@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class DataTransferJobsPauseSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/data-transfer-service/CosmosDBDataTransferJobPause.json
+     * x-ms-original-file: 2026-04-01-preview/data-transfer-service/CosmosDBDataTransferJobPause.json
      */
     /**
      * Sample code: CosmosDBDataTransferJobPause.

@@ -13,18 +13,18 @@ import org.junit.jupiter.api.Assertions;
 public final class RaiToolLabelPropertiesAccountScopeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RaiToolLabelPropertiesAccountScope model
-            = BinaryData.fromString("{\"labelValues\":{\"vj\":\"nu\",\"ikyzirtxdy\":\"rtkfawnopq\"}}")
-                .toObject(RaiToolLabelPropertiesAccountScope.class);
-        Assertions.assertEquals("nu", model.labelValues().get("vj"));
+        RaiToolLabelPropertiesAccountScope model = BinaryData
+            .fromString("{\"labelValues\":{\"fuojrngif\":\"aubrjtloq\",\"dfqwmkyoq\":\"rzpasccbiuimzdly\"}}")
+            .toObject(RaiToolLabelPropertiesAccountScope.class);
+        Assertions.assertEquals("aubrjtloq", model.labelValues().get("fuojrngif"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RaiToolLabelPropertiesAccountScope model
-            = new RaiToolLabelPropertiesAccountScope().withLabelValues(mapOf("vj", "nu", "ikyzirtxdy", "rtkfawnopq"));
+        RaiToolLabelPropertiesAccountScope model = new RaiToolLabelPropertiesAccountScope()
+            .withLabelValues(mapOf("fuojrngif", "aubrjtloq", "dfqwmkyoq", "rzpasccbiuimzdly"));
         model = BinaryData.fromObject(model).toObject(RaiToolLabelPropertiesAccountScope.class);
-        Assertions.assertEquals("nu", model.labelValues().get("vj"));
+        Assertions.assertEquals("aubrjtloq", model.labelValues().get("fuojrngif"));
     }
 
     // Use "Map.of" if available

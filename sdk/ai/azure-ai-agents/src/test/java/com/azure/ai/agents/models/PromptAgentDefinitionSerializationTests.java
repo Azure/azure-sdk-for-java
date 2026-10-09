@@ -14,8 +14,10 @@ import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -537,6 +539,22 @@ public class PromptAgentDefinitionSerializationTests {
         assertNotNull(deserialized.getReasoning());
         assertEquals(ReasoningEffort.LOW, deserialized.getReasoning().effort().get());
         assertEquals(Reasoning.GenerateSummary.AUTO, deserialized.getReasoning().generateSummary().get());
+    }
+
+    /**
+     * Tests round-trip serialization of the managed harness and skill references.
+     */
+    @Test
+    public void testRoundTripWithHarnessAndSkills() throws IOException {
+        PromptAgentDefinition original = new PromptAgentDefinition(TEST_MODEL).setHarness(new GitHubCopilotHarness())
+            .setSkills(Collections.singletonList(new SkillReference("coding-skill").setVersion("1")));
+
+        PromptAgentDefinition deserialized = deserializeFromJson(serializeToJson(original));
+
+        assertInstanceOf(GitHubCopilotHarness.class, deserialized.getHarness());
+        assertEquals(1, deserialized.getSkills().size());
+        assertEquals("coding-skill", deserialized.getSkills().get(0).getName());
+        assertEquals("1", deserialized.getSkills().get(0).getVersion());
     }
 
     /**

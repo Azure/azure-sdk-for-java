@@ -12,21 +12,20 @@ public final class NetworkSecurityPerimeterConfigurationListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkSecurityPerimeterConfigurationList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"kdlpa\",\"provisioningIssues\":[{\"name\":\"x\",\"properties\":{}},{\"name\":\"lc\",\"properties\":{}},{\"name\":\"m\",\"properties\":{}},{\"name\":\"xdfgsftufqobr\",\"properties\":{}}],\"networkSecurityPerimeter\":{\"id\":\"cgcckknhxkizvyt\",\"perimeterGuid\":\"zvulj\",\"location\":\"aeranokqgukkjqnv\"},\"resourceAssociation\":{\"name\":\"ylaxxulcdi\",\"accessMode\":\"osfjbjsv\"},\"profile\":{\"name\":\"whryvycytdcl\",\"accessRulesVersion\":4919215833349894285,\"accessRules\":[{}],\"diagnosticSettingsVersion\":2808392059508100767,\"enabledLogCategories\":[\"tmvpdvjdhtt\",\"a\",\"fedxihchrphkm\",\"rjdqnsdfzp\"]}},\"id\":\"tg\",\"name\":\"ylkdghrje\",\"type\":\"utlwxezwzhok\"}],\"nextLink\":\"wnhhtqlgehgppip\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"u\",\"provisioningIssues\":[{\"name\":\"kccrrvwey\",\"properties\":{}}],\"networkSecurityPerimeter\":{\"id\":\"yukphaimmoiroq\",\"perimeterGuid\":\"shbraga\",\"location\":\"yrmfsvbpav\"},\"resourceAssociation\":{\"name\":\"fppdbwnu\",\"accessMode\":\"ahxku\"},\"profile\":{\"name\":\"jcaacfdmmcpugm\",\"accessRulesVersion\":2799453974287418624,\"accessRules\":[{},{},{},{}],\"diagnosticSettingsVersion\":5118985133701326059,\"enabledLogCategories\":[\"ehewhoqh\"]}},\"id\":\"bqnbl\",\"name\":\"xeaclgsc\",\"type\":\"orim\"}],\"nextLink\":\"srrm\"}")
             .toObject(NetworkSecurityPerimeterConfigurationList.class);
-        Assertions.assertEquals("x", model.value().get(0).properties().provisioningIssues().get(0).name());
-        Assertions.assertEquals("cgcckknhxkizvyt", model.value().get(0).properties().networkSecurityPerimeter().id());
-        Assertions.assertEquals("zvulj", model.value().get(0).properties().networkSecurityPerimeter().perimeterGuid());
-        Assertions.assertEquals("aeranokqgukkjqnv",
-            model.value().get(0).properties().networkSecurityPerimeter().location());
-        Assertions.assertEquals("ylaxxulcdi", model.value().get(0).properties().resourceAssociation().name());
-        Assertions.assertEquals("osfjbjsv", model.value().get(0).properties().resourceAssociation().accessMode());
-        Assertions.assertEquals("whryvycytdcl", model.value().get(0).properties().profile().name());
-        Assertions.assertEquals(4919215833349894285L, model.value().get(0).properties().profile().accessRulesVersion());
-        Assertions.assertEquals(2808392059508100767L,
+        Assertions.assertEquals("kccrrvwey", model.value().get(0).properties().provisioningIssues().get(0).name());
+        Assertions.assertEquals("yukphaimmoiroq", model.value().get(0).properties().networkSecurityPerimeter().id());
+        Assertions.assertEquals("shbraga",
+            model.value().get(0).properties().networkSecurityPerimeter().perimeterGuid());
+        Assertions.assertEquals("yrmfsvbpav", model.value().get(0).properties().networkSecurityPerimeter().location());
+        Assertions.assertEquals("fppdbwnu", model.value().get(0).properties().resourceAssociation().name());
+        Assertions.assertEquals("ahxku", model.value().get(0).properties().resourceAssociation().accessMode());
+        Assertions.assertEquals("jcaacfdmmcpugm", model.value().get(0).properties().profile().name());
+        Assertions.assertEquals(2799453974287418624L, model.value().get(0).properties().profile().accessRulesVersion());
+        Assertions.assertEquals(5118985133701326059L,
             model.value().get(0).properties().profile().diagnosticSettingsVersion());
-        Assertions.assertEquals("tmvpdvjdhtt",
-            model.value().get(0).properties().profile().enabledLogCategories().get(0));
-        Assertions.assertEquals("wnhhtqlgehgppip", model.nextLink());
+        Assertions.assertEquals("ehewhoqh", model.value().get(0).properties().profile().enabledLogCategories().get(0));
+        Assertions.assertEquals("srrm", model.nextLink());
     }
 }

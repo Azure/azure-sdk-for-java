@@ -31,32 +31,63 @@ import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.io.Closeable;
+import java.net.URI;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 /**
  * While this class is public, but it is not part of our published public APIs.
  * This is meant to be internally used only by our sdk.
+ *
+ * <p>The routing-map storage is obtained from {@link SharedPartitionKeyRangeCacheRegistry}
+ * keyed by the service endpoint URI; clients configured with the same service
+ * endpoint share it. {@link #close()} releases this instance's reference. The
+ * fetching logic (network call, collection resolution, diagnostics) remains
+ * per-client. Clients configured with different endpoint URIs &mdash; including
+ * a regional endpoint versus the global endpoint of the same account &mdash;
+ * do <b>not</b> share.</p>
  **/
-public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
+public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache, Closeable {
     private final Logger logger = LoggerFactory.getLogger(RxPartitionKeyRangeCache.class);
 
     private final AsyncCacheNonBlocking<String, CollectionRoutingMap> routingMapCache;
     private final RxDocumentClientImpl client;
     private final RxCollectionCache collectionCache;
     private final DiagnosticsClientContext clientContext;
+    private final URI sharedCacheEndpointKey;
+    private final AtomicBoolean closed = new AtomicBoolean(false);
+    private final SharedPartitionKeyRangeCacheRegistry.ReleaseHandle releaseHandle;
 
-    public RxPartitionKeyRangeCache(RxDocumentClientImpl client, RxCollectionCache collectionCache) {
-        this.routingMapCache = new AsyncCacheNonBlocking<>();
+    public RxPartitionKeyRangeCache(
+        RxDocumentClientImpl client,
+        RxCollectionCache collectionCache,
+        URI serviceEndpoint) {
+
+        this.sharedCacheEndpointKey = serviceEndpoint;
+        SharedPartitionKeyRangeCacheRegistry.AcquireResult acquired =
+            SharedPartitionKeyRangeCacheRegistry.getInstance().acquire(this.sharedCacheEndpointKey, this);
+        this.routingMapCache = acquired.cache;
+        this.releaseHandle = acquired.releaseHandle;
         this.client = client;
         this.collectionCache = collectionCache;
         this.clientContext = client;
+    }
+
+    /** Idempotent release of this instance's shared-cache reference. */
+    @Override
+    public void close() {
+        if (closed.compareAndSet(false, true)) {
+            SharedPartitionKeyRangeCacheRegistry.getInstance().release(
+                this.sharedCacheEndpointKey, this.routingMapCache, this.releaseHandle);
+        }
     }
 
     /* (non-Javadoc)

@@ -12,10 +12,10 @@ import org.junit.jupiter.api.Assertions;
 public final class DnsZoneResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DnsZoneResponse model
-            = BinaryData.fromString("{\"requiredZoneNames\":[\"xpsiebtfhvpes\"],\"subResource\":\"AzureSiteRecovery\"}")
-                .toObject(DnsZoneResponse.class);
+        DnsZoneResponse model = BinaryData.fromString(
+            "{\"requiredZoneNames\":[\"v\",\"hjkbegibtnmxieb\",\"waloayqcgwr\",\"zjuzgwyz\"],\"subResource\":\"AzureSiteRecovery\"}")
+            .toObject(DnsZoneResponse.class);
         Assertions.assertEquals(VaultSubResourceType.AZURE_SITE_RECOVERY, model.subResource());
-        Assertions.assertEquals("xpsiebtfhvpes", model.requiredZoneNames().get(0));
+        Assertions.assertEquals("v", model.requiredZoneNames().get(0));
     }
 }

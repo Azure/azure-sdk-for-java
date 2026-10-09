@@ -6,6 +6,7 @@ package com.azure.spring.cloud.docker.compose.implementation.service.connection.
 import com.azure.spring.cloud.autoconfigure.implementation.context.AzureGlobalPropertiesAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.implementation.storage.queue.AzureStorageQueueAutoConfiguration;
 import com.azure.storage.queue.QueueClient;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledOnOs;
 import org.junit.jupiter.api.condition.OS;
@@ -22,6 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
     "spring.docker.compose.stop.command=down",
     "spring.cloud.azure.storage.queue.queue-name=devstoreaccount1/tc-queue"
 })
+@Tag("docker")
 @EnabledOnOs(OS.LINUX)
 class StorageQueueDockerComposeConnectionDetailsFactoryTests {
 

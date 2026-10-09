@@ -12,8 +12,8 @@ public final class VmFamilyInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VmFamilyInner model = BinaryData.fromString(
-            "{\"properties\":{\"category\":\"w\",\"provisioningState\":\"Succeeded\"},\"id\":\"ypl\",\"name\":\"ckbasyypndd\",\"type\":\"sgcbac\"}")
+            "{\"properties\":{\"category\":\"rujqg\",\"provisioningState\":\"Failed\"},\"id\":\"ouqfprwz\",\"name\":\"bngui\",\"type\":\"nwui\"}")
             .toObject(VmFamilyInner.class);
-        Assertions.assertEquals("w", model.properties().category());
+        Assertions.assertEquals("rujqg", model.properties().category());
     }
 }

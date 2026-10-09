@@ -16,6 +16,7 @@ import static com.azure.spring.cloud.appconfiguration.config.implementation.Test
 import static com.azure.spring.cloud.appconfiguration.config.implementation.TestUtils.createItemFeatureFlag;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
@@ -43,6 +44,7 @@ import com.azure.spring.cloud.appconfiguration.config.implementation.configurati
 import com.azure.spring.cloud.appconfiguration.config.implementation.feature.entity.Allocation;
 import com.azure.spring.cloud.appconfiguration.config.implementation.feature.entity.Feature;
 import com.azure.spring.cloud.appconfiguration.config.implementation.feature.entity.Variant;
+import com.azure.spring.cloud.appconfiguration.config.implementation.http.policy.FeatureFlagTracing;
 
 public class FeatureFlagClientTest {
 
@@ -453,5 +455,59 @@ public class FeatureFlagClientTest {
             assertEquals(1, capturedSelector.getTagsFilter().size());
             assertEquals("env=staging", capturedSelector.getTagsFilter().get(0));
         }
+    }
+
+    /**
+     * Walks the config-level telemetry flow end-to-end: an initial load with Seed+Telemetry must populate the shared
+     * FeatureFlagTracing reference that FeatureFlagClient hands to the HTTP pipeline through the request Context. The
+     * same reference is read by TracingInfo on every subsequent request, so the FFFeatures string it produces must
+     * track the latest load. After resetting and reloading with telemetry disabled, the reference must report Seed only.
+     */
+    @Test
+    public void correlationContextReflectsLoadedFeatureFlagTracing() {
+        FeatureFlagConfigurationSetting seedAndTelemetry = createItemFeatureFlag(
+            ".appconfig.featureflag/", "SeedTelemetryFlag",
+            "{\"id\":\"SeedTelemetryFlag\",\"enabled\":true,"
+                + "\"allocation\":{\"seed\":\"abc\"},"
+                + "\"telemetry\":{\"enabled\":true}}",
+            FEATURE_LABEL, FEATURE_FLAG_CONTENT_TYPE, TEST_E_TAG);
+        WatchedConfigurationSettings firstLoad = new WatchedConfigurationSettings(null,
+            List.of((ConfigurationSetting) seedAndTelemetry));
+        when(clientMock.listSettingsByPage(Mockito.any(), Mockito.any(Context.class))).thenReturn(firstLoad);
+
+        // Step 2: initial load.
+        featureFlagClient.loadFeatureFlags(clientMock, null, emptyLabelList, null, context);
+
+        // Pull the live FeatureFlagTracing reference out of the Context the client received during load. This is the
+        // same reference TracingInfo caches and reads on every outbound request (including refresh checks that pass
+        // a null FeatureFlagTracing through the Context).
+        ArgumentCaptor<Context> contextCaptor = ArgumentCaptor.forClass(Context.class);
+        Mockito.verify(clientMock).listSettingsByPage(Mockito.any(), contextCaptor.capture());
+        FeatureFlagTracing ffTracing = (FeatureFlagTracing) contextCaptor.getValue()
+            .getData("FeatureFlagTracing").orElse(null);
+        assertNotNull(ffTracing, "FeatureFlagClient must publish its tracing instance through the request Context");
+
+        // Steps 3 + 4: the shared reference now advertises Seed+Telemetry for subsequent requests.
+        assertEquals("Seed+Telemetry", ffTracing.createFFFeaturesString(),
+            "FFFeatures after initial load should be Seed+Telemetry");
+
+        // Steps 5 + 6: update FF to disable telemetry, then reset + reload (as AzureAppConfigDataLoader.load does).
+        FeatureFlagConfigurationSetting seedOnly = createItemFeatureFlag(
+            ".appconfig.featureflag/", "SeedTelemetryFlag",
+            "{\"id\":\"SeedTelemetryFlag\",\"enabled\":true,"
+                + "\"allocation\":{\"seed\":\"abc\"},"
+                + "\"telemetry\":{\"enabled\":false}}",
+            FEATURE_LABEL, FEATURE_FLAG_CONTENT_TYPE, TEST_E_TAG);
+        WatchedConfigurationSettings secondLoad = new WatchedConfigurationSettings(null,
+            List.of((ConfigurationSetting) seedOnly));
+        when(clientMock.listSettingsByPage(Mockito.any(), Mockito.any(Context.class))).thenReturn(secondLoad);
+
+        featureFlagClient.resetTelemetry();
+        featureFlagClient.loadFeatureFlags(clientMock, null, emptyLabelList, null, context);
+
+        // Steps 7 + 8: the same shared reference now advertises Seed only.
+        assertEquals("Seed", ffTracing.createFFFeaturesString(),
+            "FFFeatures after reload with telemetry disabled should be Seed only");
+        assertFalse(ffTracing.createFFFeaturesString().contains("Telemetry"));
     }
 }

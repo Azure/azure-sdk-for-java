@@ -14,7 +14,7 @@ import java.io.IOException;
  * Represents a delta update of the arguments for an MCP tool call.
  */
 @Immutable
-public final class ServerEventResponseMcpCallArgumentsDelta extends SessionUpdate {
+public final class ServerEventResponseMcpCallArgumentsDelta extends SessionServerEvent {
 
     /*
      * The type of event.

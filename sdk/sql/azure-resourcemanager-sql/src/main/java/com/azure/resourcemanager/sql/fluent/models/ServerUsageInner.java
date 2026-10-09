@@ -11,6 +11,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.time.OffsetDateTime;
 
 /**
  * Usage metric of a server.
@@ -130,6 +131,24 @@ public final class ServerUsageInner extends ProxyResource {
      */
     public String unit() {
         return this.innerProperties() == null ? null : this.innerProperties().unit();
+    }
+
+    /**
+     * Get the resourceName property: The name of the resource.
+     * 
+     * @return the resourceName value.
+     */
+    public String resourceName() {
+        return this.innerProperties() == null ? null : this.innerProperties().resourceName();
+    }
+
+    /**
+     * Get the nextResetTime property: The next reset time for the metric (ISO8601 format).
+     * 
+     * @return the nextResetTime value.
+     */
+    public OffsetDateTime nextResetTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().nextResetTime();
     }
 
     /**

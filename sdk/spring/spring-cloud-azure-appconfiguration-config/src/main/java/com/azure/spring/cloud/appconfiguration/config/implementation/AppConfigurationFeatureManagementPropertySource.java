@@ -6,8 +6,8 @@ import java.util.List;
 
 import org.springframework.core.env.EnumerablePropertySource;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.json.JsonMapper;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 
 /**
  * Azure App Configuration PropertySource unique per Store Label(Profile) combo.

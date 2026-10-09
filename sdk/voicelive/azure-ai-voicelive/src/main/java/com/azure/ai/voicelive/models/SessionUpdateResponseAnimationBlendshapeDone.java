@@ -14,7 +14,7 @@ import java.io.IOException;
  * Indicates the completion of blendshape animation processing for a specific output of a response.
  */
 @Immutable
-public final class SessionUpdateResponseAnimationBlendshapeDone extends SessionUpdate {
+public final class SessionUpdateResponseAnimationBlendshapeDone extends SessionServerEvent {
 
     /*
      * The type of event.

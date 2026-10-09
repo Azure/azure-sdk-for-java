@@ -110,6 +110,7 @@ public final class SpanDataMapper {
                 }
             });
 
+        CustomMeasurementsMapper.register(mappingsBuilder);
         applyCommonTags(mappingsBuilder);
 
         MAPPINGS = mappingsBuilder.build();

@@ -19,6 +19,7 @@ class AsyncQuerySinglePartitionMultiple extends AsyncBenchmark<FeedResponse<Pojo
         super(cfg);
         options = new CosmosQueryRequestOptions();
         options.setPartitionKey(new PartitionKey("pk"));
+        options.setExcludedRegions(cfg.getExcludedRegionsList());
     }
 
     @Override

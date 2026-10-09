@@ -20,6 +20,7 @@ import java.util.List;
 public final class VirtualMachineScaleSetNetworkConfigurationProperties
     implements JsonSerializable<VirtualMachineScaleSetNetworkConfigurationProperties> {
     /*
+     * 
      * Specifies the primary network interface in case the virtual machine has more
      * than 1 network interface.
      */
@@ -66,12 +67,14 @@ public final class VirtualMachineScaleSetNetworkConfigurationProperties
     private DeleteOptions deleteOption;
 
     /*
+     * 
      * Specifies whether the Auxiliary mode is enabled for the Network Interface
      * resource.
      */
     private NetworkInterfaceAuxiliaryMode auxiliaryMode;
 
     /*
+     * 
      * Specifies whether the Auxiliary sku is enabled for the Network Interface
      * resource.
      */
@@ -84,7 +87,8 @@ public final class VirtualMachineScaleSetNetworkConfigurationProperties
     }
 
     /**
-     * Get the primary property: Specifies the primary network interface in case the virtual machine has more
+     * Get the primary property:
+     * Specifies the primary network interface in case the virtual machine has more
      * than 1 network interface.
      * 
      * @return the primary value.
@@ -94,7 +98,8 @@ public final class VirtualMachineScaleSetNetworkConfigurationProperties
     }
 
     /**
-     * Set the primary property: Specifies the primary network interface in case the virtual machine has more
+     * Set the primary property:
+     * Specifies the primary network interface in case the virtual machine has more
      * than 1 network interface.
      * 
      * @param primary the primary value to set.
@@ -275,7 +280,8 @@ public final class VirtualMachineScaleSetNetworkConfigurationProperties
     }
 
     /**
-     * Get the auxiliaryMode property: Specifies whether the Auxiliary mode is enabled for the Network Interface
+     * Get the auxiliaryMode property:
+     * Specifies whether the Auxiliary mode is enabled for the Network Interface
      * resource.
      * 
      * @return the auxiliaryMode value.
@@ -285,7 +291,8 @@ public final class VirtualMachineScaleSetNetworkConfigurationProperties
     }
 
     /**
-     * Set the auxiliaryMode property: Specifies whether the Auxiliary mode is enabled for the Network Interface
+     * Set the auxiliaryMode property:
+     * Specifies whether the Auxiliary mode is enabled for the Network Interface
      * resource.
      * 
      * @param auxiliaryMode the auxiliaryMode value to set.
@@ -298,7 +305,8 @@ public final class VirtualMachineScaleSetNetworkConfigurationProperties
     }
 
     /**
-     * Get the auxiliarySku property: Specifies whether the Auxiliary sku is enabled for the Network Interface
+     * Get the auxiliarySku property:
+     * Specifies whether the Auxiliary sku is enabled for the Network Interface
      * resource.
      * 
      * @return the auxiliarySku value.
@@ -308,7 +316,8 @@ public final class VirtualMachineScaleSetNetworkConfigurationProperties
     }
 
     /**
-     * Set the auxiliarySku property: Specifies whether the Auxiliary sku is enabled for the Network Interface
+     * Set the auxiliarySku property:
+     * Specifies whether the Auxiliary sku is enabled for the Network Interface
      * resource.
      * 
      * @param auxiliarySku the auxiliarySku value to set.

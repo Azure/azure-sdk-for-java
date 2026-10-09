@@ -1,10 +1,16 @@
 # Release History
 
-## 2.0.0-beta.3 (2026-06-01)
+## 2.0.0-beta.4 (2026-10-09)
 
 ### Features Added
 
 - Added new `buildManager` overload to `ResourceManagerTestProxyTestBase`, enabling setting long-running operation's default polling interval via entry class.
+
+## 2.0.0-beta.3 (2026-08-12)
+
+### Other Changes
+
+- Added `Accept` to ignored headers.
 
 ## 2.0.0-beta.2 (2025-08-20)
 

@@ -59,6 +59,17 @@ public final class DataEncryption implements JsonSerializable<DataEncryption> {
      */
     private EncryptionKeyStatus geoBackupEncryptionKeyStatus;
 
+    /*
+     * Client id of multi-tenant Microsoft Entra application.
+     */
+    private String primaryFederatedIdentityClientId;
+
+    /*
+     * Client id of multi-tenant Microsoft Entra application for when it is configured to support geographically
+     * redundant backups.
+     */
+    private String geoBackupFederatedIdentityClientId;
+
     /**
      * Creates an instance of DataEncryption class.
      */
@@ -199,6 +210,48 @@ public final class DataEncryption implements JsonSerializable<DataEncryption> {
     }
 
     /**
+     * Get the primaryFederatedIdentityClientId property: Client id of multi-tenant Microsoft Entra application.
+     * 
+     * @return the primaryFederatedIdentityClientId value.
+     */
+    public String primaryFederatedIdentityClientId() {
+        return this.primaryFederatedIdentityClientId;
+    }
+
+    /**
+     * Set the primaryFederatedIdentityClientId property: Client id of multi-tenant Microsoft Entra application.
+     * 
+     * @param primaryFederatedIdentityClientId the primaryFederatedIdentityClientId value to set.
+     * @return the DataEncryption object itself.
+     */
+    public DataEncryption withPrimaryFederatedIdentityClientId(String primaryFederatedIdentityClientId) {
+        this.primaryFederatedIdentityClientId = primaryFederatedIdentityClientId;
+        return this;
+    }
+
+    /**
+     * Get the geoBackupFederatedIdentityClientId property: Client id of multi-tenant Microsoft Entra application for
+     * when it is configured to support geographically redundant backups.
+     * 
+     * @return the geoBackupFederatedIdentityClientId value.
+     */
+    public String geoBackupFederatedIdentityClientId() {
+        return this.geoBackupFederatedIdentityClientId;
+    }
+
+    /**
+     * Set the geoBackupFederatedIdentityClientId property: Client id of multi-tenant Microsoft Entra application for
+     * when it is configured to support geographically redundant backups.
+     * 
+     * @param geoBackupFederatedIdentityClientId the geoBackupFederatedIdentityClientId value to set.
+     * @return the DataEncryption object itself.
+     */
+    public DataEncryption withGeoBackupFederatedIdentityClientId(String geoBackupFederatedIdentityClientId) {
+        this.geoBackupFederatedIdentityClientId = geoBackupFederatedIdentityClientId;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -209,6 +262,8 @@ public final class DataEncryption implements JsonSerializable<DataEncryption> {
         jsonWriter.writeStringField("geoBackupKeyURI", this.geoBackupKeyUri);
         jsonWriter.writeStringField("geoBackupUserAssignedIdentityId", this.geoBackupUserAssignedIdentityId);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("primaryFederatedIdentityClientId", this.primaryFederatedIdentityClientId);
+        jsonWriter.writeStringField("geoBackupFederatedIdentityClientId", this.geoBackupFederatedIdentityClientId);
         return jsonWriter.writeEndObject();
     }
 
@@ -243,6 +298,10 @@ public final class DataEncryption implements JsonSerializable<DataEncryption> {
                 } else if ("geoBackupEncryptionKeyStatus".equals(fieldName)) {
                     deserializedDataEncryption.geoBackupEncryptionKeyStatus
                         = EncryptionKeyStatus.fromString(reader.getString());
+                } else if ("primaryFederatedIdentityClientId".equals(fieldName)) {
+                    deserializedDataEncryption.primaryFederatedIdentityClientId = reader.getString();
+                } else if ("geoBackupFederatedIdentityClientId".equals(fieldName)) {
+                    deserializedDataEncryption.geoBackupFederatedIdentityClientId = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

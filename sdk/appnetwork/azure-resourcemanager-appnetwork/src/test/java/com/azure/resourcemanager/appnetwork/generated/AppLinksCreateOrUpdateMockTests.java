@@ -27,7 +27,7 @@ public final class AppLinksCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\"},\"identity\":{\"principalId\":\"xivetvt\",\"tenantId\":\"aqtdoqmcbx\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"mpew\":{\"principalId\":\"slqb\",\"clientId\":\"fxoblytkb\"},\"ovasrruvwbhsqfsu\":{\"principalId\":\"fbkrvrnsvs\",\"clientId\":\"johxcrsb\"}}},\"location\":\"gjb\",\"tags\":{\"twss\":\"bpybsrfbjf\"},\"id\":\"t\",\"name\":\"tpvjzbexilzznfqq\",\"type\":\"vwpm\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\"},\"identity\":{\"principalId\":\"rqhakauha\",\"tenantId\":\"sfwxosowzxc\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"zceuojgjrw\":{\"principalId\":\"ooxdjebwpuc\",\"clientId\":\"fvovbvmeuecivy\"},\"qwgxhniskx\":{\"principalId\":\"eiotwmcdytdx\",\"clientId\":\"txnrjaw\"},\"btdhxujznbm\":{\"principalId\":\"kpycgklwndnhjd\",\"clientId\":\"whvylw\"},\"hfxobbcswsrtj\":{\"principalId\":\"wuwprzqlv\",\"clientId\":\"alupjm\"}}},\"location\":\"plrbpbewtghf\",\"tags\":{\"wxzvlvqhjkb\":\"c\",\"iebwwaloayqcgwrt\":\"gibtnm\",\"zg\":\"j\"},\"id\":\"yzm\",\"name\":\"txon\",\"type\":\"mtsavjcbpwxqp\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,23 +36,21 @@ public final class AppLinksCreateOrUpdateMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        AppLink response
-            = manager.appLinks()
-                .define("aln")
-                .withRegion("xolzdahzx")
-                .withExistingResourceGroup("xwyjsflhhc")
-                .withTags(mapOf("grcfb", "bgbkdmoizpost", "bpvjymjhx", "nrmfqjhhk", "n", "j"))
-                .withProperties(new AppLinkProperties())
-                .withIdentity(
-                    new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
-                        .withUserAssignedIdentities(mapOf("tfolhbnx", new UserAssignedIdentity(), "gylgqgitxmedjvcs",
-                            new UserAssignedIdentity(), "cnapkteoell", new UserAssignedIdentity(), "cq",
-                            new UserAssignedIdentity())))
-                .create();
+        AppLink response = manager.appLinks()
+            .define("g")
+            .withRegion("hhseyv")
+            .withExistingResourceGroup("tcc")
+            .withTags(
+                mapOf("hspkdeemao", "rts", "gkvtmelmqkrhah", "mx", "duala", "ljuahaquhcdh", "rcrgvx", "xqpvfadmw"))
+            .withProperties(new AppLinkProperties())
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
+                .withUserAssignedIdentities(
+                    mapOf("ca", new UserAssignedIdentity(), "kuwbcrnwb", new UserAssignedIdentity())))
+            .create();
 
-        Assertions.assertEquals("gjb", response.location());
-        Assertions.assertEquals("bpybsrfbjf", response.tags().get("twss"));
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, response.identity().type());
+        Assertions.assertEquals("plrbpbewtghf", response.location());
+        Assertions.assertEquals("c", response.tags().get("wxzvlvqhjkb"));
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, response.identity().type());
     }
 
     // Use "Map.of" if available

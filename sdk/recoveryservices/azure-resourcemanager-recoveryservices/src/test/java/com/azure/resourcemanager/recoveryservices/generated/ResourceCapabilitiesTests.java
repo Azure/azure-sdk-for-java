@@ -16,22 +16,21 @@ public final class ResourceCapabilitiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceCapabilities model = BinaryData.fromString(
-            "{\"properties\":{\"dnsZones\":[{\"subResource\":\"AzureSiteRecovery\"},{\"subResource\":\"AzureSiteRecovery\"}]},\"type\":\"klbb\"}")
+            "{\"properties\":{\"dnsZones\":[{\"subResource\":\"AzureBackup\"},{\"subResource\":\"AzureBackup\"},{\"subResource\":\"AzureBackup_secondary\"}]},\"type\":\"gicjooxdjeb\"}")
             .toObject(ResourceCapabilities.class);
-        Assertions.assertEquals("klbb", model.type());
-        Assertions.assertEquals(VaultSubResourceType.AZURE_SITE_RECOVERY,
-            model.properties().dnsZones().get(0).subResource());
+        Assertions.assertEquals("gicjooxdjeb", model.type());
+        Assertions.assertEquals(VaultSubResourceType.AZURE_BACKUP, model.properties().dnsZones().get(0).subResource());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourceCapabilities model = new ResourceCapabilities().withType("klbb")
+        ResourceCapabilities model = new ResourceCapabilities().withType("gicjooxdjeb")
             .withProperties(new CapabilitiesProperties()
-                .withDnsZones(Arrays.asList(new DnsZone().withSubResource(VaultSubResourceType.AZURE_SITE_RECOVERY),
-                    new DnsZone().withSubResource(VaultSubResourceType.AZURE_SITE_RECOVERY))));
+                .withDnsZones(Arrays.asList(new DnsZone().withSubResource(VaultSubResourceType.AZURE_BACKUP),
+                    new DnsZone().withSubResource(VaultSubResourceType.AZURE_BACKUP),
+                    new DnsZone().withSubResource(VaultSubResourceType.AZURE_BACKUP_SECONDARY))));
         model = BinaryData.fromObject(model).toObject(ResourceCapabilities.class);
-        Assertions.assertEquals("klbb", model.type());
-        Assertions.assertEquals(VaultSubResourceType.AZURE_SITE_RECOVERY,
-            model.properties().dnsZones().get(0).subResource());
+        Assertions.assertEquals("gicjooxdjeb", model.type());
+        Assertions.assertEquals(VaultSubResourceType.AZURE_BACKUP, model.properties().dnsZones().get(0).subResource());
     }
 }

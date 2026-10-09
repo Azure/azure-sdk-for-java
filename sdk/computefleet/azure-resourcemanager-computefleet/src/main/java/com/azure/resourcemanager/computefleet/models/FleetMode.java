@@ -12,14 +12,14 @@ import java.util.Collection;
  */
 public final class FleetMode extends ExpandableStringEnum<FleetMode> {
     /**
-     * Default. Managed is the default mode for Compute Fleet where VMs are provisioned via VMSS.
+     * Default. Managed mode where Compute Fleet provisions the VMs, manages them and their lifecycle.
      */
     public static final FleetMode MANAGED = fromString("Managed");
 
     /**
-     * Instance mode for Compute Fleet will directly provision VM instances.
+     * Launch mode where Compute Fleet launches the VMs and the customer manages them and their lifecycle.
      */
-    public static final FleetMode INSTANCE = fromString("Instance");
+    public static final FleetMode LAUNCH = fromString("Launch");
 
     /**
      * Creates a new instance of FleetMode value.

@@ -14,7 +14,7 @@ import java.io.IOException;
  * Returned when the avatar switches to idle state.
  */
 @Immutable
-public final class ServerEventSessionAvatarSwitchToIdle extends SessionUpdate {
+public final class ServerEventSessionAvatarSwitchToIdle extends SessionServerEvent {
 
     /*
      * The type of event.

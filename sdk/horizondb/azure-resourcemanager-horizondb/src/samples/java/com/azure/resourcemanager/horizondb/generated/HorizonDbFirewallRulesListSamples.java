@@ -9,14 +9,14 @@ package com.azure.resourcemanager.horizondb.generated;
  */
 public final class HorizonDbFirewallRulesListSamples {
     /*
-     * x-ms-original-file: 2026-01-20-preview/FirewallRules_List.json
+     * x-ms-original-file: 2026-05-01-preview/FirewallRules_List.json
      */
     /**
-     * Sample code: List HorizonDb firewall rules in a pool.
+     * Sample code: List HorizonDB firewall rules in a pool.
      * 
      * @param manager Entry point to HorizonDbManager.
      */
-    public static void listHorizonDbFirewallRulesInAPool(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
+    public static void listHorizonDBFirewallRulesInAPool(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
         manager.horizonDbFirewallRules()
             .list("exampleresourcegroup", "examplecluster", "examplepool", com.azure.core.util.Context.NONE);
     }

@@ -5,6 +5,8 @@
 package com.azure.ai.projects.implementation;
 
 import com.azure.ai.projects.AIProjectsServiceVersion;
+import com.azure.ai.projects.models.DataGenerationJob;
+import com.azure.ai.projects.models.DataGenerationJobResult;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
@@ -34,6 +36,11 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.PollingStrategyOptions;
+import com.azure.core.util.polling.SyncPoller;
+import com.azure.core.util.serializer.TypeReference;
+import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -231,6 +238,107 @@ public final class DatasetsImpl {
             @PathParam("version") String version, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
+        @Get("/data_generation_jobs/{jobId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> getGenerationJob(@HostParam("endpoint") String endpoint,
+            @PathParam("jobId") String jobId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("/data_generation_jobs/{jobId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getGenerationJobSync(@HostParam("endpoint") String endpoint,
+            @PathParam("jobId") String jobId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("/data_generation_jobs")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> listGenerationJobs(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
+
+        @Get("/data_generation_jobs")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listGenerationJobsSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
+
+        @Post("/data_generation_jobs")
+        @ExpectedResponses({ 201 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> createGenerationJob(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData job,
+            RequestOptions requestOptions, Context context);
+
+        @Post("/data_generation_jobs")
+        @ExpectedResponses({ 201 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> createGenerationJobSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData job,
+            RequestOptions requestOptions, Context context);
+
+        @Post("/data_generation_jobs/{jobId}:cancel")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> cancelGenerationJob(@HostParam("endpoint") String endpoint,
+            @PathParam("jobId") String jobId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Post("/data_generation_jobs/{jobId}:cancel")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> cancelGenerationJobSync(@HostParam("endpoint") String endpoint,
+            @PathParam("jobId") String jobId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Delete("/data_generation_jobs/{jobId}")
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<Void>> deleteGenerationJob(@HostParam("endpoint") String endpoint,
+            @PathParam("jobId") String jobId, @QueryParam("api-version") String apiVersion,
+            RequestOptions requestOptions, Context context);
+
+        @Delete("/data_generation_jobs/{jobId}")
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<Void> deleteGenerationJobSync(@HostParam("endpoint") String endpoint, @PathParam("jobId") String jobId,
+            @QueryParam("api-version") String apiVersion, RequestOptions requestOptions, Context context);
+
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
@@ -273,6 +381,8 @@ public final class DatasetsImpl {
     }
 
     /**
+     * List versions
+     * 
      * List all versions of the given DatasetVersion.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -315,6 +425,8 @@ public final class DatasetsImpl {
     }
 
     /**
+     * List versions
+     * 
      * List all versions of the given DatasetVersion.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -354,6 +466,8 @@ public final class DatasetsImpl {
     }
 
     /**
+     * List versions
+     * 
      * List all versions of the given DatasetVersion.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -393,6 +507,8 @@ public final class DatasetsImpl {
     }
 
     /**
+     * List versions
+     * 
      * List all versions of the given DatasetVersion.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -432,6 +548,8 @@ public final class DatasetsImpl {
     }
 
     /**
+     * List latest versions
+     * 
      * List the latest version of each DatasetVersion.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -472,6 +590,8 @@ public final class DatasetsImpl {
     }
 
     /**
+     * List latest versions
+     * 
      * List the latest version of each DatasetVersion.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -510,6 +630,8 @@ public final class DatasetsImpl {
     }
 
     /**
+     * List latest versions
+     * 
      * List the latest version of each DatasetVersion.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -548,6 +670,8 @@ public final class DatasetsImpl {
     }
 
     /**
+     * List latest versions
+     * 
      * List the latest version of each DatasetVersion.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -586,6 +710,8 @@ public final class DatasetsImpl {
     }
 
     /**
+     * Get a version
+     * 
      * Get the specific version of the DatasetVersion. The service returns 404 Not Found error if the DatasetVersion
      * does not exist.
      * <p><strong>Response Body Schema</strong></p>
@@ -615,7 +741,9 @@ public final class DatasetsImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the specific version of the DatasetVersion along with {@link Response} on successful completion of
+     * @return a version
+     * 
+     * Get the specific version of the DatasetVersion along with {@link Response} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -627,6 +755,8 @@ public final class DatasetsImpl {
     }
 
     /**
+     * Get a version
+     * 
      * Get the specific version of the DatasetVersion. The service returns 404 Not Found error if the DatasetVersion
      * does not exist.
      * <p><strong>Response Body Schema</strong></p>
@@ -656,7 +786,9 @@ public final class DatasetsImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the specific version of the DatasetVersion along with {@link Response}.
+     * @return a version
+     * 
+     * Get the specific version of the DatasetVersion along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getDatasetVersionWithResponse(String name, String version,
@@ -667,6 +799,8 @@ public final class DatasetsImpl {
     }
 
     /**
+     * Delete a version
+     * 
      * Delete the specific version of the DatasetVersion. The service returns 204 No Content if the DatasetVersion was
      * deleted successfully or if the DatasetVersion does not exist.
      * 
@@ -687,6 +821,8 @@ public final class DatasetsImpl {
     }
 
     /**
+     * Delete a version
+     * 
      * Delete the specific version of the DatasetVersion. The service returns 204 No Content if the DatasetVersion was
      * deleted successfully or if the DatasetVersion does not exist.
      * 
@@ -706,6 +842,8 @@ public final class DatasetsImpl {
     }
 
     /**
+     * Create or update a version
+     * 
      * Create a new or update an existing DatasetVersion with the given version id.
      * <p><strong>Request Body Schema</strong></p>
      * 
@@ -768,6 +906,8 @@ public final class DatasetsImpl {
     }
 
     /**
+     * Create or update a version
+     * 
      * Create a new or update an existing DatasetVersion with the given version id.
      * <p><strong>Request Body Schema</strong></p>
      * 
@@ -830,7 +970,9 @@ public final class DatasetsImpl {
     }
 
     /**
-     * Start a new or get an existing pending upload of a dataset for a specific version.
+     * Start a pending upload
+     * 
+     * Initiates a new pending upload or retrieves an existing one for the specified dataset version.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -838,7 +980,7 @@ public final class DatasetsImpl {
      * {
      *     pendingUploadId: String (Optional)
      *     connectionName: String (Optional)
-     *     pendingUploadType: String(None/BlobReference) (Required)
+     *     pendingUploadType: String(None/BlobReference/TemporaryBlobReference) (Required)
      * }
      * }
      * </pre>
@@ -858,7 +1000,7 @@ public final class DatasetsImpl {
      *     }
      *     pendingUploadId: String (Required)
      *     version: String (Optional)
-     *     pendingUploadType: String(None/BlobReference) (Required)
+     *     pendingUploadType: String(None/BlobReference/TemporaryBlobReference) (Required)
      * }
      * }
      * </pre>
@@ -885,7 +1027,9 @@ public final class DatasetsImpl {
     }
 
     /**
-     * Start a new or get an existing pending upload of a dataset for a specific version.
+     * Start a pending upload
+     * 
+     * Initiates a new pending upload or retrieves an existing one for the specified dataset version.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -893,7 +1037,7 @@ public final class DatasetsImpl {
      * {
      *     pendingUploadId: String (Optional)
      *     connectionName: String (Optional)
-     *     pendingUploadType: String(None/BlobReference) (Required)
+     *     pendingUploadType: String(None/BlobReference/TemporaryBlobReference) (Required)
      * }
      * }
      * </pre>
@@ -913,7 +1057,7 @@ public final class DatasetsImpl {
      *     }
      *     pendingUploadId: String (Required)
      *     version: String (Optional)
-     *     pendingUploadType: String(None/BlobReference) (Required)
+     *     pendingUploadType: String(None/BlobReference/TemporaryBlobReference) (Required)
      * }
      * }
      * </pre>
@@ -938,7 +1082,9 @@ public final class DatasetsImpl {
     }
 
     /**
-     * Get the SAS credential to access the storage account associated with a Dataset version.
+     * Get dataset credentials
+     * 
+     * Retrieves the SAS credential to access the storage account associated with a dataset version.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -963,7 +1109,9 @@ public final class DatasetsImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the SAS credential to access the storage account associated with a Dataset version along with
+     * @return dataset credentials
+     * 
+     * Retrieves the SAS credential to access the storage account associated with a dataset version along with
      * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -975,7 +1123,9 @@ public final class DatasetsImpl {
     }
 
     /**
-     * Get the SAS credential to access the storage account associated with a Dataset version.
+     * Get dataset credentials
+     * 
+     * Retrieves the SAS credential to access the storage account associated with a dataset version.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -1000,7 +1150,9 @@ public final class DatasetsImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the SAS credential to access the storage account associated with a Dataset version along with
+     * @return dataset credentials
+     * 
+     * Retrieves the SAS credential to access the storage account associated with a dataset version along with
      * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1011,6 +1163,1524 @@ public final class DatasetsImpl {
     }
 
     /**
+     * Get a data generation job
+     * 
+     * Retrieves the specified data generation job and its current status.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     scenario: String(supervised_finetuning_preview/reinforcement_finetuning_preview/evaluation) (Required)
+     *     id: String (Required)
+     *     result (Optional): {
+     *         outputs (Optional): [
+     *              (Optional){
+     *                 type: String(file/dataset) (Required)
+     *             }
+     *         ]
+     *         generated_samples: int (Required)
+     *         token_usage (Optional): {
+     *             prompt_tokens: long (Required)
+     *             completion_tokens: long (Required)
+     *             total_tokens: long (Required)
+     *         }
+     *     }
+     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     name: String (Required)
+     *     sources (Required): [
+     *          (Required){
+     *             type: String(prompt/agent/traces/file) (Required)
+     *             description: String (Optional)
+     *         }
+     *     ]
+     *     generation_configuration (Required): {
+     *         type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
+     *         train_split: Double (Optional)
+     *         model_options (Optional): {
+     *             model: String (Required)
+     *         }
+     *     }
+     *     created_at: long (Required)
+     *     finished_at: Long (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>Retry-After</td><td>int</td><td>Recommended number of seconds to wait before polling again.</td></tr>
+     * </table>
+     * 
+     * @param jobId The ID of the job.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a data generation job
+     * 
+     * Retrieves the specified data generation job and its current status along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getGenerationJobWithResponseAsync(String jobId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.getGenerationJob(this.client.getEndpoint(), jobId,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
+    }
+
+    /**
+     * Get a data generation job
+     * 
+     * Retrieves the specified data generation job and its current status.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     scenario: String(supervised_finetuning_preview/reinforcement_finetuning_preview/evaluation) (Required)
+     *     id: String (Required)
+     *     result (Optional): {
+     *         outputs (Optional): [
+     *              (Optional){
+     *                 type: String(file/dataset) (Required)
+     *             }
+     *         ]
+     *         generated_samples: int (Required)
+     *         token_usage (Optional): {
+     *             prompt_tokens: long (Required)
+     *             completion_tokens: long (Required)
+     *             total_tokens: long (Required)
+     *         }
+     *     }
+     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     name: String (Required)
+     *     sources (Required): [
+     *          (Required){
+     *             type: String(prompt/agent/traces/file) (Required)
+     *             description: String (Optional)
+     *         }
+     *     ]
+     *     generation_configuration (Required): {
+     *         type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
+     *         train_split: Double (Optional)
+     *         model_options (Optional): {
+     *             model: String (Required)
+     *         }
+     *     }
+     *     created_at: long (Required)
+     *     finished_at: Long (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>Retry-After</td><td>int</td><td>Recommended number of seconds to wait before polling again.</td></tr>
+     * </table>
+     * 
+     * @param jobId The ID of the job.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a data generation job
+     * 
+     * Retrieves the specified data generation job and its current status along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getGenerationJobWithResponse(String jobId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.getGenerationJobSync(this.client.getEndpoint(), jobId,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+    }
+
+    /**
+     * List data generation jobs
+     * 
+     * Returns a list of data generation jobs.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the
+     * default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
+     * for ascending order and`desc`
+     * for descending order. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. `after` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. `before` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     scenario: String(supervised_finetuning_preview/reinforcement_finetuning_preview/evaluation) (Required)
+     *     id: String (Required)
+     *     result (Optional): {
+     *         outputs (Optional): [
+     *              (Optional){
+     *                 type: String(file/dataset) (Required)
+     *             }
+     *         ]
+     *         generated_samples: int (Required)
+     *         token_usage (Optional): {
+     *             prompt_tokens: long (Required)
+     *             completion_tokens: long (Required)
+     *             total_tokens: long (Required)
+     *         }
+     *     }
+     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     name: String (Required)
+     *     sources (Required): [
+     *          (Required){
+     *             type: String(prompt/agent/traces/file) (Required)
+     *             description: String (Optional)
+     *         }
+     *     ]
+     *     generation_configuration (Required): {
+     *         type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
+     *         train_split: Double (Optional)
+     *         model_options (Optional): {
+     *             model: String (Required)
+     *         }
+     *     }
+     *     created_at: long (Required)
+     *     finished_at: Long (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response data for a requested list of items along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<BinaryData>> listGenerationJobsSinglePageAsync(RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listGenerationJobs(this.client.getEndpoint(),
+                this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "data"), null, null));
+    }
+
+    /**
+     * List data generation jobs
+     * 
+     * Returns a list of data generation jobs.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the
+     * default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
+     * for ascending order and`desc`
+     * for descending order. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. `after` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. `before` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     scenario: String(supervised_finetuning_preview/reinforcement_finetuning_preview/evaluation) (Required)
+     *     id: String (Required)
+     *     result (Optional): {
+     *         outputs (Optional): [
+     *              (Optional){
+     *                 type: String(file/dataset) (Required)
+     *             }
+     *         ]
+     *         generated_samples: int (Required)
+     *         token_usage (Optional): {
+     *             prompt_tokens: long (Required)
+     *             completion_tokens: long (Required)
+     *             total_tokens: long (Required)
+     *         }
+     *     }
+     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     name: String (Required)
+     *     sources (Required): [
+     *          (Required){
+     *             type: String(prompt/agent/traces/file) (Required)
+     *             description: String (Optional)
+     *         }
+     *     ]
+     *     generation_configuration (Required): {
+     *         type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
+     *         train_split: Double (Optional)
+     *         model_options (Optional): {
+     *             model: String (Required)
+     *         }
+     *     }
+     *     created_at: long (Required)
+     *     finished_at: Long (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response data for a requested list of items as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listGenerationJobsAsync(RequestOptions requestOptions) {
+        return new PagedFlux<>(() -> listGenerationJobsSinglePageAsync(requestOptions));
+    }
+
+    /**
+     * List data generation jobs
+     * 
+     * Returns a list of data generation jobs.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the
+     * default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
+     * for ascending order and`desc`
+     * for descending order. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. `after` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. `before` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     scenario: String(supervised_finetuning_preview/reinforcement_finetuning_preview/evaluation) (Required)
+     *     id: String (Required)
+     *     result (Optional): {
+     *         outputs (Optional): [
+     *              (Optional){
+     *                 type: String(file/dataset) (Required)
+     *             }
+     *         ]
+     *         generated_samples: int (Required)
+     *         token_usage (Optional): {
+     *             prompt_tokens: long (Required)
+     *             completion_tokens: long (Required)
+     *             total_tokens: long (Required)
+     *         }
+     *     }
+     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     name: String (Required)
+     *     sources (Required): [
+     *          (Required){
+     *             type: String(prompt/agent/traces/file) (Required)
+     *             description: String (Optional)
+     *         }
+     *     ]
+     *     generation_configuration (Required): {
+     *         type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
+     *         train_split: Double (Optional)
+     *         model_options (Optional): {
+     *             model: String (Required)
+     *         }
+     *     }
+     *     created_at: long (Required)
+     *     finished_at: Long (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response data for a requested list of items along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BinaryData> listGenerationJobsSinglePage(RequestOptions requestOptions) {
+        final String accept = "application/json";
+        Response<BinaryData> res = service.listGenerationJobsSync(this.client.getEndpoint(),
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            getValues(res.getValue(), "data"), null, null);
+    }
+
+    /**
+     * List data generation jobs
+     * 
+     * Returns a list of data generation jobs.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the
+     * default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
+     * for ascending order and`desc`
+     * for descending order. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. `after` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. `before` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     scenario: String(supervised_finetuning_preview/reinforcement_finetuning_preview/evaluation) (Required)
+     *     id: String (Required)
+     *     result (Optional): {
+     *         outputs (Optional): [
+     *              (Optional){
+     *                 type: String(file/dataset) (Required)
+     *             }
+     *         ]
+     *         generated_samples: int (Required)
+     *         token_usage (Optional): {
+     *             prompt_tokens: long (Required)
+     *             completion_tokens: long (Required)
+     *             total_tokens: long (Required)
+     *         }
+     *     }
+     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     name: String (Required)
+     *     sources (Required): [
+     *          (Required){
+     *             type: String(prompt/agent/traces/file) (Required)
+     *             description: String (Optional)
+     *         }
+     *     ]
+     *     generation_configuration (Required): {
+     *         type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
+     *         train_split: Double (Optional)
+     *         model_options (Optional): {
+     *             model: String (Required)
+     *         }
+     *     }
+     *     created_at: long (Required)
+     *     finished_at: Long (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listGenerationJobs(RequestOptions requestOptions) {
+        return new PagedIterable<>(() -> listGenerationJobsSinglePage(requestOptions));
+    }
+
+    /**
+     * Create a data generation job
+     * 
+     * Submits a new data generation job for asynchronous execution.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Operation-Id</td><td>String</td><td>No</td><td>Client-generated unique ID for idempotent retries. When
+     * absent, the server creates the job unconditionally.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     scenario: String(supervised_finetuning_preview/reinforcement_finetuning_preview/evaluation) (Required)
+     *     name: String (Required)
+     *     sources (Required): [
+     *          (Required){
+     *             type: String(prompt/agent/traces/file) (Required)
+     *             description: String (Optional)
+     *         }
+     *     ]
+     *     generation_configuration (Required): {
+     *         type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
+     *         train_split: Double (Optional)
+     *         model_options (Optional): {
+     *             model: String (Required)
+     *         }
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     scenario: String(supervised_finetuning_preview/reinforcement_finetuning_preview/evaluation) (Required)
+     *     id: String (Required)
+     *     result (Optional): {
+     *         outputs (Optional): [
+     *              (Optional){
+     *                 type: String(file/dataset) (Required)
+     *             }
+     *         ]
+     *         generated_samples: int (Required)
+     *         token_usage (Optional): {
+     *             prompt_tokens: long (Required)
+     *             completion_tokens: long (Required)
+     *             total_tokens: long (Required)
+     *         }
+     *     }
+     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     name: String (Required)
+     *     sources (Required): [
+     *          (Required){
+     *             type: String(prompt/agent/traces/file) (Required)
+     *             description: String (Optional)
+     *         }
+     *     ]
+     *     generation_configuration (Required): {
+     *         type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
+     *         train_split: Double (Optional)
+     *         model_options (Optional): {
+     *             model: String (Required)
+     *         }
+     *     }
+     *     created_at: long (Required)
+     *     finished_at: Long (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param job The data generation job inputs to create.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return data Generation Job resource along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<BinaryData>> createGenerationJobWithResponseAsync(BinaryData job,
+        RequestOptions requestOptions) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.createGenerationJob(this.client.getEndpoint(),
+            this.client.getServiceVersion().getVersion(), contentType, accept, job, requestOptions, context));
+    }
+
+    /**
+     * Create a data generation job
+     * 
+     * Submits a new data generation job for asynchronous execution.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Operation-Id</td><td>String</td><td>No</td><td>Client-generated unique ID for idempotent retries. When
+     * absent, the server creates the job unconditionally.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     scenario: String(supervised_finetuning_preview/reinforcement_finetuning_preview/evaluation) (Required)
+     *     name: String (Required)
+     *     sources (Required): [
+     *          (Required){
+     *             type: String(prompt/agent/traces/file) (Required)
+     *             description: String (Optional)
+     *         }
+     *     ]
+     *     generation_configuration (Required): {
+     *         type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
+     *         train_split: Double (Optional)
+     *         model_options (Optional): {
+     *             model: String (Required)
+     *         }
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     scenario: String(supervised_finetuning_preview/reinforcement_finetuning_preview/evaluation) (Required)
+     *     id: String (Required)
+     *     result (Optional): {
+     *         outputs (Optional): [
+     *              (Optional){
+     *                 type: String(file/dataset) (Required)
+     *             }
+     *         ]
+     *         generated_samples: int (Required)
+     *         token_usage (Optional): {
+     *             prompt_tokens: long (Required)
+     *             completion_tokens: long (Required)
+     *             total_tokens: long (Required)
+     *         }
+     *     }
+     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     name: String (Required)
+     *     sources (Required): [
+     *          (Required){
+     *             type: String(prompt/agent/traces/file) (Required)
+     *             description: String (Optional)
+     *         }
+     *     ]
+     *     generation_configuration (Required): {
+     *         type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
+     *         train_split: Double (Optional)
+     *         model_options (Optional): {
+     *             model: String (Required)
+     *         }
+     *     }
+     *     created_at: long (Required)
+     *     finished_at: Long (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param job The data generation job inputs to create.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return data Generation Job resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> createGenerationJobWithResponse(BinaryData job, RequestOptions requestOptions) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.createGenerationJobSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
+            contentType, accept, job, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Create a data generation job
+     * 
+     * Submits a new data generation job for asynchronous execution.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Operation-Id</td><td>String</td><td>No</td><td>Client-generated unique ID for idempotent retries. When
+     * absent, the server creates the job unconditionally.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     scenario: String(supervised_finetuning_preview/reinforcement_finetuning_preview/evaluation) (Required)
+     *     name: String (Required)
+     *     sources (Required): [
+     *          (Required){
+     *             type: String(prompt/agent/traces/file) (Required)
+     *             description: String (Optional)
+     *         }
+     *     ]
+     *     generation_configuration (Required): {
+     *         type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
+     *         train_split: Double (Optional)
+     *         model_options (Optional): {
+     *             model: String (Required)
+     *         }
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     scenario: String(supervised_finetuning_preview/reinforcement_finetuning_preview/evaluation) (Required)
+     *     id: String (Required)
+     *     result (Optional): {
+     *         outputs (Optional): [
+     *              (Optional){
+     *                 type: String(file/dataset) (Required)
+     *             }
+     *         ]
+     *         generated_samples: int (Required)
+     *         token_usage (Optional): {
+     *             prompt_tokens: long (Required)
+     *             completion_tokens: long (Required)
+     *             total_tokens: long (Required)
+     *         }
+     *     }
+     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     name: String (Required)
+     *     sources (Required): [
+     *          (Required){
+     *             type: String(prompt/agent/traces/file) (Required)
+     *             description: String (Optional)
+     *         }
+     *     ]
+     *     generation_configuration (Required): {
+     *         type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
+     *         train_split: Double (Optional)
+     *         model_options (Optional): {
+     *             model: String (Required)
+     *         }
+     *     }
+     *     created_at: long (Required)
+     *     finished_at: Long (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param job The data generation job inputs to create.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link PollerFlux} for polling of data Generation Job resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<DataGenerationJob, DataGenerationJobResult> beginCreateGenerationJobWithModelAsync(BinaryData job,
+        RequestOptions requestOptions) {
+        return PollerFlux.create(Duration.ofSeconds(1),
+            () -> this.createGenerationJobWithResponseAsync(job, requestOptions),
+            new com.azure.ai.projects.implementation.OperationLocationPollingStrategy<>(
+                new PollingStrategyOptions(this.client.getHttpPipeline())
+                    .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
+                    .setContext(requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE)
+                    .setServiceVersion(this.client.getServiceVersion().getVersion()),
+                "result"),
+            TypeReference.createInstance(DataGenerationJob.class),
+            TypeReference.createInstance(DataGenerationJobResult.class));
+    }
+
+    /**
+     * Create a data generation job
+     * 
+     * Submits a new data generation job for asynchronous execution.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Operation-Id</td><td>String</td><td>No</td><td>Client-generated unique ID for idempotent retries. When
+     * absent, the server creates the job unconditionally.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     scenario: String(supervised_finetuning_preview/reinforcement_finetuning_preview/evaluation) (Required)
+     *     name: String (Required)
+     *     sources (Required): [
+     *          (Required){
+     *             type: String(prompt/agent/traces/file) (Required)
+     *             description: String (Optional)
+     *         }
+     *     ]
+     *     generation_configuration (Required): {
+     *         type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
+     *         train_split: Double (Optional)
+     *         model_options (Optional): {
+     *             model: String (Required)
+     *         }
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     scenario: String(supervised_finetuning_preview/reinforcement_finetuning_preview/evaluation) (Required)
+     *     id: String (Required)
+     *     result (Optional): {
+     *         outputs (Optional): [
+     *              (Optional){
+     *                 type: String(file/dataset) (Required)
+     *             }
+     *         ]
+     *         generated_samples: int (Required)
+     *         token_usage (Optional): {
+     *             prompt_tokens: long (Required)
+     *             completion_tokens: long (Required)
+     *             total_tokens: long (Required)
+     *         }
+     *     }
+     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     name: String (Required)
+     *     sources (Required): [
+     *          (Required){
+     *             type: String(prompt/agent/traces/file) (Required)
+     *             description: String (Optional)
+     *         }
+     *     ]
+     *     generation_configuration (Required): {
+     *         type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
+     *         train_split: Double (Optional)
+     *         model_options (Optional): {
+     *             model: String (Required)
+     *         }
+     *     }
+     *     created_at: long (Required)
+     *     finished_at: Long (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param job The data generation job inputs to create.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link SyncPoller} for polling of data Generation Job resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<DataGenerationJob, DataGenerationJobResult> beginCreateGenerationJobWithModel(BinaryData job,
+        RequestOptions requestOptions) {
+        return SyncPoller.createPoller(Duration.ofSeconds(1),
+            () -> this.createGenerationJobWithResponse(job, requestOptions),
+            new com.azure.ai.projects.implementation.SyncOperationLocationPollingStrategy<>(
+                new PollingStrategyOptions(this.client.getHttpPipeline())
+                    .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
+                    .setContext(requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE)
+                    .setServiceVersion(this.client.getServiceVersion().getVersion()),
+                "result"),
+            TypeReference.createInstance(DataGenerationJob.class),
+            TypeReference.createInstance(DataGenerationJobResult.class));
+    }
+
+    /**
+     * Create a data generation job
+     * 
+     * Submits a new data generation job for asynchronous execution.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Operation-Id</td><td>String</td><td>No</td><td>Client-generated unique ID for idempotent retries. When
+     * absent, the server creates the job unconditionally.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     scenario: String(supervised_finetuning_preview/reinforcement_finetuning_preview/evaluation) (Required)
+     *     name: String (Required)
+     *     sources (Required): [
+     *          (Required){
+     *             type: String(prompt/agent/traces/file) (Required)
+     *             description: String (Optional)
+     *         }
+     *     ]
+     *     generation_configuration (Required): {
+     *         type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
+     *         train_split: Double (Optional)
+     *         model_options (Optional): {
+     *             model: String (Required)
+     *         }
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     scenario: String(supervised_finetuning_preview/reinforcement_finetuning_preview/evaluation) (Required)
+     *     id: String (Required)
+     *     result (Optional): {
+     *         outputs (Optional): [
+     *              (Optional){
+     *                 type: String(file/dataset) (Required)
+     *             }
+     *         ]
+     *         generated_samples: int (Required)
+     *         token_usage (Optional): {
+     *             prompt_tokens: long (Required)
+     *             completion_tokens: long (Required)
+     *             total_tokens: long (Required)
+     *         }
+     *     }
+     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     name: String (Required)
+     *     sources (Required): [
+     *          (Required){
+     *             type: String(prompt/agent/traces/file) (Required)
+     *             description: String (Optional)
+     *         }
+     *     ]
+     *     generation_configuration (Required): {
+     *         type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
+     *         train_split: Double (Optional)
+     *         model_options (Optional): {
+     *             model: String (Required)
+     *         }
+     *     }
+     *     created_at: long (Required)
+     *     finished_at: Long (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param job The data generation job inputs to create.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link PollerFlux} for polling of data Generation Job resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginCreateGenerationJobAsync(BinaryData job,
+        RequestOptions requestOptions) {
+        return PollerFlux.create(Duration.ofSeconds(1),
+            () -> this.createGenerationJobWithResponseAsync(job, requestOptions),
+            new com.azure.ai.projects.implementation.OperationLocationPollingStrategy<>(
+                new PollingStrategyOptions(this.client.getHttpPipeline())
+                    .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
+                    .setContext(requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE)
+                    .setServiceVersion(this.client.getServiceVersion().getVersion()),
+                "result"),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Create a data generation job
+     * 
+     * Submits a new data generation job for asynchronous execution.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Operation-Id</td><td>String</td><td>No</td><td>Client-generated unique ID for idempotent retries. When
+     * absent, the server creates the job unconditionally.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     scenario: String(supervised_finetuning_preview/reinforcement_finetuning_preview/evaluation) (Required)
+     *     name: String (Required)
+     *     sources (Required): [
+     *          (Required){
+     *             type: String(prompt/agent/traces/file) (Required)
+     *             description: String (Optional)
+     *         }
+     *     ]
+     *     generation_configuration (Required): {
+     *         type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
+     *         train_split: Double (Optional)
+     *         model_options (Optional): {
+     *             model: String (Required)
+     *         }
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     scenario: String(supervised_finetuning_preview/reinforcement_finetuning_preview/evaluation) (Required)
+     *     id: String (Required)
+     *     result (Optional): {
+     *         outputs (Optional): [
+     *              (Optional){
+     *                 type: String(file/dataset) (Required)
+     *             }
+     *         ]
+     *         generated_samples: int (Required)
+     *         token_usage (Optional): {
+     *             prompt_tokens: long (Required)
+     *             completion_tokens: long (Required)
+     *             total_tokens: long (Required)
+     *         }
+     *     }
+     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     name: String (Required)
+     *     sources (Required): [
+     *          (Required){
+     *             type: String(prompt/agent/traces/file) (Required)
+     *             description: String (Optional)
+     *         }
+     *     ]
+     *     generation_configuration (Required): {
+     *         type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
+     *         train_split: Double (Optional)
+     *         model_options (Optional): {
+     *             model: String (Required)
+     *         }
+     *     }
+     *     created_at: long (Required)
+     *     finished_at: Long (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param job The data generation job inputs to create.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link SyncPoller} for polling of data Generation Job resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, BinaryData> beginCreateGenerationJob(BinaryData job, RequestOptions requestOptions) {
+        return SyncPoller.createPoller(Duration.ofSeconds(1),
+            () -> this.createGenerationJobWithResponse(job, requestOptions),
+            new com.azure.ai.projects.implementation.SyncOperationLocationPollingStrategy<>(
+                new PollingStrategyOptions(this.client.getHttpPipeline())
+                    .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
+                    .setContext(requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE)
+                    .setServiceVersion(this.client.getServiceVersion().getVersion()),
+                "result"),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Cancel a data generation job
+     * 
+     * Cancels the specified data generation job if it is still in progress.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     scenario: String(supervised_finetuning_preview/reinforcement_finetuning_preview/evaluation) (Required)
+     *     id: String (Required)
+     *     result (Optional): {
+     *         outputs (Optional): [
+     *              (Optional){
+     *                 type: String(file/dataset) (Required)
+     *             }
+     *         ]
+     *         generated_samples: int (Required)
+     *         token_usage (Optional): {
+     *             prompt_tokens: long (Required)
+     *             completion_tokens: long (Required)
+     *             total_tokens: long (Required)
+     *         }
+     *     }
+     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     name: String (Required)
+     *     sources (Required): [
+     *          (Required){
+     *             type: String(prompt/agent/traces/file) (Required)
+     *             description: String (Optional)
+     *         }
+     *     ]
+     *     generation_configuration (Required): {
+     *         type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
+     *         train_split: Double (Optional)
+     *         model_options (Optional): {
+     *             model: String (Required)
+     *         }
+     *     }
+     *     created_at: long (Required)
+     *     finished_at: Long (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param jobId The ID of the job to cancel.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return data Generation Job resource along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> cancelGenerationJobWithResponseAsync(String jobId,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.cancelGenerationJob(this.client.getEndpoint(), jobId,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
+    }
+
+    /**
+     * Cancel a data generation job
+     * 
+     * Cancels the specified data generation job if it is still in progress.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     scenario: String(supervised_finetuning_preview/reinforcement_finetuning_preview/evaluation) (Required)
+     *     id: String (Required)
+     *     result (Optional): {
+     *         outputs (Optional): [
+     *              (Optional){
+     *                 type: String(file/dataset) (Required)
+     *             }
+     *         ]
+     *         generated_samples: int (Required)
+     *         token_usage (Optional): {
+     *             prompt_tokens: long (Required)
+     *             completion_tokens: long (Required)
+     *             total_tokens: long (Required)
+     *         }
+     *     }
+     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     name: String (Required)
+     *     sources (Required): [
+     *          (Required){
+     *             type: String(prompt/agent/traces/file) (Required)
+     *             description: String (Optional)
+     *         }
+     *     ]
+     *     generation_configuration (Required): {
+     *         type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
+     *         train_split: Double (Optional)
+     *         model_options (Optional): {
+     *             model: String (Required)
+     *         }
+     *     }
+     *     created_at: long (Required)
+     *     finished_at: Long (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param jobId The ID of the job to cancel.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return data Generation Job resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> cancelGenerationJobWithResponse(String jobId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.cancelGenerationJobSync(this.client.getEndpoint(), jobId,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Delete a data generation job
+     * 
+     * Removes the specified data generation job and its associated output.
+     * 
+     * @param jobId The ID of the job to delete.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteGenerationJobWithResponseAsync(String jobId, RequestOptions requestOptions) {
+        return FluxUtil.withContext(context -> service.deleteGenerationJob(this.client.getEndpoint(), jobId,
+            this.client.getServiceVersion().getVersion(), requestOptions, context));
+    }
+
+    /**
+     * Delete a data generation job
+     * 
+     * Removes the specified data generation job and its associated output.
+     * 
+     * @param jobId The ID of the job to delete.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteGenerationJobWithResponse(String jobId, RequestOptions requestOptions) {
+        return service.deleteGenerationJobSync(this.client.getEndpoint(), jobId,
+            this.client.getServiceVersion().getVersion(), requestOptions, Context.NONE);
+    }
+
+    /**
+     * List versions
+     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -1053,6 +2723,8 @@ public final class DatasetsImpl {
     }
 
     /**
+     * List versions
+     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -1093,6 +2765,8 @@ public final class DatasetsImpl {
     }
 
     /**
+     * List latest versions
+     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -1135,6 +2809,8 @@ public final class DatasetsImpl {
     }
 
     /**
+     * List latest versions
+     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -1174,20 +2850,26 @@ public final class DatasetsImpl {
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
 
-    private List<BinaryData> getValues(BinaryData binaryData, String path) {
+    private List<BinaryData> getValues(BinaryData binaryData, String... path) {
         try {
-            Map<?, ?> obj = binaryData.toObject(Map.class);
-            List<?> values = (List<?>) obj.get(path);
+            Object value = binaryData.toObject(Map.class);
+            for (String segment : path) {
+                value = ((Map<?, ?>) value).get(segment);
+            }
+            List<?> values = (List<?>) value;
             return values.stream().map(BinaryData::fromObject).collect(Collectors.toList());
         } catch (RuntimeException e) {
             return null;
         }
     }
 
-    private String getNextLink(BinaryData binaryData, String path) {
+    private String getNextLink(BinaryData binaryData, String... path) {
         try {
-            Map<?, ?> obj = binaryData.toObject(Map.class);
-            return (String) obj.get(path);
+            Object value = binaryData.toObject(Map.class);
+            for (String segment : path) {
+                value = ((Map<?, ?>) value).get(segment);
+            }
+            return (String) value;
         } catch (RuntimeException e) {
             return null;
         }

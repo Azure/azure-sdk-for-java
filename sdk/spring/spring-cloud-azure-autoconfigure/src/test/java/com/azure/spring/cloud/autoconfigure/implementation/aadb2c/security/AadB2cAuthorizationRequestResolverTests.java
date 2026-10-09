@@ -4,6 +4,7 @@ package com.azure.spring.cloud.autoconfigure.implementation.aadb2c.security;
 
 import com.azure.spring.cloud.autoconfigure.implementation.aadb2c.AadB2cConstants;
 import com.azure.spring.cloud.autoconfigure.implementation.aadb2c.configuration.AadB2cAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.implementation.aadb2c.configuration.properties.AadB2cProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.aadb2c.configuration.WebOAuth2ClientTestApp;
 import com.azure.spring.cloud.autoconfigure.implementation.context.AzureGlobalPropertiesAutoConfiguration;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,6 +18,9 @@ import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
 import org.springframework.http.HttpMethod;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
+import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
+import org.springframework.security.oauth2.client.registration.ClientRegistration;
+import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
 import org.springframework.security.oauth2.server.resource.authentication.BearerTokenAuthenticationToken;
 import org.springframework.util.Assert;
 
@@ -88,5 +92,77 @@ class AadB2cAuthorizationRequestResolverTests {
                     AuthorizationGrantType.AUTHORIZATION_CODE);
                 Assertions.assertTrue(resolver.resolve(request).getScopes().containsAll(Arrays.asList("openid", AadB2cConstants.TEST_CLIENT_ID)));
             });
+    }
+
+    @Test
+    void testCustomAuthorizationRequestBaseUri() {
+        final String customAuthorizationRequestBaseUri = "/login/oauth2/authorization";
+        final String registrationId = AadB2cConstants.TEST_SIGN_UP_OR_IN_NAME;
+        final AadB2cAuthorizationRequestResolver resolver = new AadB2cAuthorizationRequestResolver(
+            customAuthorizationRequestBaseUri,
+            new InMemoryClientRegistrationRepository(createClientRegistration(registrationId)),
+            new AadB2cProperties());
+
+        HttpServletRequest defaultRequest = getHttpServletRequest("/oauth2/authorization/" + registrationId);
+        HttpServletRequest customRequest = getHttpServletRequest(customAuthorizationRequestBaseUri + "/" + registrationId);
+
+        Assertions.assertNull(resolver.resolve(defaultRequest));
+        Assertions.assertNull(resolver.resolve(defaultRequest, registrationId));
+
+        final org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest resolved =
+            resolver.resolve(customRequest);
+        Assertions.assertNotNull(resolved);
+        Assertions.assertNotNull(resolver.resolve(customRequest, registrationId));
+        Assertions.assertEquals(registrationId, resolved.getAdditionalParameters().get("p"));
+        Assertions.assertEquals("spring-boot-starter",
+            resolved.getAdditionalParameters().get("x-client-SKU"));
+    }
+
+    @Test
+    void testBaseUriNormalizationWithoutLeadingSlash() {
+        // Base URI without leading '/' should be normalized to include it
+        final String baseUriWithoutLeadingSlash = "oauth2/authorization";
+        final String registrationId = AadB2cConstants.TEST_SIGN_UP_OR_IN_NAME;
+        final AadB2cAuthorizationRequestResolver resolver = new AadB2cAuthorizationRequestResolver(
+            baseUriWithoutLeadingSlash,
+            new InMemoryClientRegistrationRepository(createClientRegistration(registrationId)),
+            new AadB2cProperties());
+
+        // Request with leading '/' should match
+        HttpServletRequest request = getHttpServletRequest("/oauth2/authorization/" + registrationId);
+        final org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest resolved =
+            resolver.resolve(request);
+        Assertions.assertNotNull(resolved);
+    }
+
+    @Test
+    void testBaseUriNormalizationWithMultipleTrailingSlashes() {
+        // Base URI with multiple trailing slashes should be normalized
+        final String baseUriWithTrailingSlashes = "/oauth2/authorization///";
+        final String registrationId = AadB2cConstants.TEST_SIGN_UP_OR_IN_NAME;
+        final AadB2cAuthorizationRequestResolver resolver = new AadB2cAuthorizationRequestResolver(
+            baseUriWithTrailingSlashes,
+            new InMemoryClientRegistrationRepository(createClientRegistration(registrationId)),
+            new AadB2cProperties());
+
+        // Request should match against normalized path
+        HttpServletRequest request = getHttpServletRequest("/oauth2/authorization/" + registrationId);
+        final org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest resolved =
+            resolver.resolve(request);
+        Assertions.assertNotNull(resolved);
+    }
+
+    private ClientRegistration createClientRegistration(String registrationId) {
+        return ClientRegistration.withRegistrationId(registrationId)
+            .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
+            .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+            .redirectUri("{baseUrl}/{action}/oauth2/code/{registrationId}")
+            .scope("openid")
+            .authorizationUri("https://faketenant.b2clogin.com/oauth2/v2.0/authorize")
+            .tokenUri("https://faketenant.b2clogin.com/oauth2/v2.0/token")
+            .clientName("b2c")
+            .clientId(AadB2cConstants.TEST_CLIENT_ID)
+            .clientSecret(AadB2cConstants.TEST_CLIENT_SECRET)
+            .build();
     }
 }

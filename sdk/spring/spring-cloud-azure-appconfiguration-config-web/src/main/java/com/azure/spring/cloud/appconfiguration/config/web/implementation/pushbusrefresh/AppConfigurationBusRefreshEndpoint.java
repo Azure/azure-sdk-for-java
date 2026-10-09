@@ -22,10 +22,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationProperties;
 import com.azure.spring.cloud.appconfiguration.config.web.implementation.AppConfigurationEndpoint;
-import com.fasterxml.jackson.databind.JsonNode;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import tools.jackson.databind.JsonNode;
 
 /**
  * Endpoint for requesting new configurations to be loaded in all registered instances on the Bus.
@@ -82,7 +82,7 @@ public class AppConfigurationBusRefreshEndpoint extends AbstractBusEndpoint {
         JsonNode validationResponse = endpoint.getValidationResponse();
         if (validationResponse != null) {
             // Validating Web Hook
-            return VALIDATION_CODE_FORMAT_START + validationResponse.asText() + "\"}";
+            return VALIDATION_CODE_FORMAT_START + validationResponse.asString() + "\"}";
         } else {
             if (!endpoint.authenticate()) {
                 return HttpStatus.UNAUTHORIZED.getReasonPhrase();

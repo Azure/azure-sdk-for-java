@@ -22,7 +22,7 @@ public final class RaiBlocklistsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"description\":\"bqwuntobuizazzel\"},\"etag\":\"vydjufbnk\",\"tags\":{\"abalfdxaglz\":\"axpegjw\"},\"id\":\"tlbtlqho\",\"name\":\"xouvmrs\",\"type\":\"flikyypzkgxfxfmy\"}]}";
+            = "{\"value\":[{\"properties\":{\"description\":\"tbapfcz\"},\"etag\":\"xtrlqbpx\",\"tags\":{\"yegbthms\":\"kjpirgzxvbczw\"},\"id\":\"tjbuiggruno\",\"name\":\"fvua\",\"type\":\"jthoivsdwsngkr\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,9 +32,9 @@ public final class RaiBlocklistsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<RaiBlocklist> response
-            = manager.raiBlocklists().list("gkifmmainwh", "d", com.azure.core.util.Context.NONE);
+            = manager.raiBlocklists().list("iyxlzmiydde", "qzqvabmhvsex", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("bqwuntobuizazzel", response.iterator().next().properties().description());
-        Assertions.assertEquals("axpegjw", response.iterator().next().tags().get("abalfdxaglz"));
+        Assertions.assertEquals("tbapfcz", response.iterator().next().properties().description());
+        Assertions.assertEquals("kjpirgzxvbczw", response.iterator().next().tags().get("yegbthms"));
     }
 }

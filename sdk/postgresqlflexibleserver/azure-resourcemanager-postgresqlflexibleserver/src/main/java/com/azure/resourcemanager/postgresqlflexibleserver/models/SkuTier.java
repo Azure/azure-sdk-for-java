@@ -12,17 +12,18 @@ import java.util.Collection;
  */
 public final class SkuTier extends ExpandableStringEnum<SkuTier> {
     /**
-     * Static value Burstable for SkuTier.
+     * Cost-effective tier for infrequent CPU usage, ideal for development and testing workloads with low performance
+     * requirements.
      */
     public static final SkuTier BURSTABLE = fromString("Burstable");
 
     /**
-     * Static value GeneralPurpose for SkuTier.
+     * Balanced compute and memory for most workloads, offering scalable performance and I/O throughput.
      */
     public static final SkuTier GENERAL_PURPOSE = fromString("GeneralPurpose");
 
     /**
-     * Static value MemoryOptimized for SkuTier.
+     * High memory-to-core ratio for demanding workloads needing fast in-memory processing and high concurrency.
      */
     public static final SkuTier MEMORY_OPTIMIZED = fromString("MemoryOptimized");
 

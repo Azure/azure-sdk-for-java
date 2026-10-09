@@ -8,6 +8,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.servicefabricmanagedclusters.fluent.ManagedApplyMaintenanceWindowsClient;
+import com.azure.resourcemanager.servicefabricmanagedclusters.models.ApplyMaintenanceWindowRequest;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.ManagedApplyMaintenanceWindows;
 
 public final class ManagedApplyMaintenanceWindowsImpl implements ManagedApplyMaintenanceWindows {
@@ -23,8 +24,9 @@ public final class ManagedApplyMaintenanceWindowsImpl implements ManagedApplyMai
         this.serviceManager = serviceManager;
     }
 
-    public Response<Void> postWithResponse(String resourceGroupName, String clusterName, Context context) {
-        return this.serviceClient().postWithResponse(resourceGroupName, clusterName, context);
+    public Response<Void> postWithResponse(String resourceGroupName, String clusterName,
+        ApplyMaintenanceWindowRequest body, Context context) {
+        return this.serviceClient().postWithResponse(resourceGroupName, clusterName, body, context);
     }
 
     public void post(String resourceGroupName, String clusterName) {

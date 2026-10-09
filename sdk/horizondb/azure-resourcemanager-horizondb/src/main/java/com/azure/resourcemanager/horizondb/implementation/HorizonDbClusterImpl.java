@@ -12,6 +12,7 @@ import com.azure.resourcemanager.horizondb.models.HorizonDbCluster;
 import com.azure.resourcemanager.horizondb.models.HorizonDbClusterForPatchUpdate;
 import com.azure.resourcemanager.horizondb.models.HorizonDbClusterProperties;
 import com.azure.resourcemanager.horizondb.models.HorizonDbClusterPropertiesForPatchUpdate;
+import com.azure.resourcemanager.horizondb.models.ManagedServiceIdentity;
 import java.util.Collections;
 import java.util.Map;
 
@@ -48,6 +49,10 @@ public final class HorizonDbClusterImpl
 
     public HorizonDbClusterProperties properties() {
         return this.innerModel().properties();
+    }
+
+    public ManagedServiceIdentity identity() {
+        return this.innerModel().identity();
     }
 
     public SystemData systemData() {
@@ -148,6 +153,30 @@ public final class HorizonDbClusterImpl
         return this;
     }
 
+    public void start() {
+        serviceManager.horizonDbClusters().start(resourceGroupName, clusterName);
+    }
+
+    public void start(Context context) {
+        serviceManager.horizonDbClusters().start(resourceGroupName, clusterName, context);
+    }
+
+    public void stop() {
+        serviceManager.horizonDbClusters().stop(resourceGroupName, clusterName);
+    }
+
+    public void stop(Context context) {
+        serviceManager.horizonDbClusters().stop(resourceGroupName, clusterName, context);
+    }
+
+    public void restart() {
+        serviceManager.horizonDbClusters().restart(resourceGroupName, clusterName);
+    }
+
+    public void restart(Context context) {
+        serviceManager.horizonDbClusters().restart(resourceGroupName, clusterName, context);
+    }
+
     public HorizonDbClusterImpl withRegion(Region location) {
         this.innerModel().withLocation(location.toString());
         return this;
@@ -171,6 +200,16 @@ public final class HorizonDbClusterImpl
     public HorizonDbClusterImpl withProperties(HorizonDbClusterProperties properties) {
         this.innerModel().withProperties(properties);
         return this;
+    }
+
+    public HorizonDbClusterImpl withIdentity(ManagedServiceIdentity identity) {
+        if (isInCreateMode()) {
+            this.innerModel().withIdentity(identity);
+            return this;
+        } else {
+            this.updateProperties.withIdentity(identity);
+            return this;
+        }
     }
 
     public HorizonDbClusterImpl withProperties(HorizonDbClusterPropertiesForPatchUpdate properties) {

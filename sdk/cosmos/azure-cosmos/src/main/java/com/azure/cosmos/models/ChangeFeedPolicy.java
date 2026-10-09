@@ -52,8 +52,6 @@ import java.time.Duration;
  * }
  * </pre>
  */
-@Beta(value = Beta.SinceVersion.V4_12_0,
-    warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public final class ChangeFeedPolicy {
 
     private final JsonSerializable jsonSerializable;
@@ -94,8 +92,6 @@ public final class ChangeFeedPolicy {
      *
      * @return ChangeFeedPolicy for AllVersionsAndDeletes change feed.
      */
-    @Beta(value = Beta.SinceVersion.V4_37_0,
-        warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public static ChangeFeedPolicy createAllVersionsAndDeletesPolicy(Duration retentionDuration) {
 
         if (retentionDuration.isNegative() ||
@@ -141,8 +137,6 @@ public final class ChangeFeedPolicy {
      *
      * @return ChangeFeedPolicy for default/LatestVersion change feed without AllVersionsAndDeletes.
      */
-    @Beta(value = Beta.SinceVersion.V4_37_0,
-        warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public static ChangeFeedPolicy createLatestVersionPolicy() {
 
         ChangeFeedPolicy policy = new ChangeFeedPolicy();
@@ -199,8 +193,6 @@ public final class ChangeFeedPolicy {
      *
      * @return AllVersionsAndDeletes retention duration.
      */
-    @Beta(value = Beta.SinceVersion.V4_37_0,
-        warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Duration getRetentionDurationForAllVersionsAndDeletesPolicy() {
         return Duration.ofMinutes(this.getRetentionDurationForAllVersionsAndDeletesPolicyInMinutes());
     }

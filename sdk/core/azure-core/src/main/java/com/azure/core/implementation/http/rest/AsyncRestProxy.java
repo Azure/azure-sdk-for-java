@@ -13,6 +13,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.implementation.TypeUtil;
 import com.azure.core.implementation.serializer.HttpResponseDecoder;
+import com.azure.core.implementation.util.HttpUtils;
 import com.azure.core.util.Base64Url;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
@@ -45,8 +46,6 @@ import static com.azure.core.implementation.logging.LoggingKeys.CANCELLED_ERROR_
  * An asynchronous REST proxy implementation.
  */
 public class AsyncRestProxy extends RestProxyBase {
-
-    private static final String TEXT_EVENT_STREAM = "text/event-stream";
 
     /**
      * Create a RestProxy.
@@ -143,23 +142,28 @@ public class AsyncRestProxy extends RestProxyBase {
 
     private Mono<?> handleRestResponseReturnType(final HttpResponseDecoder.HttpDecodedResponse response,
         final SwaggerMethodParser methodParser, final Type entityType) {
+        final boolean isTextEventStream = HttpUtils.isTextEventStreamContentType(
+            response.getSourceResponse().getHeaders().getValue(HttpHeaderName.CONTENT_TYPE));
+        final ResponseBodyOwner responseBodyOwner
+            = isTextEventStream ? new ResponseBodyOwner(response.getSourceResponse()) : null;
         if (methodParser.isStreamResponse()) {
             return Mono.fromSupplier(() -> new StreamResponse(response.getSourceResponse()));
         } else if (TypeUtil.isTypeOrSubTypeOf(entityType, Response.class)) {
             final Type bodyType = TypeUtil.getRestResponseBodyType(entityType);
             if (TypeUtil.isTypeOrSubTypeOf(bodyType, Void.class)) {
-                return response.getSourceResponse()
-                    .getBody()
-                    .ignoreElements()
+                Flux<ByteBuffer> responseBody
+                    = responseBodyOwner == null ? response.getSourceResponse().getBody() : responseBodyOwner.getBody();
+                return responseBody.ignoreElements()
                     .then(Mono.fromCallable(() -> createResponse(response, entityType, null)));
             } else {
-                return handleBodyReturnType(response.getSourceResponse(), decodeBytes(response), methodParser, bodyType)
-                    .map(bodyAsObject -> createResponse(response, entityType, bodyAsObject))
-                    .switchIfEmpty(Mono.fromCallable(() -> createResponse(response, entityType, null)));
+                return handleBodyReturnType(response.getSourceResponse(), decodeBytes(response), methodParser, bodyType,
+                    responseBodyOwner).map(bodyAsObject -> createResponse(response, entityType, bodyAsObject))
+                        .switchIfEmpty(Mono.fromCallable(() -> createResponse(response, entityType, null)));
             }
         } else {
             // For now, we're just throwing if the Maybe didn't emit a value.
-            return handleBodyReturnType(response.getSourceResponse(), decodeBytes(response), methodParser, entityType);
+            return handleBodyReturnType(response.getSourceResponse(), decodeBytes(response), methodParser, entityType,
+                responseBodyOwner);
         }
     }
 
@@ -177,10 +181,17 @@ public class AsyncRestProxy extends RestProxyBase {
     }
 
     static Mono<?> handleBodyReturnType(HttpResponse sourceResponse, Function<byte[], Mono<Object>> getDecodedBody,
-        SwaggerMethodParser methodParser, Type entityType) {
+        SwaggerMethodParser methodParser, Type entityType, ResponseBodyOwner responseBodyOwner) {
         final int responseStatusCode = sourceResponse.getStatusCode();
         final HttpMethod httpMethod = methodParser.getHttpMethod();
         final Type returnValueWireType = methodParser.getReturnValueWireType();
+        if (responseBodyOwner == null
+            && HttpUtils
+                .isTextEventStreamContentType(sourceResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
+            responseBodyOwner = new ResponseBodyOwner(sourceResponse);
+        }
+        final Flux<ByteBuffer> responseBody
+            = responseBodyOwner == null ? sourceResponse.getBody() : responseBodyOwner.getBody();
 
         final Mono<?> asyncResult;
         if (httpMethod == HttpMethod.HEAD
@@ -199,20 +210,19 @@ public class AsyncRestProxy extends RestProxyBase {
             asyncResult = responseBodyBytesAsync;
         } else if (FluxUtil.isFluxByteBuffer(entityType)) {
             // Mono<Flux<ByteBuffer>>
-            asyncResult = Mono.just(sourceResponse.getBody());
+            asyncResult = Mono.just(responseBody);
         } else if (TypeUtil.isTypeOrSubTypeOf(entityType, BinaryData.class)) {
-            String contentType = sourceResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE);
             // Mono<BinaryData>
             // The raw response is directly used to create an instance of BinaryData which then provides
             // different methods to read the response. The reading of the response is delayed until BinaryData
             // is read and depending on which format the content is converted into, the response is not necessarily
             // fully copied into memory resulting in lesser overall memory usage.
-            if (contentType != null && contentType.startsWith(TEXT_EVENT_STREAM)) {
-                // if the response content type is a stream, create a BinaryData instance with bufferContent set to
-                // false.
-                asyncResult = BinaryData.fromFlux(sourceResponse.getBody(), null, false);
+            if (responseBodyOwner != null) {
+                // If the response content type identifies a stream, create a BinaryData instance with bufferContent
+                // set to false.
+                asyncResult = BinaryData.fromFlux(responseBody, null, false);
             } else {
-                asyncResult = BinaryData.fromFlux(sourceResponse.getBody());
+                asyncResult = BinaryData.fromFlux(responseBody);
             }
         } else if (TypeUtil.isTypeOrSubTypeOf(entityType, InputStream.class)) {
             // Corresponds to the Open API 2.0 type "file" which is mapped to an InputStream.
@@ -222,6 +232,11 @@ public class AsyncRestProxy extends RestProxyBase {
             asyncResult = sourceResponse.getBodyAsByteArray().flatMap(getDecodedBody);
         }
         return asyncResult;
+    }
+
+    static Mono<?> handleBodyReturnType(HttpResponse sourceResponse, Function<byte[], Mono<Object>> getDecodedBody,
+        SwaggerMethodParser methodParser, Type entityType) {
+        return handleBodyReturnType(sourceResponse, getDecodedBody, methodParser, entityType, null);
     }
 
     /**
@@ -238,7 +253,6 @@ public class AsyncRestProxy extends RestProxyBase {
         EnumSet<ErrorOptions> errorOptionsSet) {
         final Mono<HttpResponseDecoder.HttpDecodedResponse> asyncExpectedResponse = endSpanWhenDone(
             ensureExpectedStatus(asyncHttpDecodedResponse, methodParser, options, errorOptionsSet), context);
-
         final Object result;
         if (TypeUtil.isTypeOrSubTypeOf(returnType, Mono.class)) {
             final Type monoTypeParam = TypeUtil.getTypeArgument(returnType);

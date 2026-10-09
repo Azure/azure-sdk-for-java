@@ -14,22 +14,22 @@ public final class WindowUptimeCriteriaComparator extends ExpandableStringEnum<W
     /**
      * Less than the target value.
      */
-    public static final WindowUptimeCriteriaComparator LESS_THAN = fromString("<");
+    public static final WindowUptimeCriteriaComparator LESS_THAN = fromString("lt");
 
     /**
      * Greater than the target value.
      */
-    public static final WindowUptimeCriteriaComparator GREATER_THAN = fromString(">");
+    public static final WindowUptimeCriteriaComparator GREATER_THAN = fromString("gt");
 
     /**
      * Less than or equal to the target value.
      */
-    public static final WindowUptimeCriteriaComparator LESS_THAN_OR_EQUAL = fromString("<=");
+    public static final WindowUptimeCriteriaComparator LESS_THAN_OR_EQUAL = fromString("lte");
 
     /**
      * Greater than or equal to the target value.
      */
-    public static final WindowUptimeCriteriaComparator GREATER_THAN_OR_EQUAL = fromString(">=");
+    public static final WindowUptimeCriteriaComparator GREATER_THAN_OR_EQUAL = fromString("gte");
 
     /**
      * Creates a new instance of WindowUptimeCriteriaComparator value.

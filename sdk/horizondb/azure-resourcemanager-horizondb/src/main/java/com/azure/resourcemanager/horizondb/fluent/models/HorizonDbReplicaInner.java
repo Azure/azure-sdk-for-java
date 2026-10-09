@@ -14,7 +14,7 @@ import com.azure.resourcemanager.horizondb.models.HorizonDbReplicaProperties;
 import java.io.IOException;
 
 /**
- * Represents the HorizonDb replica.
+ * Represents the HorizonDB replica.
  */
 @Fluent
 public final class HorizonDbReplicaInner extends ProxyResource {

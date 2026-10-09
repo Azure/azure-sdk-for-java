@@ -9,7 +9,7 @@ package com.azure.resourcemanager.artifactsigning.generated;
  */
 public final class CertificateProfilesDeleteSamples {
     /*
-     * x-ms-original-file: 2025-10-13/CertificateProfiles_Delete.json
+     * x-ms-original-file: 2026-05-15-preview/CertificateProfiles_Delete.json
      */
     /**
      * Sample code: Delete a certificate profile.

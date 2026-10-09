@@ -10,10 +10,12 @@ import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.keys.models.CreateEcKeyOptions;
+import com.azure.security.keyvault.keys.models.CreateExternalKeyOptions;
 import com.azure.security.keyvault.keys.models.CreateKeyOptions;
 import com.azure.security.keyvault.keys.models.CreateOctKeyOptions;
 import com.azure.security.keyvault.keys.models.CreateRsaKeyOptions;
 import com.azure.security.keyvault.keys.models.DeletedKey;
+import com.azure.security.keyvault.keys.models.ExternalKey;
 import com.azure.security.keyvault.keys.models.ImportKeyOptions;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
 import com.azure.security.keyvault.keys.models.KeyAttestation;
@@ -103,6 +105,36 @@ public final class KeyClientJavaDocCodeSnippets {
 
         System.out.printf("Created key with name: %s and id: %s%n", octKey.getName(), octKey.getId());
         // END: com.azure.security.keyvault.keys.KeyClient.createOctKey#CreateOctKeyOptions
+    }
+
+    /**
+     * Generates code samples for using {@link KeyClient#createExternalKey(CreateExternalKeyOptions)} and
+     * {@link KeyClient#createExternalKeyWithResponse(CreateExternalKeyOptions, Context)}.
+     */
+    public void createExternalKey() {
+        KeyClient keyClient = createClient();
+        // BEGIN: com.azure.security.keyvault.keys.KeyClient.createExternalKey#CreateExternalKeyOptions
+        CreateExternalKeyOptions createExternalKeyOptions =
+            new CreateExternalKeyOptions("keyName", new ExternalKey("external-key-reference-id"))
+                .setNotBefore(OffsetDateTime.now().plusDays(1))
+                .setExpiresOn(OffsetDateTime.now().plusYears(1));
+        KeyVaultKey externalKey = keyClient.createExternalKey(createExternalKeyOptions);
+
+        System.out.printf("Created external key with name: %s and id: %s%n", externalKey.getName(),
+            externalKey.getId());
+        // END: com.azure.security.keyvault.keys.KeyClient.createExternalKey#CreateExternalKeyOptions
+
+        // BEGIN: com.azure.security.keyvault.keys.KeyClient.createExternalKeyWithResponse#CreateExternalKeyOptions-Context
+        CreateExternalKeyOptions options =
+            new CreateExternalKeyOptions("keyName", new ExternalKey("external-key-reference-id"))
+                .setNotBefore(OffsetDateTime.now().plusDays(1))
+                .setExpiresOn(OffsetDateTime.now().plusYears(1));
+        Response<KeyVaultKey> response =
+            keyClient.createExternalKeyWithResponse(options, new Context("key1", "value1"));
+
+        System.out.printf("Created external key with name: %s and id: %s%n", response.getValue().getName(),
+            response.getValue().getId());
+        // END: com.azure.security.keyvault.keys.KeyClient.createExternalKeyWithResponse#CreateExternalKeyOptions-Context
     }
 
     /**

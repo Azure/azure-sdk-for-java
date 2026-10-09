@@ -12,12 +12,12 @@ import java.util.Collection;
  */
 public final class CreateModeForPatch extends ExpandableStringEnum<CreateModeForPatch> {
     /**
-     * Static value Default for CreateModeForPatch.
+     * It's equivalent to 'Update'.
      */
     public static final CreateModeForPatch DEFAULT = fromString("Default");
 
     /**
-     * Static value Update for CreateModeForPatch.
+     * Operation updates an existing server.
      */
     public static final CreateModeForPatch UPDATE = fromString("Update");
 

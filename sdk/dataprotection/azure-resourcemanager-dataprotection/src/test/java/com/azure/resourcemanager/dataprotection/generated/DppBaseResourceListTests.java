@@ -12,8 +12,8 @@ public final class DppBaseResourceListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DppBaseResourceList model = BinaryData.fromString(
-            "{\"value\":[{\"id\":\"birx\",\"name\":\"pybsrfbjfdtw\",\"type\":\"sotftpvj\"}],\"nextLink\":\"exilzznfqqnvwpmq\"}")
+            "{\"value\":[{\"id\":\"ohdneuel\",\"name\":\"phsdyhto\",\"type\":\"fikdowwqu\"},{\"id\":\"xzxcl\",\"name\":\"ithhqzon\",\"type\":\"sg\"},{\"id\":\"hcohfwdsjnk\",\"name\":\"ljuti\",\"type\":\"swacffgdkzz\"},{\"id\":\"kfvhqcrailvpn\",\"name\":\"pfuflrw\",\"type\":\"mh\"}],\"nextLink\":\"xyjrxsagafcnih\"}")
             .toObject(DppBaseResourceList.class);
-        Assertions.assertEquals("exilzznfqqnvwpmq", model.nextLink());
+        Assertions.assertEquals("xyjrxsagafcnih", model.nextLink());
     }
 }

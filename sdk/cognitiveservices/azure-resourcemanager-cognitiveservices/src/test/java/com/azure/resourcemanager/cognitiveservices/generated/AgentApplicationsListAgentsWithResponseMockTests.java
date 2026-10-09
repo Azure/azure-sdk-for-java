@@ -21,7 +21,7 @@ public final class AgentApplicationsListAgentsWithResponseMockTests {
     @Test
     public void testListAgentsWithResponse() throws Exception {
         String responseStr
-            = "{\"nextLink\":\"kd\",\"value\":[{\"properties\":{\"agentId\":\"dwdbvxvzal\",\"agentName\":\"oyqxlunkf\"},\"id\":\"mcxqqxmyzklao\",\"name\":\"n\",\"type\":\"ohrvmz\"},{\"properties\":{\"agentId\":\"razadivznllaslks\",\"agentName\":\"jqjpv\"},\"id\":\"ihxjtgzgtai\",\"name\":\"wbqgroigbsfsgsa\",\"type\":\"nwldfmhljq\"},{\"properties\":{\"agentId\":\"spmrjct\",\"agentName\":\"ldsxebuhsxrz\"},\"id\":\"gsdaluyckh\",\"name\":\"frbhseuerbg\",\"type\":\"xebjl\"},{\"properties\":{\"agentId\":\"caytujraxdtpryj\",\"agentName\":\"tnsewou\"},\"id\":\"yms\",\"name\":\"vyljurkeposehqq\",\"type\":\"lmpctwj\"}]}";
+            = "{\"nextLink\":\"rcmelycpgokut\",\"value\":[{\"properties\":{\"agentId\":\"bn\",\"agentName\":\"nv\"},\"id\":\"hfuzzlapyixlvz\",\"name\":\"gulaebxiauqs\",\"type\":\"ptessjlw\"},{\"properties\":{\"agentId\":\"atpvbl\",\"agentName\":\"xgxqayga\"},\"id\":\"kvc\",\"name\":\"wpvlcjbvyezjwjkq\",\"type\":\"nbwhiieyoz\"},{\"properties\":{\"agentId\":\"cwf\",\"agentName\":\"cwnbcgqefgzjvbx\"},\"id\":\"bg\",\"name\":\"arxt\",\"type\":\"uc\"},{\"properties\":{\"agentId\":\"gvkdlhuduk\",\"agentName\":\"joafm\"},\"id\":\"exulvoepknarseia\",\"name\":\"csqoacbuqdgs\",\"type\":\"pleqfgkxenvszglv\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,12 +31,12 @@ public final class AgentApplicationsListAgentsWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         AgentReferenceResourceArmPaginatedResult response = manager.agentApplications()
-            .listAgentsWithResponse("hnoyrzaaoeeh", "mjenvjeatea", "xc", "xoxdjxldnaryyi",
+            .listAgentsWithResponse("aphifkfrpm", "lubpebrmjjnfpght", "ttpkims", "hnkkhbykrs",
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("kd", response.nextLink());
-        Assertions.assertEquals("dwdbvxvzal", response.value().get(0).properties().agentId());
-        Assertions.assertEquals("oyqxlunkf", response.value().get(0).properties().agentName());
+        Assertions.assertEquals("rcmelycpgokut", response.nextLink());
+        Assertions.assertEquals("bn", response.value().get(0).properties().agentId());
+        Assertions.assertEquals("nv", response.value().get(0).properties().agentName());
     }
 }

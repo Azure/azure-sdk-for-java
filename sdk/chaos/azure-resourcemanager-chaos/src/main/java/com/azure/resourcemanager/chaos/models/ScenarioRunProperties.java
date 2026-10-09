@@ -40,6 +40,14 @@ public final class ScenarioRunProperties implements JsonSerializable<ScenarioRun
     private String managedIdentityPrincipalId;
 
     /*
+     * The resource snapshot ID this run is pinned to. Resolved from the scenario's
+     * pinned evaluation snapshot (template scenarios) or the latest discovery
+     * snapshot (custom scenarios) at run creation, ensuring the run executes against
+     * the same set of discovered resources that produced the recommendation.
+     */
+    private String resourceSnapshotId;
+
+    /*
      * The scenario run status.
      */
     private ScenarioRunState status;
@@ -48,6 +56,13 @@ public final class ScenarioRunProperties implements JsonSerializable<ScenarioRun
      * All resources discovered for the scenario run.
      */
     private List<ScenarioRunResource> resources;
+
+    /*
+     * Resources that matched the scenario's target resource types but were excluded
+     * from fault injection by the configuration's resource-targeting filters
+     * (for example zone, location, or explicit exclusions). These resources will not be impacted by the run.
+     */
+    private List<ScenarioRunResource> excludedResources;
 
     /*
      * System or infrastructure errors encountered during the scenario run.
@@ -129,6 +144,18 @@ public final class ScenarioRunProperties implements JsonSerializable<ScenarioRun
     }
 
     /**
+     * Get the resourceSnapshotId property: The resource snapshot ID this run is pinned to. Resolved from the scenario's
+     * pinned evaluation snapshot (template scenarios) or the latest discovery
+     * snapshot (custom scenarios) at run creation, ensuring the run executes against
+     * the same set of discovered resources that produced the recommendation.
+     * 
+     * @return the resourceSnapshotId value.
+     */
+    public String resourceSnapshotId() {
+        return this.resourceSnapshotId;
+    }
+
+    /**
      * Get the status property: The scenario run status.
      * 
      * @return the status value.
@@ -144,6 +171,17 @@ public final class ScenarioRunProperties implements JsonSerializable<ScenarioRun
      */
     public List<ScenarioRunResource> resources() {
         return this.resources;
+    }
+
+    /**
+     * Get the excludedResources property: Resources that matched the scenario's target resource types but were excluded
+     * from fault injection by the configuration's resource-targeting filters
+     * (for example zone, location, or explicit exclusions). These resources will not be impacted by the run.
+     * 
+     * @return the excludedResources value.
+     */
+    public List<ScenarioRunResource> excludedResources() {
+        return this.excludedResources;
     }
 
     /**
@@ -253,6 +291,12 @@ public final class ScenarioRunProperties implements JsonSerializable<ScenarioRun
                 } else if ("startTime".equals(fieldName)) {
                     deserializedScenarioRunProperties.startTime = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("resourceSnapshotId".equals(fieldName)) {
+                    deserializedScenarioRunProperties.resourceSnapshotId = reader.getString();
+                } else if ("excludedResources".equals(fieldName)) {
+                    List<ScenarioRunResource> excludedResources
+                        = reader.readArray(reader1 -> ScenarioRunResource.fromJson(reader1));
+                    deserializedScenarioRunProperties.excludedResources = excludedResources;
                 } else if ("errors".equals(fieldName)) {
                     List<OperationError> errors = reader.readArray(reader1 -> OperationError.fromJson(reader1));
                     deserializedScenarioRunProperties.errors = errors;

@@ -13,17 +13,17 @@ public final class CommitmentTierInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CommitmentTierInner model = BinaryData.fromString(
-            "{\"kind\":\"fqcvovj\",\"skuName\":\"ycsjmlbem\",\"hostingModel\":\"ConnectedContainer\",\"planType\":\"riuxegthortuda\",\"tier\":\"pjfe\",\"maxCount\":1302185073,\"quota\":{\"quantity\":3103501670005919366,\"unit\":\"bgqnz\"},\"cost\":{\"commitmentMeterId\":\"iilialwc\",\"overageMeterId\":\"ckbbcc\"}}")
+            "{\"kind\":\"l\",\"skuName\":\"iomqoqpepiaea\",\"hostingModel\":\"ConnectedContainer\",\"planType\":\"rgdtpeqnacyheqw\",\"tier\":\"qq\",\"maxCount\":1737059096,\"quota\":{\"quantity\":4637890487093031437,\"unit\":\"ozf\"},\"cost\":{\"commitmentMeterId\":\"wmbupyvqyvliq\",\"overageMeterId\":\"psejbsvsiaies\"}}")
             .toObject(CommitmentTierInner.class);
-        Assertions.assertEquals("fqcvovj", model.kind());
-        Assertions.assertEquals("ycsjmlbem", model.skuName());
+        Assertions.assertEquals("l", model.kind());
+        Assertions.assertEquals("iomqoqpepiaea", model.skuName());
         Assertions.assertEquals(HostingModel.CONNECTED_CONTAINER, model.hostingModel());
-        Assertions.assertEquals("riuxegthortuda", model.planType());
-        Assertions.assertEquals("pjfe", model.tier());
-        Assertions.assertEquals(1302185073, model.maxCount());
-        Assertions.assertEquals(3103501670005919366L, model.quota().quantity());
-        Assertions.assertEquals("bgqnz", model.quota().unit());
-        Assertions.assertEquals("iilialwc", model.cost().commitmentMeterId());
-        Assertions.assertEquals("ckbbcc", model.cost().overageMeterId());
+        Assertions.assertEquals("rgdtpeqnacyheqw", model.planType());
+        Assertions.assertEquals("qq", model.tier());
+        Assertions.assertEquals(1737059096, model.maxCount());
+        Assertions.assertEquals(4637890487093031437L, model.quota().quantity());
+        Assertions.assertEquals("ozf", model.quota().unit());
+        Assertions.assertEquals("wmbupyvqyvliq", model.cost().commitmentMeterId());
+        Assertions.assertEquals("psejbsvsiaies", model.cost().overageMeterId());
     }
 }

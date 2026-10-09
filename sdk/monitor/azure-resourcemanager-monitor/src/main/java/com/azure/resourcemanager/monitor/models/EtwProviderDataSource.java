@@ -49,6 +49,7 @@ public final class EtwProviderDataSource implements JsonSerializable<EtwProvider
     private String keyword;
 
     /*
+     * 
      * A friendly name for the data source.
      * This name should be unique across all data sources (regardless of type) within the data collection rule.
      */
@@ -181,7 +182,8 @@ public final class EtwProviderDataSource implements JsonSerializable<EtwProvider
     }
 
     /**
-     * Get the name property: A friendly name for the data source.
+     * Get the name property:
+     * A friendly name for the data source.
      * This name should be unique across all data sources (regardless of type) within the data collection rule.
      * 
      * @return the name value.
@@ -191,7 +193,8 @@ public final class EtwProviderDataSource implements JsonSerializable<EtwProvider
     }
 
     /**
-     * Set the name property: A friendly name for the data source.
+     * Set the name property:
+     * A friendly name for the data source.
      * This name should be unique across all data sources (regardless of type) within the data collection rule.
      * 
      * @param name the name value to set.

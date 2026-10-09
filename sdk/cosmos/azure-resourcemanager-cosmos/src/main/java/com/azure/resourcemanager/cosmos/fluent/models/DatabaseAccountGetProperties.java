@@ -31,6 +31,7 @@ import com.azure.resourcemanager.cosmos.models.MinimalTlsVersion;
 import com.azure.resourcemanager.cosmos.models.NetworkAclBypass;
 import com.azure.resourcemanager.cosmos.models.PublicNetworkAccess;
 import com.azure.resourcemanager.cosmos.models.RestoreParameters;
+import com.azure.resourcemanager.cosmos.models.SoftDeleteConfiguration;
 import com.azure.resourcemanager.cosmos.models.VirtualNetworkRule;
 import java.io.IOException;
 import java.util.List;
@@ -286,6 +287,11 @@ public final class DatabaseAccountGetProperties implements JsonSerializable<Data
     private Boolean enableAllVersionsAndDeletesChangeFeed;
 
     /*
+     * The configuration for soft delete on the Cosmos DB account.
+     */
+    private SoftDeleteConfiguration softDeleteConfiguration;
+
+    /*
      * Total dedicated throughput (RU/s) for database account. Represents the sum of all manual provisioned throughput
      * and all autoscale max RU/s across all shared throughput databases and dedicated throughput containers in the
      * account for 1 region. READ ONLY.
@@ -298,6 +304,11 @@ public final class DatabaseAccountGetProperties implements JsonSerializable<Data
      * throughput containers in the account for 1 region. READ ONLY.
      */
     private Long throughputPoolMaxConsumableRUs;
+
+    /*
+     * Flag to indicate enabling/disabling of hierarchical partition key ID last level enforcement on the account.
+     */
+    private Boolean enforceHierarchicalPartitionKeyIdLastLevel;
 
     /**
      * Creates an instance of DatabaseAccountGetProperties class.
@@ -1194,6 +1205,26 @@ public final class DatabaseAccountGetProperties implements JsonSerializable<Data
     }
 
     /**
+     * Get the softDeleteConfiguration property: The configuration for soft delete on the Cosmos DB account.
+     * 
+     * @return the softDeleteConfiguration value.
+     */
+    public SoftDeleteConfiguration softDeleteConfiguration() {
+        return this.softDeleteConfiguration;
+    }
+
+    /**
+     * Set the softDeleteConfiguration property: The configuration for soft delete on the Cosmos DB account.
+     * 
+     * @param softDeleteConfiguration the softDeleteConfiguration value to set.
+     * @return the DatabaseAccountGetProperties object itself.
+     */
+    public DatabaseAccountGetProperties withSoftDeleteConfiguration(SoftDeleteConfiguration softDeleteConfiguration) {
+        this.softDeleteConfiguration = softDeleteConfiguration;
+        return this;
+    }
+
+    /**
      * Get the throughputPoolDedicatedRUs property: Total dedicated throughput (RU/s) for database account. Represents
      * the sum of all manual provisioned throughput and all autoscale max RU/s across all shared throughput databases
      * and dedicated throughput containers in the account for 1 region. READ ONLY.
@@ -1240,6 +1271,29 @@ public final class DatabaseAccountGetProperties implements JsonSerializable<Data
      */
     public DatabaseAccountGetProperties withThroughputPoolMaxConsumableRUs(Long throughputPoolMaxConsumableRUs) {
         this.throughputPoolMaxConsumableRUs = throughputPoolMaxConsumableRUs;
+        return this;
+    }
+
+    /**
+     * Get the enforceHierarchicalPartitionKeyIdLastLevel property: Flag to indicate enabling/disabling of hierarchical
+     * partition key ID last level enforcement on the account.
+     * 
+     * @return the enforceHierarchicalPartitionKeyIdLastLevel value.
+     */
+    public Boolean enforceHierarchicalPartitionKeyIdLastLevel() {
+        return this.enforceHierarchicalPartitionKeyIdLastLevel;
+    }
+
+    /**
+     * Set the enforceHierarchicalPartitionKeyIdLastLevel property: Flag to indicate enabling/disabling of hierarchical
+     * partition key ID last level enforcement on the account.
+     * 
+     * @param enforceHierarchicalPartitionKeyIdLastLevel the enforceHierarchicalPartitionKeyIdLastLevel value to set.
+     * @return the DatabaseAccountGetProperties object itself.
+     */
+    public DatabaseAccountGetProperties
+        withEnforceHierarchicalPartitionKeyIdLastLevel(Boolean enforceHierarchicalPartitionKeyIdLastLevel) {
+        this.enforceHierarchicalPartitionKeyIdLastLevel = enforceHierarchicalPartitionKeyIdLastLevel;
         return this;
     }
 
@@ -1303,6 +1357,9 @@ public final class DatabaseAccountGetProperties implements JsonSerializable<Data
         if (keysMetadata() != null) {
             keysMetadata().validate();
         }
+        if (softDeleteConfiguration() != null) {
+            softDeleteConfiguration().validate();
+        }
     }
 
     /**
@@ -1356,8 +1413,11 @@ public final class DatabaseAccountGetProperties implements JsonSerializable<Data
         jsonWriter.writeBooleanField("enablePerRegionPerPartitionAutoscale", this.enablePerRegionPerPartitionAutoscale);
         jsonWriter.writeBooleanField("enableAllVersionsAndDeletesChangeFeed",
             this.enableAllVersionsAndDeletesChangeFeed);
+        jsonWriter.writeJsonField("softDeleteConfiguration", this.softDeleteConfiguration);
         jsonWriter.writeNumberField("throughputPoolDedicatedRUs", this.throughputPoolDedicatedRUs);
         jsonWriter.writeNumberField("throughputPoolMaxConsumableRUs", this.throughputPoolMaxConsumableRUs);
+        jsonWriter.writeBooleanField("enforceHierarchicalPartitionKeyIdLastLevel",
+            this.enforceHierarchicalPartitionKeyIdLastLevel);
         return jsonWriter.writeEndObject();
     }
 
@@ -1509,12 +1569,18 @@ public final class DatabaseAccountGetProperties implements JsonSerializable<Data
                 } else if ("enableAllVersionsAndDeletesChangeFeed".equals(fieldName)) {
                     deserializedDatabaseAccountGetProperties.enableAllVersionsAndDeletesChangeFeed
                         = reader.getNullable(JsonReader::getBoolean);
+                } else if ("softDeleteConfiguration".equals(fieldName)) {
+                    deserializedDatabaseAccountGetProperties.softDeleteConfiguration
+                        = SoftDeleteConfiguration.fromJson(reader);
                 } else if ("throughputPoolDedicatedRUs".equals(fieldName)) {
                     deserializedDatabaseAccountGetProperties.throughputPoolDedicatedRUs
                         = reader.getNullable(JsonReader::getLong);
                 } else if ("throughputPoolMaxConsumableRUs".equals(fieldName)) {
                     deserializedDatabaseAccountGetProperties.throughputPoolMaxConsumableRUs
                         = reader.getNullable(JsonReader::getLong);
+                } else if ("enforceHierarchicalPartitionKeyIdLastLevel".equals(fieldName)) {
+                    deserializedDatabaseAccountGetProperties.enforceHierarchicalPartitionKeyIdLastLevel
+                        = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }

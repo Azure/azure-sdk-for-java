@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.cosmos.generated;
 
 import com.azure.resourcemanager.cosmos.fluent.models.GarnetClusterResourceInner;
+import com.azure.resourcemanager.cosmos.models.GarnetAuthenticationType;
 import com.azure.resourcemanager.cosmos.models.GarnetClusterResourceProperties;
 import java.util.HashMap;
 import java.util.Map;
@@ -14,7 +15,7 @@ import java.util.Map;
  */
 public final class GarnetClustersCreateUpdateSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/CosmosDBGarnetClusterCreate.json
+     * x-ms-original-file: 2026-04-01-preview/CosmosDBGarnetClusterCreate.json
      */
     /**
      * Sample code: CosmosDBGarnetClusterCreate.
@@ -29,8 +30,10 @@ public final class GarnetClustersCreateUpdateSamples {
                 .withProperties(new GarnetClusterResourceProperties().withSubnetId(
                     "/subscriptions/536e130b-d7d6-4ac7-98a5-de20d69588d2/resourceGroups/customer-vnet-rg/providers/Microsoft.Network/virtualNetworks/customer-vnet/subnets/management")
                     .withReplicationFactor(2)
-                    .withNodeCount(4)
-                    .withNodeSku("Standard_DS13_v2")),
+                    .withShardCount(4)
+                    .withNodeSku("Standard_DS13_v2")
+                    .withAuthenticationMethod(GarnetAuthenticationType.ENTRA)
+                    .withPersistence(true)),
                 com.azure.core.util.Context.NONE);
     }
 

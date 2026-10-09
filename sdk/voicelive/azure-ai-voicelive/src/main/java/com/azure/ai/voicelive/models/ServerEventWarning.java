@@ -15,7 +15,7 @@ import java.io.IOException;
  * Warnings are informational and the session will continue normally.
  */
 @Immutable
-public final class ServerEventWarning extends SessionUpdate {
+public final class ServerEventWarning extends SessionServerEvent {
 
     /*
      * The type of event.

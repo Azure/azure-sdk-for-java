@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class ThroughputPoolAccountGetSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/throughputPool/CosmosDBThroughputPoolAccountGet.json
+     * x-ms-original-file: 2026-04-01-preview/throughputPool/CosmosDBThroughputPoolAccountGet.json
      */
     /**
      * Sample code: CosmosDB ThroughputPool Account Get.

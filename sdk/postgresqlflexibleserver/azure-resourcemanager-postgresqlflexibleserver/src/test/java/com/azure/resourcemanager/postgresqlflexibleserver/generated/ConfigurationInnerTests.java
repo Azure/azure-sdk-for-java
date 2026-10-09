@@ -12,9 +12,9 @@ public final class ConfigurationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConfigurationInner model = BinaryData.fromString(
-            "{\"properties\":{\"value\":\"wtmwerio\",\"description\":\"pyqs\",\"defaultValue\":\"wab\",\"dataType\":\"String\",\"allowedValues\":\"hhszh\",\"source\":\"plvwiwubmwmbes\",\"isDynamicConfig\":false,\"isReadOnly\":false,\"isConfigPendingRestart\":false,\"unit\":\"pjflcxogao\",\"documentationLink\":\"nzmnsikvm\"},\"id\":\"ze\",\"name\":\"qkdltfz\",\"type\":\"mhhv\"}")
+            "{\"properties\":{\"value\":\"d\",\"description\":\"vwiwubmwmbesld\",\"defaultValue\":\"wwtppj\",\"dataType\":\"Enumeration\",\"allowedValues\":\"ogaok\",\"source\":\"z\",\"isDynamicConfig\":true,\"isReadOnly\":true,\"isConfigPendingRestart\":true,\"unit\":\"qzeqqkdltfzxm\",\"documentationLink\":\"v\"},\"id\":\"ur\",\"name\":\"odkwobd\",\"type\":\"gxtibqdxbxw\"}")
             .toObject(ConfigurationInner.class);
-        Assertions.assertEquals("wtmwerio", model.value());
-        Assertions.assertEquals("plvwiwubmwmbes", model.source());
+        Assertions.assertEquals("d", model.value());
+        Assertions.assertEquals("z", model.source());
     }
 }

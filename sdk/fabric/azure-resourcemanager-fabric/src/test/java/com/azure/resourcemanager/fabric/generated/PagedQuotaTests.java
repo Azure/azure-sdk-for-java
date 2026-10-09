@@ -12,11 +12,11 @@ public final class PagedQuotaTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PagedQuota model = BinaryData.fromString(
-            "{\"value\":[{\"name\":{\"value\":\"ta\",\"localizedValue\":\"pwgcuertu\"},\"unit\":\"kdosvqw\",\"currentValue\":4117897998779209947,\"limit\":3494827514980222479},{\"name\":{\"value\":\"jfddgmbmbe\",\"localizedValue\":\"pbhtqqrolfpfpsa\"},\"unit\":\"gbquxigj\",\"currentValue\":3940628181525155930,\"limit\":3662129632751771998}],\"nextLink\":\"o\"}")
+            "{\"value\":[{\"name\":{\"value\":\"ciqfou\",\"localizedValue\":\"mmnkzsmodmgl\"},\"unit\":\"ugpbkw\",\"currentValue\":2331240743756595548,\"limit\":9064339058448952534}],\"nextLink\":\"qktapspwgcuert\"}")
             .toObject(PagedQuota.class);
-        Assertions.assertEquals("kdosvqw", model.value().get(0).unit());
-        Assertions.assertEquals(4117897998779209947L, model.value().get(0).currentValue());
-        Assertions.assertEquals(3494827514980222479L, model.value().get(0).limit());
-        Assertions.assertEquals("o", model.nextLink());
+        Assertions.assertEquals("ugpbkw", model.value().get(0).unit());
+        Assertions.assertEquals(2331240743756595548L, model.value().get(0).currentValue());
+        Assertions.assertEquals(9064339058448952534L, model.value().get(0).limit());
+        Assertions.assertEquals("qktapspwgcuert", model.nextLink());
     }
 }

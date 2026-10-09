@@ -15,11 +15,11 @@ public final class ConditionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Condition model = BinaryData.fromString(
-            "{\"dimensionName\":\"fssxqukkfplg\",\"scalarFunction\":\"sum\",\"samplingType\":\"sum\",\"operator\":\"!startswith\",\"value\":\"jzkdeslpvlopwi\"}")
+            "{\"dimensionName\":\"fssxqukkfplg\",\"scalarFunction\":\"sum\",\"samplingType\":\"Min\",\"operator\":\"notstartswith\",\"value\":\"jzkdeslpvlopwi\"}")
             .toObject(Condition.class);
         Assertions.assertEquals("fssxqukkfplg", model.dimensionName());
         Assertions.assertEquals(ScalarFunction.SUM, model.scalarFunction());
-        Assertions.assertEquals(SamplingType.SUM, model.samplingType());
+        Assertions.assertEquals(SamplingType.MIN, model.samplingType());
         Assertions.assertEquals(ConditionOperator.NOT_STARTS_WITH, model.operator());
         Assertions.assertEquals("jzkdeslpvlopwi", model.value());
     }
@@ -28,13 +28,13 @@ public final class ConditionTests {
     public void testSerialize() throws Exception {
         Condition model = new Condition().withDimensionName("fssxqukkfplg")
             .withScalarFunction(ScalarFunction.SUM)
-            .withSamplingType(SamplingType.SUM)
+            .withSamplingType(SamplingType.MIN)
             .withOperator(ConditionOperator.NOT_STARTS_WITH)
             .withValue("jzkdeslpvlopwi");
         model = BinaryData.fromObject(model).toObject(Condition.class);
         Assertions.assertEquals("fssxqukkfplg", model.dimensionName());
         Assertions.assertEquals(ScalarFunction.SUM, model.scalarFunction());
-        Assertions.assertEquals(SamplingType.SUM, model.samplingType());
+        Assertions.assertEquals(SamplingType.MIN, model.samplingType());
         Assertions.assertEquals(ConditionOperator.NOT_STARTS_WITH, model.operator());
         Assertions.assertEquals("jzkdeslpvlopwi", model.value());
     }

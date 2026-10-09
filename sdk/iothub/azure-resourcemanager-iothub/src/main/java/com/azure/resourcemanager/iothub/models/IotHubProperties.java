@@ -93,6 +93,16 @@ public final class IotHubProperties implements JsonSerializable<IotHubProperties
     private String hostname;
 
     /*
+     * The name of the device host. Supports secure connections over TLS 1.3.
+     */
+    private String deviceHostName;
+
+    /*
+     * The name of the service host. Supports secure connections over TLS 1.3.
+     */
+    private String serviceHostName;
+
+    /*
      * The Event Hub-compatible endpoint properties. The only possible keys to this dictionary is events. This key has
      * to be present in the dictionary while making create or update calls for the IoT hub.
      */
@@ -171,6 +181,11 @@ public final class IotHubProperties implements JsonSerializable<IotHubProperties
      * Represents properties related to the Azure Device Registry (ADR).
      */
     private DeviceRegistry deviceRegistry;
+
+    /*
+     * Set of additional read-only properties for the IoT hub.
+     */
+    private IotHubDetails iotHubDetails;
 
     /**
      * Creates an instance of IotHubProperties class.
@@ -435,6 +450,24 @@ public final class IotHubProperties implements JsonSerializable<IotHubProperties
      */
     public String hostname() {
         return this.hostname;
+    }
+
+    /**
+     * Get the deviceHostName property: The name of the device host. Supports secure connections over TLS 1.3.
+     * 
+     * @return the deviceHostName value.
+     */
+    public String deviceHostName() {
+        return this.deviceHostName;
+    }
+
+    /**
+     * Get the serviceHostName property: The name of the service host. Supports secure connections over TLS 1.3.
+     * 
+     * @return the serviceHostName value.
+     */
+    public String serviceHostName() {
+        return this.serviceHostName;
     }
 
     /**
@@ -741,6 +774,15 @@ public final class IotHubProperties implements JsonSerializable<IotHubProperties
     }
 
     /**
+     * Get the iotHubDetails property: Set of additional read-only properties for the IoT hub.
+     * 
+     * @return the iotHubDetails value.
+     */
+    public IotHubDetails iotHubDetails() {
+        return this.iotHubDetails;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -832,6 +874,10 @@ public final class IotHubProperties implements JsonSerializable<IotHubProperties
                     deserializedIotHubProperties.state = reader.getString();
                 } else if ("hostName".equals(fieldName)) {
                     deserializedIotHubProperties.hostname = reader.getString();
+                } else if ("deviceHostName".equals(fieldName)) {
+                    deserializedIotHubProperties.deviceHostName = reader.getString();
+                } else if ("serviceHostName".equals(fieldName)) {
+                    deserializedIotHubProperties.serviceHostName = reader.getString();
                 } else if ("eventHubEndpoints".equals(fieldName)) {
                     Map<String, EventHubProperties> eventHubEndpoints
                         = reader.readMap(reader1 -> EventHubProperties.fromJson(reader1));
@@ -871,6 +917,8 @@ public final class IotHubProperties implements JsonSerializable<IotHubProperties
                     deserializedIotHubProperties.ipVersion = IpVersion.fromString(reader.getString());
                 } else if ("deviceRegistry".equals(fieldName)) {
                     deserializedIotHubProperties.deviceRegistry = DeviceRegistry.fromJson(reader);
+                } else if ("iotHubDetails".equals(fieldName)) {
+                    deserializedIotHubProperties.iotHubDetails = IotHubDetails.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

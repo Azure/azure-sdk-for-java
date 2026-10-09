@@ -55,7 +55,9 @@ public class KeysCustomizations extends Customization {
             .addImplementedType("ServiceVersion")
             .setJavadocComment("The versions of Azure Key Vault Keys supported by this client library.");
 
-        for (String version : Arrays.asList("7.0", "7.1", "7.2", "7.3", "7.4", "7.5", "7.6", "2025-07-01")) {
+        for (String version : Arrays.asList(
+            "7.0", "7.1", "7.2", "7.3", "7.4", "7.5", "7.6", 
+            "2025-07-01", "2026-01-01-preview")) {
             enumDeclaration.addEnumConstant("V" + version.replace('.', '_').replace('-', '_').toUpperCase())
                 .setJavadocComment("Service version {@code " + version + "}.")
                 .addArgument(new StringLiteralExpr(version));
@@ -76,7 +78,7 @@ public class KeysCustomizations extends Customization {
             .setType("KeyServiceVersion")
             .setJavadocComment(new Javadoc(parseText("Gets the latest service version supported by this client library."))
                 .addBlockTag("return", "The latest {@link KeyServiceVersion}."))
-            .setBody(StaticJavaParser.parseBlock("{ return V2025_07_01; }"));
+            .setBody(StaticJavaParser.parseBlock("{ return V2026_01_01_PREVIEW; }"));
 
         customization.getRawEditor()
             .addFile("src/main/java/com/azure/security/keyvault/keys/KeyServiceVersion.java",

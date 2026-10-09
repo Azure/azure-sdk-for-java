@@ -12,14 +12,14 @@ public final class ClientDiscoveryResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClientDiscoveryResponse model = BinaryData.fromString(
-            "{\"value\":[{\"name\":\"okftyxolniwpwcuk\",\"display\":{\"provider\":\"giawx\",\"resource\":\"ryplwckbasyypn\",\"operation\":\"hsgcbacphejkot\",\"description\":\"qgoulznd\"},\"origin\":\"kwy\",\"properties\":{\"serviceSpecification\":{\"logSpecifications\":[{},{}]}}},{\"name\":\"bmadgak\",\"display\":{\"provider\":\"rxybz\",\"resource\":\"e\",\"operation\":\"ytb\",\"description\":\"qfou\"},\"origin\":\"mmnkzsmodmgl\",\"properties\":{\"serviceSpecification\":{\"logSpecifications\":[{}]}}}],\"nextLink\":\"wtmutduq\"}")
+            "{\"value\":[{\"name\":\"w\",\"display\":{\"provider\":\"ryplwckbasyypn\",\"resource\":\"hsgcbacphejkot\",\"operation\":\"qgoulznd\",\"description\":\"kwy\"},\"origin\":\"gfgibm\",\"properties\":{\"serviceSpecification\":{\"logSpecifications\":[{},{},{},{}]}}},{\"name\":\"qsrxybzqqed\",\"display\":{\"provider\":\"bciqfouflm\",\"resource\":\"kzsmodm\",\"operation\":\"ougpbkwt\",\"description\":\"tduqktapspwgcuer\"},\"origin\":\"mkdo\",\"properties\":{\"serviceSpecification\":{\"logSpecifications\":[{},{},{}]}}}],\"nextLink\":\"mdgbbjfdd\"}")
             .toObject(ClientDiscoveryResponse.class);
-        Assertions.assertEquals("okftyxolniwpwcuk", model.value().get(0).name());
-        Assertions.assertEquals("giawx", model.value().get(0).display().provider());
-        Assertions.assertEquals("ryplwckbasyypn", model.value().get(0).display().resource());
-        Assertions.assertEquals("hsgcbacphejkot", model.value().get(0).display().operation());
-        Assertions.assertEquals("qgoulznd", model.value().get(0).display().description());
-        Assertions.assertEquals("kwy", model.value().get(0).origin());
-        Assertions.assertEquals("wtmutduq", model.nextLink());
+        Assertions.assertEquals("w", model.value().get(0).name());
+        Assertions.assertEquals("ryplwckbasyypn", model.value().get(0).display().provider());
+        Assertions.assertEquals("hsgcbacphejkot", model.value().get(0).display().resource());
+        Assertions.assertEquals("qgoulznd", model.value().get(0).display().operation());
+        Assertions.assertEquals("kwy", model.value().get(0).display().description());
+        Assertions.assertEquals("gfgibm", model.value().get(0).origin());
+        Assertions.assertEquals("mdgbbjfdd", model.nextLink());
     }
 }

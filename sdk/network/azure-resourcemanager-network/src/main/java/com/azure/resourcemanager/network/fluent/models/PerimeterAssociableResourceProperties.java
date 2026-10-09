@@ -9,6 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.network.models.NspReadinessState;
 import java.io.IOException;
 import java.util.List;
 
@@ -32,6 +33,26 @@ public final class PerimeterAssociableResourceProperties
      * Public DNS zone names of the resources.
      */
     private List<String> publicDnsZones;
+
+    /*
+     * Service tags associated with the resource provider.
+     */
+    private List<String> serviceTags;
+
+    /*
+     * The readiness state of the resource type for NSP support.
+     */
+    private NspReadinessState readinessState;
+
+    /*
+     * Indicates whether the resource type supports outbound scenario.
+     */
+    private Boolean outboundSupported;
+
+    /*
+     * Description of the PaaS resource type.
+     */
+    private String description;
 
     /**
      * Creates an instance of PerimeterAssociableResourceProperties class.
@@ -64,6 +85,42 @@ public final class PerimeterAssociableResourceProperties
      */
     public List<String> publicDnsZones() {
         return this.publicDnsZones;
+    }
+
+    /**
+     * Get the serviceTags property: Service tags associated with the resource provider.
+     * 
+     * @return the serviceTags value.
+     */
+    public List<String> serviceTags() {
+        return this.serviceTags;
+    }
+
+    /**
+     * Get the readinessState property: The readiness state of the resource type for NSP support.
+     * 
+     * @return the readinessState value.
+     */
+    public NspReadinessState readinessState() {
+        return this.readinessState;
+    }
+
+    /**
+     * Get the outboundSupported property: Indicates whether the resource type supports outbound scenario.
+     * 
+     * @return the outboundSupported value.
+     */
+    public Boolean outboundSupported() {
+        return this.outboundSupported;
+    }
+
+    /**
+     * Get the description property: Description of the PaaS resource type.
+     * 
+     * @return the description value.
+     */
+    public String description() {
+        return this.description;
     }
 
     /**
@@ -106,6 +163,17 @@ public final class PerimeterAssociableResourceProperties
                 } else if ("publicDnsZones".equals(fieldName)) {
                     List<String> publicDnsZones = reader.readArray(reader1 -> reader1.getString());
                     deserializedPerimeterAssociableResourceProperties.publicDnsZones = publicDnsZones;
+                } else if ("serviceTags".equals(fieldName)) {
+                    List<String> serviceTags = reader.readArray(reader1 -> reader1.getString());
+                    deserializedPerimeterAssociableResourceProperties.serviceTags = serviceTags;
+                } else if ("readinessState".equals(fieldName)) {
+                    deserializedPerimeterAssociableResourceProperties.readinessState
+                        = NspReadinessState.fromString(reader.getString());
+                } else if ("outboundSupported".equals(fieldName)) {
+                    deserializedPerimeterAssociableResourceProperties.outboundSupported
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("description".equals(fieldName)) {
+                    deserializedPerimeterAssociableResourceProperties.description = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

@@ -20,7 +20,7 @@ import java.lang.annotation.Target;
  * specified {@link #destination}. The {@link #containerFactory} identifies the
  * {@link MessageListenerContainerFactory} to use to build
  * the Azure listener container. If not set, a <em>default</em> container factory is
- * assumed to be available with a bean name of {@code eventHubsListenerContainerFactory}
+ * assumed to be available with a bean name of {@code azureEventHubsListenerContainerFactory}
  * unless an explicit default has been provided through configuration.
  *
  * <p>Processing of {@code @EventHubsListener} annotations is performed by registering a

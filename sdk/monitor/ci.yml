@@ -78,6 +78,10 @@ parameters:
     displayName: azure-resourcemanager-monitor-slis
     type: boolean
     default: false
+  - name: release_azureresourcemanagermonitorworkspaces
+    displayName: azure-resourcemanager-monitor-workspaces
+    type: boolean
+    default: false
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
@@ -116,6 +120,10 @@ extends:
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagermonitorslis
         releaseInBatch: ${{ parameters.release_azureresourcemanagermonitorslis }}
+      - name: azure-resourcemanager-monitor-workspaces
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagermonitorworkspaces
+        releaseInBatch: ${{ parameters.release_azureresourcemanagermonitorworkspaces }}
     AdditionalModules:
       - name: azure-monitor-query-perf
         groupId: com.azure

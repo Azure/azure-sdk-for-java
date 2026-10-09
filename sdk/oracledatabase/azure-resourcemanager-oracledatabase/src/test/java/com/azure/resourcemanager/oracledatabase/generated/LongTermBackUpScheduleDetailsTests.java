@@ -14,25 +14,25 @@ public final class LongTermBackUpScheduleDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LongTermBackUpScheduleDetails model = BinaryData.fromString(
-            "{\"repeatCadence\":\"Monthly\",\"timeOfBackup\":\"2021-06-03T05:33:27Z\",\"retentionPeriodInDays\":275372238,\"isDisabled\":false}")
+            "{\"repeatCadence\":\"OneTime\",\"timeOfBackup\":\"2021-05-22T23:46:18Z\",\"retentionPeriodInDays\":649228036,\"isDisabled\":false}")
             .toObject(LongTermBackUpScheduleDetails.class);
-        Assertions.assertEquals(RepeatCadenceType.MONTHLY, model.repeatCadence());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-03T05:33:27Z"), model.timeOfBackup());
-        Assertions.assertEquals(275372238, model.retentionPeriodInDays());
+        Assertions.assertEquals(RepeatCadenceType.ONE_TIME, model.repeatCadence());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-22T23:46:18Z"), model.timeOfBackup());
+        Assertions.assertEquals(649228036, model.retentionPeriodInDays());
         Assertions.assertFalse(model.isDisabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         LongTermBackUpScheduleDetails model
-            = new LongTermBackUpScheduleDetails().withRepeatCadence(RepeatCadenceType.MONTHLY)
-                .withTimeOfBackup(OffsetDateTime.parse("2021-06-03T05:33:27Z"))
-                .withRetentionPeriodInDays(275372238)
+            = new LongTermBackUpScheduleDetails().withRepeatCadence(RepeatCadenceType.ONE_TIME)
+                .withTimeOfBackup(OffsetDateTime.parse("2021-05-22T23:46:18Z"))
+                .withRetentionPeriodInDays(649228036)
                 .withIsDisabled(false);
         model = BinaryData.fromObject(model).toObject(LongTermBackUpScheduleDetails.class);
-        Assertions.assertEquals(RepeatCadenceType.MONTHLY, model.repeatCadence());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-03T05:33:27Z"), model.timeOfBackup());
-        Assertions.assertEquals(275372238, model.retentionPeriodInDays());
+        Assertions.assertEquals(RepeatCadenceType.ONE_TIME, model.repeatCadence());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-22T23:46:18Z"), model.timeOfBackup());
+        Assertions.assertEquals(649228036, model.retentionPeriodInDays());
         Assertions.assertFalse(model.isDisabled());
     }
 }

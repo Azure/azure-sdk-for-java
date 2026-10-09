@@ -14,12 +14,12 @@ import java.util.Collection;
  */
 public final class FastProvisioningSupport extends ExpandableStringEnum<FastProvisioningSupport> {
     /**
-     * Static value Enabled for FastProvisioningSupport.
+     * Fast provisioning is supported.
      */
     public static final FastProvisioningSupport ENABLED = fromString("Enabled");
 
     /**
-     * Static value Disabled for FastProvisioningSupport.
+     * Fast provisioning is not supported.
      */
     public static final FastProvisioningSupport DISABLED = fromString("Disabled");
 

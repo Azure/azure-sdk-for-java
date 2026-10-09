@@ -14,6 +14,7 @@ import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.GatewayCustomBgpIpAddressIpConfiguration;
 import com.azure.resourcemanager.network.models.IpsecPolicy;
 import com.azure.resourcemanager.network.models.ProvisioningState;
+import com.azure.resourcemanager.network.models.RoutingConfiguration;
 import com.azure.resourcemanager.network.models.TrafficSelectorPolicy;
 import com.azure.resourcemanager.network.models.TunnelConnectionHealth;
 import com.azure.resourcemanager.network.models.VirtualNetworkConnectionGatewayReference;
@@ -317,6 +318,16 @@ public final class VirtualNetworkGatewayConnectionListEntityInner extends Resour
      */
     public Boolean enablePrivateLinkFastPath() {
         return this.innerProperties() == null ? null : this.innerProperties().enablePrivateLinkFastPath();
+    }
+
+    /**
+     * Get the routingConfiguration property: The routing configuration indicating the associated and propagated route
+     * tables for this connection.
+     * 
+     * @return the routingConfiguration value.
+     */
+    public RoutingConfiguration routingConfiguration() {
+        return this.innerProperties() == null ? null : this.innerProperties().routingConfiguration();
     }
 
     /**

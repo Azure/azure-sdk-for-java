@@ -80,7 +80,7 @@ storageTask = storageActionsManager.storageTasks()
     .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED))
     .withProperties(new StorageTaskProperties()
         .withAction(new StorageTaskAction()
-            .withIfProperty(new IfCondition().withCondition("[[[equals(AccessTier, 'Cool')]]")
+            .withIfProperty(new IfCondition().withCondition("[[equals(AccessTier, 'Cool')]]")
                 .withOperations(Arrays
                     .asList(new StorageTaskOperation().withName(StorageTaskOperationName.SET_BLOB_TIER)
                         .withParameters(operationMap)

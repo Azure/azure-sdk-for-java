@@ -292,7 +292,7 @@ public final class ContainerServiceFleetManagementClientImpl implements Containe
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2026-03-02-preview";
+        this.apiVersion = "2026-06-02-preview";
         this.operations = new OperationsClientImpl(this);
         this.clusterMeshProfiles = new ClusterMeshProfilesClientImpl(this);
         this.fleets = new FleetsClientImpl(this);
@@ -416,7 +416,7 @@ public final class ContainerServiceFleetManagementClientImpl implements Containe
             super(null);
             this.statusCode = statusCode;
             this.httpHeaders = httpHeaders;
-            this.responseBody = responseBody == null ? null : responseBody.getBytes(StandardCharsets.UTF_8);
+            this.responseBody = responseBody == null ? new byte[0] : responseBody.getBytes(StandardCharsets.UTF_8);
         }
 
         public int getStatusCode() {

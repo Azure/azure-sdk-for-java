@@ -13,7 +13,7 @@ import com.azure.resourcemanager.quota.models.GroupQuotasEnforcementStatusProper
  */
 public final class GroupQuotaLocationSettingsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-01/GroupQuotasEnforcement/PutGroupQuotaEnforcement.json
+     * x-ms-original-file: 2026-09-01-preview/GroupQuotasEnforcement/PutGroupQuotaEnforcement.json
      */
     /**
      * Sample code: GroupQuotaLocationSettings_CreateOrUpdate.
@@ -29,7 +29,7 @@ public final class GroupQuotaLocationSettingsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/GroupQuotasEnforcement/PutGroupQuotaEnforcementFailed.json
+     * x-ms-original-file: 2026-09-01-preview/GroupQuotasEnforcement/PutGroupQuotaEnforcementFailed.json
      */
     /**
      * Sample code: GroupQuotaLocationSettings_CreateOrUpdate_Failed.

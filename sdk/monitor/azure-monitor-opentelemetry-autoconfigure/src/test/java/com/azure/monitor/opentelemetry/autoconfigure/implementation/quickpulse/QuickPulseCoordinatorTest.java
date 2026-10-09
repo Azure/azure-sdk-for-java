@@ -16,8 +16,12 @@ import java.util.concurrent.atomic.AtomicReference;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 class QuickPulseCoordinatorTest {
+    private static final long VERIFY_TIMEOUT_MILLIS = 10000;
+    private static final long THREAD_JOIN_TIMEOUT_MILLIS = 10000;
+
     private static final HttpHeaderName QPS_STATUS_HEADER = HttpHeaderName.fromString("x-ms-qps-subscribed");
     private static final HttpHeaderName QPS_SERVICE_POLLING_INTERVAL_HINT
         = HttpHeaderName.fromString("x-ms-qps-service-polling-interval-hint");
@@ -50,17 +54,17 @@ class QuickPulseCoordinatorTest {
         thread.setDaemon(true);
         thread.start();
 
-        Thread.sleep(1000);
-        coordinator.stop();
-
-        thread.join();
+        try {
+            Mockito.verify(mockPingSender, Mockito.timeout(VERIFY_TIMEOUT_MILLIS).atLeastOnce()).ping(null);
+        } finally {
+            stopAndJoin(coordinator, thread);
+        }
 
         Mockito.verify(mockFetcher, Mockito.never()).prepareQuickPulseDataForSend();
 
         Mockito.verify(mockSender, Mockito.never()).startSending();
         Mockito.verify(mockSender, Mockito.never()).getQuickPulseStatus();
 
-        Mockito.verify(mockPingSender, Mockito.atLeast(1)).ping(null);
         // make sure QP_IS_OFF after ping
         assertThat(collector.getQuickPulseStatus()).isEqualTo(QuickPulseStatus.QP_IS_OFF);
     }
@@ -96,12 +100,12 @@ class QuickPulseCoordinatorTest {
         thread.setDaemon(true);
         thread.start();
 
-        Thread.sleep(1000);
-        coordinator.stop();
-
-        thread.join();
-
-        Mockito.verify(mockFetcher, Mockito.atLeast(1)).prepareQuickPulseDataForSend();
+        try {
+            Mockito.verify(mockFetcher, Mockito.timeout(VERIFY_TIMEOUT_MILLIS).atLeastOnce())
+                .prepareQuickPulseDataForSend();
+        } finally {
+            stopAndJoin(coordinator, thread);
+        }
 
         Mockito.verify(mockSender, Mockito.times(1)).startSending();
         Mockito.verify(mockSender, Mockito.times(1)).getQuickPulseStatus();
@@ -109,6 +113,141 @@ class QuickPulseCoordinatorTest {
         Mockito.verify(mockPingSender, Mockito.atLeast(1)).ping(null);
         // Make sure QP_IS_OFF after one post and ping
         assertThat(collector.getQuickPulseStatus()).isEqualTo(QuickPulseStatus.QP_IS_OFF);
+    }
+
+    private static void stopAndJoin(QuickPulseCoordinator coordinator, Thread thread) throws InterruptedException {
+        coordinator.stop();
+        thread.join(THREAD_JOIN_TIMEOUT_MILLIS);
+        assertThat(thread.isAlive()).isFalse();
+    }
+
+    @Test
+    void acceptsSameLiveMetricsDomainRedirect() {
+        QuickPulseDataSender mockSender = Mockito.mock(QuickPulseDataSender.class);
+        QuickPulsePingSender mockPingSender = Mockito.mock(QuickPulsePingSender.class);
+        Mockito.doReturn("https://westus.livediagnostics.monitor.azure.com/")
+            .when(mockPingSender)
+            .getQuickPulseEndpoint();
+
+        QuickPulseCoordinator coordinator = createCoordinator(mockSender, mockPingSender);
+
+        HttpHeaders rawPingHeaders = new HttpHeaders();
+        rawPingHeaders.add(QPS_STATUS_HEADER, "true");
+        rawPingHeaders.add(QPS_SERVICE_ENDPOINT_REDIRECT,
+            "https://eastus.livediagnostics.monitor.azure.com/QuickPulseService.svc/");
+
+        assertThat(coordinator.handleReceivedPingHeaders(new IsSubscribedHeaders(rawPingHeaders)))
+            .isEqualTo(QuickPulseStatus.QP_IS_ON);
+        verify(mockSender).setRedirectEndpointPrefix("https://eastus.livediagnostics.monitor.azure.com/");
+    }
+
+    @Test
+    void acceptsSameHostRedirect() {
+        QuickPulseDataSender mockSender = Mockito.mock(QuickPulseDataSender.class);
+        QuickPulsePingSender mockPingSender = Mockito.mock(QuickPulsePingSender.class);
+        Mockito.doReturn("https://live.example.com/").when(mockPingSender).getQuickPulseEndpoint();
+
+        QuickPulseCoordinator coordinator = createCoordinator(mockSender, mockPingSender);
+
+        HttpHeaders rawPingHeaders = new HttpHeaders();
+        rawPingHeaders.add(QPS_STATUS_HEADER, "true");
+        rawPingHeaders.add(QPS_SERVICE_ENDPOINT_REDIRECT, "https://live.example.com/QuickPulseService.svc/");
+
+        assertThat(coordinator.handleReceivedPingHeaders(new IsSubscribedHeaders(rawPingHeaders)))
+            .isEqualTo(QuickPulseStatus.QP_IS_ON);
+        verify(mockSender).setRedirectEndpointPrefix("https://live.example.com/");
+    }
+
+    @Test
+    void rejectsCrossOriginRedirect() {
+        QuickPulseDataSender mockSender = Mockito.mock(QuickPulseDataSender.class);
+        QuickPulsePingSender mockPingSender = Mockito.mock(QuickPulsePingSender.class);
+        Mockito.doReturn("https://westus.livediagnostics.monitor.azure.com/")
+            .when(mockPingSender)
+            .getQuickPulseEndpoint();
+
+        QuickPulseCoordinator coordinator = createCoordinator(mockSender, mockPingSender);
+
+        HttpHeaders rawPingHeaders = new HttpHeaders();
+        rawPingHeaders.add(QPS_STATUS_HEADER, "true");
+        rawPingHeaders.add(QPS_SERVICE_ENDPOINT_REDIRECT, "https://attacker.invalid/QuickPulseService.svc/");
+
+        assertThat(coordinator.handleReceivedPingHeaders(new IsSubscribedHeaders(rawPingHeaders)))
+            .isEqualTo(QuickPulseStatus.QP_IS_ON);
+        Mockito.verify(mockSender, Mockito.never()).setRedirectEndpointPrefix(any());
+    }
+
+    @Test
+    void rejectsInvalidRedirects() {
+        assertRedirectRejected("http://eastus.livediagnostics.monitor.azure.com/QuickPulseService.svc/");
+        assertRedirectRejected("https://user@eastus.livediagnostics.monitor.azure.com/QuickPulseService.svc/");
+        assertRedirectRejected("https://eastus.livediagnostics.monitor.azure.com:444/QuickPulseService.svc/");
+        assertRedirectRejected(
+            "https://evil.livediagnostics.monitor.azure.com.attacker.invalid/QuickPulseService.svc/");
+        assertRedirectRejected("https://evil.live.example.com/QuickPulseService.svc/");
+    }
+
+    private static void assertRedirectRejected(String redirectLink) {
+        QuickPulseDataSender mockSender = Mockito.mock(QuickPulseDataSender.class);
+        QuickPulsePingSender mockPingSender = Mockito.mock(QuickPulsePingSender.class);
+        Mockito.doReturn("https://westus.livediagnostics.monitor.azure.com/")
+            .when(mockPingSender)
+            .getQuickPulseEndpoint();
+
+        QuickPulseCoordinator coordinator = createCoordinator(mockSender, mockPingSender);
+
+        HttpHeaders rawPingHeaders = new HttpHeaders();
+        rawPingHeaders.add(QPS_STATUS_HEADER, "true");
+        rawPingHeaders.add(QPS_SERVICE_ENDPOINT_REDIRECT, redirectLink);
+
+        assertThat(coordinator.handleReceivedPingHeaders(new IsSubscribedHeaders(rawPingHeaders)))
+            .isEqualTo(QuickPulseStatus.QP_IS_ON);
+        Mockito.verify(mockSender, Mockito.never()).setRedirectEndpointPrefix(any());
+    }
+
+    @Test
+    void appliesValidPollingIntervalHint() {
+        QuickPulseCoordinator coordinator
+            = createCoordinator(mock(QuickPulseDataSender.class), mock(QuickPulsePingSender.class));
+
+        assertThat(coordinator.handleReceivedPingHeaders(pingHeadersWithPollingHint("1000")))
+            .isEqualTo(QuickPulseStatus.QP_IS_ON);
+        assertThat(coordinator.getQpsServicePollingIntervalHintMillis()).isEqualTo(1000L);
+    }
+
+    @Test
+    void ignoresInvalidOrNonPositivePollingIntervalHint() {
+        QuickPulseCoordinator coordinator
+            = createCoordinator(mock(QuickPulseDataSender.class), mock(QuickPulsePingSender.class));
+        coordinator.handleReceivedPingHeaders(pingHeadersWithPollingHint("1000"));
+
+        for (String invalidHint : new String[] { "abc", "1.5", "99999999999999999999", "0", "-5" }) {
+            assertThat(coordinator.handleReceivedPingHeaders(pingHeadersWithPollingHint(invalidHint)))
+                .isEqualTo(QuickPulseStatus.QP_IS_ON);
+            assertThat(coordinator.getQpsServicePollingIntervalHintMillis()).isEqualTo(1000L);
+        }
+    }
+
+    private static IsSubscribedHeaders pingHeadersWithPollingHint(String pollingIntervalHint) {
+        HttpHeaders rawPingHeaders = new HttpHeaders();
+        rawPingHeaders.add(QPS_STATUS_HEADER, "true");
+        rawPingHeaders.add(QPS_SERVICE_POLLING_INTERVAL_HINT, pollingIntervalHint);
+        return new IsSubscribedHeaders(rawPingHeaders);
+    }
+
+    private static QuickPulseCoordinator createCoordinator(QuickPulseDataSender mockSender,
+        QuickPulsePingSender mockPingSender) {
+        AtomicReference<FilteringConfiguration> configuration = new AtomicReference<>(new FilteringConfiguration());
+        QuickPulseCoordinatorInitData initData
+            = new QuickPulseCoordinatorInitDataBuilder().withDataFetcher(mock(QuickPulseDataFetcher.class))
+                .withDataSender(mockSender)
+                .withPingSender(mockPingSender)
+                .withCollector(new QuickPulseDataCollector(configuration))
+                .withWaitBetweenPingsInMillis(10L)
+                .withWaitBetweenPostsInMillis(10L)
+                .withWaitOnErrorInMillis(10L)
+                .build();
+        return new QuickPulseCoordinator(initData);
     }
 
     @Disabled("sporadically failing on CI")

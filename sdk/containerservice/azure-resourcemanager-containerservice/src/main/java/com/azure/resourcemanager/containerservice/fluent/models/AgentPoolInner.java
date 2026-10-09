@@ -674,7 +674,9 @@ public final class AgentPoolInner extends ProxyResource {
     }
 
     /**
-     * Get the nodeImageVersion property: The version of node image.
+     * Get the nodeImageVersion property: The version of the node image. Setting this value triggers an agentPool
+     * rollback.
+     * Only values from `recentlyUsedVersions` are allowed.
      * 
      * @return the nodeImageVersion value.
      */
@@ -683,7 +685,9 @@ public final class AgentPoolInner extends ProxyResource {
     }
 
     /**
-     * Set the nodeImageVersion property: The version of node image.
+     * Set the nodeImageVersion property: The version of the node image. Setting this value triggers an agentPool
+     * rollback.
+     * Only values from `recentlyUsedVersions` are allowed.
      * 
      * @param nodeImageVersion the nodeImageVersion value to set.
      * @return the AgentPoolInner object itself.

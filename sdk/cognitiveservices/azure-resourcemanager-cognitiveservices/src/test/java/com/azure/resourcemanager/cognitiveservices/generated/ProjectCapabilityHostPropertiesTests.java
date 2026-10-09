@@ -13,25 +13,25 @@ public final class ProjectCapabilityHostPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ProjectCapabilityHostProperties model = BinaryData.fromString(
-            "{\"aiServicesConnections\":[\"znvfbycjsxjww\",\"xzv\"],\"vectorStoreConnections\":[\"mxqhndvnoamldse\",\"aohdjh\",\"flzokxco\",\"pelnjetag\"],\"storageConnections\":[\"xo\"],\"threadStorageConnections\":[\"tgzpnpb\"],\"provisioningState\":\"Updating\"}")
+            "{\"aiServicesConnections\":[\"zoeo\"],\"vectorStoreConnections\":[\"jhvefgwbmqjchnt\",\"sf\",\"ymxbulpzealb\"],\"storageConnections\":[\"yojwyvfkmbtsu\",\"hxsgxj\",\"mmzrrscub\"],\"threadStorageConnections\":[\"drnpxqwodiff\"],\"provisioningState\":\"Deleting\"}")
             .toObject(ProjectCapabilityHostProperties.class);
-        Assertions.assertEquals("znvfbycjsxjww", model.aiServicesConnections().get(0));
-        Assertions.assertEquals("mxqhndvnoamldse", model.vectorStoreConnections().get(0));
-        Assertions.assertEquals("xo", model.storageConnections().get(0));
-        Assertions.assertEquals("tgzpnpb", model.threadStorageConnections().get(0));
+        Assertions.assertEquals("zoeo", model.aiServicesConnections().get(0));
+        Assertions.assertEquals("jhvefgwbmqjchnt", model.vectorStoreConnections().get(0));
+        Assertions.assertEquals("yojwyvfkmbtsu", model.storageConnections().get(0));
+        Assertions.assertEquals("drnpxqwodiff", model.threadStorageConnections().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ProjectCapabilityHostProperties model
-            = new ProjectCapabilityHostProperties().withAiServicesConnections(Arrays.asList("znvfbycjsxjww", "xzv"))
-                .withVectorStoreConnections(Arrays.asList("mxqhndvnoamldse", "aohdjh", "flzokxco", "pelnjetag"))
-                .withStorageConnections(Arrays.asList("xo"))
-                .withThreadStorageConnections(Arrays.asList("tgzpnpb"));
+            = new ProjectCapabilityHostProperties().withAiServicesConnections(Arrays.asList("zoeo"))
+                .withVectorStoreConnections(Arrays.asList("jhvefgwbmqjchnt", "sf", "ymxbulpzealb"))
+                .withStorageConnections(Arrays.asList("yojwyvfkmbtsu", "hxsgxj", "mmzrrscub"))
+                .withThreadStorageConnections(Arrays.asList("drnpxqwodiff"));
         model = BinaryData.fromObject(model).toObject(ProjectCapabilityHostProperties.class);
-        Assertions.assertEquals("znvfbycjsxjww", model.aiServicesConnections().get(0));
-        Assertions.assertEquals("mxqhndvnoamldse", model.vectorStoreConnections().get(0));
-        Assertions.assertEquals("xo", model.storageConnections().get(0));
-        Assertions.assertEquals("tgzpnpb", model.threadStorageConnections().get(0));
+        Assertions.assertEquals("zoeo", model.aiServicesConnections().get(0));
+        Assertions.assertEquals("jhvefgwbmqjchnt", model.vectorStoreConnections().get(0));
+        Assertions.assertEquals("yojwyvfkmbtsu", model.storageConnections().get(0));
+        Assertions.assertEquals("drnpxqwodiff", model.threadStorageConnections().get(0));
     }
 }

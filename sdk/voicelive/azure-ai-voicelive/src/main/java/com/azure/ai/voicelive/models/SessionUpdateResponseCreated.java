@@ -15,7 +15,7 @@ import java.io.IOException;
  * where the response is in an initial state of `in_progress`.
  */
 @Immutable
-public final class SessionUpdateResponseCreated extends SessionUpdate {
+public final class SessionUpdateResponseCreated extends SessionServerEvent {
 
     /*
      * The type of event.

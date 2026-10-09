@@ -45,7 +45,9 @@ public final class DeploymentsAsyncClient {
     }
 
     /**
-     * Get a deployed model.
+     * Get a deployment
+     *
+     * Retrieves a deployed model.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -56,6 +58,14 @@ public final class DeploymentsAsyncClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>x-ms-client-request-id</td><td>String</td><td>An opaque, globally-unique, client-generated string
+     * identifier for the request.</td></tr>
+     * </table>
      *
      * @param name Name of the deployment.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -63,7 +73,9 @@ public final class DeploymentsAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a deployed model along with {@link Response} on successful completion of {@link Mono}.
+     * @return a deployment
+     *
+     * Retrieves a deployed model along with {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -72,7 +84,10 @@ public final class DeploymentsAsyncClient {
     }
 
     /**
-     * List all deployed models in the project.
+     * List deployments
+     *
+     * Returns the deployed models available in the current project, optionally filtered by publisher, model name, or
+     * deployment type.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -109,7 +124,9 @@ public final class DeploymentsAsyncClient {
     }
 
     /**
-     * Get a deployed model.
+     * Get a deployment
+     *
+     * Retrieves a deployed model.
      *
      * @param name Name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -118,7 +135,9 @@ public final class DeploymentsAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deployed model on successful completion of {@link Mono}.
+     * @return a deployment
+     *
+     * Retrieves a deployed model on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -130,7 +149,10 @@ public final class DeploymentsAsyncClient {
     }
 
     /**
-     * List all deployed models in the project.
+     * List deployments
+     *
+     * Returns the deployed models available in the current project, optionally filtered by publisher, model name, or
+     * deployment type.
      *
      * @param modelPublisher Model publisher to filter models by.
      * @param modelName Model name (the publisher specific name) to filter models by.
@@ -174,7 +196,10 @@ public final class DeploymentsAsyncClient {
     }
 
     /**
-     * List all deployed models in the project.
+     * List deployments
+     *
+     * Returns the deployed models available in the current project, optionally filtered by publisher, model name, or
+     * deployment type.
      *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.

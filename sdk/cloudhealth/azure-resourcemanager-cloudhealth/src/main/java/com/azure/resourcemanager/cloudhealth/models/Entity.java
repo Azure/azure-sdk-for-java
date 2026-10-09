@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.cloudhealth.models;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.cloudhealth.fluent.models.EntityInner;
@@ -186,4 +187,143 @@ public interface Entity {
      * @return the refreshed resource.
      */
     Entity refresh(Context context);
+
+    /**
+     * Retrieve the health state transition history for an entity.
+     * 
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response containing entity health state transitions along with {@link Response}.
+     */
+    Response<EntityHistoryResponse> getHistoryWithResponse(EntityHistoryRequest body, Context context);
+
+    /**
+     * Retrieve the health state transition history for an entity.
+     * 
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response containing entity health state transitions.
+     */
+    EntityHistoryResponse getHistory(EntityHistoryRequest body);
+
+    /**
+     * Retrieve the time series history for a signal on an entity.
+     * 
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response containing signal history along with {@link Response}.
+     */
+    Response<SignalHistoryResponse> getSignalHistoryWithResponse(SignalHistoryRequest body, Context context);
+
+    /**
+     * Retrieve the time series history for a signal on an entity.
+     * 
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response containing signal history.
+     */
+    SignalHistoryResponse getSignalHistory(SignalHistoryRequest body);
+
+    /**
+     * Ingest a health report for a specific signal on an entity (the entity must already exist).
+     * 
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    Response<Void> ingestHealthReportWithResponse(HealthReportRequest body, Context context);
+
+    /**
+     * Ingest a health report for a specific signal on an entity (the entity must already exist).
+     * 
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void ingestHealthReport(HealthReportRequest body);
+
+    /**
+     * Add a data annotation to an entity.
+     * 
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a single data annotation on an entity along with {@link Response}.
+     */
+    Response<DataAnnotation> addDataAnnotationWithResponse(AddDataAnnotationRequest body, Context context);
+
+    /**
+     * Add a data annotation to an entity.
+     * 
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a single data annotation on an entity.
+     */
+    DataAnnotation addDataAnnotation(AddDataAnnotationRequest body);
+
+    /**
+     * Retrieve data annotations for an entity.
+     * 
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response containing data annotations for an entity along with {@link Response}.
+     */
+    Response<GetDataAnnotationsResponse> getDataAnnotationsWithResponse(GetDataAnnotationsRequest body,
+        Context context);
+
+    /**
+     * Retrieve data annotations for an entity.
+     * 
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response containing data annotations for an entity.
+     */
+    GetDataAnnotationsResponse getDataAnnotations(GetDataAnnotationsRequest body);
+
+    /**
+     * Get recommended signal configurations for a given Entity (only applicable for Entities representing Azure
+     * resources).
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return recommended signal configurations for a given Entity (only applicable for Entities representing Azure
+     * resources) along with {@link Response}.
+     */
+    Response<GetSignalRecommendationsResponse> getSignalRecommendationsWithResponse(Context context);
+
+    /**
+     * Get recommended signal configurations for a given Entity (only applicable for Entities representing Azure
+     * resources).
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return recommended signal configurations for a given Entity (only applicable for Entities representing Azure
+     * resources).
+     */
+    GetSignalRecommendationsResponse getSignalRecommendations();
 }

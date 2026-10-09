@@ -2434,7 +2434,7 @@ public class FileSystemApiTests extends DataLakeTestBase {
         foo.createSubdirectory("foo");
         foo.createSubdirectory("bar");
 
-        // Creat subdirs for baz
+        // Create subdirs for baz
         baz.createSubdirectory("foo").createSubdirectory("bar");
         baz.createSubdirectory("bar/foo");
     }

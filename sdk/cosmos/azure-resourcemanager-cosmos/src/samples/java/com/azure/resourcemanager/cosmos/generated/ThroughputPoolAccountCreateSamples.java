@@ -11,7 +11,7 @@ import com.azure.resourcemanager.cosmos.fluent.models.ThroughputPoolAccountResou
  */
 public final class ThroughputPoolAccountCreateSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/throughputPool/CosmosDBThroughputPoolAccountCreate.json
+     * x-ms-original-file: 2026-04-01-preview/throughputPool/CosmosDBThroughputPoolAccountCreate.json
      */
     /**
      * Sample code: CosmosDB ThroughputPool Account Create.

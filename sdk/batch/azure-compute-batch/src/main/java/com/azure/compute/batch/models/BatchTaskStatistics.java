@@ -42,13 +42,15 @@ public final class BatchTaskStatistics implements JsonSerializable<BatchTaskStat
     private final OffsetDateTime lastUpdateTime;
 
     /*
-     * The total user mode CPU time (summed across all cores and all Compute Nodes) consumed by the Task.
+     * The total user mode CPU time (summed across all cores and all Compute Nodes) consumed by the Task. The time
+     * duration is specified in ISO 8601 format.
      */
     @Generated
     private final Duration userCpuTime;
 
     /*
-     * The total kernel mode CPU time (summed across all cores and all Compute Nodes) consumed by the Task.
+     * The total kernel mode CPU time (summed across all cores and all Compute Nodes) consumed by the Task. The time
+     * duration is specified in ISO 8601 format.
      */
     @Generated
     private final Duration kernelCpuTime;
@@ -56,7 +58,8 @@ public final class BatchTaskStatistics implements JsonSerializable<BatchTaskStat
     /*
      * The total wall clock time of the Task. The wall clock time is the elapsed time from when the Task started running
      * on a Compute Node to when it finished (or to the last time the statistics were updated, if the Task had not
-     * finished by then). If the Task was retried, this includes the wall clock time of all the Task retries.
+     * finished by then). If the Task was retried, this includes the wall clock time of all the Task retries. The time
+     * duration is specified in ISO 8601 format.
      */
     @Generated
     private final Duration wallClockTime;
@@ -64,7 +67,7 @@ public final class BatchTaskStatistics implements JsonSerializable<BatchTaskStat
     /*
      * The total wait time of the Task. The wait time for a Task is defined as the elapsed time between the creation of
      * the Task and the start of Task execution. (If the Task is retried due to failures, the wait time is the time to
-     * the most recent Task execution.).
+     * the most recent Task execution.). The time duration is specified in ISO 8601 format.
      */
     @Generated
     private final Duration waitTime;
@@ -134,7 +137,7 @@ public final class BatchTaskStatistics implements JsonSerializable<BatchTaskStat
 
     /**
      * Get the userCpuTime property: The total user mode CPU time (summed across all cores and all Compute Nodes)
-     * consumed by the Task.
+     * consumed by the Task. The time duration is specified in ISO 8601 format.
      *
      * @return the userCpuTime value.
      */
@@ -145,7 +148,7 @@ public final class BatchTaskStatistics implements JsonSerializable<BatchTaskStat
 
     /**
      * Get the kernelCpuTime property: The total kernel mode CPU time (summed across all cores and all Compute Nodes)
-     * consumed by the Task.
+     * consumed by the Task. The time duration is specified in ISO 8601 format.
      *
      * @return the kernelCpuTime value.
      */
@@ -158,7 +161,7 @@ public final class BatchTaskStatistics implements JsonSerializable<BatchTaskStat
      * Get the wallClockTime property: The total wall clock time of the Task. The wall clock time is the elapsed time
      * from when the Task started running on a Compute Node to when it finished (or to the last time the statistics were
      * updated, if the Task had not finished by then). If the Task was retried, this includes the wall clock time of all
-     * the Task retries.
+     * the Task retries. The time duration is specified in ISO 8601 format.
      *
      * @return the wallClockTime value.
      */
@@ -170,7 +173,7 @@ public final class BatchTaskStatistics implements JsonSerializable<BatchTaskStat
     /**
      * Get the waitTime property: The total wait time of the Task. The wait time for a Task is defined as the elapsed
      * time between the creation of the Task and the start of Task execution. (If the Task is retried due to failures,
-     * the wait time is the time to the most recent Task execution.).
+     * the wait time is the time to the most recent Task execution.). The time duration is specified in ISO 8601 format.
      *
      * @return the waitTime value.
      */

@@ -986,6 +986,59 @@ public final class DatabaseAccountUpdateParameters implements JsonSerializable<D
     }
 
     /**
+     * Get the softDeleteConfiguration property: The configuration for soft delete on the Cosmos DB account.
+     * 
+     * @return the softDeleteConfiguration value.
+     */
+    public SoftDeleteConfiguration softDeleteConfiguration() {
+        return this.innerProperties() == null ? null : this.innerProperties().softDeleteConfiguration();
+    }
+
+    /**
+     * Set the softDeleteConfiguration property: The configuration for soft delete on the Cosmos DB account.
+     * 
+     * @param softDeleteConfiguration the softDeleteConfiguration value to set.
+     * @return the DatabaseAccountUpdateParameters object itself.
+     */
+    public DatabaseAccountUpdateParameters
+        withSoftDeleteConfiguration(SoftDeleteConfiguration softDeleteConfiguration) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountUpdateProperties();
+        }
+        this.innerProperties().withSoftDeleteConfiguration(softDeleteConfiguration);
+        return this;
+    }
+
+    /**
+     * Get the enforceHierarchicalPartitionKeyIdLastLevel property: Flag to indicate enabling/disabling of hierarchical
+     * partition key ID last level enforcement on the account.
+     * 
+     * @return the enforceHierarchicalPartitionKeyIdLastLevel value.
+     */
+    public Boolean enforceHierarchicalPartitionKeyIdLastLevel() {
+        return this.innerProperties() == null
+            ? null
+            : this.innerProperties().enforceHierarchicalPartitionKeyIdLastLevel();
+    }
+
+    /**
+     * Set the enforceHierarchicalPartitionKeyIdLastLevel property: Flag to indicate enabling/disabling of hierarchical
+     * partition key ID last level enforcement on the account.
+     * 
+     * @param enforceHierarchicalPartitionKeyIdLastLevel the enforceHierarchicalPartitionKeyIdLastLevel value to set.
+     * @return the DatabaseAccountUpdateParameters object itself.
+     */
+    public DatabaseAccountUpdateParameters
+        withEnforceHierarchicalPartitionKeyIdLastLevel(Boolean enforceHierarchicalPartitionKeyIdLastLevel) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountUpdateProperties();
+        }
+        this.innerProperties()
+            .withEnforceHierarchicalPartitionKeyIdLastLevel(enforceHierarchicalPartitionKeyIdLastLevel);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.

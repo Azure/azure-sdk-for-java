@@ -36,7 +36,7 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.artifactsigning.fluent.CertificateProfilesClient;
 import com.azure.resourcemanager.artifactsigning.fluent.models.CertificateProfileInner;
 import com.azure.resourcemanager.artifactsigning.implementation.models.CertificateProfileListResult;
-import com.azure.resourcemanager.artifactsigning.models.RevokeCertificate;
+import com.azure.resourcemanager.artifactsigning.models.RevokeCertificateList;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -148,24 +148,24 @@ public final class CertificateProfilesClientImpl implements CertificateProfilesC
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Accept: application/json;q=0.9" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CodeSigning/codeSigningAccounts/{accountName}/certificateProfiles/{profileName}/revokeCertificate")
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CodeSigning/codeSigningAccounts/{accountName}/certificateProfiles/{profileName}/revokeCertificates")
         @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> revokeCertificate(@HostParam("endpoint") String endpoint,
+        Mono<Response<Void>> revokeCertificates(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("profileName") String profileName, @HeaderParam("Content-Type") String contentType,
-            @BodyParam("application/json") RevokeCertificate body, Context context);
+            @BodyParam("application/json") RevokeCertificateList body, Context context);
 
         @Headers({ "Accept: application/json;q=0.9" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CodeSigning/codeSigningAccounts/{accountName}/certificateProfiles/{profileName}/revokeCertificate")
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CodeSigning/codeSigningAccounts/{accountName}/certificateProfiles/{profileName}/revokeCertificates")
         @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<Void> revokeCertificateSync(@HostParam("endpoint") String endpoint,
+        Response<Void> revokeCertificatesSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("profileName") String profileName, @HeaderParam("Content-Type") String contentType,
-            @BodyParam("application/json") RevokeCertificate body, Context context);
+            @BodyParam("application/json") RevokeCertificateList body, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -728,54 +728,54 @@ public final class CertificateProfilesClientImpl implements CertificateProfilesC
     }
 
     /**
-     * Revoke a certificate under a certificate profile.
+     * Revokes certificates under a certificate profile.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Artifact Signing account name.
      * @param profileName Certificate profile name.
-     * @param body Parameters to revoke the certificate profile.
+     * @param body Parameters to revoke the certificates in the certificate profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> revokeCertificateWithResponseAsync(String resourceGroupName, String accountName,
-        String profileName, RevokeCertificate body) {
+    private Mono<Response<Void>> revokeCertificatesWithResponseAsync(String resourceGroupName, String accountName,
+        String profileName, RevokeCertificateList body) {
         final String contentType = "application/json";
         return FluxUtil
-            .withContext(context -> service.revokeCertificate(this.client.getEndpoint(), this.client.getApiVersion(),
+            .withContext(context -> service.revokeCertificates(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, accountName, profileName, contentType, body,
                 context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Revoke a certificate under a certificate profile.
+     * Revokes certificates under a certificate profile.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Artifact Signing account name.
      * @param profileName Certificate profile name.
-     * @param body Parameters to revoke the certificate profile.
+     * @param body Parameters to revoke the certificates in the certificate profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> revokeCertificateAsync(String resourceGroupName, String accountName, String profileName,
-        RevokeCertificate body) {
-        return revokeCertificateWithResponseAsync(resourceGroupName, accountName, profileName, body)
+    private Mono<Void> revokeCertificatesAsync(String resourceGroupName, String accountName, String profileName,
+        RevokeCertificateList body) {
+        return revokeCertificatesWithResponseAsync(resourceGroupName, accountName, profileName, body)
             .flatMap(ignored -> Mono.empty());
     }
 
     /**
-     * Revoke a certificate under a certificate profile.
+     * Revokes certificates under a certificate profile.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Artifact Signing account name.
      * @param profileName Certificate profile name.
-     * @param body Parameters to revoke the certificate profile.
+     * @param body Parameters to revoke the certificates in the certificate profile.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -783,28 +783,28 @@ public final class CertificateProfilesClientImpl implements CertificateProfilesC
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> revokeCertificateWithResponse(String resourceGroupName, String accountName,
-        String profileName, RevokeCertificate body, Context context) {
+    public Response<Void> revokeCertificatesWithResponse(String resourceGroupName, String accountName,
+        String profileName, RevokeCertificateList body, Context context) {
         final String contentType = "application/json";
-        return service.revokeCertificateSync(this.client.getEndpoint(), this.client.getApiVersion(),
+        return service.revokeCertificatesSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, accountName, profileName, contentType, body, context);
     }
 
     /**
-     * Revoke a certificate under a certificate profile.
+     * Revokes certificates under a certificate profile.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Artifact Signing account name.
      * @param profileName Certificate profile name.
-     * @param body Parameters to revoke the certificate profile.
+     * @param body Parameters to revoke the certificates in the certificate profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void revokeCertificate(String resourceGroupName, String accountName, String profileName,
-        RevokeCertificate body) {
-        revokeCertificateWithResponse(resourceGroupName, accountName, profileName, body, Context.NONE);
+    public void revokeCertificates(String resourceGroupName, String accountName, String profileName,
+        RevokeCertificateList body) {
+        revokeCertificatesWithResponse(resourceGroupName, accountName, profileName, body, Context.NONE);
     }
 
     /**

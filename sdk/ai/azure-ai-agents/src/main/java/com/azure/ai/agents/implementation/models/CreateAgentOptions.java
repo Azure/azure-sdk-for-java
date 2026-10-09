@@ -6,8 +6,9 @@ package com.azure.ai.agents.implementation.models;
 import com.azure.ai.agents.models.AgentBlueprintReference;
 import com.azure.ai.agents.models.AgentCard;
 import com.azure.ai.agents.models.AgentDefinition;
-import com.azure.ai.agents.models.AgentDefinitionOptInKeys;
-import com.azure.ai.agents.models.AgentEndpoint;
+import com.azure.ai.agents.models.AgentEndpointConfig;
+import com.azure.ai.agents.models.AgentState;
+import com.azure.ai.agents.models.DigitalWorkerType;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import java.util.Map;
@@ -17,12 +18,6 @@ import java.util.Map;
  */
 @Fluent
 public final class CreateAgentOptions {
-
-    /*
-     * A feature flag opt-in required when using preview operations or modifying persisted preview resources.
-     */
-    @Generated
-    private AgentDefinitionOptInKeys foundryFeatures;
 
     /*
      * The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
@@ -51,7 +46,7 @@ public final class CreateAgentOptions {
     private String description;
 
     /*
-     * The agent definition. This can be a workflow, hosted agent, or a simple agent definition.
+     * The agent definition. This can be a prompt, workflow, hosted, external, or voice agent definition.
      */
     @Generated
     private final AgentDefinition definition;
@@ -66,7 +61,7 @@ public final class CreateAgentOptions {
      * An optional endpoint configuration. If not specified, a default endpoint configuration will be set for the agent
      */
     @Generated
-    private AgentEndpoint agentEndpoint;
+    private AgentEndpointConfig agentEndpoint;
 
     /*
      * Optional agent card for the agent
@@ -84,30 +79,6 @@ public final class CreateAgentOptions {
     public CreateAgentOptions(String agentName, AgentDefinition definition) {
         this.agentName = agentName;
         this.definition = definition;
-    }
-
-    /**
-     * Get the foundryFeatures property: A feature flag opt-in required when using preview operations or modifying
-     * persisted preview resources.
-     *
-     * @return the foundryFeatures value.
-     */
-    @Generated
-    public AgentDefinitionOptInKeys getFoundryFeatures() {
-        return this.foundryFeatures;
-    }
-
-    /**
-     * Set the foundryFeatures property: A feature flag opt-in required when using preview operations or modifying
-     * persisted preview resources.
-     *
-     * @param foundryFeatures the foundryFeatures value to set.
-     * @return the CreateAgentOptions object itself.
-     */
-    @Generated
-    public CreateAgentOptions setFoundryFeatures(AgentDefinitionOptInKeys foundryFeatures) {
-        this.foundryFeatures = foundryFeatures;
-        return this;
     }
 
     /**
@@ -179,8 +150,8 @@ public final class CreateAgentOptions {
     }
 
     /**
-     * Get the definition property: The agent definition. This can be a workflow, hosted agent, or a simple agent
-     * definition.
+     * Get the definition property: The agent definition. This can be a prompt, workflow, hosted, external, or voice
+     * agent definition.
      *
      * @return the definition value.
      */
@@ -218,21 +189,8 @@ public final class CreateAgentOptions {
      * @return the agentEndpoint value.
      */
     @Generated
-    public AgentEndpoint getAgentEndpoint() {
+    public AgentEndpointConfig getAgentEndpoint() {
         return this.agentEndpoint;
-    }
-
-    /**
-     * Set the agentEndpoint property: An optional endpoint configuration. If not specified, a default endpoint
-     * configuration will be set for the agent.
-     *
-     * @param agentEndpoint the agentEndpoint value to set.
-     * @return the CreateAgentOptions object itself.
-     */
-    @Generated
-    public CreateAgentOptions setAgentEndpoint(AgentEndpoint agentEndpoint) {
-        this.agentEndpoint = agentEndpoint;
-        return this;
     }
 
     /**
@@ -254,6 +212,111 @@ public final class CreateAgentOptions {
     @Generated
     public CreateAgentOptions setAgentCard(AgentCard agentCard) {
         this.agentCard = agentCard;
+        return this;
+    }
+
+    /**
+     * Set the agentEndpoint property: An optional endpoint configuration. If not specified, a default endpoint
+     * configuration will be set for the agent.
+     *
+     * @param agentEndpoint the agentEndpoint value to set.
+     * @return the CreateAgentOptions object itself.
+     */
+    @Generated
+    public CreateAgentOptions setAgentEndpoint(AgentEndpointConfig agentEndpoint) {
+        this.agentEndpoint = agentEndpoint;
+        return this;
+    }
+
+    /*
+     * The initial operational state of the agent. Defaults to 'enabled' if not specified.
+     */
+    @Generated
+    private AgentState state;
+
+    /**
+     * Get the state property: The initial operational state of the agent. Defaults to 'enabled' if not specified.
+     *
+     * @return the state value.
+     */
+    @Generated
+    public AgentState getState() {
+        return this.state;
+    }
+
+    /**
+     * Set the state property: The initial operational state of the agent. Defaults to 'enabled' if not specified.
+     *
+     * @param state the state value to set.
+     * @return the CreateAgentOptions object itself.
+     */
+    @Generated
+    public CreateAgentOptions setState(AgentState state) {
+        this.state = state;
+        return this;
+    }
+
+    /*
+     * (Preview) Whether this agent version is a draft (candidate) rather than a release. The service defaults to
+     * `false` if a value is not specified by the caller. Draft versions are recorded but excluded from default 'latest'
+     * resolution and are not auto-promoted.
+     */
+    @Generated
+    private Boolean draft;
+
+    /**
+     * Get the draft property: (Preview) Whether this agent version is a draft (candidate) rather than a release. The
+     * service defaults to `false` if a value is not specified by the caller. Draft versions are recorded but excluded
+     * from default 'latest' resolution and are not auto-promoted.
+     *
+     * @return the draft value.
+     */
+    @Generated
+    public Boolean isDraft() {
+        return this.draft;
+    }
+
+    /**
+     * Set the draft property: (Preview) Whether this agent version is a draft (candidate) rather than a release. The
+     * service defaults to `false` if a value is not specified by the caller. Draft versions are recorded but excluded
+     * from default 'latest' resolution and are not auto-promoted.
+     *
+     * @param draft the draft value to set.
+     * @return the CreateAgentOptions object itself.
+     */
+    @Generated
+    public CreateAgentOptions setDraft(Boolean draft) {
+        this.draft = draft;
+        return this;
+    }
+
+    /*
+     * (Preview) The type of digital worker (previously known as `autopilot`). If omitted, it is not a digital worker.
+     */
+    @Generated
+    private DigitalWorkerType digitalWorkerType;
+
+    /**
+     * Get the digitalWorkerType property: (Preview) The type of digital worker (previously known as `autopilot`). If
+     * omitted, it is not a digital worker.
+     *
+     * @return the digitalWorkerType value.
+     */
+    @Generated
+    public DigitalWorkerType getDigitalWorkerType() {
+        return this.digitalWorkerType;
+    }
+
+    /**
+     * Set the digitalWorkerType property: (Preview) The type of digital worker (previously known as `autopilot`). If
+     * omitted, it is not a digital worker.
+     *
+     * @param digitalWorkerType the digitalWorkerType value to set.
+     * @return the CreateAgentOptions object itself.
+     */
+    @Generated
+    public CreateAgentOptions setDigitalWorkerType(DigitalWorkerType digitalWorkerType) {
+        this.digitalWorkerType = digitalWorkerType;
         return this;
     }
 }

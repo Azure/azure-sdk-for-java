@@ -59,4 +59,18 @@ public interface MongoDBAtlasManagementClient {
      * @return the OrganizationsClient object.
      */
     OrganizationsClient getOrganizations();
+
+    /**
+     * Gets the ProjectsClient object to access its operations.
+     * 
+     * @return the ProjectsClient object.
+     */
+    ProjectsClient getProjects();
+
+    /**
+     * Gets the ClustersClient object to access its operations.
+     * 
+     * @return the ClustersClient object.
+     */
+    ClustersClient getClusters();
 }

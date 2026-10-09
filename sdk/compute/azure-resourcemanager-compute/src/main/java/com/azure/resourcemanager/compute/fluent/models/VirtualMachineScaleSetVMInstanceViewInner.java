@@ -10,9 +10,11 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.models.BootDiagnosticsInstanceView;
+import com.azure.resourcemanager.compute.models.CapacityReservationType;
 import com.azure.resourcemanager.compute.models.DiskInstanceView;
 import com.azure.resourcemanager.compute.models.HyperVGeneration;
 import com.azure.resourcemanager.compute.models.InstanceViewStatus;
+import com.azure.resourcemanager.compute.models.InterconnectInstanceView;
 import com.azure.resourcemanager.compute.models.MaintenanceRedeployStatus;
 import com.azure.resourcemanager.compute.models.VirtualMachineAgentInstanceView;
 import com.azure.resourcemanager.compute.models.VirtualMachineExtensionInstanceView;
@@ -113,6 +115,18 @@ public final class VirtualMachineScaleSetVMInstanceViewInner
      * The hypervisor generation of the Virtual Machine [V1, V2]
      */
     private HyperVGeneration hyperVGeneration;
+
+    /*
+     * The Interconnect runtime view of the Scale Set VM instance. Minimum api-version: 2026-03-01.
+     */
+    private InterconnectInstanceView interconnectInstanceView;
+
+    /*
+     * Specifies which type of capacity reservation the virtual machine scale set VM instance will consume capacity from
+     * if eligible or whether it is explicitly opted out from being associated and consuming capacity from any reserved
+     * capacity available in the subscription. Minimum api-version: 2026-04-01.
+     */
+    private CapacityReservationType capacityReservationType;
 
     /**
      * Creates an instance of VirtualMachineScaleSetVMInstanceViewInner class.
@@ -274,6 +288,28 @@ public final class VirtualMachineScaleSetVMInstanceViewInner
     }
 
     /**
+     * Get the interconnectInstanceView property: The Interconnect runtime view of the Scale Set VM instance. Minimum
+     * api-version: 2026-03-01.
+     * 
+     * @return the interconnectInstanceView value.
+     */
+    public InterconnectInstanceView interconnectInstanceView() {
+        return this.interconnectInstanceView;
+    }
+
+    /**
+     * Get the capacityReservationType property: Specifies which type of capacity reservation the virtual machine scale
+     * set VM instance will consume capacity from if eligible or whether it is explicitly opted out from being
+     * associated and consuming capacity from any reserved capacity available in the subscription. Minimum api-version:
+     * 2026-04-01.
+     * 
+     * @return the capacityReservationType value.
+     */
+    public CapacityReservationType capacityReservationType() {
+        return this.capacityReservationType;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -299,6 +335,9 @@ public final class VirtualMachineScaleSetVMInstanceViewInner
         }
         if (statuses() != null) {
             statuses().forEach(e -> e.validate());
+        }
+        if (interconnectInstanceView() != null) {
+            interconnectInstanceView().validate();
         }
     }
 
@@ -386,6 +425,12 @@ public final class VirtualMachineScaleSetVMInstanceViewInner
                 } else if ("hyperVGeneration".equals(fieldName)) {
                     deserializedVirtualMachineScaleSetVMInstanceViewInner.hyperVGeneration
                         = HyperVGeneration.fromString(reader.getString());
+                } else if ("interconnectInstanceView".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetVMInstanceViewInner.interconnectInstanceView
+                        = InterconnectInstanceView.fromJson(reader);
+                } else if ("capacityReservationType".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetVMInstanceViewInner.capacityReservationType
+                        = CapacityReservationType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

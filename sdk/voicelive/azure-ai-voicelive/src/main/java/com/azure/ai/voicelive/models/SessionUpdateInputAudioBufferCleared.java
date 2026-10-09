@@ -15,7 +15,7 @@ import java.io.IOException;
  * `input_audio_buffer.clear` event.
  */
 @Immutable
-public final class SessionUpdateInputAudioBufferCleared extends SessionUpdate {
+public final class SessionUpdateInputAudioBufferCleared extends SessionServerEvent {
 
     /*
      * The type of event.

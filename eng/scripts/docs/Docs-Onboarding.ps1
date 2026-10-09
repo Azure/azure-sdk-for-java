@@ -19,7 +19,7 @@ function Set-java-DocsPackageOnboarding($moniker, $metadata, $docRepoLocation, $
         Write-Error "No appropriate index for moniker $moniker"
     }
 
-    $packageDownloadUrl = 'https://repo1.maven.org/maven2'
+    $packageDownloadUrl = 'https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-java/maven/v1'
     if ($PackageSourceOverride) {
         $packageDownloadUrl = $PackageSourceOverride
     }

@@ -18,7 +18,7 @@ import java.io.IOException;
  * server will respond with an error.
  */
 @Fluent
-public final class ClientEventConversationItemRetrieve extends ClientEvent {
+public final class ClientEventConversationItemRetrieve extends SessionClientEvent {
 
     /*
      * The type of event.

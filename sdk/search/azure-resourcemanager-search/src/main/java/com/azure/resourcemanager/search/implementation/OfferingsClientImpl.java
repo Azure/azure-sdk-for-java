@@ -5,11 +5,11 @@
 package com.azure.resourcemanager.search.implementation;
 
 import com.azure.core.annotation.ExpectedResponses;
-import com.azure.core.annotation.Get;
 import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
+import com.azure.core.annotation.Post;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
@@ -21,7 +21,7 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.search.fluent.OfferingsClient;
-import com.azure.resourcemanager.search.fluent.models.OfferingsListResultInner;
+import com.azure.resourcemanager.search.fluent.models.OfferingsResultInner;
 import reactor.core.publisher.Mono;
 
 /**
@@ -57,25 +57,25 @@ public final class OfferingsClientImpl implements OfferingsClient {
     @ServiceInterface(name = "SearchManagementClientOfferings")
     public interface OfferingsService {
         @Headers({ "Content-Type: application/json" })
-        @Get("/providers/Microsoft.Search/offerings")
+        @Post("/providers/Microsoft.Search/fetchOfferings")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<OfferingsListResultInner>> list(@HostParam("endpoint") String endpoint,
+        Mono<Response<OfferingsResultInner>> fetch(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
-     * Lists all of the features and SKUs offered by the Azure AI Search service in each region. Note: This API returns
-     * a non-ARM resource collection and is not RPC-compliant. It will be replaced with an action-style API in the next
-     * preview as a breaking change. Customers should avoid taking new dependencies on the current shape.
+     * Fetches the features and SKUs offered by the Azure AI Search service in each region, along with the recommended
+     * default region for creating new services.
      * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response containing the list of offerings available in Azure AI Search, organized by region along with
-     * {@link Response} on successful completion of {@link Mono}.
+     * @return response containing the available Azure AI Search offerings, organized by region, along with the
+     * recommended default region for creating new services along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<OfferingsListResultInner>> listWithResponseAsync() {
+    public Mono<Response<OfferingsResultInner>> fetchWithResponseAsync() {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -83,76 +83,74 @@ public final class OfferingsClientImpl implements OfferingsClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(), accept, context))
+                context -> service.fetch(this.client.getEndpoint(), this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Lists all of the features and SKUs offered by the Azure AI Search service in each region. Note: This API returns
-     * a non-ARM resource collection and is not RPC-compliant. It will be replaced with an action-style API in the next
-     * preview as a breaking change. Customers should avoid taking new dependencies on the current shape.
+     * Fetches the features and SKUs offered by the Azure AI Search service in each region, along with the recommended
+     * default region for creating new services.
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response containing the list of offerings available in Azure AI Search, organized by region along with
-     * {@link Response} on successful completion of {@link Mono}.
+     * @return response containing the available Azure AI Search offerings, organized by region, along with the
+     * recommended default region for creating new services along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<OfferingsListResultInner>> listWithResponseAsync(Context context) {
+    private Mono<Response<OfferingsResultInner>> fetchWithResponseAsync(Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.list(this.client.getEndpoint(), this.client.getApiVersion(), accept, context);
+        return service.fetch(this.client.getEndpoint(), this.client.getApiVersion(), accept, context);
     }
 
     /**
-     * Lists all of the features and SKUs offered by the Azure AI Search service in each region. Note: This API returns
-     * a non-ARM resource collection and is not RPC-compliant. It will be replaced with an action-style API in the next
-     * preview as a breaking change. Customers should avoid taking new dependencies on the current shape.
+     * Fetches the features and SKUs offered by the Azure AI Search service in each region, along with the recommended
+     * default region for creating new services.
      * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response containing the list of offerings available in Azure AI Search, organized by region on successful
-     * completion of {@link Mono}.
+     * @return response containing the available Azure AI Search offerings, organized by region, along with the
+     * recommended default region for creating new services on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<OfferingsListResultInner> listAsync() {
-        return listWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<OfferingsResultInner> fetchAsync() {
+        return fetchWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Lists all of the features and SKUs offered by the Azure AI Search service in each region. Note: This API returns
-     * a non-ARM resource collection and is not RPC-compliant. It will be replaced with an action-style API in the next
-     * preview as a breaking change. Customers should avoid taking new dependencies on the current shape.
+     * Fetches the features and SKUs offered by the Azure AI Search service in each region, along with the recommended
+     * default region for creating new services.
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response containing the list of offerings available in Azure AI Search, organized by region along with
-     * {@link Response}.
+     * @return response containing the available Azure AI Search offerings, organized by region, along with the
+     * recommended default region for creating new services along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<OfferingsListResultInner> listWithResponse(Context context) {
-        return listWithResponseAsync(context).block();
+    public Response<OfferingsResultInner> fetchWithResponse(Context context) {
+        return fetchWithResponseAsync(context).block();
     }
 
     /**
-     * Lists all of the features and SKUs offered by the Azure AI Search service in each region. Note: This API returns
-     * a non-ARM resource collection and is not RPC-compliant. It will be replaced with an action-style API in the next
-     * preview as a breaking change. Customers should avoid taking new dependencies on the current shape.
+     * Fetches the features and SKUs offered by the Azure AI Search service in each region, along with the recommended
+     * default region for creating new services.
      * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response containing the list of offerings available in Azure AI Search, organized by region.
+     * @return response containing the available Azure AI Search offerings, organized by region, along with the
+     * recommended default region for creating new services.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OfferingsListResultInner list() {
-        return listWithResponse(Context.NONE).getValue();
+    public OfferingsResultInner fetch() {
+        return fetchWithResponse(Context.NONE).getValue();
     }
 }

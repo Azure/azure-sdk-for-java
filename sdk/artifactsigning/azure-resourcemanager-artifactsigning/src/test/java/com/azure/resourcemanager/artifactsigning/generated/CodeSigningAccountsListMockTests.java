@@ -23,7 +23,7 @@ public final class CodeSigningAccountsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"accountUri\":\"nrosfqpte\",\"sku\":{\"name\":\"Premium\"},\"provisioningState\":\"Accepted\"},\"location\":\"pyqr\",\"tags\":{\"hc\":\"inpvswjdkirsoodq\"},\"id\":\"mnoh\",\"name\":\"t\",\"type\":\"kwh\"}]}";
+            = "{\"value\":[{\"properties\":{\"accountUri\":\"pyqr\",\"sku\":{\"name\":\"Basic\"},\"provisioningState\":\"Succeeded\"},\"location\":\"vswjdk\",\"tags\":{\"ohjtckw\":\"oodqxhcrm\",\"sqwpgrjb\":\"dsoifiyipj\",\"mocpc\":\"norcjxvsnbyxqab\",\"c\":\"shurzafbljjgpbto\"},\"id\":\"mkljavb\",\"name\":\"idtqajzyu\",\"type\":\"pku\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,8 +35,8 @@ public final class CodeSigningAccountsListMockTests {
         PagedIterable<CodeSigningAccount> response
             = manager.codeSigningAccounts().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("pyqr", response.iterator().next().location());
-        Assertions.assertEquals("inpvswjdkirsoodq", response.iterator().next().tags().get("hc"));
-        Assertions.assertEquals(SkuName.PREMIUM, response.iterator().next().sku().name());
+        Assertions.assertEquals("vswjdk", response.iterator().next().location());
+        Assertions.assertEquals("oodqxhcrm", response.iterator().next().tags().get("ohjtckw"));
+        Assertions.assertEquals(SkuName.BASIC, response.iterator().next().sku().name());
     }
 }

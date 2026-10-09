@@ -11,7 +11,6 @@ import com.azure.resourcemanager.cloudhealth.fluent.models.HealthModelInner;
 import com.azure.resourcemanager.cloudhealth.models.HealthModel;
 import com.azure.resourcemanager.cloudhealth.models.HealthModelProperties;
 import com.azure.resourcemanager.cloudhealth.models.HealthModelUpdate;
-import com.azure.resourcemanager.cloudhealth.models.HealthModelUpdateProperties;
 import com.azure.resourcemanager.cloudhealth.models.ManagedServiceIdentity;
 import java.util.Collections;
 import java.util.Map;
@@ -185,11 +184,6 @@ public final class HealthModelImpl implements HealthModel, HealthModel.Definitio
             this.updateProperties.withIdentity(identity);
             return this;
         }
-    }
-
-    public HealthModelImpl withProperties(HealthModelUpdateProperties properties) {
-        this.updateProperties.withProperties(properties);
-        return this;
     }
 
     private boolean isInCreateMode() {

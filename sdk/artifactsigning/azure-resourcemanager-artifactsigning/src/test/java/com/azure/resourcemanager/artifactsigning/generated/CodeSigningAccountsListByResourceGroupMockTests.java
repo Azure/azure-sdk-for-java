@@ -23,7 +23,7 @@ public final class CodeSigningAccountsListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"accountUri\":\"zxufiz\",\"sku\":{\"name\":\"Basic\"},\"provisioningState\":\"Deleting\"},\"location\":\"hr\",\"tags\":{\"wisdkft\":\"fvzwdzuhty\",\"vkmijcmmxdcuf\":\"wxmnteiwao\",\"cxtbzsg\":\"fsrpymzidnse\"},\"id\":\"yc\",\"name\":\"sne\",\"type\":\"mdwzjeiachboo\"}]}";
+            = "{\"value\":[{\"properties\":{\"accountUri\":\"idf\",\"sku\":{\"name\":\"Premium\"},\"provisioningState\":\"Accepted\"},\"location\":\"htymw\",\"tags\":{\"aop\":\"kfthwxmntei\",\"jcmmxdcufufsrp\":\"km\",\"sgfyccsnew\":\"mzidnsezcxtb\"},\"id\":\"dwzjeiach\",\"name\":\"oosflnr\",\"type\":\"sfqpteehz\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,10 +33,10 @@ public final class CodeSigningAccountsListByResourceGroupMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<CodeSigningAccount> response
-            = manager.codeSigningAccounts().listByResourceGroup("prwzwbnguitnwui", com.azure.core.util.Context.NONE);
+            = manager.codeSigningAccounts().listByResourceGroup("zuckyfi", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("hr", response.iterator().next().location());
-        Assertions.assertEquals("fvzwdzuhty", response.iterator().next().tags().get("wisdkft"));
-        Assertions.assertEquals(SkuName.BASIC, response.iterator().next().sku().name());
+        Assertions.assertEquals("htymw", response.iterator().next().location());
+        Assertions.assertEquals("kfthwxmntei", response.iterator().next().tags().get("aop"));
+        Assertions.assertEquals(SkuName.PREMIUM, response.iterator().next().sku().name());
     }
 }

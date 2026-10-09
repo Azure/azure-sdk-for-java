@@ -53,7 +53,9 @@ public class AadB2cResourceServerAutoConfiguration {
 
     AadB2cResourceServerAutoConfiguration(AadB2cProperties properties, RestTemplateBuilder restTemplateBuilder) {
         this.properties = properties;
-        this.restTemplateBuilder = restTemplateBuilder;
+        this.restTemplateBuilder = restTemplateBuilder
+            .connectTimeout(properties.getJwtConnectTimeout())
+            .readTimeout(properties.getJwtReadTimeout());
     }
 
     @Bean

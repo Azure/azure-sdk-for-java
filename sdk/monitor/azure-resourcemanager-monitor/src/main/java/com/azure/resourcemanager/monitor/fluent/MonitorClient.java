@@ -4,8 +4,20 @@
 
 package com.azure.resourcemanager.monitor.fluent;
 
+import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.rest.Response;
+import com.azure.core.management.polling.PollResult;
+import com.azure.core.util.Context;
+import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
+import com.azure.resourcemanager.monitor.fluent.models.TenantActionGroupTestNotificationDetailsResponseInner;
+import com.azure.resourcemanager.monitor.models.TenantNotificationRequestBody;
+import java.nio.ByteBuffer;
 import java.time.Duration;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 /**
  * The interface for MonitorClient class.
@@ -220,4 +232,223 @@ public interface MonitorClient {
      * @return the NspScheduledQueryRulesClient object.
      */
     NspScheduledQueryRulesClient getNspScheduledQueryRules();
+
+    /**
+     * Gets the TenantActionGroupsClient object to access its operations.
+     * 
+     * @return the TenantActionGroupsClient object.
+     */
+    TenantActionGroupsClient getTenantActionGroups();
+
+    /**
+     * Gets the VMInsightsClient object to access its operations.
+     * 
+     * @return the VMInsightsClient object.
+     */
+    VMInsightsClient getVMInsights();
+
+    /**
+     * Gets the DiagnosticSettingsOperationsClient object to access its operations.
+     * 
+     * @return the DiagnosticSettingsOperationsClient object.
+     */
+    DiagnosticSettingsOperationsClient getDiagnosticSettingsOperations();
+
+    /**
+     * Gets the DiagnosticSettingsCategoriesClient object to access its operations.
+     * 
+     * @return the DiagnosticSettingsCategoriesClient object.
+     */
+    DiagnosticSettingsCategoriesClient getDiagnosticSettingsCategories();
+
+    /**
+     * Send test notifications to a set of provided receivers.
+     * 
+     * @param managementGroupId The management group ID.
+     * @param tenantActionGroupName The name of the action group.
+     * @param xMsClientTenantId The tenant ID of the client making the request.
+     * @param notificationRequest The notification request body which includes the contact details.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details of the test notification results along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> createNotificationsAtTenantActionGroupResourceLevelWithResponseAsync(
+        String managementGroupId, String tenantActionGroupName, String xMsClientTenantId,
+        TenantNotificationRequestBody notificationRequest);
+
+    /**
+     * Send test notifications to a set of provided receivers.
+     * 
+     * @param managementGroupId The management group ID.
+     * @param tenantActionGroupName The name of the action group.
+     * @param xMsClientTenantId The tenant ID of the client making the request.
+     * @param notificationRequest The notification request body which includes the contact details.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of the details of the test notification results.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<TenantActionGroupTestNotificationDetailsResponseInner>, TenantActionGroupTestNotificationDetailsResponseInner>
+        beginCreateNotificationsAtTenantActionGroupResourceLevelAsync(String managementGroupId,
+            String tenantActionGroupName, String xMsClientTenantId, TenantNotificationRequestBody notificationRequest);
+
+    /**
+     * Send test notifications to a set of provided receivers.
+     * 
+     * @param managementGroupId The management group ID.
+     * @param tenantActionGroupName The name of the action group.
+     * @param xMsClientTenantId The tenant ID of the client making the request.
+     * @param notificationRequest The notification request body which includes the contact details.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the details of the test notification results.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<TenantActionGroupTestNotificationDetailsResponseInner>, TenantActionGroupTestNotificationDetailsResponseInner>
+        beginCreateNotificationsAtTenantActionGroupResourceLevel(String managementGroupId, String tenantActionGroupName,
+            String xMsClientTenantId, TenantNotificationRequestBody notificationRequest);
+
+    /**
+     * Send test notifications to a set of provided receivers.
+     * 
+     * @param managementGroupId The management group ID.
+     * @param tenantActionGroupName The name of the action group.
+     * @param xMsClientTenantId The tenant ID of the client making the request.
+     * @param notificationRequest The notification request body which includes the contact details.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the details of the test notification results.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<TenantActionGroupTestNotificationDetailsResponseInner>, TenantActionGroupTestNotificationDetailsResponseInner>
+        beginCreateNotificationsAtTenantActionGroupResourceLevel(String managementGroupId, String tenantActionGroupName,
+            String xMsClientTenantId, TenantNotificationRequestBody notificationRequest, Context context);
+
+    /**
+     * Send test notifications to a set of provided receivers.
+     * 
+     * @param managementGroupId The management group ID.
+     * @param tenantActionGroupName The name of the action group.
+     * @param xMsClientTenantId The tenant ID of the client making the request.
+     * @param notificationRequest The notification request body which includes the contact details.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details of the test notification results on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<TenantActionGroupTestNotificationDetailsResponseInner>
+        createNotificationsAtTenantActionGroupResourceLevelAsync(String managementGroupId, String tenantActionGroupName,
+            String xMsClientTenantId, TenantNotificationRequestBody notificationRequest);
+
+    /**
+     * Send test notifications to a set of provided receivers.
+     * 
+     * @param managementGroupId The management group ID.
+     * @param tenantActionGroupName The name of the action group.
+     * @param xMsClientTenantId The tenant ID of the client making the request.
+     * @param notificationRequest The notification request body which includes the contact details.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details of the test notification results.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    TenantActionGroupTestNotificationDetailsResponseInner createNotificationsAtTenantActionGroupResourceLevel(
+        String managementGroupId, String tenantActionGroupName, String xMsClientTenantId,
+        TenantNotificationRequestBody notificationRequest);
+
+    /**
+     * Send test notifications to a set of provided receivers.
+     * 
+     * @param managementGroupId The management group ID.
+     * @param tenantActionGroupName The name of the action group.
+     * @param xMsClientTenantId The tenant ID of the client making the request.
+     * @param notificationRequest The notification request body which includes the contact details.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details of the test notification results.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    TenantActionGroupTestNotificationDetailsResponseInner createNotificationsAtTenantActionGroupResourceLevel(
+        String managementGroupId, String tenantActionGroupName, String xMsClientTenantId,
+        TenantNotificationRequestBody notificationRequest, Context context);
+
+    /**
+     * Get the test notifications by the notification id.
+     * 
+     * @param managementGroupId The management group id.
+     * @param tenantActionGroupName The name of the action group.
+     * @param notificationId The notification id.
+     * @param xMsClientTenantId The tenant ID of the client making the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the test notifications by the notification id along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<TenantActionGroupTestNotificationDetailsResponseInner>>
+        getTestNotificationsAtTenantActionGroupResourceLevelWithResponseAsync(String managementGroupId,
+            String tenantActionGroupName, String notificationId, String xMsClientTenantId);
+
+    /**
+     * Get the test notifications by the notification id.
+     * 
+     * @param managementGroupId The management group id.
+     * @param tenantActionGroupName The name of the action group.
+     * @param notificationId The notification id.
+     * @param xMsClientTenantId The tenant ID of the client making the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the test notifications by the notification id on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<TenantActionGroupTestNotificationDetailsResponseInner>
+        getTestNotificationsAtTenantActionGroupResourceLevelAsync(String managementGroupId,
+            String tenantActionGroupName, String notificationId, String xMsClientTenantId);
+
+    /**
+     * Get the test notifications by the notification id.
+     * 
+     * @param managementGroupId The management group id.
+     * @param tenantActionGroupName The name of the action group.
+     * @param notificationId The notification id.
+     * @param xMsClientTenantId The tenant ID of the client making the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the test notifications by the notification id along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<TenantActionGroupTestNotificationDetailsResponseInner>
+        getTestNotificationsAtTenantActionGroupResourceLevelWithResponse(String managementGroupId,
+            String tenantActionGroupName, String notificationId, String xMsClientTenantId, Context context);
+
+    /**
+     * Get the test notifications by the notification id.
+     * 
+     * @param managementGroupId The management group id.
+     * @param tenantActionGroupName The name of the action group.
+     * @param notificationId The notification id.
+     * @param xMsClientTenantId The tenant ID of the client making the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the test notifications by the notification id.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    TenantActionGroupTestNotificationDetailsResponseInner getTestNotificationsAtTenantActionGroupResourceLevel(
+        String managementGroupId, String tenantActionGroupName, String notificationId, String xMsClientTenantId);
 }

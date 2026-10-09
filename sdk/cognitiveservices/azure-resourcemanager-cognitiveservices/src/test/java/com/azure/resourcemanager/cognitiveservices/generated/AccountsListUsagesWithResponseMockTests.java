@@ -24,7 +24,7 @@ public final class AccountsListUsagesWithResponseMockTests {
     @Test
     public void testListUsagesWithResponse() throws Exception {
         String responseStr
-            = "{\"nextLink\":\"nyeofltfnnxrk\",\"value\":[{\"unit\":\"Seconds\",\"name\":{\"value\":\"fmu\",\"localizedValue\":\"iripfohyk\"},\"quotaPeriod\":\"xbbcbrw\",\"limit\":0.2025469318898132,\"currentValue\":26.415490189151026,\"nextResetTime\":\"zbeewoiymrvzbju\",\"status\":\"Blocked\",\"scopeType\":\"Global\",\"scopeId\":\"uctixgbdsui\"},{\"unit\":\"BytesPerSecond\",\"name\":{\"value\":\"aapezkiswqjmdghs\",\"localizedValue\":\"arybjufptbjc\"},\"quotaPeriod\":\"nciuiyqvldaswvpp\",\"limit\":58.75710691783412,\"currentValue\":97.07361868687615,\"nextResetTime\":\"ndhzx\",\"status\":\"InOverage\",\"scopeType\":\"DataZone\",\"scopeId\":\"r\"},{\"unit\":\"BytesPerSecond\",\"name\":{\"value\":\"nxu\",\"localizedValue\":\"kpphefsbzx\"},\"quotaPeriod\":\"zxomeikjclwz\",\"limit\":29.032336560601667,\"currentValue\":52.0250585261819,\"nextResetTime\":\"uqtaazyqbxyxoyf\",\"status\":\"Included\",\"scopeType\":\"DataZone\",\"scopeId\":\"ezxlhdjzqdca\"},{\"unit\":\"CountPerSecond\",\"name\":{\"value\":\"ozjiihj\",\"localizedValue\":\"ybmrzoepnxwd\"},\"quotaPeriod\":\"njkgvfnmx\",\"limit\":38.19206627923554,\"currentValue\":95.69530684060187,\"nextResetTime\":\"btyi\",\"status\":\"Included\",\"scopeType\":\"Regional\",\"scopeId\":\"rfqjpnqnoo\"}]}";
+            = "{\"nextLink\":\"atwfauj\",\"value\":[{\"unit\":\"Milliseconds\",\"name\":{\"value\":\"r\",\"localizedValue\":\"gddhjkrukizyhgs\"},\"quotaPeriod\":\"nqskt\",\"limit\":52.50280800542966,\"currentValue\":25.39356583900255,\"nextResetTime\":\"gweeiwd\",\"status\":\"Included\",\"scopeType\":\"DataZone\",\"scopeId\":\"bf\"},{\"unit\":\"Seconds\",\"name\":{\"value\":\"tunmlhxd\",\"localizedValue\":\"klciichgjsysm\"},\"quotaPeriod\":\"o\",\"limit\":99.37963130435838,\"currentValue\":53.5735232788603,\"nextResetTime\":\"ifc\",\"status\":\"Unknown\",\"scopeType\":\"Regional\",\"scopeId\":\"gcwx\"},{\"unit\":\"Count\",\"name\":{\"value\":\"wjtrdxriza\",\"localizedValue\":\"bgiark\"},\"quotaPeriod\":\"kpgdqxwabzrwiq\",\"limit\":12.102028897079531,\"currentValue\":55.41303683641783,\"nextResetTime\":\"osqkptjqgk\",\"status\":\"Blocked\",\"scopeType\":\"DataZone\",\"scopeId\":\"nwhedxkpbqwun\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,19 +34,19 @@ public final class AccountsListUsagesWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         UsageListResult response = manager.accounts()
-            .listUsagesWithResponse("vajmailfem", "jzakzwjiqull", "xbdmvrscmqernd", com.azure.core.util.Context.NONE)
+            .listUsagesWithResponse("ewp", "jlfxampqcrzgeuq", "b", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("nyeofltfnnxrk", response.nextLink());
-        Assertions.assertEquals(UnitType.SECONDS, response.value().get(0).unit());
-        Assertions.assertEquals("fmu", response.value().get(0).name().value());
-        Assertions.assertEquals("iripfohyk", response.value().get(0).name().localizedValue());
-        Assertions.assertEquals("xbbcbrw", response.value().get(0).quotaPeriod());
-        Assertions.assertEquals(0.2025469318898132D, response.value().get(0).limit());
-        Assertions.assertEquals(26.415490189151026D, response.value().get(0).currentValue());
-        Assertions.assertEquals("zbeewoiymrvzbju", response.value().get(0).nextResetTime());
-        Assertions.assertEquals(QuotaUsageStatus.BLOCKED, response.value().get(0).status());
-        Assertions.assertEquals(QuotaScopeType.GLOBAL, response.value().get(0).scopeType());
-        Assertions.assertEquals("uctixgbdsui", response.value().get(0).scopeId());
+        Assertions.assertEquals("atwfauj", response.nextLink());
+        Assertions.assertEquals(UnitType.MILLISECONDS, response.value().get(0).unit());
+        Assertions.assertEquals("r", response.value().get(0).name().value());
+        Assertions.assertEquals("gddhjkrukizyhgs", response.value().get(0).name().localizedValue());
+        Assertions.assertEquals("nqskt", response.value().get(0).quotaPeriod());
+        Assertions.assertEquals(52.50280800542966D, response.value().get(0).limit());
+        Assertions.assertEquals(25.39356583900255D, response.value().get(0).currentValue());
+        Assertions.assertEquals("gweeiwd", response.value().get(0).nextResetTime());
+        Assertions.assertEquals(QuotaUsageStatus.INCLUDED, response.value().get(0).status());
+        Assertions.assertEquals(QuotaScopeType.DATA_ZONE, response.value().get(0).scopeType());
+        Assertions.assertEquals("bf", response.value().get(0).scopeId());
     }
 }

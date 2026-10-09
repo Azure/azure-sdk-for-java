@@ -17,7 +17,7 @@ import java.util.Arrays;
  */
 public final class CopyJobsCreateSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/copy-jobs/CosmosDBCopyJobCreate.json
+     * x-ms-original-file: 2026-04-01-preview/copy-jobs/CosmosDBCopyJobCreate.json
      */
     /**
      * Sample code: CosmosDBCopyJobCreate.

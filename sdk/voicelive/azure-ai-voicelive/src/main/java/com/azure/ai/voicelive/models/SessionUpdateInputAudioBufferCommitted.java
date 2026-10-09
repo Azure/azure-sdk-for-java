@@ -17,7 +17,7 @@ import java.io.IOException;
  * will also be sent to the client.
  */
 @Immutable
-public final class SessionUpdateInputAudioBufferCommitted extends SessionUpdate {
+public final class SessionUpdateInputAudioBufferCommitted extends SessionServerEvent {
 
     /*
      * The type of event.

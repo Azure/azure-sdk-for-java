@@ -11,6 +11,7 @@ import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
+import com.azure.storage.blob.models.DownloadRetryOptions;
 import com.azure.storage.common.implementation.StorageSeekableByteChannel;
 
 import java.io.IOException;
@@ -70,12 +71,21 @@ class StorageSeekableByteChannelBlobReadBehavior implements StorageSeekableByteC
             initialBufferPosition = null;
         }
 
+        // If the request is at or past the known end of the resource and the blob content is locked via an
+        // If-Match ETag, the blob cannot have grown without invalidating the precondition. Short-circuit and
+        // signal end-of-file rather than issuing a request that the service will reject with HTTP 416. This
+        // avoids an unnecessary round trip (and the failure modes that come with streaming the 416 response
+        // body, such as the connection being reset by the service).
+        if (sourceOffset >= resourceLength && isEtagLocked()) {
+            return -1;
+        }
+
         int initialPosition = dst.position();
 
         try (ByteBufferBackedOutputStreamUtil dstStream = new ByteBufferBackedOutputStreamUtil(dst)) {
             BlobDownloadResponse response
                 = client.downloadStreamWithResponse(dstStream, new BlobRange(sourceOffset, (long) dst.remaining()),
-                    null /*downloadRetryOptions*/, requestConditions, false, null, null);
+                    new DownloadRetryOptions(), requestConditions, false, null, null);
             resourceLength = CoreUtils.extractSizeFromContentRange(response.getDeserializedHeaders().getContentRange());
             return dst.position() - initialPosition;
         } catch (BlobStorageException e) {
@@ -89,7 +99,34 @@ class StorageSeekableByteChannelBlobReadBehavior implements StorageSeekableByteC
                 return sourceOffset < resourceLength ? 0 : -1;
             }
             throw LOGGER.logExceptionAsError(e);
+        } catch (RuntimeException e) {
+            // Reading the body of an HTTP 416 response can fail with transport-level errors (for example
+            // 'Connection reset by peer' wrapped in reactor's ReactiveException). When the requested offset is
+            // already at or past the known end of the resource, no data could have been returned anyway, so log
+            // the failure and signal end-of-file instead of propagating an exception to the caller that has
+            // already received all of the blob's content.
+            if (sourceOffset >= resourceLength && dst.position() == initialPosition) {
+                LOGGER.warning("Ignoring error encountered while issuing a read at or past the end of the blob; "
+                    + "treating as end-of-file because the resource length is already known.", e);
+                return -1;
+            }
+            throw LOGGER.logExceptionAsError(e);
         }
+    }
+
+    /**
+     * @return Whether the request conditions on this behavior lock the blob's content via an If-Match ETag.
+     */
+    private boolean isEtagLocked() {
+        if (requestConditions == null) {
+            return false;
+        }
+
+        String ifMatch = requestConditions.getIfMatch();
+        if (CoreUtils.isNullOrEmpty(ifMatch)) {
+            return false;
+        }
+        return !"*".equals(ifMatch.trim());
     }
 
     /**

@@ -12,11 +12,11 @@ public final class JobSubTaskTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         JobSubTask model = BinaryData.fromString(
-            "{\"additionalDetails\":{\"pn\":\"mw\"},\"taskId\":650056423,\"taskName\":\"azej\",\"taskProgress\":\"qkagfhsxt\",\"taskStatus\":\"augzxnfaazpxdtn\"}")
+            "{\"additionalDetails\":{\"hirctymoxoftpipi\":\"cotmr\"},\"taskId\":420468172,\"taskName\":\"czuhxacpqjlihh\",\"taskProgress\":\"spskasdvlmfwdgz\",\"taskStatus\":\"ulucv\"}")
             .toObject(JobSubTask.class);
-        Assertions.assertEquals("mw", model.additionalDetails().get("pn"));
-        Assertions.assertEquals(650056423, model.taskId());
-        Assertions.assertEquals("azej", model.taskName());
-        Assertions.assertEquals("augzxnfaazpxdtn", model.taskStatus());
+        Assertions.assertEquals("cotmr", model.additionalDetails().get("hirctymoxoftpipi"));
+        Assertions.assertEquals(420468172, model.taskId());
+        Assertions.assertEquals("czuhxacpqjlihh", model.taskName());
+        Assertions.assertEquals("ulucv", model.taskStatus());
     }
 }

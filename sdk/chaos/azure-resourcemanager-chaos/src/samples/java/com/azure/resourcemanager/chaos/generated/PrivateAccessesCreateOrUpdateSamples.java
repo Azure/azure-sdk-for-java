@@ -13,7 +13,7 @@ import com.azure.resourcemanager.chaos.models.PublicNetworkAccessOption;
 public final class PrivateAccessesCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * 2026-05-01-preview/PrivateAccesses_CreateOrUpdate_Create_Or_Update_A_Private_Access_Resource.json
+     * 2026-08-01-preview/PrivateAccesses_CreateOrUpdate_Create_Or_Update_A_Private_Access_Resource.json
      */
     /**
      * Sample code: Create or Update a private access resource.
@@ -30,7 +30,7 @@ public final class PrivateAccessesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-05-01-preview/
+     * x-ms-original-file: 2026-08-01-preview/
      * PrivateAccesses_CreateOrUpdate_Create_Or_Update_A_Private_Access_Resource_With_Public_Network_Access.json
      */
     /**

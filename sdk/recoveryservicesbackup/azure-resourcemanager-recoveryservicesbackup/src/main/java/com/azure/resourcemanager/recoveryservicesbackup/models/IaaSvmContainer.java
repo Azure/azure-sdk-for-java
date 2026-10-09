@@ -240,6 +240,8 @@ public class IaaSvmContainer extends ProtectionContainer {
                     deserializedIaaSvmContainer.withHealthStatus(reader.getString());
                 } else if ("protectableObjectType".equals(fieldName)) {
                     deserializedIaaSvmContainer.withProtectableObjectType(reader.getString());
+                } else if ("sourceLocation".equals(fieldName)) {
+                    deserializedIaaSvmContainer.withSourceLocation(reader.getString());
                 } else if ("containerType".equals(fieldName)) {
                     deserializedIaaSvmContainer.containerType = ProtectableContainerType.fromString(reader.getString());
                 } else if ("virtualMachineId".equals(fieldName)) {

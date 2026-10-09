@@ -9,6 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * Image generation tool
@@ -31,15 +32,23 @@ public final class ImageGenTool extends Tool {
     private ImageGenToolModel model;
 
     /*
-     * The quality of the generated image. One of `low`, `medium`, `high`,
-     * or `auto`. Default: `auto`.
+     * The quality of the generated image. The GPT image models support `low`,
+     * `medium`, and `high`. `gpt-image-2.5-sunburst` and `gpt-image-2.5-flare`,
+     * including their `2026-09-08` snapshots, also support `xhigh` and `max`.
+     * Default: `auto`.
      */
     @Generated
     private ImageGenToolQuality quality;
 
     /*
-     * The size of the generated image. One of `1024x1024`, `1024x1536`,
-     * `1536x1024`, or `auto`. Default: `auto`.
+     * The size of the generated images. For `gpt-image-2`, `gpt-image-2-2026-04-21`, `gpt-image-2.5-sunburst`,
+     * `gpt-image-2.5-sunburst-2026-09-08`, `gpt-image-2.5-flare`, and `gpt-image-2.5-flare-2026-09-08`, arbitrary
+     * resolutions are supported as `WIDTHxHEIGHT` strings, for example `1536x864`. Width and height must both be
+     * divisible by 16 and the requested aspect ratio must be between 1:3 and 3:1. Resolutions above `2560x1440` are
+     * experimental, and the maximum supported resolution is `3840x2160`. The requested size must also satisfy the
+     * model's current pixel and edge limits. The standard sizes `1024x1024`, `1536x1024`, and `1024x1536` are supported
+     * by the GPT image models; `auto` is supported for models that allow automatic sizing. For `dall-e-2`, use one of
+     * `256x256`, `512x512`, or `1024x1024`. For `dall-e-3`, use one of `1024x1024`, `1792x1024`, or `1024x1792`.
      */
     @Generated
     private ImageGenToolSize size;
@@ -64,8 +73,13 @@ public final class ImageGenTool extends Tool {
     private ImageGenToolModeration moderation;
 
     /*
-     * Background type for the generated image. One of `transparent`,
-     * `opaque`, or `auto`. Default: `auto`.
+     * Set the background of the generated image. One of `transparent`, `opaque`,
+     * or `auto`. `gpt-image-2.5-sunburst` and `gpt-image-2.5-flare`, including
+     * their `2026-09-08` snapshots, support `opaque` and `transparent`
+     * backgrounds. Transparent backgrounds are available for supported GPT Image
+     * models. For `gpt-image-2` and `gpt-image-2-2026-04-21`, this support is in
+     * preview. When using `transparent`, set the output format to `png` or `webp`.
+     * Default: `auto`.
      */
     @Generated
     private ImageGenToolBackground background;
@@ -124,8 +138,10 @@ public final class ImageGenTool extends Tool {
     }
 
     /**
-     * Get the quality property: The quality of the generated image. One of `low`, `medium`, `high`,
-     * or `auto`. Default: `auto`.
+     * Get the quality property: The quality of the generated image. The GPT image models support `low`,
+     * `medium`, and `high`. `gpt-image-2.5-sunburst` and `gpt-image-2.5-flare`,
+     * including their `2026-09-08` snapshots, also support `xhigh` and `max`.
+     * Default: `auto`.
      *
      * @return the quality value.
      */
@@ -135,8 +151,10 @@ public final class ImageGenTool extends Tool {
     }
 
     /**
-     * Set the quality property: The quality of the generated image. One of `low`, `medium`, `high`,
-     * or `auto`. Default: `auto`.
+     * Set the quality property: The quality of the generated image. The GPT image models support `low`,
+     * `medium`, and `high`. `gpt-image-2.5-sunburst` and `gpt-image-2.5-flare`,
+     * including their `2026-09-08` snapshots, also support `xhigh` and `max`.
+     * Default: `auto`.
      *
      * @param quality the quality value to set.
      * @return the ImageGenTool object itself.
@@ -148,8 +166,15 @@ public final class ImageGenTool extends Tool {
     }
 
     /**
-     * Get the size property: The size of the generated image. One of `1024x1024`, `1024x1536`,
-     * `1536x1024`, or `auto`. Default: `auto`.
+     * Get the size property: The size of the generated images. For `gpt-image-2`, `gpt-image-2-2026-04-21`,
+     * `gpt-image-2.5-sunburst`, `gpt-image-2.5-sunburst-2026-09-08`, `gpt-image-2.5-flare`, and
+     * `gpt-image-2.5-flare-2026-09-08`, arbitrary resolutions are supported as `WIDTHxHEIGHT` strings, for example
+     * `1536x864`. Width and height must both be divisible by 16 and the requested aspect ratio must be between 1:3 and
+     * 3:1. Resolutions above `2560x1440` are experimental, and the maximum supported resolution is `3840x2160`. The
+     * requested size must also satisfy the model's current pixel and edge limits. The standard sizes `1024x1024`,
+     * `1536x1024`, and `1024x1536` are supported by the GPT image models; `auto` is supported for models that allow
+     * automatic sizing. For `dall-e-2`, use one of `256x256`, `512x512`, or `1024x1024`. For `dall-e-3`, use one of
+     * `1024x1024`, `1792x1024`, or `1024x1792`.
      *
      * @return the size value.
      */
@@ -159,8 +184,15 @@ public final class ImageGenTool extends Tool {
     }
 
     /**
-     * Set the size property: The size of the generated image. One of `1024x1024`, `1024x1536`,
-     * `1536x1024`, or `auto`. Default: `auto`.
+     * Set the size property: The size of the generated images. For `gpt-image-2`, `gpt-image-2-2026-04-21`,
+     * `gpt-image-2.5-sunburst`, `gpt-image-2.5-sunburst-2026-09-08`, `gpt-image-2.5-flare`, and
+     * `gpt-image-2.5-flare-2026-09-08`, arbitrary resolutions are supported as `WIDTHxHEIGHT` strings, for example
+     * `1536x864`. Width and height must both be divisible by 16 and the requested aspect ratio must be between 1:3 and
+     * 3:1. Resolutions above `2560x1440` are experimental, and the maximum supported resolution is `3840x2160`. The
+     * requested size must also satisfy the model's current pixel and edge limits. The standard sizes `1024x1024`,
+     * `1536x1024`, and `1024x1536` are supported by the GPT image models; `auto` is supported for models that allow
+     * automatic sizing. For `dall-e-2`, use one of `256x256`, `512x512`, or `1024x1024`. For `dall-e-3`, use one of
+     * `1024x1024`, `1792x1024`, or `1024x1792`.
      *
      * @param size the size value to set.
      * @return the ImageGenTool object itself.
@@ -228,8 +260,13 @@ public final class ImageGenTool extends Tool {
     }
 
     /**
-     * Get the background property: Background type for the generated image. One of `transparent`,
-     * `opaque`, or `auto`. Default: `auto`.
+     * Get the background property: Set the background of the generated image. One of `transparent`, `opaque`,
+     * or `auto`. `gpt-image-2.5-sunburst` and `gpt-image-2.5-flare`, including
+     * their `2026-09-08` snapshots, support `opaque` and `transparent`
+     * backgrounds. Transparent backgrounds are available for supported GPT Image
+     * models. For `gpt-image-2` and `gpt-image-2-2026-04-21`, this support is in
+     * preview. When using `transparent`, set the output format to `png` or `webp`.
+     * Default: `auto`.
      *
      * @return the background value.
      */
@@ -239,8 +276,13 @@ public final class ImageGenTool extends Tool {
     }
 
     /**
-     * Set the background property: Background type for the generated image. One of `transparent`,
-     * `opaque`, or `auto`. Default: `auto`.
+     * Set the background property: Set the background of the generated image. One of `transparent`, `opaque`,
+     * or `auto`. `gpt-image-2.5-sunburst` and `gpt-image-2.5-flare`, including
+     * their `2026-09-08` snapshots, support `opaque` and `transparent`
+     * backgrounds. Transparent backgrounds are available for supported GPT Image
+     * models. For `gpt-image-2` and `gpt-image-2-2026-04-21`, this support is in
+     * preview. When using `transparent`, set the output format to `png` or `webp`.
+     * Default: `auto`.
      *
      * @param background the background value to set.
      * @return the ImageGenTool object itself.
@@ -308,6 +350,7 @@ public final class ImageGenTool extends Tool {
         jsonWriter.writeStringField("action", this.action == null ? null : this.action.toString());
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeMapField("tool_configs", this.toolConfigs, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -354,6 +397,9 @@ public final class ImageGenTool extends Tool {
                     deserializedImageGenTool.name = reader.getString();
                 } else if ("description".equals(fieldName)) {
                     deserializedImageGenTool.description = reader.getString();
+                } else if ("tool_configs".equals(fieldName)) {
+                    Map<String, ToolConfig> toolConfigs = reader.readMap(reader1 -> ToolConfig.fromJson(reader1));
+                    deserializedImageGenTool.toolConfigs = toolConfigs;
                 } else {
                     reader.skipChildren();
                 }
@@ -444,19 +490,25 @@ public final class ImageGenTool extends Tool {
     }
 
     /*
-     * Optional user-defined name for this tool or configuration.
+     * Deprecated. This property is deprecated and will be removed in a future version.
      */
     @Generated
     private String name;
 
     /*
-     * Optional user-defined description for this tool or configuration.
+     * Deprecated. This property is deprecated and will be removed in a future version.
      */
     @Generated
     private String description;
 
+    /*
+     * Deprecated. This property is deprecated and will be removed in a future version.
+     */
+    @Generated
+    private Map<String, ToolConfig> toolConfigs;
+
     /**
-     * Get the name property: Optional user-defined name for this tool or configuration.
+     * Get the name property: Deprecated. This property is deprecated and will be removed in a future version.
      *
      * @return the name value.
      */
@@ -466,7 +518,7 @@ public final class ImageGenTool extends Tool {
     }
 
     /**
-     * Set the name property: Optional user-defined name for this tool or configuration.
+     * Set the name property: Deprecated. This property is deprecated and will be removed in a future version.
      *
      * @param name the name value to set.
      * @return the ImageGenTool object itself.
@@ -478,7 +530,7 @@ public final class ImageGenTool extends Tool {
     }
 
     /**
-     * Get the description property: Optional user-defined description for this tool or configuration.
+     * Get the description property: Deprecated. This property is deprecated and will be removed in a future version.
      *
      * @return the description value.
      */
@@ -488,7 +540,7 @@ public final class ImageGenTool extends Tool {
     }
 
     /**
-     * Set the description property: Optional user-defined description for this tool or configuration.
+     * Set the description property: Deprecated. This property is deprecated and will be removed in a future version.
      *
      * @param description the description value to set.
      * @return the ImageGenTool object itself.
@@ -496,6 +548,28 @@ public final class ImageGenTool extends Tool {
     @Generated
     public ImageGenTool setDescription(String description) {
         this.description = description;
+        return this;
+    }
+
+    /**
+     * Get the toolConfigs property: Deprecated. This property is deprecated and will be removed in a future version.
+     *
+     * @return the toolConfigs value.
+     */
+    @Generated
+    public Map<String, ToolConfig> getToolConfigs() {
+        return this.toolConfigs;
+    }
+
+    /**
+     * Set the toolConfigs property: Deprecated. This property is deprecated and will be removed in a future version.
+     *
+     * @param toolConfigs the toolConfigs value to set.
+     * @return the ImageGenTool object itself.
+     */
+    @Generated
+    public ImageGenTool setToolConfigs(Map<String, ToolConfig> toolConfigs) {
+        this.toolConfigs = toolConfigs;
         return this;
     }
 }

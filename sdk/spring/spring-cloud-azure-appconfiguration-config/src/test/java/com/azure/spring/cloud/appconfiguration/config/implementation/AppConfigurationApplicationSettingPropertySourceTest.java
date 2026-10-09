@@ -40,13 +40,13 @@ import org.mockito.MockitoSession;
 import org.mockito.quality.Strictness;
 import org.springframework.boot.context.properties.source.InvalidConfigurationPropertyValueException;
 
+import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
+import com.azure.spring.cloud.appconfiguration.config.implementation.http.policy.TracingInfo;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationProperties;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 
 public class AppConfigurationApplicationSettingPropertySourceTest {
 
@@ -76,8 +76,6 @@ public class AppConfigurationApplicationSettingPropertySourceTest {
     
     private static final FeatureFlagConfigurationSetting FEATURE_FLAG = createItemFeatureFlag("Beta",  "/0");
 
-    private static final ObjectMapper MAPPER = new ObjectMapper();
-
     private List<ConfigurationSetting> testItems = new ArrayList<>();
 
     private AppConfigurationApplicationSettingPropertySource propertySource;
@@ -104,9 +102,11 @@ public class AppConfigurationApplicationSettingPropertySourceTest {
     @BeforeEach
     public void init() {
         session = Mockito.mockitoSession().initMocks(this).strictness(Strictness.STRICT_STUBS).startMocking();
-        MAPPER.setPropertyNamingStrategy(PropertyNamingStrategies.KEBAB_CASE);
 
         MockitoAnnotations.openMocks(this);
+
+        when(clientMock.getTracingInfo())
+            .thenReturn(new TracingInfo(false, 0, Configuration.getGlobalConfiguration()));
 
         testItems = new ArrayList<>();
         testItems.add(ITEM_1);

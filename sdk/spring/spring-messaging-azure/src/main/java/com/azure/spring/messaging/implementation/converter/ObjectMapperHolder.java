@@ -3,7 +3,7 @@
 
 package com.azure.spring.messaging.implementation.converter;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 
 public final class ObjectMapperHolder {
 

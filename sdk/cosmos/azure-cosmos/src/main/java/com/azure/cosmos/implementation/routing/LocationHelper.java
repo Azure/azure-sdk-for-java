@@ -45,7 +45,12 @@ public class LocationHelper {
     }
 
     private static String dataCenterToUriPostfix(String dataCenter) {
-        return dataCenter.replace(" ", "");
+        // Convert to normalized form (lowercase, no spaces/hyphens/underscores) for use as URL suffix.
+        // DNS is case-insensitive (RFC 4343), so the lowercase change vs. the old space-strip-only
+        // behavior is invisible to resolution. The hyphen/underscore strips are no-ops on real
+        // server-returned region names (e.g., "West US 3") but keep this aligned with the single
+        // normalization used across all lookup paths.
+        return RegionNameNormalizer.normalize(dataCenter);
     }
 }
 

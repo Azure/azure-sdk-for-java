@@ -94,7 +94,7 @@ final class BulkOperationRetryPolicy implements IRetryPolicy {
             return Mono.just(true);
         }
 
-        if (statusCode == StatusCodes.GONE) {
+        if (statusCode == StatusCodes.GONE || isNameCacheStaleRetryLimit(statusCode, subStatusCode)) {
             if (exception instanceof GoneException && isWriteOnly(itemOperation) &&
                 BridgeInternal.hasSendingRequestStarted(exception) &&
                 !((GoneException) exception).isBasedOn410ResponseFromService() &&
@@ -107,19 +107,8 @@ final class BulkOperationRetryPolicy implements IRetryPolicy {
                 return Mono.just(false);
             }
 
-            if ((subStatusCode == SubStatusCodes.PARTITION_KEY_RANGE_GONE ||
-                     subStatusCode == SubStatusCodes.COMPLETING_SPLIT_OR_MERGE ||
-                     subStatusCode == SubStatusCodes.COMPLETING_PARTITION_MIGRATION)) {
-                return collectionCache
-                       .resolveByNameAsync(null, collectionLink, null)
-                       .flatMap(collection -> this.partitionKeyRangeCache
-                                                  .tryGetOverlappingRangesAsync(null /*metaDataDiagnosticsContext*/,
-                                                                                collection.getResourceId(),
-                                                                                FeedRangeEpkImpl.forFullRange()
-                                                                                    .getRange(),
-                                                                                true,
-                                                                                null /*properties*/)
-                                                  .then(Mono.just(true)));
+            if (shouldRefreshPartitionKeyRangeCache(statusCode, subStatusCode)) {
+                return refreshPartitionKeyRangeCache();
             }
 
             return Mono.just(true);
@@ -134,6 +123,32 @@ final class BulkOperationRetryPolicy implements IRetryPolicy {
             itemOperation.getOperationType() == CosmosItemOperationType.PATCH ||
             itemOperation.getOperationType() == CosmosItemOperationType.REPLACE ||
             itemOperation.getOperationType() == CosmosItemOperationType.UPSERT;
+    }
+
+    private boolean shouldRefreshPartitionKeyRangeCache(int statusCode, int subStatusCode) {
+        return (statusCode == StatusCodes.GONE &&
+            (subStatusCode == SubStatusCodes.PARTITION_KEY_RANGE_GONE ||
+                subStatusCode == SubStatusCodes.COMPLETING_SPLIT_OR_MERGE ||
+                subStatusCode == SubStatusCodes.COMPLETING_PARTITION_MIGRATION)) ||
+            isNameCacheStaleRetryLimit(statusCode, subStatusCode);
+    }
+
+    private boolean isNameCacheStaleRetryLimit(int statusCode, int subStatusCode) {
+        return statusCode == StatusCodes.SERVICE_UNAVAILABLE &&
+            subStatusCode == SubStatusCodes.NAME_CACHE_IS_STALE_EXCEEDED_RETRY_LIMIT;
+    }
+
+    private Mono<Boolean> refreshPartitionKeyRangeCache() {
+        return collectionCache
+            .resolveByNameAsync(null, collectionLink, null)
+            .flatMap(collection -> this.partitionKeyRangeCache
+                .tryGetOverlappingRangesAsync(null /*metaDataDiagnosticsContext*/,
+                    collection.getResourceId(),
+                    FeedRangeEpkImpl.forFullRange()
+                        .getRange(),
+                    true,
+                    null /*properties*/)
+                .then(Mono.just(true)));
     }
 
     /**

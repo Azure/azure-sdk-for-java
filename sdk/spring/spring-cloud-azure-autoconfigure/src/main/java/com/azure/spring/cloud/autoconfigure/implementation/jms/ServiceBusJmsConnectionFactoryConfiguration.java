@@ -6,6 +6,7 @@ package com.azure.spring.cloud.autoconfigure.implementation.jms;
 import com.azure.servicebus.jms.ServiceBusJmsConnectionFactory;
 import com.azure.spring.cloud.autoconfigure.implementation.jms.properties.AzureServiceBusJmsProperties;
 import com.azure.spring.cloud.autoconfigure.jms.AzureServiceBusJmsConnectionFactoryCustomizer;
+import com.azure.spring.cloud.autoconfigure.jms.AzureServiceBusJmsConnectionFactoryFactory;
 import jakarta.jms.ConnectionFactory;
 import org.messaginghub.pooled.jms.JmsPoolConnectionFactory;
 import org.springframework.beans.BeansException;
@@ -50,13 +51,15 @@ class ServiceBusJmsConnectionFactoryConfiguration {
      *
      * @param properties the Azure Service Bus JMS properties
      * @param customizers the list of customizers to apply
+     * @param instanceFactory the factory used to create the ServiceBusJmsConnectionFactory instance
      * @return a configured ServiceBusJmsConnectionFactory instance
      */
     static ServiceBusJmsConnectionFactory createServiceBusJmsConnectionFactory(
         AzureServiceBusJmsProperties properties,
-        java.util.List<AzureServiceBusJmsConnectionFactoryCustomizer> customizers) {
-        return new ServiceBusJmsConnectionFactoryFactory(properties, customizers)
-            .createConnectionFactory(ServiceBusJmsConnectionFactory.class);
+        java.util.List<AzureServiceBusJmsConnectionFactoryCustomizer> customizers,
+        AzureServiceBusJmsConnectionFactoryFactory instanceFactory) {
+        return new ServiceBusJmsConnectionFactoryProvider(properties, customizers)
+            .createConnectionFactory(instanceFactory);
     }
 
     /**
@@ -195,10 +198,13 @@ class ServiceBusJmsConnectionFactoryConfiguration {
 
         private ServiceBusJmsConnectionFactory createServiceBusJmsConnectionFactory() {
             AzureServiceBusJmsProperties serviceBusJmsProperties = beanFactory.getBean(AzureServiceBusJmsProperties.class);
+            AzureServiceBusJmsConnectionFactoryFactory instanceFactory =
+                beanFactory.getBean(AzureServiceBusJmsConnectionFactoryFactory.class);
             ObjectProvider<AzureServiceBusJmsConnectionFactoryCustomizer> factoryCustomizers = beanFactory.getBeanProvider(AzureServiceBusJmsConnectionFactoryCustomizer.class);
             return ServiceBusJmsConnectionFactoryConfiguration.createServiceBusJmsConnectionFactory(
                 serviceBusJmsProperties,
-                factoryCustomizers.orderedStream().collect(Collectors.toList()));
+                factoryCustomizers.orderedStream().collect(Collectors.toList()),
+                instanceFactory);
         }
     }
 }

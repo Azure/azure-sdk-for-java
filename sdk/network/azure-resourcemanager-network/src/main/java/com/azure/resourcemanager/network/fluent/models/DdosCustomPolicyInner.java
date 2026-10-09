@@ -197,6 +197,16 @@ public final class DdosCustomPolicyInner extends Resource {
     }
 
     /**
+     * Get the publicIPAddresses property: The list of public IP addresses associated with the custom policy. This list
+     * is read-only.
+     * 
+     * @return the publicIPAddresses value.
+     */
+    public List<SubResource> publicIPAddresses() {
+        return this.innerProperties() == null ? null : this.innerProperties().publicIPAddresses();
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.

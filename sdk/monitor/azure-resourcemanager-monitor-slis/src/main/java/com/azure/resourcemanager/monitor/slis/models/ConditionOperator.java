@@ -14,42 +14,44 @@ public final class ConditionOperator extends ExpandableStringEnum<ConditionOpera
     /**
      * Equal to.
      */
-    public static final ConditionOperator EQUAL = fromString("==");
+    public static final ConditionOperator EQUAL = fromString("eq");
 
     /**
      * Not equal to.
      */
-    public static final ConditionOperator NOT_EQUAL = fromString("!=");
+    public static final ConditionOperator NOT_EQUAL = fromString("ne");
 
     /**
      * Less than.
      */
-    public static final ConditionOperator LESS_THAN = fromString("<");
+    public static final ConditionOperator LESS_THAN = fromString("lt");
 
     /**
      * Less than or equal to.
      */
-    public static final ConditionOperator LESS_THAN_OR_EQUAL = fromString("<=");
+    public static final ConditionOperator LESS_THAN_OR_EQUAL = fromString("lte");
 
     /**
      * Greater than.
      */
-    public static final ConditionOperator GREATER_THAN = fromString(">");
+    public static final ConditionOperator GREATER_THAN = fromString("gt");
 
     /**
      * Greater than or equal to.
      */
-    public static final ConditionOperator GREATER_THAN_OR_EQUAL = fromString(">=");
+    public static final ConditionOperator GREATER_THAN_OR_EQUAL = fromString("gte");
 
     /**
-     * In operator.
+     * Matches when {@code value} is one of the items in the {@code ^^}-delimited list (for example, {@code value} =
+     * "east^^west^^north").
      */
-    public static final ConditionOperator IN = fromString("@in");
+    public static final ConditionOperator IN = fromString("in");
 
     /**
-     * Not in.
+     * Matches when {@code value} is none of the items in the {@code ^^}-delimited list (for example, {@code value} =
+     * "east^^west^^north").
      */
-    public static final ConditionOperator NOT_IN = fromString("!in");
+    public static final ConditionOperator NOT_IN = fromString("notin");
 
     /**
      * Starts with.
@@ -59,7 +61,7 @@ public final class ConditionOperator extends ExpandableStringEnum<ConditionOpera
     /**
      * Does not start with.
      */
-    public static final ConditionOperator NOT_STARTS_WITH = fromString("!startswith");
+    public static final ConditionOperator NOT_STARTS_WITH = fromString("notstartswith");
 
     /**
      * Contains the value.
@@ -69,7 +71,7 @@ public final class ConditionOperator extends ExpandableStringEnum<ConditionOpera
     /**
      * Does not contain the value.
      */
-    public static final ConditionOperator NOT_CONTAINS = fromString("!contains");
+    public static final ConditionOperator NOT_CONTAINS = fromString("notcontains");
 
     /**
      * Creates a new instance of ConditionOperator value.

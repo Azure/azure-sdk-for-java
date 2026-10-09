@@ -2,9 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.implementation.aad.serde.jackson;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.DeserializationContext;
+import tools.jackson.databind.JsonNode;
 
 import java.util.Map;
 import java.util.Set;
@@ -24,16 +24,17 @@ final class JsonNodeUtils {
             return null;
         }
         JsonNode value = jsonNode.findValue(fieldName);
-        return (value != null && value.isTextual()) ? value.asText() : null;
+        return (value != null && value.isString()) ? value.stringValue() : null;
     }
 
     static <T> T findValue(JsonNode jsonNode, String fieldName, TypeReference<T> valueTypeReference,
-                           ObjectMapper mapper) {
+                           DeserializationContext context) {
         if (jsonNode == null) {
             return null;
         }
         JsonNode value = jsonNode.findValue(fieldName);
-        return (value != null && value.isContainerNode()) ? mapper.convertValue(value, valueTypeReference) : null;
+        return (value != null && value.isContainer())
+            ? context.readTreeAsValue(value, context.getTypeFactory().constructType(valueTypeReference)) : null;
     }
 
     static JsonNode findObjectNode(JsonNode jsonNode, String fieldName) {

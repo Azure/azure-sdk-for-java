@@ -12,10 +12,10 @@ public final class RestorableTimeRangeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RestorableTimeRange model = BinaryData
-            .fromString("{\"startTime\":\"hvxndzwmkrefajpj\",\"endTime\":\"rwkq\",\"objectType\":\"hgbijt\"}")
+            .fromString("{\"startTime\":\"a\",\"endTime\":\"sgvvsccyajguq\",\"objectType\":\"wygzlvdnkfxusem\"}")
             .toObject(RestorableTimeRange.class);
-        Assertions.assertEquals("hvxndzwmkrefajpj", model.startTime());
-        Assertions.assertEquals("rwkq", model.endTime());
-        Assertions.assertEquals("hgbijt", model.objectType());
+        Assertions.assertEquals("a", model.startTime());
+        Assertions.assertEquals("sgvvsccyajguq", model.endTime());
+        Assertions.assertEquals("wygzlvdnkfxusem", model.objectType());
     }
 }

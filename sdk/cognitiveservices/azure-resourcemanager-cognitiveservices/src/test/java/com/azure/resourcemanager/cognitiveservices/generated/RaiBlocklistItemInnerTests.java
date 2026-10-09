@@ -15,22 +15,22 @@ public final class RaiBlocklistItemInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RaiBlocklistItemInner model = BinaryData.fromString(
-            "{\"properties\":{\"pattern\":\"ncckw\",\"isRegex\":true},\"etag\":\"whxxbuyqax\",\"tags\":{\"iolxor\":\"qztpp\"},\"id\":\"lt\",\"name\":\"lmncw\",\"type\":\"obqwcsdbnwdcfh\"}")
+            "{\"properties\":{\"pattern\":\"vusfzld\",\"isRegex\":true},\"etag\":\"xylfsb\",\"tags\":{\"s\":\"dp\",\"tgkbugrjqctojc\":\"wn\",\"cuplcplcwkhih\":\"isofieypefojyqd\"},\"id\":\"lhzdsqtzb\",\"name\":\"rgnowcjhfgm\",\"type\":\"ecactx\"}")
             .toObject(RaiBlocklistItemInner.class);
-        Assertions.assertEquals("ncckw", model.properties().pattern());
+        Assertions.assertEquals("vusfzld", model.properties().pattern());
         Assertions.assertTrue(model.properties().isRegex());
-        Assertions.assertEquals("qztpp", model.tags().get("iolxor"));
+        Assertions.assertEquals("dp", model.tags().get("s"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RaiBlocklistItemInner model = new RaiBlocklistItemInner()
-            .withProperties(new RaiBlocklistItemProperties().withPattern("ncckw").withIsRegex(true))
-            .withTags(mapOf("iolxor", "qztpp"));
+            .withProperties(new RaiBlocklistItemProperties().withPattern("vusfzld").withIsRegex(true))
+            .withTags(mapOf("s", "dp", "tgkbugrjqctojc", "wn", "cuplcplcwkhih", "isofieypefojyqd"));
         model = BinaryData.fromObject(model).toObject(RaiBlocklistItemInner.class);
-        Assertions.assertEquals("ncckw", model.properties().pattern());
+        Assertions.assertEquals("vusfzld", model.properties().pattern());
         Assertions.assertTrue(model.properties().isRegex());
-        Assertions.assertEquals("qztpp", model.tags().get("iolxor"));
+        Assertions.assertEquals("dp", model.tags().get("s"));
     }
 
     // Use "Map.of" if available

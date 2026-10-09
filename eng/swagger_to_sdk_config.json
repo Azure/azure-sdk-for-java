@@ -26,8 +26,12 @@
     "generationCallMode": "one-per-config"
   },
   "packageOptions": {
+    "sdkBreakingChangePatternFile": "docs/breaking-changes-mitigation.md",
     "buildScript": {
       "command": "mvn clean package -f {packagePath} -Dmaven.javadoc.skip -Dgpg.skip -DskipTestCompile -Djacoco.skip -Drevapi.skip"
+    },
+    "getSdkChangesScript": {
+      "command": "pwsh {SdkRepoPath}/eng/scripts/Automation-Sdk-GetSDKChanges.ps1 -PackagePath \"{packagePath}\" -OutputJsonFile \"{outputJsonFile}\""
     },
     "updateChangelogContentScript": {
       "path": "./eng/scripts/Automation-Sdk-UpdateChangelog.ps1"

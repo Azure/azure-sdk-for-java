@@ -4,26 +4,36 @@
 package com.azure.security.keyvault.keys.cryptography;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.test.TestMode;
+import com.azure.core.util.BinaryData;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
 import com.azure.security.keyvault.keys.KeyClient;
+import com.azure.security.keyvault.keys.KeyClientTestBase;
 import com.azure.security.keyvault.keys.cryptography.models.DecryptResult;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptParameters;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptResult;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm;
+import com.azure.security.keyvault.keys.cryptography.models.SecureKeyWrapAlgorithm;
+import com.azure.security.keyvault.keys.cryptography.models.SecureUnwrapResult;
+import com.azure.security.keyvault.keys.cryptography.models.SecureWrapResult;
 import com.azure.security.keyvault.keys.cryptography.models.SignResult;
 import com.azure.security.keyvault.keys.cryptography.models.SignatureAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.UnwrapResult;
 import com.azure.security.keyvault.keys.cryptography.models.VerifyResult;
 import com.azure.security.keyvault.keys.cryptography.models.WrapResult;
 import com.azure.security.keyvault.keys.models.CreateEcKeyOptions;
+import com.azure.security.keyvault.keys.models.CreateRsaKeyOptions;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
 import com.azure.security.keyvault.keys.models.KeyCurveName;
 import com.azure.security.keyvault.keys.models.KeyOperation;
+import com.azure.security.keyvault.keys.models.KeyReleasePolicy;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
 import com.azure.security.keyvault.keys.models.KeyVaultKeyIdentifier;
 
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -195,6 +205,63 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
                 assertArrayEquals(unwrapResult.getKey(), plainText);
             }
         });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.security.keyvault.keys.cryptography.TestHelper#getTestParameters")
+    public void secureWrapUnwrap(HttpClient httpClient, CryptographyServiceVersion serviceVersion) {
+        boolean attestationConfigured = getTestMode() == TestMode.PLAYBACK
+            || Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_ATTESTATION_URL") != null;
+
+        Assumptions.assumeTrue(runManagedHsmTest && attestationConfigured);
+        Assumptions.assumeTrue(serviceVersion.ordinal() >= CryptographyServiceVersion.V2026_01_01_PREVIEW.ordinal(),
+            "Secure wrap and unwrap require service version 2026-01-01-preview or newer.");
+
+        initializeKeyClient(httpClient);
+
+        String attestationUrl
+            = Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_ATTESTATION_URL", "https://localhost:8080");
+        String releasePolicyContents = "{" + "\"anyOf\": [" + "{" + "\"allOf\": [" + "{" + "\"claim\": \"sdk-test\","
+            + "\"equals\": \"true\"" + "}" + "]," + "\"authority\": \"" + attestationUrl + "\"" + "}" + "],"
+            + "\"version\": \"1.0.0\"" + "}";
+
+        // Secure wrap/unwrap keys must be HSM-backed and created with the secure wrap/unwrap operations and a release
+        // policy that governs which target environments (TEEs) the wrapping key may be released into.
+        String keyName = testResourceNamer.randomName("secureWrapKey", 25);
+        CreateRsaKeyOptions createRsaKeyOptions = new CreateRsaKeyOptions(keyName).setKeySize(2048)
+            .setHardwareProtected(true)
+            .setKeyOperations(KeyOperation.SECURE_WRAP_KEY, KeyOperation.SECURE_UNWRAP_KEY)
+            .setReleasePolicy(new KeyReleasePolicy(BinaryData.fromString(releasePolicyContents)));
+
+        KeyVaultKey wrappingKey = client.createRsaKey(createRsaKeyOptions);
+
+        // Secure wrap is remote-only, so bind a remote crypto client to the wrapping key.
+        CryptographyClient cryptoClient = initializeCryptographyClient(wrappingKey.getId(), httpClient, serviceVersion);
+
+        // Securely wrap a key generated inside the HSM trusted execution environment.
+        SecureWrapResult wrapResult = cryptoClient.secureWrapKey(SecureKeyWrapAlgorithm.RSA_OAEP_256);
+
+        assertEquals(SecureKeyWrapAlgorithm.RSA_OAEP_256, wrapResult.getAlgorithm());
+        assertNotNull(wrapResult.getEncryptedKey());
+        assertEquals(wrappingKey.getId(), wrapResult.getKeyId());
+
+        // Secure unwrap releases the wrapped key into a target TEE proven by a Microsoft Azure Attestation (MAA) token.
+        String targetAttestationToken = "testAttestationToken";
+
+        if (getTestMode() != TestMode.PLAYBACK) {
+            if (!attestationUrl.endsWith("/")) {
+                attestationUrl = attestationUrl + "/";
+            }
+
+            targetAttestationToken = KeyClientTestBase.getAttestationToken(attestationUrl + "generate-test-token");
+        }
+
+        SecureUnwrapResult unwrapResult = cryptoClient.secureUnwrapKey(SecureKeyWrapAlgorithm.RSA_OAEP_256,
+            wrapResult.getEncryptedKey(), targetAttestationToken);
+
+        assertEquals(SecureKeyWrapAlgorithm.RSA_OAEP_256, unwrapResult.getAlgorithm());
+        assertNotNull(unwrapResult.getKey());
+        assertEquals(wrappingKey.getId(), unwrapResult.getKeyId());
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)

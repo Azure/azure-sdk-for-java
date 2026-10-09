@@ -1,0 +1,18 @@
+diff --git a/sdk/deviceprovisioningservices/azure-resourcemanager-deviceprovisioningservices/pom.xml b/sdk/deviceprovisioningservices/azure-resourcemanager-deviceprovisioningservices/pom.xml
+index 105ef92..642f829 100644
+--- a/sdk/deviceprovisioningservices/azure-resourcemanager-deviceprovisioningservices/pom.xml
++++ b/sdk/deviceprovisioningservices/azure-resourcemanager-deviceprovisioningservices/pom.xml
+@@ -12,7 +12,7 @@
+   <artifactId>azure-resourcemanager-deviceprovisioningservices</artifactId>
+-  <version>1.1.0-beta.1</version>
++  <version>1.2.0-beta.1</version>
+ 
+diff --git a/sdk/deviceprovisioningservices/azure-resourcemanager-deviceprovisioningservices/src/main/java/com/azure/resourcemanager/deviceprovisioningservices/models/CertificateProperties.java b/sdk/deviceprovisioningservices/azure-resourcemanager-deviceprovisioningservices/src/main/java/com/azure/resourcemanager/deviceprovisioningservices/models/CertificateProperties.java
+index 44a603a..8b6d540 100644
+--- a/sdk/deviceprovisioningservices/azure-resourcemanager-deviceprovisioningservices/src/main/java/com/azure/resourcemanager/deviceprovisioningservices/models/CertificateProperties.java
++++ b/sdk/deviceprovisioningservices/azure-resourcemanager-deviceprovisioningservices/src/main/java/com/azure/resourcemanager/deviceprovisioningservices/models/CertificateProperties.java
+@@ -28,4 +28,8 @@ public interface CertificateProperties {
+     String subject();
++
++    String thumbprint();
+ }

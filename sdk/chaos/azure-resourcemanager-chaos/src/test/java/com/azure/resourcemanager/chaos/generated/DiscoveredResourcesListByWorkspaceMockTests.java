@@ -21,7 +21,7 @@ public final class DiscoveredResourcesListByWorkspaceMockTests {
     @Test
     public void testListByWorkspace() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"namespace\":\"lwxlboncqbazq\",\"resourceName\":\"cqchygtvxbyjane\",\"resourceType\":\"ubdpkxyqvgxi\",\"fullyQualifiedIdentifier\":\"od\",\"discoveredAt\":\"2021-10-03T22:46:30Z\",\"scope\":\"vohkxdxuws\"},\"id\":\"fmcwnosb\",\"name\":\"lehgcvkbc\",\"type\":\"njolgjyyxpv\"}]}";
+            = "{\"value\":[{\"properties\":{\"namespace\":\"biipsnawwlqkznx\",\"resourceName\":\"hllxricctkw\",\"resourceType\":\"uqqoaj\",\"fullyQualifiedIdentifier\":\"eiyglesrwvaexhdc\",\"discoveredAt\":\"2021-09-11T21:48:17Z\",\"scope\":\"ceqnkbrupobehd\"},\"id\":\"jzacvumepjpbibn\",\"name\":\"pphepifexl\",\"type\":\"qirccj\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,8 +30,8 @@ public final class DiscoveredResourcesListByWorkspaceMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<DiscoveredResource> response
-            = manager.discoveredResources().listByWorkspace("mxcpwzvmdoks", "dt", com.azure.core.util.Context.NONE);
+        PagedIterable<DiscoveredResource> response = manager.discoveredResources()
+            .listByWorkspace("qxjhqxcsqhtkbtnq", "rngl", com.azure.core.util.Context.NONE);
 
     }
 }

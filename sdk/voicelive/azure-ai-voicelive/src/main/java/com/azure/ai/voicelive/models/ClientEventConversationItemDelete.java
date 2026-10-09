@@ -17,7 +17,7 @@ import java.io.IOException;
  * server will respond with an error.
  */
 @Fluent
-public final class ClientEventConversationItemDelete extends ClientEvent {
+public final class ClientEventConversationItemDelete extends SessionClientEvent {
 
     /*
      * The type of event.

@@ -12,18 +12,17 @@ import org.junit.jupiter.api.Assertions;
 public final class CmkKekIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CmkKekIdentity model = BinaryData.fromString("{\"identityType\":\"SystemAssigned\",\"identityId\":\"kgpwoz\"}")
+        CmkKekIdentity model = BinaryData.fromString("{\"identityType\":\"UserAssigned\",\"identityId\":\"pe\"}")
             .toObject(CmkKekIdentity.class);
-        Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED, model.identityType());
-        Assertions.assertEquals("kgpwoz", model.identityId());
+        Assertions.assertEquals(IdentityType.USER_ASSIGNED, model.identityType());
+        Assertions.assertEquals("pe", model.identityId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CmkKekIdentity model
-            = new CmkKekIdentity().withIdentityType(IdentityType.SYSTEM_ASSIGNED).withIdentityId("kgpwoz");
+        CmkKekIdentity model = new CmkKekIdentity().withIdentityType(IdentityType.USER_ASSIGNED).withIdentityId("pe");
         model = BinaryData.fromObject(model).toObject(CmkKekIdentity.class);
-        Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED, model.identityType());
-        Assertions.assertEquals("kgpwoz", model.identityId());
+        Assertions.assertEquals(IdentityType.USER_ASSIGNED, model.identityType());
+        Assertions.assertEquals("pe", model.identityId());
     }
 }

@@ -616,7 +616,7 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
     }
 
     /**
-     * A long-running resource action.
+     * The delay operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scheduledActionName The name of the ScheduledAction.
@@ -641,7 +641,7 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
     }
 
     /**
-     * A long-running resource action.
+     * The delay operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scheduledActionName The name of the ScheduledAction.
@@ -664,7 +664,7 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
     }
 
     /**
-     * A long-running resource action.
+     * The delay operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scheduledActionName The name of the ScheduledAction.
@@ -688,7 +688,7 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
     }
 
     /**
-     * A long-running resource action.
+     * The delay operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scheduledActionName The name of the ScheduledAction.
@@ -713,7 +713,7 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
     }
 
     /**
-     * A long-running resource action.
+     * The delay operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scheduledActionName The name of the ScheduledAction.
@@ -737,7 +737,7 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
     }
 
     /**
-     * A long-running resource action.
+     * The delay operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scheduledActionName The name of the ScheduledAction.
@@ -764,7 +764,7 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
     }
 
     /**
-     * A long-running resource action.
+     * The delay operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scheduledActionName The name of the ScheduledAction.
@@ -784,7 +784,7 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
     }
 
     /**
-     * A long-running resource action.
+     * The delay operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scheduledActionName The name of the ScheduledAction.
@@ -802,7 +802,7 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
     }
 
     /**
-     * A long-running resource action.
+     * The delay operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scheduledActionName The name of the ScheduledAction.

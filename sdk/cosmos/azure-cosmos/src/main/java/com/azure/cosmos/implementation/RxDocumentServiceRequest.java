@@ -968,6 +968,10 @@ public class RxDocumentServiceRequest implements Cloneable {
         return this.headers.containsKey(HttpConstants.HttpHeaders.A_IM);
     }
 
+    public boolean isExecuteStoredProcedureBasedRequest() {
+        return this.resourceType == ResourceType.StoredProcedure && this.operationType == OperationType.ExecuteJavaScript;
+    }
+
     public boolean isAllVersionsAndDeletesChangeFeedMode() {
         String aImHeader = this.headers.get(HttpConstants.HttpHeaders.A_IM);
         return this.headers.containsKey(HttpConstants.HttpHeaders.A_IM) && HttpConstants.A_IMHeaderValues.FULL_FIDELITY_FEED.equals(aImHeader);
@@ -1050,8 +1054,18 @@ public class RxDocumentServiceRequest implements Cloneable {
 
     @Override
     public RxDocumentServiceRequest clone() {
+        // Deep-copy headers so availability-strategy / hedging clones do not share
+        // the same HashMap reference with their parent. The shared-reference pattern
+        // was previously safe-by-convention (assumption: no mutation after clone),
+        // but resolveEffectiveConsistencyHeaders mutates the map on every request,
+        // which races with concurrent hedged clones. A racing put can trigger HashMap
+        // resize and corrupt the map (lost inserts, null reads of unrelated keys).
+        // Same defensive-copy pattern already used for requestContext and
+        // faultInjectionRequestContext below.
+        Map<String, String> sourceHeaders = this.getHeaders();
+        Map<String, String> clonedHeaders = sourceHeaders != null ? new HashMap<>(sourceHeaders) : null;
         RxDocumentServiceRequest rxDocumentServiceRequest = RxDocumentServiceRequest.create(this.clientContext, this.getOperationType(),
-            this.resourceId, this.isNameBased, this.getResourceType(),this.getHeaders());
+            this.resourceId, this.isNameBased, this.getResourceType(), clonedHeaders);
         rxDocumentServiceRequest.setPartitionKeyInternal(this.getPartitionKeyInternal());
         rxDocumentServiceRequest.setContentBytes(this.contentAsByteArray);
         rxDocumentServiceRequest.setContinuation(this.getContinuation());
@@ -1061,11 +1075,11 @@ public class RxDocumentServiceRequest implements Cloneable {
         rxDocumentServiceRequest.setIsMedia(this.getIsMedia());
         rxDocumentServiceRequest.setOriginalSessionToken(this.getOriginalSessionToken());
         rxDocumentServiceRequest.setPartitionKeyRangeIdentity(this.getPartitionKeyRangeIdentity());
+        rxDocumentServiceRequest.setAddressRefresh(this.isAddressRefresh(), this.shouldForceAddressRefresh());
         rxDocumentServiceRequest.forceCollectionRoutingMapRefresh = this.forceCollectionRoutingMapRefresh;
         rxDocumentServiceRequest.forcePartitionKeyRangeRefresh = this.forcePartitionKeyRangeRefresh;
         rxDocumentServiceRequest.useGatewayMode = this.useGatewayMode;
         rxDocumentServiceRequest.useThinClientMode = this.useThinClientMode;
-        rxDocumentServiceRequest.requestContext = this.requestContext;
         rxDocumentServiceRequest.faultInjectionRequestContext = new FaultInjectionRequestContext(this.faultInjectionRequestContext);
         rxDocumentServiceRequest.nonIdempotentWriteRetriesEnabled = this.nonIdempotentWriteRetriesEnabled;
         rxDocumentServiceRequest.setResourceAddress(this.resourceAddress);
@@ -1077,6 +1091,16 @@ public class RxDocumentServiceRequest implements Cloneable {
         rxDocumentServiceRequest.hasFeedRangeFilteringBeenApplied = this.hasFeedRangeFilteringBeenApplied;
         rxDocumentServiceRequest.isPerPartitionAutomaticFailoverEnabledAndWriteRequest = this.isPerPartitionAutomaticFailoverEnabledAndWriteRequest;
         rxDocumentServiceRequest.partitionKeyDefinition = this.partitionKeyDefinition;
+        rxDocumentServiceRequest.effectivePartitionKey = this.effectivePartitionKey;
+        rxDocumentServiceRequest.numberOfItemsInBatchRequest = this.numberOfItemsInBatchRequest;
+        rxDocumentServiceRequest.entityId = this.entityId;
+        rxDocumentServiceRequest.authorizationTokenType = this.authorizationTokenType;
+        rxDocumentServiceRequest.properties = this.properties != null ? new HashMap<>(this.properties) : null;
+        rxDocumentServiceRequest.throughputControlGroupName = this.throughputControlGroupName;
+        rxDocumentServiceRequest.intendedCollectionRidPassedIntoSDK = this.intendedCollectionRidPassedIntoSDK;
+        rxDocumentServiceRequest.isBarrierRequest = this.isBarrierRequest;
+        rxDocumentServiceRequest.responseTimeout = this.responseTimeout;
+        rxDocumentServiceRequest.httpTransportSerializer.set(this.httpTransportSerializer.get());
         return rxDocumentServiceRequest;
     }
 

@@ -16,6 +16,7 @@ import com.azure.cosmos.implementation.QueryMetrics;
 import com.azure.cosmos.implementation.QueryMetricsConstants;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
 import com.azure.cosmos.implementation.Strings;
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.query.queryadvisor.QueryAdvice;
 import com.azure.cosmos.implementation.query.QueryInfo;
@@ -55,19 +56,21 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
     private QueryInfo queryInfo;
     private QueryInfo.QueryPlanDiagnosticsContext queryPlanDiagnosticsContext;
 
-    // All header maps are produced by the SDK's own query pipeline. Non-null maps
-    // are always mutable (HashMap or ConcurrentHashMap) - the SDK intentionally
-    // allows callers to add/modify headers on FeedResponse. The only known
-    // exception is empty-page responses where the query pipeline may pass null.
-    // We do NOT clone non-null maps here to avoid unnecessary allocations on every
-    // FeedResponse construction - the wider blast radius of cloning (every query,
-    // change feed, readMany response) is not justified by the narrow null case.
-    // If a future code path introduces an immutable non-null header map, the
-    // setContinuationTokenInternal method will fail fast with
-    // UnsupportedOperationException, and the fix should be to make the upstream
-    // pipeline emit a mutable map rather than adding defensive cloning here.
+    // The header map stored on FeedResponse must be mutable: downstream stages
+    // (e.g. the readManyByPartitionKeys stamping lambda) may add or replace
+    // headers in place. Normalize at construction time so the field can stay
+    // final and getResponseHeaders() consistently returns the same instance.
+    // Mutable inputs are passed through without copying; null and the known
+    // immutable shapes produced by Utils.immutableMapOf / Collections.emptyMap
+    // are replaced with a fresh HashMap (preserving entries).
     private static Map<String, String> ensureMutableHeadersMap(Map<String, String> headers) {
-        return headers == null ? new HashMap<>() : headers;
+        if (headers == null) {
+            return new HashMap<>();
+        }
+        if (Utils.isImmutableMap(headers)) {
+            return new HashMap<>(headers);
+        }
+        return headers;
     }
 
     FeedResponse(List<T> results, Map<String, String> headers) {
@@ -452,16 +455,6 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
         if (!Strings.isNullOrWhiteSpace(continuationToken)) {
             this.header.put(headerName, continuationToken);
         } else if (!this.header.isEmpty() && this.header.containsKey(headerName)) {
-            // The query API returns unmodifiable header collections for empty
-            // responses (no documents returned - when only header set is request charge)
-            // the protection here to check for existence of the header before attempting
-            // to remove it would not be robust enough against unknown headers
-            // but since we only ever call our own query pipeline
-            // avoiding cloning in all cases and gating on continuation header
-            // existence is a reasonable trade-off - test coverage exists that uncovered
-            // the problem - so, this acts as regression test as well
-            // --> the test coverage is in ItemsPartitionReaderWithReadManyByPartitionKeyITest
-            // it should "return empty results for non-existent partition keys"
             this.header.remove(headerName);
         }
     }

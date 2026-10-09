@@ -8,11 +8,11 @@ import com.azure.cosmos.implementation.guava25.hash.Funnel;
 import com.azure.cosmos.implementation.guava25.hash.PrimitiveSink;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
+import com.azure.cosmos.implementation.routing.RegionNameNormalizer;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 
 import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
-import java.util.Locale;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
@@ -81,7 +81,7 @@ public class PartitionKeyBasedBloomFilter {
             String effectivePartitionKeyString = request.getEffectivePartitionKey() != null ? request.getEffectivePartitionKey() : PartitionKeyInternalHelper
                 .getEffectivePartitionKeyString(partitionKeyInternal, partitionKeyDefinition);
 
-            String normalizedRegionRoutedTo = regionRoutedTo.toLowerCase(Locale.ROOT).replace(" ", "");;
+            String normalizedRegionRoutedTo = RegionNameNormalizer.normalize(regionRoutedTo);
 
             // 1. record region information for EPK hash only if this EPK was resolved
             // to a different preferred region than the first preferred region

@@ -12,14 +12,14 @@ import org.junit.jupiter.api.Assertions;
 public final class DnsZoneTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DnsZone model = BinaryData.fromString("{\"subResource\":\"AzureBackup\"}").toObject(DnsZone.class);
-        Assertions.assertEquals(VaultSubResourceType.AZURE_BACKUP, model.subResource());
+        DnsZone model = BinaryData.fromString("{\"subResource\":\"AzureSiteRecovery\"}").toObject(DnsZone.class);
+        Assertions.assertEquals(VaultSubResourceType.AZURE_SITE_RECOVERY, model.subResource());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DnsZone model = new DnsZone().withSubResource(VaultSubResourceType.AZURE_BACKUP);
+        DnsZone model = new DnsZone().withSubResource(VaultSubResourceType.AZURE_SITE_RECOVERY);
         model = BinaryData.fromObject(model).toObject(DnsZone.class);
-        Assertions.assertEquals(VaultSubResourceType.AZURE_BACKUP, model.subResource());
+        Assertions.assertEquals(VaultSubResourceType.AZURE_SITE_RECOVERY, model.subResource());
     }
 }

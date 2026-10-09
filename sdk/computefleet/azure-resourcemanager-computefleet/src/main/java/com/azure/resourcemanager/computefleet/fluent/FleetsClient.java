@@ -295,7 +295,7 @@ public interface FleetsClient {
         Context context);
 
     /**
-     * List VirtualMachine resources of an instance Fleet.
+     * List VirtualMachine resources of a Launch mode Fleet.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Fleet.
@@ -308,7 +308,7 @@ public interface FleetsClient {
     PagedIterable<VirtualMachineInner> listVirtualMachines(String resourceGroupName, String name);
 
     /**
-     * List VirtualMachine resources of an instance Fleet.
+     * List VirtualMachine resources of a Launch mode Fleet.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Fleet.
@@ -324,56 +324,4 @@ public interface FleetsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<VirtualMachineInner> listVirtualMachines(String resourceGroupName, String name, String filter,
         String skiptoken, Context context);
-
-    /**
-     * Cancels an instance Fleet creation that is in progress.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Compute Fleet.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginCancel(String resourceGroupName, String fleetName);
-
-    /**
-     * Cancels an instance Fleet creation that is in progress.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Compute Fleet.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginCancel(String resourceGroupName, String fleetName, Context context);
-
-    /**
-     * Cancels an instance Fleet creation that is in progress.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Compute Fleet.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void cancel(String resourceGroupName, String fleetName);
-
-    /**
-     * Cancels an instance Fleet creation that is in progress.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Compute Fleet.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void cancel(String resourceGroupName, String fleetName, Context context);
 }

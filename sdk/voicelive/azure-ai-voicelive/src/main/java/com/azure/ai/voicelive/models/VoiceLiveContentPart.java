@@ -77,9 +77,7 @@ public class VoiceLiveContentPart implements JsonSerializable<VoiceLiveContentPa
                     }
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
-                if ("input_image".equals(discriminatorValue)) {
-                    return RequestImageContentPart.fromJson(readerToUse.reset());
-                } else if ("input_text".equals(discriminatorValue)) {
+                if ("input_text".equals(discriminatorValue)) {
                     return RequestTextContentPart.fromJson(readerToUse.reset());
                 } else if ("input_audio".equals(discriminatorValue)) {
                     return RequestAudioContentPart.fromJson(readerToUse.reset());
@@ -87,6 +85,8 @@ public class VoiceLiveContentPart implements JsonSerializable<VoiceLiveContentPa
                     return ResponseTextContentPart.fromJson(readerToUse.reset());
                 } else if ("audio".equals(discriminatorValue)) {
                     return ResponseAudioContentPart.fromJson(readerToUse.reset());
+                } else if ("input_image".equals(discriminatorValue)) {
+                    return RequestImageContentPart.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

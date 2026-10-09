@@ -14,12 +14,15 @@ import com.azure.resourcemanager.cognitiveservices.fluent.models.AccountInner;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.AccountModelInner;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.AccountSkuListResultInner;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.ApiKeysInner;
+import com.azure.resourcemanager.cognitiveservices.fluent.models.EvaluateDeploymentPoliciesResponseInner;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.UsageListResultInner;
 import com.azure.resourcemanager.cognitiveservices.models.Account;
 import com.azure.resourcemanager.cognitiveservices.models.AccountModel;
 import com.azure.resourcemanager.cognitiveservices.models.AccountSkuListResult;
 import com.azure.resourcemanager.cognitiveservices.models.Accounts;
 import com.azure.resourcemanager.cognitiveservices.models.ApiKeys;
+import com.azure.resourcemanager.cognitiveservices.models.EvaluateDeploymentPoliciesRequest;
+import com.azure.resourcemanager.cognitiveservices.models.EvaluateDeploymentPoliciesResponse;
 import com.azure.resourcemanager.cognitiveservices.models.RegenerateKeyParameters;
 import com.azure.resourcemanager.cognitiveservices.models.UsageListResult;
 
@@ -157,6 +160,25 @@ public final class AccountsImpl implements Accounts {
         PagedIterable<AccountModelInner> inner
             = this.serviceClient().listModels(resourceGroupName, accountName, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new AccountModelImpl(inner1, this.manager()));
+    }
+
+    public Response<EvaluateDeploymentPoliciesResponse> evaluateDeploymentPoliciesWithResponse(String resourceGroupName,
+        String accountName, EvaluateDeploymentPoliciesRequest body, Context context) {
+        Response<EvaluateDeploymentPoliciesResponseInner> inner = this.serviceClient()
+            .evaluateDeploymentPoliciesWithResponse(resourceGroupName, accountName, body, context);
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new EvaluateDeploymentPoliciesResponseImpl(inner.getValue(), this.manager()));
+    }
+
+    public EvaluateDeploymentPoliciesResponse evaluateDeploymentPolicies(String resourceGroupName, String accountName,
+        EvaluateDeploymentPoliciesRequest body) {
+        EvaluateDeploymentPoliciesResponseInner inner
+            = this.serviceClient().evaluateDeploymentPolicies(resourceGroupName, accountName, body);
+        if (inner != null) {
+            return new EvaluateDeploymentPoliciesResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Account getById(String id) {

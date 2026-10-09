@@ -8,56 +8,63 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Possible states of a server.
+ * State of a server.
  */
 public final class ServerState extends ExpandableStringEnum<ServerState> {
     /**
-     * Static value Ready for ServerState.
+     * Server is healthy and not undergoing any operations at the management or control plane level. This doesn't mean
+     * that the server is fully operational at the data plane level.
      */
     public static final ServerState READY = fromString("Ready");
 
     /**
-     * Static value Dropping for ServerState.
+     * Server is being deleted.
      */
     public static final ServerState DROPPING = fromString("Dropping");
 
     /**
-     * Static value Disabled for ServerState.
+     * Server is disabled. Typical reasons include: the subscription on which the server is deployed is explicitly
+     * disabled or canceled by the administrator, the spending limit has been reached, or the bill is past due. May also
+     * happen when the server is being moved to another resource group or subscription.
      */
     public static final ServerState DISABLED = fromString("Disabled");
 
     /**
-     * Static value Starting for ServerState.
+     * PostgreSQL database engine is being restarted.
      */
     public static final ServerState STARTING = fromString("Starting");
 
     /**
-     * Static value Stopping for ServerState.
+     * Compute resources associated with the server are being stopped and deallocated. If the server has high
+     * availability enabled, the compute resources of the standby server are also stopped and deallocated.
      */
     public static final ServerState STOPPING = fromString("Stopping");
 
     /**
-     * Static value Stopped for ServerState.
+     * Compute resources associated with the server are being stopped and deallocated.
      */
     public static final ServerState STOPPED = fromString("Stopped");
 
     /**
-     * Static value Updating for ServerState.
+     * Server is undergoing some changes which may or may not impact the availability of the PostgreSQL database engine.
+     * For example, the compute resources of the server are being scaled up or down, which may cause temporary
+     * unavailability of the database engine. Or, for example, a firewall rule is being added or removed, which doesn't
+     * cause any unavailability of the database engine.
      */
     public static final ServerState UPDATING = fromString("Updating");
 
     /**
-     * Static value Restarting for ServerState.
+     * PostgreSQL database engine is being restarted.
      */
     public static final ServerState RESTARTING = fromString("Restarting");
 
     /**
-     * Static value Inaccessible for ServerState.
+     * Server isn't accessible, because the key provided to encrypt and decrypt the data is in invalid state.
      */
     public static final ServerState INACCESSIBLE = fromString("Inaccessible");
 
     /**
-     * Static value Provisioning for ServerState.
+     * Server is in the process of being created.
      */
     public static final ServerState PROVISIONING = fromString("Provisioning");
 

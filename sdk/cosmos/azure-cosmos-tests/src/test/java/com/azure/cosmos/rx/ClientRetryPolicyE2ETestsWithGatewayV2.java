@@ -413,7 +413,9 @@ public class ClientRetryPolicyE2ETestsWithGatewayV2 extends TestSuiteBase {
         }
 
         if (operationType == OperationType.ReadFeed) {
-            List<FeedRange> feedRanges = cosmosAsyncContainer.getFeedRanges().block();
+            List<FeedRange> feedRanges = getFeedRangesWithRetry(
+                cosmosAsyncContainer,
+                "get feed ranges for gateway v2 client retry policy setup");
             CosmosChangeFeedRequestOptions changeFeedRequestOptions =
                 CosmosChangeFeedRequestOptions.createForProcessingFromBeginning(feedRanges.get(0));
 

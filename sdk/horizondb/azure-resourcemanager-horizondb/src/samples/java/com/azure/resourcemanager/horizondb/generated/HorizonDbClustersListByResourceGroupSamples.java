@@ -9,15 +9,15 @@ package com.azure.resourcemanager.horizondb.generated;
  */
 public final class HorizonDbClustersListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-01-20-preview/Clusters_ListByResourceGroup.json
+     * x-ms-original-file: 2026-05-01-preview/Clusters_ListByResourceGroup.json
      */
     /**
-     * Sample code: List HorizonDb clusters in a resource group.
+     * Sample code: List HorizonDB clusters in a resource group.
      * 
      * @param manager Entry point to HorizonDbManager.
      */
     public static void
-        listHorizonDbClustersInAResourceGroup(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
+        listHorizonDBClustersInAResourceGroup(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
         manager.horizonDbClusters().listByResourceGroup("exampleresourcegroup", com.azure.core.util.Context.NONE);
     }
 }

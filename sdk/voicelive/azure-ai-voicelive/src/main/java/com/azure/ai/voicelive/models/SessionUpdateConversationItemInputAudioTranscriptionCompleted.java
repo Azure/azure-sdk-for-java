@@ -23,7 +23,7 @@ import java.util.List;
  * should be treated as a rough guide.
  */
 @Immutable
-public final class SessionUpdateConversationItemInputAudioTranscriptionCompleted extends SessionUpdate {
+public final class SessionUpdateConversationItemInputAudioTranscriptionCompleted extends SessionServerEvent {
 
     /*
      * The type of event.
@@ -117,7 +117,7 @@ public final class SessionUpdateConversationItemInputAudioTranscriptionCompleted
         jsonWriter.writeIntField("content_index", this.contentIndex);
         jsonWriter.writeStringField("transcript", this.transcript);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
-        jsonWriter.writeArrayField("logprobs", this.logprobs, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("logprobs", this.logProbs, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("phrases", this.phrases, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
@@ -141,7 +141,7 @@ public final class SessionUpdateConversationItemInputAudioTranscriptionCompleted
             int contentIndex = 0;
             String transcript = null;
             ServerEventType type = ServerEventType.CONVERSATION_ITEM_INPUT_AUDIO_TRANSCRIPTION_COMPLETED;
-            List<LogProbProperties> logprobs = null;
+            List<LogProbProperties> logProbs = null;
             List<TranscriptionPhrase> phrases = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -157,7 +157,7 @@ public final class SessionUpdateConversationItemInputAudioTranscriptionCompleted
                 } else if ("type".equals(fieldName)) {
                     type = ServerEventType.fromString(reader.getString());
                 } else if ("logprobs".equals(fieldName)) {
-                    logprobs = reader.readArray(reader1 -> LogProbProperties.fromJson(reader1));
+                    logProbs = reader.readArray(reader1 -> LogProbProperties.fromJson(reader1));
                 } else if ("phrases".equals(fieldName)) {
                     phrases = reader.readArray(reader1 -> TranscriptionPhrase.fromJson(reader1));
                 } else {
@@ -168,33 +168,17 @@ public final class SessionUpdateConversationItemInputAudioTranscriptionCompleted
                 = new SessionUpdateConversationItemInputAudioTranscriptionCompleted(itemId, contentIndex, transcript);
             deserializedSessionUpdateConversationItemInputAudioTranscriptionCompleted.setEventId(eventId);
             deserializedSessionUpdateConversationItemInputAudioTranscriptionCompleted.type = type;
-            deserializedSessionUpdateConversationItemInputAudioTranscriptionCompleted.logprobs = logprobs;
+            deserializedSessionUpdateConversationItemInputAudioTranscriptionCompleted.logProbs = logProbs;
             deserializedSessionUpdateConversationItemInputAudioTranscriptionCompleted.phrases = phrases;
             return deserializedSessionUpdateConversationItemInputAudioTranscriptionCompleted;
         });
     }
 
     /*
-     * The log probabilities of the transcription tokens.
-     */
-    @Generated
-    private List<LogProbProperties> logprobs;
-
-    /*
      * The transcription phrases with timing information.
      */
     @Generated
     private List<TranscriptionPhrase> phrases;
-
-    /**
-     * Get the logprobs property: The log probabilities of the transcription tokens.
-     *
-     * @return the logprobs value.
-     */
-    @Generated
-    public List<LogProbProperties> getLogprobs() {
-        return this.logprobs;
-    }
 
     /**
      * Get the phrases property: The transcription phrases with timing information.
@@ -204,5 +188,21 @@ public final class SessionUpdateConversationItemInputAudioTranscriptionCompleted
     @Generated
     public List<TranscriptionPhrase> getPhrases() {
         return this.phrases;
+    }
+
+    /*
+     * The log probabilities of the transcription tokens.
+     */
+    @Generated
+    private List<LogProbProperties> logProbs;
+
+    /**
+     * Get the logProbs property: The log probabilities of the transcription tokens.
+     *
+     * @return the logProbs value.
+     */
+    @Generated
+    public List<LogProbProperties> getLogProbs() {
+        return this.logProbs;
     }
 }

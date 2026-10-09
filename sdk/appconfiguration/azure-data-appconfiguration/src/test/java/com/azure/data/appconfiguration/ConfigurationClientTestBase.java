@@ -781,6 +781,7 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
             .setValue(actual.getValue())
             .setTags(actual.getTags())
             .setContentType(actual.getContentType())
+            .setDescription(actual.getDescription())
             .setETag(expected.getETag());
 
         ConfigurationSettingHelper.setLastModified(actual, expected.getLastModified());
@@ -855,6 +856,7 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
             || !Objects.equals(o1.getLastModified(), o2.getLastModified())
             || !Objects.equals(o1.isReadOnly(), o2.isReadOnly())
             || !Objects.equals(o1.getContentType(), o2.getContentType())
+            || !Objects.equals(o1.getDescription(), o2.getDescription())
             || CoreUtils.isNullOrEmpty(o1.getTags()) != CoreUtils.isNullOrEmpty(o2.getTags())) {
             return false;
         }

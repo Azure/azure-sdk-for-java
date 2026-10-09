@@ -77,7 +77,11 @@ public class Tool implements JsonSerializable<Tool> {
                     }
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
-                if ("bing_grounding".equals(discriminatorValue)) {
+                if ("mcp".equals(discriminatorValue)) {
+                    return McpTool.fromJson(readerToUse.reset());
+                } else if ("github_copilot_toolset_preview".equals(discriminatorValue)) {
+                    return GitHubCopilotToolsetPreview.fromJson(readerToUse.reset());
+                } else if ("bing_grounding".equals(discriminatorValue)) {
                     return BingGroundingTool.fromJson(readerToUse.reset());
                 } else if ("fabric_dataagent_preview".equals(discriminatorValue)) {
                     return MicrosoftFabricPreviewTool.fromJson(readerToUse.reset());
@@ -91,14 +95,22 @@ public class Tool implements JsonSerializable<Tool> {
                     return BingCustomSearchPreviewTool.fromJson(readerToUse.reset());
                 } else if ("browser_automation_preview".equals(discriminatorValue)) {
                     return BrowserAutomationPreviewTool.fromJson(readerToUse.reset());
+                } else if ("browser_automation".equals(discriminatorValue)) {
+                    return BrowserAutomationTool.fromJson(readerToUse.reset());
                 } else if ("azure_function".equals(discriminatorValue)) {
                     return AzureFunctionTool.fromJson(readerToUse.reset());
                 } else if ("capture_structured_outputs".equals(discriminatorValue)) {
                     return CaptureStructuredOutputsTool.fromJson(readerToUse.reset());
                 } else if ("a2a_preview".equals(discriminatorValue)) {
                     return A2APreviewTool.fromJson(readerToUse.reset());
+                } else if ("a2a".equals(discriminatorValue)) {
+                    return A2ATool.fromJson(readerToUse.reset());
                 } else if ("work_iq_preview".equals(discriminatorValue)) {
                     return WorkIqPreviewTool.fromJson(readerToUse.reset());
+                } else if ("fabric_iq_preview".equals(discriminatorValue)) {
+                    return FabricIqPreviewTool.fromJson(readerToUse.reset());
+                } else if ("web_iq_preview".equals(discriminatorValue)) {
+                    return WebIqPreviewTool.fromJson(readerToUse.reset());
                 } else if ("memory_search_preview".equals(discriminatorValue)) {
                     return MemorySearchPreviewTool.fromJson(readerToUse.reset());
                 } else if ("code_interpreter".equals(discriminatorValue)) {
@@ -111,8 +123,8 @@ public class Tool implements JsonSerializable<Tool> {
                     return ComputerUsePreviewTool.fromJson(readerToUse.reset());
                 } else if ("web_search".equals(discriminatorValue)) {
                     return WebSearchTool.fromJson(readerToUse.reset());
-                } else if ("mcp".equals(discriminatorValue)) {
-                    return McpTool.fromJson(readerToUse.reset());
+                } else if ("programmatic_tool_calling".equals(discriminatorValue)) {
+                    return ProgrammaticToolCallingParameter.fromJson(readerToUse.reset());
                 } else if ("image_generation".equals(discriminatorValue)) {
                     return ImageGenTool.fromJson(readerToUse.reset());
                 } else if ("local_shell".equals(discriminatorValue)) {
@@ -125,6 +137,12 @@ public class Tool implements JsonSerializable<Tool> {
                     return WebSearchPreviewTool.fromJson(readerToUse.reset());
                 } else if ("apply_patch".equals(discriminatorValue)) {
                     return ApplyPatchToolParameter.fromJson(readerToUse.reset());
+                } else if ("computer".equals(discriminatorValue)) {
+                    return ComputerTool.fromJson(readerToUse.reset());
+                } else if ("namespace".equals(discriminatorValue)) {
+                    return NamespaceTool.fromJson(readerToUse.reset());
+                } else if ("tool_search".equals(discriminatorValue)) {
+                    return ToolSearchTool.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

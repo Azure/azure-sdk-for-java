@@ -62,6 +62,8 @@ public class BatchTests extends TestProxyTestBase {
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile)
             .withDefaultSubscription();
+        // AzurePipelinesCredential performs a synchronous OIDC token request on first use, so initialize it before asynchronous resource creation.
+        resourceManager.serviceClient().getResourceGroups().list().stream().findFirst();
 
         batchManager = BatchManager.configure()
             .withPolicy(new ProviderRegistrationPolicy(resourceManager))
@@ -96,7 +98,7 @@ public class BatchTests extends TestProxyTestBase {
         BatchAccount account = null;
         try {
             // storage account
-            final String storageAccountName = "sa" + randomPadding();
+            final String storageAccountName = testResourceNamer.randomName("sa", 22);
 
             storageAccount = storageManager.storageAccounts()
                 .define(storageAccountName)
@@ -156,7 +158,7 @@ public class BatchTests extends TestProxyTestBase {
             Assertions.assertNotNull(regeneratedKeys.secondary());
 
             // storage account
-            final String storageAccountName = "sa" + randomPadding();
+            final String storageAccountName = testResourceNamer.randomName("sa", 22);
             storageAccount = storageManager.storageAccounts()
                 .define(storageAccountName)
                 .withRegion(REGION)
@@ -195,7 +197,7 @@ public class BatchTests extends TestProxyTestBase {
         String packageVersion;
         try {
             // storage account
-            final String storageAccountName = "sa" + randomPadding();
+            final String storageAccountName = testResourceNamer.randomName("sa", 22);
             storageAccount = storageManager.storageAccounts()
                 .define(storageAccountName)
                 .withRegion(REGION)
@@ -276,9 +278,9 @@ public class BatchTests extends TestProxyTestBase {
                 .withDisplayName(poolDisplayName)
                 .withDeploymentConfiguration(new DeploymentConfiguration().withVirtualMachineConfiguration(
                     new VirtualMachineConfiguration().withImageReference(new ImageReference().withPublisher("Canonical")
-                        .withOffer("UbuntuServer")
-                        .withSku("18.04-LTS")
-                        .withVersion("latest")).withNodeAgentSkuId("batch.node.ubuntu 18.04")))
+                        .withOffer("ubuntu-24_04-lts")
+                        .withSku("server")
+                        .withVersion("latest")).withNodeAgentSkuId("batch.node.ubuntu 24.04")))
                 .withScaleSettings(new ScaleSettings()
                     .withFixedScale(new FixedScaleSettings().withResizeTimeout(Duration.parse("PT8M"))
                         .withTargetDedicatedNodes(1)

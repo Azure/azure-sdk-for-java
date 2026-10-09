@@ -726,7 +726,9 @@ public final class ManagedClusterInner extends Resource {
      * enforces FIPS compliance for all AKS-managed components, such as the node operating system, addons, and [managed
      * containerized components](https://aka.ms/aks/components/docs). See [Enable cluster-wide
      * FIPS](https://aka.ms/aks/fips) for more details. When this property is enabled, all node pools in the cluster
-     * must also be FIPS-enabled.
+     * must also be FIPS-enabled. Although this property is available in a stable API version, cluster-wide FIPS remains
+     * a preview feature. Write requests whose resulting cluster state has this property set to true require the
+     * `Microsoft.ContainerService/EnableFIPSPreview` subscription feature registration.
      * 
      * @return the enableFips value.
      */
@@ -739,7 +741,9 @@ public final class ManagedClusterInner extends Resource {
      * enforces FIPS compliance for all AKS-managed components, such as the node operating system, addons, and [managed
      * containerized components](https://aka.ms/aks/components/docs). See [Enable cluster-wide
      * FIPS](https://aka.ms/aks/fips) for more details. When this property is enabled, all node pools in the cluster
-     * must also be FIPS-enabled.
+     * must also be FIPS-enabled. Although this property is available in a stable API version, cluster-wide FIPS remains
+     * a preview feature. Write requests whose resulting cluster state has this property set to true require the
+     * `Microsoft.ContainerService/EnableFIPSPreview` subscription feature registration.
      * 
      * @param enableFips the enableFips value to set.
      * @return the ManagedClusterInner object itself.
@@ -749,6 +753,37 @@ public final class ManagedClusterInner extends Resource {
             this.innerProperties = new ManagedClusterProperties();
         }
         this.innerProperties().withEnableFips(enableFips);
+        return this;
+    }
+
+    /**
+     * Get the enableNodeHardening property: Whether to enable node hardening at the cluster level. When enabled, AKS
+     * applies hardened defaults for soft eviction thresholds, kube-reserved, and system-reserved on all Linux node
+     * pools in the cluster. Per-node-pool kubeletConfig settings take precedence over hardening defaults. On agent
+     * pools running Kubernetes 1.37 or later, node hardening is enabled by default and cannot be disabled; setting this
+     * field to false has no effect on those pools.
+     * 
+     * @return the enableNodeHardening value.
+     */
+    public Boolean enableNodeHardening() {
+        return this.innerProperties() == null ? null : this.innerProperties().enableNodeHardening();
+    }
+
+    /**
+     * Set the enableNodeHardening property: Whether to enable node hardening at the cluster level. When enabled, AKS
+     * applies hardened defaults for soft eviction thresholds, kube-reserved, and system-reserved on all Linux node
+     * pools in the cluster. Per-node-pool kubeletConfig settings take precedence over hardening defaults. On agent
+     * pools running Kubernetes 1.37 or later, node hardening is enabled by default and cannot be disabled; setting this
+     * field to false has no effect on those pools.
+     * 
+     * @param enableNodeHardening the enableNodeHardening value to set.
+     * @return the ManagedClusterInner object itself.
+     */
+    public ManagedClusterInner withEnableNodeHardening(Boolean enableNodeHardening) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedClusterProperties();
+        }
+        this.innerProperties().withEnableNodeHardening(enableNodeHardening);
         return this;
     }
 
@@ -1319,7 +1354,8 @@ public final class ManagedClusterInner extends Resource {
     }
 
     /**
-     * Get the schedulerProfile property: Profile of the pod scheduler configuration.
+     * Get the schedulerProfile property: Profile with scheduler-related settings, like the configuration mode for each
+     * scheduler managed by AKS. See https://aka.ms/aks/scheduler-profile.
      * 
      * @return the schedulerProfile value.
      */
@@ -1328,7 +1364,8 @@ public final class ManagedClusterInner extends Resource {
     }
 
     /**
-     * Set the schedulerProfile property: Profile of the pod scheduler configuration.
+     * Set the schedulerProfile property: Profile with scheduler-related settings, like the configuration mode for each
+     * scheduler managed by AKS. See https://aka.ms/aks/scheduler-profile.
      * 
      * @param schedulerProfile the schedulerProfile value to set.
      * @return the ManagedClusterInner object itself.

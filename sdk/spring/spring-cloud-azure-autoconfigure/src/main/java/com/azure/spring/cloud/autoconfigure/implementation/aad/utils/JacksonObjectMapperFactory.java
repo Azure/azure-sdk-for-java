@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.implementation.aad.utils;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 
 /**
  * factory class of JacksonObjectMapper

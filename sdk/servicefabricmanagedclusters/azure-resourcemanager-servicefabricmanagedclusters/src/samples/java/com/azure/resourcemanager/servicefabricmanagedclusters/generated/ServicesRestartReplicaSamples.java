@@ -13,7 +13,7 @@ import java.util.Arrays;
  */
 public final class ServicesRestartReplicaSamples {
     /*
-     * x-ms-original-file: 2026-02-01/ServiceActionRestartReplica_example.json
+     * x-ms-original-file: 2026-05-01-preview/ServiceActionRestartReplica_example.json
      */
     /**
      * Sample code: Restart replicas.

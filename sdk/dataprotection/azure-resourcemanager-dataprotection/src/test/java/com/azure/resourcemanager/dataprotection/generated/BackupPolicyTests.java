@@ -14,20 +14,21 @@ public final class BackupPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BackupPolicy model = BinaryData.fromString(
-            "{\"objectType\":\"BackupPolicy\",\"policyRules\":[{\"objectType\":\"BasePolicyRule\",\"name\":\"ewzsyyceuzsoib\"},{\"objectType\":\"BasePolicyRule\",\"name\":\"ud\"}],\"datasourceTypes\":[\"rx\",\"rthzvaytdwkqbrqu\",\"paxh\",\"xiilivpdtiirqt\"]}")
+            "{\"objectType\":\"BackupPolicy\",\"policyRules\":[{\"objectType\":\"BasePolicyRule\",\"name\":\"eyvpnqicvinvkj\"},{\"objectType\":\"BasePolicyRule\",\"name\":\"xdxr\"},{\"objectType\":\"BasePolicyRule\",\"name\":\"uukzclewyhmlw\"},{\"objectType\":\"BasePolicyRule\",\"name\":\"aztz\"}],\"datasourceTypes\":[\"fn\",\"ckw\",\"fz\",\"whxxbuyqax\"]}")
             .toObject(BackupPolicy.class);
-        Assertions.assertEquals("rx", model.datasourceTypes().get(0));
-        Assertions.assertEquals("ewzsyyceuzsoib", model.policyRules().get(0).name());
+        Assertions.assertEquals("fn", model.datasourceTypes().get(0));
+        Assertions.assertEquals("eyvpnqicvinvkj", model.policyRules().get(0).name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BackupPolicy model = new BackupPolicy()
-            .withDatasourceTypes(Arrays.asList("rx", "rthzvaytdwkqbrqu", "paxh", "xiilivpdtiirqt"))
-            .withPolicyRules(
-                Arrays.asList(new BasePolicyRule().withName("ewzsyyceuzsoib"), new BasePolicyRule().withName("ud")));
+        BackupPolicy model
+            = new BackupPolicy().withDatasourceTypes(Arrays.asList("fn", "ckw", "fz", "whxxbuyqax"))
+                .withPolicyRules(Arrays.asList(new BasePolicyRule().withName("eyvpnqicvinvkj"),
+                    new BasePolicyRule().withName("xdxr"), new BasePolicyRule().withName("uukzclewyhmlw"),
+                    new BasePolicyRule().withName("aztz")));
         model = BinaryData.fromObject(model).toObject(BackupPolicy.class);
-        Assertions.assertEquals("rx", model.datasourceTypes().get(0));
-        Assertions.assertEquals("ewzsyyceuzsoib", model.policyRules().get(0).name());
+        Assertions.assertEquals("fn", model.datasourceTypes().get(0));
+        Assertions.assertEquals("eyvpnqicvinvkj", model.policyRules().get(0).name());
     }
 }

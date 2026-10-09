@@ -18,10 +18,10 @@ import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSettin
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationKeyValueSelector;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationProperties;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.ConfigStore;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
 
 /**
  * Utility methods which can be used across different test classes
@@ -75,7 +75,7 @@ public final class TestUtils {
                     if (clientFiltersNode != null) {
                         for (int i = 0; i < clientFiltersNode.size(); i++) {
                             JsonNode nodeFilter = clientFiltersNode.get(i);
-                            FeatureFlagFilter filter = new FeatureFlagFilter(nodeFilter.get("Name").asText());
+                            FeatureFlagFilter filter = new FeatureFlagFilter(nodeFilter.get("Name").asString());
 
                             JsonNode nodeParams = nodeFilter.get("Parameters");
                             if (nodeParams != null) {
@@ -92,7 +92,7 @@ public final class TestUtils {
                     }
                 }
             }
-        } catch (JsonProcessingException e) {
+        } catch (JacksonException e) {
             LOGGER.log(LogLevel.VERBOSE, () -> "Failed to create FeatureFlagConfigurationSetting.", e);
         }
         return item;

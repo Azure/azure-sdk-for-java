@@ -5,6 +5,8 @@
 package com.azure.ai.projects.implementation;
 
 import com.azure.ai.projects.AIProjectsServiceVersion;
+import com.azure.ai.projects.models.EvaluatorGenerationJob;
+import com.azure.ai.projects.models.EvaluatorVersion;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
@@ -34,6 +36,11 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.PollingStrategyOptions;
+import com.azure.core.util.polling.SyncPoller;
+import com.azure.core.util.serializer.TypeReference;
+import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -88,8 +95,7 @@ public final class EvaluatorsImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listEvaluatorVersions(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/evaluators/{name}/versions")
         @ExpectedResponses({ 200 })
@@ -99,8 +105,7 @@ public final class EvaluatorsImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listEvaluatorVersionsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/evaluators")
         @ExpectedResponses({ 200 })
@@ -109,8 +114,8 @@ public final class EvaluatorsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listLatestEvaluatorVersions(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Foundry-Features") String foundryFeatures,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/evaluators")
         @ExpectedResponses({ 200 })
@@ -119,8 +124,8 @@ public final class EvaluatorsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listLatestEvaluatorVersionsSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Foundry-Features") String foundryFeatures,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/evaluators/{name}/versions/{version}")
         @ExpectedResponses({ 200 })
@@ -130,8 +135,8 @@ public final class EvaluatorsImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getEvaluatorVersion(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @PathParam("version") String version,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @PathParam("version") String version, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
 
         @Get("/evaluators/{name}/versions/{version}")
         @ExpectedResponses({ 200 })
@@ -141,8 +146,8 @@ public final class EvaluatorsImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getEvaluatorVersionSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @PathParam("version") String version,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @PathParam("version") String version, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
 
         @Delete("/evaluators/{name}/versions/{version}")
         @ExpectedResponses({ 204 })
@@ -152,8 +157,7 @@ public final class EvaluatorsImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteEvaluatorVersion(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @PathParam("version") String version,
-            RequestOptions requestOptions, Context context);
+            @PathParam("version") String version, RequestOptions requestOptions, Context context);
 
         @Delete("/evaluators/{name}/versions/{version}")
         @ExpectedResponses({ 204 })
@@ -163,8 +167,7 @@ public final class EvaluatorsImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteEvaluatorVersionSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @PathParam("version") String version,
-            RequestOptions requestOptions, Context context);
+            @PathParam("version") String version, RequestOptions requestOptions, Context context);
 
         @Post("/evaluators/{name}/versions")
         @ExpectedResponses({ 201 })
@@ -174,9 +177,8 @@ public final class EvaluatorsImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createEvaluatorVersion(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData evaluatorVersion,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData evaluatorVersion, RequestOptions requestOptions, Context context);
 
         @Post("/evaluators/{name}/versions")
         @ExpectedResponses({ 201 })
@@ -186,9 +188,8 @@ public final class EvaluatorsImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createEvaluatorVersionSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData evaluatorVersion,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData evaluatorVersion, RequestOptions requestOptions, Context context);
 
         @Patch("/evaluators/{name}/versions/{version}")
         @ExpectedResponses({ 200 })
@@ -198,9 +199,9 @@ public final class EvaluatorsImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> updateEvaluatorVersion(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @PathParam("version") String version,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") BinaryData evaluatorVersion, RequestOptions requestOptions, Context context);
+            @PathParam("version") String version, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData evaluatorVersion,
+            RequestOptions requestOptions, Context context);
 
         @Patch("/evaluators/{name}/versions/{version}")
         @ExpectedResponses({ 200 })
@@ -210,9 +211,111 @@ public final class EvaluatorsImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> updateEvaluatorVersionSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @PathParam("version") String version,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") BinaryData evaluatorVersion, RequestOptions requestOptions, Context context);
+            @PathParam("version") String version, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData evaluatorVersion,
+            RequestOptions requestOptions, Context context);
+
+        @Post("/evaluator_generation_jobs")
+        @ExpectedResponses({ 201 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> createEvaluatorGenerationJob(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData job,
+            RequestOptions requestOptions, Context context);
+
+        @Post("/evaluator_generation_jobs")
+        @ExpectedResponses({ 201 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> createEvaluatorGenerationJobSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData job,
+            RequestOptions requestOptions, Context context);
+
+        @Get("/evaluator_generation_jobs/{jobId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> getEvaluatorGenerationJob(@HostParam("endpoint") String endpoint,
+            @PathParam("jobId") String jobId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("/evaluator_generation_jobs/{jobId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getEvaluatorGenerationJobSync(@HostParam("endpoint") String endpoint,
+            @PathParam("jobId") String jobId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("/evaluator_generation_jobs")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> listEvaluatorGenerationJobs(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
+
+        @Get("/evaluator_generation_jobs")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listEvaluatorGenerationJobsSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
+
+        @Post("/evaluator_generation_jobs/{jobId}:cancel")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> cancelEvaluatorGenerationJob(@HostParam("endpoint") String endpoint,
+            @PathParam("jobId") String jobId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Post("/evaluator_generation_jobs/{jobId}:cancel")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> cancelEvaluatorGenerationJobSync(@HostParam("endpoint") String endpoint,
+            @PathParam("jobId") String jobId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Delete("/evaluator_generation_jobs/{jobId}")
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<Void>> deleteEvaluatorGenerationJob(@HostParam("endpoint") String endpoint,
+            @PathParam("jobId") String jobId, @QueryParam("api-version") String apiVersion,
+            RequestOptions requestOptions, Context context);
+
+        @Delete("/evaluator_generation_jobs/{jobId}")
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<Void> deleteEvaluatorGenerationJobSync(@HostParam("endpoint") String endpoint,
+            @PathParam("jobId") String jobId, @QueryParam("api-version") String apiVersion,
+            RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -222,8 +325,7 @@ public final class EvaluatorsImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listEvaluatorVersionsNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -233,8 +335,7 @@ public final class EvaluatorsImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listEvaluatorVersionsNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -244,8 +345,7 @@ public final class EvaluatorsImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listLatestEvaluatorVersionsNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -255,12 +355,13 @@ public final class EvaluatorsImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listLatestEvaluatorVersionsNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
     }
 
     /**
-     * List all versions of the given evaluator.
+     * List evaluator versions
+     * 
+     * Returns the available versions for the specified evaluator.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -284,8 +385,11 @@ public final class EvaluatorsImpl {
      *     categories (Required): [
      *         String(quality/safety/agents) (Required)
      *     ]
+     *     supported_evaluation_levels (Optional): [
+     *         String(turn/conversation) (Optional)
+     *     ]
      *     definition (Required): {
-     *         type: String(prompt/code/prompt_and_code/service/openai_graders) (Required)
+     *         type: String(prompt/code/prompt_and_code/service/openai_graders/rubric/endpoint) (Required)
      *         init_parameters (Optional): {
      *             String: BinaryData (Required)
      *         }
@@ -303,6 +407,19 @@ public final class EvaluatorsImpl {
      *             }
      *         }
      *     }
+     *     generation_artifacts (Optional): {
+     *         dataset (Required): {
+     *             name: String (Required)
+     *             version: String (Required)
+     *         }
+     *         kinds (Required): [
+     *             String (Required)
+     *         ]
+     *     }
+     *     generation_job_id: String (Optional)
+     *     warnings (Optional): [
+     *         String(input_quality) (Optional)
+     *     ]
      *     created_by: String (Required)
      *     created_at: OffsetDateTime (Required)
      *     modified_at: OffsetDateTime (Required)
@@ -329,17 +446,18 @@ public final class EvaluatorsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listEvaluatorVersionsSinglePageAsync(String name,
         RequestOptions requestOptions) {
-        final String foundryFeatures = "Evaluations=V1Preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listEvaluatorVersions(this.client.getEndpoint(),
-                this.client.getServiceVersion().getVersion(), name, foundryFeatures, accept, requestOptions, context))
+                this.client.getServiceVersion().getVersion(), name, accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
 
     /**
-     * List all versions of the given evaluator.
+     * List evaluator versions
+     * 
+     * Returns the available versions for the specified evaluator.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -363,8 +481,11 @@ public final class EvaluatorsImpl {
      *     categories (Required): [
      *         String(quality/safety/agents) (Required)
      *     ]
+     *     supported_evaluation_levels (Optional): [
+     *         String(turn/conversation) (Optional)
+     *     ]
      *     definition (Required): {
-     *         type: String(prompt/code/prompt_and_code/service/openai_graders) (Required)
+     *         type: String(prompt/code/prompt_and_code/service/openai_graders/rubric/endpoint) (Required)
      *         init_parameters (Optional): {
      *             String: BinaryData (Required)
      *         }
@@ -382,6 +503,19 @@ public final class EvaluatorsImpl {
      *             }
      *         }
      *     }
+     *     generation_artifacts (Optional): {
+     *         dataset (Required): {
+     *             name: String (Required)
+     *             version: String (Required)
+     *         }
+     *         kinds (Required): [
+     *             String (Required)
+     *         ]
+     *     }
+     *     generation_job_id: String (Optional)
+     *     warnings (Optional): [
+     *         String(input_quality) (Optional)
+     *     ]
      *     created_by: String (Required)
      *     created_at: OffsetDateTime (Required)
      *     modified_at: OffsetDateTime (Required)
@@ -414,7 +548,9 @@ public final class EvaluatorsImpl {
     }
 
     /**
-     * List all versions of the given evaluator.
+     * List evaluator versions
+     * 
+     * Returns the available versions for the specified evaluator.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -438,8 +574,11 @@ public final class EvaluatorsImpl {
      *     categories (Required): [
      *         String(quality/safety/agents) (Required)
      *     ]
+     *     supported_evaluation_levels (Optional): [
+     *         String(turn/conversation) (Optional)
+     *     ]
      *     definition (Required): {
-     *         type: String(prompt/code/prompt_and_code/service/openai_graders) (Required)
+     *         type: String(prompt/code/prompt_and_code/service/openai_graders/rubric/endpoint) (Required)
      *         init_parameters (Optional): {
      *             String: BinaryData (Required)
      *         }
@@ -457,6 +596,19 @@ public final class EvaluatorsImpl {
      *             }
      *         }
      *     }
+     *     generation_artifacts (Optional): {
+     *         dataset (Required): {
+     *             name: String (Required)
+     *             version: String (Required)
+     *         }
+     *         kinds (Required): [
+     *             String (Required)
+     *         ]
+     *     }
+     *     generation_job_id: String (Optional)
+     *     warnings (Optional): [
+     *         String(input_quality) (Optional)
+     *     ]
      *     created_by: String (Required)
      *     created_at: OffsetDateTime (Required)
      *     modified_at: OffsetDateTime (Required)
@@ -481,16 +633,17 @@ public final class EvaluatorsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listEvaluatorVersionsSinglePage(String name, RequestOptions requestOptions) {
-        final String foundryFeatures = "Evaluations=V1Preview";
         final String accept = "application/json";
         Response<BinaryData> res = service.listEvaluatorVersionsSync(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), name, foundryFeatures, accept, requestOptions, Context.NONE);
+            this.client.getServiceVersion().getVersion(), name, accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
 
     /**
-     * List all versions of the given evaluator.
+     * List evaluator versions
+     * 
+     * Returns the available versions for the specified evaluator.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -514,8 +667,11 @@ public final class EvaluatorsImpl {
      *     categories (Required): [
      *         String(quality/safety/agents) (Required)
      *     ]
+     *     supported_evaluation_levels (Optional): [
+     *         String(turn/conversation) (Optional)
+     *     ]
      *     definition (Required): {
-     *         type: String(prompt/code/prompt_and_code/service/openai_graders) (Required)
+     *         type: String(prompt/code/prompt_and_code/service/openai_graders/rubric/endpoint) (Required)
      *         init_parameters (Optional): {
      *             String: BinaryData (Required)
      *         }
@@ -533,6 +689,19 @@ public final class EvaluatorsImpl {
      *             }
      *         }
      *     }
+     *     generation_artifacts (Optional): {
+     *         dataset (Required): {
+     *             name: String (Required)
+     *             version: String (Required)
+     *         }
+     *         kinds (Required): [
+     *             String (Required)
+     *         ]
+     *     }
+     *     generation_job_id: String (Optional)
+     *     warnings (Optional): [
+     *         String(input_quality) (Optional)
+     *     ]
      *     created_by: String (Required)
      *     created_at: OffsetDateTime (Required)
      *     modified_at: OffsetDateTime (Required)
@@ -565,7 +734,9 @@ public final class EvaluatorsImpl {
     }
 
     /**
-     * List the latest version of each evaluator.
+     * List latest evaluator versions
+     * 
+     * Lists the latest version of each evaluator.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -589,8 +760,11 @@ public final class EvaluatorsImpl {
      *     categories (Required): [
      *         String(quality/safety/agents) (Required)
      *     ]
+     *     supported_evaluation_levels (Optional): [
+     *         String(turn/conversation) (Optional)
+     *     ]
      *     definition (Required): {
-     *         type: String(prompt/code/prompt_and_code/service/openai_graders) (Required)
+     *         type: String(prompt/code/prompt_and_code/service/openai_graders/rubric/endpoint) (Required)
      *         init_parameters (Optional): {
      *             String: BinaryData (Required)
      *         }
@@ -608,6 +782,19 @@ public final class EvaluatorsImpl {
      *             }
      *         }
      *     }
+     *     generation_artifacts (Optional): {
+     *         dataset (Required): {
+     *             name: String (Required)
+     *             version: String (Required)
+     *         }
+     *         kinds (Required): [
+     *             String (Required)
+     *         ]
+     *     }
+     *     generation_job_id: String (Optional)
+     *     warnings (Optional): [
+     *         String(input_quality) (Optional)
+     *     ]
      *     created_by: String (Required)
      *     created_at: OffsetDateTime (Required)
      *     modified_at: OffsetDateTime (Required)
@@ -632,17 +819,18 @@ public final class EvaluatorsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listLatestEvaluatorVersionsSinglePageAsync(RequestOptions requestOptions) {
-        final String foundryFeatures = "Evaluations=V1Preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listLatestEvaluatorVersions(this.client.getEndpoint(),
-                this.client.getServiceVersion().getVersion(), foundryFeatures, accept, requestOptions, context))
+                this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
 
     /**
-     * List the latest version of each evaluator.
+     * List latest evaluator versions
+     * 
+     * Lists the latest version of each evaluator.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -666,8 +854,11 @@ public final class EvaluatorsImpl {
      *     categories (Required): [
      *         String(quality/safety/agents) (Required)
      *     ]
+     *     supported_evaluation_levels (Optional): [
+     *         String(turn/conversation) (Optional)
+     *     ]
      *     definition (Required): {
-     *         type: String(prompt/code/prompt_and_code/service/openai_graders) (Required)
+     *         type: String(prompt/code/prompt_and_code/service/openai_graders/rubric/endpoint) (Required)
      *         init_parameters (Optional): {
      *             String: BinaryData (Required)
      *         }
@@ -685,6 +876,19 @@ public final class EvaluatorsImpl {
      *             }
      *         }
      *     }
+     *     generation_artifacts (Optional): {
+     *         dataset (Required): {
+     *             name: String (Required)
+     *             version: String (Required)
+     *         }
+     *         kinds (Required): [
+     *             String (Required)
+     *         ]
+     *     }
+     *     generation_job_id: String (Optional)
+     *     warnings (Optional): [
+     *         String(input_quality) (Optional)
+     *     ]
      *     created_by: String (Required)
      *     created_at: OffsetDateTime (Required)
      *     modified_at: OffsetDateTime (Required)
@@ -716,7 +920,9 @@ public final class EvaluatorsImpl {
     }
 
     /**
-     * List the latest version of each evaluator.
+     * List latest evaluator versions
+     * 
+     * Lists the latest version of each evaluator.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -740,8 +946,11 @@ public final class EvaluatorsImpl {
      *     categories (Required): [
      *         String(quality/safety/agents) (Required)
      *     ]
+     *     supported_evaluation_levels (Optional): [
+     *         String(turn/conversation) (Optional)
+     *     ]
      *     definition (Required): {
-     *         type: String(prompt/code/prompt_and_code/service/openai_graders) (Required)
+     *         type: String(prompt/code/prompt_and_code/service/openai_graders/rubric/endpoint) (Required)
      *         init_parameters (Optional): {
      *             String: BinaryData (Required)
      *         }
@@ -759,6 +968,19 @@ public final class EvaluatorsImpl {
      *             }
      *         }
      *     }
+     *     generation_artifacts (Optional): {
+     *         dataset (Required): {
+     *             name: String (Required)
+     *             version: String (Required)
+     *         }
+     *         kinds (Required): [
+     *             String (Required)
+     *         ]
+     *     }
+     *     generation_job_id: String (Optional)
+     *     warnings (Optional): [
+     *         String(input_quality) (Optional)
+     *     ]
      *     created_by: String (Required)
      *     created_at: OffsetDateTime (Required)
      *     modified_at: OffsetDateTime (Required)
@@ -782,16 +1004,17 @@ public final class EvaluatorsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listLatestEvaluatorVersionsSinglePage(RequestOptions requestOptions) {
-        final String foundryFeatures = "Evaluations=V1Preview";
         final String accept = "application/json";
         Response<BinaryData> res = service.listLatestEvaluatorVersionsSync(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), foundryFeatures, accept, requestOptions, Context.NONE);
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
 
     /**
-     * List the latest version of each evaluator.
+     * List latest evaluator versions
+     * 
+     * Lists the latest version of each evaluator.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -815,8 +1038,11 @@ public final class EvaluatorsImpl {
      *     categories (Required): [
      *         String(quality/safety/agents) (Required)
      *     ]
+     *     supported_evaluation_levels (Optional): [
+     *         String(turn/conversation) (Optional)
+     *     ]
      *     definition (Required): {
-     *         type: String(prompt/code/prompt_and_code/service/openai_graders) (Required)
+     *         type: String(prompt/code/prompt_and_code/service/openai_graders/rubric/endpoint) (Required)
      *         init_parameters (Optional): {
      *             String: BinaryData (Required)
      *         }
@@ -834,6 +1060,19 @@ public final class EvaluatorsImpl {
      *             }
      *         }
      *     }
+     *     generation_artifacts (Optional): {
+     *         dataset (Required): {
+     *             name: String (Required)
+     *             version: String (Required)
+     *         }
+     *         kinds (Required): [
+     *             String (Required)
+     *         ]
+     *     }
+     *     generation_job_id: String (Optional)
+     *     warnings (Optional): [
+     *         String(input_quality) (Optional)
+     *     ]
      *     created_by: String (Required)
      *     created_at: OffsetDateTime (Required)
      *     modified_at: OffsetDateTime (Required)
@@ -865,8 +1104,9 @@ public final class EvaluatorsImpl {
     }
 
     /**
-     * Get the specific version of the EvaluatorVersion. The service returns 404 Not Found error if the EvaluatorVersion
-     * does not exist.
+     * Get an evaluator version
+     * 
+     * Retrieves the specified evaluator version, returning 404 if it does not exist.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -880,8 +1120,11 @@ public final class EvaluatorsImpl {
      *     categories (Required): [
      *         String(quality/safety/agents) (Required)
      *     ]
+     *     supported_evaluation_levels (Optional): [
+     *         String(turn/conversation) (Optional)
+     *     ]
      *     definition (Required): {
-     *         type: String(prompt/code/prompt_and_code/service/openai_graders) (Required)
+     *         type: String(prompt/code/prompt_and_code/service/openai_graders/rubric/endpoint) (Required)
      *         init_parameters (Optional): {
      *             String: BinaryData (Required)
      *         }
@@ -899,6 +1142,19 @@ public final class EvaluatorsImpl {
      *             }
      *         }
      *     }
+     *     generation_artifacts (Optional): {
+     *         dataset (Required): {
+     *             name: String (Required)
+     *             version: String (Required)
+     *         }
+     *         kinds (Required): [
+     *             String (Required)
+     *         ]
+     *     }
+     *     generation_job_id: String (Optional)
+     *     warnings (Optional): [
+     *         String(input_quality) (Optional)
+     *     ]
      *     created_by: String (Required)
      *     created_at: OffsetDateTime (Required)
      *     modified_at: OffsetDateTime (Required)
@@ -920,22 +1176,23 @@ public final class EvaluatorsImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the specific version of the EvaluatorVersion along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return an evaluator version
+     * 
+     * Retrieves the specified evaluator version, returning 404 if it does not exist along with {@link Response} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getEvaluatorVersionWithResponseAsync(String name, String version,
         RequestOptions requestOptions) {
-        final String foundryFeatures = "Evaluations=V1Preview";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.getEvaluatorVersion(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), name, foundryFeatures, version, accept, requestOptions,
-            context));
+            this.client.getServiceVersion().getVersion(), name, version, accept, requestOptions, context));
     }
 
     /**
-     * Get the specific version of the EvaluatorVersion. The service returns 404 Not Found error if the EvaluatorVersion
-     * does not exist.
+     * Get an evaluator version
+     * 
+     * Retrieves the specified evaluator version, returning 404 if it does not exist.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -949,8 +1206,11 @@ public final class EvaluatorsImpl {
      *     categories (Required): [
      *         String(quality/safety/agents) (Required)
      *     ]
+     *     supported_evaluation_levels (Optional): [
+     *         String(turn/conversation) (Optional)
+     *     ]
      *     definition (Required): {
-     *         type: String(prompt/code/prompt_and_code/service/openai_graders) (Required)
+     *         type: String(prompt/code/prompt_and_code/service/openai_graders/rubric/endpoint) (Required)
      *         init_parameters (Optional): {
      *             String: BinaryData (Required)
      *         }
@@ -968,6 +1228,19 @@ public final class EvaluatorsImpl {
      *             }
      *         }
      *     }
+     *     generation_artifacts (Optional): {
+     *         dataset (Required): {
+     *             name: String (Required)
+     *             version: String (Required)
+     *         }
+     *         kinds (Required): [
+     *             String (Required)
+     *         ]
+     *     }
+     *     generation_job_id: String (Optional)
+     *     warnings (Optional): [
+     *         String(input_quality) (Optional)
+     *     ]
      *     created_by: String (Required)
      *     created_at: OffsetDateTime (Required)
      *     modified_at: OffsetDateTime (Required)
@@ -989,20 +1262,22 @@ public final class EvaluatorsImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the specific version of the EvaluatorVersion along with {@link Response}.
+     * @return an evaluator version
+     * 
+     * Retrieves the specified evaluator version, returning 404 if it does not exist along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getEvaluatorVersionWithResponse(String name, String version,
         RequestOptions requestOptions) {
-        final String foundryFeatures = "Evaluations=V1Preview";
         final String accept = "application/json";
         return service.getEvaluatorVersionSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-            name, foundryFeatures, version, accept, requestOptions, Context.NONE);
+            name, version, accept, requestOptions, Context.NONE);
     }
 
     /**
-     * Delete the specific version of the EvaluatorVersion. The service returns 204 No Content if the EvaluatorVersion
-     * was deleted successfully or if the EvaluatorVersion does not exist.
+     * Delete an evaluator version
+     * 
+     * Removes the specified evaluator version. Returns 204 whether the version existed or not.
      * 
      * @param name The name of the resource.
      * @param version The version of the EvaluatorVersion to delete.
@@ -1016,14 +1291,14 @@ public final class EvaluatorsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteEvaluatorVersionWithResponseAsync(String name, String version,
         RequestOptions requestOptions) {
-        final String foundryFeatures = "Evaluations=V1Preview";
         return FluxUtil.withContext(context -> service.deleteEvaluatorVersion(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), name, foundryFeatures, version, requestOptions, context));
+            this.client.getServiceVersion().getVersion(), name, version, requestOptions, context));
     }
 
     /**
-     * Delete the specific version of the EvaluatorVersion. The service returns 204 No Content if the EvaluatorVersion
-     * was deleted successfully or if the EvaluatorVersion does not exist.
+     * Delete an evaluator version
+     * 
+     * Removes the specified evaluator version. Returns 204 whether the version existed or not.
      * 
      * @param name The name of the resource.
      * @param version The version of the EvaluatorVersion to delete.
@@ -1037,13 +1312,14 @@ public final class EvaluatorsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteEvaluatorVersionWithResponse(String name, String version,
         RequestOptions requestOptions) {
-        final String foundryFeatures = "Evaluations=V1Preview";
         return service.deleteEvaluatorVersionSync(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), name, foundryFeatures, version, requestOptions, Context.NONE);
+            this.client.getServiceVersion().getVersion(), name, version, requestOptions, Context.NONE);
     }
 
     /**
-     * Create a new EvaluatorVersion with auto incremented version id.
+     * Create an evaluator version
+     * 
+     * Creates a new evaluator version with an auto-incremented version identifier.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -1057,8 +1333,11 @@ public final class EvaluatorsImpl {
      *     categories (Required): [
      *         String(quality/safety/agents) (Required)
      *     ]
+     *     supported_evaluation_levels (Optional): [
+     *         String(turn/conversation) (Optional)
+     *     ]
      *     definition (Required): {
-     *         type: String(prompt/code/prompt_and_code/service/openai_graders) (Required)
+     *         type: String(prompt/code/prompt_and_code/service/openai_graders/rubric/endpoint) (Required)
      *         init_parameters (Optional): {
      *             String: BinaryData (Required)
      *         }
@@ -1076,6 +1355,19 @@ public final class EvaluatorsImpl {
      *             }
      *         }
      *     }
+     *     generation_artifacts (Optional): {
+     *         dataset (Required): {
+     *             name: String (Required)
+     *             version: String (Required)
+     *         }
+     *         kinds (Required): [
+     *             String (Required)
+     *         ]
+     *     }
+     *     generation_job_id: String (Optional)
+     *     warnings (Optional): [
+     *         String(input_quality) (Optional)
+     *     ]
      *     created_by: String (Required)
      *     created_at: OffsetDateTime (Required)
      *     modified_at: OffsetDateTime (Required)
@@ -1103,8 +1395,11 @@ public final class EvaluatorsImpl {
      *     categories (Required): [
      *         String(quality/safety/agents) (Required)
      *     ]
+     *     supported_evaluation_levels (Optional): [
+     *         String(turn/conversation) (Optional)
+     *     ]
      *     definition (Required): {
-     *         type: String(prompt/code/prompt_and_code/service/openai_graders) (Required)
+     *         type: String(prompt/code/prompt_and_code/service/openai_graders/rubric/endpoint) (Required)
      *         init_parameters (Optional): {
      *             String: BinaryData (Required)
      *         }
@@ -1122,6 +1417,19 @@ public final class EvaluatorsImpl {
      *             }
      *         }
      *     }
+     *     generation_artifacts (Optional): {
+     *         dataset (Required): {
+     *             name: String (Required)
+     *             version: String (Required)
+     *         }
+     *         kinds (Required): [
+     *             String (Required)
+     *         ]
+     *     }
+     *     generation_job_id: String (Optional)
+     *     warnings (Optional): [
+     *         String(input_quality) (Optional)
+     *     ]
      *     created_by: String (Required)
      *     created_at: OffsetDateTime (Required)
      *     modified_at: OffsetDateTime (Required)
@@ -1148,16 +1456,17 @@ public final class EvaluatorsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createEvaluatorVersionWithResponseAsync(String name, BinaryData evaluatorVersion,
         RequestOptions requestOptions) {
-        final String foundryFeatures = "Evaluations=V1Preview";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.createEvaluatorVersion(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), name, foundryFeatures, contentType, accept, evaluatorVersion,
-            requestOptions, context));
+            this.client.getServiceVersion().getVersion(), name, contentType, accept, evaluatorVersion, requestOptions,
+            context));
     }
 
     /**
-     * Create a new EvaluatorVersion with auto incremented version id.
+     * Create an evaluator version
+     * 
+     * Creates a new evaluator version with an auto-incremented version identifier.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -1171,8 +1480,11 @@ public final class EvaluatorsImpl {
      *     categories (Required): [
      *         String(quality/safety/agents) (Required)
      *     ]
+     *     supported_evaluation_levels (Optional): [
+     *         String(turn/conversation) (Optional)
+     *     ]
      *     definition (Required): {
-     *         type: String(prompt/code/prompt_and_code/service/openai_graders) (Required)
+     *         type: String(prompt/code/prompt_and_code/service/openai_graders/rubric/endpoint) (Required)
      *         init_parameters (Optional): {
      *             String: BinaryData (Required)
      *         }
@@ -1190,6 +1502,19 @@ public final class EvaluatorsImpl {
      *             }
      *         }
      *     }
+     *     generation_artifacts (Optional): {
+     *         dataset (Required): {
+     *             name: String (Required)
+     *             version: String (Required)
+     *         }
+     *         kinds (Required): [
+     *             String (Required)
+     *         ]
+     *     }
+     *     generation_job_id: String (Optional)
+     *     warnings (Optional): [
+     *         String(input_quality) (Optional)
+     *     ]
      *     created_by: String (Required)
      *     created_at: OffsetDateTime (Required)
      *     modified_at: OffsetDateTime (Required)
@@ -1217,8 +1542,11 @@ public final class EvaluatorsImpl {
      *     categories (Required): [
      *         String(quality/safety/agents) (Required)
      *     ]
+     *     supported_evaluation_levels (Optional): [
+     *         String(turn/conversation) (Optional)
+     *     ]
      *     definition (Required): {
-     *         type: String(prompt/code/prompt_and_code/service/openai_graders) (Required)
+     *         type: String(prompt/code/prompt_and_code/service/openai_graders/rubric/endpoint) (Required)
      *         init_parameters (Optional): {
      *             String: BinaryData (Required)
      *         }
@@ -1236,6 +1564,19 @@ public final class EvaluatorsImpl {
      *             }
      *         }
      *     }
+     *     generation_artifacts (Optional): {
+     *         dataset (Required): {
+     *             name: String (Required)
+     *             version: String (Required)
+     *         }
+     *         kinds (Required): [
+     *             String (Required)
+     *         ]
+     *     }
+     *     generation_job_id: String (Optional)
+     *     warnings (Optional): [
+     *         String(input_quality) (Optional)
+     *     ]
      *     created_by: String (Required)
      *     created_at: OffsetDateTime (Required)
      *     modified_at: OffsetDateTime (Required)
@@ -1262,16 +1603,17 @@ public final class EvaluatorsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createEvaluatorVersionWithResponse(String name, BinaryData evaluatorVersion,
         RequestOptions requestOptions) {
-        final String foundryFeatures = "Evaluations=V1Preview";
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createEvaluatorVersionSync(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), name, foundryFeatures, contentType, accept, evaluatorVersion,
-            requestOptions, Context.NONE);
+            this.client.getServiceVersion().getVersion(), name, contentType, accept, evaluatorVersion, requestOptions,
+            Context.NONE);
     }
 
     /**
-     * Update an existing EvaluatorVersion with the given version id.
+     * Update an evaluator version
+     * 
+     * Updates the specified evaluator version in place.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -1285,8 +1627,11 @@ public final class EvaluatorsImpl {
      *     categories (Required): [
      *         String(quality/safety/agents) (Required)
      *     ]
+     *     supported_evaluation_levels (Optional): [
+     *         String(turn/conversation) (Optional)
+     *     ]
      *     definition (Required): {
-     *         type: String(prompt/code/prompt_and_code/service/openai_graders) (Required)
+     *         type: String(prompt/code/prompt_and_code/service/openai_graders/rubric/endpoint) (Required)
      *         init_parameters (Optional): {
      *             String: BinaryData (Required)
      *         }
@@ -1304,6 +1649,19 @@ public final class EvaluatorsImpl {
      *             }
      *         }
      *     }
+     *     generation_artifacts (Optional): {
+     *         dataset (Required): {
+     *             name: String (Required)
+     *             version: String (Required)
+     *         }
+     *         kinds (Required): [
+     *             String (Required)
+     *         ]
+     *     }
+     *     generation_job_id: String (Optional)
+     *     warnings (Optional): [
+     *         String(input_quality) (Optional)
+     *     ]
      *     created_by: String (Required)
      *     created_at: OffsetDateTime (Required)
      *     modified_at: OffsetDateTime (Required)
@@ -1331,8 +1689,11 @@ public final class EvaluatorsImpl {
      *     categories (Required): [
      *         String(quality/safety/agents) (Required)
      *     ]
+     *     supported_evaluation_levels (Optional): [
+     *         String(turn/conversation) (Optional)
+     *     ]
      *     definition (Required): {
-     *         type: String(prompt/code/prompt_and_code/service/openai_graders) (Required)
+     *         type: String(prompt/code/prompt_and_code/service/openai_graders/rubric/endpoint) (Required)
      *         init_parameters (Optional): {
      *             String: BinaryData (Required)
      *         }
@@ -1350,6 +1711,19 @@ public final class EvaluatorsImpl {
      *             }
      *         }
      *     }
+     *     generation_artifacts (Optional): {
+     *         dataset (Required): {
+     *             name: String (Required)
+     *             version: String (Required)
+     *         }
+     *         kinds (Required): [
+     *             String (Required)
+     *         ]
+     *     }
+     *     generation_job_id: String (Optional)
+     *     warnings (Optional): [
+     *         String(input_quality) (Optional)
+     *     ]
      *     created_by: String (Required)
      *     created_at: OffsetDateTime (Required)
      *     modified_at: OffsetDateTime (Required)
@@ -1377,16 +1751,17 @@ public final class EvaluatorsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> updateEvaluatorVersionWithResponseAsync(String name, String version,
         BinaryData evaluatorVersion, RequestOptions requestOptions) {
-        final String foundryFeatures = "Evaluations=V1Preview";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.updateEvaluatorVersion(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), name, foundryFeatures, version, contentType, accept,
-            evaluatorVersion, requestOptions, context));
+            this.client.getServiceVersion().getVersion(), name, version, contentType, accept, evaluatorVersion,
+            requestOptions, context));
     }
 
     /**
-     * Update an existing EvaluatorVersion with the given version id.
+     * Update an evaluator version
+     * 
+     * Updates the specified evaluator version in place.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -1400,8 +1775,11 @@ public final class EvaluatorsImpl {
      *     categories (Required): [
      *         String(quality/safety/agents) (Required)
      *     ]
+     *     supported_evaluation_levels (Optional): [
+     *         String(turn/conversation) (Optional)
+     *     ]
      *     definition (Required): {
-     *         type: String(prompt/code/prompt_and_code/service/openai_graders) (Required)
+     *         type: String(prompt/code/prompt_and_code/service/openai_graders/rubric/endpoint) (Required)
      *         init_parameters (Optional): {
      *             String: BinaryData (Required)
      *         }
@@ -1419,6 +1797,19 @@ public final class EvaluatorsImpl {
      *             }
      *         }
      *     }
+     *     generation_artifacts (Optional): {
+     *         dataset (Required): {
+     *             name: String (Required)
+     *             version: String (Required)
+     *         }
+     *         kinds (Required): [
+     *             String (Required)
+     *         ]
+     *     }
+     *     generation_job_id: String (Optional)
+     *     warnings (Optional): [
+     *         String(input_quality) (Optional)
+     *     ]
      *     created_by: String (Required)
      *     created_at: OffsetDateTime (Required)
      *     modified_at: OffsetDateTime (Required)
@@ -1446,8 +1837,11 @@ public final class EvaluatorsImpl {
      *     categories (Required): [
      *         String(quality/safety/agents) (Required)
      *     ]
+     *     supported_evaluation_levels (Optional): [
+     *         String(turn/conversation) (Optional)
+     *     ]
      *     definition (Required): {
-     *         type: String(prompt/code/prompt_and_code/service/openai_graders) (Required)
+     *         type: String(prompt/code/prompt_and_code/service/openai_graders/rubric/endpoint) (Required)
      *         init_parameters (Optional): {
      *             String: BinaryData (Required)
      *         }
@@ -1465,6 +1859,19 @@ public final class EvaluatorsImpl {
      *             }
      *         }
      *     }
+     *     generation_artifacts (Optional): {
+     *         dataset (Required): {
+     *             name: String (Required)
+     *             version: String (Required)
+     *         }
+     *         kinds (Required): [
+     *             String (Required)
+     *         ]
+     *     }
+     *     generation_job_id: String (Optional)
+     *     warnings (Optional): [
+     *         String(input_quality) (Optional)
+     *     ]
      *     created_by: String (Required)
      *     created_at: OffsetDateTime (Required)
      *     modified_at: OffsetDateTime (Required)
@@ -1492,15 +1899,2228 @@ public final class EvaluatorsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> updateEvaluatorVersionWithResponse(String name, String version,
         BinaryData evaluatorVersion, RequestOptions requestOptions) {
-        final String foundryFeatures = "Evaluations=V1Preview";
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.updateEvaluatorVersionSync(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), name, foundryFeatures, version, contentType, accept,
-            evaluatorVersion, requestOptions, Context.NONE);
+            this.client.getServiceVersion().getVersion(), name, version, contentType, accept, evaluatorVersion,
+            requestOptions, Context.NONE);
     }
 
     /**
+     * Create an evaluator generation job
+     * 
+     * Creates an evaluator generation job. The service generates rubric-based evaluator
+     * definitions from the provided source materials asynchronously.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Operation-Id</td><td>String</td><td>No</td><td>Client-generated unique ID for idempotent retries. When
+     * absent, the server creates the job unconditionally.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     sources (Required): [
+     *          (Required){
+     *             type: String(prompt/agent/traces/dataset) (Required)
+     *         }
+     *     ]
+     *     model: String (Required)
+     *     evaluator_name: String (Required)
+     *     evaluator_display_name: String (Optional)
+     *     evaluator_description: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     result (Optional): {
+     *         display_name: String (Optional)
+     *         metadata (Optional): {
+     *             String: String (Required)
+     *         }
+     *         evaluator_type: String(builtin/custom) (Required)
+     *         categories (Required): [
+     *             String(quality/safety/agents) (Required)
+     *         ]
+     *         supported_evaluation_levels (Optional): [
+     *             String(turn/conversation) (Optional)
+     *         ]
+     *         definition (Required): {
+     *             type: String(prompt/code/prompt_and_code/service/openai_graders/rubric/endpoint) (Required)
+     *             init_parameters (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *             data_schema (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *             metrics (Optional): {
+     *                 String (Required): {
+     *                     type: String(ordinal/continuous/boolean) (Optional)
+     *                     desirable_direction: String(increase/decrease/neutral) (Optional)
+     *                     min_value: Double (Optional)
+     *                     max_value: Double (Optional)
+     *                     threshold: Double (Optional)
+     *                     is_primary: Boolean (Optional)
+     *                 }
+     *             }
+     *         }
+     *         generation_artifacts (Optional): {
+     *             dataset (Required): {
+     *                 name: String (Required)
+     *                 version: String (Required)
+     *             }
+     *             kinds (Required): [
+     *                 String (Required)
+     *             ]
+     *         }
+     *         generation_job_id: String (Optional)
+     *         warnings (Optional): [
+     *             String(input_quality) (Optional)
+     *         ]
+     *         created_by: String (Required)
+     *         created_at: OffsetDateTime (Required)
+     *         modified_at: OffsetDateTime (Required)
+     *         id: String (Optional)
+     *         name: String (Required)
+     *         version: String (Required)
+     *         description: String (Optional)
+     *         tags (Optional): {
+     *             String: String (Required)
+     *         }
+     *     }
+     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     sources (Required): [
+     *          (Required){
+     *             type: String(prompt/agent/traces/dataset) (Required)
+     *         }
+     *     ]
+     *     model: String (Required)
+     *     evaluator_name: String (Required)
+     *     evaluator_display_name: String (Optional)
+     *     evaluator_description: String (Optional)
+     *     created_at: long (Required)
+     *     finished_at: Long (Optional)
+     *     usage (Optional): {
+     *         input_tokens: long (Required)
+     *         output_tokens: long (Required)
+     *         total_tokens: long (Required)
+     *     }
+     *     input_quality_warnings (Optional): [
+     *          (Optional){
+     *             code: String(empty_prompt/short_prompt/empty_agent_instructions/short_agent_instructions/empty_dataset_content/short_dataset_content/low_trace_count/insufficient_total_input) (Required)
+     *             severity: String(warning) (Required)
+     *             message: String (Required)
+     *             source: String(prompt/agent/dataset/aggregate) (Required)
+     *             source_index: Integer (Optional)
+     *         }
+     *     ]
+     * }
+     * }
+     * </pre>
+     * 
+     * @param job The evaluator generation job inputs to create.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return evaluator Generation Job resource — a long-running job that generates rubric-based evaluator definitions
+     * from source materials along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<BinaryData>> createEvaluatorGenerationJobWithResponseAsync(BinaryData job,
+        RequestOptions requestOptions) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.createEvaluatorGenerationJob(this.client.getEndpoint(),
+            this.client.getServiceVersion().getVersion(), contentType, accept, job, requestOptions, context));
+    }
+
+    /**
+     * Create an evaluator generation job
+     * 
+     * Creates an evaluator generation job. The service generates rubric-based evaluator
+     * definitions from the provided source materials asynchronously.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Operation-Id</td><td>String</td><td>No</td><td>Client-generated unique ID for idempotent retries. When
+     * absent, the server creates the job unconditionally.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     sources (Required): [
+     *          (Required){
+     *             type: String(prompt/agent/traces/dataset) (Required)
+     *         }
+     *     ]
+     *     model: String (Required)
+     *     evaluator_name: String (Required)
+     *     evaluator_display_name: String (Optional)
+     *     evaluator_description: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     result (Optional): {
+     *         display_name: String (Optional)
+     *         metadata (Optional): {
+     *             String: String (Required)
+     *         }
+     *         evaluator_type: String(builtin/custom) (Required)
+     *         categories (Required): [
+     *             String(quality/safety/agents) (Required)
+     *         ]
+     *         supported_evaluation_levels (Optional): [
+     *             String(turn/conversation) (Optional)
+     *         ]
+     *         definition (Required): {
+     *             type: String(prompt/code/prompt_and_code/service/openai_graders/rubric/endpoint) (Required)
+     *             init_parameters (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *             data_schema (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *             metrics (Optional): {
+     *                 String (Required): {
+     *                     type: String(ordinal/continuous/boolean) (Optional)
+     *                     desirable_direction: String(increase/decrease/neutral) (Optional)
+     *                     min_value: Double (Optional)
+     *                     max_value: Double (Optional)
+     *                     threshold: Double (Optional)
+     *                     is_primary: Boolean (Optional)
+     *                 }
+     *             }
+     *         }
+     *         generation_artifacts (Optional): {
+     *             dataset (Required): {
+     *                 name: String (Required)
+     *                 version: String (Required)
+     *             }
+     *             kinds (Required): [
+     *                 String (Required)
+     *             ]
+     *         }
+     *         generation_job_id: String (Optional)
+     *         warnings (Optional): [
+     *             String(input_quality) (Optional)
+     *         ]
+     *         created_by: String (Required)
+     *         created_at: OffsetDateTime (Required)
+     *         modified_at: OffsetDateTime (Required)
+     *         id: String (Optional)
+     *         name: String (Required)
+     *         version: String (Required)
+     *         description: String (Optional)
+     *         tags (Optional): {
+     *             String: String (Required)
+     *         }
+     *     }
+     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     sources (Required): [
+     *          (Required){
+     *             type: String(prompt/agent/traces/dataset) (Required)
+     *         }
+     *     ]
+     *     model: String (Required)
+     *     evaluator_name: String (Required)
+     *     evaluator_display_name: String (Optional)
+     *     evaluator_description: String (Optional)
+     *     created_at: long (Required)
+     *     finished_at: Long (Optional)
+     *     usage (Optional): {
+     *         input_tokens: long (Required)
+     *         output_tokens: long (Required)
+     *         total_tokens: long (Required)
+     *     }
+     *     input_quality_warnings (Optional): [
+     *          (Optional){
+     *             code: String(empty_prompt/short_prompt/empty_agent_instructions/short_agent_instructions/empty_dataset_content/short_dataset_content/low_trace_count/insufficient_total_input) (Required)
+     *             severity: String(warning) (Required)
+     *             message: String (Required)
+     *             source: String(prompt/agent/dataset/aggregate) (Required)
+     *             source_index: Integer (Optional)
+     *         }
+     *     ]
+     * }
+     * }
+     * </pre>
+     * 
+     * @param job The evaluator generation job inputs to create.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return evaluator Generation Job resource — a long-running job that generates rubric-based evaluator definitions
+     * from source materials along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> createEvaluatorGenerationJobWithResponse(BinaryData job,
+        RequestOptions requestOptions) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.createEvaluatorGenerationJobSync(this.client.getEndpoint(),
+            this.client.getServiceVersion().getVersion(), contentType, accept, job, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Create an evaluator generation job
+     * 
+     * Creates an evaluator generation job. The service generates rubric-based evaluator
+     * definitions from the provided source materials asynchronously.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Operation-Id</td><td>String</td><td>No</td><td>Client-generated unique ID for idempotent retries. When
+     * absent, the server creates the job unconditionally.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     sources (Required): [
+     *          (Required){
+     *             type: String(prompt/agent/traces/dataset) (Required)
+     *         }
+     *     ]
+     *     model: String (Required)
+     *     evaluator_name: String (Required)
+     *     evaluator_display_name: String (Optional)
+     *     evaluator_description: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     result (Optional): {
+     *         display_name: String (Optional)
+     *         metadata (Optional): {
+     *             String: String (Required)
+     *         }
+     *         evaluator_type: String(builtin/custom) (Required)
+     *         categories (Required): [
+     *             String(quality/safety/agents) (Required)
+     *         ]
+     *         supported_evaluation_levels (Optional): [
+     *             String(turn/conversation) (Optional)
+     *         ]
+     *         definition (Required): {
+     *             type: String(prompt/code/prompt_and_code/service/openai_graders/rubric/endpoint) (Required)
+     *             init_parameters (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *             data_schema (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *             metrics (Optional): {
+     *                 String (Required): {
+     *                     type: String(ordinal/continuous/boolean) (Optional)
+     *                     desirable_direction: String(increase/decrease/neutral) (Optional)
+     *                     min_value: Double (Optional)
+     *                     max_value: Double (Optional)
+     *                     threshold: Double (Optional)
+     *                     is_primary: Boolean (Optional)
+     *                 }
+     *             }
+     *         }
+     *         generation_artifacts (Optional): {
+     *             dataset (Required): {
+     *                 name: String (Required)
+     *                 version: String (Required)
+     *             }
+     *             kinds (Required): [
+     *                 String (Required)
+     *             ]
+     *         }
+     *         generation_job_id: String (Optional)
+     *         warnings (Optional): [
+     *             String(input_quality) (Optional)
+     *         ]
+     *         created_by: String (Required)
+     *         created_at: OffsetDateTime (Required)
+     *         modified_at: OffsetDateTime (Required)
+     *         id: String (Optional)
+     *         name: String (Required)
+     *         version: String (Required)
+     *         description: String (Optional)
+     *         tags (Optional): {
+     *             String: String (Required)
+     *         }
+     *     }
+     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     sources (Required): [
+     *          (Required){
+     *             type: String(prompt/agent/traces/dataset) (Required)
+     *         }
+     *     ]
+     *     model: String (Required)
+     *     evaluator_name: String (Required)
+     *     evaluator_display_name: String (Optional)
+     *     evaluator_description: String (Optional)
+     *     created_at: long (Required)
+     *     finished_at: Long (Optional)
+     *     usage (Optional): {
+     *         input_tokens: long (Required)
+     *         output_tokens: long (Required)
+     *         total_tokens: long (Required)
+     *     }
+     *     input_quality_warnings (Optional): [
+     *          (Optional){
+     *             code: String(empty_prompt/short_prompt/empty_agent_instructions/short_agent_instructions/empty_dataset_content/short_dataset_content/low_trace_count/insufficient_total_input) (Required)
+     *             severity: String(warning) (Required)
+     *             message: String (Required)
+     *             source: String(prompt/agent/dataset/aggregate) (Required)
+     *             source_index: Integer (Optional)
+     *         }
+     *     ]
+     * }
+     * }
+     * </pre>
+     * 
+     * @param job The evaluator generation job inputs to create.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link PollerFlux} for polling of evaluator Generation Job resource — a long-running job that
+     * generates rubric-based evaluator definitions from source materials.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<EvaluatorGenerationJob, EvaluatorVersion>
+        beginCreateEvaluatorGenerationJobWithModelAsync(BinaryData job, RequestOptions requestOptions) {
+        return PollerFlux.create(Duration.ofSeconds(1),
+            () -> this.createEvaluatorGenerationJobWithResponseAsync(job, requestOptions),
+            new com.azure.ai.projects.implementation.OperationLocationPollingStrategy<>(
+                new PollingStrategyOptions(this.client.getHttpPipeline())
+                    .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
+                    .setContext(requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE)
+                    .setServiceVersion(this.client.getServiceVersion().getVersion()),
+                "result"),
+            TypeReference.createInstance(EvaluatorGenerationJob.class),
+            TypeReference.createInstance(EvaluatorVersion.class));
+    }
+
+    /**
+     * Create an evaluator generation job
+     * 
+     * Creates an evaluator generation job. The service generates rubric-based evaluator
+     * definitions from the provided source materials asynchronously.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Operation-Id</td><td>String</td><td>No</td><td>Client-generated unique ID for idempotent retries. When
+     * absent, the server creates the job unconditionally.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     sources (Required): [
+     *          (Required){
+     *             type: String(prompt/agent/traces/dataset) (Required)
+     *         }
+     *     ]
+     *     model: String (Required)
+     *     evaluator_name: String (Required)
+     *     evaluator_display_name: String (Optional)
+     *     evaluator_description: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     result (Optional): {
+     *         display_name: String (Optional)
+     *         metadata (Optional): {
+     *             String: String (Required)
+     *         }
+     *         evaluator_type: String(builtin/custom) (Required)
+     *         categories (Required): [
+     *             String(quality/safety/agents) (Required)
+     *         ]
+     *         supported_evaluation_levels (Optional): [
+     *             String(turn/conversation) (Optional)
+     *         ]
+     *         definition (Required): {
+     *             type: String(prompt/code/prompt_and_code/service/openai_graders/rubric/endpoint) (Required)
+     *             init_parameters (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *             data_schema (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *             metrics (Optional): {
+     *                 String (Required): {
+     *                     type: String(ordinal/continuous/boolean) (Optional)
+     *                     desirable_direction: String(increase/decrease/neutral) (Optional)
+     *                     min_value: Double (Optional)
+     *                     max_value: Double (Optional)
+     *                     threshold: Double (Optional)
+     *                     is_primary: Boolean (Optional)
+     *                 }
+     *             }
+     *         }
+     *         generation_artifacts (Optional): {
+     *             dataset (Required): {
+     *                 name: String (Required)
+     *                 version: String (Required)
+     *             }
+     *             kinds (Required): [
+     *                 String (Required)
+     *             ]
+     *         }
+     *         generation_job_id: String (Optional)
+     *         warnings (Optional): [
+     *             String(input_quality) (Optional)
+     *         ]
+     *         created_by: String (Required)
+     *         created_at: OffsetDateTime (Required)
+     *         modified_at: OffsetDateTime (Required)
+     *         id: String (Optional)
+     *         name: String (Required)
+     *         version: String (Required)
+     *         description: String (Optional)
+     *         tags (Optional): {
+     *             String: String (Required)
+     *         }
+     *     }
+     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     sources (Required): [
+     *          (Required){
+     *             type: String(prompt/agent/traces/dataset) (Required)
+     *         }
+     *     ]
+     *     model: String (Required)
+     *     evaluator_name: String (Required)
+     *     evaluator_display_name: String (Optional)
+     *     evaluator_description: String (Optional)
+     *     created_at: long (Required)
+     *     finished_at: Long (Optional)
+     *     usage (Optional): {
+     *         input_tokens: long (Required)
+     *         output_tokens: long (Required)
+     *         total_tokens: long (Required)
+     *     }
+     *     input_quality_warnings (Optional): [
+     *          (Optional){
+     *             code: String(empty_prompt/short_prompt/empty_agent_instructions/short_agent_instructions/empty_dataset_content/short_dataset_content/low_trace_count/insufficient_total_input) (Required)
+     *             severity: String(warning) (Required)
+     *             message: String (Required)
+     *             source: String(prompt/agent/dataset/aggregate) (Required)
+     *             source_index: Integer (Optional)
+     *         }
+     *     ]
+     * }
+     * }
+     * </pre>
+     * 
+     * @param job The evaluator generation job inputs to create.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link SyncPoller} for polling of evaluator Generation Job resource — a long-running job that
+     * generates rubric-based evaluator definitions from source materials.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<EvaluatorGenerationJob, EvaluatorVersion>
+        beginCreateEvaluatorGenerationJobWithModel(BinaryData job, RequestOptions requestOptions) {
+        return SyncPoller.createPoller(Duration.ofSeconds(1),
+            () -> this.createEvaluatorGenerationJobWithResponse(job, requestOptions),
+            new com.azure.ai.projects.implementation.SyncOperationLocationPollingStrategy<>(
+                new PollingStrategyOptions(this.client.getHttpPipeline())
+                    .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
+                    .setContext(requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE)
+                    .setServiceVersion(this.client.getServiceVersion().getVersion()),
+                "result"),
+            TypeReference.createInstance(EvaluatorGenerationJob.class),
+            TypeReference.createInstance(EvaluatorVersion.class));
+    }
+
+    /**
+     * Create an evaluator generation job
+     * 
+     * Creates an evaluator generation job. The service generates rubric-based evaluator
+     * definitions from the provided source materials asynchronously.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Operation-Id</td><td>String</td><td>No</td><td>Client-generated unique ID for idempotent retries. When
+     * absent, the server creates the job unconditionally.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     sources (Required): [
+     *          (Required){
+     *             type: String(prompt/agent/traces/dataset) (Required)
+     *         }
+     *     ]
+     *     model: String (Required)
+     *     evaluator_name: String (Required)
+     *     evaluator_display_name: String (Optional)
+     *     evaluator_description: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     result (Optional): {
+     *         display_name: String (Optional)
+     *         metadata (Optional): {
+     *             String: String (Required)
+     *         }
+     *         evaluator_type: String(builtin/custom) (Required)
+     *         categories (Required): [
+     *             String(quality/safety/agents) (Required)
+     *         ]
+     *         supported_evaluation_levels (Optional): [
+     *             String(turn/conversation) (Optional)
+     *         ]
+     *         definition (Required): {
+     *             type: String(prompt/code/prompt_and_code/service/openai_graders/rubric/endpoint) (Required)
+     *             init_parameters (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *             data_schema (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *             metrics (Optional): {
+     *                 String (Required): {
+     *                     type: String(ordinal/continuous/boolean) (Optional)
+     *                     desirable_direction: String(increase/decrease/neutral) (Optional)
+     *                     min_value: Double (Optional)
+     *                     max_value: Double (Optional)
+     *                     threshold: Double (Optional)
+     *                     is_primary: Boolean (Optional)
+     *                 }
+     *             }
+     *         }
+     *         generation_artifacts (Optional): {
+     *             dataset (Required): {
+     *                 name: String (Required)
+     *                 version: String (Required)
+     *             }
+     *             kinds (Required): [
+     *                 String (Required)
+     *             ]
+     *         }
+     *         generation_job_id: String (Optional)
+     *         warnings (Optional): [
+     *             String(input_quality) (Optional)
+     *         ]
+     *         created_by: String (Required)
+     *         created_at: OffsetDateTime (Required)
+     *         modified_at: OffsetDateTime (Required)
+     *         id: String (Optional)
+     *         name: String (Required)
+     *         version: String (Required)
+     *         description: String (Optional)
+     *         tags (Optional): {
+     *             String: String (Required)
+     *         }
+     *     }
+     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     sources (Required): [
+     *          (Required){
+     *             type: String(prompt/agent/traces/dataset) (Required)
+     *         }
+     *     ]
+     *     model: String (Required)
+     *     evaluator_name: String (Required)
+     *     evaluator_display_name: String (Optional)
+     *     evaluator_description: String (Optional)
+     *     created_at: long (Required)
+     *     finished_at: Long (Optional)
+     *     usage (Optional): {
+     *         input_tokens: long (Required)
+     *         output_tokens: long (Required)
+     *         total_tokens: long (Required)
+     *     }
+     *     input_quality_warnings (Optional): [
+     *          (Optional){
+     *             code: String(empty_prompt/short_prompt/empty_agent_instructions/short_agent_instructions/empty_dataset_content/short_dataset_content/low_trace_count/insufficient_total_input) (Required)
+     *             severity: String(warning) (Required)
+     *             message: String (Required)
+     *             source: String(prompt/agent/dataset/aggregate) (Required)
+     *             source_index: Integer (Optional)
+     *         }
+     *     ]
+     * }
+     * }
+     * </pre>
+     * 
+     * @param job The evaluator generation job inputs to create.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link PollerFlux} for polling of evaluator Generation Job resource — a long-running job that
+     * generates rubric-based evaluator definitions from source materials.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginCreateEvaluatorGenerationJobAsync(BinaryData job,
+        RequestOptions requestOptions) {
+        return PollerFlux.create(Duration.ofSeconds(1),
+            () -> this.createEvaluatorGenerationJobWithResponseAsync(job, requestOptions),
+            new com.azure.ai.projects.implementation.OperationLocationPollingStrategy<>(
+                new PollingStrategyOptions(this.client.getHttpPipeline())
+                    .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
+                    .setContext(requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE)
+                    .setServiceVersion(this.client.getServiceVersion().getVersion()),
+                "result"),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Create an evaluator generation job
+     * 
+     * Creates an evaluator generation job. The service generates rubric-based evaluator
+     * definitions from the provided source materials asynchronously.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Operation-Id</td><td>String</td><td>No</td><td>Client-generated unique ID for idempotent retries. When
+     * absent, the server creates the job unconditionally.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     sources (Required): [
+     *          (Required){
+     *             type: String(prompt/agent/traces/dataset) (Required)
+     *         }
+     *     ]
+     *     model: String (Required)
+     *     evaluator_name: String (Required)
+     *     evaluator_display_name: String (Optional)
+     *     evaluator_description: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     result (Optional): {
+     *         display_name: String (Optional)
+     *         metadata (Optional): {
+     *             String: String (Required)
+     *         }
+     *         evaluator_type: String(builtin/custom) (Required)
+     *         categories (Required): [
+     *             String(quality/safety/agents) (Required)
+     *         ]
+     *         supported_evaluation_levels (Optional): [
+     *             String(turn/conversation) (Optional)
+     *         ]
+     *         definition (Required): {
+     *             type: String(prompt/code/prompt_and_code/service/openai_graders/rubric/endpoint) (Required)
+     *             init_parameters (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *             data_schema (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *             metrics (Optional): {
+     *                 String (Required): {
+     *                     type: String(ordinal/continuous/boolean) (Optional)
+     *                     desirable_direction: String(increase/decrease/neutral) (Optional)
+     *                     min_value: Double (Optional)
+     *                     max_value: Double (Optional)
+     *                     threshold: Double (Optional)
+     *                     is_primary: Boolean (Optional)
+     *                 }
+     *             }
+     *         }
+     *         generation_artifacts (Optional): {
+     *             dataset (Required): {
+     *                 name: String (Required)
+     *                 version: String (Required)
+     *             }
+     *             kinds (Required): [
+     *                 String (Required)
+     *             ]
+     *         }
+     *         generation_job_id: String (Optional)
+     *         warnings (Optional): [
+     *             String(input_quality) (Optional)
+     *         ]
+     *         created_by: String (Required)
+     *         created_at: OffsetDateTime (Required)
+     *         modified_at: OffsetDateTime (Required)
+     *         id: String (Optional)
+     *         name: String (Required)
+     *         version: String (Required)
+     *         description: String (Optional)
+     *         tags (Optional): {
+     *             String: String (Required)
+     *         }
+     *     }
+     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     sources (Required): [
+     *          (Required){
+     *             type: String(prompt/agent/traces/dataset) (Required)
+     *         }
+     *     ]
+     *     model: String (Required)
+     *     evaluator_name: String (Required)
+     *     evaluator_display_name: String (Optional)
+     *     evaluator_description: String (Optional)
+     *     created_at: long (Required)
+     *     finished_at: Long (Optional)
+     *     usage (Optional): {
+     *         input_tokens: long (Required)
+     *         output_tokens: long (Required)
+     *         total_tokens: long (Required)
+     *     }
+     *     input_quality_warnings (Optional): [
+     *          (Optional){
+     *             code: String(empty_prompt/short_prompt/empty_agent_instructions/short_agent_instructions/empty_dataset_content/short_dataset_content/low_trace_count/insufficient_total_input) (Required)
+     *             severity: String(warning) (Required)
+     *             message: String (Required)
+     *             source: String(prompt/agent/dataset/aggregate) (Required)
+     *             source_index: Integer (Optional)
+     *         }
+     *     ]
+     * }
+     * }
+     * </pre>
+     * 
+     * @param job The evaluator generation job inputs to create.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link SyncPoller} for polling of evaluator Generation Job resource — a long-running job that
+     * generates rubric-based evaluator definitions from source materials.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, BinaryData> beginCreateEvaluatorGenerationJob(BinaryData job,
+        RequestOptions requestOptions) {
+        return SyncPoller.createPoller(Duration.ofSeconds(1),
+            () -> this.createEvaluatorGenerationJobWithResponse(job, requestOptions),
+            new com.azure.ai.projects.implementation.SyncOperationLocationPollingStrategy<>(
+                new PollingStrategyOptions(this.client.getHttpPipeline())
+                    .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
+                    .setContext(requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE)
+                    .setServiceVersion(this.client.getServiceVersion().getVersion()),
+                "result"),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Get an evaluator generation job
+     * 
+     * Gets the details of an evaluator generation job by its ID.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     result (Optional): {
+     *         display_name: String (Optional)
+     *         metadata (Optional): {
+     *             String: String (Required)
+     *         }
+     *         evaluator_type: String(builtin/custom) (Required)
+     *         categories (Required): [
+     *             String(quality/safety/agents) (Required)
+     *         ]
+     *         supported_evaluation_levels (Optional): [
+     *             String(turn/conversation) (Optional)
+     *         ]
+     *         definition (Required): {
+     *             type: String(prompt/code/prompt_and_code/service/openai_graders/rubric/endpoint) (Required)
+     *             init_parameters (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *             data_schema (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *             metrics (Optional): {
+     *                 String (Required): {
+     *                     type: String(ordinal/continuous/boolean) (Optional)
+     *                     desirable_direction: String(increase/decrease/neutral) (Optional)
+     *                     min_value: Double (Optional)
+     *                     max_value: Double (Optional)
+     *                     threshold: Double (Optional)
+     *                     is_primary: Boolean (Optional)
+     *                 }
+     *             }
+     *         }
+     *         generation_artifacts (Optional): {
+     *             dataset (Required): {
+     *                 name: String (Required)
+     *                 version: String (Required)
+     *             }
+     *             kinds (Required): [
+     *                 String (Required)
+     *             ]
+     *         }
+     *         generation_job_id: String (Optional)
+     *         warnings (Optional): [
+     *             String(input_quality) (Optional)
+     *         ]
+     *         created_by: String (Required)
+     *         created_at: OffsetDateTime (Required)
+     *         modified_at: OffsetDateTime (Required)
+     *         id: String (Optional)
+     *         name: String (Required)
+     *         version: String (Required)
+     *         description: String (Optional)
+     *         tags (Optional): {
+     *             String: String (Required)
+     *         }
+     *     }
+     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     sources (Required): [
+     *          (Required){
+     *             type: String(prompt/agent/traces/dataset) (Required)
+     *         }
+     *     ]
+     *     model: String (Required)
+     *     evaluator_name: String (Required)
+     *     evaluator_display_name: String (Optional)
+     *     evaluator_description: String (Optional)
+     *     created_at: long (Required)
+     *     finished_at: Long (Optional)
+     *     usage (Optional): {
+     *         input_tokens: long (Required)
+     *         output_tokens: long (Required)
+     *         total_tokens: long (Required)
+     *     }
+     *     input_quality_warnings (Optional): [
+     *          (Optional){
+     *             code: String(empty_prompt/short_prompt/empty_agent_instructions/short_agent_instructions/empty_dataset_content/short_dataset_content/low_trace_count/insufficient_total_input) (Required)
+     *             severity: String(warning) (Required)
+     *             message: String (Required)
+     *             source: String(prompt/agent/dataset/aggregate) (Required)
+     *             source_index: Integer (Optional)
+     *         }
+     *     ]
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>Retry-After</td><td>int</td><td>Recommended number of seconds to wait before polling again.</td></tr>
+     * </table>
+     * 
+     * @param jobId The ID of the job.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return an evaluator generation job
+     * 
+     * Gets the details of an evaluator generation job by its ID along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getEvaluatorGenerationJobWithResponseAsync(String jobId,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.getEvaluatorGenerationJob(this.client.getEndpoint(), jobId,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
+    }
+
+    /**
+     * Get an evaluator generation job
+     * 
+     * Gets the details of an evaluator generation job by its ID.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     result (Optional): {
+     *         display_name: String (Optional)
+     *         metadata (Optional): {
+     *             String: String (Required)
+     *         }
+     *         evaluator_type: String(builtin/custom) (Required)
+     *         categories (Required): [
+     *             String(quality/safety/agents) (Required)
+     *         ]
+     *         supported_evaluation_levels (Optional): [
+     *             String(turn/conversation) (Optional)
+     *         ]
+     *         definition (Required): {
+     *             type: String(prompt/code/prompt_and_code/service/openai_graders/rubric/endpoint) (Required)
+     *             init_parameters (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *             data_schema (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *             metrics (Optional): {
+     *                 String (Required): {
+     *                     type: String(ordinal/continuous/boolean) (Optional)
+     *                     desirable_direction: String(increase/decrease/neutral) (Optional)
+     *                     min_value: Double (Optional)
+     *                     max_value: Double (Optional)
+     *                     threshold: Double (Optional)
+     *                     is_primary: Boolean (Optional)
+     *                 }
+     *             }
+     *         }
+     *         generation_artifacts (Optional): {
+     *             dataset (Required): {
+     *                 name: String (Required)
+     *                 version: String (Required)
+     *             }
+     *             kinds (Required): [
+     *                 String (Required)
+     *             ]
+     *         }
+     *         generation_job_id: String (Optional)
+     *         warnings (Optional): [
+     *             String(input_quality) (Optional)
+     *         ]
+     *         created_by: String (Required)
+     *         created_at: OffsetDateTime (Required)
+     *         modified_at: OffsetDateTime (Required)
+     *         id: String (Optional)
+     *         name: String (Required)
+     *         version: String (Required)
+     *         description: String (Optional)
+     *         tags (Optional): {
+     *             String: String (Required)
+     *         }
+     *     }
+     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     sources (Required): [
+     *          (Required){
+     *             type: String(prompt/agent/traces/dataset) (Required)
+     *         }
+     *     ]
+     *     model: String (Required)
+     *     evaluator_name: String (Required)
+     *     evaluator_display_name: String (Optional)
+     *     evaluator_description: String (Optional)
+     *     created_at: long (Required)
+     *     finished_at: Long (Optional)
+     *     usage (Optional): {
+     *         input_tokens: long (Required)
+     *         output_tokens: long (Required)
+     *         total_tokens: long (Required)
+     *     }
+     *     input_quality_warnings (Optional): [
+     *          (Optional){
+     *             code: String(empty_prompt/short_prompt/empty_agent_instructions/short_agent_instructions/empty_dataset_content/short_dataset_content/low_trace_count/insufficient_total_input) (Required)
+     *             severity: String(warning) (Required)
+     *             message: String (Required)
+     *             source: String(prompt/agent/dataset/aggregate) (Required)
+     *             source_index: Integer (Optional)
+     *         }
+     *     ]
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>Retry-After</td><td>int</td><td>Recommended number of seconds to wait before polling again.</td></tr>
+     * </table>
+     * 
+     * @param jobId The ID of the job.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return an evaluator generation job
+     * 
+     * Gets the details of an evaluator generation job by its ID along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getEvaluatorGenerationJobWithResponse(String jobId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.getEvaluatorGenerationJobSync(this.client.getEndpoint(), jobId,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+    }
+
+    /**
+     * List evaluator generation jobs
+     * 
+     * Returns a list of evaluator generation jobs. The List API has up to a few
+     * seconds of propagation delay, so a recently created job may not appear
+     * immediately; use the Get evaluator generation job API with the job ID to
+     * retrieve a specific job without delay.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the
+     * default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
+     * for ascending order and`desc`
+     * for descending order. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. `after` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. `before` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     result (Optional): {
+     *         display_name: String (Optional)
+     *         metadata (Optional): {
+     *             String: String (Required)
+     *         }
+     *         evaluator_type: String(builtin/custom) (Required)
+     *         categories (Required): [
+     *             String(quality/safety/agents) (Required)
+     *         ]
+     *         supported_evaluation_levels (Optional): [
+     *             String(turn/conversation) (Optional)
+     *         ]
+     *         definition (Required): {
+     *             type: String(prompt/code/prompt_and_code/service/openai_graders/rubric/endpoint) (Required)
+     *             init_parameters (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *             data_schema (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *             metrics (Optional): {
+     *                 String (Required): {
+     *                     type: String(ordinal/continuous/boolean) (Optional)
+     *                     desirable_direction: String(increase/decrease/neutral) (Optional)
+     *                     min_value: Double (Optional)
+     *                     max_value: Double (Optional)
+     *                     threshold: Double (Optional)
+     *                     is_primary: Boolean (Optional)
+     *                 }
+     *             }
+     *         }
+     *         generation_artifacts (Optional): {
+     *             dataset (Required): {
+     *                 name: String (Required)
+     *                 version: String (Required)
+     *             }
+     *             kinds (Required): [
+     *                 String (Required)
+     *             ]
+     *         }
+     *         generation_job_id: String (Optional)
+     *         warnings (Optional): [
+     *             String(input_quality) (Optional)
+     *         ]
+     *         created_by: String (Required)
+     *         created_at: OffsetDateTime (Required)
+     *         modified_at: OffsetDateTime (Required)
+     *         id: String (Optional)
+     *         name: String (Required)
+     *         version: String (Required)
+     *         description: String (Optional)
+     *         tags (Optional): {
+     *             String: String (Required)
+     *         }
+     *     }
+     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     sources (Required): [
+     *          (Required){
+     *             type: String(prompt/agent/traces/dataset) (Required)
+     *         }
+     *     ]
+     *     model: String (Required)
+     *     evaluator_name: String (Required)
+     *     evaluator_display_name: String (Optional)
+     *     evaluator_description: String (Optional)
+     *     created_at: long (Required)
+     *     finished_at: Long (Optional)
+     *     usage (Optional): {
+     *         input_tokens: long (Required)
+     *         output_tokens: long (Required)
+     *         total_tokens: long (Required)
+     *     }
+     *     input_quality_warnings (Optional): [
+     *          (Optional){
+     *             code: String(empty_prompt/short_prompt/empty_agent_instructions/short_agent_instructions/empty_dataset_content/short_dataset_content/low_trace_count/insufficient_total_input) (Required)
+     *             severity: String(warning) (Required)
+     *             message: String (Required)
+     *             source: String(prompt/agent/dataset/aggregate) (Required)
+     *             source_index: Integer (Optional)
+     *         }
+     *     ]
+     * }
+     * }
+     * </pre>
+     * 
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response data for a requested list of items along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<BinaryData>> listEvaluatorGenerationJobsSinglePageAsync(RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listEvaluatorGenerationJobs(this.client.getEndpoint(),
+                this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "data"), null, null));
+    }
+
+    /**
+     * List evaluator generation jobs
+     * 
+     * Returns a list of evaluator generation jobs. The List API has up to a few
+     * seconds of propagation delay, so a recently created job may not appear
+     * immediately; use the Get evaluator generation job API with the job ID to
+     * retrieve a specific job without delay.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the
+     * default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
+     * for ascending order and`desc`
+     * for descending order. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. `after` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. `before` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     result (Optional): {
+     *         display_name: String (Optional)
+     *         metadata (Optional): {
+     *             String: String (Required)
+     *         }
+     *         evaluator_type: String(builtin/custom) (Required)
+     *         categories (Required): [
+     *             String(quality/safety/agents) (Required)
+     *         ]
+     *         supported_evaluation_levels (Optional): [
+     *             String(turn/conversation) (Optional)
+     *         ]
+     *         definition (Required): {
+     *             type: String(prompt/code/prompt_and_code/service/openai_graders/rubric/endpoint) (Required)
+     *             init_parameters (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *             data_schema (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *             metrics (Optional): {
+     *                 String (Required): {
+     *                     type: String(ordinal/continuous/boolean) (Optional)
+     *                     desirable_direction: String(increase/decrease/neutral) (Optional)
+     *                     min_value: Double (Optional)
+     *                     max_value: Double (Optional)
+     *                     threshold: Double (Optional)
+     *                     is_primary: Boolean (Optional)
+     *                 }
+     *             }
+     *         }
+     *         generation_artifacts (Optional): {
+     *             dataset (Required): {
+     *                 name: String (Required)
+     *                 version: String (Required)
+     *             }
+     *             kinds (Required): [
+     *                 String (Required)
+     *             ]
+     *         }
+     *         generation_job_id: String (Optional)
+     *         warnings (Optional): [
+     *             String(input_quality) (Optional)
+     *         ]
+     *         created_by: String (Required)
+     *         created_at: OffsetDateTime (Required)
+     *         modified_at: OffsetDateTime (Required)
+     *         id: String (Optional)
+     *         name: String (Required)
+     *         version: String (Required)
+     *         description: String (Optional)
+     *         tags (Optional): {
+     *             String: String (Required)
+     *         }
+     *     }
+     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     sources (Required): [
+     *          (Required){
+     *             type: String(prompt/agent/traces/dataset) (Required)
+     *         }
+     *     ]
+     *     model: String (Required)
+     *     evaluator_name: String (Required)
+     *     evaluator_display_name: String (Optional)
+     *     evaluator_description: String (Optional)
+     *     created_at: long (Required)
+     *     finished_at: Long (Optional)
+     *     usage (Optional): {
+     *         input_tokens: long (Required)
+     *         output_tokens: long (Required)
+     *         total_tokens: long (Required)
+     *     }
+     *     input_quality_warnings (Optional): [
+     *          (Optional){
+     *             code: String(empty_prompt/short_prompt/empty_agent_instructions/short_agent_instructions/empty_dataset_content/short_dataset_content/low_trace_count/insufficient_total_input) (Required)
+     *             severity: String(warning) (Required)
+     *             message: String (Required)
+     *             source: String(prompt/agent/dataset/aggregate) (Required)
+     *             source_index: Integer (Optional)
+     *         }
+     *     ]
+     * }
+     * }
+     * </pre>
+     * 
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response data for a requested list of items as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listEvaluatorGenerationJobsAsync(RequestOptions requestOptions) {
+        return new PagedFlux<>(() -> listEvaluatorGenerationJobsSinglePageAsync(requestOptions));
+    }
+
+    /**
+     * List evaluator generation jobs
+     * 
+     * Returns a list of evaluator generation jobs. The List API has up to a few
+     * seconds of propagation delay, so a recently created job may not appear
+     * immediately; use the Get evaluator generation job API with the job ID to
+     * retrieve a specific job without delay.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the
+     * default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
+     * for ascending order and`desc`
+     * for descending order. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. `after` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. `before` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     result (Optional): {
+     *         display_name: String (Optional)
+     *         metadata (Optional): {
+     *             String: String (Required)
+     *         }
+     *         evaluator_type: String(builtin/custom) (Required)
+     *         categories (Required): [
+     *             String(quality/safety/agents) (Required)
+     *         ]
+     *         supported_evaluation_levels (Optional): [
+     *             String(turn/conversation) (Optional)
+     *         ]
+     *         definition (Required): {
+     *             type: String(prompt/code/prompt_and_code/service/openai_graders/rubric/endpoint) (Required)
+     *             init_parameters (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *             data_schema (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *             metrics (Optional): {
+     *                 String (Required): {
+     *                     type: String(ordinal/continuous/boolean) (Optional)
+     *                     desirable_direction: String(increase/decrease/neutral) (Optional)
+     *                     min_value: Double (Optional)
+     *                     max_value: Double (Optional)
+     *                     threshold: Double (Optional)
+     *                     is_primary: Boolean (Optional)
+     *                 }
+     *             }
+     *         }
+     *         generation_artifacts (Optional): {
+     *             dataset (Required): {
+     *                 name: String (Required)
+     *                 version: String (Required)
+     *             }
+     *             kinds (Required): [
+     *                 String (Required)
+     *             ]
+     *         }
+     *         generation_job_id: String (Optional)
+     *         warnings (Optional): [
+     *             String(input_quality) (Optional)
+     *         ]
+     *         created_by: String (Required)
+     *         created_at: OffsetDateTime (Required)
+     *         modified_at: OffsetDateTime (Required)
+     *         id: String (Optional)
+     *         name: String (Required)
+     *         version: String (Required)
+     *         description: String (Optional)
+     *         tags (Optional): {
+     *             String: String (Required)
+     *         }
+     *     }
+     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     sources (Required): [
+     *          (Required){
+     *             type: String(prompt/agent/traces/dataset) (Required)
+     *         }
+     *     ]
+     *     model: String (Required)
+     *     evaluator_name: String (Required)
+     *     evaluator_display_name: String (Optional)
+     *     evaluator_description: String (Optional)
+     *     created_at: long (Required)
+     *     finished_at: Long (Optional)
+     *     usage (Optional): {
+     *         input_tokens: long (Required)
+     *         output_tokens: long (Required)
+     *         total_tokens: long (Required)
+     *     }
+     *     input_quality_warnings (Optional): [
+     *          (Optional){
+     *             code: String(empty_prompt/short_prompt/empty_agent_instructions/short_agent_instructions/empty_dataset_content/short_dataset_content/low_trace_count/insufficient_total_input) (Required)
+     *             severity: String(warning) (Required)
+     *             message: String (Required)
+     *             source: String(prompt/agent/dataset/aggregate) (Required)
+     *             source_index: Integer (Optional)
+     *         }
+     *     ]
+     * }
+     * }
+     * </pre>
+     * 
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response data for a requested list of items along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BinaryData> listEvaluatorGenerationJobsSinglePage(RequestOptions requestOptions) {
+        final String accept = "application/json";
+        Response<BinaryData> res = service.listEvaluatorGenerationJobsSync(this.client.getEndpoint(),
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            getValues(res.getValue(), "data"), null, null);
+    }
+
+    /**
+     * List evaluator generation jobs
+     * 
+     * Returns a list of evaluator generation jobs. The List API has up to a few
+     * seconds of propagation delay, so a recently created job may not appear
+     * immediately; use the Get evaluator generation job API with the job ID to
+     * retrieve a specific job without delay.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the
+     * default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
+     * for ascending order and`desc`
+     * for descending order. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. `after` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. `before` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     result (Optional): {
+     *         display_name: String (Optional)
+     *         metadata (Optional): {
+     *             String: String (Required)
+     *         }
+     *         evaluator_type: String(builtin/custom) (Required)
+     *         categories (Required): [
+     *             String(quality/safety/agents) (Required)
+     *         ]
+     *         supported_evaluation_levels (Optional): [
+     *             String(turn/conversation) (Optional)
+     *         ]
+     *         definition (Required): {
+     *             type: String(prompt/code/prompt_and_code/service/openai_graders/rubric/endpoint) (Required)
+     *             init_parameters (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *             data_schema (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *             metrics (Optional): {
+     *                 String (Required): {
+     *                     type: String(ordinal/continuous/boolean) (Optional)
+     *                     desirable_direction: String(increase/decrease/neutral) (Optional)
+     *                     min_value: Double (Optional)
+     *                     max_value: Double (Optional)
+     *                     threshold: Double (Optional)
+     *                     is_primary: Boolean (Optional)
+     *                 }
+     *             }
+     *         }
+     *         generation_artifacts (Optional): {
+     *             dataset (Required): {
+     *                 name: String (Required)
+     *                 version: String (Required)
+     *             }
+     *             kinds (Required): [
+     *                 String (Required)
+     *             ]
+     *         }
+     *         generation_job_id: String (Optional)
+     *         warnings (Optional): [
+     *             String(input_quality) (Optional)
+     *         ]
+     *         created_by: String (Required)
+     *         created_at: OffsetDateTime (Required)
+     *         modified_at: OffsetDateTime (Required)
+     *         id: String (Optional)
+     *         name: String (Required)
+     *         version: String (Required)
+     *         description: String (Optional)
+     *         tags (Optional): {
+     *             String: String (Required)
+     *         }
+     *     }
+     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     sources (Required): [
+     *          (Required){
+     *             type: String(prompt/agent/traces/dataset) (Required)
+     *         }
+     *     ]
+     *     model: String (Required)
+     *     evaluator_name: String (Required)
+     *     evaluator_display_name: String (Optional)
+     *     evaluator_description: String (Optional)
+     *     created_at: long (Required)
+     *     finished_at: Long (Optional)
+     *     usage (Optional): {
+     *         input_tokens: long (Required)
+     *         output_tokens: long (Required)
+     *         total_tokens: long (Required)
+     *     }
+     *     input_quality_warnings (Optional): [
+     *          (Optional){
+     *             code: String(empty_prompt/short_prompt/empty_agent_instructions/short_agent_instructions/empty_dataset_content/short_dataset_content/low_trace_count/insufficient_total_input) (Required)
+     *             severity: String(warning) (Required)
+     *             message: String (Required)
+     *             source: String(prompt/agent/dataset/aggregate) (Required)
+     *             source_index: Integer (Optional)
+     *         }
+     *     ]
+     * }
+     * }
+     * </pre>
+     * 
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listEvaluatorGenerationJobs(RequestOptions requestOptions) {
+        return new PagedIterable<>(() -> listEvaluatorGenerationJobsSinglePage(requestOptions));
+    }
+
+    /**
+     * Cancel an evaluator generation job
+     * 
+     * Cancels an evaluator generation job by its ID.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     result (Optional): {
+     *         display_name: String (Optional)
+     *         metadata (Optional): {
+     *             String: String (Required)
+     *         }
+     *         evaluator_type: String(builtin/custom) (Required)
+     *         categories (Required): [
+     *             String(quality/safety/agents) (Required)
+     *         ]
+     *         supported_evaluation_levels (Optional): [
+     *             String(turn/conversation) (Optional)
+     *         ]
+     *         definition (Required): {
+     *             type: String(prompt/code/prompt_and_code/service/openai_graders/rubric/endpoint) (Required)
+     *             init_parameters (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *             data_schema (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *             metrics (Optional): {
+     *                 String (Required): {
+     *                     type: String(ordinal/continuous/boolean) (Optional)
+     *                     desirable_direction: String(increase/decrease/neutral) (Optional)
+     *                     min_value: Double (Optional)
+     *                     max_value: Double (Optional)
+     *                     threshold: Double (Optional)
+     *                     is_primary: Boolean (Optional)
+     *                 }
+     *             }
+     *         }
+     *         generation_artifacts (Optional): {
+     *             dataset (Required): {
+     *                 name: String (Required)
+     *                 version: String (Required)
+     *             }
+     *             kinds (Required): [
+     *                 String (Required)
+     *             ]
+     *         }
+     *         generation_job_id: String (Optional)
+     *         warnings (Optional): [
+     *             String(input_quality) (Optional)
+     *         ]
+     *         created_by: String (Required)
+     *         created_at: OffsetDateTime (Required)
+     *         modified_at: OffsetDateTime (Required)
+     *         id: String (Optional)
+     *         name: String (Required)
+     *         version: String (Required)
+     *         description: String (Optional)
+     *         tags (Optional): {
+     *             String: String (Required)
+     *         }
+     *     }
+     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     sources (Required): [
+     *          (Required){
+     *             type: String(prompt/agent/traces/dataset) (Required)
+     *         }
+     *     ]
+     *     model: String (Required)
+     *     evaluator_name: String (Required)
+     *     evaluator_display_name: String (Optional)
+     *     evaluator_description: String (Optional)
+     *     created_at: long (Required)
+     *     finished_at: Long (Optional)
+     *     usage (Optional): {
+     *         input_tokens: long (Required)
+     *         output_tokens: long (Required)
+     *         total_tokens: long (Required)
+     *     }
+     *     input_quality_warnings (Optional): [
+     *          (Optional){
+     *             code: String(empty_prompt/short_prompt/empty_agent_instructions/short_agent_instructions/empty_dataset_content/short_dataset_content/low_trace_count/insufficient_total_input) (Required)
+     *             severity: String(warning) (Required)
+     *             message: String (Required)
+     *             source: String(prompt/agent/dataset/aggregate) (Required)
+     *             source_index: Integer (Optional)
+     *         }
+     *     ]
+     * }
+     * }
+     * </pre>
+     * 
+     * @param jobId The ID of the job to cancel.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return evaluator Generation Job resource — a long-running job that generates rubric-based evaluator definitions
+     * from source materials along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> cancelEvaluatorGenerationJobWithResponseAsync(String jobId,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.cancelEvaluatorGenerationJob(this.client.getEndpoint(), jobId,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
+    }
+
+    /**
+     * Cancel an evaluator generation job
+     * 
+     * Cancels an evaluator generation job by its ID.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     result (Optional): {
+     *         display_name: String (Optional)
+     *         metadata (Optional): {
+     *             String: String (Required)
+     *         }
+     *         evaluator_type: String(builtin/custom) (Required)
+     *         categories (Required): [
+     *             String(quality/safety/agents) (Required)
+     *         ]
+     *         supported_evaluation_levels (Optional): [
+     *             String(turn/conversation) (Optional)
+     *         ]
+     *         definition (Required): {
+     *             type: String(prompt/code/prompt_and_code/service/openai_graders/rubric/endpoint) (Required)
+     *             init_parameters (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *             data_schema (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *             metrics (Optional): {
+     *                 String (Required): {
+     *                     type: String(ordinal/continuous/boolean) (Optional)
+     *                     desirable_direction: String(increase/decrease/neutral) (Optional)
+     *                     min_value: Double (Optional)
+     *                     max_value: Double (Optional)
+     *                     threshold: Double (Optional)
+     *                     is_primary: Boolean (Optional)
+     *                 }
+     *             }
+     *         }
+     *         generation_artifacts (Optional): {
+     *             dataset (Required): {
+     *                 name: String (Required)
+     *                 version: String (Required)
+     *             }
+     *             kinds (Required): [
+     *                 String (Required)
+     *             ]
+     *         }
+     *         generation_job_id: String (Optional)
+     *         warnings (Optional): [
+     *             String(input_quality) (Optional)
+     *         ]
+     *         created_by: String (Required)
+     *         created_at: OffsetDateTime (Required)
+     *         modified_at: OffsetDateTime (Required)
+     *         id: String (Optional)
+     *         name: String (Required)
+     *         version: String (Required)
+     *         description: String (Optional)
+     *         tags (Optional): {
+     *             String: String (Required)
+     *         }
+     *     }
+     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     sources (Required): [
+     *          (Required){
+     *             type: String(prompt/agent/traces/dataset) (Required)
+     *         }
+     *     ]
+     *     model: String (Required)
+     *     evaluator_name: String (Required)
+     *     evaluator_display_name: String (Optional)
+     *     evaluator_description: String (Optional)
+     *     created_at: long (Required)
+     *     finished_at: Long (Optional)
+     *     usage (Optional): {
+     *         input_tokens: long (Required)
+     *         output_tokens: long (Required)
+     *         total_tokens: long (Required)
+     *     }
+     *     input_quality_warnings (Optional): [
+     *          (Optional){
+     *             code: String(empty_prompt/short_prompt/empty_agent_instructions/short_agent_instructions/empty_dataset_content/short_dataset_content/low_trace_count/insufficient_total_input) (Required)
+     *             severity: String(warning) (Required)
+     *             message: String (Required)
+     *             source: String(prompt/agent/dataset/aggregate) (Required)
+     *             source_index: Integer (Optional)
+     *         }
+     *     ]
+     * }
+     * }
+     * </pre>
+     * 
+     * @param jobId The ID of the job to cancel.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return evaluator Generation Job resource — a long-running job that generates rubric-based evaluator definitions
+     * from source materials along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> cancelEvaluatorGenerationJobWithResponse(String jobId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.cancelEvaluatorGenerationJobSync(this.client.getEndpoint(), jobId,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Delete an evaluator generation job
+     * 
+     * Deletes an evaluator generation job by its ID. Deletes the job record only;
+     * the generated evaluator (if any) is preserved.
+     * 
+     * @param jobId The ID of the job to delete.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteEvaluatorGenerationJobWithResponseAsync(String jobId,
+        RequestOptions requestOptions) {
+        return FluxUtil.withContext(context -> service.deleteEvaluatorGenerationJob(this.client.getEndpoint(), jobId,
+            this.client.getServiceVersion().getVersion(), requestOptions, context));
+    }
+
+    /**
+     * Delete an evaluator generation job
+     * 
+     * Deletes an evaluator generation job by its ID. Deletes the job record only;
+     * the generated evaluator (if any) is preserved.
+     * 
+     * @param jobId The ID of the job to delete.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteEvaluatorGenerationJobWithResponse(String jobId, RequestOptions requestOptions) {
+        return service.deleteEvaluatorGenerationJobSync(this.client.getEndpoint(), jobId,
+            this.client.getServiceVersion().getVersion(), requestOptions, Context.NONE);
+    }
+
+    /**
+     * List evaluator versions
+     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -1515,8 +4135,11 @@ public final class EvaluatorsImpl {
      *     categories (Required): [
      *         String(quality/safety/agents) (Required)
      *     ]
+     *     supported_evaluation_levels (Optional): [
+     *         String(turn/conversation) (Optional)
+     *     ]
      *     definition (Required): {
-     *         type: String(prompt/code/prompt_and_code/service/openai_graders) (Required)
+     *         type: String(prompt/code/prompt_and_code/service/openai_graders/rubric/endpoint) (Required)
      *         init_parameters (Optional): {
      *             String: BinaryData (Required)
      *         }
@@ -1534,6 +4157,19 @@ public final class EvaluatorsImpl {
      *             }
      *         }
      *     }
+     *     generation_artifacts (Optional): {
+     *         dataset (Required): {
+     *             name: String (Required)
+     *             version: String (Required)
+     *         }
+     *         kinds (Required): [
+     *             String (Required)
+     *         ]
+     *     }
+     *     generation_job_id: String (Optional)
+     *     warnings (Optional): [
+     *         String(input_quality) (Optional)
+     *     ]
      *     created_by: String (Required)
      *     created_at: OffsetDateTime (Required)
      *     modified_at: OffsetDateTime (Required)
@@ -1560,16 +4196,17 @@ public final class EvaluatorsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listEvaluatorVersionsNextSinglePageAsync(String nextLink,
         RequestOptions requestOptions) {
-        final String foundryFeatures = "Evaluations=V1Preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listEvaluatorVersionsNext(nextLink, this.client.getEndpoint(),
-                foundryFeatures, accept, requestOptions, context))
+            .withContext(context -> service.listEvaluatorVersionsNext(nextLink, this.client.getEndpoint(), accept,
+                requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
 
     /**
+     * List evaluator versions
+     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -1584,8 +4221,11 @@ public final class EvaluatorsImpl {
      *     categories (Required): [
      *         String(quality/safety/agents) (Required)
      *     ]
+     *     supported_evaluation_levels (Optional): [
+     *         String(turn/conversation) (Optional)
+     *     ]
      *     definition (Required): {
-     *         type: String(prompt/code/prompt_and_code/service/openai_graders) (Required)
+     *         type: String(prompt/code/prompt_and_code/service/openai_graders/rubric/endpoint) (Required)
      *         init_parameters (Optional): {
      *             String: BinaryData (Required)
      *         }
@@ -1603,6 +4243,19 @@ public final class EvaluatorsImpl {
      *             }
      *         }
      *     }
+     *     generation_artifacts (Optional): {
+     *         dataset (Required): {
+     *             name: String (Required)
+     *             version: String (Required)
+     *         }
+     *         kinds (Required): [
+     *             String (Required)
+     *         ]
+     *     }
+     *     generation_job_id: String (Optional)
+     *     warnings (Optional): [
+     *         String(input_quality) (Optional)
+     *     ]
      *     created_by: String (Required)
      *     created_at: OffsetDateTime (Required)
      *     modified_at: OffsetDateTime (Required)
@@ -1628,15 +4281,16 @@ public final class EvaluatorsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listEvaluatorVersionsNextSinglePage(String nextLink,
         RequestOptions requestOptions) {
-        final String foundryFeatures = "Evaluations=V1Preview";
         final String accept = "application/json";
-        Response<BinaryData> res = service.listEvaluatorVersionsNextSync(nextLink, this.client.getEndpoint(),
-            foundryFeatures, accept, requestOptions, Context.NONE);
+        Response<BinaryData> res = service.listEvaluatorVersionsNextSync(nextLink, this.client.getEndpoint(), accept,
+            requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
 
     /**
+     * List latest evaluator versions
+     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -1651,8 +4305,11 @@ public final class EvaluatorsImpl {
      *     categories (Required): [
      *         String(quality/safety/agents) (Required)
      *     ]
+     *     supported_evaluation_levels (Optional): [
+     *         String(turn/conversation) (Optional)
+     *     ]
      *     definition (Required): {
-     *         type: String(prompt/code/prompt_and_code/service/openai_graders) (Required)
+     *         type: String(prompt/code/prompt_and_code/service/openai_graders/rubric/endpoint) (Required)
      *         init_parameters (Optional): {
      *             String: BinaryData (Required)
      *         }
@@ -1670,6 +4327,19 @@ public final class EvaluatorsImpl {
      *             }
      *         }
      *     }
+     *     generation_artifacts (Optional): {
+     *         dataset (Required): {
+     *             name: String (Required)
+     *             version: String (Required)
+     *         }
+     *         kinds (Required): [
+     *             String (Required)
+     *         ]
+     *     }
+     *     generation_job_id: String (Optional)
+     *     warnings (Optional): [
+     *         String(input_quality) (Optional)
+     *     ]
      *     created_by: String (Required)
      *     created_at: OffsetDateTime (Required)
      *     modified_at: OffsetDateTime (Required)
@@ -1696,16 +4366,17 @@ public final class EvaluatorsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listLatestEvaluatorVersionsNextSinglePageAsync(String nextLink,
         RequestOptions requestOptions) {
-        final String foundryFeatures = "Evaluations=V1Preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listLatestEvaluatorVersionsNext(nextLink, this.client.getEndpoint(),
-                foundryFeatures, accept, requestOptions, context))
+            .withContext(context -> service.listLatestEvaluatorVersionsNext(nextLink, this.client.getEndpoint(), accept,
+                requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
 
     /**
+     * List latest evaluator versions
+     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -1720,8 +4391,11 @@ public final class EvaluatorsImpl {
      *     categories (Required): [
      *         String(quality/safety/agents) (Required)
      *     ]
+     *     supported_evaluation_levels (Optional): [
+     *         String(turn/conversation) (Optional)
+     *     ]
      *     definition (Required): {
-     *         type: String(prompt/code/prompt_and_code/service/openai_graders) (Required)
+     *         type: String(prompt/code/prompt_and_code/service/openai_graders/rubric/endpoint) (Required)
      *         init_parameters (Optional): {
      *             String: BinaryData (Required)
      *         }
@@ -1739,6 +4413,19 @@ public final class EvaluatorsImpl {
      *             }
      *         }
      *     }
+     *     generation_artifacts (Optional): {
+     *         dataset (Required): {
+     *             name: String (Required)
+     *             version: String (Required)
+     *         }
+     *         kinds (Required): [
+     *             String (Required)
+     *         ]
+     *     }
+     *     generation_job_id: String (Optional)
+     *     warnings (Optional): [
+     *         String(input_quality) (Optional)
+     *     ]
      *     created_by: String (Required)
      *     created_at: OffsetDateTime (Required)
      *     modified_at: OffsetDateTime (Required)
@@ -1764,28 +4451,33 @@ public final class EvaluatorsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listLatestEvaluatorVersionsNextSinglePage(String nextLink,
         RequestOptions requestOptions) {
-        final String foundryFeatures = "Evaluations=V1Preview";
         final String accept = "application/json";
         Response<BinaryData> res = service.listLatestEvaluatorVersionsNextSync(nextLink, this.client.getEndpoint(),
-            foundryFeatures, accept, requestOptions, Context.NONE);
+            accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
 
-    private List<BinaryData> getValues(BinaryData binaryData, String path) {
+    private List<BinaryData> getValues(BinaryData binaryData, String... path) {
         try {
-            Map<?, ?> obj = binaryData.toObject(Map.class);
-            List<?> values = (List<?>) obj.get(path);
+            Object value = binaryData.toObject(Map.class);
+            for (String segment : path) {
+                value = ((Map<?, ?>) value).get(segment);
+            }
+            List<?> values = (List<?>) value;
             return values.stream().map(BinaryData::fromObject).collect(Collectors.toList());
         } catch (RuntimeException e) {
             return null;
         }
     }
 
-    private String getNextLink(BinaryData binaryData, String path) {
+    private String getNextLink(BinaryData binaryData, String... path) {
         try {
-            Map<?, ?> obj = binaryData.toObject(Map.class);
-            return (String) obj.get(path);
+            Object value = binaryData.toObject(Map.class);
+            for (String segment : path) {
+                value = ((Map<?, ?>) value).get(segment);
+            }
+            return (String) value;
         } catch (RuntimeException e) {
             return null;
         }

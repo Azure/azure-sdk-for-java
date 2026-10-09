@@ -122,6 +122,11 @@ public final class IaasVMRecoveryPoint extends RecoveryPoint {
      */
     private ExtendedLocation extendedLocation;
 
+    /*
+     * Data disk metadata for the VM recovery point
+     */
+    private DataDiskDetails dataDiskMetadata;
+
     /**
      * Creates an instance of IaasVMRecoveryPoint class.
      */
@@ -314,6 +319,15 @@ public final class IaasVMRecoveryPoint extends RecoveryPoint {
     }
 
     /**
+     * Get the dataDiskMetadata property: Data disk metadata for the VM recovery point.
+     * 
+     * @return the dataDiskMetadata value.
+     */
+    public DataDiskDetails dataDiskMetadata() {
+        return this.dataDiskMetadata;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -346,6 +360,7 @@ public final class IaasVMRecoveryPoint extends RecoveryPoint {
         jsonWriter.writeJsonField("recoveryPointProperties", this.recoveryPointProperties);
         jsonWriter.writeBooleanField("isPrivateAccessEnabledOnAnyDisk", this.isPrivateAccessEnabledOnAnyDisk);
         jsonWriter.writeJsonField("extendedLocation", this.extendedLocation);
+        jsonWriter.writeJsonField("dataDiskMetadata", this.dataDiskMetadata);
         return jsonWriter.writeEndObject();
     }
 
@@ -420,6 +435,8 @@ public final class IaasVMRecoveryPoint extends RecoveryPoint {
                         = reader.getNullable(JsonReader::getBoolean);
                 } else if ("extendedLocation".equals(fieldName)) {
                     deserializedIaasVMRecoveryPoint.extendedLocation = ExtendedLocation.fromJson(reader);
+                } else if ("dataDiskMetadata".equals(fieldName)) {
+                    deserializedIaasVMRecoveryPoint.dataDiskMetadata = DataDiskDetails.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

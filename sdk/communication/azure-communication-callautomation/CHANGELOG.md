@@ -1,6 +1,6 @@
 # Release History
 
-## 1.7.0-beta.1 (Unreleased)
+## 1.8.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,41 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.7.3 (2026-10-06)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.16.6` to version `1.16.8`.
+- Upgraded `azure-core` from `1.59.0` to version `1.60.0`.
+- Upgraded `azure-communication-common` from `1.4.8` to version `1.4.9`.
+
+## 1.7.2 (2026-08-18)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-communication-common` from `1.4.7` to version `1.4.8`.
+- Upgraded `azure-core-http-netty` from `1.16.5` to version `1.16.6`.
+- Upgraded `azure-core` from `1.58.1` to version `1.59.0`.
+
+## 1.7.1 (2026-07-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-communication-common` from `1.4.6` to version `1.4.7`.
+
+## 1.7.0 (2026-06-18)
+
+### Features Added
+
+- Added support for moving a participant from one call to another, enabling seamless participant transfer between active calls.
+- Added support for retrieving Teams phone call details, including the ability to specify a custom calling context for enhanced integration scenarios.
 
 ## 1.6.2 (2026-05-05)
 

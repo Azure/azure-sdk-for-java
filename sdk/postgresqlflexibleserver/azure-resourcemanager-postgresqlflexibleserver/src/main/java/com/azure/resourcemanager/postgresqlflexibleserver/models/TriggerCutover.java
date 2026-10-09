@@ -12,12 +12,12 @@ import java.util.Collection;
  */
 public final class TriggerCutover extends ExpandableStringEnum<TriggerCutover> {
     /**
-     * Static value True for TriggerCutover.
+     * Cutover must be triggered for the entire migration.
      */
     public static final TriggerCutover TRUE = fromString("True");
 
     /**
-     * Static value False for TriggerCutover.
+     * Cutover must not be triggered for the entire migration.
      */
     public static final TriggerCutover FALSE = fromString("False");
 

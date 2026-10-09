@@ -9,6 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.network.models.NspReadinessState;
 import java.io.IOException;
 import java.util.List;
 
@@ -105,6 +106,42 @@ public final class PerimeterAssociableResourceInner implements JsonSerializable<
      */
     public List<String> publicDnsZones() {
         return this.innerProperties() == null ? null : this.innerProperties().publicDnsZones();
+    }
+
+    /**
+     * Get the serviceTags property: Service tags associated with the resource provider.
+     * 
+     * @return the serviceTags value.
+     */
+    public List<String> serviceTags() {
+        return this.innerProperties() == null ? null : this.innerProperties().serviceTags();
+    }
+
+    /**
+     * Get the readinessState property: The readiness state of the resource type for NSP support.
+     * 
+     * @return the readinessState value.
+     */
+    public NspReadinessState readinessState() {
+        return this.innerProperties() == null ? null : this.innerProperties().readinessState();
+    }
+
+    /**
+     * Get the outboundSupported property: Indicates whether the resource type supports outbound scenario.
+     * 
+     * @return the outboundSupported value.
+     */
+    public Boolean outboundSupported() {
+        return this.innerProperties() == null ? null : this.innerProperties().outboundSupported();
+    }
+
+    /**
+     * Get the description property: Description of the PaaS resource type.
+     * 
+     * @return the description value.
+     */
+    public String description() {
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**

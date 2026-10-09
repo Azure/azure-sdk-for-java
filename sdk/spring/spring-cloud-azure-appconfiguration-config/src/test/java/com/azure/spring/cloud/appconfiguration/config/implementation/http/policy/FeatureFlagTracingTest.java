@@ -4,8 +4,8 @@ package com.azure.spring.cloud.appconfiguration.config.implementation.http.polic
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import org.junit.jupiter.api.Test;
 
 public class FeatureFlagTracingTest {
@@ -166,6 +166,60 @@ public class FeatureFlagTracingTest {
         assertEquals("CSTM+PRCNT", tracing.toString());
         tracing.resetFeatureFilterTelemetry();
         assertEquals("", tracing.toString());
+    }
+
+    @Test
+    public void usesTelemetryFlag() {
+        FeatureFlagTracing tracing = new FeatureFlagTracing();
+        assertEquals("", tracing.createFFFeaturesString());
+
+        tracing.setUsesTelemetry();
+        assertEquals("Telemetry", tracing.createFFFeaturesString());
+
+        tracing.resetFeatureFilterTelemetry();
+        assertEquals("", tracing.createFFFeaturesString());
+    }
+
+    @Test
+    public void usesSeedFlag() {
+        FeatureFlagTracing tracing = new FeatureFlagTracing();
+        assertEquals("", tracing.createFFFeaturesString());
+
+        tracing.setUsesSeed();
+        assertEquals("Seed", tracing.createFFFeaturesString());
+
+        tracing.resetFeatureFilterTelemetry();
+        assertEquals("", tracing.createFFFeaturesString());
+    }
+
+    @Test
+    public void usesSeedAndTelemetry() {
+        FeatureFlagTracing tracing = new FeatureFlagTracing();
+        tracing.setUsesSeed();
+        tracing.setUsesTelemetry();
+        assertEquals("Seed+Telemetry", tracing.createFFFeaturesString());
+
+        tracing.resetFeatureFilterTelemetry();
+        assertEquals("", tracing.createFFFeaturesString());
+    }
+
+    @Test
+    public void maxVariantsTracking() {
+        FeatureFlagTracing tracing = new FeatureFlagTracing();
+        assertNull(tracing.getMaxVariants());
+
+        tracing.updateMaxVariants(3);
+        assertEquals(3, tracing.getMaxVariants());
+
+        // Should only update if larger
+        tracing.updateMaxVariants(2);
+        assertEquals(3, tracing.getMaxVariants());
+
+        tracing.updateMaxVariants(5);
+        assertEquals(5, tracing.getMaxVariants());
+
+        tracing.resetFeatureFilterTelemetry();
+        assertNull(tracing.getMaxVariants());
     }
 
 }

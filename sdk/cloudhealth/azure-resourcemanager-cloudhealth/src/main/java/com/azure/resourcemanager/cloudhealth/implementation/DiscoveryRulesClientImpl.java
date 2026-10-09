@@ -26,12 +26,18 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
+import com.azure.core.management.polling.PollResult;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.cloudhealth.fluent.DiscoveryRulesClient;
 import com.azure.resourcemanager.cloudhealth.fluent.models.DiscoveryRuleInner;
 import com.azure.resourcemanager.cloudhealth.implementation.models.DiscoveryRuleListResult;
+import java.nio.ByteBuffer;
 import java.time.OffsetDateTime;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
@@ -91,7 +97,7 @@ public final class DiscoveryRulesClientImpl implements DiscoveryRulesClient {
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/discoveryrules/{discoveryRuleName}")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DiscoveryRuleInner>> createOrUpdate(@HostParam("endpoint") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("healthModelName") String healthModelName,
@@ -102,7 +108,7 @@ public final class DiscoveryRulesClientImpl implements DiscoveryRulesClient {
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/discoveryrules/{discoveryRuleName}")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<DiscoveryRuleInner> createOrUpdateSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> createOrUpdateSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("healthModelName") String healthModelName,
@@ -112,9 +118,9 @@ public final class DiscoveryRulesClientImpl implements DiscoveryRulesClient {
 
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/discoveryrules/{discoveryRuleName}")
-        @ExpectedResponses({ 200, 204 })
+        @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(@HostParam("endpoint") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("healthModelName") String healthModelName,
@@ -122,10 +128,10 @@ public final class DiscoveryRulesClientImpl implements DiscoveryRulesClient {
 
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/discoveryrules/{discoveryRuleName}")
-        @ExpectedResponses({ 200, 204 })
+        @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<Void> deleteSync(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Response<BinaryData> deleteSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("healthModelName") String healthModelName,
             @PathParam("discoveryRuleName") String discoveryRuleName, Context context);
@@ -255,7 +261,7 @@ public final class DiscoveryRulesClientImpl implements DiscoveryRulesClient {
      * Resource Graph query along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DiscoveryRuleInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String healthModelName, String discoveryRuleName, DiscoveryRuleInner resource) {
         final String contentType = "application/json";
         final String accept = "application/json";
@@ -277,13 +283,16 @@ public final class DiscoveryRulesClientImpl implements DiscoveryRulesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a discovery rule which automatically finds entities and relationships in a health model based on an Azure
-     * Resource Graph query on successful completion of {@link Mono}.
+     * Resource Graph query along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DiscoveryRuleInner> createOrUpdateAsync(String resourceGroupName, String healthModelName,
+    private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String healthModelName,
         String discoveryRuleName, DiscoveryRuleInner resource) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, healthModelName, discoveryRuleName, resource)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, healthModelName, discoveryRuleName, contentType, accept,
+            resource, Context.NONE);
     }
 
     /**
@@ -301,7 +310,7 @@ public final class DiscoveryRulesClientImpl implements DiscoveryRulesClient {
      * Resource Graph query along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DiscoveryRuleInner> createOrUpdateWithResponse(String resourceGroupName, String healthModelName,
+    private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String healthModelName,
         String discoveryRuleName, DiscoveryRuleInner resource, Context context) {
         final String contentType = "application/json";
         final String accept = "application/json";
@@ -320,14 +329,121 @@ public final class DiscoveryRulesClientImpl implements DiscoveryRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of a discovery rule which automatically finds entities and
+     * relationships in a health model based on an Azure Resource Graph query.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<DiscoveryRuleInner>, DiscoveryRuleInner> beginCreateOrUpdateAsync(
+        String resourceGroupName, String healthModelName, String discoveryRuleName, DiscoveryRuleInner resource) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, healthModelName, discoveryRuleName, resource);
+        return this.client.<DiscoveryRuleInner, DiscoveryRuleInner>getLroResult(mono, this.client.getHttpPipeline(),
+            DiscoveryRuleInner.class, DiscoveryRuleInner.class, this.client.getContext());
+    }
+
+    /**
+     * Create a DiscoveryRule.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param healthModelName Name of health model resource.
+     * @param discoveryRuleName Name of the discovery rule. Must be unique within a health model.
+     * @param resource Resource create parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a discovery rule which automatically finds entities and
+     * relationships in a health model based on an Azure Resource Graph query.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<DiscoveryRuleInner>, DiscoveryRuleInner> beginCreateOrUpdate(String resourceGroupName,
+        String healthModelName, String discoveryRuleName, DiscoveryRuleInner resource) {
+        Response<BinaryData> response
+            = createOrUpdateWithResponse(resourceGroupName, healthModelName, discoveryRuleName, resource);
+        return this.client.<DiscoveryRuleInner, DiscoveryRuleInner>getLroResult(response, DiscoveryRuleInner.class,
+            DiscoveryRuleInner.class, Context.NONE);
+    }
+
+    /**
+     * Create a DiscoveryRule.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param healthModelName Name of health model resource.
+     * @param discoveryRuleName Name of the discovery rule. Must be unique within a health model.
+     * @param resource Resource create parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a discovery rule which automatically finds entities and
+     * relationships in a health model based on an Azure Resource Graph query.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<DiscoveryRuleInner>, DiscoveryRuleInner> beginCreateOrUpdate(String resourceGroupName,
+        String healthModelName, String discoveryRuleName, DiscoveryRuleInner resource, Context context) {
+        Response<BinaryData> response
+            = createOrUpdateWithResponse(resourceGroupName, healthModelName, discoveryRuleName, resource, context);
+        return this.client.<DiscoveryRuleInner, DiscoveryRuleInner>getLroResult(response, DiscoveryRuleInner.class,
+            DiscoveryRuleInner.class, context);
+    }
+
+    /**
+     * Create a DiscoveryRule.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param healthModelName Name of health model resource.
+     * @param discoveryRuleName Name of the discovery rule. Must be unique within a health model.
+     * @param resource Resource create parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a discovery rule which automatically finds entities and relationships in a health model based on an Azure
+     * Resource Graph query on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<DiscoveryRuleInner> createOrUpdateAsync(String resourceGroupName, String healthModelName,
+        String discoveryRuleName, DiscoveryRuleInner resource) {
+        return beginCreateOrUpdateAsync(resourceGroupName, healthModelName, discoveryRuleName, resource).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Create a DiscoveryRule.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param healthModelName Name of health model resource.
+     * @param discoveryRuleName Name of the discovery rule. Must be unique within a health model.
+     * @param resource Resource create parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a discovery rule which automatically finds entities and relationships in a health model based on an Azure
      * Resource Graph query.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DiscoveryRuleInner createOrUpdate(String resourceGroupName, String healthModelName, String discoveryRuleName,
         DiscoveryRuleInner resource) {
-        return createOrUpdateWithResponse(resourceGroupName, healthModelName, discoveryRuleName, resource, Context.NONE)
-            .getValue();
+        return beginCreateOrUpdate(resourceGroupName, healthModelName, discoveryRuleName, resource).getFinalResult();
+    }
+
+    /**
+     * Create a DiscoveryRule.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param healthModelName Name of health model resource.
+     * @param discoveryRuleName Name of the discovery rule. Must be unique within a health model.
+     * @param resource Resource create parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a discovery rule which automatically finds entities and relationships in a health model based on an Azure
+     * Resource Graph query.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DiscoveryRuleInner createOrUpdate(String resourceGroupName, String healthModelName, String discoveryRuleName,
+        DiscoveryRuleInner resource, Context context) {
+        return beginCreateOrUpdate(resourceGroupName, healthModelName, discoveryRuleName, resource, context)
+            .getFinalResult();
     }
 
     /**
@@ -342,7 +458,7 @@ public final class DiscoveryRulesClientImpl implements DiscoveryRulesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String healthModelName,
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String healthModelName,
         String discoveryRuleName) {
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -359,12 +475,13 @@ public final class DiscoveryRulesClientImpl implements DiscoveryRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String healthModelName, String discoveryRuleName) {
-        return deleteWithResponseAsync(resourceGroupName, healthModelName, discoveryRuleName)
-            .flatMap(ignored -> Mono.empty());
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String healthModelName,
+        String discoveryRuleName) {
+        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, healthModelName, discoveryRuleName, Context.NONE);
     }
 
     /**
@@ -377,13 +494,88 @@ public final class DiscoveryRulesClientImpl implements DiscoveryRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(String resourceGroupName, String healthModelName, String discoveryRuleName,
-        Context context) {
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String healthModelName,
+        String discoveryRuleName, Context context) {
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, healthModelName, discoveryRuleName, context);
+    }
+
+    /**
+     * Delete a DiscoveryRule.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param healthModelName Name of health model resource.
+     * @param discoveryRuleName Name of the discovery rule. Must be unique within a health model.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String healthModelName,
+        String discoveryRuleName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, healthModelName, discoveryRuleName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Delete a DiscoveryRule.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param healthModelName Name of health model resource.
+     * @param discoveryRuleName Name of the discovery rule. Must be unique within a health model.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String healthModelName,
+        String discoveryRuleName) {
+        Response<BinaryData> response = deleteWithResponse(resourceGroupName, healthModelName, discoveryRuleName);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+    }
+
+    /**
+     * Delete a DiscoveryRule.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param healthModelName Name of health model resource.
+     * @param discoveryRuleName Name of the discovery rule. Must be unique within a health model.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String healthModelName,
+        String discoveryRuleName, Context context) {
+        Response<BinaryData> response
+            = deleteWithResponse(resourceGroupName, healthModelName, discoveryRuleName, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
+    }
+
+    /**
+     * Delete a DiscoveryRule.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param healthModelName Name of health model resource.
+     * @param discoveryRuleName Name of the discovery rule. Must be unique within a health model.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> deleteAsync(String resourceGroupName, String healthModelName, String discoveryRuleName) {
+        return beginDeleteAsync(resourceGroupName, healthModelName, discoveryRuleName).last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -398,7 +590,23 @@ public final class DiscoveryRulesClientImpl implements DiscoveryRulesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String healthModelName, String discoveryRuleName) {
-        deleteWithResponse(resourceGroupName, healthModelName, discoveryRuleName, Context.NONE);
+        beginDelete(resourceGroupName, healthModelName, discoveryRuleName).getFinalResult();
+    }
+
+    /**
+     * Delete a DiscoveryRule.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param healthModelName Name of health model resource.
+     * @param discoveryRuleName Name of the discovery rule. Must be unique within a health model.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String healthModelName, String discoveryRuleName, Context context) {
+        beginDelete(resourceGroupName, healthModelName, discoveryRuleName, context).getFinalResult();
     }
 
     /**

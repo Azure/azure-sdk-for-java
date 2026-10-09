@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.models;
 
 /**
- * The status of the capability.
+ * Status of the capability.
  */
 public enum CapabilityStatus {
     /**

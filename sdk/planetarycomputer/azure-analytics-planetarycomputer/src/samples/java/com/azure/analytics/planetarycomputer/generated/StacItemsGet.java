@@ -6,6 +6,7 @@ package com.azure.analytics.planetarycomputer.generated;
 
 import com.azure.analytics.planetarycomputer.PlanetaryComputerProClientBuilder;
 import com.azure.analytics.planetarycomputer.StacClient;
+import com.azure.analytics.planetarycomputer.models.StacAssetUrlSigningMode;
 import com.azure.analytics.planetarycomputer.models.StacItem;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -17,7 +18,8 @@ public class StacItemsGet {
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildStacClient();
         // BEGIN:com.azure.analytics.planetarycomputer.generated.stac-get-item.stac-items-get
-        StacItem response = stacClient.getItem("naip-atl", "ga_m_3308421_se_16_060_20211114_test");
+        StacItem response = stacClient.getItem("naip-atl", "ga_m_3308421_se_16_060_20211114_test",
+            (StacAssetUrlSigningMode) null, (Integer) null);
         // END:com.azure.analytics.planetarycomputer.generated.stac-get-item.stac-items-get
     }
 }

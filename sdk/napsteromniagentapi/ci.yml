@@ -1,0 +1,46 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/napsteromniagentapi/ci.yml
+      - sdk/napsteromniagentapi/azure-resourcemanager-napsteromniagentapi/
+    exclude:
+      - sdk/napsteromniagentapi/pom.xml
+      - sdk/napsteromniagentapi/azure-resourcemanager-napsteromniagentapi/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/napsteromniagentapi/ci.yml
+      - sdk/napsteromniagentapi/azure-resourcemanager-napsteromniagentapi/
+    exclude:
+      - sdk/napsteromniagentapi/pom.xml
+      - sdk/napsteromniagentapi/azure-resourcemanager-napsteromniagentapi/pom.xml
+
+parameters:
+  - name: release_azureresourcemanagernapsteromniagentapi
+    displayName: azure-resourcemanager-napsteromniagentapi
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: napsteromniagentapi
+    Artifacts:
+      - name: azure-resourcemanager-napsteromniagentapi
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagernapsteromniagentapi
+        releaseInBatch: ${{ parameters.release_azureresourcemanagernapsteromniagentapi }}

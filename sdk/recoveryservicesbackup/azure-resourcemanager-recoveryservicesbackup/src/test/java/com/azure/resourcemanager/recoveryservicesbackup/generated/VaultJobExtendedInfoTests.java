@@ -11,9 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class VaultJobExtendedInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VaultJobExtendedInfo model = BinaryData
-            .fromString("{\"propertyBag\":{\"afcbqw\":\"md\",\"jelaqacigele\":\"e\",\"beonrlkwzdq\":\"hdbvqvwzkjop\"}}")
-            .toObject(VaultJobExtendedInfo.class);
-        Assertions.assertEquals("md", model.propertyBag().get("afcbqw"));
+        VaultJobExtendedInfo model
+            = BinaryData.fromString("{\"propertyBag\":{\"oe\":\"yank\"}}").toObject(VaultJobExtendedInfo.class);
+        Assertions.assertEquals("yank", model.propertyBag().get("oe"));
     }
 }

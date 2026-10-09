@@ -34,11 +34,9 @@ public class AadB2cAuthorizationRequestResolver implements OAuth2AuthorizationRe
 
     private static final String AAD_B2C_USER_AGENT = "spring-boot-starter";
 
-    private static final String MATCHER_PATTERN = String.format("%s/{%s}", REQUEST_BASE_URI, REGISTRATION_ID_NAME);
-
-    private static final PathPatternRequestMatcher REQUEST_MATCHER = PathPatternRequestMatcher.withDefaults().matcher(MATCHER_PATTERN);
-
     private final OAuth2AuthorizationRequestResolver delegateResolver;
+
+    private final PathPatternRequestMatcher requestMatcher;
 
     private final String passwordResetUserFlow;
 
@@ -52,7 +50,21 @@ public class AadB2cAuthorizationRequestResolver implements OAuth2AuthorizationRe
      */
     public AadB2cAuthorizationRequestResolver(ClientRegistrationRepository repository,
                                               AadB2cProperties properties) {
-        this(properties, new DefaultOAuth2AuthorizationRequestResolver(repository, REQUEST_BASE_URI));
+        this(REQUEST_BASE_URI, repository, properties);
+    }
+
+    /**
+     * Creates a new instance of {@link AadB2cAuthorizationRequestResolver}.
+     *
+     * @param authorizationRequestBaseUri the base URI used to resolve authorization requests
+     * @param repository the client registration repository
+     * @param properties the AAD B2C properties
+     */
+    public AadB2cAuthorizationRequestResolver(String authorizationRequestBaseUri,
+                                              ClientRegistrationRepository repository,
+                                              AadB2cProperties properties) {
+        this(authorizationRequestBaseUri, properties,
+            new DefaultOAuth2AuthorizationRequestResolver(repository, normalizeBaseUri(authorizationRequestBaseUri)));
     }
 
     /**
@@ -63,9 +75,29 @@ public class AadB2cAuthorizationRequestResolver implements OAuth2AuthorizationRe
      */
     public AadB2cAuthorizationRequestResolver(AadB2cProperties properties,
                                               OAuth2AuthorizationRequestResolver delegateResolver) {
+        this(REQUEST_BASE_URI, properties, delegateResolver);
+    }
+
+    /**
+     * Creates a new instance of {@link AadB2cAuthorizationRequestResolver}.
+     *
+     * @param authorizationRequestBaseUri the base URI used to resolve authorization requests
+     * @param properties the AAD B2C properties.
+     * @param delegateResolver the delegate resolver.
+     */
+    public AadB2cAuthorizationRequestResolver(String authorizationRequestBaseUri,
+                                              AadB2cProperties properties,
+                                              OAuth2AuthorizationRequestResolver delegateResolver) {
+        this(properties, delegateResolver, createRequestMatcher(normalizeBaseUri(authorizationRequestBaseUri)));
+    }
+
+    private AadB2cAuthorizationRequestResolver(AadB2cProperties properties,
+                                               OAuth2AuthorizationRequestResolver delegateResolver,
+                                               PathPatternRequestMatcher requestMatcher) {
         this.properties = properties;
         this.passwordResetUserFlow = this.properties.getPasswordReset();
         this.delegateResolver = delegateResolver;
+        this.requestMatcher = requestMatcher;
     }
 
     /**
@@ -97,8 +129,8 @@ public class AadB2cAuthorizationRequestResolver implements OAuth2AuthorizationRe
             return getB2cAuthorizationRequest(authRequest, passwordResetUserFlow);
         }
 
-        if (StringUtils.hasText(registrationId) && REQUEST_MATCHER.matches(request)) {
-            return getB2cAuthorizationRequest(delegateResolver.resolve(request), registrationId);
+        if (StringUtils.hasText(registrationId) && requestMatcher.matches(request)) {
+            return getB2cAuthorizationRequest(delegateResolver.resolve(request, registrationId), registrationId);
         }
 
         // Return null may not be the good practice, but we need to align with oauth2.client.web
@@ -129,11 +161,32 @@ public class AadB2cAuthorizationRequestResolver implements OAuth2AuthorizationRe
     }
 
     private String getRegistrationId(HttpServletRequest request) {
-        if (REQUEST_MATCHER.matches(request)) {
-            return REQUEST_MATCHER.matcher(request).getVariables().get(REGISTRATION_ID_NAME);
+        if (requestMatcher.matches(request)) {
+            return requestMatcher.matcher(request).getVariables().get(REGISTRATION_ID_NAME);
         }
 
         return null;
+    }
+
+    private static String normalizeBaseUri(String authorizationRequestBaseUri) {
+        Assert.hasText(authorizationRequestBaseUri, "authorizationRequestBaseUri must contain text.");
+
+        String normalizedBaseUri = authorizationRequestBaseUri.trim();
+        if (!normalizedBaseUri.startsWith("/")) {
+            normalizedBaseUri = "/" + normalizedBaseUri;
+        }
+        // Remove all trailing slashes to handle multiple trailing slashes and ensure idempotent normalization
+        normalizedBaseUri = normalizedBaseUri.replaceAll("/+$", "");
+        // Ensure result is not empty (e.g., from inputs like "/" or " / ")
+        Assert.hasText(normalizedBaseUri, "authorizationRequestBaseUri must normalize to a non-empty value.");
+        return normalizedBaseUri;
+    }
+
+    private static PathPatternRequestMatcher createRequestMatcher(String authorizationRequestBaseUri) {
+        // The URI should already be normalized by the caller; validate it has text
+        Assert.hasText(authorizationRequestBaseUri, "authorizationRequestBaseUri must contain text.");
+        String matcherPattern = String.format("%s/{%s}", authorizationRequestBaseUri, REGISTRATION_ID_NAME);
+        return PathPatternRequestMatcher.withDefaults().matcher(matcherPattern);
     }
 
     // Handle the forgot password of sign-up-or-in page cannot redirect user to password-reset page.

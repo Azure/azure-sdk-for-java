@@ -31,7 +31,7 @@ public final class RecognitionChoiceInternal implements JsonSerializable<Recogni
     private List<String> phrases;
 
     /*
-     * The tone property.
+     * List of valid stop tones
      */
     @Generated
     private DtmfToneInternal tone;
@@ -88,7 +88,7 @@ public final class RecognitionChoiceInternal implements JsonSerializable<Recogni
     }
 
     /**
-     * Get the tone property: The tone property.
+     * Get the tone property: List of valid stop tones.
      * 
      * @return the tone value.
      */
@@ -98,7 +98,7 @@ public final class RecognitionChoiceInternal implements JsonSerializable<Recogni
     }
 
     /**
-     * Set the tone property: The tone property.
+     * Set the tone property: List of valid stop tones.
      * 
      * @param tone the tone value to set.
      * @return the RecognitionChoiceInternal object itself.

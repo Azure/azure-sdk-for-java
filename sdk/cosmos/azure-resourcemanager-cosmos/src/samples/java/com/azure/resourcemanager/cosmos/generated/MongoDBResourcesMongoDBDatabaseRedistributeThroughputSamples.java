@@ -15,7 +15,7 @@ import java.util.Arrays;
  */
 public final class MongoDBResourcesMongoDBDatabaseRedistributeThroughputSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/CosmosDBMongoDBDatabaseRedistributeThroughput.json
+     * x-ms-original-file: 2026-04-01-preview/CosmosDBMongoDBDatabaseRedistributeThroughput.json
      */
     /**
      * Sample code: CosmosDBMongoDBDatabaseRedistributeThroughput.

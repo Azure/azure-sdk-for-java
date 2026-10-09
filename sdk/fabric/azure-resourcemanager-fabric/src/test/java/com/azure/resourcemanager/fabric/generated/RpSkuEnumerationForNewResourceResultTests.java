@@ -12,11 +12,11 @@ public final class RpSkuEnumerationForNewResourceResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RpSkuEnumerationForNewResourceResult model = BinaryData.fromString(
-            "{\"value\":[{\"resourceType\":\"pdappds\",\"name\":\"dkvwrwjfe\",\"locations\":[\"nhutjeltmrldhugj\"]},{\"resourceType\":\"zdatqxhocdg\",\"name\":\"ablgphuticndvk\",\"locations\":[\"zwyiftyhxhur\",\"k\",\"tyxolniwpwc\",\"kjfkg\"]},{\"resourceType\":\"awxklr\",\"name\":\"plwckbas\",\"locations\":[\"pnddhsgcbacphejk\",\"tynqgoul\",\"ndlik\"]}],\"nextLink\":\"qkgfgibma\"}")
+            "{\"value\":[{\"resourceType\":\"cdgea\",\"name\":\"lgphu\",\"locations\":[\"cndvkaozwyiftyhx\",\"urokft\",\"xolniwpwcukjfk\",\"iawxklry\"]}],\"nextLink\":\"wckbasyypnd\"}")
             .toObject(RpSkuEnumerationForNewResourceResult.class);
-        Assertions.assertEquals("pdappds", model.value().get(0).resourceType());
-        Assertions.assertEquals("dkvwrwjfe", model.value().get(0).name());
-        Assertions.assertEquals("nhutjeltmrldhugj", model.value().get(0).locations().get(0));
-        Assertions.assertEquals("qkgfgibma", model.nextLink());
+        Assertions.assertEquals("cdgea", model.value().get(0).resourceType());
+        Assertions.assertEquals("lgphu", model.value().get(0).name());
+        Assertions.assertEquals("cndvkaozwyiftyhx", model.value().get(0).locations().get(0));
+        Assertions.assertEquals("wckbasyypnd", model.nextLink());
     }
 }

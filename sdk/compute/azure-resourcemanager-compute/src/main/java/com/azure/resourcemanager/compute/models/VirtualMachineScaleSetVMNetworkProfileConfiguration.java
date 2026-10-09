@@ -23,6 +23,12 @@ public final class VirtualMachineScaleSetVMNetworkProfileConfiguration
      */
     private List<VirtualMachineScaleSetNetworkConfiguration> networkInterfaceConfigurations;
 
+    /*
+     * Specifies the interconnect group profile to associate with the scale set vm instance. Minimum api-version:
+     * 2026-03-01.
+     */
+    private InterconnectGroupProfile interconnectGroupProfile;
+
     /**
      * Creates an instance of VirtualMachineScaleSetVMNetworkProfileConfiguration class.
      */
@@ -51,6 +57,29 @@ public final class VirtualMachineScaleSetVMNetworkProfileConfiguration
     }
 
     /**
+     * Get the interconnectGroupProfile property: Specifies the interconnect group profile to associate with the scale
+     * set vm instance. Minimum api-version: 2026-03-01.
+     * 
+     * @return the interconnectGroupProfile value.
+     */
+    public InterconnectGroupProfile interconnectGroupProfile() {
+        return this.interconnectGroupProfile;
+    }
+
+    /**
+     * Set the interconnectGroupProfile property: Specifies the interconnect group profile to associate with the scale
+     * set vm instance. Minimum api-version: 2026-03-01.
+     * 
+     * @param interconnectGroupProfile the interconnectGroupProfile value to set.
+     * @return the VirtualMachineScaleSetVMNetworkProfileConfiguration object itself.
+     */
+    public VirtualMachineScaleSetVMNetworkProfileConfiguration
+        withInterconnectGroupProfile(InterconnectGroupProfile interconnectGroupProfile) {
+        this.interconnectGroupProfile = interconnectGroupProfile;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -58,6 +87,9 @@ public final class VirtualMachineScaleSetVMNetworkProfileConfiguration
     public void validate() {
         if (networkInterfaceConfigurations() != null) {
             networkInterfaceConfigurations().forEach(e -> e.validate());
+        }
+        if (interconnectGroupProfile() != null) {
+            interconnectGroupProfile().validate();
         }
     }
 
@@ -69,6 +101,7 @@ public final class VirtualMachineScaleSetVMNetworkProfileConfiguration
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("networkInterfaceConfigurations", this.networkInterfaceConfigurations,
             (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("interconnectGroupProfile", this.interconnectGroupProfile);
         return jsonWriter.writeEndObject();
     }
 
@@ -94,6 +127,9 @@ public final class VirtualMachineScaleSetVMNetworkProfileConfiguration
                         = reader.readArray(reader1 -> VirtualMachineScaleSetNetworkConfiguration.fromJson(reader1));
                     deserializedVirtualMachineScaleSetVMNetworkProfileConfiguration.networkInterfaceConfigurations
                         = networkInterfaceConfigurations;
+                } else if ("interconnectGroupProfile".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetVMNetworkProfileConfiguration.interconnectGroupProfile
+                        = InterconnectGroupProfile.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

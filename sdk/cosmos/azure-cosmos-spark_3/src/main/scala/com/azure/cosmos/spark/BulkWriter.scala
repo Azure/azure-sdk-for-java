@@ -112,6 +112,12 @@ private class BulkWriter
 
   private val totalScheduledMetrics = new AtomicLong(0)
   private val totalSuccessfulIngestionMetrics = new AtomicLong(0)
+  private val totalSkippedIngestionMetrics = new AtomicLong(0)
+
+  // Constant for the lifetime of the writer - writeConfig is immutable, and shouldIgnore is on the
+  // per-failed-operation path, which gets hot during a throttling storm.
+  private val hasPatchFilterPredicate =
+    writeConfig.patchConfigs.exists(patchConfigs => patchConfigs.filter.exists(_.nonEmpty))
 
   private val maxOperationTimeout = java.time.Duration.ofSeconds(CosmosConstants.batchOperationEndToEndTimeoutInSeconds)
   private val endToEndTimeoutPolicy = new CosmosEndToEndOperationLatencyPolicyConfigBuilder(maxOperationTimeout)
@@ -849,6 +855,12 @@ private class BulkWriter
       log.logDebug(s"for itemId=[${context.itemId}], partitionKeyValue=[${context.partitionKeyValue}], " +
         s"ignored encountered status code '$effectiveStatusCode:$effectiveSubStatusCode', " +
         s"Context: ${operationContext.toString}")
+      // Count the skip so operators can distinguish expected no-ops from real write progress.
+      // Diagnostics are intentionally omitted (None): RU charge for every diagnostics context observed
+      // by the bulk executor - including ignored ones - is already tracked via
+      // ForwardingMetricTracker.trackDiagnostics, so passing them again would double-count.
+      outputMetricsPublisher.trackSkippedOperation(1, None)
+      totalSkippedIngestionMetrics.getAndIncrement()
       totalSuccessfulIngestionMetrics.getAndIncrement()
       // work done
     } else if (shouldRetry(effectiveStatusCode, effectiveSubStatusCode, context)) {
@@ -1209,6 +1221,15 @@ private class BulkWriter
               s"totalSuccessfulIngestionMetrics=${totalSuccessfulIngestionMetrics.get()}, " +
               s"totalScheduled=$totalScheduledMetrics, Context: ${operationContext.toString} $getThreadInfo")
           }
+
+          val totalSkipped = totalSkippedIngestionMetrics.get()
+          if (totalSkipped > 0) {
+            // Logged unconditionally at info level: a fully skipped write is otherwise indistinguishable
+            // from a fully successful one (for example when a patch filter predicate never matches).
+            log.logInfo(s"$totalSkipped of ${totalScheduledMetrics.get()} operations were skipped as an " +
+              s"intentional no-op by the '${writeConfig.itemWriteStrategy}' write strategy. " +
+              s"Context: ${operationContext.toString} $getThreadInfo")
+          }
         }
       } finally {
         subscriptionDisposable.dispose()
@@ -1295,9 +1316,23 @@ private class BulkWriter
   }
 
   private def shouldIgnore(statusCode: Int, subStatusCode: Int): Boolean = {
+    // A 412 on patch can only originate from the configured filter predicate (etag/If-Match is not
+    // wired for patch today). The predicate's contract is "only modify the document when the condition
+    // holds, otherwise leave it alone", so a 412 is an expected no-op skip rather than a failure - the
+    // same way ItemDeleteIfNotModified/ItemOverwriteIfNotModified already treat it.
+    //
+    // Gating on the filter-specific sub-status instead would be tighter, but is not viable: the service
+    // reports sub-status 1110 for this failure on the point path, while the bulk item response surfaces
+    // sub-status 0 for the same failure. If etag support lands for patch, 412 will have two distinct
+    // causes and telling them apart will need either consistent sub-status propagation in the bulk path
+    // or an explicit request-level flag.
     val returnValue = writeConfig.itemWriteStrategy match {
       case ItemWriteStrategy.ItemAppend => Exceptions.isResourceExistsException(statusCode)
-      case ItemWriteStrategy.ItemPatchIfExists => Exceptions.isNotFoundExceptionCore(statusCode, subStatusCode)
+      case ItemWriteStrategy.ItemPatch =>
+        hasPatchFilterPredicate && Exceptions.isPreconditionFailedException(statusCode)
+      case ItemWriteStrategy.ItemPatchIfExists =>
+        Exceptions.isNotFoundExceptionCore(statusCode, subStatusCode) ||
+          (hasPatchFilterPredicate && Exceptions.isPreconditionFailedException(statusCode))
       case ItemWriteStrategy.ItemDelete => Exceptions.isNotFoundExceptionCore(statusCode, subStatusCode)
       case ItemWriteStrategy.ItemDeleteIfNotModified => Exceptions.isNotFoundExceptionCore(statusCode, subStatusCode) ||
         Exceptions.isPreconditionFailedException(statusCode)

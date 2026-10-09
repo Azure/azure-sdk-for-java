@@ -36,46 +36,7 @@ import java.util.Map;
  */
 public final class MetricAlertsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2024-03-01-preview/createOrUpdateMetricAlertSubscription.json
-     */
-    /**
-     * Sample code: Create or update an alert rule on Subscription.
-     * 
-     * @param manager Entry point to MonitorManager.
-     */
-    public static void
-        createOrUpdateAnAlertRuleOnSubscription(com.azure.resourcemanager.monitor.MonitorManager manager) {
-        manager.serviceClient()
-            .getMetricAlerts()
-            .createOrUpdateWithResponse("gigtest", "MetricAlertAtSubscriptionLevel",
-                new MetricAlertResourceInner().withLocation("global")
-                    .withTags(mapOf())
-                    .withDescription("This is the description of the rule1")
-                    .withSeverity(3)
-                    .withEnabled(true)
-                    .withScopes(Arrays.asList("/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7"))
-                    .withEvaluationFrequency(Duration.parse("PT1M"))
-                    .withWindowSize(Duration.parse("PT15M"))
-                    .withTargetResourceType("Microsoft.Compute/virtualMachines")
-                    .withTargetResourceRegion("southcentralus")
-                    .withCriteria(new MetricAlertMultipleResourceMultipleMetricCriteria()
-                        .withAllOf(Arrays.asList(new MetricCriteria().withName("High_CPU_80")
-                            .withMetricName("Percentage CPU")
-                            .withMetricNamespace("microsoft.compute/virtualmachines")
-                            .withTimeAggregation(AggregationTypeEnum.AVERAGE)
-                            .withDimensions(Arrays.asList())
-                            .withOperator(Operator.GREATER_THAN)
-                            .withThreshold(80.5))))
-                    .withAutoMitigate(true)
-                    .withActions(Arrays.asList(new MetricAlertAction().withActionGroupId(
-                        "/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourcegroups/gigtest/providers/microsoft.insights/actiongroups/group2")
-                        .withWebhookProperties(
-                            mapOf("key11", "fakeTokenPlaceholder", "key12", "fakeTokenPlaceholder")))),
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2024-03-01-preview/createOrUpdateMetricAlertResourceGroup.json
+     * x-ms-original-file: 2026-01-01/createOrUpdateMetricAlertResourceGroup.json
      */
     /**
      * Sample code: Create or update an alert rule on Resource group(s).
@@ -114,7 +75,7 @@ public final class MetricAlertsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-03-01-preview/createOrUpdateMetricAlertWithDimensions.json
+     * x-ms-original-file: 2026-01-01/createOrUpdateMetricAlertWithDimensions.json
      */
     /**
      * Sample code: Create or update an alert rules with dimensions.
@@ -157,7 +118,7 @@ public final class MetricAlertsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-03-01-preview/createOrUpdateMetricAlertQuery.json
+     * x-ms-original-file: 2026-01-01/createOrUpdateMetricAlertQuery.json
      */
     /**
      * Sample code: Create or update a query based alert rule.
@@ -193,7 +154,7 @@ public final class MetricAlertsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-03-01-preview/createOrUpdateWebTestMetricAlert.json
+     * x-ms-original-file: 2026-01-01/createOrUpdateWebTestMetricAlert.json
      */
     /**
      * Sample code: Create or update a web test alert rule.
@@ -227,7 +188,7 @@ public final class MetricAlertsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-03-01-preview/createOrUpdateDynamicMetricAlertSingleResource.json
+     * x-ms-original-file: 2026-01-01/createOrUpdateDynamicMetricAlertSingleResource.json
      */
     /**
      * Sample code: Create or update a dynamic alert rule for Single Resource.
@@ -266,7 +227,7 @@ public final class MetricAlertsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-03-01-preview/createOrUpdateMetricAlertQueryMultiResource.json
+     * x-ms-original-file: 2026-01-01/createOrUpdateMetricAlertQueryMultiResource.json
      */
     /**
      * Sample code: Create or update a resource centric query based alert rule for Multiple Resources.
@@ -302,7 +263,7 @@ public final class MetricAlertsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-03-01-preview/createOrUpdateMetricAlertQueryResourceCentric.json
+     * x-ms-original-file: 2026-01-01/createOrUpdateMetricAlertQueryResourceCentric.json
      */
     /**
      * Sample code: Create or update a resource centric query based alert rule.
@@ -339,7 +300,7 @@ public final class MetricAlertsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-03-01-preview/createOrUpdateMetricAlertSingleResource.json
+     * x-ms-original-file: 2026-01-01/createOrUpdateMetricAlertSingleResource.json
      */
     /**
      * Sample code: Create or update an alert rule for Single Resource.
@@ -374,7 +335,46 @@ public final class MetricAlertsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-03-01-preview/createOrUpdateMetricAlertMultipleResource.json
+     * x-ms-original-file: 2026-01-01/createOrUpdateMetricAlertSubscription.json
+     */
+    /**
+     * Sample code: Create or update an alert rule on Subscription.
+     * 
+     * @param manager Entry point to MonitorManager.
+     */
+    public static void
+        createOrUpdateAnAlertRuleOnSubscription(com.azure.resourcemanager.monitor.MonitorManager manager) {
+        manager.serviceClient()
+            .getMetricAlerts()
+            .createOrUpdateWithResponse("gigtest", "MetricAlertAtSubscriptionLevel",
+                new MetricAlertResourceInner().withLocation("global")
+                    .withTags(mapOf())
+                    .withDescription("This is the description of the rule1")
+                    .withSeverity(3)
+                    .withEnabled(true)
+                    .withScopes(Arrays.asList("/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7"))
+                    .withEvaluationFrequency(Duration.parse("PT1M"))
+                    .withWindowSize(Duration.parse("PT15M"))
+                    .withTargetResourceType("Microsoft.Compute/virtualMachines")
+                    .withTargetResourceRegion("southcentralus")
+                    .withCriteria(new MetricAlertMultipleResourceMultipleMetricCriteria()
+                        .withAllOf(Arrays.asList(new MetricCriteria().withName("High_CPU_80")
+                            .withMetricName("Percentage CPU")
+                            .withMetricNamespace("microsoft.compute/virtualmachines")
+                            .withTimeAggregation(AggregationTypeEnum.AVERAGE)
+                            .withDimensions(Arrays.asList())
+                            .withOperator(Operator.GREATER_THAN)
+                            .withThreshold(80.5))))
+                    .withAutoMitigate(true)
+                    .withActions(Arrays.asList(new MetricAlertAction().withActionGroupId(
+                        "/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourcegroups/gigtest/providers/microsoft.insights/actiongroups/group2")
+                        .withWebhookProperties(
+                            mapOf("key11", "fakeTokenPlaceholder", "key12", "fakeTokenPlaceholder")))),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-01-01/createOrUpdateMetricAlertMultipleResource.json
      */
     /**
      * Sample code: Create or update an alert rule for Multiple Resource.
@@ -414,7 +414,7 @@ public final class MetricAlertsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-03-01-preview/createOrUpdateDynamicMetricAlertMultipleResource.json
+     * x-ms-original-file: 2026-01-01/createOrUpdateDynamicMetricAlertMultipleResource.json
      */
     /**
      * Sample code: Create or update a dynamic alert rule for Multiple Resources.
@@ -456,7 +456,7 @@ public final class MetricAlertsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-03-01-preview/createOrUpdateMetricAlertQueryDT.json
+     * x-ms-original-file: 2026-01-01/createOrUpdateMetricAlertQueryDT.json
      */
     /**
      * Sample code: Create or update a query based alert rule with dynamic threshold.

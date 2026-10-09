@@ -5,6 +5,7 @@ package com.azure.ai.agents.implementation.models;
 
 import com.azure.ai.agents.models.AgentBlueprintReference;
 import com.azure.ai.agents.models.AgentDefinition;
+import com.azure.ai.agents.models.DigitalWorkerType;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
@@ -38,7 +39,7 @@ public final class CreateAgentVersionRequest implements JsonSerializable<CreateA
     private String description;
 
     /*
-     * The agent definition. This can be a workflow, hosted agent, or a simple agent definition.
+     * The agent definition. This can be a prompt, workflow, hosted, external, or voice agent definition.
      */
     @Generated
     private final AgentDefinition definition;
@@ -108,8 +109,8 @@ public final class CreateAgentVersionRequest implements JsonSerializable<CreateA
     }
 
     /**
-     * Get the definition property: The agent definition. This can be a workflow, hosted agent, or a simple agent
-     * definition.
+     * Get the definition property: The agent definition. This can be a prompt, workflow, hosted, external, or voice
+     * agent definition.
      *
      * @return the definition value.
      */
@@ -129,6 +130,9 @@ public final class CreateAgentVersionRequest implements JsonSerializable<CreateA
         jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("description", this.description);
         jsonWriter.writeJsonField("blueprint_reference", this.blueprintReference);
+        jsonWriter.writeStringField("digital_worker_type",
+            this.digitalWorkerType == null ? null : this.digitalWorkerType.toString());
+        jsonWriter.writeBooleanField("draft", this.draft);
         return jsonWriter.writeEndObject();
     }
 
@@ -148,6 +152,8 @@ public final class CreateAgentVersionRequest implements JsonSerializable<CreateA
             Map<String, String> metadata = null;
             String description = null;
             AgentBlueprintReference blueprintReference = null;
+            DigitalWorkerType digitalWorkerType = null;
+            Boolean draft = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -159,6 +165,10 @@ public final class CreateAgentVersionRequest implements JsonSerializable<CreateA
                     description = reader.getString();
                 } else if ("blueprint_reference".equals(fieldName)) {
                     blueprintReference = AgentBlueprintReference.fromJson(reader);
+                } else if ("digital_worker_type".equals(fieldName)) {
+                    digitalWorkerType = DigitalWorkerType.fromString(reader.getString());
+                } else if ("draft".equals(fieldName)) {
+                    draft = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }
@@ -167,6 +177,8 @@ public final class CreateAgentVersionRequest implements JsonSerializable<CreateA
             deserializedCreateAgentVersionRequest.metadata = metadata;
             deserializedCreateAgentVersionRequest.description = description;
             deserializedCreateAgentVersionRequest.blueprintReference = blueprintReference;
+            deserializedCreateAgentVersionRequest.digitalWorkerType = digitalWorkerType;
+            deserializedCreateAgentVersionRequest.draft = draft;
             return deserializedCreateAgentVersionRequest;
         });
     }
@@ -196,6 +208,70 @@ public final class CreateAgentVersionRequest implements JsonSerializable<CreateA
     @Generated
     public CreateAgentVersionRequest setBlueprintReference(AgentBlueprintReference blueprintReference) {
         this.blueprintReference = blueprintReference;
+        return this;
+    }
+
+    /*
+     * (Preview) Whether this agent version is a draft (candidate) rather than a release. The service defaults to
+     * `false` if a value is not specified by the caller. Draft versions are recorded but excluded from default 'latest'
+     * resolution and are not auto-promoted.
+     */
+    @Generated
+    private Boolean draft;
+
+    /**
+     * Get the draft property: (Preview) Whether this agent version is a draft (candidate) rather than a release. The
+     * service defaults to `false` if a value is not specified by the caller. Draft versions are recorded but excluded
+     * from default 'latest' resolution and are not auto-promoted.
+     *
+     * @return the draft value.
+     */
+    @Generated
+    public Boolean isDraft() {
+        return this.draft;
+    }
+
+    /**
+     * Set the draft property: (Preview) Whether this agent version is a draft (candidate) rather than a release. The
+     * service defaults to `false` if a value is not specified by the caller. Draft versions are recorded but excluded
+     * from default 'latest' resolution and are not auto-promoted.
+     *
+     * @param draft the draft value to set.
+     * @return the CreateAgentVersionRequest object itself.
+     */
+    @Generated
+    public CreateAgentVersionRequest setDraft(Boolean draft) {
+        this.draft = draft;
+        return this;
+    }
+
+    /*
+     * (Preview) The type of digital worker (previously known as `autopilot`). If omitted, it is not a digital worker.
+     */
+    @Generated
+    private DigitalWorkerType digitalWorkerType;
+
+    /**
+     * Get the digitalWorkerType property: (Preview) The type of digital worker (previously known as `autopilot`). If
+     * omitted, it is not a digital worker.
+     *
+     * @return the digitalWorkerType value.
+     */
+    @Generated
+    public DigitalWorkerType getDigitalWorkerType() {
+        return this.digitalWorkerType;
+    }
+
+    /**
+     * Set the digitalWorkerType property: (Preview) The type of digital worker (previously known as `autopilot`). If
+     * omitted, it is not a digital worker.
+     *
+     * @param digitalWorkerType the digitalWorkerType value to set.
+     * @return the CreateAgentVersionRequest object itself.
+     */
+    @Generated
+    public CreateAgentVersionRequest setDigitalWorkerType(DigitalWorkerType digitalWorkerType) {
+        this.digitalWorkerType = digitalWorkerType;
         return this;
     }
 }

@@ -18,24 +18,6 @@ import java.io.IOException;
 public final class ResponseTokenStatistics implements JsonSerializable<ResponseTokenStatistics> {
 
     /*
-     * Total number of tokens (input + output).
-     */
-    @Generated
-    private final int totalTokens;
-
-    /*
-     * Number of input tokens.
-     */
-    @Generated
-    private final int inputTokens;
-
-    /*
-     * Number of output tokens.
-     */
-    @Generated
-    private final int outputTokens;
-
-    /*
      * Detailed breakdown of input tokens.
      */
     @Generated
@@ -50,50 +32,20 @@ public final class ResponseTokenStatistics implements JsonSerializable<ResponseT
     /**
      * Creates an instance of ResponseTokenStatistics class.
      *
-     * @param totalTokens the totalTokens value to set.
-     * @param inputTokens the inputTokens value to set.
-     * @param outputTokens the outputTokens value to set.
+     * @param totalTokenCount the totalTokenCount value to set.
+     * @param inputTokenCount the inputTokenCount value to set.
+     * @param outputTokenCount the outputTokenCount value to set.
      * @param inputTokenDetails the inputTokenDetails value to set.
      * @param outputTokenDetails the outputTokenDetails value to set.
      */
     @Generated
-    private ResponseTokenStatistics(int totalTokens, int inputTokens, int outputTokens,
+    private ResponseTokenStatistics(int totalTokenCount, int inputTokenCount, int outputTokenCount,
         InputTokenDetails inputTokenDetails, OutputTokenDetails outputTokenDetails) {
-        this.totalTokens = totalTokens;
-        this.inputTokens = inputTokens;
-        this.outputTokens = outputTokens;
+        this.totalTokenCount = totalTokenCount;
+        this.inputTokenCount = inputTokenCount;
+        this.outputTokenCount = outputTokenCount;
         this.inputTokenDetails = inputTokenDetails;
         this.outputTokenDetails = outputTokenDetails;
-    }
-
-    /**
-     * Get the totalTokens property: Total number of tokens (input + output).
-     *
-     * @return the totalTokens value.
-     */
-    @Generated
-    public int getTotalTokens() {
-        return this.totalTokens;
-    }
-
-    /**
-     * Get the inputTokens property: Number of input tokens.
-     *
-     * @return the inputTokens value.
-     */
-    @Generated
-    public int getInputTokens() {
-        return this.inputTokens;
-    }
-
-    /**
-     * Get the outputTokens property: Number of output tokens.
-     *
-     * @return the outputTokens value.
-     */
-    @Generated
-    public int getOutputTokens() {
-        return this.outputTokens;
     }
 
     /**
@@ -123,9 +75,9 @@ public final class ResponseTokenStatistics implements JsonSerializable<ResponseT
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeIntField("total_tokens", this.totalTokens);
-        jsonWriter.writeIntField("input_tokens", this.inputTokens);
-        jsonWriter.writeIntField("output_tokens", this.outputTokens);
+        jsonWriter.writeIntField("total_tokens", this.totalTokenCount);
+        jsonWriter.writeIntField("input_tokens", this.inputTokenCount);
+        jsonWriter.writeIntField("output_tokens", this.outputTokenCount);
         jsonWriter.writeJsonField("input_token_details", this.inputTokenDetails);
         jsonWriter.writeJsonField("output_token_details", this.outputTokenDetails);
         return jsonWriter.writeEndObject();
@@ -143,20 +95,20 @@ public final class ResponseTokenStatistics implements JsonSerializable<ResponseT
     @Generated
     public static ResponseTokenStatistics fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            int totalTokens = 0;
-            int inputTokens = 0;
-            int outputTokens = 0;
+            int totalTokenCount = 0;
+            int inputTokenCount = 0;
+            int outputTokenCount = 0;
             InputTokenDetails inputTokenDetails = null;
             OutputTokenDetails outputTokenDetails = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("total_tokens".equals(fieldName)) {
-                    totalTokens = reader.getInt();
+                    totalTokenCount = reader.getInt();
                 } else if ("input_tokens".equals(fieldName)) {
-                    inputTokens = reader.getInt();
+                    inputTokenCount = reader.getInt();
                 } else if ("output_tokens".equals(fieldName)) {
-                    outputTokens = reader.getInt();
+                    outputTokenCount = reader.getInt();
                 } else if ("input_token_details".equals(fieldName)) {
                     inputTokenDetails = InputTokenDetails.fromJson(reader);
                 } else if ("output_token_details".equals(fieldName)) {
@@ -165,8 +117,56 @@ public final class ResponseTokenStatistics implements JsonSerializable<ResponseT
                     reader.skipChildren();
                 }
             }
-            return new ResponseTokenStatistics(totalTokens, inputTokens, outputTokens, inputTokenDetails,
+            return new ResponseTokenStatistics(totalTokenCount, inputTokenCount, outputTokenCount, inputTokenDetails,
                 outputTokenDetails);
         });
+    }
+
+    /*
+     * Total number of tokens (input + output).
+     */
+    @Generated
+    private final int totalTokenCount;
+
+    /*
+     * Number of input tokens.
+     */
+    @Generated
+    private final int inputTokenCount;
+
+    /*
+     * Number of output tokens.
+     */
+    @Generated
+    private final int outputTokenCount;
+
+    /**
+     * Get the totalTokenCount property: Total number of tokens (input + output).
+     *
+     * @return the totalTokenCount value.
+     */
+    @Generated
+    public int getTotalTokenCount() {
+        return this.totalTokenCount;
+    }
+
+    /**
+     * Get the inputTokenCount property: Number of input tokens.
+     *
+     * @return the inputTokenCount value.
+     */
+    @Generated
+    public int getInputTokenCount() {
+        return this.inputTokenCount;
+    }
+
+    /**
+     * Get the outputTokenCount property: Number of output tokens.
+     *
+     * @return the outputTokenCount value.
+     */
+    @Generated
+    public int getOutputTokenCount() {
+        return this.outputTokenCount;
     }
 }

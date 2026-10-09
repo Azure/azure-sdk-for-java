@@ -6,6 +6,7 @@ package com.azure.spring.cloud.testcontainers.implementation.service.connection.
 import com.azure.spring.cloud.autoconfigure.implementation.context.AzureGlobalPropertiesAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.implementation.storage.queue.AzureStorageQueueAutoConfiguration;
 import com.azure.storage.queue.QueueClient;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledOnOs;
 import org.junit.jupiter.api.condition.OS;
@@ -24,6 +25,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringJUnitConfig
 @TestPropertySource(properties = "spring.cloud.azure.storage.queue.queue-name=devstoreaccount1/tc-queue")
 @Testcontainers
+@Tag("docker")
 @EnabledOnOs(OS.LINUX)
 class StorageQueueContainerConnectionDetailsFactoryTests {
 

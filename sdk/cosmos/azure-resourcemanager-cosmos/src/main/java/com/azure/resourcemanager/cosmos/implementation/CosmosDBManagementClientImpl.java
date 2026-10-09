@@ -55,6 +55,9 @@ import com.azure.resourcemanager.cosmos.fluent.RestorableSqlResourcesClient;
 import com.azure.resourcemanager.cosmos.fluent.RestorableTableResourcesClient;
 import com.azure.resourcemanager.cosmos.fluent.RestorableTablesClient;
 import com.azure.resourcemanager.cosmos.fluent.ServicesClient;
+import com.azure.resourcemanager.cosmos.fluent.SoftDeletedDatabaseAccountsClient;
+import com.azure.resourcemanager.cosmos.fluent.SoftDeletedSqlContainersClient;
+import com.azure.resourcemanager.cosmos.fluent.SoftDeletedSqlDatabasesClient;
 import com.azure.resourcemanager.cosmos.fluent.SqlResourcesClient;
 import com.azure.resourcemanager.cosmos.fluent.TableResourcesClient;
 import com.azure.resourcemanager.cosmos.fluent.ThroughputPoolAccountsClient;
@@ -361,6 +364,48 @@ public final class CosmosDBManagementClientImpl extends AzureServiceClient imple
      */
     public PrivateLinkResourcesClient getPrivateLinkResources() {
         return this.privateLinkResources;
+    }
+
+    /**
+     * The SoftDeletedDatabaseAccountsClient object to access its operations.
+     */
+    private final SoftDeletedDatabaseAccountsClient softDeletedDatabaseAccounts;
+
+    /**
+     * Gets the SoftDeletedDatabaseAccountsClient object to access its operations.
+     * 
+     * @return the SoftDeletedDatabaseAccountsClient object.
+     */
+    public SoftDeletedDatabaseAccountsClient getSoftDeletedDatabaseAccounts() {
+        return this.softDeletedDatabaseAccounts;
+    }
+
+    /**
+     * The SoftDeletedSqlDatabasesClient object to access its operations.
+     */
+    private final SoftDeletedSqlDatabasesClient softDeletedSqlDatabases;
+
+    /**
+     * Gets the SoftDeletedSqlDatabasesClient object to access its operations.
+     * 
+     * @return the SoftDeletedSqlDatabasesClient object.
+     */
+    public SoftDeletedSqlDatabasesClient getSoftDeletedSqlDatabases() {
+        return this.softDeletedSqlDatabases;
+    }
+
+    /**
+     * The SoftDeletedSqlContainersClient object to access its operations.
+     */
+    private final SoftDeletedSqlContainersClient softDeletedSqlContainers;
+
+    /**
+     * Gets the SoftDeletedSqlContainersClient object to access its operations.
+     * 
+     * @return the SoftDeletedSqlContainersClient object.
+     */
+    public SoftDeletedSqlContainersClient getSoftDeletedSqlContainers() {
+        return this.softDeletedSqlContainers;
     }
 
     /**
@@ -899,7 +944,7 @@ public final class CosmosDBManagementClientImpl extends AzureServiceClient imple
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2025-11-01-preview";
+        this.apiVersion = "2026-04-01-preview";
         this.operations = new OperationsClientImpl(this);
         this.databaseAccounts = new DatabaseAccountsClientImpl(this);
         this.copyJobs = new CopyJobsClientImpl(this);
@@ -915,6 +960,9 @@ public final class CosmosDBManagementClientImpl extends AzureServiceClient imple
         this.notebookWorkspaces = new NotebookWorkspacesClientImpl(this);
         this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
         this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);
+        this.softDeletedDatabaseAccounts = new SoftDeletedDatabaseAccountsClientImpl(this);
+        this.softDeletedSqlDatabases = new SoftDeletedSqlDatabasesClientImpl(this);
+        this.softDeletedSqlContainers = new SoftDeletedSqlContainersClientImpl(this);
         this.chaosFaults = new ChaosFaultsClientImpl(this);
         this.databases = new DatabasesClientImpl(this);
         this.collections = new CollectionsClientImpl(this);

@@ -11,6 +11,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.RequestConditions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
@@ -18,6 +19,7 @@ import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobServiceAsyncClient;
 import com.azure.storage.blob.BlobServiceVersion;
+import com.azure.storage.blob.implementation.accesshelpers.AppendBlobItemConstructorProxy;
 import com.azure.storage.blob.implementation.models.AppendBlobsAppendBlockFromUrlHeaders;
 import com.azure.storage.blob.implementation.models.AppendBlobsAppendBlockHeaders;
 import com.azure.storage.blob.implementation.models.AppendBlobsCreateHeaders;
@@ -34,10 +36,13 @@ import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.models.EncryptionAlgorithmType;
+import com.azure.storage.blob.options.AppendBlobAppendBlockOptions;
 import com.azure.storage.blob.options.AppendBlobAppendBlockFromUrlOptions;
 import com.azure.storage.blob.options.AppendBlobCreateOptions;
 import com.azure.storage.blob.options.AppendBlobSealOptions;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.implementation.contentvalidation.ContentValidationModeResolver;
+
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -45,6 +50,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.util.Map;
+import java.util.Objects;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
@@ -447,13 +453,58 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      * @param appendBlobRequestConditions {@link AppendBlobRequestConditions}
      * @return A {@link Mono} containing {@link Response} whose {@link Response#getValue() value} contains the append
      * blob operation.
+     * @deprecated Use {@link #appendBlockWithResponse(AppendBlobAppendBlockOptions)}. The data and optional
+     * parameters are now carried by {@link AppendBlobAppendBlockOptions}, which is also forward-compatible with future
+     * optional settings.
      */
+    @Deprecated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AppendBlobItem>> appendBlockWithResponse(Flux<ByteBuffer> data, long length, byte[] contentMd5,
         AppendBlobRequestConditions appendBlobRequestConditions) {
         try {
-            return withContext(
-                context -> appendBlockWithResponse(data, length, contentMd5, appendBlobRequestConditions, context));
+            if (data == null) {
+                return monoError(LOGGER, new NullPointerException("'data' cannot be null."));
+            }
+            return BinaryData.fromFlux(data, length, false)
+                .flatMap(binaryData -> appendBlockWithResponse(
+                    new AppendBlobAppendBlockOptions(binaryData).setContentMd5(contentMd5)
+                        .setRequestConditions(appendBlobRequestConditions)));
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    /**
+     * Commits a new block of data to the end of the existing append blob with options.
+     * <p>Note that the data passed must be replayable if retries are enabled (the default),
+     * see {@link BinaryData#isReplayable()}.
+     * <p>For service versions 2022-11-02 and later, the maximum block size is 100 MB. For earlier service versions,
+     * the maximum block size is 4 MB. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/append-block">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.blob.specialized.AppendBlobAsyncClient.appendBlockWithResponse#AppendBlobAppendBlockOptions -->
+     * <pre>
+     * BinaryData data = BinaryData.fromString&#40;&quot;data&quot;&#41;;
+     * AppendBlobAppendBlockOptions options = new AppendBlobAppendBlockOptions&#40;data&#41;
+     *     .setContentValidationAlgorithm&#40;ContentValidationAlgorithm.CRC64&#41;;
+     *
+     * client.appendBlockWithResponse&#40;options&#41;.subscribe&#40;response -&gt;
+     *     System.out.printf&#40;&quot;AppendBlob has %d committed blocks%n&quot;,
+     *         response.getValue&#40;&#41;.getBlobCommittedBlockCount&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.AppendBlobAsyncClient.appendBlockWithResponse#AppendBlobAppendBlockOptions -->
+     *
+     * @param options {@link AppendBlobAppendBlockOptions}
+     * @return A {@link Mono} containing {@link Response} whose value contains the append blob operation.
+     * @throws NullPointerException if {@code options} is null.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<AppendBlobItem>> appendBlockWithResponse(AppendBlobAppendBlockOptions options) {
+        Objects.requireNonNull(options, "options must not be null");
+        try {
+            return withContext(context -> appendBlockWithResponseInternal(options, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -461,27 +512,43 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
 
     Mono<Response<AppendBlobItem>> appendBlockWithResponse(Flux<ByteBuffer> data, long length, byte[] contentMd5,
         AppendBlobRequestConditions appendBlobRequestConditions, Context context) {
-
+        // Prevents revapi visibility increased error
         if (data == null) {
-            return Mono.error(new NullPointerException("'data' cannot be null."));
+            return monoError(LOGGER, new NullPointerException("'data' cannot be null."));
         }
+        return BinaryData.fromFlux(data, length, false)
+            .flatMap(binaryData -> appendBlockWithResponseInternal(
+                new AppendBlobAppendBlockOptions(binaryData).setContentMd5(contentMd5)
+                    .setRequestConditions(appendBlobRequestConditions),
+                context));
+    }
 
-        appendBlobRequestConditions
-            = appendBlobRequestConditions == null ? new AppendBlobRequestConditions() : appendBlobRequestConditions;
-        context = context == null ? Context.NONE : context;
+    Mono<Response<AppendBlobItem>> appendBlockWithResponseInternal(AppendBlobAppendBlockOptions options,
+        Context context) {
+        Objects.requireNonNull(options, "options must not be null");
+        BinaryData data = options.getData();
+        Objects.requireNonNull(data, "data must not be null");
+        Objects.requireNonNull(data.getLength(), "data must have defined length");
+        long length = data.getLength();
+        AppendBlobRequestConditions requestConditions = options.getRequestConditions() == null
+            ? new AppendBlobRequestConditions()
+            : options.getRequestConditions();
+        context = ContentValidationModeResolver.addContentValidationMode(context == null ? Context.NONE : context,
+            options.getContentValidationAlgorithm(), length, false);
 
         return this.azureBlobStorage.getAppendBlobs()
-            .appendBlockWithResponseAsync(containerName, blobName, length, data, null, contentMd5, null,
-                appendBlobRequestConditions.getLeaseId(), appendBlobRequestConditions.getMaxSize(),
-                appendBlobRequestConditions.getAppendPosition(), appendBlobRequestConditions.getIfModifiedSince(),
-                appendBlobRequestConditions.getIfUnmodifiedSince(), appendBlobRequestConditions.getIfMatch(),
-                appendBlobRequestConditions.getIfNoneMatch(), appendBlobRequestConditions.getTagsConditions(), null,
-                null, null, getCustomerProvidedKey(), encryptionScope, context)
+            .appendBlockWithResponseAsync(containerName, blobName, length, data, null, options.getContentMd5(), null,
+                requestConditions.getLeaseId(), requestConditions.getMaxSize(), requestConditions.getAppendPosition(),
+                requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
+                requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(),
+                requestConditions.getTagsConditions(), null, null, null, getCustomerProvidedKey(), encryptionScope,
+                context)
             .map(rb -> {
                 AppendBlobsAppendBlockHeaders hd = rb.getDeserializedHeaders();
-                AppendBlobItem item = new AppendBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
-                    hd.isXMsRequestServerEncrypted(), hd.getXMsEncryptionKeySha256(), hd.getXMsEncryptionScope(),
-                    hd.getXMsBlobAppendOffset(), hd.getXMsBlobCommittedBlockCount());
+                AppendBlobItem item
+                    = AppendBlobItemConstructorProxy.create(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
+                        hd.isXMsRequestServerEncrypted(), hd.getXMsEncryptionKeySha256(), hd.getXMsEncryptionScope(),
+                        hd.getXMsBlobAppendOffset(), hd.getXMsBlobCommittedBlockCount(), null, hd.getXMsContentCrc64());
                 return new SimpleResponse<>(rb, item);
             });
     }
@@ -627,9 +694,10 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
                 getCustomerProvidedKey(), encryptionScope, context)
             .map(rb -> {
                 AppendBlobsAppendBlockFromUrlHeaders hd = rb.getDeserializedHeaders();
-                AppendBlobItem item = new AppendBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
-                    hd.isXMsRequestServerEncrypted(), hd.getXMsEncryptionKeySha256(), hd.getXMsEncryptionScope(),
-                    hd.getXMsBlobAppendOffset(), hd.getXMsBlobCommittedBlockCount());
+                AppendBlobItem item
+                    = AppendBlobItemConstructorProxy.create(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
+                        hd.isXMsRequestServerEncrypted(), hd.getXMsEncryptionKeySha256(), hd.getXMsEncryptionScope(),
+                        hd.getXMsBlobAppendOffset(), hd.getXMsBlobCommittedBlockCount(), null, hd.getXMsContentCrc64());
                 return new SimpleResponse<>(rb, item);
             });
     }

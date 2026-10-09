@@ -10,9 +10,11 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.models.BootDiagnosticsInstanceView;
+import com.azure.resourcemanager.compute.models.CapacityReservationType;
 import com.azure.resourcemanager.compute.models.DiskInstanceView;
 import com.azure.resourcemanager.compute.models.HyperVGenerationType;
 import com.azure.resourcemanager.compute.models.InstanceViewStatus;
+import com.azure.resourcemanager.compute.models.InterconnectInstanceView;
 import com.azure.resourcemanager.compute.models.MaintenanceRedeployStatus;
 import com.azure.resourcemanager.compute.models.VirtualMachineAgentInstanceView;
 import com.azure.resourcemanager.compute.models.VirtualMachineExtensionInstanceView;
@@ -114,6 +116,18 @@ public final class VirtualMachineInstanceViewInner implements JsonSerializable<V
      * [Preview Feature] Specifies whether the VM is currently in or out of the Standby Pool.
      */
     private Boolean isVMInStandbyPool;
+
+    /*
+     * The Interconnect runtime view of the Virtual Machine. Minimum api-version: 2026-03-01.
+     */
+    private InterconnectInstanceView interconnectInstanceView;
+
+    /*
+     * Specifies which type of capacity reservation the virtual machine will consume capacity from if eligible or
+     * whether it is explicitly opted out from being associated and consuming capacity from any reserved capacity
+     * available in the subscription. Minimum api-version: 2026-04-01.
+     */
+    private CapacityReservationType capacityReservationType;
 
     /**
      * Creates an instance of VirtualMachineInstanceViewInner class.
@@ -437,6 +451,27 @@ public final class VirtualMachineInstanceViewInner implements JsonSerializable<V
     }
 
     /**
+     * Get the interconnectInstanceView property: The Interconnect runtime view of the Virtual Machine. Minimum
+     * api-version: 2026-03-01.
+     * 
+     * @return the interconnectInstanceView value.
+     */
+    public InterconnectInstanceView interconnectInstanceView() {
+        return this.interconnectInstanceView;
+    }
+
+    /**
+     * Get the capacityReservationType property: Specifies which type of capacity reservation the virtual machine will
+     * consume capacity from if eligible or whether it is explicitly opted out from being associated and consuming
+     * capacity from any reserved capacity available in the subscription. Minimum api-version: 2026-04-01.
+     * 
+     * @return the capacityReservationType value.
+     */
+    public CapacityReservationType capacityReservationType() {
+        return this.capacityReservationType;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -465,6 +500,9 @@ public final class VirtualMachineInstanceViewInner implements JsonSerializable<V
         }
         if (patchStatus() != null) {
             patchStatus().validate();
+        }
+        if (interconnectInstanceView() != null) {
+            interconnectInstanceView().validate();
         }
     }
 
@@ -555,6 +593,12 @@ public final class VirtualMachineInstanceViewInner implements JsonSerializable<V
                 } else if ("isVMInStandbyPool".equals(fieldName)) {
                     deserializedVirtualMachineInstanceViewInner.isVMInStandbyPool
                         = reader.getNullable(JsonReader::getBoolean);
+                } else if ("interconnectInstanceView".equals(fieldName)) {
+                    deserializedVirtualMachineInstanceViewInner.interconnectInstanceView
+                        = InterconnectInstanceView.fromJson(reader);
+                } else if ("capacityReservationType".equals(fieldName)) {
+                    deserializedVirtualMachineInstanceViewInner.capacityReservationType
+                        = CapacityReservationType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

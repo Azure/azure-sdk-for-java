@@ -26,6 +26,7 @@ import com.azure.resourcemanager.cosmos.models.Location;
 import com.azure.resourcemanager.cosmos.models.MinimalTlsVersion;
 import com.azure.resourcemanager.cosmos.models.NetworkAclBypass;
 import com.azure.resourcemanager.cosmos.models.PublicNetworkAccess;
+import com.azure.resourcemanager.cosmos.models.SoftDeleteConfiguration;
 import com.azure.resourcemanager.cosmos.models.VirtualNetworkRule;
 import java.io.IOException;
 import java.util.List;
@@ -220,6 +221,16 @@ public final class DatabaseAccountUpdateProperties implements JsonSerializable<D
      * Flag to indicate if All Versions and Deletes Change feed feature is enabled on the account
      */
     private Boolean enableAllVersionsAndDeletesChangeFeed;
+
+    /*
+     * The configuration for soft delete on the Cosmos DB account.
+     */
+    private SoftDeleteConfiguration softDeleteConfiguration;
+
+    /*
+     * Flag to indicate enabling/disabling of hierarchical partition key ID last level enforcement on the account.
+     */
+    private Boolean enforceHierarchicalPartitionKeyIdLastLevel;
 
     /**
      * Creates an instance of DatabaseAccountUpdateProperties class.
@@ -982,6 +993,50 @@ public final class DatabaseAccountUpdateProperties implements JsonSerializable<D
     }
 
     /**
+     * Get the softDeleteConfiguration property: The configuration for soft delete on the Cosmos DB account.
+     * 
+     * @return the softDeleteConfiguration value.
+     */
+    public SoftDeleteConfiguration softDeleteConfiguration() {
+        return this.softDeleteConfiguration;
+    }
+
+    /**
+     * Set the softDeleteConfiguration property: The configuration for soft delete on the Cosmos DB account.
+     * 
+     * @param softDeleteConfiguration the softDeleteConfiguration value to set.
+     * @return the DatabaseAccountUpdateProperties object itself.
+     */
+    public DatabaseAccountUpdateProperties
+        withSoftDeleteConfiguration(SoftDeleteConfiguration softDeleteConfiguration) {
+        this.softDeleteConfiguration = softDeleteConfiguration;
+        return this;
+    }
+
+    /**
+     * Get the enforceHierarchicalPartitionKeyIdLastLevel property: Flag to indicate enabling/disabling of hierarchical
+     * partition key ID last level enforcement on the account.
+     * 
+     * @return the enforceHierarchicalPartitionKeyIdLastLevel value.
+     */
+    public Boolean enforceHierarchicalPartitionKeyIdLastLevel() {
+        return this.enforceHierarchicalPartitionKeyIdLastLevel;
+    }
+
+    /**
+     * Set the enforceHierarchicalPartitionKeyIdLastLevel property: Flag to indicate enabling/disabling of hierarchical
+     * partition key ID last level enforcement on the account.
+     * 
+     * @param enforceHierarchicalPartitionKeyIdLastLevel the enforceHierarchicalPartitionKeyIdLastLevel value to set.
+     * @return the DatabaseAccountUpdateProperties object itself.
+     */
+    public DatabaseAccountUpdateProperties
+        withEnforceHierarchicalPartitionKeyIdLastLevel(Boolean enforceHierarchicalPartitionKeyIdLastLevel) {
+        this.enforceHierarchicalPartitionKeyIdLastLevel = enforceHierarchicalPartitionKeyIdLastLevel;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -1022,6 +1077,9 @@ public final class DatabaseAccountUpdateProperties implements JsonSerializable<D
         }
         if (keysMetadata() != null) {
             keysMetadata().validate();
+        }
+        if (softDeleteConfiguration() != null) {
+            softDeleteConfiguration().validate();
         }
     }
 
@@ -1074,6 +1132,9 @@ public final class DatabaseAccountUpdateProperties implements JsonSerializable<D
         jsonWriter.writeBooleanField("enablePerRegionPerPartitionAutoscale", this.enablePerRegionPerPartitionAutoscale);
         jsonWriter.writeBooleanField("enableAllVersionsAndDeletesChangeFeed",
             this.enableAllVersionsAndDeletesChangeFeed);
+        jsonWriter.writeJsonField("softDeleteConfiguration", this.softDeleteConfiguration);
+        jsonWriter.writeBooleanField("enforceHierarchicalPartitionKeyIdLastLevel",
+            this.enforceHierarchicalPartitionKeyIdLastLevel);
         return jsonWriter.writeEndObject();
     }
 
@@ -1195,6 +1256,12 @@ public final class DatabaseAccountUpdateProperties implements JsonSerializable<D
                         = reader.getNullable(JsonReader::getBoolean);
                 } else if ("enableAllVersionsAndDeletesChangeFeed".equals(fieldName)) {
                     deserializedDatabaseAccountUpdateProperties.enableAllVersionsAndDeletesChangeFeed
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("softDeleteConfiguration".equals(fieldName)) {
+                    deserializedDatabaseAccountUpdateProperties.softDeleteConfiguration
+                        = SoftDeleteConfiguration.fromJson(reader);
+                } else if ("enforceHierarchicalPartitionKeyIdLastLevel".equals(fieldName)) {
+                    deserializedDatabaseAccountUpdateProperties.enforceHierarchicalPartitionKeyIdLastLevel
                         = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();

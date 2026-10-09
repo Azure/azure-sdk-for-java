@@ -9,21 +9,18 @@ import java.util.Collection;
 
 /**
  * Indicates if high availability with zone redundancy is supported in conjunction with geographically redundant backups
- * in this location. 'Enabled' means high availability with zone redundancy is supported in conjunction with
- * geographically redundant backups is supported. 'Disabled' stands for high availability with zone redundancy is
- * supported in conjunction with geographically redundant backups is not supported. Will be deprecated in the future.
- * Look to Supported Features for 'ZoneRedundantHaAndGeoBackup'.
+ * in this location. Will be deprecated in the future. Look to Supported Features for 'ZoneRedundantHaAndGeoBackup'.
  */
 public final class ZoneRedundantHighAvailabilityAndGeographicallyRedundantBackupSupport
     extends ExpandableStringEnum<ZoneRedundantHighAvailabilityAndGeographicallyRedundantBackupSupport> {
     /**
-     * Static value Enabled for ZoneRedundantHighAvailabilityAndGeographicallyRedundantBackupSupport.
+     * High availability with zone redundancy is supported in conjunction with geographically redundant backups.
      */
     public static final ZoneRedundantHighAvailabilityAndGeographicallyRedundantBackupSupport ENABLED
         = fromString("Enabled");
 
     /**
-     * Static value Disabled for ZoneRedundantHighAvailabilityAndGeographicallyRedundantBackupSupport.
+     * High availability with zone redundancy is not supported in conjunction with geographically redundant backups.
      */
     public static final ZoneRedundantHighAvailabilityAndGeographicallyRedundantBackupSupport DISABLED
         = fromString("Disabled");

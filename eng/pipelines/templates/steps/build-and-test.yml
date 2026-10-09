@@ -86,19 +86,34 @@ steps:
       VERSION_OVERRIDE_TESTS: ${{ parameters.TestVersionSupport }}
     condition: and(succeeded(), eq(variables['TestVersionSupport'], 'true'))
 
+  - task: Maven@4
+    displayName: 'Build for From Source run'
+    inputs:
+      mavenPomFile: ClientFromSourcePom.xml
+      goals: 'install'
+      # Build and install every track 2, client, library. The purpose is to have all the libraries installed on the
+      # machine, so we can simply run tests with the -amd switch and we can remove the SNAFU of dependencies that
+      # bloated the ci.yml files' AdditionalModules because we ended up having to list every transitive azure client
+      # dependency. Note: The -T 1C says spin up a build thread per core. Since we're building
+      # all the track 2, client, libraries (which is now over 100) this effectively cuts the build time in half.
+      options: $(DefaultOptions) -DskipTests $(DefaultSkipOptions) -Djacoco.skip=true ${{ parameters.BuildOptions }} -T ${{ parameters.BuildParallelization }}
+      mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+      javaHomeOption: 'JDKVersion'
+      jdkVersionOption: $(JavaTestVersion)
+      jdkArchitectureOption: 'x64'
+      publishJUnitResults: false
+    condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
+
   - ${{ parameters.PreTestRunSteps }}
 
   - ${{ if eq('true', parameters.UseFederatedAuth) }}:
-    # Remove preceeding "1." in the version specified by $(JavaTestVersion)
-    # e.g. 1.8 -> 8
-    # This is required to set JAVA_HOME correctly for the Java version
-    # Java versions are expected to always start with "1."
-    - pwsh: |
-        $javaTestVersion = "$(JavaTestVersion)".Substring(2)
-        $javaHomeValue = [System.Environment]::GetEnvironmentVariable("JAVA_HOME_$javaTestVersion`_X64")
-        Write-Host "Setting PowerShellJavaHome to '$javaHomeValue'"
-        Write-Host "##vso[task.setvariable variable=PowerShellJavaHome;]$javaHomeValue"
+    - task: PowerShell@2
       displayName: 'Set PowerShellJavaHome'
+      inputs:
+        pwsh: true
+        filePath: eng/pipelines/scripts/Set-PowerShellJavaHome.ps1
+        arguments: >
+          -JavaTestVersion $(JavaTestVersion)
 
     - task: AzurePowerShell@5
       condition: and(succeeded(), ne(variables['TestFromSource'], 'true'))
@@ -163,26 +178,6 @@ steps:
       goals: jacoco:report-aggregate
     condition: eq(variables['RunAggregateReports'], 'true')
 
-  - task: Maven@4
-    displayName: 'Build for From Source run'
-    inputs:
-      mavenPomFile: ClientFromSourcePom.xml
-      goals: 'install'
-      # Build and install every track 2, client, library. The purpose is to have all the libraries installed on the
-      # machine, so we can simply run tests with the -amd switch and we can remove the SNAFU of dependencies that
-      # bloated the ci.yml files' AdditionalModules because we ended up having to list every transitive azure client
-      # dependency. Note: The -T 1C says spin up a build thread per core. Since we're building
-      # all the track 2, client, libraries (which is now over 100) this effectively cuts the build time in half.
-      options: $(DefaultOptions) -DskipTests $(DefaultSkipOptions) -Djacoco.skip=true ${{ parameters.BuildOptions }} -T ${{ parameters.BuildParallelization }}
-      mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
-      javaHomeOption: 'JDKVersion'
-      jdkVersionOption: $(JavaTestVersion)
-      jdkArchitectureOption: 'x64'
-      publishJUnitResults: false
-    condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
-
-  - ${{ parameters.PreTestRunSteps }}
-
   - ${{ if eq('true', parameters.UseFederatedAuth) }}:
     - ${{ if eq(parameters.IsLiveTest, 'true') }}:
       - pwsh: |
@@ -241,34 +236,22 @@ steps:
       condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
 
   - ${{ if eq(parameters.TestVersionSupport, 'true') }}:
-    - template: /eng/pipelines/templates/steps/retain-test-logs.yml
+    - template: /eng/pipelines/templates/steps/retain-troubleshooting-artifacts.yml
       parameters:
         TestLogsArtifactName: 'test-logs-vo-${{ parameters.VersionOverride }}'
-
-    - template: /eng/pipelines/templates/steps/retain-heap-dump-hprofs.yml
-      parameters:
         OomArtifactName: 'oom-vo-${{ parameters.VersionOverride }}'
   - ${{ else }}:
-    - template: /eng/pipelines/templates/steps/retain-test-logs.yml
-    - template: /eng/pipelines/templates/steps/retain-heap-dump-hprofs.yml
+    - template: /eng/pipelines/templates/steps/retain-troubleshooting-artifacts.yml
 
   # The name of a test case in the results file isn't helpful in the web view.
   # Update it to include the breadcrumb namespace and the type.
-  - pwsh: |
-      echo "Current directory: $(get-location)"
-      Get-ChildItem "TEST-*.xml" -Recurse | ForEach-Object {
-      echo "Updating $($_.Name)"
-      [xml]$xml = Get-Content $_.FullName
-      $xml.SelectNodes("//testcase") | ForEach-Object {
-          $parts = $_.classname -split '\.'
-          $shortClassname = (($parts[0..($parts.Length -2)] | ForEach-Object { $_[0] }) -join ".") + ".$($parts[-1])"
-          $_.name = "$shortClassname.$($_.name)"
-          }
-          $xml.Save($_.FullName)
-      }
+  - task: PowerShell@2
     displayName: 'Update test case names for reporting'
+    inputs:
+      pwsh: true
+      filePath: eng/pipelines/scripts/Update-TestNamesForReporting.ps1
+      workingDirectory: $(System.DefaultWorkingDirectory)/sdk
     condition: always()
-    workingDirectory: $(System.DefaultWorkingDirectory)/sdk
 
   - task: PublishTestResults@2
     condition: always()
@@ -283,6 +266,11 @@ steps:
         testRunTitle: '$(Agent.JobName)_attempt_$(System.JobAttempt)'
       ${{ if ne(parameters.TestResultsFiles, '') }}:
         testResultsFiles: ${{ parameters.TestResultsFiles }}
+
+  - template: /eng/common/pipelines/templates/steps/upload-llm-artifacts.yml
+    parameters:
+      TestResultsGlob: 'TEST-*.xml'
+      SearchFolder: '$(System.DefaultWorkingDirectory)/sdk'
 
   # Azure DevOps only seems to respect the last code coverage result published, so only do this for Windows + Java LTS.
   # Code coverage reporting is set up only for Track 2 modules.

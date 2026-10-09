@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class ThroughputPoolDeleteSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/throughputPool/CosmosDBThroughputPoolDelete.json
+     * x-ms-original-file: 2026-04-01-preview/throughputPool/CosmosDBThroughputPoolDelete.json
      */
     /**
      * Sample code: CosmosDB ThroughputPool Delete.

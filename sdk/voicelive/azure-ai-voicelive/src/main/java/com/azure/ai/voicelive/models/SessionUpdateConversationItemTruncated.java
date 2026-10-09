@@ -18,7 +18,7 @@ import java.io.IOException;
  * to ensure there is no text in the context that hasn't been heard by the user.
  */
 @Immutable
-public final class SessionUpdateConversationItemTruncated extends SessionUpdate {
+public final class SessionUpdateConversationItemTruncated extends SessionServerEvent {
 
     /*
      * The type of event.

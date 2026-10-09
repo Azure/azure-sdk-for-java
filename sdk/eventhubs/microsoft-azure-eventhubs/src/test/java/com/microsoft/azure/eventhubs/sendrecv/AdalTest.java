@@ -6,7 +6,7 @@ package com.microsoft.azure.eventhubs.sendrecv;
 import java.net.MalformedURLException;
 import java.util.concurrent.ExecutionException;
 
-//import org.junit.Test;
+//import org.junit.jupiter.api.Test;
 
 import com.microsoft.aad.adal4j.AuthenticationContext;
 import com.microsoft.aad.adal4j.AuthenticationResult;

@@ -22,19 +22,14 @@ public final class HealthState extends ExpandableStringEnum<HealthState> {
     public static final HealthState DEGRADED = fromString("Degraded");
 
     /**
-     * Error status (Unhealthy).
+     * Unhealthy status.
      */
-    public static final HealthState ERROR = fromString("Error");
+    public static final HealthState UNHEALTHY = fromString("Unhealthy");
 
     /**
      * Unknown status.
      */
     public static final HealthState UNKNOWN = fromString("Unknown");
-
-    /**
-     * Deleted status.
-     */
-    public static final HealthState DELETED = fromString("Deleted");
 
     /**
      * Creates a new instance of HealthState value.

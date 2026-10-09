@@ -391,4 +391,10 @@ public final class ServerEventType extends ExpandableStringEnum<ServerEventType>
     @Generated
     public static final ServerEventType RESPONSE_AUDIO_TRANSCRIPT_ANNOTATION_ADDED
         = fromString("response.audio_transcript.annotation.added");
+
+    /**
+     * Invocation passthrough delta from hosted agent.
+     */
+    @Generated
+    public static final ServerEventType RESPONSE_INVOCATION_DELTA = fromString("response.invocation.delta");
 }

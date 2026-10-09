@@ -8,36 +8,36 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * The state of the network migration operation.
+ * State of the network migration operation.
  */
 public final class NetworkMigrationState extends ExpandableStringEnum<NetworkMigrationState> {
     /**
-     * The network migration is pending.
+     * Network migration is pending.
      */
     public static final NetworkMigrationState PENDING = fromString("Pending");
 
     /**
-     * The network migration is in progress.
+     * Network migration is in progress.
      */
     public static final NetworkMigrationState IN_PROGRESS = fromString("InProgress");
 
     /**
-     * The network migration succeeded.
+     * Network migration succeeded.
      */
     public static final NetworkMigrationState SUCCEEDED = fromString("Succeeded");
 
     /**
-     * The network migration failed.
+     * Network migration failed.
      */
     public static final NetworkMigrationState FAILED = fromString("Failed");
 
     /**
-     * The network migration cancellation is in progress.
+     * Network migration cancellation is in progress.
      */
     public static final NetworkMigrationState CANCEL_IN_PROGRESS = fromString("CancelInProgress");
 
     /**
-     * The network migration was cancelled.
+     * Network migration was cancelled.
      */
     public static final NetworkMigrationState CANCELLED = fromString("Cancelled");
 

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.quota.generated;
  */
 public final class UsagesListSamples {
     /*
-     * x-ms-original-file: 2025-09-01/getComputeUsages.json
+     * x-ms-original-file: 2026-09-01-preview/getComputeUsages.json
      */
     /**
      * Sample code: Quotas_listUsagesForCompute.
@@ -23,7 +23,7 @@ public final class UsagesListSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/getNetworkUsages.json
+     * x-ms-original-file: 2026-09-01-preview/getNetworkUsages.json
      */
     /**
      * Sample code: Quotas_listUsagesForNetwork.
@@ -37,7 +37,7 @@ public final class UsagesListSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/getMachineLearningServicesUsages.json
+     * x-ms-original-file: 2026-09-01-preview/getMachineLearningServicesUsages.json
      */
     /**
      * Sample code: Quotas_listUsagesMachineLearningServices.

@@ -14,7 +14,8 @@ import org.junit.jupiter.api.Assertions;
 public final class CapabilitiesPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CapabilitiesProperties model = BinaryData.fromString("{\"dnsZones\":[{\"subResource\":\"AzureBackup\"}]}")
+        CapabilitiesProperties model = BinaryData.fromString(
+            "{\"dnsZones\":[{\"subResource\":\"AzureBackup\"},{\"subResource\":\"AzureBackup_secondary\"},{\"subResource\":\"AzureBackup_secondary\"}]}")
             .toObject(CapabilitiesProperties.class);
         Assertions.assertEquals(VaultSubResourceType.AZURE_BACKUP, model.dnsZones().get(0).subResource());
     }
@@ -22,7 +23,9 @@ public final class CapabilitiesPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CapabilitiesProperties model = new CapabilitiesProperties()
-            .withDnsZones(Arrays.asList(new DnsZone().withSubResource(VaultSubResourceType.AZURE_BACKUP)));
+            .withDnsZones(Arrays.asList(new DnsZone().withSubResource(VaultSubResourceType.AZURE_BACKUP),
+                new DnsZone().withSubResource(VaultSubResourceType.AZURE_BACKUP_SECONDARY),
+                new DnsZone().withSubResource(VaultSubResourceType.AZURE_BACKUP_SECONDARY)));
         model = BinaryData.fromObject(model).toObject(CapabilitiesProperties.class);
         Assertions.assertEquals(VaultSubResourceType.AZURE_BACKUP, model.dnsZones().get(0).subResource());
     }

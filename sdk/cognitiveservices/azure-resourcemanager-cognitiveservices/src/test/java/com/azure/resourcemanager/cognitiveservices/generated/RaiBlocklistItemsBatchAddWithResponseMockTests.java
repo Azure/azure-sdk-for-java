@@ -24,7 +24,7 @@ public final class RaiBlocklistItemsBatchAddWithResponseMockTests {
     @Test
     public void testBatchAddWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"description\":\"roqksmfxm\"},\"etag\":\"prstvkitbfj\",\"tags\":{\"rqxw\":\"otnplfacqocc\",\"a\":\"tjtdrhutfd\",\"eh\":\"txop\"},\"id\":\"dkmdzgsszx\",\"name\":\"ctkbbxuha\",\"type\":\"lsi\"}";
+            = "{\"properties\":{\"description\":\"sqeq\"},\"etag\":\"dxmdses\",\"tags\":{\"pktl\":\"jbjp\",\"at\":\"dibfmthi\"},\"id\":\"jrnm\",\"name\":\"nzqplgtkihonikzs\",\"type\":\"zfffjilzfbpnt\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,13 +34,17 @@ public final class RaiBlocklistItemsBatchAddWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         RaiBlocklist response = manager.raiBlocklistItems()
-            .batchAddWithResponse("oxudnmckap", "hknqiijge", "cdgmoqu",
-                Arrays.asList(new RaiBlocklistItemBulkRequest().withName("hkkyowltjouw")
-                    .withProperties(new RaiBlocklistItemProperties().withPattern("x").withIsRegex(true))),
+            .batchAddWithResponse("vmyifopxf", "jt", "dyzoutxfptofhg", Arrays.asList(
+                new RaiBlocklistItemBulkRequest().withName("wezygvadgaaqw")
+                    .withProperties(new RaiBlocklistItemProperties().withPattern("jpytp").withIsRegex(false)),
+                new RaiBlocklistItemBulkRequest().withName("nogehlufbort")
+                    .withProperties(new RaiBlocklistItemProperties().withPattern("kk").withIsRegex(true)),
+                new RaiBlocklistItemBulkRequest().withName("svbxxyjisskob")
+                    .withProperties(new RaiBlocklistItemProperties().withPattern("lflioewyhxessm").withIsRegex(true))),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("roqksmfxm", response.properties().description());
-        Assertions.assertEquals("otnplfacqocc", response.tags().get("rqxw"));
+        Assertions.assertEquals("sqeq", response.properties().description());
+        Assertions.assertEquals("jbjp", response.tags().get("pktl"));
     }
 }

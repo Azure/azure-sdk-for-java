@@ -352,7 +352,7 @@ public final class IoTOperationsManagementClientImpl implements IoTOperationsMan
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2026-03-01";
+        this.apiVersion = "2026-07-01";
         this.operations = new OperationsClientImpl(this);
         this.instances = new InstancesClientImpl(this);
         this.brokers = new BrokersClientImpl(this);
@@ -480,7 +480,7 @@ public final class IoTOperationsManagementClientImpl implements IoTOperationsMan
             super(null);
             this.statusCode = statusCode;
             this.httpHeaders = httpHeaders;
-            this.responseBody = responseBody == null ? null : responseBody.getBytes(StandardCharsets.UTF_8);
+            this.responseBody = responseBody == null ? new byte[0] : responseBody.getBytes(StandardCharsets.UTF_8);
         }
 
         public int getStatusCode() {

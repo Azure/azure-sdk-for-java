@@ -11,6 +11,9 @@ import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.administration.models.KeyVaultBackupOperation;
+import com.azure.security.keyvault.administration.models.KeyVaultEkmConnection;
+import com.azure.security.keyvault.administration.models.KeyVaultEkmProxyClientCertificateInfo;
+import com.azure.security.keyvault.administration.models.KeyVaultEkmProxyInfo;
 import com.azure.security.keyvault.administration.models.KeyVaultGetSettingsResult;
 import com.azure.security.keyvault.administration.models.KeyVaultRestoreOperation;
 import com.azure.security.keyvault.administration.models.KeyVaultRestoreResult;
@@ -22,6 +25,7 @@ import com.azure.security.keyvault.administration.models.KeyVaultSelectiveKeyRes
 import com.azure.security.keyvault.administration.models.KeyVaultSetting;
 
 import java.time.Duration;
+import java.util.Collections;
 
 /**
  * Class containing code snippets that will be injected to README.md.
@@ -57,6 +61,18 @@ public class ReadmeSamples {
 
     private final KeyVaultSettingsAsyncClient keyVaultSettingsAsyncClient =
         new KeyVaultSettingsClientBuilder()
+            .vaultUrl("<your-managed-hsm-url>")
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .buildAsyncClient();
+
+    private final KeyVaultEkmClient keyVaultEkmClient =
+        new KeyVaultEkmClientBuilder()
+            .vaultUrl("<your-managed-hsm-url>")
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .buildClient();
+
+    private final KeyVaultEkmAsyncClient keyVaultEkmAsyncClient =
+        new KeyVaultEkmClientBuilder()
             .vaultUrl("<your-managed-hsm-url>")
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
@@ -608,5 +624,137 @@ public class ReadmeSamples {
                     System.out.printf("Retrieved setting with name '%s' and value '%s'.%n", setting.getName(),
                         setting.asBoolean())));
         // END: readme-sample-getSettingsAsync
+    }
+
+    /**
+     * Code sample for creating a {@link KeyVaultEkmClient}.
+     */
+    public void createEkmClient() {
+        // BEGIN: readme-sample-createEkmClient
+        KeyVaultEkmClient keyVaultEkmClient = new KeyVaultEkmClientBuilder()
+            .vaultUrl("<your-managed-hsm-url>")
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .buildClient();
+        // END: readme-sample-createEkmClient
+    }
+
+    /**
+     * Code sample for creating a {@link KeyVaultEkmConnection EKM connection}.
+     */
+    public void createEkmConnection() {
+        // BEGIN: readme-sample-createEkmConnection
+        KeyVaultEkmConnection ekmConnectionToCreate =
+            new KeyVaultEkmConnection("<ekm-proxy-host>",
+                Collections.singletonList("<server-ca-certificate>".getBytes()))
+                .setPathPrefix("<path-prefix>")
+                .setServerSubjectCommonName("<server-subject-common-name>");
+
+        KeyVaultEkmConnection createdEkmConnection = keyVaultEkmClient.createEkmConnection(ekmConnectionToCreate);
+
+        System.out.printf("Created EKM connection with host '%s'.%n", createdEkmConnection.getHost());
+        // END: readme-sample-createEkmConnection
+    }
+
+    /**
+     * Code sample for getting a {@link KeyVaultEkmConnection EKM connection}.
+     */
+    public void getEkmConnection() {
+        // BEGIN: readme-sample-getEkmConnection
+        KeyVaultEkmConnection ekmConnection = keyVaultEkmClient.getEkmConnection();
+
+        System.out.printf("Retrieved EKM connection with host '%s'.%n", ekmConnection.getHost());
+        // END: readme-sample-getEkmConnection
+    }
+
+    /**
+     * Code sample for updating a {@link KeyVaultEkmConnection EKM connection}.
+     */
+    public void updateEkmConnection() {
+        // BEGIN: readme-sample-updateEkmConnection
+        KeyVaultEkmConnection ekmConnectionToUpdate =
+            new KeyVaultEkmConnection("<ekm-proxy-host>",
+                Collections.singletonList("<server-ca-certificate>".getBytes()))
+                .setPathPrefix("<path-prefix>")
+                .setServerSubjectCommonName("<server-subject-common-name>");
+
+        KeyVaultEkmConnection updatedEkmConnection = keyVaultEkmClient.updateEkmConnection(ekmConnectionToUpdate);
+
+        System.out.printf("Updated EKM connection with host '%s'.%n", updatedEkmConnection.getHost());
+        // END: readme-sample-updateEkmConnection
+    }
+
+    /**
+     * Code sample for deleting a {@link KeyVaultEkmConnection EKM connection}.
+     */
+    public void deleteEkmConnection() {
+        // BEGIN: readme-sample-deleteEkmConnection
+        KeyVaultEkmConnection deletedEkmConnection = keyVaultEkmClient.deleteEkmConnection();
+
+        System.out.printf("Deleted EKM connection with host '%s'.%n", deletedEkmConnection.getHost());
+        // END: readme-sample-deleteEkmConnection
+    }
+
+    /**
+     * Code sample for checking a {@link KeyVaultEkmConnection EKM connection}.
+     */
+    public void checkEkmConnection() {
+        // BEGIN: readme-sample-checkEkmConnection
+        KeyVaultEkmProxyInfo ekmProxyInfo = keyVaultEkmClient.checkEkmConnection();
+
+        System.out.printf("Checked EKM connection. Proxy vendor: '%s', proxy name: '%s'.%n",
+            ekmProxyInfo.getProxyVendor(), ekmProxyInfo.getProxyName());
+        // END: readme-sample-checkEkmConnection
+    }
+
+    /**
+     * Code sample for getting the {@link KeyVaultEkmProxyClientCertificateInfo EKM proxy client certificate}.
+     */
+    public void getEkmCertificate() {
+        // BEGIN: readme-sample-getEkmCertificate
+        KeyVaultEkmProxyClientCertificateInfo certificateInfo = keyVaultEkmClient.getEkmCertificate();
+
+        System.out.printf("Retrieved EKM proxy client certificate with subject common name '%s'.%n",
+            certificateInfo.getSubjectCommonName());
+        // END: readme-sample-getEkmCertificate
+    }
+
+    /**
+     * Code sample for getting a {@link KeyVaultEkmConnection EKM connection} asynchronously.
+     */
+    public void getEkmConnectionAsync() {
+        // BEGIN: readme-sample-getEkmConnectionAsync
+        keyVaultEkmAsyncClient.getEkmConnection()
+            .subscribe(ekmConnection ->
+                System.out.printf("Retrieved EKM connection with host '%s'.%n", ekmConnection.getHost()));
+        // END: readme-sample-getEkmConnectionAsync
+    }
+
+    /**
+     * Code sample for creating a {@link KeyVaultEkmConnection EKM connection} asynchronously.
+     */
+    public void createEkmConnectionAsync() {
+        // BEGIN: readme-sample-createEkmConnectionAsync
+        KeyVaultEkmConnection ekmConnectionToCreate =
+            new KeyVaultEkmConnection("<ekm-proxy-host>",
+                Collections.singletonList("<server-ca-certificate>".getBytes()))
+                .setPathPrefix("<path-prefix>")
+                .setServerSubjectCommonName("<server-subject-common-name>");
+
+        keyVaultEkmAsyncClient.createEkmConnection(ekmConnectionToCreate)
+            .subscribe(createdEkmConnection ->
+                System.out.printf("Created EKM connection with host '%s'.%n", createdEkmConnection.getHost()));
+        // END: readme-sample-createEkmConnectionAsync
+    }
+
+    /**
+     * Code sample for checking a {@link KeyVaultEkmConnection EKM connection} asynchronously.
+     */
+    public void checkEkmConnectionAsync() {
+        // BEGIN: readme-sample-checkEkmConnectionAsync
+        keyVaultEkmAsyncClient.checkEkmConnection()
+            .subscribe(ekmProxyInfo ->
+                System.out.printf("Checked EKM connection. Proxy vendor: '%s', proxy name: '%s'.%n",
+                    ekmProxyInfo.getProxyVendor(), ekmProxyInfo.getProxyName()));
+        // END: readme-sample-checkEkmConnectionAsync
     }
 }

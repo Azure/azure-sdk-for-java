@@ -12,12 +12,12 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The scheduler profile for a single scheduler instance.
+ * Profile with settings related to a specific instance of an AKS-managed scheduler.
  */
 @Fluent
 public final class SchedulerInstanceProfile implements JsonSerializable<SchedulerInstanceProfile> {
     /*
-     * The config customization mode for this scheduler instance.
+     * The configuration mode to be used by the AKS-managed scheduler.
      */
     private SchedulerConfigMode schedulerConfigMode;
 
@@ -28,7 +28,7 @@ public final class SchedulerInstanceProfile implements JsonSerializable<Schedule
     }
 
     /**
-     * Get the schedulerConfigMode property: The config customization mode for this scheduler instance.
+     * Get the schedulerConfigMode property: The configuration mode to be used by the AKS-managed scheduler.
      * 
      * @return the schedulerConfigMode value.
      */
@@ -37,7 +37,7 @@ public final class SchedulerInstanceProfile implements JsonSerializable<Schedule
     }
 
     /**
-     * Set the schedulerConfigMode property: The config customization mode for this scheduler instance.
+     * Set the schedulerConfigMode property: The configuration mode to be used by the AKS-managed scheduler.
      * 
      * @param schedulerConfigMode the schedulerConfigMode value to set.
      * @return the SchedulerInstanceProfile object itself.

@@ -9,12 +9,13 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Custom tool
  *
  * A custom tool that processes input using a specified format. Learn more about [custom
- * tools](/docs/guides/function-calling#custom-tools).
+ * tools](https://developers.openai.com/api/docs/guides/function-calling#custom-tools).
  */
 @Fluent
 public final class CustomToolParameter extends Tool {
@@ -127,8 +128,12 @@ public final class CustomToolParameter extends Tool {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeBooleanField("async", this.async);
         jsonWriter.writeStringField("description", this.description);
         jsonWriter.writeJsonField("format", this.format);
+        jsonWriter.writeBooleanField("defer_loading", this.deferLoading);
+        jsonWriter.writeArrayField("allowed_callers", this.allowedCallers,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
         return jsonWriter.writeEndObject();
     }
 
@@ -146,8 +151,11 @@ public final class CustomToolParameter extends Tool {
         return jsonReader.readObject(reader -> {
             String name = null;
             ToolType type = ToolType.CUSTOM;
+            Boolean async = null;
             String description = null;
             CustomToolParamFormat format = null;
+            Boolean deferLoading = null;
+            List<CallableToolAllowedCaller> allowedCallers = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -155,19 +163,115 @@ public final class CustomToolParameter extends Tool {
                     name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     type = ToolType.fromString(reader.getString());
+                } else if ("async".equals(fieldName)) {
+                    async = reader.getNullable(JsonReader::getBoolean);
                 } else if ("description".equals(fieldName)) {
                     description = reader.getString();
                 } else if ("format".equals(fieldName)) {
                     format = CustomToolParamFormat.fromJson(reader);
+                } else if ("defer_loading".equals(fieldName)) {
+                    deferLoading = reader.getNullable(JsonReader::getBoolean);
+                } else if ("allowed_callers".equals(fieldName)) {
+                    allowedCallers
+                        = reader.readArray(reader1 -> CallableToolAllowedCaller.fromString(reader1.getString()));
                 } else {
                     reader.skipChildren();
                 }
             }
             CustomToolParameter deserializedCustomToolParameter = new CustomToolParameter(name);
             deserializedCustomToolParameter.type = type;
+            deserializedCustomToolParameter.async = async;
             deserializedCustomToolParameter.description = description;
             deserializedCustomToolParameter.format = format;
+            deserializedCustomToolParameter.deferLoading = deferLoading;
+            deserializedCustomToolParameter.allowedCallers = allowedCallers;
             return deserializedCustomToolParameter;
         });
+    }
+
+    /*
+     * Whether this tool should be deferred and discovered via tool search.
+     */
+    @Generated
+    private Boolean deferLoading;
+
+    /**
+     * Get the deferLoading property: Whether this tool should be deferred and discovered via tool search.
+     *
+     * @return the deferLoading value.
+     */
+    @Generated
+    public Boolean isDeferLoading() {
+        return this.deferLoading;
+    }
+
+    /**
+     * Set the deferLoading property: Whether this tool should be deferred and discovered via tool search.
+     *
+     * @param deferLoading the deferLoading value to set.
+     * @return the CustomToolParameter object itself.
+     */
+    @Generated
+    public CustomToolParameter setDeferLoading(Boolean deferLoading) {
+        this.deferLoading = deferLoading;
+        return this;
+    }
+
+    /*
+     * The allowed_callers property.
+     */
+    @Generated
+    private List<CallableToolAllowedCaller> allowedCallers;
+
+    /**
+     * Get the allowedCallers property: The allowed_callers property.
+     *
+     * @return the allowedCallers value.
+     */
+    @Generated
+    public List<CallableToolAllowedCaller> getAllowedCallers() {
+        return this.allowedCallers;
+    }
+
+    /**
+     * Set the allowedCallers property: The allowed_callers property.
+     *
+     * @param allowedCallers the allowedCallers value to set.
+     * @return the CustomToolParameter object itself.
+     */
+    @Generated
+    public CustomToolParameter setAllowedCallers(List<CallableToolAllowedCaller> allowedCallers) {
+        this.allowedCallers = allowedCallers;
+        return this;
+    }
+
+    /*
+     * Whether the tool response can be returned asynchronously versus immediately returned on next response creation.
+     */
+    @Generated
+    private Boolean async;
+
+    /**
+     * Get the async property: Whether the tool response can be returned asynchronously versus immediately returned on
+     * next response creation.
+     *
+     * @return the async value.
+     */
+    @Generated
+    public Boolean isAsync() {
+        return this.async;
+    }
+
+    /**
+     * Set the async property: Whether the tool response can be returned asynchronously versus immediately returned on
+     * next response creation.
+     *
+     * @param async the async value to set.
+     * @return the CustomToolParameter object itself.
+     */
+    @Generated
+    public CustomToolParameter setAsync(Boolean async) {
+        this.async = async;
+        return this;
     }
 }

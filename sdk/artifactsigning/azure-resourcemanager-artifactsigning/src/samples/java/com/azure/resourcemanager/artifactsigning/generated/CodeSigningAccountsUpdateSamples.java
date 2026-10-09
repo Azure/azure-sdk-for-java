@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class CodeSigningAccountsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-10-13/CodeSigningAccounts_Update.json
+     * x-ms-original-file: 2026-05-15-preview/CodeSigningAccounts_Update.json
      */
     /**
      * Sample code: Update an artifact signing account.

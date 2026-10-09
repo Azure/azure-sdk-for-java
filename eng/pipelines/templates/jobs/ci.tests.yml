@@ -48,6 +48,9 @@ parameters:
     default: ''
   - name: OSName
     type: string
+  - name: IsLatestNonLtsJdk
+    type: boolean
+    default: false
   - name: TimeoutInMinutes
     type: number
     default: 60
@@ -83,7 +86,12 @@ jobs:
       container: $[ variables['Container'] ]
 
     variables:
-      - template: /eng/pipelines/templates/variables/globals.yml
+      # Inherit static globals from the stage instead of duplicating them in every matrix job.
+      # Keep runtime expressions job-scoped so matrix overrides are respected.
+      - name: IsDebug
+        value: $[coalesce(variables['System.Debug'], 'false')]
+      - name: MavenLogLevel
+        value: $[coalesce(variables['LogLevel'], 'warn')]
 
     timeoutInMinutes: ${{ parameters.TimeoutInMinutes }}
 
@@ -106,6 +114,13 @@ jobs:
           condition: or(eq(variables['CaptureRepositoryOnFailure'], 'true'), and(failed(), eq(variables['Build.Reason'],'Schedule')))
           sbomEnabled: false
 
+        # See eng/common/pipelines/templates/steps/upload-llm-artifacts.yml for corresponding file copy step
+        - output: pipelineArtifact
+          targetPath: '$(Build.ArtifactStagingDirectory)/llm-artifacts'
+          artifactName: "LLM Artifacts - $(System.JobName) - $(System.JobAttempt)"
+          condition: eq(variables['uploadLlmArtifacts'], 'true')
+          sbomEnabled: false
+
     steps:
       - template: /eng/pipelines/templates/steps/initialize-test-environment.yml
         parameters:
@@ -122,9 +137,12 @@ jobs:
       # Java 24), then install the latest Java version and use that to run a full build for validation of the latest
       # Java version.
       # Otherwise, run a normal test run.
-      - template: /eng/pipelines/templates/steps/install-latest-jdk.yml
-        parameters:
-          LatestJdkFeatureVersion: $(LatestNonLtsJdkFeatureVersion)
+      - ${{ if or(eq(parameters.OSName, 'macOS'), and(parameters.IsLatestNonLtsJdk, eq(parameters.OSName, 'linux'))) }}:
+        - template: /eng/pipelines/templates/steps/install-latest-jdk.yml
+          parameters:
+            OSName: ${{ parameters.OSName }}
+            IsLatestNonLtsJdk: ${{ parameters.IsLatestNonLtsJdk }}
+            LatestJdkFeatureVersion: $(LatestNonLtsJdkFeatureVersion)
 
       - ${{ parameters.PreBuildSteps }}
 
@@ -133,13 +151,15 @@ jobs:
       # Authenticate with Azure Artifacts
       - template: /eng/pipelines/templates/steps/maven-authenticate.yml
 
-      - template: /eng/pipelines/templates/steps/run-and-validate-linting.yml
-        parameters:
-          JavaBuildVersion: $(JavaTestVersion)
-          AdditionalLintingOptions: ${{ parameters.AdditionalLintingOptions }}
-          BuildParallelization: ${{ parameters.BuildParallelization }}
-          ContinueOnError: true
-          SDKType: ${{ parameters.SDKType }}
+      - ${{ if and(parameters.IsLatestNonLtsJdk, eq(parameters.OSName, 'linux')) }}:
+        - template: /eng/pipelines/templates/steps/run-and-validate-linting.yml
+          parameters:
+            JavaBuildVersion: $(JavaTestVersion)
+            AdditionalLintingOptions: ${{ parameters.AdditionalLintingOptions }}
+            BuildParallelization: ${{ parameters.BuildParallelization }}
+            ContinueOnError: true
+            SDKType: ${{ parameters.SDKType }}
+            IsLatestNonLtsJdk: true
 
       - template: /eng/pipelines/templates/steps/build-and-test.yml
         parameters:
@@ -154,26 +174,15 @@ jobs:
 
       - template: /eng/pipelines/templates/steps/post-job-cleanup.yml
 
-      # Shut down proxy to prevent file locks on the log file for auto-injected credscan
-      # steps on windows
+      # Shut down proxy to prevent file locks on the log file for auto-injected CredScan
+      # steps on Windows
       - template: /eng/common/testproxy/test-proxy-tool-shutdown.yml
 
-      - pwsh: |
-          $files = Get-ChildItem -Path $(Build.SourcesDirectory) -Filter test-proxy.log
-          foreach($file in $files){
-              Write-Host "##[group]$file"
-              cat $file
-              Write-Host "##[endgroup]"
-          }
+      - task: PowerShell@2
+        inputs:
+          pwsh: true
+          filePath: eng/pipelines/scripts/Write-TestProxyLogs.ps1
+          arguments: >
+            -LogFileDirectory $(Build.SourcesDirectory)
         displayName: Dump Test-Proxy Logs
-        condition: succeededOrFailed()
-
-      - pwsh: |
-          $files = Get-ChildItem -Path $(Build.SourcesDirectory) -Filter test-proxy-error.log
-          foreach($file in $files){
-              Write-Host "##[group]$file"
-              cat $file
-              Write-Host "##[endgroup]"
-          }
-        displayName: Dump Test-Proxy Error Logs
         condition: succeededOrFailed()

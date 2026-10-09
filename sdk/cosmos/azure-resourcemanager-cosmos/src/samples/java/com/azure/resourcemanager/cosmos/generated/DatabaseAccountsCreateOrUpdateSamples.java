@@ -45,7 +45,7 @@ import java.util.Map;
  */
 public final class DatabaseAccountsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/CosmosDBRestoreDatabaseAccountCreateUpdate.json
+     * x-ms-original-file: 2026-04-01-preview/CosmosDBRestoreDatabaseAccountCreateUpdate.json
      */
     /**
      * Sample code: CosmosDBRestoreDatabaseAccountCreateUpdate.json.
@@ -85,11 +85,12 @@ public final class DatabaseAccountsCreateOrUpdateSamples {
                             .withCollectionNames(Arrays.asList("collection3", "collection4"))))
                     .withSourceBackupLocation("westus"))
                 .withEnableMaterializedViews(false)
-                .withMinimalTlsVersion(MinimalTlsVersion.TLS), com.azure.core.util.Context.NONE);
+                .withMinimalTlsVersion(MinimalTlsVersion.TLS)
+                .withEnforceHierarchicalPartitionKeyIdLastLevel(false), com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: 2025-11-01-preview/CosmosDBDatabaseAccountCreateMax.json
+     * x-ms-original-file: 2026-04-01-preview/CosmosDBDatabaseAccountCreateMax.json
      */
     /**
      * Sample code: CosmosDBDatabaseAccountCreateMax.
@@ -146,11 +147,12 @@ public final class DatabaseAccountsCreateOrUpdateSamples {
                 .withEnablePriorityBasedExecution(true)
                 .withDefaultPriorityLevel(DefaultPriorityLevel.LOW)
                 .withEnablePerRegionPerPartitionAutoscale(true)
-                .withEnableAllVersionsAndDeletesChangeFeed(false), com.azure.core.util.Context.NONE);
+                .withEnableAllVersionsAndDeletesChangeFeed(false)
+                .withEnforceHierarchicalPartitionKeyIdLastLevel(false), com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: 2025-11-01-preview/CosmosDBDatabaseAccountCreateMin.json
+     * x-ms-original-file: 2026-04-01-preview/CosmosDBDatabaseAccountCreateMin.json
      */
     /**
      * Sample code: CosmosDBDatabaseAccountCreateMin.

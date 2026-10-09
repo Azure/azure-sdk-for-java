@@ -12,10 +12,13 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.ServersClient;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.MigrateNetworkStatusInner;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.ServerInner;
+import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.StartMajorVersionUpgradePrecheckResponseInner;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.MigrateNetworkStatus;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.RestartParameter;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Server;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Servers;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.StartMajorVersionUpgradePrecheckRequest;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.StartMajorVersionUpgradePrecheckResponse;
 
 public final class ServersImpl implements Servers {
     private static final ClientLogger LOGGER = new ClientLogger(ServersImpl.class);
@@ -113,6 +116,28 @@ public final class ServersImpl implements Servers {
             = this.serviceClient().migrateNetworkMode(resourceGroupName, serverName, context);
         if (inner != null) {
             return new MigrateNetworkStatusImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public StartMajorVersionUpgradePrecheckResponse startMajorVersionUpgradePrecheck(String resourceGroupName,
+        String serverName, StartMajorVersionUpgradePrecheckRequest body) {
+        StartMajorVersionUpgradePrecheckResponseInner inner
+            = this.serviceClient().startMajorVersionUpgradePrecheck(resourceGroupName, serverName, body);
+        if (inner != null) {
+            return new StartMajorVersionUpgradePrecheckResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public StartMajorVersionUpgradePrecheckResponse startMajorVersionUpgradePrecheck(String resourceGroupName,
+        String serverName, StartMajorVersionUpgradePrecheckRequest body, Context context) {
+        StartMajorVersionUpgradePrecheckResponseInner inner
+            = this.serviceClient().startMajorVersionUpgradePrecheck(resourceGroupName, serverName, body, context);
+        if (inner != null) {
+            return new StartMajorVersionUpgradePrecheckResponseImpl(inner, this.manager());
         } else {
             return null;
         }

@@ -24,6 +24,11 @@ public final class NetworkRuleSet implements JsonSerializable<NetworkRuleSet> {
     private DefaultAction defaultAction;
 
     /*
+     * The virtual network rules.
+     */
+    private List<VirtualNetworkRule> virtualNetworkRules;
+
+    /*
      * The IP ACL rules.
      */
     private List<IpRule> ipRules;
@@ -51,6 +56,26 @@ public final class NetworkRuleSet implements JsonSerializable<NetworkRuleSet> {
      */
     public NetworkRuleSet withDefaultAction(DefaultAction defaultAction) {
         this.defaultAction = defaultAction;
+        return this;
+    }
+
+    /**
+     * Get the virtualNetworkRules property: The virtual network rules.
+     * 
+     * @return the virtualNetworkRules value.
+     */
+    public List<VirtualNetworkRule> virtualNetworkRules() {
+        return this.virtualNetworkRules;
+    }
+
+    /**
+     * Set the virtualNetworkRules property: The virtual network rules.
+     * 
+     * @param virtualNetworkRules the virtualNetworkRules value to set.
+     * @return the NetworkRuleSet object itself.
+     */
+    public NetworkRuleSet withVirtualNetworkRules(List<VirtualNetworkRule> virtualNetworkRules) {
+        this.virtualNetworkRules = virtualNetworkRules;
         return this;
     }
 
@@ -84,6 +109,9 @@ public final class NetworkRuleSet implements JsonSerializable<NetworkRuleSet> {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Missing required property defaultAction in model NetworkRuleSet"));
         }
+        if (virtualNetworkRules() != null) {
+            virtualNetworkRules().forEach(e -> e.validate());
+        }
         if (ipRules() != null) {
             ipRules().forEach(e -> e.validate());
         }
@@ -98,6 +126,8 @@ public final class NetworkRuleSet implements JsonSerializable<NetworkRuleSet> {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("defaultAction", this.defaultAction == null ? null : this.defaultAction.toString());
+        jsonWriter.writeArrayField("virtualNetworkRules", this.virtualNetworkRules,
+            (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("ipRules", this.ipRules, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
@@ -120,6 +150,10 @@ public final class NetworkRuleSet implements JsonSerializable<NetworkRuleSet> {
 
                 if ("defaultAction".equals(fieldName)) {
                     deserializedNetworkRuleSet.defaultAction = DefaultAction.fromString(reader.getString());
+                } else if ("virtualNetworkRules".equals(fieldName)) {
+                    List<VirtualNetworkRule> virtualNetworkRules
+                        = reader.readArray(reader1 -> VirtualNetworkRule.fromJson(reader1));
+                    deserializedNetworkRuleSet.virtualNetworkRules = virtualNetworkRules;
                 } else if ("ipRules".equals(fieldName)) {
                     List<IpRule> ipRules = reader.readArray(reader1 -> IpRule.fromJson(reader1));
                     deserializedNetworkRuleSet.ipRules = ipRules;

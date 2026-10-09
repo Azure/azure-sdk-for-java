@@ -23,7 +23,7 @@ public final class HorizonDbPrivateEndpointConnectionsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"groupIds\":[\"vpuvks\",\"plsaknynfsynljph\",\"op\",\"odlqiyntor\"],\"privateEndpoint\":{\"id\":\"leosjswsrms\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"pzbchck\",\"actionsRequired\":\"zqioxiysuii\"},\"provisioningState\":\"Failed\"},\"id\":\"edyatrwyhqmibzyh\",\"name\":\"itsmypyyn\",\"type\":\"cdpu\"}]}";
+            = "{\"value\":[{\"properties\":{\"groupIds\":[\"x\",\"rw\",\"yc\"],\"privateEndpoint\":{\"id\":\"hp\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"ymareqnajxqugj\",\"actionsRequired\":\"ycubeddgs\"},\"provisioningState\":\"Deleting\"},\"id\":\"qmzqalkrmnjijpx\",\"name\":\"cqqudf\",\"type\":\"byxbaaabjy\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,13 +33,13 @@ public final class HorizonDbPrivateEndpointConnectionsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<PrivateEndpointConnectionResource> response = manager.horizonDbPrivateEndpointConnections()
-            .list("iipfpubj", "bwwift", com.azure.core.util.Context.NONE);
+            .list("cyjmoadsuvarmy", "dmjsjqb", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.PENDING,
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.APPROVED,
             response.iterator().next().properties().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("pzbchck",
+        Assertions.assertEquals("ymareqnajxqugj",
             response.iterator().next().properties().privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("zqioxiysuii",
+        Assertions.assertEquals("ycubeddgs",
             response.iterator().next().properties().privateLinkServiceConnectionState().actionsRequired());
     }
 }

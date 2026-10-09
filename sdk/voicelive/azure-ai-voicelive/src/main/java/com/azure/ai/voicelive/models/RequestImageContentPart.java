@@ -23,12 +23,6 @@ public final class RequestImageContentPart extends VoiceLiveContentPart {
     private ContentPartType type = ContentPartType.INPUT_IMAGE;
 
     /*
-     * The url property.
-     */
-    @Generated
-    private String url;
-
-    /*
      * The detail property.
      */
     @Generated
@@ -50,28 +44,6 @@ public final class RequestImageContentPart extends VoiceLiveContentPart {
     @Override
     public ContentPartType getType() {
         return this.type;
-    }
-
-    /**
-     * Get the url property: The url property.
-     *
-     * @return the url value.
-     */
-    @Generated
-    public String getUrl() {
-        return this.url;
-    }
-
-    /**
-     * Set the url property: The url property.
-     *
-     * @param url the url value to set.
-     * @return the RequestImageContentPart object itself.
-     */
-    @Generated
-    public RequestImageContentPart setUrl(String url) {
-        this.url = url;
-        return this;
     }
 
     /**
@@ -104,7 +76,7 @@ public final class RequestImageContentPart extends VoiceLiveContentPart {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
-        jsonWriter.writeStringField("url", this.url);
+        jsonWriter.writeStringField("image_url", this.imageUrl);
         jsonWriter.writeStringField("detail", this.detail == null ? null : this.detail.toString());
         return jsonWriter.writeEndObject();
     }
@@ -126,8 +98,8 @@ public final class RequestImageContentPart extends VoiceLiveContentPart {
                 reader.nextToken();
                 if ("type".equals(fieldName)) {
                     deserializedRequestImageContentPart.type = ContentPartType.fromString(reader.getString());
-                } else if ("url".equals(fieldName)) {
-                    deserializedRequestImageContentPart.url = reader.getString();
+                } else if ("image_url".equals(fieldName)) {
+                    deserializedRequestImageContentPart.imageUrl = reader.getString();
                 } else if ("detail".equals(fieldName)) {
                     deserializedRequestImageContentPart.detail
                         = RequestImageContentPartDetail.fromString(reader.getString());
@@ -137,5 +109,33 @@ public final class RequestImageContentPart extends VoiceLiveContentPart {
             }
             return deserializedRequestImageContentPart;
         });
+    }
+
+    /*
+     * The image_url property.
+     */
+    @Generated
+    private String imageUrl;
+
+    /**
+     * Get the imageUrl property: The image_url property.
+     *
+     * @return the imageUrl value.
+     */
+    @Generated
+    public String getImageUrl() {
+        return this.imageUrl;
+    }
+
+    /**
+     * Set the imageUrl property: The image_url property.
+     *
+     * @param imageUrl the imageUrl value to set.
+     * @return the RequestImageContentPart object itself.
+     */
+    @Generated
+    public RequestImageContentPart setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+        return this;
     }
 }

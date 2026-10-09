@@ -9,7 +9,6 @@ import com.azure.cosmos.implementation.changefeed.pkversion.IncrementalChangeFee
 import com.azure.cosmos.implementation.changefeed.epkversion.FullFidelityChangeFeedProcessorImpl;
 import com.azure.cosmos.models.ChangeFeedProcessorItem;
 import com.azure.cosmos.models.ChangeFeedProcessorOptions;
-import com.azure.cosmos.util.Beta;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import java.util.List;
@@ -255,7 +254,6 @@ public class ChangeFeedProcessorBuilder {
      * @param consumer the {@link Consumer} to call for handling the feeds.
      * @return current Builder.
      */
-    @Beta(value = Beta.SinceVersion.V4_37_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ChangeFeedProcessorBuilder handleAllVersionsAndDeletesChanges(Consumer<List<ChangeFeedProcessorItem>> consumer) {
         checkNotNull(consumer, "consumer cannot be null");
         checkArgument(this.fullFidelityModeLeaseWithContextConsumer == null,
@@ -285,7 +283,6 @@ public class ChangeFeedProcessorBuilder {
      * @param biConsumer the {@link BiConsumer} to call for handling the feeds and the {@link ChangeFeedProcessorContext} instance.
      * @return current Builder.
      */
-    @Beta(value = Beta.SinceVersion.V4_51_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ChangeFeedProcessorBuilder handleAllVersionsAndDeletesChanges(
         BiConsumer<List<ChangeFeedProcessorItem>, ChangeFeedProcessorContext> biConsumer) {
 

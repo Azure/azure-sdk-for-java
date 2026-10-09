@@ -8,21 +8,23 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.cloudhealth.implementation.models.DiscoveryRuleListResult;
 import com.azure.resourcemanager.cloudhealth.models.DiscoveryRuleRecommendedSignalsBehavior;
 import com.azure.resourcemanager.cloudhealth.models.DiscoveryRuleRelationshipDiscoveryBehavior;
+import com.azure.resourcemanager.cloudhealth.models.ResourceHealthAvailabilityStateSignalBehavior;
 import org.junit.jupiter.api.Assertions;
 
 public final class DiscoveryRuleListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DiscoveryRuleListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"displayName\":\"kvpuvksgplsaknyn\",\"resourceGraphQuery\":\"synljphuopxodl\",\"authenticationSetting\":\"iyntorzihle\",\"discoverRelationships\":\"Enabled\",\"addRecommendedSignals\":\"Disabled\",\"deletionDate\":\"2021-11-21T17:53:40Z\",\"errorMessage\":\"rmslyzrpzbchckqq\",\"numberOfDiscoveredEntities\":893832741,\"entityName\":\"ox\"},\"id\":\"suiizynkedyat\",\"name\":\"wyhqmibzyhwits\",\"type\":\"ypyynpcdpumnzg\"}],\"nextLink\":\"z\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"displayName\":\"lyr\",\"authenticationSetting\":\"giagtcojo\",\"discoverRelationships\":\"Disabled\",\"addRecommendedSignals\":\"Disabled\",\"specification\":{\"kind\":\"DiscoveryRuleSpecification\"},\"addResourceHealthSignal\":\"Enabled\",\"error\":{\"message\":\"nzjvusfzldm\",\"context\":[\"xylfsb\",\"kadpysown\",\"tgkbugrjqctojc\",\"isofieypefojyqd\"]},\"entityName\":\"u\"},\"id\":\"cp\",\"name\":\"cwkhihi\",\"type\":\"lhzdsqtzb\"},{\"properties\":{\"provisioningState\":\"Failed\",\"displayName\":\"wcjhfgmv\",\"authenticationSetting\":\"cact\",\"discoverRelationships\":\"Enabled\",\"addRecommendedSignals\":\"Enabled\",\"specification\":{\"kind\":\"DiscoveryRuleSpecification\"},\"addResourceHealthSignal\":\"Enabled\",\"error\":{\"message\":\"yowc\",\"context\":[\"ovekqvgqouwi\",\"zmpjwyiv\",\"ikf\"]},\"entityName\":\"vhrfsphuagrt\"},\"id\":\"kteusqczk\",\"name\":\"yklxubyjaffmmfbl\",\"type\":\"qcuubgqibrta\"},{\"properties\":{\"provisioningState\":\"Failed\",\"displayName\":\"t\",\"authenticationSetting\":\"gdslqxihhrmoo\",\"discoverRelationships\":\"Enabled\",\"addRecommendedSignals\":\"Disabled\",\"specification\":{\"kind\":\"DiscoveryRuleSpecification\"},\"addResourceHealthSignal\":\"Disabled\",\"error\":{\"message\":\"pxiutc\",\"context\":[\"zhyrpeto\",\"e\"]},\"entityName\":\"oxslh\"},\"id\":\"hlabrq\",\"name\":\"kkzjcjbtrga\",\"type\":\"hvv\"},{\"properties\":{\"provisioningState\":\"Succeeded\",\"displayName\":\"jsto\",\"authenticationSetting\":\"beitpkx\",\"discoverRelationships\":\"Enabled\",\"addRecommendedSignals\":\"Enabled\",\"specification\":{\"kind\":\"DiscoveryRuleSpecification\"},\"addResourceHealthSignal\":\"Enabled\",\"error\":{\"message\":\"klf\",\"context\":[\"gfcwqmpimaqxzhem\",\"yhohujswtwkozzwc\"]},\"entityName\":\"kb\"},\"id\":\"pfajnjwltlwtjj\",\"name\":\"uktalhsnvkcdmxz\",\"type\":\"poaimlnwiaaomyl\"}],\"nextLink\":\"azul\"}")
             .toObject(DiscoveryRuleListResult.class);
-        Assertions.assertEquals("kvpuvksgplsaknyn", model.value().get(0).properties().displayName());
-        Assertions.assertEquals("synljphuopxodl", model.value().get(0).properties().resourceGraphQuery());
-        Assertions.assertEquals("iyntorzihle", model.value().get(0).properties().authenticationSetting());
-        Assertions.assertEquals(DiscoveryRuleRelationshipDiscoveryBehavior.ENABLED,
+        Assertions.assertEquals("lyr", model.value().get(0).properties().displayName());
+        Assertions.assertEquals("giagtcojo", model.value().get(0).properties().authenticationSetting());
+        Assertions.assertEquals(DiscoveryRuleRelationshipDiscoveryBehavior.DISABLED,
             model.value().get(0).properties().discoverRelationships());
         Assertions.assertEquals(DiscoveryRuleRecommendedSignalsBehavior.DISABLED,
             model.value().get(0).properties().addRecommendedSignals());
-        Assertions.assertEquals("z", model.nextLink());
+        Assertions.assertEquals(ResourceHealthAvailabilityStateSignalBehavior.ENABLED,
+            model.value().get(0).properties().addResourceHealthSignal());
+        Assertions.assertEquals("azul", model.nextLink());
     }
 }

@@ -8,15 +8,14 @@ import com.azure.ai.voicelive.models.AudioInputTranscriptionOptions;
 import com.azure.ai.voicelive.models.AudioInputTranscriptionOptionsModel;
 import com.azure.ai.voicelive.models.AudioNoiseReduction;
 import com.azure.ai.voicelive.models.AudioNoiseReductionType;
+import com.azure.ai.voicelive.models.AzureStandardVoice;
 import com.azure.ai.voicelive.models.ClientEventSessionUpdate;
 import com.azure.ai.voicelive.models.InputAudioFormat;
 import com.azure.ai.voicelive.models.InteractionModality;
-import com.azure.ai.voicelive.models.OpenAIVoice;
-import com.azure.ai.voicelive.models.OpenAIVoiceName;
 import com.azure.ai.voicelive.models.OutputAudioFormat;
 import com.azure.ai.voicelive.models.ServerEventType;
 import com.azure.ai.voicelive.models.ServerVadTurnDetection;
-import com.azure.ai.voicelive.models.SessionUpdate;
+import com.azure.ai.voicelive.models.SessionServerEvent;
 import com.azure.ai.voicelive.models.SessionUpdateError;
 import com.azure.ai.voicelive.models.SessionUpdateResponseAudioDelta;
 import com.azure.ai.voicelive.models.SessionUpdateSessionUpdated;
@@ -247,17 +246,16 @@ public final class VoiceAssistantSample {
                         // Send audio to VoiceLive service
                         byte[] audioChunk = Arrays.copyOf(buffer, bytesRead);
 
-                        // Send audio asynchronously using the session's audio buffer append
-                        session.sendInputAudio(BinaryData.fromBytes(audioChunk))
-                            .subscribe(
-                                noValueEmitted -> { /* sendInputAudio returns Mono<Void>; no onNext values are ever emitted */ }, // onNext
-                                error -> {
-                                    // Only log non-interruption errors
-                                    if (!error.getMessage().contains("cancelled")) {
-                                        System.err.println("❌ Error sending audio: " + error.getMessage());
-                                    }
-                                }
-                            );
+                        // Block on this capture thread so sends are serialized; fire-and-forget
+                        // subscribes can flood the WebSocket send sink and trigger FAIL_OVERFLOW.
+                        try {
+                            session.sendInputAudio(BinaryData.fromBytes(audioChunk)).block();
+                        } catch (Exception sendError) {
+                            String msg = sendError.getMessage();
+                            if (isCapturing.get() && (msg == null || !msg.contains("cancelled"))) {
+                                System.err.println("❌ Error sending audio: " + msg);
+                            }
+                        }
                     }
                 } catch (Exception e) {
                     if (isCapturing.get()) {
@@ -464,7 +462,7 @@ public final class VoiceAssistantSample {
         // Start session. Session lifetime is local to this reactive chain — the session is
         // captured by the lambda passed to flatMapMany and then threaded into per-event handling
         // via flatMap, so no instance field or shared holder is needed.
-        client.startSession(DEFAULT_MODEL)
+        client.startSession(DEFAULT_MODEL, null)
             .flatMapMany(session -> {
                 System.out.println("✓ Session started successfully");
                 audioProcessorRef.set(new AudioProcessor(session));
@@ -527,12 +525,12 @@ public final class VoiceAssistantSample {
             .setCreateResponse(true);
 
         // Create audio input transcription configuration
-        AudioInputTranscriptionOptions transcriptionOptions = new AudioInputTranscriptionOptions(AudioInputTranscriptionOptionsModel.WHISPER_1);
+        AudioInputTranscriptionOptions transcriptionOptions = new AudioInputTranscriptionOptions(AudioInputTranscriptionOptionsModel.WHISPER_1).setLanguage("en");
 
         VoiceLiveSessionOptions options = new VoiceLiveSessionOptions()
             .setInstructions("You are a helpful AI voice assistant. Respond naturally and conversationally. Keep your responses concise but engaging. Speak as if having a real conversation.")
             // Voice: OpenAIVoice (OpenAIVoiceName enum) or AzureStandardVoice/AzureCustomVoice/AzurePersonalVoice
-            .setVoice(BinaryData.fromObject(new OpenAIVoice(OpenAIVoiceName.ALLOY)))
+            .setVoice(BinaryData.fromObject(new AzureStandardVoice("en-US-AvaNeural")))
             .setModalities(Arrays.asList(InteractionModality.TEXT, InteractionModality.AUDIO))
             .setInputAudioFormat(InputAudioFormat.PCM16)
             .setOutputAudioFormat(OutputAudioFormat.PCM16)
@@ -552,7 +550,7 @@ public final class VoiceAssistantSample {
      * inside the reactive chain (no nested subscribe). The voice assistant doesn't send any
      * follow-up events, so handlers always return {@link Mono#empty()}.
      */
-    private static Mono<Void> handleServerEvent(SessionUpdate event, AudioProcessor audioProcessor) {
+    private static Mono<Void> handleServerEvent(SessionServerEvent event, AudioProcessor audioProcessor) {
         ServerEventType eventType = event.getType();
 
         try {

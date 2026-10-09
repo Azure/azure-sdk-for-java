@@ -326,7 +326,15 @@ public interface SqlDatabase extends ExternalChildResource<SqlDatabase, SqlServe
      * Gets the SQL Sync Group entry point for the current database.
      *
      * @return the SQL Sync Group entry point for the current database
+     * @deprecated Azure SQL Data Sync is scheduled for retirement and requires SQL authentication; it doesn't support
+     * Microsoft Entra ID or managed identities. For distributed applications, use
+     * {@link DefinitionStages.WithSourceDatabaseId#withSourceDatabase(String)} to create a database copy. For globally
+     * distributed applications, additionally use {@link DefinitionStages.WithCreateMode#withMode(CreateMode)} with
+     * {@link CreateMode#ONLINE_SECONDARY} for active geo-replication. Refer to the
+     * <a href="https://learn.microsoft.com/azure/azure-sql/database/sql-data-sync-retirement-migration">official
+     * retirement migration guidance</a> for more alternatives.
      */
+    @Deprecated
     SqlSyncGroupOperations.SqlSyncGroupActionsDefinition syncGroups();
 
     /**************************************************************
@@ -503,6 +511,26 @@ public interface SqlDatabase extends ExternalChildResource<SqlDatabase, SqlServe
              */
             SqlDatabase.DefinitionStages.WithAttachAllOptions<ParentT>
                 withActiveDirectoryLoginAndPassword(String administratorLogin, String administratorPassword);
+
+            /**
+             * Specifies the user-assigned managed identity (UAMI) used to authenticate to the SQL database for import.
+             *
+             * <p>The SQL server must have the specified UAMI assigned (and typically set as its primary identity), the
+             * UAMI must be granted the appropriate role on the source storage account (e.g. {@code Storage Blob Data
+             * Contributor}), and it must be mapped to a database user with the required privileges. When this method
+             * is used, no administrator password is sent to the service.</p>
+             *
+             * <p>This method is for user-assigned managed identity. To use the server's system-assigned managed
+             * identity, enable SAMI on the server and pass the SAMI's resource identifier as well. The signed-in
+             * user's object ID is not a managed identity and cannot be used here.</p>
+             *
+             * @param managedIdentityResourceId the Azure resource ID of the user-assigned managed identity to use
+             * @return next definition stage
+             */
+            default SqlDatabase.DefinitionStages.WithAttachAllOptions<ParentT>
+                withManagedIdentity(String managedIdentityResourceId) {
+                throw new UnsupportedOperationException("[withManagedIdentity] is not supported in " + getClass());
+            }
         }
 
         /**
@@ -581,6 +609,26 @@ public interface SqlDatabase extends ExternalChildResource<SqlDatabase, SqlServe
              */
             SqlDatabase.DefinitionStages.WithAttachFinal<ParentT>
                 withActiveDirectoryLoginAndPassword(String administratorLogin, String administratorPassword);
+
+            /**
+             * Specifies the user-assigned managed identity (UAMI) used to authenticate to the SQL database for import.
+             *
+             * <p>The SQL server must have the specified UAMI assigned (and typically set as its primary identity), the
+             * UAMI must be granted the appropriate role on the source storage account (e.g. {@code Storage Blob Data
+             * Contributor}), and it must be mapped to a database user with the required privileges. When this method
+             * is used, no administrator password is sent to the service.</p>
+             *
+             * <p>This method is for user-assigned managed identity. To use the server's system-assigned managed
+             * identity, enable SAMI on the server and pass the SAMI's resource identifier as well. The signed-in
+             * user's object ID is not a managed identity and cannot be used here.</p>
+             *
+             * @param managedIdentityResourceId the Azure resource ID of the user-assigned managed identity to use
+             * @return next definition stage
+             */
+            default SqlDatabase.DefinitionStages.WithAttachFinal<ParentT>
+                withManagedIdentity(String managedIdentityResourceId) {
+                throw new UnsupportedOperationException("[withManagedIdentity] is not supported in " + getClass());
+            }
         }
 
         /**

@@ -11,12 +11,18 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.resourcemanager.network.fluent.models.ExpressRouteFailoverSingleTestDetailsInner;
+import com.azure.resourcemanager.network.fluent.models.ExpressRouteFailoverTestDetailsInner;
 import com.azure.resourcemanager.network.fluent.models.ExpressRouteGatewayInner;
 import com.azure.resourcemanager.network.fluent.models.ExpressRouteGatewayListInner;
+import com.azure.resourcemanager.network.fluent.models.GatewayResiliencyInformationInner;
+import com.azure.resourcemanager.network.fluent.models.GatewayRouteSetsInformationInner;
+import com.azure.resourcemanager.network.models.ExpressRouteFailoverStopApiParameters;
 import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import java.nio.ByteBuffer;
+import java.util.List;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -486,4 +492,752 @@ public interface ExpressRouteGatewaysClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ExpressRouteGatewayListInner listBySubscription();
+
+    /**
+     * Retrieves the details of all the failover tests performed on the ExpressRoute gateway for different peering
+     * locations.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param type The type of failover test.
+     * @param fetchLatest Fetch only the latest tests for each peering location.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> getFailoverAllTestsDetailsWithResponseAsync(String resourceGroupName,
+        String expressRouteGatewayName, String type, Boolean fetchLatest);
+
+    /**
+     * Retrieves the details of all the failover tests performed on the ExpressRoute gateway for different peering
+     * locations.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param type The type of failover test.
+     * @param fetchLatest Fetch only the latest tests for each peering location.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<List<ExpressRouteFailoverTestDetailsInner>>, List<ExpressRouteFailoverTestDetailsInner>>
+        beginGetFailoverAllTestsDetailsAsync(String resourceGroupName, String expressRouteGatewayName, String type,
+            Boolean fetchLatest);
+
+    /**
+     * Retrieves the details of all the failover tests performed on the ExpressRoute gateway for different peering
+     * locations.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<List<ExpressRouteFailoverTestDetailsInner>>, List<ExpressRouteFailoverTestDetailsInner>>
+        beginGetFailoverAllTestsDetailsAsync(String resourceGroupName, String expressRouteGatewayName);
+
+    /**
+     * Retrieves the details of all the failover tests performed on the ExpressRoute gateway for different peering
+     * locations.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<List<ExpressRouteFailoverTestDetailsInner>>, List<ExpressRouteFailoverTestDetailsInner>>
+        beginGetFailoverAllTestsDetails(String resourceGroupName, String expressRouteGatewayName);
+
+    /**
+     * Retrieves the details of all the failover tests performed on the ExpressRoute gateway for different peering
+     * locations.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param type The type of failover test.
+     * @param fetchLatest Fetch only the latest tests for each peering location.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<List<ExpressRouteFailoverTestDetailsInner>>, List<ExpressRouteFailoverTestDetailsInner>>
+        beginGetFailoverAllTestsDetails(String resourceGroupName, String expressRouteGatewayName, String type,
+            Boolean fetchLatest, Context context);
+
+    /**
+     * Retrieves the details of all the failover tests performed on the ExpressRoute gateway for different peering
+     * locations.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param type The type of failover test.
+     * @param fetchLatest Fetch only the latest tests for each peering location.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<List<ExpressRouteFailoverTestDetailsInner>> getFailoverAllTestsDetailsAsync(String resourceGroupName,
+        String expressRouteGatewayName, String type, Boolean fetchLatest);
+
+    /**
+     * Retrieves the details of all the failover tests performed on the ExpressRoute gateway for different peering
+     * locations.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<List<ExpressRouteFailoverTestDetailsInner>> getFailoverAllTestsDetailsAsync(String resourceGroupName,
+        String expressRouteGatewayName);
+
+    /**
+     * Retrieves the details of all the failover tests performed on the ExpressRoute gateway for different peering
+     * locations.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    List<ExpressRouteFailoverTestDetailsInner> getFailoverAllTestsDetails(String resourceGroupName,
+        String expressRouteGatewayName);
+
+    /**
+     * Retrieves the details of all the failover tests performed on the ExpressRoute gateway for different peering
+     * locations.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param type The type of failover test.
+     * @param fetchLatest Fetch only the latest tests for each peering location.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    List<ExpressRouteFailoverTestDetailsInner> getFailoverAllTestsDetails(String resourceGroupName,
+        String expressRouteGatewayName, String type, Boolean fetchLatest, Context context);
+
+    /**
+     * Retrieves the details of a particular failover test performed on the ExpressRoute gateway based on the test Guid.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param peeringLocation Peering location of the test.
+     * @param failoverTestId The unique Guid value which identifies the test.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> getFailoverSingleTestDetailsWithResponseAsync(String resourceGroupName,
+        String expressRouteGatewayName, String peeringLocation, String failoverTestId);
+
+    /**
+     * Retrieves the details of a particular failover test performed on the ExpressRoute gateway based on the test Guid.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param peeringLocation Peering location of the test.
+     * @param failoverTestId The unique Guid value which identifies the test.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<List<ExpressRouteFailoverSingleTestDetailsInner>>, List<ExpressRouteFailoverSingleTestDetailsInner>>
+        beginGetFailoverSingleTestDetailsAsync(String resourceGroupName, String expressRouteGatewayName,
+            String peeringLocation, String failoverTestId);
+
+    /**
+     * Retrieves the details of a particular failover test performed on the ExpressRoute gateway based on the test Guid.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param peeringLocation Peering location of the test.
+     * @param failoverTestId The unique Guid value which identifies the test.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<List<ExpressRouteFailoverSingleTestDetailsInner>>, List<ExpressRouteFailoverSingleTestDetailsInner>>
+        beginGetFailoverSingleTestDetails(String resourceGroupName, String expressRouteGatewayName,
+            String peeringLocation, String failoverTestId);
+
+    /**
+     * Retrieves the details of a particular failover test performed on the ExpressRoute gateway based on the test Guid.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param peeringLocation Peering location of the test.
+     * @param failoverTestId The unique Guid value which identifies the test.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<List<ExpressRouteFailoverSingleTestDetailsInner>>, List<ExpressRouteFailoverSingleTestDetailsInner>>
+        beginGetFailoverSingleTestDetails(String resourceGroupName, String expressRouteGatewayName,
+            String peeringLocation, String failoverTestId, Context context);
+
+    /**
+     * Retrieves the details of a particular failover test performed on the ExpressRoute gateway based on the test Guid.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param peeringLocation Peering location of the test.
+     * @param failoverTestId The unique Guid value which identifies the test.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<List<ExpressRouteFailoverSingleTestDetailsInner>> getFailoverSingleTestDetailsAsync(String resourceGroupName,
+        String expressRouteGatewayName, String peeringLocation, String failoverTestId);
+
+    /**
+     * Retrieves the details of a particular failover test performed on the ExpressRoute gateway based on the test Guid.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param peeringLocation Peering location of the test.
+     * @param failoverTestId The unique Guid value which identifies the test.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    List<ExpressRouteFailoverSingleTestDetailsInner> getFailoverSingleTestDetails(String resourceGroupName,
+        String expressRouteGatewayName, String peeringLocation, String failoverTestId);
+
+    /**
+     * Retrieves the details of a particular failover test performed on the ExpressRoute gateway based on the test Guid.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param peeringLocation Peering location of the test.
+     * @param failoverTestId The unique Guid value which identifies the test.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    List<ExpressRouteFailoverSingleTestDetailsInner> getFailoverSingleTestDetails(String resourceGroupName,
+        String expressRouteGatewayName, String peeringLocation, String failoverTestId, Context context);
+
+    /**
+     * Starts failover simulation on the ExpressRoute gateway for the specified peering location.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param peeringLocation Peering location of the test.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> startSiteFailoverTestWithResponseAsync(String resourceGroupName,
+        String expressRouteGatewayName, String peeringLocation);
+
+    /**
+     * Starts failover simulation on the ExpressRoute gateway for the specified peering location.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param peeringLocation Peering location of the test.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<String>, String> beginStartSiteFailoverTestAsync(String resourceGroupName,
+        String expressRouteGatewayName, String peeringLocation);
+
+    /**
+     * Starts failover simulation on the ExpressRoute gateway for the specified peering location.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param peeringLocation Peering location of the test.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<String>, String> beginStartSiteFailoverTest(String resourceGroupName,
+        String expressRouteGatewayName, String peeringLocation);
+
+    /**
+     * Starts failover simulation on the ExpressRoute gateway for the specified peering location.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param peeringLocation Peering location of the test.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<String>, String> beginStartSiteFailoverTest(String resourceGroupName,
+        String expressRouteGatewayName, String peeringLocation, Context context);
+
+    /**
+     * Starts failover simulation on the ExpressRoute gateway for the specified peering location.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param peeringLocation Peering location of the test.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<String> startSiteFailoverTestAsync(String resourceGroupName, String expressRouteGatewayName,
+        String peeringLocation);
+
+    /**
+     * Starts failover simulation on the ExpressRoute gateway for the specified peering location.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param peeringLocation Peering location of the test.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    String startSiteFailoverTest(String resourceGroupName, String expressRouteGatewayName, String peeringLocation);
+
+    /**
+     * Starts failover simulation on the ExpressRoute gateway for the specified peering location.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param peeringLocation Peering location of the test.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    String startSiteFailoverTest(String resourceGroupName, String expressRouteGatewayName, String peeringLocation,
+        Context context);
+
+    /**
+     * Stops failover simulation on the ExpressRoute gateway for the specified peering location.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param stopParameters Parameters supplied to stop the failover simulation on the express route gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> stopSiteFailoverTestWithResponseAsync(String resourceGroupName,
+        String expressRouteGatewayName, ExpressRouteFailoverStopApiParameters stopParameters);
+
+    /**
+     * Stops failover simulation on the ExpressRoute gateway for the specified peering location.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param stopParameters Parameters supplied to stop the failover simulation on the express route gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<String>, String> beginStopSiteFailoverTestAsync(String resourceGroupName,
+        String expressRouteGatewayName, ExpressRouteFailoverStopApiParameters stopParameters);
+
+    /**
+     * Stops failover simulation on the ExpressRoute gateway for the specified peering location.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param stopParameters Parameters supplied to stop the failover simulation on the express route gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<String>, String> beginStopSiteFailoverTest(String resourceGroupName,
+        String expressRouteGatewayName, ExpressRouteFailoverStopApiParameters stopParameters);
+
+    /**
+     * Stops failover simulation on the ExpressRoute gateway for the specified peering location.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param stopParameters Parameters supplied to stop the failover simulation on the express route gateway.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<String>, String> beginStopSiteFailoverTest(String resourceGroupName,
+        String expressRouteGatewayName, ExpressRouteFailoverStopApiParameters stopParameters, Context context);
+
+    /**
+     * Stops failover simulation on the ExpressRoute gateway for the specified peering location.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param stopParameters Parameters supplied to stop the failover simulation on the express route gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<String> stopSiteFailoverTestAsync(String resourceGroupName, String expressRouteGatewayName,
+        ExpressRouteFailoverStopApiParameters stopParameters);
+
+    /**
+     * Stops failover simulation on the ExpressRoute gateway for the specified peering location.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param stopParameters Parameters supplied to stop the failover simulation on the express route gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    String stopSiteFailoverTest(String resourceGroupName, String expressRouteGatewayName,
+        ExpressRouteFailoverStopApiParameters stopParameters);
+
+    /**
+     * Stops failover simulation on the ExpressRoute gateway for the specified peering location.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param stopParameters Parameters supplied to stop the failover simulation on the express route gateway.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    String stopSiteFailoverTest(String resourceGroupName, String expressRouteGatewayName,
+        ExpressRouteFailoverStopApiParameters stopParameters, Context context);
+
+    /**
+     * Retrieves the route sets information for the ExpressRoute gateway.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param attemptRefresh Whether to attempt a refresh of the route sets.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> getRoutesInformationWithResponseAsync(String resourceGroupName,
+        String expressRouteGatewayName, Boolean attemptRefresh);
+
+    /**
+     * Retrieves the route sets information for the ExpressRoute gateway.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param attemptRefresh Whether to attempt a refresh of the route sets.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<GatewayRouteSetsInformationInner>, GatewayRouteSetsInformationInner>
+        beginGetRoutesInformationAsync(String resourceGroupName, String expressRouteGatewayName,
+            Boolean attemptRefresh);
+
+    /**
+     * Retrieves the route sets information for the ExpressRoute gateway.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<GatewayRouteSetsInformationInner>, GatewayRouteSetsInformationInner>
+        beginGetRoutesInformationAsync(String resourceGroupName, String expressRouteGatewayName);
+
+    /**
+     * Retrieves the route sets information for the ExpressRoute gateway.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<GatewayRouteSetsInformationInner>, GatewayRouteSetsInformationInner>
+        beginGetRoutesInformation(String resourceGroupName, String expressRouteGatewayName);
+
+    /**
+     * Retrieves the route sets information for the ExpressRoute gateway.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param attemptRefresh Whether to attempt a refresh of the route sets.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<GatewayRouteSetsInformationInner>, GatewayRouteSetsInformationInner>
+        beginGetRoutesInformation(String resourceGroupName, String expressRouteGatewayName, Boolean attemptRefresh,
+            Context context);
+
+    /**
+     * Retrieves the route sets information for the ExpressRoute gateway.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param attemptRefresh Whether to attempt a refresh of the route sets.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<GatewayRouteSetsInformationInner> getRoutesInformationAsync(String resourceGroupName,
+        String expressRouteGatewayName, Boolean attemptRefresh);
+
+    /**
+     * Retrieves the route sets information for the ExpressRoute gateway.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<GatewayRouteSetsInformationInner> getRoutesInformationAsync(String resourceGroupName,
+        String expressRouteGatewayName);
+
+    /**
+     * Retrieves the route sets information for the ExpressRoute gateway.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    GatewayRouteSetsInformationInner getRoutesInformation(String resourceGroupName, String expressRouteGatewayName);
+
+    /**
+     * Retrieves the route sets information for the ExpressRoute gateway.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param attemptRefresh Whether to attempt a refresh of the route sets.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    GatewayRouteSetsInformationInner getRoutesInformation(String resourceGroupName, String expressRouteGatewayName,
+        Boolean attemptRefresh, Context context);
+
+    /**
+     * Retrieves the resiliency information for the ExpressRoute gateway.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param attemptRefresh Whether to attempt a refresh of the resiliency information.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> getResiliencyInformationWithResponseAsync(String resourceGroupName,
+        String expressRouteGatewayName, Boolean attemptRefresh);
+
+    /**
+     * Retrieves the resiliency information for the ExpressRoute gateway.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param attemptRefresh Whether to attempt a refresh of the resiliency information.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<GatewayResiliencyInformationInner>, GatewayResiliencyInformationInner>
+        beginGetResiliencyInformationAsync(String resourceGroupName, String expressRouteGatewayName,
+            Boolean attemptRefresh);
+
+    /**
+     * Retrieves the resiliency information for the ExpressRoute gateway.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<GatewayResiliencyInformationInner>, GatewayResiliencyInformationInner>
+        beginGetResiliencyInformationAsync(String resourceGroupName, String expressRouteGatewayName);
+
+    /**
+     * Retrieves the resiliency information for the ExpressRoute gateway.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<GatewayResiliencyInformationInner>, GatewayResiliencyInformationInner>
+        beginGetResiliencyInformation(String resourceGroupName, String expressRouteGatewayName);
+
+    /**
+     * Retrieves the resiliency information for the ExpressRoute gateway.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param attemptRefresh Whether to attempt a refresh of the resiliency information.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<GatewayResiliencyInformationInner>, GatewayResiliencyInformationInner>
+        beginGetResiliencyInformation(String resourceGroupName, String expressRouteGatewayName, Boolean attemptRefresh,
+            Context context);
+
+    /**
+     * Retrieves the resiliency information for the ExpressRoute gateway.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param attemptRefresh Whether to attempt a refresh of the resiliency information.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<GatewayResiliencyInformationInner> getResiliencyInformationAsync(String resourceGroupName,
+        String expressRouteGatewayName, Boolean attemptRefresh);
+
+    /**
+     * Retrieves the resiliency information for the ExpressRoute gateway.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<GatewayResiliencyInformationInner> getResiliencyInformationAsync(String resourceGroupName,
+        String expressRouteGatewayName);
+
+    /**
+     * Retrieves the resiliency information for the ExpressRoute gateway.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    GatewayResiliencyInformationInner getResiliencyInformation(String resourceGroupName,
+        String expressRouteGatewayName);
+
+    /**
+     * Retrieves the resiliency information for the ExpressRoute gateway.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param attemptRefresh Whether to attempt a refresh of the resiliency information.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    GatewayResiliencyInformationInner getResiliencyInformation(String resourceGroupName, String expressRouteGatewayName,
+        Boolean attemptRefresh, Context context);
 }

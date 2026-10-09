@@ -31,7 +31,7 @@ public final class VirtualMachinesListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<VirtualMachine> response
-            = manager.virtualMachines().list("dpmiljpn", "ynudqllzsa", "zp", com.azure.core.util.Context.NONE);
+            = manager.virtualMachines().list("hnhjtfvpndpmi", "jpnwynudql", "zsauzp", com.azure.core.util.Context.NONE);
 
     }
 }

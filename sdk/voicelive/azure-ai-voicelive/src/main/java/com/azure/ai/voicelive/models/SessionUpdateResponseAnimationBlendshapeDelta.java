@@ -15,7 +15,7 @@ import java.io.IOException;
  * Represents a delta update of blendshape animation frames for a specific output of a response.
  */
 @Immutable
-public final class SessionUpdateResponseAnimationBlendshapeDelta extends SessionUpdate {
+public final class SessionUpdateResponseAnimationBlendshapeDelta extends SessionServerEvent {
 
     /*
      * The type of event.

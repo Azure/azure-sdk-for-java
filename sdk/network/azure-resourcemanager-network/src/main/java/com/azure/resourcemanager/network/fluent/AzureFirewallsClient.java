@@ -91,6 +91,7 @@ public interface AzureFirewallsClient
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param azureFirewallName The name of the Azure Firewall.
      * @param parameters Parameters supplied to the create or update Azure Firewall operation.
+     * @param createAfcControlPlane When set to true, creates an AFC control plane for the Azure Firewall.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -98,7 +99,23 @@ public interface AzureFirewallsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String azureFirewallName,
-        AzureFirewallInner parameters);
+        AzureFirewallInner parameters, Boolean createAfcControlPlane);
+
+    /**
+     * Creates or updates the specified Azure Firewall.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param azureFirewallName The name of the Azure Firewall.
+     * @param parameters Parameters supplied to the create or update Azure Firewall operation.
+     * @param createAfcControlPlane When set to true, creates an AFC control plane for the Azure Firewall.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of azure Firewall resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<AzureFirewallInner>, AzureFirewallInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String azureFirewallName, AzureFirewallInner parameters, Boolean createAfcControlPlane);
 
     /**
      * Creates or updates the specified Azure Firewall.
@@ -136,6 +153,7 @@ public interface AzureFirewallsClient
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param azureFirewallName The name of the Azure Firewall.
      * @param parameters Parameters supplied to the create or update Azure Firewall operation.
+     * @param createAfcControlPlane When set to true, creates an AFC control plane for the Azure Firewall.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -144,7 +162,23 @@ public interface AzureFirewallsClient
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AzureFirewallInner>, AzureFirewallInner> beginCreateOrUpdate(String resourceGroupName,
-        String azureFirewallName, AzureFirewallInner parameters, Context context);
+        String azureFirewallName, AzureFirewallInner parameters, Boolean createAfcControlPlane, Context context);
+
+    /**
+     * Creates or updates the specified Azure Firewall.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param azureFirewallName The name of the Azure Firewall.
+     * @param parameters Parameters supplied to the create or update Azure Firewall operation.
+     * @param createAfcControlPlane When set to true, creates an AFC control plane for the Azure Firewall.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return azure Firewall resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<AzureFirewallInner> createOrUpdateAsync(String resourceGroupName, String azureFirewallName,
+        AzureFirewallInner parameters, Boolean createAfcControlPlane);
 
     /**
      * Creates or updates the specified Azure Firewall.
@@ -182,6 +216,7 @@ public interface AzureFirewallsClient
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param azureFirewallName The name of the Azure Firewall.
      * @param parameters Parameters supplied to the create or update Azure Firewall operation.
+     * @param createAfcControlPlane When set to true, creates an AFC control plane for the Azure Firewall.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -190,7 +225,7 @@ public interface AzureFirewallsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     AzureFirewallInner createOrUpdate(String resourceGroupName, String azureFirewallName, AzureFirewallInner parameters,
-        Context context);
+        Boolean createAfcControlPlane, Context context);
 
     /**
      * Updates tags of an Azure Firewall resource.

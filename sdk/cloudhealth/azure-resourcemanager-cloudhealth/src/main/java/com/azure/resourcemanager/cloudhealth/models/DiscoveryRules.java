@@ -47,14 +47,11 @@ public interface DiscoveryRules {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param healthModelName Name of health model resource.
      * @param discoveryRuleName Name of the discovery rule. Must be unique within a health model.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(String resourceGroupName, String healthModelName, String discoveryRuleName,
-        Context context);
+    void delete(String resourceGroupName, String healthModelName, String discoveryRuleName);
 
     /**
      * Delete a DiscoveryRule.
@@ -62,11 +59,12 @@ public interface DiscoveryRules {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param healthModelName Name of health model resource.
      * @param discoveryRuleName Name of the discovery rule. Must be unique within a health model.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(String resourceGroupName, String healthModelName, String discoveryRuleName);
+    void delete(String resourceGroupName, String healthModelName, String discoveryRuleName, Context context);
 
     /**
      * List DiscoveryRule resources by HealthModel.
@@ -137,9 +135,8 @@ public interface DiscoveryRules {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
      */
-    Response<Void> deleteByIdWithResponse(String id, Context context);
+    void deleteByIdWithResponse(String id, Context context);
 
     /**
      * Begins definition for a new DiscoveryRule resource.

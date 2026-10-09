@@ -20,6 +20,7 @@ import com.azure.resourcemanager.compute.models.Encryption;
 import com.azure.resourcemanager.compute.models.EncryptionSettingsCollection;
 import com.azure.resourcemanager.compute.models.ExtendedLocation;
 import com.azure.resourcemanager.compute.models.HyperVGeneration;
+import com.azure.resourcemanager.compute.models.ImmutabilityPolicy;
 import com.azure.resourcemanager.compute.models.NetworkAccessPolicy;
 import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
 import com.azure.resourcemanager.compute.models.PublicNetworkAccess;
@@ -681,6 +682,16 @@ public final class SnapshotInner extends Resource {
      */
     public SnapshotAccessState snapshotAccessState() {
         return this.innerProperties() == null ? null : this.innerProperties().snapshotAccessState();
+    }
+
+    /**
+     * Get the immutabilityPolicy property: The immutability policy currently applied to this snapshot. Present only
+     * when an immutability policy has been configured.
+     * 
+     * @return the immutabilityPolicy value.
+     */
+    public ImmutabilityPolicy immutabilityPolicy() {
+        return this.innerProperties() == null ? null : this.innerProperties().immutabilityPolicy();
     }
 
     /**

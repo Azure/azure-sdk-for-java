@@ -11,7 +11,7 @@ public final class ResourceDeletionInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceDeletionInfo model = BinaryData.fromString(
-            "{\"deletionTime\":\"2021-02-17T21:18:15Z\",\"scheduledPurgeTime\":\"2021-02-21T04:56:22Z\",\"deleteActivityId\":\"u\"}")
+            "{\"deletionTime\":\"2021-10-31T14:02:16Z\",\"scheduledPurgeTime\":\"2021-04-24T14:30:43Z\",\"deleteActivityId\":\"sikvmkqzeqqkdlt\"}")
             .toObject(ResourceDeletionInfo.class);
     }
 }

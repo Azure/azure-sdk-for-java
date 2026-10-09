@@ -27,6 +27,7 @@ public final class AutoHealActions implements JsonSerializable<AutoHealActions> 
     private AutoHealCustomAction customAction;
 
     /*
+     * 
      * Minimum time the process must execute
      * before taking the action
      */
@@ -79,7 +80,8 @@ public final class AutoHealActions implements JsonSerializable<AutoHealActions> 
     }
 
     /**
-     * Get the minProcessExecutionTime property: Minimum time the process must execute
+     * Get the minProcessExecutionTime property:
+     * Minimum time the process must execute
      * before taking the action.
      * 
      * @return the minProcessExecutionTime value.
@@ -89,7 +91,8 @@ public final class AutoHealActions implements JsonSerializable<AutoHealActions> 
     }
 
     /**
-     * Set the minProcessExecutionTime property: Minimum time the process must execute
+     * Set the minProcessExecutionTime property:
+     * Minimum time the process must execute
      * before taking the action.
      * 
      * @param minProcessExecutionTime the minProcessExecutionTime value to set.

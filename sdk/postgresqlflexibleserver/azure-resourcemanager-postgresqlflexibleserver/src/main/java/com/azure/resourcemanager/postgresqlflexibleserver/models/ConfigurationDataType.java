@@ -12,32 +12,32 @@ import java.util.Collection;
  */
 public final class ConfigurationDataType extends ExpandableStringEnum<ConfigurationDataType> {
     /**
-     * Static value Boolean for ConfigurationDataType.
+     * A boolean value.
      */
     public static final ConfigurationDataType BOOLEAN = fromString("Boolean");
 
     /**
-     * Static value Numeric for ConfigurationDataType.
+     * A numeric value.
      */
     public static final ConfigurationDataType NUMERIC = fromString("Numeric");
 
     /**
-     * Static value Integer for ConfigurationDataType.
+     * An integer value.
      */
     public static final ConfigurationDataType INTEGER = fromString("Integer");
 
     /**
-     * Static value Enumeration for ConfigurationDataType.
+     * An enumeration value.
      */
     public static final ConfigurationDataType ENUMERATION = fromString("Enumeration");
 
     /**
-     * Static value String for ConfigurationDataType.
+     * A string value.
      */
     public static final ConfigurationDataType STRING = fromString("String");
 
     /**
-     * Static value Set for ConfigurationDataType.
+     * A set of values.
      */
     public static final ConfigurationDataType SET = fromString("Set");
 

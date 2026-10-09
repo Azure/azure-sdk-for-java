@@ -359,7 +359,9 @@ public class WebExceptionRetryPolicyE2ETests extends TestSuiteBase {
                     .patchItem(createdItem.getId(), new PartitionKey(createdItem.getId()), patchOperations, TestItem.class)
                     .map(itemResponse -> itemResponse.getDiagnostics());
             case ReadFeed:
-                List<FeedRange> feedRanges = cosmosAsyncContainer.getFeedRanges().block();
+                List<FeedRange> feedRanges = getFeedRangesWithRetry(
+                    cosmosAsyncContainer,
+                    "get feed ranges for web exception retry policy setup");
                 CosmosChangeFeedRequestOptions changeFeedRequestOptions =
                     CosmosChangeFeedRequestOptions.createForProcessingFromBeginning(feedRanges.get(0));
 

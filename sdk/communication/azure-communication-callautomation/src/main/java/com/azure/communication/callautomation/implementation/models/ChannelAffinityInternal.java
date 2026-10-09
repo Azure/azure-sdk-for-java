@@ -24,8 +24,9 @@ public final class ChannelAffinityInternal implements JsonSerializable<ChannelAf
     private Integer channel;
 
     /*
-     * The identifier for the participant whose bitstream will be written to the channel
-     * represented by the channel number.
+     * Identifies a participant in Azure Communication services. A participant is, for example, a phone number or an
+     * Azure communication user. This model is polymorphic: Apart from kind and rawId, at most one further property may
+     * be set which must match the kind enum value.
      */
     @Generated
     private CommunicationIdentifierModel participant;
@@ -60,8 +61,9 @@ public final class ChannelAffinityInternal implements JsonSerializable<ChannelAf
     }
 
     /**
-     * Get the participant property: The identifier for the participant whose bitstream will be written to the channel
-     * represented by the channel number.
+     * Get the participant property: Identifies a participant in Azure Communication services. A participant is, for
+     * example, a phone number or an Azure communication user. This model is polymorphic: Apart from kind and rawId, at
+     * most one further property may be set which must match the kind enum value.
      * 
      * @return the participant value.
      */
@@ -71,8 +73,9 @@ public final class ChannelAffinityInternal implements JsonSerializable<ChannelAf
     }
 
     /**
-     * Set the participant property: The identifier for the participant whose bitstream will be written to the channel
-     * represented by the channel number.
+     * Set the participant property: Identifies a participant in Azure Communication services. A participant is, for
+     * example, a phone number or an Azure communication user. This model is polymorphic: Apart from kind and rawId, at
+     * most one further property may be set which must match the kind enum value.
      * 
      * @param participant the participant value to set.
      * @return the ChannelAffinityInternal object itself.

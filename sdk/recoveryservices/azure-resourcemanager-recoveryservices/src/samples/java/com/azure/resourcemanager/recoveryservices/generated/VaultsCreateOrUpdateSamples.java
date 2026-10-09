@@ -10,12 +10,19 @@ import com.azure.resourcemanager.recoveryservices.models.AzureMonitorAlertSettin
 import com.azure.resourcemanager.recoveryservices.models.ClassicAlertSettings;
 import com.azure.resourcemanager.recoveryservices.models.CmkKekIdentity;
 import com.azure.resourcemanager.recoveryservices.models.CmkKeyVaultProperties;
+import com.azure.resourcemanager.recoveryservices.models.CostManagementSettings;
 import com.azure.resourcemanager.recoveryservices.models.CrossRegionRestore;
+import com.azure.resourcemanager.recoveryservices.models.GranularityLevel;
 import com.azure.resourcemanager.recoveryservices.models.IdentityData;
 import com.azure.resourcemanager.recoveryservices.models.IdentityType;
+import com.azure.resourcemanager.recoveryservices.models.ImmutabilityConfiguration;
+import com.azure.resourcemanager.recoveryservices.models.ImmutabilitySettings;
+import com.azure.resourcemanager.recoveryservices.models.ImmutabilityState;
+import com.azure.resourcemanager.recoveryservices.models.ImmutabilityType;
 import com.azure.resourcemanager.recoveryservices.models.InfrastructureEncryptionState;
 import com.azure.resourcemanager.recoveryservices.models.MonitoringSettings;
 import com.azure.resourcemanager.recoveryservices.models.PublicNetworkAccess;
+import com.azure.resourcemanager.recoveryservices.models.RegionOfChoiceSettings;
 import com.azure.resourcemanager.recoveryservices.models.ResourceIdentityType;
 import com.azure.resourcemanager.recoveryservices.models.SecuritySettings;
 import com.azure.resourcemanager.recoveryservices.models.Sku;
@@ -36,7 +43,50 @@ import java.util.Map;
  */
 public final class VaultsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-08-01/PUTVault_WithCMK.json
+     * x-ms-original-file: 2026-07-01/PUTVault_WithRegionOfChoiceSettings.json
+     */
+    /**
+     * Sample code: Create or Update Vault With Region Of Choice Settings.
+     * 
+     * @param manager Entry point to RecoveryServicesManager.
+     */
+    public static void createOrUpdateVaultWithRegionOfChoiceSettings(
+        com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager) {
+        manager.vaults()
+            .define("swaggerExample")
+            .withRegion("West US")
+            .withExistingResourceGroup("Default-RecoveryServices-ResourceGroup")
+            .withProperties(new VaultProperties().withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
+                .withRegionOfChoiceSettings(new RegionOfChoiceSettings().withStatus(State.ENABLED)))
+            .withIdentity(new IdentityData().withType(ResourceIdentityType.SYSTEM_ASSIGNED))
+            .withSku(new Sku().withName(SkuName.STANDARD))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2026-07-01/PUTVault_WithCostManagementSettings.json
+     */
+    /**
+     * Sample code: Create or Update Vault With Cost Management Settings.
+     * 
+     * @param manager Entry point to RecoveryServicesManager.
+     */
+    public static void createOrUpdateVaultWithCostManagementSettings(
+        com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager) {
+        manager.vaults()
+            .define("swaggerExample")
+            .withRegion("West US")
+            .withExistingResourceGroup("Default-RecoveryServices-ResourceGroup")
+            .withProperties(new VaultProperties().withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
+                .withCostManagementSettings(
+                    new CostManagementSettings().withGranularityLevel(GranularityLevel.PROTECTED_ITEM_LEVEL)))
+            .withIdentity(new IdentityData().withType(ResourceIdentityType.SYSTEM_ASSIGNED))
+            .withSku(new Sku().withName(SkuName.STANDARD))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2026-07-01/PUTVault_WithCMK.json
      */
     /**
      * Sample code: Create or Update Vault with CustomerManagedKeys.
@@ -64,7 +114,7 @@ public final class VaultsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/PUTVault.json
+     * x-ms-original-file: 2026-07-01/PUTVault.json
      */
     /**
      * Sample code: Create or Update Recovery Services vault.
@@ -84,7 +134,31 @@ public final class VaultsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/PUTVault_ResourceGuardEnabled.json
+     * x-ms-original-file: 2026-07-01/PUTVault_WithImmutabilityConfig.json
+     */
+    /**
+     * Sample code: Create or Update Vault With Immutability Config.
+     * 
+     * @param manager Entry point to RecoveryServicesManager.
+     */
+    public static void createOrUpdateVaultWithImmutabilityConfig(
+        com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager) {
+        manager.vaults()
+            .define("swaggerExample")
+            .withRegion("West US")
+            .withExistingResourceGroup("Default-RecoveryServices-ResourceGroup")
+            .withProperties(new VaultProperties().withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
+                .withSecuritySettings(new SecuritySettings()
+                    .withImmutabilitySettings(new ImmutabilitySettings().withState(ImmutabilityState.UNLOCKED)
+                        .withConfiguration(new ImmutabilityConfiguration().withType(ImmutabilityType.TIME_BASED)
+                            .withDurationInDays(30)))))
+            .withIdentity(new IdentityData().withType(ResourceIdentityType.SYSTEM_ASSIGNED))
+            .withSku(new Sku().withName(SkuName.STANDARD))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2026-07-01/PUTVault_ResourceGuardEnabled.json
      */
     /**
      * Sample code: Create or Update Vault performing critical operation With MUA.
@@ -114,7 +188,7 @@ public final class VaultsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/PUTVault_WithUserAssignedIdentity.json
+     * x-ms-original-file: 2026-07-01/PUTVault_WithUserAssignedIdentity.json
      */
     /**
      * Sample code: Create or Update Vault with User Assigned Identity.
@@ -137,7 +211,7 @@ public final class VaultsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/PUTVault_WithMonitoringSettings.json
+     * x-ms-original-file: 2026-07-01/PUTVault_WithMonitoringSettings.json
      */
     /**
      * Sample code: Create or Update Vault With Monitoring Setting.
@@ -165,7 +239,7 @@ public final class VaultsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/PUTVault_WithRedundancySettings.json
+     * x-ms-original-file: 2026-07-01/PUTVault_WithRedundancySettings.json
      */
     /**
      * Sample code: Create or Update Vault With Redundancy Setting.
@@ -188,7 +262,7 @@ public final class VaultsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/PUTVault_WithSourceScanConfiguration.json
+     * x-ms-original-file: 2026-07-01/PUTVault_WithSourceScanConfiguration.json
      */
     /**
      * Sample code: Create or Update Vault with Source scan configuration.

@@ -45,13 +45,12 @@ public final class DiscoveryRulesImpl implements DiscoveryRules {
         }
     }
 
-    public Response<Void> deleteWithResponse(String resourceGroupName, String healthModelName, String discoveryRuleName,
-        Context context) {
-        return this.serviceClient().deleteWithResponse(resourceGroupName, healthModelName, discoveryRuleName, context);
-    }
-
     public void delete(String resourceGroupName, String healthModelName, String discoveryRuleName) {
         this.serviceClient().delete(resourceGroupName, healthModelName, discoveryRuleName);
+    }
+
+    public void delete(String resourceGroupName, String healthModelName, String discoveryRuleName, Context context) {
+        this.serviceClient().delete(resourceGroupName, healthModelName, discoveryRuleName, context);
     }
 
     public PagedIterable<DiscoveryRule> listByHealthModel(String resourceGroupName, String healthModelName) {
@@ -121,10 +120,10 @@ public final class DiscoveryRulesImpl implements DiscoveryRules {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'discoveryrules'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, healthModelName, discoveryRuleName, Context.NONE);
+        this.delete(resourceGroupName, healthModelName, discoveryRuleName, Context.NONE);
     }
 
-    public Response<Void> deleteByIdWithResponse(String id, Context context) {
+    public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
@@ -140,7 +139,7 @@ public final class DiscoveryRulesImpl implements DiscoveryRules {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'discoveryrules'.", id)));
         }
-        return this.deleteWithResponse(resourceGroupName, healthModelName, discoveryRuleName, context);
+        this.delete(resourceGroupName, healthModelName, discoveryRuleName, context);
     }
 
     private DiscoveryRulesClient serviceClient() {

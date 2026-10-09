@@ -130,6 +130,8 @@ public class AgentEndpointAuthorizationScheme implements JsonSerializable<AgentE
                     return BotServiceAuthorizationScheme.fromJson(readerToUse.reset());
                 } else if ("BotServiceRbac".equals(discriminatorValue)) {
                     return BotServiceRbacAuthorizationScheme.fromJson(readerToUse.reset());
+                } else if ("BotServiceTenant".equals(discriminatorValue)) {
+                    return BotServiceTenantAuthorizationScheme.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

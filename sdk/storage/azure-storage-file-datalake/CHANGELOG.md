@@ -1,14 +1,62 @@
 # Release History
 
-## 12.28.0-beta.2 (Unreleased)
+## 12.29.0-beta.2 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
 
 ### Bugs Fixed
+- Fixed a bug where the client returned by `rename`, `renameWithResponse`, and `undeletePath` URL-encoded the path
+  name a second time, causing subsequent requests made through that client to target a double-encoded path when the
+  name contained characters such as `%`, `#`, or a space.
+- Fixed a bug where the sync `DataLakeFileClient`/`DataLakeDirectoryClient` returned by `rename`/`renameWithResponse`
+  kept its internal async client rooted at the original source path. Operations delegated to that async client (such as
+  file `append`, `flush`, and `upload`, or directory child/ACL clients) targeted the old path instead of the renamed
+  destination.
 
 ### Other Changes
+- Corrected documentation on `DataLakeFileSystemClient`/`DataLakeFileSystemAsyncClient` path client getters and on
+  `DataLakePathClientBuilder.pathName(String)`, which incorrectly instructed callers to pass a URL-encoded path name.
+  Path names have been used verbatim since 12.22.0 and are percent-encoded by the client when the request URL is built.
+
+## 12.28.2 (2026-10-06)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-storage-blob` from `12.35.1` to version `12.35.2`.
+- Upgraded `azure-core-http-netty` from `1.16.6` to version `1.16.8`.
+- Upgraded `azure-core` from `1.59.0` to version `1.60.0`.
+
+## 12.28.1 (2026-08-18)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.16.5` to version `1.16.6`.
+- Upgraded `azure-core` from `1.58.1` to version `1.59.0`.
+- Upgraded `azure-storage-blob` from `12.35.0` to version `12.35.1`.
+
+## 12.29.0-beta.1 (2026-07-28)
+
+### Features Added
+- Added support for service version 2026-10-06.
+
+## 12.28.0 (2026-06-11)
+
+### Features Added
+- Added `getTags`/`setTags` to path APIs (sync + async).
+- Added support for service version 2026-06-06.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-storage-blob` from `12.34.0` to version `12.35.0`.
+- Upgraded `azure-core` from `1.58.0` to version `1.58.1`.
+- Upgraded `azure-core-http-netty` from `1.16.4` to version `1.16.5`.
 
 ## 12.27.0 (2026-05-14)
 

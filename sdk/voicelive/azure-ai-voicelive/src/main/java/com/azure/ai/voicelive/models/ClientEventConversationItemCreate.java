@@ -19,7 +19,7 @@ import java.io.IOException;
  * event, otherwise an `error` event will be sent.
  */
 @Fluent
-public final class ClientEventConversationItemCreate extends ClientEvent {
+public final class ClientEventConversationItemCreate extends SessionClientEvent {
 
     /*
      * The type of event.

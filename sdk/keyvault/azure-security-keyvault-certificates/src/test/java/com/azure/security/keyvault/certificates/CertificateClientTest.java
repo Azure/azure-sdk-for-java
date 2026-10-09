@@ -570,6 +570,24 @@ public class CertificateClientTest extends CertificateClientTestBase {
         });
     }
 
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS, allowZeroInvocations = true)
+    @MethodSource("getPlatformManagedTestParameters")
+    public void createCertificateWithPlatformManagedPolicy(HttpClient httpClient,
+        CertificateServiceVersion serviceVersion) {
+        createCertificateClient(httpClient, serviceVersion);
+
+        platformManagedCertificatePolicyRunner(certificateName -> {
+            CertificatePolicy policy = setupPlatformManagedPolicy();
+            SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller
+                = setPlaybackSyncPollerPollInterval(certificateClient.beginCreateCertificate(certificateName, policy));
+
+            certPoller.waitForCompletion();
+
+            KeyVaultCertificateWithPolicy certificate = certPoller.getFinalResult();
+            assertPlatformManagedPolicy(policy, certificate.getPolicy());
+        });
+    }
+
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void restoreCertificateFromMalformedBackup(HttpClient httpClient, CertificateServiceVersion serviceVersion) {

@@ -117,8 +117,6 @@ import com.azure.resourcemanager.computefleet.models.WindowsPatchAssessmentMode;
 import com.azure.resourcemanager.computefleet.models.WindowsVMGuestPatchAutomaticByPlatformRebootSetting;
 import com.azure.resourcemanager.computefleet.models.WindowsVMGuestPatchAutomaticByPlatformSettings;
 import com.azure.resourcemanager.computefleet.models.WindowsVMGuestPatchMode;
-import com.azure.resourcemanager.computefleet.models.ZoneAllocationPolicy;
-import com.azure.resourcemanager.computefleet.models.ZoneDistributionStrategy;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -128,14 +126,14 @@ import java.util.Map;
  */
 public final class FleetsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-07-01-preview/Fleets_Update.json
+     * x-ms-original-file: 2026-08-01/Fleets_Update_MaximumSet_Gen.json
      */
     /**
-     * Sample code: Fleets_Update.
+     * Sample code: Fleets_Update_MaximumSet_Gen.
      * 
      * @param manager Entry point to ComputeFleetManager.
      */
-    public static void fleetsUpdate(com.azure.resourcemanager.computefleet.ComputeFleetManager manager) {
+    public static void fleetsUpdateMaximumSetGen(com.azure.resourcemanager.computefleet.ComputeFleetManager manager) {
         Fleet resource = manager.fleets()
             .getByResourceGroupWithResponse("rgazurefleet", "myFleet", com.azure.core.util.Context.NONE)
             .getValue();
@@ -630,9 +628,7 @@ public final class FleetsUpdateSamples {
                         .withAdditionalVirtualMachineCapabilities(
                             new AdditionalCapabilities().withUltraSSDEnabled(true).withHibernationEnabled(true)))
                 .withMode(FleetMode.MANAGED)
-                .withCapacityType(CapacityType.VM)
-                .withZoneAllocationPolicy(new ZoneAllocationPolicy()
-                    .withDistributionStrategy(ZoneDistributionStrategy.BEST_EFFORT_SINGLE_ZONE)))
+                .withCapacityType(CapacityType.VM))
             .apply();
     }
 

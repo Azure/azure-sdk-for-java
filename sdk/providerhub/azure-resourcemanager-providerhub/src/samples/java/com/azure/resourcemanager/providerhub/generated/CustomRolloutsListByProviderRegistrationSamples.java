@@ -9,7 +9,7 @@ package com.azure.resourcemanager.providerhub.generated;
  */
 public final class CustomRolloutsListByProviderRegistrationSamples {
     /*
-     * x-ms-original-file: 2024-09-01/CustomRollouts_ListByProviderRegistration.json
+     * x-ms-original-file: 2025-10-01/CustomRollouts_ListByProviderRegistration.json
      */
     /**
      * Sample code: CustomRollouts_ListByProviderRegistration.

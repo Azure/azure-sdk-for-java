@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class LocalNetworkGatewaysUpdateTagsSamples {
     /*
-     * x-ms-original-file: 2025-05-01/LocalNetworkGatewayUpdateTags.json
+     * x-ms-original-file: 2026-01-01/LocalNetworkGatewayUpdateTags.json
      */
     /**
      * Sample code: UpdateLocalNetworkGatewayTags.

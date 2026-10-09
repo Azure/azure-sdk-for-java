@@ -2,8 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.appconfiguration.config.implementation;
 
-import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.PUSH_REFRESH;
-
 import java.io.IOException;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -24,6 +22,7 @@ import org.springframework.util.StringUtils;
 import com.azure.core.util.Context;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
+import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.PUSH_REFRESH;
 import com.azure.spring.cloud.appconfiguration.config.implementation.configuration.WatchedConfigurationSettings;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationKeyValueSelector;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationStoreMonitoring;
@@ -137,13 +136,12 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
             Exception loadException = loadConfiguration(sourceList);
             if (loadException != null) {
                 if (resource.isRefresh()) {
-                    logger.warn("Azure App Configuration failed during refresh for store: "
-                        + resource.getEndpoint() + ". Continuing with existing configuration.");
-                } else {
-                    logger.error("Azure App Configuration failed to load configuration during startup for store: "
-                        + resource.getEndpoint() + ". Application cannot start without required configuration.");
-                    failedToGeneratePropertySource(loadException);
+                    throw new RuntimeException(
+                        "Failed to refresh property sources for " + resource.getEndpoint(), loadException);
                 }
+                logger.error("Azure App Configuration failed to load configuration during startup for store: "
+                    + resource.getEndpoint() + ". Application cannot start without required configuration.");
+                failedToGeneratePropertySource(loadException);
             }
         }
 
@@ -324,6 +322,10 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
         replicaClientFactory.backoffClient(resource.getEndpoint(), client.getEndpoint());
         AppConfigurationReplicaClient nextClient = replicaClientFactory.getNextActiveClient(resource.getEndpoint(),
             false);
+
+        if (nextClient != null) {
+            nextClient.getTracingInfo().setFailoverRequest();
+        }
 
         String scenario = resource.isRefresh() ? "refresh" : "startup";
         String nextAction = nextClient != null ? "Trying next replica." : "No more replicas available.";

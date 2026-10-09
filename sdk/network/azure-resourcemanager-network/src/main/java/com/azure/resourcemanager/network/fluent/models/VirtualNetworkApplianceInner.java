@@ -11,6 +11,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.VirtualNetworkApplianceIpConfiguration;
+import com.azure.resourcemanager.network.models.VirtualNetworkApplianceIpVersionType;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -132,7 +133,7 @@ public final class VirtualNetworkApplianceInner extends Resource {
      * 
      * @return the bandwidthInGbps value.
      */
-    public String bandwidthInGbps() {
+    public Double bandwidthInGbps() {
         return this.innerProperties() == null ? null : this.innerProperties().bandwidthInGbps();
     }
 
@@ -142,7 +143,7 @@ public final class VirtualNetworkApplianceInner extends Resource {
      * @param bandwidthInGbps the bandwidthInGbps value to set.
      * @return the VirtualNetworkApplianceInner object itself.
      */
-    public VirtualNetworkApplianceInner withBandwidthInGbps(String bandwidthInGbps) {
+    public VirtualNetworkApplianceInner withBandwidthInGbps(Double bandwidthInGbps) {
         if (this.innerProperties() == null) {
             this.innerProperties = new VirtualNetworkAppliancePropertiesFormatInner();
         }
@@ -157,6 +158,32 @@ public final class VirtualNetworkApplianceInner extends Resource {
      */
     public List<VirtualNetworkApplianceIpConfiguration> ipConfigurations() {
         return this.innerProperties() == null ? null : this.innerProperties().ipConfigurations();
+    }
+
+    /**
+     * Get the privateIPAddressVersion property: Whether the specific virtual network appliance is IPv4 or Dual Stack.
+     * Default is IPv4.
+     * 
+     * @return the privateIPAddressVersion value.
+     */
+    public VirtualNetworkApplianceIpVersionType privateIPAddressVersion() {
+        return this.innerProperties() == null ? null : this.innerProperties().privateIPAddressVersion();
+    }
+
+    /**
+     * Set the privateIPAddressVersion property: Whether the specific virtual network appliance is IPv4 or Dual Stack.
+     * Default is IPv4.
+     * 
+     * @param privateIPAddressVersion the privateIPAddressVersion value to set.
+     * @return the VirtualNetworkApplianceInner object itself.
+     */
+    public VirtualNetworkApplianceInner
+        withPrivateIPAddressVersion(VirtualNetworkApplianceIpVersionType privateIPAddressVersion) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualNetworkAppliancePropertiesFormatInner();
+        }
+        this.innerProperties().withPrivateIPAddressVersion(privateIPAddressVersion);
+        return this;
     }
 
     /**

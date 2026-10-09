@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.servicefabricmanagedclusters.implementation;
 
+import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
@@ -21,6 +22,7 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.servicefabricmanagedclusters.fluent.ManagedApplyMaintenanceWindowsClient;
+import com.azure.resourcemanager.servicefabricmanagedclusters.models.ApplyMaintenanceWindowRequest;
 import reactor.core.publisher.Mono;
 
 /**
@@ -62,7 +64,7 @@ public final class ManagedApplyMaintenanceWindowsClientImpl implements ManagedAp
         Mono<Response<Void>> post(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
-            Context context);
+            @BodyParam("application/json") ApplyMaintenanceWindowRequest body, Context context);
 
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/applyMaintenanceWindow")
@@ -71,31 +73,31 @@ public final class ManagedApplyMaintenanceWindowsClientImpl implements ManagedAp
         Response<Void> postSync(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
-            Context context);
+            @BodyParam("application/json") ApplyMaintenanceWindowRequest body, Context context);
     }
 
     /**
-     * Action to Apply Maintenance window on the Service Fabric Managed Clusters, right now. Any pending update will be
-     * applied.
+     * Action to Apply Maintenance window on the Service Fabric Managed Clusters. Any pending update will be applied.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster resource.
+     * @param body The content of the action request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> postWithResponseAsync(String resourceGroupName, String clusterName) {
+    private Mono<Response<Void>> postWithResponseAsync(String resourceGroupName, String clusterName,
+        ApplyMaintenanceWindowRequest body) {
         return FluxUtil
             .withContext(context -> service.post(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, clusterName, context))
+                this.client.getSubscriptionId(), resourceGroupName, clusterName, body, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Action to Apply Maintenance window on the Service Fabric Managed Clusters, right now. Any pending update will be
-     * applied.
+     * Action to Apply Maintenance window on the Service Fabric Managed Clusters. Any pending update will be applied.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster resource.
@@ -106,15 +108,16 @@ public final class ManagedApplyMaintenanceWindowsClientImpl implements ManagedAp
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> postAsync(String resourceGroupName, String clusterName) {
-        return postWithResponseAsync(resourceGroupName, clusterName).flatMap(ignored -> Mono.empty());
+        final ApplyMaintenanceWindowRequest body = null;
+        return postWithResponseAsync(resourceGroupName, clusterName, body).flatMap(ignored -> Mono.empty());
     }
 
     /**
-     * Action to Apply Maintenance window on the Service Fabric Managed Clusters, right now. Any pending update will be
-     * applied.
+     * Action to Apply Maintenance window on the Service Fabric Managed Clusters. Any pending update will be applied.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster resource.
+     * @param body The content of the action request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -122,14 +125,14 @@ public final class ManagedApplyMaintenanceWindowsClientImpl implements ManagedAp
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> postWithResponse(String resourceGroupName, String clusterName, Context context) {
+    public Response<Void> postWithResponse(String resourceGroupName, String clusterName,
+        ApplyMaintenanceWindowRequest body, Context context) {
         return service.postSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, clusterName, context);
+            resourceGroupName, clusterName, body, context);
     }
 
     /**
-     * Action to Apply Maintenance window on the Service Fabric Managed Clusters, right now. Any pending update will be
-     * applied.
+     * Action to Apply Maintenance window on the Service Fabric Managed Clusters. Any pending update will be applied.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster resource.
@@ -139,6 +142,7 @@ public final class ManagedApplyMaintenanceWindowsClientImpl implements ManagedAp
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void post(String resourceGroupName, String clusterName) {
-        postWithResponse(resourceGroupName, clusterName, Context.NONE);
+        final ApplyMaintenanceWindowRequest body = null;
+        postWithResponse(resourceGroupName, clusterName, body, Context.NONE);
     }
 }

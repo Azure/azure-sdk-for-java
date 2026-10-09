@@ -14,6 +14,7 @@ extends:
             COSMOS.CLIENT_TELEMETRY_ENDPOINT: $(cosmos-client-telemetry-endpoint)
             COSMOS.CLIENT_TELEMETRY_COSMOS_ACCOUNT: $(cosmos-client-telemetry-cosmos-account)
             COSMOS_ACR_NAME: $(kafka-mcr-name)
+            TESTCONTAINERS_HUB_IMAGE_NAME_PREFIX: $(kafka-acr-login-server)/
           CloudConfig:
             Public:
               ServiceConnection: azure-sdk-tests-cosmos
@@ -57,3 +58,10 @@ extends:
                   exit 1
                 fi
               displayName: 'Ensure Docker is installed and running'
+            - script: |
+                printf '%s' "$(kafka-acr-sp-client-secret)" | docker login "$(kafka-acr-login-server)" --username "$(kafka-acr-sp-client-id)" --password-stdin
+              displayName: 'Login to ACR for Testcontainers image cache'
+          PostSteps:
+            - script: docker logout "$(kafka-acr-login-server)"
+              displayName: 'Logout from ACR'
+              condition: always()

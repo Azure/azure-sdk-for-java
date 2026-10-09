@@ -23,7 +23,7 @@ public final class IotHubResourcesImportDevicesWithResponseMockTests {
     @Test
     public void testImportDevicesWithResponse() throws Exception {
         String responseStr
-            = "{\"jobId\":\"gjqppy\",\"startTimeUtc\":\"Mon, 10 May 2021 01:51:42 GMT\",\"endTimeUtc\":\"Tue, 06 Jul 2021 23:25:37 GMT\",\"type\":\"writeDeviceProperties\",\"status\":\"unknown\",\"failureReason\":\"gfipnsxk\",\"statusMessage\":\"waekrrjreafxtsgu\",\"parentJobId\":\"jglikkxwslolb\"}";
+            = "{\"jobId\":\"kndxdigrjgu\",\"startTimeUtc\":\"Tue, 16 Feb 2021 11:30:47 GMT\",\"endTimeUtc\":\"Tue, 16 Nov 2021 06:23:27 GMT\",\"type\":\"factoryResetDevice\",\"status\":\"unknown\",\"failureReason\":\"ihwhbotzingamvpp\",\"statusMessage\":\"szqzudphqamv\",\"parentJobId\":\"fwynwcvtbvkay\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,15 +33,15 @@ public final class IotHubResourcesImportDevicesWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         JobResponse response = manager.iotHubResources()
-            .importDevicesWithResponse("nhlmctlpdng", "tvgbmhrixkwmy",
-                new ImportDevicesRequest().withInputBlobContainerUri("jejveg")
-                    .withOutputBlobContainerUri("hbpnaixexccbd")
-                    .withInputBlobName("ax")
-                    .withOutputBlobName("exdrrvqahqkg")
-                    .withAuthenticationType(AuthenticationType.KEY_BASED)
-                    .withIdentity(new ManagedIdentity().withUserAssignedIdentity("jnhyjsvf"))
+            .importDevicesWithResponse("gofel", "a",
+                new ImportDevicesRequest().withInputBlobContainerUri("rqmq")
+                    .withOutputBlobContainerUri("ldvriiiojnalghfk")
+                    .withInputBlobName("vsexsowuelu")
+                    .withOutputBlobName("hahhxvrhmzkwpj")
+                    .withAuthenticationType(AuthenticationType.IDENTITY_BASED)
+                    .withIdentity(new ManagedIdentity().withUserAssignedIdentity("ughftqsx"))
                     .withIncludeConfigurations(false)
-                    .withConfigurationsBlobName("bfvoowvrv"),
+                    .withConfigurationsBlobName("j"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 

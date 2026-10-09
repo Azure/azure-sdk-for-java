@@ -34,7 +34,10 @@ import com.azure.resourcemanager.postgresqlflexibleserver.implementation.Capabil
 import com.azure.resourcemanager.postgresqlflexibleserver.implementation.CapturedLogsImpl;
 import com.azure.resourcemanager.postgresqlflexibleserver.implementation.ConfigurationsImpl;
 import com.azure.resourcemanager.postgresqlflexibleserver.implementation.DatabasesImpl;
+import com.azure.resourcemanager.postgresqlflexibleserver.implementation.DbAgentsImpl;
 import com.azure.resourcemanager.postgresqlflexibleserver.implementation.FirewallRulesImpl;
+import com.azure.resourcemanager.postgresqlflexibleserver.implementation.MaintenanceEventsImpl;
+import com.azure.resourcemanager.postgresqlflexibleserver.implementation.MajorVersionUpgradePrechecksImpl;
 import com.azure.resourcemanager.postgresqlflexibleserver.implementation.MigrationsImpl;
 import com.azure.resourcemanager.postgresqlflexibleserver.implementation.NameAvailabilitiesImpl;
 import com.azure.resourcemanager.postgresqlflexibleserver.implementation.OperationsImpl;
@@ -58,7 +61,10 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.CapabilitiesByS
 import com.azure.resourcemanager.postgresqlflexibleserver.models.CapturedLogs;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Configurations;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Databases;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.DbAgents;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.FirewallRules;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.MaintenanceEvents;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.MajorVersionUpgradePrechecks;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Migrations;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.NameAvailabilities;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Operations;
@@ -104,6 +110,12 @@ public final class PostgreSqlManager {
     private PrivateLinkResources privateLinkResources;
 
     private VirtualEndpoints virtualEndpoints;
+
+    private MaintenanceEvents maintenanceEvents;
+
+    private MajorVersionUpgradePrechecks majorVersionUpgradePrechecks;
+
+    private DbAgents dbAgents;
 
     private AdministratorsMicrosoftEntras administratorsMicrosoftEntras;
 
@@ -455,6 +467,43 @@ public final class PostgreSqlManager {
             this.virtualEndpoints = new VirtualEndpointsImpl(clientObject.getVirtualEndpoints(), this);
         }
         return virtualEndpoints;
+    }
+
+    /**
+     * Gets the resource collection API of MaintenanceEvents.
+     * 
+     * @return Resource collection API of MaintenanceEvents.
+     */
+    public MaintenanceEvents maintenanceEvents() {
+        if (this.maintenanceEvents == null) {
+            this.maintenanceEvents = new MaintenanceEventsImpl(clientObject.getMaintenanceEvents(), this);
+        }
+        return maintenanceEvents;
+    }
+
+    /**
+     * Gets the resource collection API of MajorVersionUpgradePrechecks.
+     * 
+     * @return Resource collection API of MajorVersionUpgradePrechecks.
+     */
+    public MajorVersionUpgradePrechecks majorVersionUpgradePrechecks() {
+        if (this.majorVersionUpgradePrechecks == null) {
+            this.majorVersionUpgradePrechecks
+                = new MajorVersionUpgradePrechecksImpl(clientObject.getMajorVersionUpgradePrechecks(), this);
+        }
+        return majorVersionUpgradePrechecks;
+    }
+
+    /**
+     * Gets the resource collection API of DbAgents.
+     * 
+     * @return Resource collection API of DbAgents.
+     */
+    public DbAgents dbAgents() {
+        if (this.dbAgents == null) {
+            this.dbAgents = new DbAgentsImpl(clientObject.getDbAgents(), this);
+        }
+        return dbAgents;
     }
 
     /**

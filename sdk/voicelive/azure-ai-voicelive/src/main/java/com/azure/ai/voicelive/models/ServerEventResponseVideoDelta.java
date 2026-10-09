@@ -14,7 +14,7 @@ import java.io.IOException;
  * Returned when avatar video frame data is streamed.
  */
 @Immutable
-public final class ServerEventResponseVideoDelta extends SessionUpdate {
+public final class ServerEventResponseVideoDelta extends SessionServerEvent {
 
     /*
      * The type of event.

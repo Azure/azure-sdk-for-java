@@ -12,16 +12,16 @@ public final class SpotPlacementScoresResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SpotPlacementScoresResponseInner model = BinaryData.fromString(
-            "{\"desiredLocations\":[\"aqwi\",\"jsprozvcpute\",\"jvwmfda\"],\"desiredSizes\":[{\"sku\":\"dvpjhulsuuvmk\"}],\"desiredCount\":1523765181,\"availabilityZones\":false,\"placementScores\":[{\"sku\":\"dio\",\"region\":\"pslwejdpvw\",\"availabilityZone\":\"oqpsoa\",\"score\":\"tazak\",\"isQuotaAvailable\":true}]}")
+            "{\"desiredLocations\":[\"fpsalgbqu\"],\"desiredSizes\":[{\"sku\":\"yjgzjaoyfhrtxiln\"},{\"sku\":\"kujysvlejuvfq\"},{\"sku\":\"rlyxwjkcprbnw\"},{\"sku\":\"gjvtbv\"}],\"desiredCount\":1783786624,\"availabilityZones\":false,\"placementScores\":[{\"sku\":\"uj\",\"region\":\"uhmuouqfprwzwbn\",\"availabilityZone\":\"itnwuizgazxufi\",\"score\":\"ckyfih\",\"isQuotaAvailable\":false}]}")
             .toObject(SpotPlacementScoresResponseInner.class);
-        Assertions.assertEquals("aqwi", model.desiredLocations().get(0));
-        Assertions.assertEquals("dvpjhulsuuvmk", model.desiredSizes().get(0).sku());
-        Assertions.assertEquals(1523765181, model.desiredCount());
+        Assertions.assertEquals("fpsalgbqu", model.desiredLocations().get(0));
+        Assertions.assertEquals("yjgzjaoyfhrtxiln", model.desiredSizes().get(0).sku());
+        Assertions.assertEquals(1783786624, model.desiredCount());
         Assertions.assertFalse(model.availabilityZones());
-        Assertions.assertEquals("dio", model.placementScores().get(0).sku());
-        Assertions.assertEquals("pslwejdpvw", model.placementScores().get(0).region());
-        Assertions.assertEquals("oqpsoa", model.placementScores().get(0).availabilityZone());
-        Assertions.assertEquals("tazak", model.placementScores().get(0).score());
-        Assertions.assertTrue(model.placementScores().get(0).isQuotaAvailable());
+        Assertions.assertEquals("uj", model.placementScores().get(0).sku());
+        Assertions.assertEquals("uhmuouqfprwzwbn", model.placementScores().get(0).region());
+        Assertions.assertEquals("itnwuizgazxufi", model.placementScores().get(0).availabilityZone());
+        Assertions.assertEquals("ckyfih", model.placementScores().get(0).score());
+        Assertions.assertFalse(model.placementScores().get(0).isQuotaAvailable());
     }
 }

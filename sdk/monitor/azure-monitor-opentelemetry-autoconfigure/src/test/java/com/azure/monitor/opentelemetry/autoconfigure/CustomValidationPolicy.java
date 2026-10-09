@@ -17,15 +17,22 @@ import java.net.URL;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CountDownLatch;
+import java.util.function.Predicate;
 
 final class CustomValidationPolicy implements HttpPipelinePolicy {
 
     private final CountDownLatch countDown;
+    private final Predicate<List<TelemetryItem>> countDownCondition;
     private volatile URL url;
     private final List<TelemetryItem> actualTelemetryItems = new CopyOnWriteArrayList<>();
 
     CustomValidationPolicy(CountDownLatch countDown) {
+        this(countDown, ignored -> true);
+    }
+
+    CustomValidationPolicy(CountDownLatch countDown, Predicate<List<TelemetryItem>> countDownCondition) {
         this.countDown = countDown;
+        this.countDownCondition = countDownCondition;
     }
 
     @Override
@@ -39,7 +46,9 @@ final class CustomValidationPolicy implements HttpPipelinePolicy {
             .map(LocalStorageTelemetryPipelineListener::ungzip);
         asyncBytes.subscribe(value -> {
             actualTelemetryItems.addAll(TestUtils.deserialize(value));
-            countDown.countDown();
+            if (countDownCondition.test(actualTelemetryItems)) {
+                countDown.countDown();
+            }
         });
         return next.process();
     }

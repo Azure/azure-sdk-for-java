@@ -10,8 +10,7 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.cloudhealth.CloudHealthManager;
-import com.azure.resourcemanager.cloudhealth.models.DynamicThresholdDirection;
-import com.azure.resourcemanager.cloudhealth.models.DynamicThresholdModel;
+import com.azure.resourcemanager.cloudhealth.models.DynamicThresholdSensitivity;
 import com.azure.resourcemanager.cloudhealth.models.RefreshInterval;
 import com.azure.resourcemanager.cloudhealth.models.SignalDefinition;
 import com.azure.resourcemanager.cloudhealth.models.SignalOperator;
@@ -25,7 +24,7 @@ public final class SignalDefinitionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"signalKind\":\"SignalDefinitionProperties\",\"provisioningState\":\"Failed\",\"displayName\":\"cslfaoqzpiyylha\",\"refreshInterval\":\"PT5M\",\"labels\":{\"qscywu\":\"ccsphkaivwi\"},\"dataUnit\":\"woluhczbwemhair\",\"evaluationRules\":{\"dynamicDetectionRule\":{\"dynamicThresholdModel\":\"AnomalyDetection\",\"modelSensitivity\":12.991988684461575,\"dynamicThresholdDirection\":\"GreaterThan\",\"trainingStartTime\":\"2021-06-14T04:59:44Z\"},\"degradedRule\":{\"operator\":\"GreaterThan\",\"threshold\":\"eypqwdxggicccn\"},\"unhealthyRule\":{\"operator\":\"Equals\",\"threshold\":\"uexmkttlst\"}},\"deletionDate\":\"2021-09-29T19:52:13Z\"},\"id\":\"wem\",\"name\":\"zrncsdt\",\"type\":\"lusiy\"}";
+            = "{\"properties\":{\"signalKind\":\"SignalDefinitionProperties\",\"provisioningState\":\"Creating\",\"displayName\":\"osfjbjsv\",\"refreshInterval\":\"PT2H\",\"tags\":{\"vyc\":\"r\",\"c\":\"t\"},\"dataUnit\":\"gc\",\"evaluationRules\":{\"degradedRule\":{\"operator\":\"GreaterThanOrEqual\",\"threshold\":15.224323939811635,\"sensitivity\":\"High\"},\"unhealthyRule\":{\"operator\":\"GreaterThan\",\"threshold\":72.00121421487124,\"sensitivity\":\"Medium\"}}},\"id\":\"dhttzaefedxihchr\",\"name\":\"hk\",\"type\":\"crjdqnsdfzpbgtg\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,26 +34,24 @@ public final class SignalDefinitionsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SignalDefinition response = manager.signalDefinitions()
-            .getWithResponse("l", "zqhof", "rmaequ", com.azure.core.util.Context.NONE)
+            .getWithResponse("aaeranokqgukk", "qnvb", "oylaxxul", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("cslfaoqzpiyylha", response.properties().displayName());
-        Assertions.assertEquals(RefreshInterval.PT5M, response.properties().refreshInterval());
-        Assertions.assertEquals("ccsphkaivwi", response.properties().labels().get("qscywu"));
-        Assertions.assertEquals("woluhczbwemhair", response.properties().dataUnit());
-        Assertions.assertEquals(DynamicThresholdModel.ANOMALY_DETECTION,
-            response.properties().evaluationRules().dynamicDetectionRule().dynamicThresholdModel());
-        Assertions.assertEquals(12.991988684461575,
-            response.properties().evaluationRules().dynamicDetectionRule().modelSensitivity());
-        Assertions.assertEquals(DynamicThresholdDirection.GREATER_THAN,
-            response.properties().evaluationRules().dynamicDetectionRule().dynamicThresholdDirection());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-14T04:59:44Z"),
-            response.properties().evaluationRules().dynamicDetectionRule().trainingStartTime());
-        Assertions.assertEquals(SignalOperator.GREATER_THAN,
+        Assertions.assertEquals("osfjbjsv", response.properties().displayName());
+        Assertions.assertEquals(RefreshInterval.PT2H, response.properties().refreshInterval());
+        Assertions.assertEquals("r", response.properties().tags().get("vyc"));
+        Assertions.assertEquals("gc", response.properties().dataUnit());
+        Assertions.assertEquals(SignalOperator.GREATER_THAN_OR_EQUAL,
             response.properties().evaluationRules().degradedRule().operator());
-        Assertions.assertEquals("eypqwdxggicccn", response.properties().evaluationRules().degradedRule().threshold());
-        Assertions.assertEquals(SignalOperator.EQUALS,
+        Assertions.assertEquals(15.224323939811635D,
+            response.properties().evaluationRules().degradedRule().threshold());
+        Assertions.assertEquals(DynamicThresholdSensitivity.HIGH,
+            response.properties().evaluationRules().degradedRule().sensitivity());
+        Assertions.assertEquals(SignalOperator.GREATER_THAN,
             response.properties().evaluationRules().unhealthyRule().operator());
-        Assertions.assertEquals("uexmkttlst", response.properties().evaluationRules().unhealthyRule().threshold());
+        Assertions.assertEquals(72.00121421487124D,
+            response.properties().evaluationRules().unhealthyRule().threshold());
+        Assertions.assertEquals(DynamicThresholdSensitivity.MEDIUM,
+            response.properties().evaluationRules().unhealthyRule().sensitivity());
     }
 }

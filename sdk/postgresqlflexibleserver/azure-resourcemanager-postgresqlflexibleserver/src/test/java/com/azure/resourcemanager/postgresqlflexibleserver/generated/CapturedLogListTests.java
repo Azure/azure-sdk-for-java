@@ -13,13 +13,13 @@ public final class CapturedLogListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CapturedLogList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"createdTime\":\"2021-03-01T05:25:04Z\",\"lastModifiedTime\":\"2021-10-29T18:48:32Z\",\"sizeInKb\":4563652354254093579,\"type\":\"ffwafq\",\"url\":\"udaspavehh\"},\"id\":\"kbunzoz\",\"name\":\"dhcxgkmoy\",\"type\":\"cdyuibhmfdnbzyd\"}],\"nextLink\":\"vfcjnaeoisrvhmg\"}")
+            "{\"value\":[{\"properties\":{\"createdTime\":\"2021-08-24T12:40:07Z\",\"lastModifiedTime\":\"2021-08-19T00:36:51Z\",\"sizeInKb\":9203453787772287319,\"type\":\"adpysownbt\",\"url\":\"bugrj\"},\"id\":\"to\",\"name\":\"cmisofie\",\"type\":\"pe\"},{\"properties\":{\"createdTime\":\"2021-02-12T18:50:03Z\",\"lastModifiedTime\":\"2021-10-13T19:25:10Z\",\"sizeInKb\":5514532339479201005,\"type\":\"lcplc\",\"url\":\"hihihlhzdsqtzbsr\"},\"id\":\"o\",\"name\":\"cjhfgmvecactxmw\",\"type\":\"teyowclu\"},{\"properties\":{\"createdTime\":\"2021-10-07T05:55:55Z\",\"lastModifiedTime\":\"2021-11-27T06:09:14Z\",\"sizeInKb\":3423889667509896717,\"type\":\"uwifzmpjwyiv\",\"url\":\"kfxcvhrfs\"},\"id\":\"uagrttikteusqc\",\"name\":\"kvyklxubyjaffmm\",\"type\":\"bl\"},{\"properties\":{\"createdTime\":\"2021-10-26T23:40:24Z\",\"lastModifiedTime\":\"2021-09-13T03:41:10Z\",\"sizeInKb\":832689998362601213,\"type\":\"rtalmet\",\"url\":\"wgdsl\"},\"id\":\"ihhrmo\",\"name\":\"i\",\"type\":\"qseypxiutcxa\"}],\"nextLink\":\"hyrpetogebjoxs\"}")
             .toObject(CapturedLogList.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-01T05:25:04Z"), model.value().get(0).createdTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-29T18:48:32Z"), model.value().get(0).lastModifiedTime());
-        Assertions.assertEquals(4563652354254093579L, model.value().get(0).sizeInKb());
-        Assertions.assertEquals("ffwafq", model.value().get(0).typePropertiesType());
-        Assertions.assertEquals("udaspavehh", model.value().get(0).url());
-        Assertions.assertEquals("vfcjnaeoisrvhmg", model.nextLink());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-24T12:40:07Z"), model.value().get(0).createdTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-19T00:36:51Z"), model.value().get(0).lastModifiedTime());
+        Assertions.assertEquals(9203453787772287319L, model.value().get(0).sizeInKb());
+        Assertions.assertEquals("adpysownbt", model.value().get(0).typePropertiesType());
+        Assertions.assertEquals("bugrj", model.value().get(0).url());
+        Assertions.assertEquals("hyrpetogebjoxs", model.nextLink());
     }
 }

@@ -16,6 +16,10 @@ import com.azure.cosmos.test.faultinjection.FaultInjectionRuleBuilder;
 import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorType;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.TestConfigurations;
+import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
+import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
+import com.azure.cosmos.implementation.routing.Range;
+import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.commons.lang3.ArrayUtils;
 import org.testng.annotations.Test;
@@ -24,6 +28,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 import java.util.function.BiConsumer;
@@ -36,7 +41,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class FITests_readManyByPartitionKeysAfterCreation
     extends FaultInjectionWithAvailabilityStrategyTestsBase {
 
-    @Test(groups = {"fi-multi-master"}, dataProvider = "testConfigs_readManyByPartitionKeysAfterCreation", retryAnalyzer = FlakyTestRetryAnalyzer.class)
+    @Test(groups = {"fi-multi-master"}, dataProvider = "testConfigs_readManyByPartitionKeysAfterCreation",
+        retryAnalyzer = SuperFlakyTestRetryAnalyzer.class)
     public void readManyByPartitionKeysAfterCreation(
         String testCaseId,
         Duration endToEndTimeout,
@@ -118,10 +124,22 @@ public class FITests_readManyByPartitionKeysAfterCreation
                 String uniqueTag = UUID.randomUUID().toString().substring(0, 8);
 
                 // Create items across 3 PKs, 3 items each = 9 items total
+                PartitionKeyDefinition partitionKeyDefinition =
+                    container.read().block().getProperties().getPartitionKeyDefinition();
+                List<FeedRange> feedRanges = getFeedRangesWithRetry(
+                    container,
+                    "get feed ranges for readManyByPartitionKeys fault injection setup");
+                assertThat(feedRanges).hasSizeGreaterThanOrEqualTo(2);
+                List<Range<String>> physicalRanges = feedRanges.stream()
+                    .map(feedRange -> ((FeedRangeEpkImpl) feedRange).getRange())
+                    .sorted(Comparator.comparing(Range::getMin))
+                    .collect(Collectors.toList());
+                Range<String> firstPhysicalRange = physicalRanges.get(0);
+                Range<String> lastPhysicalRange = physicalRanges.get(physicalRanges.size() - 1);
                 List<String> pkValues = Arrays.asList(
-                    "ctResumePk1_" + uniqueTag,
-                    "ctResumePk2_" + uniqueTag,
-                    "ctResumePk3_" + uniqueTag);
+                    findPartitionKeyInRange("ctResumePk1_" + uniqueTag, firstPhysicalRange, partitionKeyDefinition),
+                    findPartitionKeyInRange("ctResumePk2_" + uniqueTag, firstPhysicalRange, partitionKeyDefinition),
+                    findPartitionKeyInRange("ctResumePk3_" + uniqueTag, lastPhysicalRange, partitionKeyDefinition));
 
                 List<ObjectNode> allCreatedItems = new ArrayList<>();
                 for (String pk : pkValues) {
@@ -157,14 +175,11 @@ public class FITests_readManyByPartitionKeysAfterCreation
                 assertThat(baselineIds).hasSize(9);
                 assertThat(baselineIds).doesNotHaveDuplicates();
 
-                // Step 2: Get feed ranges and pick the LAST one to fault.
+                // Step 2: Target the physical range containing the greatest-EPK selected key.
                 // With batch size 1, readManyByPartitionKeys processes batches sorted by EPK.
-                // Faulting the last feed range ensures the first batches succeed (giving us
-                // pages with continuation tokens) before the faulted partition is reached.
-                List<FeedRange> feedRanges = container.getFeedRanges().block();
-                assertThat(feedRanges).isNotNull();
-                assertThat(feedRanges.size()).isGreaterThanOrEqualTo(1);
-                FeedRange faultedFeedRange = feedRanges.get(feedRanges.size() - 1);
+                // The two lower-EPK keys are in a different physical range, so they can succeed
+                // before the final range is faulted.
+                FeedRange faultedFeedRange = new FeedRangeEpkImpl(lastPhysicalRange);
 
                 // Step 3: Inject sustained SERVICE_UNAVAILABLE scoped to the last feed range
                 FaultInjectionRule partitionScopedRule = new FaultInjectionRuleBuilder(
@@ -200,6 +215,7 @@ public class FITests_readManyByPartitionKeysAfterCreation
                 CosmosReadManyByPartitionKeysRequestOptions faultOptions =
                     new CosmosReadManyByPartitionKeysRequestOptions();
                 faultOptions.setCosmosEndToEndOperationLatencyPolicyConfig(e2ePolicy);
+                faultOptions.setMaxConcurrentBatchPrefetch(1);
 
                 try {
                     // Use Flux iteration (toIterable) so we can capture per-page state
@@ -221,6 +237,9 @@ public class FITests_readManyByPartitionKeysAfterCreation
 
                 // Step 5: The fault injection MUST have caused an error — pages from the
                 // faulted partition cannot succeed with SERVICE_UNAVAILABLE on all replicas.
+                assertThat(partitionScopedRule.getHitCount())
+                    .as("Fault injection rule must target the selected logical partition")
+                    .isGreaterThan(0);
                 assertThat(errorOccurred)
                     .as("Fault injection on the last feed range must cause an error")
                     .isTrue();
@@ -282,6 +301,23 @@ public class FITests_readManyByPartitionKeysAfterCreation
                 System.clearProperty("COSMOS.READ_MANY_BY_PK_MAX_BATCH_SIZE");
             }
         }
+    }
+
+    private static String findPartitionKeyInRange(
+        String prefix,
+        Range<String> targetRange,
+        PartitionKeyDefinition partitionKeyDefinition) {
+
+        for (int attempt = 0; attempt < 10_000; attempt++) {
+            String candidate = prefix + "-" + attempt;
+            String effectivePartitionKey = PartitionKeyInternalHelper.getEffectivePartitionKeyString(
+                BridgeInternal.getPartitionKeyInternal(new PartitionKey(candidate)),
+                partitionKeyDefinition);
+            if (targetRange.contains(effectivePartitionKey)) {
+                return candidate;
+            }
+        }
+        throw new AssertionError("Could not generate a partition key in range " + targetRange);
     }
 
     // Helper to access testDatabaseId from base class
