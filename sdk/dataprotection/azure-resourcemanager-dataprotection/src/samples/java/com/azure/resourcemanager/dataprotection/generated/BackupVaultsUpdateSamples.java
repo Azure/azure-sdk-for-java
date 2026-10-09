@@ -30,7 +30,7 @@ import java.util.Map;
  */
 public final class BackupVaultsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-06-01/VaultCRUD/PatchBackupVault.json
+     * x-ms-original-file: 2026-07-01/VaultCRUD/PatchBackupVault.json
      */
     /**
      * Sample code: Patch BackupVault.
@@ -50,7 +50,7 @@ public final class BackupVaultsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-01/VaultCRUD/PatchBackupVaultWithCostManagementSettings.json
+     * x-ms-original-file: 2026-07-01/VaultCRUD/PatchBackupVaultWithCostManagementSettings.json
      */
     /**
      * Sample code: Patch BackupVault with Cost Management Settings.
@@ -70,7 +70,7 @@ public final class BackupVaultsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-01/VaultCRUD/PatchBackupVaultWithCMK.json
+     * x-ms-original-file: 2026-07-01/VaultCRUD/PatchBackupVaultWithCMK.json
      */
     /**
      * Sample code: Patch BackupVault with CMK.

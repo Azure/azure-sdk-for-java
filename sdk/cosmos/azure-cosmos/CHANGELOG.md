@@ -7,6 +7,7 @@
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fixed the Direct mode (RNTBD) encoding of the `x-ms-cosmos-workload-id` header, which was sent with the wrong token ID (`0x00DC`) and type (`Byte`) instead of `0x00E7` and `UShort`. - See [PR 50673](https://github.com/Azure/azure-sdk-for-java/pull/50673)
 
 #### Other Changes
 * Added a compact `ppaf` bookmark to each data-plane attempt in `CosmosDiagnostics`, containing the current per-partition write region, failed regions, and the time it was designated, or an empty object when no override is active.
