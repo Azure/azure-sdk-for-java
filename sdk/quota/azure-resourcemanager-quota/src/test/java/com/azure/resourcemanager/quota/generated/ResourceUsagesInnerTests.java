@@ -12,10 +12,10 @@ public final class ResourceUsagesInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceUsagesInner model = BinaryData.fromString(
-            "{\"properties\":{\"name\":{\"value\":\"bcypmi\",\"localizedValue\":\"w\"},\"limit\":3601600979584148316,\"usages\":906513872152816709,\"unit\":\"nfnbacfionlebxe\"},\"id\":\"gtzxdpn\",\"name\":\"bqqwxrj\",\"type\":\"eallnwsubisnj\"}")
+            "{\"properties\":{\"name\":{\"value\":\"qupedeojnab\",\"localizedValue\":\"hsmtxpsiebtfhvp\"},\"limit\":8197357733931810453,\"usages\":6828337730937778205,\"unit\":\"qmhjjdhtld\"},\"id\":\"yzxuutkncw\",\"name\":\"cwsvlxotog\",\"type\":\"wrupqsxvnmicykvc\"}")
             .toObject(ResourceUsagesInner.class);
-        Assertions.assertEquals(3601600979584148316L, model.properties().limit());
-        Assertions.assertEquals(906513872152816709L, model.properties().usages());
-        Assertions.assertEquals("bcypmi", model.properties().value());
+        Assertions.assertEquals(8197357733931810453L, model.properties().limit());
+        Assertions.assertEquals(6828337730937778205L, model.properties().usages());
+        Assertions.assertEquals("qupedeojnab", model.properties().value());
     }
 }

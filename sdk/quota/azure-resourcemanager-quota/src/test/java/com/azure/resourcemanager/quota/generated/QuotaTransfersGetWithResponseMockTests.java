@@ -21,7 +21,7 @@ public final class QuotaTransfersGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"transferStatus\":\"Pending\",\"transferId\":\"ssofwqmzqa\",\"displayName\":\"krmnjijpxacqqud\",\"comment\":\"byxbaaabjy\",\"destinationSubscriptionId\":\"ayffim\",\"destinationTenantId\":\"rtuzqogs\",\"billingAccountId\":\"xnevfdnwn\",\"resourceName\":\"mewzsyyc\",\"amount\":4687942406282696717,\"autoApprove\":true,\"createdAt\":\"2021-09-08T21:11:14Z\",\"expiresAt\":\"2021-09-06T23:25:45Z\",\"createdBy\":\"pfrxtrthzvay\",\"approval\":{\"comment\":\"kqb\",\"actor\":\"qu\",\"occurredAt\":\"2021-08-22T14:33:21Z\"},\"cancellation\":{\"reason\":\"h\",\"actor\":\"xiilivpdtiirqt\",\"occurredAt\":\"2021-05-27T12:16:15Z\"}},\"etag\":\"axoruzfgsquy\",\"id\":\"rxxle\",\"name\":\"tramxjez\",\"type\":\"lwnwxuqlcvydyp\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"transferStatus\":\"Completed\",\"transferId\":\"mslyzrpzbchckqqz\",\"displayName\":\"ioxiysuiizyn\",\"comment\":\"dy\",\"destinationSubscriptionId\":\"trwyhqmib\",\"destinationTenantId\":\"hwit\",\"billingAccountId\":\"ypyynpcdpumnzg\",\"resourceName\":\"wznm\",\"amount\":6753075814486696287,\"autoApprove\":true,\"createdAt\":\"2021-01-03T11:48:42Z\",\"expiresAt\":\"2021-07-29T00:05:15Z\",\"createdBy\":\"hxbld\",\"approval\":{\"comment\":\"wrlkdmtn\",\"actor\":\"vokotllxdyh\",\"occurredAt\":\"2021-07-08T09:31:36Z\"},\"cancellation\":{\"reason\":\"cogjltdtbn\",\"actor\":\"hadoocrk\",\"occurredAt\":\"2020-12-23T13:08:39Z\"}},\"etag\":\"khnvpam\",\"id\":\"x\",\"name\":\"queziky\",\"type\":\"ggxkallatmelwuip\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,15 +31,14 @@ public final class QuotaTransfersGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         QuotaTransfer response = manager.quotaTransfers()
-            .getWithResponse("duhpk", "kgymareqnajxqug", "hky", com.azure.core.util.Context.NONE)
+            .getWithResponse("n", "synljphuopxodl", "iyntorzihle", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("krmnjijpxacqqud", response.properties().displayName());
-        Assertions.assertEquals("byxbaaabjy", response.properties().comment());
-        Assertions.assertEquals("ayffim", response.properties().destinationSubscriptionId());
-        Assertions.assertEquals("xnevfdnwn", response.properties().billingAccountId());
-        Assertions.assertEquals("mewzsyyc", response.properties().resourceName());
-        Assertions.assertEquals(4687942406282696717L, response.properties().amount());
+        Assertions.assertEquals("ioxiysuiizyn", response.properties().displayName());
+        Assertions.assertEquals("dy", response.properties().comment());
+        Assertions.assertEquals("trwyhqmib", response.properties().destinationSubscriptionId());
+        Assertions.assertEquals("wznm", response.properties().resourceName());
+        Assertions.assertEquals(6753075814486696287L, response.properties().amount());
         Assertions.assertTrue(response.properties().autoApprove());
     }
 }

@@ -11,16 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class IncomingQuotaTransferApproveRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IncomingQuotaTransferApproveRequest model = BinaryData.fromString("{\"comment\":\"vjsllrmvvdfw\"}")
-            .toObject(IncomingQuotaTransferApproveRequest.class);
-        Assertions.assertEquals("vjsllrmvvdfw", model.comment());
+        IncomingQuotaTransferApproveRequest model
+            = BinaryData.fromString("{\"comment\":\"umasxazjpq\"}").toObject(IncomingQuotaTransferApproveRequest.class);
+        Assertions.assertEquals("umasxazjpq", model.comment());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IncomingQuotaTransferApproveRequest model
-            = new IncomingQuotaTransferApproveRequest().withComment("vjsllrmvvdfw");
+        IncomingQuotaTransferApproveRequest model = new IncomingQuotaTransferApproveRequest().withComment("umasxazjpq");
         model = BinaryData.fromObject(model).toObject(IncomingQuotaTransferApproveRequest.class);
-        Assertions.assertEquals("vjsllrmvvdfw", model.comment());
+        Assertions.assertEquals("umasxazjpq", model.comment());
     }
 }

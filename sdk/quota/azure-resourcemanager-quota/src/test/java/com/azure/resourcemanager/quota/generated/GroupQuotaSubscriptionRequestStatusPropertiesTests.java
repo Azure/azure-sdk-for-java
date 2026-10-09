@@ -13,9 +13,9 @@ public final class GroupQuotaSubscriptionRequestStatusPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GroupQuotaSubscriptionRequestStatusProperties model = BinaryData.fromString(
-            "{\"subscriptionId\":\"cj\",\"requestSubmitTime\":\"2021-07-14T11:13:08Z\",\"provisioningState\":\"Succeeded\"}")
+            "{\"subscriptionId\":\"spkdee\",\"requestSubmitTime\":\"2021-08-19T13:55:08Z\",\"provisioningState\":\"Accepted\"}")
             .toObject(GroupQuotaSubscriptionRequestStatusProperties.class);
-        Assertions.assertEquals("cj", model.subscriptionId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-14T11:13:08Z"), model.requestSubmitTime());
+        Assertions.assertEquals("spkdee", model.subscriptionId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-19T13:55:08Z"), model.requestSubmitTime());
     }
 }
