@@ -1,24 +1,13 @@
 # Release History
 
-## 2.54.0-beta.1 (Unreleased)
-
-### Features Added
-
-- Supported enabling/disabling authentication through access keys for `RedisCache`.
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
 ## 2.53.11 (2026-10-06)
 
 ### Other Changes
 
 #### Dependency Updates
 
-- Upgraded `azure-resourcemanager-resources` from `2.54.3` to version `2.54.4`.
+- Upgraded `azure-resourcemanager-resources` from `2.54.2` to version `2.54.4`.
+
 
 ## 2.53.10 (2026-08-18)
 
@@ -26,7 +15,8 @@
 
 #### Dependency Updates
 
-- Upgraded `azure-resourcemanager-resources` from `2.54.2` to version `2.54.3`.
+- Upgraded `azure-resourcemanager-resources` from `2.54.1` to version `2.54.3`.
+
 
 ## 2.53.9 (2026-07-01)
 
@@ -34,7 +24,7 @@
 
 #### Dependency Updates
 
-- Upgraded `azure-resourcemanager-resources` from `2.54.1` to version `2.54.2`.
+- Upgraded `azure-resourcemanager-resources` from `2.54.0` to version `2.54.2`.
 
 
 ## 2.53.8 (2026-05-05)
@@ -44,6 +34,7 @@
 #### Dependency Updates
 
 - Upgraded `azure-resourcemanager-resources` from `2.54.0` to version `2.54.1`.
+
 
 ## 2.53.7 (2026-03-30)
 
@@ -62,13 +53,15 @@
 
 - Upgraded core dependencies.
 
+
 ## 2.53.5 (2025-11-24)
 
 ### Other Changes
 
 #### Dependency Updates
 
-- Updated core dependency from resources.
+- Upgraded `azure-resourcemanager-resources` from `2.53.3` to version `2.53.5`.
+
 
 ## 2.53.4 (2025-10-27)
 
@@ -76,7 +69,8 @@
 
 #### Dependency Updates
 
-- Updated core dependency from resources.
+- Upgraded `azure-resourcemanager-resources` from `2.53.2` to version `2.53.3`.
+
 
 ## 2.53.3 (2025-09-24)
 
