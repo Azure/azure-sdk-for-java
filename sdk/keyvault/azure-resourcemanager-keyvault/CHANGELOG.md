@@ -1,14 +1,31 @@
 # Release History
 
-## 2.56.0-beta.1 (Unreleased)
+## 2.56.0 (2026-10-09)
 
-### Features Added
+- Package api-version 2026-05-15.
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.ManagedHsmSkuName` was modified
 
-### Other Changes
+* `toString()` was removed
+* `models.ManagedHsmSkuName[] values()` -> `java.util.Collection values()`
+* `valueOf(java.lang.String)` was removed
+
+### Features Added
+
+#### `models.JsonWebKeyType` was modified
+
+* `OCT_HSM` was added
+
+#### `models.ManagedHsmSkuName` was modified
+
+* `ManagedHsmSkuName()` was added
+* `STANDARD_B5V2` was added
+* `STANDARD_B10V2` was added
+* `STANDARD_B20V2` was added
+* `STANDARD_B1V2` was added
+* `STANDARD_B15V2` was added
 
 ## 2.55.6 (2026-10-09)
 
