@@ -21,7 +21,7 @@ public final class ShareFileItem {
     private final String permissionKey;
     private final Long fileSize;
     private final Long linkCount;
-    private final NfsFileType fileType;
+    private final FileType fileType;
     private final String linkText;
     private final Long deviceMajor;
     private final Long deviceMinor;
@@ -59,7 +59,7 @@ public final class ShareFileItem {
 
     private ShareFileItem(String name, boolean isDirectory, String id, ShareFileItemProperties properties,
         EnumSet<NtfsFileAttributes> fileAttributes, String permissionKey, Long fileSize, Long linkCount,
-        NfsFileType fileType, String linkText, Long deviceMajor, Long deviceMinor) {
+        FileType fileType, String linkText, Long deviceMajor, Long deviceMinor) {
         this.name = name;
         this.isDirectory = isDirectory;
         this.id = id;
@@ -150,7 +150,7 @@ public final class ShareFileItem {
     }
 
     /**
-     * Gets the file type for this item.
+     * Gets the file type for this item, derived from its entry type in the listing response.
      * In SMB shares, this field is populated for files and directories.
      * In NFS-enabled shares, this field is populated for files, directories, symbolic links, block devices,
      * character devices, FIFOs, and sockets.
@@ -158,7 +158,7 @@ public final class ShareFileItem {
      *
      * @return The file type for this item.
      */
-    public NfsFileType getFileType() {
+    public FileType getFileType() {
         return fileType;
     }
 
