@@ -14,8 +14,8 @@ public class DeleteAnalyzeResult {
             = new DocumentIntelligenceClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint("https://myendpoint.cognitiveservices.azure.com")
                 .buildClient();
-        // BEGIN:com.azure.ai.documentintelligence.generated.delete-analyze-result.delete-analyze-result
+        // BEGIN:com.azure.ai.documentintelligence.generated.deleteanalyzeresult.deleteanalyzeresult
         documentIntelligenceClient.deleteAnalyzeResult("myCustomModel", "3b31320d-8bab-4f88-b19c-2322a7f11034");
-        // END:com.azure.ai.documentintelligence.generated.delete-analyze-result.delete-analyze-result
+        // END:com.azure.ai.documentintelligence.generated.deleteanalyzeresult.deleteanalyzeresult
     }
 }
