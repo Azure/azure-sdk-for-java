@@ -213,7 +213,7 @@ def find_release_gate_blockers(
     for library in libraries:
         changelog, _ = read_text(library.changelog_path)
         first_release = parse_releases(changelog, str(library.changelog_path))[0]
-        if first_release.release_date is not None:
+        if first_release.release_date is not None and not first_release.prerelease:
             blockers.append(
                 {
                     "artifact_id": library.artifact_id,

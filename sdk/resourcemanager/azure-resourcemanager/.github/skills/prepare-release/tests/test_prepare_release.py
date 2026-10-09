@@ -103,6 +103,45 @@ class PrepareReleaseTests(unittest.TestCase):
         )
         self.assertTrue(all(blocker["date"] == "2026-08-01" for blocker in blockers))
 
+    def test_prerelease_first_section_does_not_block(self):
+        library = self.library(
+            "azure-resourcemanager-alpha", "7.0.0", "package-dated-head.md"
+        )
+        for version in ("7.1.0-beta.1", "7.1.0-preview.1"):
+            for date_text in ("Unreleased", "2026-08-01"):
+                with self.subTest(version=version, date=date_text):
+                    self.write(
+                        library.changelog_path.relative_to(self.repo_root),
+                        f"## {version} ({date_text})\n\n"
+                        "### Features Added\n\n- Preview feature.\n\n"
+                        + self.fixture("package-dated-head.md"),
+                    )
+
+                    self.assertEqual(
+                        [], prepare_release.find_release_gate_blockers([library])
+                    )
+
+    def test_prerelease_head_does_not_hide_stable_blockers(self):
+        stable = self.library(
+            "azure-resourcemanager-alpha", "7.0.0", "package-dated-head.md"
+        )
+        prerelease = self.library(
+            "azure-resourcemanager-beta", "7.0.0", "package-dated-head.md"
+        )
+        self.write(
+            prerelease.changelog_path.relative_to(self.repo_root),
+            "## 7.1.0-beta.1 (2026-08-02)\n\n"
+            "### Features Added\n\n- Preview feature.\n\n"
+            + self.fixture("package-dated-head.md"),
+        )
+
+        blockers = prepare_release.find_release_gate_blockers([prerelease, stable])
+
+        self.assertEqual(
+            ["azure-resourcemanager-alpha"],
+            [blocker["artifact_id"] for blocker in blockers],
+        )
+
     def test_version_defaults_and_explicit_values(self):
         version_file = self.write(
             "eng/versioning/version_client.txt",
@@ -315,8 +354,16 @@ class PrepareReleaseTests(unittest.TestCase):
         )
 
     @patch.object(prepare_release, "datetime")
-    def test_release_writes_current_date_and_all_breaking_changes(self, clock):
+    def test_release_allows_dated_beta_and_keeps_stable_breaking_changes(self, clock):
         self.write_release_fixture_repo()
+        self.write(
+            "sdk/beta/azure-resourcemanager-beta/CHANGELOG.md",
+            "## 3.4.0-beta.2 (2026-07-19)\n\n"
+            "### Features Added\n\n- Beta-only feature.\n\n"
+            "### Breaking Changes\n\n- Beta-only breaking change.\n\n"
+            "### Other Changes\n\n- Package api-version 2026-12-01.\n\n"
+            + self.fixture("package-multiple-minors.md"),
+        )
         clock.now.return_value = datetime(2026, 7, 20, tzinfo=timezone.utc)
         changelog_relative = (
             "sdk/resourcemanager/azure-resourcemanager/CHANGELOG.md"
@@ -343,6 +390,8 @@ class PrepareReleaseTests(unittest.TestCase):
         self.assertIn("- Latest breaking prose.", changelog)
         self.assertNotIn("Before-cutoff breaking prose.", changelog)
         self.assertNotIn("Patch-only prose", changelog)
+        self.assertNotIn("Beta-only", changelog)
+        self.assertNotIn("2026-12-01", changelog)
 
         rerun, exit_code = prepare_release.prepare_release(
             self.repo_root, dry_run=True

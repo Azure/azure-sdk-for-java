@@ -39,7 +39,9 @@ rewrite, or supplement its changelog choices.
 
 1. Discover bundled premium management libraries from the aggregate `pom.xml`.
 2. Stop before editing and report every bundled library whose first CHANGELOG
-   release heading has a concrete date rather than `Unreleased`.
+   release heading is stable/GA and has a concrete date rather than `Unreleased`.
+   A beta/prerelease first heading does not block preparation, whether dated
+   or `Unreleased`. Prerelease changelog prose remains excluded from selection.
 3. Read the previous aggregate stable release and cutoff date from the
    aggregate CHANGELOG.
 4. Ignore patch-only release prose. For a patch dependency, use the nearest
