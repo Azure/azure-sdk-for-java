@@ -233,7 +233,7 @@ public final class AutoRefreshingCache<CachedValue> {
     }
 
     private boolean isValueMissingOrExpired(OffsetDateTime now) {
-        return cachedValueEntry == null || now.isAfter(cachedValueEntry.expiration);
+        return cachedValueEntry == null || !now.isBefore(cachedValueEntry.expiration);
     }
 
     private boolean isRetryBackoffActive(OffsetDateTime now) {
