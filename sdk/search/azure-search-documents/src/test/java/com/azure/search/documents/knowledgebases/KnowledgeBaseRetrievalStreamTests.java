@@ -4,6 +4,7 @@
 package com.azure.search.documents.knowledgebases;
 
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.test.http.MockHttpResponse;
@@ -52,7 +53,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
@@ -503,35 +503,31 @@ public class KnowledgeBaseRetrievalStreamTests {
 
     @ParameterizedTest
     @ValueSource(booleans = { false, true })
-    public void syncClientAcceptsNoContentAndReleasesResponse(boolean authorization) throws IOException {
-        AtomicInteger closes = new AtomicInteger();
-        AtomicInteger reads = new AtomicInteger();
-        KnowledgeBaseRetrievalClient client = noContentBuilder(authorization, closes, reads).buildClient();
-        try (CloseableIterableStream<KnowledgeBaseRetrievalStreamEvent> stream = authorization
-            ? client.retrieveStream(new KnowledgeBaseRetrievalOptions(), QUERY_SOURCE_TOKEN)
-            : client.retrieveStream(new KnowledgeBaseRetrievalOptions())) {
-            assertFalse(stream.iterator().hasNext());
-            assertEquals(1, closes.get());
-            assertEquals(0, reads.get());
-        }
-        assertEquals(1, closes.get());
+    public void syncClientRejectsUnexpectedNoContentResponse(boolean authorization) {
+        KnowledgeBaseRetrievalClient client = noContentBuilder(authorization).buildClient();
+        HttpResponseException exception = assertThrows(HttpResponseException.class, () -> {
+            if (authorization) {
+                client.retrieveStream(new KnowledgeBaseRetrievalOptions(), QUERY_SOURCE_TOKEN);
+            } else {
+                client.retrieveStream(new KnowledgeBaseRetrievalOptions());
+            }
+        });
+        assertEquals(204, exception.getResponse().getStatusCode());
     }
 
     @ParameterizedTest
     @ValueSource(booleans = { false, true })
-    public void asyncClientAcceptsNoContentAndReleasesResponse(boolean authorization) {
-        AtomicInteger closes = new AtomicInteger();
-        AtomicInteger reads = new AtomicInteger();
-        KnowledgeBaseRetrievalAsyncClient client = noContentBuilder(authorization, closes, reads).buildAsyncClient();
+    public void asyncClientRejectsUnexpectedNoContentResponse(boolean authorization) {
+        KnowledgeBaseRetrievalAsyncClient client = noContentBuilder(authorization).buildAsyncClient();
         StepVerifier.create(authorization
             ? client.retrieveStream(new KnowledgeBaseRetrievalOptions(), QUERY_SOURCE_TOKEN)
-            : client.retrieveStream(new KnowledgeBaseRetrievalOptions())).verifyComplete();
-        assertEquals(1, closes.get());
-        assertEquals(0, reads.get());
+            : client.retrieveStream(new KnowledgeBaseRetrievalOptions())).verifyErrorSatisfies(throwable -> {
+                HttpResponseException exception = assertInstanceOf(HttpResponseException.class, throwable);
+                assertEquals(204, exception.getResponse().getStatusCode());
+            });
     }
 
-    private static KnowledgeBaseRetrievalClientBuilder noContentBuilder(boolean authorization, AtomicInteger closes,
-        AtomicInteger reads) {
+    private static KnowledgeBaseRetrievalClientBuilder noContentBuilder(boolean authorization) {
         return new KnowledgeBaseRetrievalClientBuilder().endpoint("https://example.search.windows.net")
             .knowledgeBaseName("kb")
             .credential(new AzureKeyCredential("key"))
@@ -539,23 +535,7 @@ public class KnowledgeBaseRetrievalStreamTests {
                 assertEquals(authorization ? QUERY_SOURCE_TOKEN : null,
                     request.getHeaders().getValue(QUERY_SOURCE_AUTHORIZATION));
                 assertNull(request.getHeaders().getValue(QUERY_WORK_IQ_SOURCE_AUTHORIZATION));
-                return Mono.just(new MockHttpResponse(request, 204) {
-                    private final AtomicBoolean closed = new AtomicBoolean();
-
-                    @Override
-                    public Flux<ByteBuffer> getBody() {
-                        return Flux.<ByteBuffer>empty()
-                            .doOnNext(ignored -> reads.incrementAndGet())
-                            .doFinally(ignored -> close());
-                    }
-
-                    @Override
-                    public void close() {
-                        if (closed.compareAndSet(false, true)) {
-                            closes.incrementAndGet();
-                        }
-                    }
-                });
+                return Mono.just(new MockHttpResponse(request, 204));
             });
     }
 

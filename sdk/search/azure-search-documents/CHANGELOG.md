@@ -42,7 +42,6 @@ The following changes apply when upgrading from the preceding `12.1.0` beta rele
   demand pauses.
 - Fixed synchronous retrieval streaming to deliver terminal events before reporting response cleanup failures on the
   next iterator access or explicit close.
-- Fixed retrieval streaming clients to accept HTTP 204 responses as empty streams.
 
 ### Other Changes
 
