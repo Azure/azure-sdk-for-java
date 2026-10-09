@@ -12,7 +12,7 @@ import java.util.Collection;
  */
 public final class VMPresent extends ExpandableStringEnum<VMPresent> {
     /**
-     * Atleast one VM Present.
+     * At least one VM is present.
      */
     public static final VMPresent PRESENT = fromString("Present");
 
