@@ -300,6 +300,31 @@ public class ContainerSessionProviderCacheTest {
     }
 
     @Test
+    public void recentlyAccessedCacheSurvivesEvictionSweep() {
+        enqueueSessionResponse(CONTAINER_A, FIRST_TOKEN, now().plusMinutes(20));
+
+        assertEquals(FIRST_TOKEN, provider.getSession(contextFor(CONTAINER_A)).getSessionToken());
+        clock.advance(Duration.ofMinutes(1));
+
+        assertEquals(FIRST_TOKEN, provider.getSession(contextFor(CONTAINER_A)).getSessionToken());
+        assertEquals(1, httpClient.getRequestCount(CONTAINER_A));
+    }
+
+    @Test
+    public void idleCacheIsEvictedAfterOneMinute() {
+        enqueueSessionResponse(CONTAINER_A, FIRST_TOKEN, now().plusMinutes(20));
+        enqueueSessionResponse(CONTAINER_A, SECOND_TOKEN, now().plusMinutes(20));
+        enqueueSessionResponse(CONTAINER_B, "container-b-token", now().plusMinutes(20));
+
+        assertEquals(FIRST_TOKEN, provider.getSession(contextFor(CONTAINER_A)).getSessionToken());
+        clock.advance(Duration.ofMinutes(1));
+
+        assertEquals("container-b-token", provider.getSession(contextFor(CONTAINER_B)).getSessionToken());
+        assertEquals(SECOND_TOKEN, provider.getSession(contextFor(CONTAINER_A)).getSessionToken());
+        assertEquals(2, httpClient.getRequestCount(CONTAINER_A));
+    }
+
+    @Test
     public void absentExpirationUsesProviderClock() {
         enqueueSessionResponse(CONTAINER_A, FIRST_TOKEN, null);
 

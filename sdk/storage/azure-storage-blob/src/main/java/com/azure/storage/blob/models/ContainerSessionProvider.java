@@ -73,7 +73,7 @@ import static com.azure.storage.common.implementation.Constants.HeaderConstants.
  */
 public final class ContainerSessionProvider extends SessionProvider {
 
-    static final int IDLE_EVICTION_THRESHOLD_MINUTES = 5;
+    static final int IDLE_EVICTION_THRESHOLD_MINUTES = 1;
 
     private static final ClientLogger LOGGER = new ClientLogger(ContainerSessionProvider.class);
     private static final Duration IDLE_EVICTION_THRESHOLD = Duration.ofMinutes(IDLE_EVICTION_THRESHOLD_MINUTES);
@@ -213,8 +213,8 @@ public final class ContainerSessionProvider extends SessionProvider {
 
     private ContainerSessionCache updateCache(String containerName, String resolvedAccountName) {
         String key = normalize(resolvedAccountName) + "/" + normalize(containerName);
-        OffsetDateTime now = OffsetDateTime.now(clock);
         ContainerSessionCache containerSessionCache = containerSessionCaches.compute(key, (k, existing) -> {
+            OffsetDateTime now = OffsetDateTime.now(clock);
             if (existing == null) {
                 return new ContainerSessionCache(this, clock, containerName, resolvedAccountName, now);
             }
@@ -226,12 +226,20 @@ public final class ContainerSessionProvider extends SessionProvider {
     }
 
     private void evictStaleCaches() {
+        containerSessionCaches.keySet().forEach(this::evictStaleCache);
+    }
+
+    private void evictStaleCache(String key) {
+        containerSessionCaches.computeIfPresent(key, this::retainIfActive);
+    }
+
+    private ContainerSessionCache retainIfActive(String ignored, ContainerSessionCache cache) {
         OffsetDateTime now = OffsetDateTime.now(clock);
-        containerSessionCaches.forEach((key, cache) -> {
-            if (Duration.between(cache.lastAccess, now).compareTo(IDLE_EVICTION_THRESHOLD) >= 0) {
-                containerSessionCaches.remove(key, cache);
-            }
-        });
+        Duration idleTime = Duration.between(cache.lastAccess, now);
+        if (idleTime.compareTo(IDLE_EVICTION_THRESHOLD) >= 0) {
+            return null;
+        }
+        return cache;
     }
 
     private Mono<SessionCredential> createSessionAsync(String container, String resolvedAccountName) {
