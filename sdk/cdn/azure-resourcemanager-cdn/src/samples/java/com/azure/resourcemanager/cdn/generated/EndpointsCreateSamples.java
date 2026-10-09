@@ -36,7 +36,7 @@ import java.util.Map;
  */
 public final class EndpointsCreateSamples {
     /*
-     * x-ms-original-file: 2025-09-01-preview/Endpoints_Create.json
+     * x-ms-original-file: 2026-07-01/Endpoints_Create.json
      */
     /**
      * Sample code: Endpoints_Create.

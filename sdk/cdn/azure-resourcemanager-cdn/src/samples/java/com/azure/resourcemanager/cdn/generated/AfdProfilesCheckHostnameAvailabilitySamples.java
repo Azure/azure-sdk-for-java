@@ -11,7 +11,7 @@ import com.azure.resourcemanager.cdn.models.CheckHostnameAvailabilityInput;
  */
 public final class AfdProfilesCheckHostnameAvailabilitySamples {
     /*
-     * x-ms-original-file: 2025-09-01-preview/AFDProfiles_CheckHostNameAvailability.json
+     * x-ms-original-file: 2026-07-01/AFDProfiles_CheckHostNameAvailability.json
      */
     /**
      * Sample code: AFDProfiles_CheckHostNameAvailability.

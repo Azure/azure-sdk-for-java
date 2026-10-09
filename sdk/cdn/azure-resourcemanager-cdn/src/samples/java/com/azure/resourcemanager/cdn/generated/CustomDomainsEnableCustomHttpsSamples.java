@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cdn.generated;
  */
 public final class CustomDomainsEnableCustomHttpsSamples {
     /*
-     * x-ms-original-file: 2025-09-01-preview/CustomDomains_EnableCustomHttpsUsingCDNManagedCertificate.json
+     * x-ms-original-file: 2026-07-01/CustomDomains_EnableCustomHttpsUsingCDNManagedCertificate.json
      */
     /**
      * Sample code: CustomDomains_EnableCustomHttpsUsingCDNManagedCertificate.
@@ -25,7 +25,7 @@ public final class CustomDomainsEnableCustomHttpsSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01-preview/CustomDomains_EnableCustomHttpsUsingBYOC.json
+     * x-ms-original-file: 2026-07-01/CustomDomains_EnableCustomHttpsUsingBYOC.json
      */
     /**
      * Sample code: CustomDomains_EnableCustomHttpsUsingYourOwnCertificate.

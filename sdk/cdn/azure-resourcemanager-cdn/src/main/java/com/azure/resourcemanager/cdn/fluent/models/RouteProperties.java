@@ -13,7 +13,6 @@ import com.azure.resourcemanager.cdn.models.ActivatedResourceReference;
 import com.azure.resourcemanager.cdn.models.AfdEndpointProtocols;
 import com.azure.resourcemanager.cdn.models.AfdProvisioningState;
 import com.azure.resourcemanager.cdn.models.AfdRouteCacheConfiguration;
-import com.azure.resourcemanager.cdn.models.AfdRouteGrpcState;
 import com.azure.resourcemanager.cdn.models.DeploymentStatus;
 import com.azure.resourcemanager.cdn.models.EnabledState;
 import com.azure.resourcemanager.cdn.models.ForwardingProtocol;
@@ -89,11 +88,6 @@ public final class RouteProperties implements JsonSerializable<RouteProperties> 
      * Whether to enable use of this rule. Permitted values are 'Enabled' or 'Disabled'
      */
     private EnabledState enabledState;
-
-    /*
-     * Whether or not gRPC is enabled on this route. Permitted values are 'Enabled' or 'Disabled'
-     */
-    private AfdRouteGrpcState grpcState;
 
     /*
      * Provisioning status
@@ -347,28 +341,6 @@ public final class RouteProperties implements JsonSerializable<RouteProperties> 
     }
 
     /**
-     * Get the grpcState property: Whether or not gRPC is enabled on this route. Permitted values are 'Enabled' or
-     * 'Disabled'.
-     * 
-     * @return the grpcState value.
-     */
-    public AfdRouteGrpcState grpcState() {
-        return this.grpcState;
-    }
-
-    /**
-     * Set the grpcState property: Whether or not gRPC is enabled on this route. Permitted values are 'Enabled' or
-     * 'Disabled'.
-     * 
-     * @param grpcState the grpcState value to set.
-     * @return the RouteProperties object itself.
-     */
-    public RouteProperties withGrpcState(AfdRouteGrpcState grpcState) {
-        this.grpcState = grpcState;
-        return this;
-    }
-
-    /**
      * Get the provisioningState property: Provisioning status.
      * 
      * @return the provisioningState value.
@@ -427,7 +399,6 @@ public final class RouteProperties implements JsonSerializable<RouteProperties> 
             this.linkToDefaultDomain == null ? null : this.linkToDefaultDomain.toString());
         jsonWriter.writeStringField("httpsRedirect", this.httpsRedirect == null ? null : this.httpsRedirect.toString());
         jsonWriter.writeStringField("enabledState", this.enabledState == null ? null : this.enabledState.toString());
-        jsonWriter.writeStringField("grpcState", this.grpcState == null ? null : this.grpcState.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -477,8 +448,6 @@ public final class RouteProperties implements JsonSerializable<RouteProperties> 
                     deserializedRouteProperties.httpsRedirect = HttpsRedirect.fromString(reader.getString());
                 } else if ("enabledState".equals(fieldName)) {
                     deserializedRouteProperties.enabledState = EnabledState.fromString(reader.getString());
-                } else if ("grpcState".equals(fieldName)) {
-                    deserializedRouteProperties.grpcState = AfdRouteGrpcState.fromString(reader.getString());
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedRouteProperties.provisioningState = AfdProvisioningState.fromString(reader.getString());
                 } else if ("deploymentStatus".equals(fieldName)) {

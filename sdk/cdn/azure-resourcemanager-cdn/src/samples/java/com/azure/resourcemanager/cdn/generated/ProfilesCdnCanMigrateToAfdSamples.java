@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cdn.generated;
  */
 public final class ProfilesCdnCanMigrateToAfdSamples {
     /*
-     * x-ms-original-file: 2025-09-01-preview/CdnProfiles_CanMigrate.json
+     * x-ms-original-file: 2026-07-01/CdnProfiles_CanMigrate.json
      */
     /**
      * Sample code: Profiles_CdnCanMigrate.

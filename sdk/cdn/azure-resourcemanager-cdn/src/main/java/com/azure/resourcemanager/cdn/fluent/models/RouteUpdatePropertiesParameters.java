@@ -12,7 +12,6 @@ import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cdn.models.ActivatedResourceReference;
 import com.azure.resourcemanager.cdn.models.AfdEndpointProtocols;
 import com.azure.resourcemanager.cdn.models.AfdRouteCacheConfiguration;
-import com.azure.resourcemanager.cdn.models.AfdRouteGrpcState;
 import com.azure.resourcemanager.cdn.models.EnabledState;
 import com.azure.resourcemanager.cdn.models.ForwardingProtocol;
 import com.azure.resourcemanager.cdn.models.HttpsRedirect;
@@ -87,11 +86,6 @@ public final class RouteUpdatePropertiesParameters implements JsonSerializable<R
      * Whether to enable use of this rule. Permitted values are 'Enabled' or 'Disabled'
      */
     private EnabledState enabledState;
-
-    /*
-     * Whether or not gRPC is enabled on this route. Permitted values are 'Enabled' or 'Disabled'
-     */
-    private AfdRouteGrpcState grpcState;
 
     /**
      * Creates an instance of RouteUpdatePropertiesParameters class.
@@ -335,28 +329,6 @@ public final class RouteUpdatePropertiesParameters implements JsonSerializable<R
     }
 
     /**
-     * Get the grpcState property: Whether or not gRPC is enabled on this route. Permitted values are 'Enabled' or
-     * 'Disabled'.
-     * 
-     * @return the grpcState value.
-     */
-    public AfdRouteGrpcState grpcState() {
-        return this.grpcState;
-    }
-
-    /**
-     * Set the grpcState property: Whether or not gRPC is enabled on this route. Permitted values are 'Enabled' or
-     * 'Disabled'.
-     * 
-     * @param grpcState the grpcState value to set.
-     * @return the RouteUpdatePropertiesParameters object itself.
-     */
-    public RouteUpdatePropertiesParameters withGrpcState(AfdRouteGrpcState grpcState) {
-        this.grpcState = grpcState;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -397,7 +369,6 @@ public final class RouteUpdatePropertiesParameters implements JsonSerializable<R
             this.linkToDefaultDomain == null ? null : this.linkToDefaultDomain.toString());
         jsonWriter.writeStringField("httpsRedirect", this.httpsRedirect == null ? null : this.httpsRedirect.toString());
         jsonWriter.writeStringField("enabledState", this.enabledState == null ? null : this.enabledState.toString());
-        jsonWriter.writeStringField("grpcState", this.grpcState == null ? null : this.grpcState.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -452,9 +423,6 @@ public final class RouteUpdatePropertiesParameters implements JsonSerializable<R
                 } else if ("enabledState".equals(fieldName)) {
                     deserializedRouteUpdatePropertiesParameters.enabledState
                         = EnabledState.fromString(reader.getString());
-                } else if ("grpcState".equals(fieldName)) {
-                    deserializedRouteUpdatePropertiesParameters.grpcState
-                        = AfdRouteGrpcState.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

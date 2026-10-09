@@ -16,7 +16,7 @@ import java.util.Arrays;
  */
 public final class OriginGroupsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-01-preview/OriginGroups_Update.json
+     * x-ms-original-file: 2026-07-01/OriginGroups_Update.json
      */
     /**
      * Sample code: OriginGroups_Update.

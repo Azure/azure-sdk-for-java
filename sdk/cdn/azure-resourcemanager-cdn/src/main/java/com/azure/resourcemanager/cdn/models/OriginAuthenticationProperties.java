@@ -32,6 +32,12 @@ public final class OriginAuthenticationProperties implements JsonSerializable<Or
      */
     private String scope;
 
+    /*
+     * The HTTP request header where the origin authentication token will be placed when forwarding the request to the
+     * origin. If not specified, the service will use the `Authorization` header for backward compatibility.
+     */
+    private OriginAuthenticationTokenDestinationHeader tokenDestinationHeader;
+
     /**
      * Creates an instance of OriginAuthenticationProperties class.
      */
@@ -103,6 +109,31 @@ public final class OriginAuthenticationProperties implements JsonSerializable<Or
     }
 
     /**
+     * Get the tokenDestinationHeader property: The HTTP request header where the origin authentication token will be
+     * placed when forwarding the request to the origin. If not specified, the service will use the `Authorization`
+     * header for backward compatibility.
+     * 
+     * @return the tokenDestinationHeader value.
+     */
+    public OriginAuthenticationTokenDestinationHeader tokenDestinationHeader() {
+        return this.tokenDestinationHeader;
+    }
+
+    /**
+     * Set the tokenDestinationHeader property: The HTTP request header where the origin authentication token will be
+     * placed when forwarding the request to the origin. If not specified, the service will use the `Authorization`
+     * header for backward compatibility.
+     * 
+     * @param tokenDestinationHeader the tokenDestinationHeader value to set.
+     * @return the OriginAuthenticationProperties object itself.
+     */
+    public OriginAuthenticationProperties
+        withTokenDestinationHeader(OriginAuthenticationTokenDestinationHeader tokenDestinationHeader) {
+        this.tokenDestinationHeader = tokenDestinationHeader;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -122,6 +153,8 @@ public final class OriginAuthenticationProperties implements JsonSerializable<Or
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeJsonField("userAssignedIdentity", this.userAssignedIdentity);
         jsonWriter.writeStringField("scope", this.scope);
+        jsonWriter.writeStringField("tokenDestinationHeader",
+            this.tokenDestinationHeader == null ? null : this.tokenDestinationHeader.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -149,6 +182,9 @@ public final class OriginAuthenticationProperties implements JsonSerializable<Or
                         = ResourceReference.fromJson(reader);
                 } else if ("scope".equals(fieldName)) {
                     deserializedOriginAuthenticationProperties.scope = reader.getString();
+                } else if ("tokenDestinationHeader".equals(fieldName)) {
+                    deserializedOriginAuthenticationProperties.tokenDestinationHeader
+                        = OriginAuthenticationTokenDestinationHeader.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

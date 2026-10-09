@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cdn.generated;
  */
 public final class RoutesGetSamples {
     /*
-     * x-ms-original-file: 2025-09-01-preview/Routes_Get.json
+     * x-ms-original-file: 2026-07-01/Routes_Get.json
      */
     /**
      * Sample code: Routes_Get.

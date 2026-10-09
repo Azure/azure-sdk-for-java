@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cdn.generated;
  */
 public final class AfdEndpointsListResourceUsageSamples {
     /*
-     * x-ms-original-file: 2025-09-01-preview/AFDEndpoints_ListResourceUsage.json
+     * x-ms-original-file: 2026-07-01/AFDEndpoints_ListResourceUsage.json
      */
     /**
      * Sample code: AFDEndpoints_ListResourceUsage.

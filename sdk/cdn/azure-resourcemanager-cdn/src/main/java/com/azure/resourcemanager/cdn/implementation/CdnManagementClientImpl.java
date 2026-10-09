@@ -32,18 +32,14 @@ import com.azure.resourcemanager.cdn.fluent.AfdOriginsClient;
 import com.azure.resourcemanager.cdn.fluent.AfdProfilesClient;
 import com.azure.resourcemanager.cdn.fluent.CdnManagementClient;
 import com.azure.resourcemanager.cdn.fluent.CustomDomainsClient;
-import com.azure.resourcemanager.cdn.fluent.DeploymentVersionsClient;
 import com.azure.resourcemanager.cdn.fluent.EdgeNodesClient;
 import com.azure.resourcemanager.cdn.fluent.EndpointsClient;
-import com.azure.resourcemanager.cdn.fluent.KeyGroupsClient;
-import com.azure.resourcemanager.cdn.fluent.KnowledgeSourcesClient;
 import com.azure.resourcemanager.cdn.fluent.LogAnalyticsClient;
 import com.azure.resourcemanager.cdn.fluent.ManagedRuleSetsClient;
 import com.azure.resourcemanager.cdn.fluent.OperationsClient;
 import com.azure.resourcemanager.cdn.fluent.OriginGroupsClient;
 import com.azure.resourcemanager.cdn.fluent.OriginsClient;
 import com.azure.resourcemanager.cdn.fluent.PoliciesClient;
-import com.azure.resourcemanager.cdn.fluent.ProfileAgentsClient;
 import com.azure.resourcemanager.cdn.fluent.ProfilesClient;
 import com.azure.resourcemanager.cdn.fluent.ResourceUsagesClient;
 import com.azure.resourcemanager.cdn.fluent.RoutesClient;
@@ -51,7 +47,6 @@ import com.azure.resourcemanager.cdn.fluent.RuleSetsClient;
 import com.azure.resourcemanager.cdn.fluent.RulesClient;
 import com.azure.resourcemanager.cdn.fluent.SecretsClient;
 import com.azure.resourcemanager.cdn.fluent.SecurityPoliciesClient;
-import com.azure.resourcemanager.cdn.fluent.WebAgentsClient;
 import com.azure.resourcemanager.cdn.fluent.models.CheckEndpointNameAvailabilityOutputInner;
 import com.azure.resourcemanager.cdn.fluent.models.CheckNameAvailabilityOutputInner;
 import com.azure.resourcemanager.cdn.fluent.models.ValidateProbeOutputInner;
@@ -297,34 +292,6 @@ public final class CdnManagementClientImpl extends AzureServiceClient implements
     }
 
     /**
-     * The KeyGroupsClient object to access its operations.
-     */
-    private final KeyGroupsClient keyGroups;
-
-    /**
-     * Gets the KeyGroupsClient object to access its operations.
-     * 
-     * @return the KeyGroupsClient object.
-     */
-    public KeyGroupsClient getKeyGroups() {
-        return this.keyGroups;
-    }
-
-    /**
-     * The DeploymentVersionsClient object to access its operations.
-     */
-    private final DeploymentVersionsClient deploymentVersions;
-
-    /**
-     * Gets the DeploymentVersionsClient object to access its operations.
-     * 
-     * @return the DeploymentVersionsClient object.
-     */
-    public DeploymentVersionsClient getDeploymentVersions() {
-        return this.deploymentVersions;
-    }
-
-    /**
      * The EndpointsClient object to access its operations.
      */
     private final EndpointsClient endpoints;
@@ -378,48 +345,6 @@ public final class CdnManagementClientImpl extends AzureServiceClient implements
      */
     public CustomDomainsClient getCustomDomains() {
         return this.customDomains;
-    }
-
-    /**
-     * The ProfileAgentsClient object to access its operations.
-     */
-    private final ProfileAgentsClient profileAgents;
-
-    /**
-     * Gets the ProfileAgentsClient object to access its operations.
-     * 
-     * @return the ProfileAgentsClient object.
-     */
-    public ProfileAgentsClient getProfileAgents() {
-        return this.profileAgents;
-    }
-
-    /**
-     * The WebAgentsClient object to access its operations.
-     */
-    private final WebAgentsClient webAgents;
-
-    /**
-     * Gets the WebAgentsClient object to access its operations.
-     * 
-     * @return the WebAgentsClient object.
-     */
-    public WebAgentsClient getWebAgents() {
-        return this.webAgents;
-    }
-
-    /**
-     * The KnowledgeSourcesClient object to access its operations.
-     */
-    private final KnowledgeSourcesClient knowledgeSources;
-
-    /**
-     * Gets the KnowledgeSourcesClient object to access its operations.
-     * 
-     * @return the KnowledgeSourcesClient object.
-     */
-    public KnowledgeSourcesClient getKnowledgeSources() {
-        return this.knowledgeSources;
     }
 
     /**
@@ -538,7 +463,7 @@ public final class CdnManagementClientImpl extends AzureServiceClient implements
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2025-09-01-preview";
+        this.apiVersion = "2026-07-01";
         this.operations = new OperationsClientImpl(this);
         this.profiles = new ProfilesClientImpl(this);
         this.afdEndpoints = new AfdEndpointsClientImpl(this);
@@ -549,15 +474,10 @@ public final class CdnManagementClientImpl extends AzureServiceClient implements
         this.rules = new RulesClientImpl(this);
         this.securityPolicies = new SecurityPoliciesClientImpl(this);
         this.secrets = new SecretsClientImpl(this);
-        this.keyGroups = new KeyGroupsClientImpl(this);
-        this.deploymentVersions = new DeploymentVersionsClientImpl(this);
         this.endpoints = new EndpointsClientImpl(this);
         this.origins = new OriginsClientImpl(this);
         this.originGroups = new OriginGroupsClientImpl(this);
         this.customDomains = new CustomDomainsClientImpl(this);
-        this.profileAgents = new ProfileAgentsClientImpl(this);
-        this.webAgents = new WebAgentsClientImpl(this);
-        this.knowledgeSources = new KnowledgeSourcesClientImpl(this);
         this.afdCustomDomains = new AfdCustomDomainsClientImpl(this);
         this.afdProfiles = new AfdProfilesClientImpl(this);
         this.logAnalytics = new LogAnalyticsClientImpl(this);

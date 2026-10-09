@@ -11,7 +11,7 @@ import com.azure.resourcemanager.cdn.fluent.models.OriginInner;
  */
 public final class OriginsCreateSamples {
     /*
-     * x-ms-original-file: 2025-09-01-preview/Origins_Create.json
+     * x-ms-original-file: 2026-07-01/Origins_Create.json
      */
     /**
      * Sample code: Origins_Create.

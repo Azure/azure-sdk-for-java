@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cdn.generated;
  */
 public final class SecretsGetSamples {
     /*
-     * x-ms-original-file: 2025-09-01-preview/Secrets_Get.json
+     * x-ms-original-file: 2026-07-01/Secrets_Get.json
      */
     /**
      * Sample code: Secrets_Get.

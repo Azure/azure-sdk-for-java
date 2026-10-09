@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cdn.generated;
  */
 public final class RuleSetsGetSamples {
     /*
-     * x-ms-original-file: 2025-09-01-preview/RuleSets_Get.json
+     * x-ms-original-file: 2026-07-01/RuleSets_Get.json
      */
     /**
      * Sample code: RuleSets_Get.

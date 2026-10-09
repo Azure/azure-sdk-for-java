@@ -11,7 +11,7 @@ import com.azure.resourcemanager.cdn.models.OriginUpdateParameters;
  */
 public final class OriginsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-01-preview/Origins_Update.json
+     * x-ms-original-file: 2026-07-01/Origins_Update.json
      */
     /**
      * Sample code: Origins_Update.

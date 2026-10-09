@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cdn.generated;
  */
 public final class PoliciesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-09-01-preview/WafListPolicies.json
+     * x-ms-original-file: 2026-07-01/WafListPolicies.json
      */
     /**
      * Sample code: List Policies in a Resource Group.

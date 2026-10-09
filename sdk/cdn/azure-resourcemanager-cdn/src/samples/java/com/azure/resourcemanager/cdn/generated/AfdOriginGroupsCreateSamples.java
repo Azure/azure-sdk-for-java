@@ -18,7 +18,7 @@ import com.azure.resourcemanager.cdn.models.ResourceReference;
  */
 public final class AfdOriginGroupsCreateSamples {
     /*
-     * x-ms-original-file: 2025-09-01-preview/AFDOriginGroups_Create.json
+     * x-ms-original-file: 2026-07-01/AFDOriginGroups_Create.json
      */
     /**
      * Sample code: AFDOriginGroups_Create.

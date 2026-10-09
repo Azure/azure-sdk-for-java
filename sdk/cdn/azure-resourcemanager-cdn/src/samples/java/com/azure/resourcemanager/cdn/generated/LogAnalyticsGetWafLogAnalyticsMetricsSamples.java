@@ -15,7 +15,7 @@ import java.util.Arrays;
  */
 public final class LogAnalyticsGetWafLogAnalyticsMetricsSamples {
     /*
-     * x-ms-original-file: 2025-09-01-preview/LogAnalytics_GetWafLogAnalyticsMetrics.json
+     * x-ms-original-file: 2026-07-01/LogAnalytics_GetWafLogAnalyticsMetrics.json
      */
     /**
      * Sample code: LogAnalytics_GetWafLogAnalyticsMetrics.
