@@ -90,7 +90,9 @@ public final class SearchServiceStatistics implements JsonSerializable<SearchSer
                     reader.skipChildren();
                 }
             }
-            return new SearchServiceStatistics(counters, limits, indexersRuntime);
+            SearchServiceStatistics deserializedSearchServiceStatistics = new SearchServiceStatistics(counters, limits);
+            deserializedSearchServiceStatistics.indexersRuntime = indexersRuntime;
+            return deserializedSearchServiceStatistics;
         });
     }
 
@@ -98,22 +100,7 @@ public final class SearchServiceStatistics implements JsonSerializable<SearchSer
      * Service level indexer runtime consumption.
      */
     @Generated
-    private final ServiceIndexersRuntime indexersRuntime;
-
-    /**
-     * Creates an instance of SearchServiceStatistics class.
-     *
-     * @param counters the counters value to set.
-     * @param limits the limits value to set.
-     * @param indexersRuntime the indexersRuntime value to set.
-     */
-    @Generated
-    private SearchServiceStatistics(SearchServiceCounters counters, SearchServiceLimits limits,
-        ServiceIndexersRuntime indexersRuntime) {
-        this.counters = counters;
-        this.limits = limits;
-        this.indexersRuntime = indexersRuntime;
-    }
+    private ServiceIndexersRuntime indexersRuntime;
 
     /**
      * Get the indexersRuntime property: Service level indexer runtime consumption.
@@ -123,5 +110,17 @@ public final class SearchServiceStatistics implements JsonSerializable<SearchSer
     @Generated
     public ServiceIndexersRuntime getIndexersRuntime() {
         return this.indexersRuntime;
+    }
+
+    /**
+     * Creates an instance of SearchServiceStatistics class.
+     *
+     * @param counters the counters value to set.
+     * @param limits the limits value to set.
+     */
+    @Generated
+    private SearchServiceStatistics(SearchServiceCounters counters, SearchServiceLimits limits) {
+        this.counters = counters;
+        this.limits = limits;
     }
 }

@@ -15,6 +15,8 @@ import com.azure.core.test.InterceptorManager;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
+import com.azure.core.test.models.TestProxySanitizer;
+import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonProviders;
@@ -69,6 +71,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public abstract class SearchTestBase extends TestProxyTestBase {
     protected static final String HOTELS_TESTS_INDEX_DATA_JSON = "HotelsTestsIndexData.json";
     private boolean sanitizersRemoved = false;
+    private InterceptorManager playbackSanitizerManager;
 
     protected static final String SEARCH_ENDPOINT
         = Configuration.getGlobalConfiguration().get("SEARCH_SERVICE_ENDPOINT", "https://playback.search.windows.net");
@@ -290,7 +293,17 @@ public abstract class SearchTestBase extends TestProxyTestBase {
         return builder;
     }
 
-    private static HttpClient getHttpClient(InterceptorManager interceptorManager, boolean isSync) {
+    private HttpClient getHttpClient(InterceptorManager interceptorManager, boolean isSync) {
+        if (interceptorManager.isPlaybackMode() && playbackSanitizerManager != interceptorManager) {
+            // Normalize only known preview differences. SearchGaTests independently verifies the GA requests.
+            interceptorManager.addSanitizers(
+                new TestProxySanitizer("([?&])api-version=2026-10-01(?=&|$)", "$1api-version=2026-08-01-preview",
+                    TestProxySanitizerType.URL),
+                new TestProxySanitizer(",\\\\s*\\\"purviewEnabled\\\"\\\\s*:\\\\s*false(?=\\\\s*[,}])", "",
+                    TestProxySanitizerType.BODY_REGEX));
+            playbackSanitizerManager = interceptorManager;
+        }
+
         HttpClient httpClient
             = interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : HttpClient.createDefault();
 

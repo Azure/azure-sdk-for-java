@@ -33,6 +33,48 @@ Use the Azure AI Search client library to:
 
 ## Getting started
 
+### Service API version
+
+This development version targets the `2026-10-01` GA service API by default.
+Use `SearchServiceVersion.V2026_10_01` to select this version explicitly on a client builder.
+Preview-only APIs that are not included in this GA service version are not available in this development version.
+Previously supported GA service versions remain selectable with `SearchServiceVersion`.
+
+Knowledge bases, typed retrieval streaming, and file knowledge sources are included in this GA API.
+See the [knowledge base configuration sample](src/samples/java/com/azure/search/documents/KnowledgeBaseConfigurationExample.java),
+[retrieval response sample](src/samples/java/com/azure/search/documents/KnowledgeRetrievalResponseExample.java),
+[retrieval streaming sample](src/samples/java/com/azure/search/documents/KnowledgeBaseRetrievalStreamExample.java), and
+[file knowledge source sample](src/samples/java/com/azure/search/documents/KnowledgeSourceFileExample.java).
+When migrating from the previous beta, use `setMaxOutputSizeInTokens` instead of `setMaxOutputSize` and remove the
+Work IQ authorization argument from retrieval calls. Other removed preview features are listed in [the changelog](CHANGELOG.md).
+
+### Streaming knowledge base retrieval
+
+The synchronous `KnowledgeBaseRetrievalClient.retrieveStream` methods return
+`CloseableIterableStream<KnowledgeBaseRetrievalStreamEvent>` from azure-core. Events are decoded lazily by a single
+iterator. Use try-with-resources to release the response even when iteration stops early:
+
+```java readme-sample-retrieveKnowledgeBaseStream
+try (CloseableIterableStream<KnowledgeBaseRetrievalStreamEvent> events = client.retrieveStream(request)) {
+    for (KnowledgeBaseRetrievalStreamEvent event : events) {
+        System.out.println(event.getEventName());
+    }
+}
+```
+
+The asynchronous methods return `Flux<KnowledgeBaseRetrievalStreamEvent>`. Both clients emit typed retrieval events
+directly; use `getEventName()` to identify an event, and the event subtype to access its payload. Unknown event names
+and their raw data remain available through `UnknownKnowledgeBaseRetrievalStreamEvent`. SSE transport metadata such
+as IDs, comments, and retry hints is not exposed, and the client does not reconnect automatically.
+
+The terminal `error` or `response.completed` event is included before the response is released. EOF without a terminal
+event completes normally. Synchronous transport and decoding failures are thrown during iteration; asynchronous
+failures use the reactive error path. The synchronous stream also closes the response on EOF or iteration failure.
+Its explicit `close()` is idempotent and can throw `IOException`.
+
+When migrating from the previous beta, replace `ServerSentEventListener` callbacks with iteration and remove
+`ServerSentEvent.getData()` unwrapping in both sync and async code. These two Search model types have been removed.
+
 ### Include the package
 
 #### Include the BOM file
@@ -264,7 +306,6 @@ tables.)_ The `azure-search-documents` client library exposes operations on thes
 * `SearchIndexClient` allows you to:
   * [Create, delete, update, or configure a search index](https://learn.microsoft.com/rest/api/searchservice/index-operations)
   * [Declare custom synonym maps to expand or rewrite queries](https://learn.microsoft.com/rest/api/searchservice/synonym-map-operations)
-  <!-- * Most of the `SearchServiceClient` functionality is not yet available in our current preview -->
 
 * `SearchIndexerClient` allows you to:
   * [Start indexers to automatically crawl data sources](https://learn.microsoft.com/rest/api/searchservice/indexer-operations)
@@ -593,5 +634,3 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [HttpResponseException]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/exception/HttpResponseException.java
 [status_codes]: https://learn.microsoft.com/rest/api/searchservice/http-status-codes
 [search-get-started-portal]: https://learn.microsoft.com/azure/search/search-get-started-portal
-
-

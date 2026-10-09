@@ -5,8 +5,8 @@ package com.azure.search.documents.models.implementation.sse;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
-import com.azure.search.documents.models.ServerSentEvent;
-import com.azure.search.documents.models.ServerSentEventListener;
+import com.azure.core.util.CloseableIterableStream;
+import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
@@ -14,12 +14,12 @@ import java.nio.ByteBuffer;
 import java.nio.charset.CharacterCodingException;
 import java.nio.charset.CodingErrorAction;
 import java.nio.charset.StandardCharsets;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
+import java.util.NoSuchElementException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.BiFunction;
 import java.util.function.Predicate;
@@ -42,7 +42,7 @@ final class ServerSentEventStream {
      * @param <T> The event data type.
      * @return A flux of decoded events.
      */
-    static <T> Flux<ServerSentEvent<T>> toFlux(Response<BinaryData> response, BiFunction<String, String, T> converter) {
+    static <T> Flux<T> toFlux(Response<BinaryData> response, BiFunction<String, String, T> converter) {
         Objects.requireNonNull(response, "'response' cannot be null.");
         Objects.requireNonNull(converter, "'converter' cannot be null.");
         return toFluxInternal(response, converter, null);
@@ -57,16 +57,16 @@ final class ServerSentEventStream {
      * @param <T> The event data type.
      * @return A flux of decoded events.
      */
-    static <T> Flux<ServerSentEvent<T>> toFlux(Response<BinaryData> response, BiFunction<String, String, T> converter,
-        Predicate<ServerSentEvent<T>> terminalEvent) {
+    static <T> Flux<T> toFlux(Response<BinaryData> response, BiFunction<String, String, T> converter,
+        Predicate<T> terminalEvent) {
         Objects.requireNonNull(response, "'response' cannot be null.");
         Objects.requireNonNull(converter, "'converter' cannot be null.");
         Objects.requireNonNull(terminalEvent, "'terminalEvent' cannot be null.");
         return toFluxInternal(response, converter, terminalEvent);
     }
 
-    private static <T> Flux<ServerSentEvent<T>> toFluxInternal(Response<BinaryData> response,
-        BiFunction<String, String, T> converter, Predicate<ServerSentEvent<T>> terminalEvent) {
+    private static <T> Flux<T> toFluxInternal(Response<BinaryData> response, BiFunction<String, String, T> converter,
+        Predicate<T> terminalEvent) {
         AtomicBoolean subscribed = new AtomicBoolean();
         return Flux.defer(() -> {
             if (!subscribed.compareAndSet(false, true)) {
@@ -75,7 +75,7 @@ final class ServerSentEventStream {
             }
 
             ServerSentEventStreamResponse streamResponse = ServerSentEventStreamResponse.fromResponse(response);
-            Flux<ServerSentEvent<T>> events
+            Flux<T> events
                 = streamResponse.getStatusCode() == 204 ? Flux.empty() : decode(streamResponse.getBody(), converter);
 
             if (terminalEvent != null) {
@@ -86,104 +86,196 @@ final class ServerSentEventStream {
     }
 
     /**
-     * Processes an SSE response until the response body ends.
+     * Lazily decodes an SSE response until the response body ends.
      *
      * @param response The streaming response.
      * @param converter Converts an event name and data payload into the event data type.
-     * @param listener The event listener.
      * @param <T> The event data type.
+     * @return A closeable stream of decoded events.
      */
-    static <T> void listen(Response<BinaryData> response, BiFunction<String, String, T> converter,
-        ServerSentEventListener<T> listener) {
+    static <T> CloseableIterableStream<T> toIterableStream(Response<BinaryData> response,
+        BiFunction<String, String, T> converter) {
         Objects.requireNonNull(response, "'response' cannot be null.");
         Objects.requireNonNull(converter, "'converter' cannot be null.");
-        Objects.requireNonNull(listener, "'listener' cannot be null.");
-        listenInternal(response, converter, null, listener);
+        return toIterableStreamInternal(response, converter, null);
     }
 
     /**
-     * Processes an SSE response until an inclusive terminal event is delivered.
+     * Lazily decodes an SSE response until an inclusive terminal event is emitted.
      *
      * @param response The streaming response.
      * @param converter Converts an event name and data payload into the event data type.
      * @param terminalEvent Identifies an inclusive terminal event that ends processing early.
-     * @param listener The event listener.
      * @param <T> The event data type.
+     * @return A closeable stream of decoded events.
      */
-    static <T> void listen(Response<BinaryData> response, BiFunction<String, String, T> converter,
-        Predicate<ServerSentEvent<T>> terminalEvent, ServerSentEventListener<T> listener) {
+    static <T> CloseableIterableStream<T> toIterableStream(Response<BinaryData> response,
+        BiFunction<String, String, T> converter, Predicate<T> terminalEvent) {
         Objects.requireNonNull(response, "'response' cannot be null.");
         Objects.requireNonNull(converter, "'converter' cannot be null.");
         Objects.requireNonNull(terminalEvent, "'terminalEvent' cannot be null.");
-        Objects.requireNonNull(listener, "'listener' cannot be null.");
-        listenInternal(response, converter, terminalEvent, listener);
+        return toIterableStreamInternal(response, converter, terminalEvent);
     }
 
-    private static <T> void listenInternal(Response<BinaryData> response, BiFunction<String, String, T> converter,
-        Predicate<ServerSentEvent<T>> terminalEvent, ServerSentEventListener<T> listener) {
-        try {
-            ServerSentEventStreamResponse streamResponse = ServerSentEventStreamResponse.fromResponse(response);
-            if (streamResponse.getStatusCode() != 204) {
-                process(streamResponse.getBody(), converter, terminalEvent, listener);
+    private static <T> CloseableIterableStream<T> toIterableStreamInternal(Response<BinaryData> response,
+        BiFunction<String, String, T> converter, Predicate<T> terminalEvent) {
+        ServerSentEventStreamResponse streamResponse = ServerSentEventStreamResponse.fromSyncResponse(response);
+        ServerSentEventIterator<T> iterator = new ServerSentEventIterator<>(
+            streamResponse.getStatusCode() == 204 ? null : streamResponse.getBody(), converter, terminalEvent);
+        AtomicBoolean iterated = new AtomicBoolean();
+        return new CloseableIterableStream<>(() -> {
+            if (!iterated.compareAndSet(false, true)) {
+                throw new IllegalStateException("This server-sent event stream supports only one iterator.");
             }
-        } catch (IOException exception) {
-            listener.onError(exception);
-            throw new UncheckedIOException(exception);
-        } catch (RuntimeException exception) {
-            listener.onError(exception);
-            throw exception;
-        } finally {
-            listener.onClose();
-        }
+            return iterator;
+        }, iterator);
     }
 
-    private static <T> Flux<ServerSentEvent<T>> decode(BinaryData body, BiFunction<String, String, T> converter) {
+    private static <T> Flux<T> decode(BinaryData body, BiFunction<String, String, T> converter) {
         ServerSentEventDecoder decoder = new ServerSentEventDecoder();
-        Flux<ServerSentEventFrame> frames = body.toFluxByteBuffer()
-            .hide()
-            .concatMap(buffer -> Flux.fromIterable(decoder.feed(buffer)), 1)
-            .concatWith(Flux.defer(() -> Flux.fromIterable(decoder.finish())));
-        return frames.concatMap(frame -> {
-            T data = converter.apply(frame.event, frame.data);
-            return data == null ? Flux.empty() : Flux.just(frame.toEvent(data));
-        }, 1);
-    }
-
-    private static <T> boolean process(BinaryData body, BiFunction<String, String, T> converter,
-        Predicate<ServerSentEvent<T>> terminalEvent, ServerSentEventListener<T> listener) throws IOException {
-        ServerSentEventDecoder decoder = new ServerSentEventDecoder();
-        byte[] readBuffer = new byte[8192];
-
-        try (InputStream stream = body.toStream()) {
-            while (true) {
-                checkInterrupted();
-                int read = stream.read(readBuffer);
-                if (read == -1) {
-                    return processFrames(decoder.finish(), converter, terminalEvent, listener);
-                }
-                if (read > 0
-                    && processFrames(decoder.feed(ByteBuffer.wrap(readBuffer, 0, read)), converter, terminalEvent,
-                        listener)) {
-                    return true;
-                }
+        // Serialize transport errors after preceding buffers so they cannot displace an inclusive terminal event.
+        Flux<ServerSentEventFrame> frames = body.toFluxByteBuffer().materialize().hide().concatMap(signal -> {
+            if (signal.isOnError()) {
+                return Flux.error(signal.getThrowable());
             }
-        }
-    }
-
-    private static <T> boolean processFrames(List<ServerSentEventFrame> frames, BiFunction<String, String, T> converter,
-        Predicate<ServerSentEvent<T>> terminalEvent, ServerSentEventListener<T> listener) {
-        for (ServerSentEventFrame frame : frames) {
-            checkInterrupted();
+            if (!signal.hasValue()) {
+                return Flux.empty();
+            }
+            ByteBuffer input = signal.get().duplicate();
+            return Flux.<ServerSentEventFrame>generate(sink -> {
+                ServerSentEventFrame frame = decoder.nextFrame(input);
+                if (frame == null) {
+                    sink.complete();
+                } else {
+                    sink.next(frame);
+                }
+            });
+        }, 1).concatWith(Flux.defer(() -> {
+            decoder.finish();
+            return Flux.empty();
+        }));
+        return frames.handle((frame, sink) -> {
             T data = converter.apply(frame.event, frame.data);
             if (data != null) {
-                ServerSentEvent<T> event = frame.toEvent(data);
-                listener.onEvent(event);
-                if (terminalEvent != null && terminalEvent.test(event)) {
-                    return true;
+                sink.next(data);
+            }
+        });
+    }
+
+    private static final class ServerSentEventIterator<T> implements Iterator<T>, Closeable {
+        private final BinaryData body;
+        private final BiFunction<String, String, T> converter;
+        private final Predicate<T> terminalEvent;
+        private final ServerSentEventDecoder decoder = new ServerSentEventDecoder();
+        private final byte[] readBuffer = new byte[8192];
+        private final ByteBuffer input = ByteBuffer.wrap(readBuffer);
+        private volatile boolean closed;
+        private InputStream stream;
+        private T next;
+        private boolean terminal;
+
+        private ServerSentEventIterator(BinaryData body, BiFunction<String, String, T> converter,
+            Predicate<T> terminalEvent) {
+            this.body = body;
+            this.converter = converter;
+            this.terminalEvent = terminalEvent;
+            input.limit(0);
+        }
+
+        @Override
+        public boolean hasNext() {
+            if (closed) {
+                return false;
+            }
+            if (next != null) {
+                return true;
+            }
+            try {
+                if (body == null || terminal) {
+                    close();
+                    return false;
                 }
+                InputStream source = openStream();
+                while (!closed) {
+                    checkInterrupted();
+                    ServerSentEventFrame frame = decoder.nextFrame(input);
+                    if (frame != null) {
+                        T value = converter.apply(frame.event, frame.data);
+                        if (value != null) {
+                            terminal = terminalEvent != null && terminalEvent.test(value);
+                            next = value;
+                            return true;
+                        }
+                    } else {
+                        int read = source.read(readBuffer);
+                        if (read == -1) {
+                            decoder.finish();
+                            close();
+                            return false;
+                        }
+                        input.position(0);
+                        input.limit(read);
+                    }
+                }
+                return false;
+            } catch (IOException exception) {
+                throw fail(new UncheckedIOException("Failed to read the server-sent event stream.", exception));
+            } catch (RuntimeException exception) {
+                throw fail(exception);
+            } catch (Error error) {
+                throw fail(error);
             }
         }
-        return false;
+
+        @Override
+        public T next() {
+            if (!hasNext()) {
+                throw new NoSuchElementException();
+            }
+            T value = next;
+            next = null;
+            if (terminal) {
+                try {
+                    close();
+                } catch (IOException exception) {
+                    throw new UncheckedIOException("Failed to close the server-sent event stream.", exception);
+                }
+            }
+            return value;
+        }
+
+        private synchronized InputStream openStream() {
+            if (closed) {
+                throw new IllegalStateException("The server-sent event stream is closed.");
+            }
+            if (stream == null) {
+                stream = body.toStream();
+            }
+            return stream;
+        }
+
+        @Override
+        public synchronized void close() throws IOException {
+            if (closed) {
+                return;
+            }
+            closed = true;
+            next = null;
+            if (stream != null) {
+                stream.close();
+            } else if (body != null) {
+                body.toStream().close();
+            }
+        }
+
+        private <E extends Throwable> E fail(E exception) {
+            try {
+                close();
+            } catch (IOException | RuntimeException closeException) {
+                exception.addSuppressed(closeException);
+            }
+            return exception;
+        }
     }
 
     private static void checkInterrupted() {
@@ -197,36 +289,15 @@ final class ServerSentEventStream {
         return value.startsWith(" ") ? value.substring(1) : value;
     }
 
-    private static Duration parseRetryAfter(String value) {
-        if (value.isEmpty()) {
-            return null;
-        }
-        for (int i = 0; i < value.length(); i++) {
-            char character = value.charAt(i);
-            if (character < '0' || character > '9') {
-                return null;
-            }
-        }
-        try {
-            return Duration.ofMillis(Long.parseLong(value));
-        } catch (NumberFormatException ignored) {
-            return null;
-        }
-    }
-
     private static final class ServerSentEventDecoder {
-        private final StreamState state = new StreamState();
         private byte[] lineBytes = new byte[256];
         private int lineLength;
         private boolean pendingCarriageReturn;
         private boolean firstLine = true;
         private String event;
         private List<String> data;
-        private String comment;
 
-        private List<ServerSentEventFrame> feed(ByteBuffer source) {
-            ByteBuffer buffer = source.duplicate();
-            List<ServerSentEventFrame> events = new ArrayList<>();
+        private ServerSentEventFrame nextFrame(ByteBuffer buffer) {
             while (buffer.hasRemaining()) {
                 byte value = buffer.get();
                 if (pendingCarriageReturn) {
@@ -235,24 +306,27 @@ final class ServerSentEventStream {
                         continue;
                     }
                 }
+                ServerSentEventFrame frame = null;
                 if (value == '\n') {
-                    processLine(decodeLine(), events);
+                    frame = processLine(decodeLine());
                 } else if (value == '\r') {
-                    processLine(decodeLine(), events);
+                    frame = processLine(decodeLine());
                     pendingCarriageReturn = true;
                 } else {
                     appendByte(value);
                 }
+                if (frame != null) {
+                    return frame;
+                }
             }
-            return events;
+            return null;
         }
 
-        private List<ServerSentEventFrame> finish() {
+        private void finish() {
             if (lineLength > 0) {
                 // Validate trailing bytes even though an unterminated SSE event is discarded.
                 decodeLine();
             }
-            return Collections.emptyList();
         }
 
         private void appendByte(byte value) {
@@ -285,17 +359,12 @@ final class ServerSentEventStream {
             return line;
         }
 
-        private void processLine(String line, List<ServerSentEventFrame> events) {
+        private ServerSentEventFrame processLine(String line) {
             if (line.isEmpty()) {
-                ServerSentEventFrame parsedEvent = buildEvent();
-                if (parsedEvent != null) {
-                    events.add(parsedEvent);
-                }
-                return;
+                return buildEvent();
             }
             if (line.charAt(0) == ':') {
-                comment = removeOptionalSpace(line.substring(1));
-                return;
+                return null;
             }
 
             int colonIndex = line.indexOf(':');
@@ -313,31 +382,17 @@ final class ServerSentEventStream {
                     data.add(value);
                     break;
 
-                case "id":
-                    if (value.indexOf('\0') < 0) {
-                        state.setLastEventId(value);
-                    }
-                    break;
-
-                case "retry":
-                    Duration parsedRetryAfter = parseRetryAfter(value);
-                    if (parsedRetryAfter != null) {
-                        state.setRetryAfter(parsedRetryAfter);
-                    }
-                    break;
-
                 default:
                     break;
             }
+            return null;
         }
 
         private ServerSentEventFrame buildEvent() {
             String currentEvent = event;
             List<String> currentData = data;
-            String currentComment = comment;
             event = null;
             data = null;
-            comment = null;
 
             if (currentData == null) {
                 return null;
@@ -345,41 +400,17 @@ final class ServerSentEventStream {
             if (currentEvent == null || currentEvent.isEmpty()) {
                 currentEvent = DEFAULT_EVENT;
             }
-            return new ServerSentEventFrame(state.lastEventId, currentEvent, String.join("\n", currentData),
-                currentComment, state.retryAfter);
-        }
-    }
-
-    private static final class StreamState {
-        private String lastEventId;
-        private Duration retryAfter;
-
-        private void setLastEventId(String lastEventId) {
-            this.lastEventId = lastEventId;
-        }
-
-        private void setRetryAfter(Duration retryAfter) {
-            this.retryAfter = retryAfter;
+            return new ServerSentEventFrame(currentEvent, String.join("\n", currentData));
         }
     }
 
     private static final class ServerSentEventFrame {
-        private final String id;
         private final String event;
         private final String data;
-        private final String comment;
-        private final Duration retryAfter;
 
-        private ServerSentEventFrame(String id, String event, String data, String comment, Duration retryAfter) {
-            this.id = id;
+        private ServerSentEventFrame(String event, String data) {
             this.event = event;
             this.data = data;
-            this.comment = comment;
-            this.retryAfter = retryAfter;
-        }
-
-        private <T> ServerSentEvent<T> toEvent(T data) {
-            return ServerSentEventHelper.create(id, event, data, comment, retryAfter);
         }
     }
 }
