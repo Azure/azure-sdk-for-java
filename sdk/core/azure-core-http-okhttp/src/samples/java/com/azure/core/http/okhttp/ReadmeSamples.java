@@ -4,6 +4,7 @@
 package com.azure.core.http.okhttp;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpProtocolVersion;
 import com.azure.core.http.ProxyOptions;
 import okhttp3.OkHttpClient;
 import okhttp3.Protocol;
@@ -63,5 +64,16 @@ public class ReadmeSamples {
             .build())
             .build();
         // END: readme-sample-useHttp2OnlyWithConfiguredOkHttpClient
+    }
+
+    /**
+     * Configures HTTP/2 with HTTP/1.1 fallback.
+     */
+    public void configureHttpVersion() {
+        // BEGIN: readme-sample-configureHttpVersion
+        HttpClient client = new OkHttpAsyncHttpClientBuilder()
+            .maximumHttpVersion(HttpProtocolVersion.HTTP_2)
+            .build();
+        // END: readme-sample-configureHttpVersion
     }
 }

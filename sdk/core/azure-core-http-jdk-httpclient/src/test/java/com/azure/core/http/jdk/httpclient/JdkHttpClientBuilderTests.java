@@ -5,6 +5,7 @@ package com.azure.core.http.jdk.httpclient;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpProtocolVersion;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.Configuration;
@@ -18,6 +19,7 @@ import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
 
@@ -39,6 +41,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -53,6 +56,64 @@ public class JdkHttpClientBuilderTests {
 
     private static final String SERVER_HTTP_URI = JdkHttpClientLocalTestServer.getServer().getHttpUri();
     private static final int PROXY_SERVER_HTTP_PORT = JdkHttpClientLocalTestServer.getProxyServer().getHttpPort();
+
+    @ParameterizedTest
+    @EnumSource(HttpProtocolVersion.class)
+    public void maximumHttpVersion(HttpProtocolVersion version) throws Exception {
+        JdkHttpClientBuilder builder = new JdkHttpClientBuilder().configuration(Configuration.NONE);
+        assertSame(builder, builder.maximumHttpVersion(version));
+        HttpClient client = builder.build();
+        try {
+            assertEquals(
+                version == HttpProtocolVersion.HTTP_2
+                    ? java.net.http.HttpClient.Version.HTTP_2
+                    : java.net.http.HttpClient.Version.HTTP_1_1,
+                JdkHttpClientHttp2Tests.getNativeClient(client).version());
+        } finally {
+            JdkHttpClientHttp2Tests.closeNativeClient(client);
+        }
+    }
+
+    @Test
+    public void clearingMaximumHttpVersionRestoresDefault() throws Exception {
+        JdkHttpClientBuilder builder = new JdkHttpClientBuilder().configuration(Configuration.NONE)
+            .maximumHttpVersion(HttpProtocolVersion.HTTP_2);
+        HttpClient first = builder.build();
+        HttpClient cleared = builder.maximumHttpVersion(null).build();
+        try {
+            assertEquals(java.net.http.HttpClient.Version.HTTP_1_1,
+                JdkHttpClientHttp2Tests.getNativeClient(cleared).version());
+            assertEquals(java.net.http.HttpClient.Version.HTTP_2,
+                JdkHttpClientHttp2Tests.getNativeClient(first).version());
+        } finally {
+            JdkHttpClientHttp2Tests.closeNativeClient(first);
+            JdkHttpClientHttp2Tests.closeNativeClient(cleared);
+        }
+    }
+
+    @Test
+    public void maximumHttpVersionOverridesNativeBuilderAndResetsToHttp1() throws Exception {
+        Executor executor = Runnable::run;
+        java.net.http.HttpClient.Builder nativeBuilder
+            = java.net.http.HttpClient.newBuilder().version(java.net.http.HttpClient.Version.HTTP_2).executor(executor);
+        JdkHttpClientBuilder builder = new JdkHttpClientBuilder(nativeBuilder).configuration(Configuration.NONE);
+        HttpClient original = builder.build();
+        HttpClient enabled = builder.maximumHttpVersion(HttpProtocolVersion.HTTP_2).build();
+        HttpClient cleared = builder.maximumHttpVersion(null).build();
+        try {
+            assertEquals(java.net.http.HttpClient.Version.HTTP_1_1,
+                JdkHttpClientHttp2Tests.getNativeClient(original).version());
+            assertEquals(java.net.http.HttpClient.Version.HTTP_2,
+                JdkHttpClientHttp2Tests.getNativeClient(enabled).version());
+            assertEquals(java.net.http.HttpClient.Version.HTTP_1_1,
+                JdkHttpClientHttp2Tests.getNativeClient(cleared).version());
+            assertSame(executor, JdkHttpClientHttp2Tests.getNativeClient(enabled).executor().orElse(null));
+        } finally {
+            JdkHttpClientHttp2Tests.closeNativeClient(original);
+            JdkHttpClientHttp2Tests.closeNativeClient(enabled);
+            JdkHttpClientHttp2Tests.closeNativeClient(cleared);
+        }
+    }
 
     /**
      * Tests that an {@link JdkHttpClient} is able to be built from an existing

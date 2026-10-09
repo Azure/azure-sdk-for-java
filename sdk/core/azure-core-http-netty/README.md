@@ -144,6 +144,21 @@ HttpClient client = new NettyAsyncHttpClientBuilder(reactorNettyHttpClient)
 Create a Netty HttpClient that supports both the HTTP/1.1 and HTTP/2 protocols, with HTTP/2 being the preferred
 protocol.
 
+```java readme-sample-configureHttpVersion
+HttpClient client = new NettyAsyncHttpClientBuilder()
+    .maximumHttpVersion(HttpProtocolVersion.HTTP_2)
+    .build();
+```
+
+`HttpProtocolVersion` is defined in `com.azure.core.http`. HTTP/2 is negotiated over TLS, with HTTP/1.1 fallback;
+plain HTTP requests use HTTP/1.1. Use `HTTP_1_1` to limit the client to HTTP/1.1. Passing `null` clears the maximum,
+preserving the existing default or the protocols of a preconfigured Reactor Netty client.
+
+An explicit maximum retains any custom SSL context in the supplied Reactor Netty client. Configure that context's
+ALPN protocols to match the requested maximum version.
+
+You can also configure Reactor Netty directly:
+
 ```java readme-sample-useHttp2WithConfiguredNettyClient 
 // Constructs an HttpClient that supports both HTTP/1.1 and HTTP/2 with HTTP/2 being the preferred protocol.
 HttpClient client = new NettyAsyncHttpClientBuilder(reactor.netty.http.client.HttpClient.create()
@@ -220,5 +235,3 @@ For details on contributing to this repository, see the [contributing guide](htt
 [logging]: https://learn.microsoft.com/azure/developer/java/sdk/logging-overview
 [jdk_link]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [java8_client_compatibility]: https://learn.microsoft.com/azure/security/fundamentals/azure-ca-details?tabs=root-and-subordinate-cas-list#client-compatibility-for-public-pkis
-
-

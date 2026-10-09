@@ -4,6 +4,7 @@
 package com.azure.core.http.vertx;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpProtocolVersion;
 import com.azure.core.http.ProxyOptions;
 import io.vertx.core.http.HttpClientOptions;
 
@@ -55,10 +56,21 @@ public class ReadmeSamples {
         // BEGIN: readme-sample-customMaxHeaderSize
         // Constructs an HttpClient with a modified max header size.
         // This creates a Vert.x HttpClient with a max headers size of 256 KB.
-        // NOTE: If httpClientOptions is set, all other options set in the VertxHttpClientBuilder will be ignored.
+        // NOTE: Native options provide connection, read and write timeouts and proxy settings.
         HttpClient httpClient = new VertxHttpClientBuilder()
             .httpClientOptions(new HttpClientOptions().setMaxHeaderSize(256 * 1024))
             .build();
         // END: readme-sample-customMaxHeaderSize
+    }
+
+    /**
+     * Configures HTTP/2 with HTTP/1.1 fallback.
+     */
+    public void configureHttpVersion() {
+        // BEGIN: readme-sample-configureHttpVersion
+        HttpClient client = new VertxHttpClientBuilder()
+            .maximumHttpVersion(HttpProtocolVersion.HTTP_2)
+            .build();
+        // END: readme-sample-configureHttpVersion
     }
 }

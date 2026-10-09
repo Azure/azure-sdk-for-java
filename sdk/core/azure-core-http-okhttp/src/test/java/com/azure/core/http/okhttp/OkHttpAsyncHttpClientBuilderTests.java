@@ -6,6 +6,7 @@ package com.azure.core.http.okhttp;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpProtocolVersion;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.SharedExecutorService;
@@ -19,11 +20,13 @@ import okhttp3.Dispatcher;
 import okhttp3.EventListener;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
+import okhttp3.Protocol;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
 
@@ -46,6 +49,7 @@ import static com.azure.core.http.okhttp.OkHttpClientLocalTestServer.LOCATION_PA
 import static com.azure.core.http.okhttp.OkHttpClientLocalTestServer.REDIRECT_PATH;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
@@ -63,6 +67,45 @@ public class OkHttpAsyncHttpClientBuilderTests {
     private static final ConfigurationSource EMPTY_SOURCE = new TestConfigurationSource();
 
     private static final String SERVER_HTTP_URI = OkHttpClientLocalTestServer.getServer().getHttpUri();
+
+    @ParameterizedTest
+    @EnumSource(HttpProtocolVersion.class)
+    public void maximumHttpVersion(HttpProtocolVersion version) {
+        OkHttpAsyncHttpClientBuilder builder = new OkHttpAsyncHttpClientBuilder().configuration(Configuration.NONE);
+        assertSame(builder, builder.maximumHttpVersion(version));
+        OkHttpAsyncHttpClient client = (OkHttpAsyncHttpClient) builder.build();
+        assertEquals(version == HttpProtocolVersion.HTTP_2
+            ? Arrays.asList(Protocol.HTTP_2, Protocol.HTTP_1_1)
+            : Collections.singletonList(Protocol.HTTP_1_1), client.httpClient.protocols());
+    }
+
+    @Test
+    public void clearingMaximumHttpVersionRestoresDefault() {
+        OkHttpAsyncHttpClientBuilder builder = new OkHttpAsyncHttpClientBuilder().configuration(Configuration.NONE)
+            .maximumHttpVersion(HttpProtocolVersion.HTTP_1_1);
+        OkHttpAsyncHttpClient first = (OkHttpAsyncHttpClient) builder.build();
+        OkHttpAsyncHttpClient cleared = (OkHttpAsyncHttpClient) builder.maximumHttpVersion(null).build();
+
+        assertEquals(Arrays.asList(Protocol.HTTP_2, Protocol.HTTP_1_1), cleared.httpClient.protocols());
+        assertEquals(Collections.singletonList(Protocol.HTTP_1_1), first.httpClient.protocols());
+    }
+
+    @Test
+    public void maximumHttpVersionOverridesAndRestoresNativeProtocols() {
+        List<Protocol> nativeProtocols = Collections.singletonList(Protocol.H2_PRIOR_KNOWLEDGE);
+        OkHttpClient nativeClient = new OkHttpClient.Builder().protocols(nativeProtocols).build();
+        OkHttpAsyncHttpClientBuilder builder
+            = new OkHttpAsyncHttpClientBuilder(nativeClient).configuration(Configuration.NONE);
+        OkHttpAsyncHttpClient original = (OkHttpAsyncHttpClient) builder.build();
+        OkHttpAsyncHttpClient limited
+            = (OkHttpAsyncHttpClient) builder.maximumHttpVersion(HttpProtocolVersion.HTTP_1_1).build();
+        OkHttpAsyncHttpClient cleared = (OkHttpAsyncHttpClient) builder.maximumHttpVersion(null).build();
+
+        assertEquals(nativeProtocols, original.httpClient.protocols());
+        assertEquals(Collections.singletonList(Protocol.HTTP_1_1), limited.httpClient.protocols());
+        assertEquals(nativeProtocols, cleared.httpClient.protocols());
+        assertEquals(nativeProtocols, nativeClient.protocols());
+    }
 
     /**
      * Tests that an {@link OkHttpAsyncHttpClient} is able to be built from an existing {@link OkHttpClient}.

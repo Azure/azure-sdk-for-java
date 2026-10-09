@@ -64,16 +64,13 @@
  * HTTP/2 protocols, with HTTP/2 being the preferred protocol.
  * </p>
  *
- * <!-- src_embed readme-sample-useHttp2WithConfiguredOkHttpClient -->
+ * <!-- src_embed readme-sample-configureHttpVersion -->
  * <pre>
- * &#47;&#47; Constructs an HttpClient that supports both HTTP&#47;1.1 and HTTP&#47;2 with HTTP&#47;2 being the preferred protocol.
- * &#47;&#47; This is the default handling for OkHttp.
- * HttpClient client = new OkHttpAsyncHttpClientBuilder&#40;new OkHttpClient.Builder&#40;&#41;
- *     .protocols&#40;Arrays.asList&#40;Protocol.HTTP_2, Protocol.HTTP_1_1&#41;&#41;
- *     .build&#40;&#41;&#41;
+ * HttpClient client = new OkHttpAsyncHttpClientBuilder&#40;&#41;
+ *     .maximumHttpVersion&#40;HttpProtocolVersion.HTTP_2&#41;
  *     .build&#40;&#41;;
  * </pre>
- * <!-- end readme-sample-useHttp2WithConfiguredOkHttpClient -->
+ * <!-- end readme-sample-configureHttpVersion -->
  *
  * <p>
  * It is also possible to create a OkHttp HttpClient that only supports HTTP/2.

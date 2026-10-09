@@ -61,6 +61,7 @@ The following sections provide several code snippets covering some of the most c
 
 - [Create a Simple Client](#create-a-simple-client)
 - [Create a Client with Proxy](#create-a-client-with-proxy)
+- [Create a Client with HTTP/2 Support](#create-a-client-with-http2-support)
 
 ### Create a Simple Client
 
@@ -83,6 +84,18 @@ HttpClient client = new OkHttpAsyncHttpClientBuilder()
 ### Create a Client with HTTP/2 Support
 
 Create an OkHttp client that supports both the HTTP/1.1 and HTTP/2 protocols, with HTTP/2 being the preferred protocol.
+
+```java readme-sample-configureHttpVersion
+HttpClient client = new OkHttpAsyncHttpClientBuilder()
+    .maximumHttpVersion(HttpProtocolVersion.HTTP_2)
+    .build();
+```
+
+`HttpProtocolVersion` is defined in `com.azure.core.http`. HTTP/2 is negotiated over TLS, with HTTP/1.1 fallback;
+plain HTTP requests use HTTP/1.1. Use `HTTP_1_1` to limit the client to HTTP/1.1. Passing `null` clears the maximum,
+preserving OkHttp's default protocols or those of a supplied OkHttp client.
+
+You can also configure OkHttp directly:
 
 ```java readme-sample-useHttp2WithConfiguredOkHttpClient 
 // Constructs an HttpClient that supports both HTTP/1.1 and HTTP/2 with HTTP/2 being the preferred protocol.
@@ -132,5 +145,4 @@ For details on contributing to this repository, see the [contributing guide](htt
 [logging]: https://learn.microsoft.com/azure/developer/java/sdk/logging-overview
 [jdk_link]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [java8_client_compatibility]: https://learn.microsoft.com/azure/security/fundamentals/azure-ca-details?tabs=root-and-subordinate-cas-list#client-compatibility-for-public-pkis
-
 

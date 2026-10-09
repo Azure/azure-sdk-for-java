@@ -63,6 +63,7 @@ The following sections provide several code snippets covering some of the most c
 
 - [Create a Simple Client](#create-a-simple-client)
 - [Create a Client with Proxy](#create-a-client-with-proxy)
+- [Create a Client with HTTP/2 Support](#create-a-client-with-http2-support)
 
 ### Create a Simple Client
 
@@ -88,6 +89,21 @@ HttpClient client = new VertxHttpClientBuilder()
     .build();
 ```
 
+### Create a Client with HTTP/2 Support
+
+Enable HTTP/2 with HTTP/1.1 fallback using `com.azure.core.http.HttpProtocolVersion`.
+
+```java readme-sample-configureHttpVersion
+HttpClient client = new VertxHttpClientBuilder()
+    .maximumHttpVersion(HttpProtocolVersion.HTTP_2)
+    .build();
+```
+
+The client uses ALPN to negotiate HTTP/2 over TLS. For plain HTTP requests, Vert.x's cleartext upgrade configuration
+applies. Use `HTTP_1_1` to limit the client to HTTP/1.1. Passing `null` clears the maximum, preserving the existing default
+or the protocols in supplied Vert.x options. An explicit maximum overrides protocol and ALPN settings in a copy of
+those options without mutating the originals; unrelated settings are retained.
+
 ### Create an HttpClient with custom maxHeaderSize
 
 Create a Vert.x HttpClient that uses a custom maxHeaderSize. Use this sample if you're seeing an error such as
@@ -101,7 +117,7 @@ io.netty.handler.codec.http.TooLongHttpHeaderException: HTTP header is larger th
 ```java readme-sample-customMaxHeaderSize
 // Constructs an HttpClient with a modified max header size.
 // This creates a Vert.x HttpClient with a max headers size of 256 KB.
-// NOTE: If httpClientOptions is set, all other options set in the VertxHttpClientBuilder will be ignored.
+// NOTE: Native options provide connection, read and write timeouts and proxy settings.
 HttpClient httpClient = new VertxHttpClientBuilder()
     .httpClientOptions(new HttpClientOptions().setMaxHeaderSize(256 * 1024))
     .build();
@@ -136,5 +152,4 @@ For details on contributing to this repository, see the [contributing guide](htt
 [logging]: https://learn.microsoft.com/azure/developer/java/sdk/logging-overview
 [jdk_link]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [java8_client_compatibility]: https://learn.microsoft.com/azure/security/fundamentals/azure-ca-details?tabs=root-and-subordinate-cas-list#client-compatibility-for-public-pkis
-
 
