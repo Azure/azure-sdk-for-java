@@ -167,4 +167,37 @@ public final class ServiceBusReceivedMessageContext {
         }
         receiverClient.deadLetter(receivedMessageContext.getMessage(), options).block();
     }
+
+    /**
+     * Gets the state of the session that the {@link #getMessage() message} in this context belongs to. This operation
+     * is only supported when the {@link ServiceBusProcessorClient} is consuming from a session-enabled entity.
+     *
+     * @return The session state, or {@code null} if no state is set for the session.
+     * @throws IllegalStateException if the message was not received from a session-enabled entity, or if the session
+     *     that delivered the message is no longer held by this processor.
+     * @throws ServiceBusException if the session state could not be acquired.
+     */
+    public byte[] getSessionState() {
+        if (sessionReceivers != null) {
+            return sessionReceivers.getSessionState(receivedMessageContext.getMessage()).block();
+        }
+        return receiverClient.getSessionState(receivedMessageContext.getMessage()).block();
+    }
+
+    /**
+     * Sets the state of the session that the {@link #getMessage() message} in this context belongs to. This operation
+     * is only supported when the {@link ServiceBusProcessorClient} is consuming from a session-enabled entity.
+     *
+     * @param sessionState State to set on the session, or {@code null} to clear the session state.
+     * @throws IllegalStateException if the message was not received from a session-enabled entity, or if the session
+     *     that delivered the message is no longer held by this processor.
+     * @throws ServiceBusException if the session state could not be set.
+     */
+    public void setSessionState(byte[] sessionState) {
+        if (sessionReceivers != null) {
+            sessionReceivers.setSessionState(receivedMessageContext.getMessage(), sessionState).block();
+            return;
+        }
+        receiverClient.setSessionState(receivedMessageContext.getMessage(), sessionState).block();
+    }
 }
