@@ -7,6 +7,7 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CloseableIterableStream;
 import com.azure.identity.AzureAuthorityHosts;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -21,6 +22,10 @@ import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
 import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.SearchSuggester;
+import com.azure.search.documents.knowledgebases.KnowledgeBaseRetrievalClient;
+import com.azure.search.documents.knowledgebases.models.KnowledgeBaseAnswerCompletedStreamEvent;
+import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalOptions;
+import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalStreamEvent;
 import com.azure.search.documents.models.IndexAction;
 import com.azure.search.documents.models.IndexActionType;
 import com.azure.search.documents.models.IndexDocumentsBatch;
@@ -28,6 +33,7 @@ import com.azure.search.documents.models.SearchOptions;
 import com.azure.search.documents.models.SearchPagedIterable;
 import com.azure.search.documents.models.SearchResult;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -45,6 +51,21 @@ public class ReadmeSamples {
     private static final SearchIndexClient SEARCH_INDEX_CLIENT = new SearchIndexClientBuilder().buildClient();
     private static final SearchClient SEARCH_CLIENT = new SearchClientBuilder().buildClient();
     private static final SearchAsyncClient SEARCH_ASYNC_CLIENT = new SearchClientBuilder().buildAsyncClient();
+
+    public void retrieveKnowledgeBaseStream(KnowledgeBaseRetrievalClient client,
+        KnowledgeBaseRetrievalOptions request) throws IOException {
+        // BEGIN: readme-sample-retrieveKnowledgeBaseStream
+        try (CloseableIterableStream<KnowledgeBaseRetrievalStreamEvent> events = client.retrieveStream(request)) {
+            for (KnowledgeBaseRetrievalStreamEvent event : events) {
+                System.out.println(event.getEventName());
+                if (event instanceof KnowledgeBaseAnswerCompletedStreamEvent) {
+                    KnowledgeBaseAnswerCompletedStreamEvent answer = (KnowledgeBaseAnswerCompletedStreamEvent) event;
+                    System.out.println(answer.getValue().getMessage());
+                }
+            }
+        }
+        // END: readme-sample-retrieveKnowledgeBaseStream
+    }
 
     public void createSearchClient() {
         // BEGIN: readme-sample-createSearchClient

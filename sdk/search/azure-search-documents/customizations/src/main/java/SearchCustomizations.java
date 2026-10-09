@@ -24,6 +24,12 @@ import java.util.List;
  * Contains customizations for Azure AI Search code generation.
  */
 public class SearchCustomizations extends Customization {
+    /**
+     * Creates the Search code generation customization.
+     */
+    public SearchCustomizations() {
+    }
+
     @Override
     public void customize(LibraryCustomization libraryCustomization, Logger logger) {
         PackageCustomization documents = libraryCustomization.getPackage("com.azure.search.documents");
@@ -117,8 +123,6 @@ public class SearchCustomizations extends Customization {
     private static void addStreamModels(LibraryCustomization customization) {
         customization.getRawEditor().addFile(MODELS_PATH + "KnowledgeBaseRetrievalStreamEvent.java", baseEventSource());
         customization.getRawEditor()
-            .addFile(MODELS_PATH + "UnknownKnowledgeBaseRetrievalStreamEvent.java", unknownEventSource());
-        customization.getRawEditor()
             .addFile(MODELS_PATH + "KnowledgeBaseRetrievalStartedStreamEvent.java",
                 wrapperSource("KnowledgeBaseRetrievalStartedStreamEvent", "KnowledgeBaseRetrievalStartedEvent",
                     "retrieval.started", false, false));
@@ -149,8 +153,7 @@ public class SearchCustomizations extends Customization {
 
     private static void customizeKnowledgeSourceStatusDurationParsing(ClassCustomization customization) {
         customization.customizeAst(ast -> ast
-            .addImport(
-                "com.azure.search.documents.knowledgebases.implementation.KnowledgeSourceDurationParser")
+            .addImport("com.azure.search.documents.knowledgebases.implementation.KnowledgeSourceDurationParser")
             .getClassByName(customization.getClassName())
             .ifPresent(clazz -> clazz.getMethodsByName("fromJson").forEach(method -> {
                 BlockStmt body = method.getBody()
@@ -168,7 +171,6 @@ public class SearchCustomizations extends Customization {
 
     private static void addAsyncRetrieveStream(ClassCustomization customization) {
         customization.customizeAst(ast -> ast.addImport("com.azure.core.http.HttpHeaderName")
-            .addImport("com.azure.search.documents.models.ServerSentEvent")
             .addImport("com.azure.search.documents.models.implementation.sse.ServerSentEventStreams")
             .addImport(
                 "com.azure.search.documents.knowledgebases.implementation.KnowledgeBaseRetrievalStreamEventConverter")
@@ -177,22 +179,20 @@ public class SearchCustomizations extends Customization {
             .getClassByName(customization.getClassName())
             .ifPresent(clazz -> {
                 clazz.getMethodsByName("retrieveStream").forEach(MethodDeclaration::remove);
-                MethodDeclaration method
-                    = StaticJavaParser
-                        .parseBodyDeclaration("@Generated\n"
-                            + "public Flux<ServerSentEvent<KnowledgeBaseRetrievalStreamEvent>> retrieveStream("
-                                + "KnowledgeBaseRetrievalOptions retrievalRequest) {\n"
-                                + "    RequestOptions requestOptions = new RequestOptions();\n"
-                                + "    return hiddenGeneratedRetrieveStreamWithResponse("
-                                + "BinaryData.fromObject(retrievalRequest), requestOptions)\n"
-                                + "        .flatMapMany(response -> ServerSentEventStreams.toFlux(response,\n"
-                                + "            KnowledgeBaseRetrievalStreamEventConverter::convert,\n"
-                                + "            event -> event.getData().isTerminal()));\n"
-                                + "}\n")
-                        .asMethodDeclaration();
+                MethodDeclaration method = StaticJavaParser
+                    .parseBodyDeclaration(
+                        "@Generated\n" + "public Flux<KnowledgeBaseRetrievalStreamEvent> retrieveStream("
+                            + "KnowledgeBaseRetrievalOptions retrievalRequest) {\n"
+                            + "    RequestOptions requestOptions = new RequestOptions();\n"
+                            + "    return hiddenGeneratedRetrieveStreamWithResponse("
+                            + "BinaryData.fromObject(retrievalRequest), requestOptions)\n"
+                            + "        .flatMapMany(response -> ServerSentEventStreams.toFlux(response,\n"
+                            + "            KnowledgeBaseRetrievalStreamEventConverter::convert,\n"
+                            + "            KnowledgeBaseRetrievalStreamEvent::isTerminal));\n" + "}\n")
+                    .asMethodDeclaration();
                 method.setJavadocComment(
                     "Retrieves relevant data from backing stores and streams progress and results as server-sent "
-                        + "events.\n\n"
+                        + "events.\n\n" + streamEventDocumentation()
                         + "If received, the terminal {@code error} or {@code response.completed} event is emitted "
                         + "before the stream completes. End-of-stream without a terminal event completes normally. "
                         + "Transport and decoding failures are propagated through the reactive error path. The client "
@@ -201,26 +201,23 @@ public class SearchCustomizations extends Customization {
                         + "@return A stream of typed knowledge base retrieval events.");
                 clazz.addMember(method);
 
-                MethodDeclaration methodWithAuthorizationHeaders
-                    = StaticJavaParser
-                        .parseBodyDeclaration("@Generated\n"
-                            + "public Flux<ServerSentEvent<KnowledgeBaseRetrievalStreamEvent>> retrieveStream("
-                                + "KnowledgeBaseRetrievalOptions retrievalRequest, String querySourceAuthorization) {\n"
-                                + "    RequestOptions requestOptions = new RequestOptions();\n"
-                                + "    if (querySourceAuthorization != null) {\n"
-                                + "        requestOptions.setHeader(\n"
-                                + "            HttpHeaderName.fromString(\"x-ms-query-source-authorization\"),\n"
-                                + "            querySourceAuthorization);\n"
-                                + "    }\n"
-                                + "    return hiddenGeneratedRetrieveStreamWithResponse("
-                                + "BinaryData.fromObject(retrievalRequest), requestOptions)\n"
-                                + "        .flatMapMany(response -> ServerSentEventStreams.toFlux(response,\n"
-                                + "            KnowledgeBaseRetrievalStreamEventConverter::convert,\n"
-                                + "            event -> event.getData().isTerminal()));\n" + "}\n")
-                        .asMethodDeclaration();
+                MethodDeclaration methodWithAuthorizationHeaders = StaticJavaParser
+                    .parseBodyDeclaration(
+                        "@Generated\n" + "public Flux<KnowledgeBaseRetrievalStreamEvent> retrieveStream("
+                            + "KnowledgeBaseRetrievalOptions retrievalRequest, String querySourceAuthorization) {\n"
+                            + "    RequestOptions requestOptions = new RequestOptions();\n"
+                            + "    if (querySourceAuthorization != null) {\n" + "        requestOptions.setHeader(\n"
+                            + "            HttpHeaderName.fromString(\"x-ms-query-source-authorization\"),\n"
+                            + "            querySourceAuthorization);\n" + "    }\n"
+                            + "    return hiddenGeneratedRetrieveStreamWithResponse("
+                            + "BinaryData.fromObject(retrievalRequest), requestOptions)\n"
+                            + "        .flatMapMany(response -> ServerSentEventStreams.toFlux(response,\n"
+                            + "            KnowledgeBaseRetrievalStreamEventConverter::convert,\n"
+                            + "            KnowledgeBaseRetrievalStreamEvent::isTerminal));\n" + "}\n")
+                    .asMethodDeclaration();
                 methodWithAuthorizationHeaders.setJavadocComment(
                     "Retrieves relevant data from backing stores and streams progress and results as server-sent "
-                        + "events.\n\n"
+                        + "events.\n\n" + streamEventDocumentation()
                         + "If received, the terminal {@code error} or {@code response.completed} event is emitted "
                         + "before the stream completes. End-of-stream without a terminal event completes normally. "
                         + "Transport and decoding failures are propagated through the reactive error path. The client "
@@ -235,7 +232,7 @@ public class SearchCustomizations extends Customization {
 
     private static void addSyncRetrieveStream(ClassCustomization customization) {
         customization.customizeAst(ast -> ast.addImport("com.azure.core.http.HttpHeaderName")
-            .addImport("com.azure.search.documents.models.ServerSentEventListener")
+            .addImport("com.azure.core.util.CloseableIterableStream")
             .addImport("com.azure.search.documents.models.implementation.sse.ServerSentEventStreams")
             .addImport(
                 "com.azure.search.documents.knowledgebases.implementation.KnowledgeBaseRetrievalStreamEventConverter")
@@ -243,112 +240,99 @@ public class SearchCustomizations extends Customization {
             .getClassByName(customization.getClassName())
             .ifPresent(clazz -> {
                 clazz.getMethodsByName("retrieveStream").forEach(MethodDeclaration::remove);
-                MethodDeclaration method
-                    = StaticJavaParser
-                        .parseBodyDeclaration("@Generated\n"
-                            + "public void retrieveStream(KnowledgeBaseRetrievalOptions retrievalRequest,\n"
-                                + "    ServerSentEventListener<KnowledgeBaseRetrievalStreamEvent> listener) {\n"
-                                + "    RequestOptions requestOptions = new RequestOptions();\n"
-                                + "    ServerSentEventStreams.listen(hiddenGeneratedRetrieveStreamWithResponse(\n"
-                                + "        BinaryData.fromObject(retrievalRequest), requestOptions),\n"
-                                + "        KnowledgeBaseRetrievalStreamEventConverter::convert,\n"
-                                + "        event -> event.getData().isTerminal(), listener);\n"
-                                + "}\n")
-                        .asMethodDeclaration();
+                MethodDeclaration method = StaticJavaParser.parseBodyDeclaration("@Generated\n"
+                    + "public CloseableIterableStream<KnowledgeBaseRetrievalStreamEvent> retrieveStream("
+                    + "KnowledgeBaseRetrievalOptions retrievalRequest) {\n"
+                    + "    RequestOptions requestOptions = new RequestOptions();\n"
+                    + "    return ServerSentEventStreams.toIterableStream(hiddenGeneratedRetrieveStreamWithResponse(\n"
+                    + "        BinaryData.fromObject(retrievalRequest), requestOptions),\n"
+                    + "        KnowledgeBaseRetrievalStreamEventConverter::convert,\n"
+                    + "        KnowledgeBaseRetrievalStreamEvent::isTerminal);\n" + "}\n").asMethodDeclaration();
                 method.setJavadocComment(
                     "Retrieves relevant data from backing stores and streams progress and results as server-sent "
-                        + "events.\n\n"
-                        + "If received, the terminal {@code error} or {@code response.completed} event is delivered "
-                        + "before {@link ServerSentEventListener#onClose()} is invoked. End-of-stream without a "
-                        + "terminal event closes normally. Transport and decoding failures are reported through "
-                        + "{@link ServerSentEventListener#onError(Throwable)}. The client does not reconnect "
-                        + "automatically.\n\n"
-                        + "@param retrievalRequest The retrieval request to process.\n"
-                        + "@param listener The listener that receives events and lifecycle notifications.");
+                        + "events.\n\n" + streamEventDocumentation()
+                        + "Events are decoded lazily by a single iterator. Use try-with-resources to close the "
+                        + "stream when iteration ends early. The response is also closed on end-of-stream, a "
+                        + "terminal event, or an iteration failure. Closing the stream is idempotent and may throw "
+                        + "{@link java.io.IOException}.\n\n"
+                        + "If received, the terminal {@code error} or {@code response.completed} event is emitted "
+                        + "before iteration ends. A failure while closing after a terminal event is reported by the "
+                        + "next iterator access or explicit close, after the terminal event is delivered. "
+                        + "End-of-stream without a terminal event completes normally. "
+                        + "Transport and decoding failures are thrown during iteration. The client does not "
+                        + "reconnect automatically.\n\n" + "@param retrievalRequest The retrieval request to process.\n"
+                        + "@return A closeable stream of typed knowledge base retrieval events.");
                 clazz.addMember(method);
 
-                MethodDeclaration methodWithAuthorizationHeaders
-                    = StaticJavaParser
-                        .parseBodyDeclaration("@Generated\n"
-                            + "public void retrieveStream(KnowledgeBaseRetrievalOptions retrievalRequest,\n"
-                                + "    String querySourceAuthorization,\n"
-                                + "    ServerSentEventListener<KnowledgeBaseRetrievalStreamEvent> listener) {\n"
-                                + "    RequestOptions requestOptions = new RequestOptions();\n"
-                                + "    if (querySourceAuthorization != null) {\n"
-                                + "        requestOptions.setHeader(\n"
-                                + "            HttpHeaderName.fromString(\"x-ms-query-source-authorization\"),\n"
-                                + "            querySourceAuthorization);\n"
-                                + "    }\n"
-                                + "    ServerSentEventStreams.listen(hiddenGeneratedRetrieveStreamWithResponse(\n"
-                                + "        BinaryData.fromObject(retrievalRequest), requestOptions),\n"
-                                + "        KnowledgeBaseRetrievalStreamEventConverter::convert,\n"
-                                + "        event -> event.getData().isTerminal(), listener);\n" + "}\n")
-                        .asMethodDeclaration();
+                MethodDeclaration methodWithAuthorizationHeaders = StaticJavaParser.parseBodyDeclaration("@Generated\n"
+                    + "public CloseableIterableStream<KnowledgeBaseRetrievalStreamEvent> retrieveStream("
+                    + "KnowledgeBaseRetrievalOptions retrievalRequest, String querySourceAuthorization) {\n"
+                    + "    RequestOptions requestOptions = new RequestOptions();\n"
+                    + "    if (querySourceAuthorization != null) {\n" + "        requestOptions.setHeader(\n"
+                    + "            HttpHeaderName.fromString(\"x-ms-query-source-authorization\"),\n"
+                    + "            querySourceAuthorization);\n" + "    }\n"
+                    + "    return ServerSentEventStreams.toIterableStream(hiddenGeneratedRetrieveStreamWithResponse(\n"
+                    + "        BinaryData.fromObject(retrievalRequest), requestOptions),\n"
+                    + "        KnowledgeBaseRetrievalStreamEventConverter::convert,\n"
+                    + "        KnowledgeBaseRetrievalStreamEvent::isTerminal);\n" + "}\n").asMethodDeclaration();
                 methodWithAuthorizationHeaders.setJavadocComment(
                     "Retrieves relevant data from backing stores and streams progress and results as server-sent "
-                        + "events.\n\n"
-                        + "If received, the terminal {@code error} or {@code response.completed} event is delivered "
-                        + "before {@link ServerSentEventListener#onClose()} is invoked. End-of-stream without a "
-                        + "terminal event closes normally. Transport and decoding failures are reported through "
-                        + "{@link ServerSentEventListener#onError(Throwable)}. The client does not reconnect "
-                        + "automatically.\n\n"
-                        + "@param retrievalRequest The retrieval request to process.\n"
+                        + "events.\n\n" + streamEventDocumentation()
+                        + "Events are decoded lazily by a single iterator. Use try-with-resources to close the "
+                        + "stream when iteration ends early. The response is also closed on end-of-stream, a "
+                        + "terminal event, or an iteration failure. Closing the stream is idempotent and may throw "
+                        + "{@link java.io.IOException}.\n\n"
+                        + "If received, the terminal {@code error} or {@code response.completed} event is emitted "
+                        + "before iteration ends. A failure while closing after a terminal event is reported by the "
+                        + "next iterator access or explicit close, after the terminal event is delivered. "
+                        + "End-of-stream without a terminal event completes normally. "
+                        + "Transport and decoding failures are thrown during iteration. The client does not "
+                        + "reconnect automatically.\n\n" + "@param retrievalRequest The retrieval request to process.\n"
                         + "@param querySourceAuthorization Token identifying the user for which the query is being "
                         + "executed. This token is used to enforce security restrictions on documents.\n"
-                        + "@param listener The listener that receives events and lifecycle notifications.");
+                        + "@return A closeable stream of typed knowledge base retrieval events.");
                 clazz.addMember(methodWithAuthorizationHeaders);
             }));
+    }
+
+    private static String streamEventDocumentation() {
+        return "Events are polymorphic: see {@link KnowledgeBaseRetrievalStreamEvent} for the known subtypes. "
+            + "Use a known subtype's {@code getValue()} to access its typed payload, for example "
+            + "{@link com.azure.search.documents.knowledgebases.models.KnowledgeBaseAnswerCompletedStreamEvent#getValue()}. "
+            + "Unrecognized events expose only their names through "
+            + "{@link KnowledgeBaseRetrievalStreamEvent#getEventName()}; their payloads are not available.\n\n";
     }
 
     private static String baseEventSource() {
         return header("com.azure.search.documents.knowledgebases.models")
             + "import com.azure.core.annotation.Generated;\n\n" + "/**\n"
-            + " * Base type for events emitted by a streaming knowledge base retrieval.\n" + " */\n"
+            + " * Abstract base for polymorphic events emitted by a streaming knowledge base retrieval.\n"
+            + " * Known events expose typed payloads through their subtype's {@code getValue()} method.\n"
+            + " * Unrecognized events expose only their names through {@link #getEventName()}; their payloads are not available.\n"
+            + " * Stream events are envelopes, not JSON payload models; serialize the typed payload instead.\n" + " *\n"
+            + " * @see KnowledgeBaseRetrievalStartedStreamEvent\n" + " * @see KnowledgeBaseActivityStartedStreamEvent\n"
+            + " * @see KnowledgeBaseActivityCompletedStreamEvent\n"
+            + " * @see KnowledgeBaseAnswerCompletedStreamEvent\n"
+            + " * @see KnowledgeBaseReferencesCompletedStreamEvent\n" + " * @see KnowledgeBaseErrorStreamEvent\n"
+            + " * @see KnowledgeBaseResponseCompletedStreamEvent\n" + " */\n"
             + "public abstract class KnowledgeBaseRetrievalStreamEvent {\n" + "    @Generated\n"
             + "    private final String eventName;\n\n" + "    /**\n" + "     * Creates a stream event.\n" + "     *\n"
-            + "     * @param eventName The server-sent event name.\n" + "     */\n"
-            + "    @Generated\n" + "    protected KnowledgeBaseRetrievalStreamEvent(String eventName) {\n"
+            + "     * @param eventName The server-sent event name.\n" + "     */\n" + "    @Generated\n"
+            + "    protected KnowledgeBaseRetrievalStreamEvent(String eventName) {\n"
             + "        this.eventName = eventName;\n" + "    }\n\n" + "    /**\n"
             + "     * Gets the server-sent event name.\n" + "     *\n" + "     * @return The event name.\n"
             + "     */\n" + "    @Generated\n" + "    public final String getEventName() {\n"
-            + "        return eventName;\n" + "    }\n\n"
-            + "    /**\n" + "     * Gets whether this event terminates the retrieval stream.\n" + "     *\n"
+            + "        return eventName;\n" + "    }\n\n" + "    /**\n"
+            + "     * Gets whether this event terminates the retrieval stream.\n" + "     *\n"
             + "     * @return {@code true} if this is a terminal event; otherwise {@code false}.\n" + "     */\n"
             + "    @Generated\n" + "    public boolean isTerminal() {\n" + "        return false;\n" + "    }\n"
             + "}\n";
     }
 
-
-    private static String unknownEventSource() {
-        return header("com.azure.search.documents.knowledgebases.models")
-            + "import com.azure.core.annotation.Generated;\n" + "import com.azure.core.annotation.Immutable;\n\n"
-            + "/**\n"
-            + " * Represents a knowledge base retrieval stream event that is not recognized by this SDK version.\n"
-            + " */\n" + "@Immutable\n" + "public final class UnknownKnowledgeBaseRetrievalStreamEvent\n"
-            + "    extends KnowledgeBaseRetrievalStreamEvent {\n" + "    @Generated\n"
-            + "    private final String data;\n\n" + "    /**\n"
-            + "     * Creates an unknown stream event.\n" + "     *\n"
-            + "     * @param eventName The server-sent event name.\n"
-            + "     * @param data The raw server-sent event data.\n" + "     */\n"
-            + "    @Generated\n" + "    public UnknownKnowledgeBaseRetrievalStreamEvent(String eventName, String data) {\n"
-            + "        super(eventName);\n" + "        this.data = data;\n" + "    }\n\n" + "    /**\n"
-            + "     * Gets the raw server-sent event data.\n" + "     *\n" + "     * @return The raw event data.\n"
-            + "     */\n" + "    @Generated\n" + "    public String getData() {\n" + "        return data;\n"
-            + "    }\n" + "}\n";
-    }
-
-
     private static String wrapperSource(String className, String payloadType, String eventName, boolean terminal,
         boolean listPayload) {
         String valueType = listPayload ? "List<" + payloadType + ">" : payloadType;
-        String listImport = listPayload ? "import java.util.List;\n" : "";
-        String toJson = listPayload
-            ? "        return jsonWriter.writeArray(value, (writer, item) -> item.toJson(writer));\n"
-            : "        return value.toJson(jsonWriter);\n";
-        String fromJson = listPayload
-            ? "        return new " + className + "(jsonReader.readArray(reader -> " + payloadType
-                + ".fromJson(reader)));\n"
-            : "        return new " + className + "(" + payloadType + ".fromJson(jsonReader));\n";
+        String listImports = listPayload ? "import java.util.List;\n" : "";
         String terminalOverride = terminal
             ? "\n    @Generated\n" + "    @Override\n" + "    public boolean isTerminal() {\n"
                 + "        return true;\n" + "    }\n"
@@ -356,33 +340,22 @@ public class SearchCustomizations extends Customization {
 
         return header("com.azure.search.documents.knowledgebases.models")
             + "import com.azure.core.annotation.Generated;\n" + "import com.azure.core.annotation.Immutable;\n"
-            + "import com.azure.json.JsonReader;\n"
-            + "import com.azure.json.JsonSerializable;\n" + "import com.azure.json.JsonWriter;\n\n"
-            + "import java.io.IOException;\n" + listImport + "\n" + "/**\n" + " * Represents the {@code " + eventName
-            + "} knowledge base retrieval stream event.\n" + " */\n" + "@Immutable\n" + "public final class " + className
-            + " extends KnowledgeBaseRetrievalStreamEvent\n" + "    implements JsonSerializable<" + className + "> {\n"
-            + "    @Generated\n" + "    private final " + valueType + " value;\n\n" + "    /**\n"
-            + "     * Creates an event wrapper.\n" + "     *\n" + "     * @param value The event payload.\n"
-            + "     */\n" + "    @Generated\n" + "    public " + className + "("
-            + valueType + " value) {\n" + "        super(\"" + eventName + "\");\n" + "        this.value = value;\n"
-            + "    }\n\n" + "    /**\n"
-            + "     * Gets the event payload.\n" + "     *\n" + "     * @return The event payload.\n" + "     */\n"
-            + "    @Generated\n" + "    public " + valueType + " getValue() {\n" + "        return value;\n"
-            + "    }\n\n" + terminalOverride + "\n" + "    @Generated\n" + "    @Override\n"
-            + "    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {\n" + toJson + "    }\n\n"
-            + "    /**\n" + "     * Reads an event wrapper from JSON.\n" + "     *\n"
-            + "     * @param jsonReader The reader to read from.\n" + "     * @return The parsed event wrapper.\n"
-            + "     * @throws IOException If the event payload cannot be read.\n" + "     */\n" + "    @Generated\n"
-            + "    public static " + className + " fromJson(JsonReader jsonReader) throws IOException {\n" + fromJson
-            + "    }\n" + "}\n";
+            + listImports + "\n" + "/**\n" + " * Represents the {@code " + eventName
+            + "} knowledge base retrieval stream event.\n" + " * Access the typed payload with {@link #getValue()}.\n"
+            + " *\n" + " * @see KnowledgeBaseRetrievalStreamEvent\n" + " */\n" + "@Immutable\n" + "public final class "
+            + className + " extends KnowledgeBaseRetrievalStreamEvent {\n" + "    @Generated\n" + "    private final "
+            + valueType + " value;\n\n" + "    /**\n" + "     * Creates an event wrapper.\n" + "     *\n"
+            + "     * @param value The event payload.\n" + "     */\n" + "    @Generated\n" + "    public " + className
+            + "(" + valueType + " value) {\n" + "        super(\"" + eventName + "\");\n"
+            + "        this.value = value;\n" + "    }\n\n" + "    /**\n" + "     * Gets the event payload.\n"
+            + "     *\n" + "     * @return The event payload.\n" + "     */\n" + "    @Generated\n" + "    public "
+            + valueType + " getValue() {\n" + "        return value;\n" + "    }\n" + terminalOverride + "}\n";
     }
-
 
     private static String header(String packageName) {
         return "// Copyright (c) Microsoft Corporation. All rights reserved.\n"
             + "// Licensed under the MIT License.\n\n" + "package " + packageName + ";\n\n";
     }
-
 
     // Adds SearchAudience handling to generated builders. This is a temporary fix until
     // https://github.com/microsoft/typespec/issues/9458 is addressed.
@@ -481,13 +454,13 @@ public class SearchCustomizations extends Customization {
     }
 
     private static void repairAsyncSynonymMapsConvenienceMethod(ClassCustomization customization) {
-        customization.customizeAst(ast -> ast.getClassByName(customization.getClassName()).ifPresent(clazz -> clazz
-            .getMethodsByName("getSynonymMaps")
-            .stream()
-            .filter(method -> method.getParameters().isEmpty() && method.isAnnotationPresent("Generated"))
-            .findFirst()
-            .ifPresent(method -> method.setBody(
-                StaticJavaParser.parseBlock("{ return getSynonymMaps(null, null, null, null); }")))));
+        customization.customizeAst(ast -> ast.getClassByName(customization.getClassName())
+            .ifPresent(clazz -> clazz.getMethodsByName("getSynonymMaps")
+                .stream()
+                .filter(method -> method.getParameters().isEmpty() && method.isAnnotationPresent("Generated"))
+                .findFirst()
+                .ifPresent(method -> method
+                    .setBody(StaticJavaParser.parseBlock("{ return getSynonymMaps(null, null, null, null); }")))));
     }
 
     // Removes GET equivalents of POST APIs in SearchClient and SearchAsyncClient as we never plan to expose those.

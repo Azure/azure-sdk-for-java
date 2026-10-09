@@ -5,7 +5,18 @@ package com.azure.search.documents.knowledgebases.models;
 import com.azure.core.annotation.Generated;
 
 /**
- * Base type for events emitted by a streaming knowledge base retrieval.
+ * Abstract base for polymorphic events emitted by a streaming knowledge base retrieval.
+ * Known events expose typed payloads through their subtype's {@code getValue()} method.
+ * Unrecognized events expose only their names through {@link #getEventName()}; their payloads are not available.
+ * Stream events are envelopes, not JSON payload models; serialize the typed payload instead.
+ *
+ * @see KnowledgeBaseRetrievalStartedStreamEvent
+ * @see KnowledgeBaseActivityStartedStreamEvent
+ * @see KnowledgeBaseActivityCompletedStreamEvent
+ * @see KnowledgeBaseAnswerCompletedStreamEvent
+ * @see KnowledgeBaseReferencesCompletedStreamEvent
+ * @see KnowledgeBaseErrorStreamEvent
+ * @see KnowledgeBaseResponseCompletedStreamEvent
  */
 public abstract class KnowledgeBaseRetrievalStreamEvent {
 

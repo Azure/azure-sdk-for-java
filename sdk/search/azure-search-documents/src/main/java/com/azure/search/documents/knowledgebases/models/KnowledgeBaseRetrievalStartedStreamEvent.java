@@ -4,17 +4,15 @@ package com.azure.search.documents.knowledgebases.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
 
 /**
  * Represents the {@code retrieval.started} knowledge base retrieval stream event.
+ * Access the typed payload with {@link #getValue()}.
+ *
+ * @see KnowledgeBaseRetrievalStreamEvent
  */
 @Immutable
-public final class KnowledgeBaseRetrievalStartedStreamEvent extends KnowledgeBaseRetrievalStreamEvent
-    implements JsonSerializable<KnowledgeBaseRetrievalStartedStreamEvent> {
+public final class KnowledgeBaseRetrievalStartedStreamEvent extends KnowledgeBaseRetrievalStreamEvent {
 
     @Generated
     private final KnowledgeBaseRetrievalStartedEvent value;
@@ -38,23 +36,5 @@ public final class KnowledgeBaseRetrievalStartedStreamEvent extends KnowledgeBas
     @Generated
     public KnowledgeBaseRetrievalStartedEvent getValue() {
         return value;
-    }
-
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        return value.toJson(jsonWriter);
-    }
-
-    /**
-     * Reads an event wrapper from JSON.
-     *
-     * @param jsonReader The reader to read from.
-     * @return The parsed event wrapper.
-     * @throws IOException If the event payload cannot be read.
-     */
-    @Generated
-    public static KnowledgeBaseRetrievalStartedStreamEvent fromJson(JsonReader jsonReader) throws IOException {
-        return new KnowledgeBaseRetrievalStartedStreamEvent(KnowledgeBaseRetrievalStartedEvent.fromJson(jsonReader));
     }
 }

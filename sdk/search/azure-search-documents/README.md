@@ -42,7 +42,8 @@ Previously supported GA service versions remain selectable with `SearchServiceVe
 
 Knowledge bases, typed retrieval streaming, and file knowledge sources are included in this GA API.
 See the [knowledge base configuration sample](src/samples/java/com/azure/search/documents/KnowledgeBaseConfigurationExample.java),
-[retrieval response sample](src/samples/java/com/azure/search/documents/KnowledgeRetrievalResponseExample.java), and
+[retrieval response sample](src/samples/java/com/azure/search/documents/KnowledgeRetrievalResponseExample.java),
+[retrieval streaming sample](src/samples/java/com/azure/search/documents/KnowledgeBaseRetrievalStreamExample.java), and
 [file knowledge source sample](src/samples/java/com/azure/search/documents/KnowledgeSourceFileExample.java).
 When migrating from the previous beta, use `setMaxOutputSizeInTokens` instead of `setMaxOutputSize` and remove the
 Work IQ authorization argument from retrieval calls. Other removed preview features are listed in [the changelog](CHANGELOG.md).

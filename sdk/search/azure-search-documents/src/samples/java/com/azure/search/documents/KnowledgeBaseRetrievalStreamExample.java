@@ -4,6 +4,7 @@
 package com.azure.search.documents;
 
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.util.CloseableIterableStream;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
 import com.azure.search.documents.indexes.models.AzureOpenAIModelName;
@@ -23,6 +24,7 @@ import com.azure.search.documents.indexes.models.SemanticSearch;
 import com.azure.search.documents.knowledgebases.KnowledgeBaseRetrievalAsyncClient;
 import com.azure.search.documents.knowledgebases.KnowledgeBaseRetrievalClient;
 import com.azure.search.documents.knowledgebases.KnowledgeBaseRetrievalClientBuilder;
+import com.azure.search.documents.knowledgebases.models.KnowledgeBaseAnswerCompletedStreamEvent;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseResponseCompletedStreamEvent;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalOptions;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalStartedStreamEvent;
@@ -32,9 +34,9 @@ import com.azure.search.documents.models.IndexAction;
 import com.azure.search.documents.models.IndexActionType;
 import com.azure.search.documents.models.IndexDocumentsBatch;
 import com.azure.search.documents.models.IndexDocumentsResult;
-import com.azure.search.documents.models.ServerSentEvent;
-import com.azure.search.documents.models.ServerSentEventListener;
 
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -117,34 +119,29 @@ public class KnowledgeBaseRetrievalStreamExample {
     private static void streamSynchronously(KnowledgeBaseRetrievalClient client, KnowledgeBaseRetrievalOptions request) {
         AtomicBoolean started = new AtomicBoolean();
         AtomicBoolean completed = new AtomicBoolean();
-        client.retrieveStream(request, new ServerSentEventListener<KnowledgeBaseRetrievalStreamEvent>() {
-            @Override
-            public void onEvent(ServerSentEvent<KnowledgeBaseRetrievalStreamEvent> event) {
+        try (CloseableIterableStream<KnowledgeBaseRetrievalStreamEvent> events = client.retrieveStream(request)) {
+            for (KnowledgeBaseRetrievalStreamEvent event : events) {
                 inspectEvent(event, started, completed);
             }
-
-            @Override
-            public void onError(Throwable error) {
-                throw new IllegalStateException("Knowledge base retrieval stream failed.", error);
-            }
-
-            @Override
-            public void onClose() {
-                System.out.println("Stream closed.");
-            }
-        });
+        } catch (IOException exception) {
+            throw new UncheckedIOException("Failed to close the knowledge base retrieval stream.", exception);
+        }
         verifyStream(started, completed);
     }
 
-    private static void inspectEvent(ServerSentEvent<KnowledgeBaseRetrievalStreamEvent> event, AtomicBoolean started,
+    private static void inspectEvent(KnowledgeBaseRetrievalStreamEvent event, AtomicBoolean started,
         AtomicBoolean completed) {
-        System.out.println("Received event: " + event.getEvent());
-        if (event.getData() instanceof KnowledgeBaseRetrievalStartedStreamEvent) {
+        System.out.println("Received event: " + event.getEventName());
+        if (event instanceof KnowledgeBaseAnswerCompletedStreamEvent) {
+            KnowledgeBaseAnswerCompletedStreamEvent answerEvent = (KnowledgeBaseAnswerCompletedStreamEvent) event;
+            System.out.println("Answer: " + answerEvent.getValue().getMessage());
+        }
+        if (event instanceof KnowledgeBaseRetrievalStartedStreamEvent) {
             started.set(true);
         }
-        if (event.getData() instanceof KnowledgeBaseResponseCompletedStreamEvent) {
+        if (event instanceof KnowledgeBaseResponseCompletedStreamEvent) {
             KnowledgeBaseResponseCompletedStreamEvent completionEvent
-                = (KnowledgeBaseResponseCompletedStreamEvent) event.getData();
+                = (KnowledgeBaseResponseCompletedStreamEvent) event;
             if (!completionEvent.isTerminal() || completionEvent.getValue().getResponse() == null) {
                 throw new IllegalStateException("The terminal event didn't contain the completed response.");
             }
