@@ -64,11 +64,11 @@ import com.azure.storage.file.share.implementation.models.SymLinkItem;
 import com.azure.storage.file.share.models.CopyStatusType;
 import com.azure.storage.file.share.models.CopyableFileSmbPropertiesList;
 import com.azure.storage.file.share.models.FilePosixProperties;
+import com.azure.storage.file.share.models.FileType;
 import com.azure.storage.file.share.models.HandleItem;
 import com.azure.storage.file.share.models.LeaseDurationType;
 import com.azure.storage.file.share.models.LeaseStateType;
 import com.azure.storage.file.share.models.LeaseStatusType;
-import com.azure.storage.file.share.models.NfsFileType;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
 import com.azure.storage.file.share.models.ShareDirectoryInfo;
 import com.azure.storage.file.share.models.ShareDirectoryProperties;
@@ -654,7 +654,7 @@ public class ModelHelper {
 
     private static ShareFileItem toShareFileItem(StringEncoded name, boolean isDirectory, String fileId,
         FileProperty properties, String attributes, String permissionKey, Long fileSize, Long linkCount,
-        NfsFileType fileType, String linkText, Long deviceMajor, Long deviceMinor) {
+        FileType fileType, String linkText, Long deviceMajor, Long deviceMinor) {
         return ShareFileItemConstructorProxy.create(ModelHelper.decodeName(name), isDirectory, fileId,
             ModelHelper.transformFileProperty(properties), NtfsFileAttributes.toAttributes(attributes), permissionKey,
             fileSize, linkCount, fileType, linkText, deviceMajor, deviceMinor);
@@ -664,8 +664,8 @@ public class ModelHelper {
         return properties == null ? null : properties.getContentLength();
     }
 
-    private static NfsFileType getDirectoryFileType() {
-        return NfsFileType.DIRECTORY;
+    private static FileType getDirectoryFileType() {
+        return FileType.DIRECTORY;
     }
 
     public static List<ListFilesIncludeType> getListFilesIncludeTypes(ShareListFilesAndDirectoriesOptions options) {
@@ -702,33 +702,33 @@ public class ModelHelper {
 
     private static ShareFileItem createFileShareItem(FileItem item) {
         return toShareFileItem(item.getName(), false, item.getFileId(), item.getProperties(), item.getAttributes(),
-            item.getPermissionKey(), getContentLength(item.getProperties()), item.getLinkCount(),
-            item.getFileType() == null ? NfsFileType.REGULAR : item.getFileType(), null, null, null);
+            item.getPermissionKey(), getContentLength(item.getProperties()), item.getLinkCount(), FileType.REGULAR,
+            null, null, null);
     }
 
     private static ShareFileItem createSymLinkShareItem(SymLinkItem item) {
         return toShareFileItem(item.getName(), false, item.getFileId(), item.getProperties(), null, null, null,
-            item.getLinkCount(), NfsFileType.SYM_LINK, item.getLinkText(), null, null);
+            item.getLinkCount(), FileType.SYM_LINK, item.getLinkText(), null, null);
     }
 
     private static ShareFileItem createBlockDeviceShareItem(BlockDeviceItem item) {
         return toShareFileItem(item.getName(), false, item.getFileId(), item.getProperties(), null, null, null,
-            item.getLinkCount(), NfsFileType.BLOCK_DEVICE, null, item.getDeviceMajor(), item.getDeviceMinor());
+            item.getLinkCount(), FileType.BLOCK_DEVICE, null, item.getDeviceMajor(), item.getDeviceMinor());
     }
 
     private static ShareFileItem createCharDeviceShareItem(CharDeviceItem item) {
         return toShareFileItem(item.getName(), false, item.getFileId(), item.getProperties(), null, null, null,
-            item.getLinkCount(), NfsFileType.CHARACTER_DEVICE, null, item.getDeviceMajor(), item.getDeviceMinor());
+            item.getLinkCount(), FileType.CHARACTER_DEVICE, null, item.getDeviceMajor(), item.getDeviceMinor());
     }
 
     private static ShareFileItem createFifoShareItem(FifoItem item) {
         return toShareFileItem(item.getName(), false, item.getFileId(), item.getProperties(), null, null, null,
-            item.getLinkCount(), NfsFileType.FIFO, null, null, null);
+            item.getLinkCount(), FileType.FIFO, null, null, null);
     }
 
     private static ShareFileItem createSocketShareItem(SocketItem item) {
         return toShareFileItem(item.getName(), false, item.getFileId(), item.getProperties(), null, null, null,
-            item.getLinkCount(), NfsFileType.SOCKET, null, null, null);
+            item.getLinkCount(), FileType.SOCKET, null, null, null);
     }
 
     public static Response<ShareFileInfo>

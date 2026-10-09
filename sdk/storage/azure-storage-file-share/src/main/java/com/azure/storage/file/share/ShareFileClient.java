@@ -2546,7 +2546,7 @@ public class ShareFileClient {
             Callable<ResponseBase<FilesGetRangeListHeaders, ShareFileRangeList>> operation
                 = () -> this.azureFileStorageClient.getFiles()
                     .getRangeListWithResponse(shareName, filePath, snapshot, null, null, rangeString,
-                        finalRequestConditions.getLeaseId(), null, finalContext);
+                        finalRequestConditions.getLeaseId(), null, null, null, finalContext);
 
             ResponseBase<FilesGetRangeListHeaders, ShareFileRangeList> response
                 = sendRequest(operation, timeout, ShareStorageException.class);
@@ -2639,7 +2639,7 @@ public class ShareFileClient {
         String rangeString = options.getRange() == null ? null : options.getRange().toString();
         Callable<Response<ShareFileRangeList>> operation = () -> this.azureFileStorageClient.getFiles()
             .getRangeListNoCustomHeadersWithResponse(shareName, filePath, snapshot, options.getPreviousSnapshot(), null,
-                rangeString, requestConditions.getLeaseId(), options.isRenameIncluded(), finalContext);
+                rangeString, requestConditions.getLeaseId(), options.isRenameIncluded(), null, null, finalContext);
 
         return sendRequest(operation, timeout, ShareStorageException.class);
     }

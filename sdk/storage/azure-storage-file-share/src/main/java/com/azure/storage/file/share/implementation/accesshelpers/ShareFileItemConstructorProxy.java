@@ -3,7 +3,7 @@
 
 package com.azure.storage.file.share.implementation.accesshelpers;
 
-import com.azure.storage.file.share.models.NfsFileType;
+import com.azure.storage.file.share.models.FileType;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
 import com.azure.storage.file.share.models.ShareFileItem;
 import com.azure.storage.file.share.models.ShareFileItemProperties;
@@ -42,7 +42,7 @@ public final class ShareFileItemConstructorProxy {
          */
         ShareFileItem create(String name, boolean isDirectory, String id, ShareFileItemProperties properties,
             EnumSet<NtfsFileAttributes> fileAttributes, String permissionKey, Long fileSize, Long linkCount,
-            NfsFileType fileType, String linkText, Long deviceMajor, Long deviceMinor);
+            FileType fileType, String linkText, Long deviceMajor, Long deviceMinor);
     }
 
     /**
@@ -73,7 +73,7 @@ public final class ShareFileItemConstructorProxy {
      */
     public static ShareFileItem create(String name, boolean isDirectory, String id, ShareFileItemProperties properties,
         EnumSet<NtfsFileAttributes> fileAttributes, String permissionKey, Long fileSize, Long linkCount,
-        NfsFileType fileType, String linkText, Long deviceMajor, Long deviceMinor) {
+        FileType fileType, String linkText, Long deviceMajor, Long deviceMinor) {
         // This looks odd but is necessary, it is possible to engage the access helper before anywhere else in the
         // application accesses ShareFileItem which triggers the accessor to be configured. So, if the accessor
         // is null this effectively pokes the class to set up the accessor.

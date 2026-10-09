@@ -2866,7 +2866,7 @@ public class ShareFileAsyncClient {
 
         return this.azureFileStorageClient.getFiles()
             .getRangeListWithResponseAsync(shareName, filePath, snapshot, previousSnapshot, null, rangeString,
-                finalRequestConditions.getLeaseId(), supportRename, context)
+                finalRequestConditions.getLeaseId(), supportRename, null, null, context)
             .map(response -> new SimpleResponse<>(response, response.getValue()));
     }
 
