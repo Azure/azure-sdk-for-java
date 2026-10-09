@@ -1,14 +1,93 @@
 # Release History
 
-## 2.65.0-beta.1 (Unreleased)
+## 2.65.0 (2026-10-09)
 
-### Features Added
+### azure-resourcemanager-resources
 
-### Breaking Changes
+#### Breaking Changes
 
-### Bugs Fixed
+- Removed properties `ancestors`, `complianceReasonCode`, `policyAssignmentDisplayName`, `policyDefinitionDisplayName`,
+  `policyDefinitionGroupNames`, `policyExemptionIds`, `policySetDefinitionCategory`, `policySetDefinitionDisplayName`, and
+  `resourceLocation` from `PolicyLogInfo`, as they are not supported by the Policy service.
+
+#### Dependency Updates
+
+- Package api-version 2026-07-01.
+
+- Updated `api-version` of management locks to `2020-05-01`.
+
+### azure-resourcemanager-network
+
+#### Bugs Fixed
+
+- Fixed VMSS public IP address get and list operations to use the Compute API version `2018-10-01` instead of the Network API version.
+
+#### Dependency Updates
+
+- Package api-version Microsoft.Network: 2026-01-01, Microsoft.Compute: 2018-10-01.
+
+### azure-resourcemanager-containerservice
+
+#### Features Added
+
+* `models.KubernetesResourceObjectEncryptionProfile` was added
+
+* `models.InfrastructureEncryption` was added
+
+##### `models.ManagedClusterSecurityProfile` was modified
+
+* `withKubernetesResourceObjectEncryptionProfile(models.KubernetesResourceObjectEncryptionProfile)` was added
+* `kubernetesResourceObjectEncryptionProfile()` was added
+
+#### Dependency Updates
+
+- Package api-version 2026-07-01.
+
+### azure-resourcemanager-trafficmanager
+
+#### Features Added
+
+* `models.RecordType` was added
+
+#### Breaking Changes
+
+##### `models.ProfileListResult` was removed
+
+##### `models.TrafficFlow` was modified
+
+* `TrafficFlow()` was changed to private access
+* `withSourceIp(java.lang.String)` was removed
+* `withLongitude(java.lang.Double)` was removed
+* `withQueryExperiences(java.util.List)` was removed
+* `withLatitude(java.lang.Double)` was removed
+
+##### `models.QueryExperience` was modified
+
+* `QueryExperience()` was changed to private access
+* `withEndpointId(int)` was removed
+* `withLatency(java.lang.Double)` was removed
+* `withQueryCount(int)` was removed
+
+##### `models.HeatMapEndpoint` was modified
+
+* `HeatMapEndpoint()` was changed to private access
+* `withResourceId(java.lang.String)` was removed
+* `withEndpointId(java.lang.Integer)` was removed
+
+##### `models.Region` was modified
+
+* `Region()` was changed to private access
+* `withCode(java.lang.String)` was removed
+* `withName(java.lang.String)` was removed
+* `withRegions(java.util.List)` was removed
+
+#### Dependency Updates
+
+- Package api-version 2026-09-01.
 
 ### Other Changes
+
+- Updated dependencies from resources.
 
 ## 2.64.0 (2026-09-20)
 
