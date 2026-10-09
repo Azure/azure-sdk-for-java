@@ -1641,8 +1641,8 @@ public class BlobAsyncClientBase {
                         String endpoint
                             = BlobLayoutRangeResolver.resolveEndpoint(range.getOffset(), cached.getRanges());
                         Context callContext = StorageImplUtils.addDataLocalityEndpoint(finalContext, endpoint);
-                        return this.downloadStreamWithResponseInternal(range, downloadRetryOptions,
-                            conditions, rangeGetContentMd5, contentValidationAlgorithm, callContext);
+                        return this.downloadStreamWithResponseInternal(range, downloadRetryOptions, conditions,
+                            rangeGetContentMd5, contentValidationAlgorithm, callContext);
                     });
                 }
                 BiFunction<BlobRange, BlobRequestConditions, Mono<BlobDownloadAsyncResponse>> finalChunkDownloadFunc
