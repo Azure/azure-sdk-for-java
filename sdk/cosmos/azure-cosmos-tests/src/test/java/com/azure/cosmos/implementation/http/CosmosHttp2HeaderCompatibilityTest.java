@@ -66,6 +66,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class CosmosHttp2HeaderCompatibilityTest {
     private static final String HEADER = "x-ms-serviceversion";
+    private static final String CLEANER_NAME = "customHeaderCleaner";
     private static final Duration TIMEOUT = Duration.ofSeconds(15);
     private Path certificateDirectory;
     private Path certificateStore;
@@ -109,7 +110,7 @@ public class CosmosHttp2HeaderCompatibilityTest {
     public Object[][] padding() {
         return new Object[][] {
             { "version", "version" }, { " version", "version" }, { "version ", "version" },
-            { "\t version \t", "version" }, { " \t ", "" }, { "v er\tsion", "v er\tsion" }
+            { " \tversion\t ", "version" }, { " \t ", "" }, { "v er\tsion", "v er\tsion" }
         };
     }
 
@@ -129,8 +130,9 @@ public class CosmosHttp2HeaderCompatibilityTest {
     @DataProvider(name = "prohibitedValues")
     public Object[][] prohibitedValues() {
         return new Object[][] {
-            { HEADER, " v\r " }, { HEADER, " v\n " }, { HEADER, " v\0 " },
+            { HEADER, " v\rx " }, { HEADER, " v\nx " }, { HEADER, " v\0x " },
             { HEADER, "\rv" }, { HEADER, "v\n" }, { HEADER, "\0" },
+            { HEADER, "\tversion\t" },
             { "x-other", " v " }, { "x-other", "v\r" }, { "x-other", "v\n" }, { "x-other", "v\0" }
         };
     }
@@ -350,7 +352,7 @@ public class CosmosHttp2HeaderCompatibilityTest {
                 assertThat(response.statusCode()).isEqualTo(200);
                 assertThat(response.headerValue(HEADER)).isEqualTo("version");
                 assertThat(response.internConnection().channel().pipeline().get(
-                    Http2ResponseHeaderCleanerHandler.HANDLER_NAME)).isNull();
+                    CLEANER_NAME)).isNull();
                 return response.bodyAsString();
             }).block(TIMEOUT);
             assertThat(body).isEqualTo("plaintext-body");
@@ -380,14 +382,14 @@ public class CosmosHttp2HeaderCompatibilityTest {
             if (request.reactorNettyRequestRecord().isHttp2()) {
                 Channel channel = response.internConnection().channel();
                 Channel parent = channel.parent() != null ? channel.parent() : channel;
-                assertThat(parent.pipeline().get(Http2ResponseHeaderCleanerHandler.HANDLER_NAME))
+                assertThat(parent.pipeline().get(CLEANER_NAME))
                     .isInstanceOf(Http2ResponseHeaderCleanerHandler.class);
-                assertThat(parent.pipeline().names().indexOf(Http2ResponseHeaderCleanerHandler.HANDLER_NAME))
+                assertThat(parent.pipeline().names().indexOf(CLEANER_NAME))
                     .isGreaterThan(parent.pipeline().names().indexOf("reactor.left.httpCodec"))
                     .isLessThan(parent.pipeline().names().indexOf("reactor.left.h2MultiplexHandler"));
             } else {
                 assertThat(response.internConnection().channel().pipeline().get(
-                    Http2ResponseHeaderCleanerHandler.HANDLER_NAME)).isNull();
+                    CLEANER_NAME)).isNull();
             }
             String value = response.headerValue(HEADER);
             return response.bodyAsString().defaultIfEmpty("").thenReturn(value);
@@ -465,7 +467,7 @@ public class CosmosHttp2HeaderCompatibilityTest {
                                                                 if (wireHeaders == null) {
                                                                     String responseValue = "/invalid".equals(
                                                                         ((Http2HeadersFrame) message).headers().path().toString())
-                                                                        ? " v\0 " : value;
+                                                                        ? " v\0x " : value;
                                                                     Http2Headers headers = new DefaultHttp2Headers(false, false, 16)
                                                                         .status("200").add(HEADER, responseValue);
                                                                     ctx.writeAndFlush(new DefaultHttp2HeadersFrame(headers, true));

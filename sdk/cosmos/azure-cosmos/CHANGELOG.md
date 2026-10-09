@@ -7,7 +7,7 @@
 #### Breaking Changes
 
 #### Bugs Fixed
-* Fixed HTTP/2 responses with surrounding spaces or tabs in `x-ms-serviceversion` by disabling response-decoder header validation and trimming that field before HTTP/2 stream conversion. Reactor retains its normal initialization. The decoder setting also relaxes HTTP/1.1 header validation; HTTP/2 stream conversion still validates header values but does not restore all HTTP/2-specific checks.
+* Fixed HTTP/2 responses with surrounding spaces in `x-ms-serviceversion` by disabling response-decoder header validation so the existing downstream header cleaner can run before HTTP/2 stream conversion. Reactor retains its normal initialization. The decoder setting also relaxes HTTP/1.1 header validation; HTTP/2 stream conversion still validates the resulting header values but does not restore all HTTP/2-specific checks.
 * Fixed the Direct mode (RNTBD) encoding of the `x-ms-cosmos-workload-id` header, which was sent with the wrong token ID (`0x00DC`) and type (`Byte`) instead of `0x00E7` and `UShort`. - See [PR 50673](https://github.com/Azure/azure-sdk-for-java/pull/50673)
 
 #### Other Changes

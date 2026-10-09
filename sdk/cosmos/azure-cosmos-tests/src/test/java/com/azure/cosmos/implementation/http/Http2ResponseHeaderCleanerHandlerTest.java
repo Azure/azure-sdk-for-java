@@ -15,6 +15,7 @@ import io.netty.handler.codec.http2.Http2Headers;
 import io.netty.handler.codec.http2.Http2Settings;
 import io.netty.handler.codec.http2.Http2SettingsAckFrame;
 import io.netty.util.AsciiString;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.nio.charset.StandardCharsets;
@@ -25,9 +26,9 @@ public class Http2ResponseHeaderCleanerHandlerTest {
     private static final String HEADER = "x-ms-serviceversion";
 
     @Test(groups = "unit")
-    public void trimsEveryServiceVersionValueWithoutDroppingDuplicates() {
+    public void trimsTheServiceVersionValueWithoutChangingOtherHeaders() {
         Http2Headers headers = new DefaultHttp2Headers(false).status("200")
-            .add(HEADER, "first").add(HEADER, " \tsecond\t ").add(HEADER, " third ")
+            .add(HEADER, " version ")
             .add("x-other", " untouched ");
         EmbeddedChannel channel = new EmbeddedChannel(new Http2ResponseHeaderCleanerHandler());
         try {
@@ -35,8 +36,42 @@ public class Http2ResponseHeaderCleanerHandlerTest {
             assertThat(channel.writeInbound(frame)).isTrue();
             assertThat((Object) channel.readInbound()).isSameAs(frame);
             assertThat(headers.getAll(HEADER)).extracting(CharSequence::toString)
-                .containsExactly("first", "second", "third");
+                .containsExactly("version");
             assertThat(headers.get("x-other").toString()).isEqualTo(" untouched ");
+        } finally {
+            channel.finishAndReleaseAll();
+        }
+    }
+
+    @DataProvider(name = "mainTrimmingBehavior")
+    public Object[][] mainTrimmingBehavior() {
+        return new Object[][] {
+            { "", "" }, { " version", "version" }, { "version ", "version" },
+            { " \tversion\t ", "version" }, { "\tversion\t", "\tversion\t" },
+            { " v\0 ", "v" }, { " v\0x ", "v\0x" }
+        };
+    }
+
+    @Test(groups = "unit", dataProvider = "mainTrimmingBehavior")
+    public void retainsMainSpaceGuardAndStringTrimSemantics(String value, String expected) {
+        Http2Headers headers = new DefaultHttp2Headers(false).status("200").add(HEADER, value);
+        EmbeddedChannel channel = new EmbeddedChannel(new Http2ResponseHeaderCleanerHandler());
+        try {
+            channel.writeInbound(new DefaultHttp2HeadersFrame(headers, true));
+            assertThat(headers.get(HEADER).toString()).isEqualTo(expected);
+        } finally {
+            channel.finishAndReleaseAll();
+        }
+    }
+
+    @Test(groups = "unit")
+    public void retainsMainSingleValueReplacementForDuplicates() {
+        Http2Headers headers = new DefaultHttp2Headers(false).status("200")
+            .add(HEADER, " first ").add(HEADER, "second");
+        EmbeddedChannel channel = new EmbeddedChannel(new Http2ResponseHeaderCleanerHandler());
+        try {
+            channel.writeInbound(new DefaultHttp2HeadersFrame(headers, true));
+            assertThat(headers.getAll(HEADER)).extracting(CharSequence::toString).containsExactly("first");
         } finally {
             channel.finishAndReleaseAll();
         }

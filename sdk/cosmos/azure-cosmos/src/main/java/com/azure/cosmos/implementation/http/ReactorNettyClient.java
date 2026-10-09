@@ -195,9 +195,9 @@ public class ReactorNettyClient implements HttpClient {
                     ChannelPipeline channelPipeline = connection.channel().pipeline();
                     // Stream conversion still validates values, so normalize before multiplexing.
                     if (channelPipeline.get(Http2FrameCodec.class) != null
-                        && channelPipeline.get(Http2ResponseHeaderCleanerHandler.HANDLER_NAME) == null) {
+                        && channelPipeline.get("customHeaderCleaner") == null) {
                         channelPipeline.addAfter(NettyPipeline.HttpCodec,
-                            Http2ResponseHeaderCleanerHandler.HANDLER_NAME, new Http2ResponseHeaderCleanerHandler());
+                            "customHeaderCleaner", new Http2ResponseHeaderCleanerHandler());
                     }
 
                     // Install exception handler at the tail of the HTTP/2 parent (TCP)
