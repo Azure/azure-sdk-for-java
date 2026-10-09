@@ -10,9 +10,11 @@ trigger:
     include:
       - sdk/appcontainers/ci.yml
       - sdk/appcontainers/azure-resourcemanager-appcontainers/
+      - sdk/appcontainers/azure-containers-apps-sandbox/
     exclude:
       - sdk/appcontainers/pom.xml
       - sdk/appcontainers/azure-resourcemanager-appcontainers/pom.xml
+      - sdk/appcontainers/azure-containers-apps-sandbox/pom.xml
 
 pr:
   branches:
@@ -25,9 +27,11 @@ pr:
     include:
       - sdk/appcontainers/ci.yml
       - sdk/appcontainers/azure-resourcemanager-appcontainers/
+      - sdk/appcontainers/azure-containers-apps-sandbox/
     exclude:
       - sdk/appcontainers/pom.xml
       - sdk/appcontainers/azure-resourcemanager-appcontainers/pom.xml
+      - sdk/appcontainers/azure-containers-apps-sandbox/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
@@ -37,3 +41,6 @@ extends:
       - name: azure-resourcemanager-appcontainers
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerappcontainers
+      - name: azure-containers-apps-sandbox
+        groupId: com.azure
+        safeName: azurecontainersappssandbox
