@@ -12,7 +12,7 @@ import java.util.Arrays;
  */
 public final class ProtectedItemsOperationGroupCountByProtectionGroupsSamples {
     /*
-     * x-ms-original-file: 2026-07-03-preview/ProtectedItemsOperationGroup_CountByProtectionGroups_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-09-30/ProtectedItemsOperationGroup_CountByProtectionGroups_MinimumSet_Gen.json
      */
     /**
      * Sample code: ProtectedItemsOperationGroup_CountByProtectionGroups_MinimumSet.
@@ -29,7 +29,7 @@ public final class ProtectedItemsOperationGroupCountByProtectionGroupsSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-03-preview/ProtectedItemsOperationGroup_CountByProtectionGroups_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-30/ProtectedItemsOperationGroup_CountByProtectionGroups_MaximumSet_Gen.json
      */
     /**
      * Sample code: ProtectedItemsOperationGroup_CountByProtectionGroups_MaximumSet.

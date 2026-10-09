@@ -13,9 +13,9 @@ public final class RoleMappingListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RoleMappingListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"roles\":[{\"roleName\":\"SecurityAdmin\",\"entities\":[{}]},{\"roleName\":\"BackupOperator\",\"entities\":[{}]},{\"roleName\":\"BackupOperator\",\"entities\":[{},{},{}]},{\"roleName\":\"BackupOperator\",\"entities\":[{},{},{}]}],\"provisioningState\":\"Succeeded\"},\"id\":\"ccjzkzivgvv\",\"name\":\"nayrhyrnxxmueedn\",\"type\":\"rdvstkwqqtch\"},{\"properties\":{\"roles\":[{\"roleName\":\"SecurityAdmin\",\"entities\":[{}]},{\"roleName\":\"MultiPersonAuthorization\",\"entities\":[{}]},{\"roleName\":\"SecurityAdmin\",\"entities\":[{},{},{}]}],\"provisioningState\":\"Canceled\"},\"id\":\"ohgwxrtfudxepxg\",\"name\":\"qagvrvm\",\"type\":\"pkukghi\"},{\"properties\":{\"roles\":[{\"roleName\":\"BackupOperator\",\"entities\":[{},{},{}]},{\"roleName\":\"BackupAdmin\",\"entities\":[{},{}]},{\"roleName\":\"BackupOperator\",\"entities\":[{}]}],\"provisioningState\":\"Canceled\"},\"id\":\"zk\",\"name\":\"foqreyfkzik\",\"type\":\"jawneaiv\"}],\"nextLink\":\"czelpcirel\"}")
+            "{\"value\":[{\"properties\":{\"roles\":[{\"roleName\":\"SecurityAdmin\",\"entities\":[{}]}],\"provisioningState\":\"Canceled\"},\"id\":\"pichkoymkcdy\",\"name\":\"bpkkpwdre\",\"type\":\"novvqfovljxy\"},{\"properties\":{\"roles\":[{\"roleName\":\"BackupUser\",\"entities\":[{}]}],\"provisioningState\":\"Failed\"},\"id\":\"dsytgadgvr\",\"name\":\"ea\",\"type\":\"neqn\"},{\"properties\":{\"roles\":[{\"roleName\":\"SecurityAdmin\",\"entities\":[{},{},{},{}]},{\"roleName\":\"BackupOperator\",\"entities\":[{}]}],\"provisioningState\":\"Succeeded\"},\"id\":\"fqka\",\"name\":\"e\",\"type\":\"iipfpubj\"}],\"nextLink\":\"wwiftohqkvpuv\"}")
             .toObject(RoleMappingListResult.class);
         Assertions.assertEquals(RoleName.SECURITY_ADMIN, model.value().get(0).properties().roles().get(0).roleName());
-        Assertions.assertEquals("czelpcirel", model.nextLink());
+        Assertions.assertEquals("wwiftohqkvpuv", model.nextLink());
     }
 }

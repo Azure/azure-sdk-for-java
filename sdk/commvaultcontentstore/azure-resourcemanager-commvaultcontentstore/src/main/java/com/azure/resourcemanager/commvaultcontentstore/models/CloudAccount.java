@@ -222,7 +222,7 @@ public interface CloudAccount {
     /**
      * The template for CloudAccount update.
      */
-    interface Update extends UpdateStages.WithTags, UpdateStages.WithIdentity, UpdateStages.WithProperties {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithProperties, UpdateStages.WithIdentity {
         /**
          * Executes the update request.
          * 
@@ -257,6 +257,19 @@ public interface CloudAccount {
         }
 
         /**
+         * The stage of the CloudAccount update allowing to specify properties.
+         */
+        interface WithProperties {
+            /**
+             * Specifies the properties property: The resource-specific properties for this resource..
+             * 
+             * @param properties The resource-specific properties for this resource.
+             * @return the next definition stage.
+             */
+            Update withProperties(CloudAccountProperties properties);
+        }
+
+        /**
          * The stage of the CloudAccount update allowing to specify identity.
          */
         interface WithIdentity {
@@ -267,19 +280,6 @@ public interface CloudAccount {
              * @return the next definition stage.
              */
             Update withIdentity(ManagedServiceIdentity identity);
-        }
-
-        /**
-         * The stage of the CloudAccount update allowing to specify properties.
-         */
-        interface WithProperties {
-            /**
-             * Specifies the properties property: The resource-specific properties for this resource..
-             * 
-             * @param properties The resource-specific properties for this resource.
-             * @return the next definition stage.
-             */
-            Update withProperties(CloudAccountUpdateProperties properties);
         }
     }
 
