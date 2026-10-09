@@ -24,7 +24,7 @@ import java.util.Map;
  */
 public final class VpnGatewaysCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-01-01/VpnGatewayPut.json
+     * x-ms-original-file: 2026-03-01/VpnGatewayPut.json
      */
     /**
      * Sample code: VpnGatewayPut.

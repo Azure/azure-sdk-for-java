@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class ExpressRouteCircuitAuthorizationsListKeysSamples {
     /*
-     * x-ms-original-file: 2026-01-01/ExpressRouteCircuitAuthorizationListKeys.json
+     * x-ms-original-file: 2026-03-01/ExpressRouteCircuitAuthorizationListKeys.json
      */
     /**
      * Sample code: List ExpressRouteCircuit Authorization Keys.

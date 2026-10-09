@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class VerifierWorkspacesDeleteSamples {
     /*
-     * x-ms-original-file: 2026-01-01/VerifierWorkspaceDelete.json
+     * x-ms-original-file: 2026-03-01/VerifierWorkspaceDelete.json
      */
     /**
      * Sample code: VerifierWorkspaceDelete.

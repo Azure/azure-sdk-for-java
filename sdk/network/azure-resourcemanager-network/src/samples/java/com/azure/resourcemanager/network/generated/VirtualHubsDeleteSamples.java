@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class VirtualHubsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-01-01/VirtualHubDelete.json
+     * x-ms-original-file: 2026-03-01/VirtualHubDelete.json
      */
     /**
      * Sample code: VirtualHubDelete.

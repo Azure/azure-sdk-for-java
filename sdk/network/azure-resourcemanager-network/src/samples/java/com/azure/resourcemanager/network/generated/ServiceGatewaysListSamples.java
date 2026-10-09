@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class ServiceGatewaysListSamples {
     /*
-     * x-ms-original-file: 2026-01-01/ServiceGatewayListAll.json
+     * x-ms-original-file: 2026-03-01/ServiceGatewayListAll.json
      */
     /**
      * Sample code: List all load balancers.

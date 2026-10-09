@@ -25,7 +25,7 @@ import java.util.Arrays;
  */
 public final class FirewallPolicyRuleCollectionGroupsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-01-01/FirewallPolicyRuleCollectionGroupPut.json
+     * x-ms-original-file: 2026-03-01/FirewallPolicyRuleCollectionGroupPut.json
      */
     /**
      * Sample code: Create Firewall Policy Rule Collection Group.
@@ -54,7 +54,7 @@ public final class FirewallPolicyRuleCollectionGroupsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01/FirewallPolicyRuleCollectionGroupWithWebCategoriesPut.json
+     * x-ms-original-file: 2026-03-01/FirewallPolicyRuleCollectionGroupWithWebCategoriesPut.json
      */
     /**
      * Sample code: Create Firewall Policy Rule Collection Group With Web Categories.
@@ -82,7 +82,7 @@ public final class FirewallPolicyRuleCollectionGroupsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01/FirewallPolicyNatRuleCollectionGroupPut.json
+     * x-ms-original-file: 2026-03-01/FirewallPolicyNatRuleCollectionGroupPut.json
      */
     /**
      * Sample code: Create Firewall Policy Nat Rule Collection Group.
@@ -113,7 +113,7 @@ public final class FirewallPolicyRuleCollectionGroupsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01/FirewallPolicyRuleCollectionGroupWithHttpHeadersToInsert.json
+     * x-ms-original-file: 2026-03-01/FirewallPolicyRuleCollectionGroupWithHttpHeadersToInsert.json
      */
     /**
      * Sample code: Create Firewall Policy Rule Collection Group With http header to insert.
@@ -145,7 +145,7 @@ public final class FirewallPolicyRuleCollectionGroupsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01/FirewallPolicyRuleCollectionGroupWithIpGroupsPut.json
+     * x-ms-original-file: 2026-03-01/FirewallPolicyRuleCollectionGroupWithIpGroupsPut.json
      */
     /**
      * Sample code: Create Firewall Policy Rule Collection Group With IP Groups.

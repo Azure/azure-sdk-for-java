@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class VirtualWansDeleteSamples {
     /*
-     * x-ms-original-file: 2026-01-01/VirtualWANDelete.json
+     * x-ms-original-file: 2026-03-01/VirtualWANDelete.json
      */
     /**
      * Sample code: VirtualWANDelete.

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class AuthenticationPoliciesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-01-01/AuthenticationPolicyList.json
+     * x-ms-original-file: 2026-03-01/AuthenticationPolicyList.json
      */
     /**
      * Sample code: Lists authentication policies in a resource group.

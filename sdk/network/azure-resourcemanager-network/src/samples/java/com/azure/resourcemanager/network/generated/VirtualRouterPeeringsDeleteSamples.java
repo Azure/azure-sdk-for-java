@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class VirtualRouterPeeringsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-01-01/VirtualRouterPeeringDelete.json
+     * x-ms-original-file: 2026-03-01/VirtualRouterPeeringDelete.json
      */
     /**
      * Sample code: Delete VirtualRouterPeering.
