@@ -73,4 +73,46 @@ public interface MonitorWorkspacesManagementClient {
      * @return the MetricsContainersClient object.
      */
     MetricsContainersClient getMetricsContainers();
+
+    /**
+     * Gets the MetricNamespacesClient object to access its operations.
+     * 
+     * @return the MetricNamespacesClient object.
+     */
+    MetricNamespacesClient getMetricNamespaces();
+
+    /**
+     * Gets the MetricConfigurationsClient object to access its operations.
+     * 
+     * @return the MetricConfigurationsClient object.
+     */
+    MetricConfigurationsClient getMetricConfigurations();
+
+    /**
+     * Gets the TraceContainersClient object to access its operations.
+     * 
+     * @return the TraceContainersClient object.
+     */
+    TraceContainersClient getTraceContainers();
+
+    /**
+     * Gets the TraceAssociationsAtResourceGroupsClient object to access its operations.
+     * 
+     * @return the TraceAssociationsAtResourceGroupsClient object.
+     */
+    TraceAssociationsAtResourceGroupsClient getTraceAssociationsAtResourceGroups();
+
+    /**
+     * Gets the TraceAssociationsAtSubscriptionsClient object to access its operations.
+     * 
+     * @return the TraceAssociationsAtSubscriptionsClient object.
+     */
+    TraceAssociationsAtSubscriptionsClient getTraceAssociationsAtSubscriptions();
+
+    /**
+     * Gets the TraceAssociationsClient object to access its operations.
+     * 
+     * @return the TraceAssociationsClient object.
+     */
+    TraceAssociationsClient getTraceAssociations();
 }

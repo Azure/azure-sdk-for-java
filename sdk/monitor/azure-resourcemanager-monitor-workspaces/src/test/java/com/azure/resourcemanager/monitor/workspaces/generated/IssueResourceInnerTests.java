@@ -20,45 +20,46 @@ public final class IssueResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IssueResourceInner model = BinaryData.fromString(
-            "{\"properties\":{\"title\":\"dzhlrq\",\"status\":\"InProgress\",\"severity\":\"hckfrlhrx\",\"investigations\":[{\"id\":\"kyv\",\"createdAt\":\"2021-02-09T17:30:39Z\"},{\"id\":\"ca\",\"createdAt\":\"2021-10-20T05:52:01Z\"}],\"impactTime\":\"2021-09-08T09:03:30Z\",\"investigationsCount\":592666283,\"background\":{\"type\":\"kafkuwbcrnwbm\",\"text\":\"hseyvju\",\"details\":[{\"name\":\"slhs\",\"value\":\"kdeemaofmxagkvtm\"},{\"name\":\"lmqkrhahvlj\",\"value\":\"ahaquh\"},{\"name\":\"dhmdua\",\"value\":\"aex\"}]},\"notifications\":{\"updateTypes\":[{\"updateType\":\"IssueNotificationType\"},{\"updateType\":\"IssueNotificationType\"}],\"actionGroupIds\":[\"mwsrcrgvxpvgo\",\"zlfmisgwbnbbeld\",\"wkz\",\"ali\"],\"excludeDefaultActionGroups\":true},\"provisioningState\":\"Failed\"},\"id\":\"kauhashsfwxo\",\"name\":\"owzxcu\",\"type\":\"i\"}")
+            "{\"properties\":{\"title\":\"m\",\"status\":\"Mitigated\",\"severity\":\"yvshxmz\",\"investigations\":[{\"id\":\"bzoggigrx\",\"createdAt\":\"2021-05-16T13:08:42Z\"},{\"id\":\"ur\",\"createdAt\":\"2021-01-06T14:59:57Z\"}],\"impactTime\":\"2021-06-24T13:08:49Z\",\"investigationsCount\":1552581674,\"background\":{\"type\":\"spyd\",\"text\":\"koen\",\"details\":[{\"name\":\"knvudwtiukb\",\"value\":\"dng\"},{\"name\":\"pocipazyxoegu\",\"value\":\"g\"},{\"name\":\"npiucgygevqznty\",\"value\":\"mrbpizcdrqj\"}]},\"notifications\":{\"updateTypes\":[{\"updateType\":\"IssueNotificationType\"},{\"updateType\":\"IssueNotificationType\"},{\"updateType\":\"IssueNotificationType\"},{\"updateType\":\"IssueNotificationType\"}],\"actionGroupIds\":[\"fyhxde\",\"ejzicwifsjtt\"],\"excludeDefaultActionGroups\":true},\"provisioningState\":\"Failed\"},\"id\":\"hcbkhajde\",\"name\":\"eamdp\",\"type\":\"agalpbuxwgipwhon\"}")
             .toObject(IssueResourceInner.class);
-        Assertions.assertEquals("dzhlrq", model.properties().title());
-        Assertions.assertEquals(Status.IN_PROGRESS, model.properties().status());
-        Assertions.assertEquals("hckfrlhrx", model.properties().severity());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-08T09:03:30Z"), model.properties().impactTime());
-        Assertions.assertEquals("kafkuwbcrnwbm", model.properties().background().type());
-        Assertions.assertEquals("hseyvju", model.properties().background().text());
-        Assertions.assertEquals("slhs", model.properties().background().details().get(0).name());
-        Assertions.assertEquals("kdeemaofmxagkvtm", model.properties().background().details().get(0).value());
-        Assertions.assertEquals("mwsrcrgvxpvgo", model.properties().notifications().actionGroupIds().get(0));
+        Assertions.assertEquals("m", model.properties().title());
+        Assertions.assertEquals(Status.MITIGATED, model.properties().status());
+        Assertions.assertEquals("yvshxmz", model.properties().severity());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-24T13:08:49Z"), model.properties().impactTime());
+        Assertions.assertEquals("spyd", model.properties().background().type());
+        Assertions.assertEquals("koen", model.properties().background().text());
+        Assertions.assertEquals("knvudwtiukb", model.properties().background().details().get(0).name());
+        Assertions.assertEquals("dng", model.properties().background().details().get(0).value());
+        Assertions.assertEquals("fyhxde", model.properties().notifications().actionGroupIds().get(0));
         Assertions.assertTrue(model.properties().notifications().excludeDefaultActionGroups());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IssueResourceInner model = new IssueResourceInner().withProperties(new IssueProperties().withTitle("dzhlrq")
-            .withStatus(Status.IN_PROGRESS)
-            .withSeverity("hckfrlhrx")
-            .withImpactTime(OffsetDateTime.parse("2021-09-08T09:03:30Z"))
-            .withBackground(new Background().withType("kafkuwbcrnwbm")
-                .withText("hseyvju")
-                .withDetails(Arrays.asList(new BackgroundDetails().withName("slhs").withValue("kdeemaofmxagkvtm"),
-                    new BackgroundDetails().withName("lmqkrhahvlj").withValue("ahaquh"),
-                    new BackgroundDetails().withName("dhmdua").withValue("aex"))))
+        IssueResourceInner model = new IssueResourceInner().withProperties(new IssueProperties().withTitle("m")
+            .withStatus(Status.MITIGATED)
+            .withSeverity("yvshxmz")
+            .withImpactTime(OffsetDateTime.parse("2021-06-24T13:08:49Z"))
+            .withBackground(new Background().withType("spyd")
+                .withText("koen")
+                .withDetails(Arrays.asList(new BackgroundDetails().withName("knvudwtiukb").withValue("dng"),
+                    new BackgroundDetails().withName("pocipazyxoegu").withValue("g"),
+                    new BackgroundDetails().withName("npiucgygevqznty").withValue("mrbpizcdrqj"))))
             .withNotifications(new Notifications()
-                .withUpdateTypes(Arrays.asList(new IssueNotificationType(), new IssueNotificationType()))
-                .withActionGroupIds(Arrays.asList("mwsrcrgvxpvgo", "zlfmisgwbnbbeld", "wkz", "ali"))
+                .withUpdateTypes(Arrays.asList(new IssueNotificationType(), new IssueNotificationType(),
+                    new IssueNotificationType(), new IssueNotificationType()))
+                .withActionGroupIds(Arrays.asList("fyhxde", "ejzicwifsjtt"))
                 .withExcludeDefaultActionGroups(true)));
         model = BinaryData.fromObject(model).toObject(IssueResourceInner.class);
-        Assertions.assertEquals("dzhlrq", model.properties().title());
-        Assertions.assertEquals(Status.IN_PROGRESS, model.properties().status());
-        Assertions.assertEquals("hckfrlhrx", model.properties().severity());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-08T09:03:30Z"), model.properties().impactTime());
-        Assertions.assertEquals("kafkuwbcrnwbm", model.properties().background().type());
-        Assertions.assertEquals("hseyvju", model.properties().background().text());
-        Assertions.assertEquals("slhs", model.properties().background().details().get(0).name());
-        Assertions.assertEquals("kdeemaofmxagkvtm", model.properties().background().details().get(0).value());
-        Assertions.assertEquals("mwsrcrgvxpvgo", model.properties().notifications().actionGroupIds().get(0));
+        Assertions.assertEquals("m", model.properties().title());
+        Assertions.assertEquals(Status.MITIGATED, model.properties().status());
+        Assertions.assertEquals("yvshxmz", model.properties().severity());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-24T13:08:49Z"), model.properties().impactTime());
+        Assertions.assertEquals("spyd", model.properties().background().type());
+        Assertions.assertEquals("koen", model.properties().background().text());
+        Assertions.assertEquals("knvudwtiukb", model.properties().background().details().get(0).name());
+        Assertions.assertEquals("dng", model.properties().background().details().get(0).value());
+        Assertions.assertEquals("fyhxde", model.properties().notifications().actionGroupIds().get(0));
         Assertions.assertTrue(model.properties().notifications().excludeDefaultActionGroups());
     }
 }

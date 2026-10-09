@@ -13,9 +13,9 @@ public final class InvestigationMetadataTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         InvestigationMetadata model
-            = BinaryData.fromString("{\"id\":\"ualupjmkh\",\"createdAt\":\"2021-04-26T22:12:21Z\"}")
+            = BinaryData.fromString("{\"id\":\"ttxfvjr\",\"createdAt\":\"2021-07-03T14:23:35Z\"}")
                 .toObject(InvestigationMetadata.class);
-        Assertions.assertEquals("ualupjmkh", model.id());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-26T22:12:21Z"), model.createdAt());
+        Assertions.assertEquals("ttxfvjr", model.id());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-03T14:23:35Z"), model.createdAt());
     }
 }

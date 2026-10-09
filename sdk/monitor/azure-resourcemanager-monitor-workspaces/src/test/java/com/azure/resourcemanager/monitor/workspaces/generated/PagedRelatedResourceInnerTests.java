@@ -13,10 +13,10 @@ public final class PagedRelatedResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PagedRelatedResourceInner model = BinaryData.fromString(
-            "{\"value\":[{\"id\":\"vqtmnub\",\"relevance\":\"None\",\"origin\":{\"addedBy\":\"kpzksmondjmq\",\"addedByType\":\"Manual\"},\"addedAt\":\"2021-06-21T21:58:07Z\",\"lastModifiedAt\":\"2021-03-20T13:36:51Z\"},{\"id\":\"pomgkopkwhojvp\",\"relevance\":\"Irrelevant\",\"origin\":{\"addedBy\":\"qgxy\",\"addedByType\":\"Automatic\"},\"addedAt\":\"2021-04-04T10:24:56Z\",\"lastModifiedAt\":\"2021-04-04T17:01:54Z\"},{\"id\":\"mbqfqvmk\",\"relevance\":\"None\",\"origin\":{\"addedBy\":\"oz\",\"addedByType\":\"Automatic\"},\"addedAt\":\"2021-03-13T21:06:45Z\",\"lastModifiedAt\":\"2021-08-25T20:55:15Z\"}],\"nextLink\":\"lxprglyatddckcbc\"}")
+            "{\"value\":[{\"id\":\"qgitxmed\",\"relevance\":\"Relevant\",\"origin\":{\"addedBy\":\"c\",\"addedByType\":\"Automatic\"},\"addedAt\":\"2021-07-31T02:12:25Z\",\"lastModifiedAt\":\"2021-02-26T17:22:44Z\"},{\"id\":\"qwwncw\",\"relevance\":\"None\",\"origin\":{\"addedBy\":\"hxg\",\"addedByType\":\"Automatic\"},\"addedAt\":\"2021-06-02T07:12:07Z\",\"lastModifiedAt\":\"2021-01-20T08:40:01Z\"},{\"id\":\"gucnapkte\",\"relevance\":\"Relevant\",\"origin\":{\"addedBy\":\"llwptfdy\",\"addedByType\":\"Automatic\"},\"addedAt\":\"2020-12-31T02:22:45Z\",\"lastModifiedAt\":\"2021-09-18T17:40:49Z\"},{\"id\":\"b\",\"relevance\":\"Irrelevant\",\"origin\":{\"addedBy\":\"ceopzfqrhhuaopp\",\"addedByType\":\"Manual\"},\"addedAt\":\"2021-12-04T10:32:02Z\",\"lastModifiedAt\":\"2021-06-20T04:26:50Z\"}],\"nextLink\":\"xolzdahzx\"}")
             .toObject(PagedRelatedResourceInner.class);
-        Assertions.assertEquals("vqtmnub", model.value().get(0).id());
-        Assertions.assertEquals(Relevance.NONE, model.value().get(0).relevance());
-        Assertions.assertEquals("lxprglyatddckcbc", model.nextLink());
+        Assertions.assertEquals("qgitxmed", model.value().get(0).id());
+        Assertions.assertEquals(Relevance.RELEVANT, model.value().get(0).relevance());
+        Assertions.assertEquals("xolzdahzx", model.nextLink());
     }
 }
