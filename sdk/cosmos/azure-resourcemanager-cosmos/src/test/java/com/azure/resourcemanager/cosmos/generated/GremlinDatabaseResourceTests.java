@@ -15,29 +15,29 @@ public final class GremlinDatabaseResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GremlinDatabaseResource model = BinaryData.fromString(
-            "{\"id\":\"wo\",\"restoreParameters\":{\"restoreSource\":\"s\",\"restoreTimestampInUtc\":\"2021-07-10T06:15:54Z\",\"restoreWithTtlDisabled\":true},\"createMode\":\"Restore\"}")
+            "{\"id\":\"id\",\"restoreParameters\":{\"restoreSource\":\"lrmpwctofldse\",\"restoreTimestampInUtc\":\"2020-12-26T00:57:10Z\",\"restoreWithTtlDisabled\":false},\"createMode\":\"Default\"}")
             .toObject(GremlinDatabaseResource.class);
-        Assertions.assertEquals("wo", model.id());
-        Assertions.assertEquals("s", model.restoreParameters().restoreSource());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-10T06:15:54Z"),
+        Assertions.assertEquals("id", model.id());
+        Assertions.assertEquals("lrmpwctofldse", model.restoreParameters().restoreSource());
+        Assertions.assertEquals(OffsetDateTime.parse("2020-12-26T00:57:10Z"),
             model.restoreParameters().restoreTimestampInUtc());
-        Assertions.assertTrue(model.restoreParameters().restoreWithTtlDisabled());
-        Assertions.assertEquals(CreateMode.RESTORE, model.createMode());
+        Assertions.assertFalse(model.restoreParameters().restoreWithTtlDisabled());
+        Assertions.assertEquals(CreateMode.DEFAULT, model.createMode());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GremlinDatabaseResource model = new GremlinDatabaseResource().withId("wo")
-            .withRestoreParameters(new ResourceRestoreParameters().withRestoreSource("s")
-                .withRestoreTimestampInUtc(OffsetDateTime.parse("2021-07-10T06:15:54Z"))
-                .withRestoreWithTtlDisabled(true))
-            .withCreateMode(CreateMode.RESTORE);
+        GremlinDatabaseResource model = new GremlinDatabaseResource().withId("id")
+            .withRestoreParameters(new ResourceRestoreParameters().withRestoreSource("lrmpwctofldse")
+                .withRestoreTimestampInUtc(OffsetDateTime.parse("2020-12-26T00:57:10Z"))
+                .withRestoreWithTtlDisabled(false))
+            .withCreateMode(CreateMode.DEFAULT);
         model = BinaryData.fromObject(model).toObject(GremlinDatabaseResource.class);
-        Assertions.assertEquals("wo", model.id());
-        Assertions.assertEquals("s", model.restoreParameters().restoreSource());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-10T06:15:54Z"),
+        Assertions.assertEquals("id", model.id());
+        Assertions.assertEquals("lrmpwctofldse", model.restoreParameters().restoreSource());
+        Assertions.assertEquals(OffsetDateTime.parse("2020-12-26T00:57:10Z"),
             model.restoreParameters().restoreTimestampInUtc());
-        Assertions.assertTrue(model.restoreParameters().restoreWithTtlDisabled());
-        Assertions.assertEquals(CreateMode.RESTORE, model.createMode());
+        Assertions.assertFalse(model.restoreParameters().restoreWithTtlDisabled());
+        Assertions.assertEquals(CreateMode.DEFAULT, model.createMode());
     }
 }

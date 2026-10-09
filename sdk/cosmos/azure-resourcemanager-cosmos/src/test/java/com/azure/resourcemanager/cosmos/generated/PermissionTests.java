@@ -13,21 +13,21 @@ public final class PermissionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Permission model = BinaryData.fromString(
-            "{\"id\":\"gv\",\"dataActions\":[\"c\",\"rkolawjm\"],\"notDataActions\":[\"wro\",\"cdxfzzzwyjafitl\",\"guyn\",\"chl\"]}")
+            "{\"id\":\"knlqwzdvpiwhxqsz\",\"dataActions\":[\"aajquhuxylrj\",\"m\",\"ygjbmzyospspsh\"],\"notDataActions\":[\"kyjpmspbps\",\"df\",\"pyogtieyuj\",\"vczkcnyxrxmunjd\"]}")
             .toObject(Permission.class);
-        Assertions.assertEquals("gv", model.id());
-        Assertions.assertEquals("c", model.dataActions().get(0));
-        Assertions.assertEquals("wro", model.notDataActions().get(0));
+        Assertions.assertEquals("knlqwzdvpiwhxqsz", model.id());
+        Assertions.assertEquals("aajquhuxylrj", model.dataActions().get(0));
+        Assertions.assertEquals("kyjpmspbps", model.notDataActions().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Permission model = new Permission().withId("gv")
-            .withDataActions(Arrays.asList("c", "rkolawjm"))
-            .withNotDataActions(Arrays.asList("wro", "cdxfzzzwyjafitl", "guyn", "chl"));
+        Permission model = new Permission().withId("knlqwzdvpiwhxqsz")
+            .withDataActions(Arrays.asList("aajquhuxylrj", "m", "ygjbmzyospspsh"))
+            .withNotDataActions(Arrays.asList("kyjpmspbps", "df", "pyogtieyuj", "vczkcnyxrxmunjd"));
         model = BinaryData.fromObject(model).toObject(Permission.class);
-        Assertions.assertEquals("gv", model.id());
-        Assertions.assertEquals("c", model.dataActions().get(0));
-        Assertions.assertEquals("wro", model.notDataActions().get(0));
+        Assertions.assertEquals("knlqwzdvpiwhxqsz", model.id());
+        Assertions.assertEquals("aajquhuxylrj", model.dataActions().get(0));
+        Assertions.assertEquals("kyjpmspbps", model.notDataActions().get(0));
     }
 }

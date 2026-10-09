@@ -12,14 +12,14 @@ public final class CassandraPartitionKeyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CassandraPartitionKey model
-            = BinaryData.fromString("{\"name\":\"cjkay\"}").toObject(CassandraPartitionKey.class);
-        Assertions.assertEquals("cjkay", model.name());
+            = BinaryData.fromString("{\"name\":\"tuoqujlyegqavni\"}").toObject(CassandraPartitionKey.class);
+        Assertions.assertEquals("tuoqujlyegqavni", model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CassandraPartitionKey model = new CassandraPartitionKey().withName("cjkay");
+        CassandraPartitionKey model = new CassandraPartitionKey().withName("tuoqujlyegqavni");
         model = BinaryData.fromObject(model).toObject(CassandraPartitionKey.class);
-        Assertions.assertEquals("cjkay", model.name());
+        Assertions.assertEquals("tuoqujlyegqavni", model.name());
     }
 }
