@@ -102,6 +102,12 @@
       <artifactId>lettuce-core</artifactId>
       <version>7.5.2.RELEASE</version> <!-- {x-version-update;springboot4_io.lettuce:lettuce-core;external_dependency} -->
       <optional>true</optional>
+      <exclusions>
+        <exclusion>
+          <groupId>io.projectreactor</groupId>
+          <artifactId>reactor-core</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -193,7 +199,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.60.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.61.0-beta.1</version> <!-- {x-version-update;unreleased_com.azure:azure-core;dependency} -->
       <optional>true</optional>
       <exclusions>
         <exclusion>
@@ -417,6 +423,13 @@
     </dependency>
 
     <!-- TEST-->
+    <!-- Keep the test transport aligned with source builds instead of older transitive clients. -->
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-http-netty</artifactId>
+      <version>1.17.0-beta.1</version> <!-- {x-version-update;unreleased_com.azure:azure-core-http-netty;dependency} -->
+      <scope>test</scope>
+    </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>

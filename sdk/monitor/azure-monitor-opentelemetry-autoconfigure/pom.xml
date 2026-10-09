@@ -38,6 +38,7 @@
       --add-opens com.azure.monitor.opentelemetry.autoconfigure/com.azure.monitor.opentelemetry.autoconfigure=ALL-UNNAMED
       --add-exports com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
       --add-reads com.azure.monitor.opentelemetry.autoconfigure=com.azure.core.tracing.opentelemetry
+      --add-reads com.azure.monitor.opentelemetry.autoconfigure=io.netty.transport
     </javaModulesSurefireArgLine>
 
     <spotbugs.skip>false</spotbugs.skip>
@@ -47,7 +48,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.60.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.61.0-beta.1</version> <!-- {x-version-update;unreleased_com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -57,7 +58,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.16.8</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.17.0-beta.1</version> <!-- {x-version-update;unreleased_com.azure:azure-core-http-netty;dependency} -->
     </dependency>
     <dependency>
       <groupId>io.opentelemetry</groupId>
@@ -154,7 +155,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.27.0-beta.19</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.27.0-beta.20</version> <!-- {x-version-update;unreleased_com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

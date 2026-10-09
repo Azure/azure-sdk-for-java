@@ -23,7 +23,6 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
-import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -33,7 +32,6 @@ import java.util.List;
 
 import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.MODEL_ID_NOT_FOUND_ERROR_CODE;
 import static com.azure.ai.formrecognizer.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
-import static io.netty.handler.codec.http.HttpResponseStatus.BAD_REQUEST;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -81,7 +79,7 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
                     .getFinalResult();
             Response<CustomFormModel> customModelWithResponse
                 = client.getCustomModelWithResponse(trainedUnlabeledModel.getModelId(), Context.NONE);
-            assertEquals(customModelWithResponse.getStatusCode(), HttpResponseStatus.OK.code());
+            assertEquals(200, customModelWithResponse.getStatusCode());
             validateCustomModelData(customModelWithResponse.getValue(), false, false);
         });
     }
@@ -143,7 +141,7 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
         // TODO (service bug): APIM error
         client = getFormTrainingClient(httpClient, serviceVersion);
         Response<AccountProperties> accountPropertiesResponse = client.getAccountPropertiesWithResponse(Context.NONE);
-        assertEquals(accountPropertiesResponse.getStatusCode(), HttpResponseStatus.OK.code());
+        assertEquals(200, accountPropertiesResponse.getStatusCode());
         validateAccountProperties(accountPropertiesResponse.getValue());
     }
 
@@ -161,7 +159,7 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
 
             final Response<Void> deleteModelWithResponse
                 = client.deleteModelWithResponse(createdModel.getModelId(), Context.NONE);
-            assertEquals(deleteModelWithResponse.getStatusCode(), HttpResponseStatus.NO_CONTENT.code());
+            assertEquals(204, deleteModelWithResponse.getStatusCode());
             final HttpResponseException exception = assertThrows(HttpResponseException.class,
                 () -> client.getCustomModelWithResponse(createdModel.getModelId(), Context.NONE));
             final FormRecognizerErrorInformation errorInformation
@@ -184,7 +182,7 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
 
             final Response<Void> deleteModelWithResponse
                 = client.deleteModelWithResponse(createdModel.getModelId(), Context.NONE);
-            assertEquals(deleteModelWithResponse.getStatusCode(), HttpResponseStatus.NO_CONTENT.code());
+            assertEquals(204, deleteModelWithResponse.getStatusCode());
             final HttpResponseException exception = assertThrows(HttpResponseException.class,
                 () -> client.getCustomModelWithResponse(createdModel.getModelId(), Context.NONE));
             final FormRecognizerErrorInformation errorInformation
@@ -573,7 +571,7 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
             final HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
                 () -> client.beginCreateComposedModel(modelIdList, new CreateComposedModelOptions(), Context.NONE)
                     .setPollInterval(durationTestMode));
-            assertEquals(BAD_REQUEST.code(), httpResponseException.getResponse().getStatusCode());
+            assertEquals(400, httpResponseException.getResponse().getStatusCode());
 
             client.deleteModel(model1.getModelId());
             client.deleteModel(model2.getModelId());
@@ -599,7 +597,7 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
                 () -> client.beginCreateComposedModel(modelIdList, new CreateComposedModelOptions(), Context.NONE)
                     .setPollInterval(durationTestMode)
                     .getFinalResult());
-            assertEquals(BAD_REQUEST.code(), httpResponseException.getResponse().getStatusCode());
+            assertEquals(400, httpResponseException.getResponse().getStatusCode());
 
             client.deleteModel(model1.getModelId());
         });

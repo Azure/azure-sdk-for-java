@@ -16,7 +16,6 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.CoreUtils;
-import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -346,7 +345,7 @@ public class DataFeedAsyncClientTest extends DataFeedTestBase {
                 // Act & Assert
                 StepVerifier.create(client.getDataFeedWithResponse(createdDataFeed.getId()))
                     .assertNext(dataFeedResponse -> {
-                        assertEquals(dataFeedResponse.getStatusCode(), HttpResponseStatus.OK.code());
+                        assertEquals(200, dataFeedResponse.getStatusCode());
                         validateDataFeedResult(createdDataFeed, dataFeedResponse.getValue(), SQL_SERVER_DB);
                     });
                 // TODO (alzimmer): This test needs to be recorded again as it was never verifying, therefore never
@@ -725,7 +724,7 @@ public class DataFeedAsyncClientTest extends DataFeedTestBase {
 
             assertNotNull(createdDataFeed);
             StepVerifier.create(client.deleteDataFeedWithResponse(createdDataFeed.getId()))
-                .assertNext(response -> assertEquals(response.getStatusCode(), HttpResponseStatus.NO_CONTENT.code()))
+                .assertNext(response -> assertEquals(204, response.getStatusCode()))
                 .expectComplete()
                 .verify(DEFAULT_TIMEOUT);
 

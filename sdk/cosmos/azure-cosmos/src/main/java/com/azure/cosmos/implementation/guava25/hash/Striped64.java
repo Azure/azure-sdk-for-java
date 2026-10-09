@@ -24,8 +24,6 @@ import java.util.Random;
 import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
 import java.util.concurrent.atomic.AtomicLongFieldUpdater;
 
-import static io.netty.util.internal.shaded.org.jctools.util.UnsafeAccess.UNSAFE;
-
 /**
  * A package-local class holding common representation and mechanics for classes supporting dynamic
  * striping on 64bit values. The class extends Number so that concrete subclasses must publicly do

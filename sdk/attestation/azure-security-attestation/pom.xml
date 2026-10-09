@@ -37,6 +37,7 @@
     <javaModulesSurefireArgLine>
       --add-opens com.azure.security.attestation/com.azure.security.attestation=ALL-UNNAMED
       --add-opens com.azure.security.attestation/com.azure.security.attestation.models=ALL-UNNAMED
+      --add-reads com.azure.security.attestation=org.bouncycastle.provider
     </javaModulesSurefireArgLine>
 
     <spotbugs.skip>false</spotbugs.skip>

@@ -8,7 +8,15 @@
 
 ### Bugs Fixed
 
+- Preserved asynchronous file downloads when Netty uses scoped direct buffers on newer JDKs.
+- Declared the Netty transport dependency directly to prevent older transitive transports from being selected.
+
 ### Other Changes
+
+#### Dependency Updates
+
+- Migrated Netty dependencies from `4.1.137.Final` to `4.2.18.Final`.
+- Upgraded Reactor Netty from `1.2.18` to `1.3.7` and Reactor from `3.7.19` to `3.8.7`.
 
 ## 1.16.8 (2026-09-29)
 
