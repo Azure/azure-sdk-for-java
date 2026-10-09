@@ -13,15 +13,16 @@ public final class CountProtectedItemsRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CountProtectedItemsRequest model
-            = BinaryData.fromString("{\"resourceIds\":[\"jmquxvypomgk\"]}").toObject(CountProtectedItemsRequest.class);
-        Assertions.assertEquals("jmquxvypomgk", model.resourceIds().get(0));
+            = BinaryData.fromString("{\"resourceIds\":[\"qcrailvpnppfufl\",\"wdmhdlxyjrxs\",\"gafcnihgwqapnedg\"]}")
+                .toObject(CountProtectedItemsRequest.class);
+        Assertions.assertEquals("qcrailvpnppfufl", model.resourceIds().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CountProtectedItemsRequest model
-            = new CountProtectedItemsRequest().withResourceIds(Arrays.asList("jmquxvypomgk"));
+        CountProtectedItemsRequest model = new CountProtectedItemsRequest()
+            .withResourceIds(Arrays.asList("qcrailvpnppfufl", "wdmhdlxyjrxs", "gafcnihgwqapnedg"));
         model = BinaryData.fromObject(model).toObject(CountProtectedItemsRequest.class);
-        Assertions.assertEquals("jmquxvypomgk", model.resourceIds().get(0));
+        Assertions.assertEquals("qcrailvpnppfufl", model.resourceIds().get(0));
     }
 }

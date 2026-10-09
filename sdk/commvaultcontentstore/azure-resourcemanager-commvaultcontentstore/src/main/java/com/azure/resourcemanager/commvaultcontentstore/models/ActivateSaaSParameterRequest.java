@@ -19,7 +19,17 @@ public final class ActivateSaaSParameterRequest implements JsonSerializable<Acti
     /*
      * SaaS guid for Activate and Validate SaaS Resource
      */
-    private String saaSGuid;
+    private String saasGuid;
+
+    /*
+     * Optional publisher identifier
+     */
+    private String publisherId;
+
+    /*
+     * Optional activation request parameters containing user and company details
+     */
+    private ActivateSaaSRequestParam activateSaaSRequestParam;
 
     /**
      * Creates an instance of ActivateSaaSParameterRequest class.
@@ -28,22 +38,65 @@ public final class ActivateSaaSParameterRequest implements JsonSerializable<Acti
     }
 
     /**
-     * Get the saaSGuid property: SaaS guid for Activate and Validate SaaS Resource.
+     * Get the saasGuid property: SaaS guid for Activate and Validate SaaS Resource.
      * 
-     * @return the saaSGuid value.
+     * @return the saasGuid value.
      */
-    public String saaSGuid() {
-        return this.saaSGuid;
+    public String saasGuid() {
+        return this.saasGuid;
     }
 
     /**
-     * Set the saaSGuid property: SaaS guid for Activate and Validate SaaS Resource.
+     * Set the saasGuid property: SaaS guid for Activate and Validate SaaS Resource.
      * 
-     * @param saaSGuid the saaSGuid value to set.
+     * @param saasGuid the saasGuid value to set.
      * @return the ActivateSaaSParameterRequest object itself.
      */
-    public ActivateSaaSParameterRequest withSaaSGuid(String saaSGuid) {
-        this.saaSGuid = saaSGuid;
+    public ActivateSaaSParameterRequest withSaasGuid(String saasGuid) {
+        this.saasGuid = saasGuid;
+        return this;
+    }
+
+    /**
+     * Get the publisherId property: Optional publisher identifier.
+     * 
+     * @return the publisherId value.
+     */
+    public String publisherId() {
+        return this.publisherId;
+    }
+
+    /**
+     * Set the publisherId property: Optional publisher identifier.
+     * 
+     * @param publisherId the publisherId value to set.
+     * @return the ActivateSaaSParameterRequest object itself.
+     */
+    public ActivateSaaSParameterRequest withPublisherId(String publisherId) {
+        this.publisherId = publisherId;
+        return this;
+    }
+
+    /**
+     * Get the activateSaaSRequestParam property: Optional activation request parameters containing user and company
+     * details.
+     * 
+     * @return the activateSaaSRequestParam value.
+     */
+    public ActivateSaaSRequestParam activateSaaSRequestParam() {
+        return this.activateSaaSRequestParam;
+    }
+
+    /**
+     * Set the activateSaaSRequestParam property: Optional activation request parameters containing user and company
+     * details.
+     * 
+     * @param activateSaaSRequestParam the activateSaaSRequestParam value to set.
+     * @return the ActivateSaaSParameterRequest object itself.
+     */
+    public ActivateSaaSParameterRequest
+        withActivateSaaSRequestParam(ActivateSaaSRequestParam activateSaaSRequestParam) {
+        this.activateSaaSRequestParam = activateSaaSRequestParam;
         return this;
     }
 
@@ -53,7 +106,9 @@ public final class ActivateSaaSParameterRequest implements JsonSerializable<Acti
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("saaSGuid", this.saaSGuid);
+        jsonWriter.writeStringField("saasGuid", this.saasGuid);
+        jsonWriter.writeStringField("publisherId", this.publisherId);
+        jsonWriter.writeJsonField("activateSaaSRequestParam", this.activateSaaSRequestParam);
         return jsonWriter.writeEndObject();
     }
 
@@ -73,8 +128,13 @@ public final class ActivateSaaSParameterRequest implements JsonSerializable<Acti
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("saaSGuid".equals(fieldName)) {
-                    deserializedActivateSaaSParameterRequest.saaSGuid = reader.getString();
+                if ("saasGuid".equals(fieldName)) {
+                    deserializedActivateSaaSParameterRequest.saasGuid = reader.getString();
+                } else if ("publisherId".equals(fieldName)) {
+                    deserializedActivateSaaSParameterRequest.publisherId = reader.getString();
+                } else if ("activateSaaSRequestParam".equals(fieldName)) {
+                    deserializedActivateSaaSParameterRequest.activateSaaSRequestParam
+                        = ActivateSaaSRequestParam.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
