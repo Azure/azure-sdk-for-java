@@ -25,14 +25,14 @@ import reactor.core.publisher.Mono;
  */
 public interface HorizonDbParameterGroupsClient {
     /**
-     * Gets information about a HorizonDb parameter group.
+     * Gets information about a HorizonDB parameter group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDb parameter group.
+     * @param parameterGroupName The name of the HorizonDB parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a HorizonDb parameter group along with {@link Response} on successful completion of
+     * @return information about a HorizonDB parameter group along with {@link Response} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -40,56 +40,56 @@ public interface HorizonDbParameterGroupsClient {
         String parameterGroupName);
 
     /**
-     * Gets information about a HorizonDb parameter group.
+     * Gets information about a HorizonDB parameter group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDb parameter group.
+     * @param parameterGroupName The name of the HorizonDB parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a HorizonDb parameter group on successful completion of {@link Mono}.
+     * @return information about a HorizonDB parameter group on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<HorizonDbParameterGroupInner> getByResourceGroupAsync(String resourceGroupName, String parameterGroupName);
 
     /**
-     * Gets information about a HorizonDb parameter group.
+     * Gets information about a HorizonDB parameter group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDb parameter group.
+     * @param parameterGroupName The name of the HorizonDB parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a HorizonDb parameter group along with {@link Response}.
+     * @return information about a HorizonDB parameter group along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<HorizonDbParameterGroupInner> getByResourceGroupWithResponse(String resourceGroupName,
         String parameterGroupName, Context context);
 
     /**
-     * Gets information about a HorizonDb parameter group.
+     * Gets information about a HorizonDB parameter group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDb parameter group.
+     * @param parameterGroupName The name of the HorizonDB parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a HorizonDb parameter group.
+     * @return information about a HorizonDB parameter group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     HorizonDbParameterGroupInner getByResourceGroup(String resourceGroupName, String parameterGroupName);
 
     /**
-     * Creates a new HorizonDb parameter group or updates an existing parameter group.
+     * Creates a new HorizonDB parameter group or updates an existing parameter group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDb parameter group.
+     * @param parameterGroupName The name of the HorizonDB parameter group.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the HorizonDb parameter group along with {@link Response} on successful completion of
+     * @return represents the HorizonDB parameter group along with {@link Response} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -97,107 +97,107 @@ public interface HorizonDbParameterGroupsClient {
         String parameterGroupName, HorizonDbParameterGroupInner resource);
 
     /**
-     * Creates a new HorizonDb parameter group or updates an existing parameter group.
+     * Creates a new HorizonDB parameter group or updates an existing parameter group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDb parameter group.
+     * @param parameterGroupName The name of the HorizonDB parameter group.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of represents the HorizonDb parameter group.
+     * @return the {@link PollerFlux} for polling of represents the HorizonDB parameter group.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<HorizonDbParameterGroupInner>, HorizonDbParameterGroupInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String parameterGroupName, HorizonDbParameterGroupInner resource);
 
     /**
-     * Creates a new HorizonDb parameter group or updates an existing parameter group.
+     * Creates a new HorizonDB parameter group or updates an existing parameter group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDb parameter group.
+     * @param parameterGroupName The name of the HorizonDB parameter group.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents the HorizonDb parameter group.
+     * @return the {@link SyncPoller} for polling of represents the HorizonDB parameter group.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<HorizonDbParameterGroupInner>, HorizonDbParameterGroupInner>
         beginCreateOrUpdate(String resourceGroupName, String parameterGroupName, HorizonDbParameterGroupInner resource);
 
     /**
-     * Creates a new HorizonDb parameter group or updates an existing parameter group.
+     * Creates a new HorizonDB parameter group or updates an existing parameter group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDb parameter group.
+     * @param parameterGroupName The name of the HorizonDB parameter group.
      * @param resource Resource create parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents the HorizonDb parameter group.
+     * @return the {@link SyncPoller} for polling of represents the HorizonDB parameter group.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<HorizonDbParameterGroupInner>, HorizonDbParameterGroupInner> beginCreateOrUpdate(
         String resourceGroupName, String parameterGroupName, HorizonDbParameterGroupInner resource, Context context);
 
     /**
-     * Creates a new HorizonDb parameter group or updates an existing parameter group.
+     * Creates a new HorizonDB parameter group or updates an existing parameter group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDb parameter group.
+     * @param parameterGroupName The name of the HorizonDB parameter group.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the HorizonDb parameter group on successful completion of {@link Mono}.
+     * @return represents the HorizonDB parameter group on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<HorizonDbParameterGroupInner> createOrUpdateAsync(String resourceGroupName, String parameterGroupName,
         HorizonDbParameterGroupInner resource);
 
     /**
-     * Creates a new HorizonDb parameter group or updates an existing parameter group.
+     * Creates a new HorizonDB parameter group or updates an existing parameter group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDb parameter group.
+     * @param parameterGroupName The name of the HorizonDB parameter group.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the HorizonDb parameter group.
+     * @return represents the HorizonDB parameter group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     HorizonDbParameterGroupInner createOrUpdate(String resourceGroupName, String parameterGroupName,
         HorizonDbParameterGroupInner resource);
 
     /**
-     * Creates a new HorizonDb parameter group or updates an existing parameter group.
+     * Creates a new HorizonDB parameter group or updates an existing parameter group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDb parameter group.
+     * @param parameterGroupName The name of the HorizonDB parameter group.
      * @param resource Resource create parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the HorizonDb parameter group.
+     * @return represents the HorizonDB parameter group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     HorizonDbParameterGroupInner createOrUpdate(String resourceGroupName, String parameterGroupName,
         HorizonDbParameterGroupInner resource, Context context);
 
     /**
-     * Updates an existing HorizonDb parameter group.
+     * Updates an existing HorizonDB parameter group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDb parameter group.
+     * @param parameterGroupName The name of the HorizonDB parameter group.
      * @param properties The resource properties to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the HorizonDb parameter group along with {@link Response} on successful completion of
+     * @return represents the HorizonDB parameter group along with {@link Response} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -205,46 +205,46 @@ public interface HorizonDbParameterGroupsClient {
         HorizonDbParameterGroupForPatchUpdate properties);
 
     /**
-     * Updates an existing HorizonDb parameter group.
+     * Updates an existing HorizonDB parameter group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDb parameter group.
+     * @param parameterGroupName The name of the HorizonDB parameter group.
      * @param properties The resource properties to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of represents the HorizonDb parameter group.
+     * @return the {@link PollerFlux} for polling of represents the HorizonDB parameter group.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<HorizonDbParameterGroupInner>, HorizonDbParameterGroupInner> beginUpdateAsync(
         String resourceGroupName, String parameterGroupName, HorizonDbParameterGroupForPatchUpdate properties);
 
     /**
-     * Updates an existing HorizonDb parameter group.
+     * Updates an existing HorizonDB parameter group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDb parameter group.
+     * @param parameterGroupName The name of the HorizonDB parameter group.
      * @param properties The resource properties to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents the HorizonDb parameter group.
+     * @return the {@link SyncPoller} for polling of represents the HorizonDB parameter group.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<HorizonDbParameterGroupInner>, HorizonDbParameterGroupInner> beginUpdate(
         String resourceGroupName, String parameterGroupName, HorizonDbParameterGroupForPatchUpdate properties);
 
     /**
-     * Updates an existing HorizonDb parameter group.
+     * Updates an existing HorizonDB parameter group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDb parameter group.
+     * @param parameterGroupName The name of the HorizonDB parameter group.
      * @param properties The resource properties to be updated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents the HorizonDb parameter group.
+     * @return the {@link SyncPoller} for polling of represents the HorizonDB parameter group.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<HorizonDbParameterGroupInner>, HorizonDbParameterGroupInner> beginUpdate(
@@ -252,56 +252,56 @@ public interface HorizonDbParameterGroupsClient {
         Context context);
 
     /**
-     * Updates an existing HorizonDb parameter group.
+     * Updates an existing HorizonDB parameter group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDb parameter group.
+     * @param parameterGroupName The name of the HorizonDB parameter group.
      * @param properties The resource properties to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the HorizonDb parameter group on successful completion of {@link Mono}.
+     * @return represents the HorizonDB parameter group on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<HorizonDbParameterGroupInner> updateAsync(String resourceGroupName, String parameterGroupName,
         HorizonDbParameterGroupForPatchUpdate properties);
 
     /**
-     * Updates an existing HorizonDb parameter group.
+     * Updates an existing HorizonDB parameter group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDb parameter group.
+     * @param parameterGroupName The name of the HorizonDB parameter group.
      * @param properties The resource properties to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the HorizonDb parameter group.
+     * @return represents the HorizonDB parameter group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     HorizonDbParameterGroupInner update(String resourceGroupName, String parameterGroupName,
         HorizonDbParameterGroupForPatchUpdate properties);
 
     /**
-     * Updates an existing HorizonDb parameter group.
+     * Updates an existing HorizonDB parameter group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDb parameter group.
+     * @param parameterGroupName The name of the HorizonDB parameter group.
      * @param properties The resource properties to be updated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the HorizonDb parameter group.
+     * @return represents the HorizonDB parameter group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     HorizonDbParameterGroupInner update(String resourceGroupName, String parameterGroupName,
         HorizonDbParameterGroupForPatchUpdate properties, Context context);
 
     /**
-     * Deletes a HorizonDb parameter group.
+     * Deletes a HorizonDB parameter group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDb parameter group.
+     * @param parameterGroupName The name of the HorizonDB parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -311,10 +311,10 @@ public interface HorizonDbParameterGroupsClient {
     Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String parameterGroupName);
 
     /**
-     * Deletes a HorizonDb parameter group.
+     * Deletes a HorizonDB parameter group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDb parameter group.
+     * @param parameterGroupName The name of the HorizonDB parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -324,10 +324,10 @@ public interface HorizonDbParameterGroupsClient {
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String parameterGroupName);
 
     /**
-     * Deletes a HorizonDb parameter group.
+     * Deletes a HorizonDB parameter group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDb parameter group.
+     * @param parameterGroupName The name of the HorizonDB parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -337,10 +337,10 @@ public interface HorizonDbParameterGroupsClient {
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String parameterGroupName);
 
     /**
-     * Deletes a HorizonDb parameter group.
+     * Deletes a HorizonDB parameter group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDb parameter group.
+     * @param parameterGroupName The name of the HorizonDB parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -352,10 +352,10 @@ public interface HorizonDbParameterGroupsClient {
         Context context);
 
     /**
-     * Deletes a HorizonDb parameter group.
+     * Deletes a HorizonDB parameter group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDb parameter group.
+     * @param parameterGroupName The name of the HorizonDB parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -365,10 +365,10 @@ public interface HorizonDbParameterGroupsClient {
     Mono<Void> deleteAsync(String resourceGroupName, String parameterGroupName);
 
     /**
-     * Deletes a HorizonDb parameter group.
+     * Deletes a HorizonDB parameter group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDb parameter group.
+     * @param parameterGroupName The name of the HorizonDB parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -377,10 +377,10 @@ public interface HorizonDbParameterGroupsClient {
     void delete(String resourceGroupName, String parameterGroupName);
 
     /**
-     * Deletes a HorizonDb parameter group.
+     * Deletes a HorizonDB parameter group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDb parameter group.
+     * @param parameterGroupName The name of the HorizonDB parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -390,7 +390,7 @@ public interface HorizonDbParameterGroupsClient {
     void delete(String resourceGroupName, String parameterGroupName, Context context);
 
     /**
-     * Lists all HorizonDb parameter groups in a resource group.
+     * Lists all HorizonDB parameter groups in a resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -402,7 +402,7 @@ public interface HorizonDbParameterGroupsClient {
     PagedFlux<HorizonDbParameterGroupInner> listByResourceGroupAsync(String resourceGroupName);
 
     /**
-     * Lists all HorizonDb parameter groups in a resource group.
+     * Lists all HorizonDB parameter groups in a resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -415,7 +415,7 @@ public interface HorizonDbParameterGroupsClient {
     PagedIterable<HorizonDbParameterGroupInner> listByResourceGroup(String resourceGroupName);
 
     /**
-     * Lists all HorizonDb parameter groups in a resource group.
+     * Lists all HorizonDB parameter groups in a resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
@@ -429,7 +429,7 @@ public interface HorizonDbParameterGroupsClient {
     PagedIterable<HorizonDbParameterGroupInner> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
-     * Lists all HorizonDb parameter groups in a subscription.
+     * Lists all HorizonDB parameter groups in a subscription.
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -439,7 +439,7 @@ public interface HorizonDbParameterGroupsClient {
     PagedFlux<HorizonDbParameterGroupInner> listAsync();
 
     /**
-     * Lists all HorizonDb parameter groups in a subscription.
+     * Lists all HorizonDB parameter groups in a subscription.
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -450,7 +450,7 @@ public interface HorizonDbParameterGroupsClient {
     PagedIterable<HorizonDbParameterGroupInner> list();
 
     /**
-     * Lists all HorizonDb parameter groups in a subscription.
+     * Lists all HorizonDB parameter groups in a subscription.
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -466,7 +466,7 @@ public interface HorizonDbParameterGroupsClient {
      * Gets all connections to a parameter group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDb parameter group.
+     * @param parameterGroupName The name of the HorizonDB parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -480,7 +480,7 @@ public interface HorizonDbParameterGroupsClient {
      * Gets all connections to a parameter group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDb parameter group.
+     * @param parameterGroupName The name of the HorizonDB parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -494,7 +494,7 @@ public interface HorizonDbParameterGroupsClient {
      * Gets all connections to a parameter group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDb parameter group.
+     * @param parameterGroupName The name of the HorizonDB parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -509,7 +509,7 @@ public interface HorizonDbParameterGroupsClient {
      * Lists parameter groups filtered by version number.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDb parameter group.
+     * @param parameterGroupName The name of the HorizonDB parameter group.
      * @param version The version number to filter by.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -524,7 +524,7 @@ public interface HorizonDbParameterGroupsClient {
      * Lists parameter groups filtered by version number.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDb parameter group.
+     * @param parameterGroupName The name of the HorizonDB parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -537,7 +537,7 @@ public interface HorizonDbParameterGroupsClient {
      * Lists parameter groups filtered by version number.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDb parameter group.
+     * @param parameterGroupName The name of the HorizonDB parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -551,7 +551,7 @@ public interface HorizonDbParameterGroupsClient {
      * Lists parameter groups filtered by version number.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDb parameter group.
+     * @param parameterGroupName The name of the HorizonDB parameter group.
      * @param version The version number to filter by.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

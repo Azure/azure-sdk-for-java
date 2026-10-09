@@ -14,7 +14,7 @@ import com.azure.resourcemanager.compute.models.ProvisionedBandwidthCopyOption;
  */
 public final class SnapshotsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-01-02/snapshotExamples/Snapshot_Create_FromAnExistingSnapshot.json
+     * x-ms-original-file: 2026-03-02/snapshotExamples/Snapshot_Create_FromAnExistingSnapshot.json
      */
     /**
      * Sample code: Create a snapshot from an existing snapshot in the same or a different subscription.
@@ -33,7 +33,7 @@ public final class SnapshotsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-01-02/snapshotExamples/Snapshot_Create_FromAnElasticSanVolumeSnapshot.json
+     * x-ms-original-file: 2026-03-02/snapshotExamples/Snapshot_Create_FromAnElasticSanVolumeSnapshot.json
      */
     /**
      * Sample code: Create a snapshot from an elastic san volume snapshot.
@@ -52,7 +52,7 @@ public final class SnapshotsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-01-02/snapshotExamples/Snapshot_Create_InstantAccessSnapshot.json
+     * x-ms-original-file: 2026-03-02/snapshotExamples/Snapshot_Create_InstantAccessSnapshot.json
      */
     /**
      * Sample code: create a snapshot which can be instantly accessable.
@@ -72,7 +72,7 @@ public final class SnapshotsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-01-02/snapshotExamples/Snapshot_Create_EnhancedProvisionedBandwidthCopySpeed.json
+     * x-ms-original-file: 2026-03-02/snapshotExamples/Snapshot_Create_EnhancedProvisionedBandwidthCopySpeed.json
      */
     /**
      * Sample code: Create a snapshot from an existing snapshot in the same or a different subscription in a different
@@ -94,7 +94,7 @@ public final class SnapshotsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-01-02/snapshotExamples/Snapshot_Create_FromAnExistingSnapshotInDifferentRegion.json
+     * x-ms-original-file: 2026-03-02/snapshotExamples/Snapshot_Create_FromAnExistingSnapshotInDifferentRegion.json
      */
     /**
      * Sample code: Create a snapshot from an existing snapshot in the same or a different subscription in a different
@@ -115,7 +115,7 @@ public final class SnapshotsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * 2025-01-02/snapshotExamples/Snapshot_Create_ByImportingAnUnmanagedBlobFromTheSameSubscription.json
+     * 2026-03-02/snapshotExamples/Snapshot_Create_ByImportingAnUnmanagedBlobFromTheSameSubscription.json
      */
     /**
      * Sample code: Create a snapshot by importing an unmanaged blob from the same subscription.
@@ -135,7 +135,7 @@ public final class SnapshotsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * 2025-01-02/snapshotExamples/Snapshot_Create_ByImportingAnUnmanagedBlobFromADifferentSubscription.json
+     * 2026-03-02/snapshotExamples/Snapshot_Create_ByImportingAnUnmanagedBlobFromADifferentSubscription.json
      */
     /**
      * Sample code: Create a snapshot by importing an unmanaged blob from a different subscription.

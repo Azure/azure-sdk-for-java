@@ -22,7 +22,7 @@ public final class ElasticBackupPoliciesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Accepted\",\"dailyBackupsToKeep\":47343051,\"weeklyBackupsToKeep\":1137800309,\"monthlyBackupsToKeep\":1109342572,\"assignedVolumesCount\":1377509896,\"policyState\":\"Enabled\"},\"eTag\":\"ihnco\",\"location\":\"ipnmliqmv\",\"tags\":{\"eaqgrvgpomxpupd\":\"i\",\"iqbuou\":\"sdfjyiesoc\"},\"id\":\"mpyzgleo\",\"name\":\"jsb\",\"type\":\"bwwzvdajf\"}";
+            = "{\"properties\":{\"provisioningState\":\"Moving\",\"dailyBackupsToKeep\":833282883,\"weeklyBackupsToKeep\":1088510786,\"monthlyBackupsToKeep\":967504624,\"assignedVolumesCount\":1579537521,\"policyState\":\"Enabled\"},\"eTag\":\"vlrrskapbxwieexu\",\"location\":\"derltfokyksyim\",\"tags\":{\"rsejegprkj\":\"grvkcxzznnuif\",\"jmwvvbtuqkxxi\":\"uw\",\"ekotjgxi\":\"wgxql\",\"by\":\"qfkyfhiwvjaqu\"},\"id\":\"nvskpaj\",\"name\":\"mgeu\",\"type\":\"exmj\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,14 +32,14 @@ public final class ElasticBackupPoliciesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ElasticBackupPolicy response = manager.elasticBackupPolicies()
-            .getWithResponse("ngdyfcixrhlcq", "hoe", "goiutgw", com.azure.core.util.Context.NONE)
+            .getWithResponse("xslwhd", "cvhtbbzjhfvh", "wzbxpc", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("ipnmliqmv", response.location());
-        Assertions.assertEquals("i", response.tags().get("eaqgrvgpomxpupd"));
-        Assertions.assertEquals(47343051, response.properties().dailyBackupsToKeep());
-        Assertions.assertEquals(1137800309, response.properties().weeklyBackupsToKeep());
-        Assertions.assertEquals(1109342572, response.properties().monthlyBackupsToKeep());
+        Assertions.assertEquals("derltfokyksyim", response.location());
+        Assertions.assertEquals("grvkcxzznnuif", response.tags().get("rsejegprkj"));
+        Assertions.assertEquals(833282883, response.properties().dailyBackupsToKeep());
+        Assertions.assertEquals(1088510786, response.properties().weeklyBackupsToKeep());
+        Assertions.assertEquals(967504624, response.properties().monthlyBackupsToKeep());
         Assertions.assertEquals(ElasticBackupPolicyState.ENABLED, response.properties().policyState());
     }
 }

@@ -9,7 +9,14 @@ import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Settable;
 
-/** A native data disk of a virtual machine. */
+/**
+ * A native data disk of a virtual machine.
+ *
+ * @deprecated Unmanaged disks are deprecated by Azure and being retired. Use managed disks instead. See
+ * <a href="https://learn.microsoft.com/azure/virtual-machines/unmanaged-disks-deprecation">Unmanaged disks
+ * deprecation</a>.
+ */
+@Deprecated
 @Fluent
 public interface VirtualMachineUnmanagedDataDisk extends HasInnerModel<DataDisk>, ChildResource<VirtualMachine> {
     /**

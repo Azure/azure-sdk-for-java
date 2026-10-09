@@ -372,6 +372,7 @@ public final class BetaMemoryStoresAsyncClient {
      *         input_tokens: long (Required)
      *         input_tokens_details (Required): {
      *             cached_tokens: long (Required)
+     *             cache_write_tokens: long (Required)
      *         }
      *         output_tokens: long (Required)
      *         output_tokens_details (Required): {
@@ -514,6 +515,7 @@ public final class BetaMemoryStoresAsyncClient {
      *             input_tokens: long (Required)
      *             input_tokens_details (Required): {
      *                 cached_tokens: long (Required)
+     *                 cache_write_tokens: long (Required)
      *             }
      *             output_tokens: long (Required)
      *             output_tokens_details (Required): {
@@ -527,6 +529,13 @@ public final class BetaMemoryStoresAsyncClient {
      *         message: String (Required)
      *         param: String (Optional)
      *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
@@ -634,6 +643,7 @@ public final class BetaMemoryStoresAsyncClient {
      *             input_tokens: long (Required)
      *             input_tokens_details (Required): {
      *                 cached_tokens: long (Required)
+     *                 cache_write_tokens: long (Required)
      *             }
      *             output_tokens: long (Required)
      *             output_tokens_details (Required): {
@@ -647,6 +657,13 @@ public final class BetaMemoryStoresAsyncClient {
      *         message: String (Required)
      *         param: String (Optional)
      *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]

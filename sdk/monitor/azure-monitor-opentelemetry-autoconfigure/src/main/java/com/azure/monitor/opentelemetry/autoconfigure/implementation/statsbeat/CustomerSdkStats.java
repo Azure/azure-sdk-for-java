@@ -77,7 +77,7 @@ public class CustomerSdkStats {
      * @param itemCountsByType the per-type item counts
      * @param dropCode the drop code (e.g. "CLIENT_EXCEPTION", "402", etc.)
      * @param dropReason the drop reason (e.g. "Exceeded daily quota")
-     * @param successItemCountsByType success items by type (for telemetry_success dimension on
+     * @param successItemCountsByType success items by type (for telemetrySuccess dimension on
      *     REQUEST/DEPENDENCY)
      * @param failureItemCountsByType failure items by type
      */
@@ -87,7 +87,7 @@ public class CustomerSdkStats {
             String telemetryType = entry.getKey();
             long totalCount = entry.getValue();
 
-            // For REQUEST and DEPENDENCY, split by telemetry_success
+            // For REQUEST and DEPENDENCY, split by telemetrySuccess
             if ("REQUEST".equals(telemetryType) || "DEPENDENCY".equals(telemetryType)) {
                 long successCount = successItemCountsByType.getOrDefault(telemetryType, 0L);
                 long failureCount = failureItemCountsByType.getOrDefault(telemetryType, 0L);
@@ -108,7 +108,7 @@ public class CustomerSdkStats {
                     droppedCounts.computeIfAbsent(key, k -> new AtomicLong()).addAndGet(unaccounted);
                 }
             } else {
-                // For non-REQUEST/DEPENDENCY types, telemetry_success is not applicable
+                // For non-REQUEST/DEPENDENCY types, telemetrySuccess is not applicable
                 DroppedKey key = new DroppedKey(telemetryType, dropCode, dropReason, null);
                 droppedCounts.computeIfAbsent(key, k -> new AtomicLong()).addAndGet(totalCount);
             }
@@ -153,7 +153,7 @@ public class CustomerSdkStats {
             builder.setTime(FormattedTime.offSetDateTimeFromNow());
             addCommonTags(builder, sdkVersion, cloudRole, cloudRoleInstance);
             addCommonProperties(builder);
-            builder.addProperty("telemetry_type", key.telemetryType);
+            builder.addProperty("telemetryType", key.telemetryType);
             telemetryItems.add(builder.build());
         }
 
@@ -170,13 +170,13 @@ public class CustomerSdkStats {
             builder.setTime(FormattedTime.offSetDateTimeFromNow());
             addCommonTags(builder, sdkVersion, cloudRole, cloudRoleInstance);
             addCommonProperties(builder);
-            builder.addProperty("telemetry_type", key.telemetryType);
-            builder.addProperty("drop.code", key.dropCode);
+            builder.addProperty("telemetryType", key.telemetryType);
+            builder.addProperty("dropCode", key.dropCode);
             if (key.dropReason != null) {
-                builder.addProperty("drop.reason", key.dropReason);
+                builder.addProperty("dropReason", key.dropReason);
             }
             if (key.telemetrySuccess != null) {
-                builder.addProperty("telemetry_success", key.telemetrySuccess.toString());
+                builder.addProperty("telemetrySuccess", key.telemetrySuccess.toString());
             }
             telemetryItems.add(builder.build());
         }
@@ -194,10 +194,10 @@ public class CustomerSdkStats {
             builder.setTime(FormattedTime.offSetDateTimeFromNow());
             addCommonTags(builder, sdkVersion, cloudRole, cloudRoleInstance);
             addCommonProperties(builder);
-            builder.addProperty("telemetry_type", key.telemetryType);
-            builder.addProperty("retry.code", key.retryCode);
+            builder.addProperty("telemetryType", key.telemetryType);
+            builder.addProperty("retryCode", key.retryCode);
             if (key.retryReason != null) {
-                builder.addProperty("retry.reason", key.retryReason);
+                builder.addProperty("retryReason", key.retryReason);
             }
             telemetryItems.add(builder.build());
         }

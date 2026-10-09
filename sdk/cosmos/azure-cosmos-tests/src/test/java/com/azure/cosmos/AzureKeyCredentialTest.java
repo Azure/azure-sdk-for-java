@@ -75,25 +75,28 @@ public class AzureKeyCredentialTest extends TestSuiteBase {
             , documentId, uuid));
     }
 
-    @Test(groups = { "fast" }, timeOut = TIMEOUT, dataProvider = "crudArgProvider", retryAnalyzer = RetryAnalyzer.class)
+    @Test(groups = { "fast" }, timeOut = 2 * TIMEOUT, dataProvider = "crudArgProvider", retryAnalyzer = RetryAnalyzer.class)
     public void createCollectionWithSecondaryKey(String collectionName) throws InterruptedException {
         CosmosContainerProperties collectionDefinition = getCollectionDefinition(collectionName);
 
-        // sanity check
-        assertThat(client.credential().getKey()).isEqualTo(TestConfigurations.MASTER_KEY);
+        // A retry reuses the data-provider value. Remove a resource created by a previous
+        // attempt before validating that the secondary key can create it again.
+        safeDeleteCollection(database.getContainer(collectionName));
+        try {
+            assertThat(client.credential().getKey()).isEqualTo(TestConfigurations.MASTER_KEY);
+            credential.update(TestConfigurations.SECONDARY_MASTER_KEY);
 
-        credential.update(TestConfigurations.SECONDARY_MASTER_KEY);
-        Mono<CosmosContainerResponse> createObservable = database
-            .createContainer(collectionDefinition);
-
-        CosmosResponseValidator<CosmosContainerResponse> validator = new CosmosResponseValidator.Builder<CosmosContainerResponse>()
-            .withId(collectionDefinition.getId()).build();
-
-        validateSuccess(createObservable, validator);
-
-        //  sanity check
-        assertThat(client.credential().getKey()).isEqualTo(TestConfigurations.SECONDARY_MASTER_KEY);
-        safeDeleteAllCollections(database);
+            Mono<CosmosContainerResponse> createObservable = database.createContainer(collectionDefinition);
+            CosmosResponseValidator<CosmosContainerResponse> validator =
+                new CosmosResponseValidator.Builder<CosmosContainerResponse>()
+                    .withId(collectionDefinition.getId())
+                    .build();
+            validateSuccess(createObservable, validator);
+            assertThat(client.credential().getKey()).isEqualTo(TestConfigurations.SECONDARY_MASTER_KEY);
+        } finally {
+            credential.update(TestConfigurations.MASTER_KEY);
+            safeDeleteCollection(database.getContainer(collectionName));
+        }
     }
 
     @Test(groups = { "fast" }, timeOut = TIMEOUT, dataProvider = "crudArgProvider", retryAnalyzer = RetryAnalyzer.class)

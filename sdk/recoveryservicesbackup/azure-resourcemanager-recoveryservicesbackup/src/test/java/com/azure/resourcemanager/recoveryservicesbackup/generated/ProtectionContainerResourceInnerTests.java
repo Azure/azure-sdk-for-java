@@ -16,38 +16,38 @@ public final class ProtectionContainerResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ProtectionContainerResourceInner model = BinaryData.fromString(
-            "{\"properties\":{\"containerType\":\"ProtectionContainer\",\"friendlyName\":\"esutrgjupauutpw\",\"backupManagementType\":\"DPM\",\"registrationStatus\":\"hej\",\"healthStatus\":\"w\",\"protectableObjectType\":\"nfqn\"},\"tags\":{\"imwkslircizj\":\"psxjvf\",\"t\":\"vydfceacvlhvygdy\",\"jslb\":\"mrtwna\"},\"location\":\"kojgcyzts\",\"eTag\":\"z\",\"id\":\"aeqphchqnr\",\"name\":\"rpxeh\",\"type\":\"wrykqgai\"}")
+            "{\"properties\":{\"containerType\":\"ProtectionContainer\",\"friendlyName\":\"vblm\",\"backupManagementType\":\"DPM\",\"registrationStatus\":\"uhbxvvy\",\"healthStatus\":\"s\",\"protectableObjectType\":\"byrqufeg\",\"sourceLocation\":\"vwz\"},\"tags\":{\"hrixkwmy\":\"hlmctlpdngitvgb\",\"hbpnaixexccbd\":\"jejveg\",\"htpwij\":\"eaxhcexdrrvqahqk\"},\"location\":\"yjsvfyc\",\"eTag\":\"bfvoowvrv\",\"id\":\"gjqppy\",\"name\":\"s\",\"type\":\"ronzmyhgfip\"}")
             .toObject(ProtectionContainerResourceInner.class);
-        Assertions.assertEquals("esutrgjupauutpw", model.properties().friendlyName());
+        Assertions.assertEquals("vblm", model.properties().friendlyName());
         Assertions.assertEquals(BackupManagementType.DPM, model.properties().backupManagementType());
-        Assertions.assertEquals("hej", model.properties().registrationStatus());
-        Assertions.assertEquals("w", model.properties().healthStatus());
-        Assertions.assertEquals("nfqn", model.properties().protectableObjectType());
-        Assertions.assertEquals("psxjvf", model.tags().get("imwkslircizj"));
-        Assertions.assertEquals("kojgcyzts", model.location());
-        Assertions.assertEquals("z", model.etag());
+        Assertions.assertEquals("uhbxvvy", model.properties().registrationStatus());
+        Assertions.assertEquals("s", model.properties().healthStatus());
+        Assertions.assertEquals("byrqufeg", model.properties().protectableObjectType());
+        Assertions.assertEquals("hlmctlpdngitvgb", model.tags().get("hrixkwmy"));
+        Assertions.assertEquals("yjsvfyc", model.location());
+        Assertions.assertEquals("bfvoowvrv", model.etag());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ProtectionContainerResourceInner model = new ProtectionContainerResourceInner()
-            .withProperties(new ProtectionContainer().withFriendlyName("esutrgjupauutpw")
+            .withProperties(new ProtectionContainer().withFriendlyName("vblm")
                 .withBackupManagementType(BackupManagementType.DPM)
-                .withRegistrationStatus("hej")
-                .withHealthStatus("w")
-                .withProtectableObjectType("nfqn"))
-            .withTags(mapOf("imwkslircizj", "psxjvf", "t", "vydfceacvlhvygdy", "jslb", "mrtwna"))
-            .withLocation("kojgcyzts")
-            .withEtag("z");
+                .withRegistrationStatus("uhbxvvy")
+                .withHealthStatus("s")
+                .withProtectableObjectType("byrqufeg"))
+            .withTags(mapOf("hrixkwmy", "hlmctlpdngitvgb", "hbpnaixexccbd", "jejveg", "htpwij", "eaxhcexdrrvqahqk"))
+            .withLocation("yjsvfyc")
+            .withEtag("bfvoowvrv");
         model = BinaryData.fromObject(model).toObject(ProtectionContainerResourceInner.class);
-        Assertions.assertEquals("esutrgjupauutpw", model.properties().friendlyName());
+        Assertions.assertEquals("vblm", model.properties().friendlyName());
         Assertions.assertEquals(BackupManagementType.DPM, model.properties().backupManagementType());
-        Assertions.assertEquals("hej", model.properties().registrationStatus());
-        Assertions.assertEquals("w", model.properties().healthStatus());
-        Assertions.assertEquals("nfqn", model.properties().protectableObjectType());
-        Assertions.assertEquals("psxjvf", model.tags().get("imwkslircizj"));
-        Assertions.assertEquals("kojgcyzts", model.location());
-        Assertions.assertEquals("z", model.etag());
+        Assertions.assertEquals("uhbxvvy", model.properties().registrationStatus());
+        Assertions.assertEquals("s", model.properties().healthStatus());
+        Assertions.assertEquals("byrqufeg", model.properties().protectableObjectType());
+        Assertions.assertEquals("hlmctlpdngitvgb", model.tags().get("hrixkwmy"));
+        Assertions.assertEquals("yjsvfyc", model.location());
+        Assertions.assertEquals("bfvoowvrv", model.etag());
     }
 
     // Use "Map.of" if available

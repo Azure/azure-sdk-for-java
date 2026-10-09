@@ -23,7 +23,7 @@ public final class IotHubResourcesGetValidSkusMockTests {
     @Test
     public void testGetValidSkus() throws Exception {
         String responseStr
-            = "{\"value\":[{\"resourceType\":\"qhoftrmaequiah\",\"sku\":{\"name\":\"S3\",\"tier\":\"Basic\",\"capacity\":5718593450165440906},\"capacity\":{\"minimum\":6940065807913814544,\"maximum\":7697781764042454025,\"default\":8868873963072900799,\"scaleType\":\"Automatic\"}}]}";
+            = "{\"value\":[{\"resourceType\":\"znkbykutwpfhpagm\",\"sku\":{\"name\":\"F1\",\"tier\":\"Standard\",\"capacity\":5038627427973777976},\"capacity\":{\"minimum\":5556617074832466147,\"maximum\":4892088910814028509,\"default\":6150452320822609369,\"scaleType\":\"Manual\"}}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,9 +33,9 @@ public final class IotHubResourcesGetValidSkusMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<IotHubSkuDescription> response = manager.iotHubResources()
-            .getValidSkus("bminrfdwoyuhhzi", "iefozbhdmsml", com.azure.core.util.Context.NONE);
+            .getValidSkus("zkoowtlmnguxawqa", "dsyuuximerqfob", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(IotHubSku.S3, response.iterator().next().sku().name());
-        Assertions.assertEquals(5718593450165440906L, response.iterator().next().sku().capacity());
+        Assertions.assertEquals(IotHubSku.F1, response.iterator().next().sku().name());
+        Assertions.assertEquals(5038627427973777976L, response.iterator().next().sku().capacity());
     }
 }

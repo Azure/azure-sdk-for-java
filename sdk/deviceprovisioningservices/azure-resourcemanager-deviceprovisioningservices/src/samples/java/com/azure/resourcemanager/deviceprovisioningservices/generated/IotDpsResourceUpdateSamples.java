@@ -13,7 +13,24 @@ import java.util.Map;
  */
 public final class IotDpsResourceUpdateSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/DPSPatch.json
+     * x-ms-original-file: 2026-08-31/DPSPatch_DisableLocalAuth.json
+     */
+    /**
+     * Sample code: DPSPatch_DisableLocalAuth.
+     * 
+     * @param manager Entry point to IotDpsManager.
+     */
+    public static void
+        dPSPatchDisableLocalAuth(com.azure.resourcemanager.deviceprovisioningservices.IotDpsManager manager) {
+        ProvisioningServiceDescription resource = manager.iotDpsResources()
+            .getByResourceGroupWithResponse("myResourceGroup", "myFirstProvisioningService",
+                com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update().withTags(mapOf("foo", "bar")).apply();
+    }
+
+    /*
+     * x-ms-original-file: 2026-08-31/DPSPatch.json
      */
     /**
      * Sample code: DPSPatch.
@@ -22,7 +39,7 @@ public final class IotDpsResourceUpdateSamples {
      */
     public static void dPSPatch(com.azure.resourcemanager.deviceprovisioningservices.IotDpsManager manager) {
         ProvisioningServiceDescription resource = manager.iotDpsResources()
-            .getByResourceGroupWithResponse("myFirstProvisioningService", "myResourceGroup",
+            .getByResourceGroupWithResponse("myResourceGroup", "myFirstProvisioningService",
                 com.azure.core.util.Context.NONE)
             .getValue();
         resource.update().withTags(mapOf("foo", "bar")).apply();

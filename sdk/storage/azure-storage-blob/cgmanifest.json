@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json.schemastore.org/component-detection-manifest.json",
+  "version": 1,
+  "registrations": [
+    {
+      "developmentDependency": false,
+      "component": {
+        "type": "maven",
+        "maven": {
+          "groupId": "org.apache.arrow",
+          "artifactId": "arrow-format",
+          "version": "19.0.0"
+        }
+      }
+    },
+    {
+      "developmentDependency": false,
+      "component": {
+        "type": "maven",
+        "maven": {
+          "groupId": "com.google.flatbuffers",
+          "artifactId": "flatbuffers-java",
+          "version": "25.2.10"
+        }
+      }
+    }
+  ]
+}

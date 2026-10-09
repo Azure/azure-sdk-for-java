@@ -17,7 +17,7 @@ import com.azure.resourcemanager.netapp.models.OnCertificateConflictAction;
  */
 public final class BucketsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-04-15-preview/Buckets_Update.json
+     * x-ms-original-file: 2026-06-15-preview/Buckets_Update.json
      */
     /**
      * Sample code: Buckets_Update.
@@ -37,7 +37,7 @@ public final class BucketsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-04-15-preview/Buckets_UpdateWithAkv.json
+     * x-ms-original-file: 2026-06-15-preview/Buckets_UpdateWithAkv.json
      */
     /**
      * Sample code: Buckets_UpdateWithAkv.

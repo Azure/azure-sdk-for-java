@@ -21,7 +21,7 @@ import java.util.Map;
  * A single routine run returned from the run history API.
  */
 @Immutable
-@Beta(warningText = "Preview API. Routines=V1Preview")
+@Beta(warningText = "Preview API. Routines=V2Preview")
 public final class RoutineRun implements JsonSerializable<RoutineRun> {
 
     /*

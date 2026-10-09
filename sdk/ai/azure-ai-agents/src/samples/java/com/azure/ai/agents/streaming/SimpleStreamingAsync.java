@@ -5,16 +5,18 @@ package com.azure.ai.agents.streaming;
 
 import com.azure.ai.agents.AgentsAsyncClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.ResponsesAsyncClient;
-import com.azure.ai.agents.models.AgentReference;
-import com.azure.ai.agents.models.AzureCreateResponseOptions;
+import com.azure.ai.agents.SampleUtils;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.PromptAgentDefinition;
+import com.azure.ai.agents.util.StreamingResponseUtils;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.openai.client.OpenAIClientAsync;
+import com.openai.core.http.AsyncStreamResponse;
 import com.openai.helpers.ResponseAccumulator;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
+import com.openai.models.responses.ResponseStreamEvent;
 import reactor.core.publisher.Mono;
 
 import java.util.concurrent.atomic.AtomicReference;
@@ -39,7 +41,6 @@ public class SimpleStreamingAsync {
             .endpoint(endpoint);
 
         AgentsAsyncClient agentsAsyncClient = builder.buildAgentsAsyncClient();
-        ResponsesAsyncClient responsesAsyncClient = builder.buildResponsesAsyncClient();
 
         AtomicReference<AgentVersionDetails> agentRef = new AtomicReference<>();
 
@@ -52,32 +53,33 @@ public class SimpleStreamingAsync {
                 agentRef.set(agent);
                 System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());
 
-                AgentReference agentReference = new AgentReference(agent.getName())
-                    .setVersion(agent.getVersion());
+                OpenAIClientAsync openAIAsyncClient = builder.buildAgentScopedOpenAIAsyncClient(agent.getName());
 
                 // BEGIN: com.azure.ai.agents.streaming.simple_async
-                // Use ResponseAccumulator to collect streamed events into a final Response
-                ResponseAccumulator responseAccumulator = ResponseAccumulator.create();
-
-                // Stream response asynchronously - text is printed as each chunk arrives
-                return responsesAsyncClient.createStreamingAzureResponse(
-                        new AzureCreateResponseOptions().setAgentReference(agentReference),
+                // Adapt OpenAI streaming events to a Reactor Flux.
+                Mono<Void> streamingCompletion = Mono.defer(() -> {
+                    ResponseAccumulator responseAccumulator = ResponseAccumulator.create();
+                    AsyncStreamResponse<ResponseStreamEvent> stream = openAIAsyncClient.responses().createStreaming(
                         ResponseCreateParams.builder()
-                            .input("Tell me a short story about a brave explorer."))
-                    .doOnNext(event -> {
-                        responseAccumulator.accumulate(event);
-                        event.outputTextDelta()
-                            .ifPresent(textEvent -> System.out.print(textEvent.delta()));
-                    })
-                    .then(Mono.fromCallable(() -> {
-                        System.out.println(); // newline after streamed text
+                            .input("Tell me a short story about a brave explorer.")
+                            .build());
 
-                        // Access the complete accumulated response
-                        Response response = responseAccumulator.response();
-                        System.out.println("\nResponse ID: " + response.id());
-                        // END: com.azure.ai.agents.streaming.simple_async
-                        return response;
-                    }));
+                    return StreamingResponseUtils.toFlux(stream)
+                        .doOnNext(event -> responseAccumulator.accumulate(event)
+                            .outputTextDelta()
+                            .ifPresent(textEvent -> System.out.print(textEvent.delta())))
+                        .then()
+                        .doOnSuccess(unused -> {
+                            System.out.println(); // newline after streamed text
+
+                            // Access the complete accumulated response
+                            Response response = responseAccumulator.response();
+                            System.out.println("\nResponse ID: " + response.id());
+                        });
+                });
+                // END: com.azure.ai.agents.streaming.simple_async
+
+                return SampleUtils.pinAgentVersion(agentsAsyncClient, agent).then(streamingCompletion);
             })
             .then(Mono.defer(() -> {
                 AgentVersionDetails agent = agentRef.get();

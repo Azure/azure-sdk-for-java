@@ -24,6 +24,7 @@
 <suite name="fi-sm-customer-workflows">
   <listeners>
     <listener class-name="com.azure.cosmos.CosmosNettyLeakDetectorFactory"/>
+    <listener class-name="com.azure.cosmos.CosmosTestResourceJanitor"/>
   </listeners>
   <test name="fi-sm-customer-workflows" group-by-instances="true">
     <groups>

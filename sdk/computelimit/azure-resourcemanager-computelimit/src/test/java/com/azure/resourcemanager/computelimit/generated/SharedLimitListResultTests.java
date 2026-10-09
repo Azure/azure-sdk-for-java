@@ -12,8 +12,8 @@ public final class SharedLimitListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SharedLimitListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"resourceName\":{\"value\":\"j\",\"localizedValue\":\"hbcryffdfdosyge\"},\"limit\":1743197151,\"unit\":\"jakhmsbzjh\",\"provisioningState\":\"Succeeded\"},\"id\":\"vdphlxaolthqtr\",\"name\":\"qjbpfzfsin\",\"type\":\"gvfcj\"}],\"nextLink\":\"zoxxjtf\"}")
+            "{\"value\":[{\"properties\":{\"resourceName\":{\"value\":\"theotusiv\",\"localizedValue\":\"v\"},\"limit\":1323562973,\"unit\":\"ihnhun\",\"provisioningState\":\"Failed\"},\"id\":\"zrnf\",\"name\":\"gxg\",\"type\":\"spemvtzfk\"},{\"properties\":{\"resourceName\":{\"value\":\"bljofxqeof\",\"localizedValue\":\"e\"},\"limit\":565226786,\"unit\":\"jbasvmsmjqulngs\",\"provisioningState\":\"Succeeded\"},\"id\":\"ybkzgcwr\",\"name\":\"clxxwrljdo\",\"type\":\"skcqvkocrcjd\"}],\"nextLink\":\"tnhxbn\"}")
             .toObject(SharedLimitListResult.class);
-        Assertions.assertEquals("zoxxjtf", model.nextLink());
+        Assertions.assertEquals("tnhxbn", model.nextLink());
     }
 }

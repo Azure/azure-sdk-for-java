@@ -17,39 +17,38 @@ public final class ProtectionIntentResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ProtectionIntentResourceInner model = BinaryData.fromString(
-            "{\"properties\":{\"protectionIntentItemType\":\"ProtectionIntent\",\"backupManagementType\":\"AzureIaasVM\",\"sourceResourceId\":\"iswskuk\",\"itemId\":\"asbvw\",\"policyId\":\"pkxkdtxfk\",\"protectionState\":\"ProtectionFailed\"},\"tags\":{\"bugtywatmqa\":\"twknvgm\",\"zcbyfq\":\"kueatgroeshoy\",\"uvjmv\":\"kfaoytehq\",\"roejnndl\":\"mtdwcky\"},\"location\":\"juskbrreqyn\",\"eTag\":\"eysfaqegplw\",\"id\":\"shwddkvbxgk\",\"name\":\"usybwptdaca\",\"type\":\"vvlfntymtp\"}")
+            "{\"properties\":{\"protectionIntentItemType\":\"ProtectionIntent\",\"backupManagementType\":\"MAB\",\"sourceResourceId\":\"ffaweyur\",\"itemId\":\"hy\",\"policyId\":\"xra\",\"protectionState\":\"Protected\"},\"tags\":{\"apx\":\"brxmrgch\",\"uusioycblev\":\"iyfjjkbajbuscg\"},\"location\":\"clujyx\",\"eTag\":\"xlzgsjgkzzl\",\"id\":\"fhbzffovwmbjlzq\",\"name\":\"czpgvdwnapfdq\",\"type\":\"owftptnuwjtks\"}")
             .toObject(ProtectionIntentResourceInner.class);
-        Assertions.assertEquals(BackupManagementType.AZURE_IAAS_VM, model.properties().backupManagementType());
-        Assertions.assertEquals("iswskuk", model.properties().sourceResourceId());
-        Assertions.assertEquals("asbvw", model.properties().itemId());
-        Assertions.assertEquals("pkxkdtxfk", model.properties().policyId());
-        Assertions.assertEquals(ProtectionStatus.PROTECTION_FAILED, model.properties().protectionState());
-        Assertions.assertEquals("twknvgm", model.tags().get("bugtywatmqa"));
-        Assertions.assertEquals("juskbrreqyn", model.location());
-        Assertions.assertEquals("eysfaqegplw", model.etag());
+        Assertions.assertEquals(BackupManagementType.MAB, model.properties().backupManagementType());
+        Assertions.assertEquals("ffaweyur", model.properties().sourceResourceId());
+        Assertions.assertEquals("hy", model.properties().itemId());
+        Assertions.assertEquals("xra", model.properties().policyId());
+        Assertions.assertEquals(ProtectionStatus.PROTECTED, model.properties().protectionState());
+        Assertions.assertEquals("brxmrgch", model.tags().get("apx"));
+        Assertions.assertEquals("clujyx", model.location());
+        Assertions.assertEquals("xlzgsjgkzzl", model.etag());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ProtectionIntentResourceInner model = new ProtectionIntentResourceInner()
-            .withProperties(new ProtectionIntent().withBackupManagementType(BackupManagementType.AZURE_IAAS_VM)
-                .withSourceResourceId("iswskuk")
-                .withItemId("asbvw")
-                .withPolicyId("pkxkdtxfk")
-                .withProtectionState(ProtectionStatus.PROTECTION_FAILED))
-            .withTags(
-                mapOf("bugtywatmqa", "twknvgm", "zcbyfq", "kueatgroeshoy", "uvjmv", "kfaoytehq", "roejnndl", "mtdwcky"))
-            .withLocation("juskbrreqyn")
-            .withEtag("eysfaqegplw");
+            .withProperties(new ProtectionIntent().withBackupManagementType(BackupManagementType.MAB)
+                .withSourceResourceId("ffaweyur")
+                .withItemId("hy")
+                .withPolicyId("xra")
+                .withProtectionState(ProtectionStatus.PROTECTED))
+            .withTags(mapOf("apx", "brxmrgch", "uusioycblev", "iyfjjkbajbuscg"))
+            .withLocation("clujyx")
+            .withEtag("xlzgsjgkzzl");
         model = BinaryData.fromObject(model).toObject(ProtectionIntentResourceInner.class);
-        Assertions.assertEquals(BackupManagementType.AZURE_IAAS_VM, model.properties().backupManagementType());
-        Assertions.assertEquals("iswskuk", model.properties().sourceResourceId());
-        Assertions.assertEquals("asbvw", model.properties().itemId());
-        Assertions.assertEquals("pkxkdtxfk", model.properties().policyId());
-        Assertions.assertEquals(ProtectionStatus.PROTECTION_FAILED, model.properties().protectionState());
-        Assertions.assertEquals("twknvgm", model.tags().get("bugtywatmqa"));
-        Assertions.assertEquals("juskbrreqyn", model.location());
-        Assertions.assertEquals("eysfaqegplw", model.etag());
+        Assertions.assertEquals(BackupManagementType.MAB, model.properties().backupManagementType());
+        Assertions.assertEquals("ffaweyur", model.properties().sourceResourceId());
+        Assertions.assertEquals("hy", model.properties().itemId());
+        Assertions.assertEquals("xra", model.properties().policyId());
+        Assertions.assertEquals(ProtectionStatus.PROTECTED, model.properties().protectionState());
+        Assertions.assertEquals("brxmrgch", model.tags().get("apx"));
+        Assertions.assertEquals("clujyx", model.location());
+        Assertions.assertEquals("xlzgsjgkzzl", model.etag());
     }
 
     // Use "Map.of" if available

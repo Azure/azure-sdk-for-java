@@ -13,7 +13,8 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * A representation of the additional context information available when Azure OpenAI chat extensions are involved
+ * A representation of the additional context
+ * information available when Azure OpenAI chat extensions are involved
  * in the generation of a corresponding chat completions response. This context information is only populated when
  * using an Azure OpenAI request configured to use a matching extension.
  */
@@ -28,7 +29,8 @@ public final class AzureChatExtensionsMessageContext implements JsonSerializable
     }
 
     /*
-     * The contextual information associated with the Azure chat extensions used for a chat completions request.
+     * The contextual information associated with
+     * the Azure chat extensions used for a chat completions request.
      * These messages describe the data source retrievals, plugin invocations, and other intermediate steps taken in the
      * course of generating a chat completions response that was augmented by capabilities from Azure OpenAI chat
      * extensions.
@@ -43,8 +45,8 @@ public final class AzureChatExtensionsMessageContext implements JsonSerializable
     private String intent;
 
     /**
-     * Get the citations property: The contextual information associated with the Azure chat extensions used for a chat
-     * completions request.
+     * Get the citations property: The contextual information associated with
+     * the Azure chat extensions used for a chat completions request.
      * These messages describe the data source retrievals, plugin invocations, and other intermediate steps taken in the
      * course of generating a chat completions response that was augmented by capabilities from Azure OpenAI chat
      * extensions.

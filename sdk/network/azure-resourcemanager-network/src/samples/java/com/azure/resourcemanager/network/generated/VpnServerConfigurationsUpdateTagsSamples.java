@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class VpnServerConfigurationsUpdateTagsSamples {
     /*
-     * x-ms-original-file: 2025-07-01/VpnServerConfigurationUpdateTags.json
+     * x-ms-original-file: 2026-01-01/VpnServerConfigurationUpdateTags.json
      */
     /**
      * Sample code: VpnServerConfigurationUpdate.

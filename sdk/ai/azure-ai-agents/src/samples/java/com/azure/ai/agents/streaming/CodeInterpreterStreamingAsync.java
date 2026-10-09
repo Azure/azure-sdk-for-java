@@ -5,14 +5,14 @@ package com.azure.ai.agents.streaming;
 
 import com.azure.ai.agents.AgentsAsyncClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.ResponsesAsyncClient;
-import com.azure.ai.agents.models.AgentReference;
-import com.azure.ai.agents.models.AzureCreateResponseOptions;
+import com.azure.ai.agents.SampleUtils;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.CodeInterpreterTool;
 import com.azure.ai.agents.models.PromptAgentDefinition;
+import com.azure.ai.agents.util.StreamingResponseUtils;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.openai.client.OpenAIClientAsync;
 import com.openai.helpers.ResponseAccumulator;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
@@ -42,7 +42,6 @@ public class CodeInterpreterStreamingAsync {
             .endpoint(endpoint);
 
         AgentsAsyncClient agentsAsyncClient = builder.buildAgentsAsyncClient();
-        ResponsesAsyncClient responsesAsyncClient = builder.buildResponsesAsyncClient();
 
         AtomicReference<AgentVersionDetails> agentRef = new AtomicReference<>();
 
@@ -60,17 +59,18 @@ public class CodeInterpreterStreamingAsync {
                 agentRef.set(agent);
                 System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());
 
-                AgentReference agentReference = new AgentReference(agent.getName())
-                    .setVersion(agent.getVersion());
+                OpenAIClientAsync openAIAsyncClient
+                    = builder.buildAgentScopedOpenAIAsyncClient(agent.getName());
 
                 // BEGIN: com.azure.ai.agents.streaming.code_interpreter_async
                 // Stream response asynchronously with Code Interpreter
                 ResponseAccumulator responseAccumulator = ResponseAccumulator.create();
 
-                return responsesAsyncClient.createStreamingAzureResponse(
-                        new AzureCreateResponseOptions().setAgentReference(agentReference),
-                        ResponseCreateParams.builder()
-                            .input("Calculate the first 10 prime numbers using Python."))
+                return SampleUtils.pinAgentVersion(agentsAsyncClient, agent)
+                    .flatMapMany(ignored -> StreamingResponseUtils.toFlux(
+                        openAIAsyncClient.responses().createStreaming(ResponseCreateParams.builder()
+                            .input("Calculate the first 10 prime numbers using Python.")
+                            .build())))
                     .doOnNext(event -> {
                         responseAccumulator.accumulate(event);
                         // Print text deltas as they arrive

@@ -140,6 +140,11 @@ public final class CacheNodeEntity implements JsonSerializable<CacheNodeEntity> 
     private OffsetDateTime cidrCsvLastUpdateTime;
 
     /*
+     * Cache node resource Bgp network interface.
+     */
+    private String bgpNetworkInterface;
+
+    /*
      * Cache node resource last Bgp Cidr Csv update timestamp
      */
     private OffsetDateTime bgpCidrCsvLastUpdateTime;
@@ -260,7 +265,7 @@ public final class CacheNodeEntity implements JsonSerializable<CacheNodeEntity> 
     private String fullyQualifiedDomainName;
 
     /*
-     * Auto Update Ring Type which is slow or fast etc.
+     * Auto Update Ring Type which is stable or beta as new values. slow or fast are legacy from version 2026-06-01.
      */
     private AutoUpdateRingType autoUpdateRingType;
 
@@ -280,6 +285,31 @@ public final class CacheNodeEntity implements JsonSerializable<CacheNodeEntity> 
      * Customer requested time of the day for mcc install of auto update cycle, should be hh:mm
      */
     private String autoUpdateRequestedTime;
+
+    /*
+     * Cache node port firewall rule creation opt-in for port 80 property
+     */
+    private Boolean openFirewallPort80;
+
+    /*
+     * Cache node port firewall rule creation opt-in for port 443 property
+     */
+    private Boolean openFirewallPort443;
+
+    /*
+     * Cache node port firewall rule creation opt-in for port 5000 property
+     */
+    private Boolean openFirewallPort5000;
+
+    /*
+     * Cache node port firewall rule creation opt-in for port 5001 property
+     */
+    private Boolean openFirewallPort5001;
+
+    /*
+     * Connected Cache runtime account type
+     */
+    private String runtimeAccountType;
 
     /**
      * Creates an instance of CacheNodeEntity class.
@@ -627,6 +657,26 @@ public final class CacheNodeEntity implements JsonSerializable<CacheNodeEntity> 
     }
 
     /**
+     * Get the bgpNetworkInterface property: Cache node resource Bgp network interface.
+     * 
+     * @return the bgpNetworkInterface value.
+     */
+    public String bgpNetworkInterface() {
+        return this.bgpNetworkInterface;
+    }
+
+    /**
+     * Set the bgpNetworkInterface property: Cache node resource Bgp network interface.
+     * 
+     * @param bgpNetworkInterface the bgpNetworkInterface value to set.
+     * @return the CacheNodeEntity object itself.
+     */
+    public CacheNodeEntity withBgpNetworkInterface(String bgpNetworkInterface) {
+        this.bgpNetworkInterface = bgpNetworkInterface;
+        return this;
+    }
+
+    /**
      * Get the bgpCidrCsvLastUpdateTime property: Cache node resource last Bgp Cidr Csv update timestamp.
      * 
      * @return the bgpCidrCsvLastUpdateTime value.
@@ -878,7 +928,8 @@ public final class CacheNodeEntity implements JsonSerializable<CacheNodeEntity> 
     }
 
     /**
-     * Get the autoUpdateRingType property: Auto Update Ring Type which is slow or fast etc.
+     * Get the autoUpdateRingType property: Auto Update Ring Type which is stable or beta as new values. slow or fast
+     * are legacy from version 2026-06-01.
      * 
      * @return the autoUpdateRingType value.
      */
@@ -887,7 +938,8 @@ public final class CacheNodeEntity implements JsonSerializable<CacheNodeEntity> 
     }
 
     /**
-     * Set the autoUpdateRingType property: Auto Update Ring Type which is slow or fast etc.
+     * Set the autoUpdateRingType property: Auto Update Ring Type which is stable or beta as new values. slow or fast
+     * are legacy from version 2026-06-01.
      * 
      * @param autoUpdateRingType the autoUpdateRingType value to set.
      * @return the CacheNodeEntity object itself.
@@ -964,6 +1016,106 @@ public final class CacheNodeEntity implements JsonSerializable<CacheNodeEntity> 
     }
 
     /**
+     * Get the openFirewallPort80 property: Cache node port firewall rule creation opt-in for port 80 property.
+     * 
+     * @return the openFirewallPort80 value.
+     */
+    public Boolean openFirewallPort80() {
+        return this.openFirewallPort80;
+    }
+
+    /**
+     * Set the openFirewallPort80 property: Cache node port firewall rule creation opt-in for port 80 property.
+     * 
+     * @param openFirewallPort80 the openFirewallPort80 value to set.
+     * @return the CacheNodeEntity object itself.
+     */
+    public CacheNodeEntity withOpenFirewallPort80(Boolean openFirewallPort80) {
+        this.openFirewallPort80 = openFirewallPort80;
+        return this;
+    }
+
+    /**
+     * Get the openFirewallPort443 property: Cache node port firewall rule creation opt-in for port 443 property.
+     * 
+     * @return the openFirewallPort443 value.
+     */
+    public Boolean openFirewallPort443() {
+        return this.openFirewallPort443;
+    }
+
+    /**
+     * Set the openFirewallPort443 property: Cache node port firewall rule creation opt-in for port 443 property.
+     * 
+     * @param openFirewallPort443 the openFirewallPort443 value to set.
+     * @return the CacheNodeEntity object itself.
+     */
+    public CacheNodeEntity withOpenFirewallPort443(Boolean openFirewallPort443) {
+        this.openFirewallPort443 = openFirewallPort443;
+        return this;
+    }
+
+    /**
+     * Get the openFirewallPort5000 property: Cache node port firewall rule creation opt-in for port 5000 property.
+     * 
+     * @return the openFirewallPort5000 value.
+     */
+    public Boolean openFirewallPort5000() {
+        return this.openFirewallPort5000;
+    }
+
+    /**
+     * Set the openFirewallPort5000 property: Cache node port firewall rule creation opt-in for port 5000 property.
+     * 
+     * @param openFirewallPort5000 the openFirewallPort5000 value to set.
+     * @return the CacheNodeEntity object itself.
+     */
+    public CacheNodeEntity withOpenFirewallPort5000(Boolean openFirewallPort5000) {
+        this.openFirewallPort5000 = openFirewallPort5000;
+        return this;
+    }
+
+    /**
+     * Get the openFirewallPort5001 property: Cache node port firewall rule creation opt-in for port 5001 property.
+     * 
+     * @return the openFirewallPort5001 value.
+     */
+    public Boolean openFirewallPort5001() {
+        return this.openFirewallPort5001;
+    }
+
+    /**
+     * Set the openFirewallPort5001 property: Cache node port firewall rule creation opt-in for port 5001 property.
+     * 
+     * @param openFirewallPort5001 the openFirewallPort5001 value to set.
+     * @return the CacheNodeEntity object itself.
+     */
+    public CacheNodeEntity withOpenFirewallPort5001(Boolean openFirewallPort5001) {
+        this.openFirewallPort5001 = openFirewallPort5001;
+        return this;
+    }
+
+    /**
+     * Get the runtimeAccountType property: Connected Cache runtime account type.
+     * 
+     * @return the runtimeAccountType value.
+     */
+    public String runtimeAccountType() {
+        return this.runtimeAccountType;
+    }
+
+    /**
+     * Set the runtimeAccountType property: Connected Cache runtime account type.
+     * 
+     * @param runtimeAccountType the runtimeAccountType value to set.
+     * @return the CacheNodeEntity object itself.
+     */
+    public CacheNodeEntity withRuntimeAccountType(String runtimeAccountType) {
+        this.runtimeAccountType = runtimeAccountType;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -980,6 +1132,7 @@ public final class CacheNodeEntity implements JsonSerializable<CacheNodeEntity> 
         jsonWriter.writeNumberField("maxAllowableEgressInMbps", this.maxAllowableEgressInMbps);
         jsonWriter.writeBooleanField("isEnterpriseManaged", this.isEnterpriseManaged);
         jsonWriter.writeArrayField("cidrCsv", this.cidrCsv, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("bgpNetworkInterface", this.bgpNetworkInterface);
         jsonWriter.writeBooleanField("shouldMigrate", this.shouldMigrate);
         jsonWriter.writeNumberField("cidrSelectionType", this.cidrSelectionType);
         jsonWriter.writeStringField("fullyQualifiedDomainName", this.fullyQualifiedDomainName);
@@ -988,6 +1141,11 @@ public final class CacheNodeEntity implements JsonSerializable<CacheNodeEntity> 
         jsonWriter.writeNumberField("autoUpdateRequestedWeek", this.autoUpdateRequestedWeek);
         jsonWriter.writeNumberField("autoUpdateRequestedDay", this.autoUpdateRequestedDay);
         jsonWriter.writeStringField("autoUpdateRequestedTime", this.autoUpdateRequestedTime);
+        jsonWriter.writeBooleanField("openFirewallPort80", this.openFirewallPort80);
+        jsonWriter.writeBooleanField("openFirewallPort443", this.openFirewallPort443);
+        jsonWriter.writeBooleanField("openFirewallPort5000", this.openFirewallPort5000);
+        jsonWriter.writeBooleanField("openFirewallPort5001", this.openFirewallPort5001);
+        jsonWriter.writeStringField("runtimeAccountType", this.runtimeAccountType);
         return jsonWriter.writeEndObject();
     }
 
@@ -1058,6 +1216,8 @@ public final class CacheNodeEntity implements JsonSerializable<CacheNodeEntity> 
                 } else if ("cidrCsvLastUpdateTime".equals(fieldName)) {
                     deserializedCacheNodeEntity.cidrCsvLastUpdateTime = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("bgpNetworkInterface".equals(fieldName)) {
+                    deserializedCacheNodeEntity.bgpNetworkInterface = reader.getString();
                 } else if ("bgpCidrCsvLastUpdateTime".equals(fieldName)) {
                     deserializedCacheNodeEntity.bgpCidrCsvLastUpdateTime = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
@@ -1117,6 +1277,16 @@ public final class CacheNodeEntity implements JsonSerializable<CacheNodeEntity> 
                     deserializedCacheNodeEntity.autoUpdateRequestedDay = reader.getNullable(JsonReader::getInt);
                 } else if ("autoUpdateRequestedTime".equals(fieldName)) {
                     deserializedCacheNodeEntity.autoUpdateRequestedTime = reader.getString();
+                } else if ("openFirewallPort80".equals(fieldName)) {
+                    deserializedCacheNodeEntity.openFirewallPort80 = reader.getNullable(JsonReader::getBoolean);
+                } else if ("openFirewallPort443".equals(fieldName)) {
+                    deserializedCacheNodeEntity.openFirewallPort443 = reader.getNullable(JsonReader::getBoolean);
+                } else if ("openFirewallPort5000".equals(fieldName)) {
+                    deserializedCacheNodeEntity.openFirewallPort5000 = reader.getNullable(JsonReader::getBoolean);
+                } else if ("openFirewallPort5001".equals(fieldName)) {
+                    deserializedCacheNodeEntity.openFirewallPort5001 = reader.getNullable(JsonReader::getBoolean);
+                } else if ("runtimeAccountType".equals(fieldName)) {
+                    deserializedCacheNodeEntity.runtimeAccountType = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

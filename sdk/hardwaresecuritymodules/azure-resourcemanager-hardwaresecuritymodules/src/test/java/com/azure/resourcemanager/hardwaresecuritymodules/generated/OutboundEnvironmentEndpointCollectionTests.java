@@ -12,10 +12,10 @@ public final class OutboundEnvironmentEndpointCollectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OutboundEnvironmentEndpointCollection model = BinaryData.fromString(
-            "{\"value\":[{\"category\":\"n\",\"endpoints\":[{\"domainName\":\"uopxodlqiyntor\",\"endpointDetails\":[{},{}]}]},{\"category\":\"eosjswsr\",\"endpoints\":[{\"domainName\":\"zrpzb\",\"endpointDetails\":[{},{},{},{}]},{\"domainName\":\"qqzqioxiysuiizyn\",\"endpointDetails\":[{}]},{\"domainName\":\"atrwyhqmibzyh\",\"endpointDetails\":[{},{},{}]},{\"domainName\":\"mypyynpcdpu\",\"endpointDetails\":[{},{},{},{}]}]},{\"category\":\"mwzn\",\"endpoints\":[{\"domainName\":\"knso\",\"endpointDetails\":[{},{}]},{\"domainName\":\"xbldtlwwrlkdmtn\",\"endpointDetails\":[{}]},{\"domainName\":\"otllxdyhgsyo\",\"endpointDetails\":[{},{},{},{}]},{\"domainName\":\"ltdtbnnhad\",\"endpointDetails\":[{},{},{}]}]},{\"category\":\"kvci\",\"endpoints\":[{\"domainName\":\"p\",\"endpointDetails\":[{},{},{}]},{\"domainName\":\"x\",\"endpointDetails\":[{}]}]}],\"nextLink\":\"zikywgg\"}")
+            "{\"value\":[{\"category\":\"iby\",\"endpoints\":[{\"domainName\":\"bhshfwpracstwity\",\"endpointDetails\":[{},{},{}]}]},{\"category\":\"xccedcpnmdyodn\",\"endpoints\":[{\"domainName\":\"tjc\",\"endpointDetails\":[{}]},{\"domainName\":\"tiugcxnav\",\"endpointDetails\":[{}]},{\"domainName\":\"ibyqunyowxwlmdj\",\"endpointDetails\":[{},{},{},{}]}]}],\"nextLink\":\"g\"}")
             .toObject(OutboundEnvironmentEndpointCollection.class);
-        Assertions.assertEquals("n", model.value().get(0).category());
-        Assertions.assertEquals("uopxodlqiyntor", model.value().get(0).endpoints().get(0).domainName());
-        Assertions.assertEquals("zikywgg", model.nextLink());
+        Assertions.assertEquals("iby", model.value().get(0).category());
+        Assertions.assertEquals("bhshfwpracstwity", model.value().get(0).endpoints().get(0).domainName());
+        Assertions.assertEquals("g", model.nextLink());
     }
 }

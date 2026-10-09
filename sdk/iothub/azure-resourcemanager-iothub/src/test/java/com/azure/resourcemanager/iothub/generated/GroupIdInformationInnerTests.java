@@ -12,10 +12,10 @@ public final class GroupIdInformationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GroupIdInformationInner model = BinaryData.fromString(
-            "{\"id\":\"vvcnayr\",\"name\":\"rnxxmueed\",\"type\":\"rdvstkwqqtch\",\"properties\":{\"groupId\":\"lmfmtdaay\",\"requiredMembers\":[\"wvgpiohg\"],\"requiredZoneNames\":[\"tfudxepx\",\"yqagvrvm\",\"pkukghi\"]}}")
+            "{\"id\":\"kulpiujwaasi\",\"name\":\"i\",\"type\":\"byuqerpqlp\",\"properties\":{\"groupId\":\"cciuqgbdbutau\",\"requiredMembers\":[\"tkuwhhmhykojo\",\"afnn\"],\"requiredZoneNames\":[\"ichkoymkcdyhb\",\"kkpwdreqnovvq\",\"ovljxywsu\"]}}")
             .toObject(GroupIdInformationInner.class);
-        Assertions.assertEquals("lmfmtdaay", model.properties().groupId());
-        Assertions.assertEquals("wvgpiohg", model.properties().requiredMembers().get(0));
-        Assertions.assertEquals("tfudxepx", model.properties().requiredZoneNames().get(0));
+        Assertions.assertEquals("cciuqgbdbutau", model.properties().groupId());
+        Assertions.assertEquals("tkuwhhmhykojo", model.properties().requiredMembers().get(0));
+        Assertions.assertEquals("ichkoymkcdyhb", model.properties().requiredZoneNames().get(0));
     }
 }

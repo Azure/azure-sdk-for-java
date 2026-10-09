@@ -216,14 +216,6 @@ public class SessionServerEvent implements JsonSerializable<SessionServerEvent> 
                     return ServerEventResponseAudioTranscriptAnnotationAdded.fromJson(readerToUse.reset());
                 } else if ("response.invocation.delta".equals(discriminatorValue)) {
                     return ServerEventResponseInvocationDelta.fromJson(readerToUse.reset());
-                } else if ("rtc.call.sdp.created".equals(discriminatorValue)) {
-                    return ServerEventRtcCallSdpCreated.fromJson(readerToUse.reset());
-                } else if ("rtc.call.error".equals(discriminatorValue)) {
-                    return ServerEventRtcCallError.fromJson(readerToUse.reset());
-                } else if ("output_audio_buffer.started".equals(discriminatorValue)) {
-                    return ServerEventOutputAudioBufferStarted.fromJson(readerToUse.reset());
-                } else if ("output_audio_buffer.stopped".equals(discriminatorValue)) {
-                    return ServerEventOutputAudioBufferStopped.fromJson(readerToUse.reset());
                 } else if ("error".equals(discriminatorValue)) {
                     return SessionUpdateError.fromJson(readerToUse.reset());
                 } else {

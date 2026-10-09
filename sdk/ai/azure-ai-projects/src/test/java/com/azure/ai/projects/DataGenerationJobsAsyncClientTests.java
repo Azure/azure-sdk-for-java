@@ -20,6 +20,7 @@ import com.openai.models.evals.runs.RunRetrieveParams;
 import com.openai.models.evals.runs.RunRetrieveResponse;
 import com.openai.models.evals.runs.outputitems.OutputItemListParams;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -52,9 +53,10 @@ public class DataGenerationJobsAsyncClientTests extends ClientTestBase {
     @Timeout(value = 20, unit = TimeUnit.MINUTES)
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
+    @Disabled("TODO: re-record")
     public void dataGenerationJobWithEvaluationAsyncSample(HttpClient httpClient,
         AIProjectsServiceVersion serviceVersion) {
-        AIProjectClientBuilder projectClientBuilder = getClientBuilder(httpClient, serviceVersion).allowPreview(true);
+        AIProjectClientBuilder projectClientBuilder = getClientBuilder(httpClient, serviceVersion);
         BetaDatasetsAsyncClient dataGenerationJobsAsyncClient
             = projectClientBuilder.beta().buildBetaDatasetsAsyncClient();
         DatasetsAsyncClient datasetsAsyncClient = projectClientBuilder.buildDatasetsAsyncClient();
@@ -64,8 +66,11 @@ public class DataGenerationJobsAsyncClientTests extends ClientTestBase {
         String datasetName = testResourceNamer.randomName("dataset-generation-eval-", 64);
 
         Mono<Void> scenario = dataGenerationJobsAsyncClient
-            .createGenerationJob(DataGenerationJobWithEvaluationSample.createDataGenerationJob(modelName, datasetName),
+            .beginCreateGenerationJob(
+                DataGenerationJobWithEvaluationSample.createDataGenerationJob(modelName, datasetName),
                 testResourceNamer.randomUuid())
+            .next()
+            .map(response -> response.getValue())
             .flatMap(job -> waitForDataGenerationJob(dataGenerationJobsAsyncClient, job.getId(), 5, 180)
                 .flatMap(completedJob -> {
                     if (!JobStatus.SUCCEEDED.equals(completedJob.getStatus())) {

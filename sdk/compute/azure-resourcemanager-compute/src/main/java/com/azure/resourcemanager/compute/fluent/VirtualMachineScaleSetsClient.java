@@ -19,6 +19,7 @@ import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetInn
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetInstanceViewInner;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetSkuInner;
 import com.azure.resourcemanager.compute.models.ExpandTypesForGetVMScaleSets;
+import com.azure.resourcemanager.compute.models.MigrateVMAvailabilityZoneInput;
 import com.azure.resourcemanager.compute.models.OrchestrationServiceStateInput;
 import com.azure.resourcemanager.compute.models.VMScaleSetConvertToSinglePlacementGroupInput;
 import com.azure.resourcemanager.compute.models.VMScaleSetScaleOutInput;
@@ -2679,9 +2680,114 @@ public interface VirtualMachineScaleSetsClient extends InnerSupportsGet<VirtualM
     void scaleOut(String resourceGroupName, String vmScaleSetName, VMScaleSetScaleOutInput parameters, Context context);
 
     /**
+     * Migrates one or more virtual machines in a VM scale set to an availability zone.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VM scale set.
+     * @param body The input object for the MigrateVMAvailabilityZone API.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> migrateVMAvailabilityZoneWithResponseAsync(String resourceGroupName,
+        String vmScaleSetName, MigrateVMAvailabilityZoneInput body);
+
+    /**
+     * Migrates one or more virtual machines in a VM scale set to an availability zone.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VM scale set.
+     * @param body The input object for the MigrateVMAvailabilityZone API.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<Void>, Void> beginMigrateVMAvailabilityZoneAsync(String resourceGroupName,
+        String vmScaleSetName, MigrateVMAvailabilityZoneInput body);
+
+    /**
+     * Migrates one or more virtual machines in a VM scale set to an availability zone.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VM scale set.
+     * @param body The input object for the MigrateVMAvailabilityZone API.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginMigrateVMAvailabilityZone(String resourceGroupName, String vmScaleSetName,
+        MigrateVMAvailabilityZoneInput body);
+
+    /**
+     * Migrates one or more virtual machines in a VM scale set to an availability zone.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VM scale set.
+     * @param body The input object for the MigrateVMAvailabilityZone API.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginMigrateVMAvailabilityZone(String resourceGroupName, String vmScaleSetName,
+        MigrateVMAvailabilityZoneInput body, Context context);
+
+    /**
+     * Migrates one or more virtual machines in a VM scale set to an availability zone.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VM scale set.
+     * @param body The input object for the MigrateVMAvailabilityZone API.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> migrateVMAvailabilityZoneAsync(String resourceGroupName, String vmScaleSetName,
+        MigrateVMAvailabilityZoneInput body);
+
+    /**
+     * Migrates one or more virtual machines in a VM scale set to an availability zone.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VM scale set.
+     * @param body The input object for the MigrateVMAvailabilityZone API.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void migrateVMAvailabilityZone(String resourceGroupName, String vmScaleSetName,
+        MigrateVMAvailabilityZoneInput body);
+
+    /**
+     * Migrates one or more virtual machines in a VM scale set to an availability zone.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VM scale set.
+     * @param body The input object for the MigrateVMAvailabilityZone API.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void migrateVMAvailabilityZone(String resourceGroupName, String vmScaleSetName, MigrateVMAvailabilityZoneInput body,
+        Context context);
+
+    /**
      * Gets all the VM scale sets under the specified subscription for the specified location.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2694,7 +2800,7 @@ public interface VirtualMachineScaleSetsClient extends InnerSupportsGet<VirtualM
     /**
      * Gets all the VM scale sets under the specified subscription for the specified location.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2707,7 +2813,7 @@ public interface VirtualMachineScaleSetsClient extends InnerSupportsGet<VirtualM
     /**
      * Gets all the VM scale sets under the specified subscription for the specified location.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.

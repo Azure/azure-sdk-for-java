@@ -17,6 +17,7 @@ import java.io.IOException;
 @Fluent
 public final class SourceRegistryCredentials implements JsonSerializable<SourceRegistryCredentials> {
     /*
+     * 
      * The Entra identity used for source registry login.
      * The value is `[system]` for system-assigned managed identity, `[caller]` for caller identity,
      * and client ID for user-assigned managed identity.
@@ -24,6 +25,7 @@ public final class SourceRegistryCredentials implements JsonSerializable<SourceR
     private String identity;
 
     /*
+     * 
      * The authentication mode which determines the source registry login scope. The credentials for the source registry
      * will be generated using the given scope. These credentials will be used to login to
      * the source registry during the run.
@@ -37,7 +39,8 @@ public final class SourceRegistryCredentials implements JsonSerializable<SourceR
     }
 
     /**
-     * Get the identity property: The Entra identity used for source registry login.
+     * Get the identity property:
+     * The Entra identity used for source registry login.
      * The value is `[system]` for system-assigned managed identity, `[caller]` for caller identity,
      * and client ID for user-assigned managed identity.
      * 
@@ -48,7 +51,8 @@ public final class SourceRegistryCredentials implements JsonSerializable<SourceR
     }
 
     /**
-     * Set the identity property: The Entra identity used for source registry login.
+     * Set the identity property:
+     * The Entra identity used for source registry login.
      * The value is `[system]` for system-assigned managed identity, `[caller]` for caller identity,
      * and client ID for user-assigned managed identity.
      * 
@@ -61,8 +65,8 @@ public final class SourceRegistryCredentials implements JsonSerializable<SourceR
     }
 
     /**
-     * Get the loginMode property: The authentication mode which determines the source registry login scope. The
-     * credentials for the source registry
+     * Get the loginMode property:
+     * The authentication mode which determines the source registry login scope. The credentials for the source registry
      * will be generated using the given scope. These credentials will be used to login to
      * the source registry during the run.
      * 
@@ -73,8 +77,8 @@ public final class SourceRegistryCredentials implements JsonSerializable<SourceR
     }
 
     /**
-     * Set the loginMode property: The authentication mode which determines the source registry login scope. The
-     * credentials for the source registry
+     * Set the loginMode property:
+     * The authentication mode which determines the source registry login scope. The credentials for the source registry
      * will be generated using the given scope. These credentials will be used to login to
      * the source registry during the run.
      * 

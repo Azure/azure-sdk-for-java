@@ -8,7 +8,8 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Flag indicating whether subvolume operations are enabled on the volume.
+ * Flag indicating whether subvolume operations are enabled on the volume
+ * Deprecated. This type will be removed in a future API version.
  */
 public final class EnableSubvolumes extends ExpandableStringEnum<EnableSubvolumes> {
     /**

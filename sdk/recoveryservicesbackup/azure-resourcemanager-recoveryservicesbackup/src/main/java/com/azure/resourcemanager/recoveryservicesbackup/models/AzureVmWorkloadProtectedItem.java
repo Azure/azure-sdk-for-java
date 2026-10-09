@@ -618,8 +618,6 @@ public class AzureVmWorkloadProtectedItem extends ProtectedItem {
                     return AzureVmWorkloadSapHanaDBInstanceProtectedItem.fromJson(readerToUse.reset());
                 } else if ("AzureVmWorkloadSQLDatabase".equals(discriminatorValue)) {
                     return AzureVmWorkloadSqlDatabaseProtectedItem.fromJson(readerToUse.reset());
-                } else if ("AzureVmWorkloadSQLInstance".equals(discriminatorValue)) {
-                    return AzureVmWorkloadSQLInstanceProtectedItem.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }
@@ -679,6 +677,8 @@ public class AzureVmWorkloadProtectedItem extends ProtectedItem {
                 } else if ("softDeleteRetentionPeriodInDays".equals(fieldName)) {
                     deserializedAzureVmWorkloadProtectedItem
                         .withSoftDeleteRetentionPeriodInDays(reader.getNullable(JsonReader::getInt));
+                } else if ("sourceLocation".equals(fieldName)) {
+                    deserializedAzureVmWorkloadProtectedItem.withSourceLocation(reader.getString());
                 } else if ("vaultId".equals(fieldName)) {
                     deserializedAzureVmWorkloadProtectedItem.withVaultId(reader.getString());
                 } else if ("sourceSideScanInfo".equals(fieldName)) {

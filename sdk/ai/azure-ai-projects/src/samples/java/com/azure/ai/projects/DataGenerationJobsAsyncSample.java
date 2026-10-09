@@ -72,10 +72,10 @@ public class DataGenerationJobsAsyncSample {
         // BEGIN:com.azure.ai.projects.DataGenerationJobsAsyncSample.createGenerationJob
 
         String model = Configuration.getGlobalConfiguration().get("FOUNDRY_MODEL_NAME");
-        return DATA_GENERATION_JOBS_ASYNC_CLIENT.createGenerationJob(
+        return DATA_GENERATION_JOBS_ASYNC_CLIENT.beginCreateGenerationJob(
             createSampleDataGenerationJob(model),
             UUID.randomUUID().toString()
-        ).doOnNext(job -> {
+        ).next().map(response -> response.getValue()).doOnNext(job -> {
             System.out.printf("Created data generation job: %s%n", job.getId());
             System.out.printf("Status: %s%n", job.getStatus());
         })
@@ -106,7 +106,7 @@ public class DataGenerationJobsAsyncSample {
                 + "warranty coverage, product care, returns, and trail safety in a concise, friendly tone.")
             .setDescription("Contoso TrailGear support policy and product guidance.");
 
-        SimpleQnADataGenerationJobOptions options = new SimpleQnADataGenerationJobOptions(1)
+        SimpleQnADataGenerationJobOptions options = new SimpleQnADataGenerationJobOptions(15)
             .setModelOptions(new DataGenerationModelOptions(model));
 
         DataGenerationJobInputs inputs = new DataGenerationJobInputs(

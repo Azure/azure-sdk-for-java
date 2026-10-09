@@ -32,6 +32,12 @@ public final class ManagedDiskParameters extends SubResource {
      */
     private VMDiskSecurityProfile securityProfile;
 
+    /*
+     * Specifies additional properties for the managed disk that can be set at the time of implicit creation of the
+     * disk. This property is not captured for Restore Points.
+     */
+    private AdditionalDiskProperties additionalDiskProperties;
+
     /**
      * Creates an instance of ManagedDiskParameters class.
      */
@@ -103,6 +109,28 @@ public final class ManagedDiskParameters extends SubResource {
     }
 
     /**
+     * Get the additionalDiskProperties property: Specifies additional properties for the managed disk that can be set
+     * at the time of implicit creation of the disk. This property is not captured for Restore Points.
+     * 
+     * @return the additionalDiskProperties value.
+     */
+    public AdditionalDiskProperties additionalDiskProperties() {
+        return this.additionalDiskProperties;
+    }
+
+    /**
+     * Set the additionalDiskProperties property: Specifies additional properties for the managed disk that can be set
+     * at the time of implicit creation of the disk. This property is not captured for Restore Points.
+     * 
+     * @param additionalDiskProperties the additionalDiskProperties value to set.
+     * @return the ManagedDiskParameters object itself.
+     */
+    public ManagedDiskParameters withAdditionalDiskProperties(AdditionalDiskProperties additionalDiskProperties) {
+        this.additionalDiskProperties = additionalDiskProperties;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -123,6 +151,9 @@ public final class ManagedDiskParameters extends SubResource {
         if (securityProfile() != null) {
             securityProfile().validate();
         }
+        if (additionalDiskProperties() != null) {
+            additionalDiskProperties().validate();
+        }
     }
 
     /**
@@ -136,6 +167,7 @@ public final class ManagedDiskParameters extends SubResource {
             this.storageAccountType == null ? null : this.storageAccountType.toString());
         jsonWriter.writeJsonField("diskEncryptionSet", this.diskEncryptionSet);
         jsonWriter.writeJsonField("securityProfile", this.securityProfile);
+        jsonWriter.writeJsonField("additionalDiskProperties", this.additionalDiskProperties);
         return jsonWriter.writeEndObject();
     }
 
@@ -163,6 +195,9 @@ public final class ManagedDiskParameters extends SubResource {
                     deserializedManagedDiskParameters.diskEncryptionSet = DiskEncryptionSetParameters.fromJson(reader);
                 } else if ("securityProfile".equals(fieldName)) {
                     deserializedManagedDiskParameters.securityProfile = VMDiskSecurityProfile.fromJson(reader);
+                } else if ("additionalDiskProperties".equals(fieldName)) {
+                    deserializedManagedDiskParameters.additionalDiskProperties
+                        = AdditionalDiskProperties.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

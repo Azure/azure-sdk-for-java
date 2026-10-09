@@ -22,7 +22,7 @@ public final class MemberCapOverridesListByParentMockTests {
     @Test
     public void testListByParent() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"cap\":915471474,\"provisioningState\":\"Failed\"},\"id\":\"jjdhtld\",\"name\":\"kyzxuutk\",\"type\":\"cwscwsvlx\"}]}";
+            = "{\"value\":[{\"properties\":{\"cap\":1531112995,\"provisioningState\":\"Succeeded\"},\"id\":\"exq\",\"name\":\"vfadmws\",\"type\":\"crgvxpvgom\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,9 +31,9 @@ public final class MemberCapOverridesListByParentMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<MemberCapOverride> response
-            = manager.memberCapOverrides().listByParent("ckhsmtxpsieb", "fhvpesaps", com.azure.core.util.Context.NONE);
+        PagedIterable<MemberCapOverride> response = manager.memberCapOverrides()
+            .listByParent("gkvtmelmqkrhah", "ljuahaquhcdh", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(915471474, response.iterator().next().properties().cap());
+        Assertions.assertEquals(1531112995, response.iterator().next().properties().cap());
     }
 }

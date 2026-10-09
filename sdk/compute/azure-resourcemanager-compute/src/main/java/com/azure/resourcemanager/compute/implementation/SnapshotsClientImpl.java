@@ -38,6 +38,8 @@ import com.azure.resourcemanager.compute.fluent.models.SnapshotInner;
 import com.azure.resourcemanager.compute.implementation.models.SnapshotList;
 import com.azure.resourcemanager.compute.models.ApiErrorException;
 import com.azure.resourcemanager.compute.models.GrantAccessData;
+import com.azure.resourcemanager.compute.models.ImmutabilityPolicyData;
+import com.azure.resourcemanager.compute.models.ImmutabilityPolicyLockData;
 import com.azure.resourcemanager.compute.models.SnapshotUpdate;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
@@ -150,6 +152,24 @@ public final class SnapshotsClientImpl implements InnerSupportsGet<SnapshotInner
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("snapshotName") String snapshotName,
             Context context);
 
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/snapshots/{snapshotName}/updateImmutabilityPolicy")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ApiErrorException.class)
+        Mono<Response<Flux<ByteBuffer>>> updateImmutabilityPolicy(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("snapshotName") String snapshotName,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") ImmutabilityPolicyData immutabilityPolicyData, Context context);
+
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/snapshots/{snapshotName}/updateImmutabilityPolicyLock")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ApiErrorException.class)
+        Mono<Response<Flux<ByteBuffer>>> updateImmutabilityPolicyLock(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("snapshotName") String snapshotName,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") ImmutabilityPolicyLockData immutabilityPolicyData, Context context);
+
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -195,7 +215,7 @@ public final class SnapshotsClientImpl implements InnerSupportsGet<SnapshotInner
         if (snapshotName == null) {
             return Mono.error(new IllegalArgumentException("Parameter snapshotName is required and cannot be null."));
         }
-        final String apiVersion = "2025-01-02";
+        final String apiVersion = "2026-03-02";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), apiVersion,
@@ -233,7 +253,7 @@ public final class SnapshotsClientImpl implements InnerSupportsGet<SnapshotInner
         if (snapshotName == null) {
             return Mono.error(new IllegalArgumentException("Parameter snapshotName is required and cannot be null."));
         }
-        final String apiVersion = "2025-01-02";
+        final String apiVersion = "2026-03-02";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -326,7 +346,7 @@ public final class SnapshotsClientImpl implements InnerSupportsGet<SnapshotInner
         } else {
             snapshot.validate();
         }
-        final String apiVersion = "2025-01-02";
+        final String apiVersion = "2026-03-02";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.createOrUpdate(this.client.getEndpoint(), apiVersion,
@@ -370,7 +390,7 @@ public final class SnapshotsClientImpl implements InnerSupportsGet<SnapshotInner
         } else {
             snapshot.validate();
         }
-        final String apiVersion = "2025-01-02";
+        final String apiVersion = "2026-03-02";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -569,7 +589,7 @@ public final class SnapshotsClientImpl implements InnerSupportsGet<SnapshotInner
         } else {
             snapshot.validate();
         }
-        final String apiVersion = "2025-01-02";
+        final String apiVersion = "2026-03-02";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -615,7 +635,7 @@ public final class SnapshotsClientImpl implements InnerSupportsGet<SnapshotInner
         } else {
             snapshot.validate();
         }
-        final String apiVersion = "2025-01-02";
+        final String apiVersion = "2026-03-02";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -805,7 +825,7 @@ public final class SnapshotsClientImpl implements InnerSupportsGet<SnapshotInner
         if (snapshotName == null) {
             return Mono.error(new IllegalArgumentException("Parameter snapshotName is required and cannot be null."));
         }
-        final String apiVersion = "2025-01-02";
+        final String apiVersion = "2026-03-02";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, snapshotName, context))
@@ -842,7 +862,7 @@ public final class SnapshotsClientImpl implements InnerSupportsGet<SnapshotInner
         if (snapshotName == null) {
             return Mono.error(new IllegalArgumentException("Parameter snapshotName is required and cannot be null."));
         }
-        final String apiVersion = "2025-01-02";
+        final String apiVersion = "2026-03-02";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             snapshotName, context);
@@ -1010,7 +1030,7 @@ public final class SnapshotsClientImpl implements InnerSupportsGet<SnapshotInner
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2025-01-02";
+        final String apiVersion = "2026-03-02";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), apiVersion,
@@ -1046,7 +1066,7 @@ public final class SnapshotsClientImpl implements InnerSupportsGet<SnapshotInner
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2025-01-02";
+        final String apiVersion = "2026-03-02";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1134,7 +1154,7 @@ public final class SnapshotsClientImpl implements InnerSupportsGet<SnapshotInner
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-01-02";
+        final String apiVersion = "2026-03-02";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -1164,7 +1184,7 @@ public final class SnapshotsClientImpl implements InnerSupportsGet<SnapshotInner
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-01-02";
+        final String apiVersion = "2026-03-02";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
@@ -1261,7 +1281,7 @@ public final class SnapshotsClientImpl implements InnerSupportsGet<SnapshotInner
         } else {
             grantAccessData.validate();
         }
-        final String apiVersion = "2025-01-02";
+        final String apiVersion = "2026-03-02";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -1308,7 +1328,7 @@ public final class SnapshotsClientImpl implements InnerSupportsGet<SnapshotInner
         } else {
             grantAccessData.validate();
         }
-        final String apiVersion = "2025-01-02";
+        final String apiVersion = "2026-03-02";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -1501,7 +1521,7 @@ public final class SnapshotsClientImpl implements InnerSupportsGet<SnapshotInner
         if (snapshotName == null) {
             return Mono.error(new IllegalArgumentException("Parameter snapshotName is required and cannot be null."));
         }
-        final String apiVersion = "2025-01-02";
+        final String apiVersion = "2026-03-02";
         return FluxUtil
             .withContext(context -> service.revokeAccess(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, snapshotName, context))
@@ -1538,7 +1558,7 @@ public final class SnapshotsClientImpl implements InnerSupportsGet<SnapshotInner
         if (snapshotName == null) {
             return Mono.error(new IllegalArgumentException("Parameter snapshotName is required and cannot be null."));
         }
-        final String apiVersion = "2025-01-02";
+        final String apiVersion = "2026-03-02";
         context = this.client.mergeContext(context);
         return service.revokeAccess(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
             resourceGroupName, snapshotName, context);
@@ -1681,6 +1701,563 @@ public final class SnapshotsClientImpl implements InnerSupportsGet<SnapshotInner
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void revokeAccess(String resourceGroupName, String snapshotName, Context context) {
         revokeAccessAsync(resourceGroupName, snapshotName, context).block();
+    }
+
+    /**
+     * Updates the immutability policy of a snapshot. Sets or extends an unlocked immutability policy with the specified
+     * duration and type. If the snapshot already has a locked policy, the request will be rejected. Use
+     * updateImmutabilityPolicyLock to lock an immutability policy.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param snapshotName The name of the snapshot that is being created. The name can't be changed after the snapshot
+     * is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The max name length is 80 characters.
+     * @param immutabilityPolicyData Immutability policy data supplied in the body of the update immutability policy
+     * operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return snapshot resource along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> updateImmutabilityPolicyWithResponseAsync(String resourceGroupName,
+        String snapshotName, ImmutabilityPolicyData immutabilityPolicyData) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (snapshotName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter snapshotName is required and cannot be null."));
+        }
+        if (immutabilityPolicyData == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter immutabilityPolicyData is required and cannot be null."));
+        } else {
+            immutabilityPolicyData.validate();
+        }
+        final String apiVersion = "2026-03-02";
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.updateImmutabilityPolicy(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, snapshotName, contentType, accept,
+                immutabilityPolicyData, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Updates the immutability policy of a snapshot. Sets or extends an unlocked immutability policy with the specified
+     * duration and type. If the snapshot already has a locked policy, the request will be rejected. Use
+     * updateImmutabilityPolicyLock to lock an immutability policy.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param snapshotName The name of the snapshot that is being created. The name can't be changed after the snapshot
+     * is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The max name length is 80 characters.
+     * @param immutabilityPolicyData Immutability policy data supplied in the body of the update immutability policy
+     * operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return snapshot resource along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> updateImmutabilityPolicyWithResponseAsync(String resourceGroupName,
+        String snapshotName, ImmutabilityPolicyData immutabilityPolicyData, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (snapshotName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter snapshotName is required and cannot be null."));
+        }
+        if (immutabilityPolicyData == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter immutabilityPolicyData is required and cannot be null."));
+        } else {
+            immutabilityPolicyData.validate();
+        }
+        final String apiVersion = "2026-03-02";
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.updateImmutabilityPolicy(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+            resourceGroupName, snapshotName, contentType, accept, immutabilityPolicyData, context);
+    }
+
+    /**
+     * Updates the immutability policy of a snapshot. Sets or extends an unlocked immutability policy with the specified
+     * duration and type. If the snapshot already has a locked policy, the request will be rejected. Use
+     * updateImmutabilityPolicyLock to lock an immutability policy.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param snapshotName The name of the snapshot that is being created. The name can't be changed after the snapshot
+     * is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The max name length is 80 characters.
+     * @param immutabilityPolicyData Immutability policy data supplied in the body of the update immutability policy
+     * operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of snapshot resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<SnapshotInner>, SnapshotInner> beginUpdateImmutabilityPolicyAsync(
+        String resourceGroupName, String snapshotName, ImmutabilityPolicyData immutabilityPolicyData) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateImmutabilityPolicyWithResponseAsync(resourceGroupName, snapshotName, immutabilityPolicyData);
+        return this.client.<SnapshotInner, SnapshotInner>getLroResult(mono, this.client.getHttpPipeline(),
+            SnapshotInner.class, SnapshotInner.class, this.client.getContext());
+    }
+
+    /**
+     * Updates the immutability policy of a snapshot. Sets or extends an unlocked immutability policy with the specified
+     * duration and type. If the snapshot already has a locked policy, the request will be rejected. Use
+     * updateImmutabilityPolicyLock to lock an immutability policy.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param snapshotName The name of the snapshot that is being created. The name can't be changed after the snapshot
+     * is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The max name length is 80 characters.
+     * @param immutabilityPolicyData Immutability policy data supplied in the body of the update immutability policy
+     * operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of snapshot resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<SnapshotInner>, SnapshotInner> beginUpdateImmutabilityPolicyAsync(
+        String resourceGroupName, String snapshotName, ImmutabilityPolicyData immutabilityPolicyData, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono = updateImmutabilityPolicyWithResponseAsync(resourceGroupName,
+            snapshotName, immutabilityPolicyData, context);
+        return this.client.<SnapshotInner, SnapshotInner>getLroResult(mono, this.client.getHttpPipeline(),
+            SnapshotInner.class, SnapshotInner.class, context);
+    }
+
+    /**
+     * Updates the immutability policy of a snapshot. Sets or extends an unlocked immutability policy with the specified
+     * duration and type. If the snapshot already has a locked policy, the request will be rejected. Use
+     * updateImmutabilityPolicyLock to lock an immutability policy.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param snapshotName The name of the snapshot that is being created. The name can't be changed after the snapshot
+     * is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The max name length is 80 characters.
+     * @param immutabilityPolicyData Immutability policy data supplied in the body of the update immutability policy
+     * operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of snapshot resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<SnapshotInner>, SnapshotInner> beginUpdateImmutabilityPolicy(String resourceGroupName,
+        String snapshotName, ImmutabilityPolicyData immutabilityPolicyData) {
+        return this.beginUpdateImmutabilityPolicyAsync(resourceGroupName, snapshotName, immutabilityPolicyData)
+            .getSyncPoller();
+    }
+
+    /**
+     * Updates the immutability policy of a snapshot. Sets or extends an unlocked immutability policy with the specified
+     * duration and type. If the snapshot already has a locked policy, the request will be rejected. Use
+     * updateImmutabilityPolicyLock to lock an immutability policy.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param snapshotName The name of the snapshot that is being created. The name can't be changed after the snapshot
+     * is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The max name length is 80 characters.
+     * @param immutabilityPolicyData Immutability policy data supplied in the body of the update immutability policy
+     * operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of snapshot resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<SnapshotInner>, SnapshotInner> beginUpdateImmutabilityPolicy(String resourceGroupName,
+        String snapshotName, ImmutabilityPolicyData immutabilityPolicyData, Context context) {
+        return this.beginUpdateImmutabilityPolicyAsync(resourceGroupName, snapshotName, immutabilityPolicyData, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Updates the immutability policy of a snapshot. Sets or extends an unlocked immutability policy with the specified
+     * duration and type. If the snapshot already has a locked policy, the request will be rejected. Use
+     * updateImmutabilityPolicyLock to lock an immutability policy.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param snapshotName The name of the snapshot that is being created. The name can't be changed after the snapshot
+     * is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The max name length is 80 characters.
+     * @param immutabilityPolicyData Immutability policy data supplied in the body of the update immutability policy
+     * operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return snapshot resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SnapshotInner> updateImmutabilityPolicyAsync(String resourceGroupName, String snapshotName,
+        ImmutabilityPolicyData immutabilityPolicyData) {
+        return beginUpdateImmutabilityPolicyAsync(resourceGroupName, snapshotName, immutabilityPolicyData).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Updates the immutability policy of a snapshot. Sets or extends an unlocked immutability policy with the specified
+     * duration and type. If the snapshot already has a locked policy, the request will be rejected. Use
+     * updateImmutabilityPolicyLock to lock an immutability policy.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param snapshotName The name of the snapshot that is being created. The name can't be changed after the snapshot
+     * is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The max name length is 80 characters.
+     * @param immutabilityPolicyData Immutability policy data supplied in the body of the update immutability policy
+     * operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return snapshot resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<SnapshotInner> updateImmutabilityPolicyAsync(String resourceGroupName, String snapshotName,
+        ImmutabilityPolicyData immutabilityPolicyData, Context context) {
+        return beginUpdateImmutabilityPolicyAsync(resourceGroupName, snapshotName, immutabilityPolicyData, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Updates the immutability policy of a snapshot. Sets or extends an unlocked immutability policy with the specified
+     * duration and type. If the snapshot already has a locked policy, the request will be rejected. Use
+     * updateImmutabilityPolicyLock to lock an immutability policy.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param snapshotName The name of the snapshot that is being created. The name can't be changed after the snapshot
+     * is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The max name length is 80 characters.
+     * @param immutabilityPolicyData Immutability policy data supplied in the body of the update immutability policy
+     * operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return snapshot resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SnapshotInner updateImmutabilityPolicy(String resourceGroupName, String snapshotName,
+        ImmutabilityPolicyData immutabilityPolicyData) {
+        return updateImmutabilityPolicyAsync(resourceGroupName, snapshotName, immutabilityPolicyData).block();
+    }
+
+    /**
+     * Updates the immutability policy of a snapshot. Sets or extends an unlocked immutability policy with the specified
+     * duration and type. If the snapshot already has a locked policy, the request will be rejected. Use
+     * updateImmutabilityPolicyLock to lock an immutability policy.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param snapshotName The name of the snapshot that is being created. The name can't be changed after the snapshot
+     * is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The max name length is 80 characters.
+     * @param immutabilityPolicyData Immutability policy data supplied in the body of the update immutability policy
+     * operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return snapshot resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SnapshotInner updateImmutabilityPolicy(String resourceGroupName, String snapshotName,
+        ImmutabilityPolicyData immutabilityPolicyData, Context context) {
+        return updateImmutabilityPolicyAsync(resourceGroupName, snapshotName, immutabilityPolicyData, context).block();
+    }
+
+    /**
+     * Locks the immutability policy of a snapshot. Once locked, the policy cannot be reduced or removed until the lock
+     * period expires.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param snapshotName The name of the snapshot that is being created. The name can't be changed after the snapshot
+     * is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The max name length is 80 characters.
+     * @param immutabilityPolicyData Immutability policy data supplied in the body of the update immutability policy
+     * lock operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return snapshot resource along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> updateImmutabilityPolicyLockWithResponseAsync(String resourceGroupName,
+        String snapshotName, ImmutabilityPolicyLockData immutabilityPolicyData) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (snapshotName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter snapshotName is required and cannot be null."));
+        }
+        if (immutabilityPolicyData == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter immutabilityPolicyData is required and cannot be null."));
+        } else {
+            immutabilityPolicyData.validate();
+        }
+        final String apiVersion = "2026-03-02";
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.updateImmutabilityPolicyLock(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, snapshotName, contentType, accept,
+                immutabilityPolicyData, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Locks the immutability policy of a snapshot. Once locked, the policy cannot be reduced or removed until the lock
+     * period expires.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param snapshotName The name of the snapshot that is being created. The name can't be changed after the snapshot
+     * is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The max name length is 80 characters.
+     * @param immutabilityPolicyData Immutability policy data supplied in the body of the update immutability policy
+     * lock operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return snapshot resource along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> updateImmutabilityPolicyLockWithResponseAsync(String resourceGroupName,
+        String snapshotName, ImmutabilityPolicyLockData immutabilityPolicyData, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (snapshotName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter snapshotName is required and cannot be null."));
+        }
+        if (immutabilityPolicyData == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter immutabilityPolicyData is required and cannot be null."));
+        } else {
+            immutabilityPolicyData.validate();
+        }
+        final String apiVersion = "2026-03-02";
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.updateImmutabilityPolicyLock(this.client.getEndpoint(), apiVersion,
+            this.client.getSubscriptionId(), resourceGroupName, snapshotName, contentType, accept,
+            immutabilityPolicyData, context);
+    }
+
+    /**
+     * Locks the immutability policy of a snapshot. Once locked, the policy cannot be reduced or removed until the lock
+     * period expires.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param snapshotName The name of the snapshot that is being created. The name can't be changed after the snapshot
+     * is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The max name length is 80 characters.
+     * @param immutabilityPolicyData Immutability policy data supplied in the body of the update immutability policy
+     * lock operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of snapshot resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<SnapshotInner>, SnapshotInner> beginUpdateImmutabilityPolicyLockAsync(
+        String resourceGroupName, String snapshotName, ImmutabilityPolicyLockData immutabilityPolicyData) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateImmutabilityPolicyLockWithResponseAsync(resourceGroupName, snapshotName, immutabilityPolicyData);
+        return this.client.<SnapshotInner, SnapshotInner>getLroResult(mono, this.client.getHttpPipeline(),
+            SnapshotInner.class, SnapshotInner.class, this.client.getContext());
+    }
+
+    /**
+     * Locks the immutability policy of a snapshot. Once locked, the policy cannot be reduced or removed until the lock
+     * period expires.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param snapshotName The name of the snapshot that is being created. The name can't be changed after the snapshot
+     * is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The max name length is 80 characters.
+     * @param immutabilityPolicyData Immutability policy data supplied in the body of the update immutability policy
+     * lock operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of snapshot resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<SnapshotInner>, SnapshotInner> beginUpdateImmutabilityPolicyLockAsync(
+        String resourceGroupName, String snapshotName, ImmutabilityPolicyLockData immutabilityPolicyData,
+        Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono = updateImmutabilityPolicyLockWithResponseAsync(resourceGroupName,
+            snapshotName, immutabilityPolicyData, context);
+        return this.client.<SnapshotInner, SnapshotInner>getLroResult(mono, this.client.getHttpPipeline(),
+            SnapshotInner.class, SnapshotInner.class, context);
+    }
+
+    /**
+     * Locks the immutability policy of a snapshot. Once locked, the policy cannot be reduced or removed until the lock
+     * period expires.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param snapshotName The name of the snapshot that is being created. The name can't be changed after the snapshot
+     * is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The max name length is 80 characters.
+     * @param immutabilityPolicyData Immutability policy data supplied in the body of the update immutability policy
+     * lock operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of snapshot resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<SnapshotInner>, SnapshotInner> beginUpdateImmutabilityPolicyLock(
+        String resourceGroupName, String snapshotName, ImmutabilityPolicyLockData immutabilityPolicyData) {
+        return this.beginUpdateImmutabilityPolicyLockAsync(resourceGroupName, snapshotName, immutabilityPolicyData)
+            .getSyncPoller();
+    }
+
+    /**
+     * Locks the immutability policy of a snapshot. Once locked, the policy cannot be reduced or removed until the lock
+     * period expires.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param snapshotName The name of the snapshot that is being created. The name can't be changed after the snapshot
+     * is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The max name length is 80 characters.
+     * @param immutabilityPolicyData Immutability policy data supplied in the body of the update immutability policy
+     * lock operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of snapshot resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<SnapshotInner>, SnapshotInner> beginUpdateImmutabilityPolicyLock(
+        String resourceGroupName, String snapshotName, ImmutabilityPolicyLockData immutabilityPolicyData,
+        Context context) {
+        return this
+            .beginUpdateImmutabilityPolicyLockAsync(resourceGroupName, snapshotName, immutabilityPolicyData, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Locks the immutability policy of a snapshot. Once locked, the policy cannot be reduced or removed until the lock
+     * period expires.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param snapshotName The name of the snapshot that is being created. The name can't be changed after the snapshot
+     * is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The max name length is 80 characters.
+     * @param immutabilityPolicyData Immutability policy data supplied in the body of the update immutability policy
+     * lock operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return snapshot resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SnapshotInner> updateImmutabilityPolicyLockAsync(String resourceGroupName, String snapshotName,
+        ImmutabilityPolicyLockData immutabilityPolicyData) {
+        return beginUpdateImmutabilityPolicyLockAsync(resourceGroupName, snapshotName, immutabilityPolicyData).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Locks the immutability policy of a snapshot. Once locked, the policy cannot be reduced or removed until the lock
+     * period expires.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param snapshotName The name of the snapshot that is being created. The name can't be changed after the snapshot
+     * is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The max name length is 80 characters.
+     * @param immutabilityPolicyData Immutability policy data supplied in the body of the update immutability policy
+     * lock operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return snapshot resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<SnapshotInner> updateImmutabilityPolicyLockAsync(String resourceGroupName, String snapshotName,
+        ImmutabilityPolicyLockData immutabilityPolicyData, Context context) {
+        return beginUpdateImmutabilityPolicyLockAsync(resourceGroupName, snapshotName, immutabilityPolicyData, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Locks the immutability policy of a snapshot. Once locked, the policy cannot be reduced or removed until the lock
+     * period expires.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param snapshotName The name of the snapshot that is being created. The name can't be changed after the snapshot
+     * is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The max name length is 80 characters.
+     * @param immutabilityPolicyData Immutability policy data supplied in the body of the update immutability policy
+     * lock operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return snapshot resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SnapshotInner updateImmutabilityPolicyLock(String resourceGroupName, String snapshotName,
+        ImmutabilityPolicyLockData immutabilityPolicyData) {
+        return updateImmutabilityPolicyLockAsync(resourceGroupName, snapshotName, immutabilityPolicyData).block();
+    }
+
+    /**
+     * Locks the immutability policy of a snapshot. Once locked, the policy cannot be reduced or removed until the lock
+     * period expires.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param snapshotName The name of the snapshot that is being created. The name can't be changed after the snapshot
+     * is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The max name length is 80 characters.
+     * @param immutabilityPolicyData Immutability policy data supplied in the body of the update immutability policy
+     * lock operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return snapshot resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SnapshotInner updateImmutabilityPolicyLock(String resourceGroupName, String snapshotName,
+        ImmutabilityPolicyLockData immutabilityPolicyData, Context context) {
+        return updateImmutabilityPolicyLockAsync(resourceGroupName, snapshotName, immutabilityPolicyData, context)
+            .block();
     }
 
     /**

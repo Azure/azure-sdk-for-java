@@ -12,6 +12,9 @@ import com.azure.security.keyvault.keys.cryptography.models.EncryptParameters;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptResult;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm;
+import com.azure.security.keyvault.keys.cryptography.models.SecureKeyWrapAlgorithm;
+import com.azure.security.keyvault.keys.cryptography.models.SecureUnwrapResult;
+import com.azure.security.keyvault.keys.cryptography.models.SecureWrapResult;
 import com.azure.security.keyvault.keys.cryptography.models.SignResult;
 import com.azure.security.keyvault.keys.cryptography.models.SignatureAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.UnwrapResult;
@@ -296,6 +299,50 @@ public final class CryptographyClientJavaDocCodeSnippets {
 
         System.out.printf("Received key of length %d", unwrapKeyResponse.getKey().length);
         // END: com.azure.security.keyvault.keys.cryptography.CryptographyClient.unwrapKey#KeyWrapAlgorithm-byte-Context
+    }
+
+    /**
+     * Generates a code sample for using
+     * {@link CryptographyClient#secureWrapKey(SecureKeyWrapAlgorithm)},
+     * {@link CryptographyClient#secureWrapKey(SecureKeyWrapAlgorithm, Context)},
+     * {@link CryptographyClient#secureUnwrapKey(SecureKeyWrapAlgorithm, byte[], String)} and
+     * {@link CryptographyClient#secureUnwrapKey(SecureKeyWrapAlgorithm, byte[], String, Context)}.
+     */
+    public void secureWrapKeySecureUnwrapKey() {
+        CryptographyClient cryptographyClient = createClient();
+
+        // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyClient.secureWrapKey#SecureKeyWrapAlgorithm
+        SecureWrapResult secureWrapResult = cryptographyClient.secureWrapKey(SecureKeyWrapAlgorithm.RSA_OAEP_256);
+
+        System.out.printf("Received encrypted key of length: %d, with algorithm: %s.%n",
+            secureWrapResult.getEncryptedKey().length, secureWrapResult.getAlgorithm());
+        // END: com.azure.security.keyvault.keys.cryptography.CryptographyClient.secureWrapKey#SecureKeyWrapAlgorithm
+
+        // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyClient.secureWrapKey#SecureKeyWrapAlgorithm-Context
+        SecureWrapResult secureWrapKeyResult =
+            cryptographyClient.secureWrapKey(SecureKeyWrapAlgorithm.RSA_OAEP_256, new Context("key1", "value1"));
+
+        System.out.printf("Received encrypted key of length: %d, with algorithm: %s.%n",
+            secureWrapKeyResult.getEncryptedKey().length, secureWrapKeyResult.getAlgorithm());
+        // END: com.azure.security.keyvault.keys.cryptography.CryptographyClient.secureWrapKey#SecureKeyWrapAlgorithm-Context
+
+        // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyClient.secureUnwrapKey#SecureKeyWrapAlgorithm-byte-String
+        SecureWrapResult wrappedKey = cryptographyClient.secureWrapKey(SecureKeyWrapAlgorithm.RSA_OAEP_256);
+        SecureUnwrapResult secureUnwrapResult = cryptographyClient.secureUnwrapKey(SecureKeyWrapAlgorithm.RSA_OAEP_256,
+            wrappedKey.getEncryptedKey(), "<target-attestation-token>");
+
+        System.out.printf("Received key of length: %d.%n", secureUnwrapResult.getKey().length);
+        // END: com.azure.security.keyvault.keys.cryptography.CryptographyClient.secureUnwrapKey#SecureKeyWrapAlgorithm-byte-String
+
+        // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyClient.secureUnwrapKey#SecureKeyWrapAlgorithm-byte-String-Context
+        Context unwrapContext = new Context("key1", "value1");
+        SecureWrapResult secureWrappedKey =
+            cryptographyClient.secureWrapKey(SecureKeyWrapAlgorithm.RSA_OAEP_256, unwrapContext);
+        SecureUnwrapResult secureUnwrapKeyResult = cryptographyClient.secureUnwrapKey(SecureKeyWrapAlgorithm.RSA_OAEP_256,
+            secureWrappedKey.getEncryptedKey(), "<target-attestation-token>", unwrapContext);
+
+        System.out.printf("Received key of length: %d.%n", secureUnwrapKeyResult.getKey().length);
+        // END: com.azure.security.keyvault.keys.cryptography.CryptographyClient.secureUnwrapKey#SecureKeyWrapAlgorithm-byte-String-Context
     }
 
     /**

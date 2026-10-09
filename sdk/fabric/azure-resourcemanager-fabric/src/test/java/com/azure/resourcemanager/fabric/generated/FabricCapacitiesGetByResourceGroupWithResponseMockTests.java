@@ -10,6 +10,7 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.fabric.FabricManager;
+import com.azure.resourcemanager.fabric.models.CapacityOverageState;
 import com.azure.resourcemanager.fabric.models.FabricCapacity;
 import com.azure.resourcemanager.fabric.models.RpSkuTier;
 import java.nio.charset.StandardCharsets;
@@ -22,7 +23,7 @@ public final class FabricCapacitiesGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Canceled\",\"state\":\"Updating\",\"administration\":{\"members\":[\"ulpkudjkrl\",\"hbzhfepg\",\"gqexzlocxs\"]}},\"sku\":{\"name\":\"paierh\",\"tier\":\"Fabric\"},\"location\":\"sglumma\",\"tags\":{\"nbdxk\":\"aodxo\"},\"id\":\"pxokajionp\",\"name\":\"mexgstxgcp\",\"type\":\"dg\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"state\":\"Suspended\",\"overage\":{\"state\":\"Disabled\",\"thresholdCapacityUnitHours\":69430164},\"administration\":{\"members\":[\"npvswjdkirso\",\"dqxhcrmnohjtckwh\",\"soifiyipjxsqw\",\"gr\"]}},\"sku\":{\"name\":\"bznorcjxvsnby\",\"tier\":\"Fabric\"},\"location\":\"bnmo\",\"tags\":{\"rzafbljjgpbtoqcj\":\"ysh\",\"vbqid\":\"klj\",\"khbzhfepgzg\":\"qajzyulpkudjkr\",\"zloc\":\"e\"},\"id\":\"scpai\",\"name\":\"rhhbcs\",\"type\":\"l\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,13 +33,15 @@ public final class FabricCapacitiesGetByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         FabricCapacity response = manager.fabricCapacities()
-            .getByResourceGroupWithResponse("gpbtoqcjmklj", "vbqid", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("mdwzjeiachboo", "flnrosfqpteehzz", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("sglumma", response.location());
-        Assertions.assertEquals("aodxo", response.tags().get("nbdxk"));
-        Assertions.assertEquals("ulpkudjkrl", response.properties().administration().members().get(0));
-        Assertions.assertEquals("paierh", response.sku().name());
+        Assertions.assertEquals("bnmo", response.location());
+        Assertions.assertEquals("ysh", response.tags().get("rzafbljjgpbtoqcj"));
+        Assertions.assertEquals(CapacityOverageState.DISABLED, response.properties().overage().state());
+        Assertions.assertEquals(69430164, response.properties().overage().thresholdCapacityUnitHours());
+        Assertions.assertEquals("npvswjdkirso", response.properties().administration().members().get(0));
+        Assertions.assertEquals("bznorcjxvsnby", response.sku().name());
         Assertions.assertEquals(RpSkuTier.FABRIC, response.sku().tier());
     }
 }

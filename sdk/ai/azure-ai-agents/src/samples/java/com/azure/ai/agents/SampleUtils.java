@@ -3,6 +3,16 @@
 
 package com.azure.ai.agents;
 
+import com.azure.ai.agents.models.AgentDetails;
+import com.azure.ai.agents.models.AgentEndpointConfig;
+import com.azure.ai.agents.models.AgentVersionDetails;
+import com.azure.ai.agents.models.FixedRatioVersionSelectionRule;
+import com.azure.ai.agents.models.ProtocolConfiguration;
+import com.azure.ai.agents.models.ResponsesProtocolConfiguration;
+import com.azure.ai.agents.models.UpdateAgentDetailsOptions;
+import com.azure.ai.agents.models.VersionSelector;
+import reactor.core.publisher.Mono;
+
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
@@ -10,6 +20,30 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class SampleUtils {
+
+    /**
+     * Pins an agent endpoint to a specific agent version and enables the OpenAI Responses protocol.
+     *
+     * @param agentsClient the agents client
+     * @param versionDetails the agent version to pin
+     * @return the updated agent details
+     */
+    public static AgentDetails pinAgentVersion(AgentsClient agentsClient, AgentVersionDetails versionDetails) {
+        return agentsClient.updateAgentDetails(versionDetails.getName(), createPinnedEndpointOptions(versionDetails));
+    }
+
+    /**
+     * Pins an agent endpoint to a specific agent version and enables the OpenAI Responses protocol.
+     *
+     * @param agentsAsyncClient the asynchronous agents client
+     * @param versionDetails the agent version to pin
+     * @return a publisher containing the updated agent details
+     */
+    public static Mono<AgentDetails> pinAgentVersion(AgentsAsyncClient agentsAsyncClient,
+        AgentVersionDetails versionDetails) {
+        return agentsAsyncClient.updateAgentDetails(versionDetails.getName(),
+            createPinnedEndpointOptions(versionDetails));
+    }
 
     /**
      * Gets the path to a file in the sample resource folder.
@@ -36,5 +70,14 @@ public class SampleUtils {
             }
         }
         throw new RuntimeException("Sample resource file not found: " + fileName);
+    }
+
+    private static UpdateAgentDetailsOptions createPinnedEndpointOptions(AgentVersionDetails versionDetails) {
+        AgentEndpointConfig endpointConfig = new AgentEndpointConfig()
+            .setVersionSelector(new VersionSelector().setVersionSelectionRule(
+                new FixedRatioVersionSelectionRule(100).setAgentVersion(versionDetails.getVersion())))
+            .setProtocolConfiguration(new ProtocolConfiguration().setResponses(new ResponsesProtocolConfiguration()));
+
+        return new UpdateAgentDetailsOptions().setAgentEndpoint(endpointConfig);
     }
 }

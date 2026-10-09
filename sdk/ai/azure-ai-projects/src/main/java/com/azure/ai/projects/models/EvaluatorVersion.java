@@ -341,6 +341,8 @@ public final class EvaluatorVersion implements JsonSerializable<EvaluatorVersion
             Map<String, String> metadata = null;
             List<EvaluationLevel> supportedEvaluationLevels = null;
             EvaluatorGenerationArtifacts generationArtifacts = null;
+            String generationJobId = null;
+            List<GenerationWarningType> warnings = null;
             String id = null;
             String description = null;
             Map<String, String> tags = null;
@@ -374,6 +376,10 @@ public final class EvaluatorVersion implements JsonSerializable<EvaluatorVersion
                         = reader.readArray(reader1 -> EvaluationLevel.fromString(reader1.getString()));
                 } else if ("generation_artifacts".equals(fieldName)) {
                     generationArtifacts = EvaluatorGenerationArtifacts.fromJson(reader);
+                } else if ("generation_job_id".equals(fieldName)) {
+                    generationJobId = reader.getString();
+                } else if ("warnings".equals(fieldName)) {
+                    warnings = reader.readArray(reader1 -> GenerationWarningType.fromString(reader1.getString()));
                 } else if ("id".equals(fieldName)) {
                     id = reader.getString();
                 } else if ("description".equals(fieldName)) {
@@ -394,6 +400,8 @@ public final class EvaluatorVersion implements JsonSerializable<EvaluatorVersion
             deserializedEvaluatorVersion.metadata = metadata;
             deserializedEvaluatorVersion.supportedEvaluationLevels = supportedEvaluationLevels;
             deserializedEvaluatorVersion.generationArtifacts = generationArtifacts;
+            deserializedEvaluatorVersion.generationJobId = generationJobId;
+            deserializedEvaluatorVersion.warnings = warnings;
             deserializedEvaluatorVersion.id = id;
             deserializedEvaluatorVersion.description = description;
             deserializedEvaluatorVersion.tags = tags;
@@ -455,5 +463,48 @@ public final class EvaluatorVersion implements JsonSerializable<EvaluatorVersion
     public EvaluatorVersion setSupportedEvaluationLevels(List<EvaluationLevel> supportedEvaluationLevels) {
         this.supportedEvaluationLevels = supportedEvaluationLevels;
         return this;
+    }
+
+    /*
+     * Read-only provenance link back to the EvaluatorGenerationJob that produced this version. Present only on
+     * evaluator versions created via the generation pipeline; absent for manually-created versions and unaffected by
+     * subsequent `PATCH` calls.
+     */
+    @Generated
+    private String generationJobId;
+
+    /*
+     * Categories of warnings surfaced on this generated evaluator version. Present only on versions created via an
+     * EvaluatorGenerationJob when the paired job produced non-empty warnings. Absent (treat as no warnings) when the
+     * version is not from generation, when the paired job was clean, or when a subsequent `PATCH` to `definition`
+     * cleared the paired job's advisories. Follow `generation_job_id` to fetch the detailed warning payloads.
+     */
+    @Generated
+    private List<GenerationWarningType> warnings;
+
+    /**
+     * Get the generationJobId property: Read-only provenance link back to the EvaluatorGenerationJob that produced this
+     * version. Present only on evaluator versions created via the generation pipeline; absent for manually-created
+     * versions and unaffected by subsequent `PATCH` calls.
+     *
+     * @return the generationJobId value.
+     */
+    @Generated
+    public String getGenerationJobId() {
+        return this.generationJobId;
+    }
+
+    /**
+     * Get the warnings property: Categories of warnings surfaced on this generated evaluator version. Present only on
+     * versions created via an EvaluatorGenerationJob when the paired job produced non-empty warnings. Absent (treat as
+     * no warnings) when the version is not from generation, when the paired job was clean, or when a subsequent `PATCH`
+     * to `definition` cleared the paired job's advisories. Follow `generation_job_id` to fetch the detailed warning
+     * payloads.
+     *
+     * @return the warnings value.
+     */
+    @Generated
+    public List<GenerationWarningType> getWarnings() {
+        return this.warnings;
     }
 }

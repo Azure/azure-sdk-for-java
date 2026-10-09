@@ -23,6 +23,7 @@ public final class ArmApplicationHealthPolicy implements JsonSerializable<ArmApp
     private Boolean considerWarningAsError;
 
     /*
+     * 
      * The maximum allowed percentage of unhealthy deployed applications. Allowed values are Byte values from zero to
      * 100.
      * The percentage represents the maximum tolerated percentage of deployed applications that can be unhealthy before
@@ -70,8 +71,9 @@ public final class ArmApplicationHealthPolicy implements JsonSerializable<ArmApp
     }
 
     /**
-     * Get the maxPercentUnhealthyDeployedApplications property: The maximum allowed percentage of unhealthy deployed
-     * applications. Allowed values are Byte values from zero to 100.
+     * Get the maxPercentUnhealthyDeployedApplications property:
+     * The maximum allowed percentage of unhealthy deployed applications. Allowed values are Byte values from zero to
+     * 100.
      * The percentage represents the maximum tolerated percentage of deployed applications that can be unhealthy before
      * the application is considered in error.
      * This is calculated by dividing the number of unhealthy deployed applications over the number of nodes where the
@@ -85,8 +87,9 @@ public final class ArmApplicationHealthPolicy implements JsonSerializable<ArmApp
     }
 
     /**
-     * Set the maxPercentUnhealthyDeployedApplications property: The maximum allowed percentage of unhealthy deployed
-     * applications. Allowed values are Byte values from zero to 100.
+     * Set the maxPercentUnhealthyDeployedApplications property:
+     * The maximum allowed percentage of unhealthy deployed applications. Allowed values are Byte values from zero to
+     * 100.
      * The percentage represents the maximum tolerated percentage of deployed applications that can be unhealthy before
      * the application is considered in error.
      * This is calculated by dividing the number of unhealthy deployed applications over the number of nodes where the

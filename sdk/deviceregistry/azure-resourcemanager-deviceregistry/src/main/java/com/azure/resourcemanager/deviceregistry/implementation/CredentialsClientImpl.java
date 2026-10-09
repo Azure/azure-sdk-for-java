@@ -881,7 +881,7 @@ public final class CredentialsClientImpl implements CredentialsClient {
     }
 
     /**
-     * A long-running resource action.
+     * The synchronize operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The name of the namespace.
@@ -900,7 +900,7 @@ public final class CredentialsClientImpl implements CredentialsClient {
     }
 
     /**
-     * A long-running resource action.
+     * The synchronize operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The name of the namespace.
@@ -916,7 +916,7 @@ public final class CredentialsClientImpl implements CredentialsClient {
     }
 
     /**
-     * A long-running resource action.
+     * The synchronize operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The name of the namespace.
@@ -934,7 +934,7 @@ public final class CredentialsClientImpl implements CredentialsClient {
     }
 
     /**
-     * A long-running resource action.
+     * The synchronize operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The name of the namespace.
@@ -951,7 +951,7 @@ public final class CredentialsClientImpl implements CredentialsClient {
     }
 
     /**
-     * A long-running resource action.
+     * The synchronize operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The name of the namespace.
@@ -967,7 +967,7 @@ public final class CredentialsClientImpl implements CredentialsClient {
     }
 
     /**
-     * A long-running resource action.
+     * The synchronize operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The name of the namespace.
@@ -985,7 +985,7 @@ public final class CredentialsClientImpl implements CredentialsClient {
     }
 
     /**
-     * A long-running resource action.
+     * The synchronize operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The name of the namespace.
@@ -1001,7 +1001,7 @@ public final class CredentialsClientImpl implements CredentialsClient {
     }
 
     /**
-     * A long-running resource action.
+     * The synchronize operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The name of the namespace.
@@ -1015,7 +1015,7 @@ public final class CredentialsClientImpl implements CredentialsClient {
     }
 
     /**
-     * A long-running resource action.
+     * The synchronize operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The name of the namespace.

@@ -32,7 +32,6 @@ public class SkillsPackageSample {
     private static final String SKILL_NAME = "java-sample-skill-package";
 
     private static final BetaSkillsClient SKILLS_CLIENT = new AIProjectClientBuilder()
-        .allowPreview(true)
         .endpoint(Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT", "endpoint"))
         .credential(new DefaultAzureCredentialBuilder().build())
         .beta().buildBetaSkillsClient();
@@ -86,13 +85,14 @@ public class SkillsPackageSample {
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         try (ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream)) {
-            zipOutputStream.putNextEntry(new ZipEntry(SKILL_NAME + "/SKILL.md"));
+            zipOutputStream.putNextEntry(new ZipEntry("SKILL.md"));
             zipOutputStream.write(skillMarkdown.getBytes(StandardCharsets.UTF_8));
             zipOutputStream.closeEntry();
         }
 
         SkillFileDetails fileDetails = new SkillFileDetails(BinaryData.fromBytes(outputStream.toByteArray()))
             .setFilename(SKILL_NAME + ".zip");
-        return new CreateSkillVersionFromFilesBody(Arrays.asList(fileDetails));
+        return new CreateSkillVersionFromFilesBody(Arrays.asList(fileDetails))
+            .setDefaultProperty(true);
     }
 }

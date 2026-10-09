@@ -9,6 +9,22 @@ extends:
           CloudConfig:
             Public:
               ServiceConnection: azure-sdk-tests-cosmos
+          # Cosmos live tests run against fixed, self-owned accounts (RG sdk-ci) rather than
+          # provisioning an account per run. The resolve pre-step reads the single JSON
+          # secret (sub-config-cosmos-azure-cloud-test-resources) and selects the account
+          # for each matrix leg via $(AccountSelector), exporting ACCOUNT_HOST/ACCOUNT_KEY.
+          DisableAzureResourceCreation: true
+          PreTestRunSteps:
+            - template: /sdk/cosmos/pipeline/resolve-test-account-steps.yml
+              parameters:
+                AccountSelector: $(AccountSelector)
+          # Fixed self-owned account (RG sdk-ci) shared across runs - nothing tears it down, so leaked
+          # databases stay forever. ACCOUNT_HOST/ACCOUNT_KEY are set by the resolve pre-step above.
+          PostSteps:
+            - template: /sdk/cosmos/cleanup-test-resources.yml
+              parameters:
+                AccountHost: $(ACCOUNT_HOST)
+                AccountKey: $(ACCOUNT_KEY)
           MatrixConfigs:
             - Name: Cosmos_live_test
               Path: sdk/cosmos/live-platform-matrix.json
@@ -41,6 +57,19 @@ extends:
           CloudConfig:
             Public:
               ServiceConnection: azure-sdk-tests-cosmos
+          # Fixed self-owned account (RG sdk-ci); no per-run provisioning.
+          DisableAzureResourceCreation: true
+          PreTestRunSteps:
+            - template: /sdk/cosmos/pipeline/resolve-test-account-steps.yml
+              parameters:
+                AccountSelector: multimaster-session-http2
+          # Fixed self-owned account (RG sdk-ci) shared across runs - nothing tears it down, so leaked
+          # databases stay forever. ACCOUNT_HOST/ACCOUNT_KEY are set by the resolve pre-step above.
+          PostSteps:
+            - template: /sdk/cosmos/cleanup-test-resources.yml
+              parameters:
+                AccountHost: $(ACCOUNT_HOST)
+                AccountKey: $(ACCOUNT_KEY)
           MatrixConfigs:
             - Name: Cosmos_live_test_http2
               Path: sdk/cosmos/live-http2-platform-matrix.json
@@ -65,11 +94,18 @@ extends:
           TestResultsFiles: '**/junitreports/TEST-*.xml'
           AdditionalVariables:
             - name: AdditionalArgs
-              value: '-DCOSMOS.CLIENT_LEAK_DETECTION_ENABLED=true -DCOSMOS.HTTP2_ENABLED=true'
+              value: '-DCOSMOS.CLIENT_LEAK_DETECTION_ENABLED=true -DCOSMOS.HTTP2_ENABLED=true -DCOSMOS.THINCLIENT_ENABLED=false'
 
       - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
         parameters:
           TestName: 'Cosmos_Live_Test_Http2NetworkFault'
+          # Long lived shared account: nothing tears it down at the end of the run, so leaked
+          # databases stay forever. Delete this job's databases even if the job failed.
+          PostSteps:
+            - template: /sdk/cosmos/cleanup-test-resources.yml
+              parameters:
+                AccountHost: $(thinclient-test-endpoint)
+                AccountKey: $(thinclient-test-key)
           PreSteps:
             - script: |
                 sudo apt-get update -qq && sudo apt-get install -y -qq iptables
@@ -108,6 +144,13 @@ extends:
       - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
         parameters:
           TestName: 'Cosmos_Live_Test_ThinClient'
+          # Long lived shared account: nothing tears it down at the end of the run, so leaked
+          # databases stay forever. Delete this job's databases even if the job failed.
+          PostSteps:
+            - template: /sdk/cosmos/cleanup-test-resources.yml
+              parameters:
+                AccountHost: $(thinclient-test-endpoint)
+                AccountKey: $(thinclient-test-key)
           CloudConfig:
             Public:
               ServiceConnection: azure-sdk-tests-cosmos
@@ -139,7 +182,57 @@ extends:
 
       - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
         parameters:
+          TestName: 'Cosmos_Live_Test_ThinClient_EndpointProbe'
+          # Long lived shared account: nothing tears it down at the end of the run, so leaked
+          # databases stay forever. Delete this job's databases even if the job failed.
+          PostSteps:
+            - template: /sdk/cosmos/cleanup-test-resources.yml
+              parameters:
+                AccountHost: $(thinclient-test-endpoint)
+                AccountKey: $(thinclient-test-key)
+          CloudConfig:
+            Public:
+              ServiceConnection: azure-sdk-tests-cosmos
+          MatrixConfigs:
+            - Name: Cosmos_live_test_thinclient_endpoint_probe
+              Path: sdk/cosmos/live-thinclient-endpoint-probe-platform-matrix.json
+              Selection: all
+              GenerateVMJobs: true
+          MatrixReplace:
+            - .*Version=1.2(1|5)/1.17
+          ServiceDirectory: cosmos
+          Artifacts:
+            - name: azure-cosmos
+              groupId: com.azure
+              safeName: azurecosmos
+          AdditionalModules:
+            - name: azure-cosmos-tests
+              groupId: com.azure
+            - name: azure-cosmos-benchmark
+              groupId: com.azure
+          TimeoutInMinutes: 210
+          MaxParallel: 20
+          TestGoals: 'verify'
+          TestOptions: '$(ProfileFlag) $(AdditionalArgs) -DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false'
+          TestResultsFiles: '**/junitreports/TEST-*.xml'
+          AdditionalVariables:
+            # COSMOS.THINCLIENT_ENABLED is intentionally omitted so the connectivity-probe (implicit)
+            # path is exercised: thin-client is default-on and routing is gated on the probe verdict
+            # with fallback to Gateway V1, rather than a hard opt-in. HTTP2_ENABLED stays true because
+            # thin-client routing requires HTTP/2 to be effectively enabled.
+            - name: AdditionalArgs
+              value: '-DCOSMOS.CLIENT_LEAK_DETECTION_ENABLED=true -DACCOUNT_HOST=$(thinclient-test-endpoint) -DACCOUNT_KEY=$(thinclient-test-key) -DCOSMOS.HTTP2_ENABLED=true -DCOSMOS.COLLECTION_READINESS_MAX_WAIT_SECONDS=300'
+
+      - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
+        parameters:
           TestName: 'Cosmos_Live_Test_ThinClient_MultiRegion'
+          # Long lived shared account: nothing tears it down at the end of the run, so leaked
+          # databases stay forever. Delete this job's databases even if the job failed.
+          PostSteps:
+            - template: /sdk/cosmos/cleanup-test-resources.yml
+              parameters:
+                AccountHost: $(thin-client-canary-multi-region-session-endpoint)
+                AccountKey: $(thin-client-canary-multi-region-session-key)
           CloudConfig:
             Public:
               ServiceConnection: azure-sdk-tests-cosmos
@@ -172,6 +265,13 @@ extends:
       - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
         parameters:
           TestName: 'Cosmos_Live_Test_ThinClient_MultiMaster'
+          # Long lived shared account: nothing tears it down at the end of the run, so leaked
+          # databases stay forever. Delete this job's databases even if the job failed.
+          PostSteps:
+            - template: /sdk/cosmos/cleanup-test-resources.yml
+              parameters:
+                AccountHost: $(thin-client-canary-multi-writer-session-endpoint)
+                AccountKey: $(thin-client-canary-multi-writer-session-key)
           CloudConfig:
             Public:
               ServiceConnection: azure-sdk-tests-cosmos
@@ -204,6 +304,13 @@ extends:
       - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
         parameters:
           TestName: 'Cosmos_Live_Test_GSI'
+          # Long lived shared account: nothing tears it down at the end of the run, so leaked
+          # databases stay forever. Delete this job's databases even if the job failed.
+          PostSteps:
+            - template: /sdk/cosmos/cleanup-test-resources.yml
+              parameters:
+                AccountHost: $(gsi-pipeline-uri)
+                AccountKey: $(gsi-pipeline-key)
           CloudConfig:
             Public:
               ServiceConnection: azure-sdk-tests-cosmos
@@ -347,4 +454,3 @@ extends:
           AdditionalVariables:
             - name: AdditionalArgs
               value: '-DCOSMOS.CLIENT_LEAK_DETECTION_ENABLED=true'
-

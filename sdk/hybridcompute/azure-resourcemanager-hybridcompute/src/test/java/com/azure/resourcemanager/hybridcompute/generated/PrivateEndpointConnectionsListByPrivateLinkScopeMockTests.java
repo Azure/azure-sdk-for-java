@@ -22,7 +22,7 @@ public final class PrivateEndpointConnectionsListByPrivateLinkScopeMockTests {
     @Test
     public void testListByPrivateLinkScope() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"privateEndpoint\":{\"id\":\"homewjjstliu\"},\"privateLinkServiceConnectionState\":{\"status\":\"awmo\",\"description\":\"ia\",\"actionsRequired\":\"znvodrrslblxydk\"},\"provisioningState\":\"xvv\",\"groupIds\":[\"wkgfbqljnqkh\",\"chocokulehur\",\"lrqff\"]},\"id\":\"eyu\",\"name\":\"kphyjdxrav\",\"type\":\"uqd\"}]}";
+            = "{\"value\":[{\"properties\":{\"privateEndpoint\":{\"id\":\"xiwkgfbql\"},\"privateLinkServiceConnectionState\":{\"status\":\"qkhychocok\",\"description\":\"lehu\",\"actionsRequired\":\"lrqff\"},\"provisioningState\":\"eyu\",\"groupIds\":[\"hy\",\"dxravj\",\"qdbrxmrgc\"]},\"id\":\"apx\",\"name\":\"iyfjjkbajbuscg\",\"type\":\"uusioycblev\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,12 +32,12 @@ public final class PrivateEndpointConnectionsListByPrivateLinkScopeMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<PrivateEndpointConnection> response = manager.privateEndpointConnections()
-            .listByPrivateLinkScope("ipemchgavscz", "ejdtxptl", com.azure.core.util.Context.NONE);
+            .listByPrivateLinkScope("nvodrrs", "blxydkxr", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("homewjjstliu", response.iterator().next().properties().privateEndpoint().id());
-        Assertions.assertEquals("awmo",
+        Assertions.assertEquals("xiwkgfbql", response.iterator().next().properties().privateEndpoint().id());
+        Assertions.assertEquals("qkhychocok",
             response.iterator().next().properties().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("ia",
+        Assertions.assertEquals("lehu",
             response.iterator().next().properties().privateLinkServiceConnectionState().description());
     }
 }

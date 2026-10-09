@@ -66,7 +66,7 @@ public abstract class VoiceLiveTestBase extends TestProxyTestBase {
     protected static final double DEFAULT_SILENCE_DURATION = 2.0;
 
     // API versions exercised by parameterized live tests.
-    protected static final String[] API_VERSIONS = { "2025-10-01", "2026-04-10" };
+    protected static final String[] API_VERSIONS = { "2025-10-01", "2026-07-15" };
 
     protected String getEndpoint() {
         String endpoint = Configuration.getGlobalConfiguration().get("AI_SERVICES_ENDPOINT");

@@ -140,7 +140,7 @@ public final class DeploymentsImpl {
     /**
      * Get a deployment
      * 
-     * Gets a deployed model.
+     * Retrieves a deployed model.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -152,6 +152,14 @@ public final class DeploymentsImpl {
      * }
      * </pre>
      * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>x-ms-client-request-id</td><td>String</td><td>An opaque, globally-unique, client-generated string
+     * identifier for the request.</td></tr>
+     * </table>
+     * 
      * @param name Name of the deployment.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -160,7 +168,7 @@ public final class DeploymentsImpl {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return a deployment
      * 
-     * Gets a deployed model along with {@link Response} on successful completion of {@link Mono}.
+     * Retrieves a deployed model along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getDeploymentWithResponseAsync(String name, RequestOptions requestOptions) {
@@ -172,7 +180,7 @@ public final class DeploymentsImpl {
     /**
      * Get a deployment
      * 
-     * Gets a deployed model.
+     * Retrieves a deployed model.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -184,6 +192,14 @@ public final class DeploymentsImpl {
      * }
      * </pre>
      * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>x-ms-client-request-id</td><td>String</td><td>An opaque, globally-unique, client-generated string
+     * identifier for the request.</td></tr>
+     * </table>
+     * 
      * @param name Name of the deployment.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -192,7 +208,7 @@ public final class DeploymentsImpl {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return a deployment
      * 
-     * Gets a deployed model along with {@link Response}.
+     * Retrieves a deployed model along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getDeploymentWithResponse(String name, RequestOptions requestOptions) {
@@ -442,20 +458,26 @@ public final class DeploymentsImpl {
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
 
-    private List<BinaryData> getValues(BinaryData binaryData, String path) {
+    private List<BinaryData> getValues(BinaryData binaryData, String... path) {
         try {
-            Map<?, ?> obj = binaryData.toObject(Map.class);
-            List<?> values = (List<?>) obj.get(path);
+            Object value = binaryData.toObject(Map.class);
+            for (String segment : path) {
+                value = ((Map<?, ?>) value).get(segment);
+            }
+            List<?> values = (List<?>) value;
             return values.stream().map(BinaryData::fromObject).collect(Collectors.toList());
         } catch (RuntimeException e) {
             return null;
         }
     }
 
-    private String getNextLink(BinaryData binaryData, String path) {
+    private String getNextLink(BinaryData binaryData, String... path) {
         try {
-            Map<?, ?> obj = binaryData.toObject(Map.class);
-            return (String) obj.get(path);
+            Object value = binaryData.toObject(Map.class);
+            for (String segment : path) {
+                value = ((Map<?, ?>) value).get(segment);
+            }
+            return (String) value;
         } catch (RuntimeException e) {
             return null;
         }

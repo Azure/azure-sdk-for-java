@@ -12,8 +12,8 @@ public final class PrivateLinkResourcesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrivateLinkResources model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"groupId\":\"iwwzjuqk\",\"requiredMembers\":[\"ajiwkuo\"],\"requiredZoneNames\":[\"kg\",\"sauuimj\",\"vxieduugidyj\"]},\"id\":\"f\",\"name\":\"y\",\"type\":\"osvexcsonpclhoc\"},{\"properties\":{\"groupId\":\"lkevle\",\"requiredMembers\":[\"fbuhfmvfaxkffe\",\"ithlvmezyvshxm\"],\"requiredZoneNames\":[\"bzoggigrx\",\"burvjxxjnspy\"]},\"id\":\"tko\",\"name\":\"nkoukn\",\"type\":\"udwtiukbl\"},{\"properties\":{\"groupId\":\"kpoc\",\"requiredMembers\":[\"z\",\"xoegukgjnpiucgy\",\"evqzntypmrbp\"],\"requiredZoneNames\":[\"drqjsdpy\"]},\"id\":\"fyhxde\",\"name\":\"ejzicwifsjtt\",\"type\":\"zfbishcbkhaj\"},{\"properties\":{\"groupId\":\"eamdp\",\"requiredMembers\":[\"alpbuxwgipwhon\"],\"requiredZoneNames\":[\"gshwankixz\",\"injep\"]},\"id\":\"tmryw\",\"name\":\"uzoqft\",\"type\":\"yqzrnkcqvyxlw\"}],\"nextLink\":\"lsicohoqqnwv\"}")
+            "{\"value\":[{\"properties\":{\"groupId\":\"tgzfbishcbkh\",\"requiredMembers\":[\"eyeam\",\"p\",\"agalpbuxwgipwhon\",\"wkgshwa\"],\"requiredZoneNames\":[\"xzbinjeputt\",\"rywn\",\"zoqftiyqzrnkcqvy\",\"lwh\"]},\"id\":\"sicohoqqnwvlry\",\"name\":\"vwhheunmmqhgyx\",\"type\":\"konocu\"},{\"properties\":{\"groupId\":\"lyaxuc\",\"requiredMembers\":[\"qszf\",\"beypewrmjmw\"],\"requiredZoneNames\":[\"ektcxsen\",\"wlrsffrzpwv\",\"qdqgbi\"]},\"id\":\"lihkaetcktvfc\",\"name\":\"vf\",\"type\":\"nkymuctqhjfbebrj\"},{\"properties\":{\"groupId\":\"rfuwutt\",\"requiredMembers\":[\"vjrbirphxepcyvah\",\"nljky\",\"xjvuujqgidokg\",\"ljyoxgvcltb\"],\"requiredZoneNames\":[\"c\",\"hkjeszzhbi\"]},\"id\":\"txfvgx\",\"name\":\"fsm\",\"type\":\"nehmpvecx\"}],\"nextLink\":\"debfqkkrbmpukgri\"}")
             .toObject(PrivateLinkResources.class);
-        Assertions.assertEquals("lsicohoqqnwv", model.nextLink());
+        Assertions.assertEquals("debfqkkrbmpukgri", model.nextLink());
     }
 }

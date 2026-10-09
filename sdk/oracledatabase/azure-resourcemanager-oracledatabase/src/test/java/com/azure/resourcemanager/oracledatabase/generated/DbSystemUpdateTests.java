@@ -17,22 +17,22 @@ public final class DbSystemUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DbSystemUpdate model = BinaryData.fromString(
-            "{\"zones\":[\"fbkgozxwopdby\",\"p\",\"zqaclna\"],\"tags\":{\"xuuyilflqoiquvr\":\"iygnugjknfsmfctt\",\"tczytqjtwh\":\"hmrnjhvsuj\",\"pddouifamowaziyn\":\"uunfprnjletlxsm\",\"szdtmaajquh\":\"nlqwzdvpiwhx\"},\"properties\":{\"source\":\"None\"}}")
+            "{\"zones\":[\"vzbglbyvi\",\"tctbrxkjzwrgxffm\",\"hkwfbkgozxwop\"],\"tags\":{\"clnapxbiygnugjkn\":\"dpizq\"},\"properties\":{\"source\":\"None\"}}")
             .toObject(DbSystemUpdate.class);
-        Assertions.assertEquals("fbkgozxwopdby", model.zones().get(0));
-        Assertions.assertEquals("iygnugjknfsmfctt", model.tags().get("xuuyilflqoiquvr"));
+        Assertions.assertEquals("vzbglbyvi", model.zones().get(0));
+        Assertions.assertEquals("dpizq", model.tags().get("clnapxbiygnugjkn"));
         Assertions.assertEquals(DbSystemSourceType.NONE, model.properties().source());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DbSystemUpdate model = new DbSystemUpdate().withZones(Arrays.asList("fbkgozxwopdby", "p", "zqaclna"))
-            .withTags(mapOf("xuuyilflqoiquvr", "iygnugjknfsmfctt", "tczytqjtwh", "hmrnjhvsuj", "pddouifamowaziyn",
-                "uunfprnjletlxsm", "szdtmaajquh", "nlqwzdvpiwhx"))
-            .withProperties(new DbSystemUpdateProperties().withSource(DbSystemSourceType.NONE));
+        DbSystemUpdate model
+            = new DbSystemUpdate().withZones(Arrays.asList("vzbglbyvi", "tctbrxkjzwrgxffm", "hkwfbkgozxwop"))
+                .withTags(mapOf("clnapxbiygnugjkn", "dpizq"))
+                .withProperties(new DbSystemUpdateProperties().withSource(DbSystemSourceType.NONE));
         model = BinaryData.fromObject(model).toObject(DbSystemUpdate.class);
-        Assertions.assertEquals("fbkgozxwopdby", model.zones().get(0));
-        Assertions.assertEquals("iygnugjknfsmfctt", model.tags().get("xuuyilflqoiquvr"));
+        Assertions.assertEquals("vzbglbyvi", model.zones().get(0));
+        Assertions.assertEquals("dpizq", model.tags().get("clnapxbiygnugjkn"));
         Assertions.assertEquals(DbSystemSourceType.NONE, model.properties().source());
     }
 

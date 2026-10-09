@@ -13,9 +13,9 @@ public final class FeatureListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FeatureListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"state\":\"Enabled\",\"provisioningState\":\"Canceled\"},\"id\":\"xypininmayhuybbk\",\"name\":\"odepoogin\",\"type\":\"vamih\"},{\"properties\":{\"state\":\"Disabled\",\"provisioningState\":\"Canceled\"},\"id\":\"zxtheotusivyevcc\",\"name\":\"qi\",\"type\":\"nhungbw\"},{\"properties\":{\"state\":\"Disabled\",\"provisioningState\":\"Failed\"},\"id\":\"xgispemvtzfkufu\",\"name\":\"ljofxqeofjaeqjh\",\"type\":\"jbasvmsmjqulngs\"}],\"nextLink\":\"nbybkzgcwrwcl\"}")
+            "{\"value\":[{\"properties\":{\"state\":\"Disabled\",\"provisioningState\":\"Canceled\"},\"id\":\"uujitcjc\",\"name\":\"dzevndhkrw\",\"type\":\"d\"},{\"properties\":{\"state\":\"Disabled\",\"provisioningState\":\"Canceled\"},\"id\":\"kvwrwjfeu\",\"name\":\"nhutjeltmrldhugj\",\"type\":\"zdatqxhocdg\"},{\"properties\":{\"state\":\"Enabled\",\"provisioningState\":\"Canceled\"},\"id\":\"uticndvkaozwyif\",\"name\":\"yhxhu\",\"type\":\"okftyxolniwpwcuk\"},{\"properties\":{\"state\":\"Enabled\",\"provisioningState\":\"Failed\"},\"id\":\"xklrypl\",\"name\":\"ckbasyypndd\",\"type\":\"sgcbac\"}],\"nextLink\":\"ejk\"}")
             .toObject(FeatureListResult.class);
-        Assertions.assertEquals(FeatureState.ENABLED, model.value().get(0).properties().state());
-        Assertions.assertEquals("nbybkzgcwrwcl", model.nextLink());
+        Assertions.assertEquals(FeatureState.DISABLED, model.value().get(0).properties().state());
+        Assertions.assertEquals("ejk", model.nextLink());
     }
 }

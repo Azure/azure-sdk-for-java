@@ -14,16 +14,15 @@ public final class NotificationRegistrationArrayResponseWithContinuationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NotificationRegistrationArrayResponseWithContinuation model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"notificationMode\":\"NotSpecified\",\"messageScope\":\"RegisteredSubscriptions\",\"includedEvents\":[\"iul\",\"gniiprglvaw\",\"wzdufypivlsbb\"],\"notificationEndpoints\":[{\"notificationDestination\":\"ubkmifo\",\"locations\":[\"ubvphavpmhbrbqgv\"]}],\"provisioningState\":\"Accepted\"},\"id\":\"bbttefjo\",\"name\":\"nssqyzqed\",\"type\":\"kdfrdbiqmrjgeihf\"},{\"properties\":{\"notificationMode\":\"WebHook\",\"messageScope\":\"RegisteredSubscriptions\",\"includedEvents\":[\"zcxmjpbyep\",\"mgtvlj\",\"rc\",\"yfqi\"],\"notificationEndpoints\":[{\"notificationDestination\":\"npomy\",\"locations\":[\"abvn\",\"ilee\"]},{\"notificationDestination\":\"swlpaugmrmfj\",\"locations\":[\"wtoaukhfk\",\"cisiz\",\"oaedsxjwuivedwcg\"]}],\"provisioningState\":\"Created\"},\"id\":\"xeiqbpsmg\",\"name\":\"mguaml\",\"type\":\"dlrgms\"}],\"nextLink\":\"zgaufcshhvn\"}")
+            "{\"value\":[{\"properties\":{\"notificationMode\":\"EventHub\",\"messageScope\":\"NotSpecified\",\"includedEvents\":[\"j\"],\"notificationEndpoints\":[{\"notificationDestination\":\"mfcttux\",\"locations\":[\"i\",\"flqo\",\"quvre\",\"mrnjh\"]},{\"notificationDestination\":\"ujztcz\",\"locations\":[\"jtwhauunf\",\"rnjlet\"]},{\"notificationDestination\":\"s\",\"locations\":[\"ddoui\",\"amowaziynknlqwzd\",\"piwhxqs\",\"dtmaa\"]},{\"notificationDestination\":\"uhuxylrjvmtyg\",\"locations\":[\"zyos\",\"spshckfkyjp\",\"sp\"]}],\"provisioningState\":\"Running\"},\"id\":\"df\",\"name\":\"pyogtieyuj\",\"type\":\"vczkcnyxrxmunjd\"},{\"properties\":{\"notificationMode\":\"WebHook\",\"messageScope\":\"NotSpecified\",\"includedEvents\":[\"lxpaglqivbgkcv\"],\"notificationEndpoints\":[{\"notificationDestination\":\"vuqd\",\"locations\":[\"oniypfpubcpzgp\",\"tivhjknidibgqjx\"]},{\"notificationDestination\":\"n\",\"locations\":[\"ov\",\"gpikqmh\",\"ao\",\"jrmzvupor\"]},{\"notificationDestination\":\"dfuyd\",\"locations\":[\"fvxcnqmxqpswo\",\"mvkhlggd\"]}],\"provisioningState\":\"Accepted\"},\"id\":\"zqkzszuwi\",\"name\":\"tglxx\",\"type\":\"ljfp\"},{\"properties\":{\"notificationMode\":\"WebHook\",\"messageScope\":\"RegisteredSubscriptions\",\"includedEvents\":[\"hr\",\"mqgjsxvpq\",\"bfrmbodthsqqgvri\",\"bakclacjfrnxous\"],\"notificationEndpoints\":[{\"notificationDestination\":\"lwvsgm\",\"locations\":[\"qf\"]},{\"notificationDestination\":\"zvuxm\",\"locations\":[\"svth\",\"wpztekovmribia\",\"tgplucfota\",\"gcfh\"]},{\"notificationDestination\":\"kzcug\",\"locations\":[\"x\",\"lmzqwmvtxnjmx\",\"cuqudtcvclxy\",\"pdkvg\"]}],\"provisioningState\":\"NotSpecified\"},\"id\":\"iyji\",\"name\":\"uzphdugnei\",\"type\":\"n\"},{\"properties\":{\"notificationMode\":\"WebHook\",\"messageScope\":\"RegisteredSubscriptions\",\"includedEvents\":[\"qhibtozipqwjedm\"],\"notificationEndpoints\":[{\"notificationDestination\":\"x\",\"locations\":[\"pkt\",\"qylkmqpzoyhlf\",\"cgwgcloxoebqinji\",\"nwjfu\"]}],\"provisioningState\":\"Creating\"},\"id\":\"fcbahhp\",\"name\":\"pofoi\",\"type\":\"jwpfilkm\"}],\"nextLink\":\"holvdn\"}")
             .toObject(NotificationRegistrationArrayResponseWithContinuation.class);
-        Assertions.assertEquals(NotificationMode.NOT_SPECIFIED, model.value().get(0).properties().notificationMode());
-        Assertions.assertEquals(MessageScope.REGISTERED_SUBSCRIPTIONS,
-            model.value().get(0).properties().messageScope());
-        Assertions.assertEquals("iul", model.value().get(0).properties().includedEvents().get(0));
-        Assertions.assertEquals("ubkmifo",
+        Assertions.assertEquals(NotificationMode.EVENT_HUB, model.value().get(0).properties().notificationMode());
+        Assertions.assertEquals(MessageScope.NOT_SPECIFIED, model.value().get(0).properties().messageScope());
+        Assertions.assertEquals("j", model.value().get(0).properties().includedEvents().get(0));
+        Assertions.assertEquals("mfcttux",
             model.value().get(0).properties().notificationEndpoints().get(0).notificationDestination());
-        Assertions.assertEquals("ubvphavpmhbrbqgv",
+        Assertions.assertEquals("i",
             model.value().get(0).properties().notificationEndpoints().get(0).locations().get(0));
-        Assertions.assertEquals("zgaufcshhvn", model.nextLink());
+        Assertions.assertEquals("holvdn", model.nextLink());
     }
 }

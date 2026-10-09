@@ -14,6 +14,7 @@ import com.azure.resourcemanager.monitor.models.PrivateEndpoint;
 import com.azure.resourcemanager.monitor.models.PrivateEndpointConnectionProvisioningState;
 import com.azure.resourcemanager.monitor.models.PrivateLinkServiceConnectionState;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Properties of the private endpoint connection.
@@ -21,6 +22,11 @@ import java.io.IOException;
 @Fluent
 public final class PrivateEndpointConnectionProperties
     implements JsonSerializable<PrivateEndpointConnectionProperties> {
+    /*
+     * The group ids for the private endpoint resource.
+     */
+    private List<String> groupIds;
+
     /*
      * The private endpoint resource.
      */
@@ -40,6 +46,15 @@ public final class PrivateEndpointConnectionProperties
      * Creates an instance of PrivateEndpointConnectionProperties class.
      */
     public PrivateEndpointConnectionProperties() {
+    }
+
+    /**
+     * Get the groupIds property: The group ids for the private endpoint resource.
+     * 
+     * @return the groupIds value.
+     */
+    public List<String> groupIds() {
+        return this.groupIds;
     }
 
     /**
@@ -145,6 +160,9 @@ public final class PrivateEndpointConnectionProperties
                 if ("privateLinkServiceConnectionState".equals(fieldName)) {
                     deserializedPrivateEndpointConnectionProperties.privateLinkServiceConnectionState
                         = PrivateLinkServiceConnectionState.fromJson(reader);
+                } else if ("groupIds".equals(fieldName)) {
+                    List<String> groupIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedPrivateEndpointConnectionProperties.groupIds = groupIds;
                 } else if ("privateEndpoint".equals(fieldName)) {
                     deserializedPrivateEndpointConnectionProperties.privateEndpoint = PrivateEndpoint.fromJson(reader);
                 } else if ("provisioningState".equals(fieldName)) {

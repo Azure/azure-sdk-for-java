@@ -20,6 +20,17 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 /**
  * Base class for thin client E2E tests. Provides shared setup/teardown,
  * constants, and helper methods common to all thin client test classes.
+ *
+ * <p>The concrete subclasses tag every {@code @Test}/{@code @BeforeClass}/{@code @AfterClass}
+ * with BOTH the {@code "thinclient"} and {@code "thinclientEndpointProbe"} groups so the same test
+ * bodies run in either CI lane against a different ambient enablement path:</p>
+ * <ul>
+ *   <li>{@code thinclient} lane -- launched with {@code -DCOSMOS.THINCLIENT_ENABLED=true}
+ *       (explicit opt-in path).</li>
+ *   <li>{@code thinclient-endpoint-probe} lane -- {@code COSMOS.THINCLIENT_ENABLED} left unset, so
+ *       {@code Configs.isThinClientEnabled()} is null and routing is decided by the endpoint
+ *       connectivity probe (falling back to Gateway V1 if the probe fails).</li>
+ * </ul>
  */
 public abstract class ThinClientTestBase extends TestSuiteBase {
 
@@ -34,14 +45,15 @@ public abstract class ThinClientTestBase extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    @BeforeClass(groups = {"thinclient"}, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = {"thinclient", "thinclientEndpointProbe"}, timeOut = SETUP_TIMEOUT)
     public void before_ThinClientTest() {
-        // Thin client is enabled JVM-wide by the "thinclient" CI lane via
-        // -DCOSMOS.THINCLIENT_ENABLED=true (+ -DCOSMOS.HTTP2_ENABLED=true). Every test/lifecycle
-        // method in these classes is scoped to groups={"thinclient"}, so they only ever run in that
-        // lane. We therefore rely on the ambient flag rather than mutating the JVM-global property
-        // per class (which is read lazily per client build and would otherwise leak across the
-        // classes that share this JVM).
+        // Thin client enablement is controlled entirely by the CI lane's ambient JVM config, so this
+        // base neither sets nor clears COSMOS.THINCLIENT_ENABLED. The flag is read lazily per client
+        // build, and mutating it here would leak across the classes that share this JVM. In the
+        // "thinclient" lane the flag is launched as -DCOSMOS.THINCLIENT_ENABLED=true
+        // (+ -DCOSMOS.HTTP2_ENABLED=true) for the explicit opt-in path; in the
+        // "thinclient-endpoint-probe" lane it is left unset so the endpoint connectivity probe drives
+        // routing. Relying on the ambient flag lets the same bodies run correctly in both lanes.
         assertThat(this.client).isNull();
         this.client = getClientBuilder().buildAsyncClient();
         this.container = getSharedMultiPartitionCosmosContainer(this.client);
@@ -50,7 +62,7 @@ public abstract class ThinClientTestBase extends TestSuiteBase {
         cleanUpContainer(this.container);
     }
 
-    @AfterClass(groups = {"thinclient"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = {"thinclient", "thinclientEndpointProbe"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         if (this.client != null) {
             this.client.close();
@@ -69,6 +81,10 @@ public abstract class ThinClientTestBase extends TestSuiteBase {
 
     /**
      * Asserts that all data requests in the diagnostics were routed through the thin client endpoint.
+     *
+     * <p>In the {@code thinclient-endpoint-probe} lane this doubles as a probe-success signal: it
+     * only holds when the connectivity probe succeeded and selected Gateway V2 (thin client). A
+     * failing probe would fall back to Gateway V1 and this assertion would fail.</p>
      */
     public static void assertThinClientEndpointUsed(CosmosDiagnostics diagnostics) {
         // Delegate to the shared TestSuiteBase implementation so the thin-client routing invariant

@@ -5,6 +5,8 @@
 package com.azure.ai.projects.implementation;
 
 import com.azure.ai.projects.AIProjectsServiceVersion;
+import com.azure.ai.projects.models.DataGenerationJob;
+import com.azure.ai.projects.models.DataGenerationJobResult;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
@@ -33,6 +35,11 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.PollingStrategyOptions;
+import com.azure.core.util.polling.SyncPoller;
+import com.azure.core.util.serializer.TypeReference;
+import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -200,8 +207,7 @@ public final class BetaDatasetsImpl {
      *             }
      *         ]
      *         options (Required): {
-     *             type: String(simple_qna/traces/tool_use) (Required)
-     *             max_samples: int (Required)
+     *             type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
      *             train_split: Double (Optional)
      *             model_options (Optional): {
      *                 model: String (Required)
@@ -214,6 +220,7 @@ public final class BetaDatasetsImpl {
      *             tags (Optional): {
      *                 String: String (Required)
      *             }
+     *             write_mode: String(overwrite/merge) (Optional)
      *         }
      *     }
      *     result (Optional): {
@@ -235,6 +242,13 @@ public final class BetaDatasetsImpl {
      *         message: String (Required)
      *         param: String (Optional)
      *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
@@ -250,6 +264,13 @@ public final class BetaDatasetsImpl {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>Retry-After</td><td>int</td><td>Recommended number of seconds to wait before polling again.</td></tr>
+     * </table>
      * 
      * @param jobId The ID of the job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -288,8 +309,7 @@ public final class BetaDatasetsImpl {
      *             }
      *         ]
      *         options (Required): {
-     *             type: String(simple_qna/traces/tool_use) (Required)
-     *             max_samples: int (Required)
+     *             type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
      *             train_split: Double (Optional)
      *             model_options (Optional): {
      *                 model: String (Required)
@@ -302,6 +322,7 @@ public final class BetaDatasetsImpl {
      *             tags (Optional): {
      *                 String: String (Required)
      *             }
+     *             write_mode: String(overwrite/merge) (Optional)
      *         }
      *     }
      *     result (Optional): {
@@ -323,6 +344,13 @@ public final class BetaDatasetsImpl {
      *         message: String (Required)
      *         param: String (Optional)
      *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
@@ -338,6 +366,13 @@ public final class BetaDatasetsImpl {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>Retry-After</td><td>int</td><td>Recommended number of seconds to wait before polling again.</td></tr>
+     * </table>
      * 
      * @param jobId The ID of the job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -395,8 +430,7 @@ public final class BetaDatasetsImpl {
      *             }
      *         ]
      *         options (Required): {
-     *             type: String(simple_qna/traces/tool_use) (Required)
-     *             max_samples: int (Required)
+     *             type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
      *             train_split: Double (Optional)
      *             model_options (Optional): {
      *                 model: String (Required)
@@ -409,6 +443,7 @@ public final class BetaDatasetsImpl {
      *             tags (Optional): {
      *                 String: String (Required)
      *             }
+     *             write_mode: String(overwrite/merge) (Optional)
      *         }
      *     }
      *     result (Optional): {
@@ -430,6 +465,13 @@ public final class BetaDatasetsImpl {
      *         message: String (Required)
      *         param: String (Optional)
      *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
@@ -503,8 +545,7 @@ public final class BetaDatasetsImpl {
      *             }
      *         ]
      *         options (Required): {
-     *             type: String(simple_qna/traces/tool_use) (Required)
-     *             max_samples: int (Required)
+     *             type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
      *             train_split: Double (Optional)
      *             model_options (Optional): {
      *                 model: String (Required)
@@ -517,6 +558,7 @@ public final class BetaDatasetsImpl {
      *             tags (Optional): {
      *                 String: String (Required)
      *             }
+     *             write_mode: String(overwrite/merge) (Optional)
      *         }
      *     }
      *     result (Optional): {
@@ -538,6 +580,13 @@ public final class BetaDatasetsImpl {
      *         message: String (Required)
      *         param: String (Optional)
      *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
@@ -605,8 +654,7 @@ public final class BetaDatasetsImpl {
      *             }
      *         ]
      *         options (Required): {
-     *             type: String(simple_qna/traces/tool_use) (Required)
-     *             max_samples: int (Required)
+     *             type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
      *             train_split: Double (Optional)
      *             model_options (Optional): {
      *                 model: String (Required)
@@ -619,6 +667,7 @@ public final class BetaDatasetsImpl {
      *             tags (Optional): {
      *                 String: String (Required)
      *             }
+     *             write_mode: String(overwrite/merge) (Optional)
      *         }
      *     }
      *     result (Optional): {
@@ -640,6 +689,13 @@ public final class BetaDatasetsImpl {
      *         message: String (Required)
      *         param: String (Optional)
      *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
@@ -711,8 +767,7 @@ public final class BetaDatasetsImpl {
      *             }
      *         ]
      *         options (Required): {
-     *             type: String(simple_qna/traces/tool_use) (Required)
-     *             max_samples: int (Required)
+     *             type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
      *             train_split: Double (Optional)
      *             model_options (Optional): {
      *                 model: String (Required)
@@ -725,6 +780,7 @@ public final class BetaDatasetsImpl {
      *             tags (Optional): {
      *                 String: String (Required)
      *             }
+     *             write_mode: String(overwrite/merge) (Optional)
      *         }
      *     }
      *     result (Optional): {
@@ -746,6 +802,13 @@ public final class BetaDatasetsImpl {
      *         message: String (Required)
      *         param: String (Optional)
      *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
@@ -801,8 +864,7 @@ public final class BetaDatasetsImpl {
      *             }
      *         ]
      *         options (Required): {
-     *             type: String(simple_qna/traces/tool_use) (Required)
-     *             max_samples: int (Required)
+     *             type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
      *             train_split: Double (Optional)
      *             model_options (Optional): {
      *                 model: String (Required)
@@ -815,6 +877,7 @@ public final class BetaDatasetsImpl {
      *             tags (Optional): {
      *                 String: String (Required)
      *             }
+     *             write_mode: String(overwrite/merge) (Optional)
      *         }
      *     }
      *     result (Optional): {
@@ -836,6 +899,13 @@ public final class BetaDatasetsImpl {
      *         message: String (Required)
      *         param: String (Optional)
      *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
@@ -867,8 +937,7 @@ public final class BetaDatasetsImpl {
      *             }
      *         ]
      *         options (Required): {
-     *             type: String(simple_qna/traces/tool_use) (Required)
-     *             max_samples: int (Required)
+     *             type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
      *             train_split: Double (Optional)
      *             model_options (Optional): {
      *                 model: String (Required)
@@ -881,6 +950,7 @@ public final class BetaDatasetsImpl {
      *             tags (Optional): {
      *                 String: String (Required)
      *             }
+     *             write_mode: String(overwrite/merge) (Optional)
      *         }
      *     }
      *     result (Optional): {
@@ -902,6 +972,13 @@ public final class BetaDatasetsImpl {
      *         message: String (Required)
      *         param: String (Optional)
      *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
@@ -927,7 +1004,7 @@ public final class BetaDatasetsImpl {
      * @return data Generation Job resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createGenerationJobWithResponseAsync(BinaryData job,
+    private Mono<Response<BinaryData>> createGenerationJobWithResponseAsync(BinaryData job,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
@@ -962,8 +1039,7 @@ public final class BetaDatasetsImpl {
      *             }
      *         ]
      *         options (Required): {
-     *             type: String(simple_qna/traces/tool_use) (Required)
-     *             max_samples: int (Required)
+     *             type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
      *             train_split: Double (Optional)
      *             model_options (Optional): {
      *                 model: String (Required)
@@ -976,6 +1052,7 @@ public final class BetaDatasetsImpl {
      *             tags (Optional): {
      *                 String: String (Required)
      *             }
+     *             write_mode: String(overwrite/merge) (Optional)
      *         }
      *     }
      *     result (Optional): {
@@ -997,6 +1074,13 @@ public final class BetaDatasetsImpl {
      *         message: String (Required)
      *         param: String (Optional)
      *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
@@ -1028,8 +1112,7 @@ public final class BetaDatasetsImpl {
      *             }
      *         ]
      *         options (Required): {
-     *             type: String(simple_qna/traces/tool_use) (Required)
-     *             max_samples: int (Required)
+     *             type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
      *             train_split: Double (Optional)
      *             model_options (Optional): {
      *                 model: String (Required)
@@ -1042,6 +1125,7 @@ public final class BetaDatasetsImpl {
      *             tags (Optional): {
      *                 String: String (Required)
      *             }
+     *             write_mode: String(overwrite/merge) (Optional)
      *         }
      *     }
      *     result (Optional): {
@@ -1063,6 +1147,13 @@ public final class BetaDatasetsImpl {
      *         message: String (Required)
      *         param: String (Optional)
      *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
@@ -1088,7 +1179,7 @@ public final class BetaDatasetsImpl {
      * @return data Generation Job resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createGenerationJobWithResponse(BinaryData job, RequestOptions requestOptions) {
+    private Response<BinaryData> createGenerationJobWithResponse(BinaryData job, RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createGenerationJobSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
@@ -1096,10 +1187,18 @@ public final class BetaDatasetsImpl {
     }
 
     /**
-     * Cancel a data generation job
+     * Create a data generation job
      * 
-     * Cancels the specified data generation job if it is still in progress.
-     * <p><strong>Response Body Schema</strong></p>
+     * Submits a new data generation job for asynchronous execution.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Operation-Id</td><td>String</td><td>No</td><td>Client-generated unique ID for idempotent retries. When
+     * absent, the server creates the job unconditionally.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
      * {@code
@@ -1114,8 +1213,7 @@ public final class BetaDatasetsImpl {
      *             }
      *         ]
      *         options (Required): {
-     *             type: String(simple_qna/traces/tool_use) (Required)
-     *             max_samples: int (Required)
+     *             type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
      *             train_split: Double (Optional)
      *             model_options (Optional): {
      *                 model: String (Required)
@@ -1128,6 +1226,7 @@ public final class BetaDatasetsImpl {
      *             tags (Optional): {
      *                 String: String (Required)
      *             }
+     *             write_mode: String(overwrite/merge) (Optional)
      *         }
      *     }
      *     result (Optional): {
@@ -1149,6 +1248,734 @@ public final class BetaDatasetsImpl {
      *         message: String (Required)
      *         param: String (Optional)
      *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     created_at: long (Required)
+     *     finished_at: Long (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     inputs (Optional): {
+     *         name: String (Required)
+     *         sources (Required): [
+     *              (Required){
+     *                 type: String(prompt/agent/traces/file) (Required)
+     *                 description: String (Optional)
+     *             }
+     *         ]
+     *         options (Required): {
+     *             type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
+     *             train_split: Double (Optional)
+     *             model_options (Optional): {
+     *                 model: String (Required)
+     *             }
+     *         }
+     *         scenario: String(supervised_finetuning/reinforcement_finetuning/evaluation) (Required)
+     *         output_options (Optional): {
+     *             name: String (Optional)
+     *             description: String (Optional)
+     *             tags (Optional): {
+     *                 String: String (Required)
+     *             }
+     *             write_mode: String(overwrite/merge) (Optional)
+     *         }
+     *     }
+     *     result (Optional): {
+     *         outputs (Optional): [
+     *              (Optional){
+     *                 type: String(file/dataset) (Required)
+     *             }
+     *         ]
+     *         generated_samples: int (Required)
+     *         token_usage (Optional): {
+     *             prompt_tokens: long (Required)
+     *             completion_tokens: long (Required)
+     *             total_tokens: long (Required)
+     *         }
+     *     }
+     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     created_at: long (Required)
+     *     finished_at: Long (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param job The job to create.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link PollerFlux} for polling of data Generation Job resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<DataGenerationJob, DataGenerationJobResult> beginCreateGenerationJobWithModelAsync(BinaryData job,
+        RequestOptions requestOptions) {
+        return PollerFlux.create(Duration.ofSeconds(1),
+            () -> this.createGenerationJobWithResponseAsync(job, requestOptions),
+            new com.azure.ai.projects.implementation.OperationLocationPollingStrategy<>(
+                new PollingStrategyOptions(this.client.getHttpPipeline())
+                    .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
+                    .setContext(requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE)
+                    .setServiceVersion(this.client.getServiceVersion().getVersion()),
+                "result"),
+            TypeReference.createInstance(DataGenerationJob.class),
+            TypeReference.createInstance(DataGenerationJobResult.class));
+    }
+
+    /**
+     * Create a data generation job
+     * 
+     * Submits a new data generation job for asynchronous execution.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Operation-Id</td><td>String</td><td>No</td><td>Client-generated unique ID for idempotent retries. When
+     * absent, the server creates the job unconditionally.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     inputs (Optional): {
+     *         name: String (Required)
+     *         sources (Required): [
+     *              (Required){
+     *                 type: String(prompt/agent/traces/file) (Required)
+     *                 description: String (Optional)
+     *             }
+     *         ]
+     *         options (Required): {
+     *             type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
+     *             train_split: Double (Optional)
+     *             model_options (Optional): {
+     *                 model: String (Required)
+     *             }
+     *         }
+     *         scenario: String(supervised_finetuning/reinforcement_finetuning/evaluation) (Required)
+     *         output_options (Optional): {
+     *             name: String (Optional)
+     *             description: String (Optional)
+     *             tags (Optional): {
+     *                 String: String (Required)
+     *             }
+     *             write_mode: String(overwrite/merge) (Optional)
+     *         }
+     *     }
+     *     result (Optional): {
+     *         outputs (Optional): [
+     *              (Optional){
+     *                 type: String(file/dataset) (Required)
+     *             }
+     *         ]
+     *         generated_samples: int (Required)
+     *         token_usage (Optional): {
+     *             prompt_tokens: long (Required)
+     *             completion_tokens: long (Required)
+     *             total_tokens: long (Required)
+     *         }
+     *     }
+     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     created_at: long (Required)
+     *     finished_at: Long (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     inputs (Optional): {
+     *         name: String (Required)
+     *         sources (Required): [
+     *              (Required){
+     *                 type: String(prompt/agent/traces/file) (Required)
+     *                 description: String (Optional)
+     *             }
+     *         ]
+     *         options (Required): {
+     *             type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
+     *             train_split: Double (Optional)
+     *             model_options (Optional): {
+     *                 model: String (Required)
+     *             }
+     *         }
+     *         scenario: String(supervised_finetuning/reinforcement_finetuning/evaluation) (Required)
+     *         output_options (Optional): {
+     *             name: String (Optional)
+     *             description: String (Optional)
+     *             tags (Optional): {
+     *                 String: String (Required)
+     *             }
+     *             write_mode: String(overwrite/merge) (Optional)
+     *         }
+     *     }
+     *     result (Optional): {
+     *         outputs (Optional): [
+     *              (Optional){
+     *                 type: String(file/dataset) (Required)
+     *             }
+     *         ]
+     *         generated_samples: int (Required)
+     *         token_usage (Optional): {
+     *             prompt_tokens: long (Required)
+     *             completion_tokens: long (Required)
+     *             total_tokens: long (Required)
+     *         }
+     *     }
+     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     created_at: long (Required)
+     *     finished_at: Long (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param job The job to create.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link SyncPoller} for polling of data Generation Job resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<DataGenerationJob, DataGenerationJobResult> beginCreateGenerationJobWithModel(BinaryData job,
+        RequestOptions requestOptions) {
+        return SyncPoller.createPoller(Duration.ofSeconds(1),
+            () -> this.createGenerationJobWithResponse(job, requestOptions),
+            new com.azure.ai.projects.implementation.SyncOperationLocationPollingStrategy<>(
+                new PollingStrategyOptions(this.client.getHttpPipeline())
+                    .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
+                    .setContext(requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE)
+                    .setServiceVersion(this.client.getServiceVersion().getVersion()),
+                "result"),
+            TypeReference.createInstance(DataGenerationJob.class),
+            TypeReference.createInstance(DataGenerationJobResult.class));
+    }
+
+    /**
+     * Create a data generation job
+     * 
+     * Submits a new data generation job for asynchronous execution.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Operation-Id</td><td>String</td><td>No</td><td>Client-generated unique ID for idempotent retries. When
+     * absent, the server creates the job unconditionally.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     inputs (Optional): {
+     *         name: String (Required)
+     *         sources (Required): [
+     *              (Required){
+     *                 type: String(prompt/agent/traces/file) (Required)
+     *                 description: String (Optional)
+     *             }
+     *         ]
+     *         options (Required): {
+     *             type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
+     *             train_split: Double (Optional)
+     *             model_options (Optional): {
+     *                 model: String (Required)
+     *             }
+     *         }
+     *         scenario: String(supervised_finetuning/reinforcement_finetuning/evaluation) (Required)
+     *         output_options (Optional): {
+     *             name: String (Optional)
+     *             description: String (Optional)
+     *             tags (Optional): {
+     *                 String: String (Required)
+     *             }
+     *             write_mode: String(overwrite/merge) (Optional)
+     *         }
+     *     }
+     *     result (Optional): {
+     *         outputs (Optional): [
+     *              (Optional){
+     *                 type: String(file/dataset) (Required)
+     *             }
+     *         ]
+     *         generated_samples: int (Required)
+     *         token_usage (Optional): {
+     *             prompt_tokens: long (Required)
+     *             completion_tokens: long (Required)
+     *             total_tokens: long (Required)
+     *         }
+     *     }
+     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     created_at: long (Required)
+     *     finished_at: Long (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     inputs (Optional): {
+     *         name: String (Required)
+     *         sources (Required): [
+     *              (Required){
+     *                 type: String(prompt/agent/traces/file) (Required)
+     *                 description: String (Optional)
+     *             }
+     *         ]
+     *         options (Required): {
+     *             type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
+     *             train_split: Double (Optional)
+     *             model_options (Optional): {
+     *                 model: String (Required)
+     *             }
+     *         }
+     *         scenario: String(supervised_finetuning/reinforcement_finetuning/evaluation) (Required)
+     *         output_options (Optional): {
+     *             name: String (Optional)
+     *             description: String (Optional)
+     *             tags (Optional): {
+     *                 String: String (Required)
+     *             }
+     *             write_mode: String(overwrite/merge) (Optional)
+     *         }
+     *     }
+     *     result (Optional): {
+     *         outputs (Optional): [
+     *              (Optional){
+     *                 type: String(file/dataset) (Required)
+     *             }
+     *         ]
+     *         generated_samples: int (Required)
+     *         token_usage (Optional): {
+     *             prompt_tokens: long (Required)
+     *             completion_tokens: long (Required)
+     *             total_tokens: long (Required)
+     *         }
+     *     }
+     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     created_at: long (Required)
+     *     finished_at: Long (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param job The job to create.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link PollerFlux} for polling of data Generation Job resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginCreateGenerationJobAsync(BinaryData job,
+        RequestOptions requestOptions) {
+        return PollerFlux.create(Duration.ofSeconds(1),
+            () -> this.createGenerationJobWithResponseAsync(job, requestOptions),
+            new com.azure.ai.projects.implementation.OperationLocationPollingStrategy<>(
+                new PollingStrategyOptions(this.client.getHttpPipeline())
+                    .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
+                    .setContext(requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE)
+                    .setServiceVersion(this.client.getServiceVersion().getVersion()),
+                "result"),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Create a data generation job
+     * 
+     * Submits a new data generation job for asynchronous execution.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Operation-Id</td><td>String</td><td>No</td><td>Client-generated unique ID for idempotent retries. When
+     * absent, the server creates the job unconditionally.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     inputs (Optional): {
+     *         name: String (Required)
+     *         sources (Required): [
+     *              (Required){
+     *                 type: String(prompt/agent/traces/file) (Required)
+     *                 description: String (Optional)
+     *             }
+     *         ]
+     *         options (Required): {
+     *             type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
+     *             train_split: Double (Optional)
+     *             model_options (Optional): {
+     *                 model: String (Required)
+     *             }
+     *         }
+     *         scenario: String(supervised_finetuning/reinforcement_finetuning/evaluation) (Required)
+     *         output_options (Optional): {
+     *             name: String (Optional)
+     *             description: String (Optional)
+     *             tags (Optional): {
+     *                 String: String (Required)
+     *             }
+     *             write_mode: String(overwrite/merge) (Optional)
+     *         }
+     *     }
+     *     result (Optional): {
+     *         outputs (Optional): [
+     *              (Optional){
+     *                 type: String(file/dataset) (Required)
+     *             }
+     *         ]
+     *         generated_samples: int (Required)
+     *         token_usage (Optional): {
+     *             prompt_tokens: long (Required)
+     *             completion_tokens: long (Required)
+     *             total_tokens: long (Required)
+     *         }
+     *     }
+     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     created_at: long (Required)
+     *     finished_at: Long (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     inputs (Optional): {
+     *         name: String (Required)
+     *         sources (Required): [
+     *              (Required){
+     *                 type: String(prompt/agent/traces/file) (Required)
+     *                 description: String (Optional)
+     *             }
+     *         ]
+     *         options (Required): {
+     *             type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
+     *             train_split: Double (Optional)
+     *             model_options (Optional): {
+     *                 model: String (Required)
+     *             }
+     *         }
+     *         scenario: String(supervised_finetuning/reinforcement_finetuning/evaluation) (Required)
+     *         output_options (Optional): {
+     *             name: String (Optional)
+     *             description: String (Optional)
+     *             tags (Optional): {
+     *                 String: String (Required)
+     *             }
+     *             write_mode: String(overwrite/merge) (Optional)
+     *         }
+     *     }
+     *     result (Optional): {
+     *         outputs (Optional): [
+     *              (Optional){
+     *                 type: String(file/dataset) (Required)
+     *             }
+     *         ]
+     *         generated_samples: int (Required)
+     *         token_usage (Optional): {
+     *             prompt_tokens: long (Required)
+     *             completion_tokens: long (Required)
+     *             total_tokens: long (Required)
+     *         }
+     *     }
+     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     created_at: long (Required)
+     *     finished_at: Long (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param job The job to create.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link SyncPoller} for polling of data Generation Job resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, BinaryData> beginCreateGenerationJob(BinaryData job, RequestOptions requestOptions) {
+        return SyncPoller.createPoller(Duration.ofSeconds(1),
+            () -> this.createGenerationJobWithResponse(job, requestOptions),
+            new com.azure.ai.projects.implementation.SyncOperationLocationPollingStrategy<>(
+                new PollingStrategyOptions(this.client.getHttpPipeline())
+                    .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
+                    .setContext(requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE)
+                    .setServiceVersion(this.client.getServiceVersion().getVersion()),
+                "result"),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Cancel a data generation job
+     * 
+     * Cancels the specified data generation job if it is still in progress.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     inputs (Optional): {
+     *         name: String (Required)
+     *         sources (Required): [
+     *              (Required){
+     *                 type: String(prompt/agent/traces/file) (Required)
+     *                 description: String (Optional)
+     *             }
+     *         ]
+     *         options (Required): {
+     *             type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
+     *             train_split: Double (Optional)
+     *             model_options (Optional): {
+     *                 model: String (Required)
+     *             }
+     *         }
+     *         scenario: String(supervised_finetuning/reinforcement_finetuning/evaluation) (Required)
+     *         output_options (Optional): {
+     *             name: String (Optional)
+     *             description: String (Optional)
+     *             tags (Optional): {
+     *                 String: String (Required)
+     *             }
+     *             write_mode: String(overwrite/merge) (Optional)
+     *         }
+     *     }
+     *     result (Optional): {
+     *         outputs (Optional): [
+     *              (Optional){
+     *                 type: String(file/dataset) (Required)
+     *             }
+     *         ]
+     *         generated_samples: int (Required)
+     *         token_usage (Optional): {
+     *             prompt_tokens: long (Required)
+     *             completion_tokens: long (Required)
+     *             total_tokens: long (Required)
+     *         }
+     *     }
+     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
@@ -1200,8 +2027,7 @@ public final class BetaDatasetsImpl {
      *             }
      *         ]
      *         options (Required): {
-     *             type: String(simple_qna/traces/tool_use) (Required)
-     *             max_samples: int (Required)
+     *             type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
      *             train_split: Double (Optional)
      *             model_options (Optional): {
      *                 model: String (Required)
@@ -1214,6 +2040,7 @@ public final class BetaDatasetsImpl {
      *             tags (Optional): {
      *                 String: String (Required)
      *             }
+     *             write_mode: String(overwrite/merge) (Optional)
      *         }
      *     }
      *     result (Optional): {
@@ -1235,6 +2062,13 @@ public final class BetaDatasetsImpl {
      *         message: String (Required)
      *         param: String (Optional)
      *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
@@ -1304,20 +2138,26 @@ public final class BetaDatasetsImpl {
             this.client.getServiceVersion().getVersion(), requestOptions, Context.NONE);
     }
 
-    private List<BinaryData> getValues(BinaryData binaryData, String path) {
+    private List<BinaryData> getValues(BinaryData binaryData, String... path) {
         try {
-            Map<?, ?> obj = binaryData.toObject(Map.class);
-            List<?> values = (List<?>) obj.get(path);
+            Object value = binaryData.toObject(Map.class);
+            for (String segment : path) {
+                value = ((Map<?, ?>) value).get(segment);
+            }
+            List<?> values = (List<?>) value;
             return values.stream().map(BinaryData::fromObject).collect(Collectors.toList());
         } catch (RuntimeException e) {
             return null;
         }
     }
 
-    private String getNextLink(BinaryData binaryData, String path) {
+    private String getNextLink(BinaryData binaryData, String... path) {
         try {
-            Map<?, ?> obj = binaryData.toObject(Map.class);
-            return (String) obj.get(path);
+            Object value = binaryData.toObject(Map.class);
+            for (String segment : path) {
+                value = ((Map<?, ?>) value).get(segment);
+            }
+            return (String) value;
         } catch (RuntimeException e) {
             return null;
         }

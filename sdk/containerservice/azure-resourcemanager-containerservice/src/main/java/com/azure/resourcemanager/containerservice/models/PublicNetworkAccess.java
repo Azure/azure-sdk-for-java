@@ -22,11 +22,6 @@ public final class PublicNetworkAccess extends ExpandableStringEnum<PublicNetwor
     public static final PublicNetworkAccess DISABLED = fromString("Disabled");
 
     /**
-     * Inbound/Outbound traffic is managed by Microsoft.Network/NetworkSecurityPerimeters.
-     */
-    public static final PublicNetworkAccess SECURED_BY_PERIMETER = fromString("SecuredByPerimeter");
-
-    /**
      * Creates a new instance of PublicNetworkAccess value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

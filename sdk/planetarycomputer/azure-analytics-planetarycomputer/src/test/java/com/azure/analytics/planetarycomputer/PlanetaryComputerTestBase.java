@@ -45,6 +45,10 @@ public class PlanetaryComputerTestBase extends TestProxyTestBase {
     protected StacClient stacClient;
     protected DataClient dataClient;
     protected SharedAccessSignatureClient sharedAccessSignatureClient;
+    protected IngestionAsyncClient ingestionAsyncClient;
+    protected StacAsyncClient stacAsyncClient;
+    protected DataAsyncClient dataAsyncClient;
+    protected SharedAccessSignatureAsyncClient sharedAccessSignatureAsyncClient;
     protected PlanetaryComputerTestEnvironment testEnvironment;
     private boolean sanitizersApplied = false;
 
@@ -86,6 +90,17 @@ public class PlanetaryComputerTestBase extends TestProxyTestBase {
 
         configureClientAuthentication(sasClientBuilder);
         sharedAccessSignatureClient = sasClientBuilder.buildSharedAccessSignatureClient();
+
+        // Build Async Clients (reuse same builder patterns)
+        PlanetaryComputerProClientBuilder asyncBuilder = new PlanetaryComputerProClientBuilder().endpoint(endpoint)
+            .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
+
+        configureClientAuthentication(asyncBuilder);
+        ingestionAsyncClient = asyncBuilder.buildIngestionAsyncClient();
+        stacAsyncClient = asyncBuilder.buildStacAsyncClient();
+        dataAsyncClient = asyncBuilder.buildDataAsyncClient();
+        sharedAccessSignatureAsyncClient = asyncBuilder.buildSharedAccessSignatureAsyncClient();
     }
 
     private void configureClientAuthentication(PlanetaryComputerProClientBuilder builder) {

@@ -9,6 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.time.LocalTime;
 import java.util.List;
 
 /**
@@ -107,12 +108,22 @@ public final class ContentTimeField extends ContentField {
     }
 
     /**
-     * Gets the strongly-typed value of this field.
+     * Gets the time value of this field.
      *
-     * @return the field value, or null if not available.
+     * @return the time value, or null if not available.
      */
     @Override
     public String getValue() {
         return getValueTime();
+    }
+
+    /**
+     * Gets the strongly-typed time value of this field.
+     *
+     * @return the local time value, or null if not available.
+     */
+    public LocalTime getTimeValue() {
+        String value = getValueTime();
+        return value == null ? null : LocalTime.parse(value);
     }
 }

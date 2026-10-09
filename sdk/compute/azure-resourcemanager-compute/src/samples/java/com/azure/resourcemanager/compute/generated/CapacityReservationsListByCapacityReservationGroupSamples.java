@@ -11,7 +11,23 @@ import com.azure.resourcemanager.compute.models.ExpandTypesForGetCapacityReserva
  */
 public final class CapacityReservationsListByCapacityReservationGroupSamples {
     /*
-     * x-ms-original-file: 2026-03-01/capacityReservationExamples/CapacityReservation_ListByReservationGroup.json
+     * x-ms-original-file: 2026-04-01/capacityReservationExamples/FutureCapacityReservation_ListByReservationGroup.json
+     */
+    /**
+     * Sample code: List Future capacity reservations in reservation group.
+     * 
+     * @param manager Entry point to ComputeManager.
+     */
+    public static void
+        listFutureCapacityReservationsInReservationGroup(com.azure.resourcemanager.compute.ComputeManager manager) {
+        manager.serviceClient()
+            .getCapacityReservations()
+            .listByCapacityReservationGroup("myResourceGroup", "futureCapacityReservationGroup",
+                ExpandTypesForGetCapacityReservationGroups.VIRTUAL_MACHINES_REF, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-04-01/capacityReservationExamples/CapacityReservation_ListByReservationGroup.json
      */
     /**
      * Sample code: List capacity reservations in reservation group.
@@ -28,7 +44,7 @@ public final class CapacityReservationsListByCapacityReservationGroupSamples {
 
     /*
      * x-ms-original-file:
-     * 2026-03-01/capacityReservationExamples/TargetedCapacityReservation_ListByReservationGroup.json
+     * 2026-04-01/capacityReservationExamples/TargetedCapacityReservation_ListByReservationGroup.json
      */
     /**
      * Sample code: List capacity reservations in targeted reservation group.
@@ -44,7 +60,7 @@ public final class CapacityReservationsListByCapacityReservationGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-03-01/capacityReservationExamples/BlockCapacityReservation_ListByReservationGroup.json
+     * x-ms-original-file: 2026-04-01/capacityReservationExamples/BlockCapacityReservation_ListByReservationGroup.json
      */
     /**
      * Sample code: List block capacity reservations in reservation group.

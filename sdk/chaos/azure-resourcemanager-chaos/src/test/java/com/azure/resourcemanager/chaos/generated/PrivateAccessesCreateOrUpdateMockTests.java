@@ -25,7 +25,7 @@ public final class PrivateAccessesCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"privateEndpointConnections\":[{\"properties\":{\"groupIds\":[\"kceysfaqegplw\"],\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Succeeded\"},\"id\":\"ddkvbxgkqu\",\"name\":\"ybwptda\",\"type\":\"arvvlfnt\"}],\"publicNetworkAccess\":\"Enabled\"},\"location\":\"oiwenazerohzrsq\",\"tags\":{\"sdpcvess\":\"xkdnwqapf\",\"ekvalblhtjq\":\"zhhkuuipldqqc\",\"eh\":\"qyv\",\"mxhzzysevus\":\"a\"},\"id\":\"ivzrrryveimipsk\",\"name\":\"yzatvfuzkaft\",\"type\":\"vvruxwi\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"privateEndpointConnections\":[{\"properties\":{\"groupIds\":[\"fv\",\"n\",\"pmil\",\"pnwy\"],\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Failed\"},\"id\":\"l\",\"name\":\"sauzpjlx\",\"type\":\"ehuxiqhzlraym\"},{\"properties\":{\"groupIds\":[\"skihmxrfd\",\"ajrednwyyshtuw\",\"mevuafpwzy\",\"frkgwltxeq\"],\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Creating\"},\"id\":\"dyimsfay\",\"name\":\"rpravkjogeslab\",\"type\":\"smjkwynqxaekqsy\"}],\"publicNetworkAccess\":\"Enabled\"},\"location\":\"tqpkevmy\",\"tags\":{\"gxannnoytzposewx\":\"crspxklurccl\",\"dfaifyzyzeyuube\":\"gpxvkqmaupxvpi\",\"l\":\"ds\",\"gvdihoynkrxwetwk\":\"ytoithgygvfl\"},\"id\":\"rcyrucpcunnu\",\"name\":\"dqumoenodnai\",\"type\":\"nhq\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,15 +35,16 @@ public final class PrivateAccessesCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PrivateAccess response = manager.privateAccesses()
-            .define("h")
-            .withRegion("watmqa")
-            .withExistingResourceGroup("owftptnuwjtks")
-            .withProperties(new PrivateAccessProperties().withPublicNetworkAccess(PublicNetworkAccessOption.DISABLED))
-            .withTags(mapOf("zcbyfq", "eatgroeshoy", "uvjmv", "kfaoytehq"))
+            .define("mxitpfinzcpd")
+            .withRegion("pkzfbojxj")
+            .withExistingResourceGroup("jiuazjc")
+            .withProperties(new PrivateAccessProperties().withPublicNetworkAccess(PublicNetworkAccessOption.ENABLED))
+            .withTags(mapOf("ofalickduoiqtam", "myqwixvcpwnkwywz", "xrwzawnvsbcf", "yvsk", "wrzregzgyufu",
+                "zagxnvhycvdi", "weryekzk", "rw"))
             .create();
 
-        Assertions.assertEquals("oiwenazerohzrsq", response.location());
-        Assertions.assertEquals("xkdnwqapf", response.tags().get("sdpcvess"));
+        Assertions.assertEquals("tqpkevmy", response.location());
+        Assertions.assertEquals("crspxklurccl", response.tags().get("gxannnoytzposewx"));
         Assertions.assertEquals(PublicNetworkAccessOption.ENABLED, response.properties().publicNetworkAccess());
     }
 

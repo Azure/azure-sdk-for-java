@@ -24,7 +24,8 @@ public interface Subvolumes {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return subvolume Information properties along with {@link Response}.
+     * @return subvolume Information properties
+     * Deprecated along with {@link Response}.
      */
     Response<SubvolumeInfo> getWithResponse(String resourceGroupName, String accountName, String poolName,
         String volumeName, String subvolumeName, Context context);
@@ -40,7 +41,8 @@ public interface Subvolumes {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return subvolume Information properties.
+     * @return subvolume Information properties
+     * Deprecated.
      */
     SubvolumeInfo get(String resourceGroupName, String accountName, String poolName, String volumeName,
         String subvolumeName);
@@ -146,7 +148,8 @@ public interface Subvolumes {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return subvolume Information properties along with {@link Response}.
+     * @return subvolume Information properties
+     * Deprecated along with {@link Response}.
      */
     SubvolumeInfo getById(String id);
 
@@ -158,7 +161,8 @@ public interface Subvolumes {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return subvolume Information properties along with {@link Response}.
+     * @return subvolume Information properties
+     * Deprecated along with {@link Response}.
      */
     Response<SubvolumeInfo> getByIdWithResponse(String id, Context context);
 

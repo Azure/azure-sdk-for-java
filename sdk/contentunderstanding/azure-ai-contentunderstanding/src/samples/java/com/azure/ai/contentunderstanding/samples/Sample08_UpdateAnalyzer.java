@@ -23,12 +23,10 @@ import java.util.Map;
  * This sample shows:
  * 1. Creating an analyzer
  * 2. Updating analyzer description
- * 3. Updating analyzer configuration
- * 4. Updating field schema
+ * 3. Updating analyzer tags
+ * 4. Preserving analyzer properties omitted from the merge update
  */
 public class Sample08_UpdateAnalyzer {
-
-    private static String analyzerId;
 
     public static void main(String[] args) {
         // BEGIN: com.azure.ai.contentunderstanding.sample08.buildClient
@@ -49,7 +47,7 @@ public class Sample08_UpdateAnalyzer {
         // END: com.azure.ai.contentunderstanding.sample08.buildClient
 
         // Create an analyzer for testing
-        analyzerId = "update_test_analyzer_" + System.currentTimeMillis();
+        String analyzerId = "update_test_analyzer_" + System.currentTimeMillis();
         System.out.println("Creating test analyzer '" + analyzerId + "'...");
 
         Map<String, ContentFieldDefinition> fields = new HashMap<>();
@@ -65,12 +63,15 @@ public class Sample08_UpdateAnalyzer {
         fieldSchema.setFields(fields);
 
         Map<String, String> models = new HashMap<>();
-        models.put("completion", "gpt-4.1");
-        models.put("embedding", "text-embedding-3-large");
+        models.put("completion", SampleModelConfiguration.getCompletionModel());
+
+        Map<String, String> tags = new HashMap<>();
+        tags.put("tag1", "tag1_initial_value");
 
         ContentAnalyzer analyzer = new ContentAnalyzer()
             .setBaseAnalyzerId("prebuilt-document")
             .setDescription("Original analyzer for update testing")
+            .setTags(tags)
             .setConfig(new ContentAnalyzerConfig()
                 .setOcrEnabled(true)
                 .setLayoutEnabled(true))
@@ -80,61 +81,32 @@ public class Sample08_UpdateAnalyzer {
         client.beginCreateAnalyzer(analyzerId, analyzer, true).getFinalResult();
         System.out.println("Test analyzer created: " + analyzerId);
 
-        // BEGIN:ContentUnderstandingUpdateAnalyzer
-        // Get the current analyzer
-        ContentAnalyzer currentAnalyzer = client.getAnalyzer(analyzerId);
-        System.out.println("\nCurrent description: " + currentAnalyzer.getDescription());
+        try {
+            // BEGIN:ContentUnderstandingUpdateAnalyzer
+            // Get the current analyzer
+            ContentAnalyzer currentAnalyzer = client.getAnalyzer(analyzerId);
+            System.out.println("\nCurrent description: " + currentAnalyzer.getDescription());
 
-        // Update the analyzer with new configuration
-        Map<String, ContentFieldDefinition> updatedFields = new HashMap<>();
+            Map<String, String> updatedTags = new HashMap<>();
+            updatedTags.put("tag1", "tag1_updated_value");
+            updatedTags.put("tag3", "tag3_value");
 
-        // Keep the original field
-        ContentFieldDefinition titleDefUpdate = new ContentFieldDefinition();
-        titleDefUpdate.setType(ContentFieldType.STRING);
-        titleDefUpdate.setMethod(GenerationMethod.EXTRACT);
-        titleDefUpdate.setDescription("Document title");
-        updatedFields.put("title", titleDefUpdate);
+            ContentAnalyzer updatedAnalyzer = new ContentAnalyzer()
+                .setBaseAnalyzerId(currentAnalyzer.getBaseAnalyzerId())
+                .setDescription("Updated analyzer description")
+                .setTags(updatedTags);
 
-        // Add a new field
-        ContentFieldDefinition authorDef = new ContentFieldDefinition();
-        authorDef.setType(ContentFieldType.STRING);
-        authorDef.setMethod(GenerationMethod.EXTRACT);
-        authorDef.setDescription("Document author");
-        updatedFields.put("author", authorDef);
+            client.updateAnalyzer(analyzerId, updatedAnalyzer);
+            ContentAnalyzer result = client.getAnalyzer(analyzerId);
 
-        ContentFieldSchema updatedFieldSchema = new ContentFieldSchema();
-        updatedFieldSchema.setName("enhanced_schema");
-        updatedFieldSchema.setDescription("Enhanced document schema with author");
-        updatedFieldSchema.setFields(updatedFields);
-
-        Map<String, String> updatedModels = new HashMap<>();
-        updatedModels.put("completion", "gpt-4.1");
-        updatedModels.put("embedding", "text-embedding-3-large");
-
-        ContentAnalyzer updatedAnalyzer = new ContentAnalyzer()
-            .setBaseAnalyzerId("prebuilt-document")
-            .setDescription("Updated analyzer with enhanced schema")
-            .setConfig(new ContentAnalyzerConfig()
-                .setOcrEnabled(true)
-                .setLayoutEnabled(true)
-                .setFormulaEnabled(true)) // Enable formula extraction
-            .setFieldSchema(updatedFieldSchema)
-            .setModels(updatedModels);
-
-        // Update the analyzer using the convenience method
-        // This method accepts a ContentAnalyzer object directly instead of BinaryData
-        ContentAnalyzer result = client.updateAnalyzer(analyzerId, updatedAnalyzer);
-
-        System.out.println("Analyzer updated successfully!");
-        System.out.println("New description: " + result.getDescription());
-        if (result.getFieldSchema() != null && result.getFieldSchema().getFields() != null) {
-            System.out.println("Field schema now has " + result.getFieldSchema().getFields().size() + " fields");
+            System.out.println("Analyzer updated successfully!");
+            System.out.println("New description: " + result.getDescription());
+            System.out.println("Updated tags: " + result.getTags());
+            // END:ContentUnderstandingUpdateAnalyzer
+        } finally {
+            System.out.println("\nCleaning up: deleting test analyzer '" + analyzerId + "'...");
+            client.deleteAnalyzer(analyzerId);
+            System.out.println("Test analyzer deleted successfully.");
         }
-        // END:ContentUnderstandingUpdateAnalyzer
-
-        // Cleanup
-        System.out.println("\nCleaning up: deleting test analyzer '" + analyzerId + "'...");
-        client.deleteAnalyzer(analyzerId);
-        System.out.println("Test analyzer deleted successfully.");
     }
 }

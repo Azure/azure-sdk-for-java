@@ -100,7 +100,7 @@ Represents an active WebSocket connection for bidirectional streaming communicat
 ### VoiceLiveSessionOptions
 
 Configuration options for customizing session behavior:
-- **Model selection**: Specify the AI model (e.g., "gpt-4o-realtime-preview")
+- **Model selection**: Specify the AI model (e.g., "gpt-realtime")
 - **Voice settings**: Choose from OpenAI voices (Alloy, Ash, Ballad, Coral, Echo, Sage, Shimmer, Verse) or Azure voices
 - **Modalities**: Configure text and/or audio interaction modes
 - **Turn detection**: Server-side voice activity detection with configurable thresholds
@@ -525,7 +525,7 @@ OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT=true
 When tracing is active, the following span hierarchy is emitted for each voice session:
 
 ```
-connect gpt-4o-realtime-preview        ← session lifetime span
+connect gpt-realtime                    ← session lifetime span
 ├── send session.update                 ← one span per sent event
 ├── send input_audio_buffer.append
 ├── send response.create
@@ -607,7 +607,7 @@ VoiceLiveSessionOptions sessionOptions = new VoiceLiveSessionOptions()
     .setTurnDetection(turnDetection);
 
 // Start session (null VoiceLiveRequestOptions), then handle events
-client.startSession("gpt-4o-realtime-preview", null)
+client.startSession("gpt-realtime", null)
     .flatMap(session -> {
         // Subscribe to receive server events
         session.receiveEvents()

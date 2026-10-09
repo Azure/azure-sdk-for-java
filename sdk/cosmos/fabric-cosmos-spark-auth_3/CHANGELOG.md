@@ -10,6 +10,8 @@
 
 #### Other Changes
 
+* Upgraded Jackson from `2.18.7` to `2.18.11`.
+
 ### 1.2.0 (2026-06-08)
 
 #### Other Changes
@@ -28,4 +30,3 @@
 
 #### Features Added
 * Added account data resolver implementation for Azure Cosmos DB Spark Connector. This allows signed-in users in Fabric to authenticate to CosmosDB using Microsoft Entra ID. - See [PR 45890](https://github.com/Azure/azure-sdk-for-java/pull/45890)
-

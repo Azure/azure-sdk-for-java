@@ -179,7 +179,7 @@ public final class ManagedServiceIdentityClientImpl extends AzureServiceClient i
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2025-05-31-preview";
+        this.apiVersion = "2024-11-30";
         this.operations = new OperationsClientImpl(this);
         this.systemAssignedIdentities = new SystemAssignedIdentitiesClientImpl(this);
         this.federatedIdentityCredentials = new FederatedIdentityCredentialsClientImpl(this);

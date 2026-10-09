@@ -34,7 +34,8 @@ public final class ClusterInsightResult implements JsonSerializable<ClusterInsig
     private final List<InsightCluster> clusters;
 
     /*
-     * Optional mapping of IDs to 2D coordinates used by the UX for visualization.
+     * Optional mapping of IDs to 2D coordinates
+     * used by the UX for visualization.
      * 
      * The map keys are string identifiers (for example, a cluster id or a sample id)
      * and the values are the coordinates and visual size for rendering on a 2D chart.
@@ -89,7 +90,8 @@ public final class ClusterInsightResult implements JsonSerializable<ClusterInsig
     }
 
     /**
-     * Get the coordinates property: Optional mapping of IDs to 2D coordinates used by the UX for visualization.
+     * Get the coordinates property: Optional mapping of IDs to 2D coordinates
+     * used by the UX for visualization.
      *
      * The map keys are string identifiers (for example, a cluster id or a sample id)
      * and the values are the coordinates and visual size for rendering on a 2D chart.

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.compute.generated;
  */
 public final class DiskAccessesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-01-02/diskAccessExamples/DiskAccess_Get_WithPrivateEndpoints.json
+     * x-ms-original-file: 2026-03-02/diskAccessExamples/DiskAccess_Get_WithPrivateEndpoints.json
      */
     /**
      * Sample code: get information about a disk access resource with private endpoints.
@@ -24,7 +24,7 @@ public final class DiskAccessesGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-01-02/diskAccessExamples/DiskAccess_Get.json
+     * x-ms-original-file: 2026-03-02/diskAccessExamples/DiskAccess_Get.json
      */
     /**
      * Sample code: get information about a disk access resource.

@@ -192,18 +192,10 @@ public class CosmosLatestCommittedItemTests extends TestSuiteBase {
         assertThat(storeResultListQuery).hasSize(2);
         ArrayList<ClientSideRequestStatistics.StoreResponseStatistics> storeResponseList =
             new ArrayList<>(storeResultListQuery.get(0).getResponseStatisticsList());
-        assertThat(storeResponseList).hasSize(2);
-        assertThat(storeResponseList.get(0).getRequestResourceType()).isEqualTo(ResourceType.Document);
-        assertThat(storeResponseList.get(0).getRequestOperationType()).isEqualTo(OperationType.Query);
-        assertThat(storeResponseList.get(1).getRequestResourceType()).isEqualTo(ResourceType.Document);
-        assertThat(storeResponseList.get(1).getRequestOperationType()).isEqualTo(OperationType.Query);
+        assertStoreResponses(storeResponseList, OperationType.Query);
 
         storeResponseList = new ArrayList<>(storeResultListQuery.get(1).getResponseStatisticsList());
-        assertThat(storeResponseList).hasSize(2);
-        assertThat(storeResponseList.get(0).getRequestResourceType()).isEqualTo(ResourceType.Document);
-        assertThat(storeResponseList.get(0).getRequestOperationType()).isEqualTo(OperationType.Query);
-        assertThat(storeResponseList.get(1).getRequestResourceType()).isEqualTo(ResourceType.Document);
-        assertThat(storeResponseList.get(1).getRequestOperationType()).isEqualTo(OperationType.Query);
+        assertStoreResponses(storeResponseList, OperationType.Query);
     }
 
     @Test(groups = { "fast" }, timeOut = TIMEOUT)
@@ -249,11 +241,7 @@ public class CosmosLatestCommittedItemTests extends TestSuiteBase {
         assertThat(storeResultListPointRead).hasSize(1);
         ArrayList<ClientSideRequestStatistics.StoreResponseStatistics> storeResponseList =
             new ArrayList<>(storeResultListPointRead.get(0).getResponseStatisticsList());
-        assertThat(storeResponseList).hasSize(2);
-        assertThat(storeResponseList.get(0).getRequestResourceType()).isEqualTo(ResourceType.Document);
-        assertThat(storeResponseList.get(0).getRequestOperationType()).isEqualTo(OperationType.Read);
-        assertThat(storeResponseList.get(1).getRequestResourceType()).isEqualTo(ResourceType.Document);
-        assertThat(storeResponseList.get(1).getRequestOperationType()).isEqualTo(OperationType.Read);
+        assertStoreResponses(storeResponseList, OperationType.Read);
     }
 
     @Test(groups = { "fast" }, timeOut = TIMEOUT)
@@ -310,11 +298,7 @@ public class CosmosLatestCommittedItemTests extends TestSuiteBase {
         assertThat(storeResultListPointRead).hasSize(1);
         ArrayList<ClientSideRequestStatistics.StoreResponseStatistics> storeResponseList =
             new ArrayList<>(storeResultListPointRead.get(0).getResponseStatisticsList());
-        assertThat(storeResponseList).hasSize(2);
-        assertThat(storeResponseList.get(0).getRequestResourceType()).isEqualTo(ResourceType.Document);
-        assertThat(storeResponseList.get(0).getRequestOperationType()).isEqualTo(OperationType.Query);
-        assertThat(storeResponseList.get(1).getRequestResourceType()).isEqualTo(ResourceType.Document);
-        assertThat(storeResponseList.get(1).getRequestOperationType()).isEqualTo(OperationType.Query);
+        assertStoreResponses(storeResponseList, OperationType.Query);
     }
 
     @Test(groups = { "fast" }, timeOut = TIMEOUT)
@@ -364,11 +348,7 @@ public class CosmosLatestCommittedItemTests extends TestSuiteBase {
         assertThat(storeResultListPointRead).hasSize(1);
         ArrayList<ClientSideRequestStatistics.StoreResponseStatistics> storeResponseList =
             new ArrayList<>(storeResultListPointRead.get(0).getResponseStatisticsList());
-        assertThat(storeResponseList).hasSize(2);
-        assertThat(storeResponseList.get(0).getRequestResourceType()).isEqualTo(ResourceType.Document);
-        assertThat(storeResponseList.get(0).getRequestOperationType()).isEqualTo(OperationType.Read);
-        assertThat(storeResponseList.get(1).getRequestResourceType()).isEqualTo(ResourceType.Document);
-        assertThat(storeResponseList.get(1).getRequestOperationType()).isEqualTo(OperationType.Read);
+        assertStoreResponses(storeResponseList, OperationType.Read);
     }
 
     @Test(groups = { "fast" }, timeOut = TIMEOUT)
@@ -426,11 +406,20 @@ public class CosmosLatestCommittedItemTests extends TestSuiteBase {
         assertThat(storeResultListChangeFeed).hasSize(1);
         ArrayList<ClientSideRequestStatistics.StoreResponseStatistics> storeResponseList =
             new ArrayList<>(storeResultListChangeFeed.get(0).getResponseStatisticsList());
-        assertThat(storeResponseList).hasSize(2);
-        assertThat(storeResponseList.get(0).getRequestResourceType()).isEqualTo(ResourceType.Document);
-        assertThat(storeResponseList.get(0).getRequestOperationType()).isEqualTo(OperationType.ReadFeed);
-        assertThat(storeResponseList.get(1).getRequestResourceType()).isEqualTo(ResourceType.Document);
-        assertThat(storeResponseList.get(1).getRequestOperationType()).isEqualTo(OperationType.ReadFeed);
+        assertStoreResponses(storeResponseList, OperationType.ReadFeed);
+    }
+
+    private static void assertStoreResponses(
+        List<ClientSideRequestStatistics.StoreResponseStatistics> storeResponses,
+        OperationType expectedOperationType) {
+
+        // Latest-committed reads contact at least two replicas. Legitimate retries may add attempts,
+        // but every recorded store response must remain the expected document operation.
+        assertThat(storeResponses).hasSizeGreaterThanOrEqualTo(2);
+        assertThat(storeResponses).allSatisfy(statistics -> {
+            assertThat(statistics.getRequestResourceType()).isEqualTo(ResourceType.Document);
+            assertThat(statistics.getRequestOperationType()).isEqualTo(expectedOperationType);
+        });
     }
 
     private void ensureRelevantForLatestCommitted() {

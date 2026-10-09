@@ -12,22 +12,22 @@ import org.junit.jupiter.api.Assertions;
 public final class ResourceTypeRegistrationPropertiesCheckNameAvailabilitySpecificationsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceTypeRegistrationPropertiesCheckNameAvailabilitySpecifications model = BinaryData
-            .fromString("{\"enableDefaultValidation\":true,\"resourceTypesWithCustomValidation\":[\"fzzhmkdasv\"]}")
+        ResourceTypeRegistrationPropertiesCheckNameAvailabilitySpecifications model = BinaryData.fromString(
+            "{\"enableDefaultValidation\":false,\"resourceTypesWithCustomValidation\":[\"udaspavehh\",\"vkbunzozudh\",\"xg\",\"moy\"]}")
             .toObject(ResourceTypeRegistrationPropertiesCheckNameAvailabilitySpecifications.class);
-        Assertions.assertTrue(model.enableDefaultValidation());
-        Assertions.assertEquals("fzzhmkdasv", model.resourceTypesWithCustomValidation().get(0));
+        Assertions.assertFalse(model.enableDefaultValidation());
+        Assertions.assertEquals("udaspavehh", model.resourceTypesWithCustomValidation().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ResourceTypeRegistrationPropertiesCheckNameAvailabilitySpecifications model
             = new ResourceTypeRegistrationPropertiesCheckNameAvailabilitySpecifications()
-                .withEnableDefaultValidation(true)
-                .withResourceTypesWithCustomValidation(Arrays.asList("fzzhmkdasv"));
+                .withEnableDefaultValidation(false)
+                .withResourceTypesWithCustomValidation(Arrays.asList("udaspavehh", "vkbunzozudh", "xg", "moy"));
         model = BinaryData.fromObject(model)
             .toObject(ResourceTypeRegistrationPropertiesCheckNameAvailabilitySpecifications.class);
-        Assertions.assertTrue(model.enableDefaultValidation());
-        Assertions.assertEquals("fzzhmkdasv", model.resourceTypesWithCustomValidation().get(0));
+        Assertions.assertFalse(model.enableDefaultValidation());
+        Assertions.assertEquals("udaspavehh", model.resourceTypesWithCustomValidation().get(0));
     }
 }

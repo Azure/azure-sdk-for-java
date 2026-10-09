@@ -9,7 +9,7 @@ package com.azure.resourcemanager.compute.generated;
  */
 public final class DiskAccessesListPrivateEndpointConnectionsSamples {
     /*
-     * x-ms-original-file: 2025-01-02/diskAccessExamples/DiskAccessPrivateEndpointConnection_ListByDiskAccess.json
+     * x-ms-original-file: 2026-03-02/diskAccessExamples/DiskAccessPrivateEndpointConnection_ListByDiskAccess.json
      */
     /**
      * Sample code: get information about a private endpoint connection under a disk access resource.

@@ -177,12 +177,16 @@ public class ToolboxTool implements JsonSerializable<ToolboxTool> {
                     return FileSearchToolboxTool.fromJson(readerToUse.reset());
                 } else if ("web_search".equals(discriminatorValue)) {
                     return WebSearchToolboxTool.fromJson(readerToUse.reset());
+                } else if ("shell".equals(discriminatorValue)) {
+                    return ShellToolboxTool.fromJson(readerToUse.reset());
                 } else if ("mcp".equals(discriminatorValue)) {
                     return McpToolboxTool.fromJson(readerToUse.reset());
                 } else if ("azure_ai_search".equals(discriminatorValue)) {
                     return AzureAISearchToolboxTool.fromJson(readerToUse.reset());
                 } else if ("openapi".equals(discriminatorValue)) {
                     return OpenApiToolboxTool.fromJson(readerToUse.reset());
+                } else if ("a2a".equals(discriminatorValue)) {
+                    return A2AToolboxTool.fromJson(readerToUse.reset());
                 } else if ("a2a_preview".equals(discriminatorValue)) {
                     return A2APreviewToolboxTool.fromJson(readerToUse.reset());
                 } else if ("browser_automation_preview".equals(discriminatorValue)) {
@@ -193,8 +197,12 @@ public class ToolboxTool implements JsonSerializable<ToolboxTool> {
                     return WorkIqPreviewToolboxTool.fromJson(readerToUse.reset());
                 } else if ("fabric_iq_preview".equals(discriminatorValue)) {
                     return FabricIqPreviewToolboxTool.fromJson(readerToUse.reset());
+                } else if ("web_iq_preview".equals(discriminatorValue)) {
+                    return WebIqPreviewToolboxTool.fromJson(readerToUse.reset());
                 } else if ("toolbox_search_preview".equals(discriminatorValue)) {
                     return ToolboxSearchPreviewToolboxTool.fromJson(readerToUse.reset());
+                } else if ("toolbox_search".equals(discriminatorValue)) {
+                    return ToolSearchToolboxTool.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

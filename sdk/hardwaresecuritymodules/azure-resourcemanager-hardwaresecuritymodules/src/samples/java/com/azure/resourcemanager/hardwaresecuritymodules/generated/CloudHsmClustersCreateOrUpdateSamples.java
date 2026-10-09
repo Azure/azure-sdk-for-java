@@ -20,7 +20,7 @@ import java.util.Map;
  */
 public final class CloudHsmClustersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-03-31/CloudHsmCluster_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-12-01-preview/CloudHsmCluster_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: CloudHsmCluster_CreateOrUpdate_MaximumSet_Gen.

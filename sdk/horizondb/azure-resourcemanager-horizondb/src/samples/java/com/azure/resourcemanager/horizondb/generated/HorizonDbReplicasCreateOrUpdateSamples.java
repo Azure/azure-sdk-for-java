@@ -12,14 +12,14 @@ import com.azure.resourcemanager.horizondb.models.ReplicaRole;
  */
 public final class HorizonDbReplicasCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-01-20-preview/Replicas_CreateOrUpdate.json
+     * x-ms-original-file: 2026-05-01-preview/Replicas_CreateOrUpdate.json
      */
     /**
-     * Sample code: Create or update a HorizonDb replica.
+     * Sample code: Create or update a HorizonDB replica.
      * 
      * @param manager Entry point to HorizonDbManager.
      */
-    public static void createOrUpdateAHorizonDbReplica(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
+    public static void createOrUpdateAHorizonDBReplica(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
         manager.horizonDbReplicas()
             .define("examplereplica")
             .withExistingPool("exampleresourcegroup", "examplecluster", "examplepool")

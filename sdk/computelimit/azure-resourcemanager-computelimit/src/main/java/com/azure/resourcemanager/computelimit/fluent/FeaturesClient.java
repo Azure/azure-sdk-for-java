@@ -72,7 +72,7 @@ public interface FeaturesClient {
     PagedIterable<FeatureInner> listBySubscriptionLocationResource(String location, Context context);
 
     /**
-     * Enables a compute limit feature for the subscription at the specified location.
+     * Enables a compute limit feature for the subscription at the specified location. Requires the Contributor role.
      * 
      * @param location The name of the Azure region.
      * @param featureName The name of the Feature.
@@ -86,7 +86,7 @@ public interface FeaturesClient {
         String featureName);
 
     /**
-     * Enables a compute limit feature for the subscription at the specified location.
+     * Enables a compute limit feature for the subscription at the specified location. Requires the Contributor role.
      * 
      * @param location The name of the Azure region.
      * @param featureName The name of the Feature.
@@ -102,7 +102,7 @@ public interface FeaturesClient {
         String featureName, FeatureEnableRequest body, Context context);
 
     /**
-     * Enables a compute limit feature for the subscription at the specified location.
+     * Enables a compute limit feature for the subscription at the specified location. Requires the Contributor role.
      * 
      * @param location The name of the Azure region.
      * @param featureName The name of the Feature.
@@ -115,7 +115,7 @@ public interface FeaturesClient {
     OperationStatusResultInner enable(String location, String featureName);
 
     /**
-     * Enables a compute limit feature for the subscription at the specified location.
+     * Enables a compute limit feature for the subscription at the specified location. Requires the Contributor role.
      * 
      * @param location The name of the Azure region.
      * @param featureName The name of the Feature.
@@ -130,7 +130,7 @@ public interface FeaturesClient {
     OperationStatusResultInner enable(String location, String featureName, FeatureEnableRequest body, Context context);
 
     /**
-     * Disables a compute limit feature for the subscription at the specified location.
+     * Disables a compute limit feature for the subscription at the specified location. Requires the Contributor role.
      * 
      * @param location The name of the Azure region.
      * @param featureName The name of the Feature.
@@ -144,7 +144,7 @@ public interface FeaturesClient {
         String featureName);
 
     /**
-     * Disables a compute limit feature for the subscription at the specified location.
+     * Disables a compute limit feature for the subscription at the specified location. Requires the Contributor role.
      * 
      * @param location The name of the Azure region.
      * @param featureName The name of the Feature.
@@ -159,7 +159,7 @@ public interface FeaturesClient {
         String featureName, Context context);
 
     /**
-     * Disables a compute limit feature for the subscription at the specified location.
+     * Disables a compute limit feature for the subscription at the specified location. Requires the Contributor role.
      * 
      * @param location The name of the Azure region.
      * @param featureName The name of the Feature.
@@ -172,7 +172,7 @@ public interface FeaturesClient {
     OperationStatusResultInner disable(String location, String featureName);
 
     /**
-     * Disables a compute limit feature for the subscription at the specified location.
+     * Disables a compute limit feature for the subscription at the specified location. Requires the Contributor role.
      * 
      * @param location The name of the Azure region.
      * @param featureName The name of the Feature.

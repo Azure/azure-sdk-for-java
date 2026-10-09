@@ -22,7 +22,7 @@ public final class GatewaysGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Canceled\",\"gatewayId\":\"uc\",\"gatewayType\":\"Public\",\"gatewayEndpoint\":\"pcjttbstvjeaqn\",\"allowedFeatures\":[\"vfkoxml\"]},\"location\":\"ktuidvrm\",\"tags\":{\"bhpwvqsgnyy\":\"pdwwexymzvlazi\",\"patlbijp\":\"uzivensrpmeyyvp\",\"olmk\":\"gsksrfhf\",\"ommpvfqaw\":\"bnxwc\"},\"id\":\"fgbrtt\",\"name\":\"iac\",\"type\":\"kiexhajlfnthiq\"}";
+            = "{\"properties\":{\"provisioningState\":\"Canceled\",\"gatewayId\":\"xlghieegj\",\"gatewayType\":\"Public\",\"gatewayEndpoint\":\"paseksgb\",\"allowedFeatures\":[\"ntuygdhgaqipir\",\"iwrqofulopmjnl\",\"x\",\"hcbjpibk\"],\"gatewayBypass\":[\"uuuercta\"]},\"location\":\"yintqpbrlcy\",\"tags\":{\"pcjttbstvjeaqn\":\"czkgofxyfsrucvcr\",\"mlghktuidvrmazlp\":\"mvvfko\",\"wvqsgny\":\"wwexymzvlazipbh\",\"patlbijp\":\"uuzivensrpmeyyvp\"},\"id\":\"gsksrfhf\",\"name\":\"olmk\",\"type\":\"bnxwc\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,12 +32,13 @@ public final class GatewaysGetByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Gateway response = manager.gateways()
-            .getByResourceGroupWithResponse("yintqpbrlcy", "duczkgof", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("ocxnehvsmtodl", "pyapucygvoav", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("ktuidvrm", response.location());
-        Assertions.assertEquals("pdwwexymzvlazi", response.tags().get("bhpwvqsgnyy"));
+        Assertions.assertEquals("yintqpbrlcy", response.location());
+        Assertions.assertEquals("czkgofxyfsrucvcr", response.tags().get("pcjttbstvjeaqn"));
         Assertions.assertEquals(GatewayType.PUBLIC, response.gatewayType());
-        Assertions.assertEquals("vfkoxml", response.allowedFeatures().get(0));
+        Assertions.assertEquals("ntuygdhgaqipir", response.allowedFeatures().get(0));
+        Assertions.assertEquals("uuuercta", response.gatewayBypass().get(0));
     }
 }

@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class DdosProtectionPlansUpdateTagsSamples {
     /*
-     * x-ms-original-file: 2025-07-01/DdosProtectionPlanUpdateTags.json
+     * x-ms-original-file: 2026-01-01/DdosProtectionPlanUpdateTags.json
      */
     /**
      * Sample code: DDoS protection plan Update tags.

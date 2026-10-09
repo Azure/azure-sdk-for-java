@@ -29,6 +29,7 @@ public final class RaiEgressHeaderTransform implements JsonSerializable<RaiEgres
     private String name;
 
     /*
+     * 
      * A static header value. Write-only: accepted on create/update, never returned on read.
      * If omitted on update, the existing value is preserved. Use this for non-sensitive values;
      * for credentials, use valueRef instead.
@@ -87,7 +88,8 @@ public final class RaiEgressHeaderTransform implements JsonSerializable<RaiEgres
     }
 
     /**
-     * Get the value property: A static header value. Write-only: accepted on create/update, never returned on read.
+     * Get the value property:
+     * A static header value. Write-only: accepted on create/update, never returned on read.
      * If omitted on update, the existing value is preserved. Use this for non-sensitive values;
      * for credentials, use valueRef instead.
      * 
@@ -98,7 +100,8 @@ public final class RaiEgressHeaderTransform implements JsonSerializable<RaiEgres
     }
 
     /**
-     * Set the value property: A static header value. Write-only: accepted on create/update, never returned on read.
+     * Set the value property:
+     * A static header value. Write-only: accepted on create/update, never returned on read.
      * If omitted on update, the existing value is preserved. Use this for non-sensitive values;
      * for credentials, use valueRef instead.
      * 

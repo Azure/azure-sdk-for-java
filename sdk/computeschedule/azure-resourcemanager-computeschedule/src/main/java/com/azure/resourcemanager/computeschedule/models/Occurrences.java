@@ -128,7 +128,7 @@ public interface Occurrences {
         String occurrenceId, CancelOccurrenceRequest body);
 
     /**
-     * A long-running resource action.
+     * The delay operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scheduledActionName The name of the ScheduledAction.
@@ -143,7 +143,7 @@ public interface Occurrences {
         String occurrenceId, DelayRequest body);
 
     /**
-     * A long-running resource action.
+     * The delay operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scheduledActionName The name of the ScheduledAction.

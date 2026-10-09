@@ -32,20 +32,23 @@ public final class VMCategory extends ExpandableStringEnum<VMCategory> {
     public static final VMCategory MEMORY_OPTIMIZED = fromString("MemoryOptimized");
 
     /**
-     * Storage optimized virtual machine (VM) sizes offer high disk throughput and IO, and are ideal for Big Data, SQL,
-     * NoSQL databases, data warehousing, and large transactional databases.
+     * Storage optimized virtual machine (VM)
+     * sizes offer high disk throughput and IO, and are ideal for Big Data, SQL, NoSQL databases, data warehousing, and
+     * large transactional databases.
      * Examples include Cassandra, MongoDB, Cloudera, and Redis.
      */
     public static final VMCategory STORAGE_OPTIMIZED = fromString("StorageOptimized");
 
     /**
-     * GPU optimized VM sizes are specialized virtual machines available with single, multiple, or fractional GPUs.
+     * GPU optimized VM sizes are specialized
+     * virtual machines available with single, multiple, or fractional GPUs.
      * These sizes are designed for compute-intensive, graphics-intensive, and visualization workloads.
      */
     public static final VMCategory GPU_ACCELERATED = fromString("GpuAccelerated");
 
     /**
-     * FPGA optimized VM sizes are specialized virtual machines available with single or multiple FPGA.
+     * FPGA optimized VM sizes are specialized
+     * virtual machines available with single or multiple FPGA.
      * These sizes are designed for compute-intensive workloads. This article provides information about the number and
      * type of FPGA, vCPUs, data disks, and NICs.
      * Storage throughput and network bandwidth are also included for each size in this grouping.
@@ -53,8 +56,9 @@ public final class VMCategory extends ExpandableStringEnum<VMCategory> {
     public static final VMCategory FPGA_ACCELERATED = fromString("FpgaAccelerated");
 
     /**
-     * Azure High Performance Compute VMs are optimized for various HPC workloads such as computational fluid dynamics,
-     * finite element analysis, frontend and backend EDA,
+     * Azure High Performance Compute VMs are
+     * optimized for various HPC workloads such as computational fluid dynamics, finite element analysis, frontend and
+     * backend EDA,
      * rendering, molecular dynamics, computational geo science, weather simulation, and financial risk analysis.
      */
     public static final VMCategory HIGH_PERFORMANCE_COMPUTE = fromString("HighPerformanceCompute");

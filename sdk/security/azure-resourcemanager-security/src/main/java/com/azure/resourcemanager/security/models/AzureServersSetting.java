@@ -116,15 +116,6 @@ public final class AzureServersSetting extends ServerVulnerabilityAssessmentsSet
     }
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    public AzureServersSetting withProperties(ServerVulnerabilityAssessmentsSettingProperties properties) {
-        super.withProperties(properties);
-        return this;
-    }
-
-    /**
      * Get the selectedProvider property: The selected vulnerability assessments provider on Azure servers in the
      * defined scope.
      * 
@@ -159,9 +150,6 @@ public final class AzureServersSetting extends ServerVulnerabilityAssessmentsSet
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
-        }
-        if (properties() != null) {
-            properties().validate();
         }
     }
 

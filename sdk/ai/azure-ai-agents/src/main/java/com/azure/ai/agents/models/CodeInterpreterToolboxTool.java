@@ -10,6 +10,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -120,6 +121,8 @@ public final class CodeInterpreterToolboxTool extends ToolboxTool {
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeMapField("tool_configs", getToolConfigs(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeArrayField("allowed_callers", this.allowedCallers,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
         if (this.container != null) {
             jsonWriter.writeFieldName("container");
             this.container.writeTo(jsonWriter);
@@ -151,6 +154,10 @@ public final class CodeInterpreterToolboxTool extends ToolboxTool {
                     deserializedCodeInterpreterToolboxTool.setToolConfigs(toolConfigs);
                 } else if ("type".equals(fieldName)) {
                     deserializedCodeInterpreterToolboxTool.type = ToolboxToolType.fromString(reader.getString());
+                } else if ("allowed_callers".equals(fieldName)) {
+                    List<CallableToolAllowedCaller> allowedCallers
+                        = reader.readArray(reader1 -> CallableToolAllowedCaller.fromString(reader1.getString()));
+                    deserializedCodeInterpreterToolboxTool.allowedCallers = allowedCallers;
                 } else if ("container".equals(fieldName)) {
                     deserializedCodeInterpreterToolboxTool.container
                         = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
@@ -160,5 +167,33 @@ public final class CodeInterpreterToolboxTool extends ToolboxTool {
             }
             return deserializedCodeInterpreterToolboxTool;
         });
+    }
+
+    /*
+     * The allowed_callers property.
+     */
+    @Generated
+    private List<CallableToolAllowedCaller> allowedCallers;
+
+    /**
+     * Get the allowedCallers property: The allowed_callers property.
+     *
+     * @return the allowedCallers value.
+     */
+    @Generated
+    public List<CallableToolAllowedCaller> getAllowedCallers() {
+        return this.allowedCallers;
+    }
+
+    /**
+     * Set the allowedCallers property: The allowed_callers property.
+     *
+     * @param allowedCallers the allowedCallers value to set.
+     * @return the CodeInterpreterToolboxTool object itself.
+     */
+    @Generated
+    public CodeInterpreterToolboxTool setAllowedCallers(List<CallableToolAllowedCaller> allowedCallers) {
+        this.allowedCallers = allowedCallers;
+        return this;
     }
 }

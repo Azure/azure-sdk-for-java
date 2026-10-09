@@ -103,6 +103,13 @@ public interface RecoveryServicesBackupManagementClient {
     BackupsClient getBackups();
 
     /**
+     * Gets the ConfigureSourceScansClient object to access its operations.
+     * 
+     * @return the ConfigureSourceScansClient object.
+     */
+    ConfigureSourceScansClient getConfigureSourceScans();
+
+    /**
      * Gets the RecoveryPointsRecommendedForMovesClient object to access its operations.
      * 
      * @return the RecoveryPointsRecommendedForMovesClient object.

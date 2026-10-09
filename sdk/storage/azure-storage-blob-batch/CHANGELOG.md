@@ -1,6 +1,6 @@
 # Release History
 
-## 12.32.0-beta.1 (Unreleased)
+## 12.32.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,29 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 12.31.2 (2026-09-15)
+
+### Bugs Fixed
+- Fixed a header-injection issue where carriage-return (`\r`) or line-feed (`\n`) characters in a batch operation's
+  inner request header names or values (for example, a tag condition supplied via
+  `BlobRequestConditions.setTagsConditions`) were serialized into the multipart batch body without validation. Such
+  characters are now rejected with an `IllegalArgumentException` before serialization.
+
+## 12.31.1 (2026-08-18)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.16.5` to version `1.16.6`.
+- Upgraded `azure-core` from `1.58.1` to version `1.59.0`.
+- Upgraded `azure-storage-blob` from `12.35.0` to version `12.35.1`.
+
+## 12.32.0-beta.1 (2026-07-28)
+
+### Features Added
+- Added support for service version 2026-10-06.
 
 ## 12.31.0 (2026-06-11)
 

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.computelimit.generated;
  */
 public final class MemberCapOverridesDeleteSamples {
     /*
-     * x-ms-original-file: 2026-07-01/MemberCapOverrides_Delete.json
+     * x-ms-original-file: 2026-07-31/MemberCapOverrides_Delete.json
      */
     /**
      * Sample code: Delete a single member cap override.

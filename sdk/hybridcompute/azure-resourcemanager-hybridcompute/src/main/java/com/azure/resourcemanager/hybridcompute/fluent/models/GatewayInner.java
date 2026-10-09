@@ -192,6 +192,31 @@ public final class GatewayInner extends Resource {
     }
 
     /**
+     * Get the gatewayBypass property: Specifies the list of domain names that should bypass the gateway. Each entry
+     * must be a valid DNS hostname.
+     * 
+     * @return the gatewayBypass value.
+     */
+    public List<String> gatewayBypass() {
+        return this.innerProperties() == null ? null : this.innerProperties().gatewayBypass();
+    }
+
+    /**
+     * Set the gatewayBypass property: Specifies the list of domain names that should bypass the gateway. Each entry
+     * must be a valid DNS hostname.
+     * 
+     * @param gatewayBypass the gatewayBypass value to set.
+     * @return the GatewayInner object itself.
+     */
+    public GatewayInner withGatewayBypass(List<String> gatewayBypass) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new GatewayProperties();
+        }
+        this.innerProperties().withGatewayBypass(gatewayBypass);
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override

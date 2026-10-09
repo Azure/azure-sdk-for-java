@@ -67,14 +67,14 @@ public class DiagnosticSettingsImpl
     }
 
     public DiagnosticSettingsOperationsClient inner() {
-        return this.manager().alertRuleClient().getDiagnosticSettingsOperations();
+        return this.manager().serviceClient().getDiagnosticSettingsOperations();
     }
 
     @Override
     public List<DiagnosticSettingsCategory> listCategoriesByResource(String resourceId) {
         List<DiagnosticSettingsCategory> categories = new ArrayList<>();
         PagedIterable<DiagnosticSettingsCategoryResourceInner> collection = this.manager()
-            .alertRuleClient()
+            .serviceClient()
             .getDiagnosticSettingsCategories()
             .list(ResourceUtils.encodeResourceId(resourceId));
         if (collection != null) {
@@ -87,7 +87,7 @@ public class DiagnosticSettingsImpl
 
     @Override
     public PagedFlux<DiagnosticSettingsCategory> listCategoriesByResourceAsync(String resourceId) {
-        return PagedConverter.mapPage(this.manager.alertRuleClient()
+        return PagedConverter.mapPage(this.manager.serviceClient()
             .getDiagnosticSettingsCategories()
             .listAsync(ResourceUtils.encodeResourceId(resourceId)), DiagnosticSettingsCategoryImpl::new);
     }
@@ -95,7 +95,7 @@ public class DiagnosticSettingsImpl
     @Override
     public DiagnosticSettingsCategory getCategory(String resourceId, String name) {
         return new DiagnosticSettingsCategoryImpl(this.manager()
-            .alertRuleClient()
+            .serviceClient()
             .getDiagnosticSettingsCategories()
             .get(ResourceUtils.encodeResourceId(resourceId), name));
     }
@@ -103,7 +103,7 @@ public class DiagnosticSettingsImpl
     @Override
     public Mono<DiagnosticSettingsCategory> getCategoryAsync(String resourceId, String name) {
         return this.manager()
-            .alertRuleClient()
+            .serviceClient()
             .getDiagnosticSettingsCategories()
             .getAsync(ResourceUtils.encodeResourceId(resourceId), name)
             .map(DiagnosticSettingsCategoryImpl::new);
@@ -118,7 +118,7 @@ public class DiagnosticSettingsImpl
     public PagedFlux<DiagnosticSetting> listByResourceAsync(String resourceId) {
         return PagedConverter.mapPage(
             this.manager()
-                .alertRuleClient()
+                .serviceClient()
                 .getDiagnosticSettingsOperations()
                 .listAsync(ResourceUtils.encodeResourceId(resourceId)),
             inner -> new DiagnosticSettingImpl(inner.name(), inner, manager));
@@ -127,7 +127,7 @@ public class DiagnosticSettingsImpl
     @Override
     public void delete(String resourceId, String name) {
         this.manager()
-            .alertRuleClient()
+            .serviceClient()
             .getDiagnosticSettingsOperations()
             .delete(ResourceUtils.encodeResourceId(resourceId), name);
     }
@@ -135,7 +135,7 @@ public class DiagnosticSettingsImpl
     @Override
     public Mono<Void> deleteAsync(String resourceId, String name) {
         return this.manager()
-            .alertRuleClient()
+            .serviceClient()
             .getDiagnosticSettingsOperations()
             .deleteAsync(ResourceUtils.encodeResourceId(resourceId), name);
     }
@@ -143,7 +143,7 @@ public class DiagnosticSettingsImpl
     @Override
     public DiagnosticSetting get(String resourceId, String name) {
         return wrapModel(this.manager()
-            .alertRuleClient()
+            .serviceClient()
             .getDiagnosticSettingsOperations()
             .get(ResourceUtils.encodeResourceId(resourceId), name));
     }
@@ -151,7 +151,7 @@ public class DiagnosticSettingsImpl
     @Override
     public Mono<DiagnosticSetting> getAsync(String resourceId, String name) {
         return this.manager()
-            .alertRuleClient()
+            .serviceClient()
             .getDiagnosticSettingsOperations()
             .getAsync(ResourceUtils.encodeResourceId(resourceId), name)
             .map(this::wrapModel);
@@ -160,7 +160,7 @@ public class DiagnosticSettingsImpl
     @Override
     public Mono<Void> deleteByIdAsync(String id) {
         return this.manager()
-            .alertRuleClient()
+            .serviceClient()
             .getDiagnosticSettingsOperations()
             .deleteAsync(getResourceIdFromSettingsId(id), getNameFromSettingsId(id));
     }

@@ -15,10 +15,11 @@ public final class ResourceTypeTemplateDeploymentPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceTypeTemplateDeploymentPolicy model = BinaryData.fromString(
-            "{\"capabilities\":\"Preflight\",\"preflightOptions\":\"TestOnly\",\"preflightNotifications\":\"None\"}")
+            "{\"capabilities\":\"Default\",\"preflightOptions\":\"RegisteredOnly\",\"preflightNotifications\":\"UnregisteredSubscriptions\"}")
             .toObject(ResourceTypeTemplateDeploymentPolicy.class);
-        Assertions.assertEquals(TemplateDeploymentCapabilities.PREFLIGHT, model.capabilities());
-        Assertions.assertEquals(TemplateDeploymentPreflightOptions.TEST_ONLY, model.preflightOptions());
-        Assertions.assertEquals(TemplateDeploymentPreflightNotifications.NONE, model.preflightNotifications());
+        Assertions.assertEquals(TemplateDeploymentCapabilities.DEFAULT, model.capabilities());
+        Assertions.assertEquals(TemplateDeploymentPreflightOptions.REGISTERED_ONLY, model.preflightOptions());
+        Assertions.assertEquals(TemplateDeploymentPreflightNotifications.UNREGISTERED_SUBSCRIPTIONS,
+            model.preflightNotifications());
     }
 }
