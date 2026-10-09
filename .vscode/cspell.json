@@ -75,7 +75,8 @@
     "**/src/**/resources/**",
     "docs/spring/**",
     "sdk/core/.idea/**",
-    ".github/CODEOWNERS"
+    ".github/CODEOWNERS",
+    ".github/CODEOWNERS_baseline_errors.txt"
   ],
   "words": [
     "aadb",
@@ -128,6 +129,7 @@
     "dshade",
     "dskip",
     "dspotbugs",
+    "dspotless",
     "dtdl",
     "dtest",
     "dtmf",

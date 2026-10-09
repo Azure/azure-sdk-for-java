@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class ContinuousBackupRestoreLocationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ContinuousBackupRestoreLocation model = BinaryData.fromString("{\"location\":\"xtjjfzqlqhycav\"}")
-            .toObject(ContinuousBackupRestoreLocation.class);
-        Assertions.assertEquals("xtjjfzqlqhycav", model.location());
+        ContinuousBackupRestoreLocation model
+            = BinaryData.fromString("{\"location\":\"lbkpb\"}").toObject(ContinuousBackupRestoreLocation.class);
+        Assertions.assertEquals("lbkpb", model.location());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ContinuousBackupRestoreLocation model = new ContinuousBackupRestoreLocation().withLocation("xtjjfzqlqhycav");
+        ContinuousBackupRestoreLocation model = new ContinuousBackupRestoreLocation().withLocation("lbkpb");
         model = BinaryData.fromObject(model).toObject(ContinuousBackupRestoreLocation.class);
-        Assertions.assertEquals("xtjjfzqlqhycav", model.location());
+        Assertions.assertEquals("lbkpb", model.location());
     }
 }

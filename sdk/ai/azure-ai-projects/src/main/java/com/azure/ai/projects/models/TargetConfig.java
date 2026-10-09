@@ -29,7 +29,7 @@ public class TargetConfig implements JsonSerializable<TargetConfig> {
      * Creates an instance of TargetConfig class.
      */
     @Generated
-    public TargetConfig() {
+    protected TargetConfig() {
     }
 
     /**

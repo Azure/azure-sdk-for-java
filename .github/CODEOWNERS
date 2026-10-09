@@ -73,7 +73,7 @@
 
 # ServiceLabel: %OpenTelemetry
 # AzureSdkOwners:                                                  @jonathangiles
-# ServiceOwners:                                                   @trask @ramthi @jeanbisutti @harsimar @rajkumar-rangaraj @xiang17
+# ServiceOwners:                                                   @trask @ramthi @harsimar @rajkumar-rangaraj @xiang17
 
 # PRLabel: %Azure.Core
 /sdk/parents/                                                      @alzimmermsft @jonathangiles @Azure/azure-java-sdk
@@ -392,18 +392,18 @@
 # ServiceOwners:                                                   @AzmonActionG @AzmonAlerts @AzMonEssential @AzmonLogA @dadunl @SameergMS
 
 # PRLabel: %Monitor - Autoconfigure
-/sdk/monitor/azure-monitor-opentelemetry-autoconfigure/            @harsimar @jeanbisutti @rajkumar-rangaraj @ramthi @trask @xiang17 @Azure/azure-java-sdk
+/sdk/monitor/azure-monitor-opentelemetry-autoconfigure/            @harsimar @rajkumar-rangaraj @ramthi @trask @xiang17 @Azure/azure-java-sdk
 
 # PRLabel: %Monitor - Autoconfigure
-/sdk/monitor/azure-monitor-opentelemetry-exporter/                 @harsimar @jeanbisutti @ramthi @trask @Azure/azure-java-sdk
+/sdk/monitor/azure-monitor-opentelemetry-exporter/                 @harsimar @ramthi @trask @Azure/azure-java-sdk
 
 # PRLabel: %Monitor - Spring
-/sdk/spring/spring-cloud-azure-starter-monitor-test                @harsimar @jeanbisutti @moarychan @dingmeng-xue @rajkumar-rangaraj @ramthi @domainname @trask @xiang17 @Azure/azure-java-sdk
+/sdk/spring/spring-cloud-azure-starter-monitor-test                @harsimar @moarychan @dingmeng-xue @rajkumar-rangaraj @ramthi @domainname @trask @xiang17 @Azure/azure-java-sdk
 
 # PRLabel: %Monitor - Spring
-/sdk/spring/spring-cloud-azure-starter-monitor                     @harsimar @jeanbisutti @moarychan @dingmeng-xue @rajkumar-rangaraj @ramthi @domainname @trask @xiang17 @Azure/azure-java-sdk
+/sdk/spring/spring-cloud-azure-starter-monitor                     @harsimar @moarychan @dingmeng-xue @rajkumar-rangaraj @ramthi @domainname @trask @xiang17 @Azure/azure-java-sdk
 
-# AzureSdkOwners:                                                  @harsimar @jeanbisutti @rajkumar-rangaraj @ramthi @trask @xiang17
+# AzureSdkOwners:                                                  @harsimar @rajkumar-rangaraj @ramthi @trask @xiang17
 # ServiceLabel: %Monitor - Spring
 
 # PRLabel: %Online Experimentation
@@ -980,7 +980,6 @@
 /eng/versioning/version_client.txt
 
 # Add owners for notifications for specific pipelines
-/eng/pipelines/aggregate-reports.yml                               @alzimmermsft @jonathangiles @Azure/azure-java-sdk
 /eng/common/pipelines/codeowners-linter.yml                        @alzimmermsft @Azure/azure-java-sdk
 /eng/pipelines/docindex.yml                                        @danieljurek @raych1
 

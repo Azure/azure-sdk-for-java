@@ -9,7 +9,7 @@ package com.azure.resourcemanager.storagediscovery.generated;
  */
 public final class StorageDiscoveryWorkspacesDeleteSamples {
     /*
-     * x-ms-original-file: 2025-09-01/StorageDiscoveryWorkspaces_Delete.json
+     * x-ms-original-file: 2026-10-01-preview/StorageDiscoveryWorkspaces_Delete.json
      */
     /**
      * Sample code: Delete a StorageDiscoveryWorkspace.
