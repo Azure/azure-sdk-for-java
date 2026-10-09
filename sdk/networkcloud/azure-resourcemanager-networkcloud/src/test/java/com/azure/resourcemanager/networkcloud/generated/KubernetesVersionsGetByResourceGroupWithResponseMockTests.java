@@ -22,7 +22,7 @@ public final class KubernetesVersionsGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"values\":[{\"description\":\"wzdanojisgglmvo\",\"version\":\"tuz\"},{\"description\":\"ctibpvbka\",\"version\":\"xsmzygdf\"},{\"description\":\"kwseivmakxhyso\",\"version\":\"juxlkbectvtfjm\"}],\"provisioningState\":\"Failed\"},\"etag\":\"hmaiubavlzwpvg\",\"extendedLocation\":{\"name\":\"falkzazm\",\"type\":\"EdgeZone\"},\"location\":\"e\",\"tags\":{\"etw\":\"qafkmkrokzrth\",\"iezeagm\":\"qrtvaoznqni\",\"lzmb\":\"eituugedhfpjs\"},\"id\":\"syjdeolctae\",\"name\":\"fsyrledjc\",\"type\":\"stbvtqig\"}";
+            = "{\"properties\":{\"values\":[{\"description\":\"kfmkmfdjxyxgbk\",\"version\":\"vjcteoedlrslsk\"},{\"description\":\"pxvjnzd\",\"version\":\"o\"}],\"provisioningState\":\"Canceled\"},\"etag\":\"pcnab\",\"extendedLocation\":{\"name\":\"zf\",\"type\":\"EdgeZone\"},\"location\":\"gyte\",\"tags\":{\"nrzdajlskzptj\":\"ilmhivzkwwwnc\",\"qlehmcgcjeinu\":\"ulweucyrth\",\"qnttmbq\":\"hokamvfej\"},\"id\":\"abzfivf\",\"name\":\"kpysthhzagjf\",\"type\":\"yyrlhgenu\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,12 +32,12 @@ public final class KubernetesVersionsGetByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         KubernetesVersion response = manager.kubernetesVersions()
-            .getByResourceGroupWithResponse("ltxkpb", "hvfdqqj", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("zqbglcjkays", "thzodubtlmjtgbl", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("e", response.location());
-        Assertions.assertEquals("qafkmkrokzrth", response.tags().get("etw"));
-        Assertions.assertEquals("falkzazm", response.extendedLocation().name());
+        Assertions.assertEquals("gyte", response.location());
+        Assertions.assertEquals("ilmhivzkwwwnc", response.tags().get("nrzdajlskzptj"));
+        Assertions.assertEquals("zf", response.extendedLocation().name());
         Assertions.assertEquals(ExtendedLocationType.EDGE_ZONE, response.extendedLocation().type());
     }
 }

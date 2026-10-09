@@ -12,18 +12,18 @@ import org.junit.jupiter.api.Assertions;
 public final class AgentOptionsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AgentOptions model = BinaryData.fromString("{\"hugepagesCount\":6143859802750265337,\"hugepagesSize\":\"1G\"}")
+        AgentOptions model = BinaryData.fromString("{\"hugepagesCount\":2513004869091946992,\"hugepagesSize\":\"2M\"}")
             .toObject(AgentOptions.class);
-        Assertions.assertEquals(6143859802750265337L, model.hugepagesCount());
-        Assertions.assertEquals(HugepagesSize.ONEG, model.hugepagesSize());
+        Assertions.assertEquals(2513004869091946992L, model.hugepagesCount());
+        Assertions.assertEquals(HugepagesSize.TWOM, model.hugepagesSize());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AgentOptions model
-            = new AgentOptions().withHugepagesCount(6143859802750265337L).withHugepagesSize(HugepagesSize.ONEG);
+            = new AgentOptions().withHugepagesCount(2513004869091946992L).withHugepagesSize(HugepagesSize.TWOM);
         model = BinaryData.fromObject(model).toObject(AgentOptions.class);
-        Assertions.assertEquals(6143859802750265337L, model.hugepagesCount());
-        Assertions.assertEquals(HugepagesSize.ONEG, model.hugepagesSize());
+        Assertions.assertEquals(2513004869091946992L, model.hugepagesCount());
+        Assertions.assertEquals(HugepagesSize.TWOM, model.hugepagesSize());
     }
 }

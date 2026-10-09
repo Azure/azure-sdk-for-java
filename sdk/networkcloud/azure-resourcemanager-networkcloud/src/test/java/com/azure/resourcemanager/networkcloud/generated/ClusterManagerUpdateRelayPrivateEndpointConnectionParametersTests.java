@@ -12,12 +12,13 @@ import org.junit.jupiter.api.Assertions;
 public final class ClusterManagerUpdateRelayPrivateEndpointConnectionParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ClusterManagerUpdateRelayPrivateEndpointConnectionParameters model = BinaryData.fromString(
-            "{\"connectionState\":\"Approved\",\"description\":\"slfaoqzpiyyl\",\"privateEndpointResourceId\":\"alnswhccsphk\"}")
+        ClusterManagerUpdateRelayPrivateEndpointConnectionParameters model = BinaryData
+            .fromString(
+                "{\"connectionState\":\"Approved\",\"description\":\"kniod\",\"privateEndpointResourceId\":\"oo\"}")
             .toObject(ClusterManagerUpdateRelayPrivateEndpointConnectionParameters.class);
         Assertions.assertEquals(RelayPrivateEndpointConnectionState.APPROVED, model.connectionState());
-        Assertions.assertEquals("slfaoqzpiyyl", model.description());
-        Assertions.assertEquals("alnswhccsphk", model.privateEndpointResourceId());
+        Assertions.assertEquals("kniod", model.description());
+        Assertions.assertEquals("oo", model.privateEndpointResourceId());
     }
 
     @org.junit.jupiter.api.Test
@@ -25,12 +26,12 @@ public final class ClusterManagerUpdateRelayPrivateEndpointConnectionParametersT
         ClusterManagerUpdateRelayPrivateEndpointConnectionParameters model
             = new ClusterManagerUpdateRelayPrivateEndpointConnectionParameters()
                 .withConnectionState(RelayPrivateEndpointConnectionState.APPROVED)
-                .withDescription("slfaoqzpiyyl")
-                .withPrivateEndpointResourceId("alnswhccsphk");
+                .withDescription("kniod")
+                .withPrivateEndpointResourceId("oo");
         model
             = BinaryData.fromObject(model).toObject(ClusterManagerUpdateRelayPrivateEndpointConnectionParameters.class);
         Assertions.assertEquals(RelayPrivateEndpointConnectionState.APPROVED, model.connectionState());
-        Assertions.assertEquals("slfaoqzpiyyl", model.description());
-        Assertions.assertEquals("alnswhccsphk", model.privateEndpointResourceId());
+        Assertions.assertEquals("kniod", model.description());
+        Assertions.assertEquals("oo", model.privateEndpointResourceId());
     }
 }

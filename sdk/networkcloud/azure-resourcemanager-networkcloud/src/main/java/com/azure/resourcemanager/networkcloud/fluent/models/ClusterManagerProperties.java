@@ -76,6 +76,12 @@ public final class ClusterManagerProperties implements JsonSerializable<ClusterM
     private ClusterManagerRelayConfiguration relayConfiguration;
 
     /*
+     * The relative ordering group used to apply software updates to associated clusters. The minimum accepted value is
+     * 1; the service enforces the upper bound currently in effect, which may change over time.
+     */
+    private Integer rolloutRing;
+
+    /*
      * The size of the Azure virtual machines to use for hosting the cluster manager resource.
      */
     private String vmSize;
@@ -234,6 +240,30 @@ public final class ClusterManagerProperties implements JsonSerializable<ClusterM
     }
 
     /**
+     * Get the rolloutRing property: The relative ordering group used to apply software updates to associated clusters.
+     * The minimum accepted value is 1; the service enforces the upper bound currently in effect, which may change over
+     * time.
+     * 
+     * @return the rolloutRing value.
+     */
+    public Integer rolloutRing() {
+        return this.rolloutRing;
+    }
+
+    /**
+     * Set the rolloutRing property: The relative ordering group used to apply software updates to associated clusters.
+     * The minimum accepted value is 1; the service enforces the upper bound currently in effect, which may change over
+     * time.
+     * 
+     * @param rolloutRing the rolloutRing value to set.
+     * @return the ClusterManagerProperties object itself.
+     */
+    public ClusterManagerProperties withRolloutRing(Integer rolloutRing) {
+        this.rolloutRing = rolloutRing;
+        return this;
+    }
+
+    /**
      * Get the vmSize property: The size of the Azure virtual machines to use for hosting the cluster manager resource.
      * 
      * @return the vmSize value.
@@ -264,6 +294,7 @@ public final class ClusterManagerProperties implements JsonSerializable<ClusterM
         jsonWriter.writeArrayField("availabilityZones", this.availabilityZones,
             (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("managedResourceGroupConfiguration", this.managedResourceGroupConfiguration);
+        jsonWriter.writeNumberField("rolloutRing", this.rolloutRing);
         jsonWriter.writeStringField("vmSize", this.vmSize);
         return jsonWriter.writeEndObject();
     }
@@ -311,6 +342,8 @@ public final class ClusterManagerProperties implements JsonSerializable<ClusterM
                 } else if ("relayConfiguration".equals(fieldName)) {
                     deserializedClusterManagerProperties.relayConfiguration
                         = ClusterManagerRelayConfiguration.fromJson(reader);
+                } else if ("rolloutRing".equals(fieldName)) {
+                    deserializedClusterManagerProperties.rolloutRing = reader.getNullable(JsonReader::getInt);
                 } else if ("vmSize".equals(fieldName)) {
                     deserializedClusterManagerProperties.vmSize = reader.getString();
                 } else {
