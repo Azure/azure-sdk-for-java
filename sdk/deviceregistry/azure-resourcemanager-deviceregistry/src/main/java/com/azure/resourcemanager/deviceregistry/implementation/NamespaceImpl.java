@@ -8,12 +8,12 @@ import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.deviceregistry.fluent.models.NamespaceInner;
+import com.azure.resourcemanager.deviceregistry.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.deviceregistry.models.Namespace;
 import com.azure.resourcemanager.deviceregistry.models.NamespaceMigrateRequest;
 import com.azure.resourcemanager.deviceregistry.models.NamespaceProperties;
 import com.azure.resourcemanager.deviceregistry.models.NamespaceUpdate;
 import com.azure.resourcemanager.deviceregistry.models.NamespaceUpdateProperties;
-import com.azure.resourcemanager.deviceregistry.models.SystemAssignedServiceIdentity;
 import java.util.Collections;
 import java.util.Map;
 
@@ -51,7 +51,7 @@ public final class NamespaceImpl implements Namespace, Namespace.Definition, Nam
         return this.innerModel().properties();
     }
 
-    public SystemAssignedServiceIdentity identity() {
+    public ManagedServiceIdentity identity() {
         return this.innerModel().identity();
     }
 
@@ -186,7 +186,7 @@ public final class NamespaceImpl implements Namespace, Namespace.Definition, Nam
         return this;
     }
 
-    public NamespaceImpl withIdentity(SystemAssignedServiceIdentity identity) {
+    public NamespaceImpl withIdentity(ManagedServiceIdentity identity) {
         if (isInCreateMode()) {
             this.innerModel().withIdentity(identity);
             return this;

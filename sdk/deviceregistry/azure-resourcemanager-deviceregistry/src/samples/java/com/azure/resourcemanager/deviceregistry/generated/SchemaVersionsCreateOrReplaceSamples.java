@@ -11,7 +11,7 @@ import com.azure.resourcemanager.deviceregistry.models.SchemaVersionProperties;
  */
 public final class SchemaVersionsCreateOrReplaceSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/CreateOrReplace_SchemaVersion.json
+     * x-ms-original-file: 2026-11-01/CreateOrReplace_SchemaVersion.json
      */
     /**
      * Sample code: CreateOrReplace_SchemaVersion.

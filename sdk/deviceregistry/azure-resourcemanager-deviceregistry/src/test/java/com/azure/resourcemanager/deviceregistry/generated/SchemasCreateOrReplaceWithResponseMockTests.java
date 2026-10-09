@@ -26,7 +26,7 @@ public final class SchemasCreateOrReplaceWithResponseMockTests {
     @Test
     public void testCreateOrReplaceWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"uuid\":\"uwdchozf\",\"displayName\":\"fexl\",\"description\":\"noakiz\",\"format\":\"Delta/1.0\",\"schemaType\":\"MessageSchema\",\"provisioningState\":\"Accepted\",\"tags\":{\"nuwiguyxlykwph\":\"q\"}},\"id\":\"zc\",\"name\":\"xhmpejtlkex\",\"type\":\"onwivkcqhrxhxkn\"}";
+            = "{\"properties\":{\"uuid\":\"fgzii\",\"displayName\":\"ijjcea\",\"description\":\"ijjj\",\"format\":\"JsonSchema/draft-07\",\"schemaType\":\"MessageSchema\",\"provisioningState\":\"Accepted\",\"tags\":{\"yvkunmign\":\"szknxkvccxe\"}},\"id\":\"ikkgqo\",\"name\":\"jwpindedvabbxbh\",\"type\":\"edeilb\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,21 +35,23 @@ public final class SchemasCreateOrReplaceWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        Schema response = manager.schemas()
-            .define("afhlbyl")
-            .withExistingSchemaRegistry("tnhqsycl", "selpkpbaf")
-            .withProperties(new SchemaProperties().withDisplayName("wrso")
-                .withDescription("ltdb")
-                .withFormat(Format.DELTA_1_0)
-                .withSchemaType(SchemaType.MESSAGE_SCHEMA)
-                .withTags(mapOf("npq", "hfnrac")))
-            .create();
+        Schema response
+            = manager.schemas()
+                .define("uwjoedxnguca")
+                .withExistingSchemaRegistry("xxsaetgz", "gvpyigdaqqilzdc")
+                .withProperties(new SchemaProperties().withDisplayName("cdmkxwxdcvjw")
+                    .withDescription("z")
+                    .withFormat(Format.DELTA_1_0)
+                    .withSchemaType(SchemaType.MESSAGE_SCHEMA)
+                    .withTags(mapOf("p", "chxrtuicdsiwdfm", "grpxncakiqaondjr", "hzzwvywrgyngy", "ykglt",
+                        "clamgglvlmfejdoq")))
+                .create();
 
-        Assertions.assertEquals("fexl", response.properties().displayName());
-        Assertions.assertEquals("noakiz", response.properties().description());
-        Assertions.assertEquals(Format.DELTA_1_0, response.properties().format());
+        Assertions.assertEquals("ijjcea", response.properties().displayName());
+        Assertions.assertEquals("ijjj", response.properties().description());
+        Assertions.assertEquals(Format.JSON_SCHEMA_DRAFT7, response.properties().format());
         Assertions.assertEquals(SchemaType.MESSAGE_SCHEMA, response.properties().schemaType());
-        Assertions.assertEquals("q", response.properties().tags().get("nuwiguyxlykwph"));
+        Assertions.assertEquals("szknxkvccxe", response.properties().tags().get("yvkunmign"));
     }
 
     // Use "Map.of" if available

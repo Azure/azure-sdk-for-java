@@ -26,6 +26,12 @@ public final class SchemaRegistryUpdateProperties implements JsonSerializable<Sc
      */
     private String description;
 
+    /*
+     * The identity used for outbound calls from the ADR schema registry. If not specified and the schema registry has a
+     * system-assigned identity enabled, the system-assigned identity is used by default.
+     */
+    private OutboundIdentity outboundIdentity;
+
     /**
      * Creates an instance of SchemaRegistryUpdateProperties class.
      */
@@ -73,6 +79,30 @@ public final class SchemaRegistryUpdateProperties implements JsonSerializable<Sc
     }
 
     /**
+     * Get the outboundIdentity property: The identity used for outbound calls from the ADR schema registry. If not
+     * specified and the schema registry has a system-assigned identity enabled, the system-assigned identity is used by
+     * default.
+     * 
+     * @return the outboundIdentity value.
+     */
+    public OutboundIdentity outboundIdentity() {
+        return this.outboundIdentity;
+    }
+
+    /**
+     * Set the outboundIdentity property: The identity used for outbound calls from the ADR schema registry. If not
+     * specified and the schema registry has a system-assigned identity enabled, the system-assigned identity is used by
+     * default.
+     * 
+     * @param outboundIdentity the outboundIdentity value to set.
+     * @return the SchemaRegistryUpdateProperties object itself.
+     */
+    public SchemaRegistryUpdateProperties withOutboundIdentity(OutboundIdentity outboundIdentity) {
+        this.outboundIdentity = outboundIdentity;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -80,6 +110,7 @@ public final class SchemaRegistryUpdateProperties implements JsonSerializable<Sc
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("displayName", this.displayName);
         jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeJsonField("outboundIdentity", this.outboundIdentity);
         return jsonWriter.writeEndObject();
     }
 
@@ -103,6 +134,8 @@ public final class SchemaRegistryUpdateProperties implements JsonSerializable<Sc
                     deserializedSchemaRegistryUpdateProperties.displayName = reader.getString();
                 } else if ("description".equals(fieldName)) {
                     deserializedSchemaRegistryUpdateProperties.description = reader.getString();
+                } else if ("outboundIdentity".equals(fieldName)) {
+                    deserializedSchemaRegistryUpdateProperties.outboundIdentity = OutboundIdentity.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

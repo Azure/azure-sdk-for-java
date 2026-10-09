@@ -155,7 +155,7 @@ public final class NamespaceDiscoveredAssetsClientImpl implements NamespaceDisco
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/discoveredAssets")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NamespaceDiscoveredAssetListResult>> listByResourceGroup(@HostParam("endpoint") String endpoint,
+        Mono<Response<NamespaceDiscoveredAssetListResult>> listByNamespace(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("namespaceName") String namespaceName,
             @HeaderParam("Accept") String accept, Context context);
@@ -164,7 +164,7 @@ public final class NamespaceDiscoveredAssetsClientImpl implements NamespaceDisco
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/discoveredAssets")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<NamespaceDiscoveredAssetListResult> listByResourceGroupSync(@HostParam("endpoint") String endpoint,
+        Response<NamespaceDiscoveredAssetListResult> listByNamespaceSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("namespaceName") String namespaceName,
             @HeaderParam("Accept") String accept, Context context);
@@ -173,7 +173,7 @@ public final class NamespaceDiscoveredAssetsClientImpl implements NamespaceDisco
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NamespaceDiscoveredAssetListResult>> listByResourceGroupNext(
+        Mono<Response<NamespaceDiscoveredAssetListResult>> listByNamespaceNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -181,7 +181,7 @@ public final class NamespaceDiscoveredAssetsClientImpl implements NamespaceDisco
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<NamespaceDiscoveredAssetListResult> listByResourceGroupNextSync(
+        Response<NamespaceDiscoveredAssetListResult> listByNamespaceNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -823,11 +823,11 @@ public final class NamespaceDiscoveredAssetsClientImpl implements NamespaceDisco
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<NamespaceDiscoveredAssetInner>>
-        listByResourceGroupSinglePageAsync(String resourceGroupName, String namespaceName) {
+    private Mono<PagedResponse<NamespaceDiscoveredAssetInner>> listByNamespaceSinglePageAsync(String resourceGroupName,
+        String namespaceName) {
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
+            .withContext(context -> service.listByNamespace(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, namespaceName, accept, context))
             .<PagedResponse<NamespaceDiscoveredAssetInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
@@ -845,10 +845,10 @@ public final class NamespaceDiscoveredAssetsClientImpl implements NamespaceDisco
      * @return the response of a NamespaceDiscoveredAsset list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<NamespaceDiscoveredAssetInner> listByResourceGroupAsync(String resourceGroupName,
+    private PagedFlux<NamespaceDiscoveredAssetInner> listByNamespaceAsync(String resourceGroupName,
         String namespaceName) {
-        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, namespaceName),
-            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listByNamespaceSinglePageAsync(resourceGroupName, namespaceName),
+            nextLink -> listByNamespaceNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -862,11 +862,11 @@ public final class NamespaceDiscoveredAssetsClientImpl implements NamespaceDisco
      * @return the response of a NamespaceDiscoveredAsset list operation along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<NamespaceDiscoveredAssetInner> listByResourceGroupSinglePage(String resourceGroupName,
+    private PagedResponse<NamespaceDiscoveredAssetInner> listByNamespaceSinglePage(String resourceGroupName,
         String namespaceName) {
         final String accept = "application/json";
         Response<NamespaceDiscoveredAssetListResult> res
-            = service.listByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            = service.listByNamespaceSync(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, namespaceName, accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
@@ -884,11 +884,11 @@ public final class NamespaceDiscoveredAssetsClientImpl implements NamespaceDisco
      * @return the response of a NamespaceDiscoveredAsset list operation along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<NamespaceDiscoveredAssetInner> listByResourceGroupSinglePage(String resourceGroupName,
+    private PagedResponse<NamespaceDiscoveredAssetInner> listByNamespaceSinglePage(String resourceGroupName,
         String namespaceName, Context context) {
         final String accept = "application/json";
         Response<NamespaceDiscoveredAssetListResult> res
-            = service.listByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            = service.listByNamespaceSync(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, namespaceName, accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
@@ -906,10 +906,10 @@ public final class NamespaceDiscoveredAssetsClientImpl implements NamespaceDisco
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<NamespaceDiscoveredAssetInner> listByResourceGroup(String resourceGroupName,
+    public PagedIterable<NamespaceDiscoveredAssetInner> listByNamespace(String resourceGroupName,
         String namespaceName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, namespaceName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return new PagedIterable<>(() -> listByNamespaceSinglePage(resourceGroupName, namespaceName),
+            nextLink -> listByNamespaceNextSinglePage(nextLink));
     }
 
     /**
@@ -925,10 +925,10 @@ public final class NamespaceDiscoveredAssetsClientImpl implements NamespaceDisco
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<NamespaceDiscoveredAssetInner> listByResourceGroup(String resourceGroupName,
-        String namespaceName, Context context) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, namespaceName, context),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink, context));
+    public PagedIterable<NamespaceDiscoveredAssetInner> listByNamespace(String resourceGroupName, String namespaceName,
+        Context context) {
+        return new PagedIterable<>(() -> listByNamespaceSinglePage(resourceGroupName, namespaceName, context),
+            nextLink -> listByNamespaceNextSinglePage(nextLink, context));
     }
 
     /**
@@ -942,11 +942,10 @@ public final class NamespaceDiscoveredAssetsClientImpl implements NamespaceDisco
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<NamespaceDiscoveredAssetInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
+    private Mono<PagedResponse<NamespaceDiscoveredAssetInner>> listByNamespaceNextSinglePageAsync(String nextLink) {
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
+            .withContext(context -> service.listByNamespaceNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<NamespaceDiscoveredAssetInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -962,10 +961,10 @@ public final class NamespaceDiscoveredAssetsClientImpl implements NamespaceDisco
      * @return the response of a NamespaceDiscoveredAsset list operation along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<NamespaceDiscoveredAssetInner> listByResourceGroupNextSinglePage(String nextLink) {
+    private PagedResponse<NamespaceDiscoveredAssetInner> listByNamespaceNextSinglePage(String nextLink) {
         final String accept = "application/json";
         Response<NamespaceDiscoveredAssetListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+            = service.listByNamespaceNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
@@ -981,11 +980,11 @@ public final class NamespaceDiscoveredAssetsClientImpl implements NamespaceDisco
      * @return the response of a NamespaceDiscoveredAsset list operation along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<NamespaceDiscoveredAssetInner> listByResourceGroupNextSinglePage(String nextLink,
+    private PagedResponse<NamespaceDiscoveredAssetInner> listByNamespaceNextSinglePage(String nextLink,
         Context context) {
         final String accept = "application/json";
         Response<NamespaceDiscoveredAssetListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, context);
+            = service.listByNamespaceNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
