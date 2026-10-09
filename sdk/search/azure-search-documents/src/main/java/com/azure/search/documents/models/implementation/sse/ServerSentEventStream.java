@@ -386,6 +386,12 @@ final class ServerSentEventStream {
             return line;
         }
 
+        /**
+         * Processes a decoded line, updating the pending SSE event.
+         *
+         * @param line The decoded SSE line.
+         * @return The completed event frame, or {@code null} if this line produces no frame.
+         */
         private ServerSentEventFrame processLine(String line) {
             if (line.isEmpty()) {
                 return buildEvent();
