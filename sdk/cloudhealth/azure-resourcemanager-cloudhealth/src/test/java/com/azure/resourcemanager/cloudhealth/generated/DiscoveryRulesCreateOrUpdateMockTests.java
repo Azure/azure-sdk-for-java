@@ -26,7 +26,7 @@ public final class DiscoveryRulesCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"displayName\":\"hqvlnnpxybafiqg\",\"authenticationSetting\":\"aarbgjekg\",\"discoverRelationships\":\"Disabled\",\"addRecommendedSignals\":\"Disabled\",\"specification\":{\"kind\":\"DiscoveryRuleSpecification\"},\"addResourceHealthSignal\":\"Disabled\",\"error\":{\"message\":\"lidwcwvmzegjon\",\"context\":[\"irwgdnqzbrf\",\"spzhzmtksjc\",\"tdigsxcdglj\",\"lkeuac\"]},\"entityName\":\"omflrytswfp\"},\"id\":\"dgycxnmskwhqjjy\",\"name\":\"lurlpshhkvp\",\"type\":\"dwqslsrhmpqvw\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"displayName\":\"xuifmcsypobkdqz\",\"authenticationSetting\":\"dzsylollgtrczz\",\"discoverRelationships\":\"Disabled\",\"addRecommendedSignals\":\"Disabled\",\"specification\":{\"kind\":\"DiscoveryRuleSpecification\"},\"addResourceHealthSignal\":\"Disabled\",\"error\":{\"message\":\"ijpvuaurkihc\",\"context\":[\"defxrdc\",\"xnbkkj\",\"nurnnq\"]},\"entityName\":\"q\"},\"id\":\"izxqltgrd\",\"name\":\"gypxrxvbfihwuhvc\",\"type\":\"a\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,18 +36,18 @@ public final class DiscoveryRulesCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DiscoveryRule response = manager.discoveryRules()
-            .define("lhguyn")
-            .withExistingHealthmodel("kcdxfzzzw", "jafi")
-            .withProperties(new DiscoveryRuleProperties().withDisplayName("mltx")
-                .withAuthenticationSetting("whmozusgzvlnsnnj")
-                .withDiscoverRelationships(DiscoveryRuleRelationshipDiscoveryBehavior.DISABLED)
-                .withAddRecommendedSignals(DiscoveryRuleRecommendedSignalsBehavior.ENABLED)
+            .define("xeiqbpsmg")
+            .withExistingHealthmodel("wuived", "cgyee")
+            .withProperties(new DiscoveryRuleProperties().withDisplayName("mljdlrgmsplzga")
+                .withAuthenticationSetting("fcshh")
+                .withDiscoverRelationships(DiscoveryRuleRelationshipDiscoveryBehavior.ENABLED)
+                .withAddRecommendedSignals(DiscoveryRuleRecommendedSignalsBehavior.DISABLED)
                 .withSpecification(new DiscoveryRuleSpecification())
                 .withAddResourceHealthSignal(ResourceHealthAvailabilityStateSignalBehavior.DISABLED))
             .create();
 
-        Assertions.assertEquals("hqvlnnpxybafiqg", response.properties().displayName());
-        Assertions.assertEquals("aarbgjekg", response.properties().authenticationSetting());
+        Assertions.assertEquals("xuifmcsypobkdqz", response.properties().displayName());
+        Assertions.assertEquals("dzsylollgtrczz", response.properties().authenticationSetting());
         Assertions.assertEquals(DiscoveryRuleRelationshipDiscoveryBehavior.DISABLED,
             response.properties().discoverRelationships());
         Assertions.assertEquals(DiscoveryRuleRecommendedSignalsBehavior.DISABLED,
