@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerinstance.generated;
  */
 public final class CGProfileGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-09-01/ContainerGroupProfilesGet.json
+     * x-ms-original-file: 2026-07-01/ContainerGroupProfilesGet.json
      */
     /**
      * Sample code: ContainerGroupProfilesGet_Succeeded.
@@ -24,7 +24,7 @@ public final class CGProfileGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/ContainerGroupProfilesGetPriority.json
+     * x-ms-original-file: 2026-07-01/ContainerGroupProfilesGetPriority.json
      */
     /**
      * Sample code: ContainerGroupProfilesGetWithPriority.

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerinstance.generated;
  */
 public final class ContainerGroupsStopSamples {
     /*
-     * x-ms-original-file: 2025-09-01/ContainerGroupsStop.json
+     * x-ms-original-file: 2026-07-01/ContainerGroupsStop.json
      */
     /**
      * Sample code: ContainerStop.
