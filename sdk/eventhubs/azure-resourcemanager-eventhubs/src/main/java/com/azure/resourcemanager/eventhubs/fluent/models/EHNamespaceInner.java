@@ -12,6 +12,7 @@ import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.eventhubs.models.Encryption;
 import com.azure.resourcemanager.eventhubs.models.GeoDataReplicationProperties;
 import com.azure.resourcemanager.eventhubs.models.Identity;
+import com.azure.resourcemanager.eventhubs.models.IpAddressType;
 import com.azure.resourcemanager.eventhubs.models.PlatformCapabilities;
 import com.azure.resourcemanager.eventhubs.models.PublicNetworkAccess;
 import com.azure.resourcemanager.eventhubs.models.Sku;
@@ -33,16 +34,6 @@ public final class EHNamespaceInner extends Resource {
     private EHNamespaceProperties innerProperties;
 
     /*
-     * Resource tags.
-     */
-    private Map<String, String> tags;
-
-    /*
-     * The geo-location where the resource lives
-     */
-    private String location;
-
-    /*
      * Properties of sku resource
      */
     private Sku sku;
@@ -51,6 +42,16 @@ public final class EHNamespaceInner extends Resource {
      * Properties of BYOK Identity description
      */
     private Identity identity;
+
+    /*
+     * Resource location.
+     */
+    private String location;
+
+    /*
+     * Resource tags.
+     */
+    private Map<String, String> tags;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
@@ -85,46 +86,6 @@ public final class EHNamespaceInner extends Resource {
      */
     private EHNamespaceProperties innerProperties() {
         return this.innerProperties;
-    }
-
-    /**
-     * Get the tags property: Resource tags.
-     *
-     * @return the tags value.
-     */
-    public Map<String, String> tags() {
-        return this.tags;
-    }
-
-    /**
-     * Set the tags property: Resource tags.
-     *
-     * @param tags the tags value to set.
-     * @return the EHNamespaceInner object itself.
-     */
-    public EHNamespaceInner withTags(Map<String, String> tags) {
-        this.tags = tags;
-        return this;
-    }
-
-    /**
-     * Get the location property: The geo-location where the resource lives.
-     *
-     * @return the location value.
-     */
-    public String location() {
-        return this.location;
-    }
-
-    /**
-     * Set the location property: The geo-location where the resource lives.
-     *
-     * @param location the location value to set.
-     * @return the EHNamespaceInner object itself.
-     */
-    public EHNamespaceInner withLocation(String location) {
-        this.location = location;
-        return this;
     }
 
     /**
@@ -164,6 +125,46 @@ public final class EHNamespaceInner extends Resource {
      */
     public EHNamespaceInner withIdentity(Identity identity) {
         this.identity = identity;
+        return this;
+    }
+
+    /**
+     * Get the location property: Resource location.
+     *
+     * @return the location value.
+     */
+    public String location() {
+        return this.location;
+    }
+
+    /**
+     * Set the location property: Resource location.
+     *
+     * @param location the location value to set.
+     * @return the EHNamespaceInner object itself.
+     */
+    public EHNamespaceInner withLocation(String location) {
+        this.location = location;
+        return this;
+    }
+
+    /**
+     * Get the tags property: Resource tags.
+     *
+     * @return the tags value.
+     */
+    public Map<String, String> tags() {
+        return this.tags;
+    }
+
+    /**
+     * Set the tags property: Resource tags.
+     *
+     * @param tags the tags value to set.
+     * @return the EHNamespaceInner object itself.
+     */
+    public EHNamespaceInner withTags(Map<String, String> tags) {
+        this.tags = tags;
         return this;
     }
 
@@ -569,6 +570,31 @@ public final class EHNamespaceInner extends Resource {
     }
 
     /**
+     * Get the ipAddressType property: The IP address type for the namespace. Determines whether the namespace supports
+     * IPv4 only or both IPv4 and IPv6 (dual stack).
+     *
+     * @return the ipAddressType value.
+     */
+    public IpAddressType ipAddressType() {
+        return this.innerProperties() == null ? null : this.innerProperties().ipAddressType();
+    }
+
+    /**
+     * Set the ipAddressType property: The IP address type for the namespace. Determines whether the namespace supports
+     * IPv4 only or both IPv4 and IPv6 (dual stack).
+     *
+     * @param ipAddressType the ipAddressType value to set.
+     * @return the EHNamespaceInner object itself.
+     */
+    public EHNamespaceInner withIpAddressType(IpAddressType ipAddressType) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EHNamespaceProperties();
+        }
+        this.innerProperties().withIpAddressType(ipAddressType);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -592,10 +618,10 @@ public final class EHNamespaceInner extends Resource {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("properties", this.innerProperties);
-        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeStringField("location", this.location);
         jsonWriter.writeJsonField("sku", this.sku);
         jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -622,15 +648,15 @@ public final class EHNamespaceInner extends Resource {
                     deserializedEHNamespaceInner.type = reader.getString();
                 } else if ("properties".equals(fieldName)) {
                     deserializedEHNamespaceInner.innerProperties = EHNamespaceProperties.fromJson(reader);
-                } else if ("tags".equals(fieldName)) {
-                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
-                    deserializedEHNamespaceInner.tags = tags;
-                } else if ("location".equals(fieldName)) {
-                    deserializedEHNamespaceInner.location = reader.getString();
                 } else if ("sku".equals(fieldName)) {
                     deserializedEHNamespaceInner.sku = Sku.fromJson(reader);
                 } else if ("identity".equals(fieldName)) {
                     deserializedEHNamespaceInner.identity = Identity.fromJson(reader);
+                } else if ("location".equals(fieldName)) {
+                    deserializedEHNamespaceInner.location = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedEHNamespaceInner.tags = tags;
                 } else if ("systemData".equals(fieldName)) {
                     deserializedEHNamespaceInner.systemData = SystemData.fromJson(reader);
                 } else {

@@ -1,16 +1,14 @@
 # Release History
 
-## 2.54.0-beta.1 (Unreleased)
+## 2.54.0-beta.1 (2026-10-08)
 
 ### Features Added
 
 - Supported `disableLocalAuth()` and `enableLocalAuth()` in `EventHubNamespace`.
 
-### Breaking Changes
-
-### Bugs Fixed
-
 ### Other Changes
+
+- Update `api-version` to `2026-07-01-preview`.
 
 ## 2.53.12 (2026-10-06)
 
