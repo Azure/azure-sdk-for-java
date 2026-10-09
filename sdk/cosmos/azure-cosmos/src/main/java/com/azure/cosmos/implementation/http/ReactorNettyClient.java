@@ -11,7 +11,6 @@ import io.netty.channel.ChannelId;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.ChannelPipeline;
 import io.netty.handler.codec.http.HttpMethod;
-import io.netty.handler.codec.http2.Http2FrameCodec;
 import io.netty.handler.codec.http2.Http2MultiplexHandler;
 import io.netty.handler.logging.LogLevel;
 import io.netty.resolver.DefaultAddressResolverGroup;
@@ -26,8 +25,6 @@ import reactor.netty.ByteBufFlux;
 import reactor.netty.Connection;
 import reactor.netty.ConnectionObserver;
 import reactor.netty.NettyOutbound;
-import reactor.netty.NettyPipeline;
-import reactor.netty.ReactorNetty;
 import reactor.netty.http.HttpProtocol;
 import reactor.netty.http.client.HttpClientRequest;
 import reactor.netty.http.client.HttpClientResponse;
@@ -35,7 +32,6 @@ import reactor.netty.http.client.HttpClientState;
 import reactor.netty.resources.ConnectionProvider;
 import reactor.netty.transport.ProxyProvider;
 import reactor.util.context.Context;
-import reactor.util.context.ContextView;
 
 import java.lang.invoke.WrongMethodTypeException;
 import java.time.Duration;
@@ -118,8 +114,6 @@ public class ReactorNettyClient implements HttpClient {
 
     private void configureChannelPipelineHandlers() {
         Configs configs = this.httpClientConfig.getConfigs();
-        Http2ConnectionConfig http2Cfg = httpClientConfig.getHttp2ConnectionConfig();
-        boolean isH2Enabled = http2CfgAccessor().isEffectivelyEnabled(http2Cfg);
 
         if (this.httpClientConfig.getProxy() != null) {
             this.httpClient = this.httpClient.proxy(typeSpec -> typeSpec.type(ProxyProvider.Proxy.HTTP)
@@ -145,9 +139,11 @@ public class ReactorNettyClient implements HttpClient {
                     httpResponseDecoderSpec.maxInitialLineLength(this.httpClientConfig.getMaxInitialLineLength())
                                            .maxHeaderSize(this.httpClientConfig.getMaxHeaderSize())
                                            .maxChunkSize(this.httpClientConfig.getMaxChunkSize())
-                                           // Allow decoding before the H2 cleaner normalizes service-version padding.
-                                           // This also disables decoder validation for HTTP/1.1.
                                            .validateHeaders(false));
+
+        Http2ConnectionConfig http2Cfg = httpClientConfig.getHttp2ConnectionConfig();
+
+        boolean isH2Enabled = http2CfgAccessor().isEffectivelyEnabled(http2Cfg);
 
         if (isH2Enabled) {
             this.httpClient = this.httpClient.doOnConnected(connection -> {
@@ -192,12 +188,22 @@ public class ReactorNettyClient implements HttpClient {
                     .maxConcurrentStreams(http2CfgAccessor().getEffectiveMaxConcurrentStreams(http2Cfg))  // Increased from default 30
                 )
                 .doOnConnected((connection -> {
+                    // The response header clean up pipeline is being added due to an error getting when calling gateway:
+                    // java.lang.IllegalArgumentException: a header value contains prohibited character 0x20 at index 0 for 'x-ms-serviceversion', there is whitespace in the front of the value.
+                    // validateHeaders(false) does not work for http2
                     ChannelPipeline channelPipeline = connection.channel().pipeline();
-                    // Stream conversion still validates values, so normalize before multiplexing.
-                    if (channelPipeline.get(Http2FrameCodec.class) != null
+                    if (channelPipeline.get("reactor.left.httpCodec") != null
                         && channelPipeline.get("customHeaderCleaner") == null) {
-                        channelPipeline.addAfter(NettyPipeline.HttpCodec,
-                            "customHeaderCleaner", new Http2ResponseHeaderCleanerHandler());
+                        try {
+                            channelPipeline.addAfter(
+                                "reactor.left.httpCodec",
+                                "customHeaderCleaner",
+                                new Http2ResponseHeaderCleanerHandler());
+                        } catch (IllegalArgumentException ignored) {
+                            // TOCTOU race: between the get()==null check above and addAfter(),
+                            // a concurrent doOnConnected may have installed the handler.
+                            // Duplicate handler name is the only possible cause.
+                        }
                     }
 
                     // Install exception handler at the tail of the HTTP/2 parent (TCP)
@@ -498,18 +504,14 @@ public class ReactorNettyClient implements HttpClient {
 
     /**
      * Extracts the ReactorNettyRequestRecord from the connection's context.
-     * Unpooled HTTP/2 parent connections expose their context on the channel rather than the connection.
+     * Returns null if the connection is not a ConnectionObserver or if the record is not in context.
      */
     private static ReactorNettyRequestRecord getRequestRecordFromConnection(Connection conn) {
         if (conn instanceof ConnectionObserver) {
-            ReactorNettyRequestRecord record = ((ConnectionObserver) conn)
+            return ((ConnectionObserver) conn)
                 .currentContext().getOrDefault(REACTOR_NETTY_REQUEST_RECORD_KEY, null);
-            if (record != null) {
-                return record;
-            }
         }
-        ContextView context = ReactorNetty.getChannelContext(conn.channel());
-        return context == null ? null : context.getOrDefault(REACTOR_NETTY_REQUEST_RECORD_KEY, null);
+        return null;
     }
 
     /**
