@@ -141,6 +141,9 @@ HttpClient client = new NettyAsyncHttpClientBuilder(reactorNettyHttpClient)
 
 ### Create a Client with HTTP/2 Support
 
+To configure the protocol version without depending on a Netty-specific builder, use
+[`HttpClientOptions.setMaximumHttpVersion` with `HttpClient.createDefault(options)`](../azure-core/README.md#configuring-the-http-protocol-version).
+
 Create a Netty HttpClient that supports both the HTTP/1.1 and HTTP/2 protocols, with HTTP/2 being the preferred
 protocol.
 

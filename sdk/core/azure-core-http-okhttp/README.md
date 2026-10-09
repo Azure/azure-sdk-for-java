@@ -83,6 +83,9 @@ HttpClient client = new OkHttpAsyncHttpClientBuilder()
 
 ### Create a Client with HTTP/2 Support
 
+To configure the protocol version without depending on an OkHttp-specific builder, use
+[`HttpClientOptions.setMaximumHttpVersion` with `HttpClient.createDefault(options)`](../azure-core/README.md#configuring-the-http-protocol-version).
+
 Create an OkHttp client that supports both the HTTP/1.1 and HTTP/2 protocols, with HTTP/2 being the preferred protocol.
 
 ```java readme-sample-configureHttpVersion
@@ -145,4 +148,3 @@ For details on contributing to this repository, see the [contributing guide](htt
 [logging]: https://learn.microsoft.com/azure/developer/java/sdk/logging-overview
 [jdk_link]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [java8_client_compatibility]: https://learn.microsoft.com/azure/security/fundamentals/azure-ca-details?tabs=root-and-subordinate-cas-list#client-compatibility-for-public-pkis
-

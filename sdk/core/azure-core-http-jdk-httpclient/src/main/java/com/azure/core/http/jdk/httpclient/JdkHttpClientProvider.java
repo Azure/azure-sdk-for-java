@@ -66,7 +66,8 @@ public final class JdkHttpClientProvider implements HttpClientProvider {
             .connectionTimeout(clientOptions.getConnectTimeout())
             .writeTimeout(clientOptions.getWriteTimeout())
             .responseTimeout(clientOptions.getResponseTimeout())
-            .readTimeout(clientOptions.getReadTimeout());
+            .readTimeout(clientOptions.getReadTimeout())
+            .maximumHttpVersion(clientOptions.getMaximumHttpVersion());
 
         return builder.build();
     }

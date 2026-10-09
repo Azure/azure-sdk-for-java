@@ -5,18 +5,22 @@ package com.azure.core.http.netty;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpClientProvider;
+import com.azure.core.http.HttpProtocolVersion;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.HttpClientOptions;
+import com.azure.core.validation.http.HttpClientOptionsProviderTests;
 import io.netty.channel.ChannelOption;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import reactor.netty.http.HttpProtocol;
 import reactor.netty.transport.ProxyProvider;
 
 import java.net.InetSocketAddress;
 import java.time.Duration;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
@@ -26,7 +30,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * Tests {@link NettyAsyncHttpClientProvider}.
  */
-public class NettyAsyncHttpClientProviderTests {
+public class NettyAsyncHttpClientProviderTests extends HttpClientOptionsProviderTests {
     @Test
     public void nullOptionsReturnsBaseClient() {
         NettyAsyncHttpClient httpClient
@@ -129,6 +133,27 @@ public class NettyAsyncHttpClientProviderTests {
         HttpClientOptions options = new HttpClientOptions();
         options.setHttpClientProvider(AnotherHttpClientProvider.class);
         assertThrows(IllegalStateException.class, () -> HttpClient.createDefault(options));
+    }
+
+    @Override
+    protected HttpClientProvider createProvider(Configuration configuration) {
+        return new NettyAsyncHttpClientProvider(configuration);
+    }
+
+    @Override
+    protected void assertMaximumHttpVersion(HttpClient client, HttpProtocolVersion version) {
+        NettyAsyncHttpClient nettyClient = assertInstanceOf(NettyAsyncHttpClient.class, client);
+        assertArrayEquals(version == HttpProtocolVersion.HTTP_2
+            ? new HttpProtocol[] { HttpProtocol.HTTP11, HttpProtocol.H2 }
+            : new HttpProtocol[] { HttpProtocol.HTTP11 }, nettyClient.nettyClient.configuration().protocols());
+    }
+
+    @Override
+    protected void closeHttpClient(HttpClient client) {
+        ((NettyAsyncHttpClient) client).nettyClient.configuration()
+            .connectionProvider()
+            .disposeLater()
+            .block(Duration.ofSeconds(30));
     }
 
     static class AnotherHttpClientProvider implements HttpClientProvider {

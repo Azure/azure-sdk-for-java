@@ -6,6 +6,7 @@ package com.azure.core.util;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpClientProvider;
+import com.azure.core.http.HttpProtocolVersion;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.logging.ClientLogger;
 
@@ -34,6 +35,7 @@ public final class HttpClientOptions extends ClientOptions {
     private Duration writeTimeout;
     private Duration responseTimeout;
     private Duration readTimeout;
+    private HttpProtocolVersion maximumHttpVersion;
     private Integer maximumConnectionPoolSize;
     private Duration connectionIdleTimeout;
     private Class<? extends HttpClientProvider> httpClientProvider;
@@ -294,6 +296,47 @@ public final class HttpClientOptions extends ClientOptions {
      */
     public Duration getReadTimeout() {
         return getTimeout(readTimeout, getDefaultReadTimeout());
+    }
+
+    /**
+     * Sets the maximum HTTP protocol version that each {@link HttpClient} created using these options can use.
+     * <p>
+     * {@link HttpProtocolVersion#HTTP_1_1} limits the client to HTTP/1.1.
+     * {@link HttpProtocolVersion#HTTP_2} allows HTTP/2 with HTTP/1.1 fallback when HTTP/2 isn't negotiated.
+     * <p>
+     * The default value is {@code null}, which preserves the selected HTTP client implementation's existing default.
+     * Passing {@code null} clears an explicit maximum and restores that default for subsequently created clients.
+     * Changing these options doesn't affect clients that have already been created.
+     *
+     * <p><strong>Configure the HTTP version without selecting a transport implementation</strong></p>
+     * <!-- src_embed readme-sample-configureHttpVersionWithOptions -->
+     * <pre>
+     * HttpClientOptions options = new HttpClientOptions&#40;&#41;
+     *     .setMaximumHttpVersion&#40;HttpProtocolVersion.HTTP_2&#41;;
+     * HttpClient client = HttpClient.createDefault&#40;options&#41;;
+     * </pre>
+     * <!-- end readme-sample-configureHttpVersionWithOptions -->
+     *
+     * @param maximumHttpVersion The maximum HTTP protocol version, or {@code null} to use the implementation's default.
+     * @return The updated HttpClientOptions object.
+     */
+    public HttpClientOptions setMaximumHttpVersion(HttpProtocolVersion maximumHttpVersion) {
+        this.maximumHttpVersion = maximumHttpVersion;
+        return this;
+    }
+
+    /**
+     * Gets the explicitly configured maximum HTTP protocol version.
+     * <p>
+     * {@link HttpProtocolVersion#HTTP_1_1} limits the client to HTTP/1.1.
+     * {@link HttpProtocolVersion#HTTP_2} allows HTTP/2 with HTTP/1.1 fallback when HTTP/2 isn't negotiated.
+     * <p>
+     * The default value is {@code null}, which preserves the selected HTTP client implementation's existing default.
+     *
+     * @return The maximum HTTP protocol version, or {@code null} if no explicit maximum is configured.
+     */
+    public HttpProtocolVersion getMaximumHttpVersion() {
+        return maximumHttpVersion;
     }
 
     /**
