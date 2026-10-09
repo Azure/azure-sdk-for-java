@@ -8,6 +8,7 @@
 # Dev route (EmitterVersion is 'none'): builds the emitter dev package from source instead
 # - from the typespec-azure PR or branch given by PRIdOrBranch, or from the default branch (main)
 #   when PRIdOrBranch is 'none'.
+# Specs-pinned designated libraries resolve pnpm catalogs at the same specs commit.
 trigger: none
 pr: none
 
@@ -146,6 +147,7 @@ jobs:
       workingDirectory: $(TypeSpecAzureDirectory)
 
   - script: |
+      python3 -m pip install "PyYAML~=6.0" &&
       python3 ./eng/pipelines/scripts/sync_emitter.py --sdk-root=$(Build.SourcesDirectory) --emitter-version='${{ parameters.EmitterVersion }}' --package-json-path=$(TypeSpecAzureDirectory)/packages/typespec-java/package.json --upgrade-designated-libraries='${{ parameters.UpgradeDesignatedLibraries }}'
     displayName: 'Generate SDK'
     workingDirectory: $(Build.SourcesDirectory)
