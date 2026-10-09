@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob.policy;
+package com.azure.storage.blob.implementation.util;
 
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpClient;
@@ -17,9 +17,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.BlobTestBase;
-import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.BlobStorageException;
-import com.azure.storage.blob.implementation.util.SessionCredential;
 import com.azure.storage.blob.models.SessionOptions;
 import com.azure.storage.blob.models.SessionOptions.SessionMode;
 import com.azure.storage.blob.models.TestSessionProvider;
@@ -44,12 +42,14 @@ import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
+import java.lang.reflect.Modifier;
 import java.util.Optional;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -89,6 +89,19 @@ public class SessionAuthenticationPolicyTest {
         });
 
         policy = createPolicy();
+    }
+
+    @Test
+    public void sessionPolicyIsPackagePrivate() {
+        assertEquals(0, SessionAuthenticationPolicy.class.getModifiers()
+            & (Modifier.PUBLIC | Modifier.PROTECTED | Modifier.PRIVATE));
+        assertEquals(0, SessionAuthenticationPolicy.class.getConstructors().length);
+    }
+
+    @Test
+    public void builderHelperRecognizesSessionPolicy() {
+        assertTrue(BuilderHelper.isSessionAuthenticationPolicy(policy));
+        assertFalse(BuilderHelper.isSessionAuthenticationPolicy(bearerPolicy));
     }
 
     @ParameterizedTest

@@ -35,7 +35,6 @@ import com.azure.storage.blob.models.BlobAudience;
 import com.azure.storage.blob.models.BlobContainerEncryptionScope;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.CustomerProvidedKey;
-import com.azure.storage.blob.policy.SessionAuthenticationPolicy;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.connectionstring.StorageAuthenticationSettings;
 import com.azure.storage.common.implementation.connectionstring.StorageConnectionString;
@@ -142,7 +141,7 @@ public final class BlobServiceClientBuilder implements TokenCredentialTrait<Blob
                 foundCredential = true;
                 break;
             }
-            if (pipeline.getPolicy(i) instanceof SessionAuthenticationPolicy) {
+            if (BuilderHelper.isSessionAuthenticationPolicy(pipeline.getPolicy(i))) {
                 foundCredential = true;
                 break;
             }
@@ -199,7 +198,7 @@ public final class BlobServiceClientBuilder implements TokenCredentialTrait<Blob
                 foundCredential = true;
                 break;
             }
-            if (pipeline.getPolicy(i) instanceof SessionAuthenticationPolicy) {
+            if (BuilderHelper.isSessionAuthenticationPolicy(pipeline.getPolicy(i))) {
                 foundCredential = true;
                 break;
             }

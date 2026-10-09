@@ -37,7 +37,6 @@ import com.azure.storage.blob.models.SessionOptions;
 import com.azure.storage.blob.models.SessionOptions.SessionMode;
 import com.azure.storage.blob.models.SessionProvider;
 import com.azure.storage.blob.implementation.accesshelpers.SessionProviderAccessHelper;
-import com.azure.storage.blob.policy.SessionAuthenticationPolicy;
 import com.azure.storage.blob.BlobServiceClient;
 import java.time.Clock;
 import com.azure.storage.common.StorageSharedKeyCredential;
@@ -242,6 +241,16 @@ public final class BuilderHelper {
         } catch (MalformedURLException e) {
             throw new IllegalArgumentException("Invalid session endpoint.", e);
         }
+    }
+
+    /**
+     * Determines whether a pipeline policy provides session authentication.
+     *
+     * @param policy The pipeline policy to inspect. This was added to support the session authentication policy's internal delegation to a bearer token policy.
+     * @return Whether the policy provides session authentication.
+     */
+    public static boolean isSessionAuthenticationPolicy(HttpPipelinePolicy policy) {
+        return policy instanceof SessionAuthenticationPolicy;
     }
 
     /**
