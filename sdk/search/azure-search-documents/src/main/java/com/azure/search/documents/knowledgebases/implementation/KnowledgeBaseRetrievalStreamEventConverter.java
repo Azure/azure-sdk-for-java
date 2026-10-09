@@ -7,14 +7,20 @@ import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import com.azure.json.ReadValueCallback;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseActivityCompletedStreamEvent;
+import com.azure.search.documents.knowledgebases.models.KnowledgeBaseActivityRecord;
+import com.azure.search.documents.knowledgebases.models.KnowledgeBaseActivityStartedEvent;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseActivityStartedStreamEvent;
+import com.azure.search.documents.knowledgebases.models.KnowledgeBaseAnswerCompletedEvent;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseAnswerCompletedStreamEvent;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseErrorStreamEvent;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseReferencesCompletedStreamEvent;
+import com.azure.search.documents.knowledgebases.models.KnowledgeBaseReference;
+import com.azure.search.documents.knowledgebases.models.KnowledgeBaseResponseCompletedEvent;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseResponseCompletedStreamEvent;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalStartedStreamEvent;
+import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalStartedEvent;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalStreamEvent;
-import com.azure.search.documents.knowledgebases.models.UnknownKnowledgeBaseRetrievalStreamEvent;
+import com.azure.search.documents.knowledgebases.models.KnowledgeBaseStreamErrorEvent;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 
@@ -35,38 +41,51 @@ public final class KnowledgeBaseRetrievalStreamEventConverter {
     public static KnowledgeBaseRetrievalStreamEvent convert(String eventName, String data) {
         switch (eventName) {
             case "retrieval.started":
-                return read(eventName, data, KnowledgeBaseRetrievalStartedStreamEvent::fromJson);
+                return new KnowledgeBaseRetrievalStartedStreamEvent(
+                    read(eventName, data, KnowledgeBaseRetrievalStartedEvent::fromJson), data);
 
             case "activity.started":
-                return read(eventName, data, KnowledgeBaseActivityStartedStreamEvent::fromJson);
+                return new KnowledgeBaseActivityStartedStreamEvent(
+                    read(eventName, data, KnowledgeBaseActivityStartedEvent::fromJson), data);
 
             case "activity.completed":
-                return read(eventName, data, KnowledgeBaseActivityCompletedStreamEvent::fromJson);
+                return new KnowledgeBaseActivityCompletedStreamEvent(
+                    read(eventName, data, KnowledgeBaseActivityRecord::fromJson), data);
 
             case "answer.completed":
-                return read(eventName, data, KnowledgeBaseAnswerCompletedStreamEvent::fromJson);
+                return new KnowledgeBaseAnswerCompletedStreamEvent(
+                    read(eventName, data, KnowledgeBaseAnswerCompletedEvent::fromJson), data);
 
             case "references.completed":
-                return read(eventName, data, KnowledgeBaseReferencesCompletedStreamEvent::fromJson);
+                return new KnowledgeBaseReferencesCompletedStreamEvent(
+                    read(eventName, data, reader -> reader.readArray(KnowledgeBaseReference::fromJson)), data);
 
             case "error":
-                return read(eventName, data, KnowledgeBaseErrorStreamEvent::fromJson);
+                return new KnowledgeBaseErrorStreamEvent(read(eventName, data, KnowledgeBaseStreamErrorEvent::fromJson),
+                    data);
 
             case "response.completed":
-                return read(eventName, data, KnowledgeBaseResponseCompletedStreamEvent::fromJson);
+                return new KnowledgeBaseResponseCompletedStreamEvent(
+                    read(eventName, data, KnowledgeBaseResponseCompletedEvent::fromJson), data);
 
             default:
-                return new UnknownKnowledgeBaseRetrievalStreamEvent(eventName, data);
+                return new UnrecognizedStreamEvent(eventName, data);
         }
     }
 
-    private static KnowledgeBaseRetrievalStreamEvent read(String eventName, String data,
-        ReadValueCallback<JsonReader, KnowledgeBaseRetrievalStreamEvent> eventReader) {
+    private static <T> T read(String eventName, String data, ReadValueCallback<JsonReader, T> eventReader) {
         try (JsonReader reader = JsonProviders.createReader(data)) {
             return eventReader.read(reader);
         } catch (IOException exception) {
             throw new UncheckedIOException("Failed to decode knowledge base retrieval stream event: " + eventName,
                 exception);
+        }
+
+    }
+
+    private static final class UnrecognizedStreamEvent extends KnowledgeBaseRetrievalStreamEvent {
+        private UnrecognizedStreamEvent(String eventName, String data) {
+            super(eventName, data);
         }
     }
 }

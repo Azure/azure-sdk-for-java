@@ -423,6 +423,12 @@ public final class KnowledgeBaseRetrievalClient {
     /**
      * Retrieves relevant data from backing stores and streams progress and results as server-sent events.
      *
+     * Events are polymorphic: see {@link KnowledgeBaseRetrievalStreamEvent} for the known subtypes. Use a known
+     * subtype's {@code getValue()} to access its typed payload, for example
+     * {@link com.azure.search.documents.knowledgebases.models.KnowledgeBaseAnswerCompletedStreamEvent#getValue()}. For
+     * every event, including unrecognized names, {@link KnowledgeBaseRetrievalStreamEvent#getRawValue()} provides the
+     * original decoded SSE data with multiline data joined by newlines, not the complete wire frame.
+     *
      * Events are decoded lazily by a single iterator. Use try-with-resources to close the stream when iteration ends
      * early. The response is also closed on end-of-stream, a terminal event, or an iteration failure. Closing the
      * stream is idempotent and may throw {@link java.io.IOException}.
@@ -446,6 +452,12 @@ public final class KnowledgeBaseRetrievalClient {
 
     /**
      * Retrieves relevant data from backing stores and streams progress and results as server-sent events.
+     *
+     * Events are polymorphic: see {@link KnowledgeBaseRetrievalStreamEvent} for the known subtypes. Use a known
+     * subtype's {@code getValue()} to access its typed payload, for example
+     * {@link com.azure.search.documents.knowledgebases.models.KnowledgeBaseAnswerCompletedStreamEvent#getValue()}. For
+     * every event, including unrecognized names, {@link KnowledgeBaseRetrievalStreamEvent#getRawValue()} provides the
+     * original decoded SSE data with multiline data joined by newlines, not the complete wire frame.
      *
      * Events are decoded lazily by a single iterator. Use try-with-resources to close the stream when iteration ends
      * early. The response is also closed on end-of-stream, a terminal event, or an iteration failure. Closing the

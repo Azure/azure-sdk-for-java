@@ -58,14 +58,31 @@ iterator. Use try-with-resources to release the response even when iteration sto
 try (CloseableIterableStream<KnowledgeBaseRetrievalStreamEvent> events = client.retrieveStream(request)) {
     for (KnowledgeBaseRetrievalStreamEvent event : events) {
         System.out.println(event.getEventName());
+        if (event instanceof KnowledgeBaseAnswerCompletedStreamEvent) {
+            KnowledgeBaseAnswerCompletedStreamEvent answer = (KnowledgeBaseAnswerCompletedStreamEvent) event;
+            System.out.println(answer.getValue().getMessage());
+        }
+        System.out.println(event.getRawValue());
     }
 }
 ```
 
 The asynchronous methods return `Flux<KnowledgeBaseRetrievalStreamEvent>`. Both clients emit typed retrieval events
-directly; use `getEventName()` to identify an event, and the event subtype to access its payload. Unknown event names
-and their raw data remain available through `UnknownKnowledgeBaseRetrievalStreamEvent`. SSE transport metadata such
-as IDs, comments, and retry hints is not exposed, and the client does not reconnect automatically.
+directly. `KnowledgeBaseRetrievalStreamEvent` is abstract; the seven known public subtypes are
+`KnowledgeBaseRetrievalStartedStreamEvent`, `KnowledgeBaseActivityStartedStreamEvent`,
+`KnowledgeBaseActivityCompletedStreamEvent`, `KnowledgeBaseAnswerCompletedStreamEvent`,
+`KnowledgeBaseReferencesCompletedStreamEvent`, `KnowledgeBaseErrorStreamEvent`, and
+`KnowledgeBaseResponseCompletedStreamEvent`. Use a known subtype's `getValue()` to access its typed payload.
+
+Every received event exposes `getEventName()` and `getRawValue()`, including unrecognized event names with non-JSON
+data. The raw value is the original decoded SSE `data:` content joined by newlines, not the complete wire frame.
+Whitespace, empty strings, and unknown JSON fields are preserved. Event wrappers are envelopes, not JSON payload
+models; use the typed payload's serialization APIs when needed. When constructing a known wrapper without raw data,
+`getRawValue()` lazily serializes its current payload as JSON on each call, or returns null for a null payload
+(an empty reference list produces `[]`). Supplied raw data always takes precedence, even after payload mutation.
+Serialization failures are reported as `UncheckedIOException` with the original cause.
+SSE transport metadata such as IDs, comments, and retry hints is not exposed, and the client does not reconnect
+automatically.
 
 The terminal `error` or `response.completed` event is included before the response is released. EOF without a terminal
 event completes normally. Synchronous transport and decoding failures are thrown during iteration; asynchronous
@@ -74,6 +91,8 @@ Its explicit `close()` is idempotent and can throw `IOException`.
 
 When migrating from the previous beta, replace `ServerSentEventListener` callbacks with iteration and remove
 `ServerSentEvent.getData()` unwrapping in both sync and async code. These two Search model types have been removed.
+Replace `UnknownKnowledgeBaseRetrievalStreamEvent.getData()` with the base event's `getRawValue()`.
+Wrapper `fromJson` and `toJson` APIs have also been removed; serialization belongs to their typed payload models.
 
 ### Include the package
 

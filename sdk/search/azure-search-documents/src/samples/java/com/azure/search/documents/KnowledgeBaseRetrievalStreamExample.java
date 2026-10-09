@@ -24,6 +24,7 @@ import com.azure.search.documents.indexes.models.SemanticSearch;
 import com.azure.search.documents.knowledgebases.KnowledgeBaseRetrievalAsyncClient;
 import com.azure.search.documents.knowledgebases.KnowledgeBaseRetrievalClient;
 import com.azure.search.documents.knowledgebases.KnowledgeBaseRetrievalClientBuilder;
+import com.azure.search.documents.knowledgebases.models.KnowledgeBaseAnswerCompletedStreamEvent;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseResponseCompletedStreamEvent;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalOptions;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalStartedStreamEvent;
@@ -131,6 +132,11 @@ public class KnowledgeBaseRetrievalStreamExample {
     private static void inspectEvent(KnowledgeBaseRetrievalStreamEvent event, AtomicBoolean started,
         AtomicBoolean completed) {
         System.out.println("Received event: " + event.getEventName());
+        System.out.println("Decoded SSE data: " + event.getRawValue());
+        if (event instanceof KnowledgeBaseAnswerCompletedStreamEvent) {
+            KnowledgeBaseAnswerCompletedStreamEvent answerEvent = (KnowledgeBaseAnswerCompletedStreamEvent) event;
+            System.out.println("Answer: " + answerEvent.getValue().getMessage());
+        }
         if (event instanceof KnowledgeBaseRetrievalStartedStreamEvent) {
             started.set(true);
         }

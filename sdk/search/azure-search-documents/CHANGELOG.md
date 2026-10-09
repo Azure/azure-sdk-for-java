@@ -9,6 +9,8 @@
   retrieval streaming, low and medium reasoning effort, model activity, and knowledge base CORS configuration.
 - Added `KnowledgeSourceFileCapacity` for file knowledge source capacity information.
 - Added `modelName` and `modelDeployment` configuration to `ContentUnderstandingSkill`.
+- Added `getRawValue()` to retrieval stream events to expose original decoded SSE data, including unrecognized events.
+  Known event wrappers constructed without raw data lazily serialize their typed payload on raw-value access.
 
 ### Breaking Changes
 
@@ -29,6 +31,10 @@ The following changes apply when upgrading from the preceding `12.1.0` beta rele
 - Removed the `ServerSentEvent` and `ServerSentEventListener` models. Retrieval event names remain available through
   `KnowledgeBaseRetrievalStreamEvent.getEventName()`; SSE transport metadata is no longer exposed.
 - Removed the `SearchServiceVersion.V2026_08_01_PREVIEW` enum value.
+- Removed `UnknownKnowledgeBaseRetrievalStreamEvent`; use `KnowledgeBaseRetrievalStreamEvent.getEventName()` and
+  `getRawValue()` for unrecognized events.
+- Removed JSON serialization and deserialization APIs from retrieval stream event wrappers. Their typed payload
+  models retain these APIs.
 
 ### Bugs Fixed
 
