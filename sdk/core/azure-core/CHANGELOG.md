@@ -24,6 +24,8 @@
   surfaced to callers of `SharedExecutorService` as `IllegalStateException: Shutdown in progress` when work, such as
   an in-flight request draining during shutdown, needed the executor after it had been closed. A hook registered at
   that point could never run, so this case is now logged and the work continues.
+- Prevented key credential headers from being forwarded when a redirect changes the request authority.
+  ([#50215](https://github.com/Azure/azure-sdk-for-java/issues/50215))
 
 ### Other Changes
 
