@@ -19,9 +19,8 @@ import java.time.Duration;
 public final class SessionConfiguration implements JsonSerializable<SessionConfiguration> {
 
     /*
-     * The idle duration, in seconds, before a session's sandbox is suspended. Optional — when
-     * unset, the server default of 900 seconds is used. Must be between 120 and 3600 seconds
-     * (inclusive).
+     * The idle duration, in seconds, before a session's sandbox is suspended. When omitted,
+     * the server defaults to 900 seconds. Must be between 120 and 14400 seconds (4 hours).
      */
     @Generated
     private Long idleTimeoutSeconds;
@@ -34,10 +33,9 @@ public final class SessionConfiguration implements JsonSerializable<SessionConfi
     }
 
     /**
-     * Get the idleTimeoutSeconds property: The idle duration, in seconds, before a session's sandbox is suspended.
-     * Optional — when
-     * unset, the server default of 900 seconds is used. Must be between 120 and 3600 seconds
-     * (inclusive).
+     * Get the idleTimeoutSeconds property: The idle duration, in seconds, before a session's sandbox is suspended. When
+     * omitted,
+     * the server defaults to 900 seconds. Must be between 120 and 14400 seconds (4 hours).
      *
      * @return the idleTimeoutSeconds value.
      */
@@ -50,10 +48,9 @@ public final class SessionConfiguration implements JsonSerializable<SessionConfi
     }
 
     /**
-     * Set the idleTimeoutSeconds property: The idle duration, in seconds, before a session's sandbox is suspended.
-     * Optional — when
-     * unset, the server default of 900 seconds is used. Must be between 120 and 3600 seconds
-     * (inclusive).
+     * Set the idleTimeoutSeconds property: The idle duration, in seconds, before a session's sandbox is suspended. When
+     * omitted,
+     * the server defaults to 900 seconds. Must be between 120 and 14400 seconds (4 hours).
      *
      * @param idleTimeoutSeconds the idleTimeoutSeconds value to set.
      * @return the SessionConfiguration object itself.
