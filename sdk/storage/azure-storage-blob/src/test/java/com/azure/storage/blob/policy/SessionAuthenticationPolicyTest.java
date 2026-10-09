@@ -19,10 +19,10 @@ import com.azure.core.util.Context;
 import com.azure.storage.blob.BlobTestBase;
 import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.BlobStorageException;
-import com.azure.storage.blob.models.SessionCredential;
+import com.azure.storage.blob.implementation.util.SessionCredential;
 import com.azure.storage.blob.models.SessionOptions;
 import com.azure.storage.blob.models.SessionOptions.SessionMode;
-import com.azure.storage.blob.models.SessionProvider;
+import com.azure.storage.blob.models.TestSessionProvider;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.policy.StorageBearerTokenChallengeAuthorizationPolicy;
 import com.azure.storage.common.policy.RequestRetryOptions;
@@ -38,15 +38,14 @@ import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import java.lang.reflect.Field;
 import java.time.Clock;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
-import java.util.Map;
 import java.util.Optional;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -69,13 +68,13 @@ public class SessionAuthenticationPolicyTest {
 
     private static final String FIRST_TOKEN = "first-session-token";
 
-    private SessionProvider sessionProvider;
+    private TestSessionProvider sessionProvider;
     private StorageBearerTokenChallengeAuthorizationPolicy bearerPolicy;
     private SessionAuthenticationPolicy policy;
 
     @BeforeEach
     public void beforeEach() {
-        sessionProvider = mock(SessionProvider.class);
+        sessionProvider = mock(TestSessionProvider.class);
         bearerPolicy = mock(StorageBearerTokenChallengeAuthorizationPolicy.class);
         when(sessionProvider.isRequestEligible(any())).thenReturn(true);
 
@@ -173,8 +172,8 @@ public class SessionAuthenticationPolicyTest {
     }
 
     @ParameterizedTest
-    @CsvSource({ "400, 2", "401, 2", "403, 1", "404, 2", "429, 2", "500, 1", "503, 1", "599, 1", "600, 2" })
-    public void sessionAcquisitionFailureCooldownAsync(int statusCode, int expectedAcquisitions) {
+    @ValueSource(ints = { 400, 401, 403, 404, 429, 500, 503, 599, 600 })
+    public void uncachedAcquisitionFailureFallsBackForCurrentRequestAsync(int statusCode) {
         BlobStorageException serverFailure
             = new BlobStorageException("CreateSession failed.", new MockHttpResponse(null, statusCode), null);
         when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.error(serverFailure));
@@ -189,13 +188,13 @@ public class SessionAuthenticationPolicyTest {
             .assertNext(r -> assertEquals(200, r.getStatusCode()))
             .verifyComplete();
 
-        verify(sessionProvider, times(expectedAcquisitions)).getSessionAsync(any());
+        verify(sessionProvider, times(2)).getSessionAsync(any());
         verify(bearerPolicy, times(2)).process(any(), any());
     }
 
     @ParameterizedTest
-    @CsvSource({ "400, 2", "401, 2", "403, 1", "404, 2", "429, 2", "500, 1", "503, 1", "599, 1", "600, 2" })
-    public void sessionAcquisitionFailureCooldownSync(int statusCode, int expectedAcquisitions) {
+    @ValueSource(ints = { 400, 401, 403, 404, 429, 500, 503, 599, 600 })
+    public void uncachedAcquisitionFailureFallsBackForCurrentRequestSync(int statusCode) {
         BlobStorageException failure
             = new BlobStorageException("CreateSession failed.", new MockHttpResponse(null, statusCode), null);
         when(sessionProvider.getSession(any())).thenThrow(failure);
@@ -208,12 +207,12 @@ public class SessionAuthenticationPolicyTest {
             }
         }
 
-        verify(sessionProvider, times(expectedAcquisitions)).getSession(any());
+        verify(sessionProvider, times(2)).getSession(any());
         verify(bearerPolicy, times(2)).processSync(any(), any());
     }
 
     @Test
-    public void featureNotEnabledSessionAcquisitionStartsCooldown() {
+    public void policyDoesNotCacheFeatureNotEnabledFailures() {
         HttpHeaders headers
             = new HttpHeaders().set(Constants.HeaderConstants.ERROR_CODE_HEADER_NAME, "FeatureNotEnabled");
         BlobStorageException failure
@@ -227,15 +226,14 @@ public class SessionAuthenticationPolicyTest {
                 .verifyComplete();
         }
 
-        verify(sessionProvider, times(1)).getSessionAsync(any());
+        verify(sessionProvider, times(2)).getSessionAsync(any());
         verify(bearerPolicy, times(2)).process(any(), any());
     }
 
     @Test
-    public void sessionAcquisitionCooldownIsScopedPerContainerAsync() {
-        BlobStorageException failure
-            = new BlobStorageException("CreateSession failed.", new MockHttpResponse(null, 500), null);
-        when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.error(failure))
+    public void providerFallbackIsRespectedAsync() {
+        when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.empty())
+            .thenReturn(Mono.empty())
             .thenReturn(Mono.just(credentialWithToken()));
         HttpPipeline pipeline = buildPipeline(successTransport());
 
@@ -252,15 +250,13 @@ public class SessionAuthenticationPolicyTest {
             .verifyComplete();
 
         assertTrue(isSessionAuthenticated(otherContainerRequest));
-        verify(sessionProvider, times(2)).getSessionAsync(any());
+        verify(sessionProvider, times(3)).getSessionAsync(any());
         verify(bearerPolicy, times(2)).process(any(), any());
     }
 
     @Test
-    public void sessionAcquisitionCooldownIsScopedPerContainerSync() {
-        BlobStorageException failure
-            = new BlobStorageException("CreateSession failed.", new MockHttpResponse(null, 500), null);
-        when(sessionProvider.getSession(any())).thenThrow(failure).thenReturn(credentialWithToken());
+    public void providerFallbackIsRespectedSync() {
+        when(sessionProvider.getSession(any())).thenReturn(null, null, credentialWithToken());
         HttpPipelineNextSyncPolicy next = mock(HttpPipelineNextSyncPolicy.class);
         when(next.processSync()).thenAnswer(invocation -> new MockHttpResponse(null, 200));
 
@@ -270,77 +266,8 @@ public class SessionAuthenticationPolicyTest {
         sendSessionResponseSync(otherContainerRequest, 200, next);
 
         assertTrue(isSessionAuthenticated(otherContainerRequest));
-        verify(sessionProvider, times(2)).getSession(any());
+        verify(sessionProvider, times(3)).getSession(any());
         verify(bearerPolicy, times(2)).processSync(any(), any());
-    }
-
-    @Test
-    public void sessionAcquisitionCooldownExpiresAfterFiveMinutes() {
-        MutableClock clock = new MutableClock(Instant.parse("2026-06-19T00:00:00Z"));
-        policy = createPolicy(clock);
-        BlobStorageException serverFailure
-            = new BlobStorageException("CreateSession failed.", new MockHttpResponse(null, 500), null);
-
-        when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.error(serverFailure))       // first call: acquisition fails
-            .thenReturn(Mono.just(credentialWithToken())); // third call: cooldown expired
-
-        HttpClient transport = successTransport();
-        HttpPipeline pipeline = buildPipeline(transport);
-
-        StepVerifier.create(pipeline.send(blobGetRequest()))
-            .assertNext(r -> assertEquals(200, r.getStatusCode()))
-            .verifyComplete();
-        StepVerifier.create(pipeline.send(blobGetRequest()))
-            .assertNext(r -> assertEquals(200, r.getStatusCode()))
-            .verifyComplete();
-
-        clock.advance(Duration.ofMinutes(5));
-
-        StepVerifier.create(pipeline.send(blobGetRequest()))
-            .assertNext(r -> assertEquals(200, r.getStatusCode()))
-            .verifyComplete();
-
-        verify(sessionProvider, times(2)).getSessionAsync(any());
-    }
-
-    @Test
-    public void unrelatedRequestsRemoveExpiredCooldownsSync() throws ReflectiveOperationException {
-        MutableClock clock = new MutableClock(Instant.parse("2026-06-19T00:00:00Z"));
-        policy = createPolicy(clock);
-        BlobStorageException failure
-            = new BlobStorageException("CreateSession failed.", new MockHttpResponse(null, 500), null);
-        when(sessionProvider.getSession(any())).thenThrow(failure, failure, failure).thenReturn(credentialWithToken());
-
-        sendSessionResponseSync(blobGetRequest("testaccount", "expired-a"), 200);
-        sendSessionResponseSync(blobGetRequest("testaccount", "expired-b"), 200);
-        clock.advance(Duration.ofMinutes(4));
-        sendSessionResponseSync(blobGetRequest("testaccount", "active"), 200);
-        clock.advance(Duration.ofMinutes(1));
-        sendSessionResponseSync(blobGetRequest("testaccount", "unrelated"), 200);
-
-        assertOnlyActiveCooldownRemains();
-    }
-
-    @Test
-    public void unrelatedRequestsRemoveExpiredCooldownsAsync() throws ReflectiveOperationException {
-        MutableClock clock = new MutableClock(Instant.parse("2026-06-19T00:00:00Z"));
-        policy = createPolicy(clock);
-        BlobStorageException failure
-            = new BlobStorageException("CreateSession failed.", new MockHttpResponse(null, 500), null);
-        when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.error(failure))
-            .thenReturn(Mono.error(failure))
-            .thenReturn(Mono.error(failure))
-            .thenReturn(Mono.just(credentialWithToken()));
-        HttpPipeline pipeline = buildPipeline(successTransport());
-
-        sendCooldownRequestAsync(pipeline, "expired-a");
-        sendCooldownRequestAsync(pipeline, "expired-b");
-        clock.advance(Duration.ofMinutes(4));
-        sendCooldownRequestAsync(pipeline, "active");
-        clock.advance(Duration.ofMinutes(1));
-        sendCooldownRequestAsync(pipeline, "unrelated");
-
-        assertOnlyActiveCooldownRemains();
     }
 
     @Test
@@ -765,22 +692,6 @@ public class SessionAuthenticationPolicyTest {
     }
 
     // Helpers
-
-    private void assertOnlyActiveCooldownRemains() throws ReflectiveOperationException {
-        Field field = SessionAuthenticationPolicy.class.getDeclaredField("containerCooldowns");
-        field.setAccessible(true);
-        Map<?, ?> cooldowns = (Map<?, ?>) field.get(policy);
-        assertEquals(1, cooldowns.size());
-        assertTrue(cooldowns.containsKey("active"));
-    }
-
-    private void sendCooldownRequestAsync(HttpPipeline pipeline, String containerName) {
-        HttpRequest request = blobGetRequest("testaccount", containerName);
-        StepVerifier.create(pipeline.send(request)).assertNext(response -> {
-            assertEquals(200, response.getStatusCode());
-            response.close();
-        }).verifyComplete();
-    }
 
     private void sendSessionResponseSync(HttpRequest request, int sessionStatusCode) {
         sendSessionResponseSync(request, sessionStatusCode, mock(HttpPipelineNextSyncPolicy.class));

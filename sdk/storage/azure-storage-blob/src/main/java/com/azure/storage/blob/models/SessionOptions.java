@@ -60,8 +60,8 @@ public final class SessionOptions {
     /**
      * Sets the storage account name supplied to the session provider. When set, this takes precedence
      * over the account name parsed from the endpoint URL. This is useful for custom domain URLs
-     * where the account name cannot be inferred from the hostname. The built-in provider includes this name in
-     * the returned credential; signing uses {@link SessionCredential#getAccountName()}.
+     * where the account name cannot be inferred from the hostname. This override is used for signing with both
+     * automatically created and explicitly supplied providers.
      *
      * @param accountName the storage account name.
      * @return the updated {@link SessionOptions} object.
@@ -72,29 +72,24 @@ public final class SessionOptions {
     }
 
     /**
-     * Gets the custom provider used to obtain session credentials.
+     * Gets the SDK provider used to share sessions.
      *
-     * @return the custom {@link SessionProvider}, or {@code null} to use the built-in provider.
+     * @return the supplied {@link SessionProvider}, or {@code null} to create a provider for this client hierarchy.
      */
     public SessionProvider getSessionProvider() {
         return sessionProvider;
     }
 
     /**
-     * Sets the custom provider used to obtain session credentials. When set, the provider is called directly
-     * for each eligible request outside an acquisition cooldown: the SDK does not layer additional credential
-     * caching on top of a custom provider, so the provider is responsible for its own caching and refresh strategy.
-     * The SDK retains ownership of
-     * HMAC request signing, of choosing between session and bearer authentication, and of pausing session use
-     * for a container for five minutes after session acquisition fails with HTTP 403, 5xx, or HTTP 400 with
-     * the {@code FeatureNotEnabled} error code. HTTP 401 responses to session-signed requests invalidate the
-     * rejected credential and fall back to bearer for that request without starting a cooldown.
-     * The same provider instance may be supplied to multiple service client builders to share its cache; that
-     * pause, however, is tracked per client pipeline and is not shared by those clients.
-     * When {@code null}, the built-in provider is used, which calls the storage service's CreateSession REST
-     * API and manages per-container credential caching, proactive refresh, and idle eviction automatically.
+     * Sets an SDK-owned provider, such as {@link ContainerSessionProvider}, to share sessions across independent
+     * Blob and Data Lake clients. The instance is reused without copying or adding a cache. Its per-container
+     * credentials, refresh state, and five-minute acquisition cooldowns are shared by all clients using it.
+     * A rejected session is invalidated only if current and falls back to bearer for that request without a cooldown.
+     * All clients must use the provider's account endpoint and network context.
+     * When {@code null}, the SDK creates a provider for this client hierarchy, automatically reusing its transport
+     * and policies with secret-safe logging. Providers cannot be implemented by applications.
      *
-     * @param sessionProvider the custom {@link SessionProvider}, or {@code null} to use the built-in provider.
+     * @param sessionProvider the SDK provider, or {@code null} to create a provider for this client hierarchy.
      * @return the updated {@link SessionOptions} object.
      */
     public SessionOptions setSessionProvider(SessionProvider sessionProvider) {
@@ -129,7 +124,7 @@ public final class SessionOptions {
          * Each container gets its own cached session token when using the built-in session provider.
          * The built-in provider requires a storage account name; client construction throws if one cannot be
          * determined from either {@link SessionOptions#getAccountName()} or the client endpoint.
-         * A custom provider supplies the signing account name in each {@link SessionCredential}.
+         * For custom domains with a supplied provider, set {@link SessionOptions#setAccountName(String)} as well.
          */
         ENABLED
     }

@@ -36,7 +36,10 @@ import com.azure.storage.blob.models.BlobAudience;
 import com.azure.storage.blob.models.SessionOptions;
 import com.azure.storage.blob.models.SessionOptions.SessionMode;
 import com.azure.storage.blob.models.SessionProvider;
+import com.azure.storage.blob.implementation.accesshelpers.SessionProviderAccessHelper;
 import com.azure.storage.blob.policy.SessionAuthenticationPolicy;
+import com.azure.storage.blob.BlobServiceClient;
+import java.time.Clock;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.BuilderUtils;
 import com.azure.storage.common.implementation.Constants;
@@ -224,8 +227,54 @@ public final class BuilderHelper {
         HttpLoggingPolicy sessionLoggingPolicy = createSessionLoggingPolicy(logOptions);
         bearerPolicies.replaceAll(policy -> policy instanceof HttpLoggingPolicy ? sessionLoggingPolicy : policy);
 
-        return new ContainerSessionProvider(createPipeline(bearerPolicies, httpClient, clientOptions), endpoint,
-            serviceVersion, accountName);
+        return SessionProviderAccessHelper.create(createPipeline(bearerPolicies, httpClient, clientOptions), endpoint,
+            serviceVersion, accountName, Clock.systemUTC());
+    }
+
+    /**
+     * Removes resource and query components while retaining supported account paths.
+     * @param endpoint The Blob endpoint.
+     * @return The account endpoint.
+     */
+    public static String getSessionEndpoint(String endpoint) {
+        try {
+            return getEndpoint(BlobUrlParts.parse(endpoint));
+        } catch (MalformedURLException e) {
+            throw new IllegalArgumentException("Invalid session endpoint.", e);
+        }
+    }
+
+    /**
+     * Copies a configured OAuth client's pipeline, excluding HTTP logging to protect session secrets.
+     * @param client The session-disabled OAuth client.
+     * @return The session acquisition pipeline.
+     */
+    public static HttpPipeline createSessionPipeline(BlobServiceClient client) {
+        HttpPipeline pipeline = client.getHttpPipeline();
+        boolean bearer = false;
+        List<HttpPipelinePolicy> policies = new ArrayList<>();
+        for (int i = 0; i < pipeline.getPolicyCount(); i++) {
+            HttpPipelinePolicy policy = pipeline.getPolicy(i);
+            if (policy instanceof SessionAuthenticationPolicy
+                || policy instanceof StorageSharedKeyCredentialPolicy
+                || policy instanceof AzureSasCredentialPolicy) {
+                throw new IllegalArgumentException("The session provider requires a session-disabled OAuth client.");
+            }
+            bearer |= policy instanceof StorageBearerTokenChallengeAuthorizationPolicy;
+            if (!(policy instanceof HttpLoggingPolicy)) {
+                policies.add(policy);
+            }
+        }
+        if (!bearer
+            || !"https".equalsIgnoreCase(BlobUrlParts.parse(client.getAccountUrl()).getScheme())
+            || !CoreUtils
+                .isNullOrEmpty(BlobUrlParts.parse(client.getAccountUrl()).getCommonSasQueryParameters().encode())) {
+            throw new IllegalArgumentException("The session provider requires an HTTPS OAuth client without SAS.");
+        }
+        return new HttpPipelineBuilder().httpClient(pipeline.getHttpClient())
+            .tracer(pipeline.getTracer())
+            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .build();
     }
 
     private static HttpLoggingPolicy createSessionLoggingPolicy(HttpLogOptions logOptions) {

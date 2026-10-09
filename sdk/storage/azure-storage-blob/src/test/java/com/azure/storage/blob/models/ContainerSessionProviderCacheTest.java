@@ -1,20 +1,27 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob.implementation.util;
+package com.azure.storage.blob.models;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.test.http.MockHttpResponse;
+import com.azure.core.test.utils.MockTokenCredential;
+import com.azure.core.util.Context;
+import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.storage.blob.BlobServiceVersion;
-import com.azure.storage.blob.models.SessionCredential;
-import com.azure.storage.blob.models.SessionRequestContext;
+import com.azure.storage.blob.implementation.util.SessionCredential;
+import com.azure.storage.blob.implementation.util.SessionRequestContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Sinks;
 import reactor.test.StepVerifier;
@@ -54,7 +61,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * can be exercised without waiting for real credential expiration or hitting the service.
  * {@link ContainerSessionProviderTests} covers session acquisition through the service client; these tests
  * focus on cache timing, returned credentials, and CreateSession call counts. Per-container acquisition
- * cooldown is covered separately by {@link com.azure.storage.blob.policy.SessionAuthenticationPolicyTest}.
+ * cooldown is shared across independently constructed client pipelines.
  */
 public class ContainerSessionProviderCacheTest {
 
@@ -80,6 +87,192 @@ public class ContainerSessionProviderCacheTest {
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(httpClient).build();
         provider = new ContainerSessionProvider(pipeline, "https://" + ACCOUNT_NAME + ".blob.core.windows.net",
             BlobServiceVersion.getLatest(), ACCOUNT_NAME, clock);
+    }
+
+    @Test
+    public void independentSyncClientsShareSessionsAndInvalidationAcrossReplacement() {
+        enqueueSessionResponse(CONTAINER_A, FIRST_TOKEN, now().plusMinutes(20));
+        enqueueSessionResponse(CONTAINER_B, "container-b-token", now().plusMinutes(20));
+        enqueueSessionResponse(CONTAINER_A, SECOND_TOKEN, now().plusMinutes(20));
+        HttpPipeline first = independentClientPipeline();
+        HttpPipeline second = independentClientPipeline();
+
+        assertSyncToken(first, CONTAINER_A, FIRST_TOKEN);
+        assertSyncToken(second, CONTAINER_A, FIRST_TOKEN);
+        assertSyncToken(second, CONTAINER_B, "container-b-token");
+        assertEquals(1, httpClient.getRequestCount(CONTAINER_A));
+        assertEquals(1, httpClient.getRequestCount(CONTAINER_B));
+        httpClient.rejectNextSession = true;
+        assertSyncToken(first, CONTAINER_A, null);
+        assertSyncToken(independentClientPipeline(), CONTAINER_A, SECOND_TOKEN);
+        assertSyncToken(second, CONTAINER_A, SECOND_TOKEN);
+        assertSyncToken(first, CONTAINER_B, "container-b-token");
+        assertEquals(2, httpClient.getRequestCount(CONTAINER_A));
+        assertEquals(1, httpClient.getRequestCount(CONTAINER_B));
+    }
+
+    @Test
+    public void independentAsyncClientsShareSessionsAndInvalidationAcrossReplacement() {
+        enqueueSessionResponse(CONTAINER_A, FIRST_TOKEN, now().plusMinutes(20));
+        enqueueSessionResponse(CONTAINER_B, "container-b-token", now().plusMinutes(20));
+        enqueueSessionResponse(CONTAINER_A, SECOND_TOKEN, now().plusMinutes(20));
+        HttpPipeline first = independentAsyncClientPipeline();
+        HttpPipeline second = independentAsyncClientPipeline();
+
+        assertAsyncToken(first, CONTAINER_A, FIRST_TOKEN);
+        assertAsyncToken(second, CONTAINER_A, FIRST_TOKEN);
+        assertAsyncToken(second, CONTAINER_B, "container-b-token");
+        assertEquals(1, httpClient.getRequestCount(CONTAINER_A));
+        httpClient.rejectNextSession = true;
+        assertAsyncToken(first, CONTAINER_A, null);
+        assertAsyncToken(independentAsyncClientPipeline(), CONTAINER_A, SECOND_TOKEN);
+        assertAsyncToken(second, CONTAINER_A, SECOND_TOKEN);
+        assertAsyncToken(first, CONTAINER_B, "container-b-token");
+        assertEquals(2, httpClient.getRequestCount(CONTAINER_A));
+        assertEquals(1, httpClient.getRequestCount(CONTAINER_B));
+    }
+
+    @ParameterizedTest
+    @CsvSource({ "403,", "500,", "503,", "599,", "400,FeatureNotEnabled", "400,featurenotenabled" })
+    public void independentSyncClientsShareCooldownAndExpiration(int status, String errorCode) {
+        enqueueCooldown(status, errorCode);
+        HttpPipeline first = independentClientPipeline();
+        assertSyncToken(first, CONTAINER_A, null);
+        assertSyncToken(independentClientPipeline(), CONTAINER_A, null);
+        assertSyncToken(first, CONTAINER_B, "container-b-token");
+        clock.advance(Duration.ofMinutes(5).minusSeconds(1));
+        provider.refreshSession(contextFor(CONTAINER_A));
+        assertSyncToken(independentClientPipeline(), CONTAINER_A, null);
+        assertEquals(1, httpClient.getRequestCount(CONTAINER_A));
+        clock.advance(Duration.ofSeconds(1));
+        assertSyncToken(first, CONTAINER_A, SECOND_TOKEN);
+        assertSyncToken(independentClientPipeline(), CONTAINER_A, SECOND_TOKEN);
+        assertEquals(2, httpClient.getRequestCount(CONTAINER_A));
+    }
+
+    @ParameterizedTest
+    @CsvSource({ "403,", "500,", "503,", "599,", "400,FeatureNotEnabled", "400,featurenotenabled" })
+    public void independentAsyncClientsShareCooldownAndExpiration(int status, String errorCode) {
+        enqueueCooldown(status, errorCode);
+        HttpPipeline first = independentAsyncClientPipeline();
+        assertAsyncToken(first, CONTAINER_A, null);
+        assertAsyncToken(independentAsyncClientPipeline(), CONTAINER_A, null);
+        assertAsyncToken(first, CONTAINER_B, "container-b-token");
+        clock.advance(Duration.ofMinutes(5).minusSeconds(1));
+        provider.refreshSession(contextFor(CONTAINER_A));
+        assertAsyncToken(independentAsyncClientPipeline(), CONTAINER_A, null);
+        assertEquals(1, httpClient.getRequestCount(CONTAINER_A));
+        clock.advance(Duration.ofSeconds(1));
+        assertAsyncToken(first, CONTAINER_A, SECOND_TOKEN);
+        assertAsyncToken(independentAsyncClientPipeline(), CONTAINER_A, SECOND_TOKEN);
+        assertEquals(2, httpClient.getRequestCount(CONTAINER_A));
+    }
+
+    @ParameterizedTest
+    @CsvSource({ "400,", "401,", "404,", "429,", "600,", "400,OtherError" })
+    public void otherAcquisitionFailuresDoNotStartCooldownSync(int status, String errorCode) {
+        enqueueCooldown(status, errorCode);
+        assertSyncToken(independentClientPipeline(), CONTAINER_A, null);
+        assertSyncToken(independentClientPipeline(), CONTAINER_A, SECOND_TOKEN);
+        assertEquals(2, httpClient.getRequestCount(CONTAINER_A));
+    }
+
+    @ParameterizedTest
+    @CsvSource({ "400,", "401,", "404,", "429,", "600,", "400,OtherError" })
+    public void otherAcquisitionFailuresDoNotStartCooldownAsync(int status, String errorCode) {
+        enqueueCooldown(status, errorCode);
+        assertAsyncToken(independentAsyncClientPipeline(), CONTAINER_A, null);
+        assertAsyncToken(independentAsyncClientPipeline(), CONTAINER_A, SECOND_TOKEN);
+        assertEquals(2, httpClient.getRequestCount(CONTAINER_A));
+    }
+
+    private void enqueueCooldown(int status, String errorCode) {
+        httpClient.enqueueResponse(CONTAINER_A, request -> {
+            MockHttpResponse response = new MockHttpResponse(request, status);
+            if (errorCode != null) {
+                response.addHeader("x-ms-error-code", errorCode);
+            }
+            return Mono.just(response);
+        });
+        enqueueSessionResponse(CONTAINER_A, SECOND_TOKEN, now().plusMinutes(20));
+        enqueueSessionResponse(CONTAINER_B, "container-b-token", now().plusMinutes(20));
+    }
+
+    @Test
+    public void suppliedProviderHonorsAccountOverrideAndSeparatesSigningAccountsSync() {
+        enqueueSessionResponse(CONTAINER_A, FIRST_TOKEN, now().plusMinutes(20));
+        enqueueSessionResponse(CONTAINER_A, SECOND_TOKEN, now().plusMinutes(20));
+        assertSyncToken(overrideAccountBuilder().buildClient().getHttpPipeline(), CONTAINER_A, FIRST_TOKEN);
+        assertEquals("override-account",
+            provider.getSession(contextFor(CONTAINER_A).setAccountName("override-account")).getAccountName());
+        assertSyncToken(independentClientPipeline(), CONTAINER_A, SECOND_TOKEN);
+        assertEquals(ACCOUNT_NAME, provider.getSession(contextFor(CONTAINER_A)).getAccountName());
+        assertEquals(2, httpClient.getRequestCount(CONTAINER_A));
+    }
+
+    @Test
+    public void suppliedProviderHonorsAccountOverrideAndSeparatesSigningAccountsAsync() {
+        enqueueSessionResponse(CONTAINER_A, FIRST_TOKEN, now().plusMinutes(20));
+        enqueueSessionResponse(CONTAINER_A, SECOND_TOKEN, now().plusMinutes(20));
+        assertAsyncToken(overrideAccountBuilder().buildAsyncClient().getHttpPipeline(), CONTAINER_A, FIRST_TOKEN);
+        StepVerifier.create(provider.getSessionAsync(contextFor(CONTAINER_A).setAccountName("override-account")))
+            .assertNext(credential -> assertEquals("override-account", credential.getAccountName()))
+            .verifyComplete();
+        assertAsyncToken(independentAsyncClientPipeline(), CONTAINER_A, SECOND_TOKEN);
+        StepVerifier.create(provider.getSessionAsync(contextFor(CONTAINER_A)))
+            .assertNext(credential -> assertEquals(ACCOUNT_NAME, credential.getAccountName()))
+            .verifyComplete();
+        assertEquals(2, httpClient.getRequestCount(CONTAINER_A));
+    }
+
+    private BlobServiceClientBuilder overrideAccountBuilder() {
+        return independentClientBuilder()
+            .sessionOptions(new SessionOptions().setSessionMode(SessionOptions.SessionMode.ENABLED)
+                .setSessionProvider(provider)
+                .setAccountName("override-account"));
+    }
+
+    private BlobServiceClientBuilder independentClientBuilder() {
+        return new BlobServiceClientBuilder().endpoint("https://" + ACCOUNT_NAME + ".blob.core.windows.net")
+            .credential(new MockTokenCredential())
+            .httpClient(httpClient)
+            .sessionOptions(
+                new SessionOptions().setSessionMode(SessionOptions.SessionMode.ENABLED).setSessionProvider(provider));
+    }
+
+    private HttpPipeline independentClientPipeline() {
+        return independentClientBuilder().buildClient().getHttpPipeline();
+    }
+
+    private HttpPipeline independentAsyncClientPipeline() {
+        return independentClientBuilder().buildAsyncClient().getHttpPipeline();
+    }
+
+    private void assertSyncToken(HttpPipeline pipeline, String container, String token) {
+        HttpRequest request = dataRequest(container);
+        try (HttpResponse response = pipeline.sendSync(request, Context.NONE)) {
+            assertEquals(200, response.getStatusCode());
+            assertAuthorization(response.getRequest(), token);
+        }
+    }
+
+    private void assertAsyncToken(HttpPipeline pipeline, String container, String token) {
+        HttpRequest request = dataRequest(container);
+        StepVerifier.create(pipeline.send(request)).assertNext(response -> {
+            assertEquals(200, response.getStatusCode());
+            assertAuthorization(response.getRequest(), token);
+            response.close();
+        }).verifyComplete();
+    }
+
+    private static HttpRequest dataRequest(String container) {
+        return new HttpRequest(HttpMethod.GET,
+            "https://" + ACCOUNT_NAME + ".blob.core.windows.net/" + container + "/blob");
+    }
+
+    private static void assertAuthorization(HttpRequest request, String token) {
+        String authorization = request.getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
+        assertTrue(authorization.startsWith(token == null ? "Bearer " : "Session " + token + ":"));
     }
 
     /**
@@ -501,6 +694,7 @@ public class ContainerSessionProviderCacheTest {
      * path, and counts the requests each container received.
      */
     private static final class CreateSessionTransport implements HttpClient {
+        private boolean rejectNextSession;
         private final ConcurrentHashMap<String, ConcurrentLinkedQueue<Function<HttpRequest, Mono<HttpResponse>>>> responsesByContainer
             = new ConcurrentHashMap<>();
         private final ConcurrentHashMap<String, AtomicInteger> requestCountsByContainer = new ConcurrentHashMap<>();
@@ -516,6 +710,12 @@ public class ContainerSessionProviderCacheTest {
 
         @Override
         public Mono<HttpResponse> send(HttpRequest request) {
+            if (request.getHttpMethod() == HttpMethod.GET) {
+                boolean rejected = rejectNextSession
+                    && request.getHeaders().getValue(HttpHeaderName.AUTHORIZATION).startsWith("Session ");
+                rejectNextSession = false;
+                return Mono.just(new MockHttpResponse(request, rejected ? 401 : 200));
+            }
             String container = containerFromPath(request);
             requestCountsByContainer.computeIfAbsent(container, ignored -> new AtomicInteger()).incrementAndGet();
 

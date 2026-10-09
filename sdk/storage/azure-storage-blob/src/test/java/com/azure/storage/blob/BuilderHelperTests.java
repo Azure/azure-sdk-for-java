@@ -27,11 +27,13 @@ import com.azure.core.util.Header;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.util.BuilderHelper;
 import com.azure.storage.blob.implementation.util.ModelHelper;
-import com.azure.storage.blob.models.SessionCredential;
+import com.azure.storage.blob.implementation.util.SessionCredential;
 import com.azure.storage.blob.models.SessionOptions;
 import com.azure.storage.blob.models.SessionOptions.SessionMode;
 import com.azure.storage.blob.models.SessionProvider;
-import com.azure.storage.blob.models.SessionRequestContext;
+import com.azure.storage.blob.implementation.util.SessionRequestContext;
+import com.azure.storage.blob.models.TestSessionProvider;
+import com.azure.storage.blob.models.ContainerSessionProvider;
 import com.azure.storage.blob.specialized.AppendBlobClient;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.blob.specialized.PageBlobClient;
@@ -858,6 +860,30 @@ public class BuilderHelperTests {
         testContext.assertOnlyDataResponseWasLogged();
     }
 
+    @ParameterizedTest
+    @EnumSource(value = HttpLogDetailLevel.class, names = { "BODY", "BODY_AND_HEADERS" })
+    public void suppliedProviderResponseBodyIsNotLoggedSync(HttpLogDetailLevel logLevel) {
+        SessionLoggingTestContext testContext = createSessionLoggingTestContext(logLevel, true);
+        try (HttpResponse response = testContext.pipeline
+            .sendSync(new HttpRequest(HttpMethod.GET, ENDPOINT + "container/blob"), Context.NONE)) {
+            assertEquals(200, response.getStatusCode());
+        }
+        testContext.assertOnlyDataResponseWasLogged();
+    }
+
+    @ParameterizedTest
+    @EnumSource(value = HttpLogDetailLevel.class, names = { "BODY", "BODY_AND_HEADERS" })
+    public void suppliedProviderResponseBodyIsNotLoggedAsync(HttpLogDetailLevel logLevel) {
+        SessionLoggingTestContext testContext = createSessionLoggingTestContext(logLevel, true);
+        StepVerifier.create(testContext.pipeline.send(new HttpRequest(HttpMethod.GET, ENDPOINT + "container/blob")))
+            .assertNext(response -> {
+                assertEquals(200, response.getStatusCode());
+                response.close();
+            })
+            .verifyComplete();
+        testContext.assertOnlyDataResponseWasLogged();
+    }
+
     @Test
     public void customEndpointRequiresAccountNameForDefaultSessionProvider() {
         assertThrows(IllegalArgumentException.class,
@@ -869,7 +895,7 @@ public class BuilderHelperTests {
     }
 
     @Test
-    public void customSessionProviderIsWiredIntoPipelineWithResolvedRequestContext() {
+    public void suppliedSessionProviderIsWiredIntoPipelineWithResolvedRequestContext() {
         AtomicReference<SessionRequestContext> capturedContext = new AtomicReference<>();
         SessionProvider provider = createCapturingSessionProvider(capturedContext);
 
@@ -878,7 +904,7 @@ public class BuilderHelperTests {
 
         StepVerifier.create(pipeline.send(request)).expectNextCount(1).verifyComplete();
 
-        assertNotNull(capturedContext.get(), "Custom session provider should have been invoked by the pipeline");
+        assertNotNull(capturedContext.get(), "Supplied session provider should have been invoked by the pipeline");
         assertEquals("container", capturedContext.get().getContainerName());
         assertEquals("account", capturedContext.get().getAccountName());
     }
@@ -887,7 +913,7 @@ public class BuilderHelperTests {
         SessionCredential credential = new SessionCredential("session-token",
             "dGVzdFNlc3Npb25LZXkxMjM0NTY3ODkwMTIzNDU2Nzg5MA==", OffsetDateTime.now().plusMinutes(5), "account");
 
-        return new SessionProvider() {
+        return new TestSessionProvider() {
             @Override
             public boolean isRequestEligible(com.azure.core.http.HttpRequest request) {
                 return request != null && request.getHttpMethod() == com.azure.core.http.HttpMethod.GET;
@@ -923,6 +949,11 @@ public class BuilderHelperTests {
     }
 
     private static SessionLoggingTestContext createSessionLoggingTestContext(HttpLogDetailLevel logLevel) {
+        return createSessionLoggingTestContext(logLevel, false);
+    }
+
+    private static SessionLoggingTestContext createSessionLoggingTestContext(HttpLogDetailLevel logLevel,
+        boolean suppliedProvider) {
         List<String> loggedBodies = Collections.synchronizedList(new ArrayList<>());
         AtomicReference<BufferTrackingHttpResponse> sessionResponse = new AtomicReference<>();
         AtomicReference<BufferTrackingHttpResponse> dataResponse = new AtomicReference<>();
@@ -946,10 +977,19 @@ public class BuilderHelperTests {
                 return response.getBodyAsString().defaultIfEmpty("").doOnNext(loggedBodies::add).thenReturn(response);
             });
 
-        HttpPipeline pipeline = BuilderHelper.buildPipeline(null, new MockTokenCredential(), null, null, ENDPOINT,
-            REQUEST_RETRY_OPTIONS, null, logOptions, new ClientOptions(), httpClient, new ArrayList<>(),
-            new ArrayList<>(), null, null, new ClientLogger(BuilderHelperTests.class),
-            new SessionOptions().setSessionMode(SessionMode.ENABLED), BlobServiceVersion.getLatest());
+        SessionOptions sessionOptions = new SessionOptions().setSessionMode(SessionMode.ENABLED);
+        if (suppliedProvider) {
+            sessionOptions
+                .setSessionProvider(new ContainerSessionProvider(new BlobServiceClientBuilder().endpoint(ENDPOINT)
+                    .credential(new MockTokenCredential())
+                    .httpClient(httpClient)
+                    .httpLogOptions(logOptions)
+                    .buildClient()));
+        }
+        HttpPipeline pipeline
+            = BuilderHelper.buildPipeline(null, new MockTokenCredential(), null, null, ENDPOINT, REQUEST_RETRY_OPTIONS,
+                null, logOptions, new ClientOptions(), httpClient, new ArrayList<>(), new ArrayList<>(), null, null,
+                new ClientLogger(BuilderHelperTests.class), sessionOptions, BlobServiceVersion.getLatest());
         return new SessionLoggingTestContext(pipeline, loggedBodies, sessionResponse, dataResponse);
     }
 

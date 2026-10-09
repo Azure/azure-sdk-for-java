@@ -4,7 +4,6 @@
 package com.azure.storage.blob.implementation.util;
 
 import com.azure.storage.blob.BlobTestBase;
-import com.azure.storage.blob.models.SessionCredential;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;

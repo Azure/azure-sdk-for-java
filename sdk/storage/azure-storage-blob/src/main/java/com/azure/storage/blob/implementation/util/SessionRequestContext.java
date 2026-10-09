@@ -1,7 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob.models;
+package com.azure.storage.blob.implementation.util;
+
+import com.azure.storage.blob.models.SessionOptions;
 
 /**
  * Carries the request-scoped parameters needed to obtain a {@link SessionCredential}, such as the target
@@ -11,13 +13,12 @@ package com.azure.storage.blob.models;
  * from {@link SessionOptions#getAccountName()} or the request URL. This object does not resolve missing
  * values itself. When calling the built-in provider directly, a nonempty container name is required, and
  * an account name must be supplied either by the provider's configuration or by this context.
- * Custom providers define their own requirements for these values.
  * <p>
- * This exists so a single {@link SessionProvider} instance can be asked for a session that is scoped to a
+ * This exists so a single provider instance can be asked for a session that is scoped to a
  * specific container at call time, rather than being permanently bound to one container at construction
  * time - allowing one provider to serve sessions for many containers.
  *
- * @see SessionProvider
+ * RESERVED FOR INTERNAL USE.
  */
 public final class SessionRequestContext {
 
