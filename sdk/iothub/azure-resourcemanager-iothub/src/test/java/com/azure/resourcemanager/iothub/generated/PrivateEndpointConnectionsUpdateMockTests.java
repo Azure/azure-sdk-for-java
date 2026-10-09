@@ -26,7 +26,7 @@ public final class PrivateEndpointConnectionsUpdateMockTests {
     @Test
     public void testUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"privateEndpoint\":{\"id\":\"wsobqwcsdbn\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"cf\",\"actionsRequired\":\"cqdpfuv\"}},\"id\":\"sbjjc\",\"name\":\"nvxbvt\",\"type\":\"udutnco\"}";
+            = "{\"properties\":{\"privateEndpoint\":{\"id\":\"sdtclusiypbs\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"ytguslf\",\"actionsRequired\":\"dcygqukyhejhz\"}},\"id\":\"xgfpelolppv\",\"name\":\"srp\",\"type\":\"vu\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,18 +36,19 @@ public final class PrivateEndpointConnectionsUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PrivateEndpointConnection response = manager.privateEndpointConnections()
-            .update("sbzkf", "beyvpnqicvinvkjj", "dxrbuukzcle",
+            .update("z", "iyylhalnswhccsp", "kaivwit",
                 new PrivateEndpointConnectionInner()
                     .withProperties(new PrivateEndpointConnectionProperties().withPrivateEndpoint(new PrivateEndpoint())
                         .withPrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState()
-                            .withStatus(PrivateLinkServiceConnectionStatus.APPROVED)
-                            .withDescription("ofncckwyfzqwhxxb")
-                            .withActionsRequired("qa"))),
+                            .withStatus(PrivateLinkServiceConnectionStatus.PENDING)
+                            .withDescription("emh")
+                            .withActionsRequired("rsbrgzdwm"))),
                 com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(PrivateLinkServiceConnectionStatus.REJECTED,
             response.properties().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("cf", response.properties().privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("cqdpfuv", response.properties().privateLinkServiceConnectionState().actionsRequired());
+        Assertions.assertEquals("ytguslf", response.properties().privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("dcygqukyhejhz",
+            response.properties().privateLinkServiceConnectionState().actionsRequired());
     }
 }

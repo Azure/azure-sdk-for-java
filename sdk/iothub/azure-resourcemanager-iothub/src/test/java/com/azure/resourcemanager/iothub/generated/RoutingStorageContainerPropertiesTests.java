@@ -7,6 +7,7 @@ package com.azure.resourcemanager.iothub.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.iothub.models.AuthenticationType;
 import com.azure.resourcemanager.iothub.models.ManagedIdentity;
+import com.azure.resourcemanager.iothub.models.MessagePayloadFormat;
 import com.azure.resourcemanager.iothub.models.RoutingStorageContainerProperties;
 import com.azure.resourcemanager.iothub.models.RoutingStorageContainerPropertiesEncoding;
 import org.junit.jupiter.api.Assertions;
@@ -15,51 +16,54 @@ public final class RoutingStorageContainerPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RoutingStorageContainerProperties model = BinaryData.fromString(
-            "{\"id\":\"sdpydnfyhxdeoejz\",\"connectionString\":\"w\",\"endpointUri\":\"sjttgzfbish\",\"authenticationType\":\"keyBased\",\"identity\":{\"userAssignedIdentity\":\"jdeyeamdpha\"},\"name\":\"alpbuxwgipwhon\",\"subscriptionId\":\"kgshwa\",\"resourceGroup\":\"ixzbinjeputtmryw\",\"containerName\":\"uzoqft\",\"fileNameFormat\":\"qzrnkcqvyxlwhz\",\"batchFrequencyInSeconds\":658066876,\"maxChunkSizeInBytes\":1153823145,\"encoding\":\"AvroDeflate\"}")
+            "{\"id\":\"cvpnazzmhjrunmpx\",\"connectionString\":\"dbhrbnlankxm\",\"endpointUri\":\"k\",\"authenticationType\":\"identityBased\",\"identity\":{\"userAssignedIdentity\":\"btkcxywnytnrsyn\"},\"name\":\"qidybyx\",\"subscriptionId\":\"fclhaaxdbabphlwr\",\"resourceGroup\":\"fkts\",\"containerName\":\"hsucoc\",\"fileNameFormat\":\"yyazttbt\",\"batchFrequencyInSeconds\":279083940,\"maxChunkSizeInBytes\":1710095356,\"encoding\":\"AvroDeflate\",\"messagePayloadFormat\":\"None\"}")
             .toObject(RoutingStorageContainerProperties.class);
-        Assertions.assertEquals("sdpydnfyhxdeoejz", model.id());
-        Assertions.assertEquals("w", model.connectionString());
-        Assertions.assertEquals("sjttgzfbish", model.endpointUri());
-        Assertions.assertEquals(AuthenticationType.KEY_BASED, model.authenticationType());
-        Assertions.assertEquals("jdeyeamdpha", model.identity().userAssignedIdentity());
-        Assertions.assertEquals("alpbuxwgipwhon", model.name());
-        Assertions.assertEquals("kgshwa", model.subscriptionId());
-        Assertions.assertEquals("ixzbinjeputtmryw", model.resourceGroup());
-        Assertions.assertEquals("uzoqft", model.containerName());
-        Assertions.assertEquals("qzrnkcqvyxlwhz", model.fileNameFormat());
-        Assertions.assertEquals(658066876, model.batchFrequencyInSeconds());
-        Assertions.assertEquals(1153823145, model.maxChunkSizeInBytes());
+        Assertions.assertEquals("cvpnazzmhjrunmpx", model.id());
+        Assertions.assertEquals("dbhrbnlankxm", model.connectionString());
+        Assertions.assertEquals("k", model.endpointUri());
+        Assertions.assertEquals(AuthenticationType.IDENTITY_BASED, model.authenticationType());
+        Assertions.assertEquals("btkcxywnytnrsyn", model.identity().userAssignedIdentity());
+        Assertions.assertEquals("qidybyx", model.name());
+        Assertions.assertEquals("fclhaaxdbabphlwr", model.subscriptionId());
+        Assertions.assertEquals("fkts", model.resourceGroup());
+        Assertions.assertEquals("hsucoc", model.containerName());
+        Assertions.assertEquals("yyazttbt", model.fileNameFormat());
+        Assertions.assertEquals(279083940, model.batchFrequencyInSeconds());
+        Assertions.assertEquals(1710095356, model.maxChunkSizeInBytes());
         Assertions.assertEquals(RoutingStorageContainerPropertiesEncoding.AVRO_DEFLATE, model.encoding());
+        Assertions.assertEquals(MessagePayloadFormat.NONE, model.messagePayloadFormat());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RoutingStorageContainerProperties model = new RoutingStorageContainerProperties().withId("sdpydnfyhxdeoejz")
-            .withConnectionString("w")
-            .withEndpointUri("sjttgzfbish")
-            .withAuthenticationType(AuthenticationType.KEY_BASED)
-            .withIdentity(new ManagedIdentity().withUserAssignedIdentity("jdeyeamdpha"))
-            .withName("alpbuxwgipwhon")
-            .withSubscriptionId("kgshwa")
-            .withResourceGroup("ixzbinjeputtmryw")
-            .withContainerName("uzoqft")
-            .withFileNameFormat("qzrnkcqvyxlwhz")
-            .withBatchFrequencyInSeconds(658066876)
-            .withMaxChunkSizeInBytes(1153823145)
-            .withEncoding(RoutingStorageContainerPropertiesEncoding.AVRO_DEFLATE);
+        RoutingStorageContainerProperties model = new RoutingStorageContainerProperties().withId("cvpnazzmhjrunmpx")
+            .withConnectionString("dbhrbnlankxm")
+            .withEndpointUri("k")
+            .withAuthenticationType(AuthenticationType.IDENTITY_BASED)
+            .withIdentity(new ManagedIdentity().withUserAssignedIdentity("btkcxywnytnrsyn"))
+            .withName("qidybyx")
+            .withSubscriptionId("fclhaaxdbabphlwr")
+            .withResourceGroup("fkts")
+            .withContainerName("hsucoc")
+            .withFileNameFormat("yyazttbt")
+            .withBatchFrequencyInSeconds(279083940)
+            .withMaxChunkSizeInBytes(1710095356)
+            .withEncoding(RoutingStorageContainerPropertiesEncoding.AVRO_DEFLATE)
+            .withMessagePayloadFormat(MessagePayloadFormat.NONE);
         model = BinaryData.fromObject(model).toObject(RoutingStorageContainerProperties.class);
-        Assertions.assertEquals("sdpydnfyhxdeoejz", model.id());
-        Assertions.assertEquals("w", model.connectionString());
-        Assertions.assertEquals("sjttgzfbish", model.endpointUri());
-        Assertions.assertEquals(AuthenticationType.KEY_BASED, model.authenticationType());
-        Assertions.assertEquals("jdeyeamdpha", model.identity().userAssignedIdentity());
-        Assertions.assertEquals("alpbuxwgipwhon", model.name());
-        Assertions.assertEquals("kgshwa", model.subscriptionId());
-        Assertions.assertEquals("ixzbinjeputtmryw", model.resourceGroup());
-        Assertions.assertEquals("uzoqft", model.containerName());
-        Assertions.assertEquals("qzrnkcqvyxlwhz", model.fileNameFormat());
-        Assertions.assertEquals(658066876, model.batchFrequencyInSeconds());
-        Assertions.assertEquals(1153823145, model.maxChunkSizeInBytes());
+        Assertions.assertEquals("cvpnazzmhjrunmpx", model.id());
+        Assertions.assertEquals("dbhrbnlankxm", model.connectionString());
+        Assertions.assertEquals("k", model.endpointUri());
+        Assertions.assertEquals(AuthenticationType.IDENTITY_BASED, model.authenticationType());
+        Assertions.assertEquals("btkcxywnytnrsyn", model.identity().userAssignedIdentity());
+        Assertions.assertEquals("qidybyx", model.name());
+        Assertions.assertEquals("fclhaaxdbabphlwr", model.subscriptionId());
+        Assertions.assertEquals("fkts", model.resourceGroup());
+        Assertions.assertEquals("hsucoc", model.containerName());
+        Assertions.assertEquals("yyazttbt", model.fileNameFormat());
+        Assertions.assertEquals(279083940, model.batchFrequencyInSeconds());
+        Assertions.assertEquals(1710095356, model.maxChunkSizeInBytes());
         Assertions.assertEquals(RoutingStorageContainerPropertiesEncoding.AVRO_DEFLATE, model.encoding());
+        Assertions.assertEquals(MessagePayloadFormat.NONE, model.messagePayloadFormat());
     }
 }

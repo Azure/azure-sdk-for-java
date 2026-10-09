@@ -54,9 +54,9 @@ public final class CertificateProperties implements JsonSerializable<Certificate
     private String certificate;
 
     /*
-     * The reference to policy stored in Azure Device Registry (ADR).
+     * Full certificate authority resource ID for ADR linked standard SKU hubs.
      */
-    private String policyResourceId;
+    private String certificateAuthorityResourceId;
 
     /**
      * Creates an instance of CertificateProperties class.
@@ -159,22 +159,24 @@ public final class CertificateProperties implements JsonSerializable<Certificate
     }
 
     /**
-     * Get the policyResourceId property: The reference to policy stored in Azure Device Registry (ADR).
+     * Get the certificateAuthorityResourceId property: Full certificate authority resource ID for ADR linked standard
+     * SKU hubs.
      * 
-     * @return the policyResourceId value.
+     * @return the certificateAuthorityResourceId value.
      */
-    public String policyResourceId() {
-        return this.policyResourceId;
+    public String certificateAuthorityResourceId() {
+        return this.certificateAuthorityResourceId;
     }
 
     /**
-     * Set the policyResourceId property: The reference to policy stored in Azure Device Registry (ADR).
+     * Set the certificateAuthorityResourceId property: Full certificate authority resource ID for ADR linked standard
+     * SKU hubs.
      * 
-     * @param policyResourceId the policyResourceId value to set.
+     * @param certificateAuthorityResourceId the certificateAuthorityResourceId value to set.
      * @return the CertificateProperties object itself.
      */
-    public CertificateProperties withPolicyResourceId(String policyResourceId) {
-        this.policyResourceId = policyResourceId;
+    public CertificateProperties withCertificateAuthorityResourceId(String certificateAuthorityResourceId) {
+        this.certificateAuthorityResourceId = certificateAuthorityResourceId;
         return this;
     }
 
@@ -186,7 +188,7 @@ public final class CertificateProperties implements JsonSerializable<Certificate
         jsonWriter.writeStartObject();
         jsonWriter.writeBooleanField("isVerified", this.isVerified);
         jsonWriter.writeStringField("certificate", this.certificate);
-        jsonWriter.writeStringField("policyResourceId", this.policyResourceId);
+        jsonWriter.writeStringField("certificateAuthorityResourceId", this.certificateAuthorityResourceId);
         return jsonWriter.writeEndObject();
     }
 
@@ -222,8 +224,8 @@ public final class CertificateProperties implements JsonSerializable<Certificate
                         = reader.getNullable(nonNullReader -> new DateTimeRfc1123(nonNullReader.getString()));
                 } else if ("certificate".equals(fieldName)) {
                     deserializedCertificateProperties.certificate = reader.getString();
-                } else if ("policyResourceId".equals(fieldName)) {
-                    deserializedCertificateProperties.policyResourceId = reader.getString();
+                } else if ("certificateAuthorityResourceId".equals(fieldName)) {
+                    deserializedCertificateProperties.certificateAuthorityResourceId = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

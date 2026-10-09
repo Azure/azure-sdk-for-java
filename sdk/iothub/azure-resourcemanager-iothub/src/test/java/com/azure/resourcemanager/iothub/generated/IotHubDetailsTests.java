@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Assertions;
 public final class IotHubDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IotHubDetails model = BinaryData.fromString("{\"gatewayVersion\":\"V1\"}").toObject(IotHubDetails.class);
-        Assertions.assertEquals(GatewayVersion.V1, model.gatewayVersion());
+        IotHubDetails model = BinaryData.fromString("{\"gatewayVersion\":\"V2\"}").toObject(IotHubDetails.class);
+        Assertions.assertEquals(GatewayVersion.V2, model.gatewayVersion());
     }
 }

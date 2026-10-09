@@ -14,13 +14,13 @@ public final class EndpointHealthDataInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EndpointHealthDataInner model = BinaryData.fromString(
-            "{\"endpointId\":\"lcgwxzvlvqh\",\"healthStatus\":\"dead\",\"lastKnownError\":\"gibtnm\",\"lastKnownErrorTime\":\"Fri, 02 Jul 2021 21:05:28 GMT\",\"lastSuccessfulSendAttemptTime\":\"Sat, 01 May 2021 00:04:13 GMT\",\"lastSendAttemptTime\":\"Fri, 30 Jul 2021 14:06:14 GMT\"}")
+            "{\"endpointId\":\"obl\",\"healthStatus\":\"degraded\",\"lastKnownError\":\"lmpewwwfbkr\",\"lastKnownErrorTime\":\"Tue, 28 Sep 2021 10:00:25 GMT\",\"lastSuccessfulSendAttemptTime\":\"Wed, 17 Nov 2021 21:39:38 GMT\",\"lastSendAttemptTime\":\"Sat, 18 Sep 2021 19:23:36 GMT\"}")
             .toObject(EndpointHealthDataInner.class);
-        Assertions.assertEquals("lcgwxzvlvqh", model.endpointId());
-        Assertions.assertEquals(EndpointHealthStatus.DEAD, model.healthStatus());
-        Assertions.assertEquals("gibtnm", model.lastKnownError());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-02T21:05:28Z"), model.lastKnownErrorTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-01T00:04:13Z"), model.lastSuccessfulSendAttemptTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-30T14:06:14Z"), model.lastSendAttemptTime());
+        Assertions.assertEquals("obl", model.endpointId());
+        Assertions.assertEquals(EndpointHealthStatus.DEGRADED, model.healthStatus());
+        Assertions.assertEquals("lmpewwwfbkr", model.lastKnownError());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-28T10:00:25Z"), model.lastKnownErrorTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-17T21:39:38Z"), model.lastSuccessfulSendAttemptTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-18T19:23:36Z"), model.lastSendAttemptTime());
     }
 }
