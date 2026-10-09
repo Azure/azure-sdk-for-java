@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Fixed session acquisition cancellation calling blocking link cleanup on a Reactor parallel thread, which could throw `IllegalStateException`. Cancelled acquisitions now close the receive link asynchronously.
+
 ### Other Changes
 
 - Added a sample showing how to configure processor drain timeout and allow in-flight message settlement during shutdown.
