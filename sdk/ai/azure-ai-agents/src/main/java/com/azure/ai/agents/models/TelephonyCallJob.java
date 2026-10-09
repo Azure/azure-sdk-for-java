@@ -396,14 +396,14 @@ public final class TelephonyCallJob implements JsonSerializable<TelephonyCallJob
 
     /*
      * The Foundry connection name in the current project used to originate the call. Its category selects Twilio or
-     * Azure Communication Services / Teams Phone Extension. No inbound telephony binding is required.
+     * Azure Communication Services / Teams Phone extensibility. No inbound telephony binding is required.
      */
     @Generated
     private final String connectionName;
 
     /*
      * The caller identity used to originate the call. For a Twilio connection, provide an authorized E.164 phone
-     * number. For an Azure Communication Services / Teams Phone Extension connection, provide the Teams Resource
+     * number. For an Azure Communication Services / Teams Phone extensibility connection, provide the Teams Resource
      * Account object ID. The identity type is inferred from the connection category; originating does not change
      * inbound routing.
      */
@@ -412,8 +412,8 @@ public final class TelephonyCallJob implements JsonSerializable<TelephonyCallJob
 
     /**
      * Get the connectionName property: The Foundry connection name in the current project used to originate the call.
-     * Its category selects Twilio or Azure Communication Services / Teams Phone Extension. No inbound telephony binding
-     * is required.
+     * Its category selects Twilio or Azure Communication Services / Teams Phone extensibility. No inbound telephony
+     * binding is required.
      *
      * @return the connectionName value.
      */
@@ -424,9 +424,9 @@ public final class TelephonyCallJob implements JsonSerializable<TelephonyCallJob
 
     /**
      * Get the source property: The caller identity used to originate the call. For a Twilio connection, provide an
-     * authorized E.164 phone number. For an Azure Communication Services / Teams Phone Extension connection, provide
-     * the Teams Resource Account object ID. The identity type is inferred from the connection category; originating
-     * does not change inbound routing.
+     * authorized E.164 phone number. For an Azure Communication Services / Teams Phone extensibility connection,
+     * provide the Teams Resource Account object ID. The identity type is inferred from the connection category;
+     * originating does not change inbound routing.
      *
      * @return the source value.
      */
