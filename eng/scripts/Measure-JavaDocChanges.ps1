@@ -3,8 +3,8 @@
 
 <#
 .SYNOPSIS
-Reports each library's Java documentation, ordinary-comment, and formatting changes
-from a complete PR snapshot without changing test execution.
+Reports each library's Java AST-equivalent changes from a complete PR snapshot
+without changing test execution.
 
 .DESCRIPTION
 This classifier runs in report-only mode. It does not modify PackageInfo, RunTests, Build, Analyze,

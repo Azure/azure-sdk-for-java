@@ -29,7 +29,7 @@ class MainTests {
             pair(0, "/** Old. */ class Example {}", "/** New. */ class Example {}")
                 + pair(1, "class Formatted {}", "class Formatted { }")
                 + pair(2, "class Commented {/* Old. */}", "class Commented {/* New. */}"))), new PrintWriter(output));
-        assertEquals("0\tjavadoc-only\n1\twhitespace-only\n2\tordinary-comment-only\n",
+        assertEquals("0\tast-equivalent\n1\tast-equivalent\n2\tast-equivalent\n",
             output.toString().replace("\r\n", "\n"));
     }
 
@@ -51,7 +51,7 @@ class MainTests {
         assertEquals(2 * 1024 * 1024, after.getBytes(StandardCharsets.UTF_8).length);
         StringWriter output = new StringWriter();
         Main.classify(new BufferedReader(new StringReader(pair(0, before, after))), new PrintWriter(output));
-        assertEquals("0\tjavadoc-only\n", output.toString().replace("\r\n", "\n"));
+        assertEquals("0\tast-equivalent\n", output.toString().replace("\r\n", "\n"));
     }
 
     @ParameterizedTest
@@ -81,7 +81,7 @@ class MainTests {
         String[] results = output.toString().replace("\r\n", "\n").split("\n");
         assertEquals(fileCount, results.length);
         for (int i = 0; i < fileCount; i++) {
-            assertEquals(i + "\twhitespace-only", results[i]);
+            assertEquals(i + "\tast-equivalent", results[i]);
         }
     }
 
@@ -122,7 +122,7 @@ class MainTests {
             @Override
             public String readLine() throws IOException {
                 if (reads++ > 0) {
-                    assertTrue(output.toString().contains((reads - 2) + "\twhitespace-only"));
+                    assertTrue(output.toString().contains((reads - 2) + "\tast-equivalent"));
                 }
                 return super.readLine();
             }
@@ -148,7 +148,7 @@ class MainTests {
                 + pair(1, "/** Old. */ class Second {}", "/** New. */ class Second {}")
                 + pair(2, "class Broken {}", "class Broken {")
                 + pair(3, "class Last {}", "class Last { }"))), new PrintWriter(output), false);
-        assertEquals("0\tnon-documentation-change\n1\tjavadoc-only\n2\tparse-error\n3\twhitespace-only\n",
+        assertEquals("0\tnon-documentation-change\n1\tast-equivalent\n2\tparse-error\n3\tast-equivalent\n",
             output.toString().replace("\r\n", "\n"));
     }
 

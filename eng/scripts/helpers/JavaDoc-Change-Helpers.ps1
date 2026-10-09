@@ -3,10 +3,10 @@
 
 Set-StrictMode -Version 3
 
-$script:JavaDocEligibleReasons = @('javadoc-only', 'whitespace-only', 'ordinary-comment-only', 'non-code-only')
+$script:JavaDocEligibleReasons = @('ast-equivalent')
 $script:JavaDocKnownReasons = $script:JavaDocEligibleReasons + @(
     'no-source-edit', 'non-documentation-change', 'parse-error', 'unsupported-unicode-escape',
-    'unsupported-documentation', 'documentation-attachment-change', 'unsupported-comment-directive'
+    'unsupported-deprecation', 'unsupported-comment-directive'
 )
 
 function Start-JavaDocProcess {
@@ -458,7 +458,7 @@ function Complete-JavaDocLibraryReport {
         } else {
             $Library.Decision = 'Eligible'
             $Library.Reason = if ($Library.CandidateFileCount -gt 0) {
-                'supported-non-code-changes'
+                'supported-ast-equivalent-changes'
             } else {
                 'existing-non-runtime-validation'
             }
@@ -489,7 +489,7 @@ function Get-JavaDocChangeReport {
 
     $timer = [System.Diagnostics.Stopwatch]::StartNew()
     $result = [PSCustomObject][ordered]@{
-        SchemaVersion = 2
+        SchemaVersion = 3
         Mode = 'report-only'
         Decision = 'NotEligible'
         Reason = 'not-evaluated'
@@ -691,7 +691,11 @@ function Get-JavaDocChangeReport {
         $result.EligibleLibraryCount = @($result.Libraries | Where-Object Decision -CEQ 'Eligible').Count
         if ($result.EligibleLibraryCount -eq $result.Libraries.Count -and $result.SharedChanges.Count -eq 0) {
             $result.Decision = 'Eligible'
-            $result.Reason = 'supported-non-code-changes'
+            $result.Reason = if ($result.CandidateFileCount -gt 0) {
+                'supported-ast-equivalent-changes'
+            } else {
+                'existing-non-runtime-validation'
+            }
             $result.WouldSuppressTests = $true
         } elseif ($result.EligibleLibraryCount -gt 0) {
             $result.Decision = 'PartiallyEligible'

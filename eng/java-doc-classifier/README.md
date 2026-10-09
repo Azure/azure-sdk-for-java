@@ -1,8 +1,9 @@
-# Java documentation change classifier
+# Java AST change classifier
 
-This classifier runs in **report-only mode**: it evaluates documentation,
-ordinary-comment, and formatting changes separately for each Maven library,
-but never changes which tests run. The existing path
+This classifier runs in **report-only mode**: it evaluates exact printed-AST
+equivalence separately for each Maven library, but never changes which tests run.
+Documentation, ordinary comments, formatting, and some printer-normalized syntax
+changes can qualify. The existing path
 classifier, PackageInfo files, Build, Analyze, and CHANGELOG-only routing stay
 unchanged.
 
@@ -33,28 +34,48 @@ Only modified regular, non-executable Java files under a matching module's
 source comparison or prove that tests can safely be skipped. We have not tried
 the classifier on real PRs in CI.
 
-JavaParser parses both versions of the modified files as Java 8. Whitespace
-between code tokens and ordinary prose comments may change, even without a
-Javadoc edit. Identifiers, operators, literals, annotations, and other code tokens
-must remain identical. Whitespace or comment-like text inside a string or
-character literal is not ignored. Adding a comment that hides executable code
-does not qualify.
+JavaParser parses both versions of the modified files successfully as Java 8,
+with token storage, comment attribution, and original-line-separator detection
+disabled. It compares the exact `CompilationUnit.toString()` values without
+stripping whitespace. Comments are not attached to those compilation units;
+the parser's separate comment inventory supplies the lightweight directive gate.
+No token-position map, comment reattribution, second parser, or lexer is added.
 
-Existing Javadoc must remain attached to the same declaration, using positions
-among code tokens rather than positions that count whitespace/comments.
-Adding, removing, or moving Javadoc remains unsupported, as do edits involving
-`@deprecated` or unsupported documentation tags.
+Whitespace and comment-like text inside string and character literals remain
+part of the AST. Changed identifiers, operators, imports, annotations, and
+literal values do not qualify. Neither does hiding executable code in a comment.
+Printer normalization can accept syntax changes such as equivalent array
+declarations or extra empty top-level declarations. The report therefore uses
+`ast-equivalent`, not `whitespace-only` or a claim of compiler equivalence.
 
-Tool directives must keep their text and position relative to code. This includes
-snippet boundaries (`BEGIN:`/`END:`), generated-code markers, formatter and
-inspection directives, and unrecognized directive-shaped comments such as
-`@generate`, `#if`, or `custom-generator: enabled`. These are not treated as ordinary prose.
-Unchanged directives can coexist with formatting changes elsewhere. Line-ending
-conversion is supported, including inside otherwise unchanged comments.
+Ordinary Javadoc can be added, removed, moved, detached, or edited without
+tracking its declaration attachment. Known documentation tags, including
+documentation-only tags such as `hidden`, `summary`, and `snippet`, are recognized
+without validating their contents. Javadoc validity remains a Build/Analyze concern.
 
-Unicode escape sequences, byte-order marks, non-UTF-8 source, and unsupported Java
-syntax remain excluded. Build and Analyze still check formatting, generated
-documentation, and snippet synchronization.
+Compiler-sensitive cases use conservative file-level exclusions. Either source
+containing the raw sequence `\u` or the text `@deprecated` is rejected, even when
+that text is unchanged or occurs in a literal. This avoids approximating Unicode
+preprocessing or rebuilding the attribution needed to preserve deprecation metadata.
+Consequently, formatting-only edits to files with deprecated Javadoc no longer qualify.
+Byte-order marks, non-UTF-8 source, and unsupported Java syntax remain excluded.
+
+Known static-analysis, formatting, spelling, and documentation markers can change
+without retaining their text or code-relative position. These include
+`BEGIN:`/`END:`, `src_embed`, `codesnippet`, `CHECKSTYLE`, `NOSONAR`, `NOPMD`,
+`noinspection`, `formatter`, `spotless`, `cspell`, and localization suppressions.
+Generated-origin banners are not source-generation instructions.
+Build and Analyze retain their existing formatting, Javadoc, snippet,
+static-analysis, and generator checks.
+
+Source-generation and unclassified directive-shaped comments remain conservative:
+either source containing them is rejected, even if they are unchanged. Examples
+include `GEN-BEGIN`/`GEN-END`, generated regions, unclassified `tag::`/`end::`
+consumers, unknown HTML markers, and forms such as `@generate`, `#if`, or
+`custom-generator: enabled`. Unknown block/inline tag markers also remain
+unclassified. Known markers do not exempt an unknown directive in the same comment.
+Directive recognition uses the parse result's comment inventory rather than
+scanning string/character literals.
 
 Additions, deletions, renames, mode changes, package-info, module-info, test/sample
 Java, libraries outside the Track 2 data-plane scope, and mixed functional changes
@@ -137,7 +158,7 @@ candidates. It never builds the SDK or the baseline revision.
 Use `-ForceFullValidation` or `FORCE_FULL_VALIDATION=true` to disable evaluation of
 whether runtime tests can be omitted.
 
-Report schema version 2 contains exact revision IDs, the `track2-data-plane`
+Report schema version 3 contains exact revision IDs, the `track2-data-plane`
 library scope, per-library decisions in `Libraries`, shared inputs in
 `SharedChanges`, per-file reasons, and `SuppressionApplied=false`.
 Library decisions are `Eligible`, `NotEligible`, or `Inconclusive`. The PR summary
@@ -150,8 +171,13 @@ also supports `PartiallyEligible`:
 | `NotEligible` | No library qualifies, or repository-wide input changes block exclusions. |
 | `Inconclusive` | Required setup, source parsing, snapshot data, or output was invalid. |
 
-Accepted per-file reasons distinguish `javadoc-only`, `ordinary-comment-only`,
-`whitespace-only`, and `non-code-only` (a combination of these changes).
+Accepted source comparisons use the per-file reason `ast-equivalent` and the
+library reason `supported-ast-equivalent-changes`. Schema version 3 replaces the
+previous token-based documentation/comment/whitespace reason codes because
+printed-AST equality also accepts some syntax normalizations.
+Compiler-sensitive exclusions distinguish `unsupported-unicode-escape` and
+`unsupported-deprecation`; unclassified directives use
+`unsupported-comment-directive`.
 An unchanged source is not counted as an eligible edit. A library with only known
 consumer-documentation changes uses `existing-non-runtime-validation` without
 starting the Java parser.
@@ -204,10 +230,12 @@ Invoke-Pester -Path @(
 ) -Tag UnitTest -Output Detailed
 ```
 
-Java unit tests cover token preservation, formatting, ordinary-comment edits,
-stable Javadoc attachment, deprecation, tool directives, Unicode, comments versus
-literals, malformed source, exact 2 MiB UTF-8 byte boundaries, per-pair flushing,
-more than 100 source pairs, and early termination.
+Java unit tests cover exact printed-AST comparison, syntax normalization,
+formatting, ordinary-comment edits, relaxed Javadoc attachment, file-level
+deprecation and Unicode exclusions, known static/documentation markers,
+unclassified directives, comments versus literals, unsuccessful/partial parses,
+exact 2 MiB UTF-8 byte boundaries, per-pair flushing, more than 100 source pairs,
+and early termination.
 Pester uses disposable local Git repositories and the real parser to cover
 complete PR snapshots, target advancement, shallow history, sparse/dirty
 worktrees, automatic library detection, management/Track 1 exclusions, invalid

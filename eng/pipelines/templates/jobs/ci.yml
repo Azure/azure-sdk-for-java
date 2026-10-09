@@ -496,7 +496,7 @@ jobs:
           - ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
             - ${{ if and(eq(parameters.SDKType, 'client'), eq(variables['System.TeamProject'], 'public'), eq(variables['Build.Repository.Name'], 'Azure/azure-sdk-for-java')) }}:
               - task: PowerShell@2
-                displayName: Evaluate Java documentation, comments, and formatting (report only)
+                displayName: Evaluate Java AST equivalence (report only)
                 name: java_doc_report
                 condition: and(succeeded(), eq(variables['JavaDocClassifierReportOnly'], 'true'))
                 inputs:

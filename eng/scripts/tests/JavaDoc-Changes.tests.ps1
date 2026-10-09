@@ -329,9 +329,9 @@ Describe 'Java documentation report-only classification' -Tag 'UnitTest' {
         $result.ComparedFileCount | Should -Be 1
         $result.DecisionFile | Should -BeNullOrEmpty
         $result.Files[0].Compared | Should -BeTrue
-        $result.Files[0].Reason | Should -BeExactly 'javadoc-only'
+        $result.Files[0].Reason | Should -BeExactly 'ast-equivalent'
         $result.LibraryScope | Should -BeExactly 'track2-data-plane'
-        $result.SchemaVersion | Should -Be 2
+        $result.SchemaVersion | Should -Be 3
         $result.DependencyImpactEvaluated | Should -BeFalse
         $result.Libraries.Count | Should -Be 1
         $result.Libraries[0].Decision | Should -BeExactly 'Eligible'
@@ -542,7 +542,7 @@ Describe 'Java documentation report-only classification' -Tag 'UnitTest' {
     It 'treats a parser process failure as inconclusive rather than approving partial library results' {
         $fixture = New-LibraryFixture
         Mock Start-JavaDocProcess {
-            Start-FixtureParserProcess -Body '$null = [Console]::ReadLine(); [Console]::WriteLine("0`tjavadoc-only"); exit 7'
+            Start-FixtureParserProcess -Body '$null = [Console]::ReadLine(); [Console]::WriteLine("0`tast-equivalent"); exit 7'
         } -ParameterFilter { $FilePath -eq 'java' }
         $result = Measure-Fixture $fixture
         $result.Decision | Should -BeExactly 'Inconclusive'
@@ -624,7 +624,7 @@ Describe 'Java documentation report-only classification' -Tag 'UnitTest' {
     It 'does not turn an early parser exit after a positive result into PR eligibility' {
         $fixture = New-MultipleSourceFixture
         Mock Start-JavaDocProcess {
-            Start-FixtureParserProcess -Body '$null = [Console]::ReadLine(); [Console]::WriteLine("0`tjavadoc-only")'
+            Start-FixtureParserProcess -Body '$null = [Console]::ReadLine(); [Console]::WriteLine("0`tast-equivalent")'
         } -ParameterFilter { $FilePath -eq 'java' }
         Mock Get-JavaDocSource { return & $script:OriginalGetJavaDocSource $RepositoryRoot $Blob }
         $result = Measure-Fixture $fixture
@@ -646,7 +646,7 @@ Describe 'Java documentation report-only classification' -Tag 'UnitTest' {
     }
 
     It 'does not trust a result from a parser that subsequently fails: <Reason>' -TestCases @(
-        @{ Reason = 'javadoc-only' }
+        @{ Reason = 'ast-equivalent' }
         @{ Reason = 'non-documentation-change' }
     ) {
         param($Reason)
@@ -684,7 +684,7 @@ Describe 'Java documentation report-only classification' -Tag 'UnitTest' {
             $body = if ($Phase -eq 'response') {
                 'Start-Sleep -Seconds 30'
             } else {
-                '$null = [Console]::ReadLine(); [Console]::WriteLine("0`tjavadoc-only"); Start-Sleep -Seconds 30'
+                '$null = [Console]::ReadLine(); [Console]::WriteLine("0`tast-equivalent"); Start-Sleep -Seconds 30'
             }
             $process = Start-FixtureParserProcess -Body $body
             $script:FixtureParserPid = $process.Id
@@ -699,9 +699,13 @@ Describe 'Java documentation report-only classification' -Tag 'UnitTest' {
     }
 
     It 'recognizes <Kind> without requiring a Javadoc edit' -TestCases @(
-        @{ Kind = 'whitespace'; ExpectedReason = 'whitespace-only' }
-        @{ Kind = 'ordinary-comment'; ExpectedReason = 'ordinary-comment-only' }
-        @{ Kind = 'mixed'; ExpectedReason = 'non-code-only' }
+        @{ Kind = 'whitespace'; ExpectedReason = 'ast-equivalent' }
+        @{ Kind = 'ordinary-comment'; ExpectedReason = 'ast-equivalent' }
+        @{ Kind = 'mixed'; ExpectedReason = 'ast-equivalent' }
+        @{ Kind = 'added-javadoc'; ExpectedReason = 'ast-equivalent' }
+        @{ Kind = 'removed-javadoc'; ExpectedReason = 'ast-equivalent' }
+        @{ Kind = 'syntax-normalization'; ExpectedReason = 'ast-equivalent' }
+        @{ Kind = 'static-directive'; ExpectedReason = 'ast-equivalent' }
     ) {
         param($Kind, $ExpectedReason)
         $fixture = New-JavaDocFixture
@@ -709,13 +713,17 @@ Describe 'Java documentation report-only classification' -Tag 'UnitTest' {
             'whitespace' { $script:BeforeSource.Replace('    ', "`t").Replace('return ', 'return  ') }
             'ordinary-comment' { $script:BeforeSource.Replace('return ', '/* Explains the result. */return ') }
             'mixed' { $script:AfterSource.Replace('    ', "`t").Replace('return ', '/* Explains the result. */return ') }
+            'added-javadoc' { '/** Class documentation. */' + $script:BeforeSource }
+            'removed-javadoc' { $script:BeforeSource.Replace('/** Old description. */', '') }
+            'syntax-normalization' { ';' + $script:BeforeSource + ';' }
+            'static-directive' { $script:BeforeSource.Replace('return ', '/* @formatter:off */return ') }
         }
         Write-FixtureFile $fixture.Root $fixture.JavaPath $after
         Save-FixtureCommit $fixture.Root
         Complete-JavaDocFixture $fixture
         $result = Measure-Fixture $fixture
         $result.Decision | Should -BeExactly 'Eligible'
-        $result.Reason | Should -BeExactly 'supported-non-code-changes'
+        $result.Reason | Should -BeExactly 'supported-ast-equivalent-changes'
         $result.Files[0].Reason | Should -BeExactly $ExpectedReason
         $result.WouldSuppressTests | Should -BeTrue
         $result.SuppressionApplied | Should -BeFalse
@@ -741,8 +749,7 @@ Describe 'Java documentation report-only classification' -Tag 'UnitTest' {
         Save-FixtureCommit $fixture.Root
         Complete-JavaDocFixture $fixture
         $result = Measure-Fixture $fixture
-        $result.Files.Reason | Should -Contain 'whitespace-only'
-        $result.Files.Reason | Should -Contain 'ordinary-comment-only'
+        @($result.Files | Where-Object Reason -CEQ 'ast-equivalent').Count | Should -Be $(if ($Functional) { 2 } else { 3 })
         $result.WouldSuppressTests | Should -Be (-not $Functional)
         $result.SuppressionApplied | Should -BeFalse
         if ($Functional) {
@@ -750,19 +757,23 @@ Describe 'Java documentation report-only classification' -Tag 'UnitTest' {
             $result.Files.Reason | Should -Contain 'non-documentation-change'
         } else {
             $result.Decision | Should -BeExactly 'Eligible'
-            $result.Files.Reason | Should -Contain 'javadoc-only'
+            $result.Files.Reason | Should -Contain 'ast-equivalent'
         }
     }
 
-    It 'retains tests for tool directives, literal whitespace, and commented-out code: <Kind>' -TestCases @(
+    It 'rejects compiler-sensitive inputs, unclassified directives, and changed code: <Kind>' -TestCases @(
         @{ Kind = 'tool-directive'; ExpectedReason = 'unsupported-comment-directive' }
+        @{ Kind = 'deprecation'; ExpectedReason = 'unsupported-deprecation' }
+        @{ Kind = 'unicode'; ExpectedReason = 'unsupported-unicode-escape' }
         @{ Kind = 'literal-whitespace'; ExpectedReason = 'non-documentation-change' }
         @{ Kind = 'commented-out-code'; ExpectedReason = 'non-documentation-change' }
     ) {
         param($Kind, $ExpectedReason)
         $fixture = New-JavaDocFixture
         $after = switch ($Kind) {
-            'tool-directive' { $script:AfterSource.Replace('return ', '/* @formatter:off */return ') }
+            'tool-directive' { $script:AfterSource.Replace('return ', '/* @generate value */return ') }
+            'deprecation' { $script:AfterSource.Replace('New description.', '@deprecated Old API.') }
+            'unicode' { $script:AfterSource.Replace('New description.', '\u000a Not supported.') }
             'literal-whitespace' { $script:AfterSource.Replace('"name"', '" name "') }
             'commented-out-code' { $script:AfterSource.Replace('String name()', '/* String name()').Replace('"name"; }',
                 '"name"; } */') }
@@ -1026,7 +1037,7 @@ Describe 'Java documentation report-only classification' -Tag 'UnitTest' {
         }
         Mock Invoke-JavaDocComparisons {
             $Candidates.Count | Should -Be 1
-            $Candidates[0].File.Reason = 'javadoc-only'
+            $Candidates[0].File.Reason = 'ast-equivalent'
             $Candidates[0].File.Compared = $true
         }
         $result = Get-JavaDocChangeReport -RepositoryRoot $TestDrive -ExpectedHeadSha ('1' * 40) `
@@ -1096,7 +1107,7 @@ Describe 'Java documentation report-only classification' -Tag 'UnitTest' {
         $result = Measure-Fixture $fixture
         $result.Decision | Should -BeExactly 'Eligible'
         $result.ComparedFileCount | Should -Be 1
-        $result.Files[0].Reason | Should -BeExactly 'javadoc-only'
+        $result.Files[0].Reason | Should -BeExactly 'ast-equivalent'
         $result.SuppressionApplied | Should -BeFalse
     }
 
@@ -1149,7 +1160,7 @@ Describe 'Java documentation report-only classification' -Tag 'UnitTest' {
         $result.ComparedFileCount | Should -Be 101
         $result.Files.Count | Should -Be 101
         @($result.Files | Where-Object { -not $_.Compared }).Count | Should -Be 0
-        $result.Files[-1].Reason | Should -BeExactly 'javadoc-only'
+        $result.Files[-1].Reason | Should -BeExactly 'ast-equivalent'
         $result.DecisionFile | Should -BeNullOrEmpty
         $result.SuppressionApplied | Should -BeFalse
     }
@@ -1182,8 +1193,9 @@ Describe 'Java documentation report-only classification' -Tag 'UnitTest' {
     It 'never converts missing, invalid, or incomplete parser results into eligibility' -TestCases @(
         @{ Output = ''; Expected = 'incomplete result set' }
         @{ Output = "0`tunknown`n"; Expected = 'invalid result' }
-        @{ Output = "1`tjavadoc-only`n"; Expected = 'invalid result' }
-        @{ Output = "0`tjavadoc-only`n1`tjavadoc-only`n"; Expected = 'unexpected extra output' }
+        @{ Output = "0`tjavadoc-only`n"; Expected = 'invalid result' }
+        @{ Output = "1`tast-equivalent`n"; Expected = 'invalid result' }
+        @{ Output = "0`tast-equivalent`n1`tast-equivalent`n"; Expected = 'unexpected extra output' }
     ) {
         param($Output, $Expected)
         $fixture = New-EligibleFixture
@@ -1334,7 +1346,7 @@ Describe 'Java documentation report-only classification' -Tag 'UnitTest' {
             -OutputPath (Join-Path $TestDrive 'pipeline-report.json') -Pipeline 6>&1
         ($output -join "`n") | Should -Match 'variable=JavaDocReportEligible;isOutput=true]true'
         ($output -join "`n") | Should -Match 'variable=JavaDocReportDecision;isOutput=true]Eligible'
-        ($output -join "`n") | Should -Match 'variable=JavaDocReportReason;isOutput=true]supported-non-code-changes'
+        ($output -join "`n") | Should -Match 'variable=JavaDocReportReason;isOutput=true]supported-ast-equivalent-changes'
         ($output -join "`n") | Should -Match 'variable=JavaDocReportMilliseconds;isOutput=true]\d+'
         ($output -join "`n") | Should -Match 'variable=JavaDocReportEligibleLibraryCount;isOutput=true]1'
         ($output -join "`n") | Should -Match 'task.uploadfile'
@@ -1374,7 +1386,7 @@ Describe 'Java documentation report-only classification' -Tag 'UnitTest' {
         ($output -join "`n") | Should -Match 'variable=JavaDocReportEligibleLibraryCount;isOutput=true]1'
         ($output -join "`n") | Should -Not -Match 'JavaTestsSuppressed|variable=RunTests'
         $report = Get-Content -LiteralPath $reportPath -Raw | ConvertFrom-Json
-        $report.SchemaVersion | Should -Be 2
+        $report.SchemaVersion | Should -Be 3
         $report.Libraries[0].Decision | Should -BeExactly 'NotEligible'
         $report.Libraries[1].Decision | Should -BeExactly 'Eligible'
         $report.DependencyImpactEvaluated | Should -BeFalse
@@ -1411,7 +1423,7 @@ Describe 'Java documentation report-only pipeline wiring' -Tag 'UnitTest' {
     It 'keeps the observer opt-in and retains the existing matrix classifier and empty-matrix guard' {
         $ci = Get-Content (Join-Path $script:RepositoryRoot 'eng/pipelines/templates/jobs/ci.yml') -Raw
         $ci | Should -Match "eq\(variables\['JavaDocClassifierReportOnly'\], 'true'\)"
-        $ci | Should -Match 'displayName: Evaluate Java documentation, comments, and formatting \(report only\)'
+        $ci | Should -Match 'displayName: Evaluate Java AST equivalence \(report only\)'
         $ci | Should -Match 'name: java_doc_report'
         $ci | Should -Match 'java-doc-report\.json'
         $ci | Should -Match 'filePath: eng/scripts/Measure-JavaDocChanges.ps1'
