@@ -11,7 +11,7 @@ import com.azure.resourcemanager.deviceprovisioningservices.models.CertificatePr
  */
 public final class DpsCertificateCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-08-31/DPSCertificateCreateOrUpdate.json
+     * x-ms-original-file: 2026-11-01/DPSCertificateCreateOrUpdate.json
      */
     /**
      * Sample code: DPSCreateOrUpdateCertificate.

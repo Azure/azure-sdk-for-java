@@ -13,7 +13,7 @@ import com.azure.resourcemanager.deviceprovisioningservices.models.PrivateLinkSe
  */
 public final class IotDpsResourceCreateOrUpdatePrivateEndpointConnectionSamples {
     /*
-     * x-ms-original-file: 2026-08-31/DPSCreateOrUpdatePrivateEndpointConnection.json
+     * x-ms-original-file: 2026-11-01/DPSCreateOrUpdatePrivateEndpointConnection.json
      */
     /**
      * Sample code: PrivateEndpointConnection_CreateOrUpdate.
