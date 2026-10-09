@@ -9,7 +9,7 @@ package com.azure.resourcemanager.managedops.generated;
  */
 public final class ManagedOpsGetSamples {
     /*
-     * x-ms-original-file: 2025-07-28-preview/ManagedOps_Get.json
+     * x-ms-original-file: 2026-01-06-preview/ManagedOps_Get.json
      */
     /**
      * Sample code: ManagedOps_Get.
