@@ -427,9 +427,10 @@ public final class KnowledgeBaseRetrievalClient {
      * early. The response is also closed on end-of-stream, a terminal event, or an iteration failure. Closing the
      * stream is idempotent and may throw {@link java.io.IOException}.
      *
-     * If received, the terminal {@code error} or {@code response.completed} event is emitted before iteration ends.
-     * End-of-stream without a terminal event completes normally. Transport and decoding failures are thrown during
-     * iteration. The client does not reconnect automatically.
+     * If received, the terminal {@code error} or {@code response.completed} event is emitted before iteration ends. A
+     * failure while closing after a terminal event is reported by the next iterator access or explicit close, after the
+     * terminal event is delivered. End-of-stream without a terminal event completes normally. Transport and decoding
+     * failures are thrown during iteration. The client does not reconnect automatically.
      *
      * @param retrievalRequest The retrieval request to process.
      * @return A closeable stream of typed knowledge base retrieval events.
@@ -450,9 +451,10 @@ public final class KnowledgeBaseRetrievalClient {
      * early. The response is also closed on end-of-stream, a terminal event, or an iteration failure. Closing the
      * stream is idempotent and may throw {@link java.io.IOException}.
      *
-     * If received, the terminal {@code error} or {@code response.completed} event is emitted before iteration ends.
-     * End-of-stream without a terminal event completes normally. Transport and decoding failures are thrown during
-     * iteration. The client does not reconnect automatically.
+     * If received, the terminal {@code error} or {@code response.completed} event is emitted before iteration ends. A
+     * failure while closing after a terminal event is reported by the next iterator access or explicit close, after the
+     * terminal event is delivered. End-of-stream without a terminal event completes normally. Transport and decoding
+     * failures are thrown during iteration. The client does not reconnect automatically.
      *
      * @param retrievalRequest The retrieval request to process.
      * @param querySourceAuthorization Token identifying the user for which the query is being executed. This token is

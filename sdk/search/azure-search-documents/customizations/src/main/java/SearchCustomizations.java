@@ -8,6 +8,7 @@ import com.azure.autorest.customization.PackageCustomization;
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.NodeList;
+import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.EnumConstantDeclaration;
 import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
@@ -112,6 +113,28 @@ public class SearchCustomizations extends Customization {
             = libraryCustomization.getPackage("com.azure.search.documents.knowledgebases");
         addAsyncRetrieveStream(knowledgeBases.getClass("KnowledgeBaseRetrievalAsyncClient"));
         addSyncRetrieveStream(knowledgeBases.getClass("KnowledgeBaseRetrievalClient"));
+        allowNoContentRetrievalStream(libraryCustomization.getPackage("com.azure.search.documents.implementation")
+            .getClass("KnowledgeBaseRetrievalClientImpl"));
+    }
+
+    private static void allowNoContentRetrievalStream(ClassCustomization customization) {
+        customization.customizeAst(ast -> {
+            for (String methodName : Arrays.asList("retrieveStream", "retrieveStreamSync")) {
+                MethodDeclaration method = ast
+                    .findFirst(ClassOrInterfaceDeclaration.class,
+                        declaration -> declaration.isInterface()
+                            && "KnowledgeBaseRetrievalClientService".equals(declaration.getNameAsString()))
+                    .orElseThrow(
+                        () -> new IllegalStateException("Knowledge base retrieval service interface is missing."))
+                    .getMethodsByName(methodName)
+                    .stream()
+                    .findFirst()
+                    .orElseThrow(() -> new IllegalStateException("Missing streaming REST operation: " + methodName));
+                method.getAnnotationByName("ExpectedResponses")
+                    .orElseThrow(() -> new IllegalStateException("Missing expected responses for " + methodName))
+                    .replace(StaticJavaParser.parseAnnotation("@ExpectedResponses({200, 204})"));
+            }
+        });
     }
 
     private static void addStreamModels(LibraryCustomization customization) {
@@ -252,7 +275,9 @@ public class SearchCustomizations extends Customization {
                         + "terminal event, or an iteration failure. Closing the stream is idempotent and may throw "
                         + "{@link java.io.IOException}.\n\n"
                         + "If received, the terminal {@code error} or {@code response.completed} event is emitted "
-                        + "before iteration ends. End-of-stream without a terminal event completes normally. "
+                        + "before iteration ends. A failure while closing after a terminal event is reported by the "
+                        + "next iterator access or explicit close, after the terminal event is delivered. "
+                        + "End-of-stream without a terminal event completes normally. "
                         + "Transport and decoding failures are thrown during iteration. The client does not "
                         + "reconnect automatically.\n\n" + "@param retrievalRequest The retrieval request to process.\n"
                         + "@return A closeable stream of typed knowledge base retrieval events.");
@@ -277,7 +302,9 @@ public class SearchCustomizations extends Customization {
                         + "terminal event, or an iteration failure. Closing the stream is idempotent and may throw "
                         + "{@link java.io.IOException}.\n\n"
                         + "If received, the terminal {@code error} or {@code response.completed} event is emitted "
-                        + "before iteration ends. End-of-stream without a terminal event completes normally. "
+                        + "before iteration ends. A failure while closing after a terminal event is reported by the "
+                        + "next iterator access or explicit close, after the terminal event is delivered. "
+                        + "End-of-stream without a terminal event completes normally. "
                         + "Transport and decoding failures are thrown during iteration. The client does not "
                         + "reconnect automatically.\n\n" + "@param retrievalRequest The retrieval request to process.\n"
                         + "@param querySourceAuthorization Token identifying the user for which the query is being "

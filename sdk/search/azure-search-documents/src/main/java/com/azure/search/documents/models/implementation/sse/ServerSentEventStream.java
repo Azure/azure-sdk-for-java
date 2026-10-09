@@ -6,6 +6,7 @@ package com.azure.search.documents.models.implementation.sse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.CloseableIterableStream;
+import com.azure.core.util.FluxUtil;
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
@@ -133,8 +134,11 @@ final class ServerSentEventStream {
 
     private static <T> Flux<T> decode(BinaryData body, BiFunction<String, String, T> converter) {
         ServerSentEventDecoder decoder = new ServerSentEventDecoder();
+        // Own transport bytes before queuing them: the backing memory may be reclaimed when onNext returns.
+        Flux<ByteBuffer> buffers
+            = body.toFluxByteBuffer().map(buffer -> ByteBuffer.wrap(FluxUtil.byteBufferToArray(buffer.duplicate())));
         // Serialize transport errors after preceding buffers so they cannot displace an inclusive terminal event.
-        Flux<ServerSentEventFrame> frames = body.toFluxByteBuffer().materialize().hide().concatMap(signal -> {
+        Flux<ServerSentEventFrame> frames = buffers.materialize().hide().concatMap(signal -> {
             if (signal.isOnError()) {
                 return Flux.error(signal.getThrowable());
             }
@@ -173,6 +177,7 @@ final class ServerSentEventStream {
         private InputStream stream;
         private T next;
         private boolean terminal;
+        private Exception pendingCloseFailure;
 
         private ServerSentEventIterator(BinaryData body, BiFunction<String, String, T> converter,
             Predicate<T> terminalEvent) {
@@ -184,6 +189,11 @@ final class ServerSentEventStream {
 
         @Override
         public boolean hasNext() {
+            try {
+                reportPendingCloseFailure();
+            } catch (IOException exception) {
+                throw new UncheckedIOException("Failed to close the server-sent event stream.", exception);
+            }
             if (closed) {
                 return false;
             }
@@ -235,13 +245,18 @@ final class ServerSentEventStream {
             T value = next;
             next = null;
             if (terminal) {
-                try {
-                    close();
-                } catch (IOException exception) {
-                    throw new UncheckedIOException("Failed to close the server-sent event stream.", exception);
-                }
+                closeAfterTerminal();
             }
             return value;
+        }
+
+        private synchronized void closeAfterTerminal() {
+            try {
+                close();
+            } catch (IOException | RuntimeException exception) {
+                // Deliver terminal data before reporting its cleanup failure on the next access or explicit close.
+                pendingCloseFailure = exception;
+            }
         }
 
         private synchronized InputStream openStream() {
@@ -256,6 +271,7 @@ final class ServerSentEventStream {
 
         @Override
         public synchronized void close() throws IOException {
+            reportPendingCloseFailure();
             if (closed) {
                 return;
             }
@@ -265,6 +281,17 @@ final class ServerSentEventStream {
                 stream.close();
             } else if (body != null) {
                 body.toStream().close();
+            }
+        }
+
+        private synchronized void reportPendingCloseFailure() throws IOException {
+            Exception failure = pendingCloseFailure;
+            pendingCloseFailure = null;
+            if (failure instanceof IOException) {
+                throw (IOException) failure;
+            }
+            if (failure instanceof RuntimeException) {
+                throw (RuntimeException) failure;
             }
         }
 

@@ -32,6 +32,12 @@ The following changes apply when upgrading from the preceding `12.1.0` beta rele
 
 ### Bugs Fixed
 
+- Fixed asynchronous retrieval streaming to preserve response bytes when the HTTP transport reuses buffers during
+  demand pauses.
+- Fixed synchronous retrieval streaming to deliver terminal events before reporting response cleanup failures on the
+  next iterator access or explicit close.
+- Fixed retrieval streaming clients to accept HTTP 204 responses as empty streams.
+
 ### Other Changes
 
 ## 12.1.0-beta.2 (2026-08-28)

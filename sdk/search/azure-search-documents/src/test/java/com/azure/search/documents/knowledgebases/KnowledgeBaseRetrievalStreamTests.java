@@ -27,6 +27,8 @@ import com.azure.search.documents.knowledgebases.models.KnowledgeBaseStreamError
 import com.azure.search.documents.knowledgebases.models.KnowledgeRetrievalLowReasoningEffort;
 import com.azure.search.documents.knowledgebases.models.UnknownKnowledgeBaseRetrievalStreamEvent;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -37,6 +39,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -247,6 +250,64 @@ public class KnowledgeBaseRetrievalStreamTests {
         StepVerifier
             .create(createBuilder(body, null).buildAsyncClient().retrieveStream(new KnowledgeBaseRetrievalOptions()))
             .verifyError(RuntimeException.class);
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    public void syncClientAcceptsNoContentAndReleasesResponse(boolean authorization) throws IOException {
+        AtomicInteger closes = new AtomicInteger();
+        AtomicInteger reads = new AtomicInteger();
+        KnowledgeBaseRetrievalClient client = noContentBuilder(authorization, closes, reads).buildClient();
+        try (CloseableIterableStream<KnowledgeBaseRetrievalStreamEvent> stream = authorization
+            ? client.retrieveStream(new KnowledgeBaseRetrievalOptions(), QUERY_SOURCE_TOKEN)
+            : client.retrieveStream(new KnowledgeBaseRetrievalOptions())) {
+            assertFalse(stream.iterator().hasNext());
+            assertEquals(1, closes.get());
+            assertEquals(0, reads.get());
+        }
+        assertEquals(1, closes.get());
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    public void asyncClientAcceptsNoContentAndReleasesResponse(boolean authorization) {
+        AtomicInteger closes = new AtomicInteger();
+        AtomicInteger reads = new AtomicInteger();
+        KnowledgeBaseRetrievalAsyncClient client = noContentBuilder(authorization, closes, reads).buildAsyncClient();
+        StepVerifier.create(authorization
+            ? client.retrieveStream(new KnowledgeBaseRetrievalOptions(), QUERY_SOURCE_TOKEN)
+            : client.retrieveStream(new KnowledgeBaseRetrievalOptions())).verifyComplete();
+        assertEquals(1, closes.get());
+        assertEquals(0, reads.get());
+    }
+
+    private static KnowledgeBaseRetrievalClientBuilder noContentBuilder(boolean authorization, AtomicInteger closes,
+        AtomicInteger reads) {
+        return new KnowledgeBaseRetrievalClientBuilder().endpoint("https://example.search.windows.net")
+            .knowledgeBaseName("kb")
+            .credential(new AzureKeyCredential("key"))
+            .httpClient(request -> {
+                assertEquals(authorization ? QUERY_SOURCE_TOKEN : null,
+                    request.getHeaders().getValue(QUERY_SOURCE_AUTHORIZATION));
+                assertNull(request.getHeaders().getValue(QUERY_WORK_IQ_SOURCE_AUTHORIZATION));
+                return Mono.just(new MockHttpResponse(request, 204) {
+                    private final AtomicBoolean closed = new AtomicBoolean();
+
+                    @Override
+                    public Flux<ByteBuffer> getBody() {
+                        return Flux.<ByteBuffer>empty()
+                            .doOnNext(ignored -> reads.incrementAndGet())
+                            .doFinally(ignored -> close());
+                    }
+
+                    @Override
+                    public void close() {
+                        if (closed.compareAndSet(false, true)) {
+                            closes.incrementAndGet();
+                        }
+                    }
+                });
+            });
     }
 
     private static void assertStreamEvents(List<KnowledgeBaseRetrievalStreamEvent> events) {

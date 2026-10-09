@@ -13,8 +13,11 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.CloseableIterableStream;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.reactivestreams.Subscription;
+import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -37,6 +40,7 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -68,6 +72,65 @@ public class ServerSentEventStreamTests {
         StepVerifier.create(ServerSentEventStreams.toFlux(response(body), CONVERTER))
             .expectNextSequence(expectedFramedEvents())
             .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("borrowedBufferCases")
+    public void asyncOwnsBorrowedBuffersBeforeDemandPausesAndPrefetch(boolean separateBuffer, boolean direct,
+        boolean windowedReadOnly) {
+        String firstEvents = "data: first\n\ndata: second\n\n";
+        ByteBuffer firstStorage = windowedReadOnly ? windowedBuffer(firstEvents, direct) : buffer(firstEvents);
+        ByteBuffer first = windowedReadOnly ? firstStorage.asReadOnlyBuffer() : firstStorage;
+        ByteBuffer secondStorage
+            = windowedReadOnly ? windowedBuffer("data: third\n\n", direct) : buffer("data: third\n\n");
+        ByteBuffer second = windowedReadOnly ? secondStorage.asReadOnlyBuffer() : secondStorage;
+        int start = windowedReadOnly ? 1 : 0;
+        AtomicInteger returnedBuffers = new AtomicInteger();
+        AtomicInteger conversions = new AtomicInteger();
+        BinaryData body = reactiveBody(Flux.create(sink -> {
+            assertTrue(sink.requestedFromDownstream() > 0);
+            sink.next(first);
+            returnedBuffers.incrementAndGet();
+            if (separateBuffer) {
+                assertTrue(sink.requestedFromDownstream() > 0,
+                    "The next buffer must be prefetched, not source-queued.");
+                sink.next(second);
+                returnedBuffers.incrementAndGet();
+                secondStorage.put(start + "data: ".length(), (byte) 0xFF);
+            } else {
+                firstStorage.put(start + firstEvents.indexOf("second"), (byte) 0xFF);
+            }
+            sink.complete();
+        }));
+        DemandSubscriber subscriber = new DemandSubscriber();
+
+        ServerSentEventStreams.toFlux(response(body), (event, data) -> {
+            conversions.incrementAndGet();
+            return event + ":" + data;
+        }).subscribe(subscriber);
+
+        assertEquals(separateBuffer ? 2 : 1, returnedBuffers.get());
+        assertEquals(Arrays.asList("message:first"), subscriber.events);
+        assertEquals(1, conversions.get());
+        assertEquals(start, first.position());
+        assertEquals(start + firstEvents.length(), first.limit());
+        assertEquals(start, second.position());
+        assertEquals(start + "data: third\n\n".length(), second.limit());
+        assertNull(subscriber.failure);
+        assertFalse(subscriber.completed);
+
+        subscriber.request(1);
+        assertNull(subscriber.failure);
+        assertEquals(Arrays.asList("message:first", "message:second"), subscriber.events);
+        assertEquals(2, conversions.get());
+
+        subscriber.request(2);
+        assertNull(subscriber.failure);
+        assertEquals(separateBuffer
+            ? Arrays.asList("message:first", "message:second", "message:third")
+            : Arrays.asList("message:first", "message:second"), subscriber.events);
+        assertEquals(separateBuffer ? 3 : 2, conversions.get());
+        assertTrue(subscriber.completed);
     }
 
     @Test
@@ -481,6 +544,71 @@ public class ServerSentEventStreamTests {
 
     @ParameterizedTest
     @MethodSource("closeFailures")
+    public void syncTerminalCleanupFailureIsReportedAfterDeliveryDuringIteration(Throwable closeFailure)
+        throws IOException {
+        for (boolean useNext : new boolean[] { false, true }) {
+            AtomicInteger reads = new AtomicInteger();
+            AtomicInteger closes = new AtomicInteger();
+            InputStream body = failingCloseBody("event: done\ndata: last\n\n".getBytes(StandardCharsets.UTF_8),
+                closeFailure, reads, closes);
+            try (CloseableIterableStream<String> stream = ServerSentEventStreams.toIterableStream(
+                response(BinaryData.fromStream(body)), CONVERTER, event -> event.startsWith("done:"))) {
+                Iterator<String> iterator = stream.iterator();
+                assertTrue(iterator.hasNext());
+                assertEquals("done:last", iterator.next());
+                assertEquals(1, closes.get());
+                RuntimeException failure = assertThrows(RuntimeException.class, () -> {
+                    if (useNext) {
+                        iterator.next();
+                    } else {
+                        iterator.hasNext();
+                    }
+                });
+                assertSame(closeFailure, closeFailure instanceof IOException ? failure.getCause() : failure);
+                assertFalse(iterator.hasNext());
+                assertEquals(1, closes.get());
+            }
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("closeFailures")
+    public void syncTerminalCleanupFailureIsReportedByExplicitClose(Throwable closeFailure) throws IOException {
+        AtomicInteger reads = new AtomicInteger();
+        AtomicInteger closes = new AtomicInteger();
+        InputStream body = failingCloseBody("event: done\ndata: last\n\n".getBytes(StandardCharsets.UTF_8),
+            closeFailure, reads, closes);
+        CloseableIterableStream<String> stream = ServerSentEventStreams
+            .toIterableStream(response(BinaryData.fromStream(body)), CONVERTER, event -> event.startsWith("done:"));
+        assertEquals("done:last", stream.iterator().next());
+        assertEquals(1, closes.get());
+        assertSame(closeFailure, assertThrows(closeFailure.getClass(), stream::close));
+        stream.close();
+        assertEquals(1, closes.get());
+    }
+
+    @ParameterizedTest
+    @MethodSource("closeFailures")
+    public void syncTerminalCleanupFailureIsReportedByTryWithResources(Throwable closeFailure) {
+        AtomicInteger reads = new AtomicInteger();
+        AtomicInteger closes = new AtomicInteger();
+        AtomicInteger delivered = new AtomicInteger();
+        InputStream body = failingCloseBody("event: done\ndata: last\n\n".getBytes(StandardCharsets.UTF_8),
+            closeFailure, reads, closes);
+        assertSame(closeFailure, assertThrows(closeFailure.getClass(), () -> {
+            try (CloseableIterableStream<String> stream = ServerSentEventStreams.toIterableStream(
+                response(BinaryData.fromStream(body)), CONVERTER, event -> event.startsWith("done:"))) {
+                assertEquals("done:last", stream.iterator().next());
+                delivered.incrementAndGet();
+                assertEquals(1, closes.get());
+            }
+        }));
+        assertEquals(1, delivered.get());
+        assertEquals(1, closes.get());
+    }
+
+    @ParameterizedTest
+    @MethodSource("closeFailures")
     public void syncExplicitCloseFailureDoesNotReadOrRetryClosing(Throwable closeFailure) throws IOException {
         AtomicInteger reads = new AtomicInteger();
         AtomicInteger closes = new AtomicInteger();
@@ -700,6 +828,50 @@ public class ServerSentEventStreamTests {
         return Flux.range(0, (bytes.length + chunkSize - 1) / chunkSize)
             .map(index -> ByteBuffer.wrap(bytes, index * chunkSize,
                 Math.min(chunkSize, bytes.length - index * chunkSize)));
+    }
+
+    private static Stream<Arguments> borrowedBufferCases() {
+        return Stream.of(Arguments.of(false, false, true), Arguments.of(false, true, true),
+            Arguments.of(true, false, true), Arguments.of(true, true, true), Arguments.of(false, false, false),
+            Arguments.of(true, false, false));
+    }
+
+    private static ByteBuffer windowedBuffer(String text, boolean direct) {
+        byte[] bytes = text.getBytes(StandardCharsets.UTF_8);
+        ByteBuffer buffer
+            = direct ? ByteBuffer.allocateDirect(bytes.length + 2) : ByteBuffer.allocate(bytes.length + 2);
+        buffer.put((byte) 0xFF);
+        buffer.put(bytes);
+        buffer.put((byte) 0xFF);
+        buffer.position(1);
+        buffer.limit(1 + bytes.length);
+        return buffer;
+    }
+
+    private static final class DemandSubscriber extends BaseSubscriber<String> {
+        private final List<String> events = new ArrayList<>();
+        private Throwable failure;
+        private boolean completed;
+
+        @Override
+        protected void hookOnSubscribe(Subscription subscription) {
+            request(1);
+        }
+
+        @Override
+        protected void hookOnNext(String event) {
+            events.add(event);
+        }
+
+        @Override
+        protected void hookOnError(Throwable throwable) {
+            failure = throwable;
+        }
+
+        @Override
+        protected void hookOnComplete() {
+            completed = true;
+        }
     }
 
     private static Stream<Throwable> closeFailures() {
