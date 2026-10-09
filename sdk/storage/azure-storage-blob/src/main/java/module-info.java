@@ -16,6 +16,8 @@ module com.azure.storage.blob {
     exports com.azure.storage.blob.implementation
         to com.azure.storage.blob.cryptography, com.azure.storage.blob.batch, com.azure.storage.file.datalake;    // FIXME this should not be a long-term solution
 
+    exports com.azure.storage.blob.implementation.accesshelpers to com.azure.storage.file.datalake;
+
     exports com.azure.storage.blob.implementation.models
         to com.azure.storage.blob.batch, com.azure.storage.blob.cryptography;
 

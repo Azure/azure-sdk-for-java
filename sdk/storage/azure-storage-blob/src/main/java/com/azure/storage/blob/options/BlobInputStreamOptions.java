@@ -7,6 +7,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.ConsistentReadControl;
+import com.azure.storage.blob.models.LayoutAwareRouting;
 import com.azure.storage.common.ContentValidationAlgorithm;
 
 /**
@@ -18,6 +19,7 @@ public class BlobInputStreamOptions {
     private BlobRequestConditions requestConditions;
     private Integer blockSize;
     private ConsistentReadControl consistentReadControl;
+    private LayoutAwareRouting layoutAwareRouting;
     private ContentValidationAlgorithm contentValidationAlgorithm;
 
     /**
@@ -111,6 +113,26 @@ public class BlobInputStreamOptions {
      */
     public BlobInputStreamOptions setConsistentReadControl(ConsistentReadControl consistentReadControl) {
         this.consistentReadControl = consistentReadControl;
+        return this;
+    }
+
+    /**
+     * Gets the {@link LayoutAwareRouting}.
+     *
+     * @return {@link LayoutAwareRouting}
+     */
+    public LayoutAwareRouting getLayoutAwareRouting() {
+        return layoutAwareRouting;
+    }
+
+    /**
+     * Sets the {@link LayoutAwareRouting}.
+     *
+     * @param layoutAwareRouting {@link LayoutAwareRouting}
+     * @return The updated options.
+     */
+    public BlobInputStreamOptions setLayoutAwareRouting(LayoutAwareRouting layoutAwareRouting) {
+        this.layoutAwareRouting = layoutAwareRouting;
         return this;
     }
 

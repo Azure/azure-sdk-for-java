@@ -296,6 +296,36 @@ public final class BlobsDownloadHeaders {
     private Long xMsStructuredContentLength;
 
     /*
+     * The x-ms-access-tier property.
+     */
+    @Generated
+    private String xMsAccessTier;
+
+    /*
+     * The x-ms-access-tier-inferred property.
+     */
+    @Generated
+    private Boolean xMsAccessTierInferred;
+
+    /*
+     * The x-ms-access-tier-change-time property.
+     */
+    @Generated
+    private DateTimeRfc1123 xMsAccessTierChangeTime;
+
+    /*
+     * The x-ms-smart-access-tier property.
+     */
+    @Generated
+    private String xMsSmartAccessTier;
+
+    /*
+     * The x-ms-download-hint property.
+     */
+    @Generated
+    private DownloadHint xMsDownloadHint;
+
+    /*
      * The x-ms-content-crc64 property.
      */
     @Generated
@@ -366,6 +396,18 @@ public final class BlobsDownloadHeaders {
 
     private static final HttpHeaderName X_MS_STRUCTURED_CONTENT_LENGTH
         = HttpHeaderName.fromString("x-ms-structured-content-length");
+
+    private static final HttpHeaderName X_MS_ACCESS_TIER = HttpHeaderName.fromString("x-ms-access-tier");
+
+    private static final HttpHeaderName X_MS_ACCESS_TIER_INFERRED
+        = HttpHeaderName.fromString("x-ms-access-tier-inferred");
+
+    private static final HttpHeaderName X_MS_ACCESS_TIER_CHANGE_TIME
+        = HttpHeaderName.fromString("x-ms-access-tier-change-time");
+
+    private static final HttpHeaderName X_MS_SMART_ACCESS_TIER = HttpHeaderName.fromString("x-ms-smart-access-tier");
+
+    private static final HttpHeaderName X_MS_DOWNLOAD_HINT = HttpHeaderName.fromString("x-ms-download-hint");
 
     private static final HttpHeaderName X_MS_CONTENT_CRC64 = HttpHeaderName.fromString("x-ms-content-crc64");
 
@@ -528,6 +570,26 @@ public final class BlobsDownloadHeaders {
             this.xMsStructuredContentLength = Long.parseLong(xMsStructuredContentLength);
         } else {
             this.xMsStructuredContentLength = null;
+        }
+        this.xMsAccessTier = rawHeaders.getValue(X_MS_ACCESS_TIER);
+        String xMsAccessTierInferred = rawHeaders.getValue(X_MS_ACCESS_TIER_INFERRED);
+        if (xMsAccessTierInferred != null) {
+            this.xMsAccessTierInferred = Boolean.parseBoolean(xMsAccessTierInferred);
+        } else {
+            this.xMsAccessTierInferred = null;
+        }
+        String xMsAccessTierChangeTime = rawHeaders.getValue(X_MS_ACCESS_TIER_CHANGE_TIME);
+        if (xMsAccessTierChangeTime != null) {
+            this.xMsAccessTierChangeTime = new DateTimeRfc1123(xMsAccessTierChangeTime);
+        } else {
+            this.xMsAccessTierChangeTime = null;
+        }
+        this.xMsSmartAccessTier = rawHeaders.getValue(X_MS_SMART_ACCESS_TIER);
+        String xMsDownloadHint = rawHeaders.getValue(X_MS_DOWNLOAD_HINT);
+        if (xMsDownloadHint != null) {
+            this.xMsDownloadHint = DownloadHint.fromString(xMsDownloadHint);
+        } else {
+            this.xMsDownloadHint = null;
         }
         String xMsContentCrc64 = rawHeaders.getValue(X_MS_CONTENT_CRC64);
         if (xMsContentCrc64 != null) {
@@ -1581,6 +1643,123 @@ public final class BlobsDownloadHeaders {
     @Generated
     public BlobsDownloadHeaders setXMsStructuredContentLength(Long xMsStructuredContentLength) {
         this.xMsStructuredContentLength = xMsStructuredContentLength;
+        return this;
+    }
+
+    /**
+     * Get the xMsAccessTier property: The x-ms-access-tier property.
+     * 
+     * @return the xMsAccessTier value.
+     */
+    @Generated
+    public String getXMsAccessTier() {
+        return this.xMsAccessTier;
+    }
+
+    /**
+     * Set the xMsAccessTier property: The x-ms-access-tier property.
+     * 
+     * @param xMsAccessTier the xMsAccessTier value to set.
+     * @return the BlobsDownloadHeaders object itself.
+     */
+    @Generated
+    public BlobsDownloadHeaders setXMsAccessTier(String xMsAccessTier) {
+        this.xMsAccessTier = xMsAccessTier;
+        return this;
+    }
+
+    /**
+     * Get the xMsAccessTierInferred property: The x-ms-access-tier-inferred property.
+     * 
+     * @return the xMsAccessTierInferred value.
+     */
+    @Generated
+    public Boolean isXMsAccessTierInferred() {
+        return this.xMsAccessTierInferred;
+    }
+
+    /**
+     * Set the xMsAccessTierInferred property: The x-ms-access-tier-inferred property.
+     * 
+     * @param xMsAccessTierInferred the xMsAccessTierInferred value to set.
+     * @return the BlobsDownloadHeaders object itself.
+     */
+    @Generated
+    public BlobsDownloadHeaders setXMsAccessTierInferred(Boolean xMsAccessTierInferred) {
+        this.xMsAccessTierInferred = xMsAccessTierInferred;
+        return this;
+    }
+
+    /**
+     * Get the xMsAccessTierChangeTime property: The x-ms-access-tier-change-time property.
+     * 
+     * @return the xMsAccessTierChangeTime value.
+     */
+    @Generated
+    public OffsetDateTime getXMsAccessTierChangeTime() {
+        if (this.xMsAccessTierChangeTime == null) {
+            return null;
+        }
+        return this.xMsAccessTierChangeTime.getDateTime();
+    }
+
+    /**
+     * Set the xMsAccessTierChangeTime property: The x-ms-access-tier-change-time property.
+     * 
+     * @param xMsAccessTierChangeTime the xMsAccessTierChangeTime value to set.
+     * @return the BlobsDownloadHeaders object itself.
+     */
+    @Generated
+    public BlobsDownloadHeaders setXMsAccessTierChangeTime(OffsetDateTime xMsAccessTierChangeTime) {
+        if (xMsAccessTierChangeTime == null) {
+            this.xMsAccessTierChangeTime = null;
+        } else {
+            this.xMsAccessTierChangeTime = new DateTimeRfc1123(xMsAccessTierChangeTime);
+        }
+        return this;
+    }
+
+    /**
+     * Get the xMsSmartAccessTier property: The x-ms-smart-access-tier property.
+     * 
+     * @return the xMsSmartAccessTier value.
+     */
+    @Generated
+    public String getXMsSmartAccessTier() {
+        return this.xMsSmartAccessTier;
+    }
+
+    /**
+     * Set the xMsSmartAccessTier property: The x-ms-smart-access-tier property.
+     * 
+     * @param xMsSmartAccessTier the xMsSmartAccessTier value to set.
+     * @return the BlobsDownloadHeaders object itself.
+     */
+    @Generated
+    public BlobsDownloadHeaders setXMsSmartAccessTier(String xMsSmartAccessTier) {
+        this.xMsSmartAccessTier = xMsSmartAccessTier;
+        return this;
+    }
+
+    /**
+     * Get the xMsDownloadHint property: The x-ms-download-hint property.
+     * 
+     * @return the xMsDownloadHint value.
+     */
+    @Generated
+    public DownloadHint getXMsDownloadHint() {
+        return this.xMsDownloadHint;
+    }
+
+    /**
+     * Set the xMsDownloadHint property: The x-ms-download-hint property.
+     * 
+     * @param xMsDownloadHint the xMsDownloadHint value to set.
+     * @return the BlobsDownloadHeaders object itself.
+     */
+    @Generated
+    public BlobsDownloadHeaders setXMsDownloadHint(DownloadHint xMsDownloadHint) {
+        this.xMsDownloadHint = xMsDownloadHint;
         return this;
     }
 
