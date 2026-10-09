@@ -9,7 +9,7 @@ package com.azure.resourcemanager.elastic.generated;
  */
 public final class AssociateTrafficFilterAssociateSamples {
     /*
-     * x-ms-original-file: 2025-06-01/AssociateTrafficFilter_Update.json
+     * x-ms-original-file: 2026-03-15-preview/AssociateTrafficFilter_Update.json
      */
     /**
      * Sample code: AssociateTrafficFilter_Associate.

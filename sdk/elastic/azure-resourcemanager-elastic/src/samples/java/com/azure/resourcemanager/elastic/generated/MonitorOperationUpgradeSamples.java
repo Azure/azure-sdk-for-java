@@ -9,7 +9,7 @@ package com.azure.resourcemanager.elastic.generated;
  */
 public final class MonitorOperationUpgradeSamples {
     /*
-     * x-ms-original-file: 2025-06-01/Monitor_Upgrade.json
+     * x-ms-original-file: 2026-03-15-preview/Monitor_Upgrade.json
      */
     /**
      * Sample code: Monitor_Upgrade.

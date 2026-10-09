@@ -194,6 +194,9 @@ public interface MonitorsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
+     * @param softDelete Indicates whether to perform a soft delete. When set to true, the Azure resource (Liftr
+     * integration) only is deleted and not the Partner Cloud resource. When set to false (default), the resource is
+     * permanently deleted from both Azure and the Partner Cloud.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -201,7 +204,8 @@ public interface MonitorsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String monitorName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String monitorName, Boolean softDelete,
+        Context context);
 
     /**
      * Delete an existing Elastic monitor resource from your Azure subscription, removing its observability and
@@ -222,13 +226,16 @@ public interface MonitorsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
+     * @param softDelete Indicates whether to perform a soft delete. When set to true, the Azure resource (Liftr
+     * integration) only is deleted and not the Partner Cloud resource. When set to false (default), the resource is
+     * permanently deleted from both Azure and the Partner Cloud.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String monitorName, Context context);
+    void delete(String resourceGroupName, String monitorName, Boolean softDelete, Context context);
 
     /**
      * List all Elastic monitor resources within a specified resource group of the subscription, helping you audit and

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.elastic.generated;
  */
 public final class MonitoredResourcesListSamples {
     /*
-     * x-ms-original-file: 2025-06-01/MonitoredResources_List.json
+     * x-ms-original-file: 2026-03-15-preview/MonitoredResources_List.json
      */
     /**
      * Sample code: MonitoredResources_List.

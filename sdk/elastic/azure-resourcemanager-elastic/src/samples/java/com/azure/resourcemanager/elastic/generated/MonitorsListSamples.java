@@ -9,7 +9,7 @@ package com.azure.resourcemanager.elastic.generated;
  */
 public final class MonitorsListSamples {
     /*
-     * x-ms-original-file: 2025-06-01/Monitors_List.json
+     * x-ms-original-file: 2026-03-15-preview/Monitors_List.json
      */
     /**
      * Sample code: Monitors_List.
