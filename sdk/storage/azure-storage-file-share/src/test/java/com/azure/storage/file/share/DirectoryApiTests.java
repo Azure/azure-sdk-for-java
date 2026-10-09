@@ -16,6 +16,7 @@ import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.azure.storage.file.share.models.FilePropertySemantics;
+import com.azure.storage.file.share.models.FileType;
 import com.azure.storage.file.share.models.NfsFileType;
 import com.azure.storage.file.share.models.CloseHandlesInfo;
 import com.azure.storage.file.share.models.FilePermissionFormat;
@@ -950,7 +951,7 @@ public class DirectoryApiTests extends FileShareTestBase {
         assertNotNull(fileItem.getProperties().getETag());
 
         assertNull(fileItem.getLinkCount());
-        assertEquals(NfsFileType.REGULAR, fileItem.getFileType());
+        assertEquals(FileType.REGULAR, fileItem.getFileType());
         assertNull(fileItem.getProperties().getOwner());
         assertNull(fileItem.getProperties().getGroup());
         assertNull(fileItem.getProperties().getFileMode());
@@ -1025,7 +1026,7 @@ public class DirectoryApiTests extends FileShareTestBase {
                 .findFirst()
                 .orElseThrow(() -> new AssertionError("Expected listed item not found: " + fileName));
             assertFalse(fileItem.isDirectory());
-            assertEquals(NfsFileType.REGULAR, fileItem.getFileType());
+            assertEquals(FileType.REGULAR, fileItem.getFileType());
             assertNotNull(fileItem.getLinkCount());
             assertNotNull(fileItem.getProperties());
             assertEquals(owner, fileItem.getProperties().getOwner());
@@ -1037,7 +1038,7 @@ public class DirectoryApiTests extends FileShareTestBase {
                 .findFirst()
                 .orElseThrow(() -> new AssertionError("Expected listed item not found: " + subdirName));
             assertTrue(dirItem.isDirectory());
-            assertEquals(NfsFileType.DIRECTORY, dirItem.getFileType());
+            assertEquals(FileType.DIRECTORY, dirItem.getFileType());
             assertNotNull(dirItem.getLinkCount());
             assertNotNull(dirItem.getProperties());
             assertEquals(owner, dirItem.getProperties().getOwner());
@@ -1049,7 +1050,7 @@ public class DirectoryApiTests extends FileShareTestBase {
                 .findFirst()
                 .orElseThrow(() -> new AssertionError("Expected listed item not found: " + symlinkName));
             assertFalse(symlinkItem.isDirectory());
-            assertEquals(NfsFileType.SYM_LINK, symlinkItem.getFileType());
+            assertEquals(FileType.SYM_LINK, symlinkItem.getFileType());
             assertNotNull(symlinkItem.getLinkCount());
             assertNotNull(symlinkItem.getLinkText());
             assertFalse(FileShareTestHelper.isAllWhitespace(symlinkItem.getLinkText()));
