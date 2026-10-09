@@ -12,6 +12,7 @@
 #### Other Changes
 * Added a compact `ppaf` bookmark to each data-plane attempt in `CosmosDiagnostics`, containing the current per-partition write region, failed regions, and the time it was designated, or an empty object when no override is active.
 * Upgraded Jackson from `2.18.9` to `2.18.11`.
+* Change Feed Processor lease writes no longer request the document in the response (content response on write is disabled per request) - the new lease ETag is taken from the response headers. The lease container's client no longer needs `contentResponseOnWriteEnabled(true)`. - See [PR 50697](https://github.com/Azure/azure-sdk-for-java/pull/50697)
 
 ### 4.83.0 (2026-09-22)
 

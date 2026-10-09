@@ -77,7 +77,8 @@ class LeaseStoreImpl implements LeaseStore {
         return this.client.createItem(
             this.leaseCollectionLink,
                 containerDocument,
-                this.requestOptionsFactory.createItemRequestOptions(ServiceItemLeaseV1.fromDocument(containerDocument)),
+                ChangeFeedHelper.withContentResponseOnWriteDisabled(
+                    this.requestOptionsFactory.createItemRequestOptions(ServiceItemLeaseV1.fromDocument(containerDocument))),
                 false)
             .map( item -> {
                 return true;
@@ -108,15 +109,14 @@ class LeaseStoreImpl implements LeaseStore {
         return this.client.createItem(
             this.leaseCollectionLink,
                 containerDocument,
-                this.requestOptionsFactory.createItemRequestOptions(ServiceItemLeaseV1.fromDocument(containerDocument)),
+                ChangeFeedHelper.withContentResponseOnWriteDisabled(
+                    this.requestOptionsFactory.createItemRequestOptions(ServiceItemLeaseV1.fromDocument(containerDocument))),
                 false)
             .map(documentResourceResponse -> {
-                if (BridgeInternal.getProperties(documentResourceResponse) != null) {
-                    this.lockETag = BridgeInternal.getProperties(documentResourceResponse).getETag();
-                    return true;
-                } else {
-                    return false;
-                }
+                // The lock is created with content response on write disabled, so the ETag comes from the
+                // response headers - a successful create always means the lock was acquired.
+                this.lockETag = documentResourceResponse.getETag();
+                return true;
             })
             .onErrorResume(throwable -> {
                 if (throwable instanceof CosmosException) {
