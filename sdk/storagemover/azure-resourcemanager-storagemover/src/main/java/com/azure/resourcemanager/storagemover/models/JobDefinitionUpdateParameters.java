@@ -11,6 +11,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storagemover.fluent.models.JobDefinitionUpdateProperties;
 import java.io.IOException;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 /**
@@ -173,6 +174,52 @@ public final class JobDefinitionUpdateParameters implements JsonSerializable<Job
             this.innerProperties = new JobDefinitionUpdateProperties();
         }
         this.innerProperties().withSchedule(schedule);
+        return this;
+    }
+
+    /**
+     * Get the syncMode property: The synchronization mode for the Job Definition.
+     * 
+     * @return the syncMode value.
+     */
+    public String syncMode() {
+        return this.innerProperties() == null ? null : this.innerProperties().syncMode();
+    }
+
+    /**
+     * Set the syncMode property: The synchronization mode for the Job Definition.
+     * 
+     * @param syncMode the syncMode value to set.
+     * @return the JobDefinitionUpdateParameters object itself.
+     */
+    public JobDefinitionUpdateParameters withSyncMode(String syncMode) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new JobDefinitionUpdateProperties();
+        }
+        this.innerProperties().withSyncMode(syncMode);
+        return this;
+    }
+
+    /**
+     * Get the moverSyncedUntil property: The last time the mover was synchronized.
+     * 
+     * @return the moverSyncedUntil value.
+     */
+    public OffsetDateTime moverSyncedUntil() {
+        return this.innerProperties() == null ? null : this.innerProperties().moverSyncedUntil();
+    }
+
+    /**
+     * Set the moverSyncedUntil property: The last time the mover was synchronized.
+     * 
+     * @param moverSyncedUntil the moverSyncedUntil value to set.
+     * @return the JobDefinitionUpdateParameters object itself.
+     */
+    public JobDefinitionUpdateParameters withMoverSyncedUntil(OffsetDateTime moverSyncedUntil) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new JobDefinitionUpdateProperties();
+        }
+        this.innerProperties().withMoverSyncedUntil(moverSyncedUntil);
         return this;
     }
 
