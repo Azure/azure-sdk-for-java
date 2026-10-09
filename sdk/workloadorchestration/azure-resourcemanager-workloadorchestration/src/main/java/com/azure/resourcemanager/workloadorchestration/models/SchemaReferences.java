@@ -38,6 +38,29 @@ public interface SchemaReferences {
     SchemaReference get(String resourceUri, String schemaReferenceName);
 
     /**
+     * Delete a Schema Reference Resource.
+     * 
+     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
+     * @param schemaReferenceName The name of the SchemaReference.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void deleteByResourceGroup(String resourceUri, String schemaReferenceName);
+
+    /**
+     * Delete a Schema Reference Resource.
+     * 
+     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
+     * @param schemaReferenceName The name of the SchemaReference.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void delete(String resourceUri, String schemaReferenceName, Context context);
+
+    /**
      * List by specified resource group.
      * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
@@ -59,4 +82,56 @@ public interface SchemaReferences {
      * @return the response of a SchemaReference list operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<SchemaReference> listByResourceGroup(String resourceUri, Context context);
+
+    /**
+     * Get a Schema Reference Resource.
+     * 
+     * @param id the resource ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Schema Reference Resource along with {@link Response}.
+     */
+    SchemaReference getById(String id);
+
+    /**
+     * Get a Schema Reference Resource.
+     * 
+     * @param id the resource ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Schema Reference Resource along with {@link Response}.
+     */
+    Response<SchemaReference> getByIdWithResponse(String id, Context context);
+
+    /**
+     * Delete a Schema Reference Resource.
+     * 
+     * @param id the resource ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void deleteById(String id);
+
+    /**
+     * Delete a Schema Reference Resource.
+     * 
+     * @param id the resource ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void deleteByIdWithResponse(String id, Context context);
+
+    /**
+     * Begins definition for a new SchemaReference resource.
+     * 
+     * @param name resource name.
+     * @return the first stage of the new SchemaReference definition.
+     */
+    SchemaReference.DefinitionStages.Blank define(String name);
 }

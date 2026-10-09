@@ -9,6 +9,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
+import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.workloadorchestration.WorkloadOrchestrationManager;
 import com.azure.resourcemanager.workloadorchestration.fluent.models.SchemaVersionInner;
 import com.azure.resourcemanager.workloadorchestration.fluent.models.SchemaVersionWithUpdateTypeInner;
@@ -17,7 +18,6 @@ import com.azure.resourcemanager.workloadorchestration.models.SchemaVersionPrope
 import com.azure.resourcemanager.workloadorchestration.models.UpdateType;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
@@ -25,7 +25,7 @@ public final class SchemasCreateVersionMockTests {
     @Test
     public void testCreateVersion() throws Exception {
         String responseStr
-            = "{\"properties\":{\"value\":\"lvhhtklnvn\",\"provisioningState\":\"Succeeded\"},\"eTag\":\"kyfede\",\"id\":\"bo\",\"name\":\"lcqxypokk\",\"type\":\"minqcym\"}";
+            = "{\"properties\":{\"value\":\"\\\"datayfluiyuosnuudte\\\"\",\"provisioningState\":\"Succeeded\"},\"eTag\":\"ibdrqrswhbuubpyr\",\"id\":\"tjoxztfw\",\"name\":\"qchvczevjn\",\"type\":\"cta\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,13 +35,12 @@ public final class SchemasCreateVersionMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SchemaVersion response = manager.schemas()
-            .createVersion("xddbhfhpfpaz", "zoyw",
-                new SchemaVersionWithUpdateTypeInner().withUpdateType(UpdateType.MAJOR)
-                    .withVersion("dulontacn")
-                    .withSchemaVersion(
-                        new SchemaVersionInner().withProperties(new SchemaVersionProperties().withValue("w"))),
+            .createVersion("tcvbiiftk", "dwgdn",
+                new SchemaVersionWithUpdateTypeInner().withUpdateType(UpdateType.MINOR)
+                    .withVersion("mwdhcebuvczldbg")
+                    .withSchemaVersion(new SchemaVersionInner().withProperties(new SchemaVersionProperties()
+                        .withValue(BinaryData.fromBytes("\"dataoutbaaqgzeka\"".getBytes(StandardCharsets.UTF_8))))),
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("lvhhtklnvn", response.properties().value());
     }
 }

@@ -10,6 +10,7 @@ import com.azure.resourcemanager.workloadorchestration.fluent.models.SolutionTem
 import com.azure.resourcemanager.workloadorchestration.models.OrchestratorType;
 import com.azure.resourcemanager.workloadorchestration.models.SolutionTemplateVersionProperties;
 import com.azure.resourcemanager.workloadorchestration.models.UpdateType;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
@@ -18,27 +19,27 @@ public final class SolutionTemplateVersionWithUpdateTypeInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SolutionTemplateVersionWithUpdateTypeInner model = BinaryData.fromString(
-            "{\"updateType\":\"Major\",\"version\":\"bqaays\",\"solutionTemplateVersion\":{\"properties\":{\"configurations\":\"ixqtn\",\"specification\":{},\"orchestratorType\":\"TO\",\"provisioningState\":\"Deleting\"},\"eTag\":\"fffiak\",\"id\":\"pqqmted\",\"name\":\"tmmjihyeozph\",\"type\":\"wau\"}}")
+            "{\"updateType\":\"Minor\",\"version\":\"jqirwrw\",\"solutionTemplateVersion\":{\"properties\":{\"configurations\":\"\\\"dataxffi\\\"\",\"specification\":{\"ozqvbubqmam\":\"\\\"dataxwrsnew\\\"\"},\"orchestratorType\":\"TO\",\"internalState\":\"ValidatedWithoutSchema\",\"provisioningState\":\"Initialized\"},\"eTag\":\"gaztt\",\"id\":\"o\",\"name\":\"dvmfqhppub\",\"type\":\"w\"}}")
             .toObject(SolutionTemplateVersionWithUpdateTypeInner.class);
-        Assertions.assertEquals(UpdateType.MAJOR, model.updateType());
-        Assertions.assertEquals("bqaays", model.version());
-        Assertions.assertEquals("ixqtn", model.solutionTemplateVersion().properties().configurations());
+        Assertions.assertEquals(UpdateType.MINOR, model.updateType());
+        Assertions.assertEquals("jqirwrw", model.version());
         Assertions.assertEquals(OrchestratorType.TO, model.solutionTemplateVersion().properties().orchestratorType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SolutionTemplateVersionWithUpdateTypeInner model
-            = new SolutionTemplateVersionWithUpdateTypeInner().withUpdateType(UpdateType.MAJOR)
-                .withVersion("bqaays")
-                .withSolutionTemplateVersion(new SolutionTemplateVersionInner()
-                    .withProperties(new SolutionTemplateVersionProperties().withConfigurations("ixqtn")
-                        .withSpecification(mapOf())
-                        .withOrchestratorType(OrchestratorType.TO)));
+        SolutionTemplateVersionWithUpdateTypeInner model = new SolutionTemplateVersionWithUpdateTypeInner()
+            .withUpdateType(UpdateType.MINOR)
+            .withVersion("jqirwrw")
+            .withSolutionTemplateVersion(
+                new SolutionTemplateVersionInner().withProperties(new SolutionTemplateVersionProperties()
+                    .withConfigurations(BinaryData.fromBytes("\"dataxffi\"".getBytes(StandardCharsets.UTF_8)))
+                    .withSpecification(
+                        mapOf("ozqvbubqmam", BinaryData.fromBytes("\"dataxwrsnew\"".getBytes(StandardCharsets.UTF_8))))
+                    .withOrchestratorType(OrchestratorType.TO)));
         model = BinaryData.fromObject(model).toObject(SolutionTemplateVersionWithUpdateTypeInner.class);
-        Assertions.assertEquals(UpdateType.MAJOR, model.updateType());
-        Assertions.assertEquals("bqaays", model.version());
-        Assertions.assertEquals("ixqtn", model.solutionTemplateVersion().properties().configurations());
+        Assertions.assertEquals(UpdateType.MINOR, model.updateType());
+        Assertions.assertEquals("jqirwrw", model.version());
         Assertions.assertEquals(OrchestratorType.TO, model.solutionTemplateVersion().properties().orchestratorType());
     }
 

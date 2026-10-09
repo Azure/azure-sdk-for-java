@@ -73,6 +73,10 @@ public class JobStepStatisticsBase implements JsonSerializable<JobStepStatistics
                 // Use the discriminator value to determine which subtype should be deserialized.
                 if ("deploy".equals(discriminatorValue)) {
                     return DeployJobStepStatistics.fromJson(readerToUse.reset());
+                } else if ("publish".equals(discriminatorValue)) {
+                    return PublishJobStepStatistics.fromJson(readerToUse.reset());
+                } else if ("uninstall".equals(discriminatorValue)) {
+                    return UninstallJobStepStatistics.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

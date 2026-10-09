@@ -7,22 +7,20 @@ package com.azure.resourcemanager.workloadorchestration.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.workloadorchestration.fluent.models.SchemaVersionInner;
 import com.azure.resourcemanager.workloadorchestration.models.SchemaVersionProperties;
-import org.junit.jupiter.api.Assertions;
+import java.nio.charset.StandardCharsets;
 
 public final class SchemaVersionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SchemaVersionInner model = BinaryData.fromString(
-            "{\"properties\":{\"value\":\"wczbys\",\"provisioningState\":\"Deleting\"},\"eTag\":\"x\",\"id\":\"ivyqniwbybrkxvd\",\"name\":\"mjgr\",\"type\":\"fwvuk\"}")
+            "{\"properties\":{\"value\":\"\\\"datamfdatscmdvpj\\\"\",\"provisioningState\":\"Canceled\"},\"eTag\":\"uuvmkjozkrwfnd\",\"id\":\"djpslw\",\"name\":\"jdpvwryo\",\"type\":\"psoacctazakljl\"}")
             .toObject(SchemaVersionInner.class);
-        Assertions.assertEquals("wczbys", model.properties().value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SchemaVersionInner model
-            = new SchemaVersionInner().withProperties(new SchemaVersionProperties().withValue("wczbys"));
+        SchemaVersionInner model = new SchemaVersionInner().withProperties(new SchemaVersionProperties()
+            .withValue(BinaryData.fromBytes("\"datamfdatscmdvpj\"".getBytes(StandardCharsets.UTF_8))));
         model = BinaryData.fromObject(model).toObject(SchemaVersionInner.class);
-        Assertions.assertEquals("wczbys", model.properties().value());
     }
 }

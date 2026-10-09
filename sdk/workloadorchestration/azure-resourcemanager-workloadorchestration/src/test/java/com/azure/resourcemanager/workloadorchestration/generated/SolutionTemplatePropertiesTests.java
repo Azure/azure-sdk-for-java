@@ -14,23 +14,23 @@ public final class SolutionTemplatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SolutionTemplateProperties model = BinaryData.fromString(
-            "{\"description\":\"l\",\"capabilities\":[\"ngitvgbmhrixkwm\"],\"latestVersion\":\"jejveg\",\"state\":\"inactive\",\"enableExternalValidation\":false,\"provisioningState\":\"InProgress\"}")
+            "{\"uniqueIdentifier\":\"plucfotangcfhnyk\",\"description\":\"cugswvxwlmzqw\",\"capabilities\":[\"tx\",\"jmxmcuqud\",\"cvclxynpdk\",\"gfabuiyjibuzphdu\"],\"latestVersion\":\"eiknpgo\",\"state\":\"inactive\",\"enableExternalValidation\":false,\"provisioningState\":\"InProgress\"}")
             .toObject(SolutionTemplateProperties.class);
-        Assertions.assertEquals("l", model.description());
-        Assertions.assertEquals("ngitvgbmhrixkwm", model.capabilities().get(0));
+        Assertions.assertEquals("cugswvxwlmzqw", model.description());
+        Assertions.assertEquals("tx", model.capabilities().get(0));
         Assertions.assertEquals(ResourceState.INACTIVE, model.state());
         Assertions.assertFalse(model.enableExternalValidation());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SolutionTemplateProperties model = new SolutionTemplateProperties().withDescription("l")
-            .withCapabilities(Arrays.asList("ngitvgbmhrixkwm"))
+        SolutionTemplateProperties model = new SolutionTemplateProperties().withDescription("cugswvxwlmzqw")
+            .withCapabilities(Arrays.asList("tx", "jmxmcuqud", "cvclxynpdk", "gfabuiyjibuzphdu"))
             .withState(ResourceState.INACTIVE)
             .withEnableExternalValidation(false);
         model = BinaryData.fromObject(model).toObject(SolutionTemplateProperties.class);
-        Assertions.assertEquals("l", model.description());
-        Assertions.assertEquals("ngitvgbmhrixkwm", model.capabilities().get(0));
+        Assertions.assertEquals("cugswvxwlmzqw", model.description());
+        Assertions.assertEquals("tx", model.capabilities().get(0));
         Assertions.assertEquals(ResourceState.INACTIVE, model.state());
         Assertions.assertFalse(model.enableExternalValidation());
     }

@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.workloadorchestration.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,7 +20,7 @@ public final class ConfigTemplateVersionProperties implements JsonSerializable<C
     /*
      * Configuration values
      */
-    private String configurations;
+    private BinaryData configurations;
 
     /*
      * Provisioning state of resource
@@ -37,7 +38,7 @@ public final class ConfigTemplateVersionProperties implements JsonSerializable<C
      * 
      * @return the configurations value.
      */
-    public String configurations() {
+    public BinaryData configurations() {
         return this.configurations;
     }
 
@@ -47,7 +48,7 @@ public final class ConfigTemplateVersionProperties implements JsonSerializable<C
      * @param configurations the configurations value to set.
      * @return the ConfigTemplateVersionProperties object itself.
      */
-    public ConfigTemplateVersionProperties withConfigurations(String configurations) {
+    public ConfigTemplateVersionProperties withConfigurations(BinaryData configurations) {
         this.configurations = configurations;
         return this;
     }
@@ -67,7 +68,8 @@ public final class ConfigTemplateVersionProperties implements JsonSerializable<C
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("configurations", this.configurations);
+        jsonWriter.writeFieldName("configurations");
+        this.configurations.writeTo(jsonWriter);
         return jsonWriter.writeEndObject();
     }
 
@@ -89,7 +91,8 @@ public final class ConfigTemplateVersionProperties implements JsonSerializable<C
                 reader.nextToken();
 
                 if ("configurations".equals(fieldName)) {
-                    deserializedConfigTemplateVersionProperties.configurations = reader.getString();
+                    deserializedConfigTemplateVersionProperties.configurations
+                        = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedConfigTemplateVersionProperties.provisioningState
                         = ProvisioningState.fromString(reader.getString());

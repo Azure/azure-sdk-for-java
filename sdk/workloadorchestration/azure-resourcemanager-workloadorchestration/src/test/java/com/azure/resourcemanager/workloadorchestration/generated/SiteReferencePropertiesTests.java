@@ -11,15 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class SiteReferencePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SiteReferenceProperties model = BinaryData.fromString("{\"siteId\":\"rwd\",\"provisioningState\":\"Canceled\"}")
-            .toObject(SiteReferenceProperties.class);
-        Assertions.assertEquals("rwd", model.siteId());
+        SiteReferenceProperties model
+            = BinaryData.fromString("{\"siteId\":\"qvldaswvppisqqzl\",\"provisioningState\":\"InProgress\"}")
+                .toObject(SiteReferenceProperties.class);
+        Assertions.assertEquals("qvldaswvppisqqzl", model.siteId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SiteReferenceProperties model = new SiteReferenceProperties().withSiteId("rwd");
+        SiteReferenceProperties model = new SiteReferenceProperties().withSiteId("qvldaswvppisqqzl");
         model = BinaryData.fromObject(model).toObject(SiteReferenceProperties.class);
-        Assertions.assertEquals("rwd", model.siteId());
+        Assertions.assertEquals("qvldaswvppisqqzl", model.siteId());
     }
 }

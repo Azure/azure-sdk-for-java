@@ -5,20 +5,15 @@
 package com.azure.resourcemanager.workloadorchestration.implementation;
 
 import com.azure.core.management.SystemData;
+import com.azure.core.util.Context;
 import com.azure.resourcemanager.workloadorchestration.fluent.models.SchemaReferenceInner;
 import com.azure.resourcemanager.workloadorchestration.models.SchemaReference;
 import com.azure.resourcemanager.workloadorchestration.models.SchemaReferenceProperties;
 
-public final class SchemaReferenceImpl implements SchemaReference {
+public final class SchemaReferenceImpl implements SchemaReference, SchemaReference.Definition, SchemaReference.Update {
     private SchemaReferenceInner innerObject;
 
     private final com.azure.resourcemanager.workloadorchestration.WorkloadOrchestrationManager serviceManager;
-
-    SchemaReferenceImpl(SchemaReferenceInner innerObject,
-        com.azure.resourcemanager.workloadorchestration.WorkloadOrchestrationManager serviceManager) {
-        this.innerObject = innerObject;
-        this.serviceManager = serviceManager;
-    }
 
     public String id() {
         return this.innerModel().id();
@@ -50,5 +45,86 @@ public final class SchemaReferenceImpl implements SchemaReference {
 
     private com.azure.resourcemanager.workloadorchestration.WorkloadOrchestrationManager manager() {
         return this.serviceManager;
+    }
+
+    private String resourceUri;
+
+    private String schemaReferenceName;
+
+    public SchemaReferenceImpl withExistingResourceUri(String resourceUri) {
+        this.resourceUri = resourceUri;
+        return this;
+    }
+
+    public SchemaReference create() {
+        this.innerObject = serviceManager.serviceClient()
+            .getSchemaReferences()
+            .createOrUpdate(resourceUri, schemaReferenceName, this.innerModel(), Context.NONE);
+        return this;
+    }
+
+    public SchemaReference create(Context context) {
+        this.innerObject = serviceManager.serviceClient()
+            .getSchemaReferences()
+            .createOrUpdate(resourceUri, schemaReferenceName, this.innerModel(), context);
+        return this;
+    }
+
+    SchemaReferenceImpl(String name,
+        com.azure.resourcemanager.workloadorchestration.WorkloadOrchestrationManager serviceManager) {
+        this.innerObject = new SchemaReferenceInner();
+        this.serviceManager = serviceManager;
+        this.schemaReferenceName = name;
+    }
+
+    public SchemaReferenceImpl update() {
+        return this;
+    }
+
+    public SchemaReference apply() {
+        this.innerObject = serviceManager.serviceClient()
+            .getSchemaReferences()
+            .updateWithResponse(resourceUri, schemaReferenceName, this.innerModel(), Context.NONE)
+            .getValue();
+        return this;
+    }
+
+    public SchemaReference apply(Context context) {
+        this.innerObject = serviceManager.serviceClient()
+            .getSchemaReferences()
+            .updateWithResponse(resourceUri, schemaReferenceName, this.innerModel(), context)
+            .getValue();
+        return this;
+    }
+
+    SchemaReferenceImpl(SchemaReferenceInner innerObject,
+        com.azure.resourcemanager.workloadorchestration.WorkloadOrchestrationManager serviceManager) {
+        this.innerObject = innerObject;
+        this.serviceManager = serviceManager;
+        this.resourceUri = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/{resourceUri}/providers/Microsoft.Edge/schemaReferences/{schemaReferenceName}", "resourceUri");
+        this.schemaReferenceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/{resourceUri}/providers/Microsoft.Edge/schemaReferences/{schemaReferenceName}", "schemaReferenceName");
+    }
+
+    public SchemaReference refresh() {
+        this.innerObject = serviceManager.serviceClient()
+            .getSchemaReferences()
+            .getWithResponse(resourceUri, schemaReferenceName, Context.NONE)
+            .getValue();
+        return this;
+    }
+
+    public SchemaReference refresh(Context context) {
+        this.innerObject = serviceManager.serviceClient()
+            .getSchemaReferences()
+            .getWithResponse(resourceUri, schemaReferenceName, context)
+            .getValue();
+        return this;
+    }
+
+    public SchemaReferenceImpl withProperties(SchemaReferenceProperties properties) {
+        this.innerModel().withProperties(properties);
+        return this;
     }
 }

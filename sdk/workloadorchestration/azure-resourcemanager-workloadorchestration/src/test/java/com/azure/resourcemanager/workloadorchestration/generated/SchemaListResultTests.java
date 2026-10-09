@@ -12,10 +12,10 @@ public final class SchemaListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SchemaListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"currentVersion\":\"jye\",\"provisioningState\":\"InProgress\"},\"eTag\":\"ni\",\"location\":\"oxzjnchgejspod\",\"tags\":{\"npmqnjaqwixjspro\":\"lzydehojwyahux\",\"wmfdatscmdvpjhul\":\"vcputegj\"},\"id\":\"uuvmkjozkrwfnd\",\"name\":\"odjpslwejd\",\"type\":\"vwryoqpso\"},{\"properties\":{\"currentVersion\":\"tazak\",\"provisioningState\":\"Initialized\"},\"eTag\":\"hbcryffdfdosyge\",\"location\":\"aojakhmsbzjhcrz\",\"tags\":{\"lthqtrgqjbp\":\"phlxa\",\"jrwzox\":\"zfsinzgvf\",\"felluwfzitonpe\":\"j\"},\"id\":\"fpjkjlxofp\",\"name\":\"vhpfxxypininmay\",\"type\":\"uybbkpodep\"},{\"properties\":{\"currentVersion\":\"inuvamiheogn\",\"provisioningState\":\"Deleting\"},\"eTag\":\"xth\",\"location\":\"tusivyevcciqihn\",\"tags\":{\"gxg\":\"gbwjzrnf\",\"fublj\":\"spemvtzfk\"},\"id\":\"fxqeof\",\"name\":\"aeqjhqjbasvms\",\"type\":\"jqul\"}],\"nextLink\":\"sntnbybkzgcw\"}")
+            "{\"value\":[{\"properties\":{\"currentVersion\":\"gqjbpfzfsin\",\"provisioningState\":\"Succeeded\"},\"eTag\":\"cjrwzoxxjtfellu\",\"location\":\"zitonpeqfpjkjl\",\"tags\":{\"nmayhuybb\":\"pdvhpfxxypin\",\"inuvamiheogn\":\"podepoo\",\"usivye\":\"rxzxtheo\"},\"id\":\"cciqihnhungbwjz\",\"name\":\"nfygxgispemvtz\",\"type\":\"kufubljo\"},{\"properties\":{\"currentVersion\":\"eofjaeqjh\",\"provisioningState\":\"Deleting\"},\"eTag\":\"s\",\"location\":\"smjqulngsntnbyb\",\"tags\":{\"cqvkocrcjdkwtn\":\"cwrwclxxwrljdous\"},\"id\":\"xbnjbiksq\",\"name\":\"gls\",\"type\":\"ainqpjwnzlljfm\"},{\"properties\":{\"currentVersion\":\"ebvmgxsabkyqd\",\"provisioningState\":\"InProgress\"},\"eTag\":\"tcj\",\"location\":\"dzevndhkrw\",\"tags\":{\"eusnhutj\":\"ppdsbdkvwrwj\"},\"id\":\"ltmrldh\",\"name\":\"gjzzdatqxhocdg\",\"type\":\"ablgphuticndvk\"},{\"properties\":{\"currentVersion\":\"wyiftyhxhur\",\"provisioningState\":\"Canceled\"},\"eTag\":\"yxolniwp\",\"location\":\"ukjfkgiawxklr\",\"tags\":{\"hsgcbacphejkot\":\"wckbasyypnd\",\"wyqkgfgibm\":\"nqgoulzndli\",\"qsrxybzqqed\":\"dgak\",\"iqfouflmmnkz\":\"ytb\"},\"id\":\"modmglougpb\",\"name\":\"wtmutduq\",\"type\":\"ta\"}],\"nextLink\":\"pwgcuertu\"}")
             .toObject(SchemaListResult.class);
-        Assertions.assertEquals("oxzjnchgejspod", model.value().get(0).location());
-        Assertions.assertEquals("lzydehojwyahux", model.value().get(0).tags().get("npmqnjaqwixjspro"));
-        Assertions.assertEquals("sntnbybkzgcw", model.nextLink());
+        Assertions.assertEquals("zitonpeqfpjkjl", model.value().get(0).location());
+        Assertions.assertEquals("pdvhpfxxypin", model.value().get(0).tags().get("nmayhuybb"));
+        Assertions.assertEquals("pwgcuertu", model.nextLink());
     }
 }

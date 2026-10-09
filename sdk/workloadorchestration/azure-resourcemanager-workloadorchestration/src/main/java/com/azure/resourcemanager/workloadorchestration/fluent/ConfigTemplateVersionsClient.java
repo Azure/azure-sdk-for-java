@@ -8,7 +8,9 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
+import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.workloadorchestration.fluent.models.ConfigTemplateVersionInner;
 
 /**
@@ -45,6 +47,165 @@ public interface ConfigTemplateVersionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     ConfigTemplateVersionInner get(String resourceGroupName, String configTemplateName,
         String configTemplateVersionName);
+
+    /**
+     * Create or update a Config Template Version Resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param configTemplateName The name of the ConfigTemplate.
+     * @param configTemplateVersionName The name of the ConfigTemplateVersion.
+     * @param resource Resource create parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of config Template Version Resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ConfigTemplateVersionInner>, ConfigTemplateVersionInner> beginCreateOrUpdate(
+        String resourceGroupName, String configTemplateName, String configTemplateVersionName,
+        ConfigTemplateVersionInner resource);
+
+    /**
+     * Create or update a Config Template Version Resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param configTemplateName The name of the ConfigTemplate.
+     * @param configTemplateVersionName The name of the ConfigTemplateVersion.
+     * @param resource Resource create parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of config Template Version Resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ConfigTemplateVersionInner>, ConfigTemplateVersionInner> beginCreateOrUpdate(
+        String resourceGroupName, String configTemplateName, String configTemplateVersionName,
+        ConfigTemplateVersionInner resource, Context context);
+
+    /**
+     * Create or update a Config Template Version Resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param configTemplateName The name of the ConfigTemplate.
+     * @param configTemplateVersionName The name of the ConfigTemplateVersion.
+     * @param resource Resource create parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return config Template Version Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ConfigTemplateVersionInner createOrUpdate(String resourceGroupName, String configTemplateName,
+        String configTemplateVersionName, ConfigTemplateVersionInner resource);
+
+    /**
+     * Create or update a Config Template Version Resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param configTemplateName The name of the ConfigTemplate.
+     * @param configTemplateVersionName The name of the ConfigTemplateVersion.
+     * @param resource Resource create parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return config Template Version Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ConfigTemplateVersionInner createOrUpdate(String resourceGroupName, String configTemplateName,
+        String configTemplateVersionName, ConfigTemplateVersionInner resource, Context context);
+
+    /**
+     * Update a Config Template Version Resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param configTemplateName The name of the ConfigTemplate.
+     * @param configTemplateVersionName The name of the ConfigTemplateVersion.
+     * @param properties The resource properties to be updated.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return config Template Version Resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ConfigTemplateVersionInner> updateWithResponse(String resourceGroupName, String configTemplateName,
+        String configTemplateVersionName, ConfigTemplateVersionInner properties, Context context);
+
+    /**
+     * Update a Config Template Version Resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param configTemplateName The name of the ConfigTemplate.
+     * @param configTemplateVersionName The name of the ConfigTemplateVersion.
+     * @param properties The resource properties to be updated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return config Template Version Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ConfigTemplateVersionInner update(String resourceGroupName, String configTemplateName,
+        String configTemplateVersionName, ConfigTemplateVersionInner properties);
+
+    /**
+     * Delete a Config Template Version Resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param configTemplateName The name of the ConfigTemplate.
+     * @param configTemplateVersionName The name of the ConfigTemplateVersion.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String configTemplateName,
+        String configTemplateVersionName);
+
+    /**
+     * Delete a Config Template Version Resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param configTemplateName The name of the ConfigTemplate.
+     * @param configTemplateVersionName The name of the ConfigTemplateVersion.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String configTemplateName,
+        String configTemplateVersionName, Context context);
+
+    /**
+     * Delete a Config Template Version Resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param configTemplateName The name of the ConfigTemplate.
+     * @param configTemplateVersionName The name of the ConfigTemplateVersion.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String resourceGroupName, String configTemplateName, String configTemplateVersionName);
+
+    /**
+     * Delete a Config Template Version Resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param configTemplateName The name of the ConfigTemplate.
+     * @param configTemplateVersionName The name of the ConfigTemplateVersion.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String resourceGroupName, String configTemplateName, String configTemplateVersionName, Context context);
 
     /**
      * List Config Template Version Resources.

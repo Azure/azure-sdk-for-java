@@ -26,6 +26,8 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.resourcemanager.workloadorchestration.fluent.ConfigTemplateMetadatasClient;
+import com.azure.resourcemanager.workloadorchestration.fluent.ConfigTemplateSchemasClient;
 import com.azure.resourcemanager.workloadorchestration.fluent.ConfigTemplateVersionsClient;
 import com.azure.resourcemanager.workloadorchestration.fluent.ConfigTemplatesClient;
 import com.azure.resourcemanager.workloadorchestration.fluent.ContextsClient;
@@ -33,6 +35,8 @@ import com.azure.resourcemanager.workloadorchestration.fluent.DiagnosticsClient;
 import com.azure.resourcemanager.workloadorchestration.fluent.DynamicSchemaVersionsClient;
 import com.azure.resourcemanager.workloadorchestration.fluent.DynamicSchemasClient;
 import com.azure.resourcemanager.workloadorchestration.fluent.ExecutionsClient;
+import com.azure.resourcemanager.workloadorchestration.fluent.HierarchyConfigurationMetadataVersionsClient;
+import com.azure.resourcemanager.workloadorchestration.fluent.HierarchyConfigurationMetadatasClient;
 import com.azure.resourcemanager.workloadorchestration.fluent.InstanceHistoriesClient;
 import com.azure.resourcemanager.workloadorchestration.fluent.InstancesClient;
 import com.azure.resourcemanager.workloadorchestration.fluent.JobsClient;
@@ -40,6 +44,10 @@ import com.azure.resourcemanager.workloadorchestration.fluent.SchemaReferencesCl
 import com.azure.resourcemanager.workloadorchestration.fluent.SchemaVersionsClient;
 import com.azure.resourcemanager.workloadorchestration.fluent.SchemasClient;
 import com.azure.resourcemanager.workloadorchestration.fluent.SiteReferencesClient;
+import com.azure.resourcemanager.workloadorchestration.fluent.SolutionDeploymentsClient;
+import com.azure.resourcemanager.workloadorchestration.fluent.SolutionMetadataVersionsClient;
+import com.azure.resourcemanager.workloadorchestration.fluent.SolutionMetadatasClient;
+import com.azure.resourcemanager.workloadorchestration.fluent.SolutionSchemasClient;
 import com.azure.resourcemanager.workloadorchestration.fluent.SolutionTemplateVersionsClient;
 import com.azure.resourcemanager.workloadorchestration.fluent.SolutionTemplatesClient;
 import com.azure.resourcemanager.workloadorchestration.fluent.SolutionVersionsClient;
@@ -273,6 +281,34 @@ public final class WorkloadOrchestrationManagementClientImpl implements Workload
     }
 
     /**
+     * The SolutionMetadatasClient object to access its operations.
+     */
+    private final SolutionMetadatasClient solutionMetadatas;
+
+    /**
+     * Gets the SolutionMetadatasClient object to access its operations.
+     * 
+     * @return the SolutionMetadatasClient object.
+     */
+    public SolutionMetadatasClient getSolutionMetadatas() {
+        return this.solutionMetadatas;
+    }
+
+    /**
+     * The SolutionMetadataVersionsClient object to access its operations.
+     */
+    private final SolutionMetadataVersionsClient solutionMetadataVersions;
+
+    /**
+     * Gets the SolutionMetadataVersionsClient object to access its operations.
+     * 
+     * @return the SolutionMetadataVersionsClient object.
+     */
+    public SolutionMetadataVersionsClient getSolutionMetadataVersions() {
+        return this.solutionMetadataVersions;
+    }
+
+    /**
      * The SolutionTemplateVersionsClient object to access its operations.
      */
     private final SolutionTemplateVersionsClient solutionTemplateVersions;
@@ -441,6 +477,90 @@ public final class WorkloadOrchestrationManagementClientImpl implements Workload
     }
 
     /**
+     * The SolutionSchemasClient object to access its operations.
+     */
+    private final SolutionSchemasClient solutionSchemas;
+
+    /**
+     * Gets the SolutionSchemasClient object to access its operations.
+     * 
+     * @return the SolutionSchemasClient object.
+     */
+    public SolutionSchemasClient getSolutionSchemas() {
+        return this.solutionSchemas;
+    }
+
+    /**
+     * The ConfigTemplateSchemasClient object to access its operations.
+     */
+    private final ConfigTemplateSchemasClient configTemplateSchemas;
+
+    /**
+     * Gets the ConfigTemplateSchemasClient object to access its operations.
+     * 
+     * @return the ConfigTemplateSchemasClient object.
+     */
+    public ConfigTemplateSchemasClient getConfigTemplateSchemas() {
+        return this.configTemplateSchemas;
+    }
+
+    /**
+     * The ConfigTemplateMetadatasClient object to access its operations.
+     */
+    private final ConfigTemplateMetadatasClient configTemplateMetadatas;
+
+    /**
+     * Gets the ConfigTemplateMetadatasClient object to access its operations.
+     * 
+     * @return the ConfigTemplateMetadatasClient object.
+     */
+    public ConfigTemplateMetadatasClient getConfigTemplateMetadatas() {
+        return this.configTemplateMetadatas;
+    }
+
+    /**
+     * The HierarchyConfigurationMetadatasClient object to access its operations.
+     */
+    private final HierarchyConfigurationMetadatasClient hierarchyConfigurationMetadatas;
+
+    /**
+     * Gets the HierarchyConfigurationMetadatasClient object to access its operations.
+     * 
+     * @return the HierarchyConfigurationMetadatasClient object.
+     */
+    public HierarchyConfigurationMetadatasClient getHierarchyConfigurationMetadatas() {
+        return this.hierarchyConfigurationMetadatas;
+    }
+
+    /**
+     * The HierarchyConfigurationMetadataVersionsClient object to access its operations.
+     */
+    private final HierarchyConfigurationMetadataVersionsClient hierarchyConfigurationMetadataVersions;
+
+    /**
+     * Gets the HierarchyConfigurationMetadataVersionsClient object to access its operations.
+     * 
+     * @return the HierarchyConfigurationMetadataVersionsClient object.
+     */
+    public HierarchyConfigurationMetadataVersionsClient getHierarchyConfigurationMetadataVersions() {
+        return this.hierarchyConfigurationMetadataVersions;
+    }
+
+    /**
+     * The SolutionDeploymentsClient object to access its operations.
+     */
+    private final SolutionDeploymentsClient solutionDeployments;
+
+    /**
+     * Gets the SolutionDeploymentsClient object to access its operations.
+     * 
+     * @return the SolutionDeploymentsClient object.
+     */
+    public SolutionDeploymentsClient getSolutionDeployments() {
+        return this.solutionDeployments;
+    }
+
+    /**
      * Initializes an instance of WorkloadOrchestrationManagementClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
@@ -457,7 +577,7 @@ public final class WorkloadOrchestrationManagementClientImpl implements Workload
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2025-06-01";
+        this.apiVersion = "2026-05-01-preview";
         this.dynamicSchemas = new DynamicSchemasClientImpl(this);
         this.schemas = new SchemasClientImpl(this);
         this.schemaVersions = new SchemaVersionsClientImpl(this);
@@ -467,6 +587,8 @@ public final class WorkloadOrchestrationManagementClientImpl implements Workload
         this.dynamicSchemaVersions = new DynamicSchemaVersionsClientImpl(this);
         this.schemaReferences = new SchemaReferencesClientImpl(this);
         this.solutions = new SolutionsClientImpl(this);
+        this.solutionMetadatas = new SolutionMetadatasClientImpl(this);
+        this.solutionMetadataVersions = new SolutionMetadataVersionsClientImpl(this);
         this.solutionTemplateVersions = new SolutionTemplateVersionsClientImpl(this);
         this.solutionTemplates = new SolutionTemplatesClientImpl(this);
         this.instances = new InstancesClientImpl(this);
@@ -479,6 +601,12 @@ public final class WorkloadOrchestrationManagementClientImpl implements Workload
         this.diagnostics = new DiagnosticsClientImpl(this);
         this.contexts = new ContextsClientImpl(this);
         this.siteReferences = new SiteReferencesClientImpl(this);
+        this.solutionSchemas = new SolutionSchemasClientImpl(this);
+        this.configTemplateSchemas = new ConfigTemplateSchemasClientImpl(this);
+        this.configTemplateMetadatas = new ConfigTemplateMetadatasClientImpl(this);
+        this.hierarchyConfigurationMetadatas = new HierarchyConfigurationMetadatasClientImpl(this);
+        this.hierarchyConfigurationMetadataVersions = new HierarchyConfigurationMetadataVersionsClientImpl(this);
+        this.solutionDeployments = new SolutionDeploymentsClientImpl(this);
     }
 
     /**

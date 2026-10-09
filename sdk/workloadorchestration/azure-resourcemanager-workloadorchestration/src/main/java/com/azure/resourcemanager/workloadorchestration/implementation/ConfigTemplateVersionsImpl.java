@@ -46,6 +46,15 @@ public final class ConfigTemplateVersionsImpl implements ConfigTemplateVersions 
         }
     }
 
+    public void delete(String resourceGroupName, String configTemplateName, String configTemplateVersionName) {
+        this.serviceClient().delete(resourceGroupName, configTemplateName, configTemplateVersionName);
+    }
+
+    public void delete(String resourceGroupName, String configTemplateName, String configTemplateVersionName,
+        Context context) {
+        this.serviceClient().delete(resourceGroupName, configTemplateName, configTemplateVersionName, context);
+    }
+
     public PagedIterable<ConfigTemplateVersion> listByConfigTemplate(String resourceGroupName,
         String configTemplateName) {
         PagedIterable<ConfigTemplateVersionInner> inner
@@ -60,11 +69,92 @@ public final class ConfigTemplateVersionsImpl implements ConfigTemplateVersions 
         return ResourceManagerUtils.mapPage(inner, inner1 -> new ConfigTemplateVersionImpl(inner1, this.manager()));
     }
 
+    public ConfigTemplateVersion getById(String id) {
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        if (resourceGroupName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+        }
+        String configTemplateName = ResourceManagerUtils.getValueFromIdByName(id, "configTemplates");
+        if (configTemplateName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'configTemplates'.", id)));
+        }
+        String configTemplateVersionName = ResourceManagerUtils.getValueFromIdByName(id, "versions");
+        if (configTemplateVersionName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'versions'.", id)));
+        }
+        return this.getWithResponse(resourceGroupName, configTemplateName, configTemplateVersionName, Context.NONE)
+            .getValue();
+    }
+
+    public Response<ConfigTemplateVersion> getByIdWithResponse(String id, Context context) {
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        if (resourceGroupName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+        }
+        String configTemplateName = ResourceManagerUtils.getValueFromIdByName(id, "configTemplates");
+        if (configTemplateName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'configTemplates'.", id)));
+        }
+        String configTemplateVersionName = ResourceManagerUtils.getValueFromIdByName(id, "versions");
+        if (configTemplateVersionName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'versions'.", id)));
+        }
+        return this.getWithResponse(resourceGroupName, configTemplateName, configTemplateVersionName, context);
+    }
+
+    public void deleteById(String id) {
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        if (resourceGroupName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+        }
+        String configTemplateName = ResourceManagerUtils.getValueFromIdByName(id, "configTemplates");
+        if (configTemplateName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'configTemplates'.", id)));
+        }
+        String configTemplateVersionName = ResourceManagerUtils.getValueFromIdByName(id, "versions");
+        if (configTemplateVersionName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'versions'.", id)));
+        }
+        this.delete(resourceGroupName, configTemplateName, configTemplateVersionName, Context.NONE);
+    }
+
+    public void deleteByIdWithResponse(String id, Context context) {
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        if (resourceGroupName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+        }
+        String configTemplateName = ResourceManagerUtils.getValueFromIdByName(id, "configTemplates");
+        if (configTemplateName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'configTemplates'.", id)));
+        }
+        String configTemplateVersionName = ResourceManagerUtils.getValueFromIdByName(id, "versions");
+        if (configTemplateVersionName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'versions'.", id)));
+        }
+        this.delete(resourceGroupName, configTemplateName, configTemplateVersionName, context);
+    }
+
     private ConfigTemplateVersionsClient serviceClient() {
         return this.innerClient;
     }
 
     private com.azure.resourcemanager.workloadorchestration.WorkloadOrchestrationManager manager() {
         return this.serviceManager;
+    }
+
+    public ConfigTemplateVersionImpl define(String name) {
+        return new ConfigTemplateVersionImpl(name, this.manager());
     }
 }

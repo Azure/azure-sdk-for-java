@@ -10,6 +10,7 @@ import com.azure.resourcemanager.workloadorchestration.models.ErrorActionMode;
 import com.azure.resourcemanager.workloadorchestration.models.StageSpec;
 import com.azure.resourcemanager.workloadorchestration.models.TaskOption;
 import com.azure.resourcemanager.workloadorchestration.models.TaskSpec;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,36 +20,57 @@ public final class StageSpecTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StageSpec model = BinaryData.fromString(
-            "{\"name\":\"oqaqhvseufuq\",\"specification\":{},\"tasks\":[{\"name\":\"lcgqlsismj\",\"targetId\":\"rddga\",\"specification\":{}},{\"name\":\"uhiosrsju\",\"targetId\":\"fcdis\",\"specification\":{}},{\"name\":\"rnxzh\",\"targetId\":\"exrxzbujrtrhq\",\"specification\":{}},{\"name\":\"revkhgnlnzo\",\"targetId\":\"lrpiqywnc\",\"specification\":{}}],\"taskOption\":{\"concurrency\":162010613,\"errorAction\":{\"mode\":\"stopOnAnyFailure\",\"maxToleratedFailures\":1957842604}}}")
+            "{\"name\":\"ysfaqegplwrysh\",\"specification\":{\"gkqu\":\"\\\"datakvb\\\"\"},\"tasks\":[{\"name\":\"w\",\"targetId\":\"dacarvvlfnty\",\"specification\":{\"enazerohzrsqals\":\"\\\"datapoi\\\"\"}},{\"name\":\"kdnwqapfgsdpcve\",\"targetId\":\"mzhhkuuipldqqc\",\"specification\":{\"blhtjq\":\"\\\"datakva\\\"\",\"eh\":\"\\\"dataqyv\\\"\",\"mxhzzysevus\":\"\\\"dataa\\\"\"}},{\"name\":\"ivzrrryveimipsk\",\"targetId\":\"zatvfuzka\",\"specification\":{\"qdsmjtg\":\"\\\"datajvvruxwigsyei\\\"\"}},{\"name\":\"qgdgkkile\",\"targetId\":\"kcsmk\",\"specification\":{\"oygbdgwumgxd\":\"\\\"datawtbbaedorvvmqf\\\"\",\"bgd\":\"\\\"datadhp\\\"\",\"vjsaqwotm\":\"\\\"dataxjd\\\"\",\"xaptefhexcgjok\":\"\\\"datawllcolsr\\\"\"}}],\"taskOption\":{\"concurrency\":308186783,\"errorAction\":{\"mode\":\"silentlyContinue\",\"maxToleratedFailures\":1683273653}}}")
             .toObject(StageSpec.class);
-        Assertions.assertEquals("oqaqhvseufuq", model.name());
-        Assertions.assertEquals("lcgqlsismj", model.tasks().get(0).name());
-        Assertions.assertEquals("rddga", model.tasks().get(0).targetId());
-        Assertions.assertEquals(162010613, model.taskOption().concurrency());
-        Assertions.assertEquals(ErrorActionMode.STOP_ON_ANY_FAILURE, model.taskOption().errorAction().mode());
-        Assertions.assertEquals(1957842604, model.taskOption().errorAction().maxToleratedFailures());
+        Assertions.assertEquals("ysfaqegplwrysh", model.name());
+        Assertions.assertEquals("w", model.tasks().get(0).name());
+        Assertions.assertEquals("dacarvvlfnty", model.tasks().get(0).targetId());
+        Assertions.assertEquals(308186783, model.taskOption().concurrency());
+        Assertions.assertEquals(ErrorActionMode.SILENTLY_CONTINUE, model.taskOption().errorAction().mode());
+        Assertions.assertEquals(1683273653, model.taskOption().errorAction().maxToleratedFailures());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         StageSpec model
-            = new StageSpec().withName("oqaqhvseufuq")
-                .withSpecification(mapOf())
-                .withTasks(Arrays.asList(
-                    new TaskSpec().withName("lcgqlsismj").withTargetId("rddga").withSpecification(mapOf()),
-                    new TaskSpec().withName("uhiosrsju").withTargetId("fcdis").withSpecification(mapOf()),
-                    new TaskSpec().withName("rnxzh").withTargetId("exrxzbujrtrhq").withSpecification(mapOf()),
-                    new TaskSpec().withName("revkhgnlnzo").withTargetId("lrpiqywnc").withSpecification(mapOf())))
-                .withTaskOption(new TaskOption().withConcurrency(162010613)
-                    .withErrorAction(new ErrorAction().withMode(ErrorActionMode.STOP_ON_ANY_FAILURE)
-                        .withMaxToleratedFailures(1957842604)));
+            = new StageSpec().withName("ysfaqegplwrysh")
+                .withSpecification(mapOf("gkqu", BinaryData.fromBytes("\"datakvb\"".getBytes(StandardCharsets.UTF_8))))
+                .withTasks(
+                    Arrays
+                        .asList(
+                            new TaskSpec().withName("w")
+                                .withTargetId("dacarvvlfnty")
+                                .withSpecification(mapOf("enazerohzrsqals",
+                                    BinaryData.fromBytes("\"datapoi\"".getBytes(StandardCharsets.UTF_8)))),
+                            new TaskSpec().withName("kdnwqapfgsdpcve")
+                                .withTargetId("mzhhkuuipldqqc")
+                                .withSpecification(mapOf("blhtjq",
+                                    BinaryData.fromBytes("\"datakva\"".getBytes(StandardCharsets.UTF_8)), "eh",
+                                    BinaryData.fromBytes("\"dataqyv\"".getBytes(StandardCharsets.UTF_8)), "mxhzzysevus",
+                                    BinaryData.fromBytes("\"dataa\"".getBytes(StandardCharsets.UTF_8)))),
+                            new TaskSpec()
+                                .withName("ivzrrryveimipsk")
+                                .withTargetId("zatvfuzka")
+                                .withSpecification(mapOf("qdsmjtg",
+                                    BinaryData.fromBytes("\"datajvvruxwigsyei\"".getBytes(StandardCharsets.UTF_8)))),
+                            new TaskSpec().withName("qgdgkkile")
+                                .withTargetId("kcsmk")
+                                .withSpecification(mapOf("oygbdgwumgxd",
+                                    BinaryData.fromBytes("\"datawtbbaedorvvmqf\"".getBytes(StandardCharsets.UTF_8)),
+                                    "bgd", BinaryData.fromBytes("\"datadhp\"".getBytes(StandardCharsets.UTF_8)),
+                                    "vjsaqwotm", BinaryData.fromBytes("\"dataxjd\"".getBytes(StandardCharsets.UTF_8)),
+                                    "xaptefhexcgjok",
+                                    BinaryData.fromBytes("\"datawllcolsr\"".getBytes(StandardCharsets.UTF_8))))))
+                .withTaskOption(new TaskOption().withConcurrency(308186783)
+                    .withErrorAction(new ErrorAction().withMode(ErrorActionMode.SILENTLY_CONTINUE)
+                        .withMaxToleratedFailures(1683273653)));
         model = BinaryData.fromObject(model).toObject(StageSpec.class);
-        Assertions.assertEquals("oqaqhvseufuq", model.name());
-        Assertions.assertEquals("lcgqlsismj", model.tasks().get(0).name());
-        Assertions.assertEquals("rddga", model.tasks().get(0).targetId());
-        Assertions.assertEquals(162010613, model.taskOption().concurrency());
-        Assertions.assertEquals(ErrorActionMode.STOP_ON_ANY_FAILURE, model.taskOption().errorAction().mode());
-        Assertions.assertEquals(1957842604, model.taskOption().errorAction().maxToleratedFailures());
+        Assertions.assertEquals("ysfaqegplwrysh", model.name());
+        Assertions.assertEquals("w", model.tasks().get(0).name());
+        Assertions.assertEquals("dacarvvlfnty", model.tasks().get(0).targetId());
+        Assertions.assertEquals(308186783, model.taskOption().concurrency());
+        Assertions.assertEquals(ErrorActionMode.SILENTLY_CONTINUE, model.taskOption().errorAction().mode());
+        Assertions.assertEquals(1683273653, model.taskOption().errorAction().maxToleratedFailures());
     }
 
     // Use "Map.of" if available

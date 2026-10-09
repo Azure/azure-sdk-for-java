@@ -21,7 +21,7 @@ import reactor.core.publisher.Mono;
 public final class SchemasRemoveVersionWithResponseMockTests {
     @Test
     public void testRemoveVersionWithResponse() throws Exception {
-        String responseStr = "{\"status\":\"udbchaqdtv\"}";
+        String responseStr = "{\"status\":\"vx\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +31,10 @@ public final class SchemasRemoveVersionWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         RemoveVersionResponse response = manager.schemas()
-            .removeVersionWithResponse("zng", "bdxxe", new VersionParameter().withVersion("unin"),
+            .removeVersionWithResponse("fyvrtpqpemhzcgk", "epdqhqyhwq", new VersionParameter().withVersion("e"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("udbchaqdtv", response.status());
+        Assertions.assertEquals("vx", response.status());
     }
 }

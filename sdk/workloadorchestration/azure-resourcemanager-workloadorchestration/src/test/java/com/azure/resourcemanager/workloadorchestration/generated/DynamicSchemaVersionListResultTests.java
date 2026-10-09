@@ -12,9 +12,8 @@ public final class DynamicSchemaVersionListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DynamicSchemaVersionListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"value\":\"ffimrzrtuzqogsex\",\"provisioningState\":\"Succeeded\"},\"eTag\":\"dnw\",\"id\":\"mewzsyyc\",\"name\":\"uzsoi\",\"type\":\"judpfrxt\"},{\"properties\":{\"value\":\"hzv\",\"provisioningState\":\"Succeeded\"},\"eTag\":\"wkqbrqu\",\"id\":\"axhexiilivp\",\"name\":\"tiirqtdqoa\",\"type\":\"oruzfgsquyfxrxx\"}],\"nextLink\":\"ptramxj\"}")
+            "{\"value\":[{\"properties\":{\"value\":\"\\\"dataxkzb\\\"\",\"provisioningState\":\"Canceled\"},\"eTag\":\"eivsiykzkdnc\",\"id\":\"xonbzoggculapz\",\"name\":\"y\",\"type\":\"pgogtqxepny\"},{\"properties\":{\"value\":\"\\\"datafuajly\\\"\",\"provisioningState\":\"Deleting\"},\"eTag\":\"of\",\"id\":\"hvfcibyfmow\",\"name\":\"xrkjpvdw\",\"type\":\"fzwiivwzjbhyz\"},{\"properties\":{\"value\":\"\\\"datajrkambtrnegvmnv\\\"\",\"provisioningState\":\"Canceled\"},\"eTag\":\"vldspa\",\"id\":\"jbkkdmflvestmjl\",\"name\":\"rriloz\",\"type\":\"peewchpxlkt\"}],\"nextLink\":\"uziycsl\"}")
             .toObject(DynamicSchemaVersionListResult.class);
-        Assertions.assertEquals("ffimrzrtuzqogsex", model.value().get(0).properties().value());
-        Assertions.assertEquals("ptramxj", model.nextLink());
+        Assertions.assertEquals("uziycsl", model.nextLink());
     }
 }
