@@ -1,14 +1,46 @@
 # Release History
 
-## 2.65.0-beta.1 (Unreleased)
+## 2.65.0 (2026-10-09)
 
-### Features Added
+### azure-resourcemanager-resources
 
-### Breaking Changes
+#### Breaking Changes
 
-### Bugs Fixed
+- Removed properties `ancestors`, `complianceReasonCode`, `policyAssignmentDisplayName`, `policyDefinitionDisplayName`,
+  `policyDefinitionGroupNames`, `policyExemptionIds`, `policySetDefinitionCategory`, `policySetDefinitionDisplayName`, and
+  `resourceLocation` from `PolicyLogInfo`, as they are not supported by the Policy service.
+
+#### Dependency Updates
+
+- Package api-version 2026-07-01.
+
+- Updated `api-version` of management locks to `2020-05-01`.
+
+### azure-resourcemanager-network
+
+#### Bugs Fixed
+
+- Fixed VMSS public IP address get and list operations to use the Compute API version `2018-10-01` instead of the Network API version.
+
+#### Dependency Updates
+
+- Package api-version Microsoft.Network: 2026-01-01, Microsoft.Compute: 2018-10-01.
+
+### azure-resourcemanager-containerservice
+
+#### Dependency Updates
+
+- Package api-version 2026-07-01.
+
+### azure-resourcemanager-trafficmanager
+
+#### Dependency Updates
+
+- Package api-version 2026-09-01.
 
 ### Other Changes
+
+- Updated dependencies from resources.
 
 ## 2.64.0 (2026-09-20)
 
