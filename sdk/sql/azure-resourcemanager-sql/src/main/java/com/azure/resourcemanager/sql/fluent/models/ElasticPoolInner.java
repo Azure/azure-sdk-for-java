@@ -444,15 +444,6 @@ public final class ElasticPoolInner extends Resource {
     }
 
     /**
-     * Get the currentSku property: The name and tier of the current SKU.
-     * 
-     * @return the currentSku value.
-     */
-    public Sku currentSku() {
-        return this.innerProperties() == null ? null : this.innerProperties().currentSku();
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
