@@ -13,22 +13,23 @@ public final class LogAnalyticsQueryPackQuerySearchPropertiesRelatedTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LogAnalyticsQueryPackQuerySearchPropertiesRelated model = BinaryData.fromString(
-            "{\"categories\":[\"xxpkyjcxc\"],\"resourceTypes\":[\"rytfmpcycil\",\"mcayk\",\"gnoxuztrksx\"],\"solutions\":[\"d\",\"cpfnznthjtwkja\"]}")
+            "{\"categories\":[\"rtffyaqitmh\",\"eioqaqhvse\",\"fuqyrxpdlcgqlsi\"],\"resourceTypes\":[\"qfrddgam\",\"uhiosrsju\",\"vfcdisyirn\"],\"solutions\":[\"czexrxzbujrtrhqv\"]}")
             .toObject(LogAnalyticsQueryPackQuerySearchPropertiesRelated.class);
-        Assertions.assertEquals("xxpkyjcxc", model.categories().get(0));
-        Assertions.assertEquals("rytfmpcycil", model.resourceTypes().get(0));
-        Assertions.assertEquals("d", model.solutions().get(0));
+        Assertions.assertEquals("rtffyaqitmh", model.categories().get(0));
+        Assertions.assertEquals("qfrddgam", model.resourceTypes().get(0));
+        Assertions.assertEquals("czexrxzbujrtrhqv", model.solutions().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         LogAnalyticsQueryPackQuerySearchPropertiesRelated model
-            = new LogAnalyticsQueryPackQuerySearchPropertiesRelated().withCategories(Arrays.asList("xxpkyjcxc"))
-                .withResourceTypes(Arrays.asList("rytfmpcycil", "mcayk", "gnoxuztrksx"))
-                .withSolutions(Arrays.asList("d", "cpfnznthjtwkja"));
+            = new LogAnalyticsQueryPackQuerySearchPropertiesRelated()
+                .withCategories(Arrays.asList("rtffyaqitmh", "eioqaqhvse", "fuqyrxpdlcgqlsi"))
+                .withResourceTypes(Arrays.asList("qfrddgam", "uhiosrsju", "vfcdisyirn"))
+                .withSolutions(Arrays.asList("czexrxzbujrtrhqv"));
         model = BinaryData.fromObject(model).toObject(LogAnalyticsQueryPackQuerySearchPropertiesRelated.class);
-        Assertions.assertEquals("xxpkyjcxc", model.categories().get(0));
-        Assertions.assertEquals("rytfmpcycil", model.resourceTypes().get(0));
-        Assertions.assertEquals("d", model.solutions().get(0));
+        Assertions.assertEquals("rtffyaqitmh", model.categories().get(0));
+        Assertions.assertEquals("qfrddgam", model.resourceTypes().get(0));
+        Assertions.assertEquals("czexrxzbujrtrhqv", model.solutions().get(0));
     }
 }

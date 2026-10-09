@@ -28,7 +28,7 @@ public final class QueryPacksDeleteByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.queryPacks()
-            .deleteByResourceGroupWithResponse("oabhjxwxqweuip", "pvksmit", com.azure.core.util.Context.NONE);
+            .deleteByResourceGroupWithResponse("falickduoiqtamty", "sknxrwzawnvsbcf", com.azure.core.util.Context.NONE);
 
     }
 }

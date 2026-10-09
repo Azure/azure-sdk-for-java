@@ -9,7 +9,7 @@ package com.azure.resourcemanager.loganalytics.generated;
  */
 public final class IntelligencePacksDisableSamples {
     /*
-     * x-ms-original-file: 2025-07-01/WorkspacesDisableIntelligencePack.json
+     * x-ms-original-file: 2026-03-01/WorkspacesDisableIntelligencePack.json
      */
     /**
      * Sample code: IntelligencePacksDisable.

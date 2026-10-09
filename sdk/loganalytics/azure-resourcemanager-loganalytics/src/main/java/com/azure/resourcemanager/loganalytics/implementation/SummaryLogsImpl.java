@@ -12,6 +12,7 @@ import com.azure.resourcemanager.loganalytics.models.RuleDefinition;
 import com.azure.resourcemanager.loganalytics.models.RuleTypeEnum;
 import com.azure.resourcemanager.loganalytics.models.StatusCodeEnum;
 import com.azure.resourcemanager.loganalytics.models.SummaryLogs;
+import com.azure.resourcemanager.loganalytics.models.SummaryLogsIdentity;
 import com.azure.resourcemanager.loganalytics.models.SummaryLogsProvisioningState;
 import com.azure.resourcemanager.loganalytics.models.SummaryLogsRetryBin;
 
@@ -30,6 +31,10 @@ public final class SummaryLogsImpl implements SummaryLogs, SummaryLogs.Definitio
 
     public String type() {
         return this.innerModel().type();
+    }
+
+    public SummaryLogsIdentity identity() {
+        return this.innerModel().identity();
     }
 
     public SystemData systemData() {
@@ -175,6 +180,11 @@ public final class SummaryLogsImpl implements SummaryLogs, SummaryLogs.Definitio
     public void retryBin(SummaryLogsRetryBin parameters, Context context) {
         serviceManager.summaryLogsOperations()
             .retryBin(resourceGroupName, workspaceName, summaryLogsName, parameters, context);
+    }
+
+    public SummaryLogsImpl withIdentity(SummaryLogsIdentity identity) {
+        this.innerModel().withIdentity(identity);
+        return this;
     }
 
     public SummaryLogsImpl withRuleType(RuleTypeEnum ruleType) {

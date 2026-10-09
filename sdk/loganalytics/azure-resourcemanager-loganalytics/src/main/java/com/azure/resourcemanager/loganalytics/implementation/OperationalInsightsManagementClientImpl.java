@@ -487,7 +487,7 @@ public final class OperationalInsightsManagementClientImpl implements Operationa
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2025-07-01";
+        this.apiVersion = "2026-03-01";
         this.operations = new OperationsClientImpl(this);
         this.clusters = new ClustersClientImpl(this);
         this.dataExports = new DataExportsClientImpl(this);

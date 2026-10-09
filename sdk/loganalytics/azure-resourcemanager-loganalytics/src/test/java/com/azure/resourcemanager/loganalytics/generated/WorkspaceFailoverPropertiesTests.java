@@ -11,7 +11,7 @@ public final class WorkspaceFailoverPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkspaceFailoverProperties model
-            = BinaryData.fromString("{\"state\":\"Deactivating\",\"lastModifiedDate\":\"2021-06-30T19:40:04Z\"}")
+            = BinaryData.fromString("{\"state\":\"Deactivating\",\"lastModifiedDate\":\"2021-01-24T12:51:28Z\"}")
                 .toObject(WorkspaceFailoverProperties.class);
     }
 

@@ -11,9 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class SearchMetadataSchemaTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SearchMetadataSchema model = BinaryData.fromString("{\"name\":\"rbdkelvidiz\",\"version\":2083883646}")
-            .toObject(SearchMetadataSchema.class);
-        Assertions.assertEquals("rbdkelvidiz", model.name());
-        Assertions.assertEquals(2083883646, model.version());
+        SearchMetadataSchema model
+            = BinaryData.fromString("{\"name\":\"mtk\",\"version\":1432155819}").toObject(SearchMetadataSchema.class);
+        Assertions.assertEquals("mtk", model.name());
+        Assertions.assertEquals(1432155819, model.version());
     }
 }

@@ -15,23 +15,23 @@ public final class DataSourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataSourceInner model = BinaryData.fromString(
-            "{\"properties\":\"\\\"datas\\\"\",\"etag\":\"on\",\"kind\":\"ChangeTrackingServices\",\"tags\":{\"cwaekrrjre\":\"gfipnsxk\",\"jglikkxwslolb\":\"fxtsgum\",\"elfk\":\"pvuzlmv\"},\"id\":\"plcrpwjxeznoig\",\"name\":\"rnjwmw\",\"type\":\"pn\"}")
+            "{\"properties\":\"\\\"dataosphyoul\\\"\",\"etag\":\"rvxaglrvimjwosy\",\"kind\":\"ChangeTrackingContentLocation\",\"tags\":{\"zzikhlyfjhdg\":\"cskfcktqumiekk\"},\"id\":\"gebdunygaeq\",\"name\":\"db\",\"type\":\"fatpxllrxcyjmoa\"}")
             .toObject(DataSourceInner.class);
-        Assertions.assertEquals("on", model.etag());
-        Assertions.assertEquals(DataSourceKind.CHANGE_TRACKING_SERVICES, model.kind());
-        Assertions.assertEquals("gfipnsxk", model.tags().get("cwaekrrjre"));
+        Assertions.assertEquals("rvxaglrvimjwosy", model.etag());
+        Assertions.assertEquals(DataSourceKind.CHANGE_TRACKING_CONTENT_LOCATION, model.kind());
+        Assertions.assertEquals("cskfcktqumiekk", model.tags().get("zzikhlyfjhdg"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataSourceInner model = new DataSourceInner().withProperties("\"datas\"")
-            .withEtag("on")
-            .withKind(DataSourceKind.CHANGE_TRACKING_SERVICES)
-            .withTags(mapOf("cwaekrrjre", "gfipnsxk", "jglikkxwslolb", "fxtsgum", "elfk", "pvuzlmv"));
+        DataSourceInner model = new DataSourceInner().withProperties("\"dataosphyoul\"")
+            .withEtag("rvxaglrvimjwosy")
+            .withKind(DataSourceKind.CHANGE_TRACKING_CONTENT_LOCATION)
+            .withTags(mapOf("zzikhlyfjhdg", "cskfcktqumiekk"));
         model = BinaryData.fromObject(model).toObject(DataSourceInner.class);
-        Assertions.assertEquals("on", model.etag());
-        Assertions.assertEquals(DataSourceKind.CHANGE_TRACKING_SERVICES, model.kind());
-        Assertions.assertEquals("gfipnsxk", model.tags().get("cwaekrrjre"));
+        Assertions.assertEquals("rvxaglrvimjwosy", model.etag());
+        Assertions.assertEquals(DataSourceKind.CHANGE_TRACKING_CONTENT_LOCATION, model.kind());
+        Assertions.assertEquals("cskfcktqumiekk", model.tags().get("zzikhlyfjhdg"));
     }
 
     // Use "Map.of" if available

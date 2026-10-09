@@ -11,10 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class PrivateLinkScopedResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PrivateLinkScopedResource model
-            = BinaryData.fromString("{\"resourceId\":\"xaqwoochcbonqv\",\"scopeId\":\"vlrxnjeaseiph\"}")
-                .toObject(PrivateLinkScopedResource.class);
-        Assertions.assertEquals("xaqwoochcbonqv", model.resourceId());
-        Assertions.assertEquals("vlrxnjeaseiph", model.scopeId());
+        PrivateLinkScopedResource model = BinaryData.fromString("{\"resourceId\":\"npime\",\"scopeId\":\"stxgc\"}")
+            .toObject(PrivateLinkScopedResource.class);
+        Assertions.assertEquals("npime", model.resourceId());
+        Assertions.assertEquals("stxgc", model.scopeId());
     }
 }
