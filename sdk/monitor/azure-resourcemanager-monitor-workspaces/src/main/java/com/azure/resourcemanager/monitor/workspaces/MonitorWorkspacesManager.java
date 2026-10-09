@@ -27,13 +27,25 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.monitor.workspaces.fluent.MonitorWorkspacesManagementClient;
 import com.azure.resourcemanager.monitor.workspaces.implementation.AzureMonitorWorkspacesImpl;
 import com.azure.resourcemanager.monitor.workspaces.implementation.IssuesImpl;
+import com.azure.resourcemanager.monitor.workspaces.implementation.MetricConfigurationsImpl;
+import com.azure.resourcemanager.monitor.workspaces.implementation.MetricNamespacesImpl;
 import com.azure.resourcemanager.monitor.workspaces.implementation.MetricsContainersImpl;
 import com.azure.resourcemanager.monitor.workspaces.implementation.MonitorWorkspacesManagementClientBuilder;
 import com.azure.resourcemanager.monitor.workspaces.implementation.OperationsImpl;
+import com.azure.resourcemanager.monitor.workspaces.implementation.TraceAssociationsAtResourceGroupsImpl;
+import com.azure.resourcemanager.monitor.workspaces.implementation.TraceAssociationsAtSubscriptionsImpl;
+import com.azure.resourcemanager.monitor.workspaces.implementation.TraceAssociationsImpl;
+import com.azure.resourcemanager.monitor.workspaces.implementation.TraceContainersImpl;
 import com.azure.resourcemanager.monitor.workspaces.models.AzureMonitorWorkspaces;
 import com.azure.resourcemanager.monitor.workspaces.models.Issues;
+import com.azure.resourcemanager.monitor.workspaces.models.MetricConfigurations;
+import com.azure.resourcemanager.monitor.workspaces.models.MetricNamespaces;
 import com.azure.resourcemanager.monitor.workspaces.models.MetricsContainers;
 import com.azure.resourcemanager.monitor.workspaces.models.Operations;
+import com.azure.resourcemanager.monitor.workspaces.models.TraceAssociations;
+import com.azure.resourcemanager.monitor.workspaces.models.TraceAssociationsAtResourceGroups;
+import com.azure.resourcemanager.monitor.workspaces.models.TraceAssociationsAtSubscriptions;
+import com.azure.resourcemanager.monitor.workspaces.models.TraceContainers;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -53,6 +65,18 @@ public final class MonitorWorkspacesManager {
     private Issues issues;
 
     private MetricsContainers metricsContainers;
+
+    private MetricNamespaces metricNamespaces;
+
+    private MetricConfigurations metricConfigurations;
+
+    private TraceContainers traceContainers;
+
+    private TraceAssociationsAtResourceGroups traceAssociationsAtResourceGroups;
+
+    private TraceAssociationsAtSubscriptions traceAssociationsAtSubscriptions;
+
+    private TraceAssociations traceAssociations;
 
     private final MonitorWorkspacesManagementClient clientObject;
 
@@ -316,6 +340,80 @@ public final class MonitorWorkspacesManager {
             this.metricsContainers = new MetricsContainersImpl(clientObject.getMetricsContainers(), this);
         }
         return metricsContainers;
+    }
+
+    /**
+     * Gets the resource collection API of MetricNamespaces.
+     * 
+     * @return Resource collection API of MetricNamespaces.
+     */
+    public MetricNamespaces metricNamespaces() {
+        if (this.metricNamespaces == null) {
+            this.metricNamespaces = new MetricNamespacesImpl(clientObject.getMetricNamespaces(), this);
+        }
+        return metricNamespaces;
+    }
+
+    /**
+     * Gets the resource collection API of MetricConfigurations. It manages MetricConfigurationResource.
+     * 
+     * @return Resource collection API of MetricConfigurations.
+     */
+    public MetricConfigurations metricConfigurations() {
+        if (this.metricConfigurations == null) {
+            this.metricConfigurations = new MetricConfigurationsImpl(clientObject.getMetricConfigurations(), this);
+        }
+        return metricConfigurations;
+    }
+
+    /**
+     * Gets the resource collection API of TraceContainers.
+     * 
+     * @return Resource collection API of TraceContainers.
+     */
+    public TraceContainers traceContainers() {
+        if (this.traceContainers == null) {
+            this.traceContainers = new TraceContainersImpl(clientObject.getTraceContainers(), this);
+        }
+        return traceContainers;
+    }
+
+    /**
+     * Gets the resource collection API of TraceAssociationsAtResourceGroups.
+     * 
+     * @return Resource collection API of TraceAssociationsAtResourceGroups.
+     */
+    public TraceAssociationsAtResourceGroups traceAssociationsAtResourceGroups() {
+        if (this.traceAssociationsAtResourceGroups == null) {
+            this.traceAssociationsAtResourceGroups
+                = new TraceAssociationsAtResourceGroupsImpl(clientObject.getTraceAssociationsAtResourceGroups(), this);
+        }
+        return traceAssociationsAtResourceGroups;
+    }
+
+    /**
+     * Gets the resource collection API of TraceAssociationsAtSubscriptions.
+     * 
+     * @return Resource collection API of TraceAssociationsAtSubscriptions.
+     */
+    public TraceAssociationsAtSubscriptions traceAssociationsAtSubscriptions() {
+        if (this.traceAssociationsAtSubscriptions == null) {
+            this.traceAssociationsAtSubscriptions
+                = new TraceAssociationsAtSubscriptionsImpl(clientObject.getTraceAssociationsAtSubscriptions(), this);
+        }
+        return traceAssociationsAtSubscriptions;
+    }
+
+    /**
+     * Gets the resource collection API of TraceAssociations.
+     * 
+     * @return Resource collection API of TraceAssociations.
+     */
+    public TraceAssociations traceAssociations() {
+        if (this.traceAssociations == null) {
+            this.traceAssociations = new TraceAssociationsImpl(clientObject.getTraceAssociations(), this);
+        }
+        return traceAssociations;
     }
 
     /**

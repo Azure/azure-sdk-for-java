@@ -38,6 +38,11 @@ public final class AzureMonitorWorkspace implements JsonSerializable<AzureMonito
     private AzureMonitorWorkspaceDefaultIngestionSettings defaultIngestionSettings;
 
     /*
+     * Query endpoints for the Azure Monitor Workspace.
+     */
+    private AzureMonitorWorkspaceEndpoints endpoints;
+
+    /*
      * List of private endpoint connections
      */
     private List<PrivateEndpointConnection> privateEndpointConnections;
@@ -46,6 +51,11 @@ public final class AzureMonitorWorkspace implements JsonSerializable<AzureMonito
      * Gets or sets allow or disallow public network access to Azure Monitor Workspace
      */
     private PublicNetworkAccess publicNetworkAccess;
+
+    /*
+     * Action configuration for the Azure Monitor Workspace.
+     */
+    private AzureMonitorWorkspaceActions actions;
 
     /**
      * Creates an instance of AzureMonitorWorkspace class.
@@ -102,6 +112,15 @@ public final class AzureMonitorWorkspace implements JsonSerializable<AzureMonito
     }
 
     /**
+     * Get the endpoints property: Query endpoints for the Azure Monitor Workspace.
+     * 
+     * @return the endpoints value.
+     */
+    public AzureMonitorWorkspaceEndpoints endpoints() {
+        return this.endpoints;
+    }
+
+    /**
      * Get the privateEndpointConnections property: List of private endpoint connections.
      * 
      * @return the privateEndpointConnections value.
@@ -133,6 +152,26 @@ public final class AzureMonitorWorkspace implements JsonSerializable<AzureMonito
     }
 
     /**
+     * Get the actions property: Action configuration for the Azure Monitor Workspace.
+     * 
+     * @return the actions value.
+     */
+    public AzureMonitorWorkspaceActions actions() {
+        return this.actions;
+    }
+
+    /**
+     * Set the actions property: Action configuration for the Azure Monitor Workspace.
+     * 
+     * @param actions the actions value to set.
+     * @return the AzureMonitorWorkspace object itself.
+     */
+    public AzureMonitorWorkspace withActions(AzureMonitorWorkspaceActions actions) {
+        this.actions = actions;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -141,6 +180,7 @@ public final class AzureMonitorWorkspace implements JsonSerializable<AzureMonito
         jsonWriter.writeJsonField("metrics", this.metrics);
         jsonWriter.writeStringField("publicNetworkAccess",
             this.publicNetworkAccess == null ? null : this.publicNetworkAccess.toString());
+        jsonWriter.writeJsonField("actions", this.actions);
         return jsonWriter.writeEndObject();
     }
 
@@ -169,6 +209,8 @@ public final class AzureMonitorWorkspace implements JsonSerializable<AzureMonito
                 } else if ("defaultIngestionSettings".equals(fieldName)) {
                     deserializedAzureMonitorWorkspace.defaultIngestionSettings
                         = AzureMonitorWorkspaceDefaultIngestionSettings.fromJson(reader);
+                } else if ("endpoints".equals(fieldName)) {
+                    deserializedAzureMonitorWorkspace.endpoints = AzureMonitorWorkspaceEndpoints.fromJson(reader);
                 } else if ("privateEndpointConnections".equals(fieldName)) {
                     List<PrivateEndpointConnection> privateEndpointConnections
                         = reader.readArray(reader1 -> PrivateEndpointConnection.fromJson(reader1));
@@ -176,6 +218,8 @@ public final class AzureMonitorWorkspace implements JsonSerializable<AzureMonito
                 } else if ("publicNetworkAccess".equals(fieldName)) {
                     deserializedAzureMonitorWorkspace.publicNetworkAccess
                         = PublicNetworkAccess.fromString(reader.getString());
+                } else if ("actions".equals(fieldName)) {
+                    deserializedAzureMonitorWorkspace.actions = AzureMonitorWorkspaceActions.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

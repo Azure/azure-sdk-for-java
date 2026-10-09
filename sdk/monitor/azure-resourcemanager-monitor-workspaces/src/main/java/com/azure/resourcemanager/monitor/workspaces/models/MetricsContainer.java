@@ -22,6 +22,11 @@ public final class MetricsContainer implements JsonSerializable<MetricsContainer
     private ResourceProvisioningState provisioningState;
 
     /*
+     * Metrics limits.
+     */
+    private MetricsLimits limits;
+
+    /*
      * The version of Metrics Query Service that this AMW will use for all metric queries.
      */
     private String version;
@@ -39,6 +44,26 @@ public final class MetricsContainer implements JsonSerializable<MetricsContainer
      */
     public ResourceProvisioningState provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Get the limits property: Metrics limits.
+     * 
+     * @return the limits value.
+     */
+    public MetricsLimits limits() {
+        return this.limits;
+    }
+
+    /**
+     * Set the limits property: Metrics limits.
+     * 
+     * @param limits the limits value to set.
+     * @return the MetricsContainer object itself.
+     */
+    public MetricsContainer withLimits(MetricsLimits limits) {
+        this.limits = limits;
+        return this;
     }
 
     /**
@@ -67,6 +92,7 @@ public final class MetricsContainer implements JsonSerializable<MetricsContainer
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("limits", this.limits);
         jsonWriter.writeStringField("version", this.version);
         return jsonWriter.writeEndObject();
     }
@@ -89,6 +115,8 @@ public final class MetricsContainer implements JsonSerializable<MetricsContainer
                 if ("provisioningState".equals(fieldName)) {
                     deserializedMetricsContainer.provisioningState
                         = ResourceProvisioningState.fromString(reader.getString());
+                } else if ("limits".equals(fieldName)) {
+                    deserializedMetricsContainer.limits = MetricsLimits.fromJson(reader);
                 } else if ("version".equals(fieldName)) {
                     deserializedMetricsContainer.version = reader.getString();
                 } else {

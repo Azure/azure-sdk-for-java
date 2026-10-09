@@ -22,7 +22,7 @@ public final class MetricsContainersListByAzureMonitorWorkspaceMockTests {
     @Test
     public void testListByAzureMonitorWorkspace() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"version\":\"qytibyowbblgyavu\"},\"id\":\"thjoxoism\",\"name\":\"ksbpimlqoljx\",\"type\":\"cgxxlxs\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"limits\":{\"enableAutoScale\":true,\"maxActiveTimeSeries\":8274523607965375159,\"maxEventsPerMinute\":4894125923007463605},\"version\":\"cli\"},\"id\":\"zvhxnk\",\"name\":\"mtk\",\"type\":\"bo\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,9 +31,14 @@ public final class MetricsContainersListByAzureMonitorWorkspaceMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<MetricsContainerResource> response = manager.metricsContainers()
-            .listByAzureMonitorWorkspace("bywdxsmicc", "rwfscjfnynszquj", com.azure.core.util.Context.NONE);
+        PagedIterable<MetricsContainerResource> response
+            = manager.metricsContainers().listByAzureMonitorWorkspace("ekrsgs", "b", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("qytibyowbblgyavu", response.iterator().next().properties().version());
+        Assertions.assertTrue(response.iterator().next().properties().limits().enableAutoScale());
+        Assertions.assertEquals(8274523607965375159L,
+            response.iterator().next().properties().limits().maxActiveTimeSeries());
+        Assertions.assertEquals(4894125923007463605L,
+            response.iterator().next().properties().limits().maxEventsPerMinute());
+        Assertions.assertEquals("cli", response.iterator().next().properties().version());
     }
 }

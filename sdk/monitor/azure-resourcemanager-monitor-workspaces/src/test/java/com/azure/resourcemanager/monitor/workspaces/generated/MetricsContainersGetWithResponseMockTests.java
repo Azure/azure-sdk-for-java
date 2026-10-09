@@ -21,7 +21,7 @@ public final class MetricsContainersGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Failed\",\"version\":\"qonmacj\"},\"id\":\"nizshqvcim\",\"name\":\"ev\",\"type\":\"gmblrri\"}";
+            = "{\"properties\":{\"provisioningState\":\"Failed\",\"limits\":{\"enableAutoScale\":true,\"maxActiveTimeSeries\":2131613216637731959,\"maxEventsPerMinute\":5067973836639216879},\"version\":\"yik\"},\"id\":\"lauyav\",\"name\":\"uwmncs\",\"type\":\"tijfybvp\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,9 +31,12 @@ public final class MetricsContainersGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         MetricsContainerResource response = manager.metricsContainers()
-            .getWithResponse("hvcyyysfg", "otcubi", "p", com.azure.core.util.Context.NONE)
+            .getWithResponse("tj", "zysdzh", "zwwva", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("qonmacj", response.properties().version());
+        Assertions.assertTrue(response.properties().limits().enableAutoScale());
+        Assertions.assertEquals(2131613216637731959L, response.properties().limits().maxActiveTimeSeries());
+        Assertions.assertEquals(5067973836639216879L, response.properties().limits().maxEventsPerMinute());
+        Assertions.assertEquals("yik", response.properties().version());
     }
 }

@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class BackgroundDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BackgroundDetails model = BinaryData.fromString("{\"name\":\"yvxqtayriwwroy\",\"value\":\"bexrmcq\"}")
+        BackgroundDetails model = BinaryData.fromString("{\"name\":\"oxgvclt\",\"value\":\"gsncghkjeszz\"}")
             .toObject(BackgroundDetails.class);
-        Assertions.assertEquals("yvxqtayriwwroy", model.name());
-        Assertions.assertEquals("bexrmcq", model.value());
+        Assertions.assertEquals("oxgvclt", model.name());
+        Assertions.assertEquals("gsncghkjeszz", model.value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BackgroundDetails model = new BackgroundDetails().withName("yvxqtayriwwroy").withValue("bexrmcq");
+        BackgroundDetails model = new BackgroundDetails().withName("oxgvclt").withValue("gsncghkjeszz");
         model = BinaryData.fromObject(model).toObject(BackgroundDetails.class);
-        Assertions.assertEquals("yvxqtayriwwroy", model.name());
-        Assertions.assertEquals("bexrmcq", model.value());
+        Assertions.assertEquals("oxgvclt", model.name());
+        Assertions.assertEquals("gsncghkjeszz", model.value());
     }
 }

@@ -11,14 +11,17 @@ import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.monitor.workspaces.MonitorWorkspacesManager;
 import com.azure.resourcemanager.monitor.workspaces.models.AzureMonitorWorkspace;
+import com.azure.resourcemanager.monitor.workspaces.models.AzureMonitorWorkspaceActions;
 import com.azure.resourcemanager.monitor.workspaces.models.AzureMonitorWorkspaceMetrics;
 import com.azure.resourcemanager.monitor.workspaces.models.AzureMonitorWorkspaceResource;
+import com.azure.resourcemanager.monitor.workspaces.models.DefaultActionGroupResource;
 import com.azure.resourcemanager.monitor.workspaces.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.monitor.workspaces.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.monitor.workspaces.models.PublicNetworkAccess;
 import com.azure.resourcemanager.monitor.workspaces.models.UserAssignedIdentity;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
@@ -29,7 +32,7 @@ public final class AzureMonitorWorkspacesCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"accountId\":\"j\",\"metrics\":{\"prometheusQueryEndpoint\":\"lfzxiavrmbzonoki\",\"internalId\":\"jq\",\"enableAccessUsingResourcePermissions\":false},\"provisioningState\":\"Succeeded\",\"defaultIngestionSettings\":{\"dataCollectionRuleResourceId\":\"rlazszrnw\",\"dataCollectionEndpointResourceId\":\"indfpwpjyl\",\"dataCollectionRuleImmutableId\":\"tlhflsjcdhszf\",\"ingestionEndpoints\":{\"metrics\":\"bgofeljag\"}},\"privateEndpointConnections\":[{\"properties\":{\"groupIds\":[\"dvriiiojnal\",\"hfkvtvsexsowuel\",\"qhhahhxvrhmzkwpj\",\"wws\"],\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Failed\"},\"id\":\"tqs\",\"name\":\"hqxujxukndxdi\",\"type\":\"rjguufzdmsyqtf\"},{\"properties\":{\"groupIds\":[\"botzingamvppho\",\"zqzudph\",\"amvdkfwynwcvtbv\",\"ayhmtnvyqiatkz\"],\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Deleting\"},\"id\":\"wzcjaesgvvsccy\",\"name\":\"jguq\",\"type\":\"hwyg\"},{\"properties\":{\"groupIds\":[\"nk\",\"xu\"],\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Creating\"},\"id\":\"zrmuhapfcqdps\",\"name\":\"xqv\",\"type\":\"svuo\"}],\"publicNetworkAccess\":\"Enabled\"},\"identity\":{\"principalId\":\"elvezrypq\",\"tenantId\":\"feo\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"pbqpcrfkbwccsn\":{\"principalId\":\"kyhkobopg\",\"clientId\":\"dkow\"},\"y\":{\"principalId\":\"cdwxlpq\",\"clientId\":\"ftnkhtj\"},\"ywkbirryuzhlhkjo\":{\"principalId\":\"gwfqatmt\",\"clientId\":\"tmdvypgikdgs\"}}},\"etag\":\"vqqaatjinrvgo\",\"location\":\"mfiibfggj\",\"tags\":{\"llqwjygvjayvblmh\":\"lvrwxkvtkk\",\"uhbxvvy\":\"k\"},\"id\":\"gsopbyrqufegxu\",\"name\":\"wz\",\"type\":\"bnhlmc\"}";
+            = "{\"properties\":{\"accountId\":\"ithtywu\",\"metrics\":{\"prometheusQueryEndpoint\":\"bihwqknfdnt\",\"internalId\":\"chrdgoihxumwcto\",\"enableAccessUsingResourcePermissions\":false},\"provisioningState\":\"Canceled\",\"defaultIngestionSettings\":{\"dataCollectionRuleResourceId\":\"dfdlwggyts\",\"dataCollectionEndpointResourceId\":\"tov\",\"dataCollectionRuleImmutableId\":\"gseinq\",\"ingestionEndpoints\":{\"metrics\":\"fxqknpirgneptt\"}},\"endpoints\":{\"query\":\"sniffc\"},\"privateEndpointConnections\":[{\"properties\":{\"groupIds\":[\"jlpijnkrx\",\"rddh\",\"ratiz\"],\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Succeeded\"},\"id\":\"sxiftozq\",\"name\":\"zh\",\"type\":\"tw\"},{\"properties\":{\"groupIds\":[\"gc\",\"honnxkrlgnyhmos\",\"xkk\",\"thrrgh\"],\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Creating\"},\"id\":\"qxvcxgfrpdsofb\",\"name\":\"hrnsvbu\",\"type\":\"wdvzyy\"},{\"properties\":{\"groupIds\":[\"unvjsrtkfawnopq\"],\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Failed\"},\"id\":\"irtx\",\"name\":\"yuxzejntpsewgi\",\"type\":\"ilqu\"},{\"properties\":{\"groupIds\":[\"xtqmieoxor\",\"gufhyaomtbg\",\"havgrvk\"],\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Deleting\"},\"id\":\"zh\",\"name\":\"jbibg\",\"type\":\"mfxumvfcluyovw\"}],\"publicNetworkAccess\":\"Disabled\",\"actions\":{\"defaultActionGroups\":[{\"id\":\"zxscyhwzdgirujb\"},{\"id\":\"omvzzbtd\"},{\"id\":\"vp\"},{\"id\":\"yujviylwdshfssn\"}]}},\"identity\":{\"principalId\":\"ye\",\"tenantId\":\"ymsgaojfmwnc\",\"type\":\"None\",\"userAssignedIdentities\":{\"usps\":{\"principalId\":\"hirctymoxoftpipi\",\"clientId\":\"czuhxacpqjlihh\"}}},\"etag\":\"sdvlmfwdgzxulucv\",\"location\":\"mrsreuzvxurisjnh\",\"tags\":{\"hu\":\"xifqjzgxm\",\"cesutrgjupauut\":\"lw\"},\"id\":\"woqhihe\",\"name\":\"qg\",\"type\":\"zpnfqntcypsxj\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -39,22 +42,27 @@ public final class AzureMonitorWorkspacesCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         AzureMonitorWorkspaceResource response = manager.azureMonitorWorkspaces()
-            .define("lusiy")
-            .withRegion("ldgmfpgvmpip")
-            .withExistingResourceGroup("zrncsdt")
-            .withTags(mapOf("wbdsr", "thaqfxssmwu"))
+            .define("atjinrvgoupmfiib")
+            .withRegion("ipmdscwx")
+            .withExistingResourceGroup("qrvqq")
+            .withTags(mapOf("xhojuj", "evzhfsto", "hixbjxyfwnyl", "ypelmcu"))
             .withProperties(new AzureMonitorWorkspace()
-                .withMetrics(new AzureMonitorWorkspaceMetrics().withEnableAccessUsingResourcePermissions(true))
-                .withPublicNetworkAccess(PublicNetworkAccess.DISABLED))
-            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
-                .withUserAssignedIdentities(mapOf("ikayuhqlbjbsybb", new UserAssignedIdentity())))
+                .withMetrics(new AzureMonitorWorkspaceMetrics().withEnableAccessUsingResourcePermissions(false))
+                .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
+                .withActions(new AzureMonitorWorkspaceActions()
+                    .withDefaultActionGroups(Arrays.asList(new DefaultActionGroupResource().withId("wkpnbsaz")))))
+            .withIdentity(
+                new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+                    .withUserAssignedIdentities(mapOf("ou", new UserAssignedIdentity(), "kixqtnqtt",
+                        new UserAssignedIdentity(), "yeozphvwauyqncy", new UserAssignedIdentity())))
             .create();
 
-        Assertions.assertEquals("mfiibfggj", response.location());
-        Assertions.assertEquals("lvrwxkvtkk", response.tags().get("llqwjygvjayvblmh"));
+        Assertions.assertEquals("mrsreuzvxurisjnh", response.location());
+        Assertions.assertEquals("xifqjzgxm", response.tags().get("hu"));
         Assertions.assertFalse(response.properties().metrics().enableAccessUsingResourcePermissions());
-        Assertions.assertEquals(PublicNetworkAccess.ENABLED, response.properties().publicNetworkAccess());
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, response.identity().type());
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED, response.properties().publicNetworkAccess());
+        Assertions.assertEquals("zxscyhwzdgirujb", response.properties().actions().defaultActionGroups().get(0).id());
+        Assertions.assertEquals(ManagedServiceIdentityType.NONE, response.identity().type());
     }
 
     // Use "Map.of" if available
