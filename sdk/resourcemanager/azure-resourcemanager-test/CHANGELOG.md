@@ -1,14 +1,10 @@
 # Release History
 
-## 2.0.0-beta.4 (Unreleased)
+## 2.0.0-beta.4 (2026-10-09)
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Added new `buildManager` overload to `ResourceManagerTestProxyTestBase`, enabling setting long-running operation's default polling interval via entry class.
 
 ## 2.0.0-beta.3 (2026-08-12)
 

@@ -475,6 +475,31 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
     }
 
     /**
+     * Builds the manager with provided http pipeline, profile and defaultPollInterval in general manner.
+     * This is useful when you are doing recording tests and want to share the already set-up HttpPipeline.
+     *
+     * @param manager the class of the manager
+     * @param httpPipeline the http pipeline
+     * @param profile the azure profile
+     * @param defaultPollInterval default poll interval for long-running operations
+     * @param <T> the type of the manager
+     * @return the manager instance
+     * @throws RuntimeException when field cannot be found or set.
+     */
+    protected <T> T buildManager(Class<T> manager, HttpPipeline httpPipeline, AzureProfile profile,
+        Duration defaultPollInterval) {
+        try {
+            Constructor<T> constructor = manager.getDeclaredConstructor(httpPipeline.getClass(), profile.getClass(),
+                defaultPollInterval.getClass());
+            setAccessible(constructor);
+            return constructor.newInstance(httpPipeline, profile, defaultPollInterval);
+
+        } catch (ReflectiveOperationException ex) {
+            throw LOGGER.logExceptionAsError(new RuntimeException(ex));
+        }
+    }
+
+    /**
      * Builds an HttpPipeline.
      *
      * @param credential The credentials to use in the pipeline.
