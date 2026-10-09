@@ -23,7 +23,7 @@ public final class ApplyUpdatesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"status\":\"RetryNow\",\"resourceId\":\"iujwa\",\"lastUpdateTime\":\"2021-06-14T05:46Z\"},\"id\":\"qiiobyuqer\",\"name\":\"qlpqwcciuq\",\"type\":\"bdbutauvf\"}]}";
+            = "{\"value\":[{\"properties\":{\"status\":\"Pending\",\"resourceId\":\"iysui\",\"lastUpdateTime\":\"2021-06-27T05:18:24Z\"},\"id\":\"edyatrwyhqmibzyh\",\"name\":\"itsmypyyn\",\"type\":\"cdpu\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,8 +34,9 @@ public final class ApplyUpdatesListMockTests {
 
         PagedIterable<ApplyUpdate> response = manager.applyUpdates().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(UpdateStatus.RETRY_NOW, response.iterator().next().status());
-        Assertions.assertEquals("iujwa", response.iterator().next().resourceId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-14T05:46Z"), response.iterator().next().lastUpdateTime());
+        Assertions.assertEquals(UpdateStatus.PENDING, response.iterator().next().status());
+        Assertions.assertEquals("iysui", response.iterator().next().resourceId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-27T05:18:24Z"),
+            response.iterator().next().lastUpdateTime());
     }
 }

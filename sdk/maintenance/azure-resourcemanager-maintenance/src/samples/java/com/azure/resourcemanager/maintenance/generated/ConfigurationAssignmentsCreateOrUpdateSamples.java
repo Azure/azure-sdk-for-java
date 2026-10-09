@@ -11,7 +11,7 @@ import com.azure.resourcemanager.maintenance.fluent.models.ConfigurationAssignme
  */
 public final class ConfigurationAssignmentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2023-10-01-preview/ConfigurationAssignments_CreateOrUpdate.json
+     * x-ms-original-file: 2025-10-01-preview/ConfigurationAssignments_CreateOrUpdate.json
      */
     /**
      * Sample code: ConfigurationAssignments_CreateOrUpdate.

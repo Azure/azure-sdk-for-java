@@ -10,7 +10,7 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.maintenance.MaintenanceManager;
-import com.azure.resourcemanager.maintenance.models.ScheduledEventApproveResponse;
+import com.azure.resourcemanager.maintenance.models.ScheduledEventsApproveResponse;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
@@ -20,7 +20,7 @@ import reactor.core.publisher.Mono;
 public final class ScheduledEventsAcknowledgeWithResponseMockTests {
     @Test
     public void testAcknowledgeWithResponse() throws Exception {
-        String responseStr = "{\"value\":\"jdqnsdfzpbgt\"}";
+        String responseStr = "{\"value\":\"oxjumvqqo\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -29,11 +29,11 @@ public final class ScheduledEventsAcknowledgeWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        ScheduledEventApproveResponse response = manager.scheduledEvents()
-            .acknowledgeWithResponse("c", "xgccknfnw", "btmvpdvjdhttza", "fedxihchrphkm",
+        ScheduledEventsApproveResponse response = manager.scheduledEvents()
+            .acknowledgeWithResponse("uncuw", "qspkcdqzhlctd", "unqndyfpchrqb", "jjrcgegydc",
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("jdqnsdfzpbgt", response.value());
+        Assertions.assertEquals("oxjumvqqo", response.value());
     }
 }

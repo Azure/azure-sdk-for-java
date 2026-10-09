@@ -9,7 +9,7 @@ package com.azure.resourcemanager.maintenance.generated;
  */
 public final class ConfigurationAssignmentsDeleteSamples {
     /*
-     * x-ms-original-file: 2023-10-01-preview/ConfigurationAssignments_Delete.json
+     * x-ms-original-file: 2025-10-01-preview/ConfigurationAssignments_Delete.json
      */
     /**
      * Sample code: ConfigurationAssignments_Delete.

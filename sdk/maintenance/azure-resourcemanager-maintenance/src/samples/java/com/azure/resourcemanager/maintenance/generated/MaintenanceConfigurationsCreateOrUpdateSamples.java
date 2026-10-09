@@ -12,7 +12,7 @@ import com.azure.resourcemanager.maintenance.models.Visibility;
  */
 public final class MaintenanceConfigurationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2023-10-01-preview/MaintenanceConfigurations_CreateOrUpdateForResource.json
+     * x-ms-original-file: 2025-10-01-preview/MaintenanceConfigurations_CreateOrUpdateForResource.json
      */
     /**
      * Sample code: MaintenanceConfigurations_CreateOrUpdateForResource.

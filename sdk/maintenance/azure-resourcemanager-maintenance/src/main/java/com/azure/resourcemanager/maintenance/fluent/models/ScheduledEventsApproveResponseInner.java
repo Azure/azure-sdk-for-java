@@ -12,19 +12,20 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Response of scheduled event acknowledge.
+ * Response of ScheduledEvents acknowledge.
  */
 @Immutable
-public final class ScheduledEventApproveResponseInner implements JsonSerializable<ScheduledEventApproveResponseInner> {
+public final class ScheduledEventsApproveResponseInner
+    implements JsonSerializable<ScheduledEventsApproveResponseInner> {
     /*
      * Successfully Approved
      */
     private String value;
 
     /**
-     * Creates an instance of ScheduledEventApproveResponseInner class.
+     * Creates an instance of ScheduledEventsApproveResponseInner class.
      */
-    private ScheduledEventApproveResponseInner() {
+    private ScheduledEventsApproveResponseInner() {
     }
 
     /**
@@ -47,29 +48,29 @@ public final class ScheduledEventApproveResponseInner implements JsonSerializabl
     }
 
     /**
-     * Reads an instance of ScheduledEventApproveResponseInner from the JsonReader.
+     * Reads an instance of ScheduledEventsApproveResponseInner from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ScheduledEventApproveResponseInner if the JsonReader was pointing to an instance of it, or
-     * null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the ScheduledEventApproveResponseInner.
+     * @return An instance of ScheduledEventsApproveResponseInner if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ScheduledEventsApproveResponseInner.
      */
-    public static ScheduledEventApproveResponseInner fromJson(JsonReader jsonReader) throws IOException {
+    public static ScheduledEventsApproveResponseInner fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            ScheduledEventApproveResponseInner deserializedScheduledEventApproveResponseInner
-                = new ScheduledEventApproveResponseInner();
+            ScheduledEventsApproveResponseInner deserializedScheduledEventsApproveResponseInner
+                = new ScheduledEventsApproveResponseInner();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("value".equals(fieldName)) {
-                    deserializedScheduledEventApproveResponseInner.value = reader.getString();
+                    deserializedScheduledEventsApproveResponseInner.value = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedScheduledEventApproveResponseInner;
+            return deserializedScheduledEventsApproveResponseInner;
         });
     }
 }

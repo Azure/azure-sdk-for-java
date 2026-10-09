@@ -6,24 +6,23 @@ package com.azure.resourcemanager.maintenance.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.maintenance.MaintenanceManager;
-import com.azure.resourcemanager.maintenance.models.ApplyUpdate;
-import com.azure.resourcemanager.maintenance.models.UpdateStatus;
+import com.azure.resourcemanager.maintenance.models.ScheduledEventsApproveResponse;
+import com.azure.resourcemanager.maintenance.models.ScheduledEventsIdList;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
-public final class ApplyUpdateForResourceGroupsListByResourceGroupMockTests {
+public final class ScheduledEventsAcknowledgeListWithResponseMockTests {
     @Test
-    public void testListByResourceGroup() throws Exception {
-        String responseStr
-            = "{\"value\":[{\"properties\":{\"status\":\"NoUpdatesPending\",\"resourceId\":\"tngfdgugeyzihgr\",\"lastUpdateTime\":\"2021-07-12T02:27:44Z\"},\"id\":\"zabs\",\"name\":\"mfp\",\"type\":\"hojeevy\"}]}";
+    public void testAcknowledgeListWithResponse() throws Exception {
+        String responseStr = "{\"value\":\"ruzslzoj\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,12 +31,12 @@ public final class ApplyUpdateForResourceGroupsListByResourceGroupMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<ApplyUpdate> response
-            = manager.applyUpdateForResourceGroups().listByResourceGroup("pctf", com.azure.core.util.Context.NONE);
+        ScheduledEventsApproveResponse response = manager.scheduledEvents()
+            .acknowledgeListWithResponse("ihrraiouaub", "jtlo", "xfuojrn",
+                new ScheduledEventsIdList().withValue(Arrays.asList("flrzpas", "cb", "uimzdlyjd", "qwmkyoquf")),
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
-        Assertions.assertEquals(UpdateStatus.NO_UPDATES_PENDING, response.iterator().next().status());
-        Assertions.assertEquals("tngfdgugeyzihgr", response.iterator().next().resourceId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-12T02:27:44Z"),
-            response.iterator().next().lastUpdateTime());
+        Assertions.assertEquals("ruzslzoj", response.value());
     }
 }

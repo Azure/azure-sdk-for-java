@@ -64,9 +64,10 @@
 - [Get](#publicmaintenanceconfigurations_get)
 - [List](#publicmaintenanceconfigurations_list)
 
-## ScheduledEvent
+## ScheduledEvents
 
-- [Acknowledge](#scheduledevent_acknowledge)
+- [Acknowledge](#scheduledevents_acknowledge)
+- [AcknowledgeList](#scheduledevents_acknowledgelist)
 
 ## Updates
 
@@ -80,7 +81,7 @@
  */
 public final class ApplyUpdateForResourceGroupListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2023-10-01-preview/ApplyUpdatesResourceGroup_List.json
+     * x-ms-original-file: 2025-10-01-preview/ApplyUpdatesResourceGroup_List.json
      */
     /**
      * Sample code: ApplyUpdatesResourceGroup_List.
@@ -101,7 +102,7 @@ public final class ApplyUpdateForResourceGroupListByResourceGroupSamples {
  */
 public final class ApplyUpdatesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2023-10-01-preview/ApplyUpdates_CreateOrUpdate.json
+     * x-ms-original-file: 2025-10-01-preview/ApplyUpdates_CreateOrUpdate.json
      */
     /**
      * Sample code: ApplyUpdates_CreateOrUpdate.
@@ -127,7 +128,7 @@ import com.azure.resourcemanager.maintenance.models.UpdateStatus;
  */
 public final class ApplyUpdatesCreateOrUpdateOrCancelSamples {
     /*
-     * x-ms-original-file: 2023-10-01-preview/ApplyUpdates_CreateOrUpdateOnly_NoCancellation.json
+     * x-ms-original-file: 2025-10-01-preview/ApplyUpdates_CreateOrUpdateOnly_NoCancellation.json
      */
     /**
      * Sample code: ApplyUpdates_CreateOrUpdateOnly_NoCancellation.
@@ -142,7 +143,7 @@ public final class ApplyUpdatesCreateOrUpdateOrCancelSamples {
     }
 
     /*
-     * x-ms-original-file: 2023-10-01-preview/ApplyUpdates_CreateOrUpdate_CancelMaintenance.json
+     * x-ms-original-file: 2025-10-01-preview/ApplyUpdates_CreateOrUpdate_CancelMaintenance.json
      */
     /**
      * Sample code: ApplyUpdates_CreateOrUpdateOrCancel.
@@ -167,7 +168,7 @@ public final class ApplyUpdatesCreateOrUpdateOrCancelSamples {
  */
 public final class ApplyUpdatesCreateOrUpdateParentSamples {
     /*
-     * x-ms-original-file: 2023-10-01-preview/ApplyUpdates_CreateOrUpdateParent.json
+     * x-ms-original-file: 2025-10-01-preview/ApplyUpdates_CreateOrUpdateParent.json
      */
     /**
      * Sample code: ApplyUpdates_CreateOrUpdateParent.
@@ -191,7 +192,7 @@ public final class ApplyUpdatesCreateOrUpdateParentSamples {
  */
 public final class ApplyUpdatesGetSamples {
     /*
-     * x-ms-original-file: 2023-10-01-preview/ApplyUpdates_Get.json
+     * x-ms-original-file: 2025-10-01-preview/ApplyUpdates_Get.json
      */
     /**
      * Sample code: ApplyUpdates_Get.
@@ -214,7 +215,7 @@ public final class ApplyUpdatesGetSamples {
  */
 public final class ApplyUpdatesGetParentSamples {
     /*
-     * x-ms-original-file: 2023-10-01-preview/ApplyUpdates_GetParent.json
+     * x-ms-original-file: 2025-10-01-preview/ApplyUpdates_GetParent.json
      */
     /**
      * Sample code: ApplyUpdates_GetParent.
@@ -237,7 +238,7 @@ public final class ApplyUpdatesGetParentSamples {
  */
 public final class ApplyUpdatesListSamples {
     /*
-     * x-ms-original-file: 2023-10-01-preview/ApplyUpdates_List.json
+     * x-ms-original-file: 2025-10-01-preview/ApplyUpdates_List.json
      */
     /**
      * Sample code: ApplyUpdates_List.
@@ -260,7 +261,7 @@ import com.azure.resourcemanager.maintenance.fluent.models.ConfigurationAssignme
  */
 public final class ConfigurationAssignmentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2023-10-01-preview/ConfigurationAssignments_CreateOrUpdate.json
+     * x-ms-original-file: 2025-10-01-preview/ConfigurationAssignments_CreateOrUpdate.json
      */
     /**
      * Sample code: ConfigurationAssignments_CreateOrUpdate.
@@ -289,7 +290,7 @@ import com.azure.resourcemanager.maintenance.fluent.models.ConfigurationAssignme
  */
 public final class ConfigurationAssignmentsCreateOrUpdateParentSamples {
     /*
-     * x-ms-original-file: 2023-10-01-preview/ConfigurationAssignments_CreateOrUpdateParent.json
+     * x-ms-original-file: 2025-10-01-preview/ConfigurationAssignments_CreateOrUpdateParent.json
      */
     /**
      * Sample code: ConfigurationAssignments_CreateOrUpdateParent.
@@ -316,7 +317,7 @@ public final class ConfigurationAssignmentsCreateOrUpdateParentSamples {
  */
 public final class ConfigurationAssignmentsDeleteSamples {
     /*
-     * x-ms-original-file: 2023-10-01-preview/ConfigurationAssignments_Delete.json
+     * x-ms-original-file: 2025-10-01-preview/ConfigurationAssignments_Delete.json
      */
     /**
      * Sample code: ConfigurationAssignments_Delete.
@@ -340,7 +341,7 @@ public final class ConfigurationAssignmentsDeleteSamples {
  */
 public final class ConfigurationAssignmentsDeleteParentSamples {
     /*
-     * x-ms-original-file: 2023-10-01-preview/ConfigurationAssignments_DeleteParent.json
+     * x-ms-original-file: 2025-10-01-preview/ConfigurationAssignments_DeleteParent.json
      */
     /**
      * Sample code: ConfigurationAssignments_DeleteParent.
@@ -364,7 +365,7 @@ public final class ConfigurationAssignmentsDeleteParentSamples {
  */
 public final class ConfigurationAssignmentsGetSamples {
     /*
-     * x-ms-original-file: 2023-10-01-preview/ConfigurationAssignments_Get.json
+     * x-ms-original-file: 2025-10-01-preview/ConfigurationAssignments_Get.json
      */
     /**
      * Sample code: ConfigurationAssignments_Get.
@@ -387,7 +388,7 @@ public final class ConfigurationAssignmentsGetSamples {
  */
 public final class ConfigurationAssignmentsGetParentSamples {
     /*
-     * x-ms-original-file: 2023-10-01-preview/ConfigurationAssignments_GetParent.json
+     * x-ms-original-file: 2025-10-01-preview/ConfigurationAssignments_GetParent.json
      */
     /**
      * Sample code: ConfigurationAssignments_GetParent.
@@ -411,7 +412,7 @@ public final class ConfigurationAssignmentsGetParentSamples {
  */
 public final class ConfigurationAssignmentsListSamples {
     /*
-     * x-ms-original-file: 2023-10-01-preview/ConfigurationAssignments_List.json
+     * x-ms-original-file: 2025-10-01-preview/ConfigurationAssignments_List.json
      */
     /**
      * Sample code: ConfigurationAssignments_List.
@@ -434,7 +435,7 @@ public final class ConfigurationAssignmentsListSamples {
  */
 public final class ConfigurationAssignmentsListParentSamples {
     /*
-     * x-ms-original-file: 2023-10-01-preview/ConfigurationAssignments_ListParent.json
+     * x-ms-original-file: 2025-10-01-preview/ConfigurationAssignments_ListParent.json
      */
     /**
      * Sample code: ConfigurationAssignments_ListParent.
@@ -466,7 +467,7 @@ import java.util.Map;
  */
 public final class ConfigurationAssignmentsForResourceGroupCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2023-10-01-preview/ConfigurationAssignmentsForResourceGroup_CreateOrUpdate.json
+     * x-ms-original-file: 2025-10-01-preview/ConfigurationAssignmentsForResourceGroup_CreateOrUpdate.json
      */
     /**
      * Sample code: ConfigurationAssignmentsForResourceGroup_CreateOrUpdate.
@@ -512,7 +513,7 @@ public final class ConfigurationAssignmentsForResourceGroupCreateOrUpdateSamples
  */
 public final class ConfigurationAssignmentsForResourceGroupDeleteSamples {
     /*
-     * x-ms-original-file: 2023-10-01-preview/ConfigurationAssignmentsForResourceGroup_Delete.json
+     * x-ms-original-file: 2025-10-01-preview/ConfigurationAssignmentsForResourceGroup_Delete.json
      */
     /**
      * Sample code: ConfigurationAssignmentsForResourceGroup_Delete.
@@ -535,7 +536,7 @@ public final class ConfigurationAssignmentsForResourceGroupDeleteSamples {
  */
 public final class ConfigurationAssignmentsForResourceGroupGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2023-10-01-preview/ConfigurationAssignmentsForResourceGroup_Get.json
+     * x-ms-original-file: 2025-10-01-preview/ConfigurationAssignmentsForResourceGroup_Get.json
      */
     /**
      * Sample code: ConfigurationAssignmentsForResourceGroup_Get.
@@ -566,7 +567,7 @@ import java.util.Map;
  */
 public final class ConfigurationAssignmentsForResourceGroupUpdateSamples {
     /*
-     * x-ms-original-file: 2023-10-01-preview/ConfigurationAssignmentsForResourceGroup_UpdateForResource.json
+     * x-ms-original-file: 2025-10-01-preview/ConfigurationAssignmentsForResourceGroup_UpdateForResource.json
      */
     /**
      * Sample code: ConfigurationAssignmentsForResourceGroup_CreateOrUpdate.
@@ -619,7 +620,7 @@ import java.util.Map;
  */
 public final class ConfigurationAssignmentsForSubscriptionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2023-10-01-preview/ConfigurationAssignmentsForSubscriptions_CreateOrUpdate.json
+     * x-ms-original-file: 2025-10-01-preview/ConfigurationAssignmentsForSubscriptions_CreateOrUpdate.json
      */
     /**
      * Sample code: ConfigurationAssignmentsForSubscriptions_CreateOrUpdate.
@@ -667,7 +668,7 @@ public final class ConfigurationAssignmentsForSubscriptionsCreateOrUpdateSamples
  */
 public final class ConfigurationAssignmentsForSubscriptionsDeleteSamples {
     /*
-     * x-ms-original-file: 2023-10-01-preview/ConfigurationAssignmentsForSubscriptions_Delete.json
+     * x-ms-original-file: 2025-10-01-preview/ConfigurationAssignmentsForSubscriptions_Delete.json
      */
     /**
      * Sample code: ConfigurationAssignmentsForSubscriptions_Delete.
@@ -690,7 +691,7 @@ public final class ConfigurationAssignmentsForSubscriptionsDeleteSamples {
  */
 public final class ConfigurationAssignmentsForSubscriptionsGetSamples {
     /*
-     * x-ms-original-file: 2023-10-01-preview/ConfigurationAssignmentsForSubscriptions_Get.json
+     * x-ms-original-file: 2025-10-01-preview/ConfigurationAssignmentsForSubscriptions_Get.json
      */
     /**
      * Sample code: ConfigurationAssignments_GetParent.
@@ -721,7 +722,7 @@ import java.util.Map;
  */
 public final class ConfigurationAssignmentsForSubscriptionsUpdateSamples {
     /*
-     * x-ms-original-file: 2023-10-01-preview/ConfigurationAssignmentsForSubscriptions_UpdateForResource.json
+     * x-ms-original-file: 2025-10-01-preview/ConfigurationAssignmentsForSubscriptions_UpdateForResource.json
      */
     /**
      * Sample code: ConfigurationAssignmentsForSubscriptions_CreateOrUpdate.
@@ -771,7 +772,7 @@ public final class ConfigurationAssignmentsForSubscriptionsUpdateSamples {
  */
 public final class ConfigurationAssignmentsWithinSubscriptionListSamples {
     /*
-     * x-ms-original-file: 2023-10-01-preview/ConfigurationAssignmentsResultWithinSubscription_List.json
+     * x-ms-original-file: 2025-10-01-preview/ConfigurationAssignmentsResultWithinSubscription_List.json
      */
     /**
      * Sample code: ConfigurationAssignmentsResultWithinSubscription_List.
@@ -796,7 +797,7 @@ import com.azure.resourcemanager.maintenance.models.Visibility;
  */
 public final class MaintenanceConfigurationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2023-10-01-preview/MaintenanceConfigurations_CreateOrUpdateForResource.json
+     * x-ms-original-file: 2025-10-01-preview/MaintenanceConfigurations_CreateOrUpdateForResource.json
      */
     /**
      * Sample code: MaintenanceConfigurations_CreateOrUpdateForResource.
@@ -830,7 +831,7 @@ public final class MaintenanceConfigurationsCreateOrUpdateSamples {
  */
 public final class MaintenanceConfigurationsDeleteSamples {
     /*
-     * x-ms-original-file: 2023-10-01-preview/MaintenanceConfigurations_DeleteForResource.json
+     * x-ms-original-file: 2025-10-01-preview/MaintenanceConfigurations_DeleteForResource.json
      */
     /**
      * Sample code: MaintenanceConfigurations_DeleteForResource.
@@ -853,7 +854,7 @@ public final class MaintenanceConfigurationsDeleteSamples {
  */
 public final class MaintenanceConfigurationsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2023-10-01-preview/MaintenanceConfigurations_GetForResource_GuestOSPatchWindows.json
+     * x-ms-original-file: 2025-10-01-preview/MaintenanceConfigurations_GetForResource_GuestOSPatchWindows.json
      */
     /**
      * Sample code: MaintenanceConfigurations_GetForResource_GuestOSPatchWindows.
@@ -867,7 +868,7 @@ public final class MaintenanceConfigurationsGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2023-10-01-preview/MaintenanceConfigurations_GetForResource_GuestOSPatchLinux.json
+     * x-ms-original-file: 2025-10-01-preview/MaintenanceConfigurations_GetForResource_GuestOSPatchLinux.json
      */
     /**
      * Sample code: MaintenanceConfigurations_GetForResource_GuestOSPatchLinux.
@@ -881,7 +882,7 @@ public final class MaintenanceConfigurationsGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2023-10-01-preview/MaintenanceConfigurations_GetForResource.json
+     * x-ms-original-file: 2025-10-01-preview/MaintenanceConfigurations_GetForResource.json
      */
     /**
      * Sample code: MaintenanceConfigurations_GetForResource.
@@ -904,7 +905,7 @@ public final class MaintenanceConfigurationsGetByResourceGroupSamples {
  */
 public final class MaintenanceConfigurationsListSamples {
     /*
-     * x-ms-original-file: 2023-10-01-preview/MaintenanceConfigurations_List.json
+     * x-ms-original-file: 2025-10-01-preview/MaintenanceConfigurations_List.json
      */
     /**
      * Sample code: MaintenanceConfigurations_List.
@@ -929,7 +930,7 @@ import com.azure.resourcemanager.maintenance.models.Visibility;
  */
 public final class MaintenanceConfigurationsUpdateSamples {
     /*
-     * x-ms-original-file: 2023-10-01-preview/MaintenanceConfigurations_UpdateForResource.json
+     * x-ms-original-file: 2025-10-01-preview/MaintenanceConfigurations_UpdateForResource.json
      */
     /**
      * Sample code: MaintenanceConfigurations_UpdateForResource.
@@ -963,7 +964,7 @@ public final class MaintenanceConfigurationsUpdateSamples {
  */
 public final class MaintenanceConfigurationsForResourceGroupListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2023-10-01-preview/MaintenanceConfigurationsResourceGroup_List.json
+     * x-ms-original-file: 2025-10-01-preview/MaintenanceConfigurationsResourceGroup_List.json
      */
     /**
      * Sample code: MaintenanceConfigurationsResourceGroup_List.
@@ -986,7 +987,7 @@ public final class MaintenanceConfigurationsForResourceGroupListByResourceGroupS
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2023-10-01-preview/Operations_List.json
+     * x-ms-original-file: 2025-10-01-preview/Operations_List.json
      */
     /**
      * Sample code: Operations_List.
@@ -1007,7 +1008,7 @@ public final class OperationsListSamples {
  */
 public final class PublicMaintenanceConfigurationsGetSamples {
     /*
-     * x-ms-original-file: 2023-10-01-preview/PublicMaintenanceConfigurations_GetForResource.json
+     * x-ms-original-file: 2025-10-01-preview/PublicMaintenanceConfigurations_GetForResource.json
      */
     /**
      * Sample code: PublicMaintenanceConfigurations_GetForResource.
@@ -1029,7 +1030,7 @@ public final class PublicMaintenanceConfigurationsGetSamples {
  */
 public final class PublicMaintenanceConfigurationsListSamples {
     /*
-     * x-ms-original-file: 2023-10-01-preview/PublicMaintenanceConfigurations_List.json
+     * x-ms-original-file: 2025-10-01-preview/PublicMaintenanceConfigurations_List.json
      */
     /**
      * Sample code: PublicMaintenanceConfigurations_List.
@@ -1043,25 +1044,55 @@ public final class PublicMaintenanceConfigurationsListSamples {
 }
 ```
 
-### ScheduledEvent_Acknowledge
+### ScheduledEvents_Acknowledge
 
 ```java
 /**
- * Samples for ScheduledEvent Acknowledge.
+ * Samples for ScheduledEvents Acknowledge.
  */
-public final class ScheduledEventAcknowledgeSamples {
+public final class ScheduledEventsAcknowledgeSamples {
     /*
-     * x-ms-original-file: 2023-10-01-preview/ScheduledEvents_Acknowledge.json
+     * x-ms-original-file: 2025-10-01-preview/ScheduledEvents_Acknowledge.json
      */
     /**
-     * Sample code: ScheduledEvents_Acknowledge.
+     * Sample code: Post ScheduledEvents Acknowledgement.
      * 
      * @param manager Entry point to MaintenanceManager.
      */
-    public static void scheduledEventsAcknowledge(com.azure.resourcemanager.maintenance.MaintenanceManager manager) {
+    public static void
+        postScheduledEventsAcknowledgement(com.azure.resourcemanager.maintenance.MaintenanceManager manager) {
         manager.scheduledEvents()
-            .acknowledgeWithResponse("examplerg", "virtualMachines", "configuration1",
-                "ad6d85cf-2c9e-4eec-9a1e-af3213cc0486", com.azure.core.util.Context.NONE);
+            .acknowledgeWithResponse("resource-group1", "resource-type1", "resource-name1",
+                "00000000-0000-0000-0000-000000000000", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### ScheduledEvents_AcknowledgeList
+
+```java
+import com.azure.resourcemanager.maintenance.models.ScheduledEventsIdList;
+import java.util.Arrays;
+
+/**
+ * Samples for ScheduledEvents AcknowledgeList.
+ */
+public final class ScheduledEventsAcknowledgeListSamples {
+    /*
+     * x-ms-original-file: 2025-10-01-preview/ScheduledEvents_AcknowledgeList.json
+     */
+    /**
+     * Sample code: Post ScheduledEvents List Acknowledgement.
+     * 
+     * @param manager Entry point to MaintenanceManager.
+     */
+    public static void
+        postScheduledEventsListAcknowledgement(com.azure.resourcemanager.maintenance.MaintenanceManager manager) {
+        manager.scheduledEvents()
+            .acknowledgeListWithResponse("resource-group1", "resource-type1", "resource-name1",
+                new ScheduledEventsIdList().withValue(
+                    Arrays.asList("00000000-0000-0000-0000-000000000000", "11111111-1111-1111-1111-111111111111")),
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1074,7 +1105,7 @@ public final class ScheduledEventAcknowledgeSamples {
  */
 public final class UpdatesListSamples {
     /*
-     * x-ms-original-file: 2023-10-01-preview/Updates_List.json
+     * x-ms-original-file: 2025-10-01-preview/Updates_List.json
      */
     /**
      * Sample code: Updates_List.
@@ -1097,7 +1128,7 @@ public final class UpdatesListSamples {
  */
 public final class UpdatesListParentSamples {
     /*
-     * x-ms-original-file: 2023-10-01-preview/Updates_ListParent.json
+     * x-ms-original-file: 2025-10-01-preview/Updates_ListParent.json
      */
     /**
      * Sample code: Updates_ListParent.
