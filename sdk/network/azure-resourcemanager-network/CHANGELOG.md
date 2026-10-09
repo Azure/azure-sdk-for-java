@@ -1,14 +1,12 @@
 # Release History
 
-## 2.62.0-beta.1 (Unreleased)
+## 2.61.2 (2026-10-08)
 
-### Features Added
-
-### Breaking Changes
+- Package api-version Microsoft.Network: 2026-01-01, Microsoft.Compute: 2018-10-01.
 
 ### Bugs Fixed
 
-### Other Changes
+- Fixed VMSS public IP address get and list operations to use the Compute API version `2018-10-01` instead of the Network API version.
 
 ## 2.61.1 (2026-10-06)
 
