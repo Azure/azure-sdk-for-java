@@ -23,9 +23,20 @@ The following changes apply when upgrading from the preceding `12.1.0` beta rele
   `setMaxOutputSizeInTokens` to match the GA request property.
 - Removed the Work IQ source authorization argument from knowledge retrieval and typed streaming overloads.
   The query source authorization argument remains supported.
+- Changed synchronous `retrieveStream` methods to return azure-core's
+  `CloseableIterableStream<KnowledgeBaseRetrievalStreamEvent>` instead of accepting listener callbacks. Changed
+  asynchronous `retrieveStream` methods to return `Flux<KnowledgeBaseRetrievalStreamEvent>` directly.
+- Removed the `ServerSentEvent` and `ServerSentEventListener` models. Retrieval event names remain available through
+  `KnowledgeBaseRetrievalStreamEvent.getEventName()`; SSE transport metadata is no longer exposed.
 - Removed the `SearchServiceVersion.V2026_08_01_PREVIEW` enum value.
 
 ### Bugs Fixed
+
+- Fixed asynchronous retrieval streaming to preserve response bytes when the HTTP transport reuses buffers during
+  demand pauses.
+- Fixed synchronous retrieval streaming to deliver terminal events before reporting response cleanup failures on the
+  next iterator access or explicit close.
+- Fixed retrieval streaming clients to accept HTTP 204 responses as empty streams.
 
 ### Other Changes
 

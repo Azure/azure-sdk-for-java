@@ -24,7 +24,6 @@ import com.azure.search.documents.knowledgebases.implementation.KnowledgeBaseRet
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalOptions;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalResult;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalStreamEvent;
-import com.azure.search.documents.models.ServerSentEvent;
 import com.azure.search.documents.models.implementation.sse.ServerSentEventStreams;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -374,12 +373,11 @@ public final class KnowledgeBaseRetrievalAsyncClient {
      * @return A stream of typed knowledge base retrieval events.
      */
     @Generated
-    public Flux<ServerSentEvent<KnowledgeBaseRetrievalStreamEvent>>
-        retrieveStream(KnowledgeBaseRetrievalOptions retrievalRequest) {
+    public Flux<KnowledgeBaseRetrievalStreamEvent> retrieveStream(KnowledgeBaseRetrievalOptions retrievalRequest) {
         RequestOptions requestOptions = new RequestOptions();
         return hiddenGeneratedRetrieveStreamWithResponse(BinaryData.fromObject(retrievalRequest), requestOptions)
             .flatMapMany(response -> ServerSentEventStreams.toFlux(response,
-                KnowledgeBaseRetrievalStreamEventConverter::convert, event -> event.getData().isTerminal()));
+                KnowledgeBaseRetrievalStreamEventConverter::convert, KnowledgeBaseRetrievalStreamEvent::isTerminal));
     }
 
     /**
@@ -459,8 +457,8 @@ public final class KnowledgeBaseRetrievalAsyncClient {
      * @return A stream of typed knowledge base retrieval events.
      */
     @Generated
-    public Flux<ServerSentEvent<KnowledgeBaseRetrievalStreamEvent>>
-        retrieveStream(KnowledgeBaseRetrievalOptions retrievalRequest, String querySourceAuthorization) {
+    public Flux<KnowledgeBaseRetrievalStreamEvent> retrieveStream(KnowledgeBaseRetrievalOptions retrievalRequest,
+        String querySourceAuthorization) {
         RequestOptions requestOptions = new RequestOptions();
         if (querySourceAuthorization != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("x-ms-query-source-authorization"),
@@ -468,6 +466,6 @@ public final class KnowledgeBaseRetrievalAsyncClient {
         }
         return hiddenGeneratedRetrieveStreamWithResponse(BinaryData.fromObject(retrievalRequest), requestOptions)
             .flatMapMany(response -> ServerSentEventStreams.toFlux(response,
-                KnowledgeBaseRetrievalStreamEventConverter::convert, event -> event.getData().isTerminal()));
+                KnowledgeBaseRetrievalStreamEventConverter::convert, KnowledgeBaseRetrievalStreamEvent::isTerminal));
     }
 }

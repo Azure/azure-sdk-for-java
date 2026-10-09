@@ -42,10 +42,38 @@ Previously supported GA service versions remain selectable with `SearchServiceVe
 
 Knowledge bases, typed retrieval streaming, and file knowledge sources are included in this GA API.
 See the [knowledge base configuration sample](src/samples/java/com/azure/search/documents/KnowledgeBaseConfigurationExample.java),
-[retrieval response sample](src/samples/java/com/azure/search/documents/KnowledgeRetrievalResponseExample.java), and
+[retrieval response sample](src/samples/java/com/azure/search/documents/KnowledgeRetrievalResponseExample.java),
+[retrieval streaming sample](src/samples/java/com/azure/search/documents/KnowledgeBaseRetrievalStreamExample.java), and
 [file knowledge source sample](src/samples/java/com/azure/search/documents/KnowledgeSourceFileExample.java).
 When migrating from the previous beta, use `setMaxOutputSizeInTokens` instead of `setMaxOutputSize` and remove the
 Work IQ authorization argument from retrieval calls. Other removed preview features are listed in [the changelog](CHANGELOG.md).
+
+### Streaming knowledge base retrieval
+
+The synchronous `KnowledgeBaseRetrievalClient.retrieveStream` methods return
+`CloseableIterableStream<KnowledgeBaseRetrievalStreamEvent>` from azure-core. Events are decoded lazily by a single
+iterator. Use try-with-resources to release the response even when iteration stops early:
+
+```java readme-sample-retrieveKnowledgeBaseStream
+try (CloseableIterableStream<KnowledgeBaseRetrievalStreamEvent> events = client.retrieveStream(request)) {
+    for (KnowledgeBaseRetrievalStreamEvent event : events) {
+        System.out.println(event.getEventName());
+    }
+}
+```
+
+The asynchronous methods return `Flux<KnowledgeBaseRetrievalStreamEvent>`. Both clients emit typed retrieval events
+directly; use `getEventName()` to identify an event, and the event subtype to access its payload. Unknown event names
+and their raw data remain available through `UnknownKnowledgeBaseRetrievalStreamEvent`. SSE transport metadata such
+as IDs, comments, and retry hints is not exposed, and the client does not reconnect automatically.
+
+The terminal `error` or `response.completed` event is included before the response is released. EOF without a terminal
+event completes normally. Synchronous transport and decoding failures are thrown during iteration; asynchronous
+failures use the reactive error path. The synchronous stream also closes the response on EOF or iteration failure.
+Its explicit `close()` is idempotent and can throw `IOException`.
+
+When migrating from the previous beta, replace `ServerSentEventListener` callbacks with iteration and remove
+`ServerSentEvent.getData()` unwrapping in both sync and async code. These two Search model types have been removed.
 
 ### Include the package
 

@@ -17,13 +17,13 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.CloseableIterableStream;
 import com.azure.search.documents.SearchServiceVersion;
 import com.azure.search.documents.implementation.KnowledgeBaseRetrievalClientImpl;
 import com.azure.search.documents.knowledgebases.implementation.KnowledgeBaseRetrievalStreamEventConverter;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalOptions;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalResult;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalStreamEvent;
-import com.azure.search.documents.models.ServerSentEventListener;
 import com.azure.search.documents.models.implementation.sse.ServerSentEventStreams;
 
 /**
@@ -358,26 +358,6 @@ public final class KnowledgeBaseRetrievalClient {
     }
 
     /**
-     * Retrieves relevant data from backing stores and streams progress and results as server-sent events.
-     *
-     * If received, the terminal {@code error} or {@code response.completed} event is delivered before
-     * {@link ServerSentEventListener#onClose()} is invoked. End-of-stream without a terminal event closes normally.
-     * Transport and decoding failures are reported through {@link ServerSentEventListener#onError(Throwable)}. The
-     * client does not reconnect automatically.
-     *
-     * @param retrievalRequest The retrieval request to process.
-     * @param listener The listener that receives events and lifecycle notifications.
-     */
-    @Generated
-    public void retrieveStream(KnowledgeBaseRetrievalOptions retrievalRequest,
-        ServerSentEventListener<KnowledgeBaseRetrievalStreamEvent> listener) {
-        RequestOptions requestOptions = new RequestOptions();
-        ServerSentEventStreams.listen(
-            hiddenGeneratedRetrieveStreamWithResponse(BinaryData.fromObject(retrievalRequest), requestOptions),
-            KnowledgeBaseRetrievalStreamEventConverter::convert, event -> event.getData().isTerminal(), listener);
-    }
-
-    /**
      * KnowledgeBase retrieves relevant data from backing stores.
      *
      * @param retrievalRequest The retrieval request to process.
@@ -443,26 +423,54 @@ public final class KnowledgeBaseRetrievalClient {
     /**
      * Retrieves relevant data from backing stores and streams progress and results as server-sent events.
      *
-     * If received, the terminal {@code error} or {@code response.completed} event is delivered before
-     * {@link ServerSentEventListener#onClose()} is invoked. End-of-stream without a terminal event closes normally.
-     * Transport and decoding failures are reported through {@link ServerSentEventListener#onError(Throwable)}. The
-     * client does not reconnect automatically.
+     * Events are decoded lazily by a single iterator. Use try-with-resources to close the stream when iteration ends
+     * early. The response is also closed on end-of-stream, a terminal event, or an iteration failure. Closing the
+     * stream is idempotent and may throw {@link java.io.IOException}.
+     *
+     * If received, the terminal {@code error} or {@code response.completed} event is emitted before iteration ends. A
+     * failure while closing after a terminal event is reported by the next iterator access or explicit close, after the
+     * terminal event is delivered. End-of-stream without a terminal event completes normally. Transport and decoding
+     * failures are thrown during iteration. The client does not reconnect automatically.
+     *
+     * @param retrievalRequest The retrieval request to process.
+     * @return A closeable stream of typed knowledge base retrieval events.
+     */
+    @Generated
+    public CloseableIterableStream<KnowledgeBaseRetrievalStreamEvent>
+        retrieveStream(KnowledgeBaseRetrievalOptions retrievalRequest) {
+        RequestOptions requestOptions = new RequestOptions();
+        return ServerSentEventStreams.toIterableStream(
+            hiddenGeneratedRetrieveStreamWithResponse(BinaryData.fromObject(retrievalRequest), requestOptions),
+            KnowledgeBaseRetrievalStreamEventConverter::convert, KnowledgeBaseRetrievalStreamEvent::isTerminal);
+    }
+
+    /**
+     * Retrieves relevant data from backing stores and streams progress and results as server-sent events.
+     *
+     * Events are decoded lazily by a single iterator. Use try-with-resources to close the stream when iteration ends
+     * early. The response is also closed on end-of-stream, a terminal event, or an iteration failure. Closing the
+     * stream is idempotent and may throw {@link java.io.IOException}.
+     *
+     * If received, the terminal {@code error} or {@code response.completed} event is emitted before iteration ends. A
+     * failure while closing after a terminal event is reported by the next iterator access or explicit close, after the
+     * terminal event is delivered. End-of-stream without a terminal event completes normally. Transport and decoding
+     * failures are thrown during iteration. The client does not reconnect automatically.
      *
      * @param retrievalRequest The retrieval request to process.
      * @param querySourceAuthorization Token identifying the user for which the query is being executed. This token is
      * used to enforce security restrictions on documents.
-     * @param listener The listener that receives events and lifecycle notifications.
+     * @return A closeable stream of typed knowledge base retrieval events.
      */
     @Generated
-    public void retrieveStream(KnowledgeBaseRetrievalOptions retrievalRequest, String querySourceAuthorization,
-        ServerSentEventListener<KnowledgeBaseRetrievalStreamEvent> listener) {
+    public CloseableIterableStream<KnowledgeBaseRetrievalStreamEvent>
+        retrieveStream(KnowledgeBaseRetrievalOptions retrievalRequest, String querySourceAuthorization) {
         RequestOptions requestOptions = new RequestOptions();
         if (querySourceAuthorization != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("x-ms-query-source-authorization"),
                 querySourceAuthorization);
         }
-        ServerSentEventStreams.listen(
+        return ServerSentEventStreams.toIterableStream(
             hiddenGeneratedRetrieveStreamWithResponse(BinaryData.fromObject(retrievalRequest), requestOptions),
-            KnowledgeBaseRetrievalStreamEventConverter::convert, event -> event.getData().isTerminal(), listener);
+            KnowledgeBaseRetrievalStreamEventConverter::convert, KnowledgeBaseRetrievalStreamEvent::isTerminal);
     }
 }
