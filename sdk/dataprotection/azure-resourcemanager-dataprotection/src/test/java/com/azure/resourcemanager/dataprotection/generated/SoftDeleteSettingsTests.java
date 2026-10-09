@@ -13,18 +13,18 @@ public final class SoftDeleteSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SoftDeleteSettings model
-            = BinaryData.fromString("{\"state\":\"AlwaysOn\",\"retentionDurationInDays\":44.809008041844436}")
+            = BinaryData.fromString("{\"state\":\"Off\",\"retentionDurationInDays\":1.01014779855515}")
                 .toObject(SoftDeleteSettings.class);
-        Assertions.assertEquals(SoftDeleteState.ALWAYS_ON, model.state());
-        Assertions.assertEquals(44.809008041844436D, model.retentionDurationInDays());
+        Assertions.assertEquals(SoftDeleteState.OFF, model.state());
+        Assertions.assertEquals(1.01014779855515D, model.retentionDurationInDays());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SoftDeleteSettings model = new SoftDeleteSettings().withState(SoftDeleteState.ALWAYS_ON)
-            .withRetentionDurationInDays(44.809008041844436D);
+        SoftDeleteSettings model
+            = new SoftDeleteSettings().withState(SoftDeleteState.OFF).withRetentionDurationInDays(1.01014779855515D);
         model = BinaryData.fromObject(model).toObject(SoftDeleteSettings.class);
-        Assertions.assertEquals(SoftDeleteState.ALWAYS_ON, model.state());
-        Assertions.assertEquals(44.809008041844436D, model.retentionDurationInDays());
+        Assertions.assertEquals(SoftDeleteState.OFF, model.state());
+        Assertions.assertEquals(1.01014779855515D, model.retentionDurationInDays());
     }
 }

@@ -10,10 +10,10 @@ import com.azure.resourcemanager.resiliencemanagement.models.AttestationState;
 import com.azure.resourcemanager.resiliencemanagement.models.ConfirmationStatus;
 import com.azure.resourcemanager.resiliencemanagement.models.ExclusionState;
 import com.azure.resourcemanager.resiliencemanagement.models.GoalResourceProperties;
-import com.azure.resourcemanager.resiliencemanagement.models.ReasonForRequestingConfirmation;
+import com.azure.resourcemanager.resiliencemanagement.models.ResiliencyProperties;
 import com.azure.resourcemanager.resiliencemanagement.models.SolutionDisplayName;
 import com.azure.resourcemanager.resiliencemanagement.models.UpdateGoalResourceRequest;
-import com.azure.resourcemanager.resiliencemanagement.models.UserConfirmationForHighAvailabilityItem;
+import com.azure.resourcemanager.resiliencemanagement.models.UserConfirmationItem;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
@@ -21,100 +21,72 @@ public final class UpdateGoalResourceRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UpdateGoalResourceRequest model = BinaryData.fromString(
-            "{\"resources\":[{\"properties\":{\"resourceArmId\":\"f\",\"highAvailabilityGoalParticipation\":\"Excluded\",\"highAvailabilityAttestationStatus\":\"ManuallyAttested\",\"disasterRecoveryGoalParticipation\":\"Excluded\",\"disasterRecoveryAttestationStatus\":\"NotAttested\",\"exclusionReasonForHighAvailabilityGoals\":\"FailedOverResource\",\"exclusionReasonForDisasterRecoveryGoals\":\"FailedOverResource\",\"userConfirmationForHighAvailability\":[{\"solutionDisplayName\":\"VmInMultiZoneVmss\",\"confirmationStatus\":\"ApprovalNotNeeded\",\"reasonForRequestingConfirmation\":\"ZonePinnedZrsDataDisksConditional\"},{\"solutionDisplayName\":\"VmInMultiZoneVmss\",\"confirmationStatus\":\"ApprovedByUser\",\"reasonForRequestingConfirmation\":\"VmInMultiZoneScaleSetStatelessOnly\"},{\"solutionDisplayName\":\"ZonePinnedVmWithZrsDisk\",\"confirmationStatus\":\"ApprovalNotNeeded\",\"reasonForRequestingConfirmation\":\"ZonePinnedZrsDataDisksConditional\"},{\"solutionDisplayName\":\"VmInMultiZoneVmss\",\"confirmationStatus\":\"ApprovalNotNeeded\",\"reasonForRequestingConfirmation\":\"VmInMultiZoneScaleSetStatelessOnly\"}],\"serviceGroupMemberships\":[{\"serviceGroupId\":\"xofpdvhpfxxypi\",\"membershipType\":\"ThroughSubscription\"},{\"serviceGroupId\":\"nmayhuybb\",\"membershipType\":\"Direct\"},{\"serviceGroupId\":\"odepoogin\",\"membershipType\":\"ThroughResourceGroup\"},{\"serviceGroupId\":\"amiheognarxz\",\"membershipType\":\"ThroughResourceGroup\"}],\"provisioningState\":\"Provisioning\"},\"id\":\"tusivyevcciqihn\",\"name\":\"un\",\"type\":\"bwjzr\"},{\"properties\":{\"resourceArmId\":\"ygxgispemvtz\",\"highAvailabilityGoalParticipation\":\"Excluded\",\"highAvailabilityAttestationStatus\":\"NotAttested\",\"disasterRecoveryGoalParticipation\":\"Included\",\"disasterRecoveryAttestationStatus\":\"ManuallyAttested\",\"exclusionReasonForHighAvailabilityGoals\":\"UserSelectedExclusion\",\"exclusionReasonForDisasterRecoveryGoals\":\"UserSelectedExclusion\",\"userConfirmationForHighAvailability\":[{\"solutionDisplayName\":\"VmInMultiZoneVmss\",\"confirmationStatus\":\"ApprovalPending\",\"reasonForRequestingConfirmation\":\"VmInMultiZoneScaleSetStatelessOnly\"},{\"solutionDisplayName\":\"ZonePinnedVmWithZrsDisk\",\"confirmationStatus\":\"ApprovalPending\",\"reasonForRequestingConfirmation\":\"VmInMultiZoneScaleSetStatelessOnly\"},{\"solutionDisplayName\":\"ZonePinnedVmWithZrsDisk\",\"confirmationStatus\":\"RejectedByUser\",\"reasonForRequestingConfirmation\":\"ZonePinnedZrsDataDisksConditional\"}],\"serviceGroupMemberships\":[{\"serviceGroupId\":\"msmjqulngsntn\",\"membershipType\":\"Direct\"}],\"provisioningState\":\"Accepted\"},\"id\":\"gc\",\"name\":\"rwclxxwrljdo\",\"type\":\"skcqvkocrcjd\"}]}")
+            "{\"resources\":[{\"properties\":{\"resourceArmId\":\"rzevdphlxaol\",\"zonalResiliency\":{\"goalParticipation\":\"Excluded\",\"attestationStatus\":\"ManuallyAttested\",\"exclusionReason\":\"UserSelectedExclusion\",\"userConfirmation\":[{\"solutionDisplayName\":\"ZonePinnedVmWithZrsDisk\",\"confirmationStatus\":\"ApprovalNotNeeded\"},{\"solutionDisplayName\":\"VmInMultiZoneVmss\",\"confirmationStatus\":\"ApprovedByUser\"},{\"solutionDisplayName\":\"ZonePinnedVmWithZrsDisk\",\"confirmationStatus\":\"ApprovedByUser\"}]},\"provisioningState\":\"Canceled\"},\"id\":\"f\",\"name\":\"jrwzox\",\"type\":\"j\"},{\"properties\":{\"resourceArmId\":\"elluwfziton\",\"zonalResiliency\":{\"goalParticipation\":\"Included\",\"attestationStatus\":\"ManuallyAttested\",\"exclusionReason\":\"UnsupportedResource\",\"userConfirmation\":[{\"solutionDisplayName\":\"ZonePinnedVmWithZrsDisk\",\"confirmationStatus\":\"ApprovalNotNeeded\"},{\"solutionDisplayName\":\"VmInMultiZoneVmss\",\"confirmationStatus\":\"RejectedByUser\"},{\"solutionDisplayName\":\"VmInMultiZoneVmss\",\"confirmationStatus\":\"ApprovedByUser\"},{\"solutionDisplayName\":\"ZonePinnedVmWithZrsDisk\",\"confirmationStatus\":\"RejectedByUser\"}]},\"provisioningState\":\"NeedsAttention\"},\"id\":\"pini\",\"name\":\"mayhuybbkpodepoo\",\"type\":\"inuvamiheogn\"}]}")
             .toObject(UpdateGoalResourceRequest.class);
-        Assertions.assertEquals("f", model.resources().get(0).properties().resourceArmId());
+        Assertions.assertEquals("rzevdphlxaol", model.resources().get(0).properties().resourceArmId());
         Assertions.assertEquals(ExclusionState.EXCLUDED,
-            model.resources().get(0).properties().highAvailabilityGoalParticipation());
+            model.resources().get(0).properties().zonalResiliency().goalParticipation());
         Assertions.assertEquals(AttestationState.MANUALLY_ATTESTED,
-            model.resources().get(0).properties().highAvailabilityAttestationStatus());
-        Assertions.assertEquals(ExclusionState.EXCLUDED,
-            model.resources().get(0).properties().disasterRecoveryGoalParticipation());
-        Assertions.assertEquals(AttestationState.NOT_ATTESTED,
-            model.resources().get(0).properties().disasterRecoveryAttestationStatus());
-        Assertions.assertEquals(SolutionDisplayName.VM_IN_MULTI_ZONE_VMSS,
-            model.resources().get(0).properties().userConfirmationForHighAvailability().get(0).solutionDisplayName());
+            model.resources().get(0).properties().zonalResiliency().attestationStatus());
+        Assertions.assertEquals(SolutionDisplayName.ZONE_PINNED_VM_WITH_ZRS_DISK,
+            model.resources().get(0).properties().zonalResiliency().userConfirmation().get(0).solutionDisplayName());
         Assertions.assertEquals(ConfirmationStatus.APPROVAL_NOT_NEEDED,
-            model.resources().get(0).properties().userConfirmationForHighAvailability().get(0).confirmationStatus());
-        Assertions.assertEquals(ReasonForRequestingConfirmation.ZONE_PINNED_ZRS_DATA_DISKS_CONDITIONAL,
-            model.resources()
-                .get(0)
-                .properties()
-                .userConfirmationForHighAvailability()
-                .get(0)
-                .reasonForRequestingConfirmation());
+            model.resources().get(0).properties().zonalResiliency().userConfirmation().get(0).confirmationStatus());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UpdateGoalResourceRequest model = new UpdateGoalResourceRequest().withResources(Arrays.asList(
-            new GoalResourceInner().withProperties(new GoalResourceProperties().withResourceArmId("f")
-                .withHighAvailabilityGoalParticipation(ExclusionState.EXCLUDED)
-                .withHighAvailabilityAttestationStatus(AttestationState.MANUALLY_ATTESTED)
-                .withDisasterRecoveryGoalParticipation(ExclusionState.EXCLUDED)
-                .withDisasterRecoveryAttestationStatus(AttestationState.NOT_ATTESTED)
-                .withUserConfirmationForHighAvailability(Arrays.asList(
-                    new UserConfirmationForHighAvailabilityItem()
-                        .withSolutionDisplayName(SolutionDisplayName.VM_IN_MULTI_ZONE_VMSS)
-                        .withConfirmationStatus(ConfirmationStatus.APPROVAL_NOT_NEEDED)
-                        .withReasonForRequestingConfirmation(
-                            ReasonForRequestingConfirmation.ZONE_PINNED_ZRS_DATA_DISKS_CONDITIONAL),
-                    new UserConfirmationForHighAvailabilityItem()
-                        .withSolutionDisplayName(SolutionDisplayName.VM_IN_MULTI_ZONE_VMSS)
-                        .withConfirmationStatus(ConfirmationStatus.APPROVED_BY_USER)
-                        .withReasonForRequestingConfirmation(
-                            ReasonForRequestingConfirmation.VM_IN_MULTI_ZONE_SCALE_SET_STATELESS_ONLY),
-                    new UserConfirmationForHighAvailabilityItem()
-                        .withSolutionDisplayName(SolutionDisplayName.ZONE_PINNED_VM_WITH_ZRS_DISK)
-                        .withConfirmationStatus(ConfirmationStatus.APPROVAL_NOT_NEEDED)
-                        .withReasonForRequestingConfirmation(
-                            ReasonForRequestingConfirmation.ZONE_PINNED_ZRS_DATA_DISKS_CONDITIONAL),
-                    new UserConfirmationForHighAvailabilityItem()
-                        .withSolutionDisplayName(SolutionDisplayName.VM_IN_MULTI_ZONE_VMSS)
-                        .withConfirmationStatus(ConfirmationStatus.APPROVAL_NOT_NEEDED)
-                        .withReasonForRequestingConfirmation(
-                            ReasonForRequestingConfirmation.VM_IN_MULTI_ZONE_SCALE_SET_STATELESS_ONLY)))),
-            new GoalResourceInner().withProperties(new GoalResourceProperties().withResourceArmId("ygxgispemvtz")
-                .withHighAvailabilityGoalParticipation(ExclusionState.EXCLUDED)
-                .withHighAvailabilityAttestationStatus(AttestationState.NOT_ATTESTED)
-                .withDisasterRecoveryGoalParticipation(ExclusionState.INCLUDED)
-                .withDisasterRecoveryAttestationStatus(AttestationState.MANUALLY_ATTESTED)
-                .withUserConfirmationForHighAvailability(Arrays.asList(
-                    new UserConfirmationForHighAvailabilityItem()
-                        .withSolutionDisplayName(SolutionDisplayName.VM_IN_MULTI_ZONE_VMSS)
-                        .withConfirmationStatus(ConfirmationStatus.APPROVAL_PENDING)
-                        .withReasonForRequestingConfirmation(
-                            ReasonForRequestingConfirmation.VM_IN_MULTI_ZONE_SCALE_SET_STATELESS_ONLY),
-                    new UserConfirmationForHighAvailabilityItem()
-                        .withSolutionDisplayName(SolutionDisplayName.ZONE_PINNED_VM_WITH_ZRS_DISK)
-                        .withConfirmationStatus(ConfirmationStatus.APPROVAL_PENDING)
-                        .withReasonForRequestingConfirmation(
-                            ReasonForRequestingConfirmation.VM_IN_MULTI_ZONE_SCALE_SET_STATELESS_ONLY),
-                    new UserConfirmationForHighAvailabilityItem()
-                        .withSolutionDisplayName(SolutionDisplayName.ZONE_PINNED_VM_WITH_ZRS_DISK)
-                        .withConfirmationStatus(ConfirmationStatus.REJECTED_BY_USER)
-                        .withReasonForRequestingConfirmation(
-                            ReasonForRequestingConfirmation.ZONE_PINNED_ZRS_DATA_DISKS_CONDITIONAL))))));
+        UpdateGoalResourceRequest model
+            = new UpdateGoalResourceRequest()
+                .withResources(
+                    Arrays
+                        .asList(
+                            new GoalResourceInner()
+                                .withProperties(new GoalResourceProperties().withResourceArmId("rzevdphlxaol")
+                                    .withZonalResiliency(new ResiliencyProperties()
+                                        .withGoalParticipation(ExclusionState.EXCLUDED)
+                                        .withAttestationStatus(AttestationState.MANUALLY_ATTESTED)
+                                        .withUserConfirmation(Arrays.asList(
+                                            new UserConfirmationItem()
+                                                .withSolutionDisplayName(
+                                                    SolutionDisplayName.ZONE_PINNED_VM_WITH_ZRS_DISK)
+                                                .withConfirmationStatus(ConfirmationStatus.APPROVAL_NOT_NEEDED),
+                                            new UserConfirmationItem()
+                                                .withSolutionDisplayName(SolutionDisplayName.VM_IN_MULTI_ZONE_VMSS)
+                                                .withConfirmationStatus(ConfirmationStatus.APPROVED_BY_USER),
+                                            new UserConfirmationItem()
+                                                .withSolutionDisplayName(
+                                                    SolutionDisplayName.ZONE_PINNED_VM_WITH_ZRS_DISK)
+                                                .withConfirmationStatus(ConfirmationStatus.APPROVED_BY_USER))))),
+                            new GoalResourceInner()
+                                .withProperties(new GoalResourceProperties().withResourceArmId("elluwfziton")
+                                    .withZonalResiliency(new ResiliencyProperties()
+                                        .withGoalParticipation(ExclusionState.INCLUDED)
+                                        .withAttestationStatus(AttestationState.MANUALLY_ATTESTED)
+                                        .withUserConfirmation(Arrays.asList(
+                                            new UserConfirmationItem()
+                                                .withSolutionDisplayName(
+                                                    SolutionDisplayName.ZONE_PINNED_VM_WITH_ZRS_DISK)
+                                                .withConfirmationStatus(ConfirmationStatus.APPROVAL_NOT_NEEDED),
+                                            new UserConfirmationItem()
+                                                .withSolutionDisplayName(SolutionDisplayName.VM_IN_MULTI_ZONE_VMSS)
+                                                .withConfirmationStatus(ConfirmationStatus.REJECTED_BY_USER),
+                                            new UserConfirmationItem()
+                                                .withSolutionDisplayName(SolutionDisplayName.VM_IN_MULTI_ZONE_VMSS)
+                                                .withConfirmationStatus(ConfirmationStatus.APPROVED_BY_USER),
+                                            new UserConfirmationItem()
+                                                .withSolutionDisplayName(
+                                                    SolutionDisplayName.ZONE_PINNED_VM_WITH_ZRS_DISK)
+                                                .withConfirmationStatus(ConfirmationStatus.REJECTED_BY_USER)))))));
         model = BinaryData.fromObject(model).toObject(UpdateGoalResourceRequest.class);
-        Assertions.assertEquals("f", model.resources().get(0).properties().resourceArmId());
+        Assertions.assertEquals("rzevdphlxaol", model.resources().get(0).properties().resourceArmId());
         Assertions.assertEquals(ExclusionState.EXCLUDED,
-            model.resources().get(0).properties().highAvailabilityGoalParticipation());
+            model.resources().get(0).properties().zonalResiliency().goalParticipation());
         Assertions.assertEquals(AttestationState.MANUALLY_ATTESTED,
-            model.resources().get(0).properties().highAvailabilityAttestationStatus());
-        Assertions.assertEquals(ExclusionState.EXCLUDED,
-            model.resources().get(0).properties().disasterRecoveryGoalParticipation());
-        Assertions.assertEquals(AttestationState.NOT_ATTESTED,
-            model.resources().get(0).properties().disasterRecoveryAttestationStatus());
-        Assertions.assertEquals(SolutionDisplayName.VM_IN_MULTI_ZONE_VMSS,
-            model.resources().get(0).properties().userConfirmationForHighAvailability().get(0).solutionDisplayName());
+            model.resources().get(0).properties().zonalResiliency().attestationStatus());
+        Assertions.assertEquals(SolutionDisplayName.ZONE_PINNED_VM_WITH_ZRS_DISK,
+            model.resources().get(0).properties().zonalResiliency().userConfirmation().get(0).solutionDisplayName());
         Assertions.assertEquals(ConfirmationStatus.APPROVAL_NOT_NEEDED,
-            model.resources().get(0).properties().userConfirmationForHighAvailability().get(0).confirmationStatus());
-        Assertions.assertEquals(ReasonForRequestingConfirmation.ZONE_PINNED_ZRS_DATA_DISKS_CONDITIONAL,
-            model.resources()
-                .get(0)
-                .properties()
-                .userConfirmationForHighAvailability()
-                .get(0)
-                .reasonForRequestingConfirmation());
+            model.resources().get(0).properties().zonalResiliency().userConfirmation().get(0).confirmationStatus());
     }
 }

@@ -8,8 +8,6 @@ on:
       - feature/*
       - hotfix/*
       - release/*
-      - restapi*
-      - pipelinev3*
 
 permissions:
   contents: read
@@ -24,10 +22,10 @@ jobs:
         with:
           fetch-depth: 2
 
-      - name: Use Node.js 22
+      - name: Use Node.js 24
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
-          node-version: '22'
+          node-version: '24'
           cache: npm
           cache-dependency-path: eng/common/spelling/package-lock.json
 

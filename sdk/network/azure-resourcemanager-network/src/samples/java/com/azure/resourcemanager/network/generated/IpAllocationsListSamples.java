@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class IpAllocationsListSamples {
     /*
-     * x-ms-original-file: 2025-09-01/IpAllocationList.json
+     * x-ms-original-file: 2026-01-01/IpAllocationList.json
      */
     /**
      * Sample code: List all IpAllocations.

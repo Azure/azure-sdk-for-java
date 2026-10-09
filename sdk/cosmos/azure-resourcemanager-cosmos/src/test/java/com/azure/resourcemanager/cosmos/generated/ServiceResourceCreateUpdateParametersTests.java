@@ -14,19 +14,19 @@ public final class ServiceResourceCreateUpdateParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ServiceResourceCreateUpdateParameters model = BinaryData.fromString(
-            "{\"properties\":{\"serviceType\":\"ServiceResourceCreateUpdateProperties\",\"instanceSize\":\"Cosmos.D16s\",\"instanceCount\":161970940}}")
+            "{\"properties\":{\"serviceType\":\"ServiceResourceCreateUpdateProperties\",\"instanceSize\":\"Cosmos.D8s\",\"instanceCount\":902484620}}")
             .toObject(ServiceResourceCreateUpdateParameters.class);
-        Assertions.assertEquals(ServiceSize.COSMOS_D16S, model.properties().instanceSize());
-        Assertions.assertEquals(161970940, model.properties().instanceCount());
+        Assertions.assertEquals(ServiceSize.COSMOS_D8S, model.properties().instanceSize());
+        Assertions.assertEquals(902484620, model.properties().instanceCount());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ServiceResourceCreateUpdateParameters model = new ServiceResourceCreateUpdateParameters()
-            .withProperties(new ServiceResourceCreateUpdateProperties().withInstanceSize(ServiceSize.COSMOS_D16S)
-                .withInstanceCount(161970940));
+            .withProperties(new ServiceResourceCreateUpdateProperties().withInstanceSize(ServiceSize.COSMOS_D8S)
+                .withInstanceCount(902484620));
         model = BinaryData.fromObject(model).toObject(ServiceResourceCreateUpdateParameters.class);
-        Assertions.assertEquals(ServiceSize.COSMOS_D16S, model.properties().instanceSize());
-        Assertions.assertEquals(161970940, model.properties().instanceCount());
+        Assertions.assertEquals(ServiceSize.COSMOS_D8S, model.properties().instanceSize());
+        Assertions.assertEquals(902484620, model.properties().instanceCount());
     }
 }

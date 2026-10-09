@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.elasticsan.generated;
 
 import com.azure.resourcemanager.elasticsan.models.Action;
+import com.azure.resourcemanager.elasticsan.models.DeleteRetentionPolicy;
 import com.azure.resourcemanager.elasticsan.models.EncryptionIdentity;
 import com.azure.resourcemanager.elasticsan.models.EncryptionProperties;
 import com.azure.resourcemanager.elasticsan.models.EncryptionType;
@@ -12,6 +13,7 @@ import com.azure.resourcemanager.elasticsan.models.Identity;
 import com.azure.resourcemanager.elasticsan.models.IdentityType;
 import com.azure.resourcemanager.elasticsan.models.KeyVaultProperties;
 import com.azure.resourcemanager.elasticsan.models.NetworkRuleSet;
+import com.azure.resourcemanager.elasticsan.models.PolicyState;
 import com.azure.resourcemanager.elasticsan.models.StorageTargetType;
 import com.azure.resourcemanager.elasticsan.models.UserAssignedIdentity;
 import com.azure.resourcemanager.elasticsan.models.VirtualNetworkRule;
@@ -25,7 +27,7 @@ import java.util.Map;
  */
 public final class VolumeGroupsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-01/VolumeGroups_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-05-01-preview/VolumeGroups_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: VolumeGroups_Update_MaximumSet_Gen.
@@ -49,11 +51,71 @@ public final class VolumeGroupsUpdateSamples {
             .withNetworkAcls(new NetworkRuleSet().withVirtualNetworkRules(Arrays
                 .asList(new VirtualNetworkRule().withVirtualNetworkResourceId("fhhawhc").withAction(Action.ALLOW))))
             .withEnforceDataIntegrityCheckForIscsi(true)
+            .withDeleteRetentionPolicy(
+                new DeleteRetentionPolicy().withPolicyState(PolicyState.ENABLED).withRetentionPeriodDays(14))
             .apply();
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/VolumeGroups_Update_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-05-01-preview/VolumeGroups_GeneralPurpose_Update_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: VolumeGroups_GeneralPurpose_Update_MaximumSet_Gen.
+     * 
+     * @param manager Entry point to ElasticSanManager.
+     */
+    public static void
+        volumeGroupsGeneralPurposeUpdateMaximumSetGen(com.azure.resourcemanager.elasticsan.ElasticSanManager manager) {
+        VolumeGroup resource = manager.volumeGroups()
+            .getWithResponse("resourcegroupname", "elasticsanname", "volumegroupname", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withIdentity(new Identity().withType(IdentityType.NONE)
+                .withUserAssignedIdentities(mapOf("key2350", new UserAssignedIdentity())))
+            .withProtocolType(StorageTargetType.ISCSI)
+            .withEncryption(EncryptionType.ENCRYPTION_AT_REST_WITH_PLATFORM_KEY)
+            .withEncryptionProperties(new EncryptionProperties()
+                .withKeyVaultProperties(new KeyVaultProperties().withKeyName("fakeTokenPlaceholder")
+                    .withKeyVersion("fakeTokenPlaceholder")
+                    .withKeyVaultUri("fakeTokenPlaceholder"))
+                .withEncryptionIdentity(new EncryptionIdentity().withEncryptionUserAssignedIdentity("vgbeephfgecgg")))
+            .withNetworkAcls(new NetworkRuleSet().withVirtualNetworkRules(Arrays
+                .asList(new VirtualNetworkRule().withVirtualNetworkResourceId("fhhawhc").withAction(Action.ALLOW))))
+            .withEnforceDataIntegrityCheckForIscsi(true)
+            .withDeleteRetentionPolicy(
+                new DeleteRetentionPolicy().withPolicyState(PolicyState.ENABLED).withRetentionPeriodDays(14))
+            .apply();
+    }
+
+    /*
+     * x-ms-original-file: 2026-05-01-preview/VolumeGroups_PerformanceCritical_Update_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: VolumeGroups_PerformanceCritical_Update_MaximumSet_Gen.
+     * 
+     * @param manager Entry point to ElasticSanManager.
+     */
+    public static void volumeGroupsPerformanceCriticalUpdateMaximumSetGen(
+        com.azure.resourcemanager.elasticsan.ElasticSanManager manager) {
+        VolumeGroup resource = manager.volumeGroups()
+            .getWithResponse("resourcegroupname", "elasticsanname", "volumegroupname", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withIdentity(new Identity().withType(IdentityType.NONE)
+                .withUserAssignedIdentities(mapOf("key2350", new UserAssignedIdentity())))
+            .withEncryption(EncryptionType.ENCRYPTION_AT_REST_WITH_PLATFORM_KEY)
+            .withEncryptionProperties(new EncryptionProperties()
+                .withKeyVaultProperties(new KeyVaultProperties().withKeyName("fakeTokenPlaceholder")
+                    .withKeyVersion("fakeTokenPlaceholder")
+                    .withKeyVaultUri("fakeTokenPlaceholder"))
+                .withEncryptionIdentity(new EncryptionIdentity().withEncryptionUserAssignedIdentity("vgbeephfgecgg")))
+            .withReservedIops(10000)
+            .withReservedMBps(800)
+            .apply();
+    }
+
+    /*
+     * x-ms-original-file: 2026-05-01-preview/VolumeGroups_Update_MinimumSet_Gen.json
      */
     /**
      * Sample code: VolumeGroups_Update_MinimumSet_Gen.

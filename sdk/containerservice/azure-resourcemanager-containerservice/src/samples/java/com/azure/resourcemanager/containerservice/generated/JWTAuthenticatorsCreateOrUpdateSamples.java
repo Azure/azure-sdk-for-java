@@ -18,7 +18,7 @@ import java.util.Arrays;
  */
 public final class JWTAuthenticatorsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-06-02-preview/JWTAuthenticators_Create_Or_Update_CustomCABundle.json
+     * x-ms-original-file: 2026-07-02-preview/JWTAuthenticators_Create_Or_Update_CustomCABundle.json
      */
     /**
      * Sample code: Create or update JWT Authenticator With Custom CA Bundle.
@@ -59,7 +59,7 @@ public final class JWTAuthenticatorsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-02-preview/JWTAuthenticators_Create_Or_Update.json
+     * x-ms-original-file: 2026-07-02-preview/JWTAuthenticators_Create_Or_Update.json
      */
     /**
      * Sample code: Create or update JWT Authenticator.

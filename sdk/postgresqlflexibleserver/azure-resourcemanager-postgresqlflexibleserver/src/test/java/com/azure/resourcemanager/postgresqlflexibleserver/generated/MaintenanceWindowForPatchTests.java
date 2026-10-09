@@ -12,24 +12,24 @@ public final class MaintenanceWindowForPatchTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MaintenanceWindowForPatch model = BinaryData.fromString(
-            "{\"customWindow\":\"psslqlfmm\",\"startHour\":1148330667,\"startMinute\":532112858,\"dayOfWeek\":242994282}")
+            "{\"customWindow\":\"lfmmdnbbglzpswi\",\"startHour\":1146893782,\"startMinute\":1596263349,\"dayOfWeek\":695462376}")
             .toObject(MaintenanceWindowForPatch.class);
-        Assertions.assertEquals("psslqlfmm", model.customWindow());
-        Assertions.assertEquals(1148330667, model.startHour());
-        Assertions.assertEquals(532112858, model.startMinute());
-        Assertions.assertEquals(242994282, model.dayOfWeek());
+        Assertions.assertEquals("lfmmdnbbglzpswi", model.customWindow());
+        Assertions.assertEquals(1146893782, model.startHour());
+        Assertions.assertEquals(1596263349, model.startMinute());
+        Assertions.assertEquals(695462376, model.dayOfWeek());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MaintenanceWindowForPatch model = new MaintenanceWindowForPatch().withCustomWindow("psslqlfmm")
-            .withStartHour(1148330667)
-            .withStartMinute(532112858)
-            .withDayOfWeek(242994282);
+        MaintenanceWindowForPatch model = new MaintenanceWindowForPatch().withCustomWindow("lfmmdnbbglzpswi")
+            .withStartHour(1146893782)
+            .withStartMinute(1596263349)
+            .withDayOfWeek(695462376);
         model = BinaryData.fromObject(model).toObject(MaintenanceWindowForPatch.class);
-        Assertions.assertEquals("psslqlfmm", model.customWindow());
-        Assertions.assertEquals(1148330667, model.startHour());
-        Assertions.assertEquals(532112858, model.startMinute());
-        Assertions.assertEquals(242994282, model.dayOfWeek());
+        Assertions.assertEquals("lfmmdnbbglzpswi", model.customWindow());
+        Assertions.assertEquals(1146893782, model.startHour());
+        Assertions.assertEquals(1596263349, model.startMinute());
+        Assertions.assertEquals(695462376, model.dayOfWeek());
     }
 }

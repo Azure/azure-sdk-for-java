@@ -14,7 +14,7 @@ import com.azure.resourcemanager.resiliencemanagement.models.GoalAssignmentPrope
 import java.io.IOException;
 
 /**
- * Goal assignment a AzureResilienceProviderHub resource.
+ * A goal assignment resource in the Azure Resilience Management provider.
  */
 @Fluent
 public final class GoalAssignmentInner extends ProxyResource {

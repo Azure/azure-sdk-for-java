@@ -10,6 +10,14 @@
 
 ### Other Changes
 
+## 2.55.6 (2026-10-09)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-resources` from `2.54.4` to version `2.55.0`.
+
 ## 2.56.0-beta.3 (2026-09-06)
 
 - Package api-version 2026-09-01-preview.
@@ -53,6 +61,14 @@
 
 * `totalGib()` was added to report total disk space in gibibytes
 * `availableGib()` was added to report available disk space in gibibytes
+
+## 2.55.5 (2026-10-06)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-resources` from `2.54.3` to version `2.54.4`.
 
 ## 2.55.4 (2026-08-18)
 

@@ -14,43 +14,37 @@ public final class ApplicationProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ApplicationProfile model = BinaryData.fromString(
-            "{\"galleryApplications\":[{\"tags\":\"uvglsbjjcanvx\",\"order\":235845887,\"packageReferenceId\":\"vudutncor\",\"configurationReference\":\"lxqtvcofudfl\",\"treatFailureAsDeploymentFailure\":false,\"enableAutomaticUpgrade\":false},{\"tags\":\"gdknnqv\",\"order\":1989846717,\"packageReferenceId\":\"nqntorudsgsahm\",\"configurationReference\":\"c\",\"treatFailureAsDeploymentFailure\":true,\"enableAutomaticUpgrade\":false},{\"tags\":\"uetae\",\"order\":1793635364,\"packageReferenceId\":\"u\",\"configurationReference\":\"movsmzlxwabmqoe\",\"treatFailureAsDeploymentFailure\":false,\"enableAutomaticUpgrade\":false}]}")
+            "{\"galleryApplications\":[{\"tags\":\"n\",\"order\":1443237539,\"packageReferenceId\":\"cn\",\"configurationReference\":\"jitcjedftwwaez\",\"treatFailureAsDeploymentFailure\":true,\"enableAutomaticUpgrade\":false},{\"tags\":\"pzfoqoui\",\"order\":1370358053,\"packageReferenceId\":\"xarzgszufoxciq\",\"configurationReference\":\"idoamciodhkha\",\"treatFailureAsDeploymentFailure\":true,\"enableAutomaticUpgrade\":false}]}")
             .toObject(ApplicationProfile.class);
-        Assertions.assertEquals("uvglsbjjcanvx", model.galleryApplications().get(0).tags());
-        Assertions.assertEquals(235845887, model.galleryApplications().get(0).order());
-        Assertions.assertEquals("vudutncor", model.galleryApplications().get(0).packageReferenceId());
-        Assertions.assertEquals("lxqtvcofudfl", model.galleryApplications().get(0).configurationReference());
-        Assertions.assertFalse(model.galleryApplications().get(0).treatFailureAsDeploymentFailure());
+        Assertions.assertEquals("n", model.galleryApplications().get(0).tags());
+        Assertions.assertEquals(1443237539, model.galleryApplications().get(0).order());
+        Assertions.assertEquals("cn", model.galleryApplications().get(0).packageReferenceId());
+        Assertions.assertEquals("jitcjedftwwaez", model.galleryApplications().get(0).configurationReference());
+        Assertions.assertTrue(model.galleryApplications().get(0).treatFailureAsDeploymentFailure());
         Assertions.assertFalse(model.galleryApplications().get(0).enableAutomaticUpgrade());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ApplicationProfile model = new ApplicationProfile().withGalleryApplications(Arrays.asList(
-            new VMGalleryApplication().withTags("uvglsbjjcanvx")
-                .withOrder(235845887)
-                .withPackageReferenceId("vudutncor")
-                .withConfigurationReference("lxqtvcofudfl")
-                .withTreatFailureAsDeploymentFailure(false)
-                .withEnableAutomaticUpgrade(false),
-            new VMGalleryApplication().withTags("gdknnqv")
-                .withOrder(1989846717)
-                .withPackageReferenceId("nqntorudsgsahm")
-                .withConfigurationReference("c")
+            new VMGalleryApplication().withTags("n")
+                .withOrder(1443237539)
+                .withPackageReferenceId("cn")
+                .withConfigurationReference("jitcjedftwwaez")
                 .withTreatFailureAsDeploymentFailure(true)
                 .withEnableAutomaticUpgrade(false),
-            new VMGalleryApplication().withTags("uetae")
-                .withOrder(1793635364)
-                .withPackageReferenceId("u")
-                .withConfigurationReference("movsmzlxwabmqoe")
-                .withTreatFailureAsDeploymentFailure(false)
+            new VMGalleryApplication().withTags("pzfoqoui")
+                .withOrder(1370358053)
+                .withPackageReferenceId("xarzgszufoxciq")
+                .withConfigurationReference("idoamciodhkha")
+                .withTreatFailureAsDeploymentFailure(true)
                 .withEnableAutomaticUpgrade(false)));
         model = BinaryData.fromObject(model).toObject(ApplicationProfile.class);
-        Assertions.assertEquals("uvglsbjjcanvx", model.galleryApplications().get(0).tags());
-        Assertions.assertEquals(235845887, model.galleryApplications().get(0).order());
-        Assertions.assertEquals("vudutncor", model.galleryApplications().get(0).packageReferenceId());
-        Assertions.assertEquals("lxqtvcofudfl", model.galleryApplications().get(0).configurationReference());
-        Assertions.assertFalse(model.galleryApplications().get(0).treatFailureAsDeploymentFailure());
+        Assertions.assertEquals("n", model.galleryApplications().get(0).tags());
+        Assertions.assertEquals(1443237539, model.galleryApplications().get(0).order());
+        Assertions.assertEquals("cn", model.galleryApplications().get(0).packageReferenceId());
+        Assertions.assertEquals("jitcjedftwwaez", model.galleryApplications().get(0).configurationReference());
+        Assertions.assertTrue(model.galleryApplications().get(0).treatFailureAsDeploymentFailure());
         Assertions.assertFalse(model.galleryApplications().get(0).enableAutomaticUpgrade());
     }
 }

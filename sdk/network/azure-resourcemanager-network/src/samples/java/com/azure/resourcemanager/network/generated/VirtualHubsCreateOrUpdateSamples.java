@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public final class VirtualHubsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-01/VirtualHubPut.json
+     * x-ms-original-file: 2026-01-01/VirtualHubPut.json
      */
     /**
      * Sample code: VirtualHubPut.

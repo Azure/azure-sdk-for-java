@@ -8,7 +8,10 @@ import com.azure.core.management.SubResource;
 import com.azure.resourcemanager.network.fluent.models.BastionHostInner;
 import com.azure.resourcemanager.network.models.BastionHostIpConfiguration;
 import com.azure.resourcemanager.network.models.BastionHostPropertiesFormatNetworkAcls;
+import com.azure.resourcemanager.network.models.BastionSessionRecordingConfiguration;
 import com.azure.resourcemanager.network.models.IpRule;
+import com.azure.resourcemanager.network.models.SessionRecordingIdentity;
+import com.azure.resourcemanager.network.models.SessionRecordingIdentityType;
 import java.util.Arrays;
 
 /**
@@ -16,7 +19,7 @@ import java.util.Arrays;
  */
 public final class BastionHostsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-01/BastionHostPutWithPrivateOnly.json
+     * x-ms-original-file: 2026-01-01/BastionHostPutWithPrivateOnly.json
      */
     /**
      * Sample code: Create Bastion Host With Private Only.
@@ -35,7 +38,7 @@ public final class BastionHostsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/BastionHostDeveloperPut.json
+     * x-ms-original-file: 2026-01-01/BastionHostDeveloperPut.json
      */
     /**
      * Sample code: Create Developer Bastion Host.
@@ -54,7 +57,7 @@ public final class BastionHostsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/BastionHostPut.json
+     * x-ms-original-file: 2026-01-01/BastionHostPut.json
      */
     /**
      * Sample code: Create Bastion Host.
@@ -75,7 +78,35 @@ public final class BastionHostsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/BastionHostPutWithZones.json
+     * x-ms-original-file: 2026-01-01/BastionHostPutWithUserAssignedIdentityForSRConfig.json
+     */
+    /**
+     * Sample code: Create or Update Bastion Host With User Assigned Identity for Session Recording Configuration.
+     * 
+     * @param manager Entry point to NetworkManager.
+     */
+    public static void createOrUpdateBastionHostWithUserAssignedIdentityForSessionRecordingConfiguration(
+        com.azure.resourcemanager.network.NetworkManager manager) {
+        manager.serviceClient()
+            .getBastionHosts()
+            .createOrUpdate("rg1", "bastionhosttenant", new BastionHostInner()
+                .withIpConfigurations(Arrays.asList(new BastionHostIpConfiguration()
+                    .withName("bastionHostIpConfiguration")
+                    .withSubnet(new SubResource().withId(
+                        "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet2/subnets/BastionHostSubnet"))
+                    .withPublicIpAddress(new SubResource().withId(
+                        "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/publicIPAddresses/pipName"))))
+                .withEnableSessionRecording(true)
+                .withSessionRecordingConfiguration(new BastionSessionRecordingConfiguration()
+                    .withIdentity(new SessionRecordingIdentity().withType(SessionRecordingIdentityType.USER_ASSIGNED)
+                        .withUserAssignedIdentityId(
+                            "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/userassignedmsi"))
+                    .withBlobContainerUri("https://contosostorage.blob.core.windows.net/contosocontainer")),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-01-01/BastionHostPutWithZones.json
      */
     /**
      * Sample code: Create Bastion Host With Zones.
@@ -92,6 +123,32 @@ public final class BastionHostsCreateOrUpdateSamples {
                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet2/subnets/BastionHostSubnet"))
                     .withPublicIpAddress(new SubResource().withId(
                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/publicIPAddresses/pipName")))),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-01-01/BastionHostPutWithSystemAssignedIdentityForSRConfig.json
+     */
+    /**
+     * Sample code: Create or Update Bastion Host With System Assigned Identity for Session Recording Configuration.
+     * 
+     * @param manager Entry point to NetworkManager.
+     */
+    public static void createOrUpdateBastionHostWithSystemAssignedIdentityForSessionRecordingConfiguration(
+        com.azure.resourcemanager.network.NetworkManager manager) {
+        manager.serviceClient()
+            .getBastionHosts()
+            .createOrUpdate("rg1", "bastionhosttenant", new BastionHostInner()
+                .withIpConfigurations(Arrays.asList(new BastionHostIpConfiguration()
+                    .withName("bastionHostIpConfiguration")
+                    .withSubnet(new SubResource().withId(
+                        "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet2/subnets/BastionHostSubnet"))
+                    .withPublicIpAddress(new SubResource().withId(
+                        "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/publicIPAddresses/pipName"))))
+                .withEnableSessionRecording(true)
+                .withSessionRecordingConfiguration(new BastionSessionRecordingConfiguration()
+                    .withIdentity(new SessionRecordingIdentity().withType(SessionRecordingIdentityType.SYSTEM_ASSIGNED))
+                    .withBlobContainerUri("https://mystorageaccount.blob.core.windows.net/mycontainer")),
                 com.azure.core.util.Context.NONE);
     }
 }

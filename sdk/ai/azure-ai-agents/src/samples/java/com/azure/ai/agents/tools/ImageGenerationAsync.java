@@ -5,9 +5,6 @@ package com.azure.ai.agents.tools;
 
 import com.azure.ai.agents.AgentsAsyncClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.ResponsesAsyncClient;
-import com.azure.ai.agents.models.AgentReference;
-import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.ImageGenTool;
 import com.azure.ai.agents.models.ImageGenToolModel;
@@ -16,6 +13,7 @@ import com.azure.ai.agents.models.ImageGenToolSize;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.openai.client.OpenAIClientAsync;
 import com.openai.models.responses.ResponseCreateParams;
 import java.time.Duration;
 import java.util.Collections;
@@ -37,6 +35,7 @@ public class ImageGenerationAsync {
     public static void main(String[] args) {
         String endpoint = Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT");
         String model = Configuration.getGlobalConfiguration().get("FOUNDRY_MODEL_NAME");
+        String agentName = "image-gen-agent";
         String imageModel = Configuration.getGlobalConfiguration().get("IMAGE_GENERATION_MODEL_DEPLOYMENT_NAME");
 
         AgentsClientBuilder builder = new AgentsClientBuilder()
@@ -44,7 +43,7 @@ public class ImageGenerationAsync {
             .endpoint(endpoint);
 
         AgentsAsyncClient agentsAsyncClient = builder.buildAgentsAsyncClient();
-        ResponsesAsyncClient responsesAsyncClient = builder.buildResponsesAsyncClient();
+        OpenAIClientAsync openAIAsyncClient = builder.buildAgentScopedOpenAIAsyncClient(agentName);
 
         AtomicReference<AgentVersionDetails> agentRef = new AtomicReference<>();
 
@@ -58,18 +57,15 @@ public class ImageGenerationAsync {
             .setInstructions("You are a creative assistant that can generate images based on descriptions.")
             .setTools(Collections.singletonList(imageGenTool));
 
-        agentsAsyncClient.createAgentVersion("image-gen-agent", agentDefinition)
+        agentsAsyncClient.createAgentVersion(agentName, agentDefinition)
             .flatMap(agent -> {
                 agentRef.set(agent);
                 System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());
 
-                AgentReference agentReference = new AgentReference(agent.getName())
-                    .setVersion(agent.getVersion());
-
-                return responsesAsyncClient.createAzureResponse(
-                    new AzureCreateResponseOptions().setAgentReference(agentReference),
+                return Mono.fromFuture(() -> openAIAsyncClient.responses().create(
                     ResponseCreateParams.builder()
-                        .input("Generate an image of a sunset over a mountain range"));
+                        .input("Generate an image of a sunset over a mountain range")
+                        .build()));
             })
             .doOnNext(response -> {
                 System.out.println("Response: " + response.output());

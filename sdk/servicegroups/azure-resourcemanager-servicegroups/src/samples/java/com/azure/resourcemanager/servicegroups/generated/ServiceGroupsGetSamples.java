@@ -9,7 +9,7 @@ package com.azure.resourcemanager.servicegroups.generated;
  */
 public final class ServiceGroupsGetSamples {
     /*
-     * x-ms-original-file: 2024-02-01-preview/ServiceGroup_Get.json
+     * x-ms-original-file: 2026-08-01/ServiceGroup_Get.json
      */
     /**
      * Sample code: GetServiceGroup.
