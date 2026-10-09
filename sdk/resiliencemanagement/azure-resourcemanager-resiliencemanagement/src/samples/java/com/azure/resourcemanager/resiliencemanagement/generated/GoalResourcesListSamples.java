@@ -9,7 +9,7 @@ package com.azure.resourcemanager.resiliencemanagement.generated;
  */
 public final class GoalResourcesListSamples {
     /*
-     * x-ms-original-file: 2026-06-01-preview/GoalResources_List_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-31-preview/GoalResources_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: GoalResources_List_MaximumSet.
