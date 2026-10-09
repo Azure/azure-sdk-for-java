@@ -15,7 +15,7 @@ import java.util.List;
  * Custom tool
  *
  * A custom tool that processes input using a specified format. Learn more about [custom
- * tools](/docs/guides/function-calling#custom-tools).
+ * tools](https://developers.openai.com/api/docs/guides/function-calling#custom-tools).
  */
 @Fluent
 public final class CustomToolParameter extends Tool {
