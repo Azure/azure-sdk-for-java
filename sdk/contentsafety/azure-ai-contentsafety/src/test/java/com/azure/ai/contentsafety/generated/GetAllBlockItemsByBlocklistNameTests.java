@@ -16,7 +16,8 @@ public final class GetAllBlockItemsByBlocklistNameTests extends ContentSafetyCli
     @Disabled
     public void testGetAllBlockItemsByBlocklistNameTests() {
         // method invocation
-        PagedIterable<TextBlocklistItem> response = blocklistClient.listTextBlocklistItems("TestBlocklist", null, null);
+        PagedIterable<TextBlocklistItem> response
+            = blocklistClient.listTextBlocklistItems("TestBlocklist", (Integer) null, (Integer) null);
 
         // response assertion
         Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());

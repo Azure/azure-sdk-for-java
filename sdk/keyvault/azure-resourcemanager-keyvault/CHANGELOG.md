@@ -1,6 +1,6 @@
 # Release History
 
-## 2.56.0 (2026-10-08)
+## 2.56.0 (2026-10-09)
 
 - Package api-version 2026-05-15.
 
@@ -26,6 +26,15 @@
 * `STANDARD_B20V2` was added
 * `STANDARD_B1V2` was added
 * `STANDARD_B15V2` was added
+
+## 2.55.6 (2026-10-09)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-resources` from `2.54.4` to version `2.55.0`.
+- Upgraded `azure-resourcemanager-authorization` from `2.53.13` to version `2.53.14`.
 
 ## 2.55.5 (2026-10-06)
 

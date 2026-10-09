@@ -6,7 +6,6 @@ package com.azure.resourcemanager.resiliencemanagement.generated;
 
 import com.azure.resourcemanager.resiliencemanagement.fluent.models.GoalAssignmentInner;
 import com.azure.resourcemanager.resiliencemanagement.models.GoalAssignmentProperties;
-import com.azure.resourcemanager.resiliencemanagement.models.GoalAssignmentType;
 import com.azure.resourcemanager.resiliencemanagement.models.ServiceLevelResource;
 import java.util.Arrays;
 
@@ -15,7 +14,7 @@ import java.util.Arrays;
  */
 public final class GoalAssignmentsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-06-01-preview/GoalAssignments_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-01/GoalAssignments_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: GoalAssignments_Update_MaximumSet.
@@ -25,13 +24,11 @@ public final class GoalAssignmentsUpdateSamples {
     public static void goalAssignmentsUpdateMaximumSet(
         com.azure.resourcemanager.resiliencemanagement.ResilienceManagementManager manager) {
         manager.goalAssignments()
-            .update("sg1", "ga1", new GoalAssignmentInner().withProperties(new GoalAssignmentProperties()
-                .withGoalTemplateId("/providers/Microsoft.AzureResilienceManagement/goaltemplates/gt1")
-                .withGoalAssignmentType(GoalAssignmentType.RESILIENCY)
-                .withServiceLevelResources(Arrays.asList(new ServiceLevelResource().withServiceLevelIndicatorResourceId(
-                    "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/MyResourceGroup/providers/Microsoft.Compute/virtualMachines/MyVirtualMachine")
-                    .withServiceLevelObjectiveResourceId(
-                        "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/MyResourceGroup/providers/Microsoft.Compute/virtualMachines/MyVirtualMachine")))),
+            .update("production-sg", "zonal-resiliency-goal",
+                new GoalAssignmentInner().withProperties(new GoalAssignmentProperties().withRequireZonalResiliency(true)
+                    .withServiceLevelResources(
+                        Arrays.asList(new ServiceLevelResource().withServiceLevelIndicatorResourceId(
+                            "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/MyResourceGroup/providers/Microsoft.Compute/virtualMachines/MyVirtualMachine")))),
                 com.azure.core.util.Context.NONE);
     }
 }
