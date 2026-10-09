@@ -11,19 +11,20 @@ import org.junit.jupiter.api.Assertions;
 public final class InstantRPAdditionalDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        InstantRPAdditionalDetails model
-            = BinaryData.fromString("{\"azureBackupRGNamePrefix\":\"qw\",\"azureBackupRGNameSuffix\":\"d\"}")
-                .toObject(InstantRPAdditionalDetails.class);
-        Assertions.assertEquals("qw", model.azureBackupRGNamePrefix());
-        Assertions.assertEquals("d", model.azureBackupRGNameSuffix());
+        InstantRPAdditionalDetails model = BinaryData
+            .fromString("{\"azureBackupRGNamePrefix\":\"qiqyhgfsetzlexbs\",\"azureBackupRGNameSuffix\":\"e\"}")
+            .toObject(InstantRPAdditionalDetails.class);
+        Assertions.assertEquals("qiqyhgfsetzlexbs", model.azureBackupRGNamePrefix());
+        Assertions.assertEquals("e", model.azureBackupRGNameSuffix());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         InstantRPAdditionalDetails model
-            = new InstantRPAdditionalDetails().withAzureBackupRGNamePrefix("qw").withAzureBackupRGNameSuffix("d");
+            = new InstantRPAdditionalDetails().withAzureBackupRGNamePrefix("qiqyhgfsetzlexbs")
+                .withAzureBackupRGNameSuffix("e");
         model = BinaryData.fromObject(model).toObject(InstantRPAdditionalDetails.class);
-        Assertions.assertEquals("qw", model.azureBackupRGNamePrefix());
-        Assertions.assertEquals("d", model.azureBackupRGNameSuffix());
+        Assertions.assertEquals("qiqyhgfsetzlexbs", model.azureBackupRGNamePrefix());
+        Assertions.assertEquals("e", model.azureBackupRGNameSuffix());
     }
 }

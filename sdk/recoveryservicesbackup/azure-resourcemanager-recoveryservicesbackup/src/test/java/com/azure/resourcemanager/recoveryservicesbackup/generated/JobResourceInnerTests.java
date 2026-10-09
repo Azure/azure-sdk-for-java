@@ -14,17 +14,17 @@ public final class JobResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         JobResourceInner model = BinaryData.fromString(
-            "{\"properties\":{\"jobType\":\"Job\",\"entityFriendlyName\":\"mvcopexcmjurbuhh\",\"backupManagementType\":\"Invalid\",\"operation\":\"ltqs\",\"status\":\"gtuwkff\",\"startTime\":\"2021-02-16T13:39:33Z\",\"endTime\":\"2021-03-08T22:44:25Z\",\"activityId\":\"sidfv\"},\"tags\":{\"ikayiansharuj\":\"lxnfuijtkbusqogs\"},\"location\":\"iqxf\",\"eTag\":\"j\",\"id\":\"tvwkpqhjpenu\",\"name\":\"gbqe\",\"type\":\"qekewvnqvcd\"}")
+            "{\"properties\":{\"jobType\":\"Job\",\"entityFriendlyName\":\"gmxitpfi\",\"backupManagementType\":\"MAB\",\"operation\":\"dltkrlg\",\"status\":\"tbdrvcqgue\",\"startTime\":\"2021-05-18T02:25:41Z\",\"endTime\":\"2021-08-13T12:33:46Z\",\"activityId\":\"heqdurelyujlfyou\"},\"tags\":{\"brzmqxucycijoclx\":\"kyeclcdigpta\",\"zjd\":\"utgjcyz\",\"jb\":\"r\",\"w\":\"xjeaoqaqbzgyh\"},\"location\":\"uatbwbqamteuliy\",\"eTag\":\"pkcvmwf\",\"id\":\"xxe\",\"name\":\"myw\",\"type\":\"ormcqmic\"}")
             .toObject(JobResourceInner.class);
-        Assertions.assertEquals("mvcopexcmjurbuhh", model.properties().entityFriendlyName());
-        Assertions.assertEquals(BackupManagementType.INVALID, model.properties().backupManagementType());
-        Assertions.assertEquals("ltqs", model.properties().operation());
-        Assertions.assertEquals("gtuwkff", model.properties().status());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-16T13:39:33Z"), model.properties().startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-08T22:44:25Z"), model.properties().endTime());
-        Assertions.assertEquals("sidfv", model.properties().activityId());
-        Assertions.assertEquals("lxnfuijtkbusqogs", model.tags().get("ikayiansharuj"));
-        Assertions.assertEquals("iqxf", model.location());
-        Assertions.assertEquals("j", model.etag());
+        Assertions.assertEquals("gmxitpfi", model.properties().entityFriendlyName());
+        Assertions.assertEquals(BackupManagementType.MAB, model.properties().backupManagementType());
+        Assertions.assertEquals("dltkrlg", model.properties().operation());
+        Assertions.assertEquals("tbdrvcqgue", model.properties().status());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-18T02:25:41Z"), model.properties().startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-13T12:33:46Z"), model.properties().endTime());
+        Assertions.assertEquals("heqdurelyujlfyou", model.properties().activityId());
+        Assertions.assertEquals("kyeclcdigpta", model.tags().get("brzmqxucycijoclx"));
+        Assertions.assertEquals("uatbwbqamteuliy", model.location());
+        Assertions.assertEquals("pkcvmwf", model.etag());
     }
 }

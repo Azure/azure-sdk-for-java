@@ -627,6 +627,8 @@ public class ProtectedItem implements JsonSerializable<ProtectedItem> {
                     return AzureVmWorkloadSapHanaDBInstanceProtectedItem.fromJson(readerToUse.reset());
                 } else if ("AzureVmWorkloadSQLDatabase".equals(discriminatorValue)) {
                     return AzureVmWorkloadSqlDatabaseProtectedItem.fromJson(readerToUse.reset());
+                } else if ("AzureVmWorkloadSQLInstance".equals(discriminatorValue)) {
+                    return AzureVmWorkloadSQLInstanceProtectedItem.fromJson(readerToUse.reset());
                 } else if ("DPMProtectedItem".equals(discriminatorValue)) {
                     return DpmProtectedItem.fromJson(readerToUse.reset());
                 } else if ("GenericProtectedItem".equals(discriminatorValue)) {

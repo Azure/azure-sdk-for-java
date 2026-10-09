@@ -13,11 +13,11 @@ public final class ProtectableContainerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ProtectableContainer model = BinaryData.fromString(
-            "{\"protectableContainerType\":\"ProtectableContainer\",\"friendlyName\":\"evuafpwzyifrk\",\"backupManagementType\":\"AzureStorage\",\"healthStatus\":\"xeqipx\",\"containerId\":\"dyimsfay\"}")
+            "{\"protectableContainerType\":\"ProtectableContainer\",\"friendlyName\":\"ezeagmceituuge\",\"backupManagementType\":\"AzureBackupServer\",\"healthStatus\":\"jstlzmblsyj\",\"containerId\":\"olctae\"}")
             .toObject(ProtectableContainer.class);
-        Assertions.assertEquals("evuafpwzyifrk", model.friendlyName());
-        Assertions.assertEquals(BackupManagementType.AZURE_STORAGE, model.backupManagementType());
-        Assertions.assertEquals("xeqipx", model.healthStatus());
-        Assertions.assertEquals("dyimsfay", model.containerId());
+        Assertions.assertEquals("ezeagmceituuge", model.friendlyName());
+        Assertions.assertEquals(BackupManagementType.AZURE_BACKUP_SERVER, model.backupManagementType());
+        Assertions.assertEquals("jstlzmblsyj", model.healthStatus());
+        Assertions.assertEquals("olctae", model.containerId());
     }
 }

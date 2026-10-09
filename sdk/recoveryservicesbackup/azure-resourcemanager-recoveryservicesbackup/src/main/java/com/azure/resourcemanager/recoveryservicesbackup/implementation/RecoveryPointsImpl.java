@@ -11,6 +11,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.RecoveryPointsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.RecoveryPointResourceInner;
+import com.azure.resourcemanager.recoveryservicesbackup.models.GetRPExtendedInfoRequestResource;
 import com.azure.resourcemanager.recoveryservicesbackup.models.RecoveryPointResource;
 import com.azure.resourcemanager.recoveryservicesbackup.models.RecoveryPoints;
 
@@ -59,6 +60,27 @@ public final class RecoveryPointsImpl implements RecoveryPoints {
         PagedIterable<RecoveryPointResourceInner> inner = this.serviceClient()
             .list(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, filter, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new RecoveryPointResourceImpl(inner1, this.manager()));
+    }
+
+    public void getRPExtendedInfo(String resourceGroupName, String vaultName, String fabricName,
+        GetRPExtendedInfoRequestResource parameters) {
+        this.serviceClient().getRPExtendedInfo(resourceGroupName, vaultName, fabricName, parameters);
+    }
+
+    public void getRPExtendedInfo(String resourceGroupName, String vaultName, String fabricName,
+        GetRPExtendedInfoRequestResource parameters, Context context) {
+        this.serviceClient().getRPExtendedInfo(resourceGroupName, vaultName, fabricName, parameters, context);
+    }
+
+    public void getRPExtendedInfoOperationResult(String resourceGroupName, String vaultName, String fabricName,
+        String operationId) {
+        this.serviceClient().getRPExtendedInfoOperationResult(resourceGroupName, vaultName, fabricName, operationId);
+    }
+
+    public void getRPExtendedInfoOperationResult(String resourceGroupName, String vaultName, String fabricName,
+        String operationId, Context context) {
+        this.serviceClient()
+            .getRPExtendedInfoOperationResult(resourceGroupName, vaultName, fabricName, operationId, context);
     }
 
     private RecoveryPointsClient serviceClient() {

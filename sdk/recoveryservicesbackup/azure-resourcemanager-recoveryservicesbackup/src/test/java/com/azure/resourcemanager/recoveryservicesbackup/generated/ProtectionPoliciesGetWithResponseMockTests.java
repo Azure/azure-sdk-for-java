@@ -21,7 +21,7 @@ public final class ProtectionPoliciesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"backupManagementType\":\"ProtectionPolicy\",\"protectedItemsCount\":1596343736,\"resourceGuardOperationRequests\":[\"k\",\"xjxjoe\"]},\"tags\":{\"o\":\"xrkdknkobektm\",\"gwcd\":\"omtzamicb\",\"m\":\"zseznuxkeuairaa\"},\"location\":\"qjbedpfix\",\"eTag\":\"upmomihzbd\",\"id\":\"xpkcdp\",\"name\":\"eyxel\",\"type\":\"icghfl\"}";
+            = "{\"properties\":{\"backupManagementType\":\"ProtectionPolicy\",\"protectedItemsCount\":1396784523,\"resourceGuardOperationRequests\":[\"ejnglpwsadaxjsum\",\"pezco\"]},\"tags\":{\"xkeedcnwmy\":\"jrmfqzwqd\",\"czaqpqifdbmpt\":\"xfqzkvemyzd\",\"natnizexroqsqjg\":\"wtxzuisam\"},\"location\":\"mthsp\",\"eTag\":\"sttxs\",\"id\":\"xfqp\",\"name\":\"niceovxgzwh\",\"type\":\"xyrujmt\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,13 +31,13 @@ public final class ProtectionPoliciesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ProtectionPolicyResource response = manager.protectionPolicies()
-            .getWithResponse("xbmsgycqsx", "mdvewuyqaeohpjh", "ejkbvhhdaurgho", com.azure.core.util.Context.NONE)
+            .getWithResponse("wtrjmeqkvyhzokp", "yuoh", "ensnaa", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(1596343736, response.properties().protectedItemsCount());
-        Assertions.assertEquals("k", response.properties().resourceGuardOperationRequests().get(0));
-        Assertions.assertEquals("xrkdknkobektm", response.tags().get("o"));
-        Assertions.assertEquals("qjbedpfix", response.location());
-        Assertions.assertEquals("upmomihzbd", response.etag());
+        Assertions.assertEquals(1396784523, response.properties().protectedItemsCount());
+        Assertions.assertEquals("ejnglpwsadaxjsum", response.properties().resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals("jrmfqzwqd", response.tags().get("xkeedcnwmy"));
+        Assertions.assertEquals("mthsp", response.location());
+        Assertions.assertEquals("sttxs", response.etag());
     }
 }

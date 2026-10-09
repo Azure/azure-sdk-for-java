@@ -14,15 +14,15 @@ public final class AzureIaaSvmJobTaskDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureIaaSvmJobTaskDetails model = BinaryData.fromString(
-            "{\"taskId\":\"y\",\"startTime\":\"2021-08-09T07:54:10Z\",\"endTime\":\"2021-02-03T10:01:03Z\",\"instanceId\":\"nqcymczngnbdxxew\",\"duration\":\"PT121H51M33S\",\"status\":\"vudb\",\"progressPercentage\":98.9480135905309,\"taskExecutionDetails\":\"tvq\"}")
+            "{\"taskId\":\"krxwet\",\"startTime\":\"2021-03-03T08:34:14Z\",\"endTime\":\"2021-05-20T10:11:19Z\",\"instanceId\":\"rucpcunnuz\",\"duration\":\"PT26H47M8S\",\"status\":\"oenodnaienh\",\"progressPercentage\":99.61060010726467,\"taskExecutionDetails\":\"dnelqkaad\"}")
             .toObject(AzureIaaSvmJobTaskDetails.class);
-        Assertions.assertEquals("y", model.taskId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-09T07:54:10Z"), model.startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-03T10:01:03Z"), model.endTime());
-        Assertions.assertEquals("nqcymczngnbdxxew", model.instanceId());
-        Assertions.assertEquals(Duration.parse("PT121H51M33S"), model.duration());
-        Assertions.assertEquals("vudb", model.status());
-        Assertions.assertEquals(98.9480135905309D, model.progressPercentage());
-        Assertions.assertEquals("tvq", model.taskExecutionDetails());
+        Assertions.assertEquals("krxwet", model.taskId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-03T08:34:14Z"), model.startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-20T10:11:19Z"), model.endTime());
+        Assertions.assertEquals("rucpcunnuz", model.instanceId());
+        Assertions.assertEquals(Duration.parse("PT26H47M8S"), model.duration());
+        Assertions.assertEquals("oenodnaienh", model.status());
+        Assertions.assertEquals(99.61060010726467D, model.progressPercentage());
+        Assertions.assertEquals("dnelqkaad", model.taskExecutionDetails());
     }
 }

@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.recoveryservicesbackup.generated;
 
 import com.azure.resourcemanager.recoveryservicesbackup.models.AzureIaaSComputeVMProtectedItem;
+import com.azure.resourcemanager.recoveryservicesbackup.models.ExistingBasicVMProtection;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ProtectionState;
 
 /**
@@ -12,7 +13,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.ProtectionState;
  */
 public final class ProtectedItemsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-08-01/AzureIaasVm/StopProtection.json
+     * x-ms-original-file: 2026-10-01/AzureIaasVm/StopProtection.json
      */
     /**
      * Sample code: Stop Protection with retain data on Azure IaasVm.
@@ -32,7 +33,7 @@ public final class ProtectedItemsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-08-01/AzureIaasVm/ConfigureProtection.json
+     * x-ms-original-file: 2026-10-01/AzureIaasVm/ConfigureProtection.json
      */
     /**
      * Sample code: Enable Protection on Azure IaasVm.
@@ -48,7 +49,8 @@ public final class ProtectedItemsCreateOrUpdateSamples {
             .withProperties(new AzureIaaSComputeVMProtectedItem().withSourceResourceId(
                 "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/netsdktestrg/providers/Microsoft.Compute/virtualMachines/netvmtestv2vm1")
                 .withPolicyId(
-                    "/Subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/SwaggerTestRg/providers/Microsoft.RecoveryServices/vaults/NetSDKTestRsVault/backupPolicies/DefaultPolicy"))
+                    "/Subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/SwaggerTestRg/providers/Microsoft.RecoveryServices/vaults/NetSDKTestRsVault/backupPolicies/DefaultPolicy")
+                .withExistingBasicVMProtection(ExistingBasicVMProtection.DISABLE_WITH_DELETE_RPS_NOW))
             .create();
     }
 }

@@ -23,7 +23,7 @@ public final class DeletedProtectionContainersListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"containerType\":\"ProtectionContainer\",\"friendlyName\":\"neychbjizq\",\"backupManagementType\":\"MAB\",\"registrationStatus\":\"w\",\"healthStatus\":\"zed\",\"protectableObjectType\":\"l\",\"sourceLocation\":\"borx\"},\"tags\":{\"rbypi\":\"lnfyzav\",\"jtaqhsmqazpdg\":\"dbkp\"},\"location\":\"jhxsht\",\"eTag\":\"gpczqulptk\",\"id\":\"cpxtzhigqqbt\",\"name\":\"mpkjblornsihqh\",\"type\":\"dsmusuaawjakxwj\"}]}";
+            = "{\"value\":[{\"properties\":{\"containerType\":\"ProtectionContainer\",\"friendlyName\":\"enqlamwmgewayx\",\"backupManagementType\":\"MAB\",\"registrationStatus\":\"cpjs\",\"healthStatus\":\"hemhcucsqsnxfbx\",\"protectableObjectType\":\"eapdrbzyv\",\"sourceLocation\":\"uadulpodkaxpfo\"},\"tags\":{\"lt\":\"hmhjd\"},\"location\":\"luqrojadhfztlray\",\"eTag\":\"kg\",\"id\":\"yh\",\"name\":\"dbkuwpzqxlcwe\",\"type\":\"kfecjvxf\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,16 +33,16 @@ public final class DeletedProtectionContainersListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ProtectionContainerResource> response = manager.deletedProtectionContainers()
-            .list("zbwaybfmdafbgym", "tn", "preojxrjnbsconxa", com.azure.core.util.Context.NONE);
+            .list("fnzzryizwbxg", "ebxlayu", "omirhp", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("neychbjizq", response.iterator().next().properties().friendlyName());
+        Assertions.assertEquals("enqlamwmgewayx", response.iterator().next().properties().friendlyName());
         Assertions.assertEquals(BackupManagementType.MAB,
             response.iterator().next().properties().backupManagementType());
-        Assertions.assertEquals("w", response.iterator().next().properties().registrationStatus());
-        Assertions.assertEquals("zed", response.iterator().next().properties().healthStatus());
-        Assertions.assertEquals("l", response.iterator().next().properties().protectableObjectType());
-        Assertions.assertEquals("lnfyzav", response.iterator().next().tags().get("rbypi"));
-        Assertions.assertEquals("jhxsht", response.iterator().next().location());
-        Assertions.assertEquals("gpczqulptk", response.iterator().next().etag());
+        Assertions.assertEquals("cpjs", response.iterator().next().properties().registrationStatus());
+        Assertions.assertEquals("hemhcucsqsnxfbx", response.iterator().next().properties().healthStatus());
+        Assertions.assertEquals("eapdrbzyv", response.iterator().next().properties().protectableObjectType());
+        Assertions.assertEquals("hmhjd", response.iterator().next().tags().get("lt"));
+        Assertions.assertEquals("luqrojadhfztlray", response.iterator().next().location());
+        Assertions.assertEquals("kg", response.iterator().next().etag());
     }
 }

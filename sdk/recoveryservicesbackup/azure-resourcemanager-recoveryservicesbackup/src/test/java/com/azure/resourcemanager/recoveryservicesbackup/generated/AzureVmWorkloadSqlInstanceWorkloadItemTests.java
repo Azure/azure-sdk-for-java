@@ -14,19 +14,19 @@ public final class AzureVmWorkloadSqlInstanceWorkloadItemTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureVmWorkloadSqlInstanceWorkloadItem model = BinaryData.fromString(
-            "{\"workloadItemType\":\"SQLInstance\",\"dataDirectoryPaths\":[{\"type\":\"Invalid\",\"path\":\"tyh\",\"logicalName\":\"qedcgzulwm\"},{\"type\":\"Log\",\"path\":\"zrrjvpgly\",\"logicalName\":\"gkrvqeevto\"}],\"parentName\":\"r\",\"serverName\":\"t\",\"isAutoProtectable\":false,\"subinquireditemcount\":989782858,\"subWorkloadItemCount\":20343154,\"backupManagementType\":\"o\",\"workloadType\":\"vf\",\"friendlyName\":\"awzqadfl\",\"protectionState\":\"Protecting\"}")
+            "{\"workloadItemType\":\"SQLInstance\",\"dataDirectoryPaths\":[{\"type\":\"Log\",\"path\":\"jnnawtqa\",\"logicalName\":\"xuckpggqoweyir\"},{\"type\":\"Log\",\"path\":\"sn\",\"logicalName\":\"fl\"}],\"parentName\":\"mpizru\",\"serverName\":\"pqxpx\",\"isAutoProtectable\":false,\"subinquireditemcount\":2135849980,\"subWorkloadItemCount\":744816761,\"backupManagementType\":\"aas\",\"workloadType\":\"xtmkzjvkviir\",\"friendlyName\":\"fgrwsdpgratzvz\",\"protectionState\":\"Invalid\"}")
             .toObject(AzureVmWorkloadSqlInstanceWorkloadItem.class);
-        Assertions.assertEquals("o", model.backupManagementType());
-        Assertions.assertEquals("vf", model.workloadType());
-        Assertions.assertEquals("awzqadfl", model.friendlyName());
-        Assertions.assertEquals(ProtectionStatus.PROTECTING, model.protectionState());
-        Assertions.assertEquals("r", model.parentName());
-        Assertions.assertEquals("t", model.serverName());
+        Assertions.assertEquals("aas", model.backupManagementType());
+        Assertions.assertEquals("xtmkzjvkviir", model.workloadType());
+        Assertions.assertEquals("fgrwsdpgratzvz", model.friendlyName());
+        Assertions.assertEquals(ProtectionStatus.INVALID, model.protectionState());
+        Assertions.assertEquals("mpizru", model.parentName());
+        Assertions.assertEquals("pqxpx", model.serverName());
         Assertions.assertFalse(model.isAutoProtectable());
-        Assertions.assertEquals(989782858, model.subinquireditemcount());
-        Assertions.assertEquals(20343154, model.subWorkloadItemCount());
-        Assertions.assertEquals(SqlDataDirectoryType.INVALID, model.dataDirectoryPaths().get(0).type());
-        Assertions.assertEquals("tyh", model.dataDirectoryPaths().get(0).path());
-        Assertions.assertEquals("qedcgzulwm", model.dataDirectoryPaths().get(0).logicalName());
+        Assertions.assertEquals(2135849980, model.subinquireditemcount());
+        Assertions.assertEquals(744816761, model.subWorkloadItemCount());
+        Assertions.assertEquals(SqlDataDirectoryType.LOG, model.dataDirectoryPaths().get(0).type());
+        Assertions.assertEquals("jnnawtqa", model.dataDirectoryPaths().get(0).path());
+        Assertions.assertEquals("xuckpggqoweyir", model.dataDirectoryPaths().get(0).logicalName());
     }
 }

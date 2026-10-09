@@ -23,7 +23,7 @@ public final class BackupUsageSummariesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"unit\":\"Percent\",\"quotaPeriod\":\"ikff\",\"nextResetTime\":\"2020-12-26T11:09:29Z\",\"currentValue\":4364154755466514636,\"limit\":5760548338791668687,\"name\":{\"value\":\"uldbkke\",\"localizedValue\":\"kj\"}}]}";
+            = "{\"value\":[{\"unit\":\"Bytes\",\"quotaPeriod\":\"gdusxurs\",\"nextResetTime\":\"2021-02-17T20:42:28Z\",\"currentValue\":4014090144060196862,\"limit\":7027344257922652553,\"name\":{\"value\":\"w\",\"localizedValue\":\"syiqrizfwihva\"}}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,15 +33,15 @@ public final class BackupUsageSummariesListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<BackupManagementUsage> response = manager.backupUsageSummaries()
-            .list("trnzpducdaaktu", "ktz", "oimyfpqd", "wkppnwyytfvp", com.azure.core.util.Context.NONE);
+            .list("wyblv", "bdmvsby", "daelqpv", "kmkwjfbo", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(UsagesUnit.PERCENT, response.iterator().next().unit());
-        Assertions.assertEquals("ikff", response.iterator().next().quotaPeriod());
-        Assertions.assertEquals(OffsetDateTime.parse("2020-12-26T11:09:29Z"),
+        Assertions.assertEquals(UsagesUnit.BYTES, response.iterator().next().unit());
+        Assertions.assertEquals("gdusxurs", response.iterator().next().quotaPeriod());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-17T20:42:28Z"),
             response.iterator().next().nextResetTime());
-        Assertions.assertEquals(4364154755466514636L, response.iterator().next().currentValue());
-        Assertions.assertEquals(5760548338791668687L, response.iterator().next().limit());
-        Assertions.assertEquals("uldbkke", response.iterator().next().name().value());
-        Assertions.assertEquals("kj", response.iterator().next().name().localizedValue());
+        Assertions.assertEquals(4014090144060196862L, response.iterator().next().currentValue());
+        Assertions.assertEquals(7027344257922652553L, response.iterator().next().limit());
+        Assertions.assertEquals("w", response.iterator().next().name().value());
+        Assertions.assertEquals("syiqrizfwihva", response.iterator().next().name().localizedValue());
     }
 }

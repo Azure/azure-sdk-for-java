@@ -1,14 +1,115 @@
 # Release History
 
-## 1.9.0-beta.1 (Unreleased)
+## 1.9.0 (2026-10-08)
 
-### Features Added
+- Azure Resource Manager Recovery Services Backup client library for Java. This package contains Microsoft Azure SDK for Recovery Services Backup Management SDK. Open API 2.0 Specs for Azure RecoveryServices Backup service. Package api-version 2026-10-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.RecoveryPointTierType` was modified
 
-### Other Changes
+* `toString()` was removed
+* `valueOf(java.lang.String)` was removed
+* `models.RecoveryPointTierType[] values()` -> `java.util.Collection values()`
+
+### Features Added
+
+* `models.StorageSpaceInfo` was added
+
+* `models.ExistingBasicVMProtection` was added
+
+* `models.DiskInfo` was added
+
+* `models.DatabaseInRP` was added
+
+* `models.ProtectionContainerRefreshOperationStatuses` was added
+
+* `models.ValidateAzureWorkloadRestoreOperationRequest` was added
+
+* `models.SnapshotRecoveryPointInfo` was added
+
+* `models.GetRPExtendedInfoRequestResource` was added
+
+* `models.InstanceProtectionReadiness` was added
+
+* `models.FilesystemInfo` was added
+
+* `models.GetRPExtendedInfoRequest` was added
+
+* `models.RPExtendedInfoResource` was added
+
+* `models.RPExtendedInfo` was added
+
+* `models.VMWorkloadPolicyType` was added
+
+* `models.ProtectionLevel` was added
+
+* `models.RPExtendedInfoResourceList` was added
+
+* `models.AzureVmWorkloadSQLInstanceProtectedItem` was added
+
+#### `models.AzureIaaSComputeVMProtectedItem` was modified
+
+* `withExistingBasicVMProtection(models.ExistingBasicVMProtection)` was added
+
+#### `models.RecoveryPoints` was modified
+
+* `getRPExtendedInfoOperationResult(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `getRPExtendedInfo(java.lang.String,java.lang.String,java.lang.String,models.GetRPExtendedInfoRequestResource)` was added
+* `getRPExtendedInfoOperationResult(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
+* `getRPExtendedInfo(java.lang.String,java.lang.String,java.lang.String,models.GetRPExtendedInfoRequestResource,com.azure.core.util.Context)` was added
+
+#### `models.AzureIaaSvmProtectedItem` was modified
+
+* `withExistingBasicVMProtection(models.ExistingBasicVMProtection)` was added
+* `existingBasicVMProtection()` was added
+
+#### `models.AzureIaaSvmProtectionPolicy` was modified
+
+* `instantAccessSnapshotEnabled()` was added
+* `withInstantAccessSnapshotEnabled(java.lang.Boolean)` was added
+* `withInstantAccessDurationMinutes(java.lang.Integer)` was added
+* `instantAccessDurationMinutes()` was added
+
+#### `models.AzureVmWorkloadSqlDatabaseProtectedItem` was modified
+
+* `withParentProtectedItem(java.lang.String)` was added
+* `withProtectionLevel(models.ProtectionLevel)` was added
+* `parentProtectedItem()` was added
+* `protectionLevel()` was added
+
+#### `models.RecoveryPointTierType` was modified
+
+* `RecoveryPointTierType()` was added
+* `IASNAPSHOT_RP` was added
+
+#### `models.AzureVmWorkloadProtectionPolicy` was modified
+
+* `withVmWorkloadPolicyType(models.VMWorkloadPolicyType)` was added
+* `vmWorkloadPolicyType()` was added
+
+#### `models.AzureWorkloadSqlRecoveryPointExtendedInfo` was modified
+
+* `snapshotRecoveryPointInfo()` was added
+* `includedDatabases()` was added
+
+#### `models.SnapshotRestoreParameters` was modified
+
+* `disksToDetachOnClash()` was added
+* `withDisksToDetachOnClash(java.util.List)` was added
+
+#### `models.AzureIaaSClassicComputeVMProtectedItem` was modified
+
+* `withExistingBasicVMProtection(models.ExistingBasicVMProtection)` was added
+
+#### `RecoveryServicesBackupManager` was modified
+
+* `protectionContainerRefreshOperationStatuses()` was added
+
+#### `models.DiskInformation` was modified
+
+* `diskSizeInGb()` was added
+* `storageType()` was added
 
 ## 1.8.0 (2026-08-31)
 
