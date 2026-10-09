@@ -19,7 +19,9 @@ import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -63,6 +65,38 @@ public class CommunicationIdentityBuilderUnitTests {
         });
         CommunicationIdentityClient syncClient = builder.buildClient();
         assertNotNull(syncClient);
+    }
+
+    @Test
+    public void syncClientUsesLatestServiceVersionByDefault() {
+        AtomicReference<String> requestQuery = new AtomicReference<>();
+        CommunicationIdentityClient client
+            = builder.connectionString(MOCK_CONNECTION_STRING).httpClient(new NoOpHttpClient() {
+                @Override
+                public Mono<HttpResponse> send(HttpRequest request) {
+                    requestQuery.set(request.getUrl().getQuery());
+                    return Mono.just(CommunicationIdentityResponseMocker.createUserResult(request));
+                }
+            }).buildClient();
+
+        assertThrows(RuntimeException.class, client::createUser);
+        assertApiVersion(requestQuery.get(), "2026-09-23");
+    }
+
+    @Test
+    public void asyncClientUsesLatestServiceVersionByDefault() {
+        AtomicReference<String> requestQuery = new AtomicReference<>();
+        CommunicationIdentityAsyncClient client
+            = builder.connectionString(MOCK_CONNECTION_STRING).httpClient(new NoOpHttpClient() {
+                @Override
+                public Mono<HttpResponse> send(HttpRequest request) {
+                    requestQuery.set(request.getUrl().getQuery());
+                    return Mono.just(CommunicationIdentityResponseMocker.createUserResult(request));
+                }
+            }).buildAsyncClient();
+
+        assertThrows(RuntimeException.class, () -> client.createUser().block());
+        assertApiVersion(requestQuery.get(), "2026-09-23");
     }
 
     @Test
@@ -231,5 +265,9 @@ public class CommunicationIdentityBuilderUnitTests {
     private void assertHMACHeadersExist(HttpHeaders headers) {
         assertNotNull(headers.get(HttpHeaderName.AUTHORIZATION));
         assertNotNull(headers.get("x-ms-content-sha256"));
+    }
+
+    private void assertApiVersion(String requestQuery, String expectedVersion) {
+        assertEquals("api-version=" + expectedVersion, requestQuery);
     }
 }
