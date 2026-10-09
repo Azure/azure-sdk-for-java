@@ -4,7 +4,6 @@
 
 package com.azure.ai.metricsadvisor.implementation.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -17,13 +16,11 @@ public final class IncidentStatus extends ExpandableStringEnum<IncidentStatus> {
     /**
      * Static value Active for IncidentStatus.
      */
-    @Generated
     public static final IncidentStatus ACTIVE = fromString("Active");
 
     /**
      * Static value Resolved for IncidentStatus.
      */
-    @Generated
     public static final IncidentStatus RESOLVED = fromString("Resolved");
 
     /**
@@ -31,7 +28,6 @@ public final class IncidentStatus extends ExpandableStringEnum<IncidentStatus> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    @Generated
     @Deprecated
     public IncidentStatus() {
     }
@@ -42,7 +38,6 @@ public final class IncidentStatus extends ExpandableStringEnum<IncidentStatus> {
      * @param name a name to look for.
      * @return the corresponding IncidentStatus.
      */
-    @Generated
     public static IncidentStatus fromString(String name) {
         return fromString(name, IncidentStatus.class);
     }
@@ -52,7 +47,6 @@ public final class IncidentStatus extends ExpandableStringEnum<IncidentStatus> {
      * 
      * @return known IncidentStatus values.
      */
-    @Generated
     public static Collection<IncidentStatus> values() {
         return values(IncidentStatus.class);
     }
