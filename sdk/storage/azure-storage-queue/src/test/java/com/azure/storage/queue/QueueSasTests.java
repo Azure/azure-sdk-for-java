@@ -24,10 +24,13 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.Iterator;
 import java.util.stream.Stream;
 
@@ -349,5 +352,71 @@ public class QueueSasTests extends QueueTestBase {
             () -> instrument(new QueueServiceClientBuilder().endpoint(queueClient.getQueueUrl() + "?" + sas))
                 .buildClient()
                 .getProperties());
+    }
+
+    /*
+     * Offline regression tests guarding against the timezone-aware expiry defect reported for the Python and Go
+     * Storage Queue SDKs. Those SDKs formatted a non-UTC expiry's local wall-clock fields and appended 'Z' without
+     * converting the instant to UTC, producing a SAS that stayed valid beyond the issuer's intended cutoff. The Java
+     * SDK formats expiry with ISO_8601_UTC_DATE_FORMATTER, which converts the OffsetDateTime's instant to UTC before
+     * formatting, so Java is not affected. These tests sign a SAS with a synthetic shared key (no live account) and
+     * verify the generated 'se' expiry is always the UTC-converted value.
+     */
+
+    // Synthetic, non-secret credential used purely to produce a deterministic signature offline.
+    private static final StorageSharedKeyCredential TIMEZONE_CREDENTIAL = new StorageSharedKeyCredential("testaccount",
+        Base64.getEncoder().encodeToString("queue-sas-timezone-regression-key".getBytes(StandardCharsets.UTF_8)));
+
+    // The instant the issuer intends the read-only SAS to expire: 2026-10-06T14:51:33Z.
+    private static final OffsetDateTime TIMEZONE_EXPIRY_UTC
+        = OffsetDateTime.of(2026, 10, 6, 14, 51, 33, 0, ZoneOffset.UTC);
+
+    private static String timezoneSasFor(OffsetDateTime expiry) {
+        QueueClient client = new QueueClientBuilder().endpoint("https://testaccount.queue.core.windows.net")
+            .queueName("testqueue")
+            .credential(TIMEZONE_CREDENTIAL)
+            .buildClient();
+        QueueSasPermission permission = new QueueSasPermission().setReadPermission(true);
+        return client.generateSas(new QueueServiceSasSignatureValues(expiry, permission));
+    }
+
+    private static String timezoneSasQueryParam(String sas, String key) {
+        for (String pair : sas.split("&")) {
+            int eq = pair.indexOf('=');
+            if (eq > 0 && pair.substring(0, eq).equals(key)) {
+                // The SAS is URL-encoded; the only encoded character in an ISO-8601 'Z' expiry is the colon (%3A).
+                return pair.substring(eq + 1).replace("%3A", ":");
+            }
+        }
+        return null;
+    }
+
+    @Test
+    public void queueSasUtcExpiryIsSignedAsUtc() {
+        String sas = timezoneSasFor(TIMEZONE_EXPIRY_UTC);
+        assertEquals("2026-10-06T14:51:33Z", timezoneSasQueryParam(sas, "se"));
+    }
+
+    @Test
+    public void queueSasNonUtcExpiryOfSameInstantIsConvertedToUtc() {
+        // 2026-10-06T23:51:33+09:00 is the exact same instant as 2026-10-06T14:51:33Z. If Java had the Python/Go
+        // defect, this would be signed as 2026-10-06T23:51:33Z and outlive the intended cutoff by 32,400 seconds.
+        OffsetDateTime expiryPlus9 = TIMEZONE_EXPIRY_UTC.withOffsetSameInstant(ZoneOffset.ofHours(9));
+
+        String seUtc = timezoneSasQueryParam(timezoneSasFor(TIMEZONE_EXPIRY_UTC), "se");
+        String sePlus9 = timezoneSasQueryParam(timezoneSasFor(expiryPlus9), "se");
+
+        assertEquals("2026-10-06T14:51:33Z", sePlus9,
+            "Non-UTC expiry must be converted to UTC before signing (guards against the Python/Go Queue SAS defect).");
+        assertEquals(seUtc, sePlus9, "Equivalent instants in different time zones must sign identical expiry values.");
+    }
+
+    @Test
+    public void queueSasEquivalentInstantsProduceIdenticalSignature() {
+        // Because the expiry string is identical, the full SAS (including the HMAC signature) must match byte-for-byte.
+        OffsetDateTime expiryMinus5 = TIMEZONE_EXPIRY_UTC.withOffsetSameInstant(ZoneOffset.ofHours(-5));
+
+        assertEquals(timezoneSasFor(TIMEZONE_EXPIRY_UTC), timezoneSasFor(expiryMinus5),
+            "The signed string-to-sign and resulting signature must be identical for the same instant.");
     }
 }
