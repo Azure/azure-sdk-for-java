@@ -15,6 +15,8 @@ module com.azure.ai.agents {
     requires io.netty.buffer;
     requires okhttp3;
     requires okio;
+    requires io.opentelemetry.api;
+    requires io.opentelemetry.context;
 
     exports com.azure.ai.agents;
     exports com.azure.ai.agents.models;
