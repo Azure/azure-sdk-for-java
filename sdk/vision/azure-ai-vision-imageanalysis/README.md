@@ -40,7 +40,7 @@ Also note that the client library does not directly read the `VISION_ENDPOINT` a
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-vision-imageanalysis</artifactId>
-    <version>1.0.10</version>
+    <version>1.0.11</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
