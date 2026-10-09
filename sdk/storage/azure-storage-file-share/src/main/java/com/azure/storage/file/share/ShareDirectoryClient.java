@@ -612,6 +612,11 @@ public class ShareDirectoryClient {
      *
      * <p>Retrieve directory properties</p>
      *
+     * <p>This operation accepts path-addressed and file-ID-addressed clients. To retrieve properties without knowing
+     * the directory path, use {@link ShareClient#getDirectoryClientByFileId(String)}. Service availability determines
+     * whether a file-ID request succeeds; the client does not check the share protocol. If the service does not
+     * support property retrieval by ID for the share, use a path-addressed client.</p>
+     *
      * <!-- src_embed com.azure.storage.file.share.ShareDirectoryClient.getProperties -->
      * <pre>
      * ShareDirectoryProperties response = shareDirectoryClient.getProperties&#40;&#41;;

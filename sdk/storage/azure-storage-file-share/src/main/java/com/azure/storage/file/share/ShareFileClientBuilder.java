@@ -383,6 +383,11 @@ public class ShareFileClientBuilder implements TokenCredentialTrait<ShareFileCli
     /**
      * Sets the file ID used to address a file.
      *
+     * <p>Call {@link ShareFileClient#getProperties()} or {@link ShareFileAsyncClient#getProperties()} on the
+     * resulting client to retrieve properties without supplying the file path. File-ID clients also support
+     * {@link ShareFileClient#getFileLinks()} and {@link ShareFileAsyncClient#getFileLinks()} (SMB only).
+     * Other service operations require a path-addressed client.</p>
+     *
      * <p>Setting a file ID clears the resource path. The file ID can also be read from the {@code fileid} query
      * parameter when supplied in the endpoint. File IDs are supported only for file clients; building a directory
      * client with a file ID configured throws {@link IllegalStateException}. Use {@link #resourcePath(String)} to

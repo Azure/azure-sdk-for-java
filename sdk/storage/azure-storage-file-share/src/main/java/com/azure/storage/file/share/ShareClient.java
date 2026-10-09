@@ -184,6 +184,14 @@ public class ShareClient {
     /**
      * Creates a directory client that addresses a directory by its file ID.
      *
+     * <p>Call {@link ShareDirectoryClient#getProperties()} on the returned client to retrieve properties without
+     * knowing the directory path. Obtain the ID from {@link FileSmbProperties#getFileId()} in a path-based properties
+     * response. Other service operations require a path-addressed client.</p>
+     *
+     * <pre>{@code
+     * ShareDirectoryProperties properties = shareClient.getDirectoryClientByFileId(fileId).getProperties();
+     * }</pre>
+     *
      * @param fileId The file ID of the directory.
      * @return A client for interacting with the directory by ID.
      * @throws IllegalArgumentException If {@code fileId} is null or blank.
@@ -212,6 +220,15 @@ public class ShareClient {
 
     /**
      * Creates a file client that addresses a file by its file ID.
+     *
+     * <p>Call {@link ShareFileClient#getProperties()} on the returned client to retrieve properties without knowing
+     * the file path. Obtain the ID from {@link FileSmbProperties#getFileId()} in a path-based properties response.
+     * The returned client supports property retrieval and {@link ShareFileClient#getFileLinks()} (SMB only).
+     * Other service operations require a path-addressed client.</p>
+     *
+     * <pre>{@code
+     * ShareFileProperties properties = shareClient.getFileClientByFileId(fileId).getProperties();
+     * }</pre>
      *
      * @param fileId The file ID of the file.
      * @return A client for interacting with the file by ID.

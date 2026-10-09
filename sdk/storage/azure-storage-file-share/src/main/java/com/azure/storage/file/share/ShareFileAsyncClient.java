@@ -127,6 +127,10 @@ import static com.azure.storage.file.share.implementation.util.ModelHelper.toSha
  * Service. Operations allowed by the client are creating, copying, uploading, downloading, deleting and listing on a
  * file, retrieving properties, setting metadata and list or force close handles of the file.
  *
+ * <p>Use {@link ShareAsyncClient#getFileClientByFileId(String)} to retrieve properties without knowing the file path.
+ * File-ID clients support {@link #getProperties()} and {@link #getFileLinks()} (SMB only).
+ * Other service operations require a path-addressed client.</p>
+ *
  * <p><strong>Instantiating an Asynchronous File Client</strong></p>
  *
  * <!-- src_embed com.azure.storage.file.share.ShareFileAsyncClient.instantiation -->
@@ -244,7 +248,7 @@ public class ShareFileAsyncClient {
     }
 
     /**
-     * Gets the hard links to this file. This operation is available only for a file-ID-addressed client.
+     * SMB only. Gets the hard links to this file. This operation is available only for a file-ID-addressed client.
      *
      * @return A response containing the file properties and hard links.
      */
@@ -254,7 +258,7 @@ public class ShareFileAsyncClient {
     }
 
     /**
-     * Gets the hard links to this file. This operation is available only for a file-ID-addressed client.
+     * SMB only. Gets the hard links to this file. This operation is available only for a file-ID-addressed client.
      *
      * @param requestConditions Conditions to apply to the request.
      * @return A response containing the file properties and hard links.
@@ -278,7 +282,7 @@ public class ShareFileAsyncClient {
     }
 
     /**
-     * Gets the file links.
+     * SMB only. Gets the file links. This operation is available only for a file-ID-addressed client.
      *
      * @return The file properties and hard links.
      */
@@ -288,7 +292,7 @@ public class ShareFileAsyncClient {
     }
 
     /**
-     * Gets the file links.
+     * SMB only. Gets the file links. This operation is available only for a file-ID-addressed client.
      *
      * @param requestConditions Conditions to apply to the request.
      * @return The file properties and hard links.
@@ -1529,6 +1533,11 @@ public class ShareFileAsyncClient {
      * <p><strong>Code Samples</strong></p>
      *
      * <p>Retrieve file properties</p>
+     *
+     * <p>This operation accepts path-addressed and file-ID-addressed clients. To address a file by ID, use
+     * {@link ShareAsyncClient#getFileClientByFileId(String)}. Service availability determines whether a file-ID request
+     * succeeds; the client does not check the share protocol. If the service does not support property retrieval by ID
+     * for the share, use a path-addressed client.</p>
      *
      * <!-- src_embed com.azure.storage.file.share.ShareFileAsyncClient.getProperties -->
      * <pre>

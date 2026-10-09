@@ -177,6 +177,14 @@ public class ShareAsyncClient {
     /**
      * Creates a directory client that addresses a directory by its file ID.
      *
+     * <p>Call {@link ShareDirectoryAsyncClient#getProperties()} on the returned client to retrieve properties without
+     * knowing the directory path. Obtain the ID from {@link FileSmbProperties#getFileId()} in a path-based properties
+     * response. Other service operations require a path-addressed client.</p>
+     *
+     * <pre>{@code
+     * Mono<ShareDirectoryProperties> properties = shareAsyncClient.getDirectoryClientByFileId(fileId).getProperties();
+     * }</pre>
+     *
      * @param fileId The file ID of the directory.
      * @return A client for interacting with the directory by ID.
      * @throws IllegalArgumentException If {@code fileId} is null or blank.
@@ -203,6 +211,15 @@ public class ShareAsyncClient {
 
     /**
      * Creates a file client that addresses a file by its file ID.
+     *
+     * <p>Call {@link ShareFileAsyncClient#getProperties()} on the returned client to retrieve properties without knowing
+     * the file path. Obtain the ID from {@link FileSmbProperties#getFileId()} in a path-based properties response.
+     * The returned client supports property retrieval and {@link ShareFileAsyncClient#getFileLinks()} (SMB only).
+     * Other service operations require a path-addressed client.</p>
+     *
+     * <pre>{@code
+     * Mono<ShareFileProperties> properties = shareAsyncClient.getFileClientByFileId(fileId).getProperties();
+     * }</pre>
      *
      * @param fileId The file ID of the file.
      * @return A client for interacting with the file by ID.
