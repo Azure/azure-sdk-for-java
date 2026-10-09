@@ -11,7 +11,7 @@ public final class NotebookWorkspaceCreateUpdateParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NotebookWorkspaceCreateUpdateParameters model
-            = BinaryData.fromString("{\"id\":\"pl\",\"name\":\"dajjvywe\",\"type\":\"fkumcfjxoky\"}")
+            = BinaryData.fromString("{\"id\":\"ouarhwvixqqggljk\",\"name\":\"sjrclrvtzq\",\"type\":\"bctbhp\"}")
                 .toObject(NotebookWorkspaceCreateUpdateParameters.class);
     }
 

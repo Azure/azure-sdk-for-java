@@ -11,17 +11,18 @@ import org.junit.jupiter.api.Assertions;
 public final class PrivilegeResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PrivilegeResource model = BinaryData.fromString("{\"db\":\"gbdg\",\"collection\":\"mgxdgdhpabgd\"}")
-            .toObject(PrivilegeResource.class);
-        Assertions.assertEquals("gbdg", model.db());
-        Assertions.assertEquals("mgxdgdhpabgd", model.collection());
+        PrivilegeResource model
+            = BinaryData.fromString("{\"db\":\"dhxiidlopedbwd\",\"collection\":\"qyybxubmdnafcbq\"}")
+                .toObject(PrivilegeResource.class);
+        Assertions.assertEquals("dhxiidlopedbwd", model.db());
+        Assertions.assertEquals("qyybxubmdnafcbq", model.collection());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrivilegeResource model = new PrivilegeResource().withDb("gbdg").withCollection("mgxdgdhpabgd");
+        PrivilegeResource model = new PrivilegeResource().withDb("dhxiidlopedbwd").withCollection("qyybxubmdnafcbq");
         model = BinaryData.fromObject(model).toObject(PrivilegeResource.class);
-        Assertions.assertEquals("gbdg", model.db());
-        Assertions.assertEquals("mgxdgdhpabgd", model.collection());
+        Assertions.assertEquals("dhxiidlopedbwd", model.db());
+        Assertions.assertEquals("qyybxubmdnafcbq", model.collection());
     }
 }

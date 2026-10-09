@@ -11,7 +11,7 @@ public final class RegionalServiceResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RegionalServiceResource model
-            = BinaryData.fromString("{\"name\":\"uifkzqqhb\",\"location\":\"loilmkfbeo\",\"status\":\"Error\"}")
+            = BinaryData.fromString("{\"name\":\"omfpb\",\"location\":\"eegvyieztkutnj\",\"status\":\"Stopped\"}")
                 .toObject(RegionalServiceResource.class);
     }
 }

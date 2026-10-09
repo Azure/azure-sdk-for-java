@@ -12,8 +12,8 @@ public final class SqlRoleAssignmentListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SqlRoleAssignmentListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"roleDefinitionId\":\"bta\",\"scope\":\"pnyghs\",\"principalId\":\"cyl\"},\"id\":\"gmnsghpxy\",\"name\":\"phdrw\",\"type\":\"jkhvyomacluzvxnq\"},{\"properties\":{\"roleDefinitionId\":\"pqpdfwmkoisqc\",\"scope\":\"f\",\"principalId\":\"uifmc\"},\"id\":\"p\",\"name\":\"bkdq\",\"type\":\"rdzsylollgtrczzy\"}],\"nextLink\":\"xzji\"}")
+            "{\"value\":[{\"properties\":{\"roleDefinitionId\":\"ey\",\"scope\":\"uhxu\",\"principalId\":\"buew\"},\"id\":\"s\",\"name\":\"njlx\",\"type\":\"zrhwp\"},{\"properties\":{\"roleDefinitionId\":\"jbaqehgpdoh\",\"scope\":\"qatucoigebxnc\",\"principalId\":\"fepbnwgfmxjgc\"},\"id\":\"jbgdlfgtdysnaquf\",\"name\":\"qbctqha\",\"type\":\"zjrwdkqze\"}],\"nextLink\":\"jleziunjx\"}")
             .toObject(SqlRoleAssignmentListResult.class);
-        Assertions.assertEquals("xzji", model.nextLink());
+        Assertions.assertEquals("jleziunjx", model.nextLink());
     }
 }

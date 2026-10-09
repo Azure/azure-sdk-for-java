@@ -13,21 +13,21 @@ public final class ResourceRestoreParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceRestoreParameters model = BinaryData.fromString(
-            "{\"restoreSource\":\"qek\",\"restoreTimestampInUtc\":\"2021-04-24T05:25:21Z\",\"restoreWithTtlDisabled\":false}")
+            "{\"restoreSource\":\"r\",\"restoreTimestampInUtc\":\"2021-10-30T18:40:51Z\",\"restoreWithTtlDisabled\":true}")
             .toObject(ResourceRestoreParameters.class);
-        Assertions.assertEquals("qek", model.restoreSource());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-24T05:25:21Z"), model.restoreTimestampInUtc());
-        Assertions.assertFalse(model.restoreWithTtlDisabled());
+        Assertions.assertEquals("r", model.restoreSource());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-30T18:40:51Z"), model.restoreTimestampInUtc());
+        Assertions.assertTrue(model.restoreWithTtlDisabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourceRestoreParameters model = new ResourceRestoreParameters().withRestoreSource("qek")
-            .withRestoreTimestampInUtc(OffsetDateTime.parse("2021-04-24T05:25:21Z"))
-            .withRestoreWithTtlDisabled(false);
+        ResourceRestoreParameters model = new ResourceRestoreParameters().withRestoreSource("r")
+            .withRestoreTimestampInUtc(OffsetDateTime.parse("2021-10-30T18:40:51Z"))
+            .withRestoreWithTtlDisabled(true);
         model = BinaryData.fromObject(model).toObject(ResourceRestoreParameters.class);
-        Assertions.assertEquals("qek", model.restoreSource());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-24T05:25:21Z"), model.restoreTimestampInUtc());
-        Assertions.assertFalse(model.restoreWithTtlDisabled());
+        Assertions.assertEquals("r", model.restoreSource());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-30T18:40:51Z"), model.restoreTimestampInUtc());
+        Assertions.assertTrue(model.restoreWithTtlDisabled());
     }
 }

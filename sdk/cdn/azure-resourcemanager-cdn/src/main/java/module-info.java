@@ -13,5 +13,4 @@ module com.azure.resourcemanager.cdn {
     // open packages specifically for azure core
     opens com.azure.resourcemanager.cdn.fluent.models to com.azure.core;
     opens com.azure.resourcemanager.cdn.models to com.azure.core;
-    opens com.azure.resourcemanager.cdn.implementation.models to com.azure.core;
 }

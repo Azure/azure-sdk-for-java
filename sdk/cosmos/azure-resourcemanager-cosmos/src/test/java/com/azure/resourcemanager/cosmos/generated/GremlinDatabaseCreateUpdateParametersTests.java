@@ -23,46 +23,47 @@ public final class GremlinDatabaseCreateUpdateParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GremlinDatabaseCreateUpdateParameters model = BinaryData.fromString(
-            "{\"properties\":{\"resource\":{\"id\":\"rcigtzjcvbxq\",\"restoreParameters\":{\"restoreSource\":\"snsso\",\"restoreTimestampInUtc\":\"2021-08-20T00:22:26Z\",\"restoreWithTtlDisabled\":true},\"createMode\":\"Restore\"},\"options\":{\"throughput\":882366238,\"autoscaleSettings\":{\"maxThroughput\":1914716275}}},\"id\":\"fcvvy\",\"name\":\"slpuxgcbdsva\",\"type\":\"nptw\",\"location\":\"kx\",\"tags\":{\"ldiuhzzgqlm\":\"zwugxyqvnjobfel\"},\"identity\":{\"principalId\":\"wz\",\"tenantId\":\"udjpxpqht\",\"type\":\"None\",\"userAssignedIdentities\":{\"ikpazf\":{\"principalId\":\"krezsdsuxheqd\",\"clientId\":\"ruxspinymmqgwok\"}}}}")
+            "{\"properties\":{\"resource\":{\"id\":\"drwjiy\",\"restoreParameters\":{\"restoreSource\":\"fj\",\"restoreTimestampInUtc\":\"2021-12-04T16:49:47Z\",\"restoreWithTtlDisabled\":true},\"createMode\":\"Restore\"},\"options\":{\"throughput\":1800883070,\"autoscaleSettings\":{\"maxThroughput\":629966604}}},\"id\":\"r\",\"name\":\"qnt\",\"type\":\"nawthvm\",\"location\":\"gnuyeamcmhu\",\"tags\":{\"pqtwloesqrggvrb\":\"ecehokw\",\"aciduwjleip\":\"yrukoi\",\"yxpzruzythqk\":\"lh\"},\"identity\":{\"principalId\":\"bg\",\"tenantId\":\"ellv\",\"type\":\"None\",\"userAssignedIdentities\":{\"uvrzmzqmzjqrb\":{\"principalId\":\"nitmujdtvmclyymf\",\"clientId\":\"mjpddnyxf\"}}}}")
             .toObject(GremlinDatabaseCreateUpdateParameters.class);
-        Assertions.assertEquals("kx", model.location());
-        Assertions.assertEquals("zwugxyqvnjobfel", model.tags().get("ldiuhzzgqlm"));
+        Assertions.assertEquals("gnuyeamcmhu", model.location());
+        Assertions.assertEquals("ecehokw", model.tags().get("pqtwloesqrggvrb"));
         Assertions.assertEquals(ResourceIdentityType.NONE, model.identity().type());
-        Assertions.assertEquals("rcigtzjcvbxq", model.resource().id());
-        Assertions.assertEquals("snsso", model.resource().restoreParameters().restoreSource());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-20T00:22:26Z"),
+        Assertions.assertEquals("drwjiy", model.resource().id());
+        Assertions.assertEquals("fj", model.resource().restoreParameters().restoreSource());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-12-04T16:49:47Z"),
             model.resource().restoreParameters().restoreTimestampInUtc());
         Assertions.assertTrue(model.resource().restoreParameters().restoreWithTtlDisabled());
         Assertions.assertEquals(CreateMode.RESTORE, model.resource().createMode());
-        Assertions.assertEquals(882366238, model.options().throughput());
-        Assertions.assertEquals(1914716275, model.options().autoscaleSettings().maxThroughput());
+        Assertions.assertEquals(1800883070, model.options().throughput());
+        Assertions.assertEquals(629966604, model.options().autoscaleSettings().maxThroughput());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GremlinDatabaseCreateUpdateParameters model = new GremlinDatabaseCreateUpdateParameters().withLocation("kx")
-            .withTags(mapOf("ldiuhzzgqlm", "zwugxyqvnjobfel"))
+        GremlinDatabaseCreateUpdateParameters model = new GremlinDatabaseCreateUpdateParameters()
+            .withLocation("gnuyeamcmhu")
+            .withTags(mapOf("pqtwloesqrggvrb", "ecehokw", "aciduwjleip", "yrukoi", "yxpzruzythqk", "lh"))
             .withIdentity(new ManagedServiceIdentity().withType(ResourceIdentityType.NONE)
-                .withUserAssignedIdentities(mapOf("ikpazf", new ManagedServiceIdentityUserAssignedIdentities())))
-            .withResource(new GremlinDatabaseResource().withId("rcigtzjcvbxq")
-                .withRestoreParameters(new ResourceRestoreParameters().withRestoreSource("snsso")
-                    .withRestoreTimestampInUtc(OffsetDateTime.parse("2021-08-20T00:22:26Z"))
+                .withUserAssignedIdentities(mapOf("uvrzmzqmzjqrb", new ManagedServiceIdentityUserAssignedIdentities())))
+            .withResource(new GremlinDatabaseResource().withId("drwjiy")
+                .withRestoreParameters(new ResourceRestoreParameters().withRestoreSource("fj")
+                    .withRestoreTimestampInUtc(OffsetDateTime.parse("2021-12-04T16:49:47Z"))
                     .withRestoreWithTtlDisabled(true))
                 .withCreateMode(CreateMode.RESTORE))
-            .withOptions(new CreateUpdateOptions().withThroughput(882366238)
-                .withAutoscaleSettings(new AutoscaleSettings().withMaxThroughput(1914716275)));
+            .withOptions(new CreateUpdateOptions().withThroughput(1800883070)
+                .withAutoscaleSettings(new AutoscaleSettings().withMaxThroughput(629966604)));
         model = BinaryData.fromObject(model).toObject(GremlinDatabaseCreateUpdateParameters.class);
-        Assertions.assertEquals("kx", model.location());
-        Assertions.assertEquals("zwugxyqvnjobfel", model.tags().get("ldiuhzzgqlm"));
+        Assertions.assertEquals("gnuyeamcmhu", model.location());
+        Assertions.assertEquals("ecehokw", model.tags().get("pqtwloesqrggvrb"));
         Assertions.assertEquals(ResourceIdentityType.NONE, model.identity().type());
-        Assertions.assertEquals("rcigtzjcvbxq", model.resource().id());
-        Assertions.assertEquals("snsso", model.resource().restoreParameters().restoreSource());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-20T00:22:26Z"),
+        Assertions.assertEquals("drwjiy", model.resource().id());
+        Assertions.assertEquals("fj", model.resource().restoreParameters().restoreSource());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-12-04T16:49:47Z"),
             model.resource().restoreParameters().restoreTimestampInUtc());
         Assertions.assertTrue(model.resource().restoreParameters().restoreWithTtlDisabled());
         Assertions.assertEquals(CreateMode.RESTORE, model.resource().createMode());
-        Assertions.assertEquals(882366238, model.options().throughput());
-        Assertions.assertEquals(1914716275, model.options().autoscaleSettings().maxThroughput());
+        Assertions.assertEquals(1800883070, model.options().throughput());
+        Assertions.assertEquals(629966604, model.options().autoscaleSettings().maxThroughput());
     }
 
     // Use "Map.of" if available

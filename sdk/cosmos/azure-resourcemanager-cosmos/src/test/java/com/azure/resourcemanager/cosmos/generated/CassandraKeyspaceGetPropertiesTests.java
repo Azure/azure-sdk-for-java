@@ -12,10 +12,10 @@ public final class CassandraKeyspaceGetPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CassandraKeyspaceGetProperties model = BinaryData.fromString(
-            "{\"resource\":{\"_rid\":\"ltfnnxrkad\",\"_ts\":55.375187,\"_etag\":\"nfmuiiiripf\",\"id\":\"hykfkxbb\"},\"options\":{\"throughput\":360564631,\"autoscaleSettings\":{\"maxThroughput\":8699305}}}")
+            "{\"resource\":{\"_rid\":\"hufmpq\",\"_ts\":1.5317738,\"_etag\":\"jgydzul\",\"id\":\"dsaeuzanhsfnh\"},\"options\":{\"throughput\":440946587,\"autoscaleSettings\":{\"maxThroughput\":470751726}}}")
             .toObject(CassandraKeyspaceGetProperties.class);
-        Assertions.assertEquals("hykfkxbb", model.resource().id());
-        Assertions.assertEquals(360564631, model.options().throughput());
-        Assertions.assertEquals(8699305, model.options().autoscaleSettings().maxThroughput());
+        Assertions.assertEquals("dsaeuzanhsfnh", model.resource().id());
+        Assertions.assertEquals(440946587, model.options().throughput());
+        Assertions.assertEquals(470751726, model.options().autoscaleSettings().maxThroughput());
     }
 }
