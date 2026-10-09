@@ -216,57 +216,8 @@ public interface NamespacesClient
      * @return description of a namespace resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String namespaceName,
+    Mono<Response<SBNamespaceInner>> updateWithResponseAsync(String resourceGroupName, String namespaceName,
         SBNamespaceUpdateParameters parameters);
-
-    /**
-     * Updates a service namespace. Once created, this namespace's resource manifest is immutable. This operation is
-     * idempotent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param parameters Parameters supplied to update a namespace resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of description of a namespace resource.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<SBNamespaceInner>, SBNamespaceInner> beginUpdateAsync(String resourceGroupName,
-        String namespaceName, SBNamespaceUpdateParameters parameters);
-
-    /**
-     * Updates a service namespace. Once created, this namespace's resource manifest is immutable. This operation is
-     * idempotent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param parameters Parameters supplied to update a namespace resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of description of a namespace resource.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SBNamespaceInner>, SBNamespaceInner> beginUpdate(String resourceGroupName,
-        String namespaceName, SBNamespaceUpdateParameters parameters);
-
-    /**
-     * Updates a service namespace. Once created, this namespace's resource manifest is immutable. This operation is
-     * idempotent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param parameters Parameters supplied to update a namespace resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of description of a namespace resource.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SBNamespaceInner>, SBNamespaceInner> beginUpdate(String resourceGroupName,
-        String namespaceName, SBNamespaceUpdateParameters parameters, Context context);
 
     /**
      * Updates a service namespace. Once created, this namespace's resource manifest is immutable. This operation is
@@ -291,13 +242,15 @@ public interface NamespacesClient
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The namespace name.
      * @param parameters Parameters supplied to update a namespace resource.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a namespace resource.
+     * @return description of a namespace resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SBNamespaceInner update(String resourceGroupName, String namespaceName, SBNamespaceUpdateParameters parameters);
+    Response<SBNamespaceInner> updateWithResponse(String resourceGroupName, String namespaceName,
+        SBNamespaceUpdateParameters parameters, Context context);
 
     /**
      * Updates a service namespace. Once created, this namespace's resource manifest is immutable. This operation is
@@ -306,15 +259,13 @@ public interface NamespacesClient
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The namespace name.
      * @param parameters Parameters supplied to update a namespace resource.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return description of a namespace resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SBNamespaceInner update(String resourceGroupName, String namespaceName, SBNamespaceUpdateParameters parameters,
-        Context context);
+    SBNamespaceInner update(String resourceGroupName, String namespaceName, SBNamespaceUpdateParameters parameters);
 
     /**
      * Deletes an existing namespace. This operation also removes all associated resources under the namespace.

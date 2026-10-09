@@ -9,7 +9,7 @@ package com.azure.resourcemanager.servicebus.generated;
  */
 public final class QueuesDeleteAuthorizationRuleSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/Queues/SBQueueAuthorizationRuleDelete.json
+     * x-ms-original-file: 2026-07-01-preview/Queues/SBQueueAuthorizationRuleDelete.json
      */
     /**
      * Sample code: QueueAuthorizationRuleDelete.

@@ -12,6 +12,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.servicebus.models.Encryption;
 import com.azure.resourcemanager.servicebus.models.GeoDataReplicationProperties;
+import com.azure.resourcemanager.servicebus.models.IpAddressType;
 import com.azure.resourcemanager.servicebus.models.PlatformCapabilities;
 import com.azure.resourcemanager.servicebus.models.PublicNetworkAccess;
 import com.azure.resourcemanager.servicebus.models.TlsVersion;
@@ -104,6 +105,12 @@ public final class SBNamespaceProperties implements JsonSerializable<SBNamespace
      * Geo Data Replication settings for the namespace
      */
     private GeoDataReplicationProperties geoDataReplication;
+
+    /*
+     * The IP address type for the namespace. Determines whether the namespace supports IPv4 only or both IPv4 and IPv6
+     * (dual stack).
+     */
+    private IpAddressType ipAddressType;
 
     /**
      * Creates an instance of SBNamespaceProperties class.
@@ -373,6 +380,28 @@ public final class SBNamespaceProperties implements JsonSerializable<SBNamespace
     }
 
     /**
+     * Get the ipAddressType property: The IP address type for the namespace. Determines whether the namespace supports
+     * IPv4 only or both IPv4 and IPv6 (dual stack).
+     * 
+     * @return the ipAddressType value.
+     */
+    public IpAddressType ipAddressType() {
+        return this.ipAddressType;
+    }
+
+    /**
+     * Set the ipAddressType property: The IP address type for the namespace. Determines whether the namespace supports
+     * IPv4 only or both IPv4 and IPv6 (dual stack).
+     * 
+     * @param ipAddressType the ipAddressType value to set.
+     * @return the SBNamespaceProperties object itself.
+     */
+    public SBNamespaceProperties withIpAddressType(IpAddressType ipAddressType) {
+        this.ipAddressType = ipAddressType;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -411,6 +440,7 @@ public final class SBNamespaceProperties implements JsonSerializable<SBNamespace
         jsonWriter.writeNumberField("premiumMessagingPartitions", this.premiumMessagingPartitions);
         jsonWriter.writeJsonField("platformCapabilities", this.platformCapabilities);
         jsonWriter.writeJsonField("geoDataReplication", this.geoDataReplication);
+        jsonWriter.writeStringField("ipAddressType", this.ipAddressType == null ? null : this.ipAddressType.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -468,6 +498,8 @@ public final class SBNamespaceProperties implements JsonSerializable<SBNamespace
                 } else if ("geoDataReplication".equals(fieldName)) {
                     deserializedSBNamespaceProperties.geoDataReplication
                         = GeoDataReplicationProperties.fromJson(reader);
+                } else if ("ipAddressType".equals(fieldName)) {
+                    deserializedSBNamespaceProperties.ipAddressType = IpAddressType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

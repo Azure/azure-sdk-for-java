@@ -299,7 +299,7 @@ public final class ServiceBusManagementClientImpl extends AzureServiceClient imp
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2025-05-01-preview";
+        this.apiVersion = "2026-07-01-preview";
         this.operations = new OperationsClientImpl(this);
         this.disasterRecoveryConfigs = new DisasterRecoveryConfigsClientImpl(this);
         this.queues = new QueuesClientImpl(this);
