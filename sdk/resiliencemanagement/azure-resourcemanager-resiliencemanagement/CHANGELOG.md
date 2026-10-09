@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0 (2026-10-08)
+## 1.0.0 (2026-10-09)
 
 - Azure Resource Manager Resilience Management client library for Java. This package contains Microsoft Azure SDK for Resilience Management Management SDK.  Package api-version 2026-10-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
@@ -46,20 +46,20 @@
 
 * `recoveryPhysicalZones()` was removed
 * `advisorHaRecommendationId()` was removed
-* `haStatus()` was removed
 * `activePhysicalZones()` was removed
+* `haStatus()` was removed
 
 #### `models.DrillRuns` was modified
 
-* `failOver(java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.DrillRunFailoverRequest)` was removed
 * `reprotect(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+* `failOver(java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.DrillRunFailoverRequest)` was removed
 
 #### `models.GoalAssignmentProperties` was modified
 
-* `withGoalTemplateId(java.lang.String)` was removed
 * `withGoalAssignmentType(models.GoalAssignmentType)` was removed
-* `goalTemplateId()` was removed
 * `goalAssignmentType()` was removed
+* `goalTemplateId()` was removed
+* `withGoalTemplateId(java.lang.String)` was removed
 
 #### `models.UnifiedResilienceItemProperties` was modified
 
@@ -67,31 +67,31 @@
 
 #### `models.GoalResourceProperties` was modified
 
-* `withDisasterRecoveryGoalParticipation(models.ExclusionState)` was removed
 * `userConfirmationForHighAvailability()` was removed
-* `exclusionReasonForHighAvailabilityGoals()` was removed
+* `disasterRecoveryGoalParticipation()` was removed
+* `highAvailabilityGoalParticipation()` was removed
+* `exclusionReasonForDisasterRecoveryGoals()` was removed
 * `withHighAvailabilityAttestationStatus(models.AttestationState)` was removed
-* `withUserConfirmationForHighAvailability(java.util.List)` was removed
-* `serviceGroupMemberships()` was removed
 * `highAvailabilityAttestationStatus()` was removed
+* `serviceGroupMemberships()` was removed
+* `withDisasterRecoveryGoalParticipation(models.ExclusionState)` was removed
 * `disasterRecoveryAttestationStatus()` was removed
 * `withHighAvailabilityGoalParticipation(models.ExclusionState)` was removed
-* `disasterRecoveryGoalParticipation()` was removed
 * `withDisasterRecoveryAttestationStatus(models.AttestationState)` was removed
-* `exclusionReasonForDisasterRecoveryGoals()` was removed
-* `highAvailabilityGoalParticipation()` was removed
+* `exclusionReasonForHighAvailabilityGoals()` was removed
+* `withUserConfirmationForHighAvailability(java.util.List)` was removed
 
 #### `models.GoalsData` was modified
 
 * `requireHighAvailability()` was removed
-* `regionalRecoveryTimeObjectiveInMinutes()` was removed
-* `requireDisasterRecovery()` was removed
-* `regionalRecoveryPointObjectiveInMinutes()` was removed
 * `regionalRecoveryPointObjectiveStatus()` was removed
 * `regionalRecoveryTimeActualInMinutes()` was removed
+* `requireDisasterRecovery()` was removed
+* `regionalRecoveryPointObjectiveInMinutes()` was removed
+* `regionalRecoveryTimeObjectiveInMinutes()` was removed
 * `templateId()` was removed
-* `regionalRecoveryPointEstimatedInMinutes()` was removed
 * `regionalRecoveryTimeObjectiveStatus()` was removed
+* `regionalRecoveryPointEstimatedInMinutes()` was removed
 
 #### `models.ServiceLevelResource` was modified
 
@@ -100,15 +100,15 @@
 
 #### `models.DrillRunProperties` was modified
 
-* `models.JobType jobType()` -> `models.JobType jobType()`
-* `models.DrillAttestation attestation()` -> `models.DrillAttestation attestation()`
-* `java.util.List supportedVerbsForStage()` -> `java.util.List supportedVerbsForStage()`
-* `java.lang.String drillId()` -> `java.lang.String drillId()`
 * `toJson(com.azure.json.JsonWriter)` was removed
-* `models.DrillMode drillMode()` -> `models.DrillMode drillMode()`
-* `java.util.List notes()` -> `java.util.List notes()`
-* `java.lang.String currentActiveOperationId()` -> `java.lang.String currentActiveOperationId()`
+* `java.util.List supportedVerbsForStage()` -> `java.util.List supportedVerbsForStage()`
+* `models.DrillAttestation attestation()` -> `models.DrillAttestation attestation()`
 * `fromJson(com.azure.json.JsonReader)` was removed
+* `java.lang.String currentActiveOperationId()` -> `java.lang.String currentActiveOperationId()`
+* `java.util.List notes()` -> `java.util.List notes()`
+* `java.lang.String drillId()` -> `java.lang.String drillId()`
+* `models.DrillMode drillMode()` -> `models.DrillMode drillMode()`
+* `models.JobType jobType()` -> `models.JobType jobType()`
 
 #### `models.UsagePlanType` was modified
 
@@ -186,18 +186,18 @@
 
 #### `models.AttentionReason` was modified
 
-* `goalAssignment()` was added
-* `monitoringSourceNotConfigured()` was added
-* `healthModelExists()` was added
-* `drillRbacOnHealthModel()` was added
 * `healthModelAssociatedWithServiceGroup()` was added
-* `discoveryRuleExists()` was added
+* `monitoringSourceNotConfigured()` was added
+* `drillRbacOnGoalAssignment()` was added
 * `recoveryPlan()` was added
-* `rbacNeededForDrillOnGoalAssignment()` was added
+* `drillRbacOnHealthModel()` was added
 * `rbacNeededForDrillOnHealthModel()` was added
 * `sliAttentionStatuses()` was added
+* `discoveryRuleExists()` was added
+* `healthModelExists()` was added
 * `drillRbacOnSli()` was added
-* `drillRbacOnGoalAssignment()` was added
+* `goalAssignment()` was added
+* `rbacNeededForDrillOnGoalAssignment()` was added
 
 #### `models.ValidateForExecutionProperties` was modified
 
@@ -210,12 +210,12 @@
 
 #### `models.DrillProperties` was modified
 
-* `withGoalAssignmentProperties(models.GoalAssignmentPropertiesOfDrill)` was added
-* `withHealthModelMonitoringProperties(models.HealthModelMonitoringProperties)` was added
-* `healthModelMonitoringProperties()` was added
 * `withSliMonitoringProperties(models.SliMonitoringProperties)` was added
-* `goalAssignmentProperties()` was added
+* `healthModelMonitoringProperties()` was added
 * `sliMonitoringProperties()` was added
+* `withGoalAssignmentProperties(models.GoalAssignmentPropertiesOfDrill)` was added
+* `goalAssignmentProperties()` was added
+* `withHealthModelMonitoringProperties(models.HealthModelMonitoringProperties)` was added
 
 #### `models.DrillResourceProperties` was modified
 
@@ -224,20 +224,20 @@
 #### `models.DrillRuns` was modified
 
 * `listReportDownloadUrl(java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.ListReportDownloadUrlRequest)` was added
+* `generateReport(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `listReportDownloadUrl(java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.ListReportDownloadUrlRequest,com.azure.core.util.Context)` was added
 * `generateReport(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
 * `reprotect(java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.DrillRunReprotectRequest,com.azure.core.util.Context)` was added
-* `listReportDownloadUrl(java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.ListReportDownloadUrlRequest,com.azure.core.util.Context)` was added
-* `generateReport(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
 * `failOver(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
 
 #### `models.DrillUpdateProperties` was modified
 
-* `goalAssignmentProperties()` was added
+* `withHealthModelMonitoringProperties(models.HealthModelMonitoringProperties)` was added
 * `healthModelMonitoringProperties()` was added
 * `sliMonitoringProperties()` was added
+* `goalAssignmentProperties()` was added
 * `withSliMonitoringProperties(models.SliMonitoringProperties)` was added
 * `withGoalAssignmentProperties(models.GoalAssignmentPropertiesOfDrill)` was added
-* `withHealthModelMonitoringProperties(models.HealthModelMonitoringProperties)` was added
 
 #### `models.GoalAssignmentProperties` was modified
 
@@ -246,18 +246,18 @@
 
 #### `models.RecoveryJobProperties` was modified
 
-* `jobExtendedInfo()` was added
-* `status()` was added
-* `resourceId()` was added
-* `triggeredBy()` was added
 * `startTime()` was added
-* `endTime()` was added
-* `operation()` was added
 * `executionConfigurations()` was added
-* `errorDetails()` was added
-* `duration()` was added
+* `operation()` was added
+* `resourceId()` was added
 * `userComments()` was added
 * `retryDetails()` was added
+* `errorDetails()` was added
+* `duration()` was added
+* `endTime()` was added
+* `jobExtendedInfo()` was added
+* `triggeredBy()` was added
+* `status()` was added
 
 #### `models.UnifiedResilienceItemProperties` was modified
 
@@ -275,20 +275,20 @@
 
 #### `models.DrillRunProperties` was modified
 
-* `report()` was added
-* `triggeredBy()` was added
-* `resourceId()` was added
-* `executionConfigurations()` was added
-* `errorDetails()` was added
-* `duration()` was added
-* `userComments()` was added
-* `endTime()` was added
-* `innerModel()` was added
-* `startTime()` was added
-* `jobExtendedInfo()` was added
 * `retryDetails()` was added
 * `status()` was added
+* `errorDetails()` was added
+* `triggeredBy()` was added
+* `duration()` was added
+* `endTime()` was added
+* `startTime()` was added
+* `innerModel()` was added
+* `report()` was added
+* `jobExtendedInfo()` was added
 * `operation()` was added
+* `userComments()` was added
+* `executionConfigurations()` was added
+* `resourceId()` was added
 
 #### `models.OperationQualificationDetails` was modified
 
@@ -296,8 +296,8 @@
 
 #### `models.ZonalDrillProperties` was modified
 
-* `withHealthModelMonitoringProperties(models.HealthModelMonitoringProperties)` was added
 * `withGoalAssignmentProperties(models.GoalAssignmentPropertiesOfDrill)` was added
+* `withHealthModelMonitoringProperties(models.HealthModelMonitoringProperties)` was added
 * `withSliMonitoringProperties(models.SliMonitoringProperties)` was added
 
 ## 1.0.0-beta.1 (2026-06-15)
