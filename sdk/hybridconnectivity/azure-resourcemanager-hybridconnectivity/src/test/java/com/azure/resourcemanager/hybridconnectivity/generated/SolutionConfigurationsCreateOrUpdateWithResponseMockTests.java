@@ -25,7 +25,7 @@ public final class SolutionConfigurationsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Canceled\",\"solutionType\":\"hziuiefozbhdms\",\"solutionSettings\":{\"icslfaoq\":\"qhoftrmaequiah\",\"kaivwit\":\"piyylhalnswhccsp\"},\"status\":\"Completed\",\"statusDetails\":\"wuggwolu\",\"lastSyncTime\":\"2021-02-16T05:41:02Z\"},\"id\":\"wem\",\"name\":\"ai\",\"type\":\"sbrgz\"}";
+            = "{\"properties\":{\"provisioningState\":\"Failed\",\"solutionType\":\"epttwqmsniff\",\"solutionSettings\":{\"frddhcrati\":\"nrojlpijnkr\",\"zq\":\"zronasxift\",\"tw\":\"zh\",\"lgnyhmo\":\"sgogczhonnxk\"},\"status\":\"New\",\"statusDetails\":\"kgthrrghxjbd\",\"lastSyncTime\":\"2021-11-06T08:53:41Z\"},\"id\":\"xgfrpdsofbshrnsv\",\"name\":\"uswdv\",\"type\":\"yybyc\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,16 +35,15 @@ public final class SolutionConfigurationsCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SolutionConfiguration response = manager.solutionConfigurations()
-            .define("sfraoyzko")
-            .withExistingResourceUri("exztvbtq")
-            .withProperties(new SolutionConfigurationProperties().withSolutionType("mnguxawqaldsyu")
-                .withSolutionSettings(new SolutionSettings().withAdditionalProperties(
-                    mapOf("r", "znkbykutwpfhpagm", "bw", "erqf", "sdsttwvog", "dlhewp", "kkze", "kdsnfdsdoakgtdl"))))
+            .define("ttpkiwkkbnujrywv")
+            .withExistingResourceUri("xyfwnylrcool")
+            .withProperties(new SolutionConfigurationProperties().withSolutionType("fpncurdo")
+                .withSolutionSettings(new SolutionSettings()
+                    .withAdditionalProperties(mapOf("umwctondz", "fdntwjchrdgoih", "cbihwqk", "thtywub"))))
             .create();
 
-        Assertions.assertEquals("hziuiefozbhdms", response.properties().solutionType());
-        Assertions.assertEquals("piyylhalnswhccsp",
-            response.properties().solutionSettings().additionalProperties().get("kaivwit"));
+        Assertions.assertEquals("epttwqmsniff", response.properties().solutionType());
+        Assertions.assertEquals("zh", response.properties().solutionSettings().additionalProperties().get("tw"));
     }
 
     // Use "Map.of" if available

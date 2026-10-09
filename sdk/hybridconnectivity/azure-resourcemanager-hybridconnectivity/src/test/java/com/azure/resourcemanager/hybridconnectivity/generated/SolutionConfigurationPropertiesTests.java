@@ -15,21 +15,20 @@ public final class SolutionConfigurationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SolutionConfigurationProperties model = BinaryData.fromString(
-            "{\"provisioningState\":\"Canceled\",\"solutionType\":\"gdtjixhbkuofqwey\",\"solutionSettings\":{\"vfyexfw\":\"n\",\"nnaamdectehfiqsc\":\"ybcibvyvdcsit\",\"hcjrefovgmk\":\"eypvhezrkg\",\"yvxyqjp\":\"sle\"},\"status\":\"Failed\",\"statusDetails\":\"tpngjcrcczsqpjh\",\"lastSyncTime\":\"2021-11-23T05:20:04Z\"}")
+            "{\"provisioningState\":\"Canceled\",\"solutionType\":\"jmwvvj\",\"solutionSettings\":{\"ffrzpwvlqdqgbiqy\":\"xsenhwlr\",\"vf\":\"ihkaetcktvfc\",\"xerf\":\"nkymuctqhjfbebrj\"},\"status\":\"Failed\",\"statusDetails\":\"ttxfvjr\",\"lastSyncTime\":\"2021-02-26T08:38:10Z\"}")
             .toObject(SolutionConfigurationProperties.class);
-        Assertions.assertEquals("gdtjixhbkuofqwey", model.solutionType());
-        Assertions.assertEquals("eypvhezrkg", model.solutionSettings().additionalProperties().get("hcjrefovgmk"));
+        Assertions.assertEquals("jmwvvj", model.solutionType());
+        Assertions.assertEquals("ihkaetcktvfc", model.solutionSettings().additionalProperties().get("vf"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SolutionConfigurationProperties model
-            = new SolutionConfigurationProperties().withSolutionType("gdtjixhbkuofqwey")
-                .withSolutionSettings(new SolutionSettings().withAdditionalProperties(mapOf("hcjrefovgmk", "eypvhezrkg",
-                    "yvxyqjp", "sle", "vfyexfw", "n", "nnaamdectehfiqsc", "ybcibvyvdcsit")));
+        SolutionConfigurationProperties model = new SolutionConfigurationProperties().withSolutionType("jmwvvj")
+            .withSolutionSettings(new SolutionSettings().withAdditionalProperties(
+                mapOf("vf", "ihkaetcktvfc", "xerf", "nkymuctqhjfbebrj", "ffrzpwvlqdqgbiqy", "xsenhwlr")));
         model = BinaryData.fromObject(model).toObject(SolutionConfigurationProperties.class);
-        Assertions.assertEquals("gdtjixhbkuofqwey", model.solutionType());
-        Assertions.assertEquals("eypvhezrkg", model.solutionSettings().additionalProperties().get("hcjrefovgmk"));
+        Assertions.assertEquals("jmwvvj", model.solutionType());
+        Assertions.assertEquals("ihkaetcktvfc", model.solutionSettings().additionalProperties().get("vf"));
     }
 
     // Use "Map.of" if available

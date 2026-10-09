@@ -13,15 +13,34 @@ public final class PublicCloudConnectorListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PublicCloudConnectorListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"awsCloudProfile\":{\"accountId\":\"vddntwn\",\"excludedAccounts\":[\"cbtwnpzaoqvuh\",\"hcffcyddglmjthjq\",\"wpyeicxmqciwqvh\"],\"isOrganizationalAccount\":true},\"hostType\":\"AWS\",\"provisioningState\":\"Succeeded\",\"connectorPrimaryIdentifier\":\"dtopbob\"},\"location\":\"ghmewuam\",\"tags\":{\"t\":\"rzayv\",\"ln\":\"gvdfgiotkftutq\",\"qmi\":\"xlefgugnxkrx\",\"abhjybi\":\"tthzrvqd\"},\"id\":\"ehoqfbowskan\",\"name\":\"ktzlcuiywg\",\"type\":\"ywgndrv\"}],\"nextLink\":\"hzgpphrcgyncocpe\"}")
+            "{\"value\":[{\"properties\":{\"awsCloudProfile\":{\"accountId\":\"fsfksymddyst\",\"excludedAccounts\":[\"uxh\",\"yudxorrqnbp\",\"czvyifq\"],\"isOrganizationalAccount\":false},\"gcpCloudProfile\":{\"projectProperties\":{\"projectNumber\":\"jsllrmv\",\"projectId\":\"d\"},\"organizationProperties\":{\"organizationId\":\"atkpnp\",\"managementProjectNumber\":\"lexxbczwtru\",\"managementProjectId\":\"iqzbq\",\"excludedProjectNumbers\":[\"ovm\",\"okacspk\",\"lhzdobp\",\"jmflbvvnch\"],\"excludedFolderIds\":[\"ciwwzjuqkhr\"]}},\"hostType\":\"AWS\",\"provisioningState\":\"Failed\",\"connectorPrimaryIdentifier\":\"ku\"},\"kind\":\"AWS\",\"location\":\"kg\",\"tags\":{\"dyjrrfbyaosv\":\"uuimjmvxieduug\"},\"id\":\"xc\",\"name\":\"onpc\",\"type\":\"hocohslkev\"}],\"nextLink\":\"ggzfbu\"}")
             .toObject(PublicCloudConnectorListResult.class);
-        Assertions.assertEquals("ghmewuam", model.value().get(0).location());
-        Assertions.assertEquals("rzayv", model.value().get(0).tags().get("t"));
-        Assertions.assertEquals("vddntwn", model.value().get(0).properties().awsCloudProfile().accountId());
-        Assertions.assertEquals("cbtwnpzaoqvuh",
-            model.value().get(0).properties().awsCloudProfile().excludedAccounts().get(0));
-        Assertions.assertTrue(model.value().get(0).properties().awsCloudProfile().isOrganizationalAccount());
+        Assertions.assertEquals("kg", model.value().get(0).location());
+        Assertions.assertEquals("uuimjmvxieduug", model.value().get(0).tags().get("dyjrrfbyaosv"));
+        Assertions.assertEquals("fsfksymddyst", model.value().get(0).properties().awsCloudProfile().accountId());
+        Assertions.assertEquals("uxh", model.value().get(0).properties().awsCloudProfile().excludedAccounts().get(0));
+        Assertions.assertFalse(model.value().get(0).properties().awsCloudProfile().isOrganizationalAccount());
+        Assertions.assertEquals("jsllrmv",
+            model.value().get(0).properties().gcpCloudProfile().projectProperties().projectNumber());
+        Assertions.assertEquals("d",
+            model.value().get(0).properties().gcpCloudProfile().projectProperties().projectId());
+        Assertions.assertEquals("atkpnp",
+            model.value().get(0).properties().gcpCloudProfile().organizationProperties().organizationId());
+        Assertions.assertEquals("lexxbczwtru",
+            model.value().get(0).properties().gcpCloudProfile().organizationProperties().managementProjectNumber());
+        Assertions.assertEquals("iqzbq",
+            model.value().get(0).properties().gcpCloudProfile().organizationProperties().managementProjectId());
+        Assertions.assertEquals("ovm",
+            model.value()
+                .get(0)
+                .properties()
+                .gcpCloudProfile()
+                .organizationProperties()
+                .excludedProjectNumbers()
+                .get(0));
+        Assertions.assertEquals("ciwwzjuqkhr",
+            model.value().get(0).properties().gcpCloudProfile().organizationProperties().excludedFolderIds().get(0));
         Assertions.assertEquals(HostType.AWS, model.value().get(0).properties().hostType());
-        Assertions.assertEquals("hzgpphrcgyncocpe", model.nextLink());
+        Assertions.assertEquals("ggzfbu", model.nextLink());
     }
 }

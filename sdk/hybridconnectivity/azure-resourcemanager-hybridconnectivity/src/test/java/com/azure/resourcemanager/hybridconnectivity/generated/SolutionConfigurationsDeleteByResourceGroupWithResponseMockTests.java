@@ -28,7 +28,7 @@ public final class SolutionConfigurationsDeleteByResourceGroupWithResponseMockTe
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.solutionConfigurations()
-            .deleteByResourceGroupWithResponse("patdooaojkniodko", "ebwnujhe", com.azure.core.util.Context.NONE);
+            .deleteByResourceGroupWithResponse("v", "kkgll", com.azure.core.util.Context.NONE);
 
     }
 }
