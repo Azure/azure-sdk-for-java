@@ -1,6 +1,6 @@
 # Release History
 
-## 2.3.0 (2026-08-09)
+## 2.3.0 (2026-10-09)
 
 - Azure Resource Manager LogAnalytics client library for Java. This package contains Microsoft Azure SDK for LogAnalytics Management SDK.  Package api-version 2026-03-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
@@ -33,8 +33,8 @@
 
 #### `models.WorkspacePurges` was modified
 
-* `purgeLakeData(java.lang.String,java.lang.String,models.WorkspacePurgeLakeDataBody)` was added
 * `purgeLakeData(java.lang.String,java.lang.String,models.WorkspacePurgeLakeDataBody,com.azure.core.util.Context)` was added
+* `purgeLakeData(java.lang.String,java.lang.String,models.WorkspacePurgeLakeDataBody)` was added
 
 #### `models.ColumnDataTypeHintEnum` was modified
 
