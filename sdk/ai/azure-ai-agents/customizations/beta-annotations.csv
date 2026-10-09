@@ -23,7 +23,7 @@ class;com.azure.ai.agents.models.ChatSummaryMemoryItem;Preview API. MemoryStores
 field;com.azure.ai.agents.models.CreateAgentVersionInput;Preview API. DigitalWorker=V1Preview, DraftAgents=V1Preview, ExternalAgents=V1Preview, GitHubCopilot=V1Preview, Skills=V1Preview, VoiceAgents=V1Preview, WorkflowAgents=V1Preview;definition
 field;com.azure.ai.agents.models.CreateAgentVersionInput;Preview API. DigitalWorker=V1Preview;digital_worker_type
 field;com.azure.ai.agents.models.CreateAgentVersionInput;Preview API. DraftAgents=V1Preview;draft
-class;com.azure.ai.agents.models.CreateTeamsPhoneExtensionTelephonyBindingInput;Preview API. VoiceAgents=V1Preview;
+class;com.azure.ai.agents.models.CreateTeamsPhoneExtensibilityTelephonyBindingInput;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.CreateTelephonyBindingInput;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.CreateTelephonyCallJobInput;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.CreateTwilioTelephonyBindingInput;Preview API. VoiceAgents=V1Preview;
@@ -190,8 +190,8 @@ class;com.azure.ai.agents.models.SharepointGroundingToolParameters;Preview API. 
 class;com.azure.ai.agents.models.SharepointPreviewTool;Preview API. preview_tool;
 class;com.azure.ai.agents.models.SipTelephonyTransferDestination;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.SkillReference;Preview API. Skills=V1Preview;
-class;com.azure.ai.agents.models.TeamsPhoneExtensionTelephonyBinding;Preview API. VoiceAgents=V1Preview;
-class;com.azure.ai.agents.models.TeamsPhoneExtensionTelephonyBindingListItem;Preview API. VoiceAgents=V1Preview;
+class;com.azure.ai.agents.models.TeamsPhoneExtensibilityTelephonyBinding;Preview API. VoiceAgents=V1Preview;
+class;com.azure.ai.agents.models.TeamsPhoneExtensibilityTelephonyBindingListItem;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.TeamsTelephonyTransferDestination;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.TelephonyBinding;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.TelephonyBindingListItem;Preview API. VoiceAgents=V1Preview;
