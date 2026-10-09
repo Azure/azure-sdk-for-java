@@ -5,6 +5,8 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -22,46 +24,55 @@ public class JobState implements JsonSerializable<JobState> {
     /*
      * The displayName property.
      */
+    @Generated
     private String displayName;
 
     /*
      * The createdDateTime property.
      */
+    @Generated
     private OffsetDateTime createdDateTime;
 
     /*
      * The expirationDateTime property.
      */
+    @Generated
     private OffsetDateTime expirationDateTime;
 
     /*
      * The jobId property.
      */
+    @Generated
     private String jobId;
 
     /*
      * The lastUpdatedDateTime property.
      */
+    @Generated
     private OffsetDateTime lastUpdatedDateTime;
 
     /*
      * The status property.
      */
+    @Generated
     private State status;
 
     /*
      * The errors property.
      */
+    @Generated
     private List<Error> errors;
 
     /*
      * The nextLink property.
      */
+    @Generated
     private String nextLink;
 
     /**
      * Creates an instance of JobState class.
      */
+    @Generated
     public JobState() {
     }
 
@@ -70,6 +81,7 @@ public class JobState implements JsonSerializable<JobState> {
      * 
      * @return the displayName value.
      */
+    @Generated
     public String getDisplayName() {
         return this.displayName;
     }
@@ -80,6 +92,7 @@ public class JobState implements JsonSerializable<JobState> {
      * @param displayName the displayName value to set.
      * @return the JobState object itself.
      */
+    @Generated
     public JobState setDisplayName(String displayName) {
         this.displayName = displayName;
         return this;
@@ -90,6 +103,7 @@ public class JobState implements JsonSerializable<JobState> {
      * 
      * @return the createdDateTime value.
      */
+    @Generated
     public OffsetDateTime getCreatedDateTime() {
         return this.createdDateTime;
     }
@@ -100,6 +114,7 @@ public class JobState implements JsonSerializable<JobState> {
      * @param createdDateTime the createdDateTime value to set.
      * @return the JobState object itself.
      */
+    @Generated
     public JobState setCreatedDateTime(OffsetDateTime createdDateTime) {
         this.createdDateTime = createdDateTime;
         return this;
@@ -110,6 +125,7 @@ public class JobState implements JsonSerializable<JobState> {
      * 
      * @return the expirationDateTime value.
      */
+    @Generated
     public OffsetDateTime getExpirationDateTime() {
         return this.expirationDateTime;
     }
@@ -120,6 +136,7 @@ public class JobState implements JsonSerializable<JobState> {
      * @param expirationDateTime the expirationDateTime value to set.
      * @return the JobState object itself.
      */
+    @Generated
     public JobState setExpirationDateTime(OffsetDateTime expirationDateTime) {
         this.expirationDateTime = expirationDateTime;
         return this;
@@ -130,6 +147,7 @@ public class JobState implements JsonSerializable<JobState> {
      * 
      * @return the jobId value.
      */
+    @Generated
     public String getJobId() {
         return this.jobId;
     }
@@ -140,6 +158,7 @@ public class JobState implements JsonSerializable<JobState> {
      * @param jobId the jobId value to set.
      * @return the JobState object itself.
      */
+    @Generated
     public JobState setJobId(String jobId) {
         this.jobId = jobId;
         return this;
@@ -150,6 +169,7 @@ public class JobState implements JsonSerializable<JobState> {
      * 
      * @return the lastUpdatedDateTime value.
      */
+    @Generated
     public OffsetDateTime getLastUpdatedDateTime() {
         return this.lastUpdatedDateTime;
     }
@@ -160,6 +180,7 @@ public class JobState implements JsonSerializable<JobState> {
      * @param lastUpdatedDateTime the lastUpdatedDateTime value to set.
      * @return the JobState object itself.
      */
+    @Generated
     public JobState setLastUpdatedDateTime(OffsetDateTime lastUpdatedDateTime) {
         this.lastUpdatedDateTime = lastUpdatedDateTime;
         return this;
@@ -170,6 +191,7 @@ public class JobState implements JsonSerializable<JobState> {
      * 
      * @return the status value.
      */
+    @Generated
     public State getStatus() {
         return this.status;
     }
@@ -180,6 +202,7 @@ public class JobState implements JsonSerializable<JobState> {
      * @param status the status value to set.
      * @return the JobState object itself.
      */
+    @Generated
     public JobState setStatus(State status) {
         this.status = status;
         return this;
@@ -190,6 +213,7 @@ public class JobState implements JsonSerializable<JobState> {
      * 
      * @return the errors value.
      */
+    @Generated
     public List<Error> getErrors() {
         return this.errors;
     }
@@ -200,6 +224,7 @@ public class JobState implements JsonSerializable<JobState> {
      * @param errors the errors value to set.
      * @return the JobState object itself.
      */
+    @Generated
     public JobState setErrors(List<Error> errors) {
         this.errors = errors;
         return this;
@@ -210,6 +235,7 @@ public class JobState implements JsonSerializable<JobState> {
      * 
      * @return the nextLink value.
      */
+    @Generated
     public String getNextLink() {
         return this.nextLink;
     }
@@ -220,6 +246,7 @@ public class JobState implements JsonSerializable<JobState> {
      * @param nextLink the nextLink value to set.
      * @return the JobState object itself.
      */
+    @Generated
     public JobState setNextLink(String nextLink) {
         this.nextLink = nextLink;
         return this;
@@ -228,6 +255,7 @@ public class JobState implements JsonSerializable<JobState> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -258,6 +286,7 @@ public class JobState implements JsonSerializable<JobState> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the JobState.
      */
+    @Generated
     public static JobState fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             JobState deserializedJobState = new JobState();
@@ -266,20 +295,20 @@ public class JobState implements JsonSerializable<JobState> {
                 reader.nextToken();
 
                 if ("createdDateTime".equals(fieldName)) {
-                    deserializedJobState.createdDateTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedJobState.createdDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("jobId".equals(fieldName)) {
                     deserializedJobState.jobId = reader.getString();
                 } else if ("lastUpdatedDateTime".equals(fieldName)) {
-                    deserializedJobState.lastUpdatedDateTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedJobState.lastUpdatedDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("status".equals(fieldName)) {
                     deserializedJobState.status = State.fromString(reader.getString());
                 } else if ("displayName".equals(fieldName)) {
                     deserializedJobState.displayName = reader.getString();
                 } else if ("expirationDateTime".equals(fieldName)) {
-                    deserializedJobState.expirationDateTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedJobState.expirationDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("errors".equals(fieldName)) {
                     List<Error> errors = reader.readArray(reader1 -> Error.fromJson(reader1));
                     deserializedJobState.errors = errors;

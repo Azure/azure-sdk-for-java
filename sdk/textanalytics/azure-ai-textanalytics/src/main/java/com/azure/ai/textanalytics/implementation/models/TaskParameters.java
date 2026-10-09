@@ -5,6 +5,7 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,11 +20,13 @@ public class TaskParameters implements JsonSerializable<TaskParameters> {
     /*
      * The loggingOptOut property.
      */
+    @Generated
     private Boolean loggingOptOut;
 
     /**
      * Creates an instance of TaskParameters class.
      */
+    @Generated
     public TaskParameters() {
     }
 
@@ -32,6 +35,7 @@ public class TaskParameters implements JsonSerializable<TaskParameters> {
      * 
      * @return the loggingOptOut value.
      */
+    @Generated
     public Boolean isLoggingOptOut() {
         return this.loggingOptOut;
     }
@@ -42,6 +46,7 @@ public class TaskParameters implements JsonSerializable<TaskParameters> {
      * @param loggingOptOut the loggingOptOut value to set.
      * @return the TaskParameters object itself.
      */
+    @Generated
     public TaskParameters setLoggingOptOut(Boolean loggingOptOut) {
         this.loggingOptOut = loggingOptOut;
         return this;
@@ -50,6 +55,7 @@ public class TaskParameters implements JsonSerializable<TaskParameters> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -65,6 +71,7 @@ public class TaskParameters implements JsonSerializable<TaskParameters> {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the TaskParameters.
      */
+    @Generated
     public static TaskParameters fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             TaskParameters deserializedTaskParameters = new TaskParameters();

@@ -4,6 +4,7 @@
 
 package com.azure.ai.metricsadvisor.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,36 +15,43 @@ public final class Granularity extends ExpandableStringEnum<Granularity> {
     /**
      * Static value Yearly for Granularity.
      */
+    @Generated
     public static final Granularity YEARLY = fromString("Yearly");
 
     /**
      * Static value Monthly for Granularity.
      */
+    @Generated
     public static final Granularity MONTHLY = fromString("Monthly");
 
     /**
      * Static value Weekly for Granularity.
      */
+    @Generated
     public static final Granularity WEEKLY = fromString("Weekly");
 
     /**
      * Static value Daily for Granularity.
      */
+    @Generated
     public static final Granularity DAILY = fromString("Daily");
 
     /**
      * Static value Hourly for Granularity.
      */
+    @Generated
     public static final Granularity HOURLY = fromString("Hourly");
 
     /**
      * Static value Minutely for Granularity.
      */
+    @Generated
     public static final Granularity MINUTELY = fromString("Minutely");
 
     /**
      * Static value Custom for Granularity.
      */
+    @Generated
     public static final Granularity CUSTOM = fromString("Custom");
 
     /**
@@ -51,6 +59,7 @@ public final class Granularity extends ExpandableStringEnum<Granularity> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public Granularity() {
     }
@@ -61,6 +70,7 @@ public final class Granularity extends ExpandableStringEnum<Granularity> {
      * @param name a name to look for.
      * @return the corresponding Granularity.
      */
+    @Generated
     public static Granularity fromString(String name) {
         return fromString(name, Granularity.class);
     }
@@ -70,6 +80,7 @@ public final class Granularity extends ExpandableStringEnum<Granularity> {
      * 
      * @return known Granularity values.
      */
+    @Generated
     public static Collection<Granularity> values() {
         return values(Granularity.class);
     }

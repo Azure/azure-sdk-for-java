@@ -5,6 +5,7 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,11 +21,13 @@ public class AbstractiveSummarizationResultBase implements JsonSerializable<Abst
     /*
      * Response by document
      */
+    @Generated
     private List<AbstractiveSummaryDocumentResult> documents;
 
     /**
      * Creates an instance of AbstractiveSummarizationResultBase class.
      */
+    @Generated
     public AbstractiveSummarizationResultBase() {
     }
 
@@ -33,6 +36,7 @@ public class AbstractiveSummarizationResultBase implements JsonSerializable<Abst
      * 
      * @return the documents value.
      */
+    @Generated
     public List<AbstractiveSummaryDocumentResult> getDocuments() {
         return this.documents;
     }
@@ -43,6 +47,7 @@ public class AbstractiveSummarizationResultBase implements JsonSerializable<Abst
      * @param documents the documents value to set.
      * @return the AbstractiveSummarizationResultBase object itself.
      */
+    @Generated
     public AbstractiveSummarizationResultBase setDocuments(List<AbstractiveSummaryDocumentResult> documents) {
         this.documents = documents;
         return this;
@@ -51,6 +56,7 @@ public class AbstractiveSummarizationResultBase implements JsonSerializable<Abst
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -67,6 +73,7 @@ public class AbstractiveSummarizationResultBase implements JsonSerializable<Abst
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AbstractiveSummarizationResultBase.
      */
+    @Generated
     public static AbstractiveSummarizationResultBase fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AbstractiveSummarizationResultBase deserializedAbstractiveSummarizationResultBase

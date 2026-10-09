@@ -10,46 +10,6 @@ extends:
   parameters:
     TestPipeline: ${{ parameters.TestPipeline }}
     artifacts:
-    - name: azure-ai-contentsafety
-      groupId: com.azure
-      safeName: azureaicontentsafety
-      ServiceDirectory: contentsafety
-    - name: azure-ai-documentintelligence
-      groupId: com.azure
-      safeName: azureaidocumentintelligence
-      ServiceDirectory: documentintelligence
-    - name: azure-ai-metricsadvisor
-      groupId: com.azure
-      safeName: azureaimetricsadvisor
-      ServiceDirectory: metricsadvisor
-    - name: azure-ai-textanalytics
-      groupId: com.azure
-      safeName: azureaitextanalytics
-      ServiceDirectory: textanalytics
-    - name: azure-ai-translation-document
-      groupId: com.azure
-      safeName: azureaitranslationdocument
-      ServiceDirectory: translation
-    - name: azure-ai-vision-imageanalysis
-      groupId: com.azure
-      safeName: azureaivisionimageanalysis
-      ServiceDirectory: vision
-    - name: azure-communication-callautomation
-      groupId: com.azure
-      safeName: azurecommunicationcallautomation
-      ServiceDirectory: communication/azure-communication-callautomation
-    - name: azure-communication-chat
-      groupId: com.azure
-      safeName: azurecommunicationchatclient
-      ServiceDirectory: communication/azure-communication-chat
-    - name: azure-communication-email
-      groupId: com.azure
-      safeName: azurecommunicationemail
-      ServiceDirectory: communication/azure-communication-email
-    - name: azure-messaging-eventhubs-checkpointstore-blob
-      groupId: com.azure
-      safeName: azuremessagingeventhubscheckpointstoreblob
-      ServiceDirectory: eventhubs
     - name: azure-resourcemanager-storage
       groupId: com.azure.resourcemanager
       safeName: azureresourcemanagerstorage
@@ -126,4 +86,3 @@ extends:
       groupId: com.azure.resourcemanager
       safeName: azureresourcemanagersearch
       ServiceDirectory: search
-

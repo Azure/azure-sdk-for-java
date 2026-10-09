@@ -5,6 +5,7 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,26 +20,31 @@ public final class RequestStatistics implements JsonSerializable<RequestStatisti
     /*
      * Number of documents submitted in the request.
      */
+    @Generated
     private int documentsCount;
 
     /*
      * Number of valid documents. This excludes empty, over-size limit or non-supported languages documents.
      */
+    @Generated
     private int validDocumentsCount;
 
     /*
      * Number of invalid documents. This includes empty, over-size limit or non-supported languages documents.
      */
+    @Generated
     private int erroneousDocumentsCount;
 
     /*
      * Number of transactions for the request.
      */
+    @Generated
     private long transactionsCount;
 
     /**
      * Creates an instance of RequestStatistics class.
      */
+    @Generated
     public RequestStatistics() {
     }
 
@@ -47,6 +53,7 @@ public final class RequestStatistics implements JsonSerializable<RequestStatisti
      * 
      * @return the documentsCount value.
      */
+    @Generated
     public int getDocumentsCount() {
         return this.documentsCount;
     }
@@ -57,6 +64,7 @@ public final class RequestStatistics implements JsonSerializable<RequestStatisti
      * @param documentsCount the documentsCount value to set.
      * @return the RequestStatistics object itself.
      */
+    @Generated
     public RequestStatistics setDocumentsCount(int documentsCount) {
         this.documentsCount = documentsCount;
         return this;
@@ -68,6 +76,7 @@ public final class RequestStatistics implements JsonSerializable<RequestStatisti
      * 
      * @return the validDocumentsCount value.
      */
+    @Generated
     public int getValidDocumentsCount() {
         return this.validDocumentsCount;
     }
@@ -79,6 +88,7 @@ public final class RequestStatistics implements JsonSerializable<RequestStatisti
      * @param validDocumentsCount the validDocumentsCount value to set.
      * @return the RequestStatistics object itself.
      */
+    @Generated
     public RequestStatistics setValidDocumentsCount(int validDocumentsCount) {
         this.validDocumentsCount = validDocumentsCount;
         return this;
@@ -90,6 +100,7 @@ public final class RequestStatistics implements JsonSerializable<RequestStatisti
      * 
      * @return the erroneousDocumentsCount value.
      */
+    @Generated
     public int getErroneousDocumentsCount() {
         return this.erroneousDocumentsCount;
     }
@@ -101,6 +112,7 @@ public final class RequestStatistics implements JsonSerializable<RequestStatisti
      * @param erroneousDocumentsCount the erroneousDocumentsCount value to set.
      * @return the RequestStatistics object itself.
      */
+    @Generated
     public RequestStatistics setErroneousDocumentsCount(int erroneousDocumentsCount) {
         this.erroneousDocumentsCount = erroneousDocumentsCount;
         return this;
@@ -111,6 +123,7 @@ public final class RequestStatistics implements JsonSerializable<RequestStatisti
      * 
      * @return the transactionsCount value.
      */
+    @Generated
     public long getTransactionsCount() {
         return this.transactionsCount;
     }
@@ -121,6 +134,7 @@ public final class RequestStatistics implements JsonSerializable<RequestStatisti
      * @param transactionsCount the transactionsCount value to set.
      * @return the RequestStatistics object itself.
      */
+    @Generated
     public RequestStatistics setTransactionsCount(long transactionsCount) {
         this.transactionsCount = transactionsCount;
         return this;
@@ -129,6 +143,7 @@ public final class RequestStatistics implements JsonSerializable<RequestStatisti
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -148,6 +163,7 @@ public final class RequestStatistics implements JsonSerializable<RequestStatisti
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the RequestStatistics.
      */
+    @Generated
     public static RequestStatistics fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             RequestStatistics deserializedRequestStatistics = new RequestStatistics();

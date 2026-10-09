@@ -4,6 +4,7 @@
 
 package com.azure.ai.metricsadvisor.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,16 +15,19 @@ public final class AnomalyDetectorDirection extends ExpandableStringEnum<Anomaly
     /**
      * Static value Both for AnomalyDetectorDirection.
      */
+    @Generated
     public static final AnomalyDetectorDirection BOTH = fromString("Both");
 
     /**
      * Static value Down for AnomalyDetectorDirection.
      */
+    @Generated
     public static final AnomalyDetectorDirection DOWN = fromString("Down");
 
     /**
      * Static value Up for AnomalyDetectorDirection.
      */
+    @Generated
     public static final AnomalyDetectorDirection UP = fromString("Up");
 
     /**
@@ -31,6 +35,7 @@ public final class AnomalyDetectorDirection extends ExpandableStringEnum<Anomaly
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public AnomalyDetectorDirection() {
     }
@@ -41,6 +46,7 @@ public final class AnomalyDetectorDirection extends ExpandableStringEnum<Anomaly
      * @param name a name to look for.
      * @return the corresponding AnomalyDetectorDirection.
      */
+    @Generated
     public static AnomalyDetectorDirection fromString(String name) {
         return fromString(name, AnomalyDetectorDirection.class);
     }
@@ -50,6 +56,7 @@ public final class AnomalyDetectorDirection extends ExpandableStringEnum<Anomaly
      * 
      * @return known AnomalyDetectorDirection values.
      */
+    @Generated
     public static Collection<AnomalyDetectorDirection> values() {
         return values(AnomalyDetectorDirection.class);
     }

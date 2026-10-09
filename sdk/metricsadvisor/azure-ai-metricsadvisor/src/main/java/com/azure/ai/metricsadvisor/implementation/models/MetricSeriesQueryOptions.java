@@ -5,6 +5,8 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -23,16 +25,19 @@ public final class MetricSeriesQueryOptions implements JsonSerializable<MetricSe
     /*
      * query series ingested after this time, the format should be yyyy-MM-ddTHH:mm:ssZ
      */
+    @Generated
     private OffsetDateTime activeSince;
 
     /*
      * filter specific dimension name and values
      */
+    @Generated
     private Map<String, List<String>> dimensionFilter;
 
     /**
      * Creates an instance of MetricSeriesQueryOptions class.
      */
+    @Generated
     public MetricSeriesQueryOptions() {
     }
 
@@ -41,6 +46,7 @@ public final class MetricSeriesQueryOptions implements JsonSerializable<MetricSe
      * 
      * @return the activeSince value.
      */
+    @Generated
     public OffsetDateTime getActiveSince() {
         return this.activeSince;
     }
@@ -51,6 +57,7 @@ public final class MetricSeriesQueryOptions implements JsonSerializable<MetricSe
      * @param activeSince the activeSince value to set.
      * @return the MetricSeriesQueryOptions object itself.
      */
+    @Generated
     public MetricSeriesQueryOptions setActiveSince(OffsetDateTime activeSince) {
         this.activeSince = activeSince;
         return this;
@@ -61,6 +68,7 @@ public final class MetricSeriesQueryOptions implements JsonSerializable<MetricSe
      * 
      * @return the dimensionFilter value.
      */
+    @Generated
     public Map<String, List<String>> getDimensionFilter() {
         return this.dimensionFilter;
     }
@@ -71,11 +79,16 @@ public final class MetricSeriesQueryOptions implements JsonSerializable<MetricSe
      * @param dimensionFilter the dimensionFilter value to set.
      * @return the MetricSeriesQueryOptions object itself.
      */
+    @Generated
     public MetricSeriesQueryOptions setDimensionFilter(Map<String, List<String>> dimensionFilter) {
         this.dimensionFilter = dimensionFilter;
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -95,6 +108,7 @@ public final class MetricSeriesQueryOptions implements JsonSerializable<MetricSe
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the MetricSeriesQueryOptions.
      */
+    @Generated
     public static MetricSeriesQueryOptions fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             MetricSeriesQueryOptions deserializedMetricSeriesQueryOptions = new MetricSeriesQueryOptions();
@@ -103,8 +117,8 @@ public final class MetricSeriesQueryOptions implements JsonSerializable<MetricSe
                 reader.nextToken();
 
                 if ("activeSince".equals(fieldName)) {
-                    deserializedMetricSeriesQueryOptions.activeSince
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedMetricSeriesQueryOptions.activeSince = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("dimensionFilter".equals(fieldName)) {
                     Map<String, List<String>> dimensionFilter
                         = reader.readMap(reader1 -> reader1.readArray(reader2 -> reader2.getString()));

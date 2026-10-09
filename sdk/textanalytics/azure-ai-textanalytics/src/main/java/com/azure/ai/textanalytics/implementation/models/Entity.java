@@ -5,6 +5,7 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,36 +20,43 @@ public final class Entity implements JsonSerializable<Entity> {
     /*
      * Entity text as appears in the request.
      */
+    @Generated
     private String text;
 
     /*
      * Entity type.
      */
+    @Generated
     private String category;
 
     /*
      * (Optional) Entity sub type.
      */
+    @Generated
     private String subcategory;
 
     /*
      * Start position for the entity text. Use of different 'stringIndexType' values can affect the offset returned.
      */
+    @Generated
     private int offset;
 
     /*
      * Length for the entity text. Use of different 'stringIndexType' values can affect the length returned.
      */
+    @Generated
     private int length;
 
     /*
      * Confidence score between 0 and 1 of the extracted entity.
      */
+    @Generated
     private double confidenceScore;
 
     /**
      * Creates an instance of Entity class.
      */
+    @Generated
     public Entity() {
     }
 
@@ -57,6 +65,7 @@ public final class Entity implements JsonSerializable<Entity> {
      * 
      * @return the text value.
      */
+    @Generated
     public String getText() {
         return this.text;
     }
@@ -67,6 +76,7 @@ public final class Entity implements JsonSerializable<Entity> {
      * @param text the text value to set.
      * @return the Entity object itself.
      */
+    @Generated
     public Entity setText(String text) {
         this.text = text;
         return this;
@@ -77,6 +87,7 @@ public final class Entity implements JsonSerializable<Entity> {
      * 
      * @return the category value.
      */
+    @Generated
     public String getCategory() {
         return this.category;
     }
@@ -87,6 +98,7 @@ public final class Entity implements JsonSerializable<Entity> {
      * @param category the category value to set.
      * @return the Entity object itself.
      */
+    @Generated
     public Entity setCategory(String category) {
         this.category = category;
         return this;
@@ -97,6 +109,7 @@ public final class Entity implements JsonSerializable<Entity> {
      * 
      * @return the subcategory value.
      */
+    @Generated
     public String getSubcategory() {
         return this.subcategory;
     }
@@ -107,6 +120,7 @@ public final class Entity implements JsonSerializable<Entity> {
      * @param subcategory the subcategory value to set.
      * @return the Entity object itself.
      */
+    @Generated
     public Entity setSubcategory(String subcategory) {
         this.subcategory = subcategory;
         return this;
@@ -118,6 +132,7 @@ public final class Entity implements JsonSerializable<Entity> {
      * 
      * @return the offset value.
      */
+    @Generated
     public int getOffset() {
         return this.offset;
     }
@@ -129,6 +144,7 @@ public final class Entity implements JsonSerializable<Entity> {
      * @param offset the offset value to set.
      * @return the Entity object itself.
      */
+    @Generated
     public Entity setOffset(int offset) {
         this.offset = offset;
         return this;
@@ -140,6 +156,7 @@ public final class Entity implements JsonSerializable<Entity> {
      * 
      * @return the length value.
      */
+    @Generated
     public int getLength() {
         return this.length;
     }
@@ -151,6 +168,7 @@ public final class Entity implements JsonSerializable<Entity> {
      * @param length the length value to set.
      * @return the Entity object itself.
      */
+    @Generated
     public Entity setLength(int length) {
         this.length = length;
         return this;
@@ -161,6 +179,7 @@ public final class Entity implements JsonSerializable<Entity> {
      * 
      * @return the confidenceScore value.
      */
+    @Generated
     public double getConfidenceScore() {
         return this.confidenceScore;
     }
@@ -171,6 +190,7 @@ public final class Entity implements JsonSerializable<Entity> {
      * @param confidenceScore the confidenceScore value to set.
      * @return the Entity object itself.
      */
+    @Generated
     public Entity setConfidenceScore(double confidenceScore) {
         this.confidenceScore = confidenceScore;
         return this;
@@ -179,6 +199,7 @@ public final class Entity implements JsonSerializable<Entity> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -200,6 +221,7 @@ public final class Entity implements JsonSerializable<Entity> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the Entity.
      */
+    @Generated
     public static Entity fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             Entity deserializedEntity = new Entity();

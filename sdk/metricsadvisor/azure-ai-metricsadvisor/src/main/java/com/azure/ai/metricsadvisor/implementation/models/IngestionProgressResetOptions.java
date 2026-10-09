@@ -5,6 +5,8 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,16 +23,19 @@ public final class IngestionProgressResetOptions implements JsonSerializable<Ing
     /*
      * the start point of time range to reset data ingestion status.
      */
+    @Generated
     private OffsetDateTime startTime;
 
     /*
      * the end point of time range to reset data ingestion status.
      */
+    @Generated
     private OffsetDateTime endTime;
 
     /**
      * Creates an instance of IngestionProgressResetOptions class.
      */
+    @Generated
     public IngestionProgressResetOptions() {
     }
 
@@ -39,6 +44,7 @@ public final class IngestionProgressResetOptions implements JsonSerializable<Ing
      * 
      * @return the startTime value.
      */
+    @Generated
     public OffsetDateTime getStartTime() {
         return this.startTime;
     }
@@ -49,6 +55,7 @@ public final class IngestionProgressResetOptions implements JsonSerializable<Ing
      * @param startTime the startTime value to set.
      * @return the IngestionProgressResetOptions object itself.
      */
+    @Generated
     public IngestionProgressResetOptions setStartTime(OffsetDateTime startTime) {
         this.startTime = startTime;
         return this;
@@ -59,6 +66,7 @@ public final class IngestionProgressResetOptions implements JsonSerializable<Ing
      * 
      * @return the endTime value.
      */
+    @Generated
     public OffsetDateTime getEndTime() {
         return this.endTime;
     }
@@ -69,11 +77,16 @@ public final class IngestionProgressResetOptions implements JsonSerializable<Ing
      * @param endTime the endTime value to set.
      * @return the IngestionProgressResetOptions object itself.
      */
+    @Generated
     public IngestionProgressResetOptions setEndTime(OffsetDateTime endTime) {
         this.endTime = endTime;
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -93,6 +106,7 @@ public final class IngestionProgressResetOptions implements JsonSerializable<Ing
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the IngestionProgressResetOptions.
      */
+    @Generated
     public static IngestionProgressResetOptions fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             IngestionProgressResetOptions deserializedIngestionProgressResetOptions
@@ -102,11 +116,11 @@ public final class IngestionProgressResetOptions implements JsonSerializable<Ing
                 reader.nextToken();
 
                 if ("startTime".equals(fieldName)) {
-                    deserializedIngestionProgressResetOptions.startTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedIngestionProgressResetOptions.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("endTime".equals(fieldName)) {
-                    deserializedIngestionProgressResetOptions.endTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedIngestionProgressResetOptions.endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }

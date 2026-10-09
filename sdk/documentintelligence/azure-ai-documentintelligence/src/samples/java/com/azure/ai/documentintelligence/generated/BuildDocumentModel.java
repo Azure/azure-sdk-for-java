@@ -23,7 +23,7 @@ public class BuildDocumentModel {
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint("https://myendpoint.cognitiveservices.azure.com")
                 .buildClient();
-        // BEGIN:com.azure.ai.documentintelligence.generated.builddocumentmodel.builddocumentmodel
+        // BEGIN:com.azure.ai.documentintelligence.generated.build-document-model.build-document-model
         SyncPoller<DocumentModelBuildOperationDetails, DocumentModelDetails> response
             = documentIntelligenceAdministrationClient
                 .beginBuildDocumentModel(new BuildDocumentModelOptions("myCustomModel", DocumentBuildMode.TEMPLATE)
@@ -32,7 +32,7 @@ public class BuildDocumentModel {
                         "https://myStorageAccount.blob.core.windows.net/myContainer?mySasToken")
                             .setPrefix("trainingDocs/"))
                     .setTags(mapOf("createdBy", "myUserId")));
-        // END:com.azure.ai.documentintelligence.generated.builddocumentmodel.builddocumentmodel
+        // END:com.azure.ai.documentintelligence.generated.build-document-model.build-document-model
     }
 
     // Use "Map.of" if available

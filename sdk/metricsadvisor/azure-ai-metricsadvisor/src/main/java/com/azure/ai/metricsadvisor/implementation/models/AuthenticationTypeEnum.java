@@ -4,6 +4,7 @@
 
 package com.azure.ai.metricsadvisor.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,31 +15,37 @@ public final class AuthenticationTypeEnum extends ExpandableStringEnum<Authentic
     /**
      * Static value Basic for AuthenticationTypeEnum.
      */
+    @Generated
     public static final AuthenticationTypeEnum BASIC = fromString("Basic");
 
     /**
      * Static value ManagedIdentity for AuthenticationTypeEnum.
      */
+    @Generated
     public static final AuthenticationTypeEnum MANAGED_IDENTITY = fromString("ManagedIdentity");
 
     /**
      * Static value AzureSQLConnectionString for AuthenticationTypeEnum.
      */
+    @Generated
     public static final AuthenticationTypeEnum AZURE_SQLCONNECTION_STRING = fromString("AzureSQLConnectionString");
 
     /**
      * Static value DataLakeGen2SharedKey for AuthenticationTypeEnum.
      */
+    @Generated
     public static final AuthenticationTypeEnum DATA_LAKE_GEN2SHARED_KEY = fromString("DataLakeGen2SharedKey");
 
     /**
      * Static value ServicePrincipal for AuthenticationTypeEnum.
      */
+    @Generated
     public static final AuthenticationTypeEnum SERVICE_PRINCIPAL = fromString("ServicePrincipal");
 
     /**
      * Static value ServicePrincipalInKV for AuthenticationTypeEnum.
      */
+    @Generated
     public static final AuthenticationTypeEnum SERVICE_PRINCIPAL_IN_KV = fromString("ServicePrincipalInKV");
 
     /**
@@ -46,6 +53,7 @@ public final class AuthenticationTypeEnum extends ExpandableStringEnum<Authentic
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public AuthenticationTypeEnum() {
     }
@@ -56,6 +64,7 @@ public final class AuthenticationTypeEnum extends ExpandableStringEnum<Authentic
      * @param name a name to look for.
      * @return the corresponding AuthenticationTypeEnum.
      */
+    @Generated
     public static AuthenticationTypeEnum fromString(String name) {
         return fromString(name, AuthenticationTypeEnum.class);
     }
@@ -65,6 +74,7 @@ public final class AuthenticationTypeEnum extends ExpandableStringEnum<Authentic
      * 
      * @return known AuthenticationTypeEnum values.
      */
+    @Generated
     public static Collection<AuthenticationTypeEnum> values() {
         return values(AuthenticationTypeEnum.class);
     }

@@ -5,6 +5,8 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -20,14 +22,33 @@ import java.util.UUID;
 @Fluent
 public final class AzureTableDataFeed extends DataFeedDetail {
     /*
+     * data source type
+     */
+    @Generated
+    private DataSourceType dataSourceType = DataSourceType.AZURE_TABLE;
+
+    /*
      * The dataSourceParameter property.
      */
+    @Generated
     private AzureTableParameter dataSourceParameter;
 
     /**
      * Creates an instance of AzureTableDataFeed class.
      */
+    @Generated
     public AzureTableDataFeed() {
+    }
+
+    /**
+     * Get the dataSourceType property: data source type.
+     * 
+     * @return the dataSourceType value.
+     */
+    @Generated
+    @Override
+    public DataSourceType getDataSourceType() {
+        return this.dataSourceType;
     }
 
     /**
@@ -35,6 +56,7 @@ public final class AzureTableDataFeed extends DataFeedDetail {
      * 
      * @return the dataSourceParameter value.
      */
+    @Generated
     public AzureTableParameter getDataSourceParameter() {
         return this.dataSourceParameter;
     }
@@ -45,6 +67,7 @@ public final class AzureTableDataFeed extends DataFeedDetail {
      * @param dataSourceParameter the dataSourceParameter value to set.
      * @return the AzureTableDataFeed object itself.
      */
+    @Generated
     public AzureTableDataFeed setDataSourceParameter(AzureTableParameter dataSourceParameter) {
         this.dataSourceParameter = dataSourceParameter;
         return this;
@@ -53,6 +76,7 @@ public final class AzureTableDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureTableDataFeed setDataFeedName(String dataFeedName) {
         super.setDataFeedName(dataFeedName);
@@ -62,6 +86,7 @@ public final class AzureTableDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureTableDataFeed setDataFeedDescription(String dataFeedDescription) {
         super.setDataFeedDescription(dataFeedDescription);
@@ -71,6 +96,7 @@ public final class AzureTableDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureTableDataFeed setGranularityName(Granularity granularityName) {
         super.setGranularityName(granularityName);
@@ -80,6 +106,7 @@ public final class AzureTableDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureTableDataFeed setGranularityAmount(Integer granularityAmount) {
         super.setGranularityAmount(granularityAmount);
@@ -89,6 +116,7 @@ public final class AzureTableDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureTableDataFeed setMetrics(List<DataFeedMetric> metrics) {
         super.setMetrics(metrics);
@@ -98,6 +126,7 @@ public final class AzureTableDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureTableDataFeed setDimension(List<DataFeedDimension> dimension) {
         super.setDimension(dimension);
@@ -107,6 +136,7 @@ public final class AzureTableDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureTableDataFeed setTimestampColumn(String timestampColumn) {
         super.setTimestampColumn(timestampColumn);
@@ -116,6 +146,7 @@ public final class AzureTableDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureTableDataFeed setDataStartFrom(OffsetDateTime dataStartFrom) {
         super.setDataStartFrom(dataStartFrom);
@@ -125,6 +156,7 @@ public final class AzureTableDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureTableDataFeed setStartOffsetInSeconds(Long startOffsetInSeconds) {
         super.setStartOffsetInSeconds(startOffsetInSeconds);
@@ -134,6 +166,7 @@ public final class AzureTableDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureTableDataFeed setMaxConcurrency(Integer maxConcurrency) {
         super.setMaxConcurrency(maxConcurrency);
@@ -143,6 +176,7 @@ public final class AzureTableDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureTableDataFeed setMinRetryIntervalInSeconds(Long minRetryIntervalInSeconds) {
         super.setMinRetryIntervalInSeconds(minRetryIntervalInSeconds);
@@ -152,6 +186,7 @@ public final class AzureTableDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureTableDataFeed setStopRetryAfterInSeconds(Long stopRetryAfterInSeconds) {
         super.setStopRetryAfterInSeconds(stopRetryAfterInSeconds);
@@ -161,6 +196,7 @@ public final class AzureTableDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureTableDataFeed setNeedRollup(NeedRollupEnum needRollup) {
         super.setNeedRollup(needRollup);
@@ -170,6 +206,7 @@ public final class AzureTableDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureTableDataFeed setRollUpMethod(RollUpMethod rollUpMethod) {
         super.setRollUpMethod(rollUpMethod);
@@ -179,6 +216,7 @@ public final class AzureTableDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureTableDataFeed setRollUpColumns(List<String> rollUpColumns) {
         super.setRollUpColumns(rollUpColumns);
@@ -188,6 +226,7 @@ public final class AzureTableDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureTableDataFeed setAllUpIdentification(String allUpIdentification) {
         super.setAllUpIdentification(allUpIdentification);
@@ -197,6 +236,7 @@ public final class AzureTableDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureTableDataFeed setFillMissingPointType(FillMissingPointType fillMissingPointType) {
         super.setFillMissingPointType(fillMissingPointType);
@@ -206,6 +246,7 @@ public final class AzureTableDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureTableDataFeed setFillMissingPointValue(Double fillMissingPointValue) {
         super.setFillMissingPointValue(fillMissingPointValue);
@@ -215,6 +256,7 @@ public final class AzureTableDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureTableDataFeed setViewMode(ViewMode viewMode) {
         super.setViewMode(viewMode);
@@ -224,6 +266,7 @@ public final class AzureTableDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureTableDataFeed setAdmins(List<String> admins) {
         super.setAdmins(admins);
@@ -233,6 +276,7 @@ public final class AzureTableDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureTableDataFeed setViewers(List<String> viewers) {
         super.setViewers(viewers);
@@ -242,6 +286,7 @@ public final class AzureTableDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureTableDataFeed setActionLinkTemplate(String actionLinkTemplate) {
         super.setActionLinkTemplate(actionLinkTemplate);
@@ -251,6 +296,7 @@ public final class AzureTableDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureTableDataFeed setAuthenticationType(AuthenticationTypeEnum authenticationType) {
         super.setAuthenticationType(authenticationType);
@@ -260,17 +306,20 @@ public final class AzureTableDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureTableDataFeed setCredentialId(String credentialId) {
         super.setCredentialId(credentialId);
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("dataSourceType",
-            DataSourceType.AZURE_TABLE == null ? null : DataSourceType.AZURE_TABLE.toString());
         jsonWriter.writeStringField("dataFeedName", getDataFeedName());
         jsonWriter.writeStringField("granularityName",
             getGranularityName() == null ? null : getGranularityName().toString());
@@ -301,6 +350,8 @@ public final class AzureTableDataFeed extends DataFeedDetail {
             getAuthenticationType() == null ? null : getAuthenticationType().toString());
         jsonWriter.writeStringField("credentialId", getCredentialId());
         jsonWriter.writeJsonField("dataSourceParameter", this.dataSourceParameter);
+        jsonWriter.writeStringField("dataSourceType",
+            this.dataSourceType == null ? null : this.dataSourceType.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -310,10 +361,10 @@ public final class AzureTableDataFeed extends DataFeedDetail {
      * @param jsonReader The JsonReader being read.
      * @return An instance of AzureTableDataFeed if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
-     * polymorphic discriminator.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AzureTableDataFeed.
      */
+    @Generated
     public static AzureTableDataFeed fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AzureTableDataFeed deserializedAzureTableDataFeed = new AzureTableDataFeed();
@@ -321,14 +372,7 @@ public final class AzureTableDataFeed extends DataFeedDetail {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("dataSourceType".equals(fieldName)) {
-                    String dataSourceType = reader.getString();
-                    if (!"AzureTable".equals(dataSourceType)) {
-                        throw new IllegalStateException(
-                            "'dataSourceType' was expected to be non-null and equal to 'AzureTable'. The found 'dataSourceType' was '"
-                                + dataSourceType + "'.");
-                    }
-                } else if ("dataFeedName".equals(fieldName)) {
+                if ("dataFeedName".equals(fieldName)) {
                     deserializedAzureTableDataFeed.setDataFeedName(reader.getString());
                 } else if ("granularityName".equals(fieldName)) {
                     deserializedAzureTableDataFeed.setGranularityName(Granularity.fromString(reader.getString()));
@@ -336,8 +380,8 @@ public final class AzureTableDataFeed extends DataFeedDetail {
                     List<DataFeedMetric> metrics = reader.readArray(reader1 -> DataFeedMetric.fromJson(reader1));
                     deserializedAzureTableDataFeed.setMetrics(metrics);
                 } else if ("dataStartFrom".equals(fieldName)) {
-                    deserializedAzureTableDataFeed.setDataStartFrom(
-                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
+                    deserializedAzureTableDataFeed.setDataStartFrom(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
                 } else if ("dataFeedId".equals(fieldName)) {
                     deserializedAzureTableDataFeed
                         .setDataFeedId(reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString())));
@@ -389,8 +433,8 @@ public final class AzureTableDataFeed extends DataFeedDetail {
                 } else if ("status".equals(fieldName)) {
                     deserializedAzureTableDataFeed.setStatus(EntityStatus.fromString(reader.getString()));
                 } else if ("createdTime".equals(fieldName)) {
-                    deserializedAzureTableDataFeed.setCreatedTime(
-                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
+                    deserializedAzureTableDataFeed.setCreatedTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
                 } else if ("actionLinkTemplate".equals(fieldName)) {
                     deserializedAzureTableDataFeed.setActionLinkTemplate(reader.getString());
                 } else if ("authenticationType".equals(fieldName)) {
@@ -400,6 +444,8 @@ public final class AzureTableDataFeed extends DataFeedDetail {
                     deserializedAzureTableDataFeed.setCredentialId(reader.getString());
                 } else if ("dataSourceParameter".equals(fieldName)) {
                     deserializedAzureTableDataFeed.dataSourceParameter = AzureTableParameter.fromJson(reader);
+                } else if ("dataSourceType".equals(fieldName)) {
+                    deserializedAzureTableDataFeed.dataSourceType = DataSourceType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

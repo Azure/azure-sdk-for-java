@@ -5,6 +5,7 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,24 +21,28 @@ public final class AnomalyDimensionList implements JsonSerializable<AnomalyDimen
     /*
      * The @nextLink property.
      */
+    @Generated
     private String nextLink;
 
     /*
      * The value property.
      */
+    @Generated
     private List<String> value;
 
     /**
      * Creates an instance of AnomalyDimensionList class.
      */
+    @Generated
     public AnomalyDimensionList() {
     }
 
     /**
-     * Get the nextLink property: The @nextLink property.
+     * Get the nextLink property: The &#064;nextLink property.
      * 
      * @return the nextLink value.
      */
+    @Generated
     public String getNextLink() {
         return this.nextLink;
     }
@@ -47,6 +52,7 @@ public final class AnomalyDimensionList implements JsonSerializable<AnomalyDimen
      * 
      * @return the value value.
      */
+    @Generated
     public List<String> getValue() {
         return this.value;
     }
@@ -57,11 +63,16 @@ public final class AnomalyDimensionList implements JsonSerializable<AnomalyDimen
      * @param value the value value to set.
      * @return the AnomalyDimensionList object itself.
      */
+    @Generated
     public AnomalyDimensionList setValue(List<String> value) {
         this.value = value;
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -78,6 +89,7 @@ public final class AnomalyDimensionList implements JsonSerializable<AnomalyDimen
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AnomalyDimensionList.
      */
+    @Generated
     public static AnomalyDimensionList fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AnomalyDimensionList deserializedAnomalyDimensionList = new AnomalyDimensionList();

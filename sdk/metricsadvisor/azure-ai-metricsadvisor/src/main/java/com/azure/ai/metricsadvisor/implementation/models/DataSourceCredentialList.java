@@ -4,6 +4,7 @@
 
 package com.azure.ai.metricsadvisor.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,24 +21,28 @@ public final class DataSourceCredentialList implements JsonSerializable<DataSour
     /*
      * The @nextLink property.
      */
+    @Generated
     private String nextLink;
 
     /*
      * The value property.
      */
+    @Generated
     private List<DataSourceCredential> value;
 
     /**
      * Creates an instance of DataSourceCredentialList class.
      */
+    @Generated
     public DataSourceCredentialList() {
     }
 
     /**
-     * Get the nextLink property: The @nextLink property.
+     * Get the nextLink property: The &#064;nextLink property.
      * 
      * @return the nextLink value.
      */
+    @Generated
     public String getNextLink() {
         return this.nextLink;
     }
@@ -47,10 +52,15 @@ public final class DataSourceCredentialList implements JsonSerializable<DataSour
      * 
      * @return the value value.
      */
+    @Generated
     public List<DataSourceCredential> getValue() {
         return this.value;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -65,6 +75,7 @@ public final class DataSourceCredentialList implements JsonSerializable<DataSour
      * it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the DataSourceCredentialList.
      */
+    @Generated
     public static DataSourceCredentialList fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DataSourceCredentialList deserializedDataSourceCredentialList = new DataSourceCredentialList();

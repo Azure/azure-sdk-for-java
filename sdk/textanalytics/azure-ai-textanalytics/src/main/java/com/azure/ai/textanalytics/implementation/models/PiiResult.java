@@ -5,6 +5,7 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -19,11 +20,13 @@ public final class PiiResult extends PreBuiltResult {
     /*
      * Response by document
      */
+    @Generated
     private List<PiiResultDocumentsItem> documents;
 
     /**
      * Creates an instance of PiiResult class.
      */
+    @Generated
     public PiiResult() {
     }
 
@@ -32,6 +35,7 @@ public final class PiiResult extends PreBuiltResult {
      * 
      * @return the documents value.
      */
+    @Generated
     public List<PiiResultDocumentsItem> getDocuments() {
         return this.documents;
     }
@@ -42,6 +46,7 @@ public final class PiiResult extends PreBuiltResult {
      * @param documents the documents value to set.
      * @return the PiiResult object itself.
      */
+    @Generated
     public PiiResult setDocuments(List<PiiResultDocumentsItem> documents) {
         this.documents = documents;
         return this;
@@ -50,6 +55,7 @@ public final class PiiResult extends PreBuiltResult {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public PiiResult setErrors(List<DocumentError> errors) {
         super.setErrors(errors);
@@ -59,6 +65,7 @@ public final class PiiResult extends PreBuiltResult {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public PiiResult setStatistics(RequestStatistics statistics) {
         super.setStatistics(statistics);
@@ -68,6 +75,7 @@ public final class PiiResult extends PreBuiltResult {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public PiiResult setModelVersion(String modelVersion) {
         super.setModelVersion(modelVersion);
@@ -77,6 +85,7 @@ public final class PiiResult extends PreBuiltResult {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -96,6 +105,7 @@ public final class PiiResult extends PreBuiltResult {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the PiiResult.
      */
+    @Generated
     public static PiiResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             PiiResult deserializedPiiResult = new PiiResult();

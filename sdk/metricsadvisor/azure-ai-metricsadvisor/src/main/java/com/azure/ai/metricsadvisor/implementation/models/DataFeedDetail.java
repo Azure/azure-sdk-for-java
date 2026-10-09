@@ -5,6 +5,8 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,155 +23,201 @@ import java.util.UUID;
 @Fluent
 public class DataFeedDetail implements JsonSerializable<DataFeedDetail> {
     /*
+     * data source type
+     */
+    @Generated
+    private DataSourceType dataSourceType = DataSourceType.fromString("DataFeedDetail");
+
+    /*
      * data feed unique id
      */
+    @Generated
     private UUID dataFeedId;
 
     /*
      * data feed name
      */
+    @Generated
     private String dataFeedName;
 
     /*
      * data feed description
      */
+    @Generated
     private String dataFeedDescription;
 
     /*
      * granularity of the time series
      */
+    @Generated
     private Granularity granularityName;
 
     /*
      * if granularity is custom,it is required.
      */
+    @Generated
     private Integer granularityAmount;
 
     /*
      * measure list
      */
+    @Generated
     private List<DataFeedMetric> metrics;
 
     /*
      * dimension list
      */
+    @Generated
     private List<DataFeedDimension> dimension;
 
     /*
-     * user-defined timestamp column. if timestampColumn is null, start time of every time slice will be used as
-     * default value.
+     * user-defined timestamp column. if timestampColumn is null, start time of every time slice will be used as default
+     * value.
      */
+    @Generated
     private String timestampColumn;
 
     /*
      * ingestion start time
      */
+    @Generated
     private OffsetDateTime dataStartFrom;
 
     /*
      * the time that the beginning of data ingestion task will delay for every data slice according to this offset.
      */
+    @Generated
     private Long startOffsetInSeconds;
 
     /*
      * the max concurrency of data ingestion queries against user data source. 0 means no limitation.
      */
+    @Generated
     private Integer maxConcurrency;
 
     /*
      * the min retry interval for failed data ingestion tasks.
      */
+    @Generated
     private Long minRetryIntervalInSeconds;
 
     /*
      * stop retry data ingestion after the data slice first schedule time in seconds.
      */
+    @Generated
     private Long stopRetryAfterInSeconds;
 
     /*
      * mark if the data feed need rollup
      */
+    @Generated
     private NeedRollupEnum needRollup;
 
     /*
      * roll up method
      */
+    @Generated
     private RollUpMethod rollUpMethod;
 
     /*
      * roll up columns
      */
+    @Generated
     private List<String> rollUpColumns;
 
     /*
      * the identification value for the row of calculated all-up value.
      */
+    @Generated
     private String allUpIdentification;
 
     /*
      * the type of fill missing point for anomaly detection
      */
+    @Generated
     private FillMissingPointType fillMissingPointType;
 
     /*
      * the value of fill missing point for anomaly detection
      */
+    @Generated
     private Double fillMissingPointValue;
 
     /*
      * data feed access mode, default is Private
      */
+    @Generated
     private ViewMode viewMode;
 
     /*
      * data feed administrator
      */
+    @Generated
     private List<String> admins;
 
     /*
      * data feed viewer
      */
+    @Generated
     private List<String> viewers;
 
     /*
      * the query user is one of data feed administrator or not
      */
+    @Generated
     private Boolean isAdmin;
 
     /*
      * data feed creator
      */
+    @Generated
     private String creator;
 
     /*
      * data feed status
      */
+    @Generated
     private EntityStatus status;
 
     /*
      * data feed created time
      */
+    @Generated
     private OffsetDateTime createdTime;
 
     /*
      * action link for alert
      */
+    @Generated
     private String actionLinkTemplate;
 
     /*
      * authentication type for corresponding data source
      */
+    @Generated
     private AuthenticationTypeEnum authenticationType;
 
     /*
      * The credential entity id
      */
+    @Generated
     private String credentialId;
 
     /**
      * Creates an instance of DataFeedDetail class.
      */
+    @Generated
     public DataFeedDetail() {
+    }
+
+    /**
+     * Get the dataSourceType property: data source type.
+     * 
+     * @return the dataSourceType value.
+     */
+    @Generated
+    public DataSourceType getDataSourceType() {
+        return this.dataSourceType;
     }
 
     /**
@@ -177,6 +225,7 @@ public class DataFeedDetail implements JsonSerializable<DataFeedDetail> {
      * 
      * @return the dataFeedId value.
      */
+    @Generated
     public UUID getDataFeedId() {
         return this.dataFeedId;
     }
@@ -187,6 +236,7 @@ public class DataFeedDetail implements JsonSerializable<DataFeedDetail> {
      * @param dataFeedId the dataFeedId value to set.
      * @return the DataFeedDetail object itself.
      */
+    @Generated
     DataFeedDetail setDataFeedId(UUID dataFeedId) {
         this.dataFeedId = dataFeedId;
         return this;
@@ -197,6 +247,7 @@ public class DataFeedDetail implements JsonSerializable<DataFeedDetail> {
      * 
      * @return the dataFeedName value.
      */
+    @Generated
     public String getDataFeedName() {
         return this.dataFeedName;
     }
@@ -207,6 +258,7 @@ public class DataFeedDetail implements JsonSerializable<DataFeedDetail> {
      * @param dataFeedName the dataFeedName value to set.
      * @return the DataFeedDetail object itself.
      */
+    @Generated
     public DataFeedDetail setDataFeedName(String dataFeedName) {
         this.dataFeedName = dataFeedName;
         return this;
@@ -217,6 +269,7 @@ public class DataFeedDetail implements JsonSerializable<DataFeedDetail> {
      * 
      * @return the dataFeedDescription value.
      */
+    @Generated
     public String getDataFeedDescription() {
         return this.dataFeedDescription;
     }
@@ -227,6 +280,7 @@ public class DataFeedDetail implements JsonSerializable<DataFeedDetail> {
      * @param dataFeedDescription the dataFeedDescription value to set.
      * @return the DataFeedDetail object itself.
      */
+    @Generated
     public DataFeedDetail setDataFeedDescription(String dataFeedDescription) {
         this.dataFeedDescription = dataFeedDescription;
         return this;
@@ -237,6 +291,7 @@ public class DataFeedDetail implements JsonSerializable<DataFeedDetail> {
      * 
      * @return the granularityName value.
      */
+    @Generated
     public Granularity getGranularityName() {
         return this.granularityName;
     }
@@ -247,6 +302,7 @@ public class DataFeedDetail implements JsonSerializable<DataFeedDetail> {
      * @param granularityName the granularityName value to set.
      * @return the DataFeedDetail object itself.
      */
+    @Generated
     public DataFeedDetail setGranularityName(Granularity granularityName) {
         this.granularityName = granularityName;
         return this;
@@ -257,6 +313,7 @@ public class DataFeedDetail implements JsonSerializable<DataFeedDetail> {
      * 
      * @return the granularityAmount value.
      */
+    @Generated
     public Integer getGranularityAmount() {
         return this.granularityAmount;
     }
@@ -267,6 +324,7 @@ public class DataFeedDetail implements JsonSerializable<DataFeedDetail> {
      * @param granularityAmount the granularityAmount value to set.
      * @return the DataFeedDetail object itself.
      */
+    @Generated
     public DataFeedDetail setGranularityAmount(Integer granularityAmount) {
         this.granularityAmount = granularityAmount;
         return this;
@@ -277,6 +335,7 @@ public class DataFeedDetail implements JsonSerializable<DataFeedDetail> {
      * 
      * @return the metrics value.
      */
+    @Generated
     public List<DataFeedMetric> getMetrics() {
         return this.metrics;
     }
@@ -287,6 +346,7 @@ public class DataFeedDetail implements JsonSerializable<DataFeedDetail> {
      * @param metrics the metrics value to set.
      * @return the DataFeedDetail object itself.
      */
+    @Generated
     public DataFeedDetail setMetrics(List<DataFeedMetric> metrics) {
         this.metrics = metrics;
         return this;
@@ -297,6 +357,7 @@ public class DataFeedDetail implements JsonSerializable<DataFeedDetail> {
      * 
      * @return the dimension value.
      */
+    @Generated
     public List<DataFeedDimension> getDimension() {
         return this.dimension;
     }
@@ -307,6 +368,7 @@ public class DataFeedDetail implements JsonSerializable<DataFeedDetail> {
      * @param dimension the dimension value to set.
      * @return the DataFeedDetail object itself.
      */
+    @Generated
     public DataFeedDetail setDimension(List<DataFeedDimension> dimension) {
         this.dimension = dimension;
         return this;
@@ -318,6 +380,7 @@ public class DataFeedDetail implements JsonSerializable<DataFeedDetail> {
      * 
      * @return the timestampColumn value.
      */
+    @Generated
     public String getTimestampColumn() {
         return this.timestampColumn;
     }
@@ -329,6 +392,7 @@ public class DataFeedDetail implements JsonSerializable<DataFeedDetail> {
      * @param timestampColumn the timestampColumn value to set.
      * @return the DataFeedDetail object itself.
      */
+    @Generated
     public DataFeedDetail setTimestampColumn(String timestampColumn) {
         this.timestampColumn = timestampColumn;
         return this;
@@ -339,6 +403,7 @@ public class DataFeedDetail implements JsonSerializable<DataFeedDetail> {
      * 
      * @return the dataStartFrom value.
      */
+    @Generated
     public OffsetDateTime getDataStartFrom() {
         return this.dataStartFrom;
     }
@@ -349,6 +414,7 @@ public class DataFeedDetail implements JsonSerializable<DataFeedDetail> {
      * @param dataStartFrom the dataStartFrom value to set.
      * @return the DataFeedDetail object itself.
      */
+    @Generated
     public DataFeedDetail setDataStartFrom(OffsetDateTime dataStartFrom) {
         this.dataStartFrom = dataStartFrom;
         return this;
@@ -360,6 +426,7 @@ public class DataFeedDetail implements JsonSerializable<DataFeedDetail> {
      * 
      * @return the startOffsetInSeconds value.
      */
+    @Generated
     public Long getStartOffsetInSeconds() {
         return this.startOffsetInSeconds;
     }
@@ -371,6 +438,7 @@ public class DataFeedDetail implements JsonSerializable<DataFeedDetail> {
      * @param startOffsetInSeconds the startOffsetInSeconds value to set.
      * @return the DataFeedDetail object itself.
      */
+    @Generated
     public DataFeedDetail setStartOffsetInSeconds(Long startOffsetInSeconds) {
         this.startOffsetInSeconds = startOffsetInSeconds;
         return this;
@@ -382,6 +450,7 @@ public class DataFeedDetail implements JsonSerializable<DataFeedDetail> {
      * 
      * @return the maxConcurrency value.
      */
+    @Generated
     public Integer getMaxConcurrency() {
         return this.maxConcurrency;
     }
@@ -393,6 +462,7 @@ public class DataFeedDetail implements JsonSerializable<DataFeedDetail> {
      * @param maxConcurrency the maxConcurrency value to set.
      * @return the DataFeedDetail object itself.
      */
+    @Generated
     public DataFeedDetail setMaxConcurrency(Integer maxConcurrency) {
         this.maxConcurrency = maxConcurrency;
         return this;
@@ -403,6 +473,7 @@ public class DataFeedDetail implements JsonSerializable<DataFeedDetail> {
      * 
      * @return the minRetryIntervalInSeconds value.
      */
+    @Generated
     public Long getMinRetryIntervalInSeconds() {
         return this.minRetryIntervalInSeconds;
     }
@@ -413,6 +484,7 @@ public class DataFeedDetail implements JsonSerializable<DataFeedDetail> {
      * @param minRetryIntervalInSeconds the minRetryIntervalInSeconds value to set.
      * @return the DataFeedDetail object itself.
      */
+    @Generated
     public DataFeedDetail setMinRetryIntervalInSeconds(Long minRetryIntervalInSeconds) {
         this.minRetryIntervalInSeconds = minRetryIntervalInSeconds;
         return this;
@@ -424,6 +496,7 @@ public class DataFeedDetail implements JsonSerializable<DataFeedDetail> {
      * 
      * @return the stopRetryAfterInSeconds value.
      */
+    @Generated
     public Long getStopRetryAfterInSeconds() {
         return this.stopRetryAfterInSeconds;
     }
@@ -435,6 +508,7 @@ public class DataFeedDetail implements JsonSerializable<DataFeedDetail> {
      * @param stopRetryAfterInSeconds the stopRetryAfterInSeconds value to set.
      * @return the DataFeedDetail object itself.
      */
+    @Generated
     public DataFeedDetail setStopRetryAfterInSeconds(Long stopRetryAfterInSeconds) {
         this.stopRetryAfterInSeconds = stopRetryAfterInSeconds;
         return this;
@@ -445,6 +519,7 @@ public class DataFeedDetail implements JsonSerializable<DataFeedDetail> {
      * 
      * @return the needRollup value.
      */
+    @Generated
     public NeedRollupEnum getNeedRollup() {
         return this.needRollup;
     }
@@ -455,6 +530,7 @@ public class DataFeedDetail implements JsonSerializable<DataFeedDetail> {
      * @param needRollup the needRollup value to set.
      * @return the DataFeedDetail object itself.
      */
+    @Generated
     public DataFeedDetail setNeedRollup(NeedRollupEnum needRollup) {
         this.needRollup = needRollup;
         return this;
@@ -465,6 +541,7 @@ public class DataFeedDetail implements JsonSerializable<DataFeedDetail> {
      * 
      * @return the rollUpMethod value.
      */
+    @Generated
     public RollUpMethod getRollUpMethod() {
         return this.rollUpMethod;
     }
@@ -475,6 +552,7 @@ public class DataFeedDetail implements JsonSerializable<DataFeedDetail> {
      * @param rollUpMethod the rollUpMethod value to set.
      * @return the DataFeedDetail object itself.
      */
+    @Generated
     public DataFeedDetail setRollUpMethod(RollUpMethod rollUpMethod) {
         this.rollUpMethod = rollUpMethod;
         return this;
@@ -485,6 +563,7 @@ public class DataFeedDetail implements JsonSerializable<DataFeedDetail> {
      * 
      * @return the rollUpColumns value.
      */
+    @Generated
     public List<String> getRollUpColumns() {
         return this.rollUpColumns;
     }
@@ -495,6 +574,7 @@ public class DataFeedDetail implements JsonSerializable<DataFeedDetail> {
      * @param rollUpColumns the rollUpColumns value to set.
      * @return the DataFeedDetail object itself.
      */
+    @Generated
     public DataFeedDetail setRollUpColumns(List<String> rollUpColumns) {
         this.rollUpColumns = rollUpColumns;
         return this;
@@ -505,6 +585,7 @@ public class DataFeedDetail implements JsonSerializable<DataFeedDetail> {
      * 
      * @return the allUpIdentification value.
      */
+    @Generated
     public String getAllUpIdentification() {
         return this.allUpIdentification;
     }
@@ -515,6 +596,7 @@ public class DataFeedDetail implements JsonSerializable<DataFeedDetail> {
      * @param allUpIdentification the allUpIdentification value to set.
      * @return the DataFeedDetail object itself.
      */
+    @Generated
     public DataFeedDetail setAllUpIdentification(String allUpIdentification) {
         this.allUpIdentification = allUpIdentification;
         return this;
@@ -525,6 +607,7 @@ public class DataFeedDetail implements JsonSerializable<DataFeedDetail> {
      * 
      * @return the fillMissingPointType value.
      */
+    @Generated
     public FillMissingPointType getFillMissingPointType() {
         return this.fillMissingPointType;
     }
@@ -535,6 +618,7 @@ public class DataFeedDetail implements JsonSerializable<DataFeedDetail> {
      * @param fillMissingPointType the fillMissingPointType value to set.
      * @return the DataFeedDetail object itself.
      */
+    @Generated
     public DataFeedDetail setFillMissingPointType(FillMissingPointType fillMissingPointType) {
         this.fillMissingPointType = fillMissingPointType;
         return this;
@@ -545,6 +629,7 @@ public class DataFeedDetail implements JsonSerializable<DataFeedDetail> {
      * 
      * @return the fillMissingPointValue value.
      */
+    @Generated
     public Double getFillMissingPointValue() {
         return this.fillMissingPointValue;
     }
@@ -555,6 +640,7 @@ public class DataFeedDetail implements JsonSerializable<DataFeedDetail> {
      * @param fillMissingPointValue the fillMissingPointValue value to set.
      * @return the DataFeedDetail object itself.
      */
+    @Generated
     public DataFeedDetail setFillMissingPointValue(Double fillMissingPointValue) {
         this.fillMissingPointValue = fillMissingPointValue;
         return this;
@@ -565,6 +651,7 @@ public class DataFeedDetail implements JsonSerializable<DataFeedDetail> {
      * 
      * @return the viewMode value.
      */
+    @Generated
     public ViewMode getViewMode() {
         return this.viewMode;
     }
@@ -575,6 +662,7 @@ public class DataFeedDetail implements JsonSerializable<DataFeedDetail> {
      * @param viewMode the viewMode value to set.
      * @return the DataFeedDetail object itself.
      */
+    @Generated
     public DataFeedDetail setViewMode(ViewMode viewMode) {
         this.viewMode = viewMode;
         return this;
@@ -585,6 +673,7 @@ public class DataFeedDetail implements JsonSerializable<DataFeedDetail> {
      * 
      * @return the admins value.
      */
+    @Generated
     public List<String> getAdmins() {
         return this.admins;
     }
@@ -595,6 +684,7 @@ public class DataFeedDetail implements JsonSerializable<DataFeedDetail> {
      * @param admins the admins value to set.
      * @return the DataFeedDetail object itself.
      */
+    @Generated
     public DataFeedDetail setAdmins(List<String> admins) {
         this.admins = admins;
         return this;
@@ -605,6 +695,7 @@ public class DataFeedDetail implements JsonSerializable<DataFeedDetail> {
      * 
      * @return the viewers value.
      */
+    @Generated
     public List<String> getViewers() {
         return this.viewers;
     }
@@ -615,6 +706,7 @@ public class DataFeedDetail implements JsonSerializable<DataFeedDetail> {
      * @param viewers the viewers value to set.
      * @return the DataFeedDetail object itself.
      */
+    @Generated
     public DataFeedDetail setViewers(List<String> viewers) {
         this.viewers = viewers;
         return this;
@@ -625,6 +717,7 @@ public class DataFeedDetail implements JsonSerializable<DataFeedDetail> {
      * 
      * @return the isAdmin value.
      */
+    @Generated
     public Boolean isAdmin() {
         return this.isAdmin;
     }
@@ -635,6 +728,7 @@ public class DataFeedDetail implements JsonSerializable<DataFeedDetail> {
      * @param isAdmin the isAdmin value to set.
      * @return the DataFeedDetail object itself.
      */
+    @Generated
     DataFeedDetail setIsAdmin(Boolean isAdmin) {
         this.isAdmin = isAdmin;
         return this;
@@ -645,6 +739,7 @@ public class DataFeedDetail implements JsonSerializable<DataFeedDetail> {
      * 
      * @return the creator value.
      */
+    @Generated
     public String getCreator() {
         return this.creator;
     }
@@ -655,6 +750,7 @@ public class DataFeedDetail implements JsonSerializable<DataFeedDetail> {
      * @param creator the creator value to set.
      * @return the DataFeedDetail object itself.
      */
+    @Generated
     DataFeedDetail setCreator(String creator) {
         this.creator = creator;
         return this;
@@ -665,6 +761,7 @@ public class DataFeedDetail implements JsonSerializable<DataFeedDetail> {
      * 
      * @return the status value.
      */
+    @Generated
     public EntityStatus getStatus() {
         return this.status;
     }
@@ -675,6 +772,7 @@ public class DataFeedDetail implements JsonSerializable<DataFeedDetail> {
      * @param status the status value to set.
      * @return the DataFeedDetail object itself.
      */
+    @Generated
     DataFeedDetail setStatus(EntityStatus status) {
         this.status = status;
         return this;
@@ -685,6 +783,7 @@ public class DataFeedDetail implements JsonSerializable<DataFeedDetail> {
      * 
      * @return the createdTime value.
      */
+    @Generated
     public OffsetDateTime getCreatedTime() {
         return this.createdTime;
     }
@@ -695,6 +794,7 @@ public class DataFeedDetail implements JsonSerializable<DataFeedDetail> {
      * @param createdTime the createdTime value to set.
      * @return the DataFeedDetail object itself.
      */
+    @Generated
     DataFeedDetail setCreatedTime(OffsetDateTime createdTime) {
         this.createdTime = createdTime;
         return this;
@@ -705,6 +805,7 @@ public class DataFeedDetail implements JsonSerializable<DataFeedDetail> {
      * 
      * @return the actionLinkTemplate value.
      */
+    @Generated
     public String getActionLinkTemplate() {
         return this.actionLinkTemplate;
     }
@@ -715,6 +816,7 @@ public class DataFeedDetail implements JsonSerializable<DataFeedDetail> {
      * @param actionLinkTemplate the actionLinkTemplate value to set.
      * @return the DataFeedDetail object itself.
      */
+    @Generated
     public DataFeedDetail setActionLinkTemplate(String actionLinkTemplate) {
         this.actionLinkTemplate = actionLinkTemplate;
         return this;
@@ -725,6 +827,7 @@ public class DataFeedDetail implements JsonSerializable<DataFeedDetail> {
      * 
      * @return the authenticationType value.
      */
+    @Generated
     public AuthenticationTypeEnum getAuthenticationType() {
         return this.authenticationType;
     }
@@ -735,6 +838,7 @@ public class DataFeedDetail implements JsonSerializable<DataFeedDetail> {
      * @param authenticationType the authenticationType value to set.
      * @return the DataFeedDetail object itself.
      */
+    @Generated
     public DataFeedDetail setAuthenticationType(AuthenticationTypeEnum authenticationType) {
         this.authenticationType = authenticationType;
         return this;
@@ -745,6 +849,7 @@ public class DataFeedDetail implements JsonSerializable<DataFeedDetail> {
      * 
      * @return the credentialId value.
      */
+    @Generated
     public String getCredentialId() {
         return this.credentialId;
     }
@@ -755,11 +860,16 @@ public class DataFeedDetail implements JsonSerializable<DataFeedDetail> {
      * @param credentialId the credentialId value to set.
      * @return the DataFeedDetail object itself.
      */
+    @Generated
     public DataFeedDetail setCredentialId(String credentialId) {
         this.credentialId = credentialId;
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -769,6 +879,8 @@ public class DataFeedDetail implements JsonSerializable<DataFeedDetail> {
         jsonWriter.writeArrayField("metrics", this.metrics, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("dataStartFrom",
             this.dataStartFrom == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.dataStartFrom));
+        jsonWriter.writeStringField("dataSourceType",
+            this.dataSourceType == null ? null : this.dataSourceType.toString());
         jsonWriter.writeStringField("dataFeedDescription", this.dataFeedDescription);
         jsonWriter.writeNumberField("granularityAmount", this.granularityAmount);
         jsonWriter.writeArrayField("dimension", this.dimension, (writer, element) -> writer.writeJson(element));
@@ -801,59 +913,60 @@ public class DataFeedDetail implements JsonSerializable<DataFeedDetail> {
      * @param jsonReader The JsonReader being read.
      * @return An instance of DataFeedDetail if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
-     * polymorphic discriminator.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DataFeedDetail.
      */
+    @Generated
     public static DataFeedDetail fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
-            JsonReader readerToUse = reader.bufferObject();
-
-            readerToUse.nextToken(); // Prepare for reading
-            while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = readerToUse.getFieldName();
-                readerToUse.nextToken();
-                if ("dataSourceType".equals(fieldName)) {
-                    discriminatorValue = readerToUse.getString();
-                    break;
-                } else {
-                    readerToUse.skipChildren();
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("dataSourceType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
                 }
-            }
-            // Use the discriminator value to determine which subtype should be deserialized.
-            if ("AzureApplicationInsights".equals(discriminatorValue)) {
-                return AzureApplicationInsightsDataFeed.fromJson(readerToUse.reset());
-            } else if ("AzureBlob".equals(discriminatorValue)) {
-                return AzureBlobDataFeed.fromJson(readerToUse.reset());
-            } else if ("AzureCosmosDB".equals(discriminatorValue)) {
-                return AzureCosmosDBDataFeed.fromJson(readerToUse.reset());
-            } else if ("AzureDataExplorer".equals(discriminatorValue)) {
-                return AzureDataExplorerDataFeed.fromJson(readerToUse.reset());
-            } else if ("AzureDataLakeStorageGen2".equals(discriminatorValue)) {
-                return AzureDataLakeStorageGen2DataFeed.fromJson(readerToUse.reset());
-            } else if ("AzureEventHubs".equals(discriminatorValue)) {
-                return AzureEventHubsDataFeed.fromJson(readerToUse.reset());
-            } else if ("AzureLogAnalytics".equals(discriminatorValue)) {
-                return AzureLogAnalyticsDataFeed.fromJson(readerToUse.reset());
-            } else if ("AzureTable".equals(discriminatorValue)) {
-                return AzureTableDataFeed.fromJson(readerToUse.reset());
-            } else if ("InfluxDB".equals(discriminatorValue)) {
-                return InfluxDBDataFeed.fromJson(readerToUse.reset());
-            } else if ("MySql".equals(discriminatorValue)) {
-                return MySqlDataFeed.fromJson(readerToUse.reset());
-            } else if ("PostgreSql".equals(discriminatorValue)) {
-                return PostgreSqlDataFeed.fromJson(readerToUse.reset());
-            } else if ("SqlServer".equals(discriminatorValue)) {
-                return SQLServerDataFeed.fromJson(readerToUse.reset());
-            } else if ("MongoDB".equals(discriminatorValue)) {
-                return MongoDBDataFeed.fromJson(readerToUse.reset());
-            } else {
-                return fromJsonKnownDiscriminator(readerToUse.reset());
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("AzureApplicationInsights".equals(discriminatorValue)) {
+                    return AzureApplicationInsightsDataFeed.fromJson(readerToUse.reset());
+                } else if ("AzureBlob".equals(discriminatorValue)) {
+                    return AzureBlobDataFeed.fromJson(readerToUse.reset());
+                } else if ("AzureCosmosDB".equals(discriminatorValue)) {
+                    return AzureCosmosDBDataFeed.fromJson(readerToUse.reset());
+                } else if ("AzureDataExplorer".equals(discriminatorValue)) {
+                    return AzureDataExplorerDataFeed.fromJson(readerToUse.reset());
+                } else if ("AzureDataLakeStorageGen2".equals(discriminatorValue)) {
+                    return AzureDataLakeStorageGen2DataFeed.fromJson(readerToUse.reset());
+                } else if ("AzureEventHubs".equals(discriminatorValue)) {
+                    return AzureEventHubsDataFeed.fromJson(readerToUse.reset());
+                } else if ("AzureLogAnalytics".equals(discriminatorValue)) {
+                    return AzureLogAnalyticsDataFeed.fromJson(readerToUse.reset());
+                } else if ("AzureTable".equals(discriminatorValue)) {
+                    return AzureTableDataFeed.fromJson(readerToUse.reset());
+                } else if ("InfluxDB".equals(discriminatorValue)) {
+                    return InfluxDBDataFeed.fromJson(readerToUse.reset());
+                } else if ("MySql".equals(discriminatorValue)) {
+                    return MySqlDataFeed.fromJson(readerToUse.reset());
+                } else if ("PostgreSql".equals(discriminatorValue)) {
+                    return PostgreSqlDataFeed.fromJson(readerToUse.reset());
+                } else if ("SqlServer".equals(discriminatorValue)) {
+                    return SQLServerDataFeed.fromJson(readerToUse.reset());
+                } else if ("MongoDB".equals(discriminatorValue)) {
+                    return MongoDBDataFeed.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
             }
         });
     }
 
+    @Generated
     static DataFeedDetail fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DataFeedDetail deserializedDataFeedDetail = new DataFeedDetail();
@@ -869,8 +982,10 @@ public class DataFeedDetail implements JsonSerializable<DataFeedDetail> {
                     List<DataFeedMetric> metrics = reader.readArray(reader1 -> DataFeedMetric.fromJson(reader1));
                     deserializedDataFeedDetail.metrics = metrics;
                 } else if ("dataStartFrom".equals(fieldName)) {
-                    deserializedDataFeedDetail.dataStartFrom
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedDataFeedDetail.dataStartFrom = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("dataSourceType".equals(fieldName)) {
+                    deserializedDataFeedDetail.dataSourceType = DataSourceType.fromString(reader.getString());
                 } else if ("dataFeedId".equals(fieldName)) {
                     deserializedDataFeedDetail.dataFeedId
                         = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
@@ -921,8 +1036,8 @@ public class DataFeedDetail implements JsonSerializable<DataFeedDetail> {
                 } else if ("status".equals(fieldName)) {
                     deserializedDataFeedDetail.status = EntityStatus.fromString(reader.getString());
                 } else if ("createdTime".equals(fieldName)) {
-                    deserializedDataFeedDetail.createdTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedDataFeedDetail.createdTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("actionLinkTemplate".equals(fieldName)) {
                     deserializedDataFeedDetail.actionLinkTemplate = reader.getString();
                 } else if ("authenticationType".equals(fieldName)) {

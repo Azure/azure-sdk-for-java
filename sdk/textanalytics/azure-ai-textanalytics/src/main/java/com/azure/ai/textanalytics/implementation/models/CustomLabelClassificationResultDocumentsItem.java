@@ -5,6 +5,7 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -19,12 +20,14 @@ public final class CustomLabelClassificationResultDocumentsItem extends Classifi
     /**
      * Creates an instance of CustomLabelClassificationResultDocumentsItem class.
      */
+    @Generated
     public CustomLabelClassificationResultDocumentsItem() {
     }
 
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public CustomLabelClassificationResultDocumentsItem setClassProperty(List<ClassificationResult> classProperty) {
         super.setClassProperty(classProperty);
@@ -34,6 +37,7 @@ public final class CustomLabelClassificationResultDocumentsItem extends Classifi
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public CustomLabelClassificationResultDocumentsItem setId(String id) {
         super.setId(id);
@@ -43,6 +47,7 @@ public final class CustomLabelClassificationResultDocumentsItem extends Classifi
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public CustomLabelClassificationResultDocumentsItem setWarnings(List<DocumentWarning> warnings) {
         super.setWarnings(warnings);
@@ -52,6 +57,7 @@ public final class CustomLabelClassificationResultDocumentsItem extends Classifi
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public CustomLabelClassificationResultDocumentsItem setStatistics(DocumentStatistics statistics) {
         super.setStatistics(statistics);
@@ -61,6 +67,7 @@ public final class CustomLabelClassificationResultDocumentsItem extends Classifi
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -80,6 +87,7 @@ public final class CustomLabelClassificationResultDocumentsItem extends Classifi
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the CustomLabelClassificationResultDocumentsItem.
      */
+    @Generated
     public static CustomLabelClassificationResultDocumentsItem fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             CustomLabelClassificationResultDocumentsItem deserializedCustomLabelClassificationResultDocumentsItem

@@ -4,7 +4,9 @@
 
 package com.azure.ai.metricsadvisor.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,21 +22,25 @@ public final class EnrichmentStatus implements JsonSerializable<EnrichmentStatus
     /*
      * data slice timestamp.
      */
+    @Generated
     private OffsetDateTime timestamp;
 
     /*
      * latest enrichment status for this data slice.
      */
+    @Generated
     private String status;
 
     /*
      * the trimmed message describes details of the enrichment status.
      */
+    @Generated
     private String message;
 
     /**
      * Creates an instance of EnrichmentStatus class.
      */
+    @Generated
     public EnrichmentStatus() {
     }
 
@@ -43,6 +49,7 @@ public final class EnrichmentStatus implements JsonSerializable<EnrichmentStatus
      * 
      * @return the timestamp value.
      */
+    @Generated
     public OffsetDateTime getTimestamp() {
         return this.timestamp;
     }
@@ -52,6 +59,7 @@ public final class EnrichmentStatus implements JsonSerializable<EnrichmentStatus
      * 
      * @return the status value.
      */
+    @Generated
     public String getStatus() {
         return this.status;
     }
@@ -61,10 +69,15 @@ public final class EnrichmentStatus implements JsonSerializable<EnrichmentStatus
      * 
      * @return the message value.
      */
+    @Generated
     public String getMessage() {
         return this.message;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -79,6 +92,7 @@ public final class EnrichmentStatus implements JsonSerializable<EnrichmentStatus
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the EnrichmentStatus.
      */
+    @Generated
     public static EnrichmentStatus fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             EnrichmentStatus deserializedEnrichmentStatus = new EnrichmentStatus();
@@ -87,8 +101,8 @@ public final class EnrichmentStatus implements JsonSerializable<EnrichmentStatus
                 reader.nextToken();
 
                 if ("timestamp".equals(fieldName)) {
-                    deserializedEnrichmentStatus.timestamp
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedEnrichmentStatus.timestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("status".equals(fieldName)) {
                     deserializedEnrichmentStatus.status = reader.getString();
                 } else if ("message".equals(fieldName)) {

@@ -158,7 +158,7 @@ public final class MicrosoftCognitiveLanguageServiceTextAnalysisImpl {
      * service to perform REST calls.
      */
     @Host("{Endpoint}/language")
-    @ServiceInterface(name = "MicrosoftCognitiveLa")
+    @ServiceInterface(name = "MicrosoftCognitiveLanguageServiceTextAnalysis")
     public interface MicrosoftCognitiveLanguageServiceTextAnalysisService {
         @Post("/:analyze-text")
         @ExpectedResponses({ 200 })
@@ -189,9 +189,7 @@ public final class MicrosoftCognitiveLanguageServiceTextAnalysisImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AnalyzeTextTaskResult>> analyzeTextWithResponseAsync(AnalyzeTextTask body, Boolean showStats) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.analyzeText(this.getEndpoint(), this.getApiVersion(), showStats, body, accept, context));
+        return FluxUtil.withContext(context -> analyzeTextWithResponseAsync(body, showStats, context));
     }
 
     /**

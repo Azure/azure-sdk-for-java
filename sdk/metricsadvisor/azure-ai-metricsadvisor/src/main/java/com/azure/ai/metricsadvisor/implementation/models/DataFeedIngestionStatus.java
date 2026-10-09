@@ -4,7 +4,9 @@
 
 package com.azure.ai.metricsadvisor.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,21 +22,25 @@ public final class DataFeedIngestionStatus implements JsonSerializable<DataFeedI
     /*
      * data slice timestamp.
      */
+    @Generated
     private OffsetDateTime timestamp;
 
     /*
      * latest ingestion task status for this data slice.
      */
+    @Generated
     private IngestionStatusType status;
 
     /*
      * the trimmed message of last ingestion job.
      */
+    @Generated
     private String message;
 
     /**
      * Creates an instance of DataFeedIngestionStatus class.
      */
+    @Generated
     public DataFeedIngestionStatus() {
     }
 
@@ -43,6 +49,7 @@ public final class DataFeedIngestionStatus implements JsonSerializable<DataFeedI
      * 
      * @return the timestamp value.
      */
+    @Generated
     public OffsetDateTime getTimestamp() {
         return this.timestamp;
     }
@@ -52,6 +59,7 @@ public final class DataFeedIngestionStatus implements JsonSerializable<DataFeedI
      * 
      * @return the status value.
      */
+    @Generated
     public IngestionStatusType getStatus() {
         return this.status;
     }
@@ -61,10 +69,15 @@ public final class DataFeedIngestionStatus implements JsonSerializable<DataFeedI
      * 
      * @return the message value.
      */
+    @Generated
     public String getMessage() {
         return this.message;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -79,6 +92,7 @@ public final class DataFeedIngestionStatus implements JsonSerializable<DataFeedI
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the DataFeedIngestionStatus.
      */
+    @Generated
     public static DataFeedIngestionStatus fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DataFeedIngestionStatus deserializedDataFeedIngestionStatus = new DataFeedIngestionStatus();
@@ -87,8 +101,8 @@ public final class DataFeedIngestionStatus implements JsonSerializable<DataFeedI
                 reader.nextToken();
 
                 if ("timestamp".equals(fieldName)) {
-                    deserializedDataFeedIngestionStatus.timestamp
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedDataFeedIngestionStatus.timestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("status".equals(fieldName)) {
                     deserializedDataFeedIngestionStatus.status = IngestionStatusType.fromString(reader.getString());
                 } else if ("message".equals(fieldName)) {

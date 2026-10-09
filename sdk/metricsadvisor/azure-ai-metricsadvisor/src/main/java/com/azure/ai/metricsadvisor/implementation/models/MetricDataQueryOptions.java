@@ -5,6 +5,8 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -24,22 +26,26 @@ public final class MetricDataQueryOptions implements JsonSerializable<MetricData
      * start time of query a time series data, and format should be yyyy-MM-ddThh:mm:ssZ. The maximum number of data
      * points (series number * time range) is 10000.
      */
+    @Generated
     private OffsetDateTime startTime;
 
     /*
      * start time of query a time series data, and format should be yyyy-MM-ddThh:mm:ssZ. The maximum number of data
      * points (series number * time range) is 10000.
      */
+    @Generated
     private OffsetDateTime endTime;
 
     /*
      * query specific series. The maximum number of series is 100.
      */
+    @Generated
     private List<Map<String, String>> series;
 
     /**
      * Creates an instance of MetricDataQueryOptions class.
      */
+    @Generated
     public MetricDataQueryOptions() {
     }
 
@@ -49,6 +55,7 @@ public final class MetricDataQueryOptions implements JsonSerializable<MetricData
      * 
      * @return the startTime value.
      */
+    @Generated
     public OffsetDateTime getStartTime() {
         return this.startTime;
     }
@@ -60,6 +67,7 @@ public final class MetricDataQueryOptions implements JsonSerializable<MetricData
      * @param startTime the startTime value to set.
      * @return the MetricDataQueryOptions object itself.
      */
+    @Generated
     public MetricDataQueryOptions setStartTime(OffsetDateTime startTime) {
         this.startTime = startTime;
         return this;
@@ -71,6 +79,7 @@ public final class MetricDataQueryOptions implements JsonSerializable<MetricData
      * 
      * @return the endTime value.
      */
+    @Generated
     public OffsetDateTime getEndTime() {
         return this.endTime;
     }
@@ -82,6 +91,7 @@ public final class MetricDataQueryOptions implements JsonSerializable<MetricData
      * @param endTime the endTime value to set.
      * @return the MetricDataQueryOptions object itself.
      */
+    @Generated
     public MetricDataQueryOptions setEndTime(OffsetDateTime endTime) {
         this.endTime = endTime;
         return this;
@@ -92,6 +102,7 @@ public final class MetricDataQueryOptions implements JsonSerializable<MetricData
      * 
      * @return the series value.
      */
+    @Generated
     public List<Map<String, String>> getSeries() {
         return this.series;
     }
@@ -102,11 +113,16 @@ public final class MetricDataQueryOptions implements JsonSerializable<MetricData
      * @param series the series value to set.
      * @return the MetricDataQueryOptions object itself.
      */
+    @Generated
     public MetricDataQueryOptions setSeries(List<Map<String, String>> series) {
         this.series = series;
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -128,6 +144,7 @@ public final class MetricDataQueryOptions implements JsonSerializable<MetricData
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the MetricDataQueryOptions.
      */
+    @Generated
     public static MetricDataQueryOptions fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             MetricDataQueryOptions deserializedMetricDataQueryOptions = new MetricDataQueryOptions();
@@ -136,11 +153,11 @@ public final class MetricDataQueryOptions implements JsonSerializable<MetricData
                 reader.nextToken();
 
                 if ("startTime".equals(fieldName)) {
-                    deserializedMetricDataQueryOptions.startTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedMetricDataQueryOptions.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("endTime".equals(fieldName)) {
-                    deserializedMetricDataQueryOptions.endTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedMetricDataQueryOptions.endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("series".equals(fieldName)) {
                     List<Map<String, String>> series
                         = reader.readArray(reader1 -> reader1.readMap(reader2 -> reader2.getString()));

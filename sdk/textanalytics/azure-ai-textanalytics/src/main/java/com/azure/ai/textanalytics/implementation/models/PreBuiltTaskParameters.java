@@ -5,6 +5,7 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -18,11 +19,13 @@ public class PreBuiltTaskParameters extends TaskParameters {
     /*
      * The modelVersion property.
      */
+    @Generated
     private String modelVersion;
 
     /**
      * Creates an instance of PreBuiltTaskParameters class.
      */
+    @Generated
     public PreBuiltTaskParameters() {
     }
 
@@ -31,6 +34,7 @@ public class PreBuiltTaskParameters extends TaskParameters {
      * 
      * @return the modelVersion value.
      */
+    @Generated
     public String getModelVersion() {
         return this.modelVersion;
     }
@@ -41,6 +45,7 @@ public class PreBuiltTaskParameters extends TaskParameters {
      * @param modelVersion the modelVersion value to set.
      * @return the PreBuiltTaskParameters object itself.
      */
+    @Generated
     public PreBuiltTaskParameters setModelVersion(String modelVersion) {
         this.modelVersion = modelVersion;
         return this;
@@ -49,6 +54,7 @@ public class PreBuiltTaskParameters extends TaskParameters {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public PreBuiltTaskParameters setLoggingOptOut(Boolean loggingOptOut) {
         super.setLoggingOptOut(loggingOptOut);
@@ -58,6 +64,7 @@ public class PreBuiltTaskParameters extends TaskParameters {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -74,6 +81,7 @@ public class PreBuiltTaskParameters extends TaskParameters {
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the PreBuiltTaskParameters.
      */
+    @Generated
     public static PreBuiltTaskParameters fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             PreBuiltTaskParameters deserializedPreBuiltTaskParameters = new PreBuiltTaskParameters();

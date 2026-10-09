@@ -237,9 +237,10 @@ public class FeedbackAsyncTest extends FeedbackTestBase {
     public void getMetricFeedbackValidId(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         // Arrange
         client = getMetricsAdvisorBuilder(httpClient, serviceVersion, false).buildAsyncClient();
-        // Act & Assert
         creatMetricFeedbackRunner(expectedMetricFeedback -> {
+            // Act & Assert
             MetricFeedback createdMetricFeedback = client.addFeedback(METRIC_ID, expectedMetricFeedback).block();
+            // Act & Assert
             StepVerifier.create(client.getFeedbackWithResponse(createdMetricFeedback.getId()))
                 .assertNext(metricFeedbackResponse -> {
                     assertEquals(metricFeedbackResponse.getStatusCode(), HttpResponseStatus.OK.code());
@@ -281,7 +282,6 @@ public class FeedbackAsyncTest extends FeedbackTestBase {
         // Arrange
         client = getMetricsAdvisorBuilder(httpClient, serviceVersion, false).buildAsyncClient();
         // Act & Assert
-
         creatMetricFeedbackRunner(
             expectedMetricFeedback -> StepVerifier.create(client.addFeedback(METRIC_ID, expectedMetricFeedback))
                 .assertNext(createdMetricFeedback -> validateMetricFeedbackResult(expectedMetricFeedback,
@@ -301,7 +301,6 @@ public class FeedbackAsyncTest extends FeedbackTestBase {
         // Arrange
         client = getMetricsAdvisorBuilder(httpClient, serviceVersion, false).buildAsyncClient();
         // Act & Assert
-
         creatMetricFeedbackRunner(
             expectedMetricFeedback -> StepVerifier.create(client.addFeedback(METRIC_ID, expectedMetricFeedback))
                 .assertNext(createdMetricFeedback -> validateMetricFeedbackResult(expectedMetricFeedback,

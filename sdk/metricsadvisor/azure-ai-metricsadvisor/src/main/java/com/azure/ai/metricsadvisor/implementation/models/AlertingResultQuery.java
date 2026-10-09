@@ -5,6 +5,8 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,21 +23,25 @@ public final class AlertingResultQuery implements JsonSerializable<AlertingResul
     /*
      * start time
      */
+    @Generated
     private OffsetDateTime startTime;
 
     /*
      * end time
      */
+    @Generated
     private OffsetDateTime endTime;
 
     /*
      * time mode
      */
+    @Generated
     private TimeMode timeMode;
 
     /**
      * Creates an instance of AlertingResultQuery class.
      */
+    @Generated
     public AlertingResultQuery() {
     }
 
@@ -44,6 +50,7 @@ public final class AlertingResultQuery implements JsonSerializable<AlertingResul
      * 
      * @return the startTime value.
      */
+    @Generated
     public OffsetDateTime getStartTime() {
         return this.startTime;
     }
@@ -54,6 +61,7 @@ public final class AlertingResultQuery implements JsonSerializable<AlertingResul
      * @param startTime the startTime value to set.
      * @return the AlertingResultQuery object itself.
      */
+    @Generated
     public AlertingResultQuery setStartTime(OffsetDateTime startTime) {
         this.startTime = startTime;
         return this;
@@ -64,6 +72,7 @@ public final class AlertingResultQuery implements JsonSerializable<AlertingResul
      * 
      * @return the endTime value.
      */
+    @Generated
     public OffsetDateTime getEndTime() {
         return this.endTime;
     }
@@ -74,6 +83,7 @@ public final class AlertingResultQuery implements JsonSerializable<AlertingResul
      * @param endTime the endTime value to set.
      * @return the AlertingResultQuery object itself.
      */
+    @Generated
     public AlertingResultQuery setEndTime(OffsetDateTime endTime) {
         this.endTime = endTime;
         return this;
@@ -84,6 +94,7 @@ public final class AlertingResultQuery implements JsonSerializable<AlertingResul
      * 
      * @return the timeMode value.
      */
+    @Generated
     public TimeMode getTimeMode() {
         return this.timeMode;
     }
@@ -94,11 +105,16 @@ public final class AlertingResultQuery implements JsonSerializable<AlertingResul
      * @param timeMode the timeMode value to set.
      * @return the AlertingResultQuery object itself.
      */
+    @Generated
     public AlertingResultQuery setTimeMode(TimeMode timeMode) {
         this.timeMode = timeMode;
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -119,6 +135,7 @@ public final class AlertingResultQuery implements JsonSerializable<AlertingResul
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AlertingResultQuery.
      */
+    @Generated
     public static AlertingResultQuery fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AlertingResultQuery deserializedAlertingResultQuery = new AlertingResultQuery();
@@ -127,11 +144,11 @@ public final class AlertingResultQuery implements JsonSerializable<AlertingResul
                 reader.nextToken();
 
                 if ("startTime".equals(fieldName)) {
-                    deserializedAlertingResultQuery.startTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedAlertingResultQuery.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("endTime".equals(fieldName)) {
-                    deserializedAlertingResultQuery.endTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedAlertingResultQuery.endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("timeMode".equals(fieldName)) {
                     deserializedAlertingResultQuery.timeMode = TimeMode.fromString(reader.getString());
                 } else {

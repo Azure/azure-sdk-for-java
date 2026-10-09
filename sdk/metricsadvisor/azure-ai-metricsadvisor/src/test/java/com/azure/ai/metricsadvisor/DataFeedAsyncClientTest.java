@@ -14,6 +14,7 @@ import com.azure.ai.metricsadvisor.models.MetricsAdvisorError;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.annotation.DoNotRecord;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.CoreUtils;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.jupiter.api.Test;
@@ -299,7 +300,8 @@ public class DataFeedAsyncClientTest extends DataFeedTestBase {
     @DoNotRecord
     public void getDataFeedNullId() {
         // Arrange
-        client = getNonRecordAdminClient().buildAsyncClient();
+        client = getNonRecordAdminClient().httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
+            .buildAsyncClient();
 
         // Act & Assert
         StepVerifier.create(client.getDataFeed(null))
@@ -315,7 +317,8 @@ public class DataFeedAsyncClientTest extends DataFeedTestBase {
     @DoNotRecord
     public void getDataFeedInvalidId() {
         // Arrange
-        client = getNonRecordAdminClient().buildAsyncClient();
+        client = getNonRecordAdminClient().httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
+            .buildAsyncClient();
 
         // Act & Assert
         StepVerifier.create(client.getDataFeed(INCORRECT_UUID))
@@ -699,7 +702,8 @@ public class DataFeedAsyncClientTest extends DataFeedTestBase {
     @DoNotRecord
     public void deleteIncorrectDataFeedId() {
         // Arrange
-        client = getNonRecordAdminClient().buildAsyncClient();
+        client = getNonRecordAdminClient().httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
+            .buildAsyncClient();
 
         // Act & Assert
         StepVerifier.create(client.deleteDataFeed(INCORRECT_UUID))
@@ -730,7 +734,7 @@ public class DataFeedAsyncClientTest extends DataFeedTestBase {
                 .expectErrorSatisfies(throwable -> {
                     assertEquals(MetricsAdvisorResponseException.class, throwable.getClass());
                     final MetricsAdvisorError errorCode = ((MetricsAdvisorResponseException) throwable).getValue();
-                    assertEquals(errorCode.getMessage(), "datafeedId is invalid.");
+                    assertEquals("datafeedId is invalid.", errorCode.getMessage());
                 })
                 .verify(DEFAULT_TIMEOUT);
         }, SQL_SERVER_DB);

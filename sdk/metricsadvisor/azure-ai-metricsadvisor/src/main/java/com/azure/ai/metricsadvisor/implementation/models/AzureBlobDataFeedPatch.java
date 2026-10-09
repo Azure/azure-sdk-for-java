@@ -5,6 +5,8 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -19,14 +21,33 @@ import java.util.List;
 @Fluent
 public final class AzureBlobDataFeedPatch extends DataFeedDetailPatch {
     /*
+     * data source type
+     */
+    @Generated
+    private DataSourceType dataSourceType = DataSourceType.AZURE_BLOB;
+
+    /*
      * The dataSourceParameter property.
      */
+    @Generated
     private AzureBlobParameterPatch dataSourceParameter;
 
     /**
      * Creates an instance of AzureBlobDataFeedPatch class.
      */
+    @Generated
     public AzureBlobDataFeedPatch() {
+    }
+
+    /**
+     * Get the dataSourceType property: data source type.
+     * 
+     * @return the dataSourceType value.
+     */
+    @Generated
+    @Override
+    public DataSourceType getDataSourceType() {
+        return this.dataSourceType;
     }
 
     /**
@@ -34,6 +55,7 @@ public final class AzureBlobDataFeedPatch extends DataFeedDetailPatch {
      * 
      * @return the dataSourceParameter value.
      */
+    @Generated
     public AzureBlobParameterPatch getDataSourceParameter() {
         return this.dataSourceParameter;
     }
@@ -44,6 +66,7 @@ public final class AzureBlobDataFeedPatch extends DataFeedDetailPatch {
      * @param dataSourceParameter the dataSourceParameter value to set.
      * @return the AzureBlobDataFeedPatch object itself.
      */
+    @Generated
     public AzureBlobDataFeedPatch setDataSourceParameter(AzureBlobParameterPatch dataSourceParameter) {
         this.dataSourceParameter = dataSourceParameter;
         return this;
@@ -52,6 +75,7 @@ public final class AzureBlobDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureBlobDataFeedPatch setDataFeedName(String dataFeedName) {
         super.setDataFeedName(dataFeedName);
@@ -61,6 +85,7 @@ public final class AzureBlobDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureBlobDataFeedPatch setDataFeedDescription(String dataFeedDescription) {
         super.setDataFeedDescription(dataFeedDescription);
@@ -70,6 +95,7 @@ public final class AzureBlobDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureBlobDataFeedPatch setTimestampColumn(String timestampColumn) {
         super.setTimestampColumn(timestampColumn);
@@ -79,6 +105,7 @@ public final class AzureBlobDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureBlobDataFeedPatch setDataStartFrom(OffsetDateTime dataStartFrom) {
         super.setDataStartFrom(dataStartFrom);
@@ -88,6 +115,7 @@ public final class AzureBlobDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureBlobDataFeedPatch setStartOffsetInSeconds(Long startOffsetInSeconds) {
         super.setStartOffsetInSeconds(startOffsetInSeconds);
@@ -97,6 +125,7 @@ public final class AzureBlobDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureBlobDataFeedPatch setMaxConcurrency(Integer maxConcurrency) {
         super.setMaxConcurrency(maxConcurrency);
@@ -106,6 +135,7 @@ public final class AzureBlobDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureBlobDataFeedPatch setMinRetryIntervalInSeconds(Long minRetryIntervalInSeconds) {
         super.setMinRetryIntervalInSeconds(minRetryIntervalInSeconds);
@@ -115,6 +145,7 @@ public final class AzureBlobDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureBlobDataFeedPatch setStopRetryAfterInSeconds(Long stopRetryAfterInSeconds) {
         super.setStopRetryAfterInSeconds(stopRetryAfterInSeconds);
@@ -124,6 +155,7 @@ public final class AzureBlobDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureBlobDataFeedPatch setNeedRollup(NeedRollupEnum needRollup) {
         super.setNeedRollup(needRollup);
@@ -133,6 +165,7 @@ public final class AzureBlobDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureBlobDataFeedPatch setRollUpMethod(RollUpMethod rollUpMethod) {
         super.setRollUpMethod(rollUpMethod);
@@ -142,6 +175,7 @@ public final class AzureBlobDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureBlobDataFeedPatch setRollUpColumns(List<String> rollUpColumns) {
         super.setRollUpColumns(rollUpColumns);
@@ -151,6 +185,7 @@ public final class AzureBlobDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureBlobDataFeedPatch setAllUpIdentification(String allUpIdentification) {
         super.setAllUpIdentification(allUpIdentification);
@@ -160,6 +195,7 @@ public final class AzureBlobDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureBlobDataFeedPatch setFillMissingPointType(FillMissingPointType fillMissingPointType) {
         super.setFillMissingPointType(fillMissingPointType);
@@ -169,6 +205,7 @@ public final class AzureBlobDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureBlobDataFeedPatch setFillMissingPointValue(Double fillMissingPointValue) {
         super.setFillMissingPointValue(fillMissingPointValue);
@@ -178,6 +215,7 @@ public final class AzureBlobDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureBlobDataFeedPatch setViewMode(ViewMode viewMode) {
         super.setViewMode(viewMode);
@@ -187,6 +225,7 @@ public final class AzureBlobDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureBlobDataFeedPatch setAdmins(List<String> admins) {
         super.setAdmins(admins);
@@ -196,6 +235,7 @@ public final class AzureBlobDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureBlobDataFeedPatch setViewers(List<String> viewers) {
         super.setViewers(viewers);
@@ -205,6 +245,7 @@ public final class AzureBlobDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureBlobDataFeedPatch setStatus(EntityStatus status) {
         super.setStatus(status);
@@ -214,6 +255,7 @@ public final class AzureBlobDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureBlobDataFeedPatch setActionLinkTemplate(String actionLinkTemplate) {
         super.setActionLinkTemplate(actionLinkTemplate);
@@ -223,6 +265,7 @@ public final class AzureBlobDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureBlobDataFeedPatch setAuthenticationType(AuthenticationTypeEnum authenticationType) {
         super.setAuthenticationType(authenticationType);
@@ -232,17 +275,20 @@ public final class AzureBlobDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureBlobDataFeedPatch setCredentialId(String credentialId) {
         super.setCredentialId(credentialId);
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("dataSourceType",
-            DataSourceType.AZURE_BLOB == null ? null : DataSourceType.AZURE_BLOB.toString());
         jsonWriter.writeStringField("dataFeedName", getDataFeedName());
         jsonWriter.writeStringField("dataFeedDescription", getDataFeedDescription());
         jsonWriter.writeStringField("timestampColumn", getTimestampColumn());
@@ -268,6 +314,8 @@ public final class AzureBlobDataFeedPatch extends DataFeedDetailPatch {
         jsonWriter.writeStringField("authenticationType",
             getAuthenticationType() == null ? null : getAuthenticationType().toString());
         jsonWriter.writeStringField("credentialId", getCredentialId());
+        jsonWriter.writeStringField("dataSourceType",
+            this.dataSourceType == null ? null : this.dataSourceType.toString());
         jsonWriter.writeJsonField("dataSourceParameter", this.dataSourceParameter);
         return jsonWriter.writeEndObject();
     }
@@ -278,9 +326,9 @@ public final class AzureBlobDataFeedPatch extends DataFeedDetailPatch {
      * @param jsonReader The JsonReader being read.
      * @return An instance of AzureBlobDataFeedPatch if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing the polymorphic discriminator.
      * @throws IOException If an error occurs while reading the AzureBlobDataFeedPatch.
      */
+    @Generated
     public static AzureBlobDataFeedPatch fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AzureBlobDataFeedPatch deserializedAzureBlobDataFeedPatch = new AzureBlobDataFeedPatch();
@@ -288,22 +336,15 @@ public final class AzureBlobDataFeedPatch extends DataFeedDetailPatch {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("dataSourceType".equals(fieldName)) {
-                    String dataSourceType = reader.getString();
-                    if (!"AzureBlob".equals(dataSourceType)) {
-                        throw new IllegalStateException(
-                            "'dataSourceType' was expected to be non-null and equal to 'AzureBlob'. The found 'dataSourceType' was '"
-                                + dataSourceType + "'.");
-                    }
-                } else if ("dataFeedName".equals(fieldName)) {
+                if ("dataFeedName".equals(fieldName)) {
                     deserializedAzureBlobDataFeedPatch.setDataFeedName(reader.getString());
                 } else if ("dataFeedDescription".equals(fieldName)) {
                     deserializedAzureBlobDataFeedPatch.setDataFeedDescription(reader.getString());
                 } else if ("timestampColumn".equals(fieldName)) {
                     deserializedAzureBlobDataFeedPatch.setTimestampColumn(reader.getString());
                 } else if ("dataStartFrom".equals(fieldName)) {
-                    deserializedAzureBlobDataFeedPatch.setDataStartFrom(
-                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
+                    deserializedAzureBlobDataFeedPatch.setDataStartFrom(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
                 } else if ("startOffsetInSeconds".equals(fieldName)) {
                     deserializedAzureBlobDataFeedPatch.setStartOffsetInSeconds(reader.getNullable(JsonReader::getLong));
                 } else if ("maxConcurrency".equals(fieldName)) {
@@ -346,6 +387,8 @@ public final class AzureBlobDataFeedPatch extends DataFeedDetailPatch {
                         .setAuthenticationType(AuthenticationTypeEnum.fromString(reader.getString()));
                 } else if ("credentialId".equals(fieldName)) {
                     deserializedAzureBlobDataFeedPatch.setCredentialId(reader.getString());
+                } else if ("dataSourceType".equals(fieldName)) {
+                    deserializedAzureBlobDataFeedPatch.dataSourceType = DataSourceType.fromString(reader.getString());
                 } else if ("dataSourceParameter".equals(fieldName)) {
                     deserializedAzureBlobDataFeedPatch.dataSourceParameter = AzureBlobParameterPatch.fromJson(reader);
                 } else {

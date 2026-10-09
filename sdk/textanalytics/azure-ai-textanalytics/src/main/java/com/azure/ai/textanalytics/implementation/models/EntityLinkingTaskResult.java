@@ -5,6 +5,7 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -18,16 +19,19 @@ public final class EntityLinkingTaskResult extends AnalyzeTextTaskResult {
     /*
      * Enumeration of supported Text Analysis task results.
      */
+    @Generated
     private AnalyzeTextTaskResultsKind kind = AnalyzeTextTaskResultsKind.ENTITY_LINKING_RESULTS;
 
     /*
      * The results property.
      */
+    @Generated
     private EntityLinkingResult results;
 
     /**
      * Creates an instance of EntityLinkingTaskResult class.
      */
+    @Generated
     public EntityLinkingTaskResult() {
     }
 
@@ -36,6 +40,7 @@ public final class EntityLinkingTaskResult extends AnalyzeTextTaskResult {
      * 
      * @return the kind value.
      */
+    @Generated
     @Override
     public AnalyzeTextTaskResultsKind getKind() {
         return this.kind;
@@ -46,6 +51,7 @@ public final class EntityLinkingTaskResult extends AnalyzeTextTaskResult {
      * 
      * @return the results value.
      */
+    @Generated
     public EntityLinkingResult getResults() {
         return this.results;
     }
@@ -56,6 +62,7 @@ public final class EntityLinkingTaskResult extends AnalyzeTextTaskResult {
      * @param results the results value to set.
      * @return the EntityLinkingTaskResult object itself.
      */
+    @Generated
     public EntityLinkingTaskResult setResults(EntityLinkingResult results) {
         this.results = results;
         return this;
@@ -64,6 +71,7 @@ public final class EntityLinkingTaskResult extends AnalyzeTextTaskResult {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -81,6 +89,7 @@ public final class EntityLinkingTaskResult extends AnalyzeTextTaskResult {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the EntityLinkingTaskResult.
      */
+    @Generated
     public static EntityLinkingTaskResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             EntityLinkingTaskResult deserializedEntityLinkingTaskResult = new EntityLinkingTaskResult();

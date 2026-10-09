@@ -5,6 +5,7 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -18,14 +19,33 @@ import java.util.UUID;
 @Fluent
 public final class WebhookHookInfo extends HookInfo {
     /*
+     * hook type
+     */
+    @Generated
+    private HookType hookType = HookType.WEBHOOK;
+
+    /*
      * The hookParameter property.
      */
+    @Generated
     private WebhookHookParameter hookParameter;
 
     /**
      * Creates an instance of WebhookHookInfo class.
      */
+    @Generated
     public WebhookHookInfo() {
+    }
+
+    /**
+     * Get the hookType property: hook type.
+     * 
+     * @return the hookType value.
+     */
+    @Generated
+    @Override
+    public HookType getHookType() {
+        return this.hookType;
     }
 
     /**
@@ -33,6 +53,7 @@ public final class WebhookHookInfo extends HookInfo {
      * 
      * @return the hookParameter value.
      */
+    @Generated
     public WebhookHookParameter getHookParameter() {
         return this.hookParameter;
     }
@@ -43,6 +64,7 @@ public final class WebhookHookInfo extends HookInfo {
      * @param hookParameter the hookParameter value to set.
      * @return the WebhookHookInfo object itself.
      */
+    @Generated
     public WebhookHookInfo setHookParameter(WebhookHookParameter hookParameter) {
         this.hookParameter = hookParameter;
         return this;
@@ -51,6 +73,7 @@ public final class WebhookHookInfo extends HookInfo {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public WebhookHookInfo setHookName(String hookName) {
         super.setHookName(hookName);
@@ -60,6 +83,7 @@ public final class WebhookHookInfo extends HookInfo {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public WebhookHookInfo setDescription(String description) {
         super.setDescription(description);
@@ -69,6 +93,7 @@ public final class WebhookHookInfo extends HookInfo {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public WebhookHookInfo setExternalLink(String externalLink) {
         super.setExternalLink(externalLink);
@@ -78,21 +103,26 @@ public final class WebhookHookInfo extends HookInfo {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public WebhookHookInfo setAdmins(List<String> admins) {
         super.setAdmins(admins);
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("hookType", HookType.WEBHOOK == null ? null : HookType.WEBHOOK.toString());
         jsonWriter.writeStringField("hookName", getHookName());
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeStringField("externalLink", getExternalLink());
         jsonWriter.writeArrayField("admins", getAdmins(), (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("hookParameter", this.hookParameter);
+        jsonWriter.writeStringField("hookType", this.hookType == null ? null : this.hookType.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -102,10 +132,10 @@ public final class WebhookHookInfo extends HookInfo {
      * @param jsonReader The JsonReader being read.
      * @return An instance of WebhookHookInfo if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
-     * polymorphic discriminator.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the WebhookHookInfo.
      */
+    @Generated
     public static WebhookHookInfo fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             WebhookHookInfo deserializedWebhookHookInfo = new WebhookHookInfo();
@@ -113,14 +143,7 @@ public final class WebhookHookInfo extends HookInfo {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("hookType".equals(fieldName)) {
-                    String hookType = reader.getString();
-                    if (!"Webhook".equals(hookType)) {
-                        throw new IllegalStateException(
-                            "'hookType' was expected to be non-null and equal to 'Webhook'. The found 'hookType' was '"
-                                + hookType + "'.");
-                    }
-                } else if ("hookName".equals(fieldName)) {
+                if ("hookName".equals(fieldName)) {
                     deserializedWebhookHookInfo.setHookName(reader.getString());
                 } else if ("hookId".equals(fieldName)) {
                     deserializedWebhookHookInfo
@@ -134,6 +157,8 @@ public final class WebhookHookInfo extends HookInfo {
                     deserializedWebhookHookInfo.setAdmins(admins);
                 } else if ("hookParameter".equals(fieldName)) {
                     deserializedWebhookHookInfo.hookParameter = WebhookHookParameter.fromJson(reader);
+                } else if ("hookType".equals(fieldName)) {
+                    deserializedWebhookHookInfo.hookType = HookType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

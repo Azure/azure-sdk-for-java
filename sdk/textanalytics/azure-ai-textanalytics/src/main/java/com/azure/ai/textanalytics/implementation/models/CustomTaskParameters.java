@@ -5,6 +5,7 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -18,16 +19,19 @@ public class CustomTaskParameters extends TaskParameters {
     /*
      * This field indicates the project name for the model.
      */
+    @Generated
     private String projectName;
 
     /*
      * This field indicates the deployment name for the model.
      */
+    @Generated
     private String deploymentName;
 
     /**
      * Creates an instance of CustomTaskParameters class.
      */
+    @Generated
     public CustomTaskParameters() {
     }
 
@@ -36,6 +40,7 @@ public class CustomTaskParameters extends TaskParameters {
      * 
      * @return the projectName value.
      */
+    @Generated
     public String getProjectName() {
         return this.projectName;
     }
@@ -46,6 +51,7 @@ public class CustomTaskParameters extends TaskParameters {
      * @param projectName the projectName value to set.
      * @return the CustomTaskParameters object itself.
      */
+    @Generated
     public CustomTaskParameters setProjectName(String projectName) {
         this.projectName = projectName;
         return this;
@@ -56,6 +62,7 @@ public class CustomTaskParameters extends TaskParameters {
      * 
      * @return the deploymentName value.
      */
+    @Generated
     public String getDeploymentName() {
         return this.deploymentName;
     }
@@ -66,6 +73,7 @@ public class CustomTaskParameters extends TaskParameters {
      * @param deploymentName the deploymentName value to set.
      * @return the CustomTaskParameters object itself.
      */
+    @Generated
     public CustomTaskParameters setDeploymentName(String deploymentName) {
         this.deploymentName = deploymentName;
         return this;
@@ -74,6 +82,7 @@ public class CustomTaskParameters extends TaskParameters {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public CustomTaskParameters setLoggingOptOut(Boolean loggingOptOut) {
         super.setLoggingOptOut(loggingOptOut);
@@ -83,6 +92,7 @@ public class CustomTaskParameters extends TaskParameters {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -101,6 +111,7 @@ public class CustomTaskParameters extends TaskParameters {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the CustomTaskParameters.
      */
+    @Generated
     public static CustomTaskParameters fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             CustomTaskParameters deserializedCustomTaskParameters = new CustomTaskParameters();

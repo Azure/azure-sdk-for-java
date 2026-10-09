@@ -20,7 +20,7 @@ import java.util.function.Consumer;
  * Demonstrates how create an EventProcessorClient using Azure Identity to authenticate with Azure Storage Blobs and
  * Azure Event Hubs.
  *
- * @see <a href="https://github.com/Azure/azure-sdk-for-java/wiki/Identity-and-Authentication">Identity and
+ * @see <a href="https://github.com/Azure/azure-sdk-for-java/blob/main/docs/identity-examples.md">Identity and
  *     Authentication</a>
  */
 public class EventProcessorWithAzureIdentity {
@@ -49,7 +49,7 @@ public class EventProcessorWithAzureIdentity {
      */
     public static void main(String[] args) throws Exception {
         // The DefaultAzureCredential is an aggregate credential that chooses the best credentials to use based
-        // on the running environment. See https://github.com/Azure/azure-sdk-for-java/wiki/Identity-and-Authentication
+        // on the running environment. See https://github.com/Azure/azure-sdk-for-java/blob/main/docs/identity-examples.md
         // for more information.
         // Ensure the credential chosen has permissions to access both the Storage Blob container and the Event Hub.
         // For example, if you are using a service principal, it has permissions to both resources. Or, if this is

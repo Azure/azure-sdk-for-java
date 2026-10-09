@@ -5,6 +5,7 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -19,12 +20,14 @@ public final class PiiResultDocumentsItem extends PiiEntitiesDocumentResult {
     /**
      * Creates an instance of PiiResultDocumentsItem class.
      */
+    @Generated
     public PiiResultDocumentsItem() {
     }
 
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public PiiResultDocumentsItem setRedactedText(String redactedText) {
         super.setRedactedText(redactedText);
@@ -34,6 +37,7 @@ public final class PiiResultDocumentsItem extends PiiEntitiesDocumentResult {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public PiiResultDocumentsItem setEntities(List<Entity> entities) {
         super.setEntities(entities);
@@ -43,6 +47,7 @@ public final class PiiResultDocumentsItem extends PiiEntitiesDocumentResult {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public PiiResultDocumentsItem setId(String id) {
         super.setId(id);
@@ -52,6 +57,7 @@ public final class PiiResultDocumentsItem extends PiiEntitiesDocumentResult {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public PiiResultDocumentsItem setWarnings(List<DocumentWarning> warnings) {
         super.setWarnings(warnings);
@@ -61,6 +67,7 @@ public final class PiiResultDocumentsItem extends PiiEntitiesDocumentResult {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public PiiResultDocumentsItem setStatistics(DocumentStatistics statistics) {
         super.setStatistics(statistics);
@@ -70,6 +77,7 @@ public final class PiiResultDocumentsItem extends PiiEntitiesDocumentResult {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -90,6 +98,7 @@ public final class PiiResultDocumentsItem extends PiiEntitiesDocumentResult {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the PiiResultDocumentsItem.
      */
+    @Generated
     public static PiiResultDocumentsItem fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             PiiResultDocumentsItem deserializedPiiResultDocumentsItem = new PiiResultDocumentsItem();

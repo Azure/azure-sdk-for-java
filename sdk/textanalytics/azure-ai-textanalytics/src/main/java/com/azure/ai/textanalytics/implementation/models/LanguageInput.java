@@ -5,6 +5,7 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,21 +20,25 @@ public final class LanguageInput implements JsonSerializable<LanguageInput> {
     /*
      * Unique, non-empty document identifier.
      */
+    @Generated
     private String id;
 
     /*
      * The text property.
      */
+    @Generated
     private String text;
 
     /*
      * The countryHint property.
      */
+    @Generated
     private String countryHint;
 
     /**
      * Creates an instance of LanguageInput class.
      */
+    @Generated
     public LanguageInput() {
     }
 
@@ -42,6 +47,7 @@ public final class LanguageInput implements JsonSerializable<LanguageInput> {
      * 
      * @return the id value.
      */
+    @Generated
     public String getId() {
         return this.id;
     }
@@ -52,6 +58,7 @@ public final class LanguageInput implements JsonSerializable<LanguageInput> {
      * @param id the id value to set.
      * @return the LanguageInput object itself.
      */
+    @Generated
     public LanguageInput setId(String id) {
         this.id = id;
         return this;
@@ -62,6 +69,7 @@ public final class LanguageInput implements JsonSerializable<LanguageInput> {
      * 
      * @return the text value.
      */
+    @Generated
     public String getText() {
         return this.text;
     }
@@ -72,6 +80,7 @@ public final class LanguageInput implements JsonSerializable<LanguageInput> {
      * @param text the text value to set.
      * @return the LanguageInput object itself.
      */
+    @Generated
     public LanguageInput setText(String text) {
         this.text = text;
         return this;
@@ -82,6 +91,7 @@ public final class LanguageInput implements JsonSerializable<LanguageInput> {
      * 
      * @return the countryHint value.
      */
+    @Generated
     public String getCountryHint() {
         return this.countryHint;
     }
@@ -92,6 +102,7 @@ public final class LanguageInput implements JsonSerializable<LanguageInput> {
      * @param countryHint the countryHint value to set.
      * @return the LanguageInput object itself.
      */
+    @Generated
     public LanguageInput setCountryHint(String countryHint) {
         this.countryHint = countryHint;
         return this;
@@ -100,6 +111,7 @@ public final class LanguageInput implements JsonSerializable<LanguageInput> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -118,6 +130,7 @@ public final class LanguageInput implements JsonSerializable<LanguageInput> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the LanguageInput.
      */
+    @Generated
     public static LanguageInput fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             LanguageInput deserializedLanguageInput = new LanguageInput();

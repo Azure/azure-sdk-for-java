@@ -5,6 +5,8 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -20,16 +22,19 @@ public final class SentimentLROResult extends AnalyzeTextLROResult {
     /*
      * Enumeration of supported Text Analysis long-running operation task results.
      */
+    @Generated
     private AnalyzeTextLROResultsKind kind = AnalyzeTextLROResultsKind.SENTIMENT_ANALYSIS_LRORESULTS;
 
     /*
      * The results property.
      */
+    @Generated
     private SentimentResponse results;
 
     /**
      * Creates an instance of SentimentLROResult class.
      */
+    @Generated
     public SentimentLROResult() {
     }
 
@@ -38,6 +43,7 @@ public final class SentimentLROResult extends AnalyzeTextLROResult {
      * 
      * @return the kind value.
      */
+    @Generated
     @Override
     public AnalyzeTextLROResultsKind getKind() {
         return this.kind;
@@ -48,6 +54,7 @@ public final class SentimentLROResult extends AnalyzeTextLROResult {
      * 
      * @return the results value.
      */
+    @Generated
     public SentimentResponse getResults() {
         return this.results;
     }
@@ -58,6 +65,7 @@ public final class SentimentLROResult extends AnalyzeTextLROResult {
      * @param results the results value to set.
      * @return the SentimentLROResult object itself.
      */
+    @Generated
     public SentimentLROResult setResults(SentimentResponse results) {
         this.results = results;
         return this;
@@ -66,6 +74,7 @@ public final class SentimentLROResult extends AnalyzeTextLROResult {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SentimentLROResult setTaskName(String taskName) {
         super.setTaskName(taskName);
@@ -75,6 +84,7 @@ public final class SentimentLROResult extends AnalyzeTextLROResult {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SentimentLROResult setLastUpdateDateTime(OffsetDateTime lastUpdateDateTime) {
         super.setLastUpdateDateTime(lastUpdateDateTime);
@@ -84,6 +94,7 @@ public final class SentimentLROResult extends AnalyzeTextLROResult {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SentimentLROResult setStatus(State status) {
         super.setStatus(status);
@@ -93,6 +104,7 @@ public final class SentimentLROResult extends AnalyzeTextLROResult {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -116,6 +128,7 @@ public final class SentimentLROResult extends AnalyzeTextLROResult {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SentimentLROResult.
      */
+    @Generated
     public static SentimentLROResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SentimentLROResult deserializedSentimentLROResult = new SentimentLROResult();
@@ -124,8 +137,8 @@ public final class SentimentLROResult extends AnalyzeTextLROResult {
                 reader.nextToken();
 
                 if ("lastUpdateDateTime".equals(fieldName)) {
-                    deserializedSentimentLROResult.setLastUpdateDateTime(
-                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
+                    deserializedSentimentLROResult.setLastUpdateDateTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
                 } else if ("status".equals(fieldName)) {
                     deserializedSentimentLROResult.setStatus(State.fromString(reader.getString()));
                 } else if ("taskName".equals(fieldName)) {

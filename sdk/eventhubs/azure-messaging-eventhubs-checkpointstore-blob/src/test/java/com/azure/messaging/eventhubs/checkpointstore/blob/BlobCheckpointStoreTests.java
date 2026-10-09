@@ -24,6 +24,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnJre;
 import org.junit.jupiter.api.condition.JRE;
+import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -46,6 +47,7 @@ import static com.azure.messaging.eventhubs.checkpointstore.blob.BlobCheckpointS
 import static com.azure.messaging.eventhubs.checkpointstore.blob.BlobCheckpointStore.OWNER_ID;
 import static com.azure.messaging.eventhubs.checkpointstore.blob.BlobCheckpointStore.SEQUENCE_NUMBER;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyMap;
@@ -259,6 +261,109 @@ public class BlobCheckpointStoreTests {
         // Act & Assert
         assertThrows(IllegalStateException.class, () -> blobCheckpointStore.updateCheckpoint(null));
         assertThrows(IllegalStateException.class, () -> blobCheckpointStore.updateCheckpoint(new Checkpoint()));
+    }
+
+    /**
+     * Tests that {@link BlobCheckpointStore#updateCheckpoint(Checkpoint)} falls back to the deprecated
+     * {@link Checkpoint#getOffset()} value when {@link Checkpoint#getOffsetString()} is not provided. Reproduces the
+     * regression reported in https://github.com/Azure/azure-sdk-for-java/issues/46752.
+     */
+    @Test
+    public void testUpdateCheckpointFallsBackToOffsetWhenOffsetStringMissing() {
+        Map<String, String> captured = captureUpdateCheckpointMetadata(new Checkpoint().setFullyQualifiedNamespace("ns")
+            .setEventHubName("eh")
+            .setConsumerGroup("cg")
+            .setPartitionId("0")
+            .setSequenceNumber(2L)
+            .setOffset(100L));
+
+        assertEquals("2", captured.get(SEQUENCE_NUMBER));
+        assertEquals("100", captured.get(OFFSET));
+    }
+
+    /**
+     * Tests that {@link BlobCheckpointStore#updateCheckpoint(Checkpoint)} writes the {@code offsetString} value into
+     * blob metadata when only {@link Checkpoint#setOffsetString(String)} has been populated.
+     */
+    @Test
+    public void testUpdateCheckpointUsesOffsetStringWhenProvided() {
+        Map<String, String> captured = captureUpdateCheckpointMetadata(new Checkpoint().setFullyQualifiedNamespace("ns")
+            .setEventHubName("eh")
+            .setConsumerGroup("cg")
+            .setPartitionId("0")
+            .setSequenceNumber(2L)
+            .setOffsetString("offset-string-value"));
+
+        assertEquals("2", captured.get(SEQUENCE_NUMBER));
+        assertEquals("offset-string-value", captured.get(OFFSET));
+    }
+
+    /**
+     * Tests that when both {@code offset} and {@code offsetString} are populated, {@code offsetString} is preferred.
+     */
+    @Test
+    public void testUpdateCheckpointPrefersOffsetStringOverOffset() {
+        Map<String, String> captured = captureUpdateCheckpointMetadata(new Checkpoint().setFullyQualifiedNamespace("ns")
+            .setEventHubName("eh")
+            .setConsumerGroup("cg")
+            .setPartitionId("0")
+            .setSequenceNumber(2L)
+            .setOffset(100L)
+            .setOffsetString("offset-string-value"));
+
+        assertEquals("offset-string-value", captured.get(OFFSET));
+    }
+
+    /**
+     * Tests that an {@code offsetString}-only checkpoint is accepted by the validation guard. This is a behavior
+     * change from the prior implementation, which only inspected {@code sequenceNumber} and the deprecated
+     * {@code offset} (Long) and would have rejected a checkpoint that supplied only {@code offsetString}.
+     */
+    @Test
+    public void testUpdateCheckpointOffsetStringOnlyIsValid() {
+        Map<String, String> captured = captureUpdateCheckpointMetadata(new Checkpoint().setFullyQualifiedNamespace("ns")
+            .setEventHubName("eh")
+            .setConsumerGroup("cg")
+            .setPartitionId("0")
+            .setOffsetString("offset-string-value"));
+
+        assertNull(captured.get(SEQUENCE_NUMBER));
+        assertEquals("offset-string-value", captured.get(OFFSET));
+    }
+
+    /**
+     * Tests that a checkpoint with only {@code sequenceNumber} populated still succeeds and writes a {@code null}
+     * offset metadata value, preserving prior behavior.
+     */
+    @Test
+    public void testUpdateCheckpointSequenceNumberOnly() {
+        Map<String, String> captured = captureUpdateCheckpointMetadata(new Checkpoint().setFullyQualifiedNamespace("ns")
+            .setEventHubName("eh")
+            .setConsumerGroup("cg")
+            .setPartitionId("0")
+            .setSequenceNumber(2L));
+
+        assertEquals("2", captured.get(SEQUENCE_NUMBER));
+        assertNull(captured.get(OFFSET));
+    }
+
+    @SuppressWarnings("unchecked")
+    private Map<String, String> captureUpdateCheckpointMetadata(Checkpoint checkpoint) {
+        final String legacyPrefix = getLegacyPrefix(checkpoint.getFullyQualifiedNamespace(),
+            checkpoint.getEventHubName(), checkpoint.getConsumerGroup());
+        final String blobName = legacyPrefix + CHECKPOINT_PATH + checkpoint.getPartitionId();
+
+        when(blobContainerAsyncClient.getBlobAsyncClient(blobName)).thenReturn(blobAsyncClient);
+        when(blobAsyncClient.getBlockBlobAsyncClient()).thenReturn(blockBlobAsyncClient);
+        when(blobAsyncClient.exists()).thenReturn(Mono.just(true));
+        when(blobAsyncClient.setMetadata(ArgumentMatchers.<Map<String, String>>any())).thenReturn(Mono.empty());
+
+        BlobCheckpointStore store = new BlobCheckpointStore(blobContainerAsyncClient);
+        StepVerifier.create(store.updateCheckpoint(checkpoint)).verifyComplete();
+
+        ArgumentCaptor<Map<String, String>> captor = ArgumentCaptor.forClass(Map.class);
+        Mockito.verify(blobAsyncClient).setMetadata(captor.capture());
+        return captor.getValue();
     }
 
     /**

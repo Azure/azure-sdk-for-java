@@ -5,6 +5,8 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,16 +23,19 @@ public final class AnalyzeTextJobState extends JobState {
     /*
      * The tasks property.
      */
+    @Generated
     private TasksStateTasks tasks;
 
     /*
      * if showStats=true was specified in the request this field will contain information about the request payload.
      */
+    @Generated
     private RequestStatistics statistics;
 
     /**
      * Creates an instance of AnalyzeTextJobState class.
      */
+    @Generated
     public AnalyzeTextJobState() {
     }
 
@@ -39,6 +44,7 @@ public final class AnalyzeTextJobState extends JobState {
      * 
      * @return the tasks value.
      */
+    @Generated
     public TasksStateTasks getTasks() {
         return this.tasks;
     }
@@ -49,6 +55,7 @@ public final class AnalyzeTextJobState extends JobState {
      * @param tasks the tasks value to set.
      * @return the AnalyzeTextJobState object itself.
      */
+    @Generated
     public AnalyzeTextJobState setTasks(TasksStateTasks tasks) {
         this.tasks = tasks;
         return this;
@@ -60,6 +67,7 @@ public final class AnalyzeTextJobState extends JobState {
      * 
      * @return the statistics value.
      */
+    @Generated
     public RequestStatistics getStatistics() {
         return this.statistics;
     }
@@ -71,6 +79,7 @@ public final class AnalyzeTextJobState extends JobState {
      * @param statistics the statistics value to set.
      * @return the AnalyzeTextJobState object itself.
      */
+    @Generated
     public AnalyzeTextJobState setStatistics(RequestStatistics statistics) {
         this.statistics = statistics;
         return this;
@@ -79,6 +88,7 @@ public final class AnalyzeTextJobState extends JobState {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AnalyzeTextJobState setDisplayName(String displayName) {
         super.setDisplayName(displayName);
@@ -88,6 +98,7 @@ public final class AnalyzeTextJobState extends JobState {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AnalyzeTextJobState setCreatedDateTime(OffsetDateTime createdDateTime) {
         super.setCreatedDateTime(createdDateTime);
@@ -97,6 +108,7 @@ public final class AnalyzeTextJobState extends JobState {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AnalyzeTextJobState setExpirationDateTime(OffsetDateTime expirationDateTime) {
         super.setExpirationDateTime(expirationDateTime);
@@ -106,6 +118,7 @@ public final class AnalyzeTextJobState extends JobState {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AnalyzeTextJobState setJobId(String jobId) {
         super.setJobId(jobId);
@@ -115,6 +128,7 @@ public final class AnalyzeTextJobState extends JobState {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AnalyzeTextJobState setLastUpdatedDateTime(OffsetDateTime lastUpdatedDateTime) {
         super.setLastUpdatedDateTime(lastUpdatedDateTime);
@@ -124,6 +138,7 @@ public final class AnalyzeTextJobState extends JobState {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AnalyzeTextJobState setStatus(State status) {
         super.setStatus(status);
@@ -133,6 +148,7 @@ public final class AnalyzeTextJobState extends JobState {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AnalyzeTextJobState setErrors(List<Error> errors) {
         super.setErrors(errors);
@@ -142,6 +158,7 @@ public final class AnalyzeTextJobState extends JobState {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AnalyzeTextJobState setNextLink(String nextLink) {
         super.setNextLink(nextLink);
@@ -151,6 +168,7 @@ public final class AnalyzeTextJobState extends JobState {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -183,6 +201,7 @@ public final class AnalyzeTextJobState extends JobState {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AnalyzeTextJobState.
      */
+    @Generated
     public static AnalyzeTextJobState fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AnalyzeTextJobState deserializedAnalyzeTextJobState = new AnalyzeTextJobState();
@@ -191,20 +210,20 @@ public final class AnalyzeTextJobState extends JobState {
                 reader.nextToken();
 
                 if ("createdDateTime".equals(fieldName)) {
-                    deserializedAnalyzeTextJobState.setCreatedDateTime(
-                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
+                    deserializedAnalyzeTextJobState.setCreatedDateTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
                 } else if ("jobId".equals(fieldName)) {
                     deserializedAnalyzeTextJobState.setJobId(reader.getString());
                 } else if ("lastUpdatedDateTime".equals(fieldName)) {
-                    deserializedAnalyzeTextJobState.setLastUpdatedDateTime(
-                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
+                    deserializedAnalyzeTextJobState.setLastUpdatedDateTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
                 } else if ("status".equals(fieldName)) {
                     deserializedAnalyzeTextJobState.setStatus(State.fromString(reader.getString()));
                 } else if ("displayName".equals(fieldName)) {
                     deserializedAnalyzeTextJobState.setDisplayName(reader.getString());
                 } else if ("expirationDateTime".equals(fieldName)) {
-                    deserializedAnalyzeTextJobState.setExpirationDateTime(
-                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
+                    deserializedAnalyzeTextJobState.setExpirationDateTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
                 } else if ("errors".equals(fieldName)) {
                     List<Error> errors = reader.readArray(reader1 -> Error.fromJson(reader1));
                     deserializedAnalyzeTextJobState.setErrors(errors);

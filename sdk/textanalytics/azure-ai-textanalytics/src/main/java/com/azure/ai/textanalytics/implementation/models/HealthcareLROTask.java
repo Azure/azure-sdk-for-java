@@ -5,6 +5,7 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -18,16 +19,19 @@ public final class HealthcareLROTask extends AnalyzeTextLROTask {
     /*
      * Enumeration of supported long-running Text Analysis tasks.
      */
+    @Generated
     private AnalyzeTextLROTaskKind kind = AnalyzeTextLROTaskKind.HEALTHCARE;
 
     /*
      * Supported parameters for a Healthcare task.
      */
+    @Generated
     private HealthcareTaskParameters parameters;
 
     /**
      * Creates an instance of HealthcareLROTask class.
      */
+    @Generated
     public HealthcareLROTask() {
     }
 
@@ -36,6 +40,7 @@ public final class HealthcareLROTask extends AnalyzeTextLROTask {
      * 
      * @return the kind value.
      */
+    @Generated
     @Override
     public AnalyzeTextLROTaskKind getKind() {
         return this.kind;
@@ -46,6 +51,7 @@ public final class HealthcareLROTask extends AnalyzeTextLROTask {
      * 
      * @return the parameters value.
      */
+    @Generated
     public HealthcareTaskParameters getParameters() {
         return this.parameters;
     }
@@ -56,6 +62,7 @@ public final class HealthcareLROTask extends AnalyzeTextLROTask {
      * @param parameters the parameters value to set.
      * @return the HealthcareLROTask object itself.
      */
+    @Generated
     public HealthcareLROTask setParameters(HealthcareTaskParameters parameters) {
         this.parameters = parameters;
         return this;
@@ -64,6 +71,7 @@ public final class HealthcareLROTask extends AnalyzeTextLROTask {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public HealthcareLROTask setTaskName(String taskName) {
         super.setTaskName(taskName);
@@ -73,6 +81,7 @@ public final class HealthcareLROTask extends AnalyzeTextLROTask {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -90,6 +99,7 @@ public final class HealthcareLROTask extends AnalyzeTextLROTask {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the HealthcareLROTask.
      */
+    @Generated
     public static HealthcareLROTask fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             HealthcareLROTask deserializedHealthcareLROTask = new HealthcareLROTask();

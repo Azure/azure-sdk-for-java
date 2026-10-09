@@ -1,6 +1,16 @@
 # Release History
 
-## 5.5.16 (2026-10-09)
+## 5.6.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 5.5.16 (2026-10-06)
 
 ### Other Changes
 
@@ -8,7 +18,6 @@
 
 - Upgraded `azure-core-http-netty` from `1.16.6` to version `1.16.8`.
 - Upgraded `azure-core` from `1.59.0` to version `1.60.0`.
-
 
 ## 5.5.15 (2026-08-18)
 
@@ -18,7 +27,6 @@
 
 - Upgraded `azure-core-http-netty` from `1.16.5` to version `1.16.6`.
 - Upgraded `azure-core` from `1.58.1` to version `1.59.0`.
-
 
 ## 5.5.14 (2026-07-01)
 
@@ -39,7 +47,6 @@
 - Upgraded `azure-core-http-netty` from `1.16.3` to version `1.16.4`.
 - Upgraded `azure-core` from `1.57.1` to version `1.58.0`.
 
-
 ## 5.5.12 (2026-01-29)
 
 ### Other Changes
@@ -50,7 +57,6 @@
 - Upgraded `azure-json` from `1.5.0` to version `1.5.1`.
 - Upgraded `azure-core` from `1.57.0` to version `1.57.1`.
 
-
 ## 5.5.11 (2025-10-27)
 
 ### Other Changes
@@ -59,7 +65,6 @@
 
 - Upgraded `azure-core-http-netty` from `1.16.1` to version `1.16.2`.
 - Upgraded `azure-core` from `1.56.1` to version `1.57.0`.
-
 
 ## 5.5.10 (2025-09-25)
 
@@ -70,7 +75,6 @@
 - Upgraded `azure-core-http-netty` from `1.16.0` to version `1.16.1`.
 - Upgraded `azure-core` from `1.56.0` to version `1.56.1`.
 
-
 ## 5.5.9 (2025-08-21)
 
 ### Other Changes
@@ -79,7 +83,6 @@
 
 - Upgraded `azure-core` from `1.55.5` to version `1.56.0`.
 - Upgraded `azure-core-http-netty` from `1.15.13` to version `1.16.0`.
-
 
 ## 5.5.8 (2025-07-29)
 
@@ -90,7 +93,6 @@
 - Upgraded `azure-core-http-netty` from `1.15.12` to version `1.15.13`.
 - Upgraded `azure-core` from `1.55.4` to version `1.55.5`.
 
-
 ## 5.5.7 (2025-06-19)
 
 ### Other Changes
@@ -99,7 +101,6 @@
 
 - Upgraded `azure-core-http-netty` from `1.15.11` to version `1.15.12`.
 - Upgraded `azure-core` from `1.55.3` to version `1.55.4`.
-
 
 ## 5.5.6 (2025-03-24)
 
@@ -111,7 +112,6 @@
 - Upgraded `azure-core` from `1.55.2` to version `1.55.3`.
 - Upgraded `azure-core-http-netty` from `1.15.10` to version `1.15.11`.
 
-
 ## 5.5.5 (2025-02-25)
 
 ### Other Changes
@@ -122,7 +122,6 @@
 - Upgraded `azure-json` from `1.3.0` to version `1.4.0`.
 - Upgraded `azure-core` from `1.54.1` to version `1.55.2`.
 
-
 ## 5.5.4 (2024-12-04)
 
 ### Other Changes
@@ -131,7 +130,6 @@
 
 - Upgraded `azure-core` from `1.53.0` to version `1.54.1`.
 - Upgraded `azure-core-http-netty` from `1.15.5` to version `1.15.7`.
-
 
 ## 5.5.3 (2024-10-27)
 
@@ -152,7 +150,6 @@
 - Upgraded `azure-core` from `1.51.0` to version `1.52.0`.
 - Upgraded `azure-json` from `1.2.0` to version `1.3.0`.
 
-
 ## 5.5.1 (2024-08-24)
 
 ### Other Changes
@@ -162,7 +159,6 @@
 - Upgraded `azure-core` from `1.50.0` to version `1.51.0`.
 - Upgraded `azure-core-http-netty` from `1.15.2` to version `1.15.3`.
 - Upgraded `azure-json` from `1.1.0` to version `1.2.0`.
-
 
 ## 5.5.0 (2024-07-25)
 
@@ -175,7 +171,6 @@
 - Upgraded `azure-core` from `1.49.1` to version `1.50.0`.
 - Upgraded `azure-core-http-netty` from `1.15.1` to version `1.15.2`.
 
-
 ## 5.4.7 (2024-06-25)
 
 ### Other Changes
@@ -184,7 +179,6 @@
 
 - Upgraded `azure-core` from `1.49.0` to version `1.49.1`.
 - Upgraded `azure-core-http-netty` from `1.15.0` to version `1.15.1`.
-
 
 ## 5.4.6 (2024-05-28)
 
@@ -195,7 +189,6 @@
 - Upgraded `azure-core` from `1.48.0` to version `1.49.0`.
 - Upgraded `azure-core-http-netty` from `1.14.2` to version `1.15.0`.
 
-
 ## 5.4.5 (2024-04-23)
 
 ### Other Changes
@@ -204,7 +197,6 @@
 
 - Upgraded `azure-core` from `1.47.0` to version `1.48.0`.
 - Upgraded `azure-core-http-netty` from `1.14.1` to version `1.14.2`.
-
 
 ## 5.4.4 (2024-03-20)
 
@@ -215,7 +207,6 @@
 - Upgraded `azure-core` from `1.46.0` to version `1.47.0`.
 - Upgraded `azure-core-http-netty` from `1.14.0` to version `1.14.1`.
 
-
 ## 5.4.3 (2024-02-20)
 
 ### Other Changes
@@ -224,7 +215,6 @@
 
 - Upgraded `azure-core-http-netty` from `1.13.11` to version `1.14.0`.
 - Upgraded `azure-core` from `1.45.1` to version `1.46.0`.
-
 
 ## 5.4.2 (2023-12-04)
 
@@ -283,7 +273,6 @@
 - Upgraded `azure-core-http-netty` from `1.13.4` to version `1.13.5`.
 - Upgraded `azure-core` from `1.40.0` to version `1.41.0`.
 
-
 ## 5.3.0 (2023-06-15)
 
 This version of the client library defaults to the service API version 2023-04-01.
@@ -294,7 +283,7 @@ This version of the client library defaults to the service API version 2023-04-0
 
 ### Breaking Changes
 > Note: The following changes are only breaking from the previous beta. They are not breaking against previous stable versions.
-- Removed `Auto Language Detection`, `Dynamic Classification`, `Entity Resoluton`, and `Healthcare FHIR` features,
+- Removed `Auto Language Detection`, `Dynamic Classification`, `Entity Resolution`, and `Healthcare FHIR` features,
   which were introduced in the previous beta releases.
 - Renamed class:
   `SummaryContext` to `AbstractiveSummaryContext`,
@@ -310,7 +299,7 @@ This version of the client library defaults to the service API version 2023-04-0
   `ExtractSummaryPagedIterable` to `ExtractiveSummaryPagedIterable`,
   `AbstractSummaryOptions` to `AbstractiveSummaryOptions`,
   `AbstractSummaryAction` to `AbstractiveSummaryAction`,
-  `AbstractSummaryActionResult` to `AbtractiveSummaryActionResult`,
+  `AbstractSummaryActionResult` to `AbstractiveSummaryActionResult`,
   `AbstractSummaryResultCollection` to `AbstractiveSummaryResultCollection`
   `AbstractSummaryResult` to `AbstractiveSummaryResult`,
   `AbstractSummaryOperationDetail` to `AbstractiveSummaryOperationDetail`,
@@ -372,7 +361,7 @@ This version of the client library defaults to the service API version 2023-04-0
 
 ### Breaking Changes
 - Changed `dynamic classify categories` as a required parameter in dynamic text classification methods.
-- Renamed naming phrase `DynamicClassficationXXX` to `DynamicClassifyXXX` in class name, method name.
+- Renamed naming phrase `DynamicClassificationXXX` to `DynamicClassifyXXX` in class name, method name.
 - Changed `BaseResolution` to an abstract class.
 - Removed class `BooleanResolution` and enum value `BooleanResolution` in the class `ResolutionKind`.
 - Renamed `maxSentenceCount` to `sentenceCount` in abstractive summarization.
@@ -705,9 +694,9 @@ library defaults to the latest supported API version, which currently is `2022-0
 
 ### Breaking Changes
 - Removed `PiiEntity` constructor and `PiiEntity`'s `category` property is no longer a type of `EntityCategory` but use a new introduced type `PiiEntityCategory`.
-- Replace `isNegated` by `HealthcareEntityAssertion` to `HealthcareEntity` which further exposes `EntityAssociation`, `EntityCertainity` and `EntityConditionality`.
+- Replace `isNegated` by `HealthcareEntityAssertion` to `HealthcareEntity` which further exposes `EntityAssociation`, `EntityCertainty` and `EntityConditionality`.
 - Renamed classes,
-  `AspectSentiment` to `TargetSentiment`, `OpinionSentiment` to `AssesssmentSentiment`, `MinedOpinion` to `SentenceOpinion`.
+  `AspectSentiment` to `TargetSentiment`, `OpinionSentiment` to `AssessmentSentiment`, `MinedOpinion` to `SentenceOpinion`.
 - Renamed
   `SentenceSentiment`'s method, `getMinedOpinions()` to `getOpinions()`.
   `MinedOpinion`'s methods, `getAspect()` to `getTarget()`, `getOpinions()` to `getAssessments()`.

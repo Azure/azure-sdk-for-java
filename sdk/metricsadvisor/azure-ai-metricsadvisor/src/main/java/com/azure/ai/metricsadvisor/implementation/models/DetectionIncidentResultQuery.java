@@ -5,6 +5,8 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,21 +23,25 @@ public final class DetectionIncidentResultQuery implements JsonSerializable<Dete
     /*
      * start time
      */
+    @Generated
     private OffsetDateTime startTime;
 
     /*
      * end time
      */
+    @Generated
     private OffsetDateTime endTime;
 
     /*
      * The filter property.
      */
+    @Generated
     private DetectionIncidentFilterCondition filter;
 
     /**
      * Creates an instance of DetectionIncidentResultQuery class.
      */
+    @Generated
     public DetectionIncidentResultQuery() {
     }
 
@@ -44,6 +50,7 @@ public final class DetectionIncidentResultQuery implements JsonSerializable<Dete
      * 
      * @return the startTime value.
      */
+    @Generated
     public OffsetDateTime getStartTime() {
         return this.startTime;
     }
@@ -54,6 +61,7 @@ public final class DetectionIncidentResultQuery implements JsonSerializable<Dete
      * @param startTime the startTime value to set.
      * @return the DetectionIncidentResultQuery object itself.
      */
+    @Generated
     public DetectionIncidentResultQuery setStartTime(OffsetDateTime startTime) {
         this.startTime = startTime;
         return this;
@@ -64,6 +72,7 @@ public final class DetectionIncidentResultQuery implements JsonSerializable<Dete
      * 
      * @return the endTime value.
      */
+    @Generated
     public OffsetDateTime getEndTime() {
         return this.endTime;
     }
@@ -74,6 +83,7 @@ public final class DetectionIncidentResultQuery implements JsonSerializable<Dete
      * @param endTime the endTime value to set.
      * @return the DetectionIncidentResultQuery object itself.
      */
+    @Generated
     public DetectionIncidentResultQuery setEndTime(OffsetDateTime endTime) {
         this.endTime = endTime;
         return this;
@@ -84,6 +94,7 @@ public final class DetectionIncidentResultQuery implements JsonSerializable<Dete
      * 
      * @return the filter value.
      */
+    @Generated
     public DetectionIncidentFilterCondition getFilter() {
         return this.filter;
     }
@@ -94,11 +105,16 @@ public final class DetectionIncidentResultQuery implements JsonSerializable<Dete
      * @param filter the filter value to set.
      * @return the DetectionIncidentResultQuery object itself.
      */
+    @Generated
     public DetectionIncidentResultQuery setFilter(DetectionIncidentFilterCondition filter) {
         this.filter = filter;
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -119,6 +135,7 @@ public final class DetectionIncidentResultQuery implements JsonSerializable<Dete
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DetectionIncidentResultQuery.
      */
+    @Generated
     public static DetectionIncidentResultQuery fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DetectionIncidentResultQuery deserializedDetectionIncidentResultQuery = new DetectionIncidentResultQuery();
@@ -127,11 +144,11 @@ public final class DetectionIncidentResultQuery implements JsonSerializable<Dete
                 reader.nextToken();
 
                 if ("startTime".equals(fieldName)) {
-                    deserializedDetectionIncidentResultQuery.startTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedDetectionIncidentResultQuery.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("endTime".equals(fieldName)) {
-                    deserializedDetectionIncidentResultQuery.endTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedDetectionIncidentResultQuery.endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("filter".equals(fieldName)) {
                     deserializedDetectionIncidentResultQuery.filter = DetectionIncidentFilterCondition.fromJson(reader);
                 } else {
