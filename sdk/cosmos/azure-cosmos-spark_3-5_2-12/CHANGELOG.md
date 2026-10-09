@@ -1,5 +1,17 @@
 ## Release History
 
+### 4.51.0-beta.1 (Unreleased)
+
+#### Features Added
+
+#### Breaking Changes
+
+#### Bugs Fixed
+
+#### Other Changes
+
+* Upgraded Jackson from `2.18.9` to `2.18.11`.
+
 ### 4.50.0 (2026-09-22)
 
 #### Other Changes

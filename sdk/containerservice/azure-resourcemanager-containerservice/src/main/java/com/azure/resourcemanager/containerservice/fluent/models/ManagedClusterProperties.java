@@ -184,7 +184,10 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
      * Whether to enable FIPS mode at the cluster level. When enabled, this setting enforces FIPS compliance for all
      * AKS-managed components, such as the node operating system, addons, and [managed containerized
      * components](https://aka.ms/aks/components/docs). See [Enable cluster-wide FIPS](https://aka.ms/aks/fips) for more
-     * details. When this property is enabled, all node pools in the cluster must also be FIPS-enabled.
+     * details. When this property is enabled, all node pools in the cluster must also be FIPS-enabled. Although this
+     * property is available in a stable API version, cluster-wide FIPS remains a preview feature. Write requests whose
+     * resulting cluster state has this property set to true require the `Microsoft.ContainerService/EnableFIPSPreview`
+     * subscription feature registration.
      */
     private Boolean enableFips;
 
@@ -768,7 +771,9 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
      * enforces FIPS compliance for all AKS-managed components, such as the node operating system, addons, and [managed
      * containerized components](https://aka.ms/aks/components/docs). See [Enable cluster-wide
      * FIPS](https://aka.ms/aks/fips) for more details. When this property is enabled, all node pools in the cluster
-     * must also be FIPS-enabled.
+     * must also be FIPS-enabled. Although this property is available in a stable API version, cluster-wide FIPS remains
+     * a preview feature. Write requests whose resulting cluster state has this property set to true require the
+     * `Microsoft.ContainerService/EnableFIPSPreview` subscription feature registration.
      * 
      * @return the enableFips value.
      */
@@ -781,7 +786,9 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
      * enforces FIPS compliance for all AKS-managed components, such as the node operating system, addons, and [managed
      * containerized components](https://aka.ms/aks/components/docs). See [Enable cluster-wide
      * FIPS](https://aka.ms/aks/fips) for more details. When this property is enabled, all node pools in the cluster
-     * must also be FIPS-enabled.
+     * must also be FIPS-enabled. Although this property is available in a stable API version, cluster-wide FIPS remains
+     * a preview feature. Write requests whose resulting cluster state has this property set to true require the
+     * `Microsoft.ContainerService/EnableFIPSPreview` subscription feature registration.
      * 
      * @param enableFips the enableFips value to set.
      * @return the ManagedClusterProperties object itself.

@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class FullTextPathTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FullTextPath model = BinaryData.fromString("{\"path\":\"vldspa\",\"language\":\"jbkkdmflvestmjl\"}")
-            .toObject(FullTextPath.class);
-        Assertions.assertEquals("vldspa", model.path());
-        Assertions.assertEquals("jbkkdmflvestmjl", model.language());
+        FullTextPath model
+            = BinaryData.fromString("{\"path\":\"yb\",\"language\":\"wpgdak\"}").toObject(FullTextPath.class);
+        Assertions.assertEquals("yb", model.path());
+        Assertions.assertEquals("wpgdak", model.language());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FullTextPath model = new FullTextPath().withPath("vldspa").withLanguage("jbkkdmflvestmjl");
+        FullTextPath model = new FullTextPath().withPath("yb").withLanguage("wpgdak");
         model = BinaryData.fromObject(model).toObject(FullTextPath.class);
-        Assertions.assertEquals("vldspa", model.path());
-        Assertions.assertEquals("jbkkdmflvestmjl", model.language());
+        Assertions.assertEquals("yb", model.path());
+        Assertions.assertEquals("wpgdak", model.language());
     }
 }

@@ -13,7 +13,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.compute.bulkactions.fluent.models.LocationBasedBulkCreateInner;
 import com.azure.resourcemanager.compute.bulkactions.fluent.models.OperationStatusResultInner;
-import com.azure.resourcemanager.compute.bulkactions.models.ResourceOperation;
+import com.azure.resourcemanager.compute.bulkactions.fluent.models.ResourceOperationInner;
 
 /**
  * An instance of this class provides access to all the operations defined in BulkCreatesClient.
@@ -272,7 +272,7 @@ public interface BulkCreatesClient {
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ResourceOperation> virtualMachinesGetOperationStatus(String resourceGroupName, String location,
+    PagedIterable<ResourceOperationInner> virtualMachinesGetOperationStatus(String resourceGroupName, String location,
         String name);
 
     /**
@@ -289,7 +289,7 @@ public interface BulkCreatesClient {
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ResourceOperation> virtualMachinesGetOperationStatus(String resourceGroupName, String location,
+    PagedIterable<ResourceOperationInner> virtualMachinesGetOperationStatus(String resourceGroupName, String location,
         String name, Context context);
 
     /**

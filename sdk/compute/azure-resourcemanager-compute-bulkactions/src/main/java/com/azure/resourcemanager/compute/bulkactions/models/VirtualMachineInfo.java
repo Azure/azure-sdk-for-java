@@ -17,12 +17,12 @@ import java.io.IOException;
 @Immutable
 public final class VirtualMachineInfo implements JsonSerializable<VirtualMachineInfo> {
     /*
-     * The name of the VM size, eg Standard_D2ads_v5
+     * The virtual machine SKU, for example `Standard_D2ads_v5`.
      */
     private String vmSize;
 
     /*
-     * The zone identifier
+     * The availability zone identifier.
      */
     private String zone;
 
@@ -38,7 +38,7 @@ public final class VirtualMachineInfo implements JsonSerializable<VirtualMachine
     }
 
     /**
-     * Get the vmSize property: The name of the VM size, eg Standard_D2ads_v5.
+     * Get the vmSize property: The virtual machine SKU, for example `Standard_D2ads_v5`.
      * 
      * @return the vmSize value.
      */
@@ -47,7 +47,7 @@ public final class VirtualMachineInfo implements JsonSerializable<VirtualMachine
     }
 
     /**
-     * Get the zone property: The zone identifier.
+     * Get the zone property: The availability zone identifier.
      * 
      * @return the zone value.
      */

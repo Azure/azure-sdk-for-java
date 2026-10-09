@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class DatabaseAccountsCheckNameExistsSamples {
     /*
-     * x-ms-original-file: 2026-03-15/CosmosDBDatabaseAccountCheckNameExists.json
+     * x-ms-original-file: 2026-04-01-preview/CosmosDBDatabaseAccountCheckNameExists.json
      */
     /**
      * Sample code: CosmosDBDatabaseAccountCheckNameExists.

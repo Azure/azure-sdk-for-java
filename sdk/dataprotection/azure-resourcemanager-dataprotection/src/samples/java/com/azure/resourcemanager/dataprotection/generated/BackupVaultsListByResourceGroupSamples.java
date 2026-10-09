@@ -9,7 +9,7 @@ package com.azure.resourcemanager.dataprotection.generated;
  */
 public final class BackupVaultsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-06-01/VaultCRUD/GetBackupVaultsInResourceGroup.json
+     * x-ms-original-file: 2026-07-01/VaultCRUD/GetBackupVaultsInResourceGroup.json
      */
     /**
      * Sample code: Get BackupVaults in ResourceGroup.

@@ -5,7 +5,6 @@ package com.azure.ai.agents.tools;
 
 import com.azure.ai.agents.AgentsAsyncClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.SampleUtils;
 import com.azure.ai.agents.models.A2AProtocolVersion;
 import com.azure.ai.agents.models.A2ATool;
 import com.azure.ai.agents.models.AgentVersionDetails;
@@ -59,11 +58,10 @@ public class AgentToAgentAsync {
                 agentRef.set(agent);
                 System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());
 
-                return SampleUtils.pinAgentVersion(agentsAsyncClient, agent)
-                    .then(Mono.fromFuture(() -> openAIAsyncClient.responses().create(
-                        ResponseCreateParams.builder()
-                            .input("What can the secondary agent do?")
-                            .build())));
+                return Mono.fromFuture(() -> openAIAsyncClient.responses().create(
+                    ResponseCreateParams.builder()
+                        .input("What can the secondary agent do?")
+                        .build()));
             })
             .doOnNext(response -> {
                 System.out.println("Response: " + response.output());

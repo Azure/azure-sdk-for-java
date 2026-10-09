@@ -1,5 +1,17 @@
 ## Release History
 
+### 1.0.0-beta.22 (Unreleased)
+
+#### Features Added
+
+* Added support for injecting address-refresh request timeout, internal server, compute internal, partition failover, service unavailable, lease not found, channel closed, partition migration retry-limit, and read quorum errors.
+
+#### Breaking Changes
+
+#### Bugs Fixed
+
+#### Other Changes
+
 ### 1.0.0-beta.21 (2026-09-22)
 
 #### Other Changes
