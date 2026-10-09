@@ -12,11 +12,11 @@ public final class MetricsObjectFirewallResourceListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MetricsObjectFirewallResourceListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"applicationInsightsResourceId\":\"s\",\"applicationInsightsConnectionString\":\"wprtu\",\"panEtag\":\"sawddjibabxvi\",\"provisioningState\":\"Creating\"},\"id\":\"tzeexav\",\"name\":\"xtfglecdmdqb\",\"type\":\"pypqtgsfj\"}],\"nextLink\":\"b\"}")
+            "{\"value\":[{\"properties\":{\"applicationInsightsResourceId\":\"m\",\"applicationInsightsConnectionString\":\"xmeb\",\"panEtag\":\"scjpahlxv\",\"provisioningState\":\"Accepted\"},\"id\":\"qxnmwmqt\",\"name\":\"bxyijddtvq\",\"type\":\"ttadijae\"}],\"nextLink\":\"mrsieekp\"}")
             .toObject(MetricsObjectFirewallResourceListResult.class);
-        Assertions.assertEquals("s", model.value().get(0).applicationInsightsResourceId());
-        Assertions.assertEquals("wprtu", model.value().get(0).applicationInsightsConnectionString());
-        Assertions.assertEquals("sawddjibabxvi", model.value().get(0).panEtag());
-        Assertions.assertEquals("b", model.nextLink());
+        Assertions.assertEquals("m", model.value().get(0).applicationInsightsResourceId());
+        Assertions.assertEquals("xmeb", model.value().get(0).applicationInsightsConnectionString());
+        Assertions.assertEquals("scjpahlxv", model.value().get(0).panEtag());
+        Assertions.assertEquals("mrsieekp", model.nextLink());
     }
 }

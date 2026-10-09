@@ -39,7 +39,7 @@ import java.util.Map;
  */
 public final class FirewallsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-10-08/Firewalls_Update_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/Firewalls_Update_MinimumSet_Gen.json
      */
     /**
      * Sample code: Firewalls_Update_MinimumSet_Gen.
@@ -55,7 +55,7 @@ public final class FirewallsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/Firewalls_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/Firewalls_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: Firewalls_Update_MaximumSet_Gen.

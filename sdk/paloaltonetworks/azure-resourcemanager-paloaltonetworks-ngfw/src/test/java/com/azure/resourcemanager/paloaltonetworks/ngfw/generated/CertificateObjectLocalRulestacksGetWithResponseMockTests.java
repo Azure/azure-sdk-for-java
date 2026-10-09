@@ -22,7 +22,7 @@ public final class CertificateObjectLocalRulestacksGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"certificateSignerResourceId\":\"qbglcjkaysp\",\"certificateSelfSigned\":\"TRUE\",\"auditComment\":\"odubtlmjt\",\"description\":\"lioskkfmkmfdjx\",\"etag\":\"gbkkqvjcteoed\",\"provisioningState\":\"Updating\"},\"id\":\"skkzpxvjnzdpvo\",\"name\":\"ojhpcnabxzfsn\",\"type\":\"gyte\"}";
+            = "{\"properties\":{\"certificateSignerResourceId\":\"plixlajmllpqu\",\"certificateSelfSigned\":\"TRUE\",\"auditComment\":\"am\",\"description\":\"wg\",\"etag\":\"tmk\",\"provisioningState\":\"Succeeded\"},\"id\":\"kzwaqxofq\",\"name\":\"vchiqbpl\",\"type\":\"fidusztekxbyjgm\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,13 +32,13 @@ public final class CertificateObjectLocalRulestacksGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         CertificateObjectLocalRulestackResource response = manager.certificateObjectLocalRulestacks()
-            .getWithResponse("ygg", "pmcrdcuelj", "iahxmfqryarvs", com.azure.core.util.Context.NONE)
+            .getWithResponse("kkwa", "es", "yfjlpzeqto", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("qbglcjkaysp", response.certificateSignerResourceId());
+        Assertions.assertEquals("plixlajmllpqu", response.certificateSignerResourceId());
         Assertions.assertEquals(BooleanEnum.TRUE, response.certificateSelfSigned());
-        Assertions.assertEquals("odubtlmjt", response.auditComment());
-        Assertions.assertEquals("lioskkfmkmfdjx", response.description());
-        Assertions.assertEquals("gbkkqvjcteoed", response.etag());
+        Assertions.assertEquals("am", response.auditComment());
+        Assertions.assertEquals("wg", response.description());
+        Assertions.assertEquals("tmk", response.etag());
     }
 }

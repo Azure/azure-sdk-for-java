@@ -11,7 +11,7 @@ public final class PanoramaStatusTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PanoramaStatus model
-            = BinaryData.fromString("{\"panoramaServerStatus\":\"UP\",\"panoramaServer2Status\":\"DOWN\"}")
+            = BinaryData.fromString("{\"panoramaServerStatus\":\"DOWN\",\"panoramaServer2Status\":\"UP\"}")
                 .toObject(PanoramaStatus.class);
     }
 }

@@ -28,7 +28,7 @@ public final class PrefixListLocalRulestacksDeleteMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.prefixListLocalRulestacks()
-            .delete("zjwhsetwwjwz", "qseuzuukykcyqhy", "qzzdcykeyste", com.azure.core.util.Context.NONE);
+            .delete("bnhrxlelfjhkeiz", "pihtdmiwjekpt", "caydbjzcqymlcfnz", com.azure.core.util.Context.NONE);
 
     }
 }

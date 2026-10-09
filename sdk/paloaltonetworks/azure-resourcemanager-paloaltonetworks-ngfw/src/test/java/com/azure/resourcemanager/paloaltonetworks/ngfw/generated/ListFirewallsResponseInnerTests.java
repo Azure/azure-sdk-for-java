@@ -12,9 +12,10 @@ public final class ListFirewallsResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ListFirewallsResponseInner model = BinaryData
-            .fromString("{\"value\":[\"sicohoqqnwvlry\",\"vwhheunmmqhgyx\",\"konocu\"],\"nextLink\":\"klyaxuconu\"}")
+            .fromString(
+                "{\"value\":[\"haaxdbabphl\",\"rqlfktsthsucocmn\",\"yazttbtwwrqpue\"],\"nextLink\":\"kzywbiex\"}")
             .toObject(ListFirewallsResponseInner.class);
-        Assertions.assertEquals("sicohoqqnwvlry", model.value().get(0));
-        Assertions.assertEquals("klyaxuconu", model.nextLink());
+        Assertions.assertEquals("haaxdbabphl", model.value().get(0));
+        Assertions.assertEquals("kzywbiex", model.nextLink());
     }
 }

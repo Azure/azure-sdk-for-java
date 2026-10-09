@@ -13,21 +13,23 @@ public final class MarketplaceDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MarketplaceDetails model = BinaryData.fromString(
-            "{\"marketplaceSubscriptionId\":\"rc\",\"offerId\":\"pyklyhpluodpvru\",\"publisherId\":\"dlgzibthostgkt\",\"marketplaceSubscriptionStatus\":\"Subscribed\"}")
+            "{\"marketplaceSubscriptionId\":\"pjbi\",\"offerId\":\"gjmfxumvfcl\",\"publisherId\":\"yo\",\"marketplaceSubscriptionStatus\":\"PendingFulfillmentStart\"}")
             .toObject(MarketplaceDetails.class);
-        Assertions.assertEquals("pyklyhpluodpvru", model.offerId());
-        Assertions.assertEquals("dlgzibthostgkt", model.publisherId());
-        Assertions.assertEquals(MarketplaceSubscriptionStatus.SUBSCRIBED, model.marketplaceSubscriptionStatus());
+        Assertions.assertEquals("gjmfxumvfcl", model.offerId());
+        Assertions.assertEquals("yo", model.publisherId());
+        Assertions.assertEquals(MarketplaceSubscriptionStatus.PENDING_FULFILLMENT_START,
+            model.marketplaceSubscriptionStatus());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MarketplaceDetails model = new MarketplaceDetails().withOfferId("pyklyhpluodpvru")
-            .withPublisherId("dlgzibthostgkt")
-            .withMarketplaceSubscriptionStatus(MarketplaceSubscriptionStatus.SUBSCRIBED);
+        MarketplaceDetails model = new MarketplaceDetails().withOfferId("gjmfxumvfcl")
+            .withPublisherId("yo")
+            .withMarketplaceSubscriptionStatus(MarketplaceSubscriptionStatus.PENDING_FULFILLMENT_START);
         model = BinaryData.fromObject(model).toObject(MarketplaceDetails.class);
-        Assertions.assertEquals("pyklyhpluodpvru", model.offerId());
-        Assertions.assertEquals("dlgzibthostgkt", model.publisherId());
-        Assertions.assertEquals(MarketplaceSubscriptionStatus.SUBSCRIBED, model.marketplaceSubscriptionStatus());
+        Assertions.assertEquals("gjmfxumvfcl", model.offerId());
+        Assertions.assertEquals("yo", model.publisherId());
+        Assertions.assertEquals(MarketplaceSubscriptionStatus.PENDING_FULFILLMENT_START,
+            model.marketplaceSubscriptionStatus());
     }
 }

@@ -12,7 +12,7 @@ import java.util.Arrays;
  */
 public final class PrefixListGlobalRulestackCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-10-08/PrefixListGlobalRulestack_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/PrefixListGlobalRulestack_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: PrefixListGlobalRulestack_CreateOrUpdate_MaximumSet_Gen.
@@ -31,7 +31,7 @@ public final class PrefixListGlobalRulestackCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/PrefixListGlobalRulestack_CreateOrUpdate_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/PrefixListGlobalRulestack_CreateOrUpdate_MinimumSet_Gen.json
      */
     /**
      * Sample code: PrefixListGlobalRulestack_CreateOrUpdate_MinimumSet_Gen.

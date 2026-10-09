@@ -9,7 +9,7 @@ package com.azure.resourcemanager.paloaltonetworks.ngfw.generated;
  */
 public final class CertificateObjectGlobalRulestackListSamples {
     /*
-     * x-ms-original-file: 2025-10-08/CertificateObjectGlobalRulestack_List_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/CertificateObjectGlobalRulestack_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: CertificateObjectGlobalRulestack_List_MaximumSet_Gen.
@@ -22,7 +22,7 @@ public final class CertificateObjectGlobalRulestackListSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/CertificateObjectGlobalRulestack_List_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/CertificateObjectGlobalRulestack_List_MinimumSet_Gen.json
      */
     /**
      * Sample code: CertificateObjectGlobalRulestack_List_MinimumSet_Gen.

@@ -22,7 +22,7 @@ public final class GlobalRulestacksListAdvancedSecurityObjectsWithResponseMockTe
     @Test
     public void testListAdvancedSecurityObjectsWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":{\"type\":\"lbnseqac\",\"entry\":[{\"name\":\"vpilg\",\"description\":\"oq\"},{\"name\":\"agmdit\",\"description\":\"eiookjbsah\"},{\"name\":\"tdtpdelqacslmo\",\"description\":\"ebnfxofvc\"}]},\"nextLink\":\"gdirazf\"}";
+            = "{\"value\":{\"type\":\"rhpw\",\"entry\":[{\"name\":\"ddei\",\"description\":\"wzovgk\"},{\"name\":\"um\",\"description\":\"kjcjcaztbwsnsqow\"}]},\"nextLink\":\"comlikytwvczc\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,13 +32,13 @@ public final class GlobalRulestacksListAdvancedSecurityObjectsWithResponseMockTe
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         AdvSecurityObjectListResponse response = manager.globalRulestacks()
-            .listAdvancedSecurityObjectsWithResponse("jleziunjx", AdvSecurityObjectTypeEnum.URL_CUSTOM, "zantkwceg",
-                1902347173, com.azure.core.util.Context.NONE)
+            .listAdvancedSecurityObjectsWithResponse("ggsvoujkxibdaf", AdvSecurityObjectTypeEnum.URL_CUSTOM,
+                "kmdyomkxfbvfbh", 200922130, com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("lbnseqac", response.value().type());
-        Assertions.assertEquals("vpilg", response.value().entry().get(0).name());
-        Assertions.assertEquals("oq", response.value().entry().get(0).description());
-        Assertions.assertEquals("gdirazf", response.nextLink());
+        Assertions.assertEquals("rhpw", response.value().type());
+        Assertions.assertEquals("ddei", response.value().entry().get(0).name());
+        Assertions.assertEquals("wzovgk", response.value().entry().get(0).description());
+        Assertions.assertEquals("comlikytwvczc", response.nextLink());
     }
 }

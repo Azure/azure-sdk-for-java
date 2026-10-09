@@ -13,24 +13,24 @@ public final class PrefixObjectTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrefixObject model = BinaryData.fromString(
-            "{\"description\":\"ptramxj\",\"prefixList\":[\"wlwnwxuqlcv\"],\"etag\":\"ypatdooaojkniod\",\"auditComment\":\"oebwnujhemms\",\"provisioningState\":\"Accepted\"}")
+            "{\"description\":\"kotl\",\"prefixList\":[\"d\"],\"etag\":\"gsyocogj\",\"auditComment\":\"dtbnnha\",\"provisioningState\":\"Deleting\"}")
             .toObject(PrefixObject.class);
-        Assertions.assertEquals("ptramxj", model.description());
-        Assertions.assertEquals("wlwnwxuqlcv", model.prefixList().get(0));
-        Assertions.assertEquals("ypatdooaojkniod", model.etag());
-        Assertions.assertEquals("oebwnujhemms", model.auditComment());
+        Assertions.assertEquals("kotl", model.description());
+        Assertions.assertEquals("d", model.prefixList().get(0));
+        Assertions.assertEquals("gsyocogj", model.etag());
+        Assertions.assertEquals("dtbnnha", model.auditComment());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrefixObject model = new PrefixObject().withDescription("ptramxj")
-            .withPrefixList(Arrays.asList("wlwnwxuqlcv"))
-            .withEtag("ypatdooaojkniod")
-            .withAuditComment("oebwnujhemms");
+        PrefixObject model = new PrefixObject().withDescription("kotl")
+            .withPrefixList(Arrays.asList("d"))
+            .withEtag("gsyocogj")
+            .withAuditComment("dtbnnha");
         model = BinaryData.fromObject(model).toObject(PrefixObject.class);
-        Assertions.assertEquals("ptramxj", model.description());
-        Assertions.assertEquals("wlwnwxuqlcv", model.prefixList().get(0));
-        Assertions.assertEquals("ypatdooaojkniod", model.etag());
-        Assertions.assertEquals("oebwnujhemms", model.auditComment());
+        Assertions.assertEquals("kotl", model.description());
+        Assertions.assertEquals("d", model.prefixList().get(0));
+        Assertions.assertEquals("gsyocogj", model.etag());
+        Assertions.assertEquals("dtbnnha", model.auditComment());
     }
 }
