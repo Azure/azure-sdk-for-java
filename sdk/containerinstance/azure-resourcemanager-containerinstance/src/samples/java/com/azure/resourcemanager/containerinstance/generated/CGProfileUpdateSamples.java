@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class CGProfileUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-01/ContainerGroupProfilesPatch.json
+     * x-ms-original-file: 2026-08-01-preview/ContainerGroupProfilesPatch.json
      */
     /**
      * Sample code: ContainerGroupProfilesPatch.
