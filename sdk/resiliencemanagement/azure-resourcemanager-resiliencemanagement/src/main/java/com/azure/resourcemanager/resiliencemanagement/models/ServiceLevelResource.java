@@ -12,19 +12,14 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The Service level resource model.
+ * A service-level resource associated with a goal assignment.
  */
 @Fluent
 public final class ServiceLevelResource implements JsonSerializable<ServiceLevelResource> {
     /*
-     * The arm id of the service level indicator resource
+     * The ARM resource ID of the service-level indicator resource.
      */
     private String serviceLevelIndicatorResourceId;
-
-    /*
-     * The arm id of the service level object resource
-     */
-    private String serviceLevelObjectiveResourceId;
 
     /**
      * Creates an instance of ServiceLevelResource class.
@@ -33,7 +28,7 @@ public final class ServiceLevelResource implements JsonSerializable<ServiceLevel
     }
 
     /**
-     * Get the serviceLevelIndicatorResourceId property: The arm id of the service level indicator resource.
+     * Get the serviceLevelIndicatorResourceId property: The ARM resource ID of the service-level indicator resource.
      * 
      * @return the serviceLevelIndicatorResourceId value.
      */
@@ -42,7 +37,7 @@ public final class ServiceLevelResource implements JsonSerializable<ServiceLevel
     }
 
     /**
-     * Set the serviceLevelIndicatorResourceId property: The arm id of the service level indicator resource.
+     * Set the serviceLevelIndicatorResourceId property: The ARM resource ID of the service-level indicator resource.
      * 
      * @param serviceLevelIndicatorResourceId the serviceLevelIndicatorResourceId value to set.
      * @return the ServiceLevelResource object itself.
@@ -53,33 +48,12 @@ public final class ServiceLevelResource implements JsonSerializable<ServiceLevel
     }
 
     /**
-     * Get the serviceLevelObjectiveResourceId property: The arm id of the service level object resource.
-     * 
-     * @return the serviceLevelObjectiveResourceId value.
-     */
-    public String serviceLevelObjectiveResourceId() {
-        return this.serviceLevelObjectiveResourceId;
-    }
-
-    /**
-     * Set the serviceLevelObjectiveResourceId property: The arm id of the service level object resource.
-     * 
-     * @param serviceLevelObjectiveResourceId the serviceLevelObjectiveResourceId value to set.
-     * @return the ServiceLevelResource object itself.
-     */
-    public ServiceLevelResource withServiceLevelObjectiveResourceId(String serviceLevelObjectiveResourceId) {
-        this.serviceLevelObjectiveResourceId = serviceLevelObjectiveResourceId;
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("serviceLevelIndicatorResourceId", this.serviceLevelIndicatorResourceId);
-        jsonWriter.writeStringField("serviceLevelObjectiveResourceId", this.serviceLevelObjectiveResourceId);
         return jsonWriter.writeEndObject();
     }
 
@@ -101,8 +75,6 @@ public final class ServiceLevelResource implements JsonSerializable<ServiceLevel
 
                 if ("serviceLevelIndicatorResourceId".equals(fieldName)) {
                     deserializedServiceLevelResource.serviceLevelIndicatorResourceId = reader.getString();
-                } else if ("serviceLevelObjectiveResourceId".equals(fieldName)) {
-                    deserializedServiceLevelResource.serviceLevelObjectiveResourceId = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
