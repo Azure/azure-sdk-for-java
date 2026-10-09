@@ -367,9 +367,9 @@ public final class KnowledgeBaseRetrievalAsyncClient {
      *
      * Events are polymorphic: see {@link KnowledgeBaseRetrievalStreamEvent} for the known subtypes. Use a known
      * subtype's {@code getValue()} to access its typed payload, for example
-     * {@link com.azure.search.documents.knowledgebases.models.KnowledgeBaseAnswerCompletedStreamEvent#getValue()}. For
-     * every event, including unrecognized names, {@link KnowledgeBaseRetrievalStreamEvent#getRawValue()} provides the
-     * original decoded SSE data with multiline data joined by newlines, not the complete wire frame.
+     * {@link com.azure.search.documents.knowledgebases.models.KnowledgeBaseAnswerCompletedStreamEvent#getValue()}.
+     * Unrecognized events expose only their names through {@link KnowledgeBaseRetrievalStreamEvent#getEventName()};
+     * their payloads are not available.
      *
      * If received, the terminal {@code error} or {@code response.completed} event is emitted before the stream
      * completes. End-of-stream without a terminal event completes normally. Transport and decoding failures are
@@ -455,9 +455,9 @@ public final class KnowledgeBaseRetrievalAsyncClient {
      *
      * Events are polymorphic: see {@link KnowledgeBaseRetrievalStreamEvent} for the known subtypes. Use a known
      * subtype's {@code getValue()} to access its typed payload, for example
-     * {@link com.azure.search.documents.knowledgebases.models.KnowledgeBaseAnswerCompletedStreamEvent#getValue()}. For
-     * every event, including unrecognized names, {@link KnowledgeBaseRetrievalStreamEvent#getRawValue()} provides the
-     * original decoded SSE data with multiline data joined by newlines, not the complete wire frame.
+     * {@link com.azure.search.documents.knowledgebases.models.KnowledgeBaseAnswerCompletedStreamEvent#getValue()}.
+     * Unrecognized events expose only their names through {@link KnowledgeBaseRetrievalStreamEvent#getEventName()};
+     * their payloads are not available.
      *
      * If received, the terminal {@code error} or {@code response.completed} event is emitted before the stream
      * completes. End-of-stream without a terminal event completes normally. Transport and decoding failures are

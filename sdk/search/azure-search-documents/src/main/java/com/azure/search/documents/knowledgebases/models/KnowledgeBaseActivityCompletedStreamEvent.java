@@ -4,13 +4,10 @@ package com.azure.search.documents.knowledgebases.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import java.io.IOException;
-import java.io.UncheckedIOException;
 
 /**
  * Represents the {@code activity.completed} knowledge base retrieval stream event.
- * Access the typed payload with {@link #getValue()} or the decoded SSE data with {@link #getRawValue()}.
+ * Access the typed payload with {@link #getValue()}.
  *
  * @see KnowledgeBaseRetrievalStreamEvent
  */
@@ -27,7 +24,8 @@ public final class KnowledgeBaseActivityCompletedStreamEvent extends KnowledgeBa
      */
     @Generated
     public KnowledgeBaseActivityCompletedStreamEvent(KnowledgeBaseActivityRecord value) {
-        this(value, null);
+        super("activity.completed");
+        this.value = value;
     }
 
     /**
@@ -39,42 +37,4 @@ public final class KnowledgeBaseActivityCompletedStreamEvent extends KnowledgeBa
     public KnowledgeBaseActivityRecord getValue() {
         return value;
     }
-
-    /**
-     * Creates an event wrapper with its original decoded SSE data.
-     *
-     * @param value The event payload.
-     * @param rawValue The original decoded SSE data, or null to serialize the payload lazily.
-     */
-    @Generated
-    public KnowledgeBaseActivityCompletedStreamEvent(KnowledgeBaseActivityRecord value, String rawValue) {
-        super("activity.completed", rawValue);
-        this.value = value;
-    }
-
-    /**
-     * Gets the original decoded SSE data, or lazily generated JSON for the current payload.
-     * Supplied data, including an empty string, always takes precedence over the typed payload.
-     * Generated JSON is not cached and need not match an original wire representation.
-     *
-     * @return The supplied data, generated payload JSON, or null if neither data nor payload is present.
-     * @throws UncheckedIOException If payload serialization fails.
-     */
-    @Generated
-    @Override
-    public String getRawValue() {
-        String rawValue = super.getRawValue();
-        if (rawValue != null || value == null) {
-            return rawValue;
-        }
-        try {
-            return value.toJsonString();
-        } catch (IOException exception) {
-            throw LOGGER.logExceptionAsError(new UncheckedIOException(
-                "Failed to serialize knowledge base retrieval stream event: activity.completed", exception));
-        }
-    }
-
-    @Generated
-    private static final ClientLogger LOGGER = new ClientLogger(KnowledgeBaseActivityCompletedStreamEvent.class);
 }

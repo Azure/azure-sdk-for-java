@@ -299,9 +299,8 @@ public class SearchCustomizations extends Customization {
         return "Events are polymorphic: see {@link KnowledgeBaseRetrievalStreamEvent} for the known subtypes. "
             + "Use a known subtype's {@code getValue()} to access its typed payload, for example "
             + "{@link com.azure.search.documents.knowledgebases.models.KnowledgeBaseAnswerCompletedStreamEvent#getValue()}. "
-            + "For every event, including unrecognized names, "
-            + "{@link KnowledgeBaseRetrievalStreamEvent#getRawValue()} provides the original decoded SSE data "
-            + "with multiline data joined by newlines, not the complete wire frame.\n\n";
+            + "Unrecognized events expose only their names through "
+            + "{@link KnowledgeBaseRetrievalStreamEvent#getEventName()}; their payloads are not available.\n\n";
     }
 
     private static String baseEventSource() {
@@ -309,7 +308,7 @@ public class SearchCustomizations extends Customization {
             + "import com.azure.core.annotation.Generated;\n\n" + "/**\n"
             + " * Abstract base for polymorphic events emitted by a streaming knowledge base retrieval.\n"
             + " * Known events expose typed payloads through their subtype's {@code getValue()} method.\n"
-            + " * Use {@link #getEventName()} and {@link #getRawValue()} for unrecognized events.\n"
+            + " * Unrecognized events expose only their names through {@link #getEventName()}; their payloads are not available.\n"
             + " * Stream events are envelopes, not JSON payload models; serialize the typed payload instead.\n" + " *\n"
             + " * @see KnowledgeBaseRetrievalStartedStreamEvent\n" + " * @see KnowledgeBaseActivityStartedStreamEvent\n"
             + " * @see KnowledgeBaseActivityCompletedStreamEvent\n"
@@ -317,28 +316,14 @@ public class SearchCustomizations extends Customization {
             + " * @see KnowledgeBaseReferencesCompletedStreamEvent\n" + " * @see KnowledgeBaseErrorStreamEvent\n"
             + " * @see KnowledgeBaseResponseCompletedStreamEvent\n" + " */\n"
             + "public abstract class KnowledgeBaseRetrievalStreamEvent {\n" + "    @Generated\n"
-            + "    private final String eventName;\n\n" + "    @Generated\n" + "    private final String rawValue;\n\n"
-            + "    /**\n" + "     * Creates a stream event.\n" + "     *\n"
+            + "    private final String eventName;\n\n" + "    /**\n" + "     * Creates a stream event.\n" + "     *\n"
             + "     * @param eventName The server-sent event name.\n" + "     */\n" + "    @Generated\n"
             + "    protected KnowledgeBaseRetrievalStreamEvent(String eventName) {\n"
-            + "        this(eventName, null);\n" + "    }\n\n" + "    /**\n"
-            + "     * Creates a stream event with its original decoded SSE data.\n" + "     *\n"
-            + "     * @param eventName The server-sent event name.\n"
-            + "     * @param rawValue The original decoded SSE data, or null if none was supplied.\n" + "     */\n"
-            + "    @Generated\n"
-            + "    protected KnowledgeBaseRetrievalStreamEvent(String eventName, String rawValue) {\n"
-            + "        this.eventName = eventName;\n" + "        this.rawValue = rawValue;\n" + "    }\n\n"
-            + "    /**\n" + "     * Gets the server-sent event name.\n" + "     *\n"
-            + "     * @return The event name.\n" + "     */\n" + "    @Generated\n"
-            + "    public final String getEventName() {\n" + "        return eventName;\n" + "    }\n\n" + "    /**\n"
-            + "     * Gets the original decoded SSE data, with multiline data joined by newlines.\n"
-            + "     * This is not the complete wire frame. Supplied data, including an empty string, is preserved.\n"
-            + "     * Known subtypes with no supplied data lazily serialize their current typed payload as JSON.\n"
-            + "     * That generated JSON need not match an original wire representation.\n" + "     *\n"
-            + "     * @return The supplied data, generated payload JSON, or null if neither data nor payload is present.\n"
-            + "     * @throws java.io.UncheckedIOException If payload serialization fails.\n" + "     */\n"
-            + "    @Generated\n" + "    public String getRawValue() {\n" + "        return rawValue;\n" + "    }\n\n"
-            + "    /**\n" + "     * Gets whether this event terminates the retrieval stream.\n" + "     *\n"
+            + "        this.eventName = eventName;\n" + "    }\n\n" + "    /**\n"
+            + "     * Gets the server-sent event name.\n" + "     *\n" + "     * @return The event name.\n"
+            + "     */\n" + "    @Generated\n" + "    public final String getEventName() {\n"
+            + "        return eventName;\n" + "    }\n\n" + "    /**\n"
+            + "     * Gets whether this event terminates the retrieval stream.\n" + "     *\n"
             + "     * @return {@code true} if this is a terminal event; otherwise {@code false}.\n" + "     */\n"
             + "    @Generated\n" + "    public boolean isTerminal() {\n" + "        return false;\n" + "    }\n"
             + "}\n";
@@ -347,16 +332,7 @@ public class SearchCustomizations extends Customization {
     private static String wrapperSource(String className, String payloadType, String eventName, boolean terminal,
         boolean listPayload) {
         String valueType = listPayload ? "List<" + payloadType + ">" : payloadType;
-        String listImports = listPayload
-            ? "import com.azure.json.JsonProviders;\n" + "import com.azure.json.JsonWriter;\n"
-                + "import java.io.StringWriter;\n" + "import java.util.List;\n"
-            : "";
-        String serialize = listPayload
-            ? "            StringWriter output = new StringWriter();\n"
-                + "            try (JsonWriter writer = JsonProviders.createWriter(output)) {\n"
-                + "                writer.writeArray(value, (jsonWriter, item) -> item.toJson(jsonWriter)).flush();\n"
-                + "            }\n" + "            return output.toString();\n"
-            : "            return value.toJsonString();\n";
+        String listImports = listPayload ? "import java.util.List;\n" : "";
         String terminalOverride = terminal
             ? "\n    @Generated\n" + "    @Override\n" + "    public boolean isTerminal() {\n"
                 + "        return true;\n" + "    }\n"
@@ -364,38 +340,16 @@ public class SearchCustomizations extends Customization {
 
         return header("com.azure.search.documents.knowledgebases.models")
             + "import com.azure.core.annotation.Generated;\n" + "import com.azure.core.annotation.Immutable;\n"
-            + "import com.azure.core.util.logging.ClientLogger;\n" + listImports + "import java.io.IOException;\n"
-            + "import java.io.UncheckedIOException;\n\n" + "/**\n" + " * Represents the {@code " + eventName
-            + "} knowledge base retrieval stream event.\n"
-            + " * Access the typed payload with {@link #getValue()} or the decoded SSE data with {@link #getRawValue()}.\n"
+            + listImports + "\n" + "/**\n" + " * Represents the {@code " + eventName
+            + "} knowledge base retrieval stream event.\n" + " * Access the typed payload with {@link #getValue()}.\n"
             + " *\n" + " * @see KnowledgeBaseRetrievalStreamEvent\n" + " */\n" + "@Immutable\n" + "public final class "
-            + className + " extends KnowledgeBaseRetrievalStreamEvent {\n" + "    @Generated\n"
-            + "    private static final ClientLogger LOGGER = new ClientLogger(" + className + ".class);\n\n"
-            + "    @Generated\n" + "    private final " + valueType + " value;\n\n" + "    /**\n"
-            + "     * Creates an event wrapper.\n" + "     *\n" + "     * @param value The event payload.\n"
-            + "     */\n" + "    @Generated\n" + "    public " + className + "(" + valueType + " value) {\n"
-            + "        this(value, null);\n" + "    }\n\n" + "    /**\n"
-            + "     * Creates an event wrapper with its original decoded SSE data.\n" + "     *\n"
-            + "     * @param value The event payload.\n"
-            + "     * @param rawValue The original decoded SSE data, or null to serialize the payload lazily.\n"
-            + "     */\n" + "    @Generated\n" + "    public " + className + "(" + valueType
-            + " value, String rawValue) {\n" + "        super(\"" + eventName + "\", rawValue);\n"
+            + className + " extends KnowledgeBaseRetrievalStreamEvent {\n" + "    @Generated\n" + "    private final "
+            + valueType + " value;\n\n" + "    /**\n" + "     * Creates an event wrapper.\n" + "     *\n"
+            + "     * @param value The event payload.\n" + "     */\n" + "    @Generated\n" + "    public " + className
+            + "(" + valueType + " value) {\n" + "        super(\"" + eventName + "\");\n"
             + "        this.value = value;\n" + "    }\n\n" + "    /**\n" + "     * Gets the event payload.\n"
             + "     *\n" + "     * @return The event payload.\n" + "     */\n" + "    @Generated\n" + "    public "
-            + valueType + " getValue() {\n" + "        return value;\n" + "    }\n\n" + terminalOverride + "\n"
-            + "    /**\n"
-            + "     * Gets the original decoded SSE data, or lazily generated JSON for the current payload.\n"
-            + "     * Supplied data, including an empty string, always takes precedence over the typed payload.\n"
-            + "     * Generated JSON is not cached and need not match an original wire representation.\n" + "     *\n"
-            + "     * @return The supplied data, generated payload JSON, or null if neither data nor payload is present.\n"
-            + "     * @throws UncheckedIOException If payload serialization fails.\n" + "     */\n" + "    @Generated\n"
-            + "    @Override\n" + "    public String getRawValue() {\n"
-            + "        String rawValue = super.getRawValue();\n" + "        if (rawValue != null || value == null) {\n"
-            + "            return rawValue;\n" + "        }\n" + "        try {\n" + serialize
-            + "        } catch (IOException exception) {\n"
-            + "            throw LOGGER.logExceptionAsError(new UncheckedIOException("
-            + "\"Failed to serialize knowledge base retrieval stream event: " + eventName + "\", exception));\n"
-            + "        }\n" + "    }\n" + "}\n";
+            + valueType + " getValue() {\n" + "        return value;\n" + "    }\n" + terminalOverride + "}\n";
     }
 
     private static String header(String packageName) {

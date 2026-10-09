@@ -62,7 +62,6 @@ public class ReadmeSamples {
                     KnowledgeBaseAnswerCompletedStreamEvent answer = (KnowledgeBaseAnswerCompletedStreamEvent) event;
                     System.out.println(answer.getValue().getMessage());
                 }
-                System.out.println(event.getRawValue());
             }
         }
         // END: readme-sample-retrieveKnowledgeBaseStream

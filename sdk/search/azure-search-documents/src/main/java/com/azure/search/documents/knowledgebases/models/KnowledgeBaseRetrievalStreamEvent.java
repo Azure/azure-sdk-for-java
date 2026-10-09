@@ -7,7 +7,7 @@ import com.azure.core.annotation.Generated;
 /**
  * Abstract base for polymorphic events emitted by a streaming knowledge base retrieval.
  * Known events expose typed payloads through their subtype's {@code getValue()} method.
- * Use {@link #getEventName()} and {@link #getRawValue()} for unrecognized events.
+ * Unrecognized events expose only their names through {@link #getEventName()}; their payloads are not available.
  * Stream events are envelopes, not JSON payload models; serialize the typed payload instead.
  *
  * @see KnowledgeBaseRetrievalStartedStreamEvent
@@ -30,7 +30,7 @@ public abstract class KnowledgeBaseRetrievalStreamEvent {
      */
     @Generated
     protected KnowledgeBaseRetrievalStreamEvent(String eventName) {
-        this(eventName, null);
+        this.eventName = eventName;
     }
 
     /**
@@ -51,34 +51,5 @@ public abstract class KnowledgeBaseRetrievalStreamEvent {
     @Generated
     public boolean isTerminal() {
         return false;
-    }
-
-    @Generated
-    private final String rawValue;
-
-    /**
-     * Creates a stream event with its original decoded SSE data.
-     *
-     * @param eventName The server-sent event name.
-     * @param rawValue The original decoded SSE data, or null if none was supplied.
-     */
-    @Generated
-    protected KnowledgeBaseRetrievalStreamEvent(String eventName, String rawValue) {
-        this.eventName = eventName;
-        this.rawValue = rawValue;
-    }
-
-    /**
-     * Gets the original decoded SSE data, with multiline data joined by newlines.
-     * This is not the complete wire frame. Supplied data, including an empty string, is preserved.
-     * Known subtypes with no supplied data lazily serialize their current typed payload as JSON.
-     * That generated JSON need not match an original wire representation.
-     *
-     * @return The supplied data, generated payload JSON, or null if neither data nor payload is present.
-     * @throws java.io.UncheckedIOException If payload serialization fails.
-     */
-    @Generated
-    public String getRawValue() {
-        return rawValue;
     }
 }

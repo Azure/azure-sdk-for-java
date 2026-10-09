@@ -42,34 +42,34 @@ public final class KnowledgeBaseRetrievalStreamEventConverter {
         switch (eventName) {
             case "retrieval.started":
                 return new KnowledgeBaseRetrievalStartedStreamEvent(
-                    read(eventName, data, KnowledgeBaseRetrievalStartedEvent::fromJson), data);
+                    read(eventName, data, KnowledgeBaseRetrievalStartedEvent::fromJson));
 
             case "activity.started":
                 return new KnowledgeBaseActivityStartedStreamEvent(
-                    read(eventName, data, KnowledgeBaseActivityStartedEvent::fromJson), data);
+                    read(eventName, data, KnowledgeBaseActivityStartedEvent::fromJson));
 
             case "activity.completed":
                 return new KnowledgeBaseActivityCompletedStreamEvent(
-                    read(eventName, data, KnowledgeBaseActivityRecord::fromJson), data);
+                    read(eventName, data, KnowledgeBaseActivityRecord::fromJson));
 
             case "answer.completed":
                 return new KnowledgeBaseAnswerCompletedStreamEvent(
-                    read(eventName, data, KnowledgeBaseAnswerCompletedEvent::fromJson), data);
+                    read(eventName, data, KnowledgeBaseAnswerCompletedEvent::fromJson));
 
             case "references.completed":
                 return new KnowledgeBaseReferencesCompletedStreamEvent(
-                    read(eventName, data, reader -> reader.readArray(KnowledgeBaseReference::fromJson)), data);
+                    read(eventName, data, reader -> reader.readArray(KnowledgeBaseReference::fromJson)));
 
             case "error":
-                return new KnowledgeBaseErrorStreamEvent(read(eventName, data, KnowledgeBaseStreamErrorEvent::fromJson),
-                    data);
+                return new KnowledgeBaseErrorStreamEvent(
+                    read(eventName, data, KnowledgeBaseStreamErrorEvent::fromJson));
 
             case "response.completed":
                 return new KnowledgeBaseResponseCompletedStreamEvent(
-                    read(eventName, data, KnowledgeBaseResponseCompletedEvent::fromJson), data);
+                    read(eventName, data, KnowledgeBaseResponseCompletedEvent::fromJson));
 
             default:
-                return new UnrecognizedStreamEvent(eventName, data);
+                return new UnrecognizedStreamEvent(eventName);
         }
     }
 
@@ -84,8 +84,8 @@ public final class KnowledgeBaseRetrievalStreamEventConverter {
     }
 
     private static final class UnrecognizedStreamEvent extends KnowledgeBaseRetrievalStreamEvent {
-        private UnrecognizedStreamEvent(String eventName, String data) {
-            super(eventName, data);
+        private UnrecognizedStreamEvent(String eventName) {
+            super(eventName);
         }
     }
 }

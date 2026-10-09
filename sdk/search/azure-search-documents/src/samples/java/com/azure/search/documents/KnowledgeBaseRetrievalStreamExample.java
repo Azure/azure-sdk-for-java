@@ -132,7 +132,6 @@ public class KnowledgeBaseRetrievalStreamExample {
     private static void inspectEvent(KnowledgeBaseRetrievalStreamEvent event, AtomicBoolean started,
         AtomicBoolean completed) {
         System.out.println("Received event: " + event.getEventName());
-        System.out.println("Decoded SSE data: " + event.getRawValue());
         if (event instanceof KnowledgeBaseAnswerCompletedStreamEvent) {
             KnowledgeBaseAnswerCompletedStreamEvent answerEvent = (KnowledgeBaseAnswerCompletedStreamEvent) event;
             System.out.println("Answer: " + answerEvent.getValue().getMessage());
