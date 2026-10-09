@@ -9,7 +9,7 @@ package com.azure.resourcemanager.storagecache.generated;
  */
 public final class AscOperationsGetSamples {
     /*
-     * x-ms-original-file: 2026-01-01/AscOperations_Get.json
+     * x-ms-original-file: 2026-08-01/AscOperations_Get.json
      */
     /**
      * Sample code: AscOperations_Get.

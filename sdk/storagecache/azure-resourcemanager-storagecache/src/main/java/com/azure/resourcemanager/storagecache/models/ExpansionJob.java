@@ -75,6 +75,22 @@ public interface ExpansionJob {
     Float newStorageCapacityTiB();
 
     /**
+     * Gets the runRebalanceJob property: When true, expansion creates a RebalanceJob after completing. Optional,
+     * defaults to true.
+     * 
+     * @return the runRebalanceJob value.
+     */
+    Boolean runRebalanceJob();
+
+    /**
+     * Gets the rebalanceJobId property: Fully qualified ARM resource ID of the child rebalance job created by this
+     * expansion. Populated after RebalanceJob is created.
+     * 
+     * @return the rebalanceJobId value.
+     */
+    String rebalanceJobId();
+
+    /**
      * Gets the state property: The operational state of the expansion job. InProgress indicates the expansion is still
      * running. Completed indicates expansion finished successfully. Failed means the expansion was unable to complete
      * due to a fatal error. Deleting indicates the expansion is being rolled back.
@@ -204,7 +220,8 @@ public interface ExpansionJob {
          * The stage of the ExpansionJob definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithNewStorageCapacityTiB {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithNewStorageCapacityTiB,
+            DefinitionStages.WithRunRebalanceJob {
             /**
              * Executes the create request.
              * 
@@ -249,6 +266,21 @@ public interface ExpansionJob {
              * @return the next definition stage.
              */
             WithCreate withNewStorageCapacityTiB(Float newStorageCapacityTiB);
+        }
+
+        /**
+         * The stage of the ExpansionJob definition allowing to specify runRebalanceJob.
+         */
+        interface WithRunRebalanceJob {
+            /**
+             * Specifies the runRebalanceJob property: When true, expansion creates a RebalanceJob after completing.
+             * Optional, defaults to true..
+             * 
+             * @param runRebalanceJob When true, expansion creates a RebalanceJob after completing. Optional, defaults
+             * to true.
+             * @return the next definition stage.
+             */
+            WithCreate withRunRebalanceJob(Boolean runRebalanceJob);
         }
     }
 

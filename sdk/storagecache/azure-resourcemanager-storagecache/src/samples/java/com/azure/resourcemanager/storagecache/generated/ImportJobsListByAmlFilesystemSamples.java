@@ -9,7 +9,7 @@ package com.azure.resourcemanager.storagecache.generated;
  */
 public final class ImportJobsListByAmlFilesystemSamples {
     /*
-     * x-ms-original-file: 2026-01-01/importJobs_ListByAmlFilesystem.json
+     * x-ms-original-file: 2026-08-01/importJobs_ListByAmlFilesystem.json
      */
     /**
      * Sample code: importJobs_ListByAmlFilesystem.

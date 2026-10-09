@@ -33,7 +33,7 @@ import java.util.Map;
  */
 public final class CachesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-01-01/Caches_CreateOrUpdate_ldap_only.json
+     * x-ms-original-file: 2026-08-01/Caches_CreateOrUpdate_ldap_only.json
      */
     /**
      * Sample code: Caches_CreateOrUpdate_ldap_only.
@@ -76,7 +76,7 @@ public final class CachesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01/Caches_CreateOrUpdate.json
+     * x-ms-original-file: 2026-08-01/Caches_CreateOrUpdate.json
      */
     /**
      * Sample code: Caches_CreateOrUpdate.

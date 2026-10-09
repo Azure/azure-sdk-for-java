@@ -11,11 +11,12 @@ import org.junit.jupiter.api.Assertions;
 public final class UsageModelInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UsageModelInner model = BinaryData.fromString(
-            "{\"display\":{\"description\":\"nguxawqaldsy\"},\"modelName\":\"ximerqfobwyznk\",\"targetType\":\"kutwpf\"}")
+        UsageModelInner model = BinaryData
+            .fromString(
+                "{\"display\":{\"description\":\"cqdpsqxqvpsvuoym\"},\"modelName\":\"celve\",\"targetType\":\"ypql\"}")
             .toObject(UsageModelInner.class);
-        Assertions.assertEquals("nguxawqaldsy", model.display().description());
-        Assertions.assertEquals("ximerqfobwyznk", model.modelName());
-        Assertions.assertEquals("kutwpf", model.targetType());
+        Assertions.assertEquals("cqdpsqxqvpsvuoym", model.display().description());
+        Assertions.assertEquals("celve", model.modelName());
+        Assertions.assertEquals("ypql", model.targetType());
     }
 }
