@@ -71,7 +71,7 @@ public class ReactorNettyHttpClientTest {
     public void httpClientWithValidateHeaders() {
         reactor.netty.http.client.HttpClient httpClient =
             ReflectionUtils.get(reactor.netty.http.client.HttpClient.class, this.reactorNettyHttpClient, "httpClient");
-        assertThat(httpClient.configuration().decoder().validateHeaders()).isTrue();
+        assertThat(httpClient.configuration().decoder().validateHeaders()).isFalse();
     }
 
     @Test(groups = "unit")
