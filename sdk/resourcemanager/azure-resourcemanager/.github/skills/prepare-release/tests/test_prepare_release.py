@@ -3,7 +3,7 @@ import io
 import sys
 import tempfile
 import unittest
-from contextlib import redirect_stderr
+from contextlib import redirect_stderr, redirect_stdout
 from datetime import date, datetime, timezone
 from pathlib import Path
 from unittest.mock import patch
@@ -111,9 +111,30 @@ class PrepareReleaseTests(unittest.TestCase):
         current = prepare_release.read_aggregate_current_version(version_file)
 
         self.assertEqual("5.1.0", prepare_release.resolve_release_version(None, current))
+        self.assertEqual("5.1.0", prepare_release.resolve_release_version("", current))
         self.assertEqual(
             "5.2.0", prepare_release.resolve_release_version("5.2.0", current)
         )
+
+    def test_cli_accepts_empty_release_version(self):
+        summary_file = self.repo_root / "summary.json"
+        with patch.object(
+            prepare_release, "prepare_release", return_value=({"status": "no_changes"}, 0)
+        ) as prepare:
+            with redirect_stdout(io.StringIO()):
+                exit_code = prepare_release.main(
+                    [
+                        "--release-version", "",
+                        "--repo-root", str(self.repo_root),
+                        "--summary-file", str(summary_file),
+                    ]
+                )
+
+        self.assertEqual(0, exit_code)
+        prepare.assert_called_once_with(
+            repo_root=self.repo_root, release_version_arg="", dry_run=False
+        )
+        self.assertIn('"status": "no_changes"', summary_file.read_text(encoding="utf-8"))
 
     @patch.object(prepare_release, "datetime")
     def test_release_date_is_current_utc_date(self, clock):

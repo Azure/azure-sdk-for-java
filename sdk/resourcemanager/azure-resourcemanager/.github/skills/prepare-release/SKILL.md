@@ -8,7 +8,13 @@ description: Prepare a stable com.azure.resourcemanager:azure-resourcemanager re
 Use this skill only for preparing a stable release of
 `com.azure.resourcemanager:azure-resourcemanager`.
 
-Run the package-local script from the repository root:
+When invoked by `prepare-resourcemanager-release`, the fixed workflow step has
+already run the script and written
+`/tmp/gh-aw/agent/prepare-resourcemanager-release-summary.json`. Read that summary
+and follow the result handling below. Do not rerun the script or manually modify
+its prepared release files.
+
+For standalone use, run the package-local script from the repository root:
 
 ```bash
 python3 sdk/resourcemanager/azure-resourcemanager/.github/skills/prepare-release/scripts/prepare_release.py \

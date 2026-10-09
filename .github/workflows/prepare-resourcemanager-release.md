@@ -27,9 +27,33 @@ skills:
 
 network: {}
 
+steps:
+  - name: Prepare ResourceManager release
+    shell: bash
+    timeout-minutes: 5
+    env:
+      PYTHONDONTWRITEBYTECODE: "1"
+    run: |
+      exit_code=0
+      python3 sdk/resourcemanager/azure-resourcemanager/.github/skills/prepare-release/scripts/prepare_release.py \
+        --release-version "$RELEASE_VERSION" \
+        --summary-file /tmp/gh-aw/agent/prepare-resourcemanager-release-summary.json || exit_code=$?
+      case "$exit_code" in
+        0|2) ;;
+        *) exit "$exit_code" ;;
+      esac
+      test -s /tmp/gh-aw/agent/prepare-resourcemanager-release-summary.json
+  - name: Upload release preparation summary
+    if: always()
+    uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+    with:
+      name: release-preparation-summary
+      path: /tmp/gh-aw/agent/prepare-resourcemanager-release-summary.json
+      if-no-files-found: warn
+      retention-days: 1
+
 tools:
   bash:
-    - "python3 sdk/resourcemanager/azure-resourcemanager/.github/skills/prepare-release/scripts/prepare_release.py *"
     - "cat /tmp/gh-aw/agent/prepare-resourcemanager-release-summary.json"
     - "git status --short"
     - "git diff *"
@@ -71,20 +95,17 @@ skill defines the deterministic algorithm and safety rules. Follow it exactly.
 Always use the current UTC date and include all Breaking Changes from qualifying
 minor releases.
 
-Execute this command from the repository root, preserving the environment
-variable references so workflow input is never interpolated into shell syntax:
-
-```bash
-python3 sdk/resourcemanager/azure-resourcemanager/.github/skills/prepare-release/scripts/prepare_release.py \
-  ${RELEASE_VERSION:+--release-version "$RELEASE_VERSION"} \
-  --summary-file /tmp/gh-aw/agent/prepare-resourcemanager-release-summary.json
-```
+The fixed `Prepare ResourceManager release` workflow step has already executed
+the deterministic script. It preserves the quoted release-version input and
+uses the canonical version when that input is empty. Fatal script errors fail
+the step; an intentional release-readiness block remains in the JSON summary.
+Do not rerun the script or manually modify its prepared release files.
 
 The input environment is:
 
 - `RELEASE_VERSION=${{ inputs.release_version }}`
 
-After execution, read
+Read
 `/tmp/gh-aw/agent/prepare-resourcemanager-release-summary.json`. Do not reinterpret,
 rewrite, or supplement the script's changelog selection.
 
