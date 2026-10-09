@@ -12,16 +12,16 @@ public final class VmTagTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VmTag model
-            = BinaryData.fromString("{\"name\":\"fiwjmygtdssls\",\"value\":\"tmweriofzpyq\"}").toObject(VmTag.class);
-        Assertions.assertEquals("fiwjmygtdssls", model.name());
-        Assertions.assertEquals("tmweriofzpyq", model.value());
+            = BinaryData.fromString("{\"name\":\"nvdfznuda\",\"value\":\"dvxzbncblylpst\"}").toObject(VmTag.class);
+        Assertions.assertEquals("nvdfznuda", model.name());
+        Assertions.assertEquals("dvxzbncblylpst", model.value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VmTag model = new VmTag().withName("fiwjmygtdssls").withValue("tmweriofzpyq");
+        VmTag model = new VmTag().withName("nvdfznuda").withValue("dvxzbncblylpst");
         model = BinaryData.fromObject(model).toObject(VmTag.class);
-        Assertions.assertEquals("fiwjmygtdssls", model.name());
-        Assertions.assertEquals("tmweriofzpyq", model.value());
+        Assertions.assertEquals("nvdfznuda", model.name());
+        Assertions.assertEquals("dvxzbncblylpst", model.value());
     }
 }

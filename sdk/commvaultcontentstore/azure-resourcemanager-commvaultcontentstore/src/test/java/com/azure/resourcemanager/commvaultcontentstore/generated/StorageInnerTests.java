@@ -16,7 +16,7 @@ public final class StorageInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StorageInner model = BinaryData.fromString(
-            "{\"properties\":{\"location\":\"thz\",\"storageType\":\"Air_Gap_Protect\",\"vendor\":\"Azure_Blob_Storage\",\"class\":\"HOT\",\"provisioningState\":\"Succeeded\"},\"id\":\"hjybigehoqfbo\",\"name\":\"skanyk\",\"type\":\"zlcuiywgqywgndrv\"}")
+            "{\"properties\":{\"location\":\"thz\",\"storageType\":\"Air_Gap_Protect\",\"vendor\":\"Azure_Blob_Storage\",\"class\":\"HOT\",\"provisioningState\":\"Succeeded\",\"complianceLockStatus\":\"DisablementPending\"},\"id\":\"yb\",\"name\":\"gehoqfbowskany\",\"type\":\"tzlcuiywgqywgn\"}")
             .toObject(StorageInner.class);
         Assertions.assertEquals("thz", model.properties().location());
         Assertions.assertEquals(StorageType.AIR_GAP_PROTECT, model.properties().storageType());

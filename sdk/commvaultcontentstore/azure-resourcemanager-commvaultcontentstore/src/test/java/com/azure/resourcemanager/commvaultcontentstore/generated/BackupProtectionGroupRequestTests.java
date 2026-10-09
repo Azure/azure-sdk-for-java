@@ -16,11 +16,11 @@ public final class BackupProtectionGroupRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BackupProtectionGroupRequest model = BinaryData.fromString(
-            "{\"vmList\":[{\"vmGuid\":\"nkww\"},{\"vmGuid\":\"pp\"},{\"vmGuid\":\"flcxoga\"},{\"vmGuid\":\"konzmnsik\"}],\"backupOptions\":{\"backupLevel\":\"FULL\",\"jobDescription\":\"qzeqqkdltfzxm\",\"backupCopyImmediately\":true,\"runSnapShotBackup\":false,\"notifyUserOnJobCompletion\":false}}")
+            "{\"vmList\":[{\"vmGuid\":\"t\"},{\"vmGuid\":\"evfiwjmygt\"}],\"backupOptions\":{\"backupLevel\":\"INCREMENTAL\",\"jobDescription\":\"lswtmweriofzpyqs\",\"backupCopyImmediately\":true,\"runSnapShotBackup\":false,\"notifyUserOnJobCompletion\":false}}")
             .toObject(BackupProtectionGroupRequest.class);
-        Assertions.assertEquals("nkww", model.vmList().get(0).vmGuid());
-        Assertions.assertEquals(BackupLevel.FULL, model.backupOptions().backupLevel());
-        Assertions.assertEquals("qzeqqkdltfzxm", model.backupOptions().jobDescription());
+        Assertions.assertEquals("t", model.vmList().get(0).vmGuid());
+        Assertions.assertEquals(BackupLevel.INCREMENTAL, model.backupOptions().backupLevel());
+        Assertions.assertEquals("lswtmweriofzpyqs", model.backupOptions().jobDescription());
         Assertions.assertTrue(model.backupOptions().backupCopyImmediately());
         Assertions.assertFalse(model.backupOptions().runSnapShotBackup());
         Assertions.assertFalse(model.backupOptions().notifyUserOnJobCompletion());
@@ -29,17 +29,16 @@ public final class BackupProtectionGroupRequestTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         BackupProtectionGroupRequest model = new BackupProtectionGroupRequest()
-            .withVmList(Arrays.asList(new VmListItem().withVmGuid("nkww"), new VmListItem().withVmGuid("pp"),
-                new VmListItem().withVmGuid("flcxoga"), new VmListItem().withVmGuid("konzmnsik")))
-            .withBackupOptions(new BackupOptions().withBackupLevel(BackupLevel.FULL)
-                .withJobDescription("qzeqqkdltfzxm")
+            .withVmList(Arrays.asList(new VmListItem().withVmGuid("t"), new VmListItem().withVmGuid("evfiwjmygt")))
+            .withBackupOptions(new BackupOptions().withBackupLevel(BackupLevel.INCREMENTAL)
+                .withJobDescription("lswtmweriofzpyqs")
                 .withBackupCopyImmediately(true)
                 .withRunSnapShotBackup(false)
                 .withNotifyUserOnJobCompletion(false));
         model = BinaryData.fromObject(model).toObject(BackupProtectionGroupRequest.class);
-        Assertions.assertEquals("nkww", model.vmList().get(0).vmGuid());
-        Assertions.assertEquals(BackupLevel.FULL, model.backupOptions().backupLevel());
-        Assertions.assertEquals("qzeqqkdltfzxm", model.backupOptions().jobDescription());
+        Assertions.assertEquals("t", model.vmList().get(0).vmGuid());
+        Assertions.assertEquals(BackupLevel.INCREMENTAL, model.backupOptions().backupLevel());
+        Assertions.assertEquals("lswtmweriofzpyqs", model.backupOptions().jobDescription());
         Assertions.assertTrue(model.backupOptions().backupCopyImmediately());
         Assertions.assertFalse(model.backupOptions().runSnapShotBackup());
         Assertions.assertFalse(model.backupOptions().notifyUserOnJobCompletion());

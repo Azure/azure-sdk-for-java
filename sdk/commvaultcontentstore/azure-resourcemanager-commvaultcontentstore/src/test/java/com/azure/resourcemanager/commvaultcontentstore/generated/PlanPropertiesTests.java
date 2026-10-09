@@ -25,153 +25,161 @@ public final class PlanPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PlanProperties model = BinaryData.fromString(
-            "{\"location\":\"vyvdcs\",\"storagePlans\":[{\"name\":\"ynnaam\",\"storagePoolId\":\"ctehfiqscjey\",\"copyName\":\"hezrkgq\",\"copyPrecedence\":1290040732,\"retentionPeriod\":1874212634,\"retentionTime\":\"monthly\",\"backupRuleType\":\"YEARLY_FULLS\",\"extendedRetention\":[{\"retentionTime\":\"monthly\",\"retentionPeriod\":1096221203,\"backupRuleType\":\"MONTHLY_FULLS\"},{\"retentionTime\":\"monthly\",\"retentionPeriod\":1769493620,\"backupRuleType\":\"DAILY_FULLS\"},{\"retentionTime\":\"yearly\",\"retentionPeriod\":203599917,\"backupRuleType\":\"ALL_JOBS\"}]},{\"name\":\"ngj\",\"storagePoolId\":\"cczsq\",\"copyName\":\"hvmdajvnysounq\",\"copyPrecedence\":97546857,\"retentionPeriod\":1709538743,\"retentionTime\":\"yearly\",\"backupRuleType\":\"MONTHLY_FULLS\",\"extendedRetention\":[{\"retentionTime\":\"yearly\",\"retentionPeriod\":1106914506,\"backupRuleType\":\"MONTHLY_FULLS\"}]},{\"name\":\"mopjmc\",\"storagePoolId\":\"tuo\",\"copyName\":\"hfuiuaodsfc\",\"copyPrecedence\":1569730572,\"retentionPeriod\":1076562523,\"retentionTime\":\"yearly\",\"backupRuleType\":\"QUARTERLY_FULLS\",\"extendedRetention\":[{\"retentionTime\":\"yearly\",\"retentionPeriod\":1714527436,\"backupRuleType\":\"ALL_JOBS\"},{\"retentionTime\":\"yearly\",\"retentionPeriod\":1113167460,\"backupRuleType\":\"DAILY_FULLS\"},{\"retentionTime\":\"yearly\",\"retentionPeriod\":1016147904,\"backupRuleType\":\"MONTHLY_FULLS\"},{\"retentionTime\":\"yearly\",\"retentionPeriod\":1080863753,\"backupRuleType\":\"MONTHLY_FULLS\"}]},{\"name\":\"xw\",\"storagePoolId\":\"wqsmbsur\",\"copyName\":\"imoryocfsfksym\",\"copyPrecedence\":376493890,\"retentionPeriod\":666664165,\"retentionTime\":\"monthly\",\"backupRuleType\":\"ALL_JOBS\",\"extendedRetention\":[{\"retentionTime\":\"yearly\",\"retentionPeriod\":1167674004,\"backupRuleType\":\"DAILY_FULLS\"},{\"retentionTime\":\"monthly\",\"retentionPeriod\":2086943152,\"backupRuleType\":\"DAILY_FULLS\"},{\"retentionTime\":\"monthly\",\"retentionPeriod\":1085417867,\"backupRuleType\":\"DAILY_FULLS\"},{\"retentionTime\":\"monthly\",\"retentionPeriod\":592745122,\"backupRuleType\":\"HALF_YEARLY_FULLS\"}]}],\"schedules\":[{\"backupType\":\"BOTH\",\"frequency\":\"monthly\",\"runsEvery\":952204067,\"weekOfMonth\":\"THIRD\",\"dayOfWeek\":\"DAY\",\"monthOfYear\":\"SEPTEMBER\",\"dayOfMonth\":1829419035,\"weeklyDays\":[\"FRIDAY\"],\"time\":\"lexxbczwtru\",\"timeZone\":\"qzbqjvsov\"},{\"backupType\":\"FULL\",\"frequency\":\"daily\",\"runsEvery\":1882721753,\"weekOfMonth\":\"LAST\",\"dayOfWeek\":\"TUESDAY\",\"monthOfYear\":\"JUNE\",\"dayOfMonth\":1196709774,\"weeklyDays\":[\"MONDAY\",\"SATURDAY\"],\"time\":\"mflbv\",\"timeZone\":\"chrkcciwwzjuqk\"}],\"retention\":{\"numberOfSnapshots\":1786560396},\"provisioningState\":\"Failed\"}")
+            "{\"location\":\"nzwdejba\",\"storagePlans\":[{\"name\":\"rxzdmohctbqvudwx\",\"storagePoolId\":\"dnvowg\",\"copyName\":\"jugwdkcglhsl\",\"copyPrecedence\":3147535,\"retentionPeriod\":24046342,\"retentionTime\":\"yearly\",\"backupRuleType\":\"ALL_FULLS\",\"extendedRetention\":[{\"retentionTime\":\"yearly\",\"retentionPeriod\":878642575,\"backupRuleType\":\"HALF_YEARLY_FULLS\"},{\"retentionTime\":\"yearly\",\"retentionPeriod\":194127225,\"backupRuleType\":\"ALL_FULLS\"},{\"retentionTime\":\"yearly\",\"retentionPeriod\":31402912,\"backupRuleType\":\"DAILY_FULLS\"},{\"retentionTime\":\"monthly\",\"retentionPeriod\":669612849,\"backupRuleType\":\"HALF_YEARLY_FULLS\"}]},{\"name\":\"hybcibv\",\"storagePoolId\":\"dcsi\",\"copyName\":\"nnaamdectehfiqsc\",\"copyPrecedence\":230831104,\"retentionPeriod\":796129419,\"retentionTime\":\"yearly\",\"backupRuleType\":\"QUARTERLY_FULLS\",\"extendedRetention\":[{\"retentionTime\":\"yearly\",\"retentionPeriod\":1290040732,\"backupRuleType\":\"ALL_FULLS\"},{\"retentionTime\":\"monthly\",\"retentionPeriod\":450468139,\"backupRuleType\":\"MONTHLY_FULLS\"},{\"retentionTime\":\"monthly\",\"retentionPeriod\":1096221203,\"backupRuleType\":\"MONTHLY_FULLS\"}]},{\"name\":\"vxyqjpkcattpngjc\",\"storagePoolId\":\"czsqpjhvm\",\"copyName\":\"jvnysounqe\",\"copyPrecedence\":904416760,\"retentionPeriod\":389510865,\"retentionTime\":\"monthly\",\"backupRuleType\":\"HOURLY_FULLS\",\"extendedRetention\":[{\"retentionTime\":\"monthly\",\"retentionPeriod\":2062075015,\"backupRuleType\":\"ALL_JOBS\"},{\"retentionTime\":\"yearly\",\"retentionPeriod\":1593902435,\"backupRuleType\":\"WEEKLY_FULLS\"},{\"retentionTime\":\"monthly\",\"retentionPeriod\":860799201,\"backupRuleType\":\"DAILY_FULLS\"},{\"retentionTime\":\"monthly\",\"retentionPeriod\":1141164896,\"backupRuleType\":\"DAILY_FULLS\"}]},{\"name\":\"odsfcpkvxodpuozm\",\"storagePoolId\":\"ydagfuaxbe\",\"copyName\":\"iu\",\"copyPrecedence\":962649448,\"retentionPeriod\":1627689194,\"retentionTime\":\"yearly\",\"backupRuleType\":\"ALL_JOBS\",\"extendedRetention\":[{\"retentionTime\":\"monthly\",\"retentionPeriod\":512563876,\"backupRuleType\":\"HALF_YEARLY_FULLS\"},{\"retentionTime\":\"yearly\",\"retentionPeriod\":854764023,\"backupRuleType\":\"ALL_FULLS\"},{\"retentionTime\":\"monthly\",\"retentionPeriod\":998039935,\"backupRuleType\":\"YEARLY_FULLS\"}]}],\"schedules\":[{\"backupType\":\"BOTH\",\"frequency\":\"yearly\",\"runsEvery\":610021021,\"weekOfMonth\":\"THIRD\",\"dayOfWeek\":\"TUESDAY\",\"monthOfYear\":\"DECEMBER\",\"dayOfMonth\":980316888,\"weeklyDays\":[\"MONDAY\",\"THURSDAY\",\"FRIDAY\",\"THURSDAY\"],\"time\":\"xorrqnb\",\"timeZone\":\"czvyifq\"},{\"backupType\":\"BOTH\",\"frequency\":\"daily\",\"runsEvery\":1867018963,\"weekOfMonth\":\"FIRST\",\"dayOfWeek\":\"FRIDAY\",\"monthOfYear\":\"JANUARY\",\"dayOfMonth\":115624331,\"weeklyDays\":[\"TUESDAY\",\"FRIDAY\",\"TUESDAY\",\"WEDNESDAY\"],\"time\":\"pulexxbczw\",\"timeZone\":\"uwiqzb\"}],\"retention\":{\"numberOfSnapshots\":1378529430},\"provisioningState\":\"Failed\"}")
             .toObject(PlanProperties.class);
-        Assertions.assertEquals("vyvdcs", model.location());
-        Assertions.assertEquals("ynnaam", model.storagePlans().get(0).name());
-        Assertions.assertEquals("ctehfiqscjey", model.storagePlans().get(0).storagePoolId());
-        Assertions.assertEquals("hezrkgq", model.storagePlans().get(0).copyName());
-        Assertions.assertEquals(1290040732, model.storagePlans().get(0).copyPrecedence());
-        Assertions.assertEquals(1874212634, model.storagePlans().get(0).retentionPeriod());
-        Assertions.assertEquals(RetentionTime.MONTHLY, model.storagePlans().get(0).retentionTime());
-        Assertions.assertEquals(BackupRuleType.YEARLY_FULLS, model.storagePlans().get(0).backupRuleType());
-        Assertions.assertEquals(RetentionTime.MONTHLY,
+        Assertions.assertEquals("nzwdejba", model.location());
+        Assertions.assertEquals("rxzdmohctbqvudwx", model.storagePlans().get(0).name());
+        Assertions.assertEquals("dnvowg", model.storagePlans().get(0).storagePoolId());
+        Assertions.assertEquals("jugwdkcglhsl", model.storagePlans().get(0).copyName());
+        Assertions.assertEquals(3147535, model.storagePlans().get(0).copyPrecedence());
+        Assertions.assertEquals(24046342, model.storagePlans().get(0).retentionPeriod());
+        Assertions.assertEquals(RetentionTime.YEARLY, model.storagePlans().get(0).retentionTime());
+        Assertions.assertEquals(BackupRuleType.ALL_FULLS, model.storagePlans().get(0).backupRuleType());
+        Assertions.assertEquals(RetentionTime.YEARLY,
             model.storagePlans().get(0).extendedRetention().get(0).retentionTime());
-        Assertions.assertEquals(1096221203, model.storagePlans().get(0).extendedRetention().get(0).retentionPeriod());
-        Assertions.assertEquals(BackupRuleType.MONTHLY_FULLS,
+        Assertions.assertEquals(878642575, model.storagePlans().get(0).extendedRetention().get(0).retentionPeriod());
+        Assertions.assertEquals(BackupRuleType.HALF_YEARLY_FULLS,
             model.storagePlans().get(0).extendedRetention().get(0).backupRuleType());
         Assertions.assertEquals(BackUpType.BOTH, model.schedules().get(0).backupType());
-        Assertions.assertEquals(Frequency.MONTHLY, model.schedules().get(0).frequency());
-        Assertions.assertEquals(952204067, model.schedules().get(0).runsEvery());
+        Assertions.assertEquals(Frequency.YEARLY, model.schedules().get(0).frequency());
+        Assertions.assertEquals(610021021, model.schedules().get(0).runsEvery());
         Assertions.assertEquals(WeekOfMonth.THIRD, model.schedules().get(0).weekOfMonth());
-        Assertions.assertEquals(DayOfWeek.DAY, model.schedules().get(0).dayOfWeek());
-        Assertions.assertEquals(MonthOfYear.SEPTEMBER, model.schedules().get(0).monthOfYear());
-        Assertions.assertEquals(1829419035, model.schedules().get(0).dayOfMonth());
-        Assertions.assertEquals(WeeklyDays.FRIDAY, model.schedules().get(0).weeklyDays().get(0));
-        Assertions.assertEquals("lexxbczwtru", model.schedules().get(0).time());
-        Assertions.assertEquals("qzbqjvsov", model.schedules().get(0).timeZone());
-        Assertions.assertEquals(1786560396, model.retention().numberOfSnapshots());
+        Assertions.assertEquals(DayOfWeek.TUESDAY, model.schedules().get(0).dayOfWeek());
+        Assertions.assertEquals(MonthOfYear.DECEMBER, model.schedules().get(0).monthOfYear());
+        Assertions.assertEquals(980316888, model.schedules().get(0).dayOfMonth());
+        Assertions.assertEquals(WeeklyDays.MONDAY, model.schedules().get(0).weeklyDays().get(0));
+        Assertions.assertEquals("xorrqnb", model.schedules().get(0).time());
+        Assertions.assertEquals("czvyifq", model.schedules().get(0).timeZone());
+        Assertions.assertEquals(1378529430, model.retention().numberOfSnapshots());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PlanProperties model
-            = new PlanProperties().withLocation("vyvdcs")
-                .withStoragePlans(Arrays.asList(
-                    new StoragePlan().withName("ynnaam")
-                        .withStoragePoolId("ctehfiqscjey")
-                        .withCopyName("hezrkgq")
-                        .withCopyPrecedence(1290040732)
-                        .withRetentionPeriod(1874212634)
-                        .withRetentionTime(RetentionTime.MONTHLY)
-                        .withBackupRuleType(BackupRuleType.YEARLY_FULLS)
-                        .withExtendedRetention(Arrays.asList(
-                            new ExtendedRetentionTime().withRetentionTime(RetentionTime.MONTHLY)
-                                .withRetentionPeriod(1096221203)
-                                .withBackupRuleType(BackupRuleType.MONTHLY_FULLS),
-                            new ExtendedRetentionTime().withRetentionTime(RetentionTime.MONTHLY)
-                                .withRetentionPeriod(1769493620)
-                                .withBackupRuleType(BackupRuleType.DAILY_FULLS),
-                            new ExtendedRetentionTime().withRetentionTime(RetentionTime.YEARLY)
-                                .withRetentionPeriod(203599917)
-                                .withBackupRuleType(BackupRuleType.ALL_JOBS))),
-                    new StoragePlan().withName("ngj")
-                        .withStoragePoolId("cczsq")
-                        .withCopyName("hvmdajvnysounq")
-                        .withCopyPrecedence(97546857)
-                        .withRetentionPeriod(1709538743)
-                        .withRetentionTime(RetentionTime.YEARLY)
-                        .withBackupRuleType(BackupRuleType.MONTHLY_FULLS)
-                        .withExtendedRetention(
-                            Arrays.asList(new ExtendedRetentionTime().withRetentionTime(RetentionTime.YEARLY)
-                                .withRetentionPeriod(1106914506)
-                                .withBackupRuleType(BackupRuleType.MONTHLY_FULLS))),
-                    new StoragePlan().withName("mopjmc")
-                        .withStoragePoolId("tuo")
-                        .withCopyName("hfuiuaodsfc")
-                        .withCopyPrecedence(1569730572)
-                        .withRetentionPeriod(1076562523)
-                        .withRetentionTime(RetentionTime.YEARLY)
-                        .withBackupRuleType(BackupRuleType.QUARTERLY_FULLS)
-                        .withExtendedRetention(Arrays.asList(
-                            new ExtendedRetentionTime().withRetentionTime(RetentionTime.YEARLY)
-                                .withRetentionPeriod(1714527436)
-                                .withBackupRuleType(BackupRuleType.ALL_JOBS),
-                            new ExtendedRetentionTime().withRetentionTime(RetentionTime.YEARLY)
-                                .withRetentionPeriod(1113167460)
-                                .withBackupRuleType(BackupRuleType.DAILY_FULLS),
-                            new ExtendedRetentionTime().withRetentionTime(RetentionTime.YEARLY)
-                                .withRetentionPeriod(1016147904)
-                                .withBackupRuleType(BackupRuleType.MONTHLY_FULLS),
-                            new ExtendedRetentionTime().withRetentionTime(RetentionTime.YEARLY)
-                                .withRetentionPeriod(1080863753)
-                                .withBackupRuleType(BackupRuleType.MONTHLY_FULLS))),
-                    new StoragePlan().withName("xw")
-                        .withStoragePoolId("wqsmbsur")
-                        .withCopyName("imoryocfsfksym")
-                        .withCopyPrecedence(376493890)
-                        .withRetentionPeriod(666664165)
-                        .withRetentionTime(RetentionTime.MONTHLY)
-                        .withBackupRuleType(BackupRuleType.ALL_JOBS)
-                        .withExtendedRetention(Arrays.asList(
-                            new ExtendedRetentionTime().withRetentionTime(RetentionTime.YEARLY)
-                                .withRetentionPeriod(1167674004)
-                                .withBackupRuleType(BackupRuleType.DAILY_FULLS),
-                            new ExtendedRetentionTime().withRetentionTime(RetentionTime.MONTHLY)
-                                .withRetentionPeriod(2086943152)
-                                .withBackupRuleType(BackupRuleType.DAILY_FULLS),
-                            new ExtendedRetentionTime().withRetentionTime(RetentionTime.MONTHLY)
-                                .withRetentionPeriod(1085417867)
-                                .withBackupRuleType(BackupRuleType.DAILY_FULLS),
-                            new ExtendedRetentionTime().withRetentionTime(RetentionTime.MONTHLY)
-                                .withRetentionPeriod(592745122)
-                                .withBackupRuleType(BackupRuleType.HALF_YEARLY_FULLS)))))
-                .withSchedules(Arrays.asList(
+        PlanProperties model = new PlanProperties().withLocation("nzwdejba")
+            .withStoragePlans(Arrays.asList(
+                new StoragePlan().withName("rxzdmohctbqvudwx")
+                    .withStoragePoolId("dnvowg")
+                    .withCopyName("jugwdkcglhsl")
+                    .withCopyPrecedence(3147535)
+                    .withRetentionPeriod(24046342)
+                    .withRetentionTime(RetentionTime.YEARLY)
+                    .withBackupRuleType(BackupRuleType.ALL_FULLS)
+                    .withExtendedRetention(Arrays.asList(
+                        new ExtendedRetentionTime().withRetentionTime(RetentionTime.YEARLY)
+                            .withRetentionPeriod(878642575)
+                            .withBackupRuleType(BackupRuleType.HALF_YEARLY_FULLS),
+                        new ExtendedRetentionTime().withRetentionTime(RetentionTime.YEARLY)
+                            .withRetentionPeriod(194127225)
+                            .withBackupRuleType(BackupRuleType.ALL_FULLS),
+                        new ExtendedRetentionTime().withRetentionTime(RetentionTime.YEARLY)
+                            .withRetentionPeriod(31402912)
+                            .withBackupRuleType(BackupRuleType.DAILY_FULLS),
+                        new ExtendedRetentionTime().withRetentionTime(RetentionTime.MONTHLY)
+                            .withRetentionPeriod(669612849)
+                            .withBackupRuleType(BackupRuleType.HALF_YEARLY_FULLS))),
+                new StoragePlan().withName("hybcibv")
+                    .withStoragePoolId("dcsi")
+                    .withCopyName("nnaamdectehfiqsc")
+                    .withCopyPrecedence(230831104)
+                    .withRetentionPeriod(796129419)
+                    .withRetentionTime(RetentionTime.YEARLY)
+                    .withBackupRuleType(BackupRuleType.QUARTERLY_FULLS)
+                    .withExtendedRetention(Arrays.asList(
+                        new ExtendedRetentionTime().withRetentionTime(RetentionTime.YEARLY)
+                            .withRetentionPeriod(1290040732)
+                            .withBackupRuleType(BackupRuleType.ALL_FULLS),
+                        new ExtendedRetentionTime().withRetentionTime(RetentionTime.MONTHLY)
+                            .withRetentionPeriod(450468139)
+                            .withBackupRuleType(BackupRuleType.MONTHLY_FULLS),
+                        new ExtendedRetentionTime().withRetentionTime(RetentionTime.MONTHLY)
+                            .withRetentionPeriod(1096221203)
+                            .withBackupRuleType(BackupRuleType.MONTHLY_FULLS))),
+                new StoragePlan().withName("vxyqjpkcattpngjc")
+                    .withStoragePoolId("czsqpjhvm")
+                    .withCopyName("jvnysounqe")
+                    .withCopyPrecedence(904416760)
+                    .withRetentionPeriod(389510865)
+                    .withRetentionTime(RetentionTime.MONTHLY)
+                    .withBackupRuleType(BackupRuleType.HOURLY_FULLS)
+                    .withExtendedRetention(Arrays.asList(
+                        new ExtendedRetentionTime().withRetentionTime(RetentionTime.MONTHLY)
+                            .withRetentionPeriod(2062075015)
+                            .withBackupRuleType(BackupRuleType.ALL_JOBS),
+                        new ExtendedRetentionTime().withRetentionTime(RetentionTime.YEARLY)
+                            .withRetentionPeriod(1593902435)
+                            .withBackupRuleType(BackupRuleType.WEEKLY_FULLS),
+                        new ExtendedRetentionTime().withRetentionTime(RetentionTime.MONTHLY)
+                            .withRetentionPeriod(860799201)
+                            .withBackupRuleType(BackupRuleType.DAILY_FULLS),
+                        new ExtendedRetentionTime().withRetentionTime(RetentionTime.MONTHLY)
+                            .withRetentionPeriod(1141164896)
+                            .withBackupRuleType(BackupRuleType.DAILY_FULLS))),
+                new StoragePlan().withName("odsfcpkvxodpuozm")
+                    .withStoragePoolId("ydagfuaxbe")
+                    .withCopyName("iu")
+                    .withCopyPrecedence(962649448)
+                    .withRetentionPeriod(1627689194)
+                    .withRetentionTime(RetentionTime.YEARLY)
+                    .withBackupRuleType(BackupRuleType.ALL_JOBS)
+                    .withExtendedRetention(Arrays.asList(
+                        new ExtendedRetentionTime().withRetentionTime(RetentionTime.MONTHLY)
+                            .withRetentionPeriod(512563876)
+                            .withBackupRuleType(BackupRuleType.HALF_YEARLY_FULLS),
+                        new ExtendedRetentionTime().withRetentionTime(RetentionTime.YEARLY)
+                            .withRetentionPeriod(854764023)
+                            .withBackupRuleType(BackupRuleType.ALL_FULLS),
+                        new ExtendedRetentionTime().withRetentionTime(RetentionTime.MONTHLY)
+                            .withRetentionPeriod(998039935)
+                            .withBackupRuleType(BackupRuleType.YEARLY_FULLS)))))
+            .withSchedules(
+                Arrays.asList(
                     new Schedule().withBackupType(BackUpType.BOTH)
-                        .withFrequency(Frequency.MONTHLY)
-                        .withRunsEvery(952204067)
+                        .withFrequency(Frequency.YEARLY)
+                        .withRunsEvery(610021021)
                         .withWeekOfMonth(WeekOfMonth.THIRD)
-                        .withDayOfWeek(DayOfWeek.DAY)
-                        .withMonthOfYear(MonthOfYear.SEPTEMBER)
-                        .withDayOfMonth(1829419035)
-                        .withWeeklyDays(Arrays.asList(WeeklyDays.FRIDAY))
-                        .withTime("lexxbczwtru")
-                        .withTimeZone("qzbqjvsov"),
-                    new Schedule().withBackupType(BackUpType.FULL)
-                        .withFrequency(Frequency.DAILY)
-                        .withRunsEvery(1882721753)
-                        .withWeekOfMonth(WeekOfMonth.LAST)
                         .withDayOfWeek(DayOfWeek.TUESDAY)
-                        .withMonthOfYear(MonthOfYear.JUNE)
-                        .withDayOfMonth(1196709774)
-                        .withWeeklyDays(Arrays.asList(WeeklyDays.MONDAY, WeeklyDays.SATURDAY))
-                        .withTime("mflbv")
-                        .withTimeZone("chrkcciwwzjuqk")))
-                .withRetention(new Retention().withNumberOfSnapshots(1786560396));
+                        .withMonthOfYear(MonthOfYear.DECEMBER)
+                        .withDayOfMonth(980316888)
+                        .withWeeklyDays(Arrays.asList(WeeklyDays.MONDAY, WeeklyDays.THURSDAY, WeeklyDays.FRIDAY,
+                            WeeklyDays.THURSDAY))
+                        .withTime("xorrqnb")
+                        .withTimeZone("czvyifq"),
+                    new Schedule().withBackupType(BackUpType.BOTH)
+                        .withFrequency(Frequency.DAILY)
+                        .withRunsEvery(1867018963)
+                        .withWeekOfMonth(WeekOfMonth.FIRST)
+                        .withDayOfWeek(DayOfWeek.FRIDAY)
+                        .withMonthOfYear(MonthOfYear.JANUARY)
+                        .withDayOfMonth(115624331)
+                        .withWeeklyDays(Arrays.asList(WeeklyDays.TUESDAY, WeeklyDays.FRIDAY, WeeklyDays.TUESDAY,
+                            WeeklyDays.WEDNESDAY))
+                        .withTime("pulexxbczw")
+                        .withTimeZone("uwiqzb")))
+            .withRetention(new Retention().withNumberOfSnapshots(1378529430));
         model = BinaryData.fromObject(model).toObject(PlanProperties.class);
-        Assertions.assertEquals("vyvdcs", model.location());
-        Assertions.assertEquals("ynnaam", model.storagePlans().get(0).name());
-        Assertions.assertEquals("ctehfiqscjey", model.storagePlans().get(0).storagePoolId());
-        Assertions.assertEquals("hezrkgq", model.storagePlans().get(0).copyName());
-        Assertions.assertEquals(1290040732, model.storagePlans().get(0).copyPrecedence());
-        Assertions.assertEquals(1874212634, model.storagePlans().get(0).retentionPeriod());
-        Assertions.assertEquals(RetentionTime.MONTHLY, model.storagePlans().get(0).retentionTime());
-        Assertions.assertEquals(BackupRuleType.YEARLY_FULLS, model.storagePlans().get(0).backupRuleType());
-        Assertions.assertEquals(RetentionTime.MONTHLY,
+        Assertions.assertEquals("nzwdejba", model.location());
+        Assertions.assertEquals("rxzdmohctbqvudwx", model.storagePlans().get(0).name());
+        Assertions.assertEquals("dnvowg", model.storagePlans().get(0).storagePoolId());
+        Assertions.assertEquals("jugwdkcglhsl", model.storagePlans().get(0).copyName());
+        Assertions.assertEquals(3147535, model.storagePlans().get(0).copyPrecedence());
+        Assertions.assertEquals(24046342, model.storagePlans().get(0).retentionPeriod());
+        Assertions.assertEquals(RetentionTime.YEARLY, model.storagePlans().get(0).retentionTime());
+        Assertions.assertEquals(BackupRuleType.ALL_FULLS, model.storagePlans().get(0).backupRuleType());
+        Assertions.assertEquals(RetentionTime.YEARLY,
             model.storagePlans().get(0).extendedRetention().get(0).retentionTime());
-        Assertions.assertEquals(1096221203, model.storagePlans().get(0).extendedRetention().get(0).retentionPeriod());
-        Assertions.assertEquals(BackupRuleType.MONTHLY_FULLS,
+        Assertions.assertEquals(878642575, model.storagePlans().get(0).extendedRetention().get(0).retentionPeriod());
+        Assertions.assertEquals(BackupRuleType.HALF_YEARLY_FULLS,
             model.storagePlans().get(0).extendedRetention().get(0).backupRuleType());
         Assertions.assertEquals(BackUpType.BOTH, model.schedules().get(0).backupType());
-        Assertions.assertEquals(Frequency.MONTHLY, model.schedules().get(0).frequency());
-        Assertions.assertEquals(952204067, model.schedules().get(0).runsEvery());
+        Assertions.assertEquals(Frequency.YEARLY, model.schedules().get(0).frequency());
+        Assertions.assertEquals(610021021, model.schedules().get(0).runsEvery());
         Assertions.assertEquals(WeekOfMonth.THIRD, model.schedules().get(0).weekOfMonth());
-        Assertions.assertEquals(DayOfWeek.DAY, model.schedules().get(0).dayOfWeek());
-        Assertions.assertEquals(MonthOfYear.SEPTEMBER, model.schedules().get(0).monthOfYear());
-        Assertions.assertEquals(1829419035, model.schedules().get(0).dayOfMonth());
-        Assertions.assertEquals(WeeklyDays.FRIDAY, model.schedules().get(0).weeklyDays().get(0));
-        Assertions.assertEquals("lexxbczwtru", model.schedules().get(0).time());
-        Assertions.assertEquals("qzbqjvsov", model.schedules().get(0).timeZone());
-        Assertions.assertEquals(1786560396, model.retention().numberOfSnapshots());
+        Assertions.assertEquals(DayOfWeek.TUESDAY, model.schedules().get(0).dayOfWeek());
+        Assertions.assertEquals(MonthOfYear.DECEMBER, model.schedules().get(0).monthOfYear());
+        Assertions.assertEquals(980316888, model.schedules().get(0).dayOfMonth());
+        Assertions.assertEquals(WeeklyDays.MONDAY, model.schedules().get(0).weeklyDays().get(0));
+        Assertions.assertEquals("xorrqnb", model.schedules().get(0).time());
+        Assertions.assertEquals("czvyifq", model.schedules().get(0).timeZone());
+        Assertions.assertEquals(1378529430, model.retention().numberOfSnapshots());
     }
 }

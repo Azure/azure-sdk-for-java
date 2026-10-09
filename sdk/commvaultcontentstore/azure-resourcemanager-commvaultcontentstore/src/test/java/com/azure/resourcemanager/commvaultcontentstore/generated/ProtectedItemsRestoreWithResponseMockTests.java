@@ -25,7 +25,8 @@ import reactor.core.publisher.Mono;
 public final class ProtectedItemsRestoreWithResponseMockTests {
     @Test
     public void testRestoreWithResponse() throws Exception {
-        String responseStr = "{\"taskId\":15369485,\"jobIds\":[\"yvudtjuewbci\",\"xuuwhcj\",\"xccybvpa\"]}";
+        String responseStr
+            = "{\"taskId\":672829136,\"jobIds\":[\"omdjvlpjxxkzbrm\",\"geivsiykzkdncj\",\"xonbzoggculapz\"]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,22 +36,36 @@ public final class ProtectedItemsRestoreWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         RestoreProtectionItemResponse response = manager.protectedItems()
-            .restoreWithResponse("dyhgkfminsg", "wzf", "tsttktlahbq", "ctxtgzukxi",
-                new RestoreProtectionItemRequest().withInPlaceRestore(true)
-                    .withRestoreType(RestoreType.DISK_ATTACH)
-                    .withToTime("gqqqxh")
-                    .withVmDestinationInfo(
-                        new VmDestinationInfo().withVmInfoList(Arrays.asList(new VmInfo().withSourceVmGuid("xrxc")
-                            .withStorageAccountId("juisavokqdzf")
+            .restoreWithResponse("isavok", "dzf", "azivjlfrqttbajl", "atnwxyiopi",
+                new RestoreProtectionItemRequest().withInPlaceRestore(false)
+                    .withRestoreType(RestoreType.VIRTUAL_MACHINE)
+                    .withToTime("kuvscxkdm")
+                    .withVmDestinationInfo(new VmDestinationInfo().withVmInfoList(Arrays.asList(
+                        new VmInfo().withSourceVmGuid("govibrxkpmloazu")
+                            .withStorageAccountId("u")
                             .withPowerOnVmAfterRestore(false)
-                            .withName("vjlfrqtt")
-                            .withResourceGroup("jlkatnwxy")
-                            .withRegion("pidkqqfkuvscxkdm")
-                            .withNetworkId("govibrxkpmloazu")
-                            .withSubnetId("ocbgoorbteoyb")
+                            .withName("oorb")
+                            .withResourceGroup("oybfhjxakvvj")
+                            .withRegion("lordilmywwtkgkxn")
+                            .withNetworkId("dabg")
+                            .withSubnetId("udtjuewbc")
                             .withAttachAndSwapOsDisk(false)
-                            .withTargetVmGuid("akvvjgslordi")
-                            .withVmtags(Arrays.asList(new VmTag().withName("wwtkg").withValue("xnyed")))))),
+                            .withTargetVmGuid("uwhcjyxccybv")
+                            .withVmtags(Arrays.asList(new VmTag().withName("akkud").withValue("px"))),
+                        new VmInfo().withSourceVmGuid("wjplma")
+                            .withStorageAccountId("stcyohpfkyrkdbd")
+                            .withPowerOnVmAfterRestore(true)
+                            .withName("sjkmnwqj")
+                            .withResourceGroup("baiyhddviaceg")
+                            .withRegion("m")
+                            .withNetworkId("fpmvmemfnczd")
+                            .withSubnetId("vbalxlllc")
+                            .withAttachAndSwapOsDisk(true)
+                            .withTargetVmGuid("bzevwrd")
+                            .withVmtags(Arrays.asList(new VmTag().withName("ukuv").withValue("jcswsmys"),
+                                new VmTag().withName("uluqypfc").withValue("lerchpq"),
+                                new VmTag().withName("mfpjbabw").withValue("dfc"),
+                                new VmTag().withName("sspuunnoxyhkx").withValue("qddrihpfhoqcaae")))))),
                 com.azure.core.util.Context.NONE)
             .getValue();
 

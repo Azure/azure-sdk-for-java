@@ -22,7 +22,7 @@ public final class RoleMappingsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"roles\":[{\"roleName\":\"MultiPersonAuthorization\",\"entities\":[{},{},{}]},{\"roleName\":\"SecurityAdmin\",\"entities\":[{},{},{},{}]},{\"roleName\":\"SecurityAdmin\",\"entities\":[{},{},{},{}]},{\"roleName\":\"BackupUser\",\"entities\":[{}]}],\"provisioningState\":\"Succeeded\"},\"id\":\"fnczdwvvbalx\",\"name\":\"l\",\"type\":\"chp\"}";
+            = "{\"properties\":{\"roles\":[{\"roleName\":\"BackupOperator\",\"entities\":[{},{}]},{\"roleName\":\"BackupOperator\",\"entities\":[{},{},{},{}]},{\"roleName\":\"SecurityAdmin\",\"entities\":[{}]}],\"provisioningState\":\"Failed\"},\"id\":\"w\",\"name\":\"fzwiivwzjbhyz\",\"type\":\"xjrk\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,9 +32,9 @@ public final class RoleMappingsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         RoleMapping response = manager.roleMappings()
-            .getWithResponse("bdgiogsjk", "nwqjnoba", com.azure.core.util.Context.NONE)
+            .getWithResponse("ajlyjtlvofqzhv", "cib", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(RoleName.MULTI_PERSON_AUTHORIZATION, response.properties().roles().get(0).roleName());
+        Assertions.assertEquals(RoleName.BACKUP_OPERATOR, response.properties().roles().get(0).roleName());
     }
 }
