@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class NetworkSecurityPerimetersPatchSamples {
     /*
-     * x-ms-original-file: 2026-01-01/NetworkSecurityPerimeterPatch.json
+     * x-ms-original-file: 2026-03-01/NetworkSecurityPerimeterPatch.json
      */
     /**
      * Sample code: Patch Network Security Perimeter.

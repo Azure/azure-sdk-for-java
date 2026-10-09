@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class NetworkSecurityPerimeterProfilesDeleteSamples {
     /*
-     * x-ms-original-file: 2026-01-01/NspProfileDelete.json
+     * x-ms-original-file: 2026-03-01/NspProfileDelete.json
      */
     /**
      * Sample code: NspProfilesDelete.

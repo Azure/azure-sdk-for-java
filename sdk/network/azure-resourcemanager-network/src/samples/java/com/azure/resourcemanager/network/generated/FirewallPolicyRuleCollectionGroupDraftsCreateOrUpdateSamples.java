@@ -17,7 +17,7 @@ import java.util.Arrays;
  */
 public final class FirewallPolicyRuleCollectionGroupDraftsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-01-01/FirewallPolicyRuleCollectionGroupDraftPut.json
+     * x-ms-original-file: 2026-03-01/FirewallPolicyRuleCollectionGroupDraftPut.json
      */
     /**
      * Sample code: create or update rule collection group draft.

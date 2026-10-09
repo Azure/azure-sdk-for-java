@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class VirtualNetworkGatewaysStartExpressRouteSiteFailoverSimulationSamples {
     /*
-     * x-ms-original-file: 2026-01-01/VirtualNetworkGatewayStartSiteFailoverSimulation.json
+     * x-ms-original-file: 2026-03-01/VirtualNetworkGatewayStartSiteFailoverSimulation.json
      */
     /**
      * Sample code: VirtualNetworkGatewayStartSiteFailoverSimulation.

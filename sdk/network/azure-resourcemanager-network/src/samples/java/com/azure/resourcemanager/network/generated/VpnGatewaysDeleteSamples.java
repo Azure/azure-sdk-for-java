@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class VpnGatewaysDeleteSamples {
     /*
-     * x-ms-original-file: 2026-01-01/VpnGatewayDelete.json
+     * x-ms-original-file: 2026-03-01/VpnGatewayDelete.json
      */
     /**
      * Sample code: VpnGatewayDelete.

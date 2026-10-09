@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class NatRulesDeleteSamples {
     /*
-     * x-ms-original-file: 2026-01-01/NatRuleDelete.json
+     * x-ms-original-file: 2026-03-01/NatRuleDelete.json
      */
     /**
      * Sample code: NatRuleDelete.

@@ -13,7 +13,7 @@ import java.util.Arrays;
  */
 public final class IpamPoolsCreateSamples {
     /*
-     * x-ms-original-file: 2026-01-01/IpamPools_Create.json
+     * x-ms-original-file: 2026-03-01/IpamPools_Create.json
      */
     /**
      * Sample code: IpamPools_Create.
@@ -32,7 +32,7 @@ public final class IpamPoolsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01/IpamPools_CreateWithAllocationBounds.json
+     * x-ms-original-file: 2026-03-01/IpamPools_CreateWithAllocationBounds.json
      */
     /**
      * Sample code: Create/Update the Pool resource with allocation size bounds.

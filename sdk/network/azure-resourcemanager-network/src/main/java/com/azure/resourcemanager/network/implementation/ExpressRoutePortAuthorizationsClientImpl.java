@@ -169,7 +169,7 @@ public final class ExpressRoutePortAuthorizationsClientImpl implements ExpressRo
             return Mono
                 .error(new IllegalArgumentException("Parameter authorizationName is required and cannot be null."));
         }
-        final String apiVersion = "2026-01-01";
+        final String apiVersion = "2026-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -213,7 +213,7 @@ public final class ExpressRoutePortAuthorizationsClientImpl implements ExpressRo
             return Mono
                 .error(new IllegalArgumentException("Parameter authorizationName is required and cannot be null."));
         }
-        final String apiVersion = "2026-01-01";
+        final String apiVersion = "2026-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
@@ -317,7 +317,7 @@ public final class ExpressRoutePortAuthorizationsClientImpl implements ExpressRo
         } else {
             authorizationParameters.validate();
         }
-        final String apiVersion = "2026-01-01";
+        final String apiVersion = "2026-03-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -371,7 +371,7 @@ public final class ExpressRoutePortAuthorizationsClientImpl implements ExpressRo
         } else {
             authorizationParameters.validate();
         }
-        final String apiVersion = "2026-01-01";
+        final String apiVersion = "2026-03-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -595,7 +595,7 @@ public final class ExpressRoutePortAuthorizationsClientImpl implements ExpressRo
             return Mono
                 .error(new IllegalArgumentException("Parameter authorizationName is required and cannot be null."));
         }
-        final String apiVersion = "2026-01-01";
+        final String apiVersion = "2026-03-01";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, expressRoutePortName, authorizationName, context))
@@ -637,7 +637,7 @@ public final class ExpressRoutePortAuthorizationsClientImpl implements ExpressRo
             return Mono
                 .error(new IllegalArgumentException("Parameter authorizationName is required and cannot be null."));
         }
-        final String apiVersion = "2026-01-01";
+        final String apiVersion = "2026-03-01";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             expressRoutePortName, authorizationName, context);
@@ -819,7 +819,7 @@ public final class ExpressRoutePortAuthorizationsClientImpl implements ExpressRo
             return Mono
                 .error(new IllegalArgumentException("Parameter expressRoutePortName is required and cannot be null."));
         }
-        final String apiVersion = "2026-01-01";
+        final String apiVersion = "2026-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -860,7 +860,7 @@ public final class ExpressRoutePortAuthorizationsClientImpl implements ExpressRo
             return Mono
                 .error(new IllegalArgumentException("Parameter expressRoutePortName is required and cannot be null."));
         }
-        final String apiVersion = "2026-01-01";
+        final String apiVersion = "2026-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -973,7 +973,7 @@ public final class ExpressRoutePortAuthorizationsClientImpl implements ExpressRo
             return Mono
                 .error(new IllegalArgumentException("Parameter authorizationName is required and cannot be null."));
         }
-        final String apiVersion = "2026-01-01";
+        final String apiVersion = "2026-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1018,7 +1018,7 @@ public final class ExpressRoutePortAuthorizationsClientImpl implements ExpressRo
             return Mono
                 .error(new IllegalArgumentException("Parameter authorizationName is required and cannot be null."));
         }
-        final String apiVersion = "2026-01-01";
+        final String apiVersion = "2026-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listKeys(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),

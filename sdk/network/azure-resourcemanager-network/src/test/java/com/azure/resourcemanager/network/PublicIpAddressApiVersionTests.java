@@ -67,7 +67,7 @@ public class PublicIpAddressApiVersionTests {
     @Test
     public void getPublicIpAddressUsesNetworkApiVersion() {
         NetworkManagementClientImpl client
-            = createClient("2026-01-01", "/providers/Microsoft.Network/publicIPAddresses/pip");
+            = createClient("2026-03-01", "/providers/Microsoft.Network/publicIPAddresses/pip");
 
         Assertions.assertNotNull(
             client.getPublicIpAddresses().getByResourceGroupWithResponseAsync("rg", "pip", null).block());

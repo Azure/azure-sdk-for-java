@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class ExpressRoutePortsLocationsGetSamples {
     /*
-     * x-ms-original-file: 2026-01-01/ExpressRoutePortsLocationGet.json
+     * x-ms-original-file: 2026-03-01/ExpressRoutePortsLocationGet.json
      */
     /**
      * Sample code: ExpressRoutePortsLocationGet.

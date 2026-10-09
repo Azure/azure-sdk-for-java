@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class VirtualHubBgpConnectionsGetSamples {
     /*
-     * x-ms-original-file: 2026-01-01/VirtualHubBgpConnectionGet.json
+     * x-ms-original-file: 2026-03-01/VirtualHubBgpConnectionGet.json
      */
     /**
      * Sample code: VirtualHubVirtualHubRouteTableV2Get.
