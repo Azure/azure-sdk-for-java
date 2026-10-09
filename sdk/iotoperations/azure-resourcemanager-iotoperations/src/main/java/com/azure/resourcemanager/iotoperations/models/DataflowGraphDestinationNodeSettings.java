@@ -33,6 +33,11 @@ public final class DataflowGraphDestinationNodeSettings
      */
     private List<DataflowGraphDestinationHeaderAction> headers;
 
+    /*
+     * Output schema settings.
+     */
+    private DataflowGraphDestinationSchemaSettings outputSchemaSettings;
+
     /**
      * Creates an instance of DataflowGraphDestinationNodeSettings class.
      */
@@ -100,6 +105,27 @@ public final class DataflowGraphDestinationNodeSettings
     }
 
     /**
+     * Get the outputSchemaSettings property: Output schema settings.
+     * 
+     * @return the outputSchemaSettings value.
+     */
+    public DataflowGraphDestinationSchemaSettings outputSchemaSettings() {
+        return this.outputSchemaSettings;
+    }
+
+    /**
+     * Set the outputSchemaSettings property: Output schema settings.
+     * 
+     * @param outputSchemaSettings the outputSchemaSettings value to set.
+     * @return the DataflowGraphDestinationNodeSettings object itself.
+     */
+    public DataflowGraphDestinationNodeSettings
+        withOutputSchemaSettings(DataflowGraphDestinationSchemaSettings outputSchemaSettings) {
+        this.outputSchemaSettings = outputSchemaSettings;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -108,6 +134,7 @@ public final class DataflowGraphDestinationNodeSettings
         jsonWriter.writeStringField("endpointRef", this.endpointRef);
         jsonWriter.writeStringField("dataDestination", this.dataDestination);
         jsonWriter.writeArrayField("headers", this.headers, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("outputSchemaSettings", this.outputSchemaSettings);
         return jsonWriter.writeEndObject();
     }
 
@@ -136,6 +163,9 @@ public final class DataflowGraphDestinationNodeSettings
                     List<DataflowGraphDestinationHeaderAction> headers
                         = reader.readArray(reader1 -> DataflowGraphDestinationHeaderAction.fromJson(reader1));
                     deserializedDataflowGraphDestinationNodeSettings.headers = headers;
+                } else if ("outputSchemaSettings".equals(fieldName)) {
+                    deserializedDataflowGraphDestinationNodeSettings.outputSchemaSettings
+                        = DataflowGraphDestinationSchemaSettings.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

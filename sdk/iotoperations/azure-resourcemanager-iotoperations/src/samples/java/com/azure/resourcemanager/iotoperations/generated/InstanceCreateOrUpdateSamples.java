@@ -7,6 +7,8 @@ package com.azure.resourcemanager.iotoperations.generated;
 import com.azure.resourcemanager.iotoperations.models.ExtendedLocation;
 import com.azure.resourcemanager.iotoperations.models.ExtendedLocationType;
 import com.azure.resourcemanager.iotoperations.models.InstanceProperties;
+import com.azure.resourcemanager.iotoperations.models.InstanceSku;
+import com.azure.resourcemanager.iotoperations.models.InstanceSkuName;
 import com.azure.resourcemanager.iotoperations.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.iotoperations.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.iotoperations.models.SchemaRegistryRef;
@@ -18,7 +20,7 @@ import java.util.Map;
  */
 public final class InstanceCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-01/Instance_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-01/Instance_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: Instance_CreateOrUpdate.
@@ -39,6 +41,7 @@ public final class InstanceCreateOrUpdateSamples {
                     "/subscriptions/0000000-0000-0000-0000-000000000000/resourceGroups/resourceGroup123/providers/Microsoft.DeviceRegistry/schemaRegistries/resource-name123")))
             .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE)
                 .withUserAssignedIdentities(mapOf()))
+            .withSku(new InstanceSku().withName(InstanceSkuName.STANDARD))
             .create();
     }
 
