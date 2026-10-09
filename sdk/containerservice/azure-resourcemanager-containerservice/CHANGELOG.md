@@ -1,5 +1,15 @@
 # Release History
 
+## 2.65.0-beta.2 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 2.65.0-beta.1 (2026-10-08)
 
 - Package api-version 2026-07-02-preview.
