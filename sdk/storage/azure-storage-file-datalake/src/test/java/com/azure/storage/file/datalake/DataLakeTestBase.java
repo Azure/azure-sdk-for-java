@@ -19,6 +19,7 @@ import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.CoreUtils;
 import com.azure.storage.blob.models.BlobErrorCode;
+import com.azure.storage.blob.models.SessionOptions;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
@@ -135,10 +136,14 @@ public class DataLakeTestBase extends TestProxyTestBase {
         prefix = StorageCommonTestUtils.getCrc32(testContextManager.getTestPlaybackRecordingName());
 
         if (getTestMode() != TestMode.LIVE) {
-            interceptorManager.addSanitizers(Arrays.asList(
-                new TestProxySanitizer("sig=(.*)", "REDACTED", TestProxySanitizerType.URL),
-                new TestProxySanitizer("x-ms-encryption-key", ".*", "REDACTED", TestProxySanitizerType.HEADER),
-                new TestProxySanitizer("x-ms-rename-source", "sig=(.*)", "REDACTED", TestProxySanitizerType.HEADER)));
+            interceptorManager
+                .addSanitizers(Arrays.asList(new TestProxySanitizer("sig=(.*)", "REDACTED", TestProxySanitizerType.URL),
+                    new TestProxySanitizer("x-ms-encryption-key", ".*", "REDACTED", TestProxySanitizerType.HEADER),
+                    new TestProxySanitizer("x-ms-rename-source", "sig=(.*)", "REDACTED", TestProxySanitizerType.HEADER),
+                    new TestProxySanitizer("<SessionToken>(?<secret>.*?)</SessionToken>", "REDACTED",
+                        TestProxySanitizerType.BODY_REGEX).setGroupForReplace("secret"),
+                    new TestProxySanitizer("<SessionKey>(?<secret>.*?)</SessionKey>", "REDACTED",
+                        TestProxySanitizerType.BODY_REGEX).setGroupForReplace("secret")));
             // Remove `id` and `name` sanitizers from the list of common sanitizers.
             interceptorManager.removeSanitizers("AZSDK3430", "AZSDK3493");
         }
@@ -205,6 +210,43 @@ public class DataLakeTestBase extends TestProxyTestBase {
 
     protected DataLakeServiceAsyncClient getOAuthServiceAsyncClient() {
         return getOAuthServiceClientBuilder().buildAsyncClient();
+    }
+
+    protected DataLakeServiceClient getOAuthServiceClient(SessionOptions sessionOptions) {
+        return getOAuthServiceClient(sessionOptions, (HttpPipelinePolicy[]) null);
+    }
+
+    protected DataLakeServiceClient getOAuthServiceClient(SessionOptions sessionOptions,
+        HttpPipelinePolicy... policies) {
+        return getOAuthServiceClientBuilder(sessionOptions, policies).buildClient();
+    }
+
+    protected DataLakeServiceClientBuilder getOAuthServiceClientBuilder(SessionOptions sessionOptions,
+        HttpPipelinePolicy... policies) {
+        DataLakeServiceClientBuilder builder
+            = new DataLakeServiceClientBuilder().endpoint(ENVIRONMENT.getDataLakeAccount().getDataLakeEndpoint())
+                .sessionOptions(sessionOptions);
+
+        instrument(builder);
+
+        if (policies != null) {
+            for (HttpPipelinePolicy policy : policies) {
+                if (policy != null) {
+                    builder.addPolicy(policy);
+                }
+            }
+        }
+
+        return builder.credential(StorageCommonTestUtils.getTokenCredential(interceptorManager));
+    }
+
+    protected DataLakeServiceAsyncClient getOAuthServiceAsyncClient(SessionOptions sessionOptions) {
+        return getOAuthServiceAsyncClient(sessionOptions, (HttpPipelinePolicy[]) null);
+    }
+
+    protected DataLakeServiceAsyncClient getOAuthServiceAsyncClient(SessionOptions sessionOptions,
+        HttpPipelinePolicy... policies) {
+        return getOAuthServiceClientBuilder(sessionOptions, policies).buildAsyncClient();
     }
 
     protected DataLakeServiceClient getServiceClient(TestAccount account) {

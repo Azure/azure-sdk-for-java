@@ -4,12 +4,12 @@
 
 ### Features Added
 
+- Added opt-in session-based authentication for eligible Blob GET requests, configured through `SessionOptions` and
+  `ContainerSessionProvider`.
+
 ### Breaking Changes
 
 ### Bugs Fixed
-
-- Fixed SDK-generated ETag consistency locks for retries, chunked downloads, input streams, and seekable reads to send
-  RFC 9110-conformant `If-Match` values.
 
 ### Other Changes
 

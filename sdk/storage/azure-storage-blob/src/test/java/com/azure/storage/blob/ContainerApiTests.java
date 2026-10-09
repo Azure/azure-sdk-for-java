@@ -3,7 +3,17 @@
 
 package com.azure.storage.blob;
 
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpPipelineCallContext;
+import com.azure.core.http.HttpPipelineNextPolicy;
+import com.azure.core.http.HttpPipelineNextSyncPolicy;
+import com.azure.core.http.HttpPipelinePosition;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
+import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.util.BinaryData;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
@@ -31,8 +41,11 @@ import com.azure.storage.blob.models.LeaseStatusType;
 import com.azure.storage.blob.models.ListBlobsOptions;
 import com.azure.storage.blob.models.ObjectReplicationPolicy;
 import com.azure.storage.blob.models.ObjectReplicationStatus;
+import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.RehydratePriority;
+import com.azure.storage.blob.models.SessionOptions;
+import com.azure.storage.blob.models.SessionOptions.SessionMode;
 import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.StorageResponseSerializationFormat;
 import com.azure.storage.blob.models.TaggedBlobItem;
@@ -51,10 +64,12 @@ import com.azure.storage.common.test.shared.TestHttpClientType;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
+import com.azure.storage.common.test.shared.http.WireTapHttpClient;
 import com.azure.storage.common.test.shared.policy.InvalidServiceVersionPipelinePolicy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.ResourceLock;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -67,11 +82,15 @@ import com.azure.storage.blob.implementation.util.ArrowBlobListDeserializer;
 import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.ListBlobsIncludeItem;
 import com.azure.core.http.rest.ResponseBase;
+import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.Base64;
@@ -86,6 +105,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.azure.storage.common.implementation.StorageImplUtils.INVALID_VERSION_HEADER_MESSAGE;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -2473,6 +2493,316 @@ public class ContainerApiTests extends BlobTestBase {
 
         // 3 prefixes + 1 blob = 4 items
         assertEquals(4, allItems.size());
+    }
+
+    @Test
+    @LiveOnly
+    @ResourceLock("BlobSessionAuth")
+    public void downloadBlobOverSessionAuth() {
+        int blobCount = 5;
+        List<String> blobNames = new ArrayList<>();
+        for (int i = 0; i < blobCount; i++) {
+            String blobName = generateBlobName();
+            cc.getBlobClient(blobName)
+                .getBlockBlobClient()
+                .upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
+            blobNames.add(blobName);
+        }
+
+        List<String> downloadAuthSchemes = Collections.synchronizedList(new ArrayList<>());
+        WireTapHttpClient inspect = new WireTapHttpClient(getHttpClient(), req -> {
+            String auth = req.getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
+            String path = req.getUrl().getPath();
+            String trimmed = path != null && path.startsWith("/") ? path.substring(1) : path;
+            if (auth != null && trimmed != null && trimmed.contains("/")) {
+                downloadAuthSchemes.add(auth.startsWith("Session ") ? "Session" : "Bearer");
+            }
+        });
+
+        BlobContainerClient sessionCc = sessionEnabledContainerClient(inspect);
+
+        for (String blobName : blobNames) {
+            BinaryData downloaded = sessionCc.getBlobClient(blobName).downloadContent();
+            assertEquals(DATA.getDefaultText(), downloaded.toString());
+        }
+
+        // Transport retries can produce more than one observed request per blob.
+        assertTrue(downloadAuthSchemes.size() >= blobCount,
+            "Expected to observe at least one download request per blob; saw " + downloadAuthSchemes);
+        assertTrue(downloadAuthSchemes.stream().allMatch("Session"::equals),
+            "Expected all blob downloads to be authenticated with Session scheme; saw " + downloadAuthSchemes);
+    }
+
+    @Test
+    @LiveOnly
+    @ResourceLock("BlobSessionAuth")
+    public void downloadBlobToFileInChunksOverSessionAuth() throws IOException {
+        String blobName = generateBlobName();
+        byte[] data = getRandomByteArray(4 * Constants.KB + 17);
+        int downloadBlockSize = Constants.KB;
+
+        cc.getBlobClient(blobName).getBlockBlobClient().upload(new ByteArrayInputStream(data), data.length);
+
+        Map<String, List<String>> downloadAuthSchemesByRange = Collections.synchronizedMap(new HashMap<>());
+        WireTapHttpClient inspect = new WireTapHttpClient(getHttpClient(), req -> {
+            String auth = req.getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
+            String path = req.getUrl().getPath();
+            String query = req.getUrl().getQuery();
+            if (auth != null
+                && req.getHttpMethod() == HttpMethod.GET
+                && path != null
+                && path.endsWith("/" + blobName)
+                && (query == null || !query.contains("comp="))) {
+                String range = req.getHeaders().getValue(HttpHeaderName.fromString("x-ms-range"));
+                if (range == null) {
+                    range = req.getHeaders().getValue(HttpHeaderName.fromString("Range"));
+                }
+                String rangeKey = range == null ? "<no range>" : range;
+                synchronized (downloadAuthSchemesByRange) {
+                    downloadAuthSchemesByRange.computeIfAbsent(rangeKey, ignored -> new ArrayList<>())
+                        .add(auth.startsWith("Session ") ? "Session" : "Bearer");
+                }
+            }
+        });
+
+        BlobClient sessionBlob = sessionEnabledContainerClient(inspect).getBlobClient(blobName);
+        File outFile = File.createTempFile(prefix, ".tmp");
+        outFile.deleteOnExit();
+        Files.deleteIfExists(outFile.toPath());
+
+        try {
+            sessionBlob.downloadToFileWithResponse(outFile.toPath().toString(), null,
+                new ParallelTransferOptions().setBlockSizeLong((long) downloadBlockSize).setMaxConcurrency(2), null,
+                null, false, null, null);
+
+            assertArrayEquals(data, Files.readAllBytes(outFile.toPath()));
+            assertTrue(downloadAuthSchemesByRange.size() > 1,
+                "Expected multiple chunked download ranges; saw " + downloadAuthSchemesByRange);
+            assertTrue(downloadAuthSchemesByRange.values().stream().allMatch(schemes -> schemes.contains("Session")),
+                "Expected every chunked blob download range to attempt Session auth; saw "
+                    + downloadAuthSchemesByRange);
+        } finally {
+            Files.deleteIfExists(outFile.toPath());
+        }
+    }
+
+    @Test
+    @LiveOnly
+    @ResourceLock("BlobSessionAuth")
+    // Listing uses bearer authentication because List Blobs is a container-level GET, not an eligible blob GET.
+    public void listBlobsOverSessionEnabledClient() {
+        String blobName = generateBlobName();
+        cc.getBlobClient(blobName).getBlockBlobClient().upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
+
+        List<String> listAuthSchemes = Collections.synchronizedList(new ArrayList<>());
+        WireTapHttpClient inspect = new WireTapHttpClient(getHttpClient(), req -> {
+            String auth = req.getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
+            String query = req.getUrl().getQuery();
+            if (auth != null && query != null && query.contains("comp=list")) {
+                listAuthSchemes.add(auth.startsWith("Session ") ? "Session" : "Bearer");
+            }
+        });
+
+        BlobContainerClient sessionCc = sessionEnabledContainerClient(inspect);
+
+        assertTrue(sessionCc.listBlobs().stream().anyMatch(b -> b.getName().equals(blobName)));
+
+        assertFalse(listAuthSchemes.isEmpty(), "Expected to observe at least one list request");
+        assertTrue(listAuthSchemes.stream().allMatch("Bearer"::equals),
+            "Container list operation must use Bearer authorization; saw " + listAuthSchemes);
+    }
+
+    @Test
+    @LiveOnly
+    @ResourceLock("BlobSessionAuth")
+    // Verifies token rotation while a client keeps issuing blob GET requests. Cache lookups trigger background
+    // refresh when due; they acquire a new credential if the cached one has expired. The test expects the
+    // service-issued session lifetime to be approximately five minutes.
+    public void sessionTokenRotates() {
+        String blobName = generateBlobName();
+        cc.getBlobClient(blobName).getBlockBlobClient().upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
+
+        SessionGetInspectionPolicy inspect = new SessionGetInspectionPolicy(blobName);
+        BlobClient sessionBlob = sessionEnabledContainerClient(inspect).getBlobClient(blobName);
+
+        // Issue small GET requests for longer than the expected session lifetime to observe token rotation.
+        long testDurationMillis = 6 * 60 * 1000L;
+        long pollIntervalMillis = 10 * 1000L;
+        long deadline = System.currentTimeMillis() + testDurationMillis;
+        int getCount = 0;
+
+        while (System.currentTimeMillis() < deadline) {
+            // Each GET is small (the default test data) and must succeed with the expected content.
+            assertEquals(DATA.getDefaultText(), sessionBlob.downloadContent().toString());
+            getCount++;
+            sleepIfRunningAgainstService(pollIntervalMillis);
+        }
+
+        assertTrue(getCount > 1, "Expected to issue multiple blob GET requests over the test window");
+        assertFalse(inspect.getSessionTokens().isEmpty(), "Expected blob GETs to be signed with Session tokens");
+
+        Set<String> distinctTokens = new HashSet<>(inspect.getSessionTokens());
+        assertTrue(distinctTokens.size() >= 2,
+            "Expected the session token to rotate at least once over the test window; only saw " + distinctTokens.size()
+                + " distinct token(s)");
+    }
+
+    @Test
+    @LiveOnly
+    @ResourceLock("BlobSessionAuth")
+    // Verifies that tokens rotate and downloads succeed during rapid, back-to-back blob GET requests.
+    // A session-signed 401 invalidates the rejected credential if still current and retries with bearer authentication;
+    // a later request can acquire a new session. The test asserts successful downloads, not the absence of
+    // wire-level authentication failures, which are retained for diagnostics.
+    public void sessionTokenRotatesWithoutInvalidTokenGets() {
+        String blobName = generateBlobName();
+        cc.getBlobClient(blobName).getBlockBlobClient().upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
+
+        SessionGetInspectionPolicy inspect = new SessionGetInspectionPolicy(blobName);
+        BlobClient sessionBlob = sessionEnabledContainerClient(inspect).getBlobClient(blobName);
+
+        // Issue back-to-back GET requests for longer than the expected five-minute session lifetime.
+        long testDurationMillis = 6 * 60 * 1000L;
+        long deadline = System.currentTimeMillis() + testDurationMillis;
+        int getCount = 0;
+
+        while (System.currentTimeMillis() < deadline) {
+            // Each download must return the expected content, including when it falls back to bearer after a 401.
+            assertEquals(DATA.getDefaultText(), sessionBlob.downloadContent().toString());
+            getCount++;
+        }
+
+        assertTrue(getCount > 1, "Expected to issue multiple blob GET requests over the test window");
+        assertFalse(inspect.getSessionTokens().isEmpty(), "Expected blob GETs to be signed with Session tokens");
+
+        Set<String> distinctTokens = new HashSet<>(inspect.getSessionTokens());
+        assertTrue(distinctTokens.size() >= 2,
+            "Expected the session token to rotate at least once over the test window; saw " + distinctTokens.size()
+                + " distinct token(s)" + " and transparently-recovered invalid-token responses "
+                + inspect.getInvalidAuthStatuses());
+    }
+
+    @Test
+    @LiveOnly
+    @ResourceLock("BlobSessionAuth")
+    // Simulates a client issuing a blob GET roughly every 30 seconds, potentially missing session_expiring hints.
+    // Each cache lookup checks expiration: a usable credential can trigger background refresh, while an expired
+    // credential requires acquisition before signing. A session-signed 401 falls back to bearer for that request.
+    // Downloads must succeed and the observed session token must rotate over the test window.
+    public void sessionTokenRotatesWithSparsePolling() {
+        String blobName = generateBlobName();
+        cc.getBlobClient(blobName).getBlockBlobClient().upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
+
+        SessionGetInspectionPolicy inspect = new SessionGetInspectionPolicy(blobName);
+        BlobClient sessionBlob = sessionEnabledContainerClient(inspect).getBlobClient(blobName);
+
+        // Poll for longer than two expected five-minute lifetimes. Refresh times may pass during the idle gaps,
+        // but expiration and refresh eligibility are evaluated only when the cache is accessed.
+        long testDurationMillis = 11 * 60 * 1000L;
+        long pollIntervalMillis = 30 * 1000L;
+        long deadline = System.currentTimeMillis() + testDurationMillis;
+        int getCount = 0;
+
+        while (System.currentTimeMillis() < deadline) {
+            // Each download must return the expected content, whether it uses a cached or newly acquired session
+            // or falls back to bearer after a session-signed 401.
+            assertEquals(DATA.getDefaultText(), sessionBlob.downloadContent().toString());
+            getCount++;
+            sleepIfRunningAgainstService(pollIntervalMillis);
+        }
+
+        assertTrue(getCount > 1, "Expected to issue multiple blob GET requests over the sparse-polling window");
+        assertFalse(inspect.getSessionTokens().isEmpty(), "Expected blob GETs to be signed with Session tokens");
+
+        Set<String> distinctTokens = new HashSet<>(inspect.getSessionTokens());
+        assertTrue(distinctTokens.size() >= 2,
+            "Expected the session token to rotate at least once over the sparse-polling window; only saw "
+                + distinctTokens);
+    }
+
+    /**
+     * Test-only pipeline policy that watches blob-level GET requests for a single blob and records, at the wire
+     * level (PER_RETRY), the Session token used to sign each request and any HTTP 401/403 responses, including
+     * bearer responses. Used to assert token rotation and include authentication failures in diagnostics.
+     */
+    private static final class SessionGetInspectionPolicy implements HttpPipelinePolicy {
+        private final String blobName;
+        private final List<String> sessionTokens = Collections.synchronizedList(new ArrayList<>());
+        private final List<Integer> invalidAuthStatuses = Collections.synchronizedList(new ArrayList<>());
+
+        SessionGetInspectionPolicy(String blobName) {
+            this.blobName = blobName;
+        }
+
+        private boolean isBlobGet(HttpRequest request) {
+            String path = request.getUrl().getPath();
+            String query = request.getUrl().getQuery();
+            return request.getHttpMethod() == HttpMethod.GET
+                && path != null
+                && path.endsWith("/" + blobName)
+                && (query == null || !query.contains("comp="));
+        }
+
+        private void onRequest(HttpRequest request) {
+            if (!isBlobGet(request)) {
+                return;
+            }
+            String auth = request.getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
+            if (auth != null && auth.startsWith("Session ")) {
+                // Header form is "Session <sessionToken>:<signature>" - extract just the token.
+                int tokenStart = "Session ".length();
+                int sigSeparator = auth.indexOf(':', tokenStart);
+                sessionTokens
+                    .add(sigSeparator < 0 ? auth.substring(tokenStart) : auth.substring(tokenStart, sigSeparator));
+            }
+        }
+
+        private void onResponse(HttpRequest request, int statusCode) {
+            if (isBlobGet(request) && (statusCode == 401 || statusCode == 403)) {
+                invalidAuthStatuses.add(statusCode);
+            }
+        }
+
+        @Override
+        public HttpPipelinePosition getPipelinePosition() {
+            return HttpPipelinePosition.PER_RETRY;
+        }
+
+        @Override
+        public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+            onRequest(context.getHttpRequest());
+            return next.process().doOnNext(response -> onResponse(context.getHttpRequest(), response.getStatusCode()));
+        }
+
+        @Override
+        public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
+            onRequest(context.getHttpRequest());
+            HttpResponse response = next.processSync();
+            onResponse(context.getHttpRequest(), response.getStatusCode());
+            return response;
+        }
+
+        List<String> getSessionTokens() {
+            return sessionTokens;
+        }
+
+        List<Integer> getInvalidAuthStatuses() {
+            return invalidAuthStatuses;
+        }
+    }
+
+    private BlobContainerClient sessionEnabledContainerClient(HttpPipelinePolicy... policies) {
+        return getOAuthServiceClient(sessionEnabledOptions(), policies)
+            .getBlobContainerClient(cc.getBlobContainerName());
+    }
+
+    private BlobContainerClient sessionEnabledContainerClient(HttpClient httpClient) {
+        return getOAuthServiceClient(sessionEnabledOptions(), httpClient)
+            .getBlobContainerClient(cc.getBlobContainerName());
+    }
+
+    private SessionOptions sessionEnabledOptions() {
+        return new SessionOptions().setSessionMode(SessionMode.ENABLED).setAccountName(cc.getAccountName());
     }
 
 }

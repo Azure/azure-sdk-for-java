@@ -14,9 +14,11 @@ import java.util.concurrent.TimeoutException;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class StorageImplUtilsTests {
 
@@ -44,6 +46,16 @@ public class StorageImplUtilsTests {
         assertEquals(firstPass, StorageImplUtils.toETagHeaderValue(firstPass));
     }
 
+    @ParameterizedTest
+    @MethodSource("serviceEndpointValues")
+    void isServiceEndpointDetectsServiceSubdomain(String host, String serviceSubDomain, boolean expected) {
+        if (expected) {
+            assertTrue(StorageImplUtils.isServiceEndpoint(host, serviceSubDomain));
+        } else {
+            assertFalse(StorageImplUtils.isServiceEndpoint(host, serviceSubDomain));
+        }
+    }
+
     private static Stream<Arguments> exceptionCallables() {
         Callable<Object> timeoutCallable = () -> {
             throw new TimeoutException();
@@ -65,6 +77,13 @@ public class StorageImplUtilsTests {
             Arguments.of(runtimeCallable, RuntimeException.class),
             Arguments.of(executionCallable, ExecutionException.class),
             Arguments.of(interruptedCallable, InterruptedException.class));
+    }
+
+    private static Stream<Arguments> serviceEndpointValues() {
+        return Stream.of(Arguments.of("account.blob.core.windows.net", "blob", true),
+            Arguments.of("account.dfs.core.windows.net", "dfs", true),
+            Arguments.of("custom.example.com", "blob", false), Arguments.of("account.blob.example.com", "dfs", false),
+            Arguments.of(null, "blob", false), Arguments.of("account.blob.core.windows.net", null, false));
     }
 
     private static Stream<Arguments> etagValues() {

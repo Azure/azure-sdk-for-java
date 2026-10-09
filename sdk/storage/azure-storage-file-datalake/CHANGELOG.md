@@ -4,6 +4,9 @@
 
 ### Features Added
 
+- Added `sessionOptions` to Data Lake client builders to configure session-based authentication for eligible GET
+  requests.
+
 ### Breaking Changes
 
 ### Bugs Fixed

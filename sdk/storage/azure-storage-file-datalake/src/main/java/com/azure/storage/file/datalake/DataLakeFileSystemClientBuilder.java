@@ -28,6 +28,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerClientBuilder;
 import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.models.BlobAudience;
+import com.azure.storage.blob.models.SessionOptions;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.file.datalake.implementation.util.BuilderHelper;
@@ -98,6 +99,20 @@ public class DataLakeFileSystemClientBuilder implements TokenCredentialTrait<Dat
         logOptions = getDefaultHttpLogOptions();
         blobContainerClientBuilder = new BlobContainerClientBuilder();
         blobContainerClientBuilder.addPolicy(BuilderHelper.getBlobUserAgentModificationPolicy());
+    }
+
+    /**
+     * Sets the options for session-based authentication of eligible GET blob requests made by the underlying Blob
+     * clients used by this Data Lake client. Applies when the builder constructs a pipeline with a
+     * {@link TokenCredential}; requests that are not eligible continue to use bearer token authentication.
+     * Sessions are disabled by default and are not used by the DFS pipeline.
+     *
+     * @param sessionOptions The session options for the HTTP pipeline.
+     * @return the updated DataLakeFileSystemClientBuilder object.
+     */
+    public DataLakeFileSystemClientBuilder sessionOptions(SessionOptions sessionOptions) {
+        blobContainerClientBuilder.sessionOptions(sessionOptions);
+        return this;
     }
 
     private DataLakeServiceVersion getServiceVersion() {

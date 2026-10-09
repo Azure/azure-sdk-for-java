@@ -13,6 +13,10 @@ import com.azure.storage.blob.models.BlobServiceProperties;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.StorageAccountInfo;
+import com.azure.storage.blob.models.ContainerSessionProvider;
+import com.azure.storage.blob.models.SessionOptions;
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.HttpClient;
 import com.azure.storage.blob.options.BlobContainerCreateOptions;
 import com.azure.storage.blob.options.FindBlobsOptions;
 import com.azure.storage.blob.options.UndeleteBlobContainerOptions;
@@ -33,6 +37,26 @@ import java.util.Map;
 public class BlobServiceClientJavaDocCodeSnippets {
     private final BlobServiceClient client = JavaDocCodeSnippetsHelpers.getBlobServiceClient();
     private final Duration timeout = Duration.ofSeconds(30);
+
+    /**
+     * Shares an SDK-owned session provider across independent sync and async clients.
+     * @param credential The OAuth credential.
+     */
+    public void shareSessionProvider(TokenCredential credential) {
+        // BEGIN: com.azure.storage.blob.models.ContainerSessionProvider.share
+        String endpoint = "https://account.blob.core.windows.net";
+        HttpClient transport = HttpClient.createDefault();
+        BlobServiceClient acquisitionClient = new BlobServiceClientBuilder()
+            .endpoint(endpoint).credential(credential).httpClient(transport).buildClient();
+        ContainerSessionProvider provider = new ContainerSessionProvider(acquisitionClient);
+        SessionOptions sessions = new SessionOptions().setSessionMode(SessionOptions.SessionMode.ENABLED)
+            .setSessionProvider(provider);
+        BlobServiceClient first = new BlobServiceClientBuilder()
+            .endpoint(endpoint).credential(credential).httpClient(transport).sessionOptions(sessions).buildClient();
+        BlobServiceAsyncClient second = new BlobServiceClientBuilder()
+            .endpoint(endpoint).credential(credential).httpClient(transport).sessionOptions(sessions).buildAsyncClient();
+        // END: com.azure.storage.blob.models.ContainerSessionProvider.share
+    }
 
     /**
      * Code snippet for {@link BlobServiceClient#getBlobContainerClient(String)}
