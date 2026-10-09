@@ -1,9 +1,12 @@
 import importlib.util
+import io
 import sys
 import tempfile
 import unittest
-from datetime import date
+from contextlib import redirect_stderr
+from datetime import date, datetime, timezone
 from pathlib import Path
+from unittest.mock import patch
 
 
 TESTS_DIR = Path(__file__).resolve().parent
@@ -45,6 +48,26 @@ class PrepareReleaseTests(unittest.TestCase):
             artifact_id, version, directory, changelog
         )
 
+    def write_release_fixture_repo(self, aggregate_changelog=None):
+        self.write(
+            "sdk/resourcemanager/azure-resourcemanager/pom.xml",
+            self.fixture("premium-pom.xml"),
+        )
+        self.write(
+            "sdk/resourcemanager/azure-resourcemanager/CHANGELOG.md",
+            aggregate_changelog or self.fixture("aggregate-changelog.md"),
+        )
+        self.write(
+            "eng/versioning/version_client.txt",
+            self.fixture("version-client.txt"),
+        )
+        self.library(
+            "azure-resourcemanager-alpha", "3.2.1", "package-patch-fallback.md"
+        )
+        self.library(
+            "azure-resourcemanager-beta", "4.1.0", "package-multiple-minors.md"
+        )
+
     def test_discovers_bundled_premium_libraries_from_pom(self):
         self.write(
             "sdk/resourcemanager/azure-resourcemanager/pom.xml",
@@ -80,7 +103,7 @@ class PrepareReleaseTests(unittest.TestCase):
         )
         self.assertTrue(all(blocker["date"] == "2026-08-01" for blocker in blockers))
 
-    def test_version_and_date_defaults_and_explicit_values(self):
+    def test_version_defaults_and_explicit_values(self):
         version_file = self.write(
             "eng/versioning/version_client.txt",
             self.fixture("version-client.txt"),
@@ -91,14 +114,25 @@ class PrepareReleaseTests(unittest.TestCase):
         self.assertEqual(
             "5.2.0", prepare_release.resolve_release_version("5.2.0", current)
         )
-        self.assertEqual(
-            date(2026, 9, 20),
-            prepare_release.resolve_release_date(None, date(2026, 9, 20)),
-        )
-        self.assertEqual(
-            date(2026, 10, 1),
-            prepare_release.resolve_release_date("2026-10-01"),
-        )
+
+    @patch.object(prepare_release, "datetime")
+    def test_release_date_is_current_utc_date(self, clock):
+        clock.now.return_value = datetime(2026, 9, 20, 23, 59, tzinfo=timezone.utc)
+
+        self.assertEqual(date(2026, 9, 20), prepare_release.resolve_release_date())
+        clock.now.assert_called_once_with(timezone.utc)
+
+    def test_removed_cli_options_are_rejected(self):
+        for option, value in (
+            ("--release-date", "2026-10-01"),
+            ("--exclude-breaking-changes", "azure-resourcemanager-beta"),
+        ):
+            with self.subTest(option=option):
+                stderr = io.StringIO()
+                with redirect_stderr(stderr), self.assertRaises(SystemExit) as error:
+                    prepare_release.main([option, value])
+                self.assertEqual(2, error.exception.code)
+                self.assertIn(f"unrecognized arguments: {option}", stderr.getvalue())
 
     def test_rejects_duplicate_and_downgrade_release_versions(self):
         releases = prepare_release.parse_releases(
@@ -129,25 +163,36 @@ class PrepareReleaseTests(unittest.TestCase):
                         invalid_date, prior
                     )
 
-    def test_current_top_rerun_keeps_existing_release_date(self):
+    @patch.object(prepare_release, "datetime")
+    def test_current_top_rerun_uses_current_utc_date(self, clock):
         changelog = self.fixture("aggregate-changelog.md").replace(
             "## 5.1.0-beta.1 (Unreleased)",
             "## 5.1.0 (2026-07-01)",
         )
-        releases = prepare_release.parse_releases(changelog)
-
-        self.assertEqual(
-            date(2026, 7, 1),
-            prepare_release.resolve_target_release_date(
-                None, date(2026, 9, 20), releases, "5.1.0"
-            ),
+        self.write_release_fixture_repo(changelog)
+        self.write(
+            "eng/versioning/version_client.txt",
+            self.fixture("version-client.txt").replace("5.1.0-beta.2", "5.1.0"),
         )
-        with self.assertRaisesRegex(
-            prepare_release.ReleasePreparationError, "cannot change its date"
-        ):
-            prepare_release.resolve_target_release_date(
-                "2026-09-20", None, releases, "5.1.0"
-            )
+        clock.now.return_value = datetime(2026, 9, 20, tzinfo=timezone.utc)
+
+        summary, exit_code = prepare_release.prepare_release(
+            self.repo_root, dry_run=True
+        )
+
+        self.assertEqual(0, exit_code)
+        self.assertEqual("ready", summary["status"])
+        self.assertEqual("2026-09-20", summary["release_date"])
+        self.assertEqual("2026-05-10", summary["cutoff_date"])
+        self.assertEqual(
+            ["sdk/resourcemanager/azure-resourcemanager/CHANGELOG.md"],
+            summary["planned_files"],
+        )
+        self.assertEqual(
+            ["3.2.0", "3.3.0"],
+            summary["selected_packages"][1]["selected_versions"],
+        )
+        clock.now.assert_called_once_with(timezone.utc)
 
     def test_patch_dependency_falls_back_to_closest_minor_release(self):
         library = self.library(
@@ -212,23 +257,24 @@ class PrepareReleaseTests(unittest.TestCase):
         self.assertIn("2026-07-01", rendered)
         self.assertNotIn("2026-05-01", rendered)
 
-    def test_breaking_change_exclusion_is_per_run(self):
+    def test_breaking_changes_only_package_is_included(self):
         library = self.library(
             "azure-resourcemanager-beta", "3.3.0", "package-multiple-minors.md"
         )
         selection = prepare_release.select_package_changelog(
             library,
-            self.fixture("package-multiple-minors.md"),
+            "## 3.3.0 (2026-07-10)\n\n"
+            "### Breaking Changes\n\n"
+            "- Breaking-only prose.\n",
             cutoff=date(2026, 5, 10),
             release_date=date(2026, 7, 20),
-            exclude_breaking_changes=True,
         )
 
         rendered = prepare_release.render_package_selection(selection)
 
-        self.assertNotIn("breaking prose", rendered)
-        self.assertIn("Latest feature prose.", rendered)
-        self.assertTrue(selection.exclude_breaking_changes)
+        self.assertTrue(selection.has_content)
+        self.assertIn("#### Breaking Changes\n\n- Breaking-only prose.", rendered)
+        self.assertNotIn("Features Added", rendered)
 
     def test_changed_file_allowlist_rejects_any_other_path(self):
         allowed = [
@@ -247,32 +293,57 @@ class PrepareReleaseTests(unittest.TestCase):
             ["sdk/compute/azure-resourcemanager-compute/CHANGELOG.md"], unexpected
         )
 
-    def test_dry_run_uses_defaults_and_does_not_edit_fixture_repo(self):
-        self.write(
-            "sdk/resourcemanager/azure-resourcemanager/pom.xml",
-            self.fixture("premium-pom.xml"),
+    @patch.object(prepare_release, "datetime")
+    def test_release_writes_current_date_and_all_breaking_changes(self, clock):
+        self.write_release_fixture_repo()
+        clock.now.return_value = datetime(2026, 7, 20, tzinfo=timezone.utc)
+        changelog_relative = (
+            "sdk/resourcemanager/azure-resourcemanager/CHANGELOG.md"
         )
-        self.write(
-            "sdk/resourcemanager/azure-resourcemanager/CHANGELOG.md",
-            self.fixture("aggregate-changelog.md"),
+        changed_files = ["eng/versioning/version_client.txt", changelog_relative]
+
+        with (
+            patch.object(prepare_release, "run_version_propagation") as propagate,
+            patch.object(
+                prepare_release, "get_changed_files",
+                side_effect=[[], changed_files],
+            ),
+        ):
+            summary, exit_code = prepare_release.prepare_release(self.repo_root)
+
+        self.assertEqual(0, exit_code)
+        self.assertEqual("ready", summary["status"])
+        self.assertEqual("2026-07-20", summary["release_date"])
+        propagate.assert_called_once_with(self.repo_root.resolve())
+        changelog = (self.repo_root / changelog_relative).read_text(encoding="utf-8")
+        self.assertIn("## 5.1.0 (2026-07-20)", changelog)
+        self.assertIn("- Breaking wording must remain exactly intact.", changelog)
+        self.assertIn("- Earlier breaking prose.", changelog)
+        self.assertIn("- Latest breaking prose.", changelog)
+        self.assertNotIn("Before-cutoff breaking prose.", changelog)
+        self.assertNotIn("Patch-only prose", changelog)
+
+        rerun, exit_code = prepare_release.prepare_release(
+            self.repo_root, dry_run=True
         )
-        version_file = self.write(
-            "eng/versioning/version_client.txt",
-            self.fixture("version-client.txt"),
-        )
-        changelog = self.library(
-            "azure-resourcemanager-alpha", "3.2.1", "package-patch-fallback.md"
-        ).changelog_path
-        self.library(
-            "azure-resourcemanager-beta", "4.1.0", "package-multiple-minors.md"
-        )
+
+        self.assertEqual(0, exit_code)
+        self.assertEqual("no_changes", rerun["status"])
+        self.assertEqual("2026-07-20", rerun["release_date"])
+        self.assertEqual([], rerun["planned_files"])
+
+    @patch.object(prepare_release, "datetime")
+    def test_dry_run_uses_defaults_and_does_not_edit_fixture_repo(self, clock):
+        self.write_release_fixture_repo()
         before = {
-            version_file: version_file.read_bytes(),
-            changelog: changelog.read_bytes(),
+            path: path.read_bytes()
+            for path in self.repo_root.rglob("*")
+            if path.is_file()
         }
+        clock.now.return_value = datetime(2026, 7, 1, tzinfo=timezone.utc)
 
         summary, exit_code = prepare_release.prepare_release(
-            self.repo_root, dry_run=True, today=date(2026, 7, 1)
+            self.repo_root, dry_run=True
         )
 
         self.assertEqual(0, exit_code)
@@ -281,6 +352,14 @@ class PrepareReleaseTests(unittest.TestCase):
         self.assertEqual("2026-07-01", summary["release_date"])
         self.assertEqual("2026-05-10", summary["cutoff_date"])
         self.assertEqual([], summary["changed_files"])
+        self.assertNotIn("overrides", summary)
+        self.assertTrue(
+            all(
+                "breaking_changes_excluded" not in package
+                for package in summary["selected_packages"]
+            )
+        )
+        clock.now.assert_called_once_with(timezone.utc)
         for path, content in before.items():
             self.assertEqual(content, path.read_bytes())
 

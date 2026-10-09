@@ -97,13 +97,12 @@ class PackageSelection:
     breaking_sections: Tuple[str, ...]
     api_updates: Tuple[str, ...]
     api_versions: Tuple[str, ...]
-    exclude_breaking_changes: bool
 
     @property
     def has_content(self) -> bool:
         return bool(
             self.features_sections
-            or (self.breaking_sections and not self.exclude_breaking_changes)
+            or self.breaking_sections
             or self.api_updates
         )
 
@@ -247,37 +246,8 @@ def resolve_release_version(explicit: Optional[str], current_version: str) -> st
     return candidate
 
 
-def resolve_release_date(explicit: Optional[str], today: Optional[date] = None) -> date:
-    if explicit:
-        try:
-            return date.fromisoformat(explicit)
-        except ValueError as error:
-            raise ReleasePreparationError(
-                f"Release date must use YYYY-MM-DD format: {explicit}"
-            ) from error
-    return today or datetime.now(timezone.utc).date()
-
-
-def resolve_target_release_date(
-    explicit: Optional[str],
-    today: Optional[date],
-    aggregate_releases: Sequence[Release],
-    target_version: str,
-) -> date:
-    requested_date = resolve_release_date(explicit, today)
-    first_release = aggregate_releases[0]
-    if (
-        not first_release.prerelease
-        and first_release.version_text == target_version
-        and first_release.release_date is not None
-    ):
-        if explicit and requested_date != first_release.release_date:
-            raise ReleasePreparationError(
-                f"Existing top release {target_version} is dated "
-                f"{first_release.release_date.isoformat()}; a rerun cannot change its date"
-            )
-        return first_release.release_date
-    return requested_date
+def resolve_release_date() -> date:
+    return datetime.now(timezone.utc).date()
 
 
 def find_prior_aggregate_release(
@@ -393,7 +363,6 @@ def select_package_changelog(
     changelog: str,
     cutoff: date,
     release_date: date,
-    exclude_breaking_changes: bool = False,
 ) -> PackageSelection:
     releases = parse_releases(changelog, str(library.changelog_path))
     consumed = Version.parse(library.consumed_version)
@@ -408,7 +377,7 @@ def select_package_changelog(
     source_release = max(stable_minor_releases, key=lambda item: item.version, default=None)
     if source_release is None:
         return PackageSelection(
-            library, None, (), None, (), (), (), (), exclude_breaking_changes
+            library, None, (), None, (), (), (), ()
         )
 
     qualifying = tuple(
@@ -443,7 +412,6 @@ def select_package_changelog(
         breaking_sections=breaking,
         api_updates=api_updates,
         api_versions=extract_api_versions(api_updates),
-        exclude_breaking_changes=exclude_breaking_changes,
     )
 
 
@@ -462,7 +430,7 @@ def render_package_selection(selection: PackageSelection) -> Optional[str]:
             ]
             blocks.append("#### Features Added\n\n" + "\n\n".join(feature_bodies))
 
-    if selection.breaking_sections and not selection.exclude_breaking_changes:
+    if selection.breaking_sections:
         if len(selection.qualifying_releases) == 1:
             blocks.append(shift_headings(selection.breaking_sections[0]))
         else:
@@ -580,22 +548,6 @@ def validate_changed_files(
     return not unexpected, unexpected
 
 
-def parse_breaking_exclusions(
-    value: Optional[str], libraries: Sequence[BundledLibrary]
-) -> List[str]:
-    exclusions = sorted(
-        {item.strip() for item in (value or "").split(",") if item.strip()}
-    )
-    bundled = {library.artifact_id for library in libraries}
-    unknown = sorted(set(exclusions) - bundled)
-    if unknown:
-        raise ReleasePreparationError(
-            "Breaking-change exclusions are not bundled artifact IDs: "
-            + ", ".join(unknown)
-        )
-    return exclusions
-
-
 def _selection_summary(selection: PackageSelection) -> Dict[str, object]:
     return {
         "artifact_id": selection.library.artifact_id,
@@ -606,7 +558,6 @@ def _selection_summary(selection: PackageSelection) -> Dict[str, object]:
         ],
         "api_versions": list(selection.api_versions),
         "api_updates": list(selection.api_updates),
-        "breaking_changes_excluded": selection.exclude_breaking_changes,
         "included": selection.has_content,
     }
 
@@ -614,10 +565,7 @@ def _selection_summary(selection: PackageSelection) -> Dict[str, object]:
 def prepare_release(
     repo_root: Path,
     release_version_arg: Optional[str] = None,
-    release_date_arg: Optional[str] = None,
-    exclude_breaking_changes_arg: Optional[str] = None,
     dry_run: bool = False,
-    today: Optional[date] = None,
 ) -> Tuple[Dict[str, object], int]:
     repo_root = repo_root.resolve()
     version_file = repo_root / VERSION_FILE
@@ -628,15 +576,10 @@ def prepare_release(
     aggregate_releases = parse_releases(
         aggregate_changelog, str(aggregate_changelog_path)
     )
-    target_date = resolve_target_release_date(
-        release_date_arg, today, aggregate_releases, release_version
-    )
+    target_date = resolve_release_date()
     prior_release = find_prior_aggregate_release(aggregate_releases, release_version)
     validate_release_date_after_cutoff(target_date, prior_release)
     libraries = discover_bundled_libraries(repo_root)
-    exclusions = parse_breaking_exclusions(
-        exclude_breaking_changes_arg, libraries
-    )
 
     summary: Dict[str, object] = {
         "status": "blocked",
@@ -650,7 +593,6 @@ def prepare_release(
         "cutoff_date": prior_release.release_date.isoformat(),
         "gate": {"passed": False, "blockers": []},
         "selected_packages": [],
-        "overrides": {"exclude_breaking_changes": exclusions},
         "allowlist": {
             "passed": True,
             "allowed_files": list(ALLOWED_CHANGED_FILES),
@@ -674,7 +616,6 @@ def prepare_release(
                 changelog=changelog,
                 cutoff=prior_release.release_date,
                 release_date=target_date,
-                exclude_breaking_changes=library.artifact_id in exclusions,
             )
         )
     summary["selected_packages"] = [
@@ -755,8 +696,6 @@ def write_summary(summary: Dict[str, object], summary_file: Optional[Path]) -> N
 def main(argv: Optional[Sequence[str]] = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--release-version")
-    parser.add_argument("--release-date")
-    parser.add_argument("--exclude-breaking-changes")
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--summary-file", type=Path)
     parser.add_argument("--repo-root", type=Path)
@@ -767,8 +706,6 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         summary, exit_code = prepare_release(
             repo_root=repo_root,
             release_version_arg=args.release_version,
-            release_date_arg=args.release_date,
-            exclude_breaking_changes_arg=args.exclude_breaking_changes,
             dry_run=args.dry_run,
         )
     except (OSError, ET.ParseError, ReleasePreparationError, subprocess.SubprocessError) as error:

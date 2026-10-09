@@ -11,14 +11,6 @@ on:
         description: Optional stable X.Y.Z release version
         required: false
         type: string
-      release_date:
-        description: Optional UTC release date in YYYY-MM-DD format
-        required: false
-        type: string
-      exclude_breaking_changes:
-        description: Optional comma-separated bundled artifact IDs whose Breaking Changes should be excluded
-        required: false
-        type: string
 
 permissions:
   contents: read
@@ -26,8 +18,6 @@ permissions:
 
 env:
   RELEASE_VERSION: ${{ inputs.release_version }}
-  RELEASE_DATE: ${{ inputs.release_date }}
-  EXCLUDE_BREAKING_CHANGES: ${{ inputs.exclude_breaking_changes }}
 
 concurrency:
   job-discriminator: ${{ github.run_id }}
@@ -78,6 +68,8 @@ timeout-minutes: 20
 Prepare a stable release of
 `com.azure.resourcemanager:azure-resourcemanager`. The installed package-local
 skill defines the deterministic algorithm and safety rules. Follow it exactly.
+Always use the current UTC date and include all Breaking Changes from qualifying
+minor releases.
 
 Execute this command from the repository root, preserving the environment
 variable references so workflow input is never interpolated into shell syntax:
@@ -85,16 +77,12 @@ variable references so workflow input is never interpolated into shell syntax:
 ```bash
 python3 sdk/resourcemanager/azure-resourcemanager/.github/skills/prepare-release/scripts/prepare_release.py \
   ${RELEASE_VERSION:+--release-version "$RELEASE_VERSION"} \
-  ${RELEASE_DATE:+--release-date "$RELEASE_DATE"} \
-  ${EXCLUDE_BREAKING_CHANGES:+--exclude-breaking-changes "$EXCLUDE_BREAKING_CHANGES"} \
   --summary-file /tmp/gh-aw/agent/prepare-resourcemanager-release-summary.json
 ```
 
 The input environment is:
 
 - `RELEASE_VERSION=${{ inputs.release_version }}`
-- `RELEASE_DATE=${{ inputs.release_date }}`
-- `EXCLUDE_BREAKING_CHANGES=${{ inputs.exclude_breaking_changes }}`
 
 After execution, read
 `/tmp/gh-aw/agent/prepare-resourcemanager-release-summary.json`. Do not reinterpret,
@@ -113,9 +101,9 @@ Build a compact pull request body using only the JSON summary:
 2. Gate result and prior aggregate cutoff.
 3. A table of selected artifact IDs, consumed/source versions, selected minor
    versions, and retained API versions.
-4. The per-run Breaking Changes exclusions.
-5. The allowlist result and changed files.
-6. State that patch-only prose was omitted and changelog selection came
+4. The allowlist result and changed files.
+5. State that all qualifying Breaking Changes were included, patch-only prose
+   was omitted, and changelog selection came
    directly from the deterministic script.
 
 Never publish a package, modify a premium package changelog, or alter files

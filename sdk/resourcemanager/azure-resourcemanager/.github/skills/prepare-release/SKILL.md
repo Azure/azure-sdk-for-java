@@ -20,11 +20,11 @@ Optional arguments:
 - `--release-version X.Y.Z` overrides the stable version derived by removing
   the prerelease suffix from the aggregate current version in
   `eng/versioning/version_client.txt`.
-- `--release-date YYYY-MM-DD` overrides the current UTC date.
-- `--exclude-breaking-changes artifact-a,artifact-b` excludes Breaking Changes
-  for only the named bundled artifact IDs in this run.
 - `--dry-run` performs discovery, gating, and changelog selection without
   editing files or invoking version propagation.
+
+The release date is always the current UTC date, including on reruns. All
+Breaking Changes from qualifying minor releases are included without exclusions.
 
 The script is the authority for release selection. Do not manually reinterpret,
 rewrite, or supplement its changelog choices.
@@ -40,8 +40,7 @@ rewrite, or supplement its changelog choices.
    stable minor release at or below the consumed version as the changelog
    source.
 5. Retain Features Added and Breaking Changes from every qualifying minor
-   release, subject only to the per-run Breaking Changes exclusion. Retain only
-   the latest qualifying minor release's API-version update.
+   release. Retain only the latest qualifying minor release's API-version update.
 6. Update the canonical aggregate current version, then invoke
    `eng/versioning/update_versions.py` for the allowlisted POM and README files.
 7. Reject any changed file outside the embedded allowlist.
