@@ -21,10 +21,10 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * The FilesGetPropertiesHeaders model.
+ * The FilesGetHardLinksHeaders model.
  */
 @Fluent
-public final class FilesGetPropertiesHeaders {
+public final class FilesGetHardLinksHeaders {
     /*
      * The Last-Modified property.
      */
@@ -44,70 +44,52 @@ public final class FilesGetPropertiesHeaders {
     private String xMsType = "File";
 
     /*
-     * The Content-Length property.
-     */
-    @Generated
-    private Long contentLength;
-
-    /*
-     * The Content-Type property.
-     */
-    @Generated
-    private String contentType;
-
-    /*
      * The ETag property.
      */
     @Generated
     private String eTag;
 
     /*
-     * The Content-MD5 property.
+     * The x-ms-content-type property.
      */
     @Generated
-    private byte[] contentMD5;
+    private String xMsContentType;
 
     /*
-     * The Content-Encoding property.
+     * The x-ms-content-length property.
      */
     @Generated
-    private String contentEncoding;
+    private Long xMsContentLength;
 
     /*
-     * The Cache-Control property.
+     * The x-ms-content-md5 property.
      */
     @Generated
-    private String cacheControl;
+    private byte[] xMsContentMd5;
 
     /*
-     * The Content-Disposition property.
+     * The x-ms-content-encoding property.
      */
     @Generated
-    private String contentDisposition;
+    private String xMsContentEncoding;
 
     /*
-     * The Content-Language property.
+     * The x-ms-content-language property.
      */
     @Generated
-    private String contentLanguage;
+    private String xMsContentLanguage;
 
     /*
-     * The x-ms-request-id property.
+     * The x-ms-cache-control property.
      */
     @Generated
-    private String xMsRequestId;
+    private String xMsCacheControl;
 
     /*
-     * The x-ms-version property.
+     * The x-ms-content-disposition property.
      */
     @Generated
-    private String xMsVersion;
-
-    /*
-     * The Date property.
-     */
-    @Generated
-    private DateTimeRfc1123 date;
+    private String xMsContentDisposition;
 
     /*
      * The x-ms-copy-completion-time property.
@@ -239,7 +221,7 @@ public final class FilesGetPropertiesHeaders {
      * The x-ms-link-count property.
      */
     @Generated
-    private Long xMsLinkCount;
+    private Integer xMsLinkCount;
 
     /*
      * The x-ms-file-file-type property.
@@ -247,9 +229,46 @@ public final class FilesGetPropertiesHeaders {
     @Generated
     private NfsFileType xMsFileFileType;
 
+    /*
+     * The x-ms-request-id property.
+     */
+    @Generated
+    private String xMsRequestId;
+
+    /*
+     * The x-ms-version property.
+     */
+    @Generated
+    private String xMsVersion;
+
+    /*
+     * The Date property.
+     */
+    @Generated
+    private DateTimeRfc1123 date;
+
+    /*
+     * The x-ms-client-request-id property.
+     */
+    @Generated
+    private String xMsClientRequestId;
+
     private static final HttpHeaderName X_MS_TYPE = HttpHeaderName.fromString("x-ms-type");
 
-    private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
+    private static final HttpHeaderName X_MS_CONTENT_TYPE = HttpHeaderName.fromString("x-ms-content-type");
+
+    private static final HttpHeaderName X_MS_CONTENT_LENGTH = HttpHeaderName.fromString("x-ms-content-length");
+
+    private static final HttpHeaderName X_MS_CONTENT_MD5 = HttpHeaderName.fromString("x-ms-content-md5");
+
+    private static final HttpHeaderName X_MS_CONTENT_ENCODING = HttpHeaderName.fromString("x-ms-content-encoding");
+
+    private static final HttpHeaderName X_MS_CONTENT_LANGUAGE = HttpHeaderName.fromString("x-ms-content-language");
+
+    private static final HttpHeaderName X_MS_CACHE_CONTROL = HttpHeaderName.fromString("x-ms-cache-control");
+
+    private static final HttpHeaderName X_MS_CONTENT_DISPOSITION
+        = HttpHeaderName.fromString("x-ms-content-disposition");
 
     private static final HttpHeaderName X_MS_COPY_COMPLETION_TIME
         = HttpHeaderName.fromString("x-ms-copy-completion-time");
@@ -301,13 +320,15 @@ public final class FilesGetPropertiesHeaders {
 
     private static final HttpHeaderName X_MS_FILE_FILE_TYPE = HttpHeaderName.fromString("x-ms-file-file-type");
 
+    private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
+
     // HttpHeaders containing the raw property values.
     /**
-     * Creates an instance of FilesGetPropertiesHeaders class.
+     * Creates an instance of FilesGetHardLinksHeaders class.
      * 
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
-    public FilesGetPropertiesHeaders(HttpHeaders rawHeaders) {
+    public FilesGetHardLinksHeaders(HttpHeaders rawHeaders) {
         String lastModified = rawHeaders.getValue(HttpHeaderName.LAST_MODIFIED);
         if (lastModified != null) {
             this.lastModified = new DateTimeRfc1123(lastModified);
@@ -315,32 +336,24 @@ public final class FilesGetPropertiesHeaders {
             this.lastModified = null;
         }
         this.xMsType = rawHeaders.getValue(X_MS_TYPE);
-        String contentLength = rawHeaders.getValue(HttpHeaderName.CONTENT_LENGTH);
-        if (contentLength != null) {
-            this.contentLength = Long.parseLong(contentLength);
-        } else {
-            this.contentLength = null;
-        }
-        this.contentType = rawHeaders.getValue(HttpHeaderName.CONTENT_TYPE);
         this.eTag = rawHeaders.getValue(HttpHeaderName.ETAG);
-        String contentMD5 = rawHeaders.getValue(HttpHeaderName.CONTENT_MD5);
-        if (contentMD5 != null) {
-            this.contentMD5 = Base64.getDecoder().decode(contentMD5);
+        this.xMsContentType = rawHeaders.getValue(X_MS_CONTENT_TYPE);
+        String xMsContentLength = rawHeaders.getValue(X_MS_CONTENT_LENGTH);
+        if (xMsContentLength != null) {
+            this.xMsContentLength = Long.parseLong(xMsContentLength);
         } else {
-            this.contentMD5 = null;
+            this.xMsContentLength = null;
         }
-        this.contentEncoding = rawHeaders.getValue(HttpHeaderName.CONTENT_ENCODING);
-        this.cacheControl = rawHeaders.getValue(HttpHeaderName.CACHE_CONTROL);
-        this.contentDisposition = rawHeaders.getValue(HttpHeaderName.CONTENT_DISPOSITION);
-        this.contentLanguage = rawHeaders.getValue(HttpHeaderName.CONTENT_LANGUAGE);
-        this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
-        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
-        String date = rawHeaders.getValue(HttpHeaderName.DATE);
-        if (date != null) {
-            this.date = new DateTimeRfc1123(date);
+        String xMsContentMd5 = rawHeaders.getValue(X_MS_CONTENT_MD5);
+        if (xMsContentMd5 != null) {
+            this.xMsContentMd5 = Base64.getDecoder().decode(xMsContentMd5);
         } else {
-            this.date = null;
+            this.xMsContentMd5 = null;
         }
+        this.xMsContentEncoding = rawHeaders.getValue(X_MS_CONTENT_ENCODING);
+        this.xMsContentLanguage = rawHeaders.getValue(X_MS_CONTENT_LANGUAGE);
+        this.xMsCacheControl = rawHeaders.getValue(X_MS_CACHE_CONTROL);
+        this.xMsContentDisposition = rawHeaders.getValue(X_MS_CONTENT_DISPOSITION);
         String xMsCopyCompletionTime = rawHeaders.getValue(X_MS_COPY_COMPLETION_TIME);
         if (xMsCopyCompletionTime != null) {
             this.xMsCopyCompletionTime = new DateTimeRfc1123(xMsCopyCompletionTime);
@@ -409,7 +422,7 @@ public final class FilesGetPropertiesHeaders {
         this.xMsGroup = rawHeaders.getValue(X_MS_GROUP);
         String xMsLinkCount = rawHeaders.getValue(X_MS_LINK_COUNT);
         if (xMsLinkCount != null) {
-            this.xMsLinkCount = Long.parseLong(xMsLinkCount);
+            this.xMsLinkCount = Integer.parseInt(xMsLinkCount);
         } else {
             this.xMsLinkCount = null;
         }
@@ -419,6 +432,15 @@ public final class FilesGetPropertiesHeaders {
         } else {
             this.xMsFileFileType = null;
         }
+        this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
+        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
+        String date = rawHeaders.getValue(HttpHeaderName.DATE);
+        if (date != null) {
+            this.date = new DateTimeRfc1123(date);
+        } else {
+            this.date = null;
+        }
+        this.xMsClientRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_CLIENT_REQUEST_ID);
         Map<String, String> xMsMetaHeaderCollection = new LinkedHashMap<>();
 
         rawHeaders.stream().forEach(header -> {
@@ -447,10 +469,10 @@ public final class FilesGetPropertiesHeaders {
      * Set the lastModified property: The Last-Modified property.
      * 
      * @param lastModified the lastModified value to set.
-     * @return the FilesGetPropertiesHeaders object itself.
+     * @return the FilesGetHardLinksHeaders object itself.
      */
     @Generated
-    public FilesGetPropertiesHeaders setLastModified(OffsetDateTime lastModified) {
+    public FilesGetHardLinksHeaders setLastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
         } else {
@@ -473,10 +495,10 @@ public final class FilesGetPropertiesHeaders {
      * Set the xMsMeta property: The x-ms-meta- property.
      * 
      * @param xMsMeta the xMsMeta value to set.
-     * @return the FilesGetPropertiesHeaders object itself.
+     * @return the FilesGetHardLinksHeaders object itself.
      */
     @Generated
-    public FilesGetPropertiesHeaders setXMsMeta(Map<String, String> xMsMeta) {
+    public FilesGetHardLinksHeaders setXMsMeta(Map<String, String> xMsMeta) {
         this.xMsMeta = xMsMeta;
         return this;
     }
@@ -495,55 +517,11 @@ public final class FilesGetPropertiesHeaders {
      * Set the xMsType property: The x-ms-type property.
      * 
      * @param xMsType the xMsType value to set.
-     * @return the FilesGetPropertiesHeaders object itself.
+     * @return the FilesGetHardLinksHeaders object itself.
      */
     @Generated
-    public FilesGetPropertiesHeaders setXMsType(String xMsType) {
+    public FilesGetHardLinksHeaders setXMsType(String xMsType) {
         this.xMsType = xMsType;
-        return this;
-    }
-
-    /**
-     * Get the contentLength property: The Content-Length property.
-     * 
-     * @return the contentLength value.
-     */
-    @Generated
-    public Long getContentLength() {
-        return this.contentLength;
-    }
-
-    /**
-     * Set the contentLength property: The Content-Length property.
-     * 
-     * @param contentLength the contentLength value to set.
-     * @return the FilesGetPropertiesHeaders object itself.
-     */
-    @Generated
-    public FilesGetPropertiesHeaders setContentLength(Long contentLength) {
-        this.contentLength = contentLength;
-        return this;
-    }
-
-    /**
-     * Get the contentType property: The Content-Type property.
-     * 
-     * @return the contentType value.
-     */
-    @Generated
-    public String getContentType() {
-        return this.contentType;
-    }
-
-    /**
-     * Set the contentType property: The Content-Type property.
-     * 
-     * @param contentType the contentType value to set.
-     * @return the FilesGetPropertiesHeaders object itself.
-     */
-    @Generated
-    public FilesGetPropertiesHeaders setContentType(String contentType) {
-        this.contentType = contentType;
         return this;
     }
 
@@ -561,194 +539,165 @@ public final class FilesGetPropertiesHeaders {
      * Set the eTag property: The ETag property.
      * 
      * @param eTag the eTag value to set.
-     * @return the FilesGetPropertiesHeaders object itself.
+     * @return the FilesGetHardLinksHeaders object itself.
      */
     @Generated
-    public FilesGetPropertiesHeaders setETag(String eTag) {
+    public FilesGetHardLinksHeaders setETag(String eTag) {
         this.eTag = eTag;
         return this;
     }
 
     /**
-     * Get the contentMD5 property: The Content-MD5 property.
+     * Get the xMsContentType property: The x-ms-content-type property.
      * 
-     * @return the contentMD5 value.
+     * @return the xMsContentType value.
      */
     @Generated
-    public byte[] getContentMD5() {
-        return CoreUtils.clone(this.contentMD5);
+    public String getXMsContentType() {
+        return this.xMsContentType;
     }
 
     /**
-     * Set the contentMD5 property: The Content-MD5 property.
+     * Set the xMsContentType property: The x-ms-content-type property.
      * 
-     * @param contentMD5 the contentMD5 value to set.
-     * @return the FilesGetPropertiesHeaders object itself.
+     * @param xMsContentType the xMsContentType value to set.
+     * @return the FilesGetHardLinksHeaders object itself.
      */
     @Generated
-    public FilesGetPropertiesHeaders setContentMD5(byte[] contentMD5) {
-        this.contentMD5 = CoreUtils.clone(contentMD5);
+    public FilesGetHardLinksHeaders setXMsContentType(String xMsContentType) {
+        this.xMsContentType = xMsContentType;
         return this;
     }
 
     /**
-     * Get the contentEncoding property: The Content-Encoding property.
+     * Get the xMsContentLength property: The x-ms-content-length property.
      * 
-     * @return the contentEncoding value.
+     * @return the xMsContentLength value.
      */
     @Generated
-    public String getContentEncoding() {
-        return this.contentEncoding;
+    public Long getXMsContentLength() {
+        return this.xMsContentLength;
     }
 
     /**
-     * Set the contentEncoding property: The Content-Encoding property.
+     * Set the xMsContentLength property: The x-ms-content-length property.
      * 
-     * @param contentEncoding the contentEncoding value to set.
-     * @return the FilesGetPropertiesHeaders object itself.
+     * @param xMsContentLength the xMsContentLength value to set.
+     * @return the FilesGetHardLinksHeaders object itself.
      */
     @Generated
-    public FilesGetPropertiesHeaders setContentEncoding(String contentEncoding) {
-        this.contentEncoding = contentEncoding;
+    public FilesGetHardLinksHeaders setXMsContentLength(Long xMsContentLength) {
+        this.xMsContentLength = xMsContentLength;
         return this;
     }
 
     /**
-     * Get the cacheControl property: The Cache-Control property.
+     * Get the xMsContentMd5 property: The x-ms-content-md5 property.
      * 
-     * @return the cacheControl value.
+     * @return the xMsContentMd5 value.
      */
     @Generated
-    public String getCacheControl() {
-        return this.cacheControl;
+    public byte[] getXMsContentMd5() {
+        return CoreUtils.clone(this.xMsContentMd5);
     }
 
     /**
-     * Set the cacheControl property: The Cache-Control property.
+     * Set the xMsContentMd5 property: The x-ms-content-md5 property.
      * 
-     * @param cacheControl the cacheControl value to set.
-     * @return the FilesGetPropertiesHeaders object itself.
+     * @param xMsContentMd5 the xMsContentMd5 value to set.
+     * @return the FilesGetHardLinksHeaders object itself.
      */
     @Generated
-    public FilesGetPropertiesHeaders setCacheControl(String cacheControl) {
-        this.cacheControl = cacheControl;
+    public FilesGetHardLinksHeaders setXMsContentMd5(byte[] xMsContentMd5) {
+        this.xMsContentMd5 = CoreUtils.clone(xMsContentMd5);
         return this;
     }
 
     /**
-     * Get the contentDisposition property: The Content-Disposition property.
+     * Get the xMsContentEncoding property: The x-ms-content-encoding property.
      * 
-     * @return the contentDisposition value.
+     * @return the xMsContentEncoding value.
      */
     @Generated
-    public String getContentDisposition() {
-        return this.contentDisposition;
+    public String getXMsContentEncoding() {
+        return this.xMsContentEncoding;
     }
 
     /**
-     * Set the contentDisposition property: The Content-Disposition property.
+     * Set the xMsContentEncoding property: The x-ms-content-encoding property.
      * 
-     * @param contentDisposition the contentDisposition value to set.
-     * @return the FilesGetPropertiesHeaders object itself.
+     * @param xMsContentEncoding the xMsContentEncoding value to set.
+     * @return the FilesGetHardLinksHeaders object itself.
      */
     @Generated
-    public FilesGetPropertiesHeaders setContentDisposition(String contentDisposition) {
-        this.contentDisposition = contentDisposition;
+    public FilesGetHardLinksHeaders setXMsContentEncoding(String xMsContentEncoding) {
+        this.xMsContentEncoding = xMsContentEncoding;
         return this;
     }
 
     /**
-     * Get the contentLanguage property: The Content-Language property.
+     * Get the xMsContentLanguage property: The x-ms-content-language property.
      * 
-     * @return the contentLanguage value.
+     * @return the xMsContentLanguage value.
      */
     @Generated
-    public String getContentLanguage() {
-        return this.contentLanguage;
+    public String getXMsContentLanguage() {
+        return this.xMsContentLanguage;
     }
 
     /**
-     * Set the contentLanguage property: The Content-Language property.
+     * Set the xMsContentLanguage property: The x-ms-content-language property.
      * 
-     * @param contentLanguage the contentLanguage value to set.
-     * @return the FilesGetPropertiesHeaders object itself.
+     * @param xMsContentLanguage the xMsContentLanguage value to set.
+     * @return the FilesGetHardLinksHeaders object itself.
      */
     @Generated
-    public FilesGetPropertiesHeaders setContentLanguage(String contentLanguage) {
-        this.contentLanguage = contentLanguage;
+    public FilesGetHardLinksHeaders setXMsContentLanguage(String xMsContentLanguage) {
+        this.xMsContentLanguage = xMsContentLanguage;
         return this;
     }
 
     /**
-     * Get the xMsRequestId property: The x-ms-request-id property.
+     * Get the xMsCacheControl property: The x-ms-cache-control property.
      * 
-     * @return the xMsRequestId value.
+     * @return the xMsCacheControl value.
      */
     @Generated
-    public String getXMsRequestId() {
-        return this.xMsRequestId;
+    public String getXMsCacheControl() {
+        return this.xMsCacheControl;
     }
 
     /**
-     * Set the xMsRequestId property: The x-ms-request-id property.
+     * Set the xMsCacheControl property: The x-ms-cache-control property.
      * 
-     * @param xMsRequestId the xMsRequestId value to set.
-     * @return the FilesGetPropertiesHeaders object itself.
+     * @param xMsCacheControl the xMsCacheControl value to set.
+     * @return the FilesGetHardLinksHeaders object itself.
      */
     @Generated
-    public FilesGetPropertiesHeaders setXMsRequestId(String xMsRequestId) {
-        this.xMsRequestId = xMsRequestId;
+    public FilesGetHardLinksHeaders setXMsCacheControl(String xMsCacheControl) {
+        this.xMsCacheControl = xMsCacheControl;
         return this;
     }
 
     /**
-     * Get the xMsVersion property: The x-ms-version property.
+     * Get the xMsContentDisposition property: The x-ms-content-disposition property.
      * 
-     * @return the xMsVersion value.
+     * @return the xMsContentDisposition value.
      */
     @Generated
-    public String getXMsVersion() {
-        return this.xMsVersion;
+    public String getXMsContentDisposition() {
+        return this.xMsContentDisposition;
     }
 
     /**
-     * Set the xMsVersion property: The x-ms-version property.
+     * Set the xMsContentDisposition property: The x-ms-content-disposition property.
      * 
-     * @param xMsVersion the xMsVersion value to set.
-     * @return the FilesGetPropertiesHeaders object itself.
+     * @param xMsContentDisposition the xMsContentDisposition value to set.
+     * @return the FilesGetHardLinksHeaders object itself.
      */
     @Generated
-    public FilesGetPropertiesHeaders setXMsVersion(String xMsVersion) {
-        this.xMsVersion = xMsVersion;
-        return this;
-    }
-
-    /**
-     * Get the date property: The Date property.
-     * 
-     * @return the date value.
-     */
-    @Generated
-    public OffsetDateTime getDate() {
-        if (this.date == null) {
-            return null;
-        }
-        return this.date.getDateTime();
-    }
-
-    /**
-     * Set the date property: The Date property.
-     * 
-     * @param date the date value to set.
-     * @return the FilesGetPropertiesHeaders object itself.
-     */
-    @Generated
-    public FilesGetPropertiesHeaders setDate(OffsetDateTime date) {
-        if (date == null) {
-            this.date = null;
-        } else {
-            this.date = new DateTimeRfc1123(date);
-        }
+    public FilesGetHardLinksHeaders setXMsContentDisposition(String xMsContentDisposition) {
+        this.xMsContentDisposition = xMsContentDisposition;
         return this;
     }
 
@@ -769,10 +718,10 @@ public final class FilesGetPropertiesHeaders {
      * Set the xMsCopyCompletionTime property: The x-ms-copy-completion-time property.
      * 
      * @param xMsCopyCompletionTime the xMsCopyCompletionTime value to set.
-     * @return the FilesGetPropertiesHeaders object itself.
+     * @return the FilesGetHardLinksHeaders object itself.
      */
     @Generated
-    public FilesGetPropertiesHeaders setXMsCopyCompletionTime(OffsetDateTime xMsCopyCompletionTime) {
+    public FilesGetHardLinksHeaders setXMsCopyCompletionTime(OffsetDateTime xMsCopyCompletionTime) {
         if (xMsCopyCompletionTime == null) {
             this.xMsCopyCompletionTime = null;
         } else {
@@ -795,10 +744,10 @@ public final class FilesGetPropertiesHeaders {
      * Set the xMsCopyStatusDescription property: The x-ms-copy-status-description property.
      * 
      * @param xMsCopyStatusDescription the xMsCopyStatusDescription value to set.
-     * @return the FilesGetPropertiesHeaders object itself.
+     * @return the FilesGetHardLinksHeaders object itself.
      */
     @Generated
-    public FilesGetPropertiesHeaders setXMsCopyStatusDescription(String xMsCopyStatusDescription) {
+    public FilesGetHardLinksHeaders setXMsCopyStatusDescription(String xMsCopyStatusDescription) {
         this.xMsCopyStatusDescription = xMsCopyStatusDescription;
         return this;
     }
@@ -817,10 +766,10 @@ public final class FilesGetPropertiesHeaders {
      * Set the xMsCopyId property: The x-ms-copy-id property.
      * 
      * @param xMsCopyId the xMsCopyId value to set.
-     * @return the FilesGetPropertiesHeaders object itself.
+     * @return the FilesGetHardLinksHeaders object itself.
      */
     @Generated
-    public FilesGetPropertiesHeaders setXMsCopyId(String xMsCopyId) {
+    public FilesGetHardLinksHeaders setXMsCopyId(String xMsCopyId) {
         this.xMsCopyId = xMsCopyId;
         return this;
     }
@@ -839,10 +788,10 @@ public final class FilesGetPropertiesHeaders {
      * Set the xMsCopyProgress property: The x-ms-copy-progress property.
      * 
      * @param xMsCopyProgress the xMsCopyProgress value to set.
-     * @return the FilesGetPropertiesHeaders object itself.
+     * @return the FilesGetHardLinksHeaders object itself.
      */
     @Generated
-    public FilesGetPropertiesHeaders setXMsCopyProgress(String xMsCopyProgress) {
+    public FilesGetHardLinksHeaders setXMsCopyProgress(String xMsCopyProgress) {
         this.xMsCopyProgress = xMsCopyProgress;
         return this;
     }
@@ -861,10 +810,10 @@ public final class FilesGetPropertiesHeaders {
      * Set the xMsCopySource property: The x-ms-copy-source property.
      * 
      * @param xMsCopySource the xMsCopySource value to set.
-     * @return the FilesGetPropertiesHeaders object itself.
+     * @return the FilesGetHardLinksHeaders object itself.
      */
     @Generated
-    public FilesGetPropertiesHeaders setXMsCopySource(String xMsCopySource) {
+    public FilesGetHardLinksHeaders setXMsCopySource(String xMsCopySource) {
         this.xMsCopySource = xMsCopySource;
         return this;
     }
@@ -883,10 +832,10 @@ public final class FilesGetPropertiesHeaders {
      * Set the xMsCopyStatus property: The x-ms-copy-status property.
      * 
      * @param xMsCopyStatus the xMsCopyStatus value to set.
-     * @return the FilesGetPropertiesHeaders object itself.
+     * @return the FilesGetHardLinksHeaders object itself.
      */
     @Generated
-    public FilesGetPropertiesHeaders setXMsCopyStatus(CopyStatusType xMsCopyStatus) {
+    public FilesGetHardLinksHeaders setXMsCopyStatus(CopyStatusType xMsCopyStatus) {
         this.xMsCopyStatus = xMsCopyStatus;
         return this;
     }
@@ -905,10 +854,10 @@ public final class FilesGetPropertiesHeaders {
      * Set the xMsServerEncrypted property: The x-ms-server-encrypted property.
      * 
      * @param xMsServerEncrypted the xMsServerEncrypted value to set.
-     * @return the FilesGetPropertiesHeaders object itself.
+     * @return the FilesGetHardLinksHeaders object itself.
      */
     @Generated
-    public FilesGetPropertiesHeaders setXMsServerEncrypted(Boolean xMsServerEncrypted) {
+    public FilesGetHardLinksHeaders setXMsServerEncrypted(Boolean xMsServerEncrypted) {
         this.xMsServerEncrypted = xMsServerEncrypted;
         return this;
     }
@@ -927,10 +876,10 @@ public final class FilesGetPropertiesHeaders {
      * Set the xMsFileAttributes property: The x-ms-file-attributes property.
      * 
      * @param xMsFileAttributes the xMsFileAttributes value to set.
-     * @return the FilesGetPropertiesHeaders object itself.
+     * @return the FilesGetHardLinksHeaders object itself.
      */
     @Generated
-    public FilesGetPropertiesHeaders setXMsFileAttributes(String xMsFileAttributes) {
+    public FilesGetHardLinksHeaders setXMsFileAttributes(String xMsFileAttributes) {
         this.xMsFileAttributes = xMsFileAttributes;
         return this;
     }
@@ -949,10 +898,10 @@ public final class FilesGetPropertiesHeaders {
      * Set the xMsFileCreationTime property: The x-ms-file-creation-time property.
      * 
      * @param xMsFileCreationTime the xMsFileCreationTime value to set.
-     * @return the FilesGetPropertiesHeaders object itself.
+     * @return the FilesGetHardLinksHeaders object itself.
      */
     @Generated
-    public FilesGetPropertiesHeaders setXMsFileCreationTime(OffsetDateTime xMsFileCreationTime) {
+    public FilesGetHardLinksHeaders setXMsFileCreationTime(OffsetDateTime xMsFileCreationTime) {
         this.xMsFileCreationTime = xMsFileCreationTime;
         return this;
     }
@@ -971,10 +920,10 @@ public final class FilesGetPropertiesHeaders {
      * Set the xMsFileLastWriteTime property: The x-ms-file-last-write-time property.
      * 
      * @param xMsFileLastWriteTime the xMsFileLastWriteTime value to set.
-     * @return the FilesGetPropertiesHeaders object itself.
+     * @return the FilesGetHardLinksHeaders object itself.
      */
     @Generated
-    public FilesGetPropertiesHeaders setXMsFileLastWriteTime(OffsetDateTime xMsFileLastWriteTime) {
+    public FilesGetHardLinksHeaders setXMsFileLastWriteTime(OffsetDateTime xMsFileLastWriteTime) {
         this.xMsFileLastWriteTime = xMsFileLastWriteTime;
         return this;
     }
@@ -993,10 +942,10 @@ public final class FilesGetPropertiesHeaders {
      * Set the xMsFileChangeTime property: The x-ms-file-change-time property.
      * 
      * @param xMsFileChangeTime the xMsFileChangeTime value to set.
-     * @return the FilesGetPropertiesHeaders object itself.
+     * @return the FilesGetHardLinksHeaders object itself.
      */
     @Generated
-    public FilesGetPropertiesHeaders setXMsFileChangeTime(OffsetDateTime xMsFileChangeTime) {
+    public FilesGetHardLinksHeaders setXMsFileChangeTime(OffsetDateTime xMsFileChangeTime) {
         this.xMsFileChangeTime = xMsFileChangeTime;
         return this;
     }
@@ -1015,10 +964,10 @@ public final class FilesGetPropertiesHeaders {
      * Set the xMsFilePermissionKey property: The x-ms-file-permission-key property.
      * 
      * @param xMsFilePermissionKey the xMsFilePermissionKey value to set.
-     * @return the FilesGetPropertiesHeaders object itself.
+     * @return the FilesGetHardLinksHeaders object itself.
      */
     @Generated
-    public FilesGetPropertiesHeaders setXMsFilePermissionKey(String xMsFilePermissionKey) {
+    public FilesGetHardLinksHeaders setXMsFilePermissionKey(String xMsFilePermissionKey) {
         this.xMsFilePermissionKey = xMsFilePermissionKey;
         return this;
     }
@@ -1037,10 +986,10 @@ public final class FilesGetPropertiesHeaders {
      * Set the xMsFileId property: The x-ms-file-id property.
      * 
      * @param xMsFileId the xMsFileId value to set.
-     * @return the FilesGetPropertiesHeaders object itself.
+     * @return the FilesGetHardLinksHeaders object itself.
      */
     @Generated
-    public FilesGetPropertiesHeaders setXMsFileId(String xMsFileId) {
+    public FilesGetHardLinksHeaders setXMsFileId(String xMsFileId) {
         this.xMsFileId = xMsFileId;
         return this;
     }
@@ -1059,10 +1008,10 @@ public final class FilesGetPropertiesHeaders {
      * Set the xMsFileName property: The x-ms-file-name property.
      * 
      * @param xMsFileName the xMsFileName value to set.
-     * @return the FilesGetPropertiesHeaders object itself.
+     * @return the FilesGetHardLinksHeaders object itself.
      */
     @Generated
-    public FilesGetPropertiesHeaders setXMsFileName(String xMsFileName) {
+    public FilesGetHardLinksHeaders setXMsFileName(String xMsFileName) {
         this.xMsFileName = xMsFileName;
         return this;
     }
@@ -1081,10 +1030,10 @@ public final class FilesGetPropertiesHeaders {
      * Set the xMsFileParentId property: The x-ms-file-parent-id property.
      * 
      * @param xMsFileParentId the xMsFileParentId value to set.
-     * @return the FilesGetPropertiesHeaders object itself.
+     * @return the FilesGetHardLinksHeaders object itself.
      */
     @Generated
-    public FilesGetPropertiesHeaders setXMsFileParentId(String xMsFileParentId) {
+    public FilesGetHardLinksHeaders setXMsFileParentId(String xMsFileParentId) {
         this.xMsFileParentId = xMsFileParentId;
         return this;
     }
@@ -1103,10 +1052,10 @@ public final class FilesGetPropertiesHeaders {
      * Set the xMsLeaseDuration property: The x-ms-lease-duration property.
      * 
      * @param xMsLeaseDuration the xMsLeaseDuration value to set.
-     * @return the FilesGetPropertiesHeaders object itself.
+     * @return the FilesGetHardLinksHeaders object itself.
      */
     @Generated
-    public FilesGetPropertiesHeaders setXMsLeaseDuration(LeaseDurationType xMsLeaseDuration) {
+    public FilesGetHardLinksHeaders setXMsLeaseDuration(LeaseDurationType xMsLeaseDuration) {
         this.xMsLeaseDuration = xMsLeaseDuration;
         return this;
     }
@@ -1125,10 +1074,10 @@ public final class FilesGetPropertiesHeaders {
      * Set the xMsLeaseState property: The x-ms-lease-state property.
      * 
      * @param xMsLeaseState the xMsLeaseState value to set.
-     * @return the FilesGetPropertiesHeaders object itself.
+     * @return the FilesGetHardLinksHeaders object itself.
      */
     @Generated
-    public FilesGetPropertiesHeaders setXMsLeaseState(LeaseStateType xMsLeaseState) {
+    public FilesGetHardLinksHeaders setXMsLeaseState(LeaseStateType xMsLeaseState) {
         this.xMsLeaseState = xMsLeaseState;
         return this;
     }
@@ -1147,10 +1096,10 @@ public final class FilesGetPropertiesHeaders {
      * Set the xMsLeaseStatus property: The x-ms-lease-status property.
      * 
      * @param xMsLeaseStatus the xMsLeaseStatus value to set.
-     * @return the FilesGetPropertiesHeaders object itself.
+     * @return the FilesGetHardLinksHeaders object itself.
      */
     @Generated
-    public FilesGetPropertiesHeaders setXMsLeaseStatus(LeaseStatusType xMsLeaseStatus) {
+    public FilesGetHardLinksHeaders setXMsLeaseStatus(LeaseStatusType xMsLeaseStatus) {
         this.xMsLeaseStatus = xMsLeaseStatus;
         return this;
     }
@@ -1169,10 +1118,10 @@ public final class FilesGetPropertiesHeaders {
      * Set the xMsMode property: The x-ms-mode property.
      * 
      * @param xMsMode the xMsMode value to set.
-     * @return the FilesGetPropertiesHeaders object itself.
+     * @return the FilesGetHardLinksHeaders object itself.
      */
     @Generated
-    public FilesGetPropertiesHeaders setXMsMode(String xMsMode) {
+    public FilesGetHardLinksHeaders setXMsMode(String xMsMode) {
         this.xMsMode = xMsMode;
         return this;
     }
@@ -1191,10 +1140,10 @@ public final class FilesGetPropertiesHeaders {
      * Set the xMsOwner property: The x-ms-owner property.
      * 
      * @param xMsOwner the xMsOwner value to set.
-     * @return the FilesGetPropertiesHeaders object itself.
+     * @return the FilesGetHardLinksHeaders object itself.
      */
     @Generated
-    public FilesGetPropertiesHeaders setXMsOwner(String xMsOwner) {
+    public FilesGetHardLinksHeaders setXMsOwner(String xMsOwner) {
         this.xMsOwner = xMsOwner;
         return this;
     }
@@ -1213,10 +1162,10 @@ public final class FilesGetPropertiesHeaders {
      * Set the xMsGroup property: The x-ms-group property.
      * 
      * @param xMsGroup the xMsGroup value to set.
-     * @return the FilesGetPropertiesHeaders object itself.
+     * @return the FilesGetHardLinksHeaders object itself.
      */
     @Generated
-    public FilesGetPropertiesHeaders setXMsGroup(String xMsGroup) {
+    public FilesGetHardLinksHeaders setXMsGroup(String xMsGroup) {
         this.xMsGroup = xMsGroup;
         return this;
     }
@@ -1227,7 +1176,7 @@ public final class FilesGetPropertiesHeaders {
      * @return the xMsLinkCount value.
      */
     @Generated
-    public Long getXMsLinkCount() {
+    public Integer getXMsLinkCount() {
         return this.xMsLinkCount;
     }
 
@@ -1235,10 +1184,10 @@ public final class FilesGetPropertiesHeaders {
      * Set the xMsLinkCount property: The x-ms-link-count property.
      * 
      * @param xMsLinkCount the xMsLinkCount value to set.
-     * @return the FilesGetPropertiesHeaders object itself.
+     * @return the FilesGetHardLinksHeaders object itself.
      */
     @Generated
-    public FilesGetPropertiesHeaders setXMsLinkCount(Long xMsLinkCount) {
+    public FilesGetHardLinksHeaders setXMsLinkCount(Integer xMsLinkCount) {
         this.xMsLinkCount = xMsLinkCount;
         return this;
     }
@@ -1257,11 +1206,106 @@ public final class FilesGetPropertiesHeaders {
      * Set the xMsFileFileType property: The x-ms-file-file-type property.
      * 
      * @param xMsFileFileType the xMsFileFileType value to set.
-     * @return the FilesGetPropertiesHeaders object itself.
+     * @return the FilesGetHardLinksHeaders object itself.
      */
     @Generated
-    public FilesGetPropertiesHeaders setXMsFileFileType(NfsFileType xMsFileFileType) {
+    public FilesGetHardLinksHeaders setXMsFileFileType(NfsFileType xMsFileFileType) {
         this.xMsFileFileType = xMsFileFileType;
+        return this;
+    }
+
+    /**
+     * Get the xMsRequestId property: The x-ms-request-id property.
+     * 
+     * @return the xMsRequestId value.
+     */
+    @Generated
+    public String getXMsRequestId() {
+        return this.xMsRequestId;
+    }
+
+    /**
+     * Set the xMsRequestId property: The x-ms-request-id property.
+     * 
+     * @param xMsRequestId the xMsRequestId value to set.
+     * @return the FilesGetHardLinksHeaders object itself.
+     */
+    @Generated
+    public FilesGetHardLinksHeaders setXMsRequestId(String xMsRequestId) {
+        this.xMsRequestId = xMsRequestId;
+        return this;
+    }
+
+    /**
+     * Get the xMsVersion property: The x-ms-version property.
+     * 
+     * @return the xMsVersion value.
+     */
+    @Generated
+    public String getXMsVersion() {
+        return this.xMsVersion;
+    }
+
+    /**
+     * Set the xMsVersion property: The x-ms-version property.
+     * 
+     * @param xMsVersion the xMsVersion value to set.
+     * @return the FilesGetHardLinksHeaders object itself.
+     */
+    @Generated
+    public FilesGetHardLinksHeaders setXMsVersion(String xMsVersion) {
+        this.xMsVersion = xMsVersion;
+        return this;
+    }
+
+    /**
+     * Get the date property: The Date property.
+     * 
+     * @return the date value.
+     */
+    @Generated
+    public OffsetDateTime getDate() {
+        if (this.date == null) {
+            return null;
+        }
+        return this.date.getDateTime();
+    }
+
+    /**
+     * Set the date property: The Date property.
+     * 
+     * @param date the date value to set.
+     * @return the FilesGetHardLinksHeaders object itself.
+     */
+    @Generated
+    public FilesGetHardLinksHeaders setDate(OffsetDateTime date) {
+        if (date == null) {
+            this.date = null;
+        } else {
+            this.date = new DateTimeRfc1123(date);
+        }
+        return this;
+    }
+
+    /**
+     * Get the xMsClientRequestId property: The x-ms-client-request-id property.
+     * 
+     * @return the xMsClientRequestId value.
+     */
+    @Generated
+    public String getXMsClientRequestId() {
+        return this.xMsClientRequestId;
+    }
+
+    /**
+     * Set the xMsClientRequestId property: The x-ms-client-request-id property.
+     * 
+     * @param xMsClientRequestId the xMsClientRequestId value to set.
+     * @return the FilesGetHardLinksHeaders object itself.
+     */
+    @Generated
+    public FilesGetHardLinksHeaders setXMsClientRequestId(String xMsClientRequestId) {
+        this.xMsClientRequestId = xMsClientRequestId;
         return this;
     }
 }
