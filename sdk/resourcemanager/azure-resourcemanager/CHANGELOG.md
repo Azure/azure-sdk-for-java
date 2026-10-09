@@ -28,58 +28,11 @@
 
 ### azure-resourcemanager-containerservice
 
-#### Features Added
-
-* `models.KubernetesResourceObjectEncryptionProfile` was added
-
-* `models.InfrastructureEncryption` was added
-
-##### `models.ManagedClusterSecurityProfile` was modified
-
-* `withKubernetesResourceObjectEncryptionProfile(models.KubernetesResourceObjectEncryptionProfile)` was added
-* `kubernetesResourceObjectEncryptionProfile()` was added
-
 #### Dependency Updates
 
 - Package api-version 2026-07-01.
 
 ### azure-resourcemanager-trafficmanager
-
-#### Features Added
-
-* `models.RecordType` was added
-
-#### Breaking Changes
-
-##### `models.ProfileListResult` was removed
-
-##### `models.TrafficFlow` was modified
-
-* `TrafficFlow()` was changed to private access
-* `withSourceIp(java.lang.String)` was removed
-* `withLongitude(java.lang.Double)` was removed
-* `withQueryExperiences(java.util.List)` was removed
-* `withLatitude(java.lang.Double)` was removed
-
-##### `models.QueryExperience` was modified
-
-* `QueryExperience()` was changed to private access
-* `withEndpointId(int)` was removed
-* `withLatency(java.lang.Double)` was removed
-* `withQueryCount(int)` was removed
-
-##### `models.HeatMapEndpoint` was modified
-
-* `HeatMapEndpoint()` was changed to private access
-* `withResourceId(java.lang.String)` was removed
-* `withEndpointId(java.lang.Integer)` was removed
-
-##### `models.Region` was modified
-
-* `Region()` was changed to private access
-* `withCode(java.lang.String)` was removed
-* `withName(java.lang.String)` was removed
-* `withRegions(java.util.List)` was removed
 
 #### Dependency Updates
 
