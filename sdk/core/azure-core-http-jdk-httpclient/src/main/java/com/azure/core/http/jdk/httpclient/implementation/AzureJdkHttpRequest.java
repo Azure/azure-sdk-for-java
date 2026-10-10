@@ -65,7 +65,7 @@ public final class AzureJdkHttpRequest extends HttpRequest {
      * @param logger The logger to log warnings to.
      * @param writeTimeout The write timeout of the request.
      * @param responseTimeout The response timeout of the request.
-     * @param httpVersion The protocol preference, or null to use the native client's preference.
+     * @param httpVersion The protocol preference, or null to use the internal client's preference.
      */
     public AzureJdkHttpRequest(com.azure.core.http.HttpRequest azureCoreRequest, Context context,
         Set<String> restrictedHeaders, ClientLogger logger, Duration writeTimeout, Duration responseTimeout,

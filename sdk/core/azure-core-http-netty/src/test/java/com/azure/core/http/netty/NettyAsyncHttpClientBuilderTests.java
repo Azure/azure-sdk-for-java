@@ -109,10 +109,10 @@ public class NettyAsyncHttpClientBuilderTests {
     }
 
     @Test
-    public void maximumHttpVersionOverridesAndRestoresNativeProtocols() {
-        HttpClient nativeClient = HttpClient.create().protocol(HttpProtocol.H2C);
+    public void maximumHttpVersionOverridesAndRestoresInternalProtocols() {
+        HttpClient internalClient = HttpClient.create().protocol(HttpProtocol.H2C);
         NettyAsyncHttpClientBuilder builder
-            = new NettyAsyncHttpClientBuilder(nativeClient).configuration(Configuration.NONE);
+            = new NettyAsyncHttpClientBuilder(internalClient).configuration(Configuration.NONE);
         NettyAsyncHttpClient original = (NettyAsyncHttpClient) builder.build();
         NettyAsyncHttpClient limited
             = (NettyAsyncHttpClient) builder.maximumHttpVersion(HttpProtocolVersion.HTTP_1_1).build();
@@ -121,7 +121,7 @@ public class NettyAsyncHttpClientBuilderTests {
         assertArrayEquals(new HttpProtocol[] { HttpProtocol.H2C }, original.nettyClient.configuration().protocols());
         assertArrayEquals(new HttpProtocol[] { HttpProtocol.HTTP11 }, limited.nettyClient.configuration().protocols());
         assertArrayEquals(new HttpProtocol[] { HttpProtocol.H2C }, cleared.nettyClient.configuration().protocols());
-        assertArrayEquals(new HttpProtocol[] { HttpProtocol.H2C }, nativeClient.configuration().protocols());
+        assertArrayEquals(new HttpProtocol[] { HttpProtocol.H2C }, internalClient.configuration().protocols());
     }
 
     /**

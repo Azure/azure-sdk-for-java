@@ -45,8 +45,8 @@ public class JdkHttpClientHttp2Tests extends HttpProtocolVersionTests {
     }
 
     @ParameterizedTest
-    @MethodSource("nativeVersionArguments")
-    public void explicitMaximumOverridesNativeVersionWithoutChangingIt(HttpProtocolVersion nativeVersion, boolean async)
+    @MethodSource("internalVersionArguments")
+    public void explicitMaximumOverridesInternalVersionWithoutChangingIt(HttpProtocolVersion internalVersion, boolean async)
         throws Exception {
         LocalTestServer server = new LocalTestServer((request, response, body) -> {
             response.setHeader(PROTOCOL_HEADER.getCaseSensitiveName(), request.getProtocol());
@@ -57,7 +57,7 @@ public class JdkHttpClientHttp2Tests extends HttpProtocolVersionTests {
         HttpClient cleared = null;
         try {
             server.start();
-            java.net.http.HttpClient.Version version = nativeVersion == HttpProtocolVersion.HTTP_2
+            java.net.http.HttpClient.Version version = internalVersion == HttpProtocolVersion.HTTP_2
                 ? java.net.http.HttpClient.Version.HTTP_2
                 : java.net.http.HttpClient.Version.HTTP_1_1;
             JdkHttpClientBuilder builder = new JdkHttpClientBuilder(
@@ -65,34 +65,34 @@ public class JdkHttpClientHttp2Tests extends HttpProtocolVersionTests {
                     .configuration(Configuration.NONE);
             original = builder.build();
             overridden = builder.maximumHttpVersion(
-                nativeVersion == HttpProtocolVersion.HTTP_2 ? HttpProtocolVersion.HTTP_1_1 : HttpProtocolVersion.HTTP_2)
+                internalVersion == HttpProtocolVersion.HTTP_2 ? HttpProtocolVersion.HTTP_1_1 : HttpProtocolVersion.HTTP_2)
                 .build();
             cleared = builder.maximumHttpVersion(null).build();
 
-            String nativeProtocol = nativeVersion == HttpProtocolVersion.HTTP_2 ? "HTTP/2.0" : "HTTP/1.1";
-            String overriddenProtocol = nativeVersion == HttpProtocolVersion.HTTP_2 ? "HTTP/1.1" : "HTTP/2.0";
-            assertNegotiatedProtocol(original, server.getHttpsUri(), nativeProtocol, async);
+            String internalProtocol = internalVersion == HttpProtocolVersion.HTTP_2 ? "HTTP/2.0" : "HTTP/1.1";
+            String overriddenProtocol = internalVersion == HttpProtocolVersion.HTTP_2 ? "HTTP/1.1" : "HTTP/2.0";
+            assertNegotiatedProtocol(original, server.getHttpsUri(), internalProtocol, async);
             assertNegotiatedProtocol(overridden, server.getHttpsUri(), overriddenProtocol, async);
-            assertNegotiatedProtocol(cleared, server.getHttpsUri(), nativeProtocol, async);
+            assertNegotiatedProtocol(cleared, server.getHttpsUri(), internalProtocol, async);
             assertNegotiatedProtocol(overridden, server.getHttpsUri(), overriddenProtocol, async);
-            assertEquals(version, getNativeClient(original).version());
-            assertEquals(version, getNativeClient(overridden).version());
-            assertEquals(version, getNativeClient(cleared).version());
+            assertEquals(version, getInternalClient(original).version());
+            assertEquals(version, getInternalClient(overridden).version());
+            assertEquals(version, getInternalClient(cleared).version());
         } finally {
             if (original != null) {
-                closeNativeClient(original);
+                closeInternalClient(original);
             }
             if (overridden != null) {
-                closeNativeClient(overridden);
+                closeInternalClient(overridden);
             }
             if (cleared != null) {
-                closeNativeClient(cleared);
+                closeInternalClient(cleared);
             }
             server.stop();
         }
     }
 
-    private static Stream<Arguments> nativeVersionArguments() {
+    private static Stream<Arguments> internalVersionArguments() {
         return Stream.of(Arguments.of(HttpProtocolVersion.HTTP_1_1, false),
             Arguments.of(HttpProtocolVersion.HTTP_1_1, true), Arguments.of(HttpProtocolVersion.HTTP_2, false),
             Arguments.of(HttpProtocolVersion.HTTP_2, true));
@@ -119,17 +119,17 @@ public class JdkHttpClientHttp2Tests extends HttpProtocolVersionTests {
 
     @Override
     protected void closeHttpClient(HttpClient client) throws Exception {
-        closeNativeClient(client);
+        closeInternalClient(client);
     }
 
-    static void closeNativeClient(HttpClient client) throws Exception {
-        java.net.http.HttpClient nativeClient = getNativeClient(client);
-        if (nativeClient instanceof AutoCloseable) {
-            ((AutoCloseable) nativeClient).close();
+    static void closeInternalClient(HttpClient client) throws Exception {
+        java.net.http.HttpClient internalClient = getInternalClient(client);
+        if (internalClient instanceof AutoCloseable) {
+            ((AutoCloseable) internalClient).close();
         }
     }
 
-    static java.net.http.HttpClient getNativeClient(HttpClient client) throws ReflectiveOperationException {
+    static java.net.http.HttpClient getInternalClient(HttpClient client) throws ReflectiveOperationException {
         Field field = JdkHttpClient.class.getDeclaredField("jdkHttpClient");
         field.setAccessible(true);
         return (java.net.http.HttpClient) field.get(client);

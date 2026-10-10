@@ -42,7 +42,7 @@ public class JdkHttpClientBuilder {
     private static final String JAVA_HOME = System.getProperty("java.home");
     private static final String JDK_HTTPCLIENT_ALLOW_RESTRICTED_HEADERS = "jdk.httpclient.allowRestrictedHeaders";
 
-    // These headers are restricted by default in native JDK12 HttpClient.
+    // These headers are restricted by default in the internal JDK12 HttpClient.
     // These headers can be whitelisted by setting jdk.httpclient.allowRestrictedHeaders
     // property in the network properties file: 'JAVA_HOME/conf/net.properties'
     // e.g white listing 'host' header.
@@ -89,9 +89,9 @@ public class JdkHttpClientBuilder {
      * {@link HttpProtocolVersion#HTTP_2} enables HTTP/2 with HTTP/1.1 fallback using the JDK client's protocol
      * negotiation.
      * <p>
-     * By default, the client uses HTTP/1.1, or the version configured on a supplied native JDK builder. An explicit
+     * By default, the client uses HTTP/1.1, or the version configured on a supplied internal JDK builder. An explicit
      * maximum overrides the version used for requests without modifying the supplied builder's version. Passing null
-     * clears the maximum and restores the default or supplied native version.
+     * clears the maximum and restores the default or supplied internal version.
      *
      * <p><strong>Code Sample</strong></p>
      *

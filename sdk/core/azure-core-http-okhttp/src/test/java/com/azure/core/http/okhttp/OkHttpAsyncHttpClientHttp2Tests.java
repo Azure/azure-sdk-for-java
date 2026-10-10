@@ -15,11 +15,11 @@ import okhttp3.OkHttpClient;
 public class OkHttpAsyncHttpClientHttp2Tests extends HttpProtocolVersionTests {
     @Override
     protected HttpClient createHttpClient(HttpProtocolVersion version, boolean applySetting) throws Exception {
-        OkHttpClient nativeClient
+        OkHttpClient internalClient
             = new OkHttpClient.Builder().sslSocketFactory(getSslContext().getSocketFactory(), getTrustManager())
                 .build();
         OkHttpAsyncHttpClientBuilder builder
-            = new OkHttpAsyncHttpClientBuilder(nativeClient).configuration(Configuration.NONE);
+            = new OkHttpAsyncHttpClientBuilder(internalClient).configuration(Configuration.NONE);
         if (applySetting) {
             builder.maximumHttpVersion(version);
         }
@@ -33,8 +33,8 @@ public class OkHttpAsyncHttpClientHttp2Tests extends HttpProtocolVersionTests {
 
     @Override
     protected void closeHttpClient(HttpClient client) {
-        OkHttpClient nativeClient = ((OkHttpAsyncHttpClient) client).httpClient;
-        nativeClient.connectionPool().evictAll();
-        nativeClient.dispatcher().executorService().shutdown();
+        OkHttpClient internalClient = ((OkHttpAsyncHttpClient) client).httpClient;
+        internalClient.connectionPool().evictAll();
+        internalClient.dispatcher().executorService().shutdown();
     }
 }

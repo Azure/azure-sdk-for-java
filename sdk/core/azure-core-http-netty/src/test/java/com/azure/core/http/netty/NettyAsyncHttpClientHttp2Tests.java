@@ -29,11 +29,11 @@ public class NettyAsyncHttpClientHttp2Tests extends HttpProtocolVersionTests {
             : Http11SslContextSpec.forClient()
                 .configure(builder -> builder.trustManager(trustManagerFactory))
                 .sslContext();
-        reactor.netty.http.client.HttpClient nativeClient
+        reactor.netty.http.client.HttpClient internalClient
             = reactor.netty.http.client.HttpClient.create(ConnectionProvider.newConnection())
                 .secure(ssl -> ssl.sslContext(sslContext));
         NettyAsyncHttpClientBuilder builder
-            = new NettyAsyncHttpClientBuilder(nativeClient).configuration(Configuration.NONE);
+            = new NettyAsyncHttpClientBuilder(internalClient).configuration(Configuration.NONE);
         if (applySetting) {
             builder.maximumHttpVersion(version);
         }

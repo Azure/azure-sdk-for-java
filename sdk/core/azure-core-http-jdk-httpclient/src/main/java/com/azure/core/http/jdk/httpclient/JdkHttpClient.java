@@ -153,7 +153,7 @@ class JdkHttpClient implements HttpClient {
      * @return the HttpRequest
      */
     private java.net.http.HttpRequest toJdkHttpRequest(HttpRequest request, Context context) {
-        // A request-level preference avoids rewriting the version on the caller's mutable native builder.
+        // A request-level preference avoids rewriting the version on the caller's mutable internal builder.
         return new AzureJdkHttpRequest(request, context, restrictedHeaders, LOGGER, writeTimeout, responseTimeout,
             httpVersion);
     }

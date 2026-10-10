@@ -87,7 +87,7 @@ public class VertxHttpClientBuilderTests {
     }
 
     @Test
-    public void maximumHttpVersionCopiesAndRestoresNativeOptions() throws Exception {
+    public void maximumHttpVersionCopiesAndRestoresInternalOptions() throws Exception {
         HttpClientOptions options = new HttpClientOptions().setProtocolVersion(HttpVersion.HTTP_2)
             .setUseAlpn(true)
             .setAlpnVersions(Collections.singletonList(HttpVersion.HTTP_2))

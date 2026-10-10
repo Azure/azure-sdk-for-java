@@ -175,7 +175,7 @@ public class NettyAsyncHttpClientBuilder {
      * {@link #NettyAsyncHttpClientBuilder(HttpClient)}. An explicit maximum overrides those protocols. Passing null
      * clears the maximum and restores that default behavior.
      * <p>
-     * A custom SSL context supplied in the native client is retained. Configure its ALPN protocols to match the
+     * A custom SSL context supplied in the internal client is retained. Configure its ALPN protocols to match the
      * requested maximum HTTP version.
      *
      * <p><strong>Code Sample</strong></p>

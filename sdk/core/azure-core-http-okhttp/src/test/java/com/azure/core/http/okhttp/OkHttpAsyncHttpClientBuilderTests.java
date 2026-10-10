@@ -91,20 +91,20 @@ public class OkHttpAsyncHttpClientBuilderTests {
     }
 
     @Test
-    public void maximumHttpVersionOverridesAndRestoresNativeProtocols() {
-        List<Protocol> nativeProtocols = Collections.singletonList(Protocol.H2_PRIOR_KNOWLEDGE);
-        OkHttpClient nativeClient = new OkHttpClient.Builder().protocols(nativeProtocols).build();
+    public void maximumHttpVersionOverridesAndRestoresInternalProtocols() {
+        List<Protocol> internalProtocols = Collections.singletonList(Protocol.H2_PRIOR_KNOWLEDGE);
+        OkHttpClient internalClient = new OkHttpClient.Builder().protocols(internalProtocols).build();
         OkHttpAsyncHttpClientBuilder builder
-            = new OkHttpAsyncHttpClientBuilder(nativeClient).configuration(Configuration.NONE);
+            = new OkHttpAsyncHttpClientBuilder(internalClient).configuration(Configuration.NONE);
         OkHttpAsyncHttpClient original = (OkHttpAsyncHttpClient) builder.build();
         OkHttpAsyncHttpClient limited
             = (OkHttpAsyncHttpClient) builder.maximumHttpVersion(HttpProtocolVersion.HTTP_1_1).build();
         OkHttpAsyncHttpClient cleared = (OkHttpAsyncHttpClient) builder.maximumHttpVersion(null).build();
 
-        assertEquals(nativeProtocols, original.httpClient.protocols());
+        assertEquals(internalProtocols, original.httpClient.protocols());
         assertEquals(Collections.singletonList(Protocol.HTTP_1_1), limited.httpClient.protocols());
-        assertEquals(nativeProtocols, cleared.httpClient.protocols());
-        assertEquals(nativeProtocols, nativeClient.protocols());
+        assertEquals(internalProtocols, cleared.httpClient.protocols());
+        assertEquals(internalProtocols, internalClient.protocols());
     }
 
     /**

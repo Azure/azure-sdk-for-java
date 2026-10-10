@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 /**
- * Tests protocol preferences on native JDK requests.
+ * Tests protocol preferences on internal JDK requests.
  */
 public class AzureJdkHttpRequestTests {
     private static final ClientLogger LOGGER = new ClientLogger(AzureJdkHttpRequestTests.class);
@@ -35,7 +35,7 @@ public class AzureJdkHttpRequestTests {
     }
 
     @Test
-    public void existingConstructorUsesNativeClientPreference() {
+    public void existingConstructorUsesInternalClientPreference() {
         AzureJdkHttpRequest request = new AzureJdkHttpRequest(new HttpRequest(HttpMethod.GET, "https://localhost"),
             Context.NONE, Collections.emptySet(), LOGGER, null, null);
         assertFalse(request.version().isPresent());
