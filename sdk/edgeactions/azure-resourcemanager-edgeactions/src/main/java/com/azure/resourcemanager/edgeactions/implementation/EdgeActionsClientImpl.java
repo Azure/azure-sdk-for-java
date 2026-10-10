@@ -467,7 +467,9 @@ public final class EdgeActionsClientImpl implements EdgeActionsClient {
     }
 
     /**
-     * Update a EdgeAction.
+     * Updates the tags of an Edge Action. Omitted tags are preserved, an empty tags object clears all tags, and
+     * supplied tags replace the entire tag collection. Null tags are rejected. Do not include sku in PATCH requests;
+     * any supplied sku, including null or the existing value, is rejected.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.
@@ -491,7 +493,9 @@ public final class EdgeActionsClientImpl implements EdgeActionsClient {
     }
 
     /**
-     * Update a EdgeAction.
+     * Updates the tags of an Edge Action. Omitted tags are preserved, an empty tags object clears all tags, and
+     * supplied tags replace the entire tag collection. Null tags are rejected. Do not include sku in PATCH requests;
+     * any supplied sku, including null or the existing value, is rejected.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.
@@ -513,7 +517,9 @@ public final class EdgeActionsClientImpl implements EdgeActionsClient {
     }
 
     /**
-     * Update a EdgeAction.
+     * Updates the tags of an Edge Action. Omitted tags are preserved, an empty tags object clears all tags, and
+     * supplied tags replace the entire tag collection. Null tags are rejected. Do not include sku in PATCH requests;
+     * any supplied sku, including null or the existing value, is rejected.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.
@@ -536,7 +542,9 @@ public final class EdgeActionsClientImpl implements EdgeActionsClient {
     }
 
     /**
-     * Update a EdgeAction.
+     * Updates the tags of an Edge Action. Omitted tags are preserved, an empty tags object clears all tags, and
+     * supplied tags replace the entire tag collection. Null tags are rejected. Do not include sku in PATCH requests;
+     * any supplied sku, including null or the existing value, is rejected.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.
@@ -556,7 +564,9 @@ public final class EdgeActionsClientImpl implements EdgeActionsClient {
     }
 
     /**
-     * Update a EdgeAction.
+     * Updates the tags of an Edge Action. Omitted tags are preserved, an empty tags object clears all tags, and
+     * supplied tags replace the entire tag collection. Null tags are rejected. Do not include sku in PATCH requests;
+     * any supplied sku, including null or the existing value, is rejected.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.
@@ -576,7 +586,9 @@ public final class EdgeActionsClientImpl implements EdgeActionsClient {
     }
 
     /**
-     * Update a EdgeAction.
+     * Updates the tags of an Edge Action. Omitted tags are preserved, an empty tags object clears all tags, and
+     * supplied tags replace the entire tag collection. Null tags are rejected. Do not include sku in PATCH requests;
+     * any supplied sku, including null or the existing value, is rejected.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.
@@ -597,7 +609,9 @@ public final class EdgeActionsClientImpl implements EdgeActionsClient {
     }
 
     /**
-     * Update a EdgeAction.
+     * Updates the tags of an Edge Action. Omitted tags are preserved, an empty tags object clears all tags, and
+     * supplied tags replace the entire tag collection. Null tags are rejected. Do not include sku in PATCH requests;
+     * any supplied sku, including null or the existing value, is rejected.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.
@@ -616,7 +630,9 @@ public final class EdgeActionsClientImpl implements EdgeActionsClient {
     }
 
     /**
-     * Update a EdgeAction.
+     * Updates the tags of an Edge Action. Omitted tags are preserved, an empty tags object clears all tags, and
+     * supplied tags replace the entire tag collection. Null tags are rejected. Do not include sku in PATCH requests;
+     * any supplied sku, including null or the existing value, is rejected.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.
@@ -632,7 +648,9 @@ public final class EdgeActionsClientImpl implements EdgeActionsClient {
     }
 
     /**
-     * Update a EdgeAction.
+     * Updates the tags of an Edge Action. Omitted tags are preserved, an empty tags object clears all tags, and
+     * supplied tags replace the entire tag collection. Null tags are rejected. Do not include sku in PATCH requests;
+     * any supplied sku, including null or the existing value, is rejected.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.

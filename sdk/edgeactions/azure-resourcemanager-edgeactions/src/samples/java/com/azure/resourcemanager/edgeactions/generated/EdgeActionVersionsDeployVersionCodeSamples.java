@@ -11,7 +11,7 @@ import com.azure.resourcemanager.edgeactions.fluent.models.VersionCodeInner;
  */
 public final class EdgeActionVersionsDeployVersionCodeSamples {
     /*
-     * x-ms-original-file: 2025-12-01-preview/EdgeActionVersions_DeployVersionCode.json
+     * x-ms-original-file: 2026-10-01/EdgeActionVersions_DeployVersionCode.json
      */
     /**
      * Sample code: DeployVersionCode.
@@ -20,8 +20,8 @@ public final class EdgeActionVersionsDeployVersionCodeSamples {
      */
     public static void deployVersionCode(com.azure.resourcemanager.edgeactions.EdgeActionsManager manager) {
         manager.edgeActionVersions()
-            .deployVersionCode("testrg", "edgeAction1", "version2",
-                new VersionCodeInner().withContent("UEsDBBQAAAAIAI1NzkQAAAAABQAAAA==").withName("zippedFile"),
-                com.azure.core.util.Context.NONE);
+            .deployVersionCode("testrg", "edgeAction1", "version2", new VersionCodeInner().withContent(
+                "UEsDBBQAAAAIAAAAIQAqlc+OKAAAACoAAAAOAAAAZWRnZV9hY3Rpb24uanNLK81LLsnMz1PISMxLyUkt0kgtS80r0VSoVihKLSktylMA860VarkAUEsBAhQAFAAAAAgAAAAhACqVz44oAAAAKgAAAA4AAAAAAAAAAAAAAKSBAAAAAGVkZ2VfYWN0aW9uLmpzUEsFBgAAAAABAAEAPAAAAFQAAAAAAA==")
+                .withName("edge_action.js"), com.azure.core.util.Context.NONE);
     }
 }

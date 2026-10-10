@@ -119,7 +119,8 @@ public interface EdgeActionExecutionFiltersClient {
         EdgeActionExecutionFilterInner resource, Context context);
 
     /**
-     * Update a EdgeActionExecutionFilter.
+     * Updates the properties and tags of an Edge Action execution filter. Omitted tags are preserved, an empty tags
+     * object clears all tags, and supplied tags replace the entire tag collection. Null tags are rejected.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.
@@ -137,7 +138,8 @@ public interface EdgeActionExecutionFiltersClient {
         EdgeActionExecutionFilterUpdate properties);
 
     /**
-     * Update a EdgeActionExecutionFilter.
+     * Updates the properties and tags of an Edge Action execution filter. Omitted tags are preserved, an empty tags
+     * object clears all tags, and supplied tags replace the entire tag collection. Null tags are rejected.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.
@@ -156,7 +158,8 @@ public interface EdgeActionExecutionFiltersClient {
         EdgeActionExecutionFilterUpdate properties, Context context);
 
     /**
-     * Update a EdgeActionExecutionFilter.
+     * Updates the properties and tags of an Edge Action execution filter. Omitted tags are preserved, an empty tags
+     * object clears all tags, and supplied tags replace the entire tag collection. Null tags are rejected.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.
@@ -172,7 +175,8 @@ public interface EdgeActionExecutionFiltersClient {
         EdgeActionExecutionFilterUpdate properties);
 
     /**
-     * Update a EdgeActionExecutionFilter.
+     * Updates the properties and tags of an Edge Action execution filter. Omitted tags are preserved, an empty tags
+     * object clears all tags, and supplied tags replace the entire tag collection. Null tags are rejected.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.

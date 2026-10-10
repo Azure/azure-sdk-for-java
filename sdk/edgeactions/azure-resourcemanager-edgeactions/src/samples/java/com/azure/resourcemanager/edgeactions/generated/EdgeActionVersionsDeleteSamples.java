@@ -9,7 +9,7 @@ package com.azure.resourcemanager.edgeactions.generated;
  */
 public final class EdgeActionVersionsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-12-01-preview/EdgeActionVersions_Delete.json
+     * x-ms-original-file: 2026-10-01/EdgeActionVersions_Delete.json
      */
     /**
      * Sample code: DeleteEdgeActionVersion.
