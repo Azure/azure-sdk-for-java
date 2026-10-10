@@ -4,29 +4,46 @@
 
 package com.azure.resourcemanager.edgeactions.generated;
 
+import com.azure.resourcemanager.edgeactions.models.EdgeActionIsDefaultVersion;
 import com.azure.resourcemanager.edgeactions.models.EdgeActionVersion;
 import com.azure.resourcemanager.edgeactions.models.EdgeActionVersionDeploymentType;
 import com.azure.resourcemanager.edgeactions.models.EdgeActionVersionUpdateProperties;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Samples for EdgeActionVersions Update.
  */
 public final class EdgeActionVersionsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-12-01-preview/EdgeActionVersions_Update.json
+     * x-ms-original-file: 2026-10-01/EdgeActionVersions_Update.json
      */
     /**
-     * Sample code: UpdateEdgeActionVersion.
+     * Sample code: UpdateEdgeActionVersionTags.
      * 
      * @param manager Entry point to EdgeActionsManager.
      */
-    public static void updateEdgeActionVersion(com.azure.resourcemanager.edgeactions.EdgeActionsManager manager) {
+    public static void updateEdgeActionVersionTags(com.azure.resourcemanager.edgeactions.EdgeActionsManager manager) {
         EdgeActionVersion resource = manager.edgeActionVersions()
             .getWithResponse("testrg", "edgeAction1", "version1", com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
+            .withTags(mapOf("environment", "production"))
             .withProperties(
-                new EdgeActionVersionUpdateProperties().withDeploymentType(EdgeActionVersionDeploymentType.OTHERS))
+                new EdgeActionVersionUpdateProperties().withDeploymentType(EdgeActionVersionDeploymentType.ZIP)
+                    .withIsDefaultVersion(EdgeActionIsDefaultVersion.TRUE))
             .apply();
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }
