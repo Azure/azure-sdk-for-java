@@ -13,16 +13,16 @@ public final class ManagedComputeUsageInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManagedComputeUsageInner model = BinaryData.fromString(
-            "{\"id\":\"pa\",\"name\":{\"value\":\"wgilfjqqac\",\"localizedValue\":\"kxwxdcvjwcyziake\"},\"type\":\"qchxrtuic\",\"unit\":\"CountPerSecond\",\"limit\":72.74596280759863,\"currentValue\":95.98056526755447,\"offerScope\":\"hzzwvywrgyngy\",\"deployments\":[{\"deploymentId\":\"x\",\"projectId\":\"akiqa\",\"modelId\":\"djrkclamggl\",\"acceleratorCount\":6536212634590682609,\"instanceCount\":952584421},{\"deploymentId\":\"oqeykglt\",\"projectId\":\"xhqf\",\"modelId\":\"ka\",\"acceleratorCount\":9210406858833590150,\"instanceCount\":225659950}]}")
+            "{\"id\":\"eagmceituug\",\"name\":{\"value\":\"fpjstlzmb\",\"localizedValue\":\"yjdeolctaebfs\"},\"type\":\"ledjcustbvtqigd\",\"unit\":\"Percent\",\"limit\":97.0592512722313,\"currentValue\":98.97008949582057,\"offerScope\":\"osehxlzsxez\",\"deployments\":[{\"deploymentId\":\"waaeskyfjl\",\"projectId\":\"eqtoyrpl\",\"modelId\":\"lajmllp\",\"acceleratorCount\":371598371868666796,\"instanceCount\":528311226}]}")
             .toObject(ManagedComputeUsageInner.class);
-        Assertions.assertEquals(UnitType.COUNT_PER_SECOND, model.unit());
-        Assertions.assertEquals(72.74596280759863D, model.limit());
-        Assertions.assertEquals(95.98056526755447D, model.currentValue());
-        Assertions.assertEquals("hzzwvywrgyngy", model.offerScope());
-        Assertions.assertEquals("x", model.deployments().get(0).deploymentId());
-        Assertions.assertEquals("akiqa", model.deployments().get(0).projectId());
-        Assertions.assertEquals("djrkclamggl", model.deployments().get(0).modelId());
-        Assertions.assertEquals(6536212634590682609L, model.deployments().get(0).acceleratorCount());
-        Assertions.assertEquals(952584421, model.deployments().get(0).instanceCount());
+        Assertions.assertEquals(UnitType.PERCENT, model.unit());
+        Assertions.assertEquals(97.0592512722313D, model.limit());
+        Assertions.assertEquals(98.97008949582057D, model.currentValue());
+        Assertions.assertEquals("osehxlzsxez", model.offerScope());
+        Assertions.assertEquals("waaeskyfjl", model.deployments().get(0).deploymentId());
+        Assertions.assertEquals("eqtoyrpl", model.deployments().get(0).projectId());
+        Assertions.assertEquals("lajmllp", model.deployments().get(0).modelId());
+        Assertions.assertEquals(371598371868666796L, model.deployments().get(0).acceleratorCount());
+        Assertions.assertEquals(528311226, model.deployments().get(0).instanceCount());
     }
 }

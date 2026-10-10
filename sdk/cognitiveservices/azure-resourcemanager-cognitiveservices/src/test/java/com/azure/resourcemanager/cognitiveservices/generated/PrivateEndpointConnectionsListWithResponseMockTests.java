@@ -22,7 +22,7 @@ public final class PrivateEndpointConnectionsListWithResponseMockTests {
     @Test
     public void testListWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"privateEndpoint\":{\"id\":\"nahwk\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"ztnlmsoo\",\"actionsRequired\":\"mvecdhdyswcr\"},\"provisioningState\":\"Failed\",\"groupIds\":[\"jczxvlgsrg\",\"rfizr\"]},\"etag\":\"wlp\",\"location\":\"uqhrlmcskykp\",\"id\":\"ofix\",\"name\":\"npcfyk\",\"type\":\"pyycpawm\"},{\"properties\":{\"privateEndpoint\":{\"id\":\"dpwrp\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"fjfw\",\"actionsRequired\":\"gzawk\"},\"provisioningState\":\"Succeeded\",\"groupIds\":[\"yamnnidmdiawp\"]},\"etag\":\"kzrn\",\"location\":\"kctd\",\"id\":\"osgwqpsqazihqo\",\"name\":\"vqgcnbhcbm\",\"type\":\"kztibni\"}]}";
+            = "{\"value\":[{\"properties\":{\"privateEndpoint\":{\"id\":\"mxtllfl\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"cn\",\"actionsRequired\":\"fijhgga\"},\"provisioningState\":\"Deleting\",\"groupIds\":[\"mkli\",\"irw\",\"vffhs\"]},\"etag\":\"zouhktqrxq\",\"location\":\"njxrd\",\"id\":\"dtullygtavczcxdf\",\"name\":\"eapyfmlxrlj\",\"type\":\"h\"},{\"properties\":{\"privateEndpoint\":{\"id\":\"ifleimixlmd\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"ehfgsm\",\"actionsRequired\":\"juqbpx\"},\"provisioningState\":\"Failed\",\"groupIds\":[\"mtznpaxwfqtyyqi\",\"rcltungbsoljckm\",\"i\"]},\"etag\":\"b\",\"location\":\"ckgk\",\"id\":\"ksw\",\"name\":\"iiqqcqikclsmalns\",\"type\":\"woykdnonaaxwm\"},{\"properties\":{\"privateEndpoint\":{\"id\":\"jlqcwny\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"iqbcbgv\",\"actionsRequired\":\"t\"},\"provisioningState\":\"Failed\",\"groupIds\":[\"xa\"]},\"etag\":\"xuvj\",\"location\":\"mnrqstjcmetwml\",\"id\":\"cvnpv\",\"name\":\"dhgjnaqyqi\",\"type\":\"slz\"},{\"properties\":{\"privateEndpoint\":{\"id\":\"svmwbi\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"tfo\",\"actionsRequired\":\"fiybxqich\"},\"provisioningState\":\"Deleting\",\"groupIds\":[\"dqekivycpzcvd\",\"zulrqt\",\"htre\",\"pzl\"]},\"etag\":\"yfmx\",\"location\":\"utzfkgilnoudc\",\"id\":\"nd\",\"name\":\"gdpri\",\"type\":\"gqqyeqfcbuulpyuf\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,16 +32,16 @@ public final class PrivateEndpointConnectionsListWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PrivateEndpointConnectionListResult response = manager.privateEndpointConnections()
-            .listWithResponse("dxqlfrolq", "wnk", com.azure.core.util.Context.NONE)
+            .listWithResponse("rmimrljdpoqfxyem", "kftbaewhte", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.APPROVED,
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.REJECTED,
             response.value().get(0).properties().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("ztnlmsoo",
+        Assertions.assertEquals("cn",
             response.value().get(0).properties().privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("mvecdhdyswcr",
+        Assertions.assertEquals("fijhgga",
             response.value().get(0).properties().privateLinkServiceConnectionState().actionsRequired());
-        Assertions.assertEquals("jczxvlgsrg", response.value().get(0).properties().groupIds().get(0));
-        Assertions.assertEquals("uqhrlmcskykp", response.value().get(0).location());
+        Assertions.assertEquals("mkli", response.value().get(0).properties().groupIds().get(0));
+        Assertions.assertEquals("njxrd", response.value().get(0).location());
     }
 }

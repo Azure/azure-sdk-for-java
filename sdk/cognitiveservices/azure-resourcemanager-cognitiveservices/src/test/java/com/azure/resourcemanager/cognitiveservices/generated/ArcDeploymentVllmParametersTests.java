@@ -12,11 +12,11 @@ public final class ArcDeploymentVllmParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ArcDeploymentVllmParameters model = BinaryData.fromString(
-            "{\"tensorParallelSize\":1229023980,\"maxModelLen\":1191862536,\"gpuMemoryUtilization\":90.277695,\"enforceEager\":true}")
+            "{\"tensorParallelSize\":2101549304,\"maxModelLen\":1540955255,\"gpuMemoryUtilization\":75.94109,\"enforceEager\":false}")
             .toObject(ArcDeploymentVllmParameters.class);
-        Assertions.assertEquals(1229023980, model.tensorParallelSize());
-        Assertions.assertEquals(1191862536, model.maxModelLen());
-        Assertions.assertEquals(90.277695F, model.gpuMemoryUtilization());
-        Assertions.assertTrue(model.enforceEager());
+        Assertions.assertEquals(2101549304, model.tensorParallelSize());
+        Assertions.assertEquals(1540955255, model.maxModelLen());
+        Assertions.assertEquals(75.94109F, model.gpuMemoryUtilization());
+        Assertions.assertFalse(model.enforceEager());
     }
 }

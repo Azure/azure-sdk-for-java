@@ -22,7 +22,7 @@ public interface RaiPolicies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Content Filters associated with the Azure OpenAI account along with {@link Response}.
+     * @return the specified Content Filters associated with the Azure OpenAI account.
      */
     Response<RaiPolicy> getWithResponse(String resourceGroupName, String accountName, String raiPolicyName,
         Context context);
@@ -58,12 +58,13 @@ public interface RaiPolicies {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param raiPolicyName The name of the RaiPolicy associated with the Cognitive Services Account.
+     * @param ifMatch Proceed only when the current resource ETag matches this value.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(String resourceGroupName, String accountName, String raiPolicyName, Context context);
+    void delete(String resourceGroupName, String accountName, String raiPolicyName, String ifMatch, Context context);
 
     /**
      * Gets the content filters associated with the Azure OpenAI account.
@@ -99,7 +100,7 @@ public interface RaiPolicies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Content Filters associated with the Azure OpenAI account along with {@link Response}.
+     * @return the specified Content Filters associated with the Azure OpenAI account.
      */
     RaiPolicy getById(String id);
 
@@ -111,7 +112,7 @@ public interface RaiPolicies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Content Filters associated with the Azure OpenAI account along with {@link Response}.
+     * @return the specified Content Filters associated with the Azure OpenAI account.
      */
     Response<RaiPolicy> getByIdWithResponse(String id, Context context);
 
@@ -129,12 +130,13 @@ public interface RaiPolicies {
      * Deletes the specified Content Filters associated with the Azure OpenAI account.
      * 
      * @param id the resource ID.
+     * @param ifMatch Proceed only when the current resource ETag matches this value.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void deleteByIdWithResponse(String id, Context context);
+    void deleteByIdWithResponse(String id, String ifMatch, Context context);
 
     /**
      * Begins definition for a new RaiPolicy resource.

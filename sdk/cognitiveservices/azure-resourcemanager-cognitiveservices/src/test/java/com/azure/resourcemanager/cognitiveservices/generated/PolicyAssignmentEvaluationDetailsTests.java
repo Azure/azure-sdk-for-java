@@ -13,19 +13,19 @@ public final class PolicyAssignmentEvaluationDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PolicyAssignmentEvaluationDetails model = BinaryData.fromString(
-            "{\"assignmentId\":\"zjf\",\"policyDefinitionId\":\"vjfdx\",\"policySetDefinitionId\":\"vetvt\",\"evaluationOutcome\":\"Error\",\"nonComplianceReason\":\"tdo\",\"effect\":\"cbxvwvxyslqbh\",\"expressionEvaluations\":[{\"expression\":\"blytk\",\"expressionKind\":\"mpew\",\"operator\":\"fbkrvrnsvs\",\"result\":\"johxcrsb\",\"targetValue\":\"vasrruvwb\",\"expressionValue\":\"qfsubcgjbirx\"},{\"expression\":\"ybsrfbjfdtwss\",\"expressionKind\":\"ftpvjzbexil\",\"operator\":\"nfqqnvwp\",\"result\":\"taruoujmkcj\",\"targetValue\":\"qytjrybnwjewgd\",\"expressionValue\":\"ervnaenqpehi\"},{\"expression\":\"oygmift\",\"expressionKind\":\"zdnds\",\"operator\":\"nayqi\",\"result\":\"nduhavhqlkthum\",\"targetValue\":\"olbgycduiertgccy\",\"expressionValue\":\"aolps\"}]}")
+            "{\"assignmentId\":\"wmbesldnkw\",\"policyDefinitionId\":\"pp\",\"policySetDefinitionId\":\"lcxog\",\"evaluationOutcome\":\"Compliant\",\"nonComplianceReason\":\"nzmnsikvm\",\"effect\":\"ze\",\"expressionEvaluations\":[{\"expression\":\"l\",\"expressionKind\":\"zxmhhvhgu\",\"operator\":\"odkwobd\",\"result\":\"xtibqdxbxwakbog\",\"targetValue\":\"ndlkzgxhurip\",\"expressionValue\":\"podxunkb\"},{\"expression\":\"xmubyyntwlrbq\",\"expressionKind\":\"oievseotgqrlltm\",\"operator\":\"lauwzizxbmpgcjef\",\"result\":\"muvp\",\"targetValue\":\"tdum\",\"expressionValue\":\"p\"},{\"expression\":\"ebmnzbtbhjpglk\",\"expressionKind\":\"ohdneuel\",\"operator\":\"hsd\",\"result\":\"t\",\"targetValue\":\"fikdowwqu\",\"expressionValue\":\"xzxcl\"},{\"expression\":\"thhqzonosggbh\",\"expressionKind\":\"hfwdsjnkaljutiis\",\"operator\":\"cffgdkzzewk\",\"result\":\"hqcrailvpnpp\",\"targetValue\":\"flrwd\",\"expressionValue\":\"dlxyjrxs\"}]}")
             .toObject(PolicyAssignmentEvaluationDetails.class);
-        Assertions.assertEquals("zjf", model.assignmentId());
-        Assertions.assertEquals("vjfdx", model.policyDefinitionId());
-        Assertions.assertEquals("vetvt", model.policySetDefinitionId());
-        Assertions.assertEquals(PolicyEvaluationOutcome.ERROR, model.evaluationOutcome());
-        Assertions.assertEquals("tdo", model.nonComplianceReason());
-        Assertions.assertEquals("cbxvwvxyslqbh", model.effect());
-        Assertions.assertEquals("blytk", model.expressionEvaluations().get(0).expression());
-        Assertions.assertEquals("mpew", model.expressionEvaluations().get(0).expressionKind());
-        Assertions.assertEquals("fbkrvrnsvs", model.expressionEvaluations().get(0).operator());
-        Assertions.assertEquals("johxcrsb", model.expressionEvaluations().get(0).result());
-        Assertions.assertEquals("vasrruvwb", model.expressionEvaluations().get(0).targetValue());
-        Assertions.assertEquals("qfsubcgjbirx", model.expressionEvaluations().get(0).expressionValue());
+        Assertions.assertEquals("wmbesldnkw", model.assignmentId());
+        Assertions.assertEquals("pp", model.policyDefinitionId());
+        Assertions.assertEquals("lcxog", model.policySetDefinitionId());
+        Assertions.assertEquals(PolicyEvaluationOutcome.COMPLIANT, model.evaluationOutcome());
+        Assertions.assertEquals("nzmnsikvm", model.nonComplianceReason());
+        Assertions.assertEquals("ze", model.effect());
+        Assertions.assertEquals("l", model.expressionEvaluations().get(0).expression());
+        Assertions.assertEquals("zxmhhvhgu", model.expressionEvaluations().get(0).expressionKind());
+        Assertions.assertEquals("odkwobd", model.expressionEvaluations().get(0).operator());
+        Assertions.assertEquals("xtibqdxbxwakbog", model.expressionEvaluations().get(0).result());
+        Assertions.assertEquals("ndlkzgxhurip", model.expressionEvaluations().get(0).targetValue());
+        Assertions.assertEquals("podxunkb", model.expressionEvaluations().get(0).expressionValue());
     }
 }

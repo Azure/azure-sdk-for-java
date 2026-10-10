@@ -17,7 +17,7 @@ import java.util.Map;
  */
 public final class ArcDeploymentsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/UpdateArcDeployment.json
+     * x-ms-original-file: 2026-09-15-preview/UpdateArcDeployment.json
      */
     /**
      * Sample code: UpdateArcDeployment.

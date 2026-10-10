@@ -15,41 +15,28 @@ public final class ApplicationTrafficRoutingPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ApplicationTrafficRoutingPolicy model = BinaryData.fromString(
-            "{\"protocol\":\"FixedRatio\",\"rules\":[{\"ruleId\":\"qwixvcpwnk\",\"description\":\"wzwofalickduo\",\"deploymentId\":\"tamtyv\",\"trafficPercentage\":384634481},{\"ruleId\":\"rwzawnvs\",\"description\":\"fhzag\",\"deploymentId\":\"vhycvdimwrzregzg\",\"trafficPercentage\":1808851477},{\"ruleId\":\"trwpw\",\"description\":\"ye\",\"deploymentId\":\"kdhmeottawjyosx\",\"trafficPercentage\":1246274609},{\"ruleId\":\"h\",\"description\":\"fv\",\"deploymentId\":\"dpmiljpn\",\"trafficPercentage\":1686524732}]}")
+            "{\"protocol\":\"FixedRatio\",\"rules\":[{\"ruleId\":\"aueekcsueh\",\"description\":\"ddacbcbgydlqidy\",\"deploymentId\":\"hmptyrilkfbn\",\"trafficPercentage\":1690234008}]}")
             .toObject(ApplicationTrafficRoutingPolicy.class);
         Assertions.assertEquals(TrafficRoutingProtocol.FIXED_RATIO, model.protocol());
-        Assertions.assertEquals("qwixvcpwnk", model.rules().get(0).ruleId());
-        Assertions.assertEquals("wzwofalickduo", model.rules().get(0).description());
-        Assertions.assertEquals("tamtyv", model.rules().get(0).deploymentId());
-        Assertions.assertEquals(384634481, model.rules().get(0).trafficPercentage());
+        Assertions.assertEquals("aueekcsueh", model.rules().get(0).ruleId());
+        Assertions.assertEquals("ddacbcbgydlqidy", model.rules().get(0).description());
+        Assertions.assertEquals("hmptyrilkfbn", model.rules().get(0).deploymentId());
+        Assertions.assertEquals(1690234008, model.rules().get(0).trafficPercentage());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ApplicationTrafficRoutingPolicy model
             = new ApplicationTrafficRoutingPolicy().withProtocol(TrafficRoutingProtocol.FIXED_RATIO)
-                .withRules(Arrays.asList(
-                    new TrafficRoutingRule().withRuleId("qwixvcpwnk")
-                        .withDescription("wzwofalickduo")
-                        .withDeploymentId("tamtyv")
-                        .withTrafficPercentage(384634481),
-                    new TrafficRoutingRule().withRuleId("rwzawnvs")
-                        .withDescription("fhzag")
-                        .withDeploymentId("vhycvdimwrzregzg")
-                        .withTrafficPercentage(1808851477),
-                    new TrafficRoutingRule().withRuleId("trwpw")
-                        .withDescription("ye")
-                        .withDeploymentId("kdhmeottawjyosx")
-                        .withTrafficPercentage(1246274609),
-                    new TrafficRoutingRule().withRuleId("h")
-                        .withDescription("fv")
-                        .withDeploymentId("dpmiljpn")
-                        .withTrafficPercentage(1686524732)));
+                .withRules(Arrays.asList(new TrafficRoutingRule().withRuleId("aueekcsueh")
+                    .withDescription("ddacbcbgydlqidy")
+                    .withDeploymentId("hmptyrilkfbn")
+                    .withTrafficPercentage(1690234008)));
         model = BinaryData.fromObject(model).toObject(ApplicationTrafficRoutingPolicy.class);
         Assertions.assertEquals(TrafficRoutingProtocol.FIXED_RATIO, model.protocol());
-        Assertions.assertEquals("qwixvcpwnk", model.rules().get(0).ruleId());
-        Assertions.assertEquals("wzwofalickduo", model.rules().get(0).description());
-        Assertions.assertEquals("tamtyv", model.rules().get(0).deploymentId());
-        Assertions.assertEquals(384634481, model.rules().get(0).trafficPercentage());
+        Assertions.assertEquals("aueekcsueh", model.rules().get(0).ruleId());
+        Assertions.assertEquals("ddacbcbgydlqidy", model.rules().get(0).description());
+        Assertions.assertEquals("hmptyrilkfbn", model.rules().get(0).deploymentId());
+        Assertions.assertEquals(1690234008, model.rules().get(0).trafficPercentage());
     }
 }

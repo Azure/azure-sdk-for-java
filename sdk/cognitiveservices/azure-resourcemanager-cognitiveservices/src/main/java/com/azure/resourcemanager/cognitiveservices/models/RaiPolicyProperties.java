@@ -18,6 +18,22 @@ import java.util.List;
 @Fluent
 public final class RaiPolicyProperties implements JsonSerializable<RaiPolicyProperties> {
     /*
+     * The policy representation. Omission selects ContentFilters when creating a policy. ACS policy
+     * creation and replacement require ACS.
+     */
+    private RaiPolicyFormat format;
+
+    /*
+     * The ACS manifest. Required by service validation when format is ACS.
+     */
+    private RaiAcsManifest acs;
+
+    /*
+     * Reusable same-account Rego resources loaded with the ACS manifest.
+     */
+    private List<RaiRegoReference> acsRegos;
+
+    /*
      * Content Filters policy type.
      */
     private RaiPolicyType type;
@@ -49,6 +65,11 @@ public final class RaiPolicyProperties implements JsonSerializable<RaiPolicyProp
     private List<SafetyProviderConfig> safetyProviders;
 
     /*
+     * Optional external safety-provider references used by this policy.
+     */
+    private List<RaiPolicyCustomExternalSafetyProviderReference> customExternalSafetyProviders;
+
+    /*
      * Egress (outbound network) policy controlling which external endpoints sandboxed
      * agents can reach. Includes rules with Allow/Deny/Transform/Rewrite actions.
      */
@@ -58,6 +79,70 @@ public final class RaiPolicyProperties implements JsonSerializable<RaiPolicyProp
      * Creates an instance of RaiPolicyProperties class.
      */
     public RaiPolicyProperties() {
+    }
+
+    /**
+     * Get the format property: The policy representation. Omission selects ContentFilters when creating a policy. ACS
+     * policy
+     * creation and replacement require ACS.
+     * 
+     * @return the format value.
+     */
+    public RaiPolicyFormat format() {
+        return this.format;
+    }
+
+    /**
+     * Set the format property: The policy representation. Omission selects ContentFilters when creating a policy. ACS
+     * policy
+     * creation and replacement require ACS.
+     * 
+     * @param format the format value to set.
+     * @return the RaiPolicyProperties object itself.
+     */
+    public RaiPolicyProperties withFormat(RaiPolicyFormat format) {
+        this.format = format;
+        return this;
+    }
+
+    /**
+     * Get the acs property: The ACS manifest. Required by service validation when format is ACS.
+     * 
+     * @return the acs value.
+     */
+    public RaiAcsManifest acs() {
+        return this.acs;
+    }
+
+    /**
+     * Set the acs property: The ACS manifest. Required by service validation when format is ACS.
+     * 
+     * @param acs the acs value to set.
+     * @return the RaiPolicyProperties object itself.
+     */
+    public RaiPolicyProperties withAcs(RaiAcsManifest acs) {
+        this.acs = acs;
+        return this;
+    }
+
+    /**
+     * Get the acsRegos property: Reusable same-account Rego resources loaded with the ACS manifest.
+     * 
+     * @return the acsRegos value.
+     */
+    public List<RaiRegoReference> acsRegos() {
+        return this.acsRegos;
+    }
+
+    /**
+     * Set the acsRegos property: Reusable same-account Rego resources loaded with the ACS manifest.
+     * 
+     * @param acsRegos the acsRegos value to set.
+     * @return the RaiPolicyProperties object itself.
+     */
+    public RaiPolicyProperties withAcsRegos(List<RaiRegoReference> acsRegos) {
+        this.acsRegos = acsRegos;
+        return this;
     }
 
     /**
@@ -174,6 +259,27 @@ public final class RaiPolicyProperties implements JsonSerializable<RaiPolicyProp
     }
 
     /**
+     * Get the customExternalSafetyProviders property: Optional external safety-provider references used by this policy.
+     * 
+     * @return the customExternalSafetyProviders value.
+     */
+    public List<RaiPolicyCustomExternalSafetyProviderReference> customExternalSafetyProviders() {
+        return this.customExternalSafetyProviders;
+    }
+
+    /**
+     * Set the customExternalSafetyProviders property: Optional external safety-provider references used by this policy.
+     * 
+     * @param customExternalSafetyProviders the customExternalSafetyProviders value to set.
+     * @return the RaiPolicyProperties object itself.
+     */
+    public RaiPolicyProperties withCustomExternalSafetyProviders(
+        List<RaiPolicyCustomExternalSafetyProviderReference> customExternalSafetyProviders) {
+        this.customExternalSafetyProviders = customExternalSafetyProviders;
+        return this;
+    }
+
+    /**
      * Get the egressPolicy property: Egress (outbound network) policy controlling which external endpoints sandboxed
      * agents can reach. Includes rules with Allow/Deny/Transform/Rewrite actions.
      * 
@@ -201,6 +307,9 @@ public final class RaiPolicyProperties implements JsonSerializable<RaiPolicyProp
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("format", this.format == null ? null : this.format.toString());
+        jsonWriter.writeJsonField("acs", this.acs);
+        jsonWriter.writeArrayField("acsRegos", this.acsRegos, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("mode", this.mode == null ? null : this.mode.toString());
         jsonWriter.writeStringField("basePolicyName", this.basePolicyName);
         jsonWriter.writeArrayField("contentFilters", this.contentFilters,
@@ -208,6 +317,8 @@ public final class RaiPolicyProperties implements JsonSerializable<RaiPolicyProp
         jsonWriter.writeArrayField("customBlocklists", this.customBlocklists,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("safetyProviders", this.safetyProviders,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("customExternalSafetyProviders", this.customExternalSafetyProviders,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("egressPolicy", this.egressPolicy);
         return jsonWriter.writeEndObject();
@@ -228,7 +339,14 @@ public final class RaiPolicyProperties implements JsonSerializable<RaiPolicyProp
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("type".equals(fieldName)) {
+                if ("format".equals(fieldName)) {
+                    deserializedRaiPolicyProperties.format = RaiPolicyFormat.fromString(reader.getString());
+                } else if ("acs".equals(fieldName)) {
+                    deserializedRaiPolicyProperties.acs = RaiAcsManifest.fromJson(reader);
+                } else if ("acsRegos".equals(fieldName)) {
+                    List<RaiRegoReference> acsRegos = reader.readArray(reader1 -> RaiRegoReference.fromJson(reader1));
+                    deserializedRaiPolicyProperties.acsRegos = acsRegos;
+                } else if ("type".equals(fieldName)) {
                     deserializedRaiPolicyProperties.type = RaiPolicyType.fromString(reader.getString());
                 } else if ("mode".equals(fieldName)) {
                     deserializedRaiPolicyProperties.mode = RaiPolicyMode.fromString(reader.getString());
@@ -246,6 +364,10 @@ public final class RaiPolicyProperties implements JsonSerializable<RaiPolicyProp
                     List<SafetyProviderConfig> safetyProviders
                         = reader.readArray(reader1 -> SafetyProviderConfig.fromJson(reader1));
                     deserializedRaiPolicyProperties.safetyProviders = safetyProviders;
+                } else if ("customExternalSafetyProviders".equals(fieldName)) {
+                    List<RaiPolicyCustomExternalSafetyProviderReference> customExternalSafetyProviders
+                        = reader.readArray(reader1 -> RaiPolicyCustomExternalSafetyProviderReference.fromJson(reader1));
+                    deserializedRaiPolicyProperties.customExternalSafetyProviders = customExternalSafetyProviders;
                 } else if ("egressPolicy".equals(fieldName)) {
                     deserializedRaiPolicyProperties.egressPolicy = RaiEgressPolicyConfig.fromJson(reader);
                 } else {

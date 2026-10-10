@@ -12,28 +12,25 @@ import org.junit.jupiter.api.Assertions;
 public final class SkuTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Sku model = BinaryData.fromString(
-            "{\"name\":\"q\",\"tier\":\"Free\",\"size\":\"ixuigdtopbobj\",\"family\":\"hm\",\"capacity\":115410873}")
+        Sku model = BinaryData
+            .fromString("{\"name\":\"og\",\"tier\":\"Basic\",\"size\":\"u\",\"family\":\"a\",\"capacity\":1338226566}")
             .toObject(Sku.class);
-        Assertions.assertEquals("q", model.name());
-        Assertions.assertEquals(SkuTier.FREE, model.tier());
-        Assertions.assertEquals("ixuigdtopbobj", model.size());
-        Assertions.assertEquals("hm", model.family());
-        Assertions.assertEquals(115410873, model.capacity());
+        Assertions.assertEquals("og", model.name());
+        Assertions.assertEquals(SkuTier.BASIC, model.tier());
+        Assertions.assertEquals("u", model.size());
+        Assertions.assertEquals("a", model.family());
+        Assertions.assertEquals(1338226566, model.capacity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Sku model = new Sku().withName("q")
-            .withTier(SkuTier.FREE)
-            .withSize("ixuigdtopbobj")
-            .withFamily("hm")
-            .withCapacity(115410873);
+        Sku model
+            = new Sku().withName("og").withTier(SkuTier.BASIC).withSize("u").withFamily("a").withCapacity(1338226566);
         model = BinaryData.fromObject(model).toObject(Sku.class);
-        Assertions.assertEquals("q", model.name());
-        Assertions.assertEquals(SkuTier.FREE, model.tier());
-        Assertions.assertEquals("ixuigdtopbobj", model.size());
-        Assertions.assertEquals("hm", model.family());
-        Assertions.assertEquals(115410873, model.capacity());
+        Assertions.assertEquals("og", model.name());
+        Assertions.assertEquals(SkuTier.BASIC, model.tier());
+        Assertions.assertEquals("u", model.size());
+        Assertions.assertEquals("a", model.family());
+        Assertions.assertEquals(1338226566, model.capacity());
     }
 }
