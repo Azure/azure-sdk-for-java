@@ -1,0 +1,12 @@
+diff --git a/sdk/contoso/azure-contoso-widgets/src/main/java/com/azure/contoso/widgets/WidgetClient.java b/sdk/contoso/azure-contoso-widgets/src/main/java/com/azure/contoso/widgets/WidgetClient.java
+index 1111111..2222222 100644
+--- a/sdk/contoso/azure-contoso-widgets/src/main/java/com/azure/contoso/widgets/WidgetClient.java
++++ b/sdk/contoso/azure-contoso-widgets/src/main/java/com/azure/contoso/widgets/WidgetClient.java
+@@ -40,6 +40,12 @@ public final class WidgetClient {
++    public Widget createWidget(String resourceGroupName, String widgetName,
++        String location, String description, String sku, Map<String, String> tags,
++        boolean enabled) {
++        return service.createWidget(resourceGroupName, widgetName, location,
++            description, sku, tags, enabled);
++    }
+ }

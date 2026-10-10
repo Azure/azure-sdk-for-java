@@ -1,0 +1,16 @@
+diff --git a/sdk/contoso/azure-contoso-widgets/pom.xml b/sdk/contoso/azure-contoso-widgets/pom.xml
+new file mode 100644
+index 0000000..1111111
+--- /dev/null
++++ b/sdk/contoso/azure-contoso-widgets/pom.xml
+@@ -0,0 +1,10 @@
++<project>
++  <modelVersion>4.0.0</modelVersion>
++  <parent>
++    <groupId>com.azure</groupId>
++    <artifactId>azure-client-sdk-parent</artifactId>
++  </parent>
++  <groupId>com.azure</groupId>
++  <artifactId>azure-contoso-widgets</artifactId>
++  <version>1.0.0-beta.1</version>
++</project>

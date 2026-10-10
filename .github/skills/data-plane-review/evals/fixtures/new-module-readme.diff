@@ -1,0 +1,26 @@
+diff --git a/sdk/contoso/azure-contoso-widgets/README.md b/sdk/contoso/azure-contoso-widgets/README.md
+new file mode 100644
+index 0000000..2222222
+--- /dev/null
++++ b/sdk/contoso/azure-contoso-widgets/README.md
+@@ -0,0 +1,20 @@
++# Azure Widgets client library for Java
++
++This package contains the Microsoft Azure Widgets client library.
++
++## Getting started
++
++### Authentication
++
++Use Azure Identity.
++
++## Key concepts
++
++## Examples
++
++```java com.azure.contoso.widgets.readme
++```
++
++## Troubleshooting
++
++## Next steps
