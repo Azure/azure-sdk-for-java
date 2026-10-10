@@ -21,7 +21,7 @@ import java.util.Map;
  */
 public final class ArcDeploymentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/CreateOrUpdateArcDeployment.json
+     * x-ms-original-file: 2026-09-15-preview/CreateOrUpdateArcDeployment.json
      */
     /**
      * Sample code: CreateOrUpdateArcDeployment.
@@ -49,7 +49,7 @@ public final class ArcDeploymentsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-15-preview/CreateOrUpdateArcDeploymentWithTemplate.json
+     * x-ms-original-file: 2026-09-15-preview/CreateOrUpdateArcDeploymentWithTemplate.json
      */
     /**
      * Sample code: CreateOrUpdateArcDeploymentWithTemplate.

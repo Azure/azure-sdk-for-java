@@ -16,19 +16,20 @@ public final class ConnectionPropertiesV2BasicResourceArmPaginatedResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConnectionPropertiesV2BasicResourceArmPaginatedResult model = BinaryData.fromString(
-            "{\"nextLink\":\"tmoqqtlffhzb\",\"value\":[{\"properties\":{\"authType\":\"ConnectionPropertiesV2\",\"category\":\"Square\",\"createdByWorkspaceArmId\":\"avfqnvhnqoewdogi\",\"error\":\"tesypvidbztjh\",\"expiryTime\":\"2021-02-22T18:19:17Z\",\"group\":\"Azure\",\"isSharedToAll\":false,\"metadata\":{\"hpsprkzyaupiac\":\"kbwetnj\"},\"peRequirement\":\"Required\",\"peStatus\":\"Active\",\"sharedUserList\":[\"qroohtu\"],\"target\":\"maonurj\",\"useWorkspaceManagedIdentity\":false},\"id\":\"hihpvecmsl\",\"name\":\"lbl\",\"type\":\"jxl\"}]}")
+            "{\"nextLink\":\"yxp\",\"value\":[{\"properties\":{\"authType\":\"ConnectionPropertiesV2\",\"category\":\"SapCloudForCustomer\",\"createdByWorkspaceArmId\":\"alwvskbu\",\"error\":\"acaqtyltcoqcu\",\"expiryTime\":\"2021-02-04T08:54:35Z\",\"group\":\"File\",\"isSharedToAll\":false,\"metadata\":{\"bizt\":\"ejkm\",\"bemyeji\":\"ofqcvovjufycsjm\",\"rtudawlpjfel\":\"iuxegth\",\"bgqnz\":\"erppt\"},\"peRequirement\":\"NotRequired\",\"peStatus\":\"Active\",\"sharedUserList\":[\"alwcjgckbb\",\"ccgzpraoxnyu\"],\"target\":\"a\",\"useWorkspaceManagedIdentity\":false},\"id\":\"tipwcxbyubhiqd\",\"name\":\"yurnpnuhzafc\",\"type\":\"nuhiig\"},{\"properties\":{\"authType\":\"ConnectionPropertiesV2\",\"category\":\"AzureMariaDb\",\"createdByWorkspaceArmId\":\"ui\",\"error\":\"xvatvcr\",\"expiryTime\":\"2021-01-29T22:04:49Z\",\"group\":\"File\",\"isSharedToAll\":true,\"metadata\":{\"syhzlwx\":\"h\"},\"peRequirement\":\"Required\",\"peStatus\":\"Active\",\"sharedUserList\":[\"exdnd\",\"bdweade\",\"zmwntopagt\"],\"target\":\"v\",\"useWorkspaceManagedIdentity\":true},\"id\":\"oaq\",\"name\":\"lkjztjiuazjc\",\"type\":\"mxitpfinzcpd\"},{\"properties\":{\"authType\":\"ConnectionPropertiesV2\",\"category\":\"Marketo\",\"createdByWorkspaceArmId\":\"lgjmtbd\",\"error\":\"cqguef\",\"expiryTime\":\"2021-12-05T12:23:33Z\",\"group\":\"GenericProtocol\",\"isSharedToAll\":true,\"metadata\":{\"kyeclcdigpta\":\"urelyujlfyoump\",\"utgjcyz\":\"brzmqxucycijoclx\",\"r\":\"zjd\"},\"peRequirement\":\"Required\",\"peStatus\":\"Active\",\"sharedUserList\":[\"aoqaqbzgyhfwwv\",\"atbwbqam\",\"e\"],\"target\":\"iyslpkcvmwfaux\",\"useWorkspaceManagedIdentity\":true},\"id\":\"ywbo\",\"name\":\"mcqmiciijqp\",\"type\":\"zfboj\"},{\"properties\":{\"authType\":\"ConnectionPropertiesV2\",\"category\":\"AIServices\",\"createdByWorkspaceArmId\":\"smyqwixvcpwnkwyw\",\"error\":\"ofalickduoiqtam\",\"expiryTime\":\"2021-08-02T07:49:48Z\",\"group\":\"AzureAI\",\"isSharedToAll\":true,\"metadata\":{\"nvhycvdimwrz\":\"zawnvsbcfhzag\",\"zgyufutrwp\":\"e\",\"yos\":\"eryekzkdhmeottaw\",\"pmil\":\"wwhnhjtfvpn\"},\"peRequirement\":\"NotApplicable\",\"peStatus\":\"NotApplicable\",\"sharedUserList\":[\"dqllzsauzpjlxeeh\",\"xiqhzlraymezxlsk\"],\"target\":\"mxrfdsa\",\"useWorkspaceManagedIdentity\":true},\"id\":\"nw\",\"name\":\"yshtuwgmev\",\"type\":\"afpwzyifrkgwl\"}]}")
             .toObject(ConnectionPropertiesV2BasicResourceArmPaginatedResult.class);
-        Assertions.assertEquals("tmoqqtlffhzb", model.nextLink());
-        Assertions.assertEquals(ConnectionCategory.SQUARE, model.value().get(0).properties().category());
-        Assertions.assertEquals("tesypvidbztjh", model.value().get(0).properties().error());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-22T18:19:17Z"),
+        Assertions.assertEquals("yxp", model.nextLink());
+        Assertions.assertEquals(ConnectionCategory.SAP_CLOUD_FOR_CUSTOMER,
+            model.value().get(0).properties().category());
+        Assertions.assertEquals("acaqtyltcoqcu", model.value().get(0).properties().error());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-04T08:54:35Z"),
             model.value().get(0).properties().expiryTime());
         Assertions.assertFalse(model.value().get(0).properties().isSharedToAll());
-        Assertions.assertEquals("kbwetnj", model.value().get(0).properties().metadata().get("hpsprkzyaupiac"));
-        Assertions.assertEquals(ManagedPERequirement.REQUIRED, model.value().get(0).properties().peRequirement());
+        Assertions.assertEquals("ejkm", model.value().get(0).properties().metadata().get("bizt"));
+        Assertions.assertEquals(ManagedPERequirement.NOT_REQUIRED, model.value().get(0).properties().peRequirement());
         Assertions.assertEquals(ManagedPEStatus.ACTIVE, model.value().get(0).properties().peStatus());
-        Assertions.assertEquals("qroohtu", model.value().get(0).properties().sharedUserList().get(0));
-        Assertions.assertEquals("maonurj", model.value().get(0).properties().target());
+        Assertions.assertEquals("alwcjgckbb", model.value().get(0).properties().sharedUserList().get(0));
+        Assertions.assertEquals("a", model.value().get(0).properties().target());
         Assertions.assertFalse(model.value().get(0).properties().useWorkspaceManagedIdentity());
     }
 }

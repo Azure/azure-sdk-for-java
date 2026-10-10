@@ -4,11 +4,9 @@
 
 package com.azure.resourcemanager.cognitiveservices.models;
 
-import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.WorkbenchInner;
-import java.util.Map;
 
 /**
  * An immutable client-side representation of Workbench.
@@ -50,20 +48,6 @@ public interface Workbench {
     String etag();
 
     /**
-     * Gets the location property: The location of the workbench resource.
-     * 
-     * @return the location value.
-     */
-    String location();
-
-    /**
-     * Gets the tags property: Resource tags.
-     * 
-     * @return the tags value.
-     */
-    Map<String, String> tags();
-
-    /**
      * Gets the identity property: Identity for the resource.
      * 
      * @return the identity value.
@@ -76,20 +60,6 @@ public interface Workbench {
      * @return the systemData value.
      */
     SystemData systemData();
-
-    /**
-     * Gets the region of the resource.
-     * 
-     * @return the region of the resource.
-     */
-    Region region();
-
-    /**
-     * Gets the name of the resource region.
-     * 
-     * @return the name of the resource region.
-     */
-    String regionName();
 
     /**
      * Gets the name of the resource group.
@@ -154,8 +124,7 @@ public interface Workbench {
          * The stage of the Workbench definition which contains all the minimum required properties for the resource to
          * be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithLocation, DefinitionStages.WithTags, DefinitionStages.WithIdentity {
+        interface WithCreate extends DefinitionStages.WithIdentity {
             /**
              * Executes the create request.
              * 
@@ -170,40 +139,6 @@ public interface Workbench {
              * @return the created resource.
              */
             Workbench create(Context context);
-        }
-
-        /**
-         * The stage of the Workbench definition allowing to specify location.
-         */
-        interface WithLocation {
-            /**
-             * Specifies the region for the resource.
-             * 
-             * @param location The location of the workbench resource.
-             * @return the next definition stage.
-             */
-            WithCreate withRegion(Region location);
-
-            /**
-             * Specifies the region for the resource.
-             * 
-             * @param location The location of the workbench resource.
-             * @return the next definition stage.
-             */
-            WithCreate withRegion(String location);
-        }
-
-        /**
-         * The stage of the Workbench definition allowing to specify tags.
-         */
-        interface WithTags {
-            /**
-             * Specifies the tags property: Resource tags..
-             * 
-             * @param tags Resource tags.
-             * @return the next definition stage.
-             */
-            WithCreate withTags(Map<String, String> tags);
         }
 
         /**
@@ -230,7 +165,7 @@ public interface Workbench {
     /**
      * The template for Workbench update.
      */
-    interface Update extends UpdateStages.WithTags, UpdateStages.WithProperties, UpdateStages.WithIdentity {
+    interface Update extends UpdateStages.WithProperties, UpdateStages.WithIdentity {
         /**
          * Executes the update request.
          * 
@@ -252,29 +187,16 @@ public interface Workbench {
      */
     interface UpdateStages {
         /**
-         * The stage of the Workbench update allowing to specify tags.
-         */
-        interface WithTags {
-            /**
-             * Specifies the tags property: Resource tags..
-             * 
-             * @param tags Resource tags.
-             * @return the next definition stage.
-             */
-            Update withTags(Map<String, String> tags);
-        }
-
-        /**
          * The stage of the Workbench update allowing to specify properties.
          */
         interface WithProperties {
             /**
-             * Specifies the properties property: Properties of the workbench resource..
+             * Specifies the properties property: Properties of the workbench to update..
              * 
-             * @param properties Properties of the workbench resource.
+             * @param properties Properties of the workbench to update.
              * @return the next definition stage.
              */
-            Update withProperties(WorkbenchProperties properties);
+            Update withProperties(WorkbenchUpdateProperties properties);
         }
 
         /**
@@ -282,9 +204,14 @@ public interface Workbench {
          */
         interface WithIdentity {
             /**
-             * Specifies the identity property: Identity for the resource..
+             * Specifies the identity property: Identity for the resource. May be changed while the workbench is running
+             * only when properties is omitted or null; the change takes effect after restart. If a properties object is
+             * supplied, including an empty object or timeout-only update, changing identity requires the workbench to
+             * be stopped..
              * 
-             * @param identity Identity for the resource.
+             * @param identity Identity for the resource. May be changed while the workbench is running only when
+             * properties is omitted or null; the change takes effect after restart. If a properties object is supplied,
+             * including an empty object or timeout-only update, changing identity requires the workbench to be stopped.
              * @return the next definition stage.
              */
             Update withIdentity(Identity identity);

@@ -31,6 +31,13 @@
 - [RegenerateKey](#accounts_regeneratekey)
 - [Update](#accounts_update)
 
+## AdapterDeployments
+
+- [CreateOrUpdate](#adapterdeployments_createorupdate)
+- [Delete](#adapterdeployments_delete)
+- [Get](#adapterdeployments_get)
+- [List](#adapterdeployments_list)
+
 ## AgentApplications
 
 - [CreateOrUpdate](#agentapplications_createorupdate)
@@ -92,6 +99,14 @@
 - [Restart](#computes_restart)
 - [Start](#computes_start)
 - [Stop](#computes_stop)
+
+## CostControls
+
+- [CreateOrUpdate](#costcontrols_createorupdate)
+- [Delete](#costcontrols_delete)
+- [Get](#costcontrols_get)
+- [List](#costcontrols_list)
+- [Update](#costcontrols_update)
 
 ## DefenderForAISettings
 
@@ -226,6 +241,13 @@
 - [List](#quotatiers_list)
 - [Update](#quotatiers_update)
 
+## RaiBindings
+
+- [CreateOrUpdate](#raibindings_createorupdate)
+- [Delete](#raibindings_delete)
+- [Get](#raibindings_get)
+- [List](#raibindings_list)
+
 ## RaiBlocklistItems
 
 - [BatchAdd](#raiblocklistitems_batchadd)
@@ -263,6 +285,13 @@
 - [Delete](#raipolicies_delete)
 - [Get](#raipolicies_get)
 - [List](#raipolicies_list)
+
+## RaiRegos
+
+- [CreateOrUpdate](#rairegos_createorupdate)
+- [Delete](#rairegos_delete)
+- [Get](#rairegos_get)
+- [List](#rairegos_list)
 
 ## RaiToolLabels
 
@@ -322,7 +351,7 @@ import com.azure.resourcemanager.cognitiveservices.models.CapabilityHostProperti
  */
 public final class AccountCapabilityHostsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/AccountCapabilityHost/createOrUpdate.json
+     * x-ms-original-file: 2026-09-15-preview/AccountCapabilityHost/createOrUpdate.json
      */
     /**
      * Sample code: CreateOrUpdate Account CapabilityHost.
@@ -350,7 +379,7 @@ public final class AccountCapabilityHostsCreateOrUpdateSamples {
  */
 public final class AccountCapabilityHostsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/AccountCapabilityHost/delete.json
+     * x-ms-original-file: 2026-09-15-preview/AccountCapabilityHost/delete.json
      */
     /**
      * Sample code: Delete Account CapabilityHost.
@@ -373,7 +402,7 @@ public final class AccountCapabilityHostsDeleteSamples {
  */
 public final class AccountCapabilityHostsGetSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/AccountCapabilityHost/get.json
+     * x-ms-original-file: 2026-09-15-preview/AccountCapabilityHost/get.json
      */
     /**
      * Sample code: Get Account CapabilityHost.
@@ -396,7 +425,7 @@ public final class AccountCapabilityHostsGetSamples {
  */
 public final class AccountCapabilityHostsListSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/AccountCapabilityHost/list.json
+     * x-ms-original-file: 2026-09-15-preview/AccountCapabilityHost/list.json
      */
     /**
      * Sample code: List Account CapabilityHosts.
@@ -422,7 +451,7 @@ import java.time.OffsetDateTime;
  */
 public final class AccountConnectionsCreateSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/AccountConnection/create.json
+     * x-ms-original-file: 2026-09-15-preview/AccountConnection/create.json
      */
     /**
      * Sample code: CreateAccountConnection.
@@ -450,7 +479,7 @@ public final class AccountConnectionsCreateSamples {
  */
 public final class AccountConnectionsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/AccountConnection/delete.json
+     * x-ms-original-file: 2026-09-15-preview/AccountConnection/delete.json
      */
     /**
      * Sample code: DeleteAccountConnection.
@@ -473,7 +502,7 @@ public final class AccountConnectionsDeleteSamples {
  */
 public final class AccountConnectionsGetSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/AccountConnection/get.json
+     * x-ms-original-file: 2026-09-15-preview/AccountConnection/get.json
      */
     /**
      * Sample code: GetAccountConnection.
@@ -496,7 +525,7 @@ public final class AccountConnectionsGetSamples {
  */
 public final class AccountConnectionsListSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/AccountConnection/list.json
+     * x-ms-original-file: 2026-09-15-preview/AccountConnection/list.json
      */
     /**
      * Sample code: ListAccountConnections.
@@ -528,7 +557,7 @@ import java.util.Map;
  */
 public final class AccountConnectionsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/AccountConnection/update.json
+     * x-ms-original-file: 2026-09-15-preview/AccountConnection/update.json
      */
     /**
      * Sample code: UpdateAccountConnection.
@@ -587,7 +616,7 @@ import java.util.Map;
  */
 public final class AccountsCreateSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/CreateAccountMin.json
+     * x-ms-original-file: 2026-09-15-preview/CreateAccountMin.json
      */
     /**
      * Sample code: Create Account Min.
@@ -607,7 +636,7 @@ public final class AccountsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-15-preview/CreateAccount.json
+     * x-ms-original-file: 2026-09-15-preview/CreateAccount.json
      */
     /**
      * Sample code: Create Account.
@@ -639,7 +668,7 @@ public final class AccountsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-15-preview/CreateAccountWithAgentHostingConfiguration.json
+     * x-ms-original-file: 2026-09-15-preview/CreateAccountWithAgentHostingConfiguration.json
      */
     /**
      * Sample code: Create a Foundry account with customer-owned AKS hosting.
@@ -693,7 +722,7 @@ public final class AccountsCreateSamples {
  */
 public final class AccountsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/DeleteAccount.json
+     * x-ms-original-file: 2026-09-15-preview/DeleteAccount.json
      */
     /**
      * Sample code: Delete Account.
@@ -720,7 +749,7 @@ import java.util.Arrays;
  */
 public final class AccountsEvaluateDeploymentPoliciesSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/EvaluateDeploymentPolicies.json
+     * x-ms-original-file: 2026-09-15-preview/EvaluateDeploymentPolicies.json
      */
     /**
      * Sample code: EvaluateDeploymentPolicies.
@@ -755,7 +784,7 @@ public final class AccountsEvaluateDeploymentPoliciesSamples {
  */
 public final class AccountsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/GetAccount.json
+     * x-ms-original-file: 2026-09-15-preview/GetAccount.json
      */
     /**
      * Sample code: Get Account.
@@ -777,7 +806,7 @@ public final class AccountsGetByResourceGroupSamples {
  */
 public final class AccountsListSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/ListAccountsBySubscription.json
+     * x-ms-original-file: 2026-09-15-preview/ListAccountsBySubscription.json
      */
     /**
      * Sample code: List Accounts by Subscription.
@@ -799,7 +828,7 @@ public final class AccountsListSamples {
  */
 public final class AccountsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/ListAccountsByResourceGroup.json
+     * x-ms-original-file: 2026-09-15-preview/ListAccountsByResourceGroup.json
      */
     /**
      * Sample code: List Accounts by Resource Group.
@@ -821,7 +850,7 @@ public final class AccountsListByResourceGroupSamples {
  */
 public final class AccountsListKeysSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/ListKeys.json
+     * x-ms-original-file: 2026-09-15-preview/ListKeys.json
      */
     /**
      * Sample code: List Keys.
@@ -842,7 +871,7 @@ public final class AccountsListKeysSamples {
  */
 public final class AccountsListModelsSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/ListAccountModels.json
+     * x-ms-original-file: 2026-09-15-preview/ListAccountModels.json
      */
     /**
      * Sample code: List AccountModels.
@@ -863,7 +892,7 @@ public final class AccountsListModelsSamples {
  */
 public final class AccountsListSkusSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/ListSkus.json
+     * x-ms-original-file: 2026-09-15-preview/ListSkus.json
      */
     /**
      * Sample code: List SKUs.
@@ -884,7 +913,7 @@ public final class AccountsListSkusSamples {
  */
 public final class AccountsListUsagesSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/GetUsages.json
+     * x-ms-original-file: 2026-09-15-preview/GetUsages.json
      */
     /**
      * Sample code: Get Usages.
@@ -897,7 +926,7 @@ public final class AccountsListUsagesSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-15-preview/GetUsagesClassicScope.json
+     * x-ms-original-file: 2026-09-15-preview/GetUsagesClassicScope.json
      */
     /**
      * Sample code: Get Usages Classic Scope.
@@ -911,7 +940,7 @@ public final class AccountsListUsagesSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-15-preview/GetUsagesDataZoneScope.json
+     * x-ms-original-file: 2026-09-15-preview/GetUsagesDataZoneScope.json
      */
     /**
      * Sample code: Get Usages DataZone Scope.
@@ -925,7 +954,7 @@ public final class AccountsListUsagesSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-15-preview/GetUsagesGlobalScope.json
+     * x-ms-original-file: 2026-09-15-preview/GetUsagesGlobalScope.json
      */
     /**
      * Sample code: Get Usages Global Scope.
@@ -951,7 +980,7 @@ import com.azure.resourcemanager.cognitiveservices.models.RegenerateKeyParameter
  */
 public final class AccountsRegenerateKeySamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/RegenerateKey.json
+     * x-ms-original-file: 2026-09-15-preview/RegenerateKey.json
      */
     /**
      * Sample code: Regenerate Keys.
@@ -970,6 +999,8 @@ public final class AccountsRegenerateKeySamples {
 
 ```java
 import com.azure.resourcemanager.cognitiveservices.models.Account;
+import com.azure.resourcemanager.cognitiveservices.models.AccountProperties;
+import com.azure.resourcemanager.cognitiveservices.models.CostControlConnections;
 import com.azure.resourcemanager.cognitiveservices.models.Sku;
 
 /**
@@ -977,7 +1008,7 @@ import com.azure.resourcemanager.cognitiveservices.models.Sku;
  */
 public final class AccountsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/UpdateAccount.json
+     * x-ms-original-file: 2026-09-15-preview/UpdateAccount.json
      */
     /**
      * Sample code: Update Account.
@@ -988,7 +1019,114 @@ public final class AccountsUpdateSamples {
         Account resource = manager.accounts()
             .getByResourceGroupWithResponse("bvttest", "bingSearch", com.azure.core.util.Context.NONE)
             .getValue();
-        resource.update().withSku(new Sku().withName("S2")).apply();
+        resource.update()
+            .withProperties(new AccountProperties().withCostControlConnections(new CostControlConnections()
+                .withAppInsightsConnectionId(
+                    "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/bvttest/providers/Microsoft.CognitiveServices/accounts/bingSearch/connections/myAppInsightsConnection")
+                .withEventGridConnectionId(
+                    "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/bvttest/providers/Microsoft.CognitiveServices/accounts/bingSearch/connections/myEventGridConnection")))
+            .withSku(new Sku().withName("S2"))
+            .apply();
+    }
+}
+```
+
+### AdapterDeployments_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.cognitiveservices.models.AdapterDeploymentProperties;
+
+/**
+ * Samples for AdapterDeployments CreateOrUpdate.
+ */
+public final class AdapterDeploymentsCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: 2026-09-15-preview/CreateOrUpdateAdapterDeployment.json
+     */
+    /**
+     * Sample code: CreateOrUpdateAdapterDeployment.
+     * 
+     * @param manager Entry point to CognitiveServicesManager.
+     */
+    public static void
+        createOrUpdateAdapterDeployment(com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager manager) {
+        manager.adapterDeployments()
+            .define("adapterDeploymentName")
+            .withExistingAccount("resourceGroupName", "accountName")
+            .withProperties(new AdapterDeploymentProperties()
+                .withSourceModelId("azureai://accounts/accountName/projects/projectName/models/modelName/versions/1")
+                .withTargetDeploymentName("managedComputeDeploymentName"))
+            .create();
+    }
+}
+```
+
+### AdapterDeployments_Delete
+
+```java
+/**
+ * Samples for AdapterDeployments Delete.
+ */
+public final class AdapterDeploymentsDeleteSamples {
+    /*
+     * x-ms-original-file: 2026-09-15-preview/DeleteAdapterDeployment.json
+     */
+    /**
+     * Sample code: DeleteAdapterDeployment.
+     * 
+     * @param manager Entry point to CognitiveServicesManager.
+     */
+    public static void
+        deleteAdapterDeployment(com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager manager) {
+        manager.adapterDeployments()
+            .delete("resourceGroupName", "accountName", "adapterDeploymentName", "\"0x8D1234567890ABC\"",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### AdapterDeployments_Get
+
+```java
+/**
+ * Samples for AdapterDeployments Get.
+ */
+public final class AdapterDeploymentsGetSamples {
+    /*
+     * x-ms-original-file: 2026-09-15-preview/GetAdapterDeployment.json
+     */
+    /**
+     * Sample code: GetAdapterDeployment.
+     * 
+     * @param manager Entry point to CognitiveServicesManager.
+     */
+    public static void
+        getAdapterDeployment(com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager manager) {
+        manager.adapterDeployments()
+            .getWithResponse("resourceGroupName", "accountName", "adapterDeploymentName",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### AdapterDeployments_List
+
+```java
+/**
+ * Samples for AdapterDeployments List.
+ */
+public final class AdapterDeploymentsListSamples {
+    /*
+     * x-ms-original-file: 2026-09-15-preview/ListAdapterDeployments.json
+     */
+    /**
+     * Sample code: ListAdapterDeployments.
+     * 
+     * @param manager Entry point to CognitiveServicesManager.
+     */
+    public static void
+        listAdapterDeployments(com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager manager) {
+        manager.adapterDeployments().list("resourceGroupName", "accountName", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1005,7 +1143,7 @@ import java.util.Map;
  */
 public final class AgentApplicationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/AgentApplication/createOrUpdate.json
+     * x-ms-original-file: 2026-09-15-preview/AgentApplication/createOrUpdate.json
      */
     /**
      * Sample code: Create or Update Account Agent Application.
@@ -1046,7 +1184,7 @@ public final class AgentApplicationsCreateOrUpdateSamples {
  */
 public final class AgentApplicationsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/AgentApplication/delete.json
+     * x-ms-original-file: 2026-09-15-preview/AgentApplication/delete.json
      */
     /**
      * Sample code: Delete Account Agent Application.
@@ -1070,7 +1208,7 @@ public final class AgentApplicationsDeleteSamples {
  */
 public final class AgentApplicationsDisableSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/AgentApplication/disable.json
+     * x-ms-original-file: 2026-09-15-preview/AgentApplication/disable.json
      */
     /**
      * Sample code: Disable Agent Application.
@@ -1094,7 +1232,7 @@ public final class AgentApplicationsDisableSamples {
  */
 public final class AgentApplicationsEnableSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/AgentApplication/enable.json
+     * x-ms-original-file: 2026-09-15-preview/AgentApplication/enable.json
      */
     /**
      * Sample code: Enable Agent Application.
@@ -1118,7 +1256,7 @@ public final class AgentApplicationsEnableSamples {
  */
 public final class AgentApplicationsGetSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/AgentApplication/get.json
+     * x-ms-original-file: 2026-09-15-preview/AgentApplication/get.json
      */
     /**
      * Sample code: Get Account Agent Application.
@@ -1144,7 +1282,7 @@ import java.util.Arrays;
  */
 public final class AgentApplicationsListSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/AgentApplication/list.json
+     * x-ms-original-file: 2026-09-15-preview/AgentApplication/list.json
      */
     /**
      * Sample code: List Account Agent Applications.
@@ -1168,7 +1306,7 @@ public final class AgentApplicationsListSamples {
  */
 public final class AgentApplicationsListAgentsSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/AgentApplication/listAgents.json
+     * x-ms-original-file: 2026-09-15-preview/AgentApplication/listAgents.json
      */
     /**
      * Sample code: List Agents for Agent Application.
@@ -1199,7 +1337,7 @@ import java.util.Arrays;
  */
 public final class AgentDeploymentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/AgentDeployment/createOrUpdate.json
+     * x-ms-original-file: 2026-09-15-preview/AgentDeployment/createOrUpdate.json
      */
     /**
      * Sample code: Create or Update Agent Deployment.
@@ -1231,7 +1369,7 @@ public final class AgentDeploymentsCreateOrUpdateSamples {
  */
 public final class AgentDeploymentsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/AgentDeployment/delete.json
+     * x-ms-original-file: 2026-09-15-preview/AgentDeployment/delete.json
      */
     /**
      * Sample code: Delete Agent Deployment.
@@ -1255,7 +1393,7 @@ public final class AgentDeploymentsDeleteSamples {
  */
 public final class AgentDeploymentsGetSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/AgentDeployment/get.json
+     * x-ms-original-file: 2026-09-15-preview/AgentDeployment/get.json
      */
     /**
      * Sample code: Get Agent Deployment.
@@ -1280,7 +1418,7 @@ public final class AgentDeploymentsGetSamples {
  */
 public final class AgentDeploymentsListSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/AgentDeployment/list.json
+     * x-ms-original-file: 2026-09-15-preview/AgentDeployment/list.json
      */
     /**
      * Sample code: List Agent Deployments.
@@ -1304,7 +1442,7 @@ public final class AgentDeploymentsListSamples {
  */
 public final class AgentDeploymentsStartSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/AgentDeployment/start.json
+     * x-ms-original-file: 2026-09-15-preview/AgentDeployment/start.json
      */
     /**
      * Sample code: Start Agent Deployment.
@@ -1328,7 +1466,7 @@ public final class AgentDeploymentsStartSamples {
  */
 public final class AgentDeploymentsStopSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/AgentDeployment/stop.json
+     * x-ms-original-file: 2026-09-15-preview/AgentDeployment/stop.json
      */
     /**
      * Sample code: Stop Agent Deployment.
@@ -1364,7 +1502,7 @@ import java.util.Map;
  */
 public final class ArcDeploymentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/CreateOrUpdateArcDeployment.json
+     * x-ms-original-file: 2026-09-15-preview/CreateOrUpdateArcDeployment.json
      */
     /**
      * Sample code: CreateOrUpdateArcDeployment.
@@ -1392,7 +1530,7 @@ public final class ArcDeploymentsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-15-preview/CreateOrUpdateArcDeploymentWithTemplate.json
+     * x-ms-original-file: 2026-09-15-preview/CreateOrUpdateArcDeploymentWithTemplate.json
      */
     /**
      * Sample code: CreateOrUpdateArcDeploymentWithTemplate.
@@ -1442,7 +1580,7 @@ public final class ArcDeploymentsCreateOrUpdateSamples {
  */
 public final class ArcDeploymentsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/DeleteArcDeployment.json
+     * x-ms-original-file: 2026-09-15-preview/DeleteArcDeployment.json
      */
     /**
      * Sample code: DeleteArcDeployment.
@@ -1465,7 +1603,7 @@ public final class ArcDeploymentsDeleteSamples {
  */
 public final class ArcDeploymentsGetSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/GetArcDeployment.json
+     * x-ms-original-file: 2026-09-15-preview/GetArcDeployment.json
      */
     /**
      * Sample code: GetArcDeployment.
@@ -1487,7 +1625,7 @@ public final class ArcDeploymentsGetSamples {
  */
 public final class ArcDeploymentsListSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/ListArcDeployments.json
+     * x-ms-original-file: 2026-09-15-preview/ListArcDeployments.json
      */
     /**
      * Sample code: ListArcDeployments.
@@ -1517,7 +1655,7 @@ import java.util.Map;
  */
 public final class ArcDeploymentsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/UpdateArcDeployment.json
+     * x-ms-original-file: 2026-09-15-preview/UpdateArcDeployment.json
      */
     /**
      * Sample code: UpdateArcDeployment.
@@ -1566,7 +1704,7 @@ import com.azure.resourcemanager.cognitiveservices.models.HostingModel;
  */
 public final class CommitmentPlansCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/PutCommitmentPlan.json
+     * x-ms-original-file: 2026-09-15-preview/PutCommitmentPlan.json
      */
     /**
      * Sample code: PutCommitmentPlan.
@@ -1594,7 +1732,7 @@ public final class CommitmentPlansCreateOrUpdateSamples {
  */
 public final class CommitmentPlansCreateOrUpdateAssociationSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/CreateSharedCommitmentPlanAssociation.json
+     * x-ms-original-file: 2026-09-15-preview/CreateSharedCommitmentPlanAssociation.json
      */
     /**
      * Sample code: PutCommitmentPlan.
@@ -1625,7 +1763,7 @@ import com.azure.resourcemanager.cognitiveservices.models.Sku;
  */
 public final class CommitmentPlansCreateOrUpdatePlanSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/CreateSharedCommitmentPlan.json
+     * x-ms-original-file: 2026-09-15-preview/CreateSharedCommitmentPlan.json
      */
     /**
      * Sample code: Create Commitment Plan.
@@ -1657,7 +1795,7 @@ public final class CommitmentPlansCreateOrUpdatePlanSamples {
  */
 public final class CommitmentPlansDeleteSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/DeleteCommitmentPlan.json
+     * x-ms-original-file: 2026-09-15-preview/DeleteCommitmentPlan.json
      */
     /**
      * Sample code: DeleteCommitmentPlan.
@@ -1680,7 +1818,7 @@ public final class CommitmentPlansDeleteSamples {
  */
 public final class CommitmentPlansDeleteAssociationSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/DeleteSharedCommitmentPlanAssociation.json
+     * x-ms-original-file: 2026-09-15-preview/DeleteSharedCommitmentPlanAssociation.json
      */
     /**
      * Sample code: DeleteCommitmentPlan.
@@ -1704,7 +1842,7 @@ public final class CommitmentPlansDeleteAssociationSamples {
  */
 public final class CommitmentPlansDeletePlanSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/DeleteSharedCommitmentPlan.json
+     * x-ms-original-file: 2026-09-15-preview/DeleteSharedCommitmentPlan.json
      */
     /**
      * Sample code: Delete Commitment Plan.
@@ -1727,7 +1865,7 @@ public final class CommitmentPlansDeletePlanSamples {
  */
 public final class CommitmentPlansGetSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/GetCommitmentPlan.json
+     * x-ms-original-file: 2026-09-15-preview/GetCommitmentPlan.json
      */
     /**
      * Sample code: GetCommitmentPlan.
@@ -1750,7 +1888,7 @@ public final class CommitmentPlansGetSamples {
  */
 public final class CommitmentPlansGetAssociationSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/GetSharedCommitmentPlanAssociation.json
+     * x-ms-original-file: 2026-09-15-preview/GetSharedCommitmentPlanAssociation.json
      */
     /**
      * Sample code: GetCommitmentPlan.
@@ -1773,7 +1911,7 @@ public final class CommitmentPlansGetAssociationSamples {
  */
 public final class CommitmentPlansGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/GetSharedCommitmentPlan.json
+     * x-ms-original-file: 2026-09-15-preview/GetSharedCommitmentPlan.json
      */
     /**
      * Sample code: Get Commitment Plan.
@@ -1796,7 +1934,7 @@ public final class CommitmentPlansGetByResourceGroupSamples {
  */
 public final class CommitmentPlansListSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/ListCommitmentPlans.json
+     * x-ms-original-file: 2026-09-15-preview/ListCommitmentPlans.json
      */
     /**
      * Sample code: ListCommitmentPlans.
@@ -1818,7 +1956,7 @@ public final class CommitmentPlansListSamples {
  */
 public final class CommitmentPlansListAssociationsSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/ListSharedCommitmentPlanAssociations.json
+     * x-ms-original-file: 2026-09-15-preview/ListSharedCommitmentPlanAssociations.json
      */
     /**
      * Sample code: ListCommitmentPlans.
@@ -1841,7 +1979,7 @@ public final class CommitmentPlansListAssociationsSamples {
  */
 public final class CommitmentPlansListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/ListSharedCommitmentPlansByResourceGroup.json
+     * x-ms-original-file: 2026-09-15-preview/ListSharedCommitmentPlansByResourceGroup.json
      */
     /**
      * Sample code: List Commitment Plans by Resource Group.
@@ -1863,7 +2001,7 @@ public final class CommitmentPlansListByResourceGroupSamples {
  */
 public final class CommitmentPlansListPlansBySubscriptionSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/ListSharedCommitmentPlansBySubscription.json
+     * x-ms-original-file: 2026-09-15-preview/ListSharedCommitmentPlansBySubscription.json
      */
     /**
      * Sample code: List Accounts by Subscription.
@@ -1889,7 +2027,7 @@ import java.util.Map;
  */
 public final class CommitmentPlansUpdatePlanSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/UpdateSharedCommitmentPlan.json
+     * x-ms-original-file: 2026-09-15-preview/UpdateSharedCommitmentPlan.json
      */
     /**
      * Sample code: Create Commitment Plan.
@@ -1926,7 +2064,7 @@ public final class CommitmentPlansUpdatePlanSamples {
  */
 public final class CommitmentTiersListSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/ListCommitmentTiers.json
+     * x-ms-original-file: 2026-09-15-preview/ListCommitmentTiers.json
      */
     /**
      * Sample code: ListCommitmentTiers.
@@ -1948,7 +2086,7 @@ public final class CommitmentTiersListSamples {
  */
 public final class ComputeOperationsGetSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/GetComputeOperationStatus.json
+     * x-ms-original-file: 2026-09-15-preview/GetComputeOperationStatus.json
      */
     /**
      * Sample code: GetComputeOperationStatus.
@@ -1983,7 +2121,7 @@ import java.util.Map;
  */
 public final class ComputesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/PutContainerInstanceCompute.json
+     * x-ms-original-file: 2026-09-15-preview/PutContainerInstanceCompute.json
      */
     /**
      * Sample code: PutContainerInstanceCompute.
@@ -2009,7 +2147,7 @@ public final class ComputesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-15-preview/PutCompute.json
+     * x-ms-original-file: 2026-09-15-preview/PutCompute.json
      */
     /**
      * Sample code: PutCompute.
@@ -2051,7 +2189,7 @@ public final class ComputesCreateOrUpdateSamples {
  */
 public final class ComputesDeleteSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/DeleteCompute.json
+     * x-ms-original-file: 2026-09-15-preview/DeleteCompute.json
      */
     /**
      * Sample code: DeleteCompute.
@@ -2072,7 +2210,7 @@ public final class ComputesDeleteSamples {
  */
 public final class ComputesGetSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/GetContainerInstanceCompute.json
+     * x-ms-original-file: 2026-09-15-preview/GetContainerInstanceCompute.json
      */
     /**
      * Sample code: GetContainerInstanceCompute.
@@ -2087,7 +2225,7 @@ public final class ComputesGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-15-preview/GetCompute.json
+     * x-ms-original-file: 2026-09-15-preview/GetCompute.json
      */
     /**
      * Sample code: GetCompute.
@@ -2109,7 +2247,7 @@ public final class ComputesGetSamples {
  */
 public final class ComputesListSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/ListComputes.json
+     * x-ms-original-file: 2026-09-15-preview/ListComputes.json
      */
     /**
      * Sample code: ListComputes.
@@ -2130,7 +2268,7 @@ public final class ComputesListSamples {
  */
 public final class ComputesRestartSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/RestartContainerInstanceCompute.json
+     * x-ms-original-file: 2026-09-15-preview/RestartContainerInstanceCompute.json
      */
     /**
      * Sample code: RestartContainerInstanceCompute.
@@ -2153,7 +2291,7 @@ public final class ComputesRestartSamples {
  */
 public final class ComputesStartSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/StartContainerInstanceCompute.json
+     * x-ms-original-file: 2026-09-15-preview/StartContainerInstanceCompute.json
      */
     /**
      * Sample code: StartContainerInstanceCompute.
@@ -2176,7 +2314,7 @@ public final class ComputesStartSamples {
  */
 public final class ComputesStopSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/StopContainerInstanceCompute.json
+     * x-ms-original-file: 2026-09-15-preview/StopContainerInstanceCompute.json
      */
     /**
      * Sample code: StopContainerInstanceCompute.
@@ -2191,6 +2329,242 @@ public final class ComputesStopSamples {
 }
 ```
 
+### CostControls_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.cognitiveservices.models.CostControlDimension;
+import com.azure.resourcemanager.cognitiveservices.models.CostControlDimensionType;
+import com.azure.resourcemanager.cognitiveservices.models.CostControlMatch;
+import com.azure.resourcemanager.cognitiveservices.models.CostControlPeriod;
+import com.azure.resourcemanager.cognitiveservices.models.CostControlProperties;
+import com.azure.resourcemanager.cognitiveservices.models.CostControlRule;
+import com.azure.resourcemanager.cognitiveservices.models.CostControlThreshold;
+import com.azure.resourcemanager.cognitiveservices.models.CostControlThresholdAction;
+import com.azure.resourcemanager.cognitiveservices.models.CostControlThresholdType;
+import com.azure.resourcemanager.cognitiveservices.models.CostControlUnit;
+import java.util.Arrays;
+
+/**
+ * Samples for CostControls CreateOrUpdate.
+ */
+public final class CostControlsCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: 2026-09-15-preview/CostControl/createOrUpdate.json
+     */
+    /**
+     * Sample code: Create a cost control with all settings.
+     * 
+     * @param manager Entry point to CognitiveServicesManager.
+     */
+    public static void createACostControlWithAllSettings(
+        com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager manager) {
+        manager.costControls()
+            .define("production-agents")
+            .withExistingAccount("foundry-resource-group", "foundry-account")
+            .withProperties(new CostControlProperties().withDisplayName("Production agent monthly budget")
+                .withRules(Arrays.asList(new CostControlRule().withName("monthly-agent-budget")
+                    .withCounterKey(new CostControlDimension().withType(CostControlDimensionType.AGENT))
+                    .withUnit(CostControlUnit.USD)
+                    .withAmount(1000.0)
+                    .withPeriod(CostControlPeriod.MONTH)
+                    .withRecurring(true)
+                    .withMatch(new CostControlMatch().withAgentResourceIds(Arrays.asList(
+                        "/subscriptions/00000000-1111-2222-3333-444444444444/accounts/foundry-account/project/production/agent/customer-support-agent",
+                        "/subscriptions/00000000-1111-2222-3333-444444444444/accounts/foundry-account/project/production/agent/sales-assistant-agent"))
+                        .withIdentityObjectIds(Arrays.asList("11111111-2222-3333-4444-555555555555"))
+                        .withSessionIds(Arrays.asList("production-session"))
+                        .withProjectIds(Arrays.asList(
+                            "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/foundry-resource-group/providers/Microsoft.CognitiveServices/accounts/foundry-account/projects/production")))
+                    .withThresholds(Arrays.asList(
+                        new CostControlThreshold().withType(CostControlThresholdType.PERCENTAGE)
+                            .withValue(80.0)
+                            .withAction(CostControlThresholdAction.ALERT),
+                        new CostControlThreshold().withType(CostControlThresholdType.ABSOLUTE)
+                            .withValue(1000.0)
+                            .withAction(CostControlThresholdAction.BLOCK))),
+                    new CostControlRule().withName("daily-account-budget")
+                        .withCounterKey(new CostControlDimension().withType(CostControlDimensionType.ACCOUNT))
+                        .withUnit(CostControlUnit.USD)
+                        .withAmount(100.0)
+                        .withPeriod(CostControlPeriod.DAY)
+                        .withRecurring(true)
+                        .withThresholds(
+                            Arrays.asList(new CostControlThreshold().withType(CostControlThresholdType.PERCENTAGE)
+                                .withValue(90.0)
+                                .withAction(CostControlThresholdAction.ALERT))))))
+            .withIfNoneMatch("*")
+            .create();
+    }
+}
+```
+
+### CostControls_Delete
+
+```java
+/**
+ * Samples for CostControls Delete.
+ */
+public final class CostControlsDeleteSamples {
+    /*
+     * x-ms-original-file: 2026-09-15-preview/CostControl/delete.json
+     */
+    /**
+     * Sample code: Delete a cost control conditionally.
+     * 
+     * @param manager Entry point to CognitiveServicesManager.
+     */
+    public static void
+        deleteACostControlConditionally(com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager manager) {
+        manager.costControls()
+            .deleteWithResponse("foundry-resource-group", "foundry-account", "production-agents",
+                "\"00000000-0000-0000-0000-000000000002\"", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### CostControls_Get
+
+```java
+/**
+ * Samples for CostControls Get.
+ */
+public final class CostControlsGetSamples {
+    /*
+     * x-ms-original-file: 2026-09-15-preview/CostControl/get.json
+     */
+    /**
+     * Sample code: Get a cost control with all settings.
+     * 
+     * @param manager Entry point to CognitiveServicesManager.
+     */
+    public static void
+        getACostControlWithAllSettings(com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager manager) {
+        manager.costControls()
+            .getWithResponse("foundry-resource-group", "foundry-account", "production-agents",
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-09-15-preview/CostControl/getLegacy.json
+     */
+    /**
+     * Sample code: Read a legacy cost control without authoring its legacy values.
+     * 
+     * @param manager Entry point to CognitiveServicesManager.
+     */
+    public static void readALegacyCostControlWithoutAuthoringItsLegacyValues(
+        com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager manager) {
+        manager.costControls()
+            .getWithResponse("foundry-resource-group", "foundry-account", "legacy-budget",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### CostControls_List
+
+```java
+/**
+ * Samples for CostControls List.
+ */
+public final class CostControlsListSamples {
+    /*
+     * x-ms-original-file: 2026-09-15-preview/CostControl/list.json
+     */
+    /**
+     * Sample code: List cost controls with all settings.
+     * 
+     * @param manager Entry point to CognitiveServicesManager.
+     */
+    public static void
+        listCostControlsWithAllSettings(com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager manager) {
+        manager.costControls().list("foundry-resource-group", "foundry-account", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### CostControls_Update
+
+```java
+import com.azure.resourcemanager.cognitiveservices.models.CostControl;
+import com.azure.resourcemanager.cognitiveservices.models.CostControlDimension;
+import com.azure.resourcemanager.cognitiveservices.models.CostControlDimensionType;
+import com.azure.resourcemanager.cognitiveservices.models.CostControlMatch;
+import com.azure.resourcemanager.cognitiveservices.models.CostControlPatchProperties;
+import com.azure.resourcemanager.cognitiveservices.models.CostControlPeriod;
+import com.azure.resourcemanager.cognitiveservices.models.CostControlRule;
+import com.azure.resourcemanager.cognitiveservices.models.CostControlThreshold;
+import com.azure.resourcemanager.cognitiveservices.models.CostControlThresholdAction;
+import com.azure.resourcemanager.cognitiveservices.models.CostControlThresholdType;
+import com.azure.resourcemanager.cognitiveservices.models.CostControlUnit;
+import java.util.Arrays;
+
+/**
+ * Samples for CostControls Update.
+ */
+public final class CostControlsUpdateSamples {
+    /*
+     * x-ms-original-file: 2026-09-15-preview/CostControl/update.json
+     */
+    /**
+     * Sample code: Update all configurable cost control settings.
+     * 
+     * @param manager Entry point to CognitiveServicesManager.
+     */
+    public static void updateAllConfigurableCostControlSettings(
+        com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager manager) {
+        CostControl resource = manager.costControls()
+            .getWithResponse("foundry-resource-group", "foundry-account", "production-agents",
+                com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withProperties(new CostControlPatchProperties().withDisplayName("Updated production agent budget")
+                .withRules(Arrays.asList(new CostControlRule().withName("monthly-agent-budget")
+                    .withCounterKey(new CostControlDimension().withType(CostControlDimensionType.AGENT))
+                    .withUnit(CostControlUnit.USD)
+                    .withAmount(1500.0)
+                    .withPeriod(CostControlPeriod.MONTH)
+                    .withRecurring(true)
+                    .withMatch(new CostControlMatch().withAgentResourceIds(Arrays.asList(
+                        "/subscriptions/00000000-1111-2222-3333-444444444444/accounts/foundry-account/project/production/agent/customer-support-agent",
+                        "/subscriptions/00000000-1111-2222-3333-444444444444/accounts/foundry-account/project/production/agent/sales-assistant-agent"))
+                        .withIdentityObjectIds(Arrays.asList("11111111-2222-3333-4444-555555555555"))
+                        .withSessionIds(Arrays.asList("production-session"))
+                        .withProjectIds(Arrays.asList(
+                            "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/foundry-resource-group/providers/Microsoft.CognitiveServices/accounts/foundry-account/projects/production")))
+                    .withThresholds(Arrays.asList(
+                        new CostControlThreshold().withType(CostControlThresholdType.PERCENTAGE)
+                            .withValue(80.0)
+                            .withAction(CostControlThresholdAction.ALERT),
+                        new CostControlThreshold().withType(CostControlThresholdType.ABSOLUTE)
+                            .withValue(1500.0)
+                            .withAction(CostControlThresholdAction.BLOCK))))))
+            .withIfMatch("\"00000000-0000-0000-0000-000000000001\"")
+            .apply();
+    }
+
+    /*
+     * x-ms-original-file: 2026-09-15-preview/CostControl/updateMetadata.json
+     */
+    /**
+     * Sample code: Update metadata while preserving legacy rules.
+     * 
+     * @param manager Entry point to CognitiveServicesManager.
+     */
+    public static void updateMetadataWhilePreservingLegacyRules(
+        com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager manager) {
+        CostControl resource = manager.costControls()
+            .getWithResponse("foundry-resource-group", "foundry-account", "legacy-budget",
+                com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withProperties(new CostControlPatchProperties().withDisplayName("Renamed legacy budget"))
+            .withIfMatch("\"00000000-0000-0000-0000-000000000001\"")
+            .apply();
+    }
+}
+```
+
 ### DefenderForAISettings_CreateOrUpdate
 
 ```java
@@ -2201,7 +2575,7 @@ import com.azure.resourcemanager.cognitiveservices.models.DefenderForAISettingSt
  */
 public final class DefenderForAISettingsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/PutDefenderForAISetting.json
+     * x-ms-original-file: 2026-09-15-preview/PutDefenderForAISetting.json
      */
     /**
      * Sample code: PutDefenderForAISetting.
@@ -2227,7 +2601,7 @@ public final class DefenderForAISettingsCreateOrUpdateSamples {
  */
 public final class DefenderForAISettingsGetSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/GetDefenderForAISetting.json
+     * x-ms-original-file: 2026-09-15-preview/GetDefenderForAISetting.json
      */
     /**
      * Sample code: GetDefenderForAISetting.
@@ -2250,7 +2624,7 @@ public final class DefenderForAISettingsGetSamples {
  */
 public final class DefenderForAISettingsListSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/ListDefenderForAISetting.json
+     * x-ms-original-file: 2026-09-15-preview/ListDefenderForAISetting.json
      */
     /**
      * Sample code: ListDefenderForAISetting.
@@ -2275,7 +2649,7 @@ import com.azure.resourcemanager.cognitiveservices.models.DefenderForAISettingSt
  */
 public final class DefenderForAISettingsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/UpdateDefenderForAISetting.json
+     * x-ms-original-file: 2026-09-15-preview/UpdateDefenderForAISetting.json
      */
     /**
      * Sample code: UpdateDefenderForAISetting.
@@ -2300,7 +2674,7 @@ public final class DefenderForAISettingsUpdateSamples {
  */
 public final class DeletedAccountsGetSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/GetDeletedAccount.json
+     * x-ms-original-file: 2026-09-15-preview/GetDeletedAccount.json
      */
     /**
      * Sample code: Get Account.
@@ -2322,7 +2696,7 @@ public final class DeletedAccountsGetSamples {
  */
 public final class DeletedAccountsListSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/ListDeletedAccountsBySubscription.json
+     * x-ms-original-file: 2026-09-15-preview/ListDeletedAccountsBySubscription.json
      */
     /**
      * Sample code: List Deleted Accounts by Subscription.
@@ -2344,7 +2718,7 @@ public final class DeletedAccountsListSamples {
  */
 public final class DeletedAccountsPurgeSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/PurgeDeletedAccount.json
+     * x-ms-original-file: 2026-09-15-preview/PurgeDeletedAccount.json
      */
     /**
      * Sample code: Delete Account.
@@ -2372,7 +2746,7 @@ import com.azure.resourcemanager.cognitiveservices.models.Sku;
  */
 public final class DeploymentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/PutDeployment.json
+     * x-ms-original-file: 2026-09-15-preview/PutDeployment.json
      */
     /**
      * Sample code: PutDeployment.
@@ -2392,7 +2766,7 @@ public final class DeploymentsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-15-preview/PutDeploymentWithSpeculativeDecoding.json
+     * x-ms-original-file: 2026-09-15-preview/PutDeploymentWithSpeculativeDecoding.json
      */
     /**
      * Sample code: PutDeploymentWithSpeculativeDecoding.
@@ -2429,7 +2803,7 @@ public final class DeploymentsCreateOrUpdateSamples {
  */
 public final class DeploymentsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/DeleteDeployment.json
+     * x-ms-original-file: 2026-09-15-preview/DeleteDeployment.json
      */
     /**
      * Sample code: DeleteDeployment.
@@ -2451,7 +2825,7 @@ public final class DeploymentsDeleteSamples {
  */
 public final class DeploymentsGetSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/GetDeployment.json
+     * x-ms-original-file: 2026-09-15-preview/GetDeployment.json
      */
     /**
      * Sample code: GetDeployment.
@@ -2473,7 +2847,7 @@ public final class DeploymentsGetSamples {
  */
 public final class DeploymentsListSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/ListDeployments.json
+     * x-ms-original-file: 2026-09-15-preview/ListDeployments.json
      */
     /**
      * Sample code: ListDeployments.
@@ -2494,7 +2868,7 @@ public final class DeploymentsListSamples {
  */
 public final class DeploymentsListSkusSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/ListDeploymentSkus.json
+     * x-ms-original-file: 2026-09-15-preview/ListDeploymentSkus.json
      */
     /**
      * Sample code: ListDeploymentSkus.
@@ -2517,7 +2891,7 @@ public final class DeploymentsListSkusSamples {
  */
 public final class DeploymentsPauseSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/PauseDeployment.json
+     * x-ms-original-file: 2026-09-15-preview/PauseDeployment.json
      */
     /**
      * Sample code: PauseDeployment.
@@ -2539,7 +2913,7 @@ public final class DeploymentsPauseSamples {
  */
 public final class DeploymentsResumeSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/ResumeDeployment.json
+     * x-ms-original-file: 2026-09-15-preview/ResumeDeployment.json
      */
     /**
      * Sample code: ResumeDeployment.
@@ -2564,7 +2938,7 @@ import com.azure.resourcemanager.cognitiveservices.models.Sku;
  */
 public final class DeploymentsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/UpdateDeployment.json
+     * x-ms-original-file: 2026-09-15-preview/UpdateDeployment.json
      */
     /**
      * Sample code: UpdateDeployment.
@@ -2593,7 +2967,7 @@ import com.azure.resourcemanager.cognitiveservices.models.KeyVaultProperties;
  */
 public final class EncryptionScopesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/PutEncryptionScope.json
+     * x-ms-original-file: 2026-09-15-preview/PutEncryptionScope.json
      */
     /**
      * Sample code: PutEncryptionScope.
@@ -2625,7 +2999,7 @@ public final class EncryptionScopesCreateOrUpdateSamples {
  */
 public final class EncryptionScopesDeleteSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/DeleteEncryptionScope.json
+     * x-ms-original-file: 2026-09-15-preview/DeleteEncryptionScope.json
      */
     /**
      * Sample code: DeleteEncryptionScope.
@@ -2648,7 +3022,7 @@ public final class EncryptionScopesDeleteSamples {
  */
 public final class EncryptionScopesGetSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/GetEncryptionScope.json
+     * x-ms-original-file: 2026-09-15-preview/GetEncryptionScope.json
      */
     /**
      * Sample code: GetEncryptionScope.
@@ -2672,7 +3046,7 @@ public final class EncryptionScopesGetSamples {
  */
 public final class EncryptionScopesListSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/ListEncryptionScopes.json
+     * x-ms-original-file: 2026-09-15-preview/ListEncryptionScopes.json
      */
     /**
      * Sample code: ListEncryptionScopes.
@@ -2694,7 +3068,7 @@ public final class EncryptionScopesListSamples {
  */
 public final class LocationBasedModelCapacitiesListSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/ListLocationBasedModelCapacitiesGlobalScope.json
+     * x-ms-original-file: 2026-09-15-preview/ListLocationBasedModelCapacitiesGlobalScope.json
      */
     /**
      * Sample code: ListLocationBasedModelCapacities Global Scope.
@@ -2707,7 +3081,7 @@ public final class LocationBasedModelCapacitiesListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-15-preview/ListLocationBasedModelCapacitiesClassicScope.json
+     * x-ms-original-file: 2026-09-15-preview/ListLocationBasedModelCapacitiesClassicScope.json
      */
     /**
      * Sample code: ListLocationBasedModelCapacities Classic Scope.
@@ -2720,7 +3094,7 @@ public final class LocationBasedModelCapacitiesListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-15-preview/ListLocationBasedModelCapacitiesDataZoneScope.json
+     * x-ms-original-file: 2026-09-15-preview/ListLocationBasedModelCapacitiesDataZoneScope.json
      */
     /**
      * Sample code: ListLocationBasedModelCapacities DataZone Scope.
@@ -2733,7 +3107,7 @@ public final class LocationBasedModelCapacitiesListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-15-preview/ListLocationBasedModelCapacities.json
+     * x-ms-original-file: 2026-09-15-preview/ListLocationBasedModelCapacities.json
      */
     /**
      * Sample code: ListLocationBasedModelCapacities.
@@ -2755,7 +3129,7 @@ public final class LocationBasedModelCapacitiesListSamples {
  */
 public final class ManagedComputeCapacitiesListSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/ListManagedComputeCapacities.json
+     * x-ms-original-file: 2026-09-15-preview/ListManagedComputeCapacities.json
      */
     /**
      * Sample code: List Managed Compute Capacities.
@@ -2773,6 +3147,7 @@ public final class ManagedComputeCapacitiesListSamples {
 
 ```java
 import com.azure.resourcemanager.cognitiveservices.models.DeploymentModelVersionUpgradeOption;
+import com.azure.resourcemanager.cognitiveservices.models.GatedModelAccessProperties;
 import com.azure.resourcemanager.cognitiveservices.models.ManagedComputeDeploymentProperties;
 import com.azure.resourcemanager.cognitiveservices.models.Sku;
 
@@ -2781,7 +3156,7 @@ import com.azure.resourcemanager.cognitiveservices.models.Sku;
  */
 public final class ManagedComputeDeploymentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/CreateOrUpdateManagedComputeDeployment.json
+     * x-ms-original-file: 2026-09-15-preview/CreateOrUpdateManagedComputeDeployment.json
      */
     /**
      * Sample code: CreateOrUpdateManagedComputeDeployment.
@@ -2798,13 +3173,15 @@ public final class ManagedComputeDeploymentsCreateOrUpdateSamples {
                 .withDeploymentTemplate(
                     "azureml://registries/azureml-openai-oss/deploymenttemplates/gpt-oss-120b-short-context/versions/1")
                 .withAcceleratorType("H100_80GB")
-                .withVersionUpgradeOption(DeploymentModelVersionUpgradeOption.ONCE_NEW_DEFAULT_VERSION_AVAILABLE))
+                .withVersionUpgradeOption(DeploymentModelVersionUpgradeOption.ONCE_NEW_DEFAULT_VERSION_AVAILABLE)
+                .withGatedModelAccess(new GatedModelAccessProperties().withConnectionId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resourceGroupName/providers/Microsoft.CognitiveServices/accounts/accountName/projects/my-project/connections/my-hf-connection")))
             .withSku(new Sku().withName("GlobalManagedCompute").withCapacity(1))
             .create();
     }
 
     /*
-     * x-ms-original-file: 2026-07-15-preview/CreateOrUpdateVmManagedComputeDeployment.json
+     * x-ms-original-file: 2026-09-15-preview/CreateOrUpdateVmManagedComputeDeployment.json
      */
     /**
      * Sample code: CreateOrUpdateVmManagedComputeDeployment.
@@ -2819,6 +3196,8 @@ public final class ManagedComputeDeploymentsCreateOrUpdateSamples {
             .withProperties(new ManagedComputeDeploymentProperties()
                 .withModel("azureml://registries/azureml-openai-oss/models/gpt-oss-120b/versions/4")
                 .withDeploymentTemplate("projects/my-project/deploymentTemplates/gpt-oss-120b-vllm-tuned/versions/2")
+                .withGatedModelAccess(new GatedModelAccessProperties().withConnectionId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resourceGroupName/providers/Microsoft.CognitiveServices/accounts/accountName/projects/my-project/connections/my-hf-connection"))
                 .withComputeId(
                     "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resourceGroupName/providers/Microsoft.CognitiveServices/accounts/accountName/computes/my-h100-pool")
                 .withPriority("High"))
@@ -2836,7 +3215,7 @@ public final class ManagedComputeDeploymentsCreateOrUpdateSamples {
  */
 public final class ManagedComputeDeploymentsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/DeleteManagedComputeDeployment.json
+     * x-ms-original-file: 2026-09-15-preview/DeleteManagedComputeDeployment.json
      */
     /**
      * Sample code: DeleteManagedComputeDeployment.
@@ -2859,7 +3238,7 @@ public final class ManagedComputeDeploymentsDeleteSamples {
  */
 public final class ManagedComputeDeploymentsGetSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/GetVmManagedComputeDeployment.json
+     * x-ms-original-file: 2026-09-15-preview/GetVmManagedComputeDeployment.json
      */
     /**
      * Sample code: GetVmManagedComputeDeployment.
@@ -2873,7 +3252,7 @@ public final class ManagedComputeDeploymentsGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-15-preview/GetManagedComputeDeployment.json
+     * x-ms-original-file: 2026-09-15-preview/GetManagedComputeDeployment.json
      */
     /**
      * Sample code: GetManagedComputeDeployment.
@@ -2896,7 +3275,7 @@ public final class ManagedComputeDeploymentsGetSamples {
  */
 public final class ManagedComputeDeploymentsListSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/ListVmManagedComputeDeployments.json
+     * x-ms-original-file: 2026-09-15-preview/ListVmManagedComputeDeployments.json
      */
     /**
      * Sample code: ListVmManagedComputeDeployments.
@@ -2909,7 +3288,7 @@ public final class ManagedComputeDeploymentsListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-15-preview/ListManagedComputeDeployments.json
+     * x-ms-original-file: 2026-09-15-preview/ListManagedComputeDeployments.json
      */
     /**
      * Sample code: ListManagedComputeDeployments.
@@ -2934,7 +3313,7 @@ import com.azure.resourcemanager.cognitiveservices.models.Sku;
  */
 public final class ManagedComputeDeploymentsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/UpdateVmManagedComputeDeployment.json
+     * x-ms-original-file: 2026-09-15-preview/UpdateVmManagedComputeDeployment.json
      */
     /**
      * Sample code: UpdateVmManagedComputeDeployment.
@@ -2950,7 +3329,7 @@ public final class ManagedComputeDeploymentsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-15-preview/UpdateManagedComputeDeployment.json
+     * x-ms-original-file: 2026-09-15-preview/UpdateManagedComputeDeployment.json
      */
     /**
      * Sample code: UpdateManagedComputeDeployment.
@@ -2975,7 +3354,7 @@ public final class ManagedComputeDeploymentsUpdateSamples {
  */
 public final class ManagedComputeUsagesOperationGroupListSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/ListManagedComputeUsages.json
+     * x-ms-original-file: 2026-09-15-preview/ListManagedComputeUsages.json
      */
     /**
      * Sample code: List Managed Compute Usages.
@@ -2999,7 +3378,7 @@ import com.azure.resourcemanager.cognitiveservices.models.ManagedNetworkProvisio
  */
 public final class ManagedNetworkProvisionsProvisionManagedNetworkSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/ManagedNetwork/provisionManagedNetwork.json
+     * x-ms-original-file: 2026-09-15-preview/ManagedNetwork/provisionManagedNetwork.json
      */
     /**
      * Sample code: Provision ManagedNetwork.
@@ -3023,7 +3402,7 @@ public final class ManagedNetworkProvisionsProvisionManagedNetworkSamples {
  */
 public final class ManagedNetworkSettingsOperationDeleteSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/ManagedNetwork/deleteManagedNetworkV2.json
+     * x-ms-original-file: 2026-09-15-preview/ManagedNetwork/deleteManagedNetworkV2.json
      */
     /**
      * Sample code: Delete ManagedNetworkSettings.
@@ -3046,7 +3425,7 @@ public final class ManagedNetworkSettingsOperationDeleteSamples {
  */
 public final class ManagedNetworkSettingsOperationGetSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/ManagedNetwork/getManagedNetworkV2.json
+     * x-ms-original-file: 2026-09-15-preview/ManagedNetwork/getManagedNetworkV2.json
      */
     /**
      * Sample code: Get ManagedNetworkSettings.
@@ -3069,7 +3448,7 @@ public final class ManagedNetworkSettingsOperationGetSamples {
  */
 public final class ManagedNetworkSettingsOperationListSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/ManagedNetwork/listManagedNetworkV2.json
+     * x-ms-original-file: 2026-09-15-preview/ManagedNetwork/listManagedNetworkV2.json
      */
     /**
      * Sample code: List ManagedNetworkSettings.
@@ -3102,7 +3481,7 @@ import java.util.Map;
  */
 public final class ManagedNetworkSettingsOperationPatchSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/ManagedNetwork/patchManagedNetworkV2.json
+     * x-ms-original-file: 2026-09-15-preview/ManagedNetwork/patchManagedNetworkV2.json
      */
     /**
      * Sample code: Patch ManagedNetworkSettings.
@@ -3155,7 +3534,7 @@ import java.util.Map;
  */
 public final class ManagedNetworkSettingsOperationPutSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/ManagedNetwork/createOrUpdateManagedNetworkV2.json
+     * x-ms-original-file: 2026-09-15-preview/ManagedNetwork/createOrUpdateManagedNetworkV2.json
      */
     /**
      * Sample code: Put ManagedNetworkSettings.
@@ -3198,7 +3577,7 @@ public final class ManagedNetworkSettingsOperationPutSamples {
  */
 public final class ModelCapacitiesListSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/ListModelCapacities.json
+     * x-ms-original-file: 2026-09-15-preview/ListModelCapacities.json
      */
     /**
      * Sample code: ListModelCapacities.
@@ -3211,7 +3590,7 @@ public final class ModelCapacitiesListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-15-preview/ListModelCapacitiesDataZoneScope.json
+     * x-ms-original-file: 2026-09-15-preview/ListModelCapacitiesDataZoneScope.json
      */
     /**
      * Sample code: ListModelCapacities DataZone Scope.
@@ -3224,7 +3603,7 @@ public final class ModelCapacitiesListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-15-preview/ListModelCapacitiesGlobalScope.json
+     * x-ms-original-file: 2026-09-15-preview/ListModelCapacitiesGlobalScope.json
      */
     /**
      * Sample code: ListModelCapacities Global Scope.
@@ -3237,7 +3616,7 @@ public final class ModelCapacitiesListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-15-preview/ListModelCapacitiesClassicScope.json
+     * x-ms-original-file: 2026-09-15-preview/ListModelCapacitiesClassicScope.json
      */
     /**
      * Sample code: ListModelCapacities Classic Scope.
@@ -3259,7 +3638,7 @@ public final class ModelCapacitiesListSamples {
  */
 public final class ModelsListSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/ListLocationModels.json
+     * x-ms-original-file: 2026-09-15-preview/ListLocationModels.json
      */
     /**
      * Sample code: ListLocationModels.
@@ -3281,7 +3660,7 @@ public final class ModelsListSamples {
  */
 public final class NetworkSecurityPerimeterConfigurationsGetSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/GetNetworkSecurityPerimeterConfigurations.json
+     * x-ms-original-file: 2026-09-15-preview/GetNetworkSecurityPerimeterConfigurations.json
      */
     /**
      * Sample code: GetNetworkSecurityPerimeterConfigurations.
@@ -3305,7 +3684,7 @@ public final class NetworkSecurityPerimeterConfigurationsGetSamples {
  */
 public final class NetworkSecurityPerimeterConfigurationsListSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/ListNetworkSecurityPerimeterConfigurations.json
+     * x-ms-original-file: 2026-09-15-preview/ListNetworkSecurityPerimeterConfigurations.json
      */
     /**
      * Sample code: ListNetworkSecurityPerimeterConfigurations.
@@ -3328,7 +3707,7 @@ public final class NetworkSecurityPerimeterConfigurationsListSamples {
  */
 public final class NetworkSecurityPerimeterConfigurationsReconcileSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/ReconcileNetworkSecurityPerimeterConfigurations.json
+     * x-ms-original-file: 2026-09-15-preview/ReconcileNetworkSecurityPerimeterConfigurations.json
      */
     /**
      * Sample code: ReconcileNetworkSecurityPerimeterConfigurations.
@@ -3351,7 +3730,7 @@ public final class NetworkSecurityPerimeterConfigurationsReconcileSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/GetOperations.json
+     * x-ms-original-file: 2026-09-15-preview/GetOperations.json
      */
     /**
      * Sample code: Get Operations.
@@ -3376,7 +3755,7 @@ import com.azure.resourcemanager.cognitiveservices.models.RuleStatus;
  */
 public final class OutboundRuleCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/ManagedNetwork/createOrUpdateRuleV2.json
+     * x-ms-original-file: 2026-09-15-preview/ManagedNetwork/createOrUpdateRuleV2.json
      */
     /**
      * Sample code: CreateOrUpdate OutboundRule.
@@ -3404,7 +3783,7 @@ public final class OutboundRuleCreateOrUpdateSamples {
  */
 public final class OutboundRuleDeleteSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/ManagedNetwork/deleteRuleV2.json
+     * x-ms-original-file: 2026-09-15-preview/ManagedNetwork/deleteRuleV2.json
      */
     /**
      * Sample code: Delete OutboundRule.
@@ -3427,7 +3806,7 @@ public final class OutboundRuleDeleteSamples {
  */
 public final class OutboundRuleGetSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/ManagedNetwork/getRuleV2.json
+     * x-ms-original-file: 2026-09-15-preview/ManagedNetwork/getRuleV2.json
      */
     /**
      * Sample code: Get OutboundRule.
@@ -3450,7 +3829,7 @@ public final class OutboundRuleGetSamples {
  */
 public final class OutboundRuleListSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/ManagedNetwork/listRuleV2.json
+     * x-ms-original-file: 2026-09-15-preview/ManagedNetwork/listRuleV2.json
      */
     /**
      * Sample code: List OutboundRules.
@@ -3480,7 +3859,7 @@ import java.util.Map;
  */
 public final class OutboundRulesOperationPostSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/ManagedNetwork/postOutboundRulesV2.json
+     * x-ms-original-file: 2026-09-15-preview/ManagedNetwork/postOutboundRulesV2.json
      */
     /**
      * Sample code: Post OutboundRules.
@@ -3525,7 +3904,7 @@ import com.azure.resourcemanager.cognitiveservices.models.PrivateLinkServiceConn
  */
 public final class PrivateEndpointConnectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/PutPrivateEndpointConnection.json
+     * x-ms-original-file: 2026-09-15-preview/PutPrivateEndpointConnection.json
      */
     /**
      * Sample code: PutPrivateEndpointConnection.
@@ -3553,7 +3932,7 @@ public final class PrivateEndpointConnectionsCreateOrUpdateSamples {
  */
 public final class PrivateEndpointConnectionsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/DeletePrivateEndpointConnection.json
+     * x-ms-original-file: 2026-09-15-preview/DeletePrivateEndpointConnection.json
      */
     /**
      * Sample code: DeletePrivateEndpointConnection.
@@ -3576,7 +3955,7 @@ public final class PrivateEndpointConnectionsDeleteSamples {
  */
 public final class PrivateEndpointConnectionsGetSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/GetPrivateEndpointConnection.json
+     * x-ms-original-file: 2026-09-15-preview/GetPrivateEndpointConnection.json
      */
     /**
      * Sample code: GetPrivateEndpointConnection.
@@ -3599,7 +3978,7 @@ public final class PrivateEndpointConnectionsGetSamples {
  */
 public final class PrivateEndpointConnectionsListSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/ListPrivateEndpointConnections.json
+     * x-ms-original-file: 2026-09-15-preview/ListPrivateEndpointConnections.json
      */
     /**
      * Sample code: GetPrivateEndpointConnection.
@@ -3621,7 +4000,7 @@ public final class PrivateEndpointConnectionsListSamples {
  */
 public final class PrivateLinkResourcesListSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/ListPrivateLinkResources.json
+     * x-ms-original-file: 2026-09-15-preview/ListPrivateLinkResources.json
      */
     /**
      * Sample code: ListPrivateLinkResources.
@@ -3646,7 +4025,7 @@ import java.util.Arrays;
  */
 public final class ProjectCapabilityHostsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/ProjectCapabilityHost/createOrUpdate.json
+     * x-ms-original-file: 2026-09-15-preview/ProjectCapabilityHost/createOrUpdate.json
      */
     /**
      * Sample code: CreateOrUpdate Project CapabilityHost.
@@ -3676,7 +4055,7 @@ public final class ProjectCapabilityHostsCreateOrUpdateSamples {
  */
 public final class ProjectCapabilityHostsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/ProjectCapabilityHost/delete.json
+     * x-ms-original-file: 2026-09-15-preview/ProjectCapabilityHost/delete.json
      */
     /**
      * Sample code: Delete Project CapabilityHost.
@@ -3699,7 +4078,7 @@ public final class ProjectCapabilityHostsDeleteSamples {
  */
 public final class ProjectCapabilityHostsGetSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/ProjectCapabilityHost/get.json
+     * x-ms-original-file: 2026-09-15-preview/ProjectCapabilityHost/get.json
      */
     /**
      * Sample code: Get Project CapabilityHost.
@@ -3723,7 +4102,7 @@ public final class ProjectCapabilityHostsGetSamples {
  */
 public final class ProjectCapabilityHostsListSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/ProjectCapabilityHost/list.json
+     * x-ms-original-file: 2026-09-15-preview/ProjectCapabilityHost/list.json
      */
     /**
      * Sample code: List Project CapabilityHosts.
@@ -3750,7 +4129,7 @@ import java.time.OffsetDateTime;
  */
 public final class ProjectConnectionsCreateSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/ProjectConnection/create.json
+     * x-ms-original-file: 2026-09-15-preview/ProjectConnection/create.json
      */
     /**
      * Sample code: CreateProjectConnection.
@@ -3778,7 +4157,7 @@ public final class ProjectConnectionsCreateSamples {
  */
 public final class ProjectConnectionsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/ProjectConnection/delete.json
+     * x-ms-original-file: 2026-09-15-preview/ProjectConnection/delete.json
      */
     /**
      * Sample code: DeleteProjectConnection.
@@ -3802,7 +4181,7 @@ public final class ProjectConnectionsDeleteSamples {
  */
 public final class ProjectConnectionsGetSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/ProjectConnection/get.json
+     * x-ms-original-file: 2026-09-15-preview/ProjectConnection/get.json
      */
     /**
      * Sample code: GetProjectConnection.
@@ -3826,7 +4205,7 @@ public final class ProjectConnectionsGetSamples {
  */
 public final class ProjectConnectionsListSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/ProjectConnection/list.json
+     * x-ms-original-file: 2026-09-15-preview/ProjectConnection/list.json
      */
     /**
      * Sample code: ListProjectConnection.
@@ -3858,7 +4237,7 @@ import java.util.Map;
  */
 public final class ProjectConnectionsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/ProjectConnection/update.json
+     * x-ms-original-file: 2026-09-15-preview/ProjectConnection/update.json
      */
     /**
      * Sample code: UpdateProjectConnection.
@@ -3906,7 +4285,7 @@ import com.azure.resourcemanager.cognitiveservices.models.ResourceIdentityType;
  */
 public final class ProjectsCreateSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/CreateProjectMin.json
+     * x-ms-original-file: 2026-09-15-preview/CreateProjectMin.json
      */
     /**
      * Sample code: Create Project Min.
@@ -3924,7 +4303,7 @@ public final class ProjectsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-15-preview/CreateProject.json
+     * x-ms-original-file: 2026-09-15-preview/CreateProject.json
      */
     /**
      * Sample code: Create Project.
@@ -3956,7 +4335,7 @@ public final class ProjectsCreateSamples {
  */
 public final class ProjectsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/DeleteProject.json
+     * x-ms-original-file: 2026-09-15-preview/DeleteProject.json
      */
     /**
      * Sample code: Delete Project.
@@ -3977,7 +4356,7 @@ public final class ProjectsDeleteSamples {
  */
 public final class ProjectsGetSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/GetProject.json
+     * x-ms-original-file: 2026-09-15-preview/GetProject.json
      */
     /**
      * Sample code: Get Project.
@@ -3999,7 +4378,7 @@ public final class ProjectsGetSamples {
  */
 public final class ProjectsListSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/ListProjects.json
+     * x-ms-original-file: 2026-09-15-preview/ListProjects.json
      */
     /**
      * Sample code: List Project.
@@ -4023,7 +4402,7 @@ import com.azure.resourcemanager.cognitiveservices.models.ProjectProperties;
  */
 public final class ProjectsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/UpdateProjects.json
+     * x-ms-original-file: 2026-09-15-preview/UpdateProjects.json
      */
     /**
      * Sample code: Update Project.
@@ -4050,7 +4429,7 @@ import com.azure.resourcemanager.cognitiveservices.models.TierUpgradePolicy;
  */
 public final class QuotaTiersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/CreateOrUpdateQuotaTier.json
+     * x-ms-original-file: 2026-09-15-preview/CreateOrUpdateQuotaTier.json
      */
     /**
      * Sample code: Update the quota tier resource for a subscription.
@@ -4075,7 +4454,7 @@ public final class QuotaTiersCreateOrUpdateSamples {
  */
 public final class QuotaTiersGetSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/GetQuotaTier.json
+     * x-ms-original-file: 2026-09-15-preview/GetQuotaTier.json
      */
     /**
      * Sample code: Get the Quota Tier information for a subscription.
@@ -4097,7 +4476,7 @@ public final class QuotaTiersGetSamples {
  */
 public final class QuotaTiersListSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/ListQuotaTiers.json
+     * x-ms-original-file: 2026-09-15-preview/ListQuotaTiers.json
      */
     /**
      * Sample code: List the Quota Tier for a subscription.
@@ -4123,7 +4502,7 @@ import com.azure.resourcemanager.cognitiveservices.models.TierUpgradePolicy;
  */
 public final class QuotaTiersUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/UpdateQuotaTier.json
+     * x-ms-original-file: 2026-09-15-preview/UpdateQuotaTier.json
      */
     /**
      * Sample code: Update the quota tier resource for a subscription.
@@ -4141,6 +4520,125 @@ public final class QuotaTiersUpdateSamples {
 }
 ```
 
+### RaiBindings_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.cognitiveservices.models.RaiBinding;
+import com.azure.resourcemanager.cognitiveservices.models.RaiBindingProperties;
+
+/**
+ * Samples for RaiBindings CreateOrUpdate.
+ */
+public final class RaiBindingsCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: 2026-09-15-preview/PutRaiBinding.json
+     */
+    /**
+     * Sample code: Bind an Azure OpenAI deployment to an ACS policy.
+     * 
+     * @param manager Entry point to CognitiveServicesManager.
+     */
+    public static void bindAnAzureOpenAIDeploymentToAnACSPolicy(
+        com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager manager) {
+        manager.raiBindings()
+            .define("chat-guard")
+            .withExistingAccount("resource-group", "safety-account")
+            .withProperties(new RaiBindingProperties().withBoundResourceId(
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resource-group/providers/Microsoft.CognitiveServices/accounts/aoai-account/deployments/chat-prod")
+                .withTargetPolicyName("agent-guard"))
+            .withIfNoneMatch("*")
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2026-09-15-preview/UpdateRaiBinding.json
+     */
+    /**
+     * Sample code: Update a RAI binding target conditionally across subscriptions.
+     * 
+     * @param manager Entry point to CognitiveServicesManager.
+     */
+    public static void updateARAIBindingTargetConditionallyAcrossSubscriptions(
+        com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager manager) {
+        RaiBinding resource = manager.raiBindings()
+            .getWithResponse("resource-group", "safety-account", "chat-guard", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withProperties(new RaiBindingProperties().withBoundResourceId(
+                "/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/target-resource-group/providers/Microsoft.CognitiveServices/accounts/aoai-account/deployments/chat-canary")
+                .withTargetPolicyName("agent-guard-v2"))
+            .withIfMatch("\"00000000-0000-0000-0000-000000000002\"")
+            .apply();
+    }
+}
+```
+
+### RaiBindings_Delete
+
+```java
+/**
+ * Samples for RaiBindings Delete.
+ */
+public final class RaiBindingsDeleteSamples {
+    /*
+     * x-ms-original-file: 2026-09-15-preview/DeleteRaiBinding.json
+     */
+    /**
+     * Sample code: Delete a RAI binding.
+     * 
+     * @param manager Entry point to CognitiveServicesManager.
+     */
+    public static void deleteARAIBinding(com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager manager) {
+        manager.raiBindings()
+            .deleteWithResponse("resource-group", "safety-account", "chat-guard",
+                "\"00000000-0000-0000-0000-000000000002\"", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### RaiBindings_Get
+
+```java
+/**
+ * Samples for RaiBindings Get.
+ */
+public final class RaiBindingsGetSamples {
+    /*
+     * x-ms-original-file: 2026-09-15-preview/GetRaiBinding.json
+     */
+    /**
+     * Sample code: Get a RAI binding.
+     * 
+     * @param manager Entry point to CognitiveServicesManager.
+     */
+    public static void getARAIBinding(com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager manager) {
+        manager.raiBindings()
+            .getWithResponse("resource-group", "safety-account", "chat-guard", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### RaiBindings_List
+
+```java
+/**
+ * Samples for RaiBindings List.
+ */
+public final class RaiBindingsListSamples {
+    /*
+     * x-ms-original-file: 2026-09-15-preview/ListRaiBindings.json
+     */
+    /**
+     * Sample code: List RAI bindings.
+     * 
+     * @param manager Entry point to CognitiveServicesManager.
+     */
+    public static void listRAIBindings(com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager manager) {
+        manager.raiBindings().list("resource-group", "safety-account", 50, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### RaiBlocklistItems_BatchAdd
 
 ```java
@@ -4153,7 +4651,7 @@ import java.util.Arrays;
  */
 public final class RaiBlocklistItemsBatchAddSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/AddRaiBlocklistItems.json
+     * x-ms-original-file: 2026-09-15-preview/AddRaiBlocklistItems.json
      */
     /**
      * Sample code: AddRaiBlocklistItems.
@@ -4185,7 +4683,7 @@ import java.util.Arrays;
  */
 public final class RaiBlocklistItemsBatchDeleteSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/DeleteRaiBlocklistItems.json
+     * x-ms-original-file: 2026-09-15-preview/DeleteRaiBlocklistItems.json
      */
     /**
      * Sample code: DeleteRaiBlocklistItems.
@@ -4211,7 +4709,7 @@ import com.azure.resourcemanager.cognitiveservices.models.RaiBlocklistItemProper
  */
 public final class RaiBlocklistItemsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/PutRaiBlocklistItem.json
+     * x-ms-original-file: 2026-09-15-preview/PutRaiBlocklistItem.json
      */
     /**
      * Sample code: PutRaiBlocklistItem.
@@ -4237,7 +4735,7 @@ public final class RaiBlocklistItemsCreateOrUpdateSamples {
  */
 public final class RaiBlocklistItemsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/DeleteRaiBlocklistItem.json
+     * x-ms-original-file: 2026-09-15-preview/DeleteRaiBlocklistItem.json
      */
     /**
      * Sample code: DeleteRaiBlocklistItem.
@@ -4261,7 +4759,7 @@ public final class RaiBlocklistItemsDeleteSamples {
  */
 public final class RaiBlocklistItemsGetSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/GetRaiBlocklistItem.json
+     * x-ms-original-file: 2026-09-15-preview/GetRaiBlocklistItem.json
      */
     /**
      * Sample code: GetRaiBlocklistItem.
@@ -4285,7 +4783,7 @@ public final class RaiBlocklistItemsGetSamples {
  */
 public final class RaiBlocklistItemsListSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/ListBlocklistItems.json
+     * x-ms-original-file: 2026-09-15-preview/ListBlocklistItems.json
      */
     /**
      * Sample code: ListBlocklistItems.
@@ -4310,7 +4808,7 @@ import com.azure.resourcemanager.cognitiveservices.models.RaiBlocklistProperties
  */
 public final class RaiBlocklistsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/PutRaiBlocklist.json
+     * x-ms-original-file: 2026-09-15-preview/PutRaiBlocklist.json
      */
     /**
      * Sample code: PutRaiBlocklist.
@@ -4335,7 +4833,7 @@ public final class RaiBlocklistsCreateOrUpdateSamples {
  */
 public final class RaiBlocklistsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/DeleteRaiBlocklist.json
+     * x-ms-original-file: 2026-09-15-preview/DeleteRaiBlocklist.json
      */
     /**
      * Sample code: DeleteRaiBlocklist.
@@ -4358,7 +4856,7 @@ public final class RaiBlocklistsDeleteSamples {
  */
 public final class RaiBlocklistsGetSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/GetRaiBlocklist.json
+     * x-ms-original-file: 2026-09-15-preview/GetRaiBlocklist.json
      */
     /**
      * Sample code: GetRaiBlocklist.
@@ -4380,7 +4878,7 @@ public final class RaiBlocklistsGetSamples {
  */
 public final class RaiBlocklistsListSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/ListBlocklists.json
+     * x-ms-original-file: 2026-09-15-preview/ListBlocklists.json
      */
     /**
      * Sample code: ListBlocklists.
@@ -4401,7 +4899,7 @@ public final class RaiBlocklistsListSamples {
  */
 public final class RaiContentFiltersGetSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/GetRaiContentFilter.json
+     * x-ms-original-file: 2026-09-15-preview/GetRaiContentFilter.json
      */
     /**
      * Sample code: GetRaiContentFilters.
@@ -4423,7 +4921,7 @@ public final class RaiContentFiltersGetSamples {
  */
 public final class RaiContentFiltersListSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/ListRaiContentFilters.json
+     * x-ms-original-file: 2026-09-15-preview/ListRaiContentFilters.json
      */
     /**
      * Sample code: ListRaiContentFilters.
@@ -4448,7 +4946,7 @@ import com.azure.resourcemanager.cognitiveservices.models.RaiExternalSafetyProvi
  */
 public final class RaiExternalSafetyProviderCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/PutRaiExternalSafetyProvider.json
+     * x-ms-original-file: 2026-09-15-preview/PutRaiExternalSafetyProvider.json
      */
     /**
      * Sample code: PutRaiExternalSafetyProvider.
@@ -4479,7 +4977,7 @@ public final class RaiExternalSafetyProviderCreateOrUpdateSamples {
  */
 public final class RaiExternalSafetyProviderDeleteSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/DeleteRaiExternalSafetyProvider.json
+     * x-ms-original-file: 2026-09-15-preview/DeleteRaiExternalSafetyProvider.json
      */
     /**
      * Sample code: DeleteRaiTopic.
@@ -4500,7 +4998,7 @@ public final class RaiExternalSafetyProviderDeleteSamples {
  */
 public final class RaiExternalSafetyProviderGetSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/GetRaiExternalSafetyProvider.json
+     * x-ms-original-file: 2026-09-15-preview/GetRaiExternalSafetyProvider.json
      */
     /**
      * Sample code: GetRaiExternalSafetyProvider.
@@ -4522,7 +5020,7 @@ public final class RaiExternalSafetyProviderGetSamples {
  */
 public final class RaiExternalSafetyProvidersOperationListSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/ListRaiExternalSafetyProviders.json
+     * x-ms-original-file: 2026-09-15-preview/ListRaiExternalSafetyProviders.json
      */
     /**
      * Sample code: ListRaiExternalSafetyProviders.
@@ -4539,7 +5037,26 @@ public final class RaiExternalSafetyProvidersOperationListSamples {
 ### RaiPolicies_CreateOrUpdate
 
 ```java
+import com.azure.core.management.serializer.SerializerFactory;
+import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.cognitiveservices.models.ContentLevel;
+import com.azure.resourcemanager.cognitiveservices.models.CustomBlocklistConfig;
+import com.azure.resourcemanager.cognitiveservices.models.RaiAcsEmptyObject;
+import com.azure.resourcemanager.cognitiveservices.models.RaiAcsHarmCategory;
+import com.azure.resourcemanager.cognitiveservices.models.RaiAcsHarmConfiguration;
+import com.azure.resourcemanager.cognitiveservices.models.RaiAcsInterventionPoint;
+import com.azure.resourcemanager.cognitiveservices.models.RaiAcsInterventionPoints;
+import com.azure.resourcemanager.cognitiveservices.models.RaiAcsManifest;
+import com.azure.resourcemanager.cognitiveservices.models.RaiAcsModerationBindingExtension;
+import com.azure.resourcemanager.cognitiveservices.models.RaiAcsModerationSubjectFormat;
+import com.azure.resourcemanager.cognitiveservices.models.RaiAcsPolicyBinding;
+import com.azure.resourcemanager.cognitiveservices.models.RaiAcsPolicyDefinitionType;
+import com.azure.resourcemanager.cognitiveservices.models.RaiAcsPolicyTarget;
+import com.azure.resourcemanager.cognitiveservices.models.RaiAcsPolicyTargetKind;
+import com.azure.resourcemanager.cognitiveservices.models.RaiAcsRegoPolicyDefinition;
+import com.azure.resourcemanager.cognitiveservices.models.RaiAcsToolDefinition;
+import com.azure.resourcemanager.cognitiveservices.models.RaiAcsToolInterventionPoint;
+import com.azure.resourcemanager.cognitiveservices.models.RaiAcsToolNameSelector;
 import com.azure.resourcemanager.cognitiveservices.models.RaiEgressDefaultAction;
 import com.azure.resourcemanager.cognitiveservices.models.RaiEgressHeaderOperation;
 import com.azure.resourcemanager.cognitiveservices.models.RaiEgressHeaderTransform;
@@ -4556,16 +5073,22 @@ import com.azure.resourcemanager.cognitiveservices.models.RaiEgressRuleType;
 import com.azure.resourcemanager.cognitiveservices.models.RaiEgressScheme;
 import com.azure.resourcemanager.cognitiveservices.models.RaiPolicyContentFilter;
 import com.azure.resourcemanager.cognitiveservices.models.RaiPolicyContentSource;
+import com.azure.resourcemanager.cognitiveservices.models.RaiPolicyCustomExternalSafetyProviderReference;
+import com.azure.resourcemanager.cognitiveservices.models.RaiPolicyFormat;
 import com.azure.resourcemanager.cognitiveservices.models.RaiPolicyMode;
 import com.azure.resourcemanager.cognitiveservices.models.RaiPolicyProperties;
+import com.azure.resourcemanager.cognitiveservices.models.RaiRegoReference;
+import java.io.IOException;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Samples for RaiPolicies CreateOrUpdate.
  */
 public final class RaiPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/PutRaiPolicy.json
+     * x-ms-original-file: 2026-09-15-preview/PutRaiPolicy.json
      */
     /**
      * Sample code: PutRaiPolicy.
@@ -4639,7 +5162,143 @@ public final class RaiPoliciesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-15-preview/PutRaiPolicyWithEgress.json
+     * x-ms-original-file: 2026-09-15-preview/PutRaiPolicyAcs.json
+     */
+    /**
+     * Sample code: Create an ACS policy with optional policy dependencies.
+     * 
+     * @param manager Entry point to CognitiveServicesManager.
+     */
+    public static void createAnACSPolicyWithOptionalPolicyDependencies(
+        com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager manager) throws IOException {
+        manager.raiPolicies()
+            .define("agent-guard")
+            .withExistingAccount("resource-group", "safety-account")
+            .withProperties(new RaiPolicyProperties().withFormat(RaiPolicyFormat.ACS)
+                .withAcs(new RaiAcsManifest().withAgentControlSpecificationVersion("0.4.0-alpha.1")
+                    .withMetadata(mapOf("name", "agent-guard"))
+                    .withPolicies(mapOf("input-guard",
+                        new RaiAcsRegoPolicyDefinition().withType(RaiAcsPolicyDefinitionType.REGO)
+                            .withQuery("data.input_guard.verdict"),
+                        "tool-guard",
+                        new RaiAcsRegoPolicyDefinition().withType(RaiAcsPolicyDefinitionType.REGO)
+                            .withQuery("data.tool_guard.verdict")))
+                    .withInterventionPoints(new RaiAcsInterventionPoints()
+                        .withInput(new RaiAcsInterventionPoint().withPolicyTarget(RaiAcsPolicyTarget.INPUT)
+                            .withPolicyTargetKind(RaiAcsPolicyTargetKind.USER_INPUT)
+                            .withPolicy(new RaiAcsPolicyBinding().withId("input-guard")
+                                .withAacsModeration(new RaiAcsModerationBindingExtension()
+                                    .withSubjectFormat(RaiAcsModerationSubjectFormat.TEXT)
+                                    .withHarmConfigs(Arrays.asList(new RaiAcsHarmConfiguration()
+                                        .withCategory(RaiAcsHarmCategory.PROMPT_INJECTION))))))
+                        .withPreToolCall(
+                            new RaiAcsToolInterventionPoint().withPolicyTarget(RaiAcsPolicyTarget.TOOL_ARGUMENTS)
+                                .withPolicyTargetKind(RaiAcsPolicyTargetKind.TOOL_ARGUMENTS)
+                                .withPolicy(new RaiAcsPolicyBinding().withId("tool-guard"))
+                                .withToolNameFrom(RaiAcsToolNameSelector.TOOL_CALL_NAME))
+                        .withPostToolCall(
+                            new RaiAcsToolInterventionPoint().withPolicyTarget(RaiAcsPolicyTarget.TOOL_RESULT)
+                                .withPolicyTargetKind(RaiAcsPolicyTargetKind.TOOL_RESULT)
+                                .withPolicy(new RaiAcsPolicyBinding().withId("tool-guard"))
+                                .withToolNameFrom(RaiAcsToolNameSelector.TOOL_CALL_NAME)))
+                    .withTools(mapOf("web_search",
+                        new RaiAcsToolDefinition().withId("web_search")
+                            .withType("retrieval")
+                            .withDescription("Search approved public documentation")
+                            .withSecurityLabels(Arrays.asList("network_egress", "untrusted_content"))
+                            .withClearance("public")
+                            .withAdditionalProperties(mapOf("allowed_domains",
+                                SerializerFactory.createDefaultManagementSerializerAdapter()
+                                    .deserialize("[\"learn.microsoft.com\"]", Object.class, SerializerEncoding.JSON))),
+                        "wire_transfer",
+                        new RaiAcsToolDefinition().withId("wire_transfer")
+                            .withType("financial_action")
+                            .withSecurityLabels(Arrays.asList("financial_write"))
+                            .withClearance("confidential")
+                            .withAdditionalProperties(mapOf())))
+                    .withAnnotators(new RaiAcsEmptyObject()))
+                .withAcsRegos(Arrays.asList(new RaiRegoReference().withRegoName("input-guard"),
+                    new RaiRegoReference().withRegoName("tool-guard")))
+                .withCustomBlocklists(Arrays.asList(new CustomBlocklistConfig().withBlocklistName("blocked-terms")
+                    .withBlocking(true)
+                    .withSource(RaiPolicyContentSource.PROMPT)))
+                .withCustomExternalSafetyProviders(Arrays.asList(new RaiPolicyCustomExternalSafetyProviderReference()
+                    .withExternalSafetyProviderName("contoso-safety-provider")
+                    .withManagedIdentityResourceId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resource-group/providers/Microsoft.ManagedIdentity/userAssignedIdentities/safety-provider-identity")
+                    .withSource(RaiPolicyContentSource.PROMPT)
+                    .withBlocking(true))))
+            .withIfNoneMatch("*")
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2026-09-15-preview/UpdateRaiPolicyAcs.json
+     */
+    /**
+     * Sample code: Replace an ACS policy conditionally.
+     * 
+     * @param manager Entry point to CognitiveServicesManager.
+     */
+    public static void replaceAnACSPolicyConditionally(
+        com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager manager) throws IOException {
+        manager.raiPolicies()
+            .define("agent-guard")
+            .withExistingAccount("resource-group", "safety-account")
+            .withProperties(new RaiPolicyProperties().withFormat(RaiPolicyFormat.ACS)
+                .withAcs(new RaiAcsManifest().withAgentControlSpecificationVersion("0.4.0-alpha.1")
+                    .withPolicies(mapOf("input-guard",
+                        new RaiAcsRegoPolicyDefinition().withType(RaiAcsPolicyDefinitionType.REGO)
+                            .withQuery("data.input_guard.verdict"),
+                        "tool-guard",
+                        new RaiAcsRegoPolicyDefinition().withType(RaiAcsPolicyDefinitionType.REGO)
+                            .withQuery("data.tool_guard.verdict")))
+                    .withInterventionPoints(new RaiAcsInterventionPoints().withInput(new RaiAcsInterventionPoint()
+                        .withPolicyTarget(RaiAcsPolicyTarget.INPUT)
+                        .withPolicyTargetKind(RaiAcsPolicyTargetKind.USER_INPUT)
+                        .withPolicy(new RaiAcsPolicyBinding().withId("input-guard")
+                            .withAacsModeration(new RaiAcsModerationBindingExtension()
+                                .withSubjectFormat(RaiAcsModerationSubjectFormat.TEXT)
+                                .withHarmConfigs(Arrays.asList(
+                                    new RaiAcsHarmConfiguration().withCategory(RaiAcsHarmCategory.HATE)
+                                        .withHarmConfigId("Hate_Text_MultiSev"),
+                                    new RaiAcsHarmConfiguration().withCategory(RaiAcsHarmCategory.PROMPT_INJECTION))))))
+                        .withPreToolCall(
+                            new RaiAcsToolInterventionPoint().withPolicyTarget(RaiAcsPolicyTarget.TOOL_ARGUMENTS)
+                                .withPolicyTargetKind(RaiAcsPolicyTargetKind.TOOL_ARGUMENTS)
+                                .withPolicy(new RaiAcsPolicyBinding().withId("tool-guard"))
+                                .withToolNameFrom(RaiAcsToolNameSelector.TOOL_CALL_NAME))
+                        .withPostToolCall(
+                            new RaiAcsToolInterventionPoint().withPolicyTarget(RaiAcsPolicyTarget.TOOL_RESULT)
+                                .withPolicyTargetKind(RaiAcsPolicyTargetKind.TOOL_RESULT)
+                                .withPolicy(new RaiAcsPolicyBinding().withId("tool-guard"))
+                                .withToolNameFrom(RaiAcsToolNameSelector.TOOL_CALL_NAME)))
+                    .withTools(mapOf("web_search",
+                        new RaiAcsToolDefinition().withId("web_search")
+                            .withType("retrieval")
+                            .withDescription("Search approved public documentation and approved partner sites")
+                            .withSecurityLabels(Arrays.asList("network_egress", "untrusted_content"))
+                            .withClearance("public")
+                            .withAdditionalProperties(mapOf("allowed_domains",
+                                SerializerFactory.createDefaultManagementSerializerAdapter()
+                                    .deserialize("[\"learn.microsoft.com\",\"support.microsoft.com\"]", Object.class,
+                                        SerializerEncoding.JSON))),
+                        "wire_transfer",
+                        new RaiAcsToolDefinition().withId("wire_transfer")
+                            .withType("financial_action")
+                            .withSecurityLabels(Arrays.asList("financial_write"))
+                            .withClearance("confidential")
+                            .withAdditionalProperties(mapOf()))))
+                .withAcsRegos(Arrays.asList(new RaiRegoReference().withRegoName("input-guard"),
+                    new RaiRegoReference().withRegoName("tool-guard")))
+                .withCustomBlocklists(Arrays.asList())
+                .withCustomExternalSafetyProviders(Arrays.asList()))
+            .withIfMatch("\"00000000-0000-0000-0000-000000000003\"")
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2026-09-15-preview/PutRaiPolicyWithEgress.json
      */
     /**
      * Sample code: PutRaiPolicyWithEgress.
@@ -4688,6 +5347,45 @@ public final class RaiPoliciesCreateOrUpdateSamples {
                                     .withPath("/v2/")))))))
             .create();
     }
+
+    /*
+     * x-ms-original-file: 2026-09-15-preview/PutRaiPolicyAcsWithoutTools.json
+     */
+    /**
+     * Sample code: Create an ACS policy without a tool catalog.
+     * 
+     * @param manager Entry point to CognitiveServicesManager.
+     */
+    public static void createAnACSPolicyWithoutAToolCatalog(
+        com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager manager) {
+        manager.raiPolicies()
+            .define("input-guard")
+            .withExistingAccount("resource-group", "safety-account")
+            .withProperties(new RaiPolicyProperties().withFormat(RaiPolicyFormat.ACS)
+                .withAcs(new RaiAcsManifest().withAgentControlSpecificationVersion("0.4.0-alpha.1")
+                    .withPolicies(mapOf("input-guard",
+                        new RaiAcsRegoPolicyDefinition().withType(RaiAcsPolicyDefinitionType.REGO)
+                            .withQuery("data.input_guard.verdict")))
+                    .withInterventionPoints(new RaiAcsInterventionPoints()
+                        .withInput(new RaiAcsInterventionPoint().withPolicyTarget(RaiAcsPolicyTarget.INPUT)
+                            .withPolicyTargetKind(RaiAcsPolicyTargetKind.USER_INPUT)
+                            .withPolicy(new RaiAcsPolicyBinding().withId("input-guard")))))
+                .withAcsRegos(Arrays.asList(new RaiRegoReference().withRegoName("input-guard"))))
+            .withIfNoneMatch("*")
+            .create();
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
+    }
 }
 ```
 
@@ -4699,7 +5397,21 @@ public final class RaiPoliciesCreateOrUpdateSamples {
  */
 public final class RaiPoliciesDeleteSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/DeleteRaiPolicy.json
+     * x-ms-original-file: 2026-09-15-preview/DeleteRaiPolicyAcs.json
+     */
+    /**
+     * Sample code: Delete an ACS policy.
+     * 
+     * @param manager Entry point to CognitiveServicesManager.
+     */
+    public static void deleteAnACSPolicy(com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager manager) {
+        manager.raiPolicies()
+            .delete("resource-group", "safety-account", "agent-guard", "\"00000000-0000-0000-0000-000000000003\"",
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-09-15-preview/DeleteRaiPolicy.json
      */
     /**
      * Sample code: DeleteRaiPolicy.
@@ -4708,7 +5420,7 @@ public final class RaiPoliciesDeleteSamples {
      */
     public static void deleteRaiPolicy(com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager manager) {
         manager.raiPolicies()
-            .delete("resourceGroupName", "accountName", "raiPolicyName", com.azure.core.util.Context.NONE);
+            .delete("resourceGroupName", "accountName", "raiPolicyName", null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4721,7 +5433,7 @@ public final class RaiPoliciesDeleteSamples {
  */
 public final class RaiPoliciesGetSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/GetRaiPolicy.json
+     * x-ms-original-file: 2026-09-15-preview/GetRaiPolicy.json
      */
     /**
      * Sample code: GetRaiPolicy.
@@ -4731,6 +5443,19 @@ public final class RaiPoliciesGetSamples {
     public static void getRaiPolicy(com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager manager) {
         manager.raiPolicies()
             .getWithResponse("resourceGroupName", "accountName", "raiPolicyName", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-09-15-preview/GetRaiPolicyAcs.json
+     */
+    /**
+     * Sample code: Get an ACS policy.
+     * 
+     * @param manager Entry point to CognitiveServicesManager.
+     */
+    public static void getAnACSPolicy(com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager manager) {
+        manager.raiPolicies()
+            .getWithResponse("resource-group", "safety-account", "agent-guard", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4743,7 +5468,7 @@ public final class RaiPoliciesGetSamples {
  */
 public final class RaiPoliciesListSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/ListRaiPolicies.json
+     * x-ms-original-file: 2026-09-15-preview/ListRaiPolicies.json
      */
     /**
      * Sample code: ListRaiPolicies.
@@ -4752,6 +5477,142 @@ public final class RaiPoliciesListSamples {
      */
     public static void listRaiPolicies(com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager manager) {
         manager.raiPolicies().list("resourceGroupName", "accountName", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### RaiRegos_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.cognitiveservices.models.RaiRegoEncoding;
+import com.azure.resourcemanager.cognitiveservices.models.RaiRegoProperties;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Samples for RaiRegos CreateOrUpdate.
+ */
+public final class RaiRegosCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: 2026-09-15-preview/UpdateRaiRego.json
+     */
+    /**
+     * Sample code: Replace a reusable Rego artifact conditionally.
+     * 
+     * @param manager Entry point to CognitiveServicesManager.
+     */
+    public static void replaceAReusableRegoArtifactConditionally(
+        com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager manager) {
+        manager.raiRegos()
+            .define("input-guard")
+            .withExistingAccount("resource-group", "safety-account")
+            .withProperties(new RaiRegoProperties().withEncoding(RaiRegoEncoding.NONE)
+                .withRego(
+                    "package input_guard\n\nimport rego.v1\n\ndefault verdict := {\"decision\": \"allow\"}\n\nblocking_signal if {\n  input.snapshot.moderation.harm.PromptInjection.detected\n}\n\nblocking_signal if {\n  input.snapshot.moderation.harm.Hate.severity >= 4\n}\n\nverdict := {\"decision\": \"deny\", \"reason\": \"unsafe_input\"} if {\n  blocking_signal\n}"))
+            .withIfMatch("\"00000000-0000-0000-0000-000000000001\"")
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2026-09-15-preview/PutRaiRego.json
+     */
+    /**
+     * Sample code: Create a reusable Rego artifact.
+     * 
+     * @param manager Entry point to CognitiveServicesManager.
+     */
+    public static void
+        createAReusableRegoArtifact(com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager manager) {
+        manager.raiRegos()
+            .define("input-guard")
+            .withExistingAccount("resource-group", "safety-account")
+            .withTags(mapOf("environment", "production"))
+            .withProperties(new RaiRegoProperties().withEncoding(RaiRegoEncoding.NONE)
+                .withRego(
+                    "package input_guard\n\nimport rego.v1\n\ndefault verdict := {\"decision\": \"allow\"}\n\nverdict := {\"decision\": \"deny\", \"reason\": \"prompt_injection_detected\"} if {\n  input.snapshot.moderation.harm.PromptInjection.detected\n}"))
+            .withIfNoneMatch("*")
+            .create();
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
+    }
+}
+```
+
+### RaiRegos_Delete
+
+```java
+/**
+ * Samples for RaiRegos Delete.
+ */
+public final class RaiRegosDeleteSamples {
+    /*
+     * x-ms-original-file: 2026-09-15-preview/DeleteRaiRego.json
+     */
+    /**
+     * Sample code: Delete a reusable Rego artifact.
+     * 
+     * @param manager Entry point to CognitiveServicesManager.
+     */
+    public static void
+        deleteAReusableRegoArtifact(com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager manager) {
+        manager.raiRegos()
+            .deleteWithResponse("resource-group", "safety-account", "input-guard",
+                "\"00000000-0000-0000-0000-000000000001\"", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### RaiRegos_Get
+
+```java
+/**
+ * Samples for RaiRegos Get.
+ */
+public final class RaiRegosGetSamples {
+    /*
+     * x-ms-original-file: 2026-09-15-preview/GetRaiRego.json
+     */
+    /**
+     * Sample code: Get a reusable Rego artifact.
+     * 
+     * @param manager Entry point to CognitiveServicesManager.
+     */
+    public static void
+        getAReusableRegoArtifact(com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager manager) {
+        manager.raiRegos()
+            .getWithResponse("resource-group", "safety-account", "input-guard", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### RaiRegos_List
+
+```java
+/**
+ * Samples for RaiRegos List.
+ */
+public final class RaiRegosListSamples {
+    /*
+     * x-ms-original-file: 2026-09-15-preview/ListRaiRegos.json
+     */
+    /**
+     * Sample code: List reusable Rego artifacts.
+     * 
+     * @param manager Entry point to CognitiveServicesManager.
+     */
+    public static void
+        listReusableRegoArtifacts(com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager manager) {
+        manager.raiRegos().list("resource-group", "safety-account", 10, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4771,7 +5632,7 @@ import java.util.Map;
  */
 public final class RaiToolLabelsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/PutRaiToolLabel.json
+     * x-ms-original-file: 2026-09-15-preview/PutRaiToolLabel.json
      */
     /**
      * Sample code: PutRaiToolLabel.
@@ -4815,7 +5676,7 @@ public final class RaiToolLabelsCreateOrUpdateSamples {
  */
 public final class RaiToolLabelsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/DeleteRaiToolLabel.json
+     * x-ms-original-file: 2026-09-15-preview/DeleteRaiToolLabel.json
      */
     /**
      * Sample code: DeleteRaiToolLabel.
@@ -4838,7 +5699,7 @@ public final class RaiToolLabelsDeleteSamples {
  */
 public final class RaiToolLabelsGetSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/GetRaiToolLabel.json
+     * x-ms-original-file: 2026-09-15-preview/GetRaiToolLabel.json
      */
     /**
      * Sample code: GetRaiToolLabel.
@@ -4860,7 +5721,7 @@ public final class RaiToolLabelsGetSamples {
  */
 public final class RaiToolLabelsListSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/ListRaiToolLabels.json
+     * x-ms-original-file: 2026-09-15-preview/ListRaiToolLabels.json
      */
     /**
      * Sample code: ListRaiToolLabels.
@@ -4883,7 +5744,7 @@ import com.azure.resourcemanager.cognitiveservices.models.RaiTopicProperties;
  */
 public final class RaiTopicsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/PutRaiTopic.json
+     * x-ms-original-file: 2026-09-15-preview/PutRaiTopic.json
      */
     /**
      * Sample code: PutRaiTopic.
@@ -4910,7 +5771,7 @@ public final class RaiTopicsCreateOrUpdateSamples {
  */
 public final class RaiTopicsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/DeleteRaiTopic.json
+     * x-ms-original-file: 2026-09-15-preview/DeleteRaiTopic.json
      */
     /**
      * Sample code: DeleteRaiTopic.
@@ -4932,7 +5793,7 @@ public final class RaiTopicsDeleteSamples {
  */
 public final class RaiTopicsGetSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/GetRaiTopic.json
+     * x-ms-original-file: 2026-09-15-preview/GetRaiTopic.json
      */
     /**
      * Sample code: GetRaiTopic.
@@ -4954,7 +5815,7 @@ public final class RaiTopicsGetSamples {
  */
 public final class RaiTopicsListSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/ListRaiTopics.json
+     * x-ms-original-file: 2026-09-15-preview/ListRaiTopics.json
      */
     /**
      * Sample code: ListRaiTopics.
@@ -4981,7 +5842,7 @@ import java.util.Arrays;
  */
 public final class ResourceProviderCalculateModelCapacitySamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/CalculateModelCapacity.json
+     * x-ms-original-file: 2026-09-15-preview/CalculateModelCapacity.json
      */
     /**
      * Sample code: Calculate Model Capacity.
@@ -5016,7 +5877,7 @@ import com.azure.resourcemanager.cognitiveservices.models.CheckDomainAvailabilit
  */
 public final class ResourceProviderCheckDomainAvailabilitySamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/CheckDomainAvailability.json
+     * x-ms-original-file: 2026-09-15-preview/CheckDomainAvailability.json
      */
     /**
      * Sample code: Check SKU Availability.
@@ -5045,7 +5906,7 @@ import java.util.Arrays;
  */
 public final class ResourceProviderCheckSkuAvailabilitySamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/CheckSkuAvailability.json
+     * x-ms-original-file: 2026-09-15-preview/CheckSkuAvailability.json
      */
     /**
      * Sample code: Check SKU Availability.
@@ -5072,7 +5933,7 @@ public final class ResourceProviderCheckSkuAvailabilitySamples {
  */
 public final class ResourceSkusListSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/GetSkus.json
+     * x-ms-original-file: 2026-09-15-preview/GetSkus.json
      */
     /**
      * Sample code: Regenerate Keys.
@@ -5101,7 +5962,7 @@ import java.util.Arrays;
  */
 public final class SubscriptionRaiPolicyCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/PutSubscriptionRaiPolicy.json
+     * x-ms-original-file: 2026-09-15-preview/PutSubscriptionRaiPolicy.json
      */
     /**
      * Sample code: PutRaiPolicy.
@@ -5184,7 +6045,7 @@ public final class SubscriptionRaiPolicyCreateOrUpdateSamples {
  */
 public final class SubscriptionRaiPolicyDeleteSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/DeleteSubscriptionRaiPolicy.json
+     * x-ms-original-file: 2026-09-15-preview/DeleteSubscriptionRaiPolicy.json
      */
     /**
      * Sample code: DeleteRaiPolicy.
@@ -5205,7 +6066,7 @@ public final class SubscriptionRaiPolicyDeleteSamples {
  */
 public final class SubscriptionRaiPolicyGetSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/GetSubscriptionRaiPolicy.json
+     * x-ms-original-file: 2026-09-15-preview/GetSubscriptionRaiPolicy.json
      */
     /**
      * Sample code: GetRaiPolicy.
@@ -5228,7 +6089,7 @@ import com.azure.resourcemanager.cognitiveservices.models.RaiExternalSafetyProvi
  */
 public final class TestRaiExternalSafetyProviderCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/TestRaiExternalSafetyProvider.json
+     * x-ms-original-file: 2026-09-15-preview/TestRaiExternalSafetyProvider.json
      */
     /**
      * Sample code: TestRaiExternalSafetyProvider.
@@ -5261,7 +6122,7 @@ public final class TestRaiExternalSafetyProviderCreateOrUpdateSamples {
  */
 public final class UsagesListSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/ListUsages.json
+     * x-ms-original-file: 2026-09-15-preview/ListUsages.json
      */
     /**
      * Sample code: Get Usages.
@@ -5273,7 +6134,7 @@ public final class UsagesListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-15-preview/ListUsagesClassicScope.json
+     * x-ms-original-file: 2026-09-15-preview/ListUsagesClassicScope.json
      */
     /**
      * Sample code: Get Usages Classic Scope.
@@ -5286,7 +6147,7 @@ public final class UsagesListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-15-preview/ListUsagesDataZoneScope.json
+     * x-ms-original-file: 2026-09-15-preview/ListUsagesDataZoneScope.json
      */
     /**
      * Sample code: Get Usages DataZone Scope.
@@ -5299,7 +6160,20 @@ public final class UsagesListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-15-preview/ListUsagesGlobalScope.json
+     * x-ms-original-file: 2026-09-15-preview/ListUsagesWithResourceMetadata.json
+     */
+    /**
+     * Sample code: Get Usages With Resource Metadata.
+     * 
+     * @param manager Entry point to CognitiveServicesManager.
+     */
+    public static void
+        getUsagesWithResourceMetadata(com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager manager) {
+        manager.usages().list("WestUS", null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-09-15-preview/ListUsagesGlobalScope.json
      */
     /**
      * Sample code: Get Usages Global Scope.
@@ -5329,7 +6203,26 @@ import java.util.Map;
  */
 public final class WorkbenchesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/PutWorkbench.json
+     * x-ms-original-file: 2026-09-15-preview/PutWorkbenchPending.json
+     */
+    /**
+     * Sample code: PutWorkbenchPending.
+     * 
+     * @param manager Entry point to CognitiveServicesManager.
+     */
+    public static void
+        putWorkbenchPending(com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager manager) {
+        manager.workbenches()
+            .define("myWorkbench")
+            .withExistingProject("rgcognitiveservices", "myAccount", "myProject")
+            .withProperties(new WorkbenchProperties().withTargetClusterId(
+                "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rgcognitiveservices/providers/Microsoft.CognitiveServices/accounts/myAccount/computes/myCluster")
+                .withImageLink("mcr.microsoft.com/azureml/curated/pytorch-gpu:latest"))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2026-09-15-preview/PutWorkbench.json
      */
     /**
      * Sample code: PutWorkbench.
@@ -5341,12 +6234,13 @@ public final class WorkbenchesCreateOrUpdateSamples {
             .define("myWorkbench")
             .withExistingProject("rgcognitiveservices", "myAccount", "myProject")
             .withProperties(new WorkbenchProperties().withTargetClusterId(
-                "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rgcognitiveservices/providers/Microsoft.CognitiveServices/accounts/myAccount/computes/myCluster")
+                "/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/vc-rg/providers/Microsoft.MachineLearningServices/virtualClusters/test-vc")
                 .withImageLink("mcr.microsoft.com/azureml/curated/pytorch-gpu:latest")
+                .withInstanceType("Singularity.ND12_H100_v5-n1")
+                .withGpuCount(1)
                 .withIdleTimeBeforeShutdown("PT30M")
                 .withDatasetId("dataset-12345")
                 .withSshSettings(new SshSettings().withSshPublicKey("fakeTokenPlaceholder").withAdminEnabled(true)))
-            .withRegion("eastus")
             .withIdentity(new Identity().withType(ResourceIdentityType.USER_ASSIGNED)
                 .withUserAssignedIdentities(mapOf(
                     "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rgcognitiveservices/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myIdentity",
@@ -5376,7 +6270,7 @@ public final class WorkbenchesCreateOrUpdateSamples {
  */
 public final class WorkbenchesDeleteSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/DeleteWorkbench.json
+     * x-ms-original-file: 2026-09-15-preview/DeleteWorkbench.json
      */
     /**
      * Sample code: DeleteWorkbench.
@@ -5398,7 +6292,7 @@ public final class WorkbenchesDeleteSamples {
  */
 public final class WorkbenchesGetSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/GetWorkbench.json
+     * x-ms-original-file: 2026-09-15-preview/GetWorkbench.json
      */
     /**
      * Sample code: GetWorkbench.
@@ -5421,7 +6315,7 @@ public final class WorkbenchesGetSamples {
  */
 public final class WorkbenchesListSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/ListWorkbenches.json
+     * x-ms-original-file: 2026-09-15-preview/ListWorkbenches.json
      */
     /**
      * Sample code: ListWorkbenches.
@@ -5442,7 +6336,7 @@ public final class WorkbenchesListSamples {
  */
 public final class WorkbenchesRestartSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/RestartWorkbench.json
+     * x-ms-original-file: 2026-09-15-preview/RestartWorkbench.json
      */
     /**
      * Sample code: RestartWorkbench.
@@ -5464,7 +6358,7 @@ public final class WorkbenchesRestartSamples {
  */
 public final class WorkbenchesStartSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/StartWorkbench.json
+     * x-ms-original-file: 2026-09-15-preview/StartWorkbench.json
      */
     /**
      * Sample code: StartWorkbench.
@@ -5486,7 +6380,7 @@ public final class WorkbenchesStartSamples {
  */
 public final class WorkbenchesStopSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/StopWorkbench.json
+     * x-ms-original-file: 2026-09-15-preview/StopWorkbench.json
      */
     /**
      * Sample code: StopWorkbench.
@@ -5503,9 +6397,11 @@ public final class WorkbenchesStopSamples {
 ### Workbenches_Update
 
 ```java
-import com.azure.resourcemanager.cognitiveservices.models.SshSettings;
+import com.azure.resourcemanager.cognitiveservices.models.Identity;
+import com.azure.resourcemanager.cognitiveservices.models.ResourceIdentityType;
+import com.azure.resourcemanager.cognitiveservices.models.UserAssignedIdentity;
 import com.azure.resourcemanager.cognitiveservices.models.Workbench;
-import com.azure.resourcemanager.cognitiveservices.models.WorkbenchProperties;
+import com.azure.resourcemanager.cognitiveservices.models.WorkbenchUpdateProperties;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -5514,7 +6410,34 @@ import java.util.Map;
  */
 public final class WorkbenchesUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/UpdateWorkbench.json
+     * x-ms-original-file: 2026-09-15-preview/UpdateWorkbenchComputeProperties.json
+     */
+    /**
+     * Sample code: UpdateWorkbenchComputeProperties.
+     * 
+     * @param manager Entry point to CognitiveServicesManager.
+     */
+    public static void
+        updateWorkbenchComputeProperties(com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager manager) {
+        Workbench resource = manager.workbenches()
+            .getWithResponse("rgcognitiveservices", "myAccount", "myProject", "myWorkbench",
+                com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withProperties(new WorkbenchUpdateProperties().withTargetClusterId(
+                "/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/vc-rg/providers/Microsoft.MachineLearningServices/virtualClusters/test-vc")
+                .withIdleTimeBeforeShutdown("PT1H")
+                .withInstanceType("Singularity.ND12_H100_v5-n1")
+                .withGpuCount(1))
+            .withIdentity(new Identity().withType(ResourceIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf(
+                    "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rgcognitiveservices/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myIdentity",
+                    new UserAssignedIdentity())))
+            .apply();
+    }
+
+    /*
+     * x-ms-original-file: 2026-09-15-preview/UpdateWorkbench.json
      */
     /**
      * Sample code: UpdateWorkbench.
@@ -5526,15 +6449,24 @@ public final class WorkbenchesUpdateSamples {
             .getWithResponse("rgcognitiveservices", "myAccount", "myProject", "myWorkbench",
                 com.azure.core.util.Context.NONE)
             .getValue();
-        resource.update()
-            .withTags(mapOf("environment", "production"))
-            .withProperties(new WorkbenchProperties().withTargetClusterId(
-                "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rgcognitiveservices/providers/Microsoft.CognitiveServices/accounts/myAccount/computes/myCluster")
-                .withImageLink("mcr.microsoft.com/azureml/curated/pytorch-gpu:v2")
-                .withIdleTimeBeforeShutdown("PT1H")
-                .withDatasetId("dataset-67890")
-                .withSshSettings(new SshSettings().withSshPublicKey("fakeTokenPlaceholder").withAdminEnabled(true)))
-            .apply();
+        resource.update().withProperties(new WorkbenchUpdateProperties().withIdleTimeBeforeShutdown("PT1H")).apply();
+    }
+
+    /*
+     * x-ms-original-file: 2026-09-15-preview/UpdateWorkbenchResetComputeProperties.json
+     */
+    /**
+     * Sample code: UpdateWorkbenchResetComputeProperties.
+     * 
+     * @param manager Entry point to CognitiveServicesManager.
+     */
+    public static void updateWorkbenchResetComputeProperties(
+        com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager manager) {
+        Workbench resource = manager.workbenches()
+            .getWithResponse("rgcognitiveservices", "myAccount", "myProject", "myWorkbench",
+                com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update().withProperties(new WorkbenchUpdateProperties()).apply();
     }
 
     // Use "Map.of" if available

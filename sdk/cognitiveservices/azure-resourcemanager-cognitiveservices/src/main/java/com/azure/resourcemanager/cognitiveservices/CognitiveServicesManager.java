@@ -28,6 +28,7 @@ import com.azure.resourcemanager.cognitiveservices.fluent.CognitiveServicesManag
 import com.azure.resourcemanager.cognitiveservices.implementation.AccountCapabilityHostsImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.AccountConnectionsImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.AccountsImpl;
+import com.azure.resourcemanager.cognitiveservices.implementation.AdapterDeploymentsImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.AgentApplicationsImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.AgentDeploymentsImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.ArcDeploymentsImpl;
@@ -36,6 +37,7 @@ import com.azure.resourcemanager.cognitiveservices.implementation.CommitmentPlan
 import com.azure.resourcemanager.cognitiveservices.implementation.CommitmentTiersImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.ComputeOperationsImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.ComputesImpl;
+import com.azure.resourcemanager.cognitiveservices.implementation.CostControlsImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.DefenderForAISettingsImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.DeletedAccountsImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.DeploymentsImpl;
@@ -58,12 +60,14 @@ import com.azure.resourcemanager.cognitiveservices.implementation.ProjectCapabil
 import com.azure.resourcemanager.cognitiveservices.implementation.ProjectConnectionsImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.ProjectsImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.QuotaTiersImpl;
+import com.azure.resourcemanager.cognitiveservices.implementation.RaiBindingsImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.RaiBlocklistItemsImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.RaiBlocklistsImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.RaiContentFiltersImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.RaiExternalSafetyProvidersImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.RaiExternalSafetyProvidersOperationsImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.RaiPoliciesImpl;
+import com.azure.resourcemanager.cognitiveservices.implementation.RaiRegosImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.RaiToolLabelsImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.RaiTopicsImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.ResourceProvidersImpl;
@@ -75,6 +79,7 @@ import com.azure.resourcemanager.cognitiveservices.implementation.WorkbenchesImp
 import com.azure.resourcemanager.cognitiveservices.models.AccountCapabilityHosts;
 import com.azure.resourcemanager.cognitiveservices.models.AccountConnections;
 import com.azure.resourcemanager.cognitiveservices.models.Accounts;
+import com.azure.resourcemanager.cognitiveservices.models.AdapterDeployments;
 import com.azure.resourcemanager.cognitiveservices.models.AgentApplications;
 import com.azure.resourcemanager.cognitiveservices.models.AgentDeployments;
 import com.azure.resourcemanager.cognitiveservices.models.ArcDeployments;
@@ -82,6 +87,7 @@ import com.azure.resourcemanager.cognitiveservices.models.CommitmentPlans;
 import com.azure.resourcemanager.cognitiveservices.models.CommitmentTiers;
 import com.azure.resourcemanager.cognitiveservices.models.ComputeOperations;
 import com.azure.resourcemanager.cognitiveservices.models.Computes;
+import com.azure.resourcemanager.cognitiveservices.models.CostControls;
 import com.azure.resourcemanager.cognitiveservices.models.DefenderForAISettings;
 import com.azure.resourcemanager.cognitiveservices.models.DeletedAccounts;
 import com.azure.resourcemanager.cognitiveservices.models.Deployments;
@@ -104,12 +110,14 @@ import com.azure.resourcemanager.cognitiveservices.models.ProjectCapabilityHosts
 import com.azure.resourcemanager.cognitiveservices.models.ProjectConnections;
 import com.azure.resourcemanager.cognitiveservices.models.Projects;
 import com.azure.resourcemanager.cognitiveservices.models.QuotaTiers;
+import com.azure.resourcemanager.cognitiveservices.models.RaiBindings;
 import com.azure.resourcemanager.cognitiveservices.models.RaiBlocklistItems;
 import com.azure.resourcemanager.cognitiveservices.models.RaiBlocklists;
 import com.azure.resourcemanager.cognitiveservices.models.RaiContentFilters;
 import com.azure.resourcemanager.cognitiveservices.models.RaiExternalSafetyProviders;
 import com.azure.resourcemanager.cognitiveservices.models.RaiExternalSafetyProvidersOperations;
 import com.azure.resourcemanager.cognitiveservices.models.RaiPolicies;
+import com.azure.resourcemanager.cognitiveservices.models.RaiRegos;
 import com.azure.resourcemanager.cognitiveservices.models.RaiToolLabels;
 import com.azure.resourcemanager.cognitiveservices.models.RaiTopics;
 import com.azure.resourcemanager.cognitiveservices.models.ResourceProviders;
@@ -151,6 +159,10 @@ public final class CognitiveServicesManager {
 
     private SubscriptionRaiPolicies subscriptionRaiPolicies;
 
+    private RaiRegos raiRegos;
+
+    private RaiBindings raiBindings;
+
     private RaiBlocklistItems raiBlocklistItems;
 
     private RaiBlocklists raiBlocklists;
@@ -179,6 +191,8 @@ public final class CognitiveServicesManager {
 
     private ManagedComputeDeployments managedComputeDeployments;
 
+    private AdapterDeployments adapterDeployments;
+
     private ComputeOperations computeOperations;
 
     private ManagedComputeUsagesOperationGroups managedComputeUsagesOperationGroups;
@@ -188,6 +202,8 @@ public final class CognitiveServicesManager {
     private Workbenches workbenches;
 
     private ManagedComputeCapacities managedComputeCapacities;
+
+    private CostControls costControls;
 
     private PrivateLinkResources privateLinkResources;
 
@@ -561,6 +577,30 @@ public final class CognitiveServicesManager {
     }
 
     /**
+     * Gets the resource collection API of RaiRegos. It manages RaiRego.
+     * 
+     * @return Resource collection API of RaiRegos.
+     */
+    public RaiRegos raiRegos() {
+        if (this.raiRegos == null) {
+            this.raiRegos = new RaiRegosImpl(clientObject.getRaiRegos(), this);
+        }
+        return raiRegos;
+    }
+
+    /**
+     * Gets the resource collection API of RaiBindings. It manages RaiBinding.
+     * 
+     * @return Resource collection API of RaiBindings.
+     */
+    public RaiBindings raiBindings() {
+        if (this.raiBindings == null) {
+            this.raiBindings = new RaiBindingsImpl(clientObject.getRaiBindings(), this);
+        }
+        return raiBindings;
+    }
+
+    /**
      * Gets the resource collection API of RaiBlocklistItems. It manages RaiBlocklistItem.
      * 
      * @return Resource collection API of RaiBlocklistItems.
@@ -732,6 +772,18 @@ public final class CognitiveServicesManager {
     }
 
     /**
+     * Gets the resource collection API of AdapterDeployments. It manages AdapterDeployment.
+     * 
+     * @return Resource collection API of AdapterDeployments.
+     */
+    public AdapterDeployments adapterDeployments() {
+        if (this.adapterDeployments == null) {
+            this.adapterDeployments = new AdapterDeploymentsImpl(clientObject.getAdapterDeployments(), this);
+        }
+        return adapterDeployments;
+    }
+
+    /**
      * Gets the resource collection API of ComputeOperations.
      * 
      * @return Resource collection API of ComputeOperations.
@@ -791,6 +843,18 @@ public final class CognitiveServicesManager {
                 = new ManagedComputeCapacitiesImpl(clientObject.getManagedComputeCapacities(), this);
         }
         return managedComputeCapacities;
+    }
+
+    /**
+     * Gets the resource collection API of CostControls. It manages CostControl.
+     * 
+     * @return Resource collection API of CostControls.
+     */
+    public CostControls costControls() {
+        if (this.costControls == null) {
+            this.costControls = new CostControlsImpl(clientObject.getCostControls(), this);
+        }
+        return costControls;
     }
 
     /**

@@ -10,7 +10,7 @@ import com.azure.resourcemanager.cognitiveservices.models.ConnectivityEndpoints;
 public final class ConnectivityEndpointsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ConnectivityEndpoints model = BinaryData.fromString("{\"publicIpAddress\":\"bgvopemt\",\"sshPort\":219160192}")
+        ConnectivityEndpoints model = BinaryData.fromString("{\"publicIpAddress\":\"qgsdr\",\"sshPort\":2142698844}")
             .toObject(ConnectivityEndpoints.class);
     }
 }

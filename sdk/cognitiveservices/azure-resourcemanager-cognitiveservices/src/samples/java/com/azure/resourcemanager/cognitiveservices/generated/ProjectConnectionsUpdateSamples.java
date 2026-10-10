@@ -17,7 +17,7 @@ import java.util.Map;
  */
 public final class ProjectConnectionsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/ProjectConnection/update.json
+     * x-ms-original-file: 2026-09-15-preview/ProjectConnection/update.json
      */
     /**
      * Sample code: UpdateProjectConnection.

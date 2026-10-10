@@ -12,10 +12,10 @@ public final class AgentReferenceResourceArmPaginatedResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AgentReferenceResourceArmPaginatedResultInner model = BinaryData.fromString(
-            "{\"nextLink\":\"yzeyuubeid\",\"value\":[{\"properties\":{\"agentId\":\"ytoithgygvfl\",\"agentName\":\"vdihoynkrx\"},\"id\":\"twk\",\"name\":\"rcyrucpcunnu\",\"type\":\"dqumoenodnai\"}]}")
+            "{\"nextLink\":\"jptnvwjhrsidqpx\",\"value\":[{\"properties\":{\"agentId\":\"akftng\",\"agentName\":\"wmykyutry\"},\"id\":\"wmfjhp\",\"name\":\"cvjqdv\",\"type\":\"wkqp\"},{\"properties\":{\"agentId\":\"rlefgnaavu\",\"agentName\":\"n\"},\"id\":\"taoutnpdct\",\"name\":\"hspfefyihd\",\"type\":\"yeuyldph\"}]}")
             .toObject(AgentReferenceResourceArmPaginatedResultInner.class);
-        Assertions.assertEquals("yzeyuubeid", model.nextLink());
-        Assertions.assertEquals("ytoithgygvfl", model.value().get(0).properties().agentId());
-        Assertions.assertEquals("vdihoynkrx", model.value().get(0).properties().agentName());
+        Assertions.assertEquals("jptnvwjhrsidqpx", model.nextLink());
+        Assertions.assertEquals("akftng", model.value().get(0).properties().agentId());
+        Assertions.assertEquals("wmykyutry", model.value().get(0).properties().agentName());
     }
 }
