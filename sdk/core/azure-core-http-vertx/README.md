@@ -93,12 +93,6 @@ HttpClient client = new VertxHttpClientBuilder()
     .build();
 ```
 
-To change only the connection timeout:
-
-```java readme-sample-createClientWithConnectionTimeout
-HttpClient client = new VertxHttpClientBuilder().connectTimeout(Duration.ofSeconds(60)).build();
-```
-
 ### Create a Client with Proxy
 
 Create a Vert.x client that is using a proxy.
@@ -153,29 +147,32 @@ HttpClient client = new VertxHttpClientBuilder()
 ```
 
 The client uses ALPN to negotiate HTTP/2 over TLS. For plain HTTP requests, Vert.x's cleartext upgrade configuration
-applies. Use `HTTP_1_1` to limit the client to HTTP/1.1. Passing `null` clears the maximum, preserving the existing default
-or the protocols in supplied Vert.x options. An explicit maximum overrides protocol and ALPN settings in a copy of
-those options without mutating the originals; unrelated settings are retained.
+applies. Use `HTTP_1_1` explicitly to limit the client to HTTP/1.1. Passing `null` clears the maximum, preserving the
+existing default or the protocols in supplied internal Vert.x instances. An explicit maximum overrides protocol and ALPN
+settings in a copy of those options without mutating the originals; unrelated settings are retained.
 
-### Customize the Underlying Client
+### Customize the Underlying Instance
 
-Supply application-configured Vert.x `HttpClientOptions` rather than an already-built native client. This example
-disables native keep-alive. You can also provide an application-owned Vert.x instance with `VertxHttpClientBuilder.vertx`.
+Supply an application-configured internal Vert.x instance before supplying it to `VertxHttpClientBuilder.vertx`. This
+example creates the instance with four event-loop threads.
 
-```java readme-sample-customizeUnderlyingClient
-HttpClientOptions nativeOptions = new HttpClientOptions()
-    .setKeepAlive(false);
+```java readme-sample-createClientWithVertxInstance
+VertxOptions vertxOptions = new VertxOptions()
+    .setEventLoopPoolSize(4);
+Vertx vertx = Vertx.vertx(vertxOptions);
 HttpClient client = new VertxHttpClientBuilder()
-    .httpClientOptions(nativeOptions)
+    .vertx(vertx)
     .build();
 ```
 
+The application is responsible for calling `vertx.close()` after all clients using that instance have finished.
+
 ### Advanced Configuration
 
-Native Vert.x options provide connection, read and write timeouts and proxy settings when supplied to the builder.
-The builder's response timeout still applies, and an explicit `maximumHttpVersion` overrides protocol/ALPN settings
-in a copy of the supplied options. HTTP/2 cleartext behavior is configured through native Vert.x options; there is
-no portable HTTP/2-only equivalent shared by all four transports.
+Client options provide connection, read and write timeouts and proxy settings when supplied to the builder. The
+builder's response timeout still applies, and an explicit `maximumHttpVersion` overrides protocol/ALPN settings in a
+copy of the supplied options. HTTP/2 cleartext behavior can be configured through the supplied Vert.x
+`HttpClientOptions`. There is no portable HTTP/2-only equivalent shared by all four transports.
 
 #### Customize the Maximum Header Size
 
@@ -190,11 +187,32 @@ io.netty.handler.codec.http.TooLongHttpHeaderException: HTTP header is larger th
 ```java readme-sample-customMaxHeaderSize
 // Constructs an HttpClient with a modified max header size.
 // This creates a Vert.x HttpClient with a max headers size of 256 KB.
-// NOTE: Native options provide connection, read and write timeouts and proxy settings.
+// NOTE: Internal options provide connection, read and write timeouts and proxy settings.
 HttpClient httpClient = new VertxHttpClientBuilder()
     .httpClientOptions(new HttpClientOptions().setMaxHeaderSize(256 * 1024))
     .build();
 ```
+
+#### Customize HTTP/2 cleartext behavior
+
+`HttpClientOptions.setHttp2ClearTextUpgrade` controls how Vert.x connects to cleartext HTTP/2 (`h2c`) servers.
+With `true` (the default), it starts with HTTP/1.1 and attempts an upgrade. If the server doesn't support the upgrade,
+it continues using HTTP/1.1.
+
+Set it to `false` to use prior knowledge and start directly with HTTP/2, as in the following example. Use this only
+when the server is known to support cleartext HTTP/2, because there is no HTTP/1.1 fallback in this mode.
+
+```java readme-sample-configureHttp2PriorKnowledge
+HttpClientOptions clientOptions = new HttpClientOptions()
+    .setHttp2ClearTextUpgrade(false);
+HttpClient client = new VertxHttpClientBuilder()
+    .httpClientOptions(clientOptions)
+    .maximumHttpVersion(HttpProtocolVersion.HTTP_2)
+    .build();
+```
+
+This cleartext setting applies only to `http://` requests. It doesn't change HTTPS protocol negotiation, which uses
+ALPN when HTTP/2 is enabled.
 
 ## Next steps
 

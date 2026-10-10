@@ -1,7 +1,7 @@
 # Azure Core JDK HTTP plugin library for Java
 
-This is an azure-core HTTP client that makes use of the asynchronous HttpClient that was made generally available as 
-part of JDK 11. 
+This is an azure-core HTTP client that makes use of the asynchronous HttpClient that was made generally available as
+part of JDK 11.
 
 ## Getting started
 
@@ -144,22 +144,21 @@ HttpClient client = new JdkHttpClientBuilder()
     .build();
 ```
 
-The JDK client treats HTTP/2 as a preferred version with HTTP/1.1 fallback, not as an HTTP/2-only mode.
-Use `HTTP_1_1` to limit the client to HTTP/1.1. Without a supplied native builder, the default remains HTTP/1.1.
-With a native builder, an unset or cleared maximum preserves its protocol preference. An explicit maximum overrides
-the version used for requests without changing the supplied builder's version. Passing `null` clears that override;
-clients built earlier retain their configuration.
+The client treats HTTP/2 as a preferred version with HTTP/1.1 fallback, not as an HTTP/2-only mode. Not setting a
+maximum HTTP version or setting it to `null` preserves the a default of HTTP/1.1. If a JDK builder is provided as
+detailed in the next section, an unset or cleared maximum preserves that builder's protocol preference.
 
 ### Customize the Underlying Client
 
-Pass an application-configured native JDK builder to the Azure builder. This example selects the shared common
-pool for native asynchronous work rather than creating an executor that needs a separate application lifecycle.
-Calling `JdkHttpClientBuilder.executor` overrides an executor supplied through the native builder.
+Pass an application-configured internal JDK client builder to the Azure builder. This example selects the shared common
+pool for asynchronous work rather than creating an executor that needs a separate application lifecycle. Calling
+`JdkHttpClientBuilder.executor` overrides an executor supplied through the JDK builder. The configurable internal
+settings can differ from those exposed in `com.azure.core.util.HttpClientOptions`.
 
-```java readme-sample-customizeUnderlyingClient
-java.net.http.HttpClient.Builder nativeBuilder = java.net.http.HttpClient.newBuilder()
+```java readme-sample-customizeInternalBuilder
+java.net.http.HttpClient.Builder internalBuilder = java.net.http.HttpClient.newBuilder()
     .executor(ForkJoinPool.commonPool());
-HttpClient client = new JdkHttpClientBuilder(nativeBuilder).build();
+HttpClient client = new JdkHttpClientBuilder(internalBuilder).build();
 ```
 
 ## Next steps

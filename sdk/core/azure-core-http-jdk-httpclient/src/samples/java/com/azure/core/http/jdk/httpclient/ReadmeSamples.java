@@ -109,14 +109,14 @@ public class ReadmeSamples {
     }
 
     /**
-     * Wraps a native JDK builder using an application-selected executor.
+     * Wraps an internal JDK builder using an application-selected executor.
      */
-    public void customizeUnderlyingClient() {
-        // BEGIN: readme-sample-customizeUnderlyingClient
-        java.net.http.HttpClient.Builder nativeBuilder = java.net.http.HttpClient.newBuilder()
+    public void customizeInternalBuilder() {
+        // BEGIN: readme-sample-customizeInternalBuilder
+        java.net.http.HttpClient.Builder internalBuilder = java.net.http.HttpClient.newBuilder()
             .executor(ForkJoinPool.commonPool());
-        HttpClient client = new JdkHttpClientBuilder(nativeBuilder).build();
-        // END: readme-sample-customizeUnderlyingClient
+        HttpClient client = new JdkHttpClientBuilder(internalBuilder).build();
+        // END: readme-sample-customizeInternalBuilder
     }
 
 }

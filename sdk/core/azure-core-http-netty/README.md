@@ -138,7 +138,7 @@ HttpClient client = new NettyAsyncHttpClientBuilder()
 
 ### Create a Client with HTTP/2 Support
 
-Create a Netty HttpClient that supports both the HTTP/1.1 and HTTP/2 protocols, with HTTP/2 being the preferred
+Create a Rector Netty client that supports both the HTTP/1.1 and HTTP/2 protocols, with HTTP/2 being the preferred
 protocol.
 
 ```java readme-sample-configureHttpVersion
@@ -147,22 +147,23 @@ HttpClient client = new NettyAsyncHttpClientBuilder()
     .build();
 ```
 
-`HttpProtocolVersion` is defined in `com.azure.core.http`. HTTP/2 is negotiated over TLS, with HTTP/1.1 fallback;
-plain HTTP requests use HTTP/1.1. Use `HTTP_1_1` to limit the client to HTTP/1.1. Passing `null` clears the maximum,
-preserving the existing default or the protocols of a preconfigured Reactor Netty client.
+HTTP/2 is negotiated over TLS, with HTTP/1.1 fallback; plain HTTP requests use HTTP/1.1. Use `HTTP_1_1` to limit the
+client to HTTP/1.1. Passing `null` clears the maximum, preserving Netty's default protocols or those of a supplied
+internal Reactor Netty client.
 
-An explicit maximum retains any custom SSL context in the supplied Reactor Netty client. Configure that context's
+An explicit maximum retains any custom SSL context in a supplied internal Reactor Netty client. Configure that context's
 ALPN protocols to match the requested maximum version.
 
 ### Customize the Underlying Client
 
-Pass an application-configured Reactor Netty client to the Azure builder. This example enables native response
-compression; the available native settings differ from those of the other HTTP transports.
+Pass an application-configured internal Reactor Netty client to the Azure builder. This example enables response
+compression. The configurable internal settings can differ from those exposed in
+ `com.azure.core.util.HttpClientOptions`.
 
-```java readme-sample-customizeUnderlyingClient
-reactor.netty.http.client.HttpClient nativeClient = reactor.netty.http.client.HttpClient.create()
+```java readme-sample-customizeInternalClient
+reactor.netty.http.client.HttpClient internalClient = reactor.netty.http.client.HttpClient.create()
     .compress(true);
-HttpClient client = new NettyAsyncHttpClientBuilder(nativeClient).build();
+HttpClient client = new NettyAsyncHttpClientBuilder(internalClient).build();
 ```
 
 ### Advanced Configuration
@@ -205,11 +206,11 @@ HttpClient client = new NettyAsyncHttpClientBuilder(reactorNettyHttpClient)
     .build();
 ```
 
-#### Configure HTTP/2 on a Native Client
+#### Configure HTTP/2 on an Internal Client
 
-You can also configure the native protocol list directly instead of using `maximumHttpVersion`.
+You can also configure the internal client's protocol list directly instead of using `maximumHttpVersion`.
 
-```java readme-sample-useHttp2WithConfiguredNettyClient 
+```java readme-sample-useHttp2WithConfiguredNettyClient
 // Constructs an HttpClient that supports both HTTP/1.1 and HTTP/2 with HTTP/2 being the preferred protocol.
 HttpClient client = new NettyAsyncHttpClientBuilder(reactor.netty.http.client.HttpClient.create()
     .protocol(HttpProtocol.HTTP11, HttpProtocol.H2))

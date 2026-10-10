@@ -6,6 +6,8 @@ package com.azure.core.http.vertx;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpProtocolVersion;
 import com.azure.core.http.ProxyOptions;
+import io.vertx.core.Vertx;
+import io.vertx.core.VertxOptions;
 import io.vertx.core.http.HttpClientOptions;
 
 import java.net.InetSocketAddress;
@@ -56,7 +58,7 @@ public class ReadmeSamples {
         // BEGIN: readme-sample-customMaxHeaderSize
         // Constructs an HttpClient with a modified max header size.
         // This creates a Vert.x HttpClient with a max headers size of 256 KB.
-        // NOTE: Native options provide connection, read and write timeouts and proxy settings.
+        // NOTE: Internal options provide connection, read and write timeouts and proxy settings.
         HttpClient httpClient = new VertxHttpClientBuilder()
             .httpClientOptions(new HttpClientOptions().setMaxHeaderSize(256 * 1024))
             .build();
@@ -124,15 +126,30 @@ public class ReadmeSamples {
     }
 
     /**
-     * Customizes the native Vert.x options before creating the client.
+     * Creates an HTTP client using a Vert.x instance with a customized event-loop pool.
      */
-    public void customizeUnderlyingClient() {
-        // BEGIN: readme-sample-customizeUnderlyingClient
-        HttpClientOptions nativeOptions = new HttpClientOptions()
-            .setKeepAlive(false);
+    public void createClientWithVertxInstance() {
+        // BEGIN: readme-sample-createClientWithVertxInstance
+        VertxOptions vertxOptions = new VertxOptions()
+            .setEventLoopPoolSize(4);
+        Vertx vertx = Vertx.vertx(vertxOptions);
         HttpClient client = new VertxHttpClientBuilder()
-            .httpClientOptions(nativeOptions)
+            .vertx(vertx)
             .build();
-        // END: readme-sample-customizeUnderlyingClient
+        // END: readme-sample-createClientWithVertxInstance
+    }
+
+    /**
+     * Configures HTTP/2 prior knowledge for cleartext connections.
+     */
+    public void configureHttp2PriorKnowledge() {
+        // BEGIN: readme-sample-configureHttp2PriorKnowledge
+        HttpClientOptions clientOptions = new HttpClientOptions()
+            .setHttp2ClearTextUpgrade(false);
+        HttpClient client = new VertxHttpClientBuilder()
+            .httpClientOptions(clientOptions)
+            .maximumHttpVersion(HttpProtocolVersion.HTTP_2)
+            .build();
+        // END: readme-sample-configureHttp2PriorKnowledge
     }
 }

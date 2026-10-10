@@ -190,13 +190,13 @@ public class ReadmeSamples {
     }
 
     /**
-     * Wraps a Reactor Netty client with native response compression configured.
+     * Wraps an internal Reactor Netty client with response compression configured.
      */
-    public void customizeUnderlyingClient() {
-        // BEGIN: readme-sample-customizeUnderlyingClient
-        reactor.netty.http.client.HttpClient nativeClient = reactor.netty.http.client.HttpClient.create()
+    public void customizeInternalClient() {
+        // BEGIN: readme-sample-customizeInternalClient
+        reactor.netty.http.client.HttpClient internalClient = reactor.netty.http.client.HttpClient.create()
             .compress(true);
-        HttpClient client = new NettyAsyncHttpClientBuilder(nativeClient).build();
-        // END: readme-sample-customizeUnderlyingClient
+        HttpClient client = new NettyAsyncHttpClientBuilder(internalClient).build();
+        // END: readme-sample-customizeInternalClient
     }
 }
