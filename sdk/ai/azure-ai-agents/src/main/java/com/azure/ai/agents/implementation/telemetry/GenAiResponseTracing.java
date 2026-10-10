@@ -473,7 +473,8 @@ public final class GenAiResponseTracing {
                 if (item.functionCallOutput().isPresent()) {
                     ResponseInputItem.FunctionCallOutput fco = item.functionCallOutput().get();
                     String output = fco.output().isString() ? fco.output().asString() : null;
-                    return GenAiMessageFormatter.formatToolResponseInput(captureContent(), fco.callId(), output);
+                    return GenAiMessageFormatter.formatToolResponseInput(captureContent(), fco.callId().orElse(null),
+                        output);
                 }
             }
         }

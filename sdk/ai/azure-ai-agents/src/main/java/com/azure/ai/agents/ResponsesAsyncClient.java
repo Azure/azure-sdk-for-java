@@ -130,7 +130,7 @@ public final class ResponsesAsyncClient {
 
         ResponseCreateParams builtParams = params.build();
         return tracer.traceStreamingResponseAsync(createResponse, builtParams,
-            tracedParams -> StreamingUtils.toFlux(this.responseServiceAsync.createStreaming(tracedParams)));
+            tracedParams -> StreamingResponseUtils.toFlux(this.responseServiceAsync.createStreaming(tracedParams)));
     }
 
     /**

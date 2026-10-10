@@ -9,7 +9,6 @@ import com.azure.ai.agents.implementation.http.HttpClientHelper;
 import com.azure.ai.agents.implementation.http.OpenAITracingContextBridge;
 import com.azure.ai.agents.implementation.models.AgentDefinitionOptInKeys;
 import com.azure.ai.agents.implementation.models.FoundryFeaturesOptInKeys;
-import com.azure.ai.agents.implementation.telemetry.AgentsClientTracer;
 import com.azure.ai.agents.implementation.realtime.VoiceAgentWebSocketClientConfiguration;
 import com.azure.ai.agents.implementation.telemetry.GenAiAgentTracing;
 import com.azure.ai.agents.implementation.telemetry.GenAiInstrumentation;

@@ -126,11 +126,10 @@ public final class ResponsesClient {
         if (!tracer.isEnabled()) {
             return StreamingResponseUtils.toIterableStream(this.responseService.createStreaming(params.build()));
         }
-    }
 
         ResponseCreateParams builtParams = params.build();
         TracedStreamIterable traced = tracer.traceStreamingResponse(createResponse, builtParams,
-            () -> StreamingUtils.toIterableStream(this.responseService.createStreaming(builtParams)));
+            () -> StreamingResponseUtils.toIterableStream(this.responseService.createStreaming(builtParams)));
         return new IterableStream<>(traced);
     }
 
