@@ -8,6 +8,7 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.Context;
 import com.openai.core.http.HttpRequestBody;
@@ -23,10 +24,13 @@ import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -49,6 +53,37 @@ class HttpClientHelperTests {
             fail("Exception thrown while reading response", e);
         }
         assertEquals(1, recordingClient.getSendCount());
+    }
+
+    @Test
+    void executeAsyncRestoresTraceContextFromRequestHeaders() {
+        Context parent = new Context("parent", "chat");
+        OpenAITracingContextBridge contextBridge = new OpenAITracingContextBridge();
+        String token = contextBridge.register(parent);
+
+        RecordingHttpClient recordingClient
+            = new RecordingHttpClient(request -> createMockResponse(request, 204, new HttpHeaders(), ""));
+        AtomicReference<Context> pipelineContext = new AtomicReference<>();
+        HttpPipelinePolicy captureContextPolicy = (context, next) -> {
+            pipelineContext.set(context.getContext());
+            return next.process();
+        };
+        com.openai.core.http.HttpClient openAiClient = HttpClientHelper.mapToOpenAIHttpClient(
+            new HttpPipelineBuilder().policies(captureContextPolicy).httpClient(recordingClient).build(),
+            contextBridge);
+        com.openai.core.http.HttpRequest request = com.openai.core.http.HttpRequest.builder()
+            .method(com.openai.core.http.HttpMethod.GET)
+            .baseUrl("https://example.com")
+            .putHeader(OpenAITracingContextBridge.TRACE_CONTEXT_HEADER, token)
+            .build();
+
+        try (com.openai.core.http.HttpResponse response = openAiClient.executeAsync(request).join()) {
+            assertEquals(204, response.statusCode());
+            assertSame(parent, pipelineContext.get());
+            assertNull(recordingClient.getLastRequest()
+                .getHeaders()
+                .getValue(OpenAITracingContextBridge.TRACE_CONTEXT_HEADER));
+        }
     }
 
     @Test
@@ -217,6 +252,7 @@ class HttpClientHelperTests {
         int getSendCount() {
             return sendCount;
         }
+
     }
 
     private static final class TestHttpRequestBody implements HttpRequestBody {
