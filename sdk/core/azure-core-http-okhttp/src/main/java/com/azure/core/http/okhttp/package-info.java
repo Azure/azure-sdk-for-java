@@ -64,6 +64,19 @@
  * HTTP/2 protocols, with HTTP/2 being the preferred protocol.
  * </p>
  *
+ * <!-- src_embed readme-sample-configureHttpVersion -->
+ * <pre>
+ * HttpClient client = new OkHttpAsyncHttpClientBuilder&#40;&#41;
+ *     .maximumHttpVersion&#40;HttpProtocolVersion.HTTP_2&#41;
+ *     .build&#40;&#41;;
+ * </pre>
+ * <!-- end readme-sample-configureHttpVersion -->
+ *
+ * <p>
+ * You can also pass a pre-configured OkHttp client to the builder instead of creating the underlying client internally.
+ * The following client supports both HTTP/1.1 and HTTP/2, with HTTP/2 being the preferred protocol.
+ * </p>
+ *
  * <!-- src_embed readme-sample-useHttp2WithConfiguredOkHttpClient -->
  * <pre>
  * &#47;&#47; Constructs an HttpClient that supports both HTTP&#47;1.1 and HTTP&#47;2 with HTTP&#47;2 being the preferred protocol.
@@ -76,12 +89,13 @@
  * <!-- end readme-sample-useHttp2WithConfiguredOkHttpClient -->
  *
  * <p>
- * It is also possible to create a OkHttp HttpClient that only supports HTTP/2.
+ * It is also possible to create an OkHttp HttpClient that only supports cleartext HTTP/2. This prior-knowledge mode
+ * requires a server already known to support cleartext HTTP/2; HTTPS and HTTP/1.1 fallback are not supported.
  * </p>
  *
  * <!-- src_embed readme-sample-useHttp2OnlyWithConfiguredOkHttpClient -->
  * <pre>
- * &#47;&#47; Constructs an HttpClient that only supports HTTP&#47;2.
+ * &#47;&#47; Constructs a cleartext HTTP&#47;2-only client. HTTPS and HTTP&#47;1.1 fallback are not supported.
  * HttpClient client = new OkHttpAsyncHttpClientBuilder&#40;new OkHttpClient.Builder&#40;&#41;
  *     .protocols&#40;Collections.singletonList&#40;Protocol.H2_PRIOR_KNOWLEDGE&#41;&#41;
  *     .build&#40;&#41;&#41;

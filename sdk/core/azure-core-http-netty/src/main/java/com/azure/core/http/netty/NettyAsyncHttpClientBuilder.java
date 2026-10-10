@@ -4,6 +4,7 @@
 package com.azure.core.http.netty;
 
 import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpProtocolVersion;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.netty.implementation.AzureNettyHttpClientContext;
 import com.azure.core.http.netty.implementation.AzureSdkHandler;
@@ -25,6 +26,7 @@ import io.netty.resolver.NoopAddressResolverGroup;
 import reactor.netty.Connection;
 import reactor.netty.NettyPipeline;
 import reactor.netty.http.HttpDecoderSpec;
+import reactor.netty.http.HttpProtocol;
 import reactor.netty.http.client.HttpClient;
 import reactor.netty.http.client.HttpClientRequest;
 import reactor.netty.http.client.HttpResponseDecoderSpec;
@@ -131,6 +133,7 @@ public class NettyAsyncHttpClientBuilder {
     private Duration writeTimeout;
     private Duration responseTimeout;
     private Duration readTimeout;
+    private HttpProtocolVersion maximumHttpVersion;
 
     /**
      * Creates a new builder instance, where a builder is capable of generating multiple instances of {@link
@@ -160,6 +163,37 @@ public class NettyAsyncHttpClientBuilder {
      */
     public NettyAsyncHttpClientBuilder(HttpClient nettyHttpClient) {
         this.baseHttpClient = Objects.requireNonNull(nettyHttpClient, "'nettyHttpClient' cannot be null.");
+    }
+
+    /**
+     * Sets the maximum HTTP protocol version the client supports.
+     * <p>
+     * {@link HttpProtocolVersion#HTTP_2} enables HTTP/2 with HTTP/1.1 fallback. HTTP/2 is negotiated over TLS; plain HTTP
+     * requests continue to use HTTP/1.1.
+     * <p>
+     * By default, the client uses HTTP/1.1, or the protocols configured on the Reactor Netty client passed to
+     * {@link #NettyAsyncHttpClientBuilder(HttpClient)}. An explicit maximum overrides those protocols. Passing null
+     * clears the maximum and restores that default behavior.
+     * <p>
+     * A custom SSL context supplied in the internal client is retained. Configure its ALPN protocols to match the
+     * requested maximum HTTP version.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <!-- src_embed readme-sample-configureHttpVersion -->
+     * <pre>
+     * HttpClient client = new NettyAsyncHttpClientBuilder&#40;&#41;
+     *     .maximumHttpVersion&#40;HttpProtocolVersion.HTTP_2&#41;
+     *     .build&#40;&#41;;
+     * </pre>
+     * <!-- end readme-sample-configureHttpVersion -->
+     *
+     * @param httpVersion The maximum HTTP protocol version, or null to clear the setting.
+     * @return The updated NettyAsyncHttpClientBuilder object.
+     */
+    public NettyAsyncHttpClientBuilder maximumHttpVersion(HttpProtocolVersion httpVersion) {
+        this.maximumHttpVersion = httpVersion;
+        return this;
     }
 
     /**
@@ -200,6 +234,12 @@ public class NettyAsyncHttpClientBuilder {
             nettyHttpClient = HttpClient.create(this.connectionProvider);
         } else {
             nettyHttpClient = HttpClient.create();
+        }
+
+        if (maximumHttpVersion == HttpProtocolVersion.HTTP_1_1) {
+            nettyHttpClient = nettyHttpClient.protocol(HttpProtocol.HTTP11);
+        } else if (maximumHttpVersion == HttpProtocolVersion.HTTP_2) {
+            nettyHttpClient = nettyHttpClient.protocol(HttpProtocol.HTTP11, HttpProtocol.H2);
         }
 
         // If a resolver hasn't been set, set the default one.

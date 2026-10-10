@@ -9,7 +9,7 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.HttpClientOptions;
 
 /**
- * An {@link HttpClientProvider} that provides an implementation of HttpClient based on native JDK HttpClient.
+ * An {@link HttpClientProvider} that provides an implementation of HttpClient based on internal JDK HttpClient.
  * <p>
  * NOTE: This implementation is only available in Java 11+ as that is when {@link java.net.http.HttpClient} was
  * introduced.

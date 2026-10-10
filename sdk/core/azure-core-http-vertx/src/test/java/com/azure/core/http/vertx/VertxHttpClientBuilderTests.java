@@ -5,6 +5,7 @@ package com.azure.core.http.vertx;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpProtocolVersion;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.Configuration;
@@ -13,6 +14,7 @@ import com.azure.core.util.ConfigurationSource;
 import com.azure.core.validation.http.models.TestConfigurationSource;
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpClientOptions;
+import io.vertx.core.http.HttpVersion;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
@@ -23,6 +25,8 @@ import reactor.test.StepVerifier;
 import java.net.ConnectException;
 import java.net.InetSocketAddress;
 import java.time.Duration;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
@@ -30,7 +34,10 @@ import static com.azure.core.http.vertx.VertxHttpClientLocalTestServer.PROXY_PAS
 import static com.azure.core.http.vertx.VertxHttpClientLocalTestServer.PROXY_USERNAME;
 import static com.azure.core.http.vertx.VertxHttpClientLocalTestServer.SERVICE_ENDPOINT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -43,6 +50,74 @@ public class VertxHttpClientBuilderTests {
 
     private static final String SERVER_HTTP_URI = VertxHttpClientLocalTestServer.getServer().getHttpUri();
     private static final int PROXY_SERVER_HTTP_PORT = VertxHttpClientLocalTestServer.getProxyServer().getHttpPort();
+
+    @ParameterizedTest
+    @EnumSource(HttpProtocolVersion.class)
+    public void maximumHttpVersion(HttpProtocolVersion version) throws Exception {
+        VertxHttpClientBuilder builder = new VertxHttpClientBuilder().configuration(Configuration.NONE);
+        assertSame(builder, builder.maximumHttpVersion(version));
+        VertxHttpClient client = (VertxHttpClient) builder.build();
+        try {
+            assertEquals(version == HttpProtocolVersion.HTTP_2 ? HttpVersion.HTTP_2 : HttpVersion.HTTP_1_1,
+                client.buildOptions.getProtocolVersion());
+            assertEquals(version == HttpProtocolVersion.HTTP_2, client.buildOptions.isUseAlpn());
+            assertEquals(version == HttpProtocolVersion.HTTP_2
+                ? Arrays.asList(HttpVersion.HTTP_2, HttpVersion.HTTP_1_1)
+                : Collections.singletonList(HttpVersion.HTTP_1_1), client.buildOptions.getAlpnVersions());
+        } finally {
+            closeClient(client);
+        }
+    }
+
+    @Test
+    public void clearingMaximumHttpVersionRestoresDefault() throws Exception {
+        VertxHttpClientBuilder builder = new VertxHttpClientBuilder().configuration(Configuration.NONE)
+            .maximumHttpVersion(HttpProtocolVersion.HTTP_2);
+        VertxHttpClient first = (VertxHttpClient) builder.build();
+        VertxHttpClient cleared = (VertxHttpClient) builder.maximumHttpVersion(null).build();
+        try {
+            assertEquals(HttpVersion.HTTP_1_1, cleared.buildOptions.getProtocolVersion());
+            assertFalse(cleared.buildOptions.isUseAlpn());
+            assertEquals(HttpVersion.HTTP_2, first.buildOptions.getProtocolVersion());
+            assertTrue(first.buildOptions.isUseAlpn());
+        } finally {
+            closeClient(first);
+            closeClient(cleared);
+        }
+    }
+
+    @Test
+    public void maximumHttpVersionCopiesAndRestoresInternalOptions() throws Exception {
+        HttpClientOptions options = new HttpClientOptions().setProtocolVersion(HttpVersion.HTTP_2)
+            .setUseAlpn(true)
+            .setAlpnVersions(Collections.singletonList(HttpVersion.HTTP_2))
+            .setConnectTimeout(30000)
+            .setVerifyHost(false);
+        VertxHttpClientBuilder builder = new VertxHttpClientBuilder().httpClientOptions(options);
+        VertxHttpClient original = (VertxHttpClient) builder.build();
+        VertxHttpClient limited = (VertxHttpClient) builder.maximumHttpVersion(HttpProtocolVersion.HTTP_1_1).build();
+        VertxHttpClient cleared = (VertxHttpClient) builder.maximumHttpVersion(null).build();
+        try {
+            assertSame(options, original.buildOptions);
+            assertNotSame(options, limited.buildOptions);
+            assertEquals(HttpVersion.HTTP_1_1, limited.buildOptions.getProtocolVersion());
+            assertFalse(limited.buildOptions.isUseAlpn());
+            assertEquals(30000, limited.buildOptions.getConnectTimeout());
+            assertFalse(limited.buildOptions.isVerifyHost());
+            assertSame(options, cleared.buildOptions);
+            assertEquals(HttpVersion.HTTP_2, options.getProtocolVersion());
+            assertTrue(options.isUseAlpn());
+            assertEquals(Collections.singletonList(HttpVersion.HTTP_2), options.getAlpnVersions());
+        } finally {
+            closeClient(original);
+            closeClient(limited);
+            closeClient(cleared);
+        }
+    }
+
+    private static void closeClient(VertxHttpClient client) throws Exception {
+        client.client.close().toCompletionStage().toCompletableFuture().get(30, TimeUnit.SECONDS);
+    }
 
     @Test
     public void buildWithConfigurationNone() {
