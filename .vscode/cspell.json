@@ -269,6 +269,13 @@
   ],
   "overrides": [
     {
+      "filename": ".github/skills/management-autopr-review/**",
+      "words": [
+        "autopr",
+        "vally"
+      ]
+    },
+    {
       "filename": "**/pom.xml",
       "patterns": [
         {
