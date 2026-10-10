@@ -1,0 +1,10 @@
+{
+  "number": 12032,
+  "title": "[AutoPR azure-resourcemanager-contosonetwork]-generated-from-SDK Generation",
+  "user": {"login": "app/azure-sdk-automation"},
+  "base": {"ref": "main", "repo": {"full_name": "Azure/azure-sdk-for-java"}},
+  "head": {"sha": "1203212032120321203212032120321203212032", "repo": {"full_name": "Azure/azure-sdk-for-java"}},
+  "draft": false,
+  "body": "<!-- azsdk-autopr-description:v1:start -->\n## SDK generation details\n\n> [!NOTE]\n> This pull request was generated automatically.\n\n| Detail | Value |\n| :--- | :--- |\n| **API version** | `2026-09-30` |\n| **SDK release type** | `stable` |\n| **Pipeline run** | [SDK Generation #12345](https://dev.azure.com/azure-sdk/internal/_build/results?buildId=12345) |\n| **Release plan** | [Release plan #36838](https://azsdk-releaseplan-dashboard-hveph5aqhhcfhtgu.westus-01.azurewebsites.net/?releaseplan=36838) |\n<!-- azsdk-autopr-description:v1:end -->",
+  "changed_files": 1
+}

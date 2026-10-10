@@ -1,0 +1,10 @@
+{
+  "number": 12030,
+  "title": "[AutoPR azure-resourcemanager-contosonetwork]-generated-from-SDK Generation",
+  "user": {"login": "app/azure-sdk-automation"},
+  "base": {"ref": "main", "repo": {"full_name": "Azure/azure-sdk-for-java"}},
+  "head": {"sha": "1203012030120301203012030120301203012030", "repo": {"full_name": "Azure/azure-sdk-for-java"}},
+  "draft": false,
+  "body": "Generated from SDK Generation pipeline 12345.\n\nRelease Plan link: https://example.com/release-plan",
+  "changed_files": 1
+}
