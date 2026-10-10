@@ -36,15 +36,15 @@ public final class UpdateTelephonyBindingInput implements JsonSerializable<Updat
     private String label;
 
     /*
-     * The replacement Foundry connection name. This property is valid only for a Teams Phone Extension binding; a
+     * The replacement Foundry connection name. This property is valid only for a Teams Phone extensibility binding; a
      * Twilio binding's connection is immutable.
      */
     @Generated
     private String connectionName;
 
     /*
-     * The replacement Teams Phone Extension display phone number. Omit it to preserve the current value; use null to
-     * clear it. This property is valid only for a Teams Phone Extension binding.
+     * The replacement Teams Phone extensibility display phone number. Omit it to preserve the current value; use null
+     * to clear it. This property is valid only for a Teams Phone extensibility binding.
      */
     @Generated
     private String phoneNumber;
@@ -138,7 +138,7 @@ public final class UpdateTelephonyBindingInput implements JsonSerializable<Updat
 
     /**
      * Get the connectionName property: The replacement Foundry connection name. This property is valid only for a Teams
-     * Phone Extension binding; a Twilio binding's connection is immutable.
+     * Phone extensibility binding; a Twilio binding's connection is immutable.
      *
      * @return the connectionName value.
      */
@@ -149,7 +149,7 @@ public final class UpdateTelephonyBindingInput implements JsonSerializable<Updat
 
     /**
      * Set the connectionName property: The replacement Foundry connection name. This property is valid only for a Teams
-     * Phone Extension binding; a Twilio binding's connection is immutable.
+     * Phone extensibility binding; a Twilio binding's connection is immutable.
      *
      * @param connectionName the connectionName value to set.
      * @return the UpdateTelephonyBindingInput object itself.
@@ -162,8 +162,8 @@ public final class UpdateTelephonyBindingInput implements JsonSerializable<Updat
     }
 
     /**
-     * Get the phoneNumber property: The replacement Teams Phone Extension display phone number. Omit it to preserve the
-     * current value; use null to clear it. This property is valid only for a Teams Phone Extension binding.
+     * Get the phoneNumber property: The replacement Teams Phone extensibility display phone number. Omit it to preserve
+     * the current value; use null to clear it. This property is valid only for a Teams Phone extensibility binding.
      *
      * @return the phoneNumber value.
      */
@@ -173,8 +173,8 @@ public final class UpdateTelephonyBindingInput implements JsonSerializable<Updat
     }
 
     /**
-     * Set the phoneNumber property: The replacement Teams Phone Extension display phone number. Omit it to preserve the
-     * current value; use null to clear it. This property is valid only for a Teams Phone Extension binding.
+     * Set the phoneNumber property: The replacement Teams Phone extensibility display phone number. Omit it to preserve
+     * the current value; use null to clear it. This property is valid only for a Teams Phone extensibility binding.
      *
      * @param phoneNumber the phoneNumber value to set.
      * @return the UpdateTelephonyBindingInput object itself.

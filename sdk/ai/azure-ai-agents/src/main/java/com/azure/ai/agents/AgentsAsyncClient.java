@@ -18,6 +18,7 @@ import com.azure.ai.agents.implementation.models.GetMicrosoft365AppPackageReques
 import com.azure.ai.agents.implementation.models.PublishAgentToMicrosoft365Request;
 import com.azure.ai.agents.implementation.models.UpdateAgentFromManifestRequest;
 import com.azure.ai.agents.implementation.models.UpdateAgentRequest;
+import com.azure.ai.agents.implementation.telemetry.GenAiAgentTracing;
 import com.azure.ai.agents.implementation.utils.FileUtils;
 import com.azure.ai.agents.models.AgentBlueprintReference;
 import com.azure.ai.agents.models.AgentDefinition;
@@ -82,6 +83,8 @@ public final class AgentsAsyncClient {
 
     @Generated
     private final AgentsImpl serviceClient;
+
+    private final GenAiAgentTracing tracer;
 
     /**
      * Get an agent
@@ -1015,10 +1018,11 @@ public final class AgentsAsyncClient {
      * Initializes an instance of AgentsAsyncClient class.
      *
      * @param serviceClient the service client implementation.
+     * @param tracer the tracer used to emit GenAI spans for agent operations.
      */
-    @Generated
-    AgentsAsyncClient(AgentsImpl serviceClient) {
+    AgentsAsyncClient(AgentsImpl serviceClient, GenAiAgentTracing tracer) {
         this.serviceClient = serviceClient;
+        this.tracer = tracer;
     }
 
     /**
@@ -2253,9 +2257,10 @@ public final class AgentsAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         CreateAgentVersionRequest createAgentVersionRequestObj = new CreateAgentVersionRequest(definition);
         BinaryData createAgentVersionRequest = BinaryData.fromObject(createAgentVersionRequestObj);
-        return createAgentVersionWithResponse(agentName, createAgentVersionRequest, requestOptions)
-            .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(AgentVersionDetails.class));
+        return tracer.traceCreateAgentVersionAsync(agentName, definition,
+            (request, options) -> createAgentVersionWithResponse(agentName, request, options).flatMap(FluxUtil::toMono)
+                .map(protocolMethodData -> protocolMethodData.toObject(AgentVersionDetails.class)),
+            createAgentVersionRequest, requestOptions);
     }
 
     /**
@@ -2284,14 +2289,15 @@ public final class AgentsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AgentVersionDetails> createAgentVersion(String agentName, AgentDefinition definition,
         Map<String, String> metadata, String description) {
-        // Generated convenience method for createAgentVersionWithResponse
+        // Customized convenience method for createAgentVersionWithResponse (removed @Generated to add tracing).
         RequestOptions requestOptions = new RequestOptions();
         CreateAgentVersionRequest createAgentVersionRequestObj
             = new CreateAgentVersionRequest(definition).setMetadata(metadata).setDescription(description);
         BinaryData createAgentVersionRequest = BinaryData.fromObject(createAgentVersionRequestObj);
-        return createAgentVersionWithResponse(agentName, createAgentVersionRequest, requestOptions)
-            .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(AgentVersionDetails.class));
+        return tracer.traceCreateAgentVersionAsync(agentName, definition,
+            (request, options) -> createAgentVersionWithResponse(agentName, request, options).flatMap(FluxUtil::toMono)
+                .map(protocolMethodData -> protocolMethodData.toObject(AgentVersionDetails.class)),
+            createAgentVersionRequest, requestOptions);
     }
 
     /**
@@ -2314,12 +2320,13 @@ public final class AgentsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AgentVersionDetails> createAgentVersion(String agentName,
         CreateAgentVersionInput createAgentVersionInput) {
-        // Generated convenience method for createAgentVersionWithResponse
+        // Customized convenience method for createAgentVersionWithResponse (removed @Generated to add tracing).
         RequestOptions requestOptions = new RequestOptions();
         BinaryData createAgentVersionRequest = BinaryData.fromObject(createAgentVersionInput);
-        return createAgentVersionWithResponse(agentName, createAgentVersionRequest, requestOptions)
-            .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(AgentVersionDetails.class));
+        return tracer.traceCreateAgentVersionAsync(agentName, createAgentVersionInput.getDefinition(),
+            (request, options) -> createAgentVersionWithResponse(agentName, request, options).flatMap(FluxUtil::toMono)
+                .map(protocolMethodData -> protocolMethodData.toObject(AgentVersionDetails.class)),
+            createAgentVersionRequest, requestOptions);
     }
 
     /**
