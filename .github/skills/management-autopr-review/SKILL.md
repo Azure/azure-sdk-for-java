@@ -34,10 +34,17 @@ be read as evidence, except files under a `generated` path.
 
 - **Severity:** Warning
 
-Normalize casing and Markdown emphasis. Accept both plain
-`Release Plan link: https://example.com/release-plan` and formatted
-`**Release plan link:** [text](https://example.com/release-plan)`. Require an
-HTTP(S) URL.
+Normalize casing and Markdown emphasis. Accept either description format:
+
+- Legacy label: `Release Plan link: https://example.com/release-plan` or
+  `**Release plan link:** [text](https://example.com/release-plan)`.
+- SDK generation details table:
+  `| **Release plan** | [Release plan #123](https://example.com/release-plan) |`.
+
+Require an HTTP(S) URL in the labeled field or table row's value, as a plain
+URL or Markdown link. A label without a URL, or an unrelated URL elsewhere in
+the description, does not qualify. Do not request a legacy label when the
+table row already contains an accepted URL.
 
 Report when the PR description contains no accepted release-plan link. Cite the
 PR description and continue the remaining review passes so other high-value
