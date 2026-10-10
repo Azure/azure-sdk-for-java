@@ -39,10 +39,12 @@ class JdkHttpClient implements HttpClient {
     private final Duration responseTimeout;
     private final Duration readTimeout;
     private final boolean hasReadTimeout;
+    private final java.net.http.HttpClient.Version httpVersion;
 
     JdkHttpClient(java.net.http.HttpClient httpClient, Set<String> restrictedHeaders, Duration writeTimeout,
-        Duration responseTimeout, Duration readTimeout) {
+        Duration responseTimeout, Duration readTimeout, java.net.http.HttpClient.Version httpVersion) {
         this.jdkHttpClient = httpClient;
+        this.httpVersion = httpVersion;
         int javaVersion = getJavaVersion();
         if (javaVersion <= 11) {
             throw LOGGER.logExceptionAsError(
@@ -151,7 +153,9 @@ class JdkHttpClient implements HttpClient {
      * @return the HttpRequest
      */
     private java.net.http.HttpRequest toJdkHttpRequest(HttpRequest request, Context context) {
-        return new AzureJdkHttpRequest(request, context, restrictedHeaders, LOGGER, writeTimeout, responseTimeout);
+        // A request-level preference avoids rewriting the version on the caller's mutable native builder.
+        return new AzureJdkHttpRequest(request, context, restrictedHeaders, LOGGER, writeTimeout, responseTimeout,
+            httpVersion);
     }
 
     /**

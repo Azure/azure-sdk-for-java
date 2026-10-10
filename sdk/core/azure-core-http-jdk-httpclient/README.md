@@ -67,7 +67,6 @@ The following sections provide several code snippets covering some of the most c
 - [Restrict the Client to HTTP/1.1](#restrict-the-client-to-http11)
 - [Create a Client with HTTP/2 Support](#create-a-client-with-http2-support)
 - [Customize the Underlying Client](#customize-the-underlying-client)
-- [Advanced Configuration](#advanced-configuration)
 
 ### Create a Simple Client
 
@@ -89,12 +88,6 @@ HttpClient client = new JdkHttpClientBuilder()
     .responseTimeout(Duration.ofSeconds(60))
     .readTimeout(Duration.ofSeconds(120))
     .build();
-```
-
-To change only the connection timeout:
-
-```java readme-sample-createClientWithConnectionTimeout
-HttpClient client = new JdkHttpClientBuilder().connectionTimeout(Duration.ofSeconds(60)).build();
 ```
 
 ### Create a Client with Proxy
@@ -151,9 +144,11 @@ HttpClient client = new JdkHttpClientBuilder()
     .build();
 ```
 
-The JDK client negotiates the protocol with the server. Use `HTTP_1_1` to limit the client to HTTP/1.1. The default
-remains HTTP/1.1, including when a native JDK builder is supplied. Passing `null` clears the maximum and restores
-that default.
+The JDK client treats HTTP/2 as a preferred version with HTTP/1.1 fallback, not as an HTTP/2-only mode.
+Use `HTTP_1_1` to limit the client to HTTP/1.1. Without a supplied native builder, the default remains HTTP/1.1.
+With a native builder, an unset or cleared maximum preserves its protocol preference. An explicit maximum overrides
+the version used for requests without changing the supplied builder's version. Passing `null` clears that override;
+clients built earlier retain their configuration.
 
 ### Customize the Underlying Client
 
@@ -166,13 +161,6 @@ java.net.http.HttpClient.Builder nativeBuilder = java.net.http.HttpClient.newBui
     .executor(ForkJoinPool.commonPool());
 HttpClient client = new JdkHttpClientBuilder(nativeBuilder).build();
 ```
-
-### Advanced Configuration
-
-The native JDK client treats HTTP/2 as a preferred version with HTTP/1.1 fallback; its version setting is not an
-HTTP/2-only mode. Azure's `maximumHttpVersion` controls the resulting client version even when a native builder is
-supplied. Reactor Netty's HTTP/2-only and OkHttp's cleartext prior-knowledge examples should not be copied to this client.
-The Azure JDK builder also does not expose equivalent per-client header-size, chunk-size, or DNS-resolver controls.
 
 ## Next steps
 

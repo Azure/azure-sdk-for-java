@@ -89,8 +89,9 @@ public class JdkHttpClientBuilder {
      * {@link HttpProtocolVersion#HTTP_2} enables HTTP/2 with HTTP/1.1 fallback using the JDK client's protocol
      * negotiation.
      * <p>
-     * By default, the client uses HTTP/1.1, including when a native JDK builder is supplied. An explicit maximum
-     * overrides the native builder's protocol version. Passing null clears the maximum and restores HTTP/1.1.
+     * By default, the client uses HTTP/1.1, or the version configured on a supplied native JDK builder. An explicit
+     * maximum overrides the version used for requests without modifying the supplied builder's version. Passing null
+     * clears the maximum and restores the default or supplied native version.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -265,9 +266,14 @@ public class JdkHttpClientBuilder {
         java.net.http.HttpClient.Builder httpClientBuilder
             = this.httpClientBuilder == null ? java.net.http.HttpClient.newBuilder() : this.httpClientBuilder;
 
-        httpClientBuilder.version(maximumHttpVersion == HttpProtocolVersion.HTTP_2
-            ? java.net.http.HttpClient.Version.HTTP_2
-            : java.net.http.HttpClient.Version.HTTP_1_1);
+        java.net.http.HttpClient.Version httpVersion = maximumHttpVersion == null
+            ? null
+            : maximumHttpVersion == HttpProtocolVersion.HTTP_2
+                ? java.net.http.HttpClient.Version.HTTP_2
+                : java.net.http.HttpClient.Version.HTTP_1_1;
+        if (this.httpClientBuilder == null) {
+            httpClientBuilder.version(httpVersion == null ? java.net.http.HttpClient.Version.HTTP_1_1 : httpVersion);
+        }
 
         httpClientBuilder = httpClientBuilder.connectTimeout(getTimeout(connectionTimeout, getDefaultConnectTimeout()));
 
@@ -300,7 +306,7 @@ public class JdkHttpClientBuilder {
             }
         }
         return new JdkHttpClient(httpClientBuilder.build(), Collections.unmodifiableSet(getRestrictedHeaders()),
-            writeTimeout, responseTimeout, readTimeout);
+            writeTimeout, responseTimeout, readTimeout, httpVersion);
     }
 
     Set<String> getRestrictedHeaders() {
