@@ -12,6 +12,11 @@
 - Added `NfsFileType.BLOCK_DEVICE`, `NfsFileType.CHARACTER_DEVICE`, `NfsFileType.SOCKET` and `NfsFileType.FIFO`.
 - Added `ShareListFilesAndDirectoriesOptions.setIncludePermissions`, `setIncludeLinkCount`, `setIncludeNfsAttributes`
   and `setIncludeAll`.
+- Added support for change feed on premium file shares. Added `ShareCreateOptions.setChangeFeedEnabled`,
+  `setChangeFeedRetentionInDays` and `ShareSetPropertiesOptions.setChangeFeedEnabled`,
+  `setChangeFeedRetentionInDays` to enable and configure change feed.
+- Added `ShareProperties.isChangeFeedEnabled()`, `getChangeFeedRetentionInDays()` and
+  `getChangeFeedBlobContainerName()`.
 
 ### Breaking Changes
 
