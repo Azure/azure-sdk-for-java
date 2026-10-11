@@ -12,6 +12,8 @@
 - Added `NfsFileType.BLOCK_DEVICE`, `NfsFileType.CHARACTER_DEVICE`, `NfsFileType.SOCKET` and `NfsFileType.FIFO`.
 - Added `ShareListFilesAndDirectoriesOptions.setIncludePermissions`, `setIncludeLinkCount`, `setIncludeNfsAttributes`
   and `setIncludeAll`.
+- Added `ShareProperties.getCreationTime()` and `ShareProperties.setCreationTime(OffsetDateTime)` to expose the share
+  creation time returned in list and get properties responses.
 
 ### Breaking Changes
 
