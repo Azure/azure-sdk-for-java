@@ -3,46 +3,55 @@
 
 package com.azure.storage.blob.models;
 
-import com.azure.storage.blob.implementation.accesshelpers.SessionProviderAccessHelper;
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
+import com.azure.storage.blob.BlobServiceVersion;
+import com.azure.storage.blob.implementation.accesshelpers.SessionProviderConstructorProxy;
 import com.azure.storage.blob.implementation.util.SessionCredential;
 import com.azure.storage.blob.implementation.util.SessionRequestContext;
 import reactor.core.publisher.Mono;
 
+import java.time.Clock;
+
 /**
- * Manages session authentication for storage containers.
+ * SDK-managed base type for session providers.
  * <p>
- * Create a {@link ContainerSessionProvider} and supply it to
- * {@link SessionOptions#setSessionProvider(SessionProvider)} to share sessions across independently built clients.
- * Providers are implemented by the SDK, not by applications. Session acquisition, signing, refresh, and fallback
- * to bearer authentication are managed internally.
+ * Use {@link ContainerSessionProvider} and configure it with {@link SessionOptions}. Applications cannot implement
+ * this type.
  * @see SessionOptions
  */
 public abstract class SessionProvider {
     static {
-        SessionProviderAccessHelper.setAccessor(provider -> new SessionProviderAccessHelper() {
+        SessionProviderConstructorProxy.setAccessor(new SessionProviderConstructorProxy.SessionProviderConstructorAccessor() {
             @Override
-            public boolean isRequestEligible(HttpRequest request) {
+            public ContainerSessionProvider create(HttpPipeline pipeline, String endpoint, BlobServiceVersion version,
+                String accountName, Clock clock) {
+                return new ContainerSessionProvider(pipeline, endpoint, version, accountName, clock);
+            }
+
+            @Override
+            public boolean isRequestEligible(SessionProvider provider, HttpRequest request) {
                 return provider.isRequestEligible(request);
             }
 
             @Override
-            public Mono<SessionCredential> getSessionAsync(SessionRequestContext context) {
+            public Mono<SessionCredential> getSessionAsync(SessionProvider provider, SessionRequestContext context) {
                 return provider.getSessionAsync(context);
             }
 
             @Override
-            public SessionCredential getSession(SessionRequestContext context) {
+            public SessionCredential getSession(SessionProvider provider, SessionRequestContext context) {
                 return provider.getSession(context);
             }
 
             @Override
-            public boolean invalidateSession(SessionRequestContext context, SessionCredential credential) {
+            public boolean invalidateSession(SessionProvider provider, SessionRequestContext context,
+                SessionCredential credential) {
                 return provider.invalidateSession(context, credential);
             }
 
             @Override
-            public void refreshSession(SessionRequestContext context) {
+            public void refreshSession(SessionProvider provider, SessionRequestContext context) {
                 provider.refreshSession(context);
             }
         });

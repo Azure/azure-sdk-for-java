@@ -33,7 +33,6 @@ import com.azure.storage.blob.models.SessionOptions.SessionMode;
 import com.azure.storage.blob.models.SessionProvider;
 import com.azure.storage.blob.implementation.util.SessionRequestContext;
 import com.azure.storage.blob.models.TestSessionProvider;
-import com.azure.storage.blob.models.ContainerSessionProvider;
 import com.azure.storage.blob.specialized.AppendBlobClient;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.blob.specialized.PageBlobClient;
@@ -860,30 +859,6 @@ public class BuilderHelperTests {
         testContext.assertOnlyDataResponseWasLogged();
     }
 
-    @ParameterizedTest
-    @EnumSource(value = HttpLogDetailLevel.class, names = { "BODY", "BODY_AND_HEADERS" })
-    public void suppliedProviderResponseBodyIsNotLoggedSync(HttpLogDetailLevel logLevel) {
-        SessionLoggingTestContext testContext = createSessionLoggingTestContext(logLevel, true);
-        try (HttpResponse response = testContext.pipeline
-            .sendSync(new HttpRequest(HttpMethod.GET, ENDPOINT + "container/blob"), Context.NONE)) {
-            assertEquals(200, response.getStatusCode());
-        }
-        testContext.assertOnlyDataResponseWasLogged();
-    }
-
-    @ParameterizedTest
-    @EnumSource(value = HttpLogDetailLevel.class, names = { "BODY", "BODY_AND_HEADERS" })
-    public void suppliedProviderResponseBodyIsNotLoggedAsync(HttpLogDetailLevel logLevel) {
-        SessionLoggingTestContext testContext = createSessionLoggingTestContext(logLevel, true);
-        StepVerifier.create(testContext.pipeline.send(new HttpRequest(HttpMethod.GET, ENDPOINT + "container/blob")))
-            .assertNext(response -> {
-                assertEquals(200, response.getStatusCode());
-                response.close();
-            })
-            .verifyComplete();
-        testContext.assertOnlyDataResponseWasLogged();
-    }
-
     @Test
     public void customEndpointRequiresAccountNameForDefaultSessionProvider() {
         assertThrows(IllegalArgumentException.class,
@@ -949,11 +924,6 @@ public class BuilderHelperTests {
     }
 
     private static SessionLoggingTestContext createSessionLoggingTestContext(HttpLogDetailLevel logLevel) {
-        return createSessionLoggingTestContext(logLevel, false);
-    }
-
-    private static SessionLoggingTestContext createSessionLoggingTestContext(HttpLogDetailLevel logLevel,
-        boolean suppliedProvider) {
         List<String> loggedBodies = Collections.synchronizedList(new ArrayList<>());
         AtomicReference<BufferTrackingHttpResponse> sessionResponse = new AtomicReference<>();
         AtomicReference<BufferTrackingHttpResponse> dataResponse = new AtomicReference<>();
@@ -978,14 +948,6 @@ public class BuilderHelperTests {
             });
 
         SessionOptions sessionOptions = new SessionOptions().setSessionMode(SessionMode.ENABLED);
-        if (suppliedProvider) {
-            sessionOptions
-                .setSessionProvider(new ContainerSessionProvider(new BlobServiceClientBuilder().endpoint(ENDPOINT)
-                    .credential(new MockTokenCredential())
-                    .httpClient(httpClient)
-                    .httpLogOptions(logOptions)
-                    .buildClient()));
-        }
         HttpPipeline pipeline
             = BuilderHelper.buildPipeline(null, new MockTokenCredential(), null, null, ENDPOINT, REQUEST_RETRY_OPTIONS,
                 null, logOptions, new ClientOptions(), httpClient, new ArrayList<>(), new ArrayList<>(), null, null,

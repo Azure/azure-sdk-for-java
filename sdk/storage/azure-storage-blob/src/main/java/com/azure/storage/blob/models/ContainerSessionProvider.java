@@ -23,7 +23,6 @@ import com.azure.storage.blob.implementation.models.AuthenticationType;
 import com.azure.storage.blob.implementation.models.CreateSessionConfiguration;
 import com.azure.storage.blob.implementation.models.CreateSessionResponse;
 import com.azure.storage.blob.implementation.models.SessionCredentials;
-import com.azure.storage.blob.implementation.accesshelpers.SessionProviderAccessHelper;
 import com.azure.storage.blob.implementation.util.BuilderHelper;
 import com.azure.storage.blob.implementation.util.SessionCredential;
 import com.azure.storage.blob.implementation.util.SessionRequestContext;
@@ -40,36 +39,28 @@ import java.util.concurrent.ConcurrentHashMap;
 import static com.azure.storage.common.implementation.Constants.HeaderConstants.ERROR_CODE_HEADER_NAME;
 
 /**
- * An SDK-managed, thread-safe session provider for one storage account's Blob endpoint.
+ * An SDK-managed, thread-safe provider that caches session credentials per container.
  * <p>
- * Share this instance through {@link SessionOptions#setSessionProvider(SessionProvider)} across independently built
- * Blob or Data Lake clients to retain per-container sessions, refresh state, and acquisition cooldowns when replacing
- * clients. All clients must target the same account endpoint and use the same network context as this provider
- * (including transport, proxy, and network-affecting policies).
+ * Share this provider across Blob or Data Lake clients using the same account endpoint and network context.
  * <p>
- * Sessions are acquired on demand, cached per container, and refreshed in the background before expiration.
- * Inactive containers are evicted after five minutes. Acquisition failures eligible for bearer fallback are cached
- * for five minutes and shared by all clients using this provider. Rejected sessions are invalidated only if current.
+ * The provider uses the default HTTP transport and client configuration to acquire sessions. Enable sessions on
+ * consuming clients through {@link SessionOptions}.
  * <p>
- * Sessions remain disabled unless {@link SessionOptions.SessionMode#ENABLED} is selected on each client.
- * For custom domains, set {@link SessionOptions#setAccountName(String)} on each client.
+ * Session authentication is disabled by default. For custom domains, set
+ * {@link SessionOptions#setAccountName(String)} on consuming clients.
  *
- * <p><strong>Share a provider across independent clients</strong></p>
- * <!-- src_embed com.azure.storage.blob.models.ContainerSessionProvider.share -->
+ * <p><strong>Configure session authentication</strong></p>
+ * <!-- src_embed com.azure.storage.blob.models.ContainerSessionProvider.create -->
  * <pre>
  * String endpoint = &quot;https:&#47;&#47;account.blob.core.windows.net&quot;;
- * HttpClient transport = HttpClient.createDefault&#40;&#41;;
- * BlobServiceClient acquisitionClient = new BlobServiceClientBuilder&#40;&#41;
- *     .endpoint&#40;endpoint&#41;.credential&#40;credential&#41;.httpClient&#40;transport&#41;.buildClient&#40;&#41;;
- * ContainerSessionProvider provider = new ContainerSessionProvider&#40;acquisitionClient&#41;;
+ * ContainerSessionProvider provider = new ContainerSessionProvider&#40;endpoint, credential&#41;;
  * SessionOptions sessions = new SessionOptions&#40;&#41;.setSessionMode&#40;SessionOptions.SessionMode.ENABLED&#41;
  *     .setSessionProvider&#40;provider&#41;;
- * BlobServiceClient first = new BlobServiceClientBuilder&#40;&#41;
- *     .endpoint&#40;endpoint&#41;.credential&#40;credential&#41;.httpClient&#40;transport&#41;.sessionOptions&#40;sessions&#41;.buildClient&#40;&#41;;
- * BlobServiceAsyncClient second = new BlobServiceClientBuilder&#40;&#41;
- *     .endpoint&#40;endpoint&#41;.credential&#40;credential&#41;.httpClient&#40;transport&#41;.sessionOptions&#40;sessions&#41;.buildAsyncClient&#40;&#41;;
+ *
+ * BlobServiceClient client = new BlobServiceClientBuilder&#40;&#41;.endpoint&#40;endpoint&#41;.credential&#40;credential&#41;
+ *     .sessionOptions&#40;sessions&#41;.buildClient&#40;&#41;;
  * </pre>
- * <!-- end com.azure.storage.blob.models.ContainerSessionProvider.share -->
+ * <!-- end com.azure.storage.blob.models.ContainerSessionProvider.create -->
  */
 public final class ContainerSessionProvider extends SessionProvider {
 
@@ -87,13 +78,9 @@ public final class ContainerSessionProvider extends SessionProvider {
     private final Clock clock;
     private final ConcurrentHashMap<String, ContainerSessionCache> containerSessionCaches = new ConcurrentHashMap<>();
 
-    static {
-        SessionProviderAccessHelper.setFactory(ContainerSessionProvider::new);
-    }
-
     /**
-     * Creates a provider using the default HTTP transport and client configuration.
-     * Container, blob, and query components are removed; supported account-path endpoints retain their account path.
+     * Creates a provider using the default transport and client configuration. The endpoint is normalized to the
+     * account endpoint.
      *
      * @param endpoint The storage account's HTTPS Blob endpoint.
      * @param credential The token credential used to acquire sessions.
@@ -101,28 +88,18 @@ public final class ContainerSessionProvider extends SessionProvider {
      * @throws IllegalArgumentException if the endpoint is invalid or does not use HTTPS.
      */
     public ContainerSessionProvider(String endpoint, TokenCredential credential) {
-        this(new BlobServiceClientBuilder()
-            .endpoint(BuilderHelper.getSessionEndpoint(Objects.requireNonNull(endpoint, "'endpoint' cannot be null.")))
-            .credential(Objects.requireNonNull(credential, "'credential' cannot be null."))
-            .buildClient());
+        this(createSessionPipeline(endpoint, credential),
+            BuilderHelper.getSessionEndpoint(Objects.requireNonNull(endpoint, "'endpoint' cannot be null.")),
+            BlobServiceVersion.getLatest(), null, Clock.systemUTC());
     }
 
-    /**
-     * Creates a provider reusing a configured client's transport, policies, retry configuration, audience, and service
-     * version. The client must use the SDK's token-credential authentication and have sessions disabled; anonymous,
-     * shared-key, SAS, and session-authenticated pipelines are rejected.
-     * <p>
-     * To protect session secrets, HTTP logging policies (including custom HTTP loggers) are removed from the acquisition
-     * pipeline. Logging on the supplied client is unchanged. Other custom policies are retained and must not log
-     * session response bodies. The same provider serves both synchronous and asynchronous clients.
-     *
-     * @param client The configured, session-disabled Blob service client.
-     * @throws NullPointerException if client is null.
-     * @throws IllegalArgumentException if the client does not use a supported HTTPS OAuth pipeline.
-     */
-    public ContainerSessionProvider(BlobServiceClient client) {
-        this(BuilderHelper.createSessionPipeline(Objects.requireNonNull(client, "'client' cannot be null.")),
-            client.getAccountUrl(), client.getServiceVersion(), null, Clock.systemUTC());
+    private static HttpPipeline createSessionPipeline(String endpoint, TokenCredential credential) {
+        String sessionEndpoint = BuilderHelper.getSessionEndpoint(Objects.requireNonNull(endpoint,
+            "'endpoint' cannot be null."));
+        BlobServiceClient client = new BlobServiceClientBuilder().endpoint(sessionEndpoint)
+            .credential(Objects.requireNonNull(credential, "'credential' cannot be null."))
+            .buildClient();
+        return BuilderHelper.createSessionPipeline(client);
     }
 
     ContainerSessionProvider(HttpPipeline bearerPipeline, String url, BlobServiceVersion serviceVersion,

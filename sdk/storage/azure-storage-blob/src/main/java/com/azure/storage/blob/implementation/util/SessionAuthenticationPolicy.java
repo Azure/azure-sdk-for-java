@@ -13,7 +13,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobUrlParts;
-import com.azure.storage.blob.implementation.accesshelpers.SessionProviderAccessHelper;
+import com.azure.storage.blob.implementation.accesshelpers.SessionProviderConstructorProxy;
 import com.azure.storage.blob.models.SessionOptions;
 import com.azure.storage.blob.models.SessionOptions.SessionMode;
 import com.azure.storage.blob.models.SessionProvider;
@@ -46,13 +46,15 @@ import java.util.Objects;
  */
 final class SessionAuthenticationPolicy implements HttpPipelinePolicy {
     private static final ClientLogger LOGGER = new ClientLogger(SessionAuthenticationPolicy.class);
+    private static final SessionProviderConstructorProxy.SessionProviderConstructorAccessor SESSION_PROVIDER_ACCESSOR
+        = SessionProviderConstructorProxy.getAccessor();
     private static final HttpHeaderName X_MS_AUTH_INFO = HttpHeaderName.fromString("x-ms-auth-info");
     private static final HttpHeaderName X_MS_DATE = HttpHeaderName.fromString("x-ms-date");
     private static final String SESSION_EXPIRING = "session_expiring";
     private static final String SESSION_PREFIX = "Session ";
 
     private final StorageBearerTokenChallengeAuthorizationPolicy bearerPolicy;
-    private final SessionProviderAccessHelper sessionProvider;
+    private final SessionProvider sessionProvider;
     private final SessionMode sessionMode;
     private final String accountName;
     private final Clock clock;
@@ -80,8 +82,7 @@ final class SessionAuthenticationPolicy implements HttpPipelinePolicy {
     SessionAuthenticationPolicy(StorageBearerTokenChallengeAuthorizationPolicy bearerPolicy,
         SessionProvider sessionProvider, SessionOptions sessionOptions, Clock clock) {
         this.bearerPolicy = Objects.requireNonNull(bearerPolicy, "'bearerPolicy' cannot be null.");
-        this.sessionProvider = SessionProviderAccessHelper
-            .getInternal(Objects.requireNonNull(sessionProvider, "'sessionProvider' cannot be null."));
+        this.sessionProvider = Objects.requireNonNull(sessionProvider, "'sessionProvider' cannot be null.");
         Objects.requireNonNull(sessionOptions, "'sessionOptions' cannot be null.");
         this.sessionMode = ModelHelper.resolveSessionMode(sessionOptions.getSessionMode());
         this.accountName = sessionOptions.getAccountName();
@@ -98,7 +99,7 @@ final class SessionAuthenticationPolicy implements HttpPipelinePolicy {
         HttpPipelineNextPolicy retryNext = next.clone();
         Mono<SessionCredential> sessionMono;
         try {
-            sessionMono = sessionProvider.getSessionAsync(requestContext);
+            sessionMono = SESSION_PROVIDER_ACCESSOR.getSessionAsync(sessionProvider, requestContext);
         } catch (RuntimeException ex) {
             handleSessionAcquisitionFailure(ex);
             return bearerPolicy.process(context, next);
@@ -124,7 +125,7 @@ final class SessionAuthenticationPolicy implements HttpPipelinePolicy {
         HttpPipelineNextSyncPolicy retryNext = next.clone();
         SessionCredential session;
         try {
-            session = sessionProvider.getSession(requestContext);
+            session = SESSION_PROVIDER_ACCESSOR.getSession(sessionProvider, requestContext);
         } catch (RuntimeException ex) {
             handleSessionAcquisitionFailure(ex);
             return bearerPolicy.processSync(context, next);
@@ -143,7 +144,7 @@ final class SessionAuthenticationPolicy implements HttpPipelinePolicy {
             return null;
         }
 
-        if (!sessionProvider.isRequestEligible(context.getHttpRequest())) {
+        if (!SESSION_PROVIDER_ACCESSOR.isRequestEligible(sessionProvider, context.getHttpRequest())) {
             return null;
         }
 
@@ -241,13 +242,14 @@ final class SessionAuthenticationPolicy implements HttpPipelinePolicy {
      * request can acquire a new session. A credential already replaced by a concurrent refresh is left unchanged.
      */
     private void handleSessionRejection(SessionRequestContext requestContext, SessionCredential session) {
-        logSessionInvalidation(requestContext, sessionProvider.invalidateSession(requestContext, session));
+        logSessionInvalidation(requestContext,
+            SESSION_PROVIDER_ACCESSOR.invalidateSession(sessionProvider, requestContext, session));
     }
 
     private void handleSessionExpiringHeader(HttpResponse response, SessionRequestContext requestContext) {
         String authInfo = response.getHeaderValue(X_MS_AUTH_INFO);
         if (authInfo != null && authInfo.contains(SESSION_EXPIRING)) {
-            sessionProvider.refreshSession(requestContext);
+            SESSION_PROVIDER_ACCESSOR.refreshSession(sessionProvider, requestContext);
         }
     }
 

@@ -36,7 +36,7 @@ import com.azure.storage.blob.models.BlobAudience;
 import com.azure.storage.blob.models.SessionOptions;
 import com.azure.storage.blob.models.SessionOptions.SessionMode;
 import com.azure.storage.blob.models.SessionProvider;
-import com.azure.storage.blob.implementation.accesshelpers.SessionProviderAccessHelper;
+import com.azure.storage.blob.implementation.accesshelpers.SessionProviderConstructorProxy;
 import com.azure.storage.blob.BlobServiceClient;
 import java.time.Clock;
 import com.azure.storage.common.StorageSharedKeyCredential;
@@ -226,8 +226,9 @@ public final class BuilderHelper {
         HttpLoggingPolicy sessionLoggingPolicy = createSessionLoggingPolicy(logOptions);
         bearerPolicies.replaceAll(policy -> policy instanceof HttpLoggingPolicy ? sessionLoggingPolicy : policy);
 
-        return SessionProviderAccessHelper.create(createPipeline(bearerPolicies, httpClient, clientOptions), endpoint,
-            serviceVersion, accountName, Clock.systemUTC());
+        return SessionProviderConstructorProxy.getAccessor()
+            .create(createPipeline(bearerPolicies, httpClient, clientOptions), endpoint, serviceVersion, accountName,
+                Clock.systemUTC());
     }
 
     /**
@@ -254,8 +255,9 @@ public final class BuilderHelper {
     }
 
     /**
-     * Copies a configured OAuth client's pipeline, excluding HTTP logging to protect session secrets.
-     * @param client The session-disabled OAuth client.
+     * Copies an OAuth client's pipeline for session acquisition, excluding HTTP logging to protect session secrets.
+     * The CreateSession request is not eligible for session authentication and uses the bearer policy.
+     * @param client The HTTPS OAuth client.
      * @return The session acquisition pipeline.
      */
     public static HttpPipeline createSessionPipeline(BlobServiceClient client) {
@@ -264,12 +266,11 @@ public final class BuilderHelper {
         List<HttpPipelinePolicy> policies = new ArrayList<>();
         for (int i = 0; i < pipeline.getPolicyCount(); i++) {
             HttpPipelinePolicy policy = pipeline.getPolicy(i);
-            if (policy instanceof SessionAuthenticationPolicy
-                || policy instanceof StorageSharedKeyCredentialPolicy
-                || policy instanceof AzureSasCredentialPolicy) {
-                throw new IllegalArgumentException("The session provider requires a session-disabled OAuth client.");
+            if (policy instanceof StorageSharedKeyCredentialPolicy || policy instanceof AzureSasCredentialPolicy) {
+                throw new IllegalArgumentException("The session provider requires an HTTPS OAuth client without SAS.");
             }
-            bearer |= policy instanceof StorageBearerTokenChallengeAuthorizationPolicy;
+            bearer |= policy instanceof StorageBearerTokenChallengeAuthorizationPolicy
+                || policy instanceof SessionAuthenticationPolicy;
             if (!(policy instanceof HttpLoggingPolicy)) {
                 policies.add(policy);
             }

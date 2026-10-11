@@ -13,9 +13,9 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Context;
-import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.storage.blob.BlobServiceVersion;
+import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.storage.blob.implementation.util.SessionCredential;
 import com.azure.storage.blob.implementation.util.SessionRequestContext;
 import org.junit.jupiter.api.BeforeEach;
@@ -62,6 +62,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * {@link ContainerSessionProviderTests} covers session acquisition through the service client; these tests
  * focus on cache timing, returned credentials, and CreateSession call counts. Per-container acquisition
  * cooldown is shared across independently constructed client pipelines.
+ * Independent-client sharing tests use the session provider's injected transport.
  */
 public class ContainerSessionProviderCacheTest {
 
@@ -91,12 +92,14 @@ public class ContainerSessionProviderCacheTest {
 
     @Test
     public void independentSyncClientsShareSessionsAndInvalidationAcrossReplacement() {
+        configureTestProvider();
         enqueueSessionResponse(CONTAINER_A, FIRST_TOKEN, now().plusMinutes(20));
         enqueueSessionResponse(CONTAINER_B, "container-b-token", now().plusMinutes(20));
         enqueueSessionResponse(CONTAINER_A, SECOND_TOKEN, now().plusMinutes(20));
         HttpPipeline first = independentClientPipeline();
         HttpPipeline second = independentClientPipeline();
 
+        assertEquals(0, httpClient.getRequestCount(CONTAINER_A));
         assertSyncToken(first, CONTAINER_A, FIRST_TOKEN);
         assertSyncToken(second, CONTAINER_A, FIRST_TOKEN);
         assertSyncToken(second, CONTAINER_B, "container-b-token");
@@ -113,12 +116,14 @@ public class ContainerSessionProviderCacheTest {
 
     @Test
     public void independentAsyncClientsShareSessionsAndInvalidationAcrossReplacement() {
+        configureTestProvider();
         enqueueSessionResponse(CONTAINER_A, FIRST_TOKEN, now().plusMinutes(20));
         enqueueSessionResponse(CONTAINER_B, "container-b-token", now().plusMinutes(20));
         enqueueSessionResponse(CONTAINER_A, SECOND_TOKEN, now().plusMinutes(20));
         HttpPipeline first = independentAsyncClientPipeline();
         HttpPipeline second = independentAsyncClientPipeline();
 
+        assertEquals(0, httpClient.getRequestCount(CONTAINER_A));
         assertAsyncToken(first, CONTAINER_A, FIRST_TOKEN);
         assertAsyncToken(second, CONTAINER_A, FIRST_TOKEN);
         assertAsyncToken(second, CONTAINER_B, "container-b-token");
@@ -130,6 +135,31 @@ public class ContainerSessionProviderCacheTest {
         assertAsyncToken(first, CONTAINER_B, "container-b-token");
         assertEquals(2, httpClient.getRequestCount(CONTAINER_A));
         assertEquals(1, httpClient.getRequestCount(CONTAINER_B));
+    }
+
+    @Test
+    public void providerSharesSessionsBetweenSyncAndAsyncClients() {
+        configureTestProvider();
+        enqueueSessionResponse(CONTAINER_A, FIRST_TOKEN, now().plusMinutes(20));
+        enqueueSessionResponse(CONTAINER_A, SECOND_TOKEN, now().plusMinutes(20));
+        HttpPipeline sync = independentClientPipeline();
+        HttpPipeline async = independentAsyncClientPipeline();
+
+        assertSyncToken(sync, CONTAINER_A, FIRST_TOKEN);
+        assertAsyncToken(async, CONTAINER_A, FIRST_TOKEN);
+        assertEquals(1, httpClient.getRequestCount(CONTAINER_A));
+        httpClient.rejectNextSession = true;
+        assertAsyncToken(async, CONTAINER_A, null);
+        assertSyncToken(sync, CONTAINER_A, SECOND_TOKEN);
+        assertAsyncToken(async, CONTAINER_A, SECOND_TOKEN);
+        assertEquals(2, httpClient.getRequestCount(CONTAINER_A));
+    }
+
+    private void configureTestProvider() {
+        clock = new MutableClock(Instant.now());
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(httpClient).build();
+        provider = new ContainerSessionProvider(pipeline, "https://" + ACCOUNT_NAME + ".blob.core.windows.net",
+            BlobServiceVersion.getLatest(), ACCOUNT_NAME, clock);
     }
 
     @ParameterizedTest

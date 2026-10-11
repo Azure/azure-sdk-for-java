@@ -9,11 +9,12 @@ import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.credential.AccessToken;
-import com.azure.core.credential.TokenCredential;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.test.http.NoOpHttpClient;
 import com.azure.core.test.utils.MockTokenCredential;
+import com.azure.core.util.Context;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.storage.blob.implementation.util.BuilderHelper;
@@ -32,6 +33,8 @@ import reactor.test.StepVerifier;
 
 import java.time.OffsetDateTime;
 import java.time.Clock;
+import java.time.Instant;
+import java.time.ZoneOffset;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.lang.reflect.Modifier;
@@ -43,6 +46,11 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * Small, focused tests for the internal {@link SessionProvider} operations implemented by
@@ -60,6 +68,11 @@ public class SessionProviderTests {
         assertTrue(Modifier.isFinal(ContainerSessionProvider.class.getModifiers()));
         assertEquals(0, SessionProvider.class.getConstructors().length);
         assertEquals(0, SessionProvider.class.getDeclaredConstructor().getModifiers());
+        assertTrue(Modifier.isFinal(
+            com.azure.storage.blob.implementation.accesshelpers.SessionProviderConstructorProxy.class.getModifiers()));
+        assertEquals(Modifier.PRIVATE,
+            com.azure.storage.blob.implementation.accesshelpers.SessionProviderConstructorProxy.class
+                .getDeclaredConstructor().getModifiers());
         for (Class<?> type : new Class<?>[] { SessionProvider.class, ContainerSessionProvider.class }) {
             for (java.lang.reflect.Method method : type.getMethods()) {
                 assertEquals(Object.class, method.getDeclaringClass(), method.toString());
@@ -72,29 +85,105 @@ public class SessionProviderTests {
     }
 
     @Test
-    public void publicConstructionValidatesArgumentsAndOAuth() {
+    public void accessorInitializesAndCreatesProviderWithSuppliedConfiguration() {
+        com.azure.storage.blob.implementation.accesshelpers.SessionProviderConstructorProxy
+            .SessionProviderConstructorAccessor accessor
+            = com.azure.storage.blob.implementation.accesshelpers.SessionProviderConstructorProxy.getAccessor();
+        assertNotNull(accessor);
+        Clock clock = Clock.fixed(Instant.parse("2026-06-19T00:00:00Z"), ZoneOffset.UTC);
+        BlobServiceVersion version = BlobServiceVersion.values()[0];
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(request -> {
+            assertEquals("https://custom.example.com/container?restype=container&comp=session",
+                request.getUrl().toString());
+            assertEquals(version.getVersion(),
+                request.getHeaders().getValue(HttpHeaderName.fromString("x-ms-version")));
+            String body = "<CreateSessionResult><Id>id</Id><AuthenticationType>HMAC</AuthenticationType>"
+                + "<Credentials><SessionToken>shared</SessionToken><SessionKey>a2V5</SessionKey>"
+                + "</Credentials></CreateSessionResult>";
+            return Mono.just(new MockHttpResponse(request, 201, body.getBytes(StandardCharsets.UTF_8))
+                .addHeader("Content-Type", "application/xml"));
+        }).build();
+        ContainerSessionProvider provider
+            = accessor.create(pipeline, "https://custom.example.com", version, "signing-account", clock);
+
+        SessionCredential session
+            = accessor.getSession(provider, new SessionRequestContext().setContainerName("container"));
+        assertEquals("shared", session.getSessionToken());
+        assertEquals("signing-account", session.getAccountName());
+        assertEquals(OffsetDateTime.now(clock).plusMinutes(5), session.getExpiresAt());
+        assertNotSame(provider,
+            accessor.create(pipeline, "https://custom.example.com", version, "signing-account", clock));
+        assertSame(accessor,
+            com.azure.storage.blob.implementation.accesshelpers.SessionProviderConstructorProxy.getAccessor());
+    }
+
+    @Test
+    public void sharedAccessorUsesSuppliedProviderSync() {
+        com.azure.storage.blob.implementation.accesshelpers.SessionProviderConstructorProxy
+            .SessionProviderConstructorAccessor accessor
+            = com.azure.storage.blob.implementation.accesshelpers.SessionProviderConstructorProxy.getAccessor();
+        TestSessionProvider first = mock(TestSessionProvider.class);
+        TestSessionProvider second = mock(TestSessionProvider.class);
+        HttpRequest request = new HttpRequest(HttpMethod.GET, "https://account.blob.core.windows.net/container/blob");
+        SessionRequestContext context = new SessionRequestContext().setContainerName("container");
+        SessionCredential credential
+            = new SessionCredential("token", "a2V5", OffsetDateTime.now().plusMinutes(5), "account");
+        when(first.isRequestEligible(request)).thenReturn(true);
+        when(first.getSession(context)).thenReturn(credential);
+        when(first.invalidateSession(context, credential)).thenReturn(true);
+
+        assertTrue(accessor.isRequestEligible(first, request));
+        assertFalse(accessor.isRequestEligible(second, request));
+        assertSame(credential, accessor.getSession(first, context));
+        assertNull(accessor.getSession(second, context));
+        assertTrue(accessor.invalidateSession(first, context, credential));
+        assertFalse(accessor.invalidateSession(second, context, credential));
+        accessor.refreshSession(first, context);
+        accessor.refreshSession(second, context);
+
+        verify(first).isRequestEligible(request);
+        verify(second).isRequestEligible(request);
+        verify(first).getSession(context);
+        verify(second).getSession(context);
+        verify(first).invalidateSession(context, credential);
+        verify(second).invalidateSession(context, credential);
+        verify(first).refreshSession(context);
+        verify(second).refreshSession(context);
+        assertSame(accessor,
+            com.azure.storage.blob.implementation.accesshelpers.SessionProviderConstructorProxy.getAccessor());
+    }
+
+    @Test
+    public void sharedAccessorUsesSuppliedProviderAsync() {
+        com.azure.storage.blob.implementation.accesshelpers.SessionProviderConstructorProxy
+            .SessionProviderConstructorAccessor accessor
+            = com.azure.storage.blob.implementation.accesshelpers.SessionProviderConstructorProxy.getAccessor();
+        TestSessionProvider first = mock(TestSessionProvider.class);
+        TestSessionProvider second = mock(TestSessionProvider.class);
+        SessionRequestContext context = new SessionRequestContext().setContainerName("container");
+        SessionCredential credential
+            = new SessionCredential("token", "a2V5", OffsetDateTime.now().plusMinutes(5), "account");
+        when(first.getSessionAsync(context)).thenReturn(Mono.just(credential));
+        when(second.getSessionAsync(context)).thenReturn(Mono.empty());
+
+        StepVerifier.create(accessor.getSessionAsync(first, context)).expectNext(credential).verifyComplete();
+        StepVerifier.create(accessor.getSessionAsync(second, context)).verifyComplete();
+        verify(first).getSessionAsync(context);
+        verify(second).getSessionAsync(context);
+        assertSame(accessor,
+            com.azure.storage.blob.implementation.accesshelpers.SessionProviderConstructorProxy.getAccessor());
+    }
+
+    @Test
+    public void publicConstructionValidatesEndpointAndCredential() {
         MockTokenCredential credential = new MockTokenCredential();
         assertNotNull(
             new ContainerSessionProvider("https://account.blob.core.windows.net/c/b?sig=removed", credential));
         assertThrows(NullPointerException.class, () -> new ContainerSessionProvider(null, credential));
         assertThrows(NullPointerException.class,
             () -> new ContainerSessionProvider("https://account.blob.core.windows.net", null));
-        assertThrows(NullPointerException.class, () -> new ContainerSessionProvider((BlobServiceClient) null));
         assertThrows(IllegalArgumentException.class,
             () -> new ContainerSessionProvider("http://account.blob.core.windows.net", credential));
-
-        BlobServiceClientBuilder builder
-            = new BlobServiceClientBuilder().endpoint("https://account.blob.core.windows.net")
-                .httpClient(new NoOpHttpClient());
-        assertThrows(IllegalArgumentException.class, () -> new ContainerSessionProvider(builder.buildClient()));
-        assertThrows(IllegalArgumentException.class, () -> new ContainerSessionProvider(
-            builder.credential(new StorageSharedKeyCredential("account", "a2V5")).buildClient()));
-        assertThrows(IllegalArgumentException.class,
-            () -> new ContainerSessionProvider(builder.sasToken("sig=test").buildClient()));
-        assertThrows(IllegalArgumentException.class,
-            () -> new ContainerSessionProvider(builder.credential(credential)
-                .sessionOptions(new SessionOptions().setSessionMode(SessionOptions.SessionMode.ENABLED))
-                .buildClient()));
     }
 
     @ParameterizedTest
@@ -113,66 +202,26 @@ public class SessionProviderTests {
         assertFalse(
             provider.isRequestEligible(new HttpRequest(HttpMethod.GET, endpoint + "/container/blob?comp=list")));
         assertFalse(provider.isRequestEligible(new HttpRequest(HttpMethod.PUT, endpoint + "/container/blob")));
+        assertFalse(provider.isRequestEligible(new HttpRequest(HttpMethod.POST, endpoint + "/container?comp=session")));
     }
 
     @Test
-    public void configuredClientReusesTransportPoliciesRetryAudienceAndVersionSync() {
-        AtomicInteger sends = new AtomicInteger();
-        ContainerSessionProvider provider = configuredProvider(sends);
-        SessionCredential session = provider
-            .getSession(new SessionRequestContext().setContainerName("container").setAccountName("custom-account"));
-        assertEquals("custom-account", session.getAccountName());
-        assertEquals(2, sends.get());
-    }
-
-    @Test
-    public void configuredClientReusesTransportPoliciesRetryAudienceAndVersionAsync() {
-        AtomicInteger sends = new AtomicInteger();
-        ContainerSessionProvider provider = configuredProvider(sends);
-        StepVerifier
-            .create(provider.getSessionAsync(
-                new SessionRequestContext().setContainerName("container").setAccountName("custom-account")))
-            .assertNext(session -> assertEquals("custom-account", session.getAccountName()))
-            .verifyComplete();
-        assertEquals(2, sends.get());
-    }
-
-    private static ContainerSessionProvider configuredProvider(AtomicInteger sends) {
-        BlobServiceVersion version = BlobServiceVersion.values()[0];
-        TokenCredential credential = request -> {
-            assertEquals("https://account.blob.core.windows.net/.default", request.getScopes().get(0));
-            return Mono.just(new AccessToken("test-token", OffsetDateTime.now().plusHours(1)));
-        };
-        HttpClient transport = request -> {
-            assertEquals("https://custom.example.com/container?restype=container&comp=session",
-                request.getUrl().toString());
-            assertEquals("bound-network", request.getHeaders().getValue(HttpHeaderName.fromString("x-test-network")));
-            assertEquals(version.getVersion(),
-                request.getHeaders().getValue(HttpHeaderName.fromString("x-ms-version")));
-            assertEquals("Bearer test-token", request.getHeaders().getValue(HttpHeaderName.AUTHORIZATION));
-            if (sends.incrementAndGet() == 1) {
-                return Mono.just(new MockHttpResponse(request, 500));
-            }
-            String body = "<CreateSessionResult><Id>id</Id><AuthenticationType>HMAC</AuthenticationType>"
-                + "<Credentials><SessionToken>shared</SessionToken><SessionKey>a2V5</SessionKey>"
-                + "</Credentials></CreateSessionResult>";
-            return Mono.just(new MockHttpResponse(request, 201, body.getBytes(StandardCharsets.UTF_8))
-                .addHeader("Content-Type", "application/xml"));
-        };
-        BlobServiceClient client = new BlobServiceClientBuilder().endpoint("https://custom.example.com")
-            .credential(credential)
-            .httpClient(transport)
-            .serviceVersion(version)
-            .audience(BlobAudience.createBlobServiceAccountAudience("account"))
-            .retryOptions(new RequestRetryOptions(RetryPolicyType.FIXED, 2, 30, 1L, 1L, null))
-            .addPolicy((context, next) -> {
-                context.getHttpRequest().setHeader("x-test-network", "bound-network");
-                return next.process();
+    public void createSessionPostUsesBearerEvenWhenSessionsAreEnabled() throws Exception {
+        BlobServiceClient client = new BlobServiceClientBuilder().endpoint("https://account.blob.core.windows.net")
+            .credential(new MockTokenCredential())
+            .httpClient(request -> {
+                assertTrue(request.getHeaders().getValue(HttpHeaderName.AUTHORIZATION).startsWith("Bearer "));
+                return Mono.just(new MockHttpResponse(request, 201));
             })
+            .sessionOptions(new SessionOptions().setSessionMode(SessionOptions.SessionMode.ENABLED))
             .buildClient();
-        HttpPipeline acquisition = BuilderHelper.createSessionPipeline(client);
-        assertSame(transport, acquisition.getHttpClient());
-        return new ContainerSessionProvider(client);
+        HttpPipeline pipeline = BuilderHelper.createSessionPipeline(client);
+        HttpRequest request = new HttpRequest(HttpMethod.POST,
+            "https://account.blob.core.windows.net/container?restype=container&comp=session");
+
+        try (HttpResponse response = pipeline.sendSync(request, Context.NONE)) {
+            assertNotNull(response);
+        }
     }
 
     @Test
