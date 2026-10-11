@@ -249,8 +249,8 @@ public final class ContainerSessionProvider extends SessionProvider {
                 new IllegalStateException("CreateSession response did not contain a session payload."));
         }
 
-        SessionCredentials creds = session.getCredentials();
-        if (creds == null) {
+        SessionCredentials sessionCredentials = session.getCredentials();
+        if (sessionCredentials == null) {
             throw LOGGER.logExceptionAsError(
                 new IllegalStateException("CreateSession response did not contain HMAC session credentials."));
         }
@@ -259,7 +259,8 @@ public final class ContainerSessionProvider extends SessionProvider {
         if (expiration == null) {
             expiration = OffsetDateTime.now(clock).plus(DEFAULT_EXPIRATION_OFFSET);
         }
-        return new SessionCredential(creds.getSessionToken(), creds.getSessionKey(), expiration, resolvedAccountName);
+        return new SessionCredential(sessionCredentials.getSessionToken(), sessionCredentials.getSessionKey(),
+            expiration, resolvedAccountName);
     }
 
     private static String normalize(String name) {
