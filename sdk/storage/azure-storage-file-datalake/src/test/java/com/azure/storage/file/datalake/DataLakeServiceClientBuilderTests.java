@@ -4,31 +4,17 @@
 package com.azure.storage.file.datalake;
 
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
-import com.azure.core.http.HttpMethod;
-import com.azure.core.http.HttpHeaderName;
-import com.azure.core.test.http.MockHttpResponse;
-import com.azure.core.util.Context;
-import com.azure.storage.blob.BlobServiceClientBuilder;
-import com.azure.storage.blob.models.ContainerSessionProvider;
 import com.azure.core.test.http.NoOpHttpClient;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.storage.blob.models.SessionOptions;
 import com.azure.storage.blob.models.SessionOptions.SessionMode;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import org.junit.jupiter.api.Test;
-import reactor.core.publisher.Mono;
-import reactor.test.StepVerifier;
-import java.nio.charset.StandardCharsets;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class DataLakeServiceClientBuilderTests {
 
