@@ -35,7 +35,8 @@ public final class SessionProviderConstructorProxy {
 
         SessionCredential getSession(SessionProvider provider, SessionRequestContext context);
 
-        boolean invalidateSession(SessionProvider provider, SessionRequestContext context, SessionCredential credential);
+        boolean invalidateSession(SessionProvider provider, SessionRequestContext context,
+            SessionCredential credential);
 
         void refreshSession(SessionProvider provider, SessionRequestContext context);
     }

@@ -67,7 +67,8 @@ public class SessionProviderTests {
             com.azure.storage.blob.implementation.accesshelpers.SessionProviderConstructorProxy.class.getModifiers()));
         assertEquals(Modifier.PRIVATE,
             com.azure.storage.blob.implementation.accesshelpers.SessionProviderConstructorProxy.class
-                .getDeclaredConstructor().getModifiers());
+                .getDeclaredConstructor()
+                .getModifiers());
         for (Class<?> type : new Class<?>[] { SessionProvider.class, ContainerSessionProvider.class }) {
             for (java.lang.reflect.Method method : type.getMethods()) {
                 assertEquals(Object.class, method.getDeclaringClass(), method.toString());
@@ -81,8 +82,7 @@ public class SessionProviderTests {
 
     @Test
     public void accessorInitializesAndCreatesProviderWithSuppliedConfiguration() {
-        com.azure.storage.blob.implementation.accesshelpers.SessionProviderConstructorProxy
-            .SessionProviderConstructorAccessor accessor
+        com.azure.storage.blob.implementation.accesshelpers.SessionProviderConstructorProxy.SessionProviderConstructorAccessor accessor
             = com.azure.storage.blob.implementation.accesshelpers.SessionProviderConstructorProxy.getAccessor();
         assertNotNull(accessor);
         Clock clock = Clock.fixed(Instant.parse("2026-06-19T00:00:00Z"), ZoneOffset.UTC);
@@ -114,8 +114,7 @@ public class SessionProviderTests {
 
     @Test
     public void sharedAccessorUsesSuppliedProviderSync() {
-        com.azure.storage.blob.implementation.accesshelpers.SessionProviderConstructorProxy
-            .SessionProviderConstructorAccessor accessor
+        com.azure.storage.blob.implementation.accesshelpers.SessionProviderConstructorProxy.SessionProviderConstructorAccessor accessor
             = com.azure.storage.blob.implementation.accesshelpers.SessionProviderConstructorProxy.getAccessor();
         TestSessionProvider first = mock(TestSessionProvider.class);
         TestSessionProvider second = mock(TestSessionProvider.class);
@@ -150,8 +149,7 @@ public class SessionProviderTests {
 
     @Test
     public void sharedAccessorUsesSuppliedProviderAsync() {
-        com.azure.storage.blob.implementation.accesshelpers.SessionProviderConstructorProxy
-            .SessionProviderConstructorAccessor accessor
+        com.azure.storage.blob.implementation.accesshelpers.SessionProviderConstructorProxy.SessionProviderConstructorAccessor accessor
             = com.azure.storage.blob.implementation.accesshelpers.SessionProviderConstructorProxy.getAccessor();
         TestSessionProvider first = mock(TestSessionProvider.class);
         TestSessionProvider second = mock(TestSessionProvider.class);

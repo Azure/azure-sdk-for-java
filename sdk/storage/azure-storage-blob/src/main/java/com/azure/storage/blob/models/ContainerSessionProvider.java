@@ -94,8 +94,8 @@ public final class ContainerSessionProvider extends SessionProvider {
     }
 
     private static HttpPipeline createSessionPipeline(String endpoint, TokenCredential credential) {
-        String sessionEndpoint = BuilderHelper.getSessionEndpoint(Objects.requireNonNull(endpoint,
-            "'endpoint' cannot be null."));
+        String sessionEndpoint
+            = BuilderHelper.getSessionEndpoint(Objects.requireNonNull(endpoint, "'endpoint' cannot be null."));
         BlobServiceClient client = new BlobServiceClientBuilder().endpoint(sessionEndpoint)
             .credential(Objects.requireNonNull(credential, "'credential' cannot be null."))
             .buildClient();
