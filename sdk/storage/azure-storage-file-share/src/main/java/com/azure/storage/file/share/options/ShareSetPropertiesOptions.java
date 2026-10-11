@@ -284,7 +284,8 @@ public class ShareSetPropertiesOptions {
     /**
      * Get the changeFeedRetentionInDays property:
      * Optional. Supported in version 2026-06-06 and above. Only applicable for premium file storage accounts.
-     * The number of days that change feed records are retained.
+     * The number of days that change feed records are retained. Valid values are between 1 and 365 inclusive.
+     * Default if not specified is 7 days.
      * @return the changeFeedRetentionInDays value.
      */
     public Integer getChangeFeedRetentionInDays() {
@@ -294,7 +295,8 @@ public class ShareSetPropertiesOptions {
     /**
      * Set the changeFeedRetentionInDays property:
      * Optional. Supported in version 2026-06-06 and above. Only applicable for premium file storage accounts.
-     * The number of days that change feed records are retained.
+     * The number of days that change feed records are retained. Valid values are between 1 and 365 inclusive.
+     * Default if not specified is 7 days.
      * @param changeFeedRetentionInDays the changeFeedRetentionInDays value to set.
      * @return the ShareSetPropertiesOptions object itself.
      */
