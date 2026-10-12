@@ -25,6 +25,20 @@ public class RequiredServiceVersionExtension implements ExecutionCondition {
     private static final Map<Class<? extends Enum<? extends ServiceVersion>>, ServiceVersion> LATEST_SERVICE_VERSIONS
         = new ConcurrentHashMap<>();
 
+    static boolean shouldSkip(Class<? extends Enum<? extends ServiceVersion>> targetEnumClass,
+        String minServiceVersion, String environmentServiceVersion) {
+        ServiceVersion[] serviceVersions = getServiceVersions(targetEnumClass);
+        if (environmentServiceVersion == null) {
+            // Fall back to "latest" service version if environment variable is not set.
+            environmentServiceVersion = getLatestServiceVersion(targetEnumClass).getVersion();
+        }
+
+        int minOrdinal = getOrdinal(serviceVersions, minServiceVersion, "minimum");
+        int environmentOrdinal = getOrdinal(serviceVersions, environmentServiceVersion, "configured");
+
+        return environmentOrdinal < minOrdinal;
+    }
+
     @Override
     public ConditionEvaluationResult evaluateExecutionCondition(ExtensionContext context) {
         // Check for the RequiredServiceVersion annotation on the test method.
@@ -47,17 +61,8 @@ public class RequiredServiceVersionExtension implements ExecutionCondition {
 
     private static boolean shouldSkip(Class<? extends Enum<? extends ServiceVersion>> targetEnumClass,
         String minServiceVersion) {
-        ServiceVersion[] serviceVersions = getServiceVersions(targetEnumClass);
         String environmentServiceVersion = TestEnvironment.getInstance().getServiceVersion();
-        if (environmentServiceVersion == null) {
-            // Fall back to "latest" service version if environment variable is not set.
-            environmentServiceVersion = getLatestServiceVersion(targetEnumClass).toString();
-        }
-
-        int minOrdinal = getOrdinal(serviceVersions, minServiceVersion);
-        int environmentOrdinal = getOrdinal(serviceVersions, environmentServiceVersion);
-
-        return environmentOrdinal < minOrdinal;
+        return shouldSkip(targetEnumClass, minServiceVersion, environmentServiceVersion);
     }
 
     private static ServiceVersion[] getServiceVersions(Class<? extends Enum<? extends ServiceVersion>> clazz) {
@@ -74,12 +79,14 @@ public class RequiredServiceVersionExtension implements ExecutionCondition {
         });
     }
 
-    private static int getOrdinal(ServiceVersion[] serviceVersions, String target) {
+    private static int getOrdinal(ServiceVersion[] serviceVersions, String target, String description) {
         for (int i = 0; i < serviceVersions.length; i++) {
-            if (Objects.equals(String.valueOf(serviceVersions[i]), target)) {
+            ServiceVersion serviceVersion = serviceVersions[i];
+            if (Objects.equals(serviceVersion.getVersion(), target)
+                || Objects.equals(((Enum<?>) serviceVersion).name(), target)) {
                 return i;
             }
         }
-        return -1;
+        throw new IllegalArgumentException("Unknown " + description + " service version '" + target + "'.");
     }
 }
