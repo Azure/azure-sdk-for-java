@@ -94,7 +94,7 @@ public final class VirtualMachinePatchParameters implements JsonSerializable<Vir
      * 
      * @return the vmImageRepositoryCredentials value.
      */
-    public ImageRepositoryCredentials vmImageRepositoryCredentials() {
+    public ImageRepositoryCredentialsPatch vmImageRepositoryCredentials() {
         return this.innerProperties() == null ? null : this.innerProperties().vmImageRepositoryCredentials();
     }
 
@@ -106,7 +106,7 @@ public final class VirtualMachinePatchParameters implements JsonSerializable<Vir
      * @return the VirtualMachinePatchParameters object itself.
      */
     public VirtualMachinePatchParameters
-        withVmImageRepositoryCredentials(ImageRepositoryCredentials vmImageRepositoryCredentials) {
+        withVmImageRepositoryCredentials(ImageRepositoryCredentialsPatch vmImageRepositoryCredentials) {
         if (this.innerProperties() == null) {
             this.innerProperties = new VirtualMachinePatchProperties();
         }

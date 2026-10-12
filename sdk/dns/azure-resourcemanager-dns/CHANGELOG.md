@@ -16,6 +16,22 @@
 - Removed `models.RecordSetListResult` class. It is replaced by `PagedIterable`/`PagedFlux` in the client API.
 - Changed `models.DnsResourceReference` to be an immutable output-only model: constructor is now private, and `withDnsResources()` and `withTargetResource()` setters are removed.
 
+## 2.53.12 (2026-10-09)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-resources` from `2.54.4` to version `2.55.0`.
+
+## 2.53.11 (2026-10-06)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-resources` from `2.54.3` to version `2.54.4`.
+
 ## 2.53.10 (2026-08-18)
 
 ### Other Changes

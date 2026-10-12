@@ -10,7 +10,7 @@ import com.azure.resourcemanager.networkcloud.models.KubernetesVersionValue;
 public final class KubernetesVersionValueTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        KubernetesVersionValue model = BinaryData.fromString("{\"description\":\"xoi\",\"version\":\"sks\"}")
+        KubernetesVersionValue model = BinaryData.fromString("{\"description\":\"kudzpxgwj\",\"version\":\"mag\"}")
             .toObject(KubernetesVersionValue.class);
     }
 }

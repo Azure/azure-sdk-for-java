@@ -12,10 +12,10 @@ public final class AcknowledgeBulkOperationErrorsResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AcknowledgeBulkOperationErrorsResponseInner model = BinaryData.fromString(
-            "{\"acknowledged\":[\"lopwiyig\",\"xpkd\",\"zb\"],\"notFound\":[\"uebbaumnyqup\",\"deoj\",\"a\"],\"skipped\":[\"khsmtxpsiebt\",\"hvpesapskrdqm\",\"jjdhtld\"]}")
+            "{\"acknowledged\":[\"kwlhzdo\",\"pxjmflbvvnchr\"],\"notFound\":[\"ciwwzjuqkhr\"],\"skipped\":[\"jiwkuofoskghsau\",\"imjm\"]}")
             .toObject(AcknowledgeBulkOperationErrorsResponseInner.class);
-        Assertions.assertEquals("lopwiyig", model.acknowledged().get(0));
-        Assertions.assertEquals("uebbaumnyqup", model.notFound().get(0));
-        Assertions.assertEquals("khsmtxpsiebt", model.skipped().get(0));
+        Assertions.assertEquals("kwlhzdo", model.acknowledged().get(0));
+        Assertions.assertEquals("ciwwzjuqkhr", model.notFound().get(0));
+        Assertions.assertEquals("jiwkuofoskghsau", model.skipped().get(0));
     }
 }

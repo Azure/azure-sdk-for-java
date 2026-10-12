@@ -22,7 +22,7 @@ public final class FabricCapacitiesListUsagesMockTests {
     @Test
     public void testListUsages() throws Exception {
         String responseStr
-            = "{\"value\":[{\"name\":{\"value\":\"pqyegualhbxxh\",\"localizedValue\":\"jzzvdud\"},\"unit\":\"wdslfhotwmcy\",\"currentValue\":8219003189774073818,\"limit\":7443640931865034302}]}";
+            = "{\"value\":[{\"name\":{\"value\":\"x\",\"localizedValue\":\"qgtz\"},\"unit\":\"dpnqbq\",\"currentValue\":5911991287657256269,\"limit\":9115058758296309886}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,10 +32,10 @@ public final class FabricCapacitiesListUsagesMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Quota> response
-            = manager.fabricCapacities().listUsages("jumasx", com.azure.core.util.Context.NONE);
+            = manager.fabricCapacities().listUsages("ccfwnfnbacfion", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("wdslfhotwmcy", response.iterator().next().unit());
-        Assertions.assertEquals(8219003189774073818L, response.iterator().next().currentValue());
-        Assertions.assertEquals(7443640931865034302L, response.iterator().next().limit());
+        Assertions.assertEquals("dpnqbq", response.iterator().next().unit());
+        Assertions.assertEquals(5911991287657256269L, response.iterator().next().currentValue());
+        Assertions.assertEquals(9115058758296309886L, response.iterator().next().limit());
     }
 }

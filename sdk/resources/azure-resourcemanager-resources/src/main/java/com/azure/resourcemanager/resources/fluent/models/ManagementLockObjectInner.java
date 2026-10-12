@@ -6,6 +6,7 @@ package com.azure.resourcemanager.resources.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -24,6 +25,11 @@ public final class ManagementLockObjectInner extends ProxyResource {
      * The properties of the lock.
      */
     private ManagementLockProperties innerProperties = new ManagementLockProperties();
+
+    /*
+     * Metadata pertaining to creation and last modification of the resource.
+     */
+    private SystemData systemData;
 
     /*
      * The type of the resource.
@@ -53,6 +59,15 @@ public final class ManagementLockObjectInner extends ProxyResource {
      */
     private ManagementLockProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
@@ -209,6 +224,8 @@ public final class ManagementLockObjectInner extends ProxyResource {
                     deserializedManagementLockObjectInner.type = reader.getString();
                 } else if ("properties".equals(fieldName)) {
                     deserializedManagementLockObjectInner.innerProperties = ManagementLockProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedManagementLockObjectInner.systemData = SystemData.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

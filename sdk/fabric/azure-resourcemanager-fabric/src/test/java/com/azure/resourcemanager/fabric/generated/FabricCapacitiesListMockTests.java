@@ -24,7 +24,7 @@ public final class FabricCapacitiesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"state\":\"Provisioning\",\"overage\":{\"state\":\"Enabled\",\"thresholdCapacityUnitHours\":204314750},\"administration\":{\"members\":[\"gvdfgiotkftutq\",\"ln\"]}},\"sku\":{\"name\":\"xlefgugnxkrx\",\"tier\":\"Fabric\"},\"location\":\"i\",\"tags\":{\"abhjybi\":\"hzrvqd\"},\"id\":\"ehoqfbowskan\",\"name\":\"ktzlcuiywg\",\"type\":\"ywgndrv\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleting\",\"state\":\"Updating\",\"overage\":{\"state\":\"Disabled\",\"thresholdCapacityUnitHours\":1295358777},\"administration\":{\"members\":[\"dzxibqeojnxqbzvd\"]}},\"sku\":{\"name\":\"ntwndeicbtwnpzao\",\"tier\":\"Fabric\"},\"location\":\"hrhcffcyddglmjth\",\"tags\":{\"hix\":\"wpyeicxmqciwqvh\"},\"id\":\"igdtopbob\",\"name\":\"og\",\"type\":\"m\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,15 +35,15 @@ public final class FabricCapacitiesListMockTests {
 
         PagedIterable<FabricCapacity> response = manager.fabricCapacities().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("i", response.iterator().next().location());
-        Assertions.assertEquals("hzrvqd", response.iterator().next().tags().get("abhjybi"));
-        Assertions.assertEquals(CapacityOverageState.ENABLED,
+        Assertions.assertEquals("hrhcffcyddglmjth", response.iterator().next().location());
+        Assertions.assertEquals("wpyeicxmqciwqvh", response.iterator().next().tags().get("hix"));
+        Assertions.assertEquals(CapacityOverageState.DISABLED,
             response.iterator().next().properties().overage().state());
-        Assertions.assertEquals(204314750,
+        Assertions.assertEquals(1295358777,
             response.iterator().next().properties().overage().thresholdCapacityUnitHours());
-        Assertions.assertEquals("gvdfgiotkftutq",
+        Assertions.assertEquals("dzxibqeojnxqbzvd",
             response.iterator().next().properties().administration().members().get(0));
-        Assertions.assertEquals("xlefgugnxkrx", response.iterator().next().sku().name());
+        Assertions.assertEquals("ntwndeicbtwnpzao", response.iterator().next().sku().name());
         Assertions.assertEquals(RpSkuTier.FABRIC, response.iterator().next().sku().tier());
     }
 }

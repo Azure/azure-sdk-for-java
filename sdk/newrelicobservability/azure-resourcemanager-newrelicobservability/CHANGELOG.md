@@ -1,5 +1,15 @@
 # Release History
 
+## 1.4.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 1.3.0 (2026-09-02)
 
 - Azure Resource Manager NewRelic Observability client library for Java. This package contains Microsoft Azure SDK for NewRelic Observability Management SDK.  Package api-version 2026-06-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).

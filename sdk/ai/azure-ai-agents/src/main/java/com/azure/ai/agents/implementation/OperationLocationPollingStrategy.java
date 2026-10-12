@@ -28,7 +28,7 @@ import reactor.core.publisher.Mono;
  * @param <U> the type of the final result object to deserialize into, or BinaryData if raw response body should be
  * kept
  */
-public final class OperationLocationPollingStrategy<T, U> extends OperationResourcePollingStrategy<T, U> {
+public class OperationLocationPollingStrategy<T, U> extends OperationResourcePollingStrategy<T, U> {
 
     private static final ClientLogger LOGGER = new ClientLogger(OperationLocationPollingStrategy.class);
 

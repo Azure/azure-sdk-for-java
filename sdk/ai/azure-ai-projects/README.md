@@ -6,9 +6,11 @@ The AI Projects client library is part of the Azure AI Foundry SDK and provides 
 * **Enumerate AI Models** deployed to your Foundry Project using the `Deployments` operations.
 * **Enumerate connected Azure resources** in your Foundry project using the `Connections` operations.
 * **Upload documents and create Datasets** to reference them using the `Datasets` operations.
-* **Generate datasets** for model, agent, evaluator, and traces scenarios using the preview `BetaDatasetsClient`.
+* **Generate datasets** for model, agent, evaluator, and traces scenarios using `DatasetsClient`.
+* **Manage evaluator versions and generate rubrics** using `EvaluatorsClient`.
 * **Register and manage model weights** as Foundry `ModelVersion` resources using the preview `BetaModelsClient`.
 * **Create and dispatch routines** using the preview `BetaRoutinesClient`.
+* **Monitor deployed agents for issues** and review the resulting insights using the preview `BetaAgentInsightMonitorsClient`.
 * **Create and manage skills** using the preview `BetaSkillsClient`.
 * **Create and enumerate Search Indexes** using the `Indexes` operations.
 
@@ -17,7 +19,7 @@ The client library uses a single service version `v1` of the AI Foundry [data pl
 > [!IMPORTANT]
 > **Preview and beta features**
 > - Build `Beta*Client` and `Beta*AsyncClient` instances through `AIProjectClientBuilder.beta()`. These clients automatically opt in to their preview service area; you do not need `allowPreview(true)` for them.
-> - Use `AIProjectClientBuilder.allowPreview(true)` only when calling preview APIs on non-Beta clients, such as preview response types on `EvaluationRulesClient` / `EvaluationRulesAsyncClient`.
+> - Use `AIProjectClientBuilder.allowPreview(true)` only when calling preview APIs on non-Beta clients, such as preview response types on `EvaluationRulesClient` / `EvaluationRulesAsyncClient`, endpoint-based evaluator definitions on `EvaluatorsClient` / `EvaluatorsAsyncClient`, or preview data generation scenarios on `DatasetsClient` / `DatasetsAsyncClient`.
 > - Classes and methods annotated with `@Beta` are preview API surface and may change in future releases. See [Preview operation groups and beta clients](#preview-operation-groups-and-beta-clients) for details.
 
 ## Documentation
@@ -41,7 +43,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-projects</artifactId>
-    <version>2.4.0</version>
+    <version>2.7.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -60,13 +62,14 @@ AIProjectClientBuilder builder = new AIProjectClientBuilder()
 
 ConnectionsClient connectionsClient = builder.buildConnectionsClient();
 // Beta* clients automatically opt in to their preview service area.
-BetaDatasetsClient dataGenerationJobsClient = builder.beta().buildBetaDatasetsClient();
+BetaAgentInsightMonitorsClient agentInsightMonitorsClient
+    = builder.beta().buildBetaAgentInsightMonitorsClient();
 DatasetsClient datasetsClient = builder.buildDatasetsClient();
 DeploymentsClient deploymentsClient = builder.buildDeploymentsClient();
 EvaluationRulesClient evaluationRulesClient = builder.buildEvaluationRulesClient();
 BetaEvaluationTaxonomiesClient evaluationTaxonomiesClient
     = builder.beta().buildBetaEvaluationTaxonomiesClient();
-BetaEvaluatorsClient evaluatorsClient = builder.beta().buildBetaEvaluatorsClient();
+EvaluatorsClient evaluatorsClient = builder.buildEvaluatorsClient();
 IndexesClient indexesClient = builder.buildIndexesClient();
 BetaInsightsClient insightsClient = builder.beta().buildBetaInsightsClient();
 BetaModelsClient modelsClient = builder.beta().buildBetaModelsClient();
@@ -133,11 +136,23 @@ AIProjectClientBuilder builder = new AIProjectClientBuilder()
 EvaluationRulesClient evaluationRulesClient = builder.buildEvaluationRulesClient();
 ```
 
+`DatasetsClient` and `DatasetsAsyncClient` support both dataset management and data generation jobs. Build them directly
+from `AIProjectClientBuilder`. Evaluation data generation is GA. Use `allowPreview(true)` for preview supervised and
+reinforcement fine-tuning data generation.
+
+`EvaluatorsClient` and `EvaluatorsAsyncClient` manage evaluator versions and rubric-generation jobs.
+Set `allowPreview(true)` when using `EndpointBasedEvaluatorDefinition`. Use `BetaEvaluatorsClient` and
+`BetaEvaluatorsAsyncClient` for preview pending-upload and credential operations.
+
+For data generation, pass a scenario-specific input such as `EvaluationDataGenerationJobInputs` with a
+`DataGenerationJobConfiguration` subtype to `beginCreateGenerationJob`. For rubric generation, pass
+`EvaluatorGenerationInputs` to `beginCreateEvaluatorGenerationJob`.
+
 Build clients whose names start with `Beta` from `AIProjectClientBuilder.beta()`. These clients always opt in to their corresponding preview service area. Requests sent by these clients automatically include the appropriate `Foundry-Features` header, and their APIs can send or return preview/beta request and response types. You do not need to call `allowPreview(true)` to use a `Beta*Client`.
 
 | Beta sub-client | Automatically populated `Foundry-Features` value |
 |---|---|
-| `BetaDatasetsClient` | `DataGenerationJobs=V1Preview` |
+| `BetaAgentInsightMonitorsClient` | `AgentInsights=V1Preview` |
 | `BetaEvaluationTaxonomiesClient` | `Evaluations=V1Preview` |
 | `BetaEvaluatorsClient` | `Evaluations=V1Preview` |
 | `BetaInsightsClient` | `Insights=V1Preview` |
@@ -151,7 +166,20 @@ The async `Beta*AsyncClient` counterparts follow the same behavior.
 
 ## Examples
 
-The examples below show common operations for core AI Projects sub-clients. For complete runnable samples, see the [package samples][package_samples]. Additional preview samples are available for data generation jobs (`DataGenerationJobsSample`, `DataGenerationJobsAsyncSample`, and `DataGenerationJobWithEvaluationSample`), model management (`ModelsSample` and `ModelsAsyncSample`), routines (`RoutinesSample`, `RoutinesAsyncSample`, `RoutinesManualDispatchSample`, `RoutinesManualDispatchAsyncSample`, and related trigger samples), and packaged skills (`SkillsPackageSample` and `SkillsPackageAsyncSample`).
+The examples below show common operations for core AI Projects sub-clients. For complete runnable samples, see the [package samples][package_samples].
+
+| Folder | Scenarios |
+| --- | --- |
+| [agents](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-projects/src/samples/java/com/azure/ai/projects/agents) | Create and delete agents using the Agents client library. |
+| [connections](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-projects/src/samples/java/com/azure/ai/projects/connections) | List connections and retrieve connection details. |
+| [datageneration](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-projects/src/samples/java/com/azure/ai/projects/datageneration) | Create data generation jobs and evaluate generated datasets. |
+| [datasets](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-projects/src/samples/java/com/azure/ai/projects/datasets) | Upload files and manage datasets and versions. |
+| [deployments](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-projects/src/samples/java/com/azure/ai/projects/deployments) | List and retrieve model deployments. |
+| [evaluations](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-projects/src/samples/java/com/azure/ai/projects/evaluations) | Evaluate inline or uploaded JSONL data using built-in evaluators, native graders, and custom rubrics; manage and generate evaluator versions. |
+| [indexes](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-projects/src/samples/java/com/azure/ai/projects/indexes) | Create, list, retrieve, and delete indexes. |
+| [models](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-projects/src/samples/java/com/azure/ai/projects/models) | Register model weights and manage model versions. |
+| [routines](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-projects/src/samples/java/com/azure/ai/projects/routines) | Manage routines, dispatch manually, and use schedule and timer triggers. |
+| [skills](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-projects/src/samples/java/com/azure/ai/projects/skills) | Manage skills and upload or download skill packages. |
 
 ### Connections operations
 
@@ -174,7 +202,7 @@ for (Connection connection : connections) {
 ```java com.azure.ai.projects.ConnectionsSample.getConnectionWithoutCredentials
 
 String connectionName = Configuration.getGlobalConfiguration().get("TEST_CONNECTION_NAME", "");
-Connection connection = connectionsClient.getConnection(connectionName);
+Connection connection = connectionsClient.getConnection(connectionName, false);
 
 System.out.printf("Connection name: %s%n", connection.getName());
 
@@ -185,7 +213,7 @@ System.out.printf("Connection name: %s%n", connection.getName());
 ```java com.azure.ai.projects.ConnectionsSample.getConnectionWithCredentials
 
 String connectionName = Configuration.getGlobalConfiguration().get("TEST_CONNECTION_NAME", "");
-Connection connection = connectionsClient.getConnectionWithCredentials(connectionName);
+Connection connection = connectionsClient.getConnection(connectionName, true);
 
 System.out.printf("Connection name: %s%n", connection.getName());
 System.out.printf("Connection credentials: %s%n", connection.getCredential().getType());
@@ -204,7 +232,7 @@ return connectionsAsyncClient.listConnections()
 ```java com.azure.ai.projects.ConnectionsAsyncSample.getConnectionWithoutCredentials
 
 String connectionName = Configuration.getGlobalConfiguration().get("TEST_CONNECTION_NAME", "");
-return connectionsAsyncClient.getConnection(connectionName)
+return connectionsAsyncClient.getConnection(connectionName, false)
     .doOnNext(connection -> System.out.printf("Connection name: %s%n", connection.getName()));
 
 ```
@@ -212,7 +240,7 @@ return connectionsAsyncClient.getConnection(connectionName)
 ```java com.azure.ai.projects.ConnectionsAsyncSample.getConnectionWithCredentials
 
 String connectionName = Configuration.getGlobalConfiguration().get("TEST_CONNECTION_NAME", "");
-return connectionsAsyncClient.getConnectionWithCredentials(connectionName)
+return connectionsAsyncClient.getConnection(connectionName, true)
     .doOnNext(connection -> {
         System.out.printf("Connection name: %s%n", connection.getName());
         System.out.printf("Connection credentials: %s%n", connection.getCredential().getType());
@@ -861,7 +889,7 @@ For details on contributing to this repository, see the [contributing guide](htt
 
 <!-- LINKS -->
 [product_documentation]: https://learn.microsoft.com/azure/ai-studio/
-[docs]: https://learn.microsoft.com/rest/api/aifoundry/aiproject/
+[docs]: https://aka.ms/azsdk/azure-ai-projects-v2/api-reference-v1
 [jdk]: https://learn.microsoft.com/azure/developer/java/fundamentals/
 [azure_subscription]: https://azure.microsoft.com/free/
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity
