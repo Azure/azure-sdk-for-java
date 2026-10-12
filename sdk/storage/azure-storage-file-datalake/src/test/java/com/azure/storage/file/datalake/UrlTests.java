@@ -3,11 +3,13 @@
 package com.azure.storage.file.datalake;
 
 import com.azure.storage.common.StorageSharedKeyCredential;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class UrlTests {
     private static final StorageSharedKeyCredential CREDENTIAL
@@ -53,5 +55,49 @@ public class UrlTests {
         assertEquals(expectedBlobUrl + "/container", fileSystemClient.blobContainerClient.getBlobContainerUrl());
         assertEquals(expectedDfsUrl + "/container/blob", pathClient.getPathUrl());
         assertEquals(expectedBlobUrl + "/container/blob", pathClient.blockBlobClient.getBlobUrl());
+    }
+
+    @Test
+    public void testExplicitBlobServiceUrl() {
+        String dfsEndpoint = "https://dfs-proxy.example.com";
+        String blobEndpoint = "https://blob-proxy.example.com";
+        DataLakeServiceClient serviceClient = new DataLakeServiceClientBuilder().credential(CREDENTIAL)
+            .endpoint(dfsEndpoint)
+            .blobEndpoint(blobEndpoint)
+            .buildClient();
+
+        assertEquals(dfsEndpoint, serviceClient.getAccountUrl());
+        assertEquals(blobEndpoint, serviceClient.blobServiceClient.getAccountUrl());
+    }
+
+    @Test
+    public void testExplicitBlobServiceUrlAsyncEndpointOrderIndependent() {
+        String dfsEndpoint = "https://dfs-proxy.example.com";
+        String blobEndpoint = "https://blob-proxy.example.com";
+        DataLakeServiceAsyncClient serviceAsyncClient = new DataLakeServiceClientBuilder().credential(CREDENTIAL)
+            .blobEndpoint(blobEndpoint)
+            .endpoint(dfsEndpoint)
+            .buildAsyncClient();
+
+        assertEquals(dfsEndpoint, serviceAsyncClient.getAccountUrl());
+        assertEquals(blobEndpoint + "/container",
+            serviceAsyncClient.getFileSystemAsyncClient("container")
+                .getBlobContainerAsyncClient()
+                .getBlobContainerUrl());
+    }
+
+    @Test
+    public void testExplicitBlobServiceUrlNormalizesDfsEndpoint() {
+        DataLakeServiceClient serviceClient = new DataLakeServiceClientBuilder().credential(CREDENTIAL)
+            .endpoint("https://account.dfs.core.windows.net")
+            .blobEndpoint("https://account.dfs.core.windows.net")
+            .buildClient();
+
+        assertEquals("https://account.blob.core.windows.net", serviceClient.blobServiceClient.getAccountUrl());
+    }
+
+    @Test
+    public void testExplicitBlobServiceUrlRejectsNullEndpoint() {
+        assertThrows(IllegalArgumentException.class, () -> new DataLakeServiceClientBuilder().blobEndpoint(null));
     }
 }
