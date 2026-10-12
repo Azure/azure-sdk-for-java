@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public final class BlobContainersUpdateSamples {
     /*
-     * x-ms-original-file: 2026-04-01/BlobContainersPatch.json
+     * x-ms-original-file: 2026-06-01/BlobContainersPatch.json
      */
     /**
      * Sample code: UpdateContainers.

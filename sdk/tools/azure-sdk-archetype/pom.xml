@@ -213,7 +213,7 @@
           <threshold>Low</threshold>
           <xmlOutput>true</xmlOutput>
           <spotbugsXmlOutputDirectory>${project.build.directory}/spotbugs</spotbugsXmlOutputDirectory>
-          <excludeFilterFile>${project.parent.relativePath}/../../../eng/lintingconfigs/spotbugs/track2/spotbugs-exclude.xml</excludeFilterFile>
+          <excludeFilterFile>${project.basedir}${file.separator}..${file.separator}..${file.separator}..${file.separator}eng${file.separator}lintingconfigs${file.separator}spotbugs${file.separator}track2${file.separator}spotbugs-exclude.xml</excludeFilterFile>
           <fork>true</fork>
         </configuration>
       </plugin>

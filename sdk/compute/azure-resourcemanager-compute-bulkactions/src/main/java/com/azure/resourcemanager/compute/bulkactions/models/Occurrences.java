@@ -13,38 +13,41 @@ import com.azure.core.util.Context;
  */
 public interface Occurrences {
     /**
-     * Get a Occurrence.
+     * Gets the specified occurrence.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @param occurrenceId The name of the Occurrence.
+     * @param scheduledActionName The name of the scheduled action. It must be 3 to 24 characters and can contain only
+     * letters, numbers, and hyphens.
+     * @param occurrenceId The occurrence ID in UUID format.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Occurrence along with {@link Response}.
+     * @return the specified occurrence along with {@link Response}.
      */
     Response<Occurrence> getWithResponse(String resourceGroupName, String scheduledActionName, String occurrenceId,
         Context context);
 
     /**
-     * Get a Occurrence.
+     * Gets the specified occurrence.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @param occurrenceId The name of the Occurrence.
+     * @param scheduledActionName The name of the scheduled action. It must be 3 to 24 characters and can contain only
+     * letters, numbers, and hyphens.
+     * @param occurrenceId The occurrence ID in UUID format.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Occurrence.
+     * @return the specified occurrence.
      */
     Occurrence get(String resourceGroupName, String scheduledActionName, String occurrenceId);
 
     /**
-     * List Occurrence resources by ScheduledAction.
+     * Lists occurrences for the specified scheduled action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
+     * @param scheduledActionName The name of the scheduled action. It must be 3 to 24 characters and can contain only
+     * letters, numbers, and hyphens.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -53,10 +56,11 @@ public interface Occurrences {
     PagedIterable<Occurrence> listByScheduledAction(String resourceGroupName, String scheduledActionName);
 
     /**
-     * List Occurrence resources by ScheduledAction.
+     * Lists occurrences for the specified scheduled action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
+     * @param scheduledActionName The name of the scheduled action. It must be 3 to 24 characters and can contain only
+     * letters, numbers, and hyphens.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -67,92 +71,104 @@ public interface Occurrences {
         Context context);
 
     /**
-     * List resources attached to Scheduled Actions for the given occurrence.
+     * Lists resources for the specified occurrence.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @param occurrenceId The name of the Occurrence.
+     * @param scheduledActionName The name of the scheduled action. It must be 3 to 24 characters and can contain only
+     * letters, numbers, and hyphens.
+     * @param occurrenceId The occurrence ID in UUID format.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of OccurrenceResource items as paginated response with {@link PagedIterable}.
+     * @return paged list of resources included in a scheduled action occurrence as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<OccurrenceResource> listResources(String resourceGroupName, String scheduledActionName,
         String occurrenceId);
 
     /**
-     * List resources attached to Scheduled Actions for the given occurrence.
+     * Lists resources for the specified occurrence.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @param occurrenceId The name of the Occurrence.
+     * @param scheduledActionName The name of the scheduled action. It must be 3 to 24 characters and can contain only
+     * letters, numbers, and hyphens.
+     * @param occurrenceId The occurrence ID in UUID format.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of OccurrenceResource items as paginated response with {@link PagedIterable}.
+     * @return paged list of resources included in a scheduled action occurrence as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<OccurrenceResource> listResources(String resourceGroupName, String scheduledActionName,
         String occurrenceId, Context context);
 
     /**
-     * Cancel the occurrence so its pending operations do not run.
+     * Cancels the specified occurrence for the specified resource IDs.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @param occurrenceId The name of the Occurrence.
-     * @param body The content of the action request.
+     * @param scheduledActionName The name of the scheduled action. It must be 3 to 24 characters and can contain only
+     * letters, numbers, and hyphens.
+     * @param occurrenceId The occurrence ID in UUID format.
+     * @param body The resources to cancel in the occurrence. If no resource IDs are provided, the occurrence is
+     * canceled for all resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from scheduled action resource requests, which contains the status of each resource.
+     * @return results of a scheduled action operation for targeted resources.
      */
     ResourceOperationResponse cancel(String resourceGroupName, String scheduledActionName, String occurrenceId,
         CancelOccurrenceRequest body);
 
     /**
-     * Cancel the occurrence so its pending operations do not run.
+     * Cancels the specified occurrence for the specified resource IDs.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @param occurrenceId The name of the Occurrence.
-     * @param body The content of the action request.
+     * @param scheduledActionName The name of the scheduled action. It must be 3 to 24 characters and can contain only
+     * letters, numbers, and hyphens.
+     * @param occurrenceId The occurrence ID in UUID format.
+     * @param body The resources to cancel in the occurrence. If no resource IDs are provided, the occurrence is
+     * canceled for all resources.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from scheduled action resource requests, which contains the status of each resource.
+     * @return results of a scheduled action operation for targeted resources.
      */
     ResourceOperationResponse cancel(String resourceGroupName, String scheduledActionName, String occurrenceId,
         CancelOccurrenceRequest body, Context context);
 
     /**
-     * Delay the occurrence to a later time.
+     * Delays the specified occurrence for the specified resource IDs.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @param occurrenceId The name of the Occurrence.
-     * @param body The content of the action request.
+     * @param scheduledActionName The name of the scheduled action. It must be 3 to 24 characters and can contain only
+     * letters, numbers, and hyphens.
+     * @param occurrenceId The occurrence ID in UUID format.
+     * @param body The new scheduled time and resources to delay in the occurrence. If no resource IDs are provided, all
+     * resources are delayed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from scheduled action resource requests, which contains the status of each resource.
+     * @return results of a scheduled action operation for targeted resources.
      */
     ResourceOperationResponse delay(String resourceGroupName, String scheduledActionName, String occurrenceId,
         DelayRequest body);
 
     /**
-     * Delay the occurrence to a later time.
+     * Delays the specified occurrence for the specified resource IDs.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @param occurrenceId The name of the Occurrence.
-     * @param body The content of the action request.
+     * @param scheduledActionName The name of the scheduled action. It must be 3 to 24 characters and can contain only
+     * letters, numbers, and hyphens.
+     * @param occurrenceId The occurrence ID in UUID format.
+     * @param body The new scheduled time and resources to delay in the occurrence. If no resource IDs are provided, all
+     * resources are delayed.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from scheduled action resource requests, which contains the status of each resource.
+     * @return results of a scheduled action operation for targeted resources.
      */
     ResourceOperationResponse delay(String resourceGroupName, String scheduledActionName, String occurrenceId,
         DelayRequest body, Context context);

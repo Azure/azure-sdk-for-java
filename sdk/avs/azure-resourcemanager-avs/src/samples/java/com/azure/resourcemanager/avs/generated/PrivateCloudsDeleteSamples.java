@@ -9,7 +9,7 @@ package com.azure.resourcemanager.avs.generated;
  */
 public final class PrivateCloudsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-09-01/PrivateClouds_Delete.json
+     * x-ms-original-file: 2026-03-01/PrivateClouds_Delete.json
      */
     /**
      * Sample code: PrivateClouds_Delete.

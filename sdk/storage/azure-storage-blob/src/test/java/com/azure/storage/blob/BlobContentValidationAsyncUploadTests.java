@@ -3,11 +3,17 @@
 
 package com.azure.storage.blob;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
+import com.azure.storage.blob.ContentValidationTestUtils.RecordedRequest;
+import com.azure.storage.blob.models.AppendBlobRequestConditions;
+import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
+import com.azure.storage.blob.models.PageBlobRequestConditions;
 import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.options.AppendBlobAppendBlockOptions;
@@ -29,8 +35,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
+import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
+import reactor.test.publisher.PublisherProbe;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -42,13 +50,26 @@ import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.Collectors;
 
+import static com.azure.storage.blob.ContentValidationTestUtils.allUploadsUseCrc64Header;
+import static com.azure.storage.blob.ContentValidationTestUtils.allUploadsUseStructuredMessage;
+import static com.azure.storage.blob.ContentValidationTestUtils.assertCrc64HeaderMatches;
+import static com.azure.storage.blob.ContentValidationTestUtils.assertStructuredMessageLengths;
+import static com.azure.storage.blob.ContentValidationTestUtils.contentBearingUploadRequests;
+import static com.azure.storage.blob.ContentValidationTestUtils.hasCommitBlockListRequest;
+import static com.azure.storage.blob.ContentValidationTestUtils.noUploadUsesContentValidation;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -59,6 +80,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * {@link BlobContentValidationUploadTests}.
  */
 public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
+    private static final HttpHeaderName LEASE_ID = HttpHeaderName.fromString("x-ms-lease-id");
+    private static final HttpHeaderName IF_MATCH = HttpHeaderName.fromString("If-Match");
+    private static final HttpHeaderName APPEND_POS = HttpHeaderName.fromString("x-ms-blob-condition-appendpos");
+    private static final HttpHeaderName MAX_SIZE = HttpHeaderName.fromString("x-ms-blob-condition-maxsize");
+    private static final HttpHeaderName SEQ_EQ = HttpHeaderName.fromString("x-ms-if-sequence-number-eq");
+    private static final HttpHeaderName X_MS_RANGE = HttpHeaderName.fromString("x-ms-range");
+
     private static final int TEN_MB = 10 * Constants.MB;
     // Generic ">= 4 MiB so the single-shot upload path uses a structured message" payload for the replayable
     // (non-live) tests. 5 MiB keeps a single Put Blob / Put Block / Append Block request (still above the 4 MiB
@@ -221,6 +249,7 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
         StepVerifier.create(client.uploadWithResponse(options)).assertNext(response -> {
             assertNotNull(response.getValue().getETag());
             assertTrue(hasOnlyCrc64Headers(recorded));
+            assertCrc64HeaderMatches(recorded.get(0), randomData);
         }).verifyComplete();
     }
 
@@ -240,6 +269,7 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
         StepVerifier.create(client.uploadWithResponse(options)).assertNext(response -> {
             assertNotNull(response.getValue().getETag());
             assertTrue(hasOnlyStructuredMessageHeaders(recorded));
+            assertStructuredMessageLengths(recorded.get(0), FIVE_MB);
         }).verifyComplete();
     }
 
@@ -278,9 +308,10 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
         BlockBlobStageBlockOptions options
             = new BlockBlobStageBlockOptions(getBlockID(), data).setContentValidationAlgorithm(algorithm);
 
-        StepVerifier.create(client.stageBlockWithResponse(options))
-            .assertNext(response -> assertTrue(hasOnlyCrc64Headers(recorded)))
-            .verifyComplete();
+        StepVerifier.create(client.stageBlockWithResponse(options)).assertNext(response -> {
+            assertTrue(hasOnlyCrc64Headers(recorded));
+            assertCrc64HeaderMatches(recorded.get(0), randomData);
+        }).verifyComplete();
     }
 
     @ParameterizedTest
@@ -296,9 +327,10 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
         BlockBlobStageBlockOptions options
             = new BlockBlobStageBlockOptions(getBlockID(), data).setContentValidationAlgorithm(algorithm);
 
-        StepVerifier.create(client.stageBlockWithResponse(options))
-            .assertNext(response -> assertTrue(hasOnlyStructuredMessageHeaders(recorded)))
-            .verifyComplete();
+        StepVerifier.create(client.stageBlockWithResponse(options)).assertNext(response -> {
+            assertTrue(hasOnlyStructuredMessageHeaders(recorded));
+            assertStructuredMessageLengths(recorded.get(0), FIVE_MB);
+        }).verifyComplete();
     }
 
     @Test
@@ -333,14 +365,13 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
         Flux<ByteBuffer> data = Flux.just(ByteBuffer.wrap(randomData));
 
         AppendBlobAppendBlockOptions options
-            = new AppendBlobAppendBlockOptions().setContentValidationAlgorithm(algorithm);
+            = new AppendBlobAppendBlockOptions(BinaryData.fromFlux(data, (long) UNDER_4MB, false).block())
+                .setContentValidationAlgorithm(algorithm);
 
-        StepVerifier.create(client.create().then(client.appendBlockWithResponse(data, UNDER_4MB, options)))
-            .assertNext(response -> {
-                assertNotNull(response.getValue().getETag());
-                assertTrue(hasOnlyCrc64Headers(recorded));
-            })
-            .verifyComplete();
+        StepVerifier.create(client.create().then(client.appendBlockWithResponse(options))).assertNext(response -> {
+            assertNotNull(response.getValue().getETag());
+            assertTrue(hasOnlyCrc64Headers(recorded));
+        }).verifyComplete();
     }
 
     @ParameterizedTest
@@ -354,14 +385,13 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
         Flux<ByteBuffer> data = Flux.just(ByteBuffer.wrap(randomData));
 
         AppendBlobAppendBlockOptions options
-            = new AppendBlobAppendBlockOptions().setContentValidationAlgorithm(algorithm);
+            = new AppendBlobAppendBlockOptions(BinaryData.fromFlux(data, (long) FIVE_MB, false).block())
+                .setContentValidationAlgorithm(algorithm);
 
-        StepVerifier.create(client.create().then(client.appendBlockWithResponse(data, FIVE_MB, options)))
-            .assertNext(response -> {
-                assertNotNull(response.getValue().getETag());
-                assertTrue(hasOnlyStructuredMessageHeaders(recorded));
-            })
-            .verifyComplete();
+        StepVerifier.create(client.create().then(client.appendBlockWithResponse(options))).assertNext(response -> {
+            assertNotNull(response.getValue().getETag());
+            assertTrue(hasOnlyStructuredMessageHeaders(recorded));
+        }).verifyComplete();
     }
 
     @Test
@@ -374,14 +404,13 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
         Flux<ByteBuffer> data = Flux.just(ByteBuffer.wrap(randomData));
 
         AppendBlobAppendBlockOptions options
-            = new AppendBlobAppendBlockOptions().setContentValidationAlgorithm(ContentValidationAlgorithm.NONE);
+            = new AppendBlobAppendBlockOptions(BinaryData.fromFlux(data, (long) FIVE_MB, false).block())
+                .setContentValidationAlgorithm(ContentValidationAlgorithm.NONE);
 
-        StepVerifier.create(client.create().then(client.appendBlockWithResponse(data, FIVE_MB, options)))
-            .assertNext(response -> {
-                assertNotNull(response.getValue().getETag());
-                assertTrue(hasNoContentValidationHeaders(recorded));
-            })
-            .verifyComplete();
+        StepVerifier.create(client.create().then(client.appendBlockWithResponse(options))).assertNext(response -> {
+            assertNotNull(response.getValue().getETag());
+            assertTrue(hasNoContentValidationHeaders(recorded));
+        }).verifyComplete();
     }
 
     // ===========================================================================================
@@ -402,12 +431,12 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
         byte[] randomData = getRandomByteArray(UNDER_4MB_PAGE_ALIGNED);
         Flux<ByteBuffer> data = Flux.just(ByteBuffer.wrap(randomData));
 
-        PageBlobUploadPagesOptions options = new PageBlobUploadPagesOptions().setContentValidationAlgorithm(algorithm);
         PageRange pageRange = new PageRange().setStart(0).setEnd(UNDER_4MB_PAGE_ALIGNED - 1);
+        PageBlobUploadPagesOptions options = new PageBlobUploadPagesOptions(pageRange,
+            BinaryData.fromFlux(data, (long) UNDER_4MB_PAGE_ALIGNED, false).block())
+                .setContentValidationAlgorithm(algorithm);
 
-        StepVerifier
-            .create(
-                client.create(UNDER_4MB_PAGE_ALIGNED).then(client.uploadPagesWithResponse(pageRange, data, options)))
+        StepVerifier.create(client.create(UNDER_4MB_PAGE_ALIGNED).then(client.uploadPagesWithResponse(options)))
             .assertNext(response -> {
                 assertNotNull(response.getValue().getETag());
                 assertTrue(hasOnlyCrc64Headers(recorded));
@@ -425,11 +454,12 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
         byte[] randomData = getRandomByteArray(FOUR_MB_PAGE_ALIGNED);
         Flux<ByteBuffer> data = Flux.just(ByteBuffer.wrap(randomData));
 
-        PageBlobUploadPagesOptions options = new PageBlobUploadPagesOptions().setContentValidationAlgorithm(algorithm);
         PageRange pageRange = new PageRange().setStart(0).setEnd(FOUR_MB_PAGE_ALIGNED - 1);
+        PageBlobUploadPagesOptions options = new PageBlobUploadPagesOptions(pageRange,
+            BinaryData.fromFlux(data, (long) FOUR_MB_PAGE_ALIGNED, false).block())
+                .setContentValidationAlgorithm(algorithm);
 
-        StepVerifier
-            .create(client.create(FOUR_MB_PAGE_ALIGNED).then(client.uploadPagesWithResponse(pageRange, data, options)))
+        StepVerifier.create(client.create(FOUR_MB_PAGE_ALIGNED).then(client.uploadPagesWithResponse(options)))
             .assertNext(response -> {
                 assertNotNull(response.getValue().getETag());
                 assertTrue(hasOnlyStructuredMessageHeaders(recorded));
@@ -446,12 +476,12 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
         byte[] randomData = getRandomByteArray(FOUR_MB_PAGE_ALIGNED);
         Flux<ByteBuffer> data = Flux.just(ByteBuffer.wrap(randomData));
 
-        PageBlobUploadPagesOptions options
-            = new PageBlobUploadPagesOptions().setContentValidationAlgorithm(ContentValidationAlgorithm.NONE);
         PageRange pageRange = new PageRange().setStart(0).setEnd(FOUR_MB_PAGE_ALIGNED - 1);
+        PageBlobUploadPagesOptions options = new PageBlobUploadPagesOptions(pageRange,
+            BinaryData.fromFlux(data, (long) FOUR_MB_PAGE_ALIGNED, false).block())
+                .setContentValidationAlgorithm(ContentValidationAlgorithm.NONE);
 
-        StepVerifier
-            .create(client.create(FOUR_MB_PAGE_ALIGNED).then(client.uploadPagesWithResponse(pageRange, data, options)))
+        StepVerifier.create(client.create(FOUR_MB_PAGE_ALIGNED).then(client.uploadPagesWithResponse(options)))
             .assertNext(response -> {
                 assertNotNull(response.getValue().getETag());
                 assertTrue(hasNoContentValidationHeaders(recorded));
@@ -582,6 +612,7 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
         StepVerifier.create(client.uploadWithResponse(options)).assertNext(response -> {
             assertNotNull(response.getValue().getETag());
             assertTrue(hasOnlyStructuredMessageHeaders(recorded));
+            assertStructuredMessageLengths(recorded.get(0), EXACTLY_4MB);
         }).verifyComplete();
     }
 
@@ -713,10 +744,11 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
         Flux<ByteBuffer> data = Flux.just(ByteBuffer.wrap(randomData));
 
         AppendBlobAppendBlockOptions options
-            = new AppendBlobAppendBlockOptions().setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
+            = new AppendBlobAppendBlockOptions(BinaryData.fromFlux(data, (long) FIVE_MB, false).block())
+                .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
 
-        StepVerifier.create(
-            client.create().then(client.appendBlockWithResponse(data, FIVE_MB, options)).then(client.downloadContent()))
+        StepVerifier
+            .create(client.create().then(client.appendBlockWithResponse(options)).then(client.downloadContent()))
             .assertNext(downloaded -> assertArrayEquals(randomData, downloaded.toBytes()))
             .verifyComplete();
     }
@@ -729,13 +761,14 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
         byte[] randomData = getRandomByteArray(FOUR_MB_PAGE_ALIGNED);
         Flux<ByteBuffer> data = Flux.just(ByteBuffer.wrap(randomData));
 
-        PageBlobUploadPagesOptions options
-            = new PageBlobUploadPagesOptions().setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
         PageRange pageRange = new PageRange().setStart(0).setEnd(FOUR_MB_PAGE_ALIGNED - 1);
+        PageBlobUploadPagesOptions options = new PageBlobUploadPagesOptions(pageRange,
+            BinaryData.fromFlux(data, (long) FOUR_MB_PAGE_ALIGNED, false).block())
+                .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
 
         StepVerifier
             .create(client.create(FOUR_MB_PAGE_ALIGNED)
-                .then(client.uploadPagesWithResponse(pageRange, data, options))
+                .then(client.uploadPagesWithResponse(options))
                 .then(client.downloadContent()))
             .assertNext(downloaded -> assertArrayEquals(randomData, downloaded.toBytes()))
             .verifyComplete();
@@ -847,9 +880,10 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
                         Flux.using(() -> AsynchronousFileChannel.open(sourceFile.toPath(), StandardOpenOption.READ),
                             channel -> FluxUtil.readFile(channel, maxAppendBlockBytes, 0, chosenPayloadSizeBytes)
                                 .concatMap(bb -> {
-                                    AppendBlobAppendBlockOptions appendOptions = new AppendBlobAppendBlockOptions()
-                                        .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
-                                    return client.appendBlockWithResponse(Flux.just(bb), bb.remaining(), appendOptions);
+                                    AppendBlobAppendBlockOptions appendOptions
+                                        = new AppendBlobAppendBlockOptions(BinaryData.fromByteBuffer(bb))
+                                            .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
+                                    return client.appendBlockWithResponse(appendOptions);
                                 }),
                             channel -> {
                                 try {
@@ -1025,7 +1059,10 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
 
     private static byte[] createDefaultMd5() {
         try {
-            return Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest(DATA.getDefaultBytes()));
+            // setContentMd5 expects the raw 16-byte MD5 digest; the SDK Base64-encodes it into the Content-MD5
+            // header. Pre-encoding here would produce an invalid digest and let conflict tests pass for the wrong
+            // reason, so the fixture must stay raw.
+            return MessageDigest.getInstance("MD5").digest(DATA.getDefaultBytes());
         } catch (NoSuchAlgorithmException ex) {
             throw LOGGER.logExceptionAsError(new RuntimeException("MD5 algorithm unavailable.", ex));
         }
@@ -1072,19 +1109,15 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
             = createBlobAsyncClientWithRequestSniffer(new CopyOnWriteArrayList<>()).getAppendBlobAsyncClient();
 
         byte[] randomData = DATA.getDefaultBytes();
-        AppendBlobAppendBlockOptions options
-            = new AppendBlobAppendBlockOptions().setContentValidationAlgorithm(algorithm).setContentMd5(DEFAULT_MD5);
+        AppendBlobAppendBlockOptions options = new AppendBlobAppendBlockOptions(BinaryData.fromBytes(randomData))
+            .setContentValidationAlgorithm(algorithm)
+            .setContentMd5(DEFAULT_MD5);
 
-        StepVerifier
-            .create(
-                client.create()
-                    .then(client.appendBlockWithResponse(Flux.just(ByteBuffer.wrap(randomData)), randomData.length,
-                        options)))
-            .verifyErrorSatisfies(ex -> {
-                BlobStorageException e = assertInstanceOf(BlobStorageException.class, ex);
-                assertEquals(400, e.getStatusCode());
-                assertTrue(e.getMessage().contains(MESSAGE));
-            });
+        StepVerifier.create(client.create().then(client.appendBlockWithResponse(options))).verifyErrorSatisfies(ex -> {
+            BlobStorageException e = assertInstanceOf(BlobStorageException.class, ex);
+            assertEquals(400, e.getStatusCode());
+            assertTrue(e.getMessage().contains(MESSAGE));
+        });
     }
 
     @ParameterizedTest
@@ -1096,17 +1129,331 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
 
         byte[] randomData = getRandomByteArray(UNDER_4MB_PAGE_ALIGNED);
         byte[] md5 = MessageDigest.getInstance("MD5").digest(randomData);
-        PageBlobUploadPagesOptions options
-            = new PageBlobUploadPagesOptions().setContentValidationAlgorithm(algorithm).setContentMd5(md5);
         PageRange pageRange = new PageRange().setStart(0).setEnd(UNDER_4MB_PAGE_ALIGNED - 1);
+        PageBlobUploadPagesOptions options = new PageBlobUploadPagesOptions(pageRange, BinaryData.fromBytes(randomData))
+            .setContentValidationAlgorithm(algorithm)
+            .setContentMd5(md5);
 
-        StepVerifier
-            .create(client.create(UNDER_4MB_PAGE_ALIGNED)
-                .then(client.uploadPagesWithResponse(pageRange, Flux.just(ByteBuffer.wrap(randomData)), options)))
+        StepVerifier.create(client.create(UNDER_4MB_PAGE_ALIGNED).then(client.uploadPagesWithResponse(options)))
             .verifyErrorSatisfies(ex -> {
                 BlobStorageException e = assertInstanceOf(BlobStorageException.class, ex);
                 assertEquals(400, e.getStatusCode());
                 assertTrue(e.getMessage().contains(MESSAGE));
             });
+    }
+
+    // ===========================================================================================
+    // Request-shape verification (async): exact header mode, checksum value, and per-request content length.
+    // Requests are captured with a pass-through sniffer and sent to the service.
+    //
+    // Put Blob (BlockBlobSimpleUpload) and Put Block header-mode + exact-value coverage lives in the existing
+    // blockBlobSimpleUpload*/stageBlock* tests above (parameterized over CRC64/AUTO). These request-shape tests add
+    // operations and scenarios those do not cover (page byte-array structured message, non-zero page offset, etc.).
+    // ===========================================================================================
+
+    @Test
+    public void uploadPagesRequestAtExactly4MbUsesStructuredMessageWithExactLengths() {
+        List<RecordedRequest> recorded = new CopyOnWriteArrayList<>();
+        PageBlobAsyncClient client = createBlobAsyncClientWithFullRequestSniffer(recorded).getPageBlobAsyncClient();
+        byte[] data = getRandomByteArray(FOUR_MB_PAGE_ALIGNED);
+        PageRange range = new PageRange().setStart(0).setEnd(FOUR_MB_PAGE_ALIGNED - 1);
+
+        StepVerifier
+            .create(client.create(FOUR_MB_PAGE_ALIGNED)
+                .then(client.uploadPagesWithResponse(new PageBlobUploadPagesOptions(range, BinaryData.fromBytes(data))
+                    .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64))))
+            .expectNextCount(1)
+            .verifyComplete();
+
+        assertTrue(allUploadsUseStructuredMessage(recorded));
+        assertStructuredMessageLengths(contentBearingUploadRequests(recorded).get(0).getHeaders(),
+            FOUR_MB_PAGE_ALIGNED);
+    }
+
+    @LiveOnly // Parallel staging uses SDK-generated (random) block IDs in the Put Block URLs; not replayable.
+    @Test
+    public void chunkedParallelUploadRequestValidatesEveryBlockIncludingFinalPartialBlock() {
+        List<RecordedRequest> recorded = new CopyOnWriteArrayList<>();
+        BlobAsyncClient client = createBlobAsyncClientWithFullRequestSniffer(recorded);
+        long blockSize = 2L * Constants.MB;
+        byte[] data = getRandomByteArray(FIVE_MB);
+
+        StepVerifier.create(client.uploadWithResponse(new BlobParallelUploadOptions(Flux.just(ByteBuffer.wrap(data)))
+            .setParallelTransferOptions(new ParallelTransferOptions().setBlockSizeLong(blockSize)
+                .setMaxSingleUploadSizeLong(blockSize)
+                .setMaxConcurrency(1))
+            .setRequestConditions(new BlobRequestConditions())
+            .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64))).expectNextCount(1).verifyComplete();
+
+        // Count DISTINCT blocks by their Put Block id, so the assertion is retry-independent (a retried block reuses
+        // its block id). Every distinct block must carry a structured message, and the three must be 2, 2, 1 MiB.
+        assertTrue(allUploadsUseStructuredMessage(recorded));
+        java.util.Map<String, Long> blocks = ContentValidationTestUtils.uploadBlockUnencodedLengths(recorded);
+        assertEquals(3, blocks.size(), "A 5 MiB payload with a 2 MiB block size must stage exactly three blocks");
+        assertEquals(Arrays.asList((long) Constants.MB, 2L * Constants.MB, 2L * Constants.MB),
+            blocks.values().stream().sorted().collect(Collectors.toList()),
+            "The three blocks must be 2 MiB, 2 MiB, and a final 1 MiB partial block (validated with its true length)");
+    }
+
+    @LiveOnly // Cancellation + parallel staging; validated live.
+    @Test
+    public void cancelledMultipartUploadDoesNotCommit() throws InterruptedException {
+        List<RecordedRequest> recorded = new CopyOnWriteArrayList<>();
+        CountDownLatch blockStaged = new CountDownLatch(1);
+        // Release the latch only AFTER a Put Block has successfully completed, so we cancel only once a block has
+        // genuinely been staged at the service (not merely dispatched). This keeps the no-commit assertion meaningful.
+        HttpPipelinePolicy stagingObserver = (context, next) -> {
+            String url = context.getHttpRequest().getUrl().toString();
+            boolean isPutBlock = url.contains("comp=block") && !url.contains("comp=blocklist");
+            return next.process().doOnNext(response -> {
+                if (isPutBlock && response.getStatusCode() >= 200 && response.getStatusCode() < 300) {
+                    blockStaged.countDown();
+                }
+            });
+        };
+        BlobAsyncClient client = createBlobAsyncClientWithFullRequestSniffer(recorded, stagingObserver);
+
+        long blockSize = 2L * Constants.MB;
+        // Emit several blocks (well over the single-shot threshold, so the gate actually switches to chunked staging)
+        // then never complete, keeping the upload pending until it is cancelled. A PublisherProbe wraps the source so
+        // the test can assert the data source was actually cancelled.
+        CountDownLatch dataCancelled = new CountDownLatch(1);
+        Flux<ByteBuffer> source = Flux
+            .concat(Flux.range(0, 4).map(i -> ByteBuffer.wrap(getRandomByteArray(2 * Constants.MB))), Flux.never());
+        PublisherProbe<ByteBuffer> dataProbe = PublisherProbe.of(source.doOnCancel(dataCancelled::countDown));
+
+        Disposable subscription = client.uploadWithResponse(new BlobParallelUploadOptions(dataProbe.flux())
+            .setParallelTransferOptions(new ParallelTransferOptions().setBlockSizeLong(blockSize)
+                .setMaxSingleUploadSizeLong(blockSize)
+                .setMaxConcurrency(1))
+            .setRequestConditions(new BlobRequestConditions())
+            .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64)).subscribe();
+
+        try {
+            // A block must have been fully staged (successful Put Block); otherwise the no-commit assertion below
+            // would pass vacuously.
+            assertTrue(blockStaged.await(60, TimeUnit.SECONDS),
+                "A block must be successfully staged before the upload is cancelled");
+        } finally {
+            subscription.dispose(); // cancel mid-flight
+        }
+
+        // The cancellation must actually reach the data source (not just complete on its own).
+        assertTrue(dataCancelled.await(60, TimeUnit.SECONDS), "Cancellation must propagate to the data source");
+        dataProbe.assertWasCancelled();
+        assertFalse(hasCommitBlockListRequest(recorded),
+            "A cancelled multipart upload must not commit a block list of incomplete data");
+    }
+
+    @Test
+    public void uploadRetryReplaysBodyAndRevalidatesAfterConsumption() {
+        List<RecordedRequest> recorded = new CopyOnWriteArrayList<>();
+        AtomicBoolean failedOnce = new AtomicBoolean(false);
+        HttpPipelinePolicy fault = (context, next) -> {
+            if (ContentValidationTestUtils.isUploadAttempt(context.getHttpRequest())
+                && failedOnce.compareAndSet(false, true)) {
+                return FluxUtil.collectBytesInByteBufferStream(context.getHttpRequest().getBody())
+                    .then(ContentValidationTestUtils.injectedError(context.getHttpRequest(), 500));
+            }
+            return next.process();
+        };
+        BlockBlobAsyncClient client
+            = createBlobAsyncClientWithFullRequestSniffer(recorded, fault).getBlockBlobAsyncClient();
+
+        byte[] data = getRandomByteArray(UNDER_4MB);
+        StepVerifier.create(client.uploadWithResponse(new BlockBlobSimpleUploadOptions(BinaryData.fromBytes(data))
+            .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64))).expectNextCount(1).verifyComplete();
+
+        List<RecordedRequest> uploads = contentBearingUploadRequests(recorded);
+        assertTrue(uploads.size() >= 2, "Expected at least one failed attempt followed by a successful retry");
+        assertTrue(allUploadsUseCrc64Header(recorded), "Both the failed attempt and the retry must be validated");
+        assertCrc64HeaderMatches(uploads.get(uploads.size() - 1).getHeaders(), data);
+    }
+
+    @Test
+    public void uploadErrorIsPropagated() {
+        List<RecordedRequest> recorded = new CopyOnWriteArrayList<>();
+        HttpPipelinePolicy fault
+            = (context, next) -> ContentValidationTestUtils.isUploadAttempt(context.getHttpRequest())
+                ? ContentValidationTestUtils.injectedError(context.getHttpRequest(), 403)
+                : next.process();
+        BlockBlobAsyncClient client
+            = createBlobAsyncClientWithFullRequestSniffer(recorded, fault).getBlockBlobAsyncClient();
+
+        StepVerifier.create(client
+            .uploadWithResponse(new BlockBlobSimpleUploadOptions(BinaryData.fromBytes(getRandomByteArray(UNDER_4MB)))
+                .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64)))
+            .verifyErrorSatisfies(ex -> {
+                BlobStorageException e = assertInstanceOf(BlobStorageException.class, ex);
+                assertEquals(403, e.getStatusCode());
+                assertEquals(BlobErrorCode.fromString("InjectedFailure"), e.getErrorCode());
+            });
+    }
+
+    @Test
+    public void failedStageBlockDoesNotCommitIncompleteData() {
+        List<RecordedRequest> recorded = new CopyOnWriteArrayList<>();
+        HttpPipelinePolicy fault = (context, next) -> {
+            String url = context.getHttpRequest().getUrl().toString();
+            return url.contains("comp=block") && !url.contains("comp=blocklist")
+                ? ContentValidationTestUtils.injectedError(context.getHttpRequest(), 403)
+                : next.process();
+        };
+        BlobAsyncClient client = createBlobAsyncClientWithFullRequestSniffer(recorded, fault);
+
+        long blockSize = 2L * Constants.MB;
+        StepVerifier.create(client
+            .uploadWithResponse(new BlobParallelUploadOptions(Flux.just(ByteBuffer.wrap(getRandomByteArray(FIVE_MB))))
+                .setParallelTransferOptions(new ParallelTransferOptions().setBlockSizeLong(blockSize)
+                    .setMaxSingleUploadSizeLong(blockSize)
+                    .setMaxConcurrency(1))
+                .setRequestConditions(new BlobRequestConditions())
+                .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64)))
+            .verifyErrorSatisfies(ex -> {
+                BlobStorageException e = assertInstanceOf(BlobStorageException.class, ex);
+                assertEquals(403, e.getStatusCode());
+                assertEquals(BlobErrorCode.fromString("InjectedFailure"), e.getErrorCode());
+            });
+
+        assertFalse(hasCommitBlockListRequest(recorded),
+            "A failed multipart upload must not commit a block list of incomplete data");
+    }
+
+    @Test
+    public void appendBlockForwardsLeaseEtagAppendPositionAndSizeWithValidation() {
+        List<RecordedRequest> recorded = new CopyOnWriteArrayList<>();
+        HttpPipelinePolicy terminal
+            = (context, next) -> ContentValidationTestUtils.terminalSuccess(context.getHttpRequest());
+        AppendBlobAsyncClient client
+            = createBlobAsyncClientWithFullRequestSniffer(recorded, terminal).getAppendBlobAsyncClient();
+
+        byte[] data = getRandomByteArray(UNDER_4MB);
+        AppendBlobRequestConditions conditions
+            = new AppendBlobRequestConditions().setLeaseId(testResourceNamer.randomUuid())
+                .setIfMatch("\"0xSOMEETAG\"")
+                .setAppendPosition(0L)
+                .setMaxSize(1024L * 1024L * 1024L);
+        StepVerifier
+            .create(client.create()
+                .then(client.appendBlockWithResponse(
+                    new AppendBlobAppendBlockOptions(BinaryData.fromBytes(data)).setRequestConditions(conditions)
+                        .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64))))
+            .expectNextCount(1)
+            .verifyComplete();
+
+        HttpHeaders headers = contentBearingUploadRequests(recorded).get(0).getHeaders();
+        assertTrue(ContentValidationTestUtils.isCrc64HeaderRequest(headers));
+        assertEquals(conditions.getLeaseId(), headers.getValue(LEASE_ID));
+        assertEquals("\"0xSOMEETAG\"", headers.getValue(IF_MATCH));
+        assertEquals("0", headers.getValue(APPEND_POS));
+        assertEquals(String.valueOf(1024L * 1024L * 1024L), headers.getValue(MAX_SIZE));
+    }
+
+    @Test
+    public void uploadPagesForwardsLeaseEtagAndSequenceNumberWithValidation() {
+        List<RecordedRequest> recorded = new CopyOnWriteArrayList<>();
+        HttpPipelinePolicy terminal
+            = (context, next) -> ContentValidationTestUtils.terminalSuccess(context.getHttpRequest());
+        PageBlobAsyncClient client
+            = createBlobAsyncClientWithFullRequestSniffer(recorded, terminal).getPageBlobAsyncClient();
+
+        byte[] data = getRandomByteArray(UNDER_4MB_PAGE_ALIGNED);
+        PageRange range = new PageRange().setStart(0).setEnd(UNDER_4MB_PAGE_ALIGNED - 1);
+        PageBlobRequestConditions conditions
+            = new PageBlobRequestConditions().setLeaseId(testResourceNamer.randomUuid())
+                .setIfMatch("\"0xSOMEETAG\"")
+                .setIfSequenceNumberEqualTo(7L);
+        StepVerifier
+            .create(client.create(UNDER_4MB_PAGE_ALIGNED)
+                .then(client.uploadPagesWithResponse(
+                    new PageBlobUploadPagesOptions(range, BinaryData.fromBytes(data)).setRequestConditions(conditions)
+                        .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64))))
+            .expectNextCount(1)
+            .verifyComplete();
+
+        HttpHeaders headers = contentBearingUploadRequests(recorded).get(0).getHeaders();
+        assertTrue(ContentValidationTestUtils.isCrc64HeaderRequest(headers));
+        assertEquals(conditions.getLeaseId(), headers.getValue(LEASE_ID));
+        assertEquals("\"0xSOMEETAG\"", headers.getValue(IF_MATCH));
+        assertEquals("7", headers.getValue(SEQ_EQ));
+    }
+
+    @Test
+    public void uploadPagesAtNonZeroOffsetIsValidatedAndForwardsRange() {
+        List<RecordedRequest> recorded = new CopyOnWriteArrayList<>();
+        PageBlobAsyncClient client = createBlobAsyncClientWithFullRequestSniffer(recorded).getPageBlobAsyncClient();
+        int start = 4 * PAGE_BYTES;
+        byte[] data = getRandomByteArray(UNDER_4MB_PAGE_ALIGNED);
+        PageRange range = new PageRange().setStart(start).setEnd(start + UNDER_4MB_PAGE_ALIGNED - 1);
+        StepVerifier
+            .create(client.create(start + UNDER_4MB_PAGE_ALIGNED)
+                .then(client.uploadPagesWithResponse(new PageBlobUploadPagesOptions(range, BinaryData.fromBytes(data))
+                    .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64))))
+            .expectNextCount(1)
+            .verifyComplete();
+
+        RecordedRequest upload = contentBearingUploadRequests(recorded).get(0);
+        assertTrue(allUploadsUseCrc64Header(recorded));
+        assertCrc64HeaderMatches(upload.getHeaders(), data);
+        assertEquals("bytes=" + start + "-" + (start + UNDER_4MB_PAGE_ALIGNED - 1),
+            upload.getHeaders().getValue(X_MS_RANGE),
+            "A non-zero page offset must be forwarded alongside content validation");
+    }
+
+    @Test
+    public void multipleAppendBlocksAreEachValidatedWithExactValues() {
+        List<RecordedRequest> recorded = new CopyOnWriteArrayList<>();
+        AppendBlobAsyncClient client = createBlobAsyncClientWithFullRequestSniffer(recorded).getAppendBlobAsyncClient();
+
+        byte[][] blocks
+            = { getRandomByteArray(UNDER_4MB), getRandomByteArray(UNDER_4MB), getRandomByteArray(Constants.MB) };
+        StepVerifier
+            .create(client.create()
+                .then(client.appendBlockWithResponse(new AppendBlobAppendBlockOptions(BinaryData.fromBytes(blocks[0]))
+                    .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64)))
+                .then(client.appendBlockWithResponse(new AppendBlobAppendBlockOptions(BinaryData.fromBytes(blocks[1]))
+                    .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64)))
+                .then(client.appendBlockWithResponse(new AppendBlobAppendBlockOptions(BinaryData.fromBytes(blocks[2]))
+                    .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64))))
+            .expectNextCount(1)
+            .verifyComplete();
+
+        // Retry-independently validate every append block by checksum: the set of sent CRC64 values must exactly
+        // match the expected blocks, so neither missing nor extra/incorrect blocks slip through, even with retries.
+        ContentValidationTestUtils.assertEachBlockValidatedWithCrc64(recorded, blocks);
+    }
+
+    @Test
+    public void putBlobMd5OnlyControlIsForwardedWithoutContentValidation() {
+        List<RecordedRequest> recorded = new CopyOnWriteArrayList<>();
+        BlockBlobAsyncClient client = createBlobAsyncClientWithFullRequestSniffer(recorded).getBlockBlobAsyncClient();
+        byte[] data = getRandomByteArray(UNDER_4MB);
+        byte[] rawDigest = ContentValidationTestUtils.md5(data);
+        assertEquals(16, rawDigest.length, "MD5 fixture must be the raw 16-byte digest, not a Base64-encoded value");
+
+        StepVerifier
+            .create(client.uploadWithResponse(
+                new BlockBlobSimpleUploadOptions(BinaryData.fromBytes(data)).setContentMd5(rawDigest)))
+            .expectNextCount(1)
+            .verifyComplete();
+
+        RecordedRequest upload = contentBearingUploadRequests(recorded).get(0);
+        assertEquals(Base64.getEncoder().encodeToString(rawDigest),
+            upload.getHeaders().getValue(HttpHeaderName.CONTENT_MD5),
+            "Content-MD5 must be the Base64 of the raw digest");
+        assertTrue(noUploadUsesContentValidation(recorded), "MD5-only must not add any content-validation header");
+    }
+
+    @Test
+    public void putBlobWithOmittedAlgorithmHasNoValidation() {
+        List<RecordedRequest> recorded = new CopyOnWriteArrayList<>();
+        BlockBlobAsyncClient client = createBlobAsyncClientWithFullRequestSniffer(recorded).getBlockBlobAsyncClient();
+        // The content-validation algorithm setter is intentionally never called (default/null): no headers expected.
+        StepVerifier
+            .create(client.uploadWithResponse(
+                new BlockBlobSimpleUploadOptions(BinaryData.fromBytes(getRandomByteArray(FIVE_MB)))))
+            .expectNextCount(1)
+            .verifyComplete();
+        assertTrue(noUploadUsesContentValidation(recorded));
     }
 }

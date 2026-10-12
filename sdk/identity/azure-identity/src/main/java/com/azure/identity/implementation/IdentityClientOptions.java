@@ -20,6 +20,7 @@ import com.azure.identity.ChainedTokenCredential;
 import com.azure.identity.TokenCachePersistenceOptions;
 import com.azure.identity.implementation.util.IdentityConstants;
 import com.azure.identity.implementation.util.ValidationUtil;
+import com.microsoft.aad.msal4j.ITokenCacheAccessAspect;
 import com.microsoft.aad.msal4j.UserAssertion;
 
 import java.time.Duration;
@@ -56,6 +57,7 @@ public final class IdentityClientOptions implements Cloneable {
     private boolean includeX5c;
     private AuthenticationRecord authenticationRecord;
     private TokenCachePersistenceOptions tokenCachePersistenceOptions;
+    private ITokenCacheAccessAspect tokenCacheAccessAspect;
     private RegionalAuthority regionalAuthority;
     private UserAssertion userAssertion;
     private boolean multiTenantAuthDisabled;
@@ -362,6 +364,15 @@ public final class IdentityClientOptions implements Cloneable {
      */
     public TokenCachePersistenceOptions getTokenCacheOptions() {
         return this.tokenCachePersistenceOptions;
+    }
+
+    IdentityClientOptions setTokenCacheAccessAspect(ITokenCacheAccessAspect tokenCacheAccessAspect) {
+        this.tokenCacheAccessAspect = tokenCacheAccessAspect;
+        return this;
+    }
+
+    ITokenCacheAccessAspect getTokenCacheAccessAspect() {
+        return tokenCacheAccessAspect;
     }
 
     /**
@@ -842,6 +853,7 @@ public final class IdentityClientOptions implements Cloneable {
                 .setExecutorService(this.executorService)
                 .setIdentityLogOptionsImpl(this.identityLogOptionsImpl)
                 .setTokenCacheOptions(this.tokenCachePersistenceOptions)
+                .setTokenCacheAccessAspect(this.tokenCacheAccessAspect)
                 .setRetryTimeout(this.retryTimeout)
                 .setRegionalAuthority(this.regionalAuthority)
                 .setHttpPipeline(this.httpPipeline)

@@ -143,6 +143,7 @@ public final class ManageTextBlocklistAsyncTests extends ContentSafetyClientTest
     @Order(8)
     public void testDeleteTextBlocklistByBlocklistNameTests() {
         // method invocation
-        blocklistAsyncClient.deleteTextBlocklist(blocklistName).block();
+        RequestOptions requestOptions = new RequestOptions().addHeader("Accept", "application/json");
+        blocklistAsyncClient.deleteTextBlocklistWithResponse(blocklistName, requestOptions).block();
     }
 }

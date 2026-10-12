@@ -8,12 +8,13 @@ import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.DownloadRetryOptions;
 import com.azure.storage.common.ContentValidationAlgorithm;
+import com.azure.storage.common.ValidatableContent;
 
 /**
  * Extended options that may be passed when downloading a blob range to an output stream.
  */
 @Fluent
-public final class BlobDownloadStreamOptions {
+public final class BlobDownloadStreamOptions implements ValidatableContent {
     private BlobRange range;
     private DownloadRetryOptions downloadRetryOptions;
     private BlobRequestConditions requestConditions;
@@ -113,6 +114,7 @@ public final class BlobDownloadStreamOptions {
      *
      * @return The transfer validation checksum algorithm.
      */
+    @Override
     public ContentValidationAlgorithm getContentValidationAlgorithm() {
         return contentValidationAlgorithm;
     }
@@ -124,6 +126,7 @@ public final class BlobDownloadStreamOptions {
      * @param contentValidationAlgorithm The transfer validation checksum algorithm.
      * @return The updated options.
      */
+    @Override
     public BlobDownloadStreamOptions
         setContentValidationAlgorithm(ContentValidationAlgorithm contentValidationAlgorithm) {
         this.contentValidationAlgorithm = contentValidationAlgorithm;

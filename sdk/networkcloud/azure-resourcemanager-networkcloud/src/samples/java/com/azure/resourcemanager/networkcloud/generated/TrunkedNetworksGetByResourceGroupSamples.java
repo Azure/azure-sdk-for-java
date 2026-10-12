@@ -9,7 +9,7 @@ package com.azure.resourcemanager.networkcloud.generated;
  */
 public final class TrunkedNetworksGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/TrunkedNetworks_Get.json
+     * x-ms-original-file: 2026-07-01/TrunkedNetworks_Get.json
      */
     /**
      * Sample code: Get Trunked network.

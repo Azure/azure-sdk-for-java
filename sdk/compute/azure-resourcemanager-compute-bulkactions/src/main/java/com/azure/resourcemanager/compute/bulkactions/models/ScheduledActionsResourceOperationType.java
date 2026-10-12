@@ -8,37 +8,32 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * The resource operation to take on a scheduled-action failure.
+ * The operation to retry when a scheduled action fails.
  */
 public final class ScheduledActionsResourceOperationType
     extends ExpandableStringEnum<ScheduledActionsResourceOperationType> {
     /**
-     * The default value for this enum type.
-     */
-    public static final ScheduledActionsResourceOperationType UNKNOWN = fromString("Unknown");
-
-    /**
-     * Start operations on the resources.
+     * Starts the resources.
      */
     public static final ScheduledActionsResourceOperationType START = fromString("Start");
 
     /**
-     * Deallocate operations on the resources.
+     * Deallocates the resources.
      */
     public static final ScheduledActionsResourceOperationType DEALLOCATE = fromString("Deallocate");
 
     /**
-     * Hibernate operations on the resources.
+     * Hibernates the resources.
      */
     public static final ScheduledActionsResourceOperationType HIBERNATE = fromString("Hibernate");
 
     /**
-     * Create operations on the resources.
+     * Creates the resources.
      */
     public static final ScheduledActionsResourceOperationType CREATE = fromString("Create");
 
     /**
-     * Delete operations on the resources.
+     * Deletes the resources.
      */
     public static final ScheduledActionsResourceOperationType DELETE = fromString("Delete");
 

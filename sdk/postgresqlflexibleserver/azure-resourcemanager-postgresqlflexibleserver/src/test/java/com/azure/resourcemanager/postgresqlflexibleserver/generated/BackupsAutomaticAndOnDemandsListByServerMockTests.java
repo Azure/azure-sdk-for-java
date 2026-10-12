@@ -23,7 +23,7 @@ public final class BackupsAutomaticAndOnDemandsListByServerMockTests {
     @Test
     public void testListByServer() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"backupType\":\"Customer On-Demand\",\"completedTime\":\"2021-08-01T13:54:24Z\",\"source\":\"lpaugmrm\"},\"id\":\"lrxw\",\"name\":\"oauk\",\"type\":\"fkvcisi\"}]}";
+            = "{\"value\":[{\"properties\":{\"backupType\":\"Customer On-Demand\",\"completedTime\":\"2020-12-31T04:23:44Z\",\"source\":\"qpbrlc\"},\"id\":\"duczkgof\",\"name\":\"y\",\"type\":\"srucvcrrpcjtt\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,12 +32,12 @@ public final class BackupsAutomaticAndOnDemandsListByServerMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<BackupAutomaticAndOnDemand> response = manager.backupsAutomaticAndOnDemands()
-            .listByServer("gxhnpomyqwcabv", "ui", com.azure.core.util.Context.NONE);
+        PagedIterable<BackupAutomaticAndOnDemand> response
+            = manager.backupsAutomaticAndOnDemands().listByServer("hu", "uerct", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(BackupType.CUSTOMER_ON_DEMAND, response.iterator().next().backupType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-01T13:54:24Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2020-12-31T04:23:44Z"),
             response.iterator().next().completedTime());
-        Assertions.assertEquals("lpaugmrm", response.iterator().next().source());
+        Assertions.assertEquals("qpbrlc", response.iterator().next().source());
     }
 }

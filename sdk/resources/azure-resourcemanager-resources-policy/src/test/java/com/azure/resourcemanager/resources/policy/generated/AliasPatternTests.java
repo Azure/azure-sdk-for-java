@@ -13,10 +13,10 @@ public final class AliasPatternTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AliasPattern model
-            = BinaryData.fromString("{\"phrase\":\"sx\",\"variable\":\"pelol\",\"type\":\"NotSpecified\"}")
+            = BinaryData.fromString("{\"phrase\":\"bw\",\"variable\":\"jhemms\",\"type\":\"NotSpecified\"}")
                 .toObject(AliasPattern.class);
-        Assertions.assertEquals("sx", model.phrase());
-        Assertions.assertEquals("pelol", model.variable());
+        Assertions.assertEquals("bw", model.phrase());
+        Assertions.assertEquals("jhemms", model.variable());
         Assertions.assertEquals(AliasPatternType.NOT_SPECIFIED, model.type());
     }
 }

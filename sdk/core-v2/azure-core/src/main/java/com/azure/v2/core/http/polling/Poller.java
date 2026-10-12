@@ -9,13 +9,15 @@ import io.clientcore.core.models.CoreException;
 
 import java.lang.reflect.Type;
 import java.time.Duration;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeoutException;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
- * A type that offers API that simplifies the task of executing long-running operations against an Azure service.
+ * An interface that offers APIs that simplify the task of executing long-running operations against an Azure service.
  *
  * <p>
  * It provides the following functionality:
@@ -69,12 +71,12 @@ public interface Poller<T, U> {
     PollResponse<T> waitForCompletion(Duration timeout);
 
     /**
-     * Wait for the given {@link LongRunningOperationStatus} to receive.
+     * Wait for the given {@link LongRunningOperationStatus} to be received.
      * <p>
      * This operation will wait indefinitely until the {@code statusToWaitFor} is received or a
      * {@link LongRunningOperationStatus#isComplete()} state is reached.
      *
-     * @param statusToWaitFor the desired {@link LongRunningOperationStatus} to block for.
+     * @param statusToWaitFor the desired {@link LongRunningOperationStatus} to wait for.
      * @return {@link PollResponse} whose {@link PollResponse#getStatus()} matches {@code statusToWaitFor} or is
      * {@link LongRunningOperationStatus#isComplete()}.
      * @throws NullPointerException if {@code statusToWaitFor} is {@code null}.
@@ -82,7 +84,7 @@ public interface Poller<T, U> {
     PollResponse<T> waitUntil(LongRunningOperationStatus statusToWaitFor);
 
     /**
-     * Wait for the given {@link LongRunningOperationStatus} with a timeout.
+     * Wait for the given {@link LongRunningOperationStatus} to be received with a timeout.
      * <p>
      * Polling will continue until a response is returned with a {@link LongRunningOperationStatus} matching
      * {@code statusToWaitFor}, a {@link LongRunningOperationStatus#isComplete()} state is reached, or the timeout
@@ -94,7 +96,7 @@ public interface Poller<T, U> {
      * is reached and completed before a poll operation is executed. For example, if a long-running operation has the
      * flow {@code A -> B -> C -> D} and the {@code statusToWaitFor} is {@code B} and the first poll request returns
      * state {@code A} but in the time between polls state {@code B} completes, then the next poll request will return
-     * state {@code C} and the {@code statusToWaitFor} will never be returned.
+     * state {@code C} and the {@code statusToWaitFor} will never occur.
      * <p>
      * This may return null if no poll operation completes within the timeout.
      *
@@ -139,9 +141,7 @@ public interface Poller<T, U> {
      * @throws RuntimeException If polling doesn't complete before the {@code timeout} elapses.
      * ({@link RuntimeException#getCause()} should be a {@link TimeoutException}).
      */
-    default U getFinalResult(Duration timeout) {
-        return getFinalResult();
-    }
+    U getFinalResult(Duration timeout);
 
     /**
      * Cancels the remote long-running operation if cancellation is supported by the service.
@@ -161,46 +161,10 @@ public interface Poller<T, U> {
      * @throws NullPointerException if the {@code pollInterval} is null.
      * @throws IllegalArgumentException if the {@code pollInterval} is zero or negative.
      */
-    default Poller<T, U> setPollInterval(Duration pollInterval) {
-        // This method is made default to prevent breaking change to the interface.
-        // no-op
-        return this;
-    }
+    Poller<T, U> setPollInterval(Duration pollInterval);
 
     /**
-     * Creates default SyncPoller.
-     *
-     * @param pollInterval the polling interval.
-     * @param syncActivationOperation the operation to synchronously activate (start) the long-running operation, this
-     * operation will be called with a new {@link PollingContext}.
-     * @param pollOperation the operation to poll the current state of long-running operation, this parameter is
-     * required and the operation will be called with current {@link PollingContext}.
-     * @param cancelOperation a {@link Function} that represents the operation to cancel the long-running operation if
-     * service supports cancellation, this parameter is required and if service does not support cancellation then the
-     * implementer should throw an exception with an error message indicating absence of cancellation support, the
-     * operation will be called with current {@link PollingContext}.
-     * @param fetchResultOperation a {@link Function} that represents the  operation to retrieve final result of the
-     * long-running operation if service support it, this parameter is required and operation will be called current
-     * {@link PollingContext}, if service does not have an api to fetch final result and if final result is same as
-     * final poll response value then implementer can choose to simply return value from provided final poll response.
-     * @param <T> The type of poll response value.
-     * @param <U> The type of the final result of long-running operation.
-     * @return new {@link Poller} instance.
-     * @throws NullPointerException if {@code pollInterval}, {@code syncActivationOperation}, {@code pollOperation},
-     * {@code cancelOperation} or {@code fetchResultOperation} is {@code null}.
-     * @throws IllegalArgumentException if {@code pollInterval} is zero or negative.
-     */
-    static <T, U> Poller<T, U> createPoller(Duration pollInterval,
-        Function<PollingContext<T>, PollResponse<T>> syncActivationOperation,
-        Function<PollingContext<T>, PollResponse<T>> pollOperation,
-        BiFunction<PollingContext<T>, PollResponse<T>, T> cancelOperation,
-        Function<PollingContext<T>, U> fetchResultOperation) {
-        return new SimplePoller<>(pollInterval, syncActivationOperation, pollOperation, cancelOperation,
-            fetchResultOperation);
-    }
-
-    /**
-     * Creates PollerFlux.
+     * Creates a Poller.
      * <p>
      * This method uses a {@link PollingStrategy} to poll the status of a long-running operation after the
      * activation operation is invoked. See {@link PollingStrategy} for more details of known polling strategies and
@@ -246,4 +210,70 @@ public interface Poller<T, U> {
             fetchResultOperation);
     }
 
+    /**
+     * Creates a Poller.
+     *
+     * @param pollInterval the polling interval.
+     * @param syncActivationOperation the operation to synchronously activate (start) the long-running operation, this
+     * operation will be called with a new {@link PollingContext}.
+     * @param pollOperation the operation to poll the current state of long-running operation, this parameter is
+     * required and the operation will be called with current {@link PollingContext}.
+     * @param cancelOperation a {@link Function} that represents the operation to cancel the long-running operation if
+     * service supports cancellation, this parameter is required and if service does not support cancellation then the
+     * implementer should throw an exception with an error message indicating absence of cancellation support, the
+     * operation will be called with current {@link PollingContext}.
+     * @param fetchResultOperation a {@link Function} that represents the  operation to retrieve final result of the
+     * long-running operation if service support it, this parameter is required and operation will be called current
+     * {@link PollingContext}, if service does not have an api to fetch final result and if final result is same as
+     * final poll response value then implementer can choose to simply return value from provided final poll response.
+     * @param <T> The type of poll response value.
+     * @param <U> The type of the final result of long-running operation.
+     * @return new {@link Poller} instance.
+     * @throws NullPointerException if {@code pollInterval}, {@code syncActivationOperation}, {@code pollOperation},
+     * {@code cancelOperation} or {@code fetchResultOperation} is {@code null}.
+     * @throws IllegalArgumentException if {@code pollInterval} is zero or negative.
+     */
+    static <T, U> Poller<T, U> createPoller(Duration pollInterval,
+        Function<PollingContext<T>, PollResponse<T>> syncActivationOperation,
+        Function<PollingContext<T>, PollResponse<T>> pollOperation,
+        BiFunction<PollingContext<T>, PollResponse<T>, T> cancelOperation,
+        Function<PollingContext<T>, U> fetchResultOperation) {
+        return createPoller(pollInterval, syncActivationOperation, pollOperation, cancelOperation, fetchResultOperation,
+            null);
+    }
+
+    /**
+     * Creates a Poller.
+     *
+     * @param pollInterval the polling interval.
+     * @param syncActivationOperation the operation to synchronously activate (start) the long-running operation, this
+     * operation will be called with a new {@link PollingContext}.
+     * @param pollOperation the operation to poll the current state of long-running operation, this parameter is
+     * required and the operation will be called with current {@link PollingContext}.
+     * @param cancelOperation a {@link Function} that represents the operation to cancel the long-running operation if
+     * service supports cancellation, this parameter is required and if service does not support cancellation then the
+     * implementer should throw an exception with an error message indicating absence of cancellation support, the
+     * operation will be called with current {@link PollingContext}.
+     * @param fetchResultOperation a {@link Function} that represents the  operation to retrieve final result of the
+     * long-running operation if service support it, this parameter is required and operation will be called current
+     * {@link PollingContext}, if service does not have an api to fetch final result and if final result is same as
+     * final poll response value then implementer can choose to simply return value from provided final poll response.
+     * @param executor A {@link ScheduledExecutorService} that handles sending scheduled poll requests. If null, uses
+     * {@link Executors#newSingleThreadScheduledExecutor()}.
+     * @param <T> The type of poll response value.
+     * @param <U> The type of the final result of long-running operation.
+     * @return new {@link Poller} instance.
+     * @throws NullPointerException if {@code pollInterval}, {@code syncActivationOperation}, {@code pollOperation},
+     * {@code cancelOperation} or {@code fetchResultOperation} is {@code null}.
+     * @throws IllegalArgumentException if {@code pollInterval} is zero or negative.
+     */
+    static <T, U> Poller<T, U> createPoller(Duration pollInterval,
+        Function<PollingContext<T>, PollResponse<T>> syncActivationOperation,
+        Function<PollingContext<T>, PollResponse<T>> pollOperation,
+        BiFunction<PollingContext<T>, PollResponse<T>, T> cancelOperation,
+        Function<PollingContext<T>, U> fetchResultOperation, ScheduledExecutorService executor) {
+        return new SimplePoller<>(pollInterval, syncActivationOperation, pollOperation, cancelOperation,
+            // TODO (alzimmer): Executor needs better handling before GA.
+            fetchResultOperation, executor == null ? Executors.newSingleThreadScheduledExecutor() : executor);
+    }
 }

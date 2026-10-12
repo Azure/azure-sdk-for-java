@@ -12,22 +12,22 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The status of a resource after a resource level operation was performed.
+ * Current status for a targeted resource in a scheduled action occurrence.
  */
 @Immutable
 public final class ResourceStatus implements JsonSerializable<ResourceStatus> {
     /*
-     * The arm identifier of the resource
+     * The Azure resource ID of the targeted resource.
      */
     private String resourceId;
 
     /*
-     * The state the resource is currently on
+     * The result of the operation for the resource.
      */
     private ResourceOperationStatus status;
 
     /*
-     * Errors encountered while trying to perform
+     * Error details when the operation fails for the resource.
      */
     private Error error;
 
@@ -38,7 +38,7 @@ public final class ResourceStatus implements JsonSerializable<ResourceStatus> {
     }
 
     /**
-     * Get the resourceId property: The arm identifier of the resource.
+     * Get the resourceId property: The Azure resource ID of the targeted resource.
      * 
      * @return the resourceId value.
      */
@@ -47,7 +47,7 @@ public final class ResourceStatus implements JsonSerializable<ResourceStatus> {
     }
 
     /**
-     * Get the status property: The state the resource is currently on.
+     * Get the status property: The result of the operation for the resource.
      * 
      * @return the status value.
      */
@@ -56,7 +56,7 @@ public final class ResourceStatus implements JsonSerializable<ResourceStatus> {
     }
 
     /**
-     * Get the error property: Errors encountered while trying to perform.
+     * Get the error property: Error details when the operation fails for the resource.
      * 
      * @return the error value.
      */

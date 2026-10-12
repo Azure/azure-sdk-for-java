@@ -9,7 +9,7 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
  */
 public final class ProtectionContainersRefreshSamples {
     /*
-     * x-ms-original-file: 2026-07-01/Common/RefreshContainers.json
+     * x-ms-original-file: 2026-08-01/Common/RefreshContainers.json
      */
     /**
      * Sample code: Trigger Azure Vm Discovery.

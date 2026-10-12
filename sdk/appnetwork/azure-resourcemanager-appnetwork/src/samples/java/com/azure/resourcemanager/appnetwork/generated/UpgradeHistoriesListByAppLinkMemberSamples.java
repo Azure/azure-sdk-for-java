@@ -9,7 +9,7 @@ package com.azure.resourcemanager.appnetwork.generated;
  */
 public final class UpgradeHistoriesListByAppLinkMemberSamples {
     /*
-     * x-ms-original-file: 2025-08-01-preview/UpgradeHistories_ListByAppLinkMember.json
+     * x-ms-original-file: 2026-08-01-preview/UpgradeHistories_ListByAppLinkMember.json
      */
     /**
      * Sample code: UpgradeHistories_ListByAppLinkMember.
