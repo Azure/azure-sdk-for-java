@@ -8,7 +8,7 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.test.http.MockHttpResponse;
-import com.azure.storage.file.share.models.NfsFileType;
+import com.azure.storage.file.share.models.FileType;
 import com.azure.storage.file.share.models.ShareFileItem;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
@@ -73,7 +73,7 @@ public class DirectoryListingDeserializationTests {
     private static void assertAllNfsItemTypes(List<ShareFileItem> items) {
         assertEquals(10, items.size());
 
-        ShareFileItem dir = getItemByFileType(items, NfsFileType.DIRECTORY);
+        ShareFileItem dir = getItemByFileType(items, FileType.DIRECTORY);
         assertTrue(dir.isDirectory());
         assertEquals("subdir", dir.getName());
         assertEquals("12682206919419625485", dir.getId());
@@ -83,7 +83,7 @@ public class DirectoryListingDeserializationTests {
         assertEquals("\"0x8DEAF1479E1C087\"", dir.getProperties().getETag());
 
         List<ShareFileItem> files = items.stream()
-            .filter(item -> !item.isDirectory() && item.getFileType() == NfsFileType.REGULAR)
+            .filter(item -> !item.isDirectory() && item.getFileType() == FileType.REGULAR)
             .collect(Collectors.toList());
         assertEquals(4, files.size());
         files.forEach(file -> {
@@ -96,7 +96,7 @@ public class DirectoryListingDeserializationTests {
         assertListedFileItem(files.get(2), "regularClose.txt", "9799903157902508049", 14L, 1L);
         assertListedFileItem(files.get(3), "regularOpen.txt", "17293892937847013391", 14L, 1L);
 
-        ShareFileItem symlink = getItemByFileType(items, NfsFileType.SYM_LINK);
+        ShareFileItem symlink = getItemByFileType(items, FileType.SYM_LINK);
         assertFalse(symlink.isDirectory());
         assertEquals("symlink.txt", symlink.getName());
         assertEquals("10376363910205931529", symlink.getId());
@@ -104,7 +104,7 @@ public class DirectoryListingDeserializationTests {
         assertEquals("/mnt/s2/dir2/regular.txt", symlink.getLinkText());
         assertPosixProperties(symlink, "1000", "1000", "0777");
 
-        ShareFileItem block = getItemByFileType(items, NfsFileType.BLOCK_DEVICE);
+        ShareFileItem block = getItemByFileType(items, FileType.BLOCK_DEVICE);
         assertEquals("block_device", block.getName());
         assertEquals("10952824662509355033", block.getId());
         assertEquals(Long.valueOf(1), block.getLinkCount());
@@ -112,7 +112,7 @@ public class DirectoryListingDeserializationTests {
         assertEquals(Long.valueOf(0), block.getDeviceMinor());
         assertPosixProperties(block, "0", "0", "0640");
 
-        ShareFileItem charDev = getItemByFileType(items, NfsFileType.CHARACTER_DEVICE);
+        ShareFileItem charDev = getItemByFileType(items, FileType.CHARACTER_DEVICE);
         assertEquals("char_device", charDev.getName());
         assertEquals("16717432185543589911", charDev.getId());
         assertEquals(Long.valueOf(1), charDev.getLinkCount());
@@ -120,7 +120,7 @@ public class DirectoryListingDeserializationTests {
         assertEquals(Long.valueOf(7), charDev.getDeviceMinor());
         assertPosixProperties(charDev, "0", "0", "0644");
 
-        ShareFileItem fifo = getItemByFileType(items, NfsFileType.FIFO);
+        ShareFileItem fifo = getItemByFileType(items, FileType.FIFO);
         assertEquals("fifo_pipe", fifo.getName());
         assertEquals("14988049928633319435", fifo.getId());
         assertEquals(Long.valueOf(1), fifo.getLinkCount());
@@ -129,7 +129,7 @@ public class DirectoryListingDeserializationTests {
         assertNull(fifo.getLinkText());
         assertPosixProperties(fifo, "1000", "1000", "0644");
 
-        ShareFileItem socket = getItemByFileType(items, NfsFileType.SOCKET);
+        ShareFileItem socket = getItemByFileType(items, FileType.SOCKET);
         assertEquals("unix_socket", socket.getName());
         assertEquals("16429201809391878183", socket.getId());
         assertEquals(Long.valueOf(1), socket.getLinkCount());
@@ -139,7 +139,7 @@ public class DirectoryListingDeserializationTests {
         assertPosixProperties(socket, "0", "0", "0755");
     }
 
-    private static ShareFileItem getItemByFileType(List<ShareFileItem> items, NfsFileType fileType) {
+    private static ShareFileItem getItemByFileType(List<ShareFileItem> items, FileType fileType) {
         return items.stream()
             .filter(item -> fileType.equals(item.getFileType()))
             .findFirst()
