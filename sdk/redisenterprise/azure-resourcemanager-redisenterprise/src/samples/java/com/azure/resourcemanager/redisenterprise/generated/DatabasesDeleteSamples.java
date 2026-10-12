@@ -9,7 +9,7 @@ package com.azure.resourcemanager.redisenterprise.generated;
  */
 public final class DatabasesDeleteSamples {
     /*
-     * x-ms-original-file: 2026-06-01-preview/RedisEnterpriseDatabasesDelete.json
+     * x-ms-original-file: 2026-09-01/RedisEnterpriseDatabasesDelete.json
      */
     /**
      * Sample code: RedisEnterpriseDatabasesDelete.

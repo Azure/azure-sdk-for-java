@@ -1,14 +1,238 @@
 # Release History
 
-## 2.2.0-beta.2 (Unreleased)
+## 2.2.0 (2026-10-12)
 
-### Features Added
+- Azure Resource Manager Redis Enterprise client library for Java. This package contains Microsoft Azure SDK for Redis Enterprise Management SDK. REST API for managing Redis Enterprise resources in Azure. Package api-version 2026-09-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.PrivateLinkResourceListResult` was removed
 
-### Other Changes
+#### `models.PrivateEndpointConnectionListResult` was removed
+
+#### `models.OperationListResult` was removed
+
+#### `models.AccessPolicyAssignmentList` was removed
+
+#### `models.ClusterList` was removed
+
+#### `models.DatabaseList` was removed
+
+#### `models.ManagedServiceIdentity` was modified
+
+* `java.util.UUID principalId()` -> `java.lang.String principalId()`
+* `java.util.UUID tenantId()` -> `java.lang.String tenantId()`
+* `validate()` was removed
+
+#### `models.ClusterUpdate` was modified
+
+* `validate()` was removed
+
+#### `models.ForceLinkParametersGeoReplication` was modified
+
+* `validate()` was removed
+
+#### `models.ForceUnlinkParameters` was modified
+
+* `validate()` was removed
+
+#### `models.UserAssignedIdentity` was modified
+
+* `java.util.UUID clientId()` -> `java.lang.String clientId()`
+* `java.util.UUID principalId()` -> `java.lang.String principalId()`
+* `validate()` was removed
+
+#### `models.DatabaseUpdate` was modified
+
+* `validate()` was removed
+
+#### `models.Module` was modified
+
+* `validate()` was removed
+
+#### `models.PrivateEndpoint` was modified
+
+* `validate()` was removed
+
+#### `models.Sku` was modified
+
+* `validate()` was removed
+
+#### `models.ClusterPropertiesEncryption` was modified
+
+* `validate()` was removed
+
+#### `models.AccessPolicyAssignmentPropertiesUser` was modified
+
+* `validate()` was removed
+
+#### `models.DatabasePropertiesGeoReplication` was modified
+
+* `validate()` was removed
+
+#### `models.RegenerateKeyParameters` was modified
+
+* `validate()` was removed
+
+#### `models.LinkedDatabase` was modified
+
+* `validate()` was removed
+
+#### `models.PrivateLinkServiceConnectionState` was modified
+
+* `validate()` was removed
+
+#### `models.ClusterPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity` was modified
+
+* `validate()` was removed
+
+#### `models.ImportClusterParameters` was modified
+
+* `validate()` was removed
+
+#### `models.ClusterCommonProperties` was modified
+
+* `validate()` was removed
+
+#### `models.ForceLinkParameters` was modified
+
+* `validate()` was removed
+
+#### `models.FlushParameters` was modified
+
+* `validate()` was removed
+
+#### `models.DatabaseCommonProperties` was modified
+
+* `validate()` was removed
+
+#### `models.OperationDisplay` was modified
+
+* `OperationDisplay()` was changed to private access
+* `validate()` was removed
+
+#### `models.ExportClusterParameters` was modified
+
+* `validate()` was removed
+
+#### `models.Persistence` was modified
+
+* `validate()` was removed
+
+#### `models.ClusterPropertiesEncryptionCustomerManagedKeyEncryption` was modified
+
+* `validate()` was removed
+
+#### `models.SkuDetails` was modified
+
+* `SkuDetails()` was changed to private access
+* `validate()` was removed
+
+### Features Added
+
+* `models.MaintenanceWindowSchedule` was added
+
+* `models.MigrationValidationRequest` was added
+
+* `models.SourceType` was added
+
+* `models.MaintenanceWindowType` was added
+
+* `models.MaintenanceDayOfWeek` was added
+
+* `models.MigrationProvisioningState` was added
+
+* `models.MigrationValidationError` was added
+
+* `models.MigrationRollbackReason` was added
+
+* `models.MaintenanceConfiguration` was added
+
+* `models.MaintenanceWindow` was added
+
+* `models.AzureCacheForRedisMigrationProperties` was added
+
+* `models.MigrationProperties` was added
+
+* `models.Clusters` was added
+
+* `models.MigrationUndoRequest` was added
+
+* `models.Migration` was added
+
+* `models.MigrationValidationResponse` was added
+
+* `models.Migrations` was added
+
+* `models.MigrationValidationDisparity` was added
+
+* `models.MigrationValidationWarning` was added
+
+#### `models.ClusterUpdate` was modified
+
+* `withMaintenanceConfiguration(models.MaintenanceConfiguration)` was added
+* `maintenanceConfiguration()` was added
+* `migratedEndpoint()` was added
+
+#### `models.PrivateLinkResource` was modified
+
+* `systemData()` was added
+
+#### `models.DatabaseUpdate` was modified
+
+* `notifyKeyspaceEvents()` was added
+* `withNotifyKeyspaceEvents(java.lang.String)` was added
+
+#### `models.Cluster$Update` was modified
+
+* `withMaintenanceConfiguration(models.MaintenanceConfiguration)` was added
+
+#### `RedisEnterpriseManager` was modified
+
+* `migrations()` was added
+* `clusters()` was added
+
+#### `models.Database$Definition` was modified
+
+* `withNotifyKeyspaceEvents(java.lang.String)` was added
+
+#### `models.Cluster$Definition` was modified
+
+* `withMaintenanceConfiguration(models.MaintenanceConfiguration)` was added
+
+#### `models.ClusterCommonProperties` was modified
+
+* `withMaintenanceConfiguration(models.MaintenanceConfiguration)` was added
+* `migratedEndpoint()` was added
+* `maintenanceConfiguration()` was added
+
+#### `models.Database$Update` was modified
+
+* `withNotifyKeyspaceEvents(java.lang.String)` was added
+
+#### `models.AccessPolicyAssignment` was modified
+
+* `systemData()` was added
+
+#### `models.Database` was modified
+
+* `notifyKeyspaceEvents()` was added
+
+#### `models.DatabaseCommonProperties` was modified
+
+* `notifyKeyspaceEvents()` was added
+* `withNotifyKeyspaceEvents(java.lang.String)` was added
+
+#### `models.PrivateEndpointConnection` was modified
+
+* `systemData()` was added
+* `groupIds()` was added
+
+#### `models.Cluster` was modified
+
+* `maintenanceConfiguration()` was added
+* `systemData()` was added
+* `migratedEndpoint()` was added
 
 ## 2.2.0-beta.1 (2026-07-14)
 

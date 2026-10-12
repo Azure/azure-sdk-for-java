@@ -12,9 +12,9 @@ public final class MigrationValidationWarningTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MigrationValidationWarning model = BinaryData.fromString(
-            "{\"disparities\":[{\"category\":\"i\",\"message\":\"qeojnxqbzvddntw\"},{\"category\":\"deicbtwnpzao\",\"message\":\"vuhrhcffcyddgl\"},{\"category\":\"jthjqkwpyei\",\"message\":\"xmqci\"}]}")
+            "{\"disparities\":[{\"category\":\"sycbkbfk\",\"message\":\"ukdkexxppofmxa\"},{\"category\":\"c\",\"message\":\"jpgd\"},{\"category\":\"toc\",\"message\":\"j\"}]}")
             .toObject(MigrationValidationWarning.class);
-        Assertions.assertEquals("i", model.disparities().get(0).category());
-        Assertions.assertEquals("qeojnxqbzvddntw", model.disparities().get(0).message());
+        Assertions.assertEquals("sycbkbfk", model.disparities().get(0).category());
+        Assertions.assertEquals("ukdkexxppofmxa", model.disparities().get(0).message());
     }
 }
