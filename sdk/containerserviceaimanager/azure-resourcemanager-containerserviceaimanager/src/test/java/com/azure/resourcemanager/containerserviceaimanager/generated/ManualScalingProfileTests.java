@@ -12,14 +12,14 @@ public final class ManualScalingProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManualScalingProfile model
-            = BinaryData.fromString("{\"replicas\":1074996435}").toObject(ManualScalingProfile.class);
-        Assertions.assertEquals(1074996435, model.replicas());
+            = BinaryData.fromString("{\"replicas\":1568542705}").toObject(ManualScalingProfile.class);
+        Assertions.assertEquals(1568542705, model.replicas());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManualScalingProfile model = new ManualScalingProfile().withReplicas(1074996435);
+        ManualScalingProfile model = new ManualScalingProfile().withReplicas(1568542705);
         model = BinaryData.fromObject(model).toObject(ManualScalingProfile.class);
-        Assertions.assertEquals(1074996435, model.replicas());
+        Assertions.assertEquals(1568542705, model.replicas());
     }
 }

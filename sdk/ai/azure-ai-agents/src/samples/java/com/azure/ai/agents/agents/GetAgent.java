@@ -12,7 +12,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 public class GetAgent {
     public static void main(String[] args) {
         String endpoint = Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT");
-        String agentName = "agent_created_from_java";
+        String agentName = "agent-created-from-java"; // Replace with actual agent name
         // Code sample for creating an agent
         AgentsClient agentsClient = new AgentsClientBuilder()
                 .credential(new DefaultAzureCredentialBuilder().build())

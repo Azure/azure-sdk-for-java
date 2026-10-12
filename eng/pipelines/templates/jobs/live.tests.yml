@@ -24,6 +24,7 @@ parameters:
   TestVersionSupport: $(TestVersionSupport)
   UseHttpFaultInjector: false
   OSName:
+  IsLatestNonLtsJdk: false
   UseFederatedAuth: false
   PersistOidcToken: false
   VersionOverride: $(VersionOverride)
@@ -88,9 +89,12 @@ jobs:
       # If the Java test versions isn't one of the LTS versions, or in other words is the latest Java version we're
       # testing against and that isn't an LTS version at the time (ex. latest LTS is Java 21 but we're testing against
       # Java 24), then install the latest Java version and use that to run tests.
-      - template: /eng/pipelines/templates/steps/install-latest-jdk.yml
-        parameters:
-          LatestJdkFeatureVersion: $(LatestNonLtsJdkFeatureVersion)
+      - ${{ if or(eq(parameters.OSName, 'macOS'), and(parameters.IsLatestNonLtsJdk, eq(parameters.OSName, 'linux'))) }}:
+        - template: /eng/pipelines/templates/steps/install-latest-jdk.yml
+          parameters:
+            OSName: ${{ parameters.OSName }}
+            IsLatestNonLtsJdk: ${{ parameters.IsLatestNonLtsJdk }}
+            LatestJdkFeatureVersion: $(LatestNonLtsJdkFeatureVersion)
 
       - ${{ if ne(parameters.DisableAzureResourceCreation, 'true') }}:
         - template: /eng/common/TestResources/build-test-resource-config.yml
@@ -103,22 +107,6 @@ jobs:
               Pool: $(Pool)
               ${{ insert }}: ${{ parameters.EnvVars }}
 
-        - ${{ each directory in coalesce(parameters.TestResourceDirectories, split(parameters.ServiceDirectory, '|')) }}:
-          - template: /eng/common/TestResources/deploy-test-resources.yml
-            parameters:
-              ${{ if or(parameters.Location, parameters.CloudConfig.Location) }}:
-                Location: ${{ coalesce(parameters.Location, parameters.CloudConfig.Location) }}
-              ServiceDirectory: '${{ directory }}'
-              SubscriptionConfiguration: $(SubscriptionConfiguration)
-              ArmTemplateParameters: $(ArmTemplateParameters)
-              UseFederatedAuth: ${{ parameters.UseFederatedAuth }}
-              PersistOidcToken: ${{ parameters.PersistOidcToken }}
-              ServiceConnection: ${{ parameters.CloudConfig.ServiceConnection }}
-              SubscriptionConfigurationFilePaths: ${{ parameters.CloudConfig.SubscriptionConfigurationFilePaths }}
-              EnvVars:
-                Pool: $(Pool)
-                ${{ insert }}: ${{ parameters.EnvVars }}
-
       - ${{ parameters.PreSteps }}
 
       # Authenticate with Azure Artifacts
@@ -126,7 +114,24 @@ jobs:
 
       - template: /eng/pipelines/templates/steps/build-and-test.yml
         parameters:
-          PreTestRunSteps: ${{ parameters.PreTestRunSteps }}
+          PreTestRunSteps:
+            - ${{ if ne(parameters.DisableAzureResourceCreation, 'true') }}:
+              - ${{ each directory in coalesce(parameters.TestResourceDirectories, split(parameters.ServiceDirectory, '|')) }}:
+                - template: /eng/common/TestResources/deploy-test-resources.yml
+                  parameters:
+                    ${{ if or(parameters.Location, parameters.CloudConfig.Location) }}:
+                      Location: ${{ coalesce(parameters.Location, parameters.CloudConfig.Location) }}
+                    ServiceDirectory: '${{ directory }}'
+                    SubscriptionConfiguration: $(SubscriptionConfiguration)
+                    ArmTemplateParameters: $(ArmTemplateParameters)
+                    UseFederatedAuth: ${{ parameters.UseFederatedAuth }}
+                    PersistOidcToken: ${{ parameters.PersistOidcToken }}
+                    ServiceConnection: ${{ parameters.CloudConfig.ServiceConnection }}
+                    SubscriptionConfigurationFilePaths: ${{ parameters.CloudConfig.SubscriptionConfigurationFilePaths }}
+                    EnvVars:
+                      Pool: $(Pool)
+                      ${{ insert }}: ${{ parameters.EnvVars }}
+            - ${{ parameters.PreTestRunSteps }}
           ParallelTestPlayback: 'false'
           BuildParallelization: ${{ parameters.BuildParallelization }}
           BuildOptions: ${{ parameters.BuildOptions }}
@@ -171,4 +176,3 @@ jobs:
               UseFederatedAuth: ${{ parameters.UseFederatedAuth }}
               ServiceConnection: ${{ parameters.CloudConfig.ServiceConnection }}
               SubscriptionConfigurationFilePaths: ${{ parameters.CloudConfig.SubscriptionConfigurationFilePaths }}
-

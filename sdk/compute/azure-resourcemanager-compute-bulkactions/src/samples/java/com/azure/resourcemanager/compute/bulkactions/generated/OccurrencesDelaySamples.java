@@ -13,20 +13,61 @@ import java.util.Arrays;
  */
 public final class OccurrencesDelaySamples {
     /*
-     * x-ms-original-file: 2026-08-06-preview/Occurrences_Delay_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-06-preview/Occurrences_Delay_PartialSuccess.json
      */
     /**
-     * Sample code: Occurrences_Delay_MaximumSet.
+     * Sample code: 03 - Response with partial success results when delaying operations in a recurring scheduled action
+     * occurrence.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
     public static void
-        occurrencesDelayMaximumSet(com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
+        zeroThreeSpaceHyphenMinusSpaceResponseSpacewithSpacepartialSpacesuccessSpaceresultsSpacewhenSpacedelayingSpaceoperationsSpaceinSpaceaSpacerecurringSpacescheduledSpaceactionSpaceoccurrence(
+            com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.occurrences()
-            .delay("rgcompute", "myScheduledAction", "CB26D7CB-3E27-465F-99C8-EAF7A4118245", new DelayRequest()
-                .withDelay(OffsetDateTime.parse("2025-05-22T17:00:00.000-07:00"))
+            .delay("example-rg", "weekday-start", "77777777-7777-7777-7777-777777777777", new DelayRequest()
+                .withDelay(OffsetDateTime.parse("2026-09-15T09:00:00-07:00"))
                 .withResourceIds(Arrays.asList(
-                    "/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/myRg/providers/Microsoft.Compute/virtualMachines/myVm")),
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-01",
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-02")),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-10-06-preview/Occurrences_Delay_BasicSuccess.json
+     */
+    /**
+     * Sample code: 01 - Delay operations in a recurring scheduled action occurrence.
+     * 
+     * @param manager Entry point to ComputeBulkActionsManager.
+     */
+    public static void
+        zeroOneSpaceHyphenMinusSpaceDelaySpaceoperationsSpaceinSpaceaSpacerecurringSpacescheduledSpaceactionSpaceoccurrence(
+            com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
+        manager.occurrences()
+            .delay("example-rg", "weekday-start", "77777777-7777-7777-7777-777777777777", new DelayRequest()
+                .withDelay(OffsetDateTime.parse("2026-09-15T09:00:00-07:00"))
+                .withResourceIds(Arrays.asList(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-01",
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-02")),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-10-06-preview/Occurrences_Delay_EntireOccurrenceSuccess.json
+     */
+    /**
+     * Sample code: 02 - Delay all operations in a recurring scheduled action occurrence.
+     * 
+     * @param manager Entry point to ComputeBulkActionsManager.
+     */
+    public static void
+        zeroTwoSpaceHyphenMinusSpaceDelaySpaceallSpaceoperationsSpaceinSpaceaSpacerecurringSpacescheduledSpaceactionSpaceoccurrence(
+            com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
+        manager.occurrences()
+            .delay("example-rg", "weekday-start", "77777777-7777-7777-7777-777777777777",
+                new DelayRequest().withDelay(OffsetDateTime.parse("2026-09-15T09:00:00-07:00"))
+                    .withResourceIds(Arrays.asList()),
                 com.azure.core.util.Context.NONE);
     }
 }

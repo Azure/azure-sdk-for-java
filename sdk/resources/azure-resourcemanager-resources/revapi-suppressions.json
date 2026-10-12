@@ -1,0 +1,56 @@
+[
+  {
+    "extension": "revapi.differences",
+    "id": "sdk-suppressions",
+    "configuration": {
+      "ignore": true,
+      "differences": [
+        {
+          "code": "java.method.removed",
+          "old": {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.resources\\.models\\..*\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Output-only immutable models' setters are removed."
+        },
+        {
+          "code": "java.method.removed",
+          "old": {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.resources\\.models\\.PolicyLogInfo\\:\\:(ancestors|complianceReasonCode|policyAssignmentDisplayName|policyDefinitionDisplayName|policyDefinitionGroupNames|policyExemptionIds|policySetDefinitionCategory|policySetDefinitionDisplayName|resourceLocation)\\(\\)"
+          },
+          "justification": "PolicyLogInfo properties were removed because they are not supported by the Policy service."
+        },
+        {
+          "code": "java.method.visibilityReduced",
+          "old": {
+            "matcher": "regex",
+            "match": "method void com\\.azure\\.resourcemanager\\.resources\\.models\\..*\\:\\:\\<init\\>\\(\\)"
+          },
+          "justification": "Output-only immutable models' constructors are now private."
+        },
+        {
+          "code": "java.class.removed",
+          "old": {
+            "matcher": "regex",
+            "match": "class com\\.azure\\.resourcemanager\\.resources\\.models\\..*ListResult"
+          },
+          "justification": "Pageable models moved to implementation package. Unlikely used by user."
+        },
+        {
+          "code": "java.class.removed",
+          "old": "class com.azure.resourcemanager.resources.models.AzureResourceBase",
+          "justification": "Unused legacy base model removed during TypeSpec migration."
+        },
+        {
+          "code": "java.class.noLongerInheritsFromClass",
+          "old": {
+            "matcher": "regex",
+            "match": "class com\\.azure\\.resourcemanager\\.resources\\.models\\.ResourceReferenceExtended"
+          },
+          "justification": "TypeSpec composition flattens ResourceReference properties instead of generating Java inheritance."
+        }
+      ]
+    }
+  }
+]

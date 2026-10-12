@@ -12,8 +12,8 @@ public final class AIModelListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AIModelListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"modelId\":\"axkffei\",\"description\":\"hl\",\"spec\":{\"license\":\"ez\",\"isRestricted\":false,\"maxContextLength\":2122365511}},\"id\":\"xmzsbbzogg\",\"name\":\"grxwbu\",\"type\":\"vjxxjnsp\"},{\"properties\":{\"modelId\":\"ptkoenkoukn\",\"description\":\"dwtiukbldngkp\",\"spec\":{\"license\":\"ipazyxoegukgjnpi\",\"isRestricted\":false,\"maxContextLength\":1142457061}},\"id\":\"gevqznty\",\"name\":\"mrbpizcdrqj\",\"type\":\"dpydn\"},{\"properties\":{\"modelId\":\"hxdeoejz\",\"description\":\"w\",\"spec\":{\"license\":\"sjttgzfbish\",\"isRestricted\":false,\"maxContextLength\":1055355134}},\"id\":\"ajdeyeamdphaga\",\"name\":\"pbuxwgipwhon\",\"type\":\"wkgshwa\"}],\"nextLink\":\"ixzbinjeputtmryw\"}")
+            "{\"value\":[{\"properties\":{\"modelId\":\"vorxzdmohct\",\"description\":\"vudwx\",\"spec\":{\"license\":\"dnvowg\",\"isRestricted\":true,\"maxContextLength\":884625398}},\"id\":\"gwdkcglhsl\",\"name\":\"zj\",\"type\":\"yggdtjixh\"}],\"nextLink\":\"uofqwe\"}")
             .toObject(AIModelListResult.class);
-        Assertions.assertEquals("ixzbinjeputtmryw", model.nextLink());
+        Assertions.assertEquals("uofqwe", model.nextLink());
     }
 }

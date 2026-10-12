@@ -56,6 +56,9 @@ parameters:
   - name: TestVersionSupport
     type: boolean
     default: false
+  - name: IsLatestNonLtsJdk
+    type: boolean
+    default: false
   - name: CloudConfig
     type: object
     default:

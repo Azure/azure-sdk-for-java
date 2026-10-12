@@ -13,15 +13,15 @@ public final class FullyManagedUpgradeProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FullyManagedUpgradeProfile model
-            = BinaryData.fromString("{\"releaseChannel\":\"Stable\"}").toObject(FullyManagedUpgradeProfile.class);
-        Assertions.assertEquals(UpgradeReleaseChannel.STABLE, model.releaseChannel());
+            = BinaryData.fromString("{\"releaseChannel\":\"Rapid\"}").toObject(FullyManagedUpgradeProfile.class);
+        Assertions.assertEquals(UpgradeReleaseChannel.RAPID, model.releaseChannel());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         FullyManagedUpgradeProfile model
-            = new FullyManagedUpgradeProfile().withReleaseChannel(UpgradeReleaseChannel.STABLE);
+            = new FullyManagedUpgradeProfile().withReleaseChannel(UpgradeReleaseChannel.RAPID);
         model = BinaryData.fromObject(model).toObject(FullyManagedUpgradeProfile.class);
-        Assertions.assertEquals(UpgradeReleaseChannel.STABLE, model.releaseChannel());
+        Assertions.assertEquals(UpgradeReleaseChannel.RAPID, model.releaseChannel());
     }
 }

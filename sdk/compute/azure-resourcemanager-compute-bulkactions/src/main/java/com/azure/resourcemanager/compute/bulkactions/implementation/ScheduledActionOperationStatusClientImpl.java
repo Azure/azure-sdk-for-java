@@ -77,15 +77,14 @@ public final class ScheduledActionOperationStatusClientImpl implements Scheduled
     }
 
     /**
-     * Get the status of a ScheduledActions asynchronous operation. Both the `Azure-AsyncOperation` and `Location`
-     * headers returned by long-running operations point at this endpoint.
+     * Gets the status of the specified scheduled action operation.
      * 
-     * @param location The location name.
-     * @param operationId The operation id.
+     * @param location The Azure region where the operation is running.
+     * @param operationId The operation ID in UUID format.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of a ScheduledActions asynchronous operation along with {@link Response} on successful
+     * @return the status of the specified scheduled action operation along with {@link Response} on successful
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -98,15 +97,14 @@ public final class ScheduledActionOperationStatusClientImpl implements Scheduled
     }
 
     /**
-     * Get the status of a ScheduledActions asynchronous operation. Both the `Azure-AsyncOperation` and `Location`
-     * headers returned by long-running operations point at this endpoint.
+     * Gets the status of the specified scheduled action operation.
      * 
-     * @param location The location name.
-     * @param operationId The operation id.
+     * @param location The Azure region where the operation is running.
+     * @param operationId The operation ID in UUID format.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of a ScheduledActions asynchronous operation on successful completion of {@link Mono}.
+     * @return the status of the specified scheduled action operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<OperationStatusResultInner> getAsync(String location, String operationId) {
@@ -114,16 +112,15 @@ public final class ScheduledActionOperationStatusClientImpl implements Scheduled
     }
 
     /**
-     * Get the status of a ScheduledActions asynchronous operation. Both the `Azure-AsyncOperation` and `Location`
-     * headers returned by long-running operations point at this endpoint.
+     * Gets the status of the specified scheduled action operation.
      * 
-     * @param location The location name.
-     * @param operationId The operation id.
+     * @param location The Azure region where the operation is running.
+     * @param operationId The operation ID in UUID format.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of a ScheduledActions asynchronous operation along with {@link Response}.
+     * @return the status of the specified scheduled action operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<OperationStatusResultInner> getWithResponse(String location, String operationId, Context context) {
@@ -133,15 +130,14 @@ public final class ScheduledActionOperationStatusClientImpl implements Scheduled
     }
 
     /**
-     * Get the status of a ScheduledActions asynchronous operation. Both the `Azure-AsyncOperation` and `Location`
-     * headers returned by long-running operations point at this endpoint.
+     * Gets the status of the specified scheduled action operation.
      * 
-     * @param location The location name.
-     * @param operationId The operation id.
+     * @param location The Azure region where the operation is running.
+     * @param operationId The operation ID in UUID format.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of a ScheduledActions asynchronous operation.
+     * @return the status of the specified scheduled action operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationStatusResultInner get(String location, String operationId) {

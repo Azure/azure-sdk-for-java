@@ -29,7 +29,7 @@ public final class GetTieringCostOperationResultsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         TieringCostInfo response = manager.getTieringCostOperationResults()
-            .getWithResponse("qlf", "olqownki", "ajewna", com.azure.core.util.Context.NONE)
+            .getWithResponse("foeajogsy", "wetamfddrvlk", "zwbhnrecc", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

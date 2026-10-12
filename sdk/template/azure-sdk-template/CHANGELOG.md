@@ -3,7 +3,7 @@
 ## 1.2.2-beta.1 (Unreleased)
 
 ### Features Added
-- Test batch release pipeline
+- Test batch release
 
 ## 1.2.1-beta.2 (2020-09-04)
 - Test release tag replacement

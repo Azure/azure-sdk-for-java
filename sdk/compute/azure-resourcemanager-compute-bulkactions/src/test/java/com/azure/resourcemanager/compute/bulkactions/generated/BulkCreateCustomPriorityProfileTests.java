@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.compute.bulkactions.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.compute.bulkactions.models.BulkCreateCustomAllocationStrategy;
 import com.azure.resourcemanager.compute.bulkactions.models.BulkCreateCustomPriorityProfile;
 import com.azure.resourcemanager.compute.bulkactions.models.EvictionPolicy;
 import com.azure.resourcemanager.compute.bulkactions.models.PriorityType;
@@ -14,25 +13,22 @@ import org.junit.jupiter.api.Assertions;
 public final class BulkCreateCustomPriorityProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BulkCreateCustomPriorityProfile model = BinaryData.fromString(
-            "{\"type\":\"Regular\",\"maxPricePerVM\":42.61463265976999,\"evictionPolicy\":\"Delete\",\"allocationStrategy\":\"Prioritized\"}")
+        BulkCreateCustomPriorityProfile model = BinaryData
+            .fromString("{\"type\":\"Regular\",\"maxPricePerVM\":52.88253093916484,\"evictionPolicy\":\"Delete\"}")
             .toObject(BulkCreateCustomPriorityProfile.class);
         Assertions.assertEquals(PriorityType.REGULAR, model.type());
-        Assertions.assertEquals(42.61463265976999D, model.maxPricePerVM());
+        Assertions.assertEquals(52.88253093916484D, model.maxPricePerVM());
         Assertions.assertEquals(EvictionPolicy.DELETE, model.evictionPolicy());
-        Assertions.assertEquals(BulkCreateCustomAllocationStrategy.PRIORITIZED, model.allocationStrategy());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         BulkCreateCustomPriorityProfile model = new BulkCreateCustomPriorityProfile().withType(PriorityType.REGULAR)
-            .withMaxPricePerVM(42.61463265976999D)
-            .withEvictionPolicy(EvictionPolicy.DELETE)
-            .withAllocationStrategy(BulkCreateCustomAllocationStrategy.PRIORITIZED);
+            .withMaxPricePerVM(52.88253093916484D)
+            .withEvictionPolicy(EvictionPolicy.DELETE);
         model = BinaryData.fromObject(model).toObject(BulkCreateCustomPriorityProfile.class);
         Assertions.assertEquals(PriorityType.REGULAR, model.type());
-        Assertions.assertEquals(42.61463265976999D, model.maxPricePerVM());
+        Assertions.assertEquals(52.88253093916484D, model.maxPricePerVM());
         Assertions.assertEquals(EvictionPolicy.DELETE, model.evictionPolicy());
-        Assertions.assertEquals(BulkCreateCustomAllocationStrategy.PRIORITIZED, model.allocationStrategy());
     }
 }

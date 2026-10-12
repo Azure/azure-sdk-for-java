@@ -14,7 +14,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.StorageTypeState;
  */
 public final class BackupResourceStorageConfigsNonCrrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-01/Common/BackupStorageConfig_Put.json
+     * x-ms-original-file: 2026-08-01/Common/BackupStorageConfig_Put.json
      */
     /**
      * Sample code: Update Vault Storage Configuration.

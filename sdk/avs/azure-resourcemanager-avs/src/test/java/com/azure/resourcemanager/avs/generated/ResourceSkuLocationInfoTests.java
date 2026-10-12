@@ -12,12 +12,12 @@ public final class ResourceSkuLocationInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceSkuLocationInfo model = BinaryData.fromString(
-            "{\"location\":\"vcimpev\",\"zones\":[\"mblrrilbywd\",\"smiccwrwfscj\"],\"zoneDetails\":[{\"name\":[\"nszqujiz\",\"voqyt\"],\"capabilities\":[{\"name\":\"yo\",\"value\":\"bblgyavut\"},{\"name\":\"thjoxoism\",\"value\":\"ksbpimlqoljx\"},{\"name\":\"cgxxlxs\",\"value\":\"fgcviz\"},{\"name\":\"zdwlvwlyoupfgfb\",\"value\":\"jub\"}]}]}")
+            "{\"location\":\"cvpa\",\"zones\":[\"sreuzvxurisjnh\"],\"zoneDetails\":[{\"name\":[\"xifqjzgxm\",\"hu\"],\"capabilities\":[{\"name\":\"wp\",\"value\":\"esutrgjupauutpw\"}]},{\"name\":[\"hihejqgwzpnfqn\"],\"capabilities\":[{\"name\":\"ypsxjvfoim\",\"value\":\"kslircizjxvydfc\"},{\"name\":\"acvlhv\",\"value\":\"gdyftumrtwna\"}]},{\"name\":[\"slbi\"],\"capabilities\":[{\"name\":\"ojgcyzt\",\"value\":\"fmznba\"},{\"name\":\"qphchqnrnrpxehuw\",\"value\":\"ykqgaifmvik\"},{\"name\":\"bydvkhbejdz\",\"value\":\"xcv\"}]},{\"name\":[\"rhnj\",\"volvtn\"],\"capabilities\":[{\"name\":\"qfzgemjdftul\",\"value\":\"ltducea\"}]}]}")
             .toObject(ResourceSkuLocationInfo.class);
-        Assertions.assertEquals("vcimpev", model.location());
-        Assertions.assertEquals("mblrrilbywd", model.zones().get(0));
-        Assertions.assertEquals("nszqujiz", model.zoneDetails().get(0).name().get(0));
-        Assertions.assertEquals("yo", model.zoneDetails().get(0).capabilities().get(0).name());
-        Assertions.assertEquals("bblgyavut", model.zoneDetails().get(0).capabilities().get(0).value());
+        Assertions.assertEquals("cvpa", model.location());
+        Assertions.assertEquals("sreuzvxurisjnh", model.zones().get(0));
+        Assertions.assertEquals("xifqjzgxm", model.zoneDetails().get(0).name().get(0));
+        Assertions.assertEquals("wp", model.zoneDetails().get(0).capabilities().get(0).name());
+        Assertions.assertEquals("esutrgjupauutpw", model.zoneDetails().get(0).capabilities().get(0).value());
     }
 }

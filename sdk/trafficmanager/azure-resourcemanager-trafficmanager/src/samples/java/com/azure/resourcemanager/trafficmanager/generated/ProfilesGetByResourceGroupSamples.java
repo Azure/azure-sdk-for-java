@@ -9,7 +9,7 @@ package com.azure.resourcemanager.trafficmanager.generated;
  */
 public final class ProfilesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2024-04-01-preview/Profile-GET-WithTrafficViewEnabled.json
+     * x-ms-original-file: 2026-09-01/Profile-GET-WithTrafficViewEnabled.json
      */
     /**
      * Sample code: Profile-GET-WithTrafficViewEnabled.
@@ -25,7 +25,7 @@ public final class ProfilesGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-04-01-preview/Profile-GET-WithTrafficViewDisabled.json
+     * x-ms-original-file: 2026-09-01/Profile-GET-WithTrafficViewDisabled.json
      */
     /**
      * Sample code: Profile-GET-WithTrafficViewDisabled.
@@ -41,7 +41,22 @@ public final class ProfilesGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-04-01-preview/Profile-GET-WithEndpoints.json
+     * x-ms-original-file: 2026-09-01/Profile-GET-WithoutRecordType.json
+     */
+    /**
+     * Sample code: Profile-GET-WithoutRecordType.
+     * 
+     * @param manager Entry point to TrafficManager.
+     */
+    public static void profileGETWithoutRecordType(com.azure.resourcemanager.trafficmanager.TrafficManager manager) {
+        manager.serviceClient()
+            .getProfiles()
+            .getByResourceGroupWithResponse("azuresdkfornetautoresttrafficmanager1323",
+                "azuresdkfornetautoresttrafficmanager3880", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-09-01/Profile-GET-WithEndpoints.json
      */
     /**
      * Sample code: Profile-GET-WithEndpoints.
@@ -56,7 +71,7 @@ public final class ProfilesGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-04-01-preview/Profile-GET-WithEndpointsAndRecordType.json
+     * x-ms-original-file: 2026-09-01/Profile-GET-WithEndpointsAndRecordType.json
      */
     /**
      * Sample code: Profile-GET-WithEndpointsAndRecordType.

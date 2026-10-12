@@ -27,91 +27,89 @@ public final class VirtualMachineNetworkInterfaceIPConfigurationPropertiesTests 
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VirtualMachineNetworkInterfaceIPConfigurationProperties model = BinaryData.fromString(
-            "{\"subnet\":{\"id\":\"pelol\"},\"primary\":false,\"publicIPAddressConfiguration\":{\"name\":\"srp\",\"properties\":{\"idleTimeoutInMinutes\":900186733,\"deleteOption\":\"Detach\",\"dnsSettings\":{\"domainNameLabel\":\"ehtwdwrft\",\"domainNameLabelScope\":\"TenantReuse\"},\"ipTags\":[{\"ipTagType\":\"cdl\",\"tag\":\"shfwpracstwity\"},{\"ipTagType\":\"evxccedcp\",\"tag\":\"dyodnwzxltj\"},{\"ipTagType\":\"nhltiugcxn\",\"tag\":\"vwxqibyqunyo\"},{\"ipTagType\":\"wlmdjrkv\",\"tag\":\"bvfvpdbod\"}],\"publicIPPrefix\":{\"id\":\"zsjqlh\"},\"publicIPAddressVersion\":\"IPv4\",\"publicIPAllocationMethod\":\"Static\"},\"sku\":{\"name\":\"Basic\",\"tier\":\"Global\"},\"tags\":{\"xndzwm\":\"qkgh\"}},\"privateIPAddressVersion\":\"IPv4\",\"applicationSecurityGroups\":[{\"id\":\"pjorwkqnyhg\"},{\"id\":\"j\"}],\"applicationGatewayBackendAddressPools\":[{\"id\":\"fxzsjabibsyst\"},{\"id\":\"fsdjpvkvp\"},{\"id\":\"xbkzbzkdvncj\"},{\"id\":\"udurgkakmokz\"}],\"loadBalancerBackendAddressPools\":[{\"id\":\"lffhmouwqlg\"}]}")
+            "{\"subnet\":{\"id\":\"xepxgyqagvrvmn\"},\"primary\":true,\"publicIPAddressConfiguration\":{\"name\":\"ghimdblx\",\"properties\":{\"idleTimeoutInMinutes\":1230098756,\"deleteOption\":\"Delete\",\"dnsSettings\":{\"domainNameLabel\":\"hfjx\",\"domainNameLabelScope\":\"ResourceGroupReuse\"},\"ipTags\":[{\"ipTagType\":\"foqreyfkzik\",\"tag\":\"aw\"},{\"ipTagType\":\"a\",\"tag\":\"xwczelpcire\"}],\"publicIPPrefix\":{\"id\":\"eae\"},\"publicIPAddressVersion\":\"IPv4\",\"publicIPAllocationMethod\":\"Dynamic\"},\"sku\":{\"name\":\"Basic\",\"tier\":\"Global\"},\"tags\":{\"zjosp\":\"bjhwuaan\",\"rvxaglrvimjwosy\":\"youlp\",\"kfcktqum\":\"xitc\",\"gqggebdunygae\":\"ekkezzikhlyfjh\"}},\"privateIPAddressVersion\":\"IPv4\",\"applicationSecurityGroups\":[{\"id\":\"atpxl\"},{\"id\":\"xcyjmoadsuvarmy\"},{\"id\":\"mjsjqb\"},{\"id\":\"hyxxrwlycoduhpk\"}],\"applicationGatewayBackendAddressPools\":[{\"id\":\"mareqnajxqugj\"},{\"id\":\"ycubeddgs\"}],\"loadBalancerBackendAddressPools\":[{\"id\":\"qmzqalkrmnjijpx\"},{\"id\":\"q\"},{\"id\":\"dfnbyxbaaabjyv\"}]}")
             .toObject(VirtualMachineNetworkInterfaceIPConfigurationProperties.class);
-        Assertions.assertEquals("pelol", model.subnet().id());
-        Assertions.assertFalse(model.primary());
-        Assertions.assertEquals("srp", model.publicIPAddressConfiguration().name());
-        Assertions.assertEquals(900186733, model.publicIPAddressConfiguration().properties().idleTimeoutInMinutes());
-        Assertions.assertEquals(DeleteOptions.DETACH, model.publicIPAddressConfiguration().properties().deleteOption());
-        Assertions.assertEquals("ehtwdwrft",
+        Assertions.assertEquals("xepxgyqagvrvmn", model.subnet().id());
+        Assertions.assertTrue(model.primary());
+        Assertions.assertEquals("ghimdblx", model.publicIPAddressConfiguration().name());
+        Assertions.assertEquals(1230098756, model.publicIPAddressConfiguration().properties().idleTimeoutInMinutes());
+        Assertions.assertEquals(DeleteOptions.DELETE, model.publicIPAddressConfiguration().properties().deleteOption());
+        Assertions.assertEquals("hfjx",
             model.publicIPAddressConfiguration().properties().dnsSettings().domainNameLabel());
-        Assertions.assertEquals(DomainNameLabelScopeTypes.TENANT_REUSE,
+        Assertions.assertEquals(DomainNameLabelScopeTypes.RESOURCE_GROUP_REUSE,
             model.publicIPAddressConfiguration().properties().dnsSettings().domainNameLabelScope());
-        Assertions.assertEquals("cdl", model.publicIPAddressConfiguration().properties().ipTags().get(0).ipTagType());
-        Assertions.assertEquals("shfwpracstwity",
-            model.publicIPAddressConfiguration().properties().ipTags().get(0).tag());
-        Assertions.assertEquals("zsjqlh", model.publicIPAddressConfiguration().properties().publicIPPrefix().id());
+        Assertions.assertEquals("foqreyfkzik",
+            model.publicIPAddressConfiguration().properties().ipTags().get(0).ipTagType());
+        Assertions.assertEquals("aw", model.publicIPAddressConfiguration().properties().ipTags().get(0).tag());
+        Assertions.assertEquals("eae", model.publicIPAddressConfiguration().properties().publicIPPrefix().id());
         Assertions.assertEquals(IPVersions.IPV4,
             model.publicIPAddressConfiguration().properties().publicIPAddressVersion());
-        Assertions.assertEquals(PublicIPAllocationMethod.STATIC,
+        Assertions.assertEquals(PublicIPAllocationMethod.DYNAMIC,
             model.publicIPAddressConfiguration().properties().publicIPAllocationMethod());
         Assertions.assertEquals(PublicIPAddressSkuName.BASIC, model.publicIPAddressConfiguration().sku().name());
         Assertions.assertEquals(PublicIPAddressSkuTier.GLOBAL, model.publicIPAddressConfiguration().sku().tier());
-        Assertions.assertEquals("qkgh", model.publicIPAddressConfiguration().tags().get("xndzwm"));
+        Assertions.assertEquals("bjhwuaan", model.publicIPAddressConfiguration().tags().get("zjosp"));
         Assertions.assertEquals(IPVersions.IPV4, model.privateIPAddressVersion());
-        Assertions.assertEquals("pjorwkqnyhg", model.applicationSecurityGroups().get(0).id());
-        Assertions.assertEquals("fxzsjabibsyst", model.applicationGatewayBackendAddressPools().get(0).id());
-        Assertions.assertEquals("lffhmouwqlg", model.loadBalancerBackendAddressPools().get(0).id());
+        Assertions.assertEquals("atpxl", model.applicationSecurityGroups().get(0).id());
+        Assertions.assertEquals("mareqnajxqugj", model.applicationGatewayBackendAddressPools().get(0).id());
+        Assertions.assertEquals("qmzqalkrmnjijpx", model.loadBalancerBackendAddressPools().get(0).id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         VirtualMachineNetworkInterfaceIPConfigurationProperties model
             = new VirtualMachineNetworkInterfaceIPConfigurationProperties()
-                .withSubnet(new SubResource().withId("pelol"))
-                .withPrimary(false)
-                .withPublicIPAddressConfiguration(
-                    new VirtualMachinePublicIPAddressConfiguration().withName("srp")
-                        .withProperties(new VirtualMachinePublicIPAddressConfigurationProperties()
-                            .withIdleTimeoutInMinutes(900186733)
-                            .withDeleteOption(DeleteOptions.DETACH)
-                            .withDnsSettings(new VirtualMachinePublicIPAddressDnsSettingsConfiguration()
-                                .withDomainNameLabel("ehtwdwrft")
-                                .withDomainNameLabelScope(DomainNameLabelScopeTypes.TENANT_REUSE))
-                            .withIpTags(
-                                Arrays.asList(new VirtualMachineIpTag().withIpTagType("cdl").withTag("shfwpracstwity"),
-                                    new VirtualMachineIpTag().withIpTagType("evxccedcp").withTag("dyodnwzxltj"),
-                                    new VirtualMachineIpTag().withIpTagType("nhltiugcxn").withTag("vwxqibyqunyo"),
-                                    new VirtualMachineIpTag().withIpTagType("wlmdjrkv").withTag("bvfvpdbod")))
-                            .withPublicIPPrefix(new SubResource().withId("zsjqlh"))
-                            .withPublicIPAddressVersion(IPVersions.IPV4)
-                            .withPublicIPAllocationMethod(PublicIPAllocationMethod.STATIC))
-                        .withSku(new PublicIPAddressSku().withName(PublicIPAddressSkuName.BASIC)
-                            .withTier(PublicIPAddressSkuTier.GLOBAL))
-                        .withTags(mapOf("xndzwm", "qkgh")))
+                .withSubnet(new SubResource().withId("xepxgyqagvrvmn"))
+                .withPrimary(true)
+                .withPublicIPAddressConfiguration(new VirtualMachinePublicIPAddressConfiguration().withName("ghimdblx")
+                    .withProperties(new VirtualMachinePublicIPAddressConfigurationProperties()
+                        .withIdleTimeoutInMinutes(1230098756)
+                        .withDeleteOption(DeleteOptions.DELETE)
+                        .withDnsSettings(
+                            new VirtualMachinePublicIPAddressDnsSettingsConfiguration().withDomainNameLabel("hfjx")
+                                .withDomainNameLabelScope(DomainNameLabelScopeTypes.RESOURCE_GROUP_REUSE))
+                        .withIpTags(Arrays.asList(new VirtualMachineIpTag().withIpTagType("foqreyfkzik").withTag("aw"),
+                            new VirtualMachineIpTag().withIpTagType("a").withTag("xwczelpcire")))
+                        .withPublicIPPrefix(new SubResource().withId("eae"))
+                        .withPublicIPAddressVersion(IPVersions.IPV4)
+                        .withPublicIPAllocationMethod(PublicIPAllocationMethod.DYNAMIC))
+                    .withSku(new PublicIPAddressSku().withName(PublicIPAddressSkuName.BASIC)
+                        .withTier(PublicIPAddressSkuTier.GLOBAL))
+                    .withTags(mapOf("zjosp", "bjhwuaan", "rvxaglrvimjwosy", "youlp", "kfcktqum", "xitc",
+                        "gqggebdunygae", "ekkezzikhlyfjh")))
                 .withPrivateIPAddressVersion(IPVersions.IPV4)
                 .withApplicationSecurityGroups(
-                    Arrays.asList(new SubResource().withId("pjorwkqnyhg"), new SubResource().withId("j")))
+                    Arrays.asList(new SubResource().withId("atpxl"), new SubResource().withId("xcyjmoadsuvarmy"),
+                        new SubResource().withId("mjsjqb"), new SubResource().withId("hyxxrwlycoduhpk")))
                 .withApplicationGatewayBackendAddressPools(
-                    Arrays.asList(new SubResource().withId("fxzsjabibsyst"), new SubResource().withId("fsdjpvkvp"),
-                        new SubResource().withId("xbkzbzkdvncj"), new SubResource().withId("udurgkakmokz")))
-                .withLoadBalancerBackendAddressPools(Arrays.asList(new SubResource().withId("lffhmouwqlg")));
+                    Arrays.asList(new SubResource().withId("mareqnajxqugj"), new SubResource().withId("ycubeddgs")))
+                .withLoadBalancerBackendAddressPools(Arrays.asList(new SubResource().withId("qmzqalkrmnjijpx"),
+                    new SubResource().withId("q"), new SubResource().withId("dfnbyxbaaabjyv")));
         model = BinaryData.fromObject(model).toObject(VirtualMachineNetworkInterfaceIPConfigurationProperties.class);
-        Assertions.assertEquals("pelol", model.subnet().id());
-        Assertions.assertFalse(model.primary());
-        Assertions.assertEquals("srp", model.publicIPAddressConfiguration().name());
-        Assertions.assertEquals(900186733, model.publicIPAddressConfiguration().properties().idleTimeoutInMinutes());
-        Assertions.assertEquals(DeleteOptions.DETACH, model.publicIPAddressConfiguration().properties().deleteOption());
-        Assertions.assertEquals("ehtwdwrft",
+        Assertions.assertEquals("xepxgyqagvrvmn", model.subnet().id());
+        Assertions.assertTrue(model.primary());
+        Assertions.assertEquals("ghimdblx", model.publicIPAddressConfiguration().name());
+        Assertions.assertEquals(1230098756, model.publicIPAddressConfiguration().properties().idleTimeoutInMinutes());
+        Assertions.assertEquals(DeleteOptions.DELETE, model.publicIPAddressConfiguration().properties().deleteOption());
+        Assertions.assertEquals("hfjx",
             model.publicIPAddressConfiguration().properties().dnsSettings().domainNameLabel());
-        Assertions.assertEquals(DomainNameLabelScopeTypes.TENANT_REUSE,
+        Assertions.assertEquals(DomainNameLabelScopeTypes.RESOURCE_GROUP_REUSE,
             model.publicIPAddressConfiguration().properties().dnsSettings().domainNameLabelScope());
-        Assertions.assertEquals("cdl", model.publicIPAddressConfiguration().properties().ipTags().get(0).ipTagType());
-        Assertions.assertEquals("shfwpracstwity",
-            model.publicIPAddressConfiguration().properties().ipTags().get(0).tag());
-        Assertions.assertEquals("zsjqlh", model.publicIPAddressConfiguration().properties().publicIPPrefix().id());
+        Assertions.assertEquals("foqreyfkzik",
+            model.publicIPAddressConfiguration().properties().ipTags().get(0).ipTagType());
+        Assertions.assertEquals("aw", model.publicIPAddressConfiguration().properties().ipTags().get(0).tag());
+        Assertions.assertEquals("eae", model.publicIPAddressConfiguration().properties().publicIPPrefix().id());
         Assertions.assertEquals(IPVersions.IPV4,
             model.publicIPAddressConfiguration().properties().publicIPAddressVersion());
-        Assertions.assertEquals(PublicIPAllocationMethod.STATIC,
+        Assertions.assertEquals(PublicIPAllocationMethod.DYNAMIC,
             model.publicIPAddressConfiguration().properties().publicIPAllocationMethod());
         Assertions.assertEquals(PublicIPAddressSkuName.BASIC, model.publicIPAddressConfiguration().sku().name());
         Assertions.assertEquals(PublicIPAddressSkuTier.GLOBAL, model.publicIPAddressConfiguration().sku().tier());
-        Assertions.assertEquals("qkgh", model.publicIPAddressConfiguration().tags().get("xndzwm"));
+        Assertions.assertEquals("bjhwuaan", model.publicIPAddressConfiguration().tags().get("zjosp"));
         Assertions.assertEquals(IPVersions.IPV4, model.privateIPAddressVersion());
-        Assertions.assertEquals("pjorwkqnyhg", model.applicationSecurityGroups().get(0).id());
-        Assertions.assertEquals("fxzsjabibsyst", model.applicationGatewayBackendAddressPools().get(0).id());
-        Assertions.assertEquals("lffhmouwqlg", model.loadBalancerBackendAddressPools().get(0).id());
+        Assertions.assertEquals("atpxl", model.applicationSecurityGroups().get(0).id());
+        Assertions.assertEquals("mareqnajxqugj", model.applicationGatewayBackendAddressPools().get(0).id());
+        Assertions.assertEquals("qmzqalkrmnjijpx", model.loadBalancerBackendAddressPools().get(0).id());
     }
 
     // Use "Map.of" if available

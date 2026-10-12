@@ -16,22 +16,22 @@ public final class UpgradeProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UpgradeProfile model = BinaryData.fromString(
-            "{\"mode\":\"SelfManaged\",\"fullyManagedUpgradeProfile\":{\"releaseChannel\":\"Rapid\"},\"selfManagedUpgradeProfile\":{\"version\":\"bkbfkgukdkex\"}}")
+            "{\"mode\":\"SelfManaged\",\"fullyManagedUpgradeProfile\":{\"releaseChannel\":\"Stable\"},\"selfManagedUpgradeProfile\":{\"version\":\"npime\"}}")
             .toObject(UpgradeProfile.class);
         Assertions.assertEquals(UpgradeMode.SELF_MANAGED, model.mode());
-        Assertions.assertEquals(UpgradeReleaseChannel.RAPID, model.fullyManagedUpgradeProfile().releaseChannel());
-        Assertions.assertEquals("bkbfkgukdkex", model.selfManagedUpgradeProfile().version());
+        Assertions.assertEquals(UpgradeReleaseChannel.STABLE, model.fullyManagedUpgradeProfile().releaseChannel());
+        Assertions.assertEquals("npime", model.selfManagedUpgradeProfile().version());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         UpgradeProfile model = new UpgradeProfile().withMode(UpgradeMode.SELF_MANAGED)
             .withFullyManagedUpgradeProfile(
-                new FullyManagedUpgradeProfile().withReleaseChannel(UpgradeReleaseChannel.RAPID))
-            .withSelfManagedUpgradeProfile(new SelfManagedUpgradeProfile().withVersion("bkbfkgukdkex"));
+                new FullyManagedUpgradeProfile().withReleaseChannel(UpgradeReleaseChannel.STABLE))
+            .withSelfManagedUpgradeProfile(new SelfManagedUpgradeProfile().withVersion("npime"));
         model = BinaryData.fromObject(model).toObject(UpgradeProfile.class);
         Assertions.assertEquals(UpgradeMode.SELF_MANAGED, model.mode());
-        Assertions.assertEquals(UpgradeReleaseChannel.RAPID, model.fullyManagedUpgradeProfile().releaseChannel());
-        Assertions.assertEquals("bkbfkgukdkex", model.selfManagedUpgradeProfile().version());
+        Assertions.assertEquals(UpgradeReleaseChannel.STABLE, model.fullyManagedUpgradeProfile().releaseChannel());
+        Assertions.assertEquals("npime", model.selfManagedUpgradeProfile().version());
     }
 }

@@ -5,8 +5,10 @@
 package com.azure.resourcemanager.servicenetworking.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.servicenetworking.models.FrontendAssociation;
 import com.azure.resourcemanager.servicenetworking.models.FrontendProperties;
 import com.azure.resourcemanager.servicenetworking.models.IpAccessRulesSecurityPolicy;
+import com.azure.resourcemanager.servicenetworking.models.PublicNetworkAccess;
 import com.azure.resourcemanager.servicenetworking.models.SecurityPolicyConfigurations;
 import com.azure.resourcemanager.servicenetworking.models.WafSecurityPolicy;
 import org.junit.jupiter.api.Assertions;
@@ -15,21 +17,27 @@ public final class FrontendPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FrontendProperties model = BinaryData.fromString(
-            "{\"fqdn\":\"tfwvukxgaudc\",\"securityPolicyConfigurations\":{\"wafSecurityPolicy\":{\"id\":\"h\"},\"ipAccessRulesSecurityPolicy\":{\"id\":\"cnyejhkryhtnapcz\"}},\"provisioningState\":\"Updating\"}")
+            "{\"fqdn\":\"tfwvukxgaudc\",\"publicNetworkAccess\":\"Disabled\",\"association\":{\"id\":\"s\"},\"securityPolicyConfigurations\":{\"wafSecurityPolicy\":{\"id\":\"yejhk\"},\"ipAccessRulesSecurityPolicy\":{\"id\":\"htnapczwlokjyem\"}},\"provisioningState\":\"Updating\"}")
             .toObject(FrontendProperties.class);
-        Assertions.assertEquals("h", model.securityPolicyConfigurations().wafSecurityPolicy().id());
-        Assertions.assertEquals("cnyejhkryhtnapcz",
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED, model.publicNetworkAccess());
+        Assertions.assertEquals("s", model.association().id());
+        Assertions.assertEquals("yejhk", model.securityPolicyConfigurations().wafSecurityPolicy().id());
+        Assertions.assertEquals("htnapczwlokjyem",
             model.securityPolicyConfigurations().ipAccessRulesSecurityPolicy().id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FrontendProperties model = new FrontendProperties().withSecurityPolicyConfigurations(
-            new SecurityPolicyConfigurations().withWafSecurityPolicy(new WafSecurityPolicy().withId("h"))
-                .withIpAccessRulesSecurityPolicy(new IpAccessRulesSecurityPolicy().withId("cnyejhkryhtnapcz")));
+        FrontendProperties model = new FrontendProperties().withPublicNetworkAccess(PublicNetworkAccess.DISABLED)
+            .withAssociation(new FrontendAssociation().withId("s"))
+            .withSecurityPolicyConfigurations(
+                new SecurityPolicyConfigurations().withWafSecurityPolicy(new WafSecurityPolicy().withId("yejhk"))
+                    .withIpAccessRulesSecurityPolicy(new IpAccessRulesSecurityPolicy().withId("htnapczwlokjyem")));
         model = BinaryData.fromObject(model).toObject(FrontendProperties.class);
-        Assertions.assertEquals("h", model.securityPolicyConfigurations().wafSecurityPolicy().id());
-        Assertions.assertEquals("cnyejhkryhtnapcz",
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED, model.publicNetworkAccess());
+        Assertions.assertEquals("s", model.association().id());
+        Assertions.assertEquals("yejhk", model.securityPolicyConfigurations().wafSecurityPolicy().id());
+        Assertions.assertEquals("htnapczwlokjyem",
             model.securityPolicyConfigurations().ipAccessRulesSecurityPolicy().id());
     }
 }

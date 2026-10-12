@@ -16,7 +16,7 @@ import java.util.Arrays;
  */
 public final class AgentPoolsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-06-02-preview/AgentPoolsUpdate_Scale.json
+     * x-ms-original-file: 2026-07-02-preview/AgentPoolsUpdate_Scale.json
      */
     /**
      * Sample code: Update Agent Pool - Scale VMSS.
@@ -33,7 +33,7 @@ public final class AgentPoolsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-02-preview/AgentPoolsUpdate_ScaleVMs.json
+     * x-ms-original-file: 2026-07-02-preview/AgentPoolsUpdate_ScaleVMs.json
      */
     /**
      * Sample code: Update Agent Pool - Scale VirtualMachines.
