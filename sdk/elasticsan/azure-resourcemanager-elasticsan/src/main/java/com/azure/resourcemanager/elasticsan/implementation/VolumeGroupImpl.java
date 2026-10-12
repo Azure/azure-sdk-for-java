@@ -8,12 +8,14 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.elasticsan.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.elasticsan.fluent.models.VolumeGroupInner;
+import com.azure.resourcemanager.elasticsan.models.DeleteRetentionPolicy;
 import com.azure.resourcemanager.elasticsan.models.EncryptionProperties;
 import com.azure.resourcemanager.elasticsan.models.EncryptionType;
 import com.azure.resourcemanager.elasticsan.models.Identity;
 import com.azure.resourcemanager.elasticsan.models.NetworkRuleSet;
 import com.azure.resourcemanager.elasticsan.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.elasticsan.models.ProvisioningStates;
+import com.azure.resourcemanager.elasticsan.models.QualityOfService;
 import com.azure.resourcemanager.elasticsan.models.StorageTargetType;
 import com.azure.resourcemanager.elasticsan.models.VolumeGroup;
 import com.azure.resourcemanager.elasticsan.models.VolumeGroupUpdate;
@@ -79,6 +81,26 @@ public final class VolumeGroupImpl implements VolumeGroup, VolumeGroup.Definitio
 
     public Boolean enforceDataIntegrityCheckForIscsi() {
         return this.innerModel().enforceDataIntegrityCheckForIscsi();
+    }
+
+    public Boolean encryptionInTransit() {
+        return this.innerModel().encryptionInTransit();
+    }
+
+    public Integer reservedIops() {
+        return this.innerModel().reservedIops();
+    }
+
+    public Integer reservedMBps() {
+        return this.innerModel().reservedMBps();
+    }
+
+    public QualityOfService qualityOfService() {
+        return this.innerModel().qualityOfService();
+    }
+
+    public DeleteRetentionPolicy deleteRetentionPolicy() {
+        return this.innerModel().deleteRetentionPolicy();
     }
 
     public String resourceGroupName() {
@@ -227,6 +249,46 @@ public final class VolumeGroupImpl implements VolumeGroup, VolumeGroup.Definitio
             return this;
         } else {
             this.updateParameters.withEnforceDataIntegrityCheckForIscsi(enforceDataIntegrityCheckForIscsi);
+            return this;
+        }
+    }
+
+    public VolumeGroupImpl withEncryptionInTransit(Boolean encryptionInTransit) {
+        this.innerModel().withEncryptionInTransit(encryptionInTransit);
+        return this;
+    }
+
+    public VolumeGroupImpl withReservedIops(Integer reservedIops) {
+        if (isInCreateMode()) {
+            this.innerModel().withReservedIops(reservedIops);
+            return this;
+        } else {
+            this.updateParameters.withReservedIops(reservedIops);
+            return this;
+        }
+    }
+
+    public VolumeGroupImpl withReservedMBps(Integer reservedMBps) {
+        if (isInCreateMode()) {
+            this.innerModel().withReservedMBps(reservedMBps);
+            return this;
+        } else {
+            this.updateParameters.withReservedMBps(reservedMBps);
+            return this;
+        }
+    }
+
+    public VolumeGroupImpl withQualityOfService(QualityOfService qualityOfService) {
+        this.innerModel().withQualityOfService(qualityOfService);
+        return this;
+    }
+
+    public VolumeGroupImpl withDeleteRetentionPolicy(DeleteRetentionPolicy deleteRetentionPolicy) {
+        if (isInCreateMode()) {
+            this.innerModel().withDeleteRetentionPolicy(deleteRetentionPolicy);
+            return this;
+        } else {
+            this.updateParameters.withDeleteRetentionPolicy(deleteRetentionPolicy);
             return this;
         }
     }

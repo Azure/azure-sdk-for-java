@@ -16,10 +16,10 @@ public final class ScheduledActionResourceInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ScheduledActionResourceInput model = BinaryData.fromString(
-            "{\"resourceId\":\"mldgxobfirc\",\"notificationSettings\":[{\"destination\":\"kciayzri\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":true}]}")
+            "{\"resourceId\":\"zydvfvf\",\"notificationSettings\":[{\"destination\":\"aeoisrvh\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":true}]}")
             .toObject(ScheduledActionResourceInput.class);
-        Assertions.assertEquals("mldgxobfirc", model.resourceId());
-        Assertions.assertEquals("kciayzri", model.notificationSettings().get(0).destination());
+        Assertions.assertEquals("zydvfvf", model.resourceId());
+        Assertions.assertEquals("aeoisrvh", model.notificationSettings().get(0).destination());
         Assertions.assertEquals(NotificationType.EMAIL, model.notificationSettings().get(0).type());
         Assertions.assertEquals(Language.EN_US, model.notificationSettings().get(0).language());
         Assertions.assertTrue(model.notificationSettings().get(0).disabled());
@@ -27,14 +27,14 @@ public final class ScheduledActionResourceInputTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ScheduledActionResourceInput model = new ScheduledActionResourceInput().withResourceId("mldgxobfirc")
-            .withNotificationSettings(Arrays.asList(new NotificationProperties().withDestination("kciayzri")
+        ScheduledActionResourceInput model = new ScheduledActionResourceInput().withResourceId("zydvfvf")
+            .withNotificationSettings(Arrays.asList(new NotificationProperties().withDestination("aeoisrvh")
                 .withType(NotificationType.EMAIL)
                 .withLanguage(Language.EN_US)
                 .withDisabled(true)));
         model = BinaryData.fromObject(model).toObject(ScheduledActionResourceInput.class);
-        Assertions.assertEquals("mldgxobfirc", model.resourceId());
-        Assertions.assertEquals("kciayzri", model.notificationSettings().get(0).destination());
+        Assertions.assertEquals("zydvfvf", model.resourceId());
+        Assertions.assertEquals("aeoisrvh", model.notificationSettings().get(0).destination());
         Assertions.assertEquals(NotificationType.EMAIL, model.notificationSettings().get(0).type());
         Assertions.assertEquals(Language.EN_US, model.notificationSettings().get(0).language());
         Assertions.assertTrue(model.notificationSettings().get(0).disabled());

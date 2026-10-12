@@ -11,7 +11,7 @@ import com.azure.resourcemanager.elasticsan.models.SnapshotCreationData;
  */
 public final class VolumeSnapshotsCreateSamples {
     /*
-     * x-ms-original-file: 2025-09-01/VolumeSnapshots_Create_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-05-01-preview/VolumeSnapshots_Create_MaximumSet_Gen.json
      */
     /**
      * Sample code: VolumeSnapshots_Create_MaximumSet_Gen.
@@ -29,7 +29,7 @@ public final class VolumeSnapshotsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/VolumeSnapshots_Create_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-05-01-preview/VolumeSnapshots_Create_MinimumSet_Gen.json
      */
     /**
      * Sample code: VolumeSnapshots_Create_MinimumSet_Gen.

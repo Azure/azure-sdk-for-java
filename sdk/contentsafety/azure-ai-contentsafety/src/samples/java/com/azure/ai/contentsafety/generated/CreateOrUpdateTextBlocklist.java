@@ -17,7 +17,7 @@ public class CreateOrUpdateTextBlocklist {
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildClient();
         // BEGIN:com.azure.ai.contentsafety.generated.create-or-update-text-blocklist.create-or-update-text-blocklist
-        TextBlocklist response = blocklistClient.createOrUpdateTextBlocklist("TestBlocklist", null);
+        TextBlocklist response = blocklistClient.createOrUpdateTextBlocklist("TestBlocklist", (TextBlocklist) null);
         // END:com.azure.ai.contentsafety.generated.create-or-update-text-blocklist.create-or-update-text-blocklist
     }
 }

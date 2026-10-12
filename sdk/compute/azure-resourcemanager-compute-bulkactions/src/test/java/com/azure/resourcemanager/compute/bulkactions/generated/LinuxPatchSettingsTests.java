@@ -16,11 +16,11 @@ public final class LinuxPatchSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LinuxPatchSettings model = BinaryData.fromString(
-            "{\"patchMode\":\"ImageDefault\",\"assessmentMode\":\"ImageDefault\",\"automaticByPlatformSettings\":{\"rebootSetting\":\"Always\",\"bypassPlatformSafetyChecksOnUserSchedule\":true}}")
+            "{\"patchMode\":\"ImageDefault\",\"assessmentMode\":\"ImageDefault\",\"automaticByPlatformSettings\":{\"rebootSetting\":\"Unknown\",\"bypassPlatformSafetyChecksOnUserSchedule\":true}}")
             .toObject(LinuxPatchSettings.class);
         Assertions.assertEquals(LinuxVMGuestPatchMode.IMAGE_DEFAULT, model.patchMode());
         Assertions.assertEquals(LinuxPatchAssessmentMode.IMAGE_DEFAULT, model.assessmentMode());
-        Assertions.assertEquals(LinuxVMGuestPatchAutomaticByPlatformRebootSetting.ALWAYS,
+        Assertions.assertEquals(LinuxVMGuestPatchAutomaticByPlatformRebootSetting.UNKNOWN,
             model.automaticByPlatformSettings().rebootSetting());
         Assertions.assertTrue(model.automaticByPlatformSettings().bypassPlatformSafetyChecksOnUserSchedule());
     }
@@ -30,12 +30,12 @@ public final class LinuxPatchSettingsTests {
         LinuxPatchSettings model = new LinuxPatchSettings().withPatchMode(LinuxVMGuestPatchMode.IMAGE_DEFAULT)
             .withAssessmentMode(LinuxPatchAssessmentMode.IMAGE_DEFAULT)
             .withAutomaticByPlatformSettings(new LinuxVMGuestPatchAutomaticByPlatformSettings()
-                .withRebootSetting(LinuxVMGuestPatchAutomaticByPlatformRebootSetting.ALWAYS)
+                .withRebootSetting(LinuxVMGuestPatchAutomaticByPlatformRebootSetting.UNKNOWN)
                 .withBypassPlatformSafetyChecksOnUserSchedule(true));
         model = BinaryData.fromObject(model).toObject(LinuxPatchSettings.class);
         Assertions.assertEquals(LinuxVMGuestPatchMode.IMAGE_DEFAULT, model.patchMode());
         Assertions.assertEquals(LinuxPatchAssessmentMode.IMAGE_DEFAULT, model.assessmentMode());
-        Assertions.assertEquals(LinuxVMGuestPatchAutomaticByPlatformRebootSetting.ALWAYS,
+        Assertions.assertEquals(LinuxVMGuestPatchAutomaticByPlatformRebootSetting.UNKNOWN,
             model.automaticByPlatformSettings().rebootSetting());
         Assertions.assertTrue(model.automaticByPlatformSettings().bypassPlatformSafetyChecksOnUserSchedule());
     }

@@ -14,11 +14,11 @@ public final class FeatureValidationResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FeatureValidationResponse model = BinaryData.fromString(
-            "{\"objectType\":\"FeatureValidationResponse\",\"featureType\":\"Invalid\",\"features\":[{\"featureName\":\"dzf\",\"supportStatus\":\"AlphaPreview\",\"exposureControlledFeatures\":[\"jlfrq\",\"tbajlkatn\"]}]}")
+            "{\"objectType\":\"FeatureValidationResponse\",\"featureType\":\"DataSourceType\",\"features\":[{\"featureName\":\"rkjpvdwxfzwii\",\"supportStatus\":\"AlphaPreview\",\"exposureControlledFeatures\":[\"hyzsxjrkamb\",\"rnegvmn\"]},{\"featureName\":\"q\",\"supportStatus\":\"AlphaPreview\",\"exposureControlledFeatures\":[\"spastjbkkdmf\",\"vestmjl\",\"rriloz\",\"peewchpxlkt\"]}]}")
             .toObject(FeatureValidationResponse.class);
-        Assertions.assertEquals(FeatureType.INVALID, model.featureType());
-        Assertions.assertEquals("dzf", model.features().get(0).featureName());
+        Assertions.assertEquals(FeatureType.DATA_SOURCE_TYPE, model.featureType());
+        Assertions.assertEquals("rkjpvdwxfzwii", model.features().get(0).featureName());
         Assertions.assertEquals(FeatureSupportStatus.ALPHA_PREVIEW, model.features().get(0).supportStatus());
-        Assertions.assertEquals("jlfrq", model.features().get(0).exposureControlledFeatures().get(0));
+        Assertions.assertEquals("hyzsxjrkamb", model.features().get(0).exposureControlledFeatures().get(0));
     }
 }

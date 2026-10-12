@@ -1,12 +1,20 @@
 # Release History
 
-## 1.60.0-beta.1 (Unreleased)
+## 1.61.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.60.0 (2026-09-29)
 
 ### Features Added
 
 - Added `CloseableIterableStream<T>` for resource-backed iteration with deterministic cleanup.
-
-### Breaking Changes
 
 ### Bugs Fixed
 
@@ -18,6 +26,8 @@
   that point could never run, so this case is now logged and the work continues.
 
 ### Other Changes
+
+- Upgraded Jackson from `2.18.9` to `2.18.11`.
 
 ## 1.59.1 (2026-08-27)
 

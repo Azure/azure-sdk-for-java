@@ -13,7 +13,6 @@ import com.azure.ai.agents.models.CreateTwilioTelephonyBindingInput;
 import com.azure.ai.agents.models.PstnTelephonyTransferDestination;
 import com.azure.ai.agents.models.TelephonyBinding;
 import com.azure.ai.agents.models.TelephonyBindingListItem;
-import com.azure.ai.agents.models.TelephonyBindingStatus;
 import com.azure.ai.agents.models.TelephonyCallJobSchedule;
 import com.azure.ai.agents.models.TelephonyCallRecord;
 import com.azure.ai.agents.models.TelephonyCallJob;
@@ -190,7 +189,6 @@ public class VoiceAgentTelephonyLiveTests extends ClientTestBase {
             inboundBindingId = binding.getId();
             assertNotNull(binding.getId());
             assertEquals(TelephonyProvider.TWILIO, binding.getProvider());
-            assertEquals(TelephonyBindingStatus.ACTIVE, binding.getStatus());
             assertNotNull(binding.getIncomingCallUrl());
 
             Response<BinaryData> initialTargetsResponse

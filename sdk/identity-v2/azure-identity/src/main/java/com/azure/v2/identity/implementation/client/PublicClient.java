@@ -24,7 +24,6 @@ import com.microsoft.aad.msal4j.AuthorizationCodeParameters;
 import com.microsoft.aad.msal4j.RefreshTokenParameters;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.utils.CoreUtils;
-import io.clientcore.core.utils.SharedExecutorService;
 
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -171,8 +170,6 @@ public class PublicClient extends ClientBase {
 
         if (options.getExecutorService() != null) {
             builder.executorService(options.getExecutorService());
-        } else {
-            builder.executorService(SharedExecutorService.getInstance());
         }
 
         if (enableCae) {

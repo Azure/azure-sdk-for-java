@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class ExcludedPathTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ExcludedPath model = BinaryData.fromString("{\"path\":\"xakvvjgslor\"}").toObject(ExcludedPath.class);
-        Assertions.assertEquals("xakvvjgslor", model.path());
+        ExcludedPath model = BinaryData.fromString("{\"path\":\"jpahlxvea\"}").toObject(ExcludedPath.class);
+        Assertions.assertEquals("jpahlxvea", model.path());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExcludedPath model = new ExcludedPath().withPath("xakvvjgslor");
+        ExcludedPath model = new ExcludedPath().withPath("jpahlxvea");
         model = BinaryData.fromObject(model).toObject(ExcludedPath.class);
-        Assertions.assertEquals("xakvvjgslor", model.path());
+        Assertions.assertEquals("jpahlxvea", model.path());
     }
 }

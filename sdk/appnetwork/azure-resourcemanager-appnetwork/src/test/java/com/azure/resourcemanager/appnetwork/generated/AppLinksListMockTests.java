@@ -23,7 +23,7 @@ public final class AppLinksListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Provisioning\"},\"identity\":{\"principalId\":\"guvriuhprwmd\",\"tenantId\":\"xqtayriwwro\",\"type\":\"None\",\"userAssignedIdentities\":{\"jyzhpvgq\":{\"principalId\":\"rmcqiby\",\"clientId\":\"ojvknmefqsgzvaha\"},\"ug\":{\"principalId\":\"j\",\"clientId\":\"xdjzlmwlxk\"},\"prnxipeil\":{\"principalId\":\"zovawjvz\",\"clientId\":\"luthn\"},\"pwo\":{\"principalId\":\"zuaejxd\",\"clientId\":\"tskzbbtdzumveek\"}}},\"location\":\"hkfpbs\",\"tags\":{\"xl\":\"f\"},\"id\":\"us\",\"name\":\"ttouwaboekqvkel\",\"type\":\"smv\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Accepted\"},\"identity\":{\"principalId\":\"cwscwsvlx\",\"tenantId\":\"ogtwrupqsxvnmi\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"kphywpnvjto\":{\"principalId\":\"eoveilovnotyf\",\"clientId\":\"cnjbkcnxdhbt\"}}},\"location\":\"ermclfplphoxuscr\",\"tags\":{\"zq\":\"gyepsbjt\",\"fjz\":\"gxywpmue\"},\"id\":\"fqkquj\",\"name\":\"dsuyonobgla\",\"type\":\"cq\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,8 +34,8 @@ public final class AppLinksListMockTests {
 
         PagedIterable<AppLink> response = manager.appLinks().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("hkfpbs", response.iterator().next().location());
-        Assertions.assertEquals("f", response.iterator().next().tags().get("xl"));
-        Assertions.assertEquals(ManagedServiceIdentityType.NONE, response.iterator().next().identity().type());
+        Assertions.assertEquals("ermclfplphoxuscr", response.iterator().next().location());
+        Assertions.assertEquals("gyepsbjt", response.iterator().next().tags().get("zq"));
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, response.iterator().next().identity().type());
     }
 }

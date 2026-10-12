@@ -1,0 +1,10 @@
+{
+  "number": 12033,
+  "title": "[AutoPR azure-resourcemanager-contoso]-generated-from-SDK Generation",
+  "user": {"login": "app/azure-sdk-automation"},
+  "base": {"ref": "main", "repo": {"full_name": "Azure/azure-sdk-for-java"}},
+  "head": {"sha": "1203312033120331203312033120331203312033", "repo": {"full_name": "Azure/azure-sdk-for-java"}},
+  "draft": false,
+  "body": "<!-- azsdk-autopr-description:v1:start -->\n## SDK generation details\n\n| Detail | Value |\n| :--- | :--- |\n| **Pipeline run** | [SDK Generation #12345](https://dev.azure.com/azure-sdk/internal/_build/results?buildId=12345) |\n| **Release plan** | [Release plan #123](ftp://example.com/release-plan) |\n<!-- azsdk-autopr-description:v1:end -->",
+  "changed_files": 1
+}

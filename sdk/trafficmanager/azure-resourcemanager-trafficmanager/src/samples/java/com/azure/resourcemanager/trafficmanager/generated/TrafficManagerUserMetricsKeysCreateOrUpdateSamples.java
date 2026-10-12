@@ -9,7 +9,7 @@ package com.azure.resourcemanager.trafficmanager.generated;
  */
 public final class TrafficManagerUserMetricsKeysCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2024-04-01-preview/TrafficManagerUserMetricsKeys-PUT.json
+     * x-ms-original-file: 2026-09-01/TrafficManagerUserMetricsKeys-PUT.json
      */
     /**
      * Sample code: TrafficManagerUserMetricsKeys-PUT.

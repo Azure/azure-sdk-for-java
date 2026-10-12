@@ -15,44 +15,38 @@ public final class GremlinRoleDefinitionResourcePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GremlinRoleDefinitionResourceProperties model = BinaryData.fromString(
-            "{\"id\":\"ifkwdvbtbrekqhs\",\"roleName\":\"tfpwpqbyejuw\",\"type\":\"BuiltInRole\",\"assignableScopes\":[\"igmghginztx\",\"ujkhnjcmrnkfmkh\"],\"permissions\":[{\"id\":\"mlm\",\"dataActions\":[\"qtqea\",\"j\"],\"notDataActions\":[\"r\",\"gpokddxejhhkvgu\",\"vtptbk\"]},{\"id\":\"kqynspgbvo\",\"dataActions\":[\"kkwvdxaexqokmyr\",\"jialz\",\"nobrqlpb\"],\"notDataActions\":[\"rpzuyudivbx\",\"hsqe\",\"eonqelwgdhuru\",\"y\"]},{\"id\":\"arogatmolji\",\"dataActions\":[\"pinm\",\"vfkn\",\"erzztrkn\",\"j\"],\"notDataActions\":[\"gdy\",\"nhrxlel\",\"jhkeizcp\"]},{\"id\":\"tdmiwjekptyca\",\"dataActions\":[\"jzcqymlcfnz\",\"mhsurlgwqkpmm\",\"pstauol\",\"wiubmomsgvv\"],\"notDataActions\":[\"vlrlohewjjmajn\",\"dfl\",\"ionsw\",\"eq\"]}]}")
+            "{\"id\":\"tgkppgkqzkcyzmff\",\"roleName\":\"dyfcix\",\"type\":\"CustomRole\",\"assignableScopes\":[\"vhoej\",\"oiutgwrmkahpq\"],\"permissions\":[{\"id\":\"ntacih\",\"dataActions\":[\"gmipnmliqmvlbhik\",\"aqgrv\",\"pomxpu\",\"dtsdfjy\"],\"notDataActions\":[\"ocwiqbuoutmpyzgl\",\"ofjsbgbwwzvdaj\",\"wnncfmaciqg\"]},{\"id\":\"rlhiqlwixvtbo\",\"dataActions\":[\"xtndopgjttbasua\",\"ap\",\"lndbeaqbkixv\",\"lwynpbbfqvzfj\"],\"notDataActions\":[\"ugzfeuzjl\"]}]}")
             .toObject(GremlinRoleDefinitionResourceProperties.class);
-        Assertions.assertEquals("ifkwdvbtbrekqhs", model.id());
-        Assertions.assertEquals("tfpwpqbyejuw", model.roleName());
-        Assertions.assertEquals(RoleDefinitionType.BUILT_IN_ROLE, model.type());
-        Assertions.assertEquals("igmghginztx", model.assignableScopes().get(0));
-        Assertions.assertEquals("mlm", model.permissions().get(0).id());
-        Assertions.assertEquals("qtqea", model.permissions().get(0).dataActions().get(0));
-        Assertions.assertEquals("r", model.permissions().get(0).notDataActions().get(0));
+        Assertions.assertEquals("tgkppgkqzkcyzmff", model.id());
+        Assertions.assertEquals("dyfcix", model.roleName());
+        Assertions.assertEquals(RoleDefinitionType.CUSTOM_ROLE, model.type());
+        Assertions.assertEquals("vhoej", model.assignableScopes().get(0));
+        Assertions.assertEquals("ntacih", model.permissions().get(0).id());
+        Assertions.assertEquals("gmipnmliqmvlbhik", model.permissions().get(0).dataActions().get(0));
+        Assertions.assertEquals("ocwiqbuoutmpyzgl", model.permissions().get(0).notDataActions().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         GremlinRoleDefinitionResourceProperties model
-            = new GremlinRoleDefinitionResourceProperties().withId("ifkwdvbtbrekqhs")
-                .withRoleName("tfpwpqbyejuw")
-                .withType(RoleDefinitionType.BUILT_IN_ROLE)
-                .withAssignableScopes(Arrays.asList("igmghginztx", "ujkhnjcmrnkfmkh"))
+            = new GremlinRoleDefinitionResourceProperties().withId("tgkppgkqzkcyzmff")
+                .withRoleName("dyfcix")
+                .withType(RoleDefinitionType.CUSTOM_ROLE)
+                .withAssignableScopes(Arrays.asList("vhoej", "oiutgwrmkahpq"))
                 .withPermissions(Arrays.asList(
-                    new Permission().withId("mlm")
-                        .withDataActions(Arrays.asList("qtqea", "j"))
-                        .withNotDataActions(Arrays.asList("r", "gpokddxejhhkvgu", "vtptbk")),
-                    new Permission().withId("kqynspgbvo")
-                        .withDataActions(Arrays.asList("kkwvdxaexqokmyr", "jialz", "nobrqlpb"))
-                        .withNotDataActions(Arrays.asList("rpzuyudivbx", "hsqe", "eonqelwgdhuru", "y")),
-                    new Permission().withId("arogatmolji")
-                        .withDataActions(Arrays.asList("pinm", "vfkn", "erzztrkn", "j"))
-                        .withNotDataActions(Arrays.asList("gdy", "nhrxlel", "jhkeizcp")),
-                    new Permission().withId("tdmiwjekptyca")
-                        .withDataActions(Arrays.asList("jzcqymlcfnz", "mhsurlgwqkpmm", "pstauol", "wiubmomsgvv"))
-                        .withNotDataActions(Arrays.asList("vlrlohewjjmajn", "dfl", "ionsw", "eq"))));
+                    new Permission().withId("ntacih")
+                        .withDataActions(Arrays.asList("gmipnmliqmvlbhik", "aqgrv", "pomxpu", "dtsdfjy"))
+                        .withNotDataActions(Arrays.asList("ocwiqbuoutmpyzgl", "ofjsbgbwwzvdaj", "wnncfmaciqg")),
+                    new Permission().withId("rlhiqlwixvtbo")
+                        .withDataActions(Arrays.asList("xtndopgjttbasua", "ap", "lndbeaqbkixv", "lwynpbbfqvzfj"))
+                        .withNotDataActions(Arrays.asList("ugzfeuzjl"))));
         model = BinaryData.fromObject(model).toObject(GremlinRoleDefinitionResourceProperties.class);
-        Assertions.assertEquals("ifkwdvbtbrekqhs", model.id());
-        Assertions.assertEquals("tfpwpqbyejuw", model.roleName());
-        Assertions.assertEquals(RoleDefinitionType.BUILT_IN_ROLE, model.type());
-        Assertions.assertEquals("igmghginztx", model.assignableScopes().get(0));
-        Assertions.assertEquals("mlm", model.permissions().get(0).id());
-        Assertions.assertEquals("qtqea", model.permissions().get(0).dataActions().get(0));
-        Assertions.assertEquals("r", model.permissions().get(0).notDataActions().get(0));
+        Assertions.assertEquals("tgkppgkqzkcyzmff", model.id());
+        Assertions.assertEquals("dyfcix", model.roleName());
+        Assertions.assertEquals(RoleDefinitionType.CUSTOM_ROLE, model.type());
+        Assertions.assertEquals("vhoej", model.assignableScopes().get(0));
+        Assertions.assertEquals("ntacih", model.permissions().get(0).id());
+        Assertions.assertEquals("gmipnmliqmvlbhik", model.permissions().get(0).dataActions().get(0));
+        Assertions.assertEquals("ocwiqbuoutmpyzgl", model.permissions().get(0).notDataActions().get(0));
     }
 }

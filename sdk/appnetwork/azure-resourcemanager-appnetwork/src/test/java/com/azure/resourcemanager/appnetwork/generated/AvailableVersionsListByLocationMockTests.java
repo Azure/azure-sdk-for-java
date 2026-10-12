@@ -22,7 +22,7 @@ public final class AvailableVersionsListByLocationMockTests {
     @Test
     public void testListByLocation() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"kubernetesVersion\":\"jxgciqibrh\",\"fullyManagedVersions\":{\"releaseChannels\":[{\"releaseChannel\":\"xsdqrhzoymibmrqy\",\"version\":\"bahwfl\"},{\"releaseChannel\":\"szdtmhrkwof\",\"version\":\"yvoqa\"},{\"releaseChannel\":\"piexpbtgiw\",\"version\":\"wo\"},{\"releaseChannel\":\"nwashrtd\",\"version\":\"kcnqxwbpo\"}]},\"selfManagedVersions\":{\"versions\":[{\"version\":\"lpiujwaa\",\"upgrades\":[\"pqiiobyuqe\",\"pqlpq\",\"cciuqgbdbutau\",\"fbtkuwhhmhyk\"]},{\"version\":\"joxafnndlpi\",\"upgrades\":[\"koymkcd\",\"h\",\"pkkpw\"]}]},\"provisioningState\":\"Updating\"},\"id\":\"novvqfovljxy\",\"name\":\"suwsyrsnds\",\"type\":\"tgadgvraeaen\"}]}";
+            = "{\"value\":[{\"properties\":{\"kubernetesVersion\":\"qzeqqkdltfzxm\",\"fullyManagedVersions\":{\"releaseChannels\":[{\"releaseChannel\":\"v\",\"version\":\"gureodkwobdag\"},{\"releaseChannel\":\"tibqdxbxwakb\",\"version\":\"gqxndlkzgxhuripl\"},{\"releaseChannel\":\"podxunkb\",\"version\":\"bxmubyynt\"}]},\"selfManagedVersions\":{\"versions\":[{\"version\":\"rbqtkoie\",\"upgrades\":[\"eotg\",\"rlltmuwlauwzizx\",\"mpgcjefuzmuvpbt\"]}]},\"provisioningState\":\"Accepted\"},\"id\":\"orppxebmnzbtb\",\"name\":\"jpglkfgohdne\",\"type\":\"el\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,16 +32,16 @@ public final class AvailableVersionsListByLocationMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<AvailableVersion> response
-            = manager.availableVersions().listByLocation("dd", "kcbcue", com.azure.core.util.Context.NONE);
+            = manager.availableVersions().listByLocation("tppjflcx", "gaokonzmnsikv", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("jxgciqibrh", response.iterator().next().properties().kubernetesVersion());
-        Assertions.assertEquals("xsdqrhzoymibmrqy",
+        Assertions.assertEquals("qzeqqkdltfzxm", response.iterator().next().properties().kubernetesVersion());
+        Assertions.assertEquals("v",
             response.iterator().next().properties().fullyManagedVersions().releaseChannels().get(0).releaseChannel());
-        Assertions.assertEquals("bahwfl",
+        Assertions.assertEquals("gureodkwobdag",
             response.iterator().next().properties().fullyManagedVersions().releaseChannels().get(0).version());
-        Assertions.assertEquals("lpiujwaa",
+        Assertions.assertEquals("rbqtkoie",
             response.iterator().next().properties().selfManagedVersions().versions().get(0).version());
-        Assertions.assertEquals("pqiiobyuqe",
+        Assertions.assertEquals("eotg",
             response.iterator().next().properties().selfManagedVersions().versions().get(0).upgrades().get(0));
     }
 }

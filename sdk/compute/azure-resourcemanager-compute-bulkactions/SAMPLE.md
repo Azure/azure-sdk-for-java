@@ -66,11 +66,13 @@
 
 ## VirtualMachineBulkOperations
 
+- [BulkAcknowledgeOperationErrors](#virtualmachinebulkoperations_bulkacknowledgeoperationerrors)
 - [BulkCancelOperations](#virtualmachinebulkoperations_bulkcanceloperations)
 - [BulkDeallocateOperation](#virtualmachinebulkoperations_bulkdeallocateoperation)
 - [BulkDeleteOperation](#virtualmachinebulkoperations_bulkdeleteoperation)
 - [BulkGetOperationsStatus](#virtualmachinebulkoperations_bulkgetoperationsstatus)
 - [BulkHibernateOperation](#virtualmachinebulkoperations_bulkhibernateoperation)
+- [BulkListOperationErrors](#virtualmachinebulkoperations_bulklistoperationerrors)
 - [BulkReimageOperation](#virtualmachinebulkoperations_bulkreimageoperation)
 - [BulkStartOperation](#virtualmachinebulkoperations_bulkstartoperation)
 ### BulkCreate_Cancel
@@ -1688,6 +1690,74 @@ public final class ScheduledActionsUpdateSamples {
 }
 ```
 
+### VirtualMachineBulkOperations_BulkAcknowledgeOperationErrors
+
+```java
+import com.azure.resourcemanager.compute.bulkactions.models.AcknowledgeBulkOperationErrorsRequest;
+import java.util.Arrays;
+
+/**
+ * Samples for VirtualMachineBulkOperations BulkAcknowledgeOperationErrors.
+ */
+public final class VirtualMachineBulkOperationsBulkAcknowledgeOperationErrorsSamples {
+    /*
+     * x-ms-original-file:
+     * 2026-10-06-preview/VirtualMachineBulkOperations_BulkAcknowledgeOperationErrors_OperationNotFoundError.json
+     */
+    /**
+     * Sample code: 03 - Acknowledge operation errors with an unknown operationId resulting in not found.
+     * 
+     * @param manager Entry point to ComputeBulkActionsManager.
+     */
+    public static void
+        zeroThreeSpaceHyphenMinusSpaceAcknowledgeSpaceoperationSpaceerrorsSpacewithSpaceanSpaceunknownSpaceoperationIdSpaceresultingSpaceinSpacenotSpacefound(
+            com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
+        manager.virtualMachineBulkOperations()
+            .bulkAcknowledgeOperationErrorsWithResponse("example-rg", "eastus",
+                new AcknowledgeBulkOperationErrorsRequest().withOperationIds(
+                    Arrays.asList("dddddddd-dddd-dddd-dddd-dddddddddddd")),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * 2026-10-06-preview/VirtualMachineBulkOperations_BulkAcknowledgeOperationErrors_BasicSuccess.json
+     */
+    /**
+     * Sample code: 01 - Acknowledge multiple operation errors.
+     * 
+     * @param manager Entry point to ComputeBulkActionsManager.
+     */
+    public static void zeroOneSpaceHyphenMinusSpaceAcknowledgeSpacemultipleSpaceoperationSpaceerrors(
+        com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
+        manager.virtualMachineBulkOperations()
+            .bulkAcknowledgeOperationErrorsWithResponse("example-rg", "eastus",
+                new AcknowledgeBulkOperationErrorsRequest().withOperationIds(
+                    Arrays.asList("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa", "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb")),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * 2026-10-06-preview/VirtualMachineBulkOperations_BulkAcknowledgeOperationErrors_MixedResults.json
+     */
+    /**
+     * Sample code: 02 - Acknowledge operation errors with mixed results.
+     * 
+     * @param manager Entry point to ComputeBulkActionsManager.
+     */
+    public static void zeroTwoSpaceHyphenMinusSpaceAcknowledgeSpaceoperationSpaceerrorsSpacewithSpacemixedSpaceresults(
+        com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
+        manager.virtualMachineBulkOperations()
+            .bulkAcknowledgeOperationErrorsWithResponse("example-rg", "eastus",
+                new AcknowledgeBulkOperationErrorsRequest().withOperationIds(
+                    Arrays.asList("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa", "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb",
+                        "cccccccc-cccc-cccc-cccc-cccccccccccc")),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### VirtualMachineBulkOperations_BulkCancelOperations
 
 ```java
@@ -2050,6 +2120,60 @@ public final class VirtualMachineBulkOperationsBulkHibernateOperationSamples {
                     "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/bulk-vm-01",
                     "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/bulk-vm-02"))),
                 com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### VirtualMachineBulkOperations_BulkListOperationErrors
+
+```java
+/**
+ * Samples for VirtualMachineBulkOperations BulkListOperationErrors.
+ */
+public final class VirtualMachineBulkOperationsBulkListOperationErrorsSamples {
+    /*
+     * x-ms-original-file: 2026-10-06-preview/VirtualMachineBulkOperations_BulkListOperationErrors_PaginatedSuccess.json
+     */
+    /**
+     * Sample code: 02 - List failed operation errors with paginated response.
+     * 
+     * @param manager Entry point to ComputeBulkActionsManager.
+     */
+    public static void
+        zeroTwoSpaceHyphenMinusSpaceListSpacefailedSpaceoperationSpaceerrorsSpacewithSpacepaginatedSpaceresponse(
+            com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
+        manager.virtualMachineBulkOperations()
+            .bulkListOperationErrors("example-rg", "eastus", null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-10-06-preview/VirtualMachineBulkOperations_BulkListOperationErrors_BasicSuccess.json
+     */
+    /**
+     * Sample code: 01 - List recent failed operation errors.
+     * 
+     * @param manager Entry point to ComputeBulkActionsManager.
+     */
+    public static void zeroOneSpaceHyphenMinusSpaceListSpacerecentSpacefailedSpaceoperationSpaceerrors(
+        com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
+        manager.virtualMachineBulkOperations()
+            .bulkListOperationErrors("example-rg", "eastus", null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * 2026-10-06-preview/VirtualMachineBulkOperations_BulkListOperationErrors_InvalidLookbackWindowError.json
+     */
+    /**
+     * Sample code: 03 - Response with an invalid lookback window error.
+     * 
+     * @param manager Entry point to ComputeBulkActionsManager.
+     */
+    public static void
+        zeroThreeSpaceHyphenMinusSpaceResponseSpacewithSpaceanSpaceinvalidSpacelookbackSpacewindowSpaceerror(
+            com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
+        manager.virtualMachineBulkOperations()
+            .bulkListOperationErrors("example-rg", "eastus", 0, com.azure.core.util.Context.NONE);
     }
 }
 ```

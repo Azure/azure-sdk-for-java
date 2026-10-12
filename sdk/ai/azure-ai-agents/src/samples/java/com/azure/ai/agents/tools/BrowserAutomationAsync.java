@@ -5,9 +5,8 @@ package com.azure.ai.agents.tools;
 
 import com.azure.ai.agents.AgentsAsyncClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.SampleUtils;
 import com.azure.ai.agents.models.AgentVersionDetails;
-import com.azure.ai.agents.models.BrowserAutomationPreviewTool;
+import com.azure.ai.agents.models.BrowserAutomationTool;
 import com.azure.ai.agents.models.BrowserAutomationToolConnectionParameters;
 import com.azure.ai.agents.models.BrowserAutomationToolParameters;
 import com.azure.ai.agents.models.PromptAgentDefinition;
@@ -48,7 +47,7 @@ public class BrowserAutomationAsync {
         AtomicReference<AgentVersionDetails> agentRef = new AtomicReference<>();
 
         // Create browser automation tool with connection configuration
-        BrowserAutomationPreviewTool browserTool = new BrowserAutomationPreviewTool(
+        BrowserAutomationTool browserTool = new BrowserAutomationTool(
             new BrowserAutomationToolParameters(
                 new BrowserAutomationToolConnectionParameters(connectionId)
             )
@@ -63,11 +62,10 @@ public class BrowserAutomationAsync {
                 agentRef.set(agent);
                 System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());
 
-                return SampleUtils.pinAgentVersion(agentsAsyncClient, agent)
-                    .then(Mono.fromFuture(() -> openAIAsyncClient.responses().create(
-                        ResponseCreateParams.builder()
-                            .input("Navigate to microsoft.com and summarize the main content")
-                            .build())));
+                return Mono.fromFuture(() -> openAIAsyncClient.responses().create(
+                    ResponseCreateParams.builder()
+                        .input("Navigate to microsoft.com and summarize the main content")
+                        .build()));
             })
             .doOnNext(response -> {
                 System.out.println("Response: " + response.output());

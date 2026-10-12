@@ -10,6 +10,8 @@
 
 #### Other Changes
 
+* Upgraded Jackson from `2.18.9` to `2.18.11`.
+
 ### 4.50.0 (2026-09-22)
 
 #### Other Changes

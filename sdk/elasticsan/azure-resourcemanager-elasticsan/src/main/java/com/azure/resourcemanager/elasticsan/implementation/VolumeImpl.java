@@ -8,11 +8,13 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.elasticsan.fluent.models.VolumeInner;
 import com.azure.resourcemanager.elasticsan.models.IscsiTargetInfo;
-import com.azure.resourcemanager.elasticsan.models.ManagedByInfo;
+import com.azure.resourcemanager.elasticsan.models.ManagedByResources;
 import com.azure.resourcemanager.elasticsan.models.ProvisioningStates;
 import com.azure.resourcemanager.elasticsan.models.SourceCreationData;
 import com.azure.resourcemanager.elasticsan.models.Volume;
 import com.azure.resourcemanager.elasticsan.models.VolumeUpdate;
+import java.util.Collections;
+import java.util.List;
 
 public final class VolumeImpl implements Volume, Volume.Definition, Volume.Update {
     private VolumeInner innerObject;
@@ -51,8 +53,13 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
         return this.innerModel().storageTarget();
     }
 
-    public ManagedByInfo managedBy() {
-        return this.innerModel().managedBy();
+    public List<ManagedByResources> managedBy() {
+        List<ManagedByResources> inner = this.innerModel().managedBy();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
     }
 
     public ProvisioningStates provisioningState() {
@@ -162,7 +169,7 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
         return this;
     }
 
-    public VolumeImpl withManagedBy(ManagedByInfo managedBy) {
+    public VolumeImpl withManagedBy(List<ManagedByResources> managedBy) {
         if (isInCreateMode()) {
             this.innerModel().withManagedBy(managedBy);
             return this;

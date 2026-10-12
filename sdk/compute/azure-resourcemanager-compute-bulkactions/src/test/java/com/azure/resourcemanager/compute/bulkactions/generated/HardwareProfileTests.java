@@ -12,21 +12,22 @@ import org.junit.jupiter.api.Assertions;
 public final class HardwareProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        HardwareProfile model = BinaryData.fromString(
-            "{\"vmSize\":\"afkuwb\",\"vmSizeProperties\":{\"vCpusAvailable\":946722582,\"vCpusPerCore\":1666097242}}")
+        HardwareProfile model = BinaryData
+            .fromString(
+                "{\"vmSize\":\"xnrj\",\"vmSizeProperties\":{\"vCpusAvailable\":520558729,\"vCpusPerCore\":1621003688}}")
             .toObject(HardwareProfile.class);
-        Assertions.assertEquals("afkuwb", model.vmSize());
-        Assertions.assertEquals(946722582, model.vmSizeProperties().vCpusAvailable());
-        Assertions.assertEquals(1666097242, model.vmSizeProperties().vCpusPerCore());
+        Assertions.assertEquals("xnrj", model.vmSize());
+        Assertions.assertEquals(520558729, model.vmSizeProperties().vCpusAvailable());
+        Assertions.assertEquals(1621003688, model.vmSizeProperties().vCpusPerCore());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HardwareProfile model = new HardwareProfile().withVmSize("afkuwb")
-            .withVmSizeProperties(new VmSizeProperties().withVCpusAvailable(946722582).withVCpusPerCore(1666097242));
+        HardwareProfile model = new HardwareProfile().withVmSize("xnrj")
+            .withVmSizeProperties(new VmSizeProperties().withVCpusAvailable(520558729).withVCpusPerCore(1621003688));
         model = BinaryData.fromObject(model).toObject(HardwareProfile.class);
-        Assertions.assertEquals("afkuwb", model.vmSize());
-        Assertions.assertEquals(946722582, model.vmSizeProperties().vCpusAvailable());
-        Assertions.assertEquals(1666097242, model.vmSizeProperties().vCpusPerCore());
+        Assertions.assertEquals("xnrj", model.vmSize());
+        Assertions.assertEquals(520558729, model.vmSizeProperties().vCpusAvailable());
+        Assertions.assertEquals(1621003688, model.vmSizeProperties().vCpusPerCore());
     }
 }

@@ -52,6 +52,9 @@ parameters:
   - name: JavaBuildVersion
     type: string
     default: $(JavaBuildVersion)
+  - name: IsLatestNonLtsJdk
+    type: boolean
+    default: false
   - name: LiveTestStages
     type: stageList
     default: []
@@ -123,6 +126,7 @@ extends:
               SDKType: ${{ parameters.SDKType }}
               # TargetBranch is runtime-only. Non-main public unified PRs wait too, but keep all existing checks.
               UseCombinedPRValidation: ${{ and(parameters.UseCombinedPRValidation, eq(parameters.ServiceDirectory, 'auto'), eq(parameters.SDKType, 'client'), not(parameters.TestPipeline), eq(variables['Build.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'public'), eq(variables['Build.Repository.Name'], 'Azure/azure-sdk-for-java'), in(variables['System.CollectionUri'], 'https://dev.azure.com/azure-sdk/', 'https://azure-sdk.visualstudio.com/')) }}
+              IsLatestNonLtsJdk: ${{ parameters.IsLatestNonLtsJdk }}
               Artifacts: ${{ parameters.Artifacts }}
               ExcludePaths: ${{parameters.ExcludePaths}}
               TimeoutInMinutes: ${{ parameters.TimeoutInMinutes }}

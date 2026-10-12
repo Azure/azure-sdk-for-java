@@ -14,19 +14,21 @@ import org.junit.jupiter.api.Assertions;
 public final class WinRMConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WinRMConfiguration model
-            = BinaryData.fromString("{\"listeners\":[{\"protocol\":\"Http\",\"certificateUrl\":\"x\"}]}")
-                .toObject(WinRMConfiguration.class);
-        Assertions.assertEquals(ProtocolTypes.HTTP, model.listeners().get(0).protocol());
-        Assertions.assertEquals("x", model.listeners().get(0).certificateUrl());
+        WinRMConfiguration model = BinaryData.fromString(
+            "{\"listeners\":[{\"protocol\":\"Https\",\"certificateUrl\":\"cbpwxqpsrknft\"},{\"protocol\":\"Https\",\"certificateUrl\":\"iuhprwmdyvxqta\"},{\"protocol\":\"Https\",\"certificateUrl\":\"wroyqbexrmcq\"}]}")
+            .toObject(WinRMConfiguration.class);
+        Assertions.assertEquals(ProtocolTypes.HTTPS, model.listeners().get(0).protocol());
+        Assertions.assertEquals("cbpwxqpsrknft", model.listeners().get(0).certificateUrl());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WinRMConfiguration model = new WinRMConfiguration()
-            .withListeners(Arrays.asList(new WinRMListener().withProtocol(ProtocolTypes.HTTP).withCertificateUrl("x")));
+        WinRMConfiguration model = new WinRMConfiguration().withListeners(
+            Arrays.asList(new WinRMListener().withProtocol(ProtocolTypes.HTTPS).withCertificateUrl("cbpwxqpsrknft"),
+                new WinRMListener().withProtocol(ProtocolTypes.HTTPS).withCertificateUrl("iuhprwmdyvxqta"),
+                new WinRMListener().withProtocol(ProtocolTypes.HTTPS).withCertificateUrl("wroyqbexrmcq")));
         model = BinaryData.fromObject(model).toObject(WinRMConfiguration.class);
-        Assertions.assertEquals(ProtocolTypes.HTTP, model.listeners().get(0).protocol());
-        Assertions.assertEquals("x", model.listeners().get(0).certificateUrl());
+        Assertions.assertEquals(ProtocolTypes.HTTPS, model.listeners().get(0).protocol());
+        Assertions.assertEquals("cbpwxqpsrknft", model.listeners().get(0).certificateUrl());
     }
 }

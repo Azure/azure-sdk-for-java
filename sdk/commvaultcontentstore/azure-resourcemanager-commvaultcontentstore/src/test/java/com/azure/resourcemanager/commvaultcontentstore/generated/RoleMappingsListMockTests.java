@@ -23,7 +23,7 @@ public final class RoleMappingsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"roles\":[{\"roleName\":\"MultiPersonAuthorization\",\"entities\":[{},{}]},{\"roleName\":\"BackupUser\",\"entities\":[{},{}]}],\"provisioningState\":\"Canceled\"},\"id\":\"lapzwyrp\",\"name\":\"ogtqxepnylbf\",\"type\":\"ajlyjtlvofqzhv\"}]}";
+            = "{\"value\":[{\"properties\":{\"roles\":[{\"roleName\":\"BackupOperator\",\"entities\":[{}]}],\"provisioningState\":\"Canceled\"},\"id\":\"zqadf\",\"name\":\"gzuriglaecxndt\",\"type\":\"cokpv\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,9 +33,9 @@ public final class RoleMappingsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<RoleMapping> response
-            = manager.roleMappings().list("xkzb", "msgeivsiykzk", com.azure.core.util.Context.NONE);
+            = manager.roleMappings().list("nwy", "pzdm", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(RoleName.MULTI_PERSON_AUTHORIZATION,
+        Assertions.assertEquals(RoleName.BACKUP_OPERATOR,
             response.iterator().next().properties().roles().get(0).roleName());
     }
 }
