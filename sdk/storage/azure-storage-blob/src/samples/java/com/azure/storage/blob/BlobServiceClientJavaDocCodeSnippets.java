@@ -16,9 +16,6 @@ import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.ContainerSessionProvider;
 import com.azure.storage.blob.options.SessionOptions;
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.http.HttpClient;
-import com.azure.core.http.policy.ExponentialBackoffOptions;
-import com.azure.core.http.policy.RetryOptions;
 import com.azure.storage.blob.options.BlobContainerCreateOptions;
 import com.azure.storage.blob.options.FindBlobsOptions;
 import com.azure.storage.blob.options.UndeleteBlobContainerOptions;
@@ -41,7 +38,7 @@ public class BlobServiceClientJavaDocCodeSnippets {
     private final Duration timeout = Duration.ofSeconds(30);
 
     /**
-     * Configures session authentication using either provider constructor.
+     * Configures session authentication using the default session provider.
      * @param credential The OAuth credential.
      */
     public void configureSessionProvider(TokenCredential credential) {
