@@ -75,7 +75,7 @@ public interface DeletedBackupInstancesClient {
     PagedIterable<DeletedBackupInstanceResourceInner> list(String resourceGroupName, String vaultName, Context context);
 
     /**
-     * The undelete operation.
+     * A long-running resource action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
@@ -90,7 +90,7 @@ public interface DeletedBackupInstancesClient {
         String backupInstanceName);
 
     /**
-     * The undelete operation.
+     * A long-running resource action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
@@ -106,7 +106,7 @@ public interface DeletedBackupInstancesClient {
         String backupInstanceName, Context context);
 
     /**
-     * The undelete operation.
+     * A long-running resource action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
@@ -119,7 +119,7 @@ public interface DeletedBackupInstancesClient {
     void undelete(String resourceGroupName, String vaultName, String backupInstanceName);
 
     /**
-     * The undelete operation.
+     * A long-running resource action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.

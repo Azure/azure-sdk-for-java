@@ -15,44 +15,38 @@ public final class CassandraRoleDefinitionResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CassandraRoleDefinitionResourceInner model = BinaryData.fromString(
-            "{\"properties\":{\"id\":\"hdjzqdcadwvpsoz\",\"roleName\":\"ih\",\"type\":\"CustomRole\",\"assignableScopes\":[\"mrzoep\",\"xwdvwnj\",\"gv\"],\"permissions\":[{\"id\":\"aursqftibtyi\",\"dataActions\":[\"vpi\"],\"notDataActions\":[\"jpnqnoowsbeden\",\"exkxbhx\",\"ucnulgmnh\",\"evdyz\"]},{\"id\":\"ajsvk\",\"dataActions\":[\"qozzkivyhjrliizj\",\"xlqfh\",\"fkwa\"],\"notDataActions\":[\"lronqqlmg\"]},{\"id\":\"qxsjxte\",\"dataActions\":[\"hvuqbo\",\"oolzqocarkuzl\",\"cnn\"],\"notDataActions\":[\"nx\",\"wqy\"]},{\"id\":\"lhdyzmyckzex\",\"dataActions\":[\"kck\",\"wymxgaabjk\"],\"notDataActions\":[\"ohfaog\",\"vkiwrsiwdyjqu\",\"ykcrraue\"]}]},\"id\":\"csuehogddac\",\"name\":\"cbgydlqi\",\"type\":\"ywmhmptyrilkfbnr\"}")
+            "{\"properties\":{\"id\":\"iekoif\",\"roleName\":\"nyttzgix\",\"type\":\"BuiltInRole\",\"assignableScopes\":[\"lgmgbe\",\"lqtxnrflkndrn\",\"pgfjo\"],\"permissions\":[{\"id\":\"qotwfh\",\"dataActions\":[\"wgsabvcipo\",\"zafczuumljci\"],\"notDataActions\":[\"efy\",\"dvei\"]},{\"id\":\"tjnsx\",\"dataActions\":[\"lnsjhw\",\"uyx\"],\"notDataActions\":[\"qvmvuaytuadxkxe\",\"bwpntghy\"]}]},\"id\":\"a\",\"name\":\"cdrnxsl\",\"type\":\"vlzladl\"}")
             .toObject(CassandraRoleDefinitionResourceInner.class);
-        Assertions.assertEquals("hdjzqdcadwvpsoz", model.idPropertiesId());
-        Assertions.assertEquals("ih", model.roleName());
-        Assertions.assertEquals(RoleDefinitionType.CUSTOM_ROLE, model.typePropertiesType());
-        Assertions.assertEquals("mrzoep", model.assignableScopes().get(0));
-        Assertions.assertEquals("aursqftibtyi", model.permissions().get(0).id());
-        Assertions.assertEquals("vpi", model.permissions().get(0).dataActions().get(0));
-        Assertions.assertEquals("jpnqnoowsbeden", model.permissions().get(0).notDataActions().get(0));
+        Assertions.assertEquals("iekoif", model.idPropertiesId());
+        Assertions.assertEquals("nyttzgix", model.roleName());
+        Assertions.assertEquals(RoleDefinitionType.BUILT_IN_ROLE, model.typePropertiesType());
+        Assertions.assertEquals("lgmgbe", model.assignableScopes().get(0));
+        Assertions.assertEquals("qotwfh", model.permissions().get(0).id());
+        Assertions.assertEquals("wgsabvcipo", model.permissions().get(0).dataActions().get(0));
+        Assertions.assertEquals("efy", model.permissions().get(0).notDataActions().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CassandraRoleDefinitionResourceInner model
-            = new CassandraRoleDefinitionResourceInner().withIdPropertiesId("hdjzqdcadwvpsoz")
-                .withRoleName("ih")
-                .withTypePropertiesType(RoleDefinitionType.CUSTOM_ROLE)
-                .withAssignableScopes(Arrays.asList("mrzoep", "xwdvwnj", "gv"))
+            = new CassandraRoleDefinitionResourceInner().withIdPropertiesId("iekoif")
+                .withRoleName("nyttzgix")
+                .withTypePropertiesType(RoleDefinitionType.BUILT_IN_ROLE)
+                .withAssignableScopes(Arrays.asList("lgmgbe", "lqtxnrflkndrn", "pgfjo"))
                 .withPermissions(Arrays.asList(
-                    new Permission().withId("aursqftibtyi")
-                        .withDataActions(Arrays.asList("vpi"))
-                        .withNotDataActions(Arrays.asList("jpnqnoowsbeden", "exkxbhx", "ucnulgmnh", "evdyz")),
-                    new Permission().withId("ajsvk")
-                        .withDataActions(Arrays.asList("qozzkivyhjrliizj", "xlqfh", "fkwa"))
-                        .withNotDataActions(Arrays.asList("lronqqlmg")),
-                    new Permission().withId("qxsjxte")
-                        .withDataActions(Arrays.asList("hvuqbo", "oolzqocarkuzl", "cnn"))
-                        .withNotDataActions(Arrays.asList("nx", "wqy")),
-                    new Permission().withId("lhdyzmyckzex")
-                        .withDataActions(Arrays.asList("kck", "wymxgaabjk"))
-                        .withNotDataActions(Arrays.asList("ohfaog", "vkiwrsiwdyjqu", "ykcrraue"))));
+                    new Permission().withId("qotwfh")
+                        .withDataActions(Arrays.asList("wgsabvcipo", "zafczuumljci"))
+                        .withNotDataActions(Arrays.asList("efy", "dvei")),
+                    new Permission().withId("tjnsx")
+                        .withDataActions(Arrays.asList("lnsjhw", "uyx"))
+                        .withNotDataActions(Arrays.asList("qvmvuaytuadxkxe", "bwpntghy"))));
         model = BinaryData.fromObject(model).toObject(CassandraRoleDefinitionResourceInner.class);
-        Assertions.assertEquals("hdjzqdcadwvpsoz", model.idPropertiesId());
-        Assertions.assertEquals("ih", model.roleName());
-        Assertions.assertEquals(RoleDefinitionType.CUSTOM_ROLE, model.typePropertiesType());
-        Assertions.assertEquals("mrzoep", model.assignableScopes().get(0));
-        Assertions.assertEquals("aursqftibtyi", model.permissions().get(0).id());
-        Assertions.assertEquals("vpi", model.permissions().get(0).dataActions().get(0));
-        Assertions.assertEquals("jpnqnoowsbeden", model.permissions().get(0).notDataActions().get(0));
+        Assertions.assertEquals("iekoif", model.idPropertiesId());
+        Assertions.assertEquals("nyttzgix", model.roleName());
+        Assertions.assertEquals(RoleDefinitionType.BUILT_IN_ROLE, model.typePropertiesType());
+        Assertions.assertEquals("lgmgbe", model.assignableScopes().get(0));
+        Assertions.assertEquals("qotwfh", model.permissions().get(0).id());
+        Assertions.assertEquals("wgsabvcipo", model.permissions().get(0).dataActions().get(0));
+        Assertions.assertEquals("efy", model.permissions().get(0).notDataActions().get(0));
     }
 }

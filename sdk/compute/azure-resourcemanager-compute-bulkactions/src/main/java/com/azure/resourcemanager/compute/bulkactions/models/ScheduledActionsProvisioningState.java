@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Provisioning state of the scheduled action resource.
+ * The provisioning state of the scheduled action.
  */
 public final class ScheduledActionsProvisioningState extends ExpandableStringEnum<ScheduledActionsProvisioningState> {
     /**
@@ -27,9 +27,14 @@ public final class ScheduledActionsProvisioningState extends ExpandableStringEnu
     public static final ScheduledActionsProvisioningState CANCELED = fromString("Canceled");
 
     /**
-     * Resource is being deleted.
+     * The scheduled action is being deleted.
      */
     public static final ScheduledActionsProvisioningState DELETING = fromString("Deleting");
+
+    /**
+     * The scheduled action is being updated.
+     */
+    public static final ScheduledActionsProvisioningState UPDATING = fromString("Updating");
 
     /**
      * Creates a new instance of ScheduledActionsProvisioningState value.

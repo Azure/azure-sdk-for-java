@@ -3,8 +3,8 @@
 
 package com.microsoft.azure.servicebus;
 
-import org.junit.Assume;
-import org.junit.BeforeClass;
+import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.BeforeAll;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,9 +15,9 @@ public class TestBase {
     private static final String PLAYBACK = "PLAYBACK";
     private static final String AZURE_TEST_MODE = "AZURE_TEST_MODE";
 
-    @BeforeClass
+    @BeforeAll
     public static void skipIfNotConfigured() {
-        Assume.assumeTrue("The test only runs in Live mode.", RECORD.equals(TestBase.getTestMode()));
+        Assumptions.assumeTrue(RECORD.equals(TestBase.getTestMode()), "The test only runs in Live mode.");
     }
 
     public static String getTestMode() {

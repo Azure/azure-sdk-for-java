@@ -17,6 +17,10 @@ import com.azure.resourcemanager.network.fluent.models.ExpressRouteCircuitsArpTa
 import com.azure.resourcemanager.network.fluent.models.ExpressRouteCircuitsRoutesTableListResultInner;
 import com.azure.resourcemanager.network.fluent.models.ExpressRouteCrossConnectionInner;
 import com.azure.resourcemanager.network.fluent.models.ExpressRouteCrossConnectionsRoutesTableSummaryListResultInner;
+import com.azure.resourcemanager.network.fluent.models.MigrateExpressRouteCircuitHealthCheckResponseInner;
+import com.azure.resourcemanager.network.fluent.models.MigrateExpressRouteCircuitValidateResponseInner;
+import com.azure.resourcemanager.network.models.MigrateExpressRouteCircuitRequest;
+import com.azure.resourcemanager.network.models.MigrateExpressRouteCircuitValidateAndHealthCheckRequest;
 import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
@@ -723,4 +727,923 @@ public interface ExpressRouteCrossConnectionsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     ExpressRouteCircuitsRoutesTableListResultInner listRoutesTable(String resourceGroupName, String crossConnectionName,
         String peeringName, String devicePath, Context context);
+
+    /**
+     * Validates express route circuit migration for a cross connection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
+     * @param parameters Parameters supplied to validate express route circuit migration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for express route circuit migration validation operation along with {@link Response} on
+     * successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> validateCircuitMigrationWithResponseAsync(String resourceGroupName,
+        String crossConnectionName, MigrateExpressRouteCircuitValidateAndHealthCheckRequest parameters);
+
+    /**
+     * Validates express route circuit migration for a cross connection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
+     * @param parameters Parameters supplied to validate express route circuit migration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of response for express route circuit migration validation operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<MigrateExpressRouteCircuitValidateResponseInner>, MigrateExpressRouteCircuitValidateResponseInner>
+        beginValidateCircuitMigrationAsync(String resourceGroupName, String crossConnectionName,
+            MigrateExpressRouteCircuitValidateAndHealthCheckRequest parameters);
+
+    /**
+     * Validates express route circuit migration for a cross connection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
+     * @param parameters Parameters supplied to validate express route circuit migration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of response for express route circuit migration validation operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<MigrateExpressRouteCircuitValidateResponseInner>, MigrateExpressRouteCircuitValidateResponseInner>
+        beginValidateCircuitMigration(String resourceGroupName, String crossConnectionName,
+            MigrateExpressRouteCircuitValidateAndHealthCheckRequest parameters);
+
+    /**
+     * Validates express route circuit migration for a cross connection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
+     * @param parameters Parameters supplied to validate express route circuit migration.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of response for express route circuit migration validation operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<MigrateExpressRouteCircuitValidateResponseInner>, MigrateExpressRouteCircuitValidateResponseInner>
+        beginValidateCircuitMigration(String resourceGroupName, String crossConnectionName,
+            MigrateExpressRouteCircuitValidateAndHealthCheckRequest parameters, Context context);
+
+    /**
+     * Validates express route circuit migration for a cross connection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
+     * @param parameters Parameters supplied to validate express route circuit migration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for express route circuit migration validation operation on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<MigrateExpressRouteCircuitValidateResponseInner> validateCircuitMigrationAsync(String resourceGroupName,
+        String crossConnectionName, MigrateExpressRouteCircuitValidateAndHealthCheckRequest parameters);
+
+    /**
+     * Validates express route circuit migration for a cross connection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
+     * @param parameters Parameters supplied to validate express route circuit migration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for express route circuit migration validation operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    MigrateExpressRouteCircuitValidateResponseInner validateCircuitMigration(String resourceGroupName,
+        String crossConnectionName, MigrateExpressRouteCircuitValidateAndHealthCheckRequest parameters);
+
+    /**
+     * Validates express route circuit migration for a cross connection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
+     * @param parameters Parameters supplied to validate express route circuit migration.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for express route circuit migration validation operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    MigrateExpressRouteCircuitValidateResponseInner validateCircuitMigration(String resourceGroupName,
+        String crossConnectionName, MigrateExpressRouteCircuitValidateAndHealthCheckRequest parameters,
+        Context context);
+
+    /**
+     * Gets migration health information for an express route circuit cross connection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
+     * @param parameters Parameters supplied to get express route circuit migration information.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return migration health information for an express route circuit cross connection along with {@link Response} on
+     * successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> getCircuitMigrationInfoWithResponseAsync(String resourceGroupName,
+        String crossConnectionName, MigrateExpressRouteCircuitValidateAndHealthCheckRequest parameters);
+
+    /**
+     * Gets migration health information for an express route circuit cross connection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
+     * @param parameters Parameters supplied to get express route circuit migration information.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of migration health information for an express route circuit cross
+     * connection.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<MigrateExpressRouteCircuitHealthCheckResponseInner>, MigrateExpressRouteCircuitHealthCheckResponseInner>
+        beginGetCircuitMigrationInfoAsync(String resourceGroupName, String crossConnectionName,
+            MigrateExpressRouteCircuitValidateAndHealthCheckRequest parameters);
+
+    /**
+     * Gets migration health information for an express route circuit cross connection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
+     * @param parameters Parameters supplied to get express route circuit migration information.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of migration health information for an express route circuit cross
+     * connection.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<MigrateExpressRouteCircuitHealthCheckResponseInner>, MigrateExpressRouteCircuitHealthCheckResponseInner>
+        beginGetCircuitMigrationInfo(String resourceGroupName, String crossConnectionName,
+            MigrateExpressRouteCircuitValidateAndHealthCheckRequest parameters);
+
+    /**
+     * Gets migration health information for an express route circuit cross connection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
+     * @param parameters Parameters supplied to get express route circuit migration information.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of migration health information for an express route circuit cross
+     * connection.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<MigrateExpressRouteCircuitHealthCheckResponseInner>, MigrateExpressRouteCircuitHealthCheckResponseInner>
+        beginGetCircuitMigrationInfo(String resourceGroupName, String crossConnectionName,
+            MigrateExpressRouteCircuitValidateAndHealthCheckRequest parameters, Context context);
+
+    /**
+     * Gets migration health information for an express route circuit cross connection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
+     * @param parameters Parameters supplied to get express route circuit migration information.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return migration health information for an express route circuit cross connection on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<MigrateExpressRouteCircuitHealthCheckResponseInner> getCircuitMigrationInfoAsync(String resourceGroupName,
+        String crossConnectionName, MigrateExpressRouteCircuitValidateAndHealthCheckRequest parameters);
+
+    /**
+     * Gets migration health information for an express route circuit cross connection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
+     * @param parameters Parameters supplied to get express route circuit migration information.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return migration health information for an express route circuit cross connection.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    MigrateExpressRouteCircuitHealthCheckResponseInner getCircuitMigrationInfo(String resourceGroupName,
+        String crossConnectionName, MigrateExpressRouteCircuitValidateAndHealthCheckRequest parameters);
+
+    /**
+     * Gets migration health information for an express route circuit cross connection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
+     * @param parameters Parameters supplied to get express route circuit migration information.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return migration health information for an express route circuit cross connection.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    MigrateExpressRouteCircuitHealthCheckResponseInner getCircuitMigrationInfo(String resourceGroupName,
+        String crossConnectionName, MigrateExpressRouteCircuitValidateAndHealthCheckRequest parameters,
+        Context context);
+
+    /**
+     * Prepares an express route circuit migration for a cross connection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
+     * @param parameters Parameters supplied to prepare the express route circuit migration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for express route circuit migration health check and migration operations along with
+     * {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> prepareCircuitMigrationWithResponseAsync(String resourceGroupName,
+        String crossConnectionName, MigrateExpressRouteCircuitRequest parameters);
+
+    /**
+     * Prepares an express route circuit migration for a cross connection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
+     * @param parameters Parameters supplied to prepare the express route circuit migration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of response for express route circuit migration health check and
+     * migration operations.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<MigrateExpressRouteCircuitHealthCheckResponseInner>, MigrateExpressRouteCircuitHealthCheckResponseInner>
+        beginPrepareCircuitMigrationAsync(String resourceGroupName, String crossConnectionName,
+            MigrateExpressRouteCircuitRequest parameters);
+
+    /**
+     * Prepares an express route circuit migration for a cross connection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
+     * @param parameters Parameters supplied to prepare the express route circuit migration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of response for express route circuit migration health check and
+     * migration operations.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<MigrateExpressRouteCircuitHealthCheckResponseInner>, MigrateExpressRouteCircuitHealthCheckResponseInner>
+        beginPrepareCircuitMigration(String resourceGroupName, String crossConnectionName,
+            MigrateExpressRouteCircuitRequest parameters);
+
+    /**
+     * Prepares an express route circuit migration for a cross connection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
+     * @param parameters Parameters supplied to prepare the express route circuit migration.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of response for express route circuit migration health check and
+     * migration operations.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<MigrateExpressRouteCircuitHealthCheckResponseInner>, MigrateExpressRouteCircuitHealthCheckResponseInner>
+        beginPrepareCircuitMigration(String resourceGroupName, String crossConnectionName,
+            MigrateExpressRouteCircuitRequest parameters, Context context);
+
+    /**
+     * Prepares an express route circuit migration for a cross connection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
+     * @param parameters Parameters supplied to prepare the express route circuit migration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for express route circuit migration health check and migration operations on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<MigrateExpressRouteCircuitHealthCheckResponseInner> prepareCircuitMigrationAsync(String resourceGroupName,
+        String crossConnectionName, MigrateExpressRouteCircuitRequest parameters);
+
+    /**
+     * Prepares an express route circuit migration for a cross connection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
+     * @param parameters Parameters supplied to prepare the express route circuit migration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for express route circuit migration health check and migration operations.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    MigrateExpressRouteCircuitHealthCheckResponseInner prepareCircuitMigration(String resourceGroupName,
+        String crossConnectionName, MigrateExpressRouteCircuitRequest parameters);
+
+    /**
+     * Prepares an express route circuit migration for a cross connection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
+     * @param parameters Parameters supplied to prepare the express route circuit migration.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for express route circuit migration health check and migration operations.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    MigrateExpressRouteCircuitHealthCheckResponseInner prepareCircuitMigration(String resourceGroupName,
+        String crossConnectionName, MigrateExpressRouteCircuitRequest parameters, Context context);
+
+    /**
+     * Shuts down BGP sessions as part of an express route circuit migration for a cross connection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
+     * @param parameters Parameters supplied to shut down BGP for the express route circuit migration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for express route circuit migration health check and migration operations along with
+     * {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> shutDownBgpForCircuitMigrationWithResponseAsync(String resourceGroupName,
+        String crossConnectionName, MigrateExpressRouteCircuitRequest parameters);
+
+    /**
+     * Shuts down BGP sessions as part of an express route circuit migration for a cross connection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
+     * @param parameters Parameters supplied to shut down BGP for the express route circuit migration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of response for express route circuit migration health check and
+     * migration operations.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<MigrateExpressRouteCircuitHealthCheckResponseInner>, MigrateExpressRouteCircuitHealthCheckResponseInner>
+        beginShutDownBgpForCircuitMigrationAsync(String resourceGroupName, String crossConnectionName,
+            MigrateExpressRouteCircuitRequest parameters);
+
+    /**
+     * Shuts down BGP sessions as part of an express route circuit migration for a cross connection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
+     * @param parameters Parameters supplied to shut down BGP for the express route circuit migration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of response for express route circuit migration health check and
+     * migration operations.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<MigrateExpressRouteCircuitHealthCheckResponseInner>, MigrateExpressRouteCircuitHealthCheckResponseInner>
+        beginShutDownBgpForCircuitMigration(String resourceGroupName, String crossConnectionName,
+            MigrateExpressRouteCircuitRequest parameters);
+
+    /**
+     * Shuts down BGP sessions as part of an express route circuit migration for a cross connection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
+     * @param parameters Parameters supplied to shut down BGP for the express route circuit migration.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of response for express route circuit migration health check and
+     * migration operations.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<MigrateExpressRouteCircuitHealthCheckResponseInner>, MigrateExpressRouteCircuitHealthCheckResponseInner>
+        beginShutDownBgpForCircuitMigration(String resourceGroupName, String crossConnectionName,
+            MigrateExpressRouteCircuitRequest parameters, Context context);
+
+    /**
+     * Shuts down BGP sessions as part of an express route circuit migration for a cross connection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
+     * @param parameters Parameters supplied to shut down BGP for the express route circuit migration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for express route circuit migration health check and migration operations on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<MigrateExpressRouteCircuitHealthCheckResponseInner> shutDownBgpForCircuitMigrationAsync(
+        String resourceGroupName, String crossConnectionName, MigrateExpressRouteCircuitRequest parameters);
+
+    /**
+     * Shuts down BGP sessions as part of an express route circuit migration for a cross connection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
+     * @param parameters Parameters supplied to shut down BGP for the express route circuit migration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for express route circuit migration health check and migration operations.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    MigrateExpressRouteCircuitHealthCheckResponseInner shutDownBgpForCircuitMigration(String resourceGroupName,
+        String crossConnectionName, MigrateExpressRouteCircuitRequest parameters);
+
+    /**
+     * Shuts down BGP sessions as part of an express route circuit migration for a cross connection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
+     * @param parameters Parameters supplied to shut down BGP for the express route circuit migration.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for express route circuit migration health check and migration operations.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    MigrateExpressRouteCircuitHealthCheckResponseInner shutDownBgpForCircuitMigration(String resourceGroupName,
+        String crossConnectionName, MigrateExpressRouteCircuitRequest parameters, Context context);
+
+    /**
+     * Restores BGP sessions as part of an express route circuit migration for a cross connection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
+     * @param parameters Parameters supplied to restore BGP for the express route circuit migration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for express route circuit migration health check and migration operations along with
+     * {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> restoreBgpForCircuitMigrationWithResponseAsync(String resourceGroupName,
+        String crossConnectionName, MigrateExpressRouteCircuitRequest parameters);
+
+    /**
+     * Restores BGP sessions as part of an express route circuit migration for a cross connection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
+     * @param parameters Parameters supplied to restore BGP for the express route circuit migration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of response for express route circuit migration health check and
+     * migration operations.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<MigrateExpressRouteCircuitHealthCheckResponseInner>, MigrateExpressRouteCircuitHealthCheckResponseInner>
+        beginRestoreBgpForCircuitMigrationAsync(String resourceGroupName, String crossConnectionName,
+            MigrateExpressRouteCircuitRequest parameters);
+
+    /**
+     * Restores BGP sessions as part of an express route circuit migration for a cross connection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
+     * @param parameters Parameters supplied to restore BGP for the express route circuit migration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of response for express route circuit migration health check and
+     * migration operations.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<MigrateExpressRouteCircuitHealthCheckResponseInner>, MigrateExpressRouteCircuitHealthCheckResponseInner>
+        beginRestoreBgpForCircuitMigration(String resourceGroupName, String crossConnectionName,
+            MigrateExpressRouteCircuitRequest parameters);
+
+    /**
+     * Restores BGP sessions as part of an express route circuit migration for a cross connection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
+     * @param parameters Parameters supplied to restore BGP for the express route circuit migration.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of response for express route circuit migration health check and
+     * migration operations.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<MigrateExpressRouteCircuitHealthCheckResponseInner>, MigrateExpressRouteCircuitHealthCheckResponseInner>
+        beginRestoreBgpForCircuitMigration(String resourceGroupName, String crossConnectionName,
+            MigrateExpressRouteCircuitRequest parameters, Context context);
+
+    /**
+     * Restores BGP sessions as part of an express route circuit migration for a cross connection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
+     * @param parameters Parameters supplied to restore BGP for the express route circuit migration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for express route circuit migration health check and migration operations on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<MigrateExpressRouteCircuitHealthCheckResponseInner> restoreBgpForCircuitMigrationAsync(
+        String resourceGroupName, String crossConnectionName, MigrateExpressRouteCircuitRequest parameters);
+
+    /**
+     * Restores BGP sessions as part of an express route circuit migration for a cross connection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
+     * @param parameters Parameters supplied to restore BGP for the express route circuit migration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for express route circuit migration health check and migration operations.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    MigrateExpressRouteCircuitHealthCheckResponseInner restoreBgpForCircuitMigration(String resourceGroupName,
+        String crossConnectionName, MigrateExpressRouteCircuitRequest parameters);
+
+    /**
+     * Restores BGP sessions as part of an express route circuit migration for a cross connection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
+     * @param parameters Parameters supplied to restore BGP for the express route circuit migration.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for express route circuit migration health check and migration operations.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    MigrateExpressRouteCircuitHealthCheckResponseInner restoreBgpForCircuitMigration(String resourceGroupName,
+        String crossConnectionName, MigrateExpressRouteCircuitRequest parameters, Context context);
+
+    /**
+     * Executes the express route circuit migration for a cross connection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
+     * @param parameters Parameters supplied to execute the express route circuit migration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for express route circuit migration health check and migration operations along with
+     * {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> migrateCircuitWithResponseAsync(String resourceGroupName,
+        String crossConnectionName, MigrateExpressRouteCircuitRequest parameters);
+
+    /**
+     * Executes the express route circuit migration for a cross connection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
+     * @param parameters Parameters supplied to execute the express route circuit migration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of response for express route circuit migration health check and
+     * migration operations.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<MigrateExpressRouteCircuitHealthCheckResponseInner>, MigrateExpressRouteCircuitHealthCheckResponseInner>
+        beginMigrateCircuitAsync(String resourceGroupName, String crossConnectionName,
+            MigrateExpressRouteCircuitRequest parameters);
+
+    /**
+     * Executes the express route circuit migration for a cross connection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
+     * @param parameters Parameters supplied to execute the express route circuit migration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of response for express route circuit migration health check and
+     * migration operations.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<MigrateExpressRouteCircuitHealthCheckResponseInner>, MigrateExpressRouteCircuitHealthCheckResponseInner>
+        beginMigrateCircuit(String resourceGroupName, String crossConnectionName,
+            MigrateExpressRouteCircuitRequest parameters);
+
+    /**
+     * Executes the express route circuit migration for a cross connection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
+     * @param parameters Parameters supplied to execute the express route circuit migration.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of response for express route circuit migration health check and
+     * migration operations.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<MigrateExpressRouteCircuitHealthCheckResponseInner>, MigrateExpressRouteCircuitHealthCheckResponseInner>
+        beginMigrateCircuit(String resourceGroupName, String crossConnectionName,
+            MigrateExpressRouteCircuitRequest parameters, Context context);
+
+    /**
+     * Executes the express route circuit migration for a cross connection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
+     * @param parameters Parameters supplied to execute the express route circuit migration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for express route circuit migration health check and migration operations on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<MigrateExpressRouteCircuitHealthCheckResponseInner> migrateCircuitAsync(String resourceGroupName,
+        String crossConnectionName, MigrateExpressRouteCircuitRequest parameters);
+
+    /**
+     * Executes the express route circuit migration for a cross connection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
+     * @param parameters Parameters supplied to execute the express route circuit migration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for express route circuit migration health check and migration operations.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    MigrateExpressRouteCircuitHealthCheckResponseInner migrateCircuit(String resourceGroupName,
+        String crossConnectionName, MigrateExpressRouteCircuitRequest parameters);
+
+    /**
+     * Executes the express route circuit migration for a cross connection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
+     * @param parameters Parameters supplied to execute the express route circuit migration.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for express route circuit migration health check and migration operations.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    MigrateExpressRouteCircuitHealthCheckResponseInner migrateCircuit(String resourceGroupName,
+        String crossConnectionName, MigrateExpressRouteCircuitRequest parameters, Context context);
+
+    /**
+     * Commits the express route circuit migration for a cross connection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
+     * @param parameters Parameters supplied to commit the express route circuit migration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for express route circuit migration health check and migration operations along with
+     * {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> commitCircuitMigrationWithResponseAsync(String resourceGroupName,
+        String crossConnectionName, MigrateExpressRouteCircuitRequest parameters);
+
+    /**
+     * Commits the express route circuit migration for a cross connection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
+     * @param parameters Parameters supplied to commit the express route circuit migration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of response for express route circuit migration health check and
+     * migration operations.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<MigrateExpressRouteCircuitHealthCheckResponseInner>, MigrateExpressRouteCircuitHealthCheckResponseInner>
+        beginCommitCircuitMigrationAsync(String resourceGroupName, String crossConnectionName,
+            MigrateExpressRouteCircuitRequest parameters);
+
+    /**
+     * Commits the express route circuit migration for a cross connection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
+     * @param parameters Parameters supplied to commit the express route circuit migration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of response for express route circuit migration health check and
+     * migration operations.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<MigrateExpressRouteCircuitHealthCheckResponseInner>, MigrateExpressRouteCircuitHealthCheckResponseInner>
+        beginCommitCircuitMigration(String resourceGroupName, String crossConnectionName,
+            MigrateExpressRouteCircuitRequest parameters);
+
+    /**
+     * Commits the express route circuit migration for a cross connection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
+     * @param parameters Parameters supplied to commit the express route circuit migration.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of response for express route circuit migration health check and
+     * migration operations.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<MigrateExpressRouteCircuitHealthCheckResponseInner>, MigrateExpressRouteCircuitHealthCheckResponseInner>
+        beginCommitCircuitMigration(String resourceGroupName, String crossConnectionName,
+            MigrateExpressRouteCircuitRequest parameters, Context context);
+
+    /**
+     * Commits the express route circuit migration for a cross connection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
+     * @param parameters Parameters supplied to commit the express route circuit migration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for express route circuit migration health check and migration operations on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<MigrateExpressRouteCircuitHealthCheckResponseInner> commitCircuitMigrationAsync(String resourceGroupName,
+        String crossConnectionName, MigrateExpressRouteCircuitRequest parameters);
+
+    /**
+     * Commits the express route circuit migration for a cross connection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
+     * @param parameters Parameters supplied to commit the express route circuit migration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for express route circuit migration health check and migration operations.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    MigrateExpressRouteCircuitHealthCheckResponseInner commitCircuitMigration(String resourceGroupName,
+        String crossConnectionName, MigrateExpressRouteCircuitRequest parameters);
+
+    /**
+     * Commits the express route circuit migration for a cross connection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
+     * @param parameters Parameters supplied to commit the express route circuit migration.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for express route circuit migration health check and migration operations.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    MigrateExpressRouteCircuitHealthCheckResponseInner commitCircuitMigration(String resourceGroupName,
+        String crossConnectionName, MigrateExpressRouteCircuitRequest parameters, Context context);
+
+    /**
+     * Rolls back the express route circuit migration for a cross connection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
+     * @param parameters Parameters supplied to roll back the express route circuit migration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for express route circuit migration health check and migration operations along with
+     * {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> rollbackCircuitMigrationWithResponseAsync(String resourceGroupName,
+        String crossConnectionName, MigrateExpressRouteCircuitRequest parameters);
+
+    /**
+     * Rolls back the express route circuit migration for a cross connection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
+     * @param parameters Parameters supplied to roll back the express route circuit migration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of response for express route circuit migration health check and
+     * migration operations.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<MigrateExpressRouteCircuitHealthCheckResponseInner>, MigrateExpressRouteCircuitHealthCheckResponseInner>
+        beginRollbackCircuitMigrationAsync(String resourceGroupName, String crossConnectionName,
+            MigrateExpressRouteCircuitRequest parameters);
+
+    /**
+     * Rolls back the express route circuit migration for a cross connection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
+     * @param parameters Parameters supplied to roll back the express route circuit migration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of response for express route circuit migration health check and
+     * migration operations.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<MigrateExpressRouteCircuitHealthCheckResponseInner>, MigrateExpressRouteCircuitHealthCheckResponseInner>
+        beginRollbackCircuitMigration(String resourceGroupName, String crossConnectionName,
+            MigrateExpressRouteCircuitRequest parameters);
+
+    /**
+     * Rolls back the express route circuit migration for a cross connection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
+     * @param parameters Parameters supplied to roll back the express route circuit migration.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of response for express route circuit migration health check and
+     * migration operations.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<MigrateExpressRouteCircuitHealthCheckResponseInner>, MigrateExpressRouteCircuitHealthCheckResponseInner>
+        beginRollbackCircuitMigration(String resourceGroupName, String crossConnectionName,
+            MigrateExpressRouteCircuitRequest parameters, Context context);
+
+    /**
+     * Rolls back the express route circuit migration for a cross connection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
+     * @param parameters Parameters supplied to roll back the express route circuit migration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for express route circuit migration health check and migration operations on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<MigrateExpressRouteCircuitHealthCheckResponseInner> rollbackCircuitMigrationAsync(String resourceGroupName,
+        String crossConnectionName, MigrateExpressRouteCircuitRequest parameters);
+
+    /**
+     * Rolls back the express route circuit migration for a cross connection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
+     * @param parameters Parameters supplied to roll back the express route circuit migration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for express route circuit migration health check and migration operations.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    MigrateExpressRouteCircuitHealthCheckResponseInner rollbackCircuitMigration(String resourceGroupName,
+        String crossConnectionName, MigrateExpressRouteCircuitRequest parameters);
+
+    /**
+     * Rolls back the express route circuit migration for a cross connection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
+     * @param parameters Parameters supplied to roll back the express route circuit migration.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for express route circuit migration health check and migration operations.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    MigrateExpressRouteCircuitHealthCheckResponseInner rollbackCircuitMigration(String resourceGroupName,
+        String crossConnectionName, MigrateExpressRouteCircuitRequest parameters, Context context);
 }

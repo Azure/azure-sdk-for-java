@@ -9,7 +9,7 @@ package com.azure.resourcemanager.elasticsan.generated;
  */
 public final class PrivateLinkResourcesListByElasticSanSamples {
     /*
-     * x-ms-original-file: 2025-09-01/PrivateLinkResources_ListByElasticSan_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-05-01-preview/PrivateLinkResources_ListByElasticSan_MinimumSet_Gen.json
      */
     /**
      * Sample code: PrivateLinkResources_ListByElasticSan_MinimumSet_Gen.
@@ -23,7 +23,7 @@ public final class PrivateLinkResourcesListByElasticSanSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/PrivateLinkResources_ListByElasticSan_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-05-01-preview/PrivateLinkResources_ListByElasticSan_MaximumSet_Gen.json
      */
     /**
      * Sample code: PrivateLinkResources_ListByElasticSan_MaximumSet_Gen.

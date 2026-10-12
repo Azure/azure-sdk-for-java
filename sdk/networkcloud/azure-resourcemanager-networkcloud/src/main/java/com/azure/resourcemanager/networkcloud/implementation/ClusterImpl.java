@@ -24,8 +24,10 @@ import com.azure.resourcemanager.networkcloud.models.ClusterProvisioningState;
 import com.azure.resourcemanager.networkcloud.models.ClusterRotateCredentialParameters;
 import com.azure.resourcemanager.networkcloud.models.ClusterScanRuntimeParameters;
 import com.azure.resourcemanager.networkcloud.models.ClusterSecretArchive;
+import com.azure.resourcemanager.networkcloud.models.ClusterSecretArchivePatch;
 import com.azure.resourcemanager.networkcloud.models.ClusterType;
 import com.azure.resourcemanager.networkcloud.models.ClusterUpdateStrategy;
+import com.azure.resourcemanager.networkcloud.models.ClusterUpdateStrategyPatch;
 import com.azure.resourcemanager.networkcloud.models.ClusterUpdateVersionParameters;
 import com.azure.resourcemanager.networkcloud.models.CommandOutputSettings;
 import com.azure.resourcemanager.networkcloud.models.DeploymentType;
@@ -34,10 +36,14 @@ import com.azure.resourcemanager.networkcloud.models.ManagedResourceGroupConfigu
 import com.azure.resourcemanager.networkcloud.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.networkcloud.models.OperationStatusResult;
 import com.azure.resourcemanager.networkcloud.models.RackDefinition;
+import com.azure.resourcemanager.networkcloud.models.RackDefinitionPatch;
 import com.azure.resourcemanager.networkcloud.models.RuntimeProtectionConfiguration;
+import com.azure.resourcemanager.networkcloud.models.RuntimeProtectionConfigurationPatch;
 import com.azure.resourcemanager.networkcloud.models.SecretArchiveSettings;
 import com.azure.resourcemanager.networkcloud.models.ServicePrincipalInformation;
+import com.azure.resourcemanager.networkcloud.models.ServicePrincipalInformationPatch;
 import com.azure.resourcemanager.networkcloud.models.ValidationThreshold;
+import com.azure.resourcemanager.networkcloud.models.ValidationThresholdPatch;
 import com.azure.resourcemanager.networkcloud.models.VulnerabilityScanningSettings;
 import com.azure.resourcemanager.networkcloud.models.VulnerabilityScanningSettingsPatch;
 import java.time.OffsetDateTime;
@@ -433,13 +439,8 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
     }
 
     public ClusterImpl withAggregatorOrSingleRackDefinition(RackDefinition aggregatorOrSingleRackDefinition) {
-        if (isInCreateMode()) {
-            this.innerModel().withAggregatorOrSingleRackDefinition(aggregatorOrSingleRackDefinition);
-            return this;
-        } else {
-            this.updateClusterUpdateParameters.withAggregatorOrSingleRackDefinition(aggregatorOrSingleRackDefinition);
-            return this;
-        }
+        this.innerModel().withAggregatorOrSingleRackDefinition(aggregatorOrSingleRackDefinition);
+        return this;
     }
 
     public ClusterImpl withClusterType(ClusterType clusterType) {
@@ -508,13 +509,8 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
     }
 
     public ClusterImpl withClusterServicePrincipal(ServicePrincipalInformation clusterServicePrincipal) {
-        if (isInCreateMode()) {
-            this.innerModel().withClusterServicePrincipal(clusterServicePrincipal);
-            return this;
-        } else {
-            this.updateClusterUpdateParameters.withClusterServicePrincipal(clusterServicePrincipal);
-            return this;
-        }
+        this.innerModel().withClusterServicePrincipal(clusterServicePrincipal);
+        return this;
     }
 
     public ClusterImpl withCommandOutputSettings(CommandOutputSettings commandOutputSettings) {
@@ -528,23 +524,13 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
     }
 
     public ClusterImpl withComputeDeploymentThreshold(ValidationThreshold computeDeploymentThreshold) {
-        if (isInCreateMode()) {
-            this.innerModel().withComputeDeploymentThreshold(computeDeploymentThreshold);
-            return this;
-        } else {
-            this.updateClusterUpdateParameters.withComputeDeploymentThreshold(computeDeploymentThreshold);
-            return this;
-        }
+        this.innerModel().withComputeDeploymentThreshold(computeDeploymentThreshold);
+        return this;
     }
 
     public ClusterImpl withComputeRackDefinitions(List<RackDefinition> computeRackDefinitions) {
-        if (isInCreateMode()) {
-            this.innerModel().withComputeRackDefinitions(computeRackDefinitions);
-            return this;
-        } else {
-            this.updateClusterUpdateParameters.withComputeRackDefinitions(computeRackDefinitions);
-            return this;
-        }
+        this.innerModel().withComputeRackDefinitions(computeRackDefinitions);
+        return this;
     }
 
     public ClusterImpl
@@ -555,23 +541,13 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
 
     public ClusterImpl
         withRuntimeProtectionConfiguration(RuntimeProtectionConfiguration runtimeProtectionConfiguration) {
-        if (isInCreateMode()) {
-            this.innerModel().withRuntimeProtectionConfiguration(runtimeProtectionConfiguration);
-            return this;
-        } else {
-            this.updateClusterUpdateParameters.withRuntimeProtectionConfiguration(runtimeProtectionConfiguration);
-            return this;
-        }
+        this.innerModel().withRuntimeProtectionConfiguration(runtimeProtectionConfiguration);
+        return this;
     }
 
     public ClusterImpl withSecretArchive(ClusterSecretArchive secretArchive) {
-        if (isInCreateMode()) {
-            this.innerModel().withSecretArchive(secretArchive);
-            return this;
-        } else {
-            this.updateClusterUpdateParameters.withSecretArchive(secretArchive);
-            return this;
-        }
+        this.innerModel().withSecretArchive(secretArchive);
+        return this;
     }
 
     public ClusterImpl withSecretArchiveSettings(SecretArchiveSettings secretArchiveSettings) {
@@ -585,13 +561,8 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
     }
 
     public ClusterImpl withUpdateStrategy(ClusterUpdateStrategy updateStrategy) {
-        if (isInCreateMode()) {
-            this.innerModel().withUpdateStrategy(updateStrategy);
-            return this;
-        } else {
-            this.updateClusterUpdateParameters.withUpdateStrategy(updateStrategy);
-            return this;
-        }
+        this.innerModel().withUpdateStrategy(updateStrategy);
+        return this;
     }
 
     public ClusterImpl withVulnerabilityScanningSettings(VulnerabilityScanningSettings vulnerabilityScanningSettings) {
@@ -617,6 +588,42 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
             this.updateIfNoneMatch = ifNoneMatch;
             return this;
         }
+    }
+
+    public ClusterImpl withAggregatorOrSingleRackDefinition(RackDefinitionPatch aggregatorOrSingleRackDefinition) {
+        this.updateClusterUpdateParameters.withAggregatorOrSingleRackDefinition(aggregatorOrSingleRackDefinition);
+        return this;
+    }
+
+    public ClusterImpl withClusterServicePrincipal(ServicePrincipalInformationPatch clusterServicePrincipal) {
+        this.updateClusterUpdateParameters.withClusterServicePrincipal(clusterServicePrincipal);
+        return this;
+    }
+
+    public ClusterImpl withComputeDeploymentThreshold(ValidationThresholdPatch computeDeploymentThreshold) {
+        this.updateClusterUpdateParameters.withComputeDeploymentThreshold(computeDeploymentThreshold);
+        return this;
+    }
+
+    public ClusterImpl withComputeRackDefinitionsForUpdate(List<RackDefinitionPatch> computeRackDefinitions) {
+        this.updateClusterUpdateParameters.withComputeRackDefinitions(computeRackDefinitions);
+        return this;
+    }
+
+    public ClusterImpl
+        withRuntimeProtectionConfiguration(RuntimeProtectionConfigurationPatch runtimeProtectionConfiguration) {
+        this.updateClusterUpdateParameters.withRuntimeProtectionConfiguration(runtimeProtectionConfiguration);
+        return this;
+    }
+
+    public ClusterImpl withSecretArchive(ClusterSecretArchivePatch secretArchive) {
+        this.updateClusterUpdateParameters.withSecretArchive(secretArchive);
+        return this;
+    }
+
+    public ClusterImpl withUpdateStrategy(ClusterUpdateStrategyPatch updateStrategy) {
+        this.updateClusterUpdateParameters.withUpdateStrategy(updateStrategy);
+        return this;
     }
 
     public ClusterImpl

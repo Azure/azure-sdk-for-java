@@ -9,7 +9,7 @@ package com.azure.resourcemanager.avs.generated;
  */
 public final class CloudLinksListSamples {
     /*
-     * x-ms-original-file: 2025-09-01/CloudLinks_List.json
+     * x-ms-original-file: 2026-03-01/CloudLinks_List.json
      */
     /**
      * Sample code: CloudLinks_List.

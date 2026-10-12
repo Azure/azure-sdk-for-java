@@ -5,6 +5,9 @@
 package com.azure.resourcemanager.appnetwork.generated;
 
 import com.azure.resourcemanager.appnetwork.models.AppLink;
+import com.azure.resourcemanager.appnetwork.models.ManagedServiceIdentityType;
+import com.azure.resourcemanager.appnetwork.models.ManagedServiceIdentityUpdate;
+import com.azure.resourcemanager.appnetwork.models.UserAssignedIdentity;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,7 +16,7 @@ import java.util.Map;
  */
 public final class AppLinksUpdateSamples {
     /*
-     * x-ms-original-file: 2025-08-01-preview/AppLinks_Update.json
+     * x-ms-original-file: 2026-08-01-preview/AppLinks_Update.json
      */
     /**
      * Sample code: AppLinks_Update.
@@ -24,7 +27,13 @@ public final class AppLinksUpdateSamples {
         AppLink resource = manager.appLinks()
             .getByResourceGroupWithResponse("test_rg", "applink-test-01", com.azure.core.util.Context.NONE)
             .getValue();
-        resource.update().withTags(mapOf("environment", "production", "cost-center", "platform")).apply();
+        resource.update()
+            .withTags(mapOf("environment", "production", "cost-center", "platform"))
+            .withIdentity(new ManagedServiceIdentityUpdate().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf(
+                    "/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/resourceGroups/test_rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/applink-identity",
+                    new UserAssignedIdentity())))
+            .apply();
     }
 
     // Use "Map.of" if available

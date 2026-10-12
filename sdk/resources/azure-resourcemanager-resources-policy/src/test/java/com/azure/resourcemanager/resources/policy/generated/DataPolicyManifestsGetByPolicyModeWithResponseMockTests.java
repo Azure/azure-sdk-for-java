@@ -21,7 +21,7 @@ public final class DataPolicyManifestsGetByPolicyModeWithResponseMockTests {
     @Test
     public void testGetByPolicyModeWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"namespaces\":[\"rbnyrukoilacidu\",\"jleip\",\"lh\"],\"policyMode\":\"xpzruzythqkk\",\"isBuiltInOnly\":false,\"resourceTypeAliases\":[{\"resourceType\":\"ellv\",\"aliases\":[{},{},{},{}]},{\"resourceType\":\"d\",\"aliases\":[{},{},{}]},{\"resourceType\":\"mujd\",\"aliases\":[{}]},{\"resourceType\":\"lyymffhmjpddny\",\"aliases\":[{},{},{}]}],\"effects\":[{\"name\":\"zmzqmzjqrb\",\"detailsSchema\":\"\\\"datavnmdyfoeboj\\\"\"}],\"fieldValues\":[\"pglaoh\"],\"resourceFunctions\":{\"standard\":[\"jtnqjil\",\"ywkdcwmqsy\",\"ilm\",\"xdqaolfylnkkb\"],\"custom\":[{\"name\":\"lywltm\",\"fullyQualifiedResourceType\":\"obbjwhlwy\",\"defaultProperties\":[\"qzocr\",\"zgczeu\",\"tgxdncaqt\"],\"allowCustomProperties\":true},{\"name\":\"oifuvnyttzgixgy\",\"fullyQualifiedResourceType\":\"hlgmgbehl\",\"defaultProperties\":[\"nrflkndrndpg\"],\"allowCustomProperties\":false}]}},\"id\":\"hdaqotwfhipxwg\",\"name\":\"abvcipowzaf\",\"type\":\"zuu\"}";
+            = "{\"properties\":{\"namespaces\":[\"jtfvpndpmiljpn\"],\"policyMode\":\"nudqllz\",\"isBuiltInOnly\":true,\"resourceTypeAliases\":[{\"resourceType\":\"lxeehuxiq\",\"aliases\":[{},{},{},{}]},{\"resourceType\":\"aymezx\",\"aliases\":[{},{},{},{}]},{\"resourceType\":\"hmx\",\"aliases\":[{},{},{},{}]},{\"resourceType\":\"ajrednwyyshtuw\",\"aliases\":[{},{},{},{}]}],\"effects\":[{\"name\":\"fpwzyifrkgwltx\",\"detailsSchema\":\"\\\"dataipxgzdy\\\"\"},{\"name\":\"sfayorpravkjoges\",\"detailsSchema\":\"\\\"databnsmjkwynqxaek\\\"\"},{\"name\":\"ykvwjtqpkevmyltj\",\"detailsSchema\":\"\\\"dataspxklu\\\"\"}],\"fieldValues\":[\"lfg\"],\"resourceFunctions\":{\"standard\":[\"noytzposewxigp\"],\"custom\":[{\"name\":\"maupxvpi\",\"fullyQualifiedResourceType\":\"f\",\"defaultProperties\":[\"yzyzeyuu\",\"eidszlfytoi\",\"hgygvfltgvd\"],\"allowCustomProperties\":true}]}},\"id\":\"nkrxwetwkdrcy\",\"name\":\"ucpcunnuzdqumoen\",\"type\":\"dnaienhqhskndnel\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,19 +31,19 @@ public final class DataPolicyManifestsGetByPolicyModeWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DataPolicyManifest response = manager.dataPolicyManifests()
-            .getByPolicyModeWithResponse("esq", com.azure.core.util.Context.NONE)
+            .getByPolicyModeWithResponse("osxw", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("rbnyrukoilacidu", response.namespaces().get(0));
-        Assertions.assertEquals("xpzruzythqkk", response.policyMode());
-        Assertions.assertFalse(response.isBuiltInOnly());
-        Assertions.assertEquals("ellv", response.resourceTypeAliases().get(0).resourceType());
-        Assertions.assertEquals("zmzqmzjqrb", response.effects().get(0).name());
-        Assertions.assertEquals("pglaoh", response.fieldValues().get(0));
-        Assertions.assertEquals("jtnqjil", response.standard().get(0));
-        Assertions.assertEquals("lywltm", response.custom().get(0).name());
-        Assertions.assertEquals("obbjwhlwy", response.custom().get(0).fullyQualifiedResourceType());
-        Assertions.assertEquals("qzocr", response.custom().get(0).defaultProperties().get(0));
+        Assertions.assertEquals("jtfvpndpmiljpn", response.namespaces().get(0));
+        Assertions.assertEquals("nudqllz", response.policyMode());
+        Assertions.assertTrue(response.isBuiltInOnly());
+        Assertions.assertEquals("lxeehuxiq", response.resourceTypeAliases().get(0).resourceType());
+        Assertions.assertEquals("fpwzyifrkgwltx", response.effects().get(0).name());
+        Assertions.assertEquals("lfg", response.fieldValues().get(0));
+        Assertions.assertEquals("noytzposewxigp", response.standard().get(0));
+        Assertions.assertEquals("maupxvpi", response.custom().get(0).name());
+        Assertions.assertEquals("f", response.custom().get(0).fullyQualifiedResourceType());
+        Assertions.assertEquals("yzyzeyuu", response.custom().get(0).defaultProperties().get(0));
         Assertions.assertTrue(response.custom().get(0).allowCustomProperties());
     }
 }

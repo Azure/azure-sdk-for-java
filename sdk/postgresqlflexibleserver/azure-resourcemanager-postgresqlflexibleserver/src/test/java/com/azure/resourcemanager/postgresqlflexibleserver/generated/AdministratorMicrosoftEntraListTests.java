@@ -13,12 +13,12 @@ public final class AdministratorMicrosoftEntraListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AdministratorMicrosoftEntraList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"principalType\":\"Group\",\"principalName\":\"wfsdjpvkvpbj\",\"objectId\":\"kzbzkdvncjabudu\",\"tenantId\":\"kakmokzh\"},\"id\":\"klff\",\"name\":\"mouwqlgzrfzeey\",\"type\":\"bizikayuhq\"},{\"properties\":{\"principalType\":\"User\",\"principalName\":\"sybbqwr\",\"objectId\":\"ldgmfpgvmpip\",\"tenantId\":\"ltha\"},\"id\":\"x\",\"name\":\"smwutwbdsrezpd\",\"type\":\"hneuyowqkd\"},{\"properties\":{\"principalType\":\"Unknown\",\"principalName\":\"sibircgpi\",\"objectId\":\"zimejzanlfzx\",\"tenantId\":\"vrmbzono\"},\"id\":\"xrjqcirgzpfrlazs\",\"name\":\"rnwoiindfp\",\"type\":\"pj\"},{\"properties\":{\"principalType\":\"Group\",\"principalName\":\"tlhflsjcdhszf\",\"objectId\":\"fbgofeljagrqmqh\",\"tenantId\":\"vriiio\"},\"id\":\"al\",\"name\":\"hfkvtvsexsowuel\",\"type\":\"qhhahhxvrhmzkwpj\"}],\"nextLink\":\"wspughftqsxhqx\"}")
+            "{\"value\":[{\"properties\":{\"principalType\":\"Unknown\",\"principalName\":\"ygz\",\"objectId\":\"dnkfx\",\"tenantId\":\"emdwzrmuhapfc\"},\"id\":\"psqxq\",\"name\":\"psvuoymgc\",\"type\":\"elvezrypq\"},{\"properties\":{\"principalType\":\"Unknown\",\"principalName\":\"okerqwkyhkobop\",\"objectId\":\"edkowepbqpcrfk\",\"tenantId\":\"ccsnjvcdwxlpq\"},\"id\":\"ftnkhtj\",\"name\":\"y\",\"type\":\"ngwfqatm\"}],\"nextLink\":\"htmdvy\"}")
             .toObject(AdministratorMicrosoftEntraList.class);
-        Assertions.assertEquals(PrincipalType.GROUP, model.value().get(0).principalType());
-        Assertions.assertEquals("wfsdjpvkvpbj", model.value().get(0).principalName());
-        Assertions.assertEquals("kzbzkdvncjabudu", model.value().get(0).objectId());
-        Assertions.assertEquals("kakmokzh", model.value().get(0).tenantId());
-        Assertions.assertEquals("wspughftqsxhqx", model.nextLink());
+        Assertions.assertEquals(PrincipalType.UNKNOWN, model.value().get(0).principalType());
+        Assertions.assertEquals("ygz", model.value().get(0).principalName());
+        Assertions.assertEquals("dnkfx", model.value().get(0).objectId());
+        Assertions.assertEquals("emdwzrmuhapfc", model.value().get(0).tenantId());
+        Assertions.assertEquals("htmdvy", model.nextLink());
     }
 }
