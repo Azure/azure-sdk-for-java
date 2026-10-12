@@ -24,12 +24,6 @@ import java.util.List;
  * Contains customizations for Azure AI Search code generation.
  */
 public class SearchCustomizations extends Customization {
-    /**
-     * Creates the Search code generation customization.
-     */
-    public SearchCustomizations() {
-    }
-
     @Override
     public void customize(LibraryCustomization libraryCustomization, Logger logger) {
         PackageCustomization documents = libraryCustomization.getPackage("com.azure.search.documents");
