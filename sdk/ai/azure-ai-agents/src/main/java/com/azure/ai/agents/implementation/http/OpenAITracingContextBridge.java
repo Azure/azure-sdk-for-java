@@ -4,8 +4,8 @@
 package com.azure.ai.agents.implementation.http;
 
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 
-import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -30,7 +30,7 @@ public final class OpenAITracingContextBridge {
      * @return the opaque request token.
      */
     public String register(Context context) {
-        String token = UUID.randomUUID().toString();
+        String token = CoreUtils.randomUuid().toString();
         contexts.put(token, context);
         return token;
     }
