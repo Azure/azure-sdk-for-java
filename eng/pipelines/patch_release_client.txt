@@ -97,3 +97,4 @@ com.azure.resourcemanager:azure-resourcemanager-trafficmanager # Tests owner: Xi
 com.azure.resourcemanager:azure-resourcemanager-servicebus # Tests owner: XiaofeiCao, weidongxu-microsoft
 com.azure.resourcemanager:azure-resourcemanager-cdn # Tests owner: XiaofeiCao, weidongxu-microsoft
 com.azure.resourcemanager:azure-resourcemanager-search # Tests owner: XiaofeiCao, weidongxu-microsoft
+com.azure.resourcemanager:azure-resourcemanager # Tests owner: XiaofeiCao, weidongxu-microsoft
