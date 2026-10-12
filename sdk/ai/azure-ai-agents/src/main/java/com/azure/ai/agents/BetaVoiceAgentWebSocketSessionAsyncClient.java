@@ -135,8 +135,8 @@ public final class BetaVoiceAgentWebSocketSessionAsyncClient implements AsyncClo
      *
      * @return the WebSocket endpoint.
      */
-    public URI getEndpoint() {
-        return websocketUri;
+    public String getEndpoint() {
+        return websocketUri.toString();
     }
 
     /**

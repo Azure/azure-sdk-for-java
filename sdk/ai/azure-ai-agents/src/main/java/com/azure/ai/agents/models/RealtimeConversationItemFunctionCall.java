@@ -11,6 +11,9 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.openai.models.realtime.RealtimeConversationItemFunctionCall.Status;
 import java.io.IOException;
+import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 
 /**
  * Realtime function call item
@@ -188,8 +191,11 @@ public final class RealtimeConversationItemFunctionCall extends RealtimeConversa
      * @return the createdAt value.
      */
     @Generated
-    public Long getCreatedAt() {
-        return this.createdAt;
+    public OffsetDateTime getCreatedAt() {
+        if (this.createdAt == null) {
+            return null;
+        }
+        return OffsetDateTime.ofInstant(Instant.ofEpochSecond(this.createdAt), ZoneOffset.UTC);
     }
 
     /**
@@ -216,6 +222,8 @@ public final class RealtimeConversationItemFunctionCall extends RealtimeConversa
         jsonWriter.writeStringField("object", this.object == null ? null : this.object.toString());
         jsonWriter.writeStringField("status", this.status == null ? null : this.status.asString());
         jsonWriter.writeStringField("call_id", this.callId);
+        jsonWriter.writeNumberField("created_at", this.createdAt);
+        jsonWriter.writeStringField("response_id", this.responseId);
         return jsonWriter.writeEndObject();
     }
 

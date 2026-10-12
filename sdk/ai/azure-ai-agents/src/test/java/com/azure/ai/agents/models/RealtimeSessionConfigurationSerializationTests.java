@@ -13,6 +13,7 @@ import com.openai.models.responses.ToolChoiceOptions;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -102,6 +103,22 @@ public class RealtimeSessionConfigurationSerializationTests {
         assertEquals("server", mcpResult.getToolChoiceAsToolChoiceMcp().serverLabel());
         assertNull(mcpResult.getToolChoiceAsToolChoiceOptions());
         assertNull(mcpResult.getToolChoiceAsToolChoiceFunction());
+    }
+
+    @Test
+    public void serverVadDurationsRoundTripAsMilliseconds() throws IOException {
+        RealtimeServerVadTurnDetection original
+            = new RealtimeServerVadTurnDetection().setSilenceDuration(Duration.ofMillis(500))
+                .setIdleTimeout(Duration.ofMillis(1500));
+
+        String json = UnionTypeSerializationTestUtils.serialize(original);
+        assertTrue(json.contains("\"silence_duration_ms\":500"));
+        assertTrue(json.contains("\"idle_timeout_ms\":1500"));
+
+        RealtimeServerVadTurnDetection result
+            = UnionTypeSerializationTestUtils.deserialize(json, RealtimeServerVadTurnDetection::fromJson);
+        assertEquals(Duration.ofMillis(500), result.getSilenceDuration());
+        assertEquals(Duration.ofMillis(1500), result.getIdleTimeout());
     }
 
     @Test

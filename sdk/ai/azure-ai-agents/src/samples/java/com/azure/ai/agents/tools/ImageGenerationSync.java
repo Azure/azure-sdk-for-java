@@ -5,7 +5,6 @@ package com.azure.ai.agents.tools;
 
 import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.SampleUtils;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.ImageGenTool;
 import com.azure.ai.agents.models.ImageGenToolModel;
@@ -61,7 +60,6 @@ public class ImageGenerationSync {
 
         try {
             // Create a response
-            SampleUtils.pinAgentVersion(agentsClient, agent);
             OpenAIClient openAIClient = builder.buildAgentScopedOpenAIClient(agent.getName());
 
             Response response = openAIClient.responses().create(

@@ -15,7 +15,7 @@ import com.azure.resourcemanager.appnetwork.fluent.models.UpgradeHistoryInner;
  */
 public interface UpgradeHistoriesClient {
     /**
-     * List UpgradeHistory resources by AppLinkMember.
+     * List the upgrade history of an Azure Kubernetes Application Network member.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param appLinkName The name of the AppLink.
@@ -30,7 +30,7 @@ public interface UpgradeHistoriesClient {
         String appLinkMemberName);
 
     /**
-     * List UpgradeHistory resources by AppLinkMember.
+     * List the upgrade history of an Azure Kubernetes Application Network member.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param appLinkName The name of the AppLink.

@@ -13,22 +13,22 @@ import org.junit.jupiter.api.Assertions;
 public final class NetworkInterfaceReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NetworkInterfaceReference model = BinaryData
-            .fromString("{\"properties\":{\"primary\":true,\"deleteOption\":\"Delete\"},\"id\":\"ivetvtcq\"}")
-            .toObject(NetworkInterfaceReference.class);
-        Assertions.assertEquals("ivetvtcq", model.id());
-        Assertions.assertTrue(model.properties().primary());
+        NetworkInterfaceReference model
+            = BinaryData.fromString("{\"properties\":{\"primary\":false,\"deleteOption\":\"Delete\"},\"id\":\"wj\"}")
+                .toObject(NetworkInterfaceReference.class);
+        Assertions.assertEquals("wj", model.id());
+        Assertions.assertFalse(model.properties().primary());
         Assertions.assertEquals(DeleteOptions.DELETE, model.properties().deleteOption());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetworkInterfaceReference model = new NetworkInterfaceReference().withId("ivetvtcq")
+        NetworkInterfaceReference model = new NetworkInterfaceReference().withId("wj")
             .withProperties(
-                new NetworkInterfaceReferenceProperties().withPrimary(true).withDeleteOption(DeleteOptions.DELETE));
+                new NetworkInterfaceReferenceProperties().withPrimary(false).withDeleteOption(DeleteOptions.DELETE));
         model = BinaryData.fromObject(model).toObject(NetworkInterfaceReference.class);
-        Assertions.assertEquals("ivetvtcq", model.id());
-        Assertions.assertTrue(model.properties().primary());
+        Assertions.assertEquals("wj", model.id());
+        Assertions.assertFalse(model.properties().primary());
         Assertions.assertEquals(DeleteOptions.DELETE, model.properties().deleteOption());
     }
 }

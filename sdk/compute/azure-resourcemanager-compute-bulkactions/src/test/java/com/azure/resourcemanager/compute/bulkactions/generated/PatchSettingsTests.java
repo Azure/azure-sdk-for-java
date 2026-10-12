@@ -16,10 +16,10 @@ public final class PatchSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PatchSettings model = BinaryData.fromString(
-            "{\"patchMode\":\"AutomaticByPlatform\",\"enableHotpatching\":true,\"assessmentMode\":\"ImageDefault\",\"automaticByPlatformSettings\":{\"rebootSetting\":\"Always\",\"bypassPlatformSafetyChecksOnUserSchedule\":true}}")
+            "{\"patchMode\":\"AutomaticByPlatform\",\"enableHotpatching\":false,\"assessmentMode\":\"ImageDefault\",\"automaticByPlatformSettings\":{\"rebootSetting\":\"Always\",\"bypassPlatformSafetyChecksOnUserSchedule\":true}}")
             .toObject(PatchSettings.class);
         Assertions.assertEquals(WindowsVMGuestPatchMode.AUTOMATIC_BY_PLATFORM, model.patchMode());
-        Assertions.assertTrue(model.enableHotpatching());
+        Assertions.assertFalse(model.enableHotpatching());
         Assertions.assertEquals(WindowsPatchAssessmentMode.IMAGE_DEFAULT, model.assessmentMode());
         Assertions.assertEquals(WindowsVMGuestPatchAutomaticByPlatformRebootSetting.ALWAYS,
             model.automaticByPlatformSettings().rebootSetting());
@@ -29,14 +29,14 @@ public final class PatchSettingsTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PatchSettings model = new PatchSettings().withPatchMode(WindowsVMGuestPatchMode.AUTOMATIC_BY_PLATFORM)
-            .withEnableHotpatching(true)
+            .withEnableHotpatching(false)
             .withAssessmentMode(WindowsPatchAssessmentMode.IMAGE_DEFAULT)
             .withAutomaticByPlatformSettings(new WindowsVMGuestPatchAutomaticByPlatformSettings()
                 .withRebootSetting(WindowsVMGuestPatchAutomaticByPlatformRebootSetting.ALWAYS)
                 .withBypassPlatformSafetyChecksOnUserSchedule(true));
         model = BinaryData.fromObject(model).toObject(PatchSettings.class);
         Assertions.assertEquals(WindowsVMGuestPatchMode.AUTOMATIC_BY_PLATFORM, model.patchMode());
-        Assertions.assertTrue(model.enableHotpatching());
+        Assertions.assertFalse(model.enableHotpatching());
         Assertions.assertEquals(WindowsPatchAssessmentMode.IMAGE_DEFAULT, model.assessmentMode());
         Assertions.assertEquals(WindowsVMGuestPatchAutomaticByPlatformRebootSetting.ALWAYS,
             model.automaticByPlatformSettings().rebootSetting());

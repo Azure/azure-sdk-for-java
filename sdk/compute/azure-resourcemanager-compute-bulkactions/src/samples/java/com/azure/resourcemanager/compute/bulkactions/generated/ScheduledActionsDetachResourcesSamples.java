@@ -12,19 +12,38 @@ import java.util.Arrays;
  */
 public final class ScheduledActionsDetachResourcesSamples {
     /*
-     * x-ms-original-file: 2026-09-06-preview/ScheduledActions_DetachResources_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-06-preview/ScheduledActions_DetachResources_BasicSuccess.json
      */
     /**
-     * Sample code: Remove resources from a scheduled action.
+     * Sample code: 01 - Detach resources from a recurring scheduled action.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
-    public static void removeResourcesFromAScheduledAction(
-        com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
+    public static void
+        zeroOneSpaceHyphenMinusSpaceDetachSpaceresourcesSpacefromSpaceaSpacerecurringSpacescheduledSpaceaction(
+            com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.scheduledActions()
-            .detachResources("rgcompute", "myScheduledAction", new ResourceDetachRequest().withResources(Arrays.asList(
-                "/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/rgcompute/providers/Microsoft.Compute/virtualMachines/myVm",
-                "/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/rgcompute/providers/Microsoft.Compute/virtualMachines/myVm2")),
+            .detachResources("example-rg", "weekday-start", new ResourceDetachRequest().withResources(Arrays.asList(
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-01",
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-02")),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-10-06-preview/ScheduledActions_DetachResources_PartialSuccess.json
+     */
+    /**
+     * Sample code: 02 - Detach resources from a recurring scheduled action with partial success.
+     * 
+     * @param manager Entry point to ComputeBulkActionsManager.
+     */
+    public static void
+        zeroTwoSpaceHyphenMinusSpaceDetachSpaceresourcesSpacefromSpaceaSpacerecurringSpacescheduledSpaceactionSpacewithSpacepartialSpacesuccess(
+            com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
+        manager.scheduledActions()
+            .detachResources("example-rg", "weekday-start", new ResourceDetachRequest().withResources(Arrays.asList(
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-01",
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-02")),
                 com.azure.core.util.Context.NONE);
     }
 }

@@ -5,15 +5,10 @@
 package com.azure.resourcemanager.compute.bulkactions.generated;
 
 import com.azure.core.management.SubResource;
-import com.azure.resourcemanager.compute.bulkactions.models.BulkCreateCustomAllocationStrategy;
-import com.azure.resourcemanager.compute.bulkactions.models.BulkCreateCustomDistributionStrategy;
 import com.azure.resourcemanager.compute.bulkactions.models.BulkCreateCustomOverride;
-import com.azure.resourcemanager.compute.bulkactions.models.BulkCreateCustomOverrideBase;
 import com.azure.resourcemanager.compute.bulkactions.models.BulkCreateCustomOverridesProfile;
 import com.azure.resourcemanager.compute.bulkactions.models.BulkCreateCustomPriorityProfile;
 import com.azure.resourcemanager.compute.bulkactions.models.BulkCreateCustomProperties;
-import com.azure.resourcemanager.compute.bulkactions.models.BulkCreateCustomVmSizeProfile;
-import com.azure.resourcemanager.compute.bulkactions.models.BulkCreateCustomZoneAllocationPolicy;
 import com.azure.resourcemanager.compute.bulkactions.models.BulkactionVMProperties;
 import com.azure.resourcemanager.compute.bulkactions.models.CachingTypes;
 import com.azure.resourcemanager.compute.bulkactions.models.CapacityType;
@@ -23,6 +18,7 @@ import com.azure.resourcemanager.compute.bulkactions.models.DiskCreateOptionType
 import com.azure.resourcemanager.compute.bulkactions.models.DiskDeleteOptionTypes;
 import com.azure.resourcemanager.compute.bulkactions.models.EvictionPolicy;
 import com.azure.resourcemanager.compute.bulkactions.models.ExecutionParameters;
+import com.azure.resourcemanager.compute.bulkactions.models.HardwareProfile;
 import com.azure.resourcemanager.compute.bulkactions.models.ImageReference;
 import com.azure.resourcemanager.compute.bulkactions.models.LinuxConfiguration;
 import com.azure.resourcemanager.compute.bulkactions.models.ManagedDiskParametersContent;
@@ -46,7 +42,6 @@ import com.azure.resourcemanager.compute.bulkactions.models.VirtualMachineNetwor
 import com.azure.resourcemanager.compute.bulkactions.models.VirtualMachineNetworkInterfaceConfigurationProperties;
 import com.azure.resourcemanager.compute.bulkactions.models.VirtualMachineNetworkInterfaceIPConfiguration;
 import com.azure.resourcemanager.compute.bulkactions.models.VirtualMachineNetworkInterfaceIPConfigurationProperties;
-import com.azure.resourcemanager.compute.bulkactions.models.ZonePreference;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -56,7 +51,7 @@ import java.util.Map;
  */
 public final class BulkCreateCustomCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-09-06-preview/BulkCreateCustom_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-06-preview/BulkCreateCustom_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: BulkCreateCustom_CreateOrUpdate_MaximumSet.
@@ -75,18 +70,7 @@ public final class BulkCreateCustomCreateOrUpdateSamples {
                 .withPartialFulfillmentPolicy(new PartialFulfillmentPolicy().withMode(PartialFulfillmentMode.ENABLED))
                 .withPriorityProfile(new BulkCreateCustomPriorityProfile().withType(PriorityType.SPOT)
                     .withMaxPricePerVM(0.2D)
-                    .withEvictionPolicy(EvictionPolicy.DELETE)
-                    .withAllocationStrategy(BulkCreateCustomAllocationStrategy.LOWEST_PRICE))
-                .withVmSizesProfile(Arrays.asList(
-                    new BulkCreateCustomVmSizeProfile().withName("Standard_D2s_v5").withRank(1),
-                    new BulkCreateCustomVmSizeProfile().withName("Standard_D4s_v5")
-                        .withRank(2)
-                        .withOverride(new BulkCreateCustomOverrideBase()
-                            .withVirtualMachineProfile(new BulkactionVMProperties().withStorageProfile(
-                                new StorageProfile().withImageReference(new ImageReference().withPublisher("Canonical")
-                                    .withOffer("0001-com-ubuntu-server-jammy")
-                                    .withSku("22_04-lts-arm64")
-                                    .withVersion("latest")))))))
+                    .withEvictionPolicy(EvictionPolicy.DELETE))
                 .withComputeProfile(new ComputeProfile().withVirtualMachineProfile(new BulkactionVMProperties()
                     .withStorageProfile(new StorageProfile()
                         .withImageReference(new ImageReference().withPublisher("Canonical")
@@ -99,6 +83,7 @@ public final class BulkCreateCustomCreateOrUpdateSamples {
                             .withManagedDisk(new ManagedDiskParametersContent()
                                 .withStorageAccountType(StorageAccountTypes.PREMIUM_LRS))
                             .withDeleteOption(DiskDeleteOptionTypes.DELETE)))
+                    .withHardwareProfile(new HardwareProfile().withVmSize("Standard_D2s_v5"))
                     .withOsProfile(new OSProfile().withComputerName("bulkvm")
                         .withAdminUsername("azureuser")
                         .withLinuxConfiguration(new LinuxConfiguration().withDisablePasswordAuthentication(true)
@@ -120,10 +105,6 @@ public final class BulkCreateCustomCreateOrUpdateSamples {
                                                         "/subscriptions/1FBA3C66-5C9C-4391-B72F-9F52735FC9F2/resourceGroups/rgBulkactions/providers/Microsoft.Network/virtualNetworks/bulkvnet/subnets/default"))
                                                     .withPrimary(true)))))))))
                     .withComputeApiVersion("2024-11-01"))
-                .withZoneAllocationPolicy(new BulkCreateCustomZoneAllocationPolicy()
-                    .withDistributionStrategy(BulkCreateCustomDistributionStrategy.BEST_EFFORT_BALANCED)
-                    .withZonePreferences(Arrays.asList(new ZonePreference().withZone("1").withRank(1),
-                        new ZonePreference().withZone("2").withRank(2))))
                 .withOverridesProfile(new BulkCreateCustomOverridesProfile().withVirtualMachineNamePrefix("bulkvm")
                     .withOverrides(Arrays.asList(
                         new BulkCreateCustomOverride().withVirtualMachineName("bulkvm-payments-0")

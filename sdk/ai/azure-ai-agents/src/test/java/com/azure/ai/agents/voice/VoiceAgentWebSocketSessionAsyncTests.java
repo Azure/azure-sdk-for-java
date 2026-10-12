@@ -560,7 +560,7 @@ public class VoiceAgentWebSocketSessionAsyncTests {
         BetaVoiceAgentWebSocketSessionAsyncClient session
             = createAsyncClient(server.port()).openWebSocketSession("secure-agent", tlsOptions())
                 .block(Duration.ofSeconds(5));
-        assertEquals("wss", session.getEndpoint().getScheme());
+        assertEquals("wss", URI.create(session.getEndpoint()).getScheme());
         StepVerifier.create(session.receiveEvents()).assertNext(this::assertWarningEvent).verifyComplete();
         session.close();
     }

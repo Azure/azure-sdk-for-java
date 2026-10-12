@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class VmSizePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VmSizeProperties model = BinaryData.fromString("{\"vCpusAvailable\":1243858380,\"vCpusPerCore\":2048736715}")
+        VmSizeProperties model = BinaryData.fromString("{\"vCpusAvailable\":979273123,\"vCpusPerCore\":676331942}")
             .toObject(VmSizeProperties.class);
-        Assertions.assertEquals(1243858380, model.vCpusAvailable());
-        Assertions.assertEquals(2048736715, model.vCpusPerCore());
+        Assertions.assertEquals(979273123, model.vCpusAvailable());
+        Assertions.assertEquals(676331942, model.vCpusPerCore());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VmSizeProperties model = new VmSizeProperties().withVCpusAvailable(1243858380).withVCpusPerCore(2048736715);
+        VmSizeProperties model = new VmSizeProperties().withVCpusAvailable(979273123).withVCpusPerCore(676331942);
         model = BinaryData.fromObject(model).toObject(VmSizeProperties.class);
-        Assertions.assertEquals(1243858380, model.vCpusAvailable());
-        Assertions.assertEquals(2048736715, model.vCpusPerCore());
+        Assertions.assertEquals(979273123, model.vCpusAvailable());
+        Assertions.assertEquals(676331942, model.vCpusPerCore());
     }
 }

@@ -163,7 +163,8 @@ public class VoiceAgentWebSocketSessionTests {
         server = startServer(messages, new AtomicReference<>(), new AtomicReference<>(), new AtomicReference<>(),
             new AtomicReference<>(), new AtomicReference<>(), false);
         AgentsClientBuilder builder = new AgentsClientBuilder().endpoint("https://localhost:" + server.port())
-            .credential(request -> Mono.just(new AccessToken("test-token", OffsetDateTime.now().plusHours(1))));
+            .credential(request -> Mono.just(new AccessToken("test-token", OffsetDateTime.now().plusHours(1))))
+            .configuration(Configuration.NONE);
         String raw = "{\"type\": \"response.create\"}";
         BinaryData mapping = BinaryData.fromObject(Collections.singletonMap("type", "response.cancel"));
         try (BetaVoiceAgentWebSocketSessionClient session
@@ -196,7 +197,8 @@ public class VoiceAgentWebSocketSessionTests {
                 WebsocketServerSpec.builder().protocols("realtime").build()))
             .bindNow();
         AgentsClientBuilder builder = new AgentsClientBuilder().endpoint("https://localhost:" + server.port())
-            .credential(request -> Mono.just(new AccessToken("test-token", OffsetDateTime.now().plusHours(1))));
+            .credential(request -> Mono.just(new AccessToken("test-token", OffsetDateTime.now().plusHours(1))))
+            .configuration(Configuration.NONE);
         List<RealtimeServerEvent> events = new ArrayList<>();
         try (BetaVoiceAgentWebSocketSessionClient session
             = builder.beta().buildBetaVoiceAgentWebSocketClient().openWebSocketSession("agent", tlsOptions())) {
@@ -220,7 +222,8 @@ public class VoiceAgentWebSocketSessionTests {
         VoiceAgentWebSocketConnectionOptions options
             = tlsOptions().setMalformedEventHandler(error -> failures.incrementAndGet());
         AgentsClientBuilder builder = new AgentsClientBuilder().endpoint("https://localhost:" + server.port())
-            .credential(request -> Mono.just(new AccessToken("test-token", OffsetDateTime.now().plusHours(1))));
+            .credential(request -> Mono.just(new AccessToken("test-token", OffsetDateTime.now().plusHours(1))))
+            .configuration(Configuration.NONE);
         try (BetaVoiceAgentWebSocketSessionClient session
             = builder.beta().buildBetaVoiceAgentWebSocketClient().openWebSocketSession("agent", options)) {
             Iterator<RealtimeServerEvent> events = session.receiveEvents(Duration.ofSeconds(5)).iterator();
@@ -239,7 +242,8 @@ public class VoiceAgentWebSocketSessionTests {
             VoiceAgentWebSocketConnectionOptions options
                 = tlsOptions().setReceiveBufferCapacity(2).setOverflowStrategy(strategy);
             AgentsClientBuilder builder = new AgentsClientBuilder().endpoint("https://localhost:" + server.port())
-                .credential(request -> Mono.just(new AccessToken("test-token", OffsetDateTime.now().plusHours(1))));
+                .credential(request -> Mono.just(new AccessToken("test-token", OffsetDateTime.now().plusHours(1))))
+                .configuration(Configuration.NONE);
             List<RealtimeServerEvent> received = new ArrayList<>();
             boolean overflowError = strategy == VoiceAgentWebSocketOverflowStrategy.ERROR;
             try (BetaVoiceAgentWebSocketSessionClient session
@@ -275,7 +279,8 @@ public class VoiceAgentWebSocketSessionTests {
         VoiceAgentWebSocketConnectionOptions options
             = tlsOptions().setMaxMessageSize(16).setMalformedEventHandler(error -> recovered.set(true));
         AgentsClientBuilder builder = new AgentsClientBuilder().endpoint("https://localhost:" + server.port())
-            .credential(request -> Mono.just(new AccessToken("test-token", OffsetDateTime.now().plusHours(1))));
+            .credential(request -> Mono.just(new AccessToken("test-token", OffsetDateTime.now().plusHours(1))))
+            .configuration(Configuration.NONE);
         assertThrows(RuntimeException.class, () -> {
             try (BetaVoiceAgentWebSocketSessionClient session
                 = builder.beta().buildBetaVoiceAgentWebSocketClient().openWebSocketSession("agent", options)) {
@@ -341,7 +346,8 @@ public class VoiceAgentWebSocketSessionTests {
                 WebsocketServerSpec.builder().protocols("realtime").build()))
             .bindNow();
         AgentsClientBuilder builder = new AgentsClientBuilder().endpoint("https://localhost:" + server.port())
-            .credential(request -> Mono.just(new AccessToken("test-token", OffsetDateTime.now().plusHours(1))));
+            .credential(request -> Mono.just(new AccessToken("test-token", OffsetDateTime.now().plusHours(1))))
+            .configuration(Configuration.NONE);
         BinaryData payload = BinaryData.fromString("{\"type\":\"future.event\",\"value\":42}");
         try (BetaVoiceAgentWebSocketSessionClient session
             = builder.beta().buildBetaVoiceAgentWebSocketClient().openWebSocketSession("agent", tlsOptions())) {

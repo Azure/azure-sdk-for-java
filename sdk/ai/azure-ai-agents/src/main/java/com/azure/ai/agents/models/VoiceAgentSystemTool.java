@@ -40,7 +40,7 @@ public class VoiceAgentSystemTool extends VoiceAgentTool {
      * Creates an instance of VoiceAgentSystemTool class.
      */
     @Generated
-    public VoiceAgentSystemTool() {
+    protected VoiceAgentSystemTool() {
     }
 
     /**

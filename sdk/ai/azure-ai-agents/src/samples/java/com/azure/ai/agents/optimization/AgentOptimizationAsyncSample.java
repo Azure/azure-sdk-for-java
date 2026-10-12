@@ -4,15 +4,20 @@
 package com.azure.ai.agents.optimization;
 
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.BetaAgentsAsyncClient;
+import com.azure.ai.agents.AgentsAsyncClient;
+import com.azure.ai.agents.models.AgentOptimizationBaselineAgentConfiguration;
+import com.azure.ai.agents.models.AgentOptimizationCandidateSearchConfiguration;
+import com.azure.ai.agents.models.AgentOptimizationConfiguration;
+import com.azure.ai.agents.models.AgentOptimizationEvaluationConfiguration;
 import com.azure.ai.agents.models.AgentOptimizationEvaluatorReference;
+import com.azure.ai.agents.models.AgentOptimizationFoundryAgentTargetConfiguration;
 import com.azure.ai.agents.models.AgentOptimizationJob;
-import com.azure.ai.agents.models.AgentOptimizationJobInputs;
 import com.azure.ai.agents.models.AgentOptimizationJobResult;
-import com.azure.ai.agents.models.AgentOptimizationOptions;
-import com.azure.ai.agents.models.AgentOptimizationReferenceDatasetInput;
-import com.azure.ai.agents.models.OptimizedAgentIdentifier;
-import com.azure.core.util.BinaryData;
+import com.azure.ai.agents.models.AgentOptimizationModelConfiguration;
+import com.azure.ai.agents.models.AgentOptimizationSpace;
+import com.azure.ai.agents.models.AgentOptimizationTargetCompletionDatasetReferenceDataSource;
+import com.azure.ai.agents.models.AgentOptimizationTargetCompletionEvaluationSet;
+import com.azure.ai.agents.models.EvaluationModelConfiguration;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
@@ -23,12 +28,10 @@ import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * This sample demonstrates how to create and monitor an agent optimization job with the asynchronous beta client.
+ * This sample demonstrates how to create and monitor an agent optimization job with the asynchronous client.
  *
  * <p>Agent optimization is currently a preview feature. Before running the sample, set these environment variables:</p>
  * <ul>
@@ -51,15 +54,14 @@ public class AgentOptimizationAsyncSample {
         Configuration configuration = Configuration.getGlobalConfiguration();
         String endpoint = configuration.get("FOUNDRY_PROJECT_ENDPOINT");
 
-        BetaAgentsAsyncClient betaAgentsAsyncClient = new AgentsClientBuilder()
+        AgentsAsyncClient agentsAsyncClient = new AgentsClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
             .endpoint(endpoint)
-            .beta()
-            .buildBetaAgentsAsyncClient();
+            .buildAgentsAsyncClient();
 
         AtomicReference<String> jobId = new AtomicReference<>();
         PollerFlux<AgentOptimizationJob, AgentOptimizationJobResult> poller
-            = betaAgentsAsyncClient.beginCreateOptimizationJob(createOptimizationJob(configuration))
+            = agentsAsyncClient.beginCreateOptimizationJob(createOptimizationJob(configuration))
                 .setPollInterval(Duration.ofSeconds(
                     Integer.parseInt(configuration.get("POLL_INTERVAL_SECONDS", "10"))));
 
@@ -68,9 +70,9 @@ public class AgentOptimizationAsyncSample {
             .doOnNext(response -> recordProgress(response, jobId))
             .last()
             .flatMap(AgentOptimizationAsyncSample::getResult)
-            .doOnNext(AgentOptimizationSample::printResult)
-            .then(Mono.defer(() -> cleanupAsync(betaAgentsAsyncClient, jobId)))
-            .onErrorResume(error -> Mono.defer(() -> cleanupAsync(betaAgentsAsyncClient, jobId))
+            .flatMap(result -> printResult(result, agentsAsyncClient, jobId.get()))
+            .then(Mono.defer(() -> cleanupAsync(agentsAsyncClient, jobId)))
+            .onErrorResume(error -> Mono.defer(() -> cleanupAsync(agentsAsyncClient, jobId))
                 .then(Mono.<Void>error(error)))
             .block();
     }
@@ -83,28 +85,30 @@ public class AgentOptimizationAsyncSample {
             evaluator.setVersion(evaluatorVersion);
         }
 
-        AgentOptimizationReferenceDatasetInput trainDataset = new AgentOptimizationReferenceDatasetInput(
-            configuration.get("DATASET_NAME"));
-        trainDataset.setVersion(configuration.get("DATASET_VERSION", "1"));
-
-        AgentOptimizationOptions options = new AgentOptimizationOptions()
-            .setMaxCandidates(Integer.parseInt(configuration.get("MAX_CANDIDATES", "2")))
-            .setEvalModel(configuration.get("EVAL_MODEL", "gpt-4.1-mini"))
-            .setOptimizationModel(configuration.get("OPTIMIZATION_MODEL", "gpt-5.1"));
+        AgentOptimizationTargetCompletionEvaluationSet trainingSet
+            = new AgentOptimizationTargetCompletionEvaluationSet(
+                new AgentOptimizationTargetCompletionDatasetReferenceDataSource(
+                    configuration.get("DATASET_NAME"), configuration.get("DATASET_VERSION", "1")));
+        AgentOptimizationEvaluationConfiguration evaluationConfiguration
+            = new AgentOptimizationEvaluationConfiguration(trainingSet, Collections.singletonList(evaluator),
+                new EvaluationModelConfiguration(configuration.get("EVAL_MODEL", "gpt-4.1-mini")));
+        AgentOptimizationConfiguration optimizationConfiguration = new AgentOptimizationConfiguration(
+            evaluationConfiguration,
+            new AgentOptimizationCandidateSearchConfiguration()
+                .setMaxCandidates(Integer.parseInt(configuration.get("MAX_CANDIDATES", "2"))),
+            new AgentOptimizationSpace());
 
         String systemPrompt = configuration.get("FOUNDRY_AGENT_SYSTEM_PROMPT");
         if (systemPrompt != null && !systemPrompt.isEmpty()) {
-            Map<String, BinaryData> optimizationConfig = new HashMap<>();
-            optimizationConfig.put("system_prompt", BinaryData.fromObject(systemPrompt));
-            options.setOptimizationConfig(optimizationConfig);
+            optimizationConfiguration.setBaselineAgentConfiguration(
+                new AgentOptimizationBaselineAgentConfiguration().setSystemPrompt(systemPrompt));
         }
 
-        AgentOptimizationJobInputs inputs = new AgentOptimizationJobInputs(
-            new OptimizedAgentIdentifier(configuration.get("FOUNDRY_AGENT_NAME")),
-            trainDataset,
-            Collections.singletonList(evaluator));
-        inputs.setOptions(options);
-        return new AgentOptimizationJob().setInputs(inputs);
+        return new AgentOptimizationJob(
+            new AgentOptimizationModelConfiguration(configuration.get("OPTIMIZATION_MODEL", "gpt-5.1")),
+            optimizationConfiguration)
+            .setTargetConfiguration(
+                new AgentOptimizationFoundryAgentTargetConfiguration(configuration.get("FOUNDRY_AGENT_NAME")));
     }
 
     private static void recordProgress(AsyncPollResponse<AgentOptimizationJob, AgentOptimizationJobResult> response,
@@ -112,9 +116,11 @@ public class AgentOptimizationAsyncSample {
         AgentOptimizationJob job = response.getValue();
         if (job != null && job.getId() != null) {
             jobId.set(job.getId());
-            if (job.getProgress() != null) {
-                System.out.printf("Job %s: %d candidates completed, best score %.4f%n",
-                    job.getId(), job.getProgress().getCandidatesCompleted(), job.getProgress().getBestScore());
+            AgentOptimizationJobResult result = job.getResult();
+            if (result != null && result.getCandidateSummary() != null) {
+                System.out.printf("Job %s: %d candidates completed, best score %s%n", job.getId(),
+                    result.getCandidateSummary().getCompletedCandidateCount(),
+                    result.getCandidateSummary().getBestScore());
             }
         }
     }
@@ -129,14 +135,34 @@ public class AgentOptimizationAsyncSample {
             .switchIfEmpty(Mono.error(new IllegalStateException("The optimization job did not return a result.")));
     }
 
-    private static Mono<Void> cleanupAsync(BetaAgentsAsyncClient betaAgentsAsyncClient,
+    private static Mono<Void> printResult(AgentOptimizationJobResult result, AgentsAsyncClient agentsAsyncClient,
+        String jobId) {
+        if (result == null) {
+            System.out.println("The optimization job did not return a result.");
+            return Mono.empty();
+        }
+        if (result.getCandidateSummary() != null) {
+            System.out.printf("Baseline candidate: %s (score: %s)%n",
+                result.getCandidateSummary().getBaselineId(), result.getCandidateSummary().getBaselineScore());
+            System.out.printf("Best candidate: %s (score: %s)%n",
+                result.getCandidateSummary().getBestId(), result.getCandidateSummary().getBestScore());
+        }
+        return agentsAsyncClient.listOptimizationCandidates(jobId)
+            .doOnNext(candidate -> System.out.printf("  %s (id: %s, score: %s, tokens: %s)%n",
+                candidate.getName(), candidate.getCandidateId(),
+                candidate.getEvaluation() == null ? null : candidate.getEvaluation().getAverageScore(),
+                candidate.getEvaluation() == null ? null : candidate.getEvaluation().getAverageTokens()))
+            .then();
+    }
+
+    private static Mono<Void> cleanupAsync(AgentsAsyncClient agentsAsyncClient,
         AtomicReference<String> jobId) {
         String id = jobId.get();
         if (id == null) {
             return Mono.empty();
         }
 
-        return betaAgentsAsyncClient.deleteOptimizationJob(id)
+        return agentsAsyncClient.deleteOptimizationJob(id)
             .doOnSuccess(unused -> System.out.printf("Optimization job deleted (id: %s)%n", id))
             .onErrorResume(cleanupError -> {
                 System.err.printf("Failed to delete optimization job %s: %s%n", id, cleanupError.getMessage());

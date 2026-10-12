@@ -26,6 +26,7 @@ import com.azure.ai.agents.models.VoiceOutputModality;
 import com.azure.ai.agents.models.VoiceType;
 import com.azure.ai.agents.models.VoiceModelType;
 
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -64,7 +65,7 @@ public class VoiceAgentWithToolsSample {
             .setTurnDetection(new VoiceAgentServerVadTurnDetection()
                 .setThreshold(0.5)
                 .setPrefixPaddingMs(300L)
-                .setSilenceDurationMs(500L))
+                .setSilenceDuration(Duration.ofMillis(500)))
             .setTranscription(new VoiceAgentInputTranscription(VoiceAgentInputTranscriptionModel.WHISPER_1));
         VoiceAgentAudioOutputConfiguration output = new VoiceAgentAudioOutputConfiguration()
             .setVoice("en-US-AvaNeural")

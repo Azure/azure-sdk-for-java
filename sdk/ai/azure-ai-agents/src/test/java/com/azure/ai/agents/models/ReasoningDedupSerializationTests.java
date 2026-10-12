@@ -119,6 +119,8 @@ public class ReasoningDedupSerializationTests {
         String json = serializeDefinition(definition);
 
         assertTrue(json.contains("\"effort\":\"high\""));
+        // Computed helper methods on openai-java models must not be serialized as request properties.
+        assertFalse(json.contains("\"isValid\""));
         // summary and generate_summary should not appear when not set
         assertFalse(json.contains("\"summary\""));
         assertFalse(json.contains("\"generate_summary\""));

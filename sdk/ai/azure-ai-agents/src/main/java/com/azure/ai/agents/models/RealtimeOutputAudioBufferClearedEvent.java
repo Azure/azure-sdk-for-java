@@ -16,7 +16,8 @@ import java.io.IOException;
  * mode when the user has interrupted (`input_audio_buffer.speech_started`),
  * or when the client has emitted the `output_audio_buffer.clear` event to manually
  * cut off the current audio response.
- * [Learn more](/docs/guides/realtime-conversations#client-and-server-events-for-audio-in-webrtc).
+ * [Learn
+ * more](https://developers.openai.com/api/docs/guides/realtime-conversations#client-and-server-events-for-audio-in-webrtc).
  */
 @Immutable
 @Beta(warningText = "Preview API. VoiceAgents=V1Preview")

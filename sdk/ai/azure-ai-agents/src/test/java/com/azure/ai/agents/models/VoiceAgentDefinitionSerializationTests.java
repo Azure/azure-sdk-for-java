@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
 
@@ -86,7 +87,8 @@ public class VoiceAgentDefinitionSerializationTests {
         VoiceAgentAudioInputConfiguration input = new VoiceAgentAudioInputConfiguration().setFormat(pcm)
             .setTurnDetection(new VoiceAgentServerVadTurnDetection().setThreshold(0.5)
                 .setPrefixPaddingMs(300L)
-                .setSilenceDurationMs(500L))
+                .setSilenceDuration(Duration.ofMillis(500))
+                .setIdleTimeout(Duration.ofMillis(1500)))
             .setTranscription(new VoiceAgentInputTranscription(VoiceAgentInputTranscriptionModel.WHISPER_1));
         VoiceAgentAudioOutputConfiguration output = new VoiceAgentAudioOutputConfiguration().setFormat(pcm)
             .setVoice("en-US-AvaNeural")
@@ -112,6 +114,8 @@ public class VoiceAgentDefinitionSerializationTests {
         assertTrue(json.contains("\"voice_type\":\"azure-standard\""));
         assertTrue(json.contains("\"rate\":24000"));
         assertTrue(json.contains("\"type\":\"server_vad\""));
+        assertTrue(json.contains("\"silence_duration_ms\":500"));
+        assertTrue(json.contains("\"idle_timeout_ms\":1500"));
         assertTrue(json.contains("\"model\":\"whisper-1\""));
         assertTrue(json.contains("\"output_modalities\":[\"audio\"]"));
         assertTrue(json.contains("\"store\":true"));
@@ -140,7 +144,8 @@ public class VoiceAgentDefinitionSerializationTests {
         VoiceAgentServerVadTurnDetection originalVad = (VoiceAgentServerVadTurnDetection) input.getTurnDetection();
         assertEquals(originalVad.getThreshold(), deserializedVad.getThreshold());
         assertEquals(originalVad.getPrefixPaddingMs(), deserializedVad.getPrefixPaddingMs());
-        assertEquals(originalVad.getSilenceDurationMs(), deserializedVad.getSilenceDurationMs());
+        assertEquals(originalVad.getSilenceDuration(), deserializedVad.getSilenceDuration());
+        assertEquals(originalVad.getIdleTimeout(), deserializedVad.getIdleTimeout());
         assertEquals(input.getTranscription().getModel(), deserializedInput.getTranscription().getModel());
 
         VoiceAgentAudioOutputConfiguration deserializedOutput = voice.getAudio().getOutput();

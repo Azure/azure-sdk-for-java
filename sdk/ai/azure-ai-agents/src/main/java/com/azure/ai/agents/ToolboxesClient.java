@@ -61,7 +61,7 @@ public final class ToolboxesClient {
      *     }
      *     tools (Required): [
      *          (Required){
-     *             type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search/toolbox_search_preview/a2a/shell/web_iq_preview) (Required)
+     *             type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search/toolbox_search_preview/a2a/shell/web_iq_preview/browser_automation) (Required)
      *             name: String (Optional)
      *             description: String (Optional)
      *             tool_configs (Optional): {
@@ -118,7 +118,7 @@ public final class ToolboxesClient {
      *     created_at: long (Required)
      *     tools (Required): [
      *          (Required){
-     *             type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search/toolbox_search_preview/a2a/shell/web_iq_preview) (Required)
+     *             type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search/toolbox_search_preview/a2a/shell/web_iq_preview/browser_automation) (Required)
      *             name: String (Optional)
      *             description: String (Optional)
      *             tool_configs (Optional): {
@@ -200,7 +200,7 @@ public final class ToolboxesClient {
      *             created_at: long (Required)
      *             tools (Required): [
      *                  (Required){
-     *                     type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search/toolbox_search_preview/a2a/shell/web_iq_preview) (Required)
+     *                     type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search/toolbox_search_preview/a2a/shell/web_iq_preview/browser_automation) (Required)
      *                     name: String (Optional)
      *                     description: String (Optional)
      *                     tool_configs (Optional): {
@@ -303,7 +303,7 @@ public final class ToolboxesClient {
      *             created_at: long (Required)
      *             tools (Required): [
      *                  (Required){
-     *                     type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search/toolbox_search_preview/a2a/shell/web_iq_preview) (Required)
+     *                     type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search/toolbox_search_preview/a2a/shell/web_iq_preview/browser_automation) (Required)
      *                     name: String (Optional)
      *                     description: String (Optional)
      *                     tool_configs (Optional): {
@@ -400,7 +400,7 @@ public final class ToolboxesClient {
      *     created_at: long (Required)
      *     tools (Required): [
      *          (Required){
-     *             type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search/toolbox_search_preview/a2a/shell/web_iq_preview) (Required)
+     *             type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search/toolbox_search_preview/a2a/shell/web_iq_preview/browser_automation) (Required)
      *             name: String (Optional)
      *             description: String (Optional)
      *             tool_configs (Optional): {
@@ -475,7 +475,7 @@ public final class ToolboxesClient {
      *     created_at: long (Required)
      *     tools (Required): [
      *          (Required){
-     *             type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search/toolbox_search_preview/a2a/shell/web_iq_preview) (Required)
+     *             type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search/toolbox_search_preview/a2a/shell/web_iq_preview/browser_automation) (Required)
      *             name: String (Optional)
      *             description: String (Optional)
      *             tool_configs (Optional): {
@@ -567,7 +567,7 @@ public final class ToolboxesClient {
      *             created_at: long (Required)
      *             tools (Required): [
      *                  (Required){
-     *                     type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search/toolbox_search_preview/a2a/shell/web_iq_preview) (Required)
+     *                     type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search/toolbox_search_preview/a2a/shell/web_iq_preview/browser_automation) (Required)
      *                     name: String (Optional)
      *                     description: String (Optional)
      *                     tool_configs (Optional): {

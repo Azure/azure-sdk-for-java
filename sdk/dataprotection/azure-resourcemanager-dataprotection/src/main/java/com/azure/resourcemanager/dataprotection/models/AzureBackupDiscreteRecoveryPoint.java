@@ -80,6 +80,11 @@ public final class AzureBackupDiscreteRecoveryPoint extends AzureBackupRecoveryP
      */
     private RecoveryPointCompletionState recoveryPointState;
 
+    /*
+     * Immutability properties of the recovery point.
+     */
+    private RecoveryPointImmutabilityProperties immutabilityProperties;
+
     /**
      * Creates an instance of AzureBackupDiscreteRecoveryPoint class.
      */
@@ -197,6 +202,15 @@ public final class AzureBackupDiscreteRecoveryPoint extends AzureBackupRecoveryP
     }
 
     /**
+     * Get the immutabilityProperties property: Immutability properties of the recovery point.
+     * 
+     * @return the immutabilityProperties value.
+     */
+    public RecoveryPointImmutabilityProperties immutabilityProperties() {
+        return this.immutabilityProperties;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -268,6 +282,9 @@ public final class AzureBackupDiscreteRecoveryPoint extends AzureBackupRecoveryP
                 } else if ("recoveryPointState".equals(fieldName)) {
                     deserializedAzureBackupDiscreteRecoveryPoint.recoveryPointState
                         = RecoveryPointCompletionState.fromString(reader.getString());
+                } else if ("immutabilityProperties".equals(fieldName)) {
+                    deserializedAzureBackupDiscreteRecoveryPoint.immutabilityProperties
+                        = RecoveryPointImmutabilityProperties.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

@@ -43,7 +43,7 @@ public class RealtimeConversationItemInputAudioTranscriptionCompletedEventSerial
             .deserialize(json, RealtimeConversationItemInputAudioTranscriptionCompletedEvent::fromJson);
 
         assertTrue(json.contains("\"usage\":{\"seconds\":7"));
-        assertEquals(Duration.ofSeconds(7), result.getUsageAsTranscriptTextUsageDuration().getSeconds());
+        assertEquals(Duration.ofSeconds(7), result.getUsageAsTranscriptTextUsageDuration().getDuration());
         assertNull(result.getUsageAsTranscriptTextUsageTokens());
     }
 

@@ -43,7 +43,7 @@ public class CreateTelephonyBindingInput implements JsonSerializable<CreateTelep
      * @param connectionName the connectionName value to set.
      */
     @Generated
-    public CreateTelephonyBindingInput(String connectionName) {
+    protected CreateTelephonyBindingInput(String connectionName) {
         this.connectionName = connectionName;
     }
 

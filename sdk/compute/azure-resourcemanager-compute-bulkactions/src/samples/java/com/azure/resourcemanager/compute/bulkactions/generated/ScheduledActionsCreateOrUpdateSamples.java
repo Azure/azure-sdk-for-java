@@ -23,24 +23,50 @@ import java.util.Map;
  */
 public final class ScheduledActionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-09-06-preview/ScheduledActions_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-06-preview/ScheduledActions_CreateOrUpdate_BasicSuccess.json
      */
     /**
-     * Sample code: Create or update a scheduled action.
+     * Sample code: 01 - Create a new recurring scheduled action.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
-    public static void createOrUpdateAScheduledAction(
+    public static void zeroOneSpaceHyphenMinusSpaceCreateSpaceaSpacenewSpacerecurringSpacescheduledSpaceaction(
         com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.scheduledActions()
-            .define("myScheduledAction")
+            .define("weekday-start")
             .withRegion("eastus")
-            .withExistingResourceGroup("rgcompute")
-            .withTags(mapOf("key2102", "fakeTokenPlaceholder"))
+            .withExistingResourceGroup("example-rg")
             .withProperties(new ScheduledActionProperties().withResourceType(ResourceType.VIRTUAL_MACHINE)
                 .withActionType(ScheduledActionType.START)
-                .withStartTime(OffsetDateTime.parse("2025-04-17T00:23:55.281Z"))
-                .withEndTime(OffsetDateTime.parse("2026-04-17T00:23:55.281Z"))
+                .withStartTime(OffsetDateTime.parse("2026-09-15T07:00:00-07:00"))
+                .withSchedule(new ScheduledActionsSchedule().withScheduledTime("07:00:00")
+                    .withTimeZone("America/Los_Angeles")
+                    .withRequestedWeekDays(Arrays.asList(WeekDay.MONDAY, WeekDay.TUESDAY, WeekDay.WEDNESDAY,
+                        WeekDay.THURSDAY, WeekDay.FRIDAY)))
+                .withNotificationSettings(Arrays.asList()))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2026-10-06-preview/ScheduledActions_CreateOrUpdate_ComprehensiveSuccess.json
+     */
+    /**
+     * Sample code: 02 - Create a recurring scheduled action with comprehensive settings.
+     * 
+     * @param manager Entry point to ComputeBulkActionsManager.
+     */
+    public static void
+        zeroTwoSpaceHyphenMinusSpaceCreateSpaceaSpacerecurringSpacescheduledSpaceactionSpacewithSpacecomprehensiveSpacesettings(
+            com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
+        manager.scheduledActions()
+            .define("first-fifteenth-start")
+            .withRegion("eastus")
+            .withExistingResourceGroup("example-rg")
+            .withTags(mapOf("environment", "production"))
+            .withProperties(new ScheduledActionProperties().withResourceType(ResourceType.VIRTUAL_MACHINE)
+                .withActionType(ScheduledActionType.START)
+                .withStartTime(OffsetDateTime.parse("2026-09-01T19:00:00-07:00"))
+                .withEndTime(OffsetDateTime.parse("2027-09-01T19:00:00-07:00"))
                 .withSchedule(new ScheduledActionsSchedule().withScheduledTime("19:00:00")
                     .withTimeZone("America/Los_Angeles")
                     .withRequestedWeekDays(Arrays.asList(WeekDay.ALL))

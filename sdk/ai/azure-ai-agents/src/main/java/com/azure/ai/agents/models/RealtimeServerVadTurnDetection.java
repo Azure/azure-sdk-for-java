@@ -10,6 +10,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.time.Duration;
 
 /**
  * The RealtimeServerVadTurnDetection model.
@@ -40,7 +41,7 @@ public final class RealtimeServerVadTurnDetection extends RealtimeTurnDetection 
      * The silence_duration_ms property.
      */
     @Generated
-    private Long silenceDurationMs;
+    private Long silenceDuration;
 
     /*
      * The create_response property.
@@ -58,7 +59,7 @@ public final class RealtimeServerVadTurnDetection extends RealtimeTurnDetection 
      * The idle_timeout_ms property.
      */
     @Generated
-    private Long idleTimeoutMs;
+    private Long idleTimeout;
 
     /**
      * Creates an instance of RealtimeServerVadTurnDetection class.
@@ -123,24 +124,31 @@ public final class RealtimeServerVadTurnDetection extends RealtimeTurnDetection 
     }
 
     /**
-     * Get the silenceDurationMs property: The silence_duration_ms property.
+     * Get the silenceDuration property: The silence_duration_ms property.
      *
-     * @return the silenceDurationMs value.
+     * @return the silenceDuration value.
      */
     @Generated
-    public Long getSilenceDurationMs() {
-        return this.silenceDurationMs;
+    public Duration getSilenceDuration() {
+        if (this.silenceDuration == null) {
+            return null;
+        }
+        return Duration.ofMillis(this.silenceDuration);
     }
 
     /**
-     * Set the silenceDurationMs property: The silence_duration_ms property.
+     * Set the silenceDuration property: The silence_duration_ms property.
      *
-     * @param silenceDurationMs the silenceDurationMs value to set.
+     * @param silenceDuration the silenceDuration value to set.
      * @return the RealtimeServerVadTurnDetection object itself.
      */
     @Generated
-    public RealtimeServerVadTurnDetection setSilenceDurationMs(Long silenceDurationMs) {
-        this.silenceDurationMs = silenceDurationMs;
+    public RealtimeServerVadTurnDetection setSilenceDuration(Duration silenceDuration) {
+        if (silenceDuration == null) {
+            this.silenceDuration = null;
+        } else {
+            this.silenceDuration = silenceDuration.toMillis();
+        }
         return this;
     }
 
@@ -189,24 +197,31 @@ public final class RealtimeServerVadTurnDetection extends RealtimeTurnDetection 
     }
 
     /**
-     * Get the idleTimeoutMs property: The idle_timeout_ms property.
+     * Get the idleTimeout property: The idle_timeout_ms property.
      *
-     * @return the idleTimeoutMs value.
+     * @return the idleTimeout value.
      */
     @Generated
-    public Long getIdleTimeoutMs() {
-        return this.idleTimeoutMs;
+    public Duration getIdleTimeout() {
+        if (this.idleTimeout == null) {
+            return null;
+        }
+        return Duration.ofMillis(this.idleTimeout);
     }
 
     /**
-     * Set the idleTimeoutMs property: The idle_timeout_ms property.
+     * Set the idleTimeout property: The idle_timeout_ms property.
      *
-     * @param idleTimeoutMs the idleTimeoutMs value to set.
+     * @param idleTimeout the idleTimeout value to set.
      * @return the RealtimeServerVadTurnDetection object itself.
      */
     @Generated
-    public RealtimeServerVadTurnDetection setIdleTimeoutMs(Long idleTimeoutMs) {
-        this.idleTimeoutMs = idleTimeoutMs;
+    public RealtimeServerVadTurnDetection setIdleTimeout(Duration idleTimeout) {
+        if (idleTimeout == null) {
+            this.idleTimeout = null;
+        } else {
+            this.idleTimeout = idleTimeout.toMillis();
+        }
         return this;
     }
 
@@ -220,10 +235,10 @@ public final class RealtimeServerVadTurnDetection extends RealtimeTurnDetection 
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeNumberField("threshold", this.threshold);
         jsonWriter.writeNumberField("prefix_padding_ms", this.prefixPaddingMs);
-        jsonWriter.writeNumberField("silence_duration_ms", this.silenceDurationMs);
+        jsonWriter.writeNumberField("silence_duration_ms", this.silenceDuration);
         jsonWriter.writeBooleanField("create_response", this.createResponse);
         jsonWriter.writeBooleanField("interrupt_response", this.interruptResponse);
-        jsonWriter.writeNumberField("idle_timeout_ms", this.idleTimeoutMs);
+        jsonWriter.writeNumberField("idle_timeout_ms", this.idleTimeout);
         return jsonWriter.writeEndObject();
     }
 
@@ -252,7 +267,7 @@ public final class RealtimeServerVadTurnDetection extends RealtimeTurnDetection 
                     deserializedRealtimeServerVadTurnDetection.prefixPaddingMs
                         = reader.getNullable(JsonReader::getLong);
                 } else if ("silence_duration_ms".equals(fieldName)) {
-                    deserializedRealtimeServerVadTurnDetection.silenceDurationMs
+                    deserializedRealtimeServerVadTurnDetection.silenceDuration
                         = reader.getNullable(JsonReader::getLong);
                 } else if ("create_response".equals(fieldName)) {
                     deserializedRealtimeServerVadTurnDetection.createResponse
@@ -261,7 +276,7 @@ public final class RealtimeServerVadTurnDetection extends RealtimeTurnDetection 
                     deserializedRealtimeServerVadTurnDetection.interruptResponse
                         = reader.getNullable(JsonReader::getBoolean);
                 } else if ("idle_timeout_ms".equals(fieldName)) {
-                    deserializedRealtimeServerVadTurnDetection.idleTimeoutMs = reader.getNullable(JsonReader::getLong);
+                    deserializedRealtimeServerVadTurnDetection.idleTimeout = reader.getNullable(JsonReader::getLong);
                 } else {
                     reader.skipChildren();
                 }

@@ -16,6 +16,8 @@ import tempfile
 import urllib.request
 from typing import List
 
+import yaml
+
 sdk_root: str
 # script is in "eng/pipelines/scripts/"
 script_root: str = os.path.dirname(os.path.realpath(__file__))
@@ -123,8 +125,9 @@ DESIGNATED_LIBRARIES_FROM_NPM_LATEST = [
 # are versioned separately by add_designated_libraries).
 DESIGNATED_LIBRARIES = DESIGNATED_LIBRARIES_FROM_SPECS + DESIGNATED_LIBRARIES_FROM_NPM_LATEST
 
-# package.json of the specs repo, the source of truth for the specs-versioned designated libraries.
-SPECS_PACKAGE_JSON_URL = "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/package.json"
+# Read the specs manifest and pnpm catalogs at the same commit.
+SPECS_REPO_API_URL = "https://api.github.com/repos/Azure/azure-rest-api-specs"
+SPECS_RAW_URL = "https://raw.githubusercontent.com/Azure/azure-rest-api-specs"
 
 
 def emitter_package_json_path() -> str:
@@ -245,12 +248,47 @@ def resolve_dependency_versions_to_latest() -> None:
 
 
 def fetch_specs_dev_dependencies() -> dict:
-    # Read the devDependencies map from the specs repo package.json, the source of truth for the
-    # designated library versions.
-    logging.info(f"Fetch designated library versions from {SPECS_PACKAGE_JSON_URL}")
-    with urllib.request.urlopen(SPECS_PACKAGE_JSON_URL, timeout=30) as response:
+    with urllib.request.urlopen(f"{SPECS_REPO_API_URL}/commits/main", timeout=30) as response:
+        commit = json.loads(response.read().decode("utf-8"))["sha"]
+    specs_root = f"{SPECS_RAW_URL}/{commit}"
+    logging.info(f"Fetch designated library versions from {specs_root}/package.json")
+    with urllib.request.urlopen(f"{specs_root}/package.json", timeout=30) as response:
         specs_package_json = json.loads(response.read().decode("utf-8"))
-    return specs_package_json.get("devDependencies", {})
+    dependencies = specs_package_json.get("devDependencies", {})
+
+    workspace = None
+    for library in DESIGNATED_LIBRARIES_FROM_SPECS:
+        reference = dependencies.get(library)
+        if not reference or not isinstance(reference, str) or not reference.startswith("catalog:"):
+            continue
+        if workspace is None:
+            with urllib.request.urlopen(f"{specs_root}/pnpm-workspace.yaml", timeout=30) as response:
+                workspace = yaml.safe_load(response.read().decode("utf-8"))
+            if not isinstance(workspace, dict):
+                raise ValueError("Expected a mapping in the specs repo pnpm-workspace.yaml.")
+
+        catalog_name = reference.removeprefix("catalog:") or "default"
+        catalogs = workspace.get("catalogs", {})
+        if not isinstance(catalogs, dict):
+            raise ValueError(f"Cannot resolve {library} {reference}: catalogs must be a mapping.")
+        catalog = workspace.get("catalog") if catalog_name == "default" else None
+        if catalog is None:
+            catalog = catalogs.get(catalog_name)
+        if not isinstance(catalog, dict) or library not in catalog:
+            raise ValueError(
+                f"Cannot resolve {library} {reference}: missing catalog or package entry in pnpm-workspace.yaml."
+            )
+        version = catalog[library]
+        if (
+            not isinstance(version, str)
+            or not version.strip()
+            or version.strip().startswith(("catalog:", "workspace:", "link:", "file:"))
+        ):
+            raise ValueError(
+                f"Cannot resolve {library} {reference}: expected an npm version in pnpm-workspace.yaml, got {version!r}."
+            )
+        dependencies[library] = version.strip()
+    return dependencies
 
 
 def add_designated_libraries(upgrade_designated_libraries: bool, cached_versions: dict) -> None:

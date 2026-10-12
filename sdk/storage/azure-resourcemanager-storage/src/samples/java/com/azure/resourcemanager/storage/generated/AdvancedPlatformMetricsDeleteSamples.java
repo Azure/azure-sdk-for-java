@@ -11,7 +11,7 @@ import com.azure.resourcemanager.storage.models.AdvancedPlatformMetricsRuleType;
  */
 public final class AdvancedPlatformMetricsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-04-01/AdvancedPlatformMetricsCRUD/AdvancedPlatformMetricsRules_Delete.json
+     * x-ms-original-file: 2026-06-01/AdvancedPlatformMetricsCRUD/AdvancedPlatformMetricsRules_Delete.json
      */
     /**
      * Sample code: AdvancedPlatformMetricsRules_Delete - Delete advanced platform metrics rule.

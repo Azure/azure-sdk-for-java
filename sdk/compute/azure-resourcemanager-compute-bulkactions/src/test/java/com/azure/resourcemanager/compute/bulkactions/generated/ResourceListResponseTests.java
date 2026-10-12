@@ -14,13 +14,13 @@ public final class ResourceListResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceListResponse model = BinaryData.fromString(
-            "{\"value\":[{\"name\":\"fdn\",\"id\":\"zydvfvf\",\"type\":\"naeo\",\"resourceId\":\"srvhmgorffuki\",\"notificationSettings\":[{\"destination\":\"w\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false},{\"destination\":\"lefaxvxilcbtgn\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":true},{\"destination\":\"qxtjjfzqlqhyca\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":true},{\"destination\":\"xdbeesmieknl\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":true}]}],\"nextLink\":\"wiuagydwqf\"}")
+            "{\"value\":[{\"name\":\"yzriykhy\",\"id\":\"wf\",\"type\":\"lboxqvkjl\",\"resourceId\":\"xhom\",\"notificationSettings\":[{\"destination\":\"hdwdi\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false},{\"destination\":\"raauzzpt\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false},{\"destination\":\"dz\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false},{\"destination\":\"vaiqyuvvf\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false}]},{\"name\":\"hqyikvy\",\"id\":\"auy\",\"type\":\"luwmncst\",\"resourceId\":\"ijf\",\"notificationSettings\":[{\"destination\":\"poekrsgsgb\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":true}]}],\"nextLink\":\"njdgkynscliq\"}")
             .toObject(ResourceListResponse.class);
-        Assertions.assertEquals("srvhmgorffuki", model.value().get(0).resourceId());
-        Assertions.assertEquals("w", model.value().get(0).notificationSettings().get(0).destination());
+        Assertions.assertEquals("xhom", model.value().get(0).resourceId());
+        Assertions.assertEquals("hdwdi", model.value().get(0).notificationSettings().get(0).destination());
         Assertions.assertEquals(NotificationType.EMAIL, model.value().get(0).notificationSettings().get(0).type());
         Assertions.assertEquals(Language.EN_US, model.value().get(0).notificationSettings().get(0).language());
         Assertions.assertFalse(model.value().get(0).notificationSettings().get(0).disabled());
-        Assertions.assertEquals("wiuagydwqf", model.nextLink());
+        Assertions.assertEquals("njdgkynscliq", model.nextLink());
     }
 }

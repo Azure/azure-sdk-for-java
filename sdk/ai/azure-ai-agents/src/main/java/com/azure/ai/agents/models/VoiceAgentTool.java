@@ -29,7 +29,7 @@ public class VoiceAgentTool implements JsonSerializable<VoiceAgentTool> {
      * Creates an instance of VoiceAgentTool class.
      */
     @Generated
-    public VoiceAgentTool() {
+    protected VoiceAgentTool() {
     }
 
     /**

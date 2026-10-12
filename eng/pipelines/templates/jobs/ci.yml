@@ -55,6 +55,9 @@ parameters:
   - name: JavaBuildVersion
     type: string
     default: $(JavaBuildVersion)
+  - name: IsLatestNonLtsJdk
+    type: boolean
+    default: false
   - name: TimeoutInMinutes
     type: number
     default: 60
@@ -515,6 +518,7 @@ jobs:
         Cloud: Public
       AdditionalParameters:
         SDKType: ${{ parameters.SDKType }}
+        IsLatestNonLtsJdk: ${{ parameters.IsLatestNonLtsJdk }}
         ServiceDirectory: ${{ parameters.ServiceDirectory }}
         ExcludePaths: ${{ parameters.ExcludePaths }}
         TestPipeline: ${{ parameters.TestPipeline }}

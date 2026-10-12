@@ -29,7 +29,7 @@ public class RealtimeAudioFormat implements JsonSerializable<RealtimeAudioFormat
      * Creates an instance of RealtimeAudioFormat class.
      */
     @Generated
-    public RealtimeAudioFormat() {
+    protected RealtimeAudioFormat() {
     }
 
     /**

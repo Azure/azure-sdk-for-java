@@ -29,7 +29,7 @@ public class RealtimeClientEvent implements JsonSerializable<RealtimeClientEvent
      * Creates an instance of RealtimeClientEvent class.
      */
     @Generated
-    public RealtimeClientEvent() {
+    protected RealtimeClientEvent() {
     }
 
     /**

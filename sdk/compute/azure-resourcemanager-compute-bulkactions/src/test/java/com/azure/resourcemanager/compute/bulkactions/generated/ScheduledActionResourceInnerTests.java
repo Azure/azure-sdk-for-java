@@ -14,10 +14,10 @@ public final class ScheduledActionResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ScheduledActionResourceInner model = BinaryData.fromString(
-            "{\"name\":\"ylyrfgiagtco\",\"id\":\"ocqwogfnzjvus\",\"type\":\"ld\",\"resourceId\":\"ozuxylfsbtkadpys\",\"notificationSettings\":[{\"destination\":\"btgkbugrjqctoj\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false},{\"destination\":\"fieypefojyqdhcup\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false},{\"destination\":\"wkhihihlhzdsqt\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":true},{\"destination\":\"nowc\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false}]}")
+            "{\"name\":\"zvhxnk\",\"id\":\"mtk\",\"type\":\"otppnv\",\"resourceId\":\"xz\",\"notificationSettings\":[{\"destination\":\"hfrbbc\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false},{\"destination\":\"tltdhlfkqojpy\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":true},{\"destination\":\"dcnifmz\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false}]}")
             .toObject(ScheduledActionResourceInner.class);
-        Assertions.assertEquals("ozuxylfsbtkadpys", model.resourceId());
-        Assertions.assertEquals("btgkbugrjqctoj", model.notificationSettings().get(0).destination());
+        Assertions.assertEquals("xz", model.resourceId());
+        Assertions.assertEquals("hfrbbc", model.notificationSettings().get(0).destination());
         Assertions.assertEquals(NotificationType.EMAIL, model.notificationSettings().get(0).type());
         Assertions.assertEquals(Language.EN_US, model.notificationSettings().get(0).language());
         Assertions.assertFalse(model.notificationSettings().get(0).disabled());

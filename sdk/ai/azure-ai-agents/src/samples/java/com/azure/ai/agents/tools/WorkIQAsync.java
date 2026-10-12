@@ -5,7 +5,6 @@ package com.azure.ai.agents.tools;
 
 import com.azure.ai.agents.AgentsAsyncClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.SampleUtils;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.ai.agents.models.WorkIqPreviewTool;
@@ -69,12 +68,11 @@ public class WorkIQAsync {
                     System.out.printf("Agent created: %s (version %s)%n",
                         createdAgent.getName(), createdAgent.getVersion());
 
-                    return SampleUtils.pinAgentVersion(agentsAsyncClient, createdAgent)
-                        .then(Mono.fromFuture(() -> openAIAsyncClient.responses().create(
-                            ResponseCreateParams.builder()
-                                .toolChoice(ToolChoiceOptions.REQUIRED)
-                                .input(userInput)
-                                .build())))
+                    return Mono.fromFuture(() -> openAIAsyncClient.responses().create(
+                        ResponseCreateParams.builder()
+                            .toolChoice(ToolChoiceOptions.REQUIRED)
+                            .input(userInput)
+                            .build()))
                         .doOnNext(response -> {
                             System.out.println("Response status: "
                                 + response.status().map(Object::toString).orElse("unknown"));
