@@ -26,7 +26,7 @@ import reactor.core.publisher.Mono;
 public final class BackupInstancesTriggerRestoreMockTests {
     @Test
     public void testTriggerRestore() throws Exception {
-        String responseStr = "{\"objectType\":\"OperationJobExtendedInfo\",\"jobId\":\"jsto\"}";
+        String responseStr = "{\"objectType\":\"OperationJobExtendedInfo\",\"jobId\":\"fr\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,18 +35,18 @@ public final class BackupInstancesTriggerRestoreMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        OperationJobExtendedInfo response = manager.backupInstances()
-            .triggerRestore("tikteusqczkvykl", "ubyjaffmmf", "lcqcuubgqibrt", new AzureBackupRestoreRequest()
-                .withRestoreTargetInfo(new RestoreTargetInfoBase().withRecoveryOption(RecoveryOption.FAIL_IF_EXISTS)
-                    .withRestoreLocation("etttwgdslqxihhr"))
-                .withSourceDataStoreType(SourceDataStoreType.OPERATIONAL_STORE)
-                .withSourceResourceId("i")
-                .withResourceGuardOperationRequests(
-                    Arrays.asList("eypxiutcxapzhyr", "etoge", "joxslhvnhla", "rqnkkzjcjbtr"))
-                .withIdentityDetails(
-                    new IdentityDetails().withUseSystemAssignedIdentity(false).withUserAssignedIdentityArmUrl("vibr")),
-                com.azure.core.util.Context.NONE);
+        OperationJobExtendedInfo response
+            = manager.backupInstances()
+                .triggerRestore("la", "hnfhqlyvijouwi", "kxoyzunbixxr", new AzureBackupRestoreRequest()
+                    .withRestoreTargetInfo(new RestoreTargetInfoBase().withRecoveryOption(RecoveryOption.FAIL_IF_EXISTS)
+                        .withRestoreLocation("vcpwpgclrc"))
+                    .withSourceDataStoreType(SourceDataStoreType.SNAPSHOT_STORE)
+                    .withSourceResourceId("soxfrken")
+                    .withResourceGuardOperationRequests(Arrays.asList("yyefrpmpdnqqs"))
+                    .withIdentityDetails(new IdentityDetails().withUseSystemAssignedIdentity(false)
+                        .withUserAssignedIdentityArmUrl("qvmmbn")),
+                    com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("jsto", response.jobId());
+        Assertions.assertEquals("fr", response.jobId());
     }
 }

@@ -13,14 +13,14 @@ public final class ProtectableContainerResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ProtectableContainerResourceInner model = BinaryData.fromString(
-            "{\"location\":\"wxigpxv\",\"tags\":{\"dfaifyzyzeyuube\":\"aupxvpi\",\"l\":\"ds\"},\"eTag\":\"toi\",\"properties\":{\"protectableContainerType\":\"ProtectableContainer\",\"friendlyName\":\"ygvfltgvdihoyn\",\"backupManagementType\":\"AzureWorkload\",\"healthStatus\":\"etwkdrcyrucpc\",\"containerId\":\"nuzdqumo\"},\"id\":\"odnaienhqhskndn\",\"name\":\"lqkaadlknwf\",\"type\":\"anniyopetxivcnr\"}")
+            "{\"location\":\"wzawnvsbcfhzagxn\",\"tags\":{\"mwrzregzgyufutrw\":\"cvd\",\"hmeott\":\"weryekzk\"},\"eTag\":\"jyosxwwh\",\"properties\":{\"protectableContainerType\":\"ProtectableContainer\",\"friendlyName\":\"tfvpndpmiljpn\",\"backupManagementType\":\"AzureBackupServer\",\"healthStatus\":\"dqllzsauzpjlxeeh\",\"containerId\":\"iqhzlr\"},\"id\":\"mezx\",\"name\":\"skihmxrfd\",\"type\":\"ajrednwyyshtuw\"}")
             .toObject(ProtectableContainerResourceInner.class);
-        Assertions.assertEquals("wxigpxv", model.location());
-        Assertions.assertEquals("aupxvpi", model.tags().get("dfaifyzyzeyuube"));
-        Assertions.assertEquals("toi", model.eTag());
-        Assertions.assertEquals("ygvfltgvdihoyn", model.properties().friendlyName());
-        Assertions.assertEquals(BackupManagementType.AZURE_WORKLOAD, model.properties().backupManagementType());
-        Assertions.assertEquals("etwkdrcyrucpc", model.properties().healthStatus());
-        Assertions.assertEquals("nuzdqumo", model.properties().containerId());
+        Assertions.assertEquals("wzawnvsbcfhzagxn", model.location());
+        Assertions.assertEquals("cvd", model.tags().get("mwrzregzgyufutrw"));
+        Assertions.assertEquals("jyosxwwh", model.eTag());
+        Assertions.assertEquals("tfvpndpmiljpn", model.properties().friendlyName());
+        Assertions.assertEquals(BackupManagementType.AZURE_BACKUP_SERVER, model.properties().backupManagementType());
+        Assertions.assertEquals("dqllzsauzpjlxeeh", model.properties().healthStatus());
+        Assertions.assertEquals("iqhzlr", model.properties().containerId());
     }
 }

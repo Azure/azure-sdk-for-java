@@ -12,9 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class PartialFulfillmentPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PartialFulfillmentPolicy model
-            = BinaryData.fromString("{\"fulfilledCapacity\":880683863,\"mode\":\"Disabled\",\"reason\":\"None\"}")
-                .toObject(PartialFulfillmentPolicy.class);
+        PartialFulfillmentPolicy model = BinaryData
+            .fromString("{\"fulfilledCapacity\":1045715770,\"mode\":\"Disabled\",\"reason\":\"InsufficientCapacity\"}")
+            .toObject(PartialFulfillmentPolicy.class);
         Assertions.assertEquals(PartialFulfillmentMode.DISABLED, model.mode());
     }
 

@@ -14,27 +14,27 @@ public final class ProtectionIntentTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ProtectionIntent model = BinaryData.fromString(
-            "{\"protectionIntentItemType\":\"ProtectionIntent\",\"backupManagementType\":\"AzureWorkload\",\"sourceResourceId\":\"kyxl\",\"itemId\":\"sjgkzzltafh\",\"policyId\":\"ffovwmbjlzqsczp\",\"protectionState\":\"Protecting\"}")
+            "{\"protectionIntentItemType\":\"ProtectionIntent\",\"backupManagementType\":\"AzureWorkload\",\"sourceResourceId\":\"gqy\",\"itemId\":\"eseyqr\",\"policyId\":\"y\",\"protectionState\":\"Protecting\"}")
             .toObject(ProtectionIntent.class);
         Assertions.assertEquals(BackupManagementType.AZURE_WORKLOAD, model.backupManagementType());
-        Assertions.assertEquals("kyxl", model.sourceResourceId());
-        Assertions.assertEquals("sjgkzzltafh", model.itemId());
-        Assertions.assertEquals("ffovwmbjlzqsczp", model.policyId());
+        Assertions.assertEquals("gqy", model.sourceResourceId());
+        Assertions.assertEquals("eseyqr", model.itemId());
+        Assertions.assertEquals("y", model.policyId());
         Assertions.assertEquals(ProtectionStatus.PROTECTING, model.protectionState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ProtectionIntent model = new ProtectionIntent().withBackupManagementType(BackupManagementType.AZURE_WORKLOAD)
-            .withSourceResourceId("kyxl")
-            .withItemId("sjgkzzltafh")
-            .withPolicyId("ffovwmbjlzqsczp")
+            .withSourceResourceId("gqy")
+            .withItemId("eseyqr")
+            .withPolicyId("y")
             .withProtectionState(ProtectionStatus.PROTECTING);
         model = BinaryData.fromObject(model).toObject(ProtectionIntent.class);
         Assertions.assertEquals(BackupManagementType.AZURE_WORKLOAD, model.backupManagementType());
-        Assertions.assertEquals("kyxl", model.sourceResourceId());
-        Assertions.assertEquals("sjgkzzltafh", model.itemId());
-        Assertions.assertEquals("ffovwmbjlzqsczp", model.policyId());
+        Assertions.assertEquals("gqy", model.sourceResourceId());
+        Assertions.assertEquals("eseyqr", model.itemId());
+        Assertions.assertEquals("y", model.policyId());
         Assertions.assertEquals(ProtectionStatus.PROTECTING, model.protectionState());
     }
 }

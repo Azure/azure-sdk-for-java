@@ -12,10 +12,10 @@ public final class QuotaInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         QuotaInner model = BinaryData.fromString(
-            "{\"name\":{\"value\":\"rlyxwjkcprbnw\",\"localizedValue\":\"gjvtbv\"},\"unit\":\"ysszdnrujqguh\",\"currentValue\":4001606914042880577,\"limit\":9055326959685278668}")
+            "{\"name\":{\"value\":\"dosvqwhbmdgbbjf\",\"localizedValue\":\"gmbmbexppbh\"},\"unit\":\"q\",\"currentValue\":7621174825781950014,\"limit\":3040729179005507255}")
             .toObject(QuotaInner.class);
-        Assertions.assertEquals("ysszdnrujqguh", model.unit());
-        Assertions.assertEquals(4001606914042880577L, model.currentValue());
-        Assertions.assertEquals(9055326959685278668L, model.limit());
+        Assertions.assertEquals("q", model.unit());
+        Assertions.assertEquals(7621174825781950014L, model.currentValue());
+        Assertions.assertEquals(3040729179005507255L, model.limit());
     }
 }

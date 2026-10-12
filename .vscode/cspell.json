@@ -54,6 +54,7 @@
     "*.crt",
     "*.yml",
     ".github/skills/agentic-workflows/**",
+    ".github/skills/azsdk-common-*/**",
     ".github/workflows/issue-triage.md",
     ".vscode/cspell.json",
     ".vscode/eclipse-format-azure-sdk-for-java.xml",
@@ -74,7 +75,8 @@
     "**/src/**/resources/**",
     "docs/spring/**",
     "sdk/core/.idea/**",
-    ".github/CODEOWNERS"
+    ".github/CODEOWNERS",
+    ".github/CODEOWNERS_baseline_errors.txt"
   ],
   "words": [
     "aadb",
@@ -128,6 +130,7 @@
     "dshade",
     "dskip",
     "dspotbugs",
+    "dspotless",
     "dtdl",
     "dtest",
     "dtmf",
@@ -200,6 +203,7 @@
     "okio",
     "postgre",
     "protonj",
+    "pzla",
     "qpid",
     "quic",
     "quis",
@@ -229,6 +233,7 @@
     "testdb",
     "testng",
     "tofile",
+    "trucy",
     "uami",
     "uksouth",
     "umls",
@@ -264,6 +269,13 @@
     "xlsb"
   ],
   "overrides": [
+    {
+      "filename": ".github/skills/management-autopr-review/**",
+      "words": [
+        "autopr",
+        "vally"
+      ]
+    },
     {
       "filename": "**/pom.xml",
       "patterns": [

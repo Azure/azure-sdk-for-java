@@ -8,7 +8,18 @@
 
 ### Bugs Fixed
 
+- Fixed `MetricsClient` and `MetricsAsyncClient` batch queries failing for subscription-level resource IDs.
+
 ### Other Changes
+
+## 1.0.8 (2026-10-06)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.59.0` to version `1.60.0`.
+- Upgraded `azure-core-http-netty` from `1.16.6` to version `1.16.8`.
 
 ## 1.0.7 (2026-08-18)
 

@@ -8,16 +8,16 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * The priority type for VM allocation.
+ * The priority type for virtual machine allocation.
  */
 public final class PriorityType extends ExpandableStringEnum<PriorityType> {
     /**
-     * Regular priority VMs.
+     * Regular, non-Spot virtual machines.
      */
     public static final PriorityType REGULAR = fromString("Regular");
 
     /**
-     * Spot priority VMs.
+     * Azure Spot Virtual Machines.
      */
     public static final PriorityType SPOT = fromString("Spot");
 

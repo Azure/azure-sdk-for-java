@@ -6,7 +6,7 @@ package com.azure.resourcemanager.networkcloud.generated;
 
 import com.azure.resourcemanager.networkcloud.models.Console;
 import com.azure.resourcemanager.networkcloud.models.ConsoleEnabled;
-import com.azure.resourcemanager.networkcloud.models.SshPublicKey;
+import com.azure.resourcemanager.networkcloud.models.SshPublicKeyPatch;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,7 +16,7 @@ import java.util.Map;
  */
 public final class ConsolesUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Consoles_Patch.json
+     * x-ms-original-file: 2026-07-01/Consoles_Patch.json
      */
     /**
      * Sample code: Patch virtual machine console.
@@ -31,7 +31,7 @@ public final class ConsolesUpdateSamples {
             .withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder"))
             .withEnabled(ConsoleEnabled.TRUE)
             .withExpiration(OffsetDateTime.parse("2022-06-01T01:27:03.008Z"))
-            .withSshPublicKey(new SshPublicKey().withKeyData("fakeTokenPlaceholder"))
+            .withSshPublicKey(new SshPublicKeyPatch().withKeyData("fakeTokenPlaceholder"))
             .apply();
     }
 

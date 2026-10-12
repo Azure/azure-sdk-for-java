@@ -5,8 +5,11 @@ package com.azure.monitor.opentelemetry.autoconfigure.implementation.localstorag
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.LinkOption;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static java.util.Arrays.asList;
 
@@ -14,7 +17,11 @@ class FileUtil {
 
     static List<File> listTrnFiles(File directory) {
         File[] files = directory.listFiles((dir, name) -> name.endsWith(".trn"));
-        return files == null ? Collections.emptyList() : asList(files);
+        return files == null
+            ? Collections.emptyList()
+            : asList(files).stream()
+                .filter(file -> Files.isRegularFile(file.toPath(), LinkOption.NOFOLLOW_LINKS))
+                .collect(Collectors.toList());
     }
 
     static String getBaseName(File file) {

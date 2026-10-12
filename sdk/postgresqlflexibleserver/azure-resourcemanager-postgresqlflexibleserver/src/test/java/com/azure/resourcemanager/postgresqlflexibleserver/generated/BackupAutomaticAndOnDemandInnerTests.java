@@ -14,10 +14,10 @@ public final class BackupAutomaticAndOnDemandInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BackupAutomaticAndOnDemandInner model = BinaryData.fromString(
-            "{\"properties\":{\"backupType\":\"Customer On-Demand\",\"completedTime\":\"2021-07-10T20:58:35Z\",\"source\":\"teusqczkvyklxu\"},\"id\":\"jaffmmfblcqcuu\",\"name\":\"gqibrtalmetttw\",\"type\":\"dslqxihhrmooizqs\"}")
+            "{\"properties\":{\"backupType\":\"Full\",\"completedTime\":\"2021-10-07T05:40:56Z\",\"source\":\"yzunbixxrtikv\"},\"id\":\"wpgclrcivt\",\"name\":\"oxfrkenxpmyyefr\",\"type\":\"mpdnqqskawa\"}")
             .toObject(BackupAutomaticAndOnDemandInner.class);
-        Assertions.assertEquals(BackupType.CUSTOMER_ON_DEMAND, model.backupType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-10T20:58:35Z"), model.completedTime());
-        Assertions.assertEquals("teusqczkvyklxu", model.source());
+        Assertions.assertEquals(BackupType.FULL, model.backupType());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-07T05:40:56Z"), model.completedTime());
+        Assertions.assertEquals("yzunbixxrtikv", model.source());
     }
 }

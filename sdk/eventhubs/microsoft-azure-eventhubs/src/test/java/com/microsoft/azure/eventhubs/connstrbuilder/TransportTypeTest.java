@@ -12,8 +12,8 @@ import com.microsoft.azure.eventhubs.impl.MessagingFactory;
 import com.microsoft.azure.eventhubs.jproxy.ProxyServer;
 import com.microsoft.azure.eventhubs.lib.ApiTestBase;
 import com.microsoft.azure.eventhubs.lib.TestContext;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -51,8 +51,8 @@ public class TransportTypeTest extends ApiTestBase {
             final Method protocolPort = ConnectionHandler.class.getDeclaredMethod("getProtocolPort");
             protocolPort.setAccessible(true);
 
-            Assert.assertEquals(5671, outboundSocketPort.invoke(connectionHandler));
-            Assert.assertEquals(5671, protocolPort.invoke(connectionHandler));
+            Assertions.assertEquals(5671, outboundSocketPort.invoke(connectionHandler));
+            Assertions.assertEquals(5671, protocolPort.invoke(connectionHandler));
         } finally {
             ehClient.closeSync();
         }
@@ -80,8 +80,8 @@ public class TransportTypeTest extends ApiTestBase {
             final Method protocolPort = ConnectionHandler.class.getDeclaredMethod("getProtocolPort");
             protocolPort.setAccessible(true);
 
-            Assert.assertEquals(443, outboundSocketPort.invoke(connectionHandler));
-            Assert.assertEquals(443, protocolPort.invoke(connectionHandler));
+            Assertions.assertEquals(443, outboundSocketPort.invoke(connectionHandler));
+            Assertions.assertEquals(443, protocolPort.invoke(connectionHandler));
         } finally {
             ehClient.closeSync();
         }
@@ -132,10 +132,10 @@ public class TransportTypeTest extends ApiTestBase {
                 final Method protocolPort = ConnectionHandler.class.getDeclaredMethod("getProtocolPort");
                 protocolPort.setAccessible(true);
 
-                Assert.assertEquals(proxyPort, outboundSocketPort.invoke(connectionHandler));
-                Assert.assertEquals(443, protocolPort.invoke(connectionHandler));
+                Assertions.assertEquals(proxyPort, outboundSocketPort.invoke(connectionHandler));
+                Assertions.assertEquals(443, protocolPort.invoke(connectionHandler));
 
-                Assert.assertTrue(isProxySelectorInvoked);
+                Assertions.assertTrue(isProxySelectorInvoked);
             } finally {
                 ehClient.closeSync();
                 ProxySelector.setDefault(defaultProxySelector);

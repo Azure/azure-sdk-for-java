@@ -6,9 +6,11 @@ package com.azure.analytics.planetarycomputer.generated;
 
 import com.azure.analytics.planetarycomputer.DataClient;
 import com.azure.analytics.planetarycomputer.PlanetaryComputerProClientBuilder;
+import com.azure.analytics.planetarycomputer.models.SelMethod;
 import com.azure.analytics.planetarycomputer.models.TileSetMetadata;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import java.util.List;
 
 public class MosaicItemsTileSetMetadataGet {
     public static void main(String[] args) {
@@ -18,7 +20,8 @@ public class MosaicItemsTileSetMetadataGet {
                 .buildDataClient();
         // BEGIN:com.azure.analytics.planetarycomputer.generated.data-get-tileset-metadata.mosaic-items-tile-set-metadata-get
         TileSetMetadata response = dataClient.getTilesetMetadata("naip-atl", "ga_m_3308421_se_16_060_20211114",
-            "WebMercatorQuad", null, null, null, null, null, null);
+            "WebMercatorQuad", (String) null, (List<Integer>) null, (String) null, (String) null, (List<String>) null,
+            (SelMethod) null);
         // END:com.azure.analytics.planetarycomputer.generated.data-get-tileset-metadata.mosaic-items-tile-set-metadata-get
     }
 }

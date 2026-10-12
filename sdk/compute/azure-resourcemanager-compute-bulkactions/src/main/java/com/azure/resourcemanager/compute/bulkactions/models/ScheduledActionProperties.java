@@ -16,47 +16,47 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
- * Scheduled action properties.
+ * Configuration and status of a scheduled action.
  */
 @Fluent
 public final class ScheduledActionProperties implements JsonSerializable<ScheduledActionProperties> {
     /*
-     * The type of resource the scheduled action is targeting
+     * The type of compute resource targeted by the action.
      */
     private ResourceType resourceType;
 
     /*
-     * The action the scheduled action should perform in the resources
+     * The operation performed on the targeted resources.
      */
     private ScheduledActionType actionType;
 
     /*
-     * The time which the scheduled action is supposed to start running
+     * The date and time, including UTC offset, when the schedule becomes active.
      */
     private OffsetDateTime startTime;
 
     /*
-     * The time when the scheduled action is supposed to stop scheduling
+     * The date and time, including UTC offset, after which no new occurrences are scheduled.
      */
     private OffsetDateTime endTime;
 
     /*
-     * The schedule the scheduled action is supposed to follow
+     * The recurring schedule.
      */
     private ScheduledActionsSchedule schedule;
 
     /*
-     * The notification settings for the scheduled action
+     * Notification settings that apply to the scheduled action.
      */
     private List<NotificationProperties> notificationSettings;
 
     /*
-     * Tell if the scheduled action is disabled or not
+     * Indicates whether new occurrences are disabled.
      */
     private Boolean disabled;
 
     /*
-     * The status of the last provisioning operation performed on the resource.
+     * Read-only. The provisioning state of the scheduled action.
      */
     private ScheduledActionsProvisioningState provisioningState;
 
@@ -67,7 +67,7 @@ public final class ScheduledActionProperties implements JsonSerializable<Schedul
     }
 
     /**
-     * Get the resourceType property: The type of resource the scheduled action is targeting.
+     * Get the resourceType property: The type of compute resource targeted by the action.
      * 
      * @return the resourceType value.
      */
@@ -76,7 +76,7 @@ public final class ScheduledActionProperties implements JsonSerializable<Schedul
     }
 
     /**
-     * Set the resourceType property: The type of resource the scheduled action is targeting.
+     * Set the resourceType property: The type of compute resource targeted by the action.
      * 
      * @param resourceType the resourceType value to set.
      * @return the ScheduledActionProperties object itself.
@@ -87,7 +87,7 @@ public final class ScheduledActionProperties implements JsonSerializable<Schedul
     }
 
     /**
-     * Get the actionType property: The action the scheduled action should perform in the resources.
+     * Get the actionType property: The operation performed on the targeted resources.
      * 
      * @return the actionType value.
      */
@@ -96,7 +96,7 @@ public final class ScheduledActionProperties implements JsonSerializable<Schedul
     }
 
     /**
-     * Set the actionType property: The action the scheduled action should perform in the resources.
+     * Set the actionType property: The operation performed on the targeted resources.
      * 
      * @param actionType the actionType value to set.
      * @return the ScheduledActionProperties object itself.
@@ -107,7 +107,7 @@ public final class ScheduledActionProperties implements JsonSerializable<Schedul
     }
 
     /**
-     * Get the startTime property: The time which the scheduled action is supposed to start running.
+     * Get the startTime property: The date and time, including UTC offset, when the schedule becomes active.
      * 
      * @return the startTime value.
      */
@@ -116,7 +116,7 @@ public final class ScheduledActionProperties implements JsonSerializable<Schedul
     }
 
     /**
-     * Set the startTime property: The time which the scheduled action is supposed to start running.
+     * Set the startTime property: The date and time, including UTC offset, when the schedule becomes active.
      * 
      * @param startTime the startTime value to set.
      * @return the ScheduledActionProperties object itself.
@@ -127,7 +127,7 @@ public final class ScheduledActionProperties implements JsonSerializable<Schedul
     }
 
     /**
-     * Get the endTime property: The time when the scheduled action is supposed to stop scheduling.
+     * Get the endTime property: The date and time, including UTC offset, after which no new occurrences are scheduled.
      * 
      * @return the endTime value.
      */
@@ -136,7 +136,7 @@ public final class ScheduledActionProperties implements JsonSerializable<Schedul
     }
 
     /**
-     * Set the endTime property: The time when the scheduled action is supposed to stop scheduling.
+     * Set the endTime property: The date and time, including UTC offset, after which no new occurrences are scheduled.
      * 
      * @param endTime the endTime value to set.
      * @return the ScheduledActionProperties object itself.
@@ -147,7 +147,7 @@ public final class ScheduledActionProperties implements JsonSerializable<Schedul
     }
 
     /**
-     * Get the schedule property: The schedule the scheduled action is supposed to follow.
+     * Get the schedule property: The recurring schedule.
      * 
      * @return the schedule value.
      */
@@ -156,7 +156,7 @@ public final class ScheduledActionProperties implements JsonSerializable<Schedul
     }
 
     /**
-     * Set the schedule property: The schedule the scheduled action is supposed to follow.
+     * Set the schedule property: The recurring schedule.
      * 
      * @param schedule the schedule value to set.
      * @return the ScheduledActionProperties object itself.
@@ -167,7 +167,7 @@ public final class ScheduledActionProperties implements JsonSerializable<Schedul
     }
 
     /**
-     * Get the notificationSettings property: The notification settings for the scheduled action.
+     * Get the notificationSettings property: Notification settings that apply to the scheduled action.
      * 
      * @return the notificationSettings value.
      */
@@ -176,7 +176,7 @@ public final class ScheduledActionProperties implements JsonSerializable<Schedul
     }
 
     /**
-     * Set the notificationSettings property: The notification settings for the scheduled action.
+     * Set the notificationSettings property: Notification settings that apply to the scheduled action.
      * 
      * @param notificationSettings the notificationSettings value to set.
      * @return the ScheduledActionProperties object itself.
@@ -187,7 +187,7 @@ public final class ScheduledActionProperties implements JsonSerializable<Schedul
     }
 
     /**
-     * Get the disabled property: Tell if the scheduled action is disabled or not.
+     * Get the disabled property: Indicates whether new occurrences are disabled.
      * 
      * @return the disabled value.
      */
@@ -196,7 +196,7 @@ public final class ScheduledActionProperties implements JsonSerializable<Schedul
     }
 
     /**
-     * Set the disabled property: Tell if the scheduled action is disabled or not.
+     * Set the disabled property: Indicates whether new occurrences are disabled.
      * 
      * @param disabled the disabled value to set.
      * @return the ScheduledActionProperties object itself.
@@ -207,7 +207,7 @@ public final class ScheduledActionProperties implements JsonSerializable<Schedul
     }
 
     /**
-     * Get the provisioningState property: The status of the last provisioning operation performed on the resource.
+     * Get the provisioningState property: Read-only. The provisioning state of the scheduled action.
      * 
      * @return the provisioningState value.
      */
