@@ -90,6 +90,36 @@ public class KeyVaultCertificatesTest {
     }
 
     @Test
+    public void testMockCertificatesHaveDistinctEncodings() throws Exception {
+        Certificate freshCertificate = new MockCertificate();
+
+        Assertions.assertNotEquals(certificate, freshCertificate);
+        Assertions.assertFalse(Arrays.equals(certificate.getEncoded(), freshCertificate.getEncoded()));
+    }
+
+    @Test
+    public void testMockCertificateEncodingIsStableAndDefensive() throws Exception {
+        byte[] originalEncoding = certificate.getEncoded();
+        byte[] returnedEncoding = certificate.getEncoded();
+        int originalHashCode = certificate.hashCode();
+
+        Assertions.assertTrue(returnedEncoding.length > 0, "A fixture must have a nonempty encoding.");
+        Assertions.assertNotSame(originalEncoding, returnedEncoding);
+        Assertions.assertArrayEquals(originalEncoding, returnedEncoding);
+        returnedEncoding[0] ^= 1;
+
+        Assertions.assertArrayEquals(originalEncoding, certificate.getEncoded());
+        Assertions.assertEquals(originalHashCode, certificate.hashCode());
+    }
+
+    @Test
+    public void testCertificateChainAssertionRejectsStaleFixture() {
+        Certificate[] freshChain = new Certificate[] { new MockCertificate() };
+
+        Assertions.assertThrows(AssertionError.class, () -> Assertions.assertArrayEquals(freshChain, certificateChain));
+    }
+
+    @Test
     public void testGetAliases() {
         Assertions.assertTrue(keyVaultCertificates.getAliases().contains("myalias"));
     }
@@ -575,7 +605,7 @@ public class KeyVaultCertificatesTest {
 
         Assertions.assertTrue(failures.isEmpty());
         Assertions.assertEquals(1, loadedChains.size());
-        Assertions.assertArrayEquals(freshChain, loadedChains.get(0));
+        assertCertificateChainIdentity(freshChain, loadedChains.get(0));
         Assertions.assertEquals(1, keyVaultClient.certificateChainForVersionCallCount(certificateVersion));
         Assertions.assertEquals(1, keyVaultClient.certificateChainForVersionCallCount(freshVersion));
     }
@@ -686,7 +716,7 @@ public class KeyVaultCertificatesTest {
         keyVaultClient.stubCertificateChainForVersion(freshVersion, freshChain);
 
         assertRefreshDiscardsStaleLoad(() -> keyVaultCertificates.getCertificateChain("myalias"), staleAnswer,
-            loadedChain -> Assertions.assertArrayEquals(freshChain, loadedChain));
+            loadedChain -> assertCertificateChainIdentity(freshChain, loadedChain));
 
         Assertions.assertEquals(2, keyVaultClient.resolveCertificateVersionCallCount("myalias"));
         Assertions.assertEquals(1, keyVaultClient.certificateChainForVersionCallCount(certificateVersion));
@@ -790,6 +820,14 @@ public class KeyVaultCertificatesTest {
         }
 
         Assertions.assertEquals(1, keyVaultClient.aliasesCallCount());
+    }
+
+    private static void assertCertificateChainIdentity(Certificate[] expected, Certificate[] actual) {
+        Assertions.assertNotNull(actual);
+        Assertions.assertEquals(expected.length, actual.length);
+        for (int index = 0; index < expected.length; index++) {
+            Assertions.assertSame(expected[index], actual[index], "Unexpected certificate at chain index " + index);
+        }
     }
 
     private <T> void assertConcurrentLoadsShareSingleRequest(Supplier<T> load, BlockingAnswer<T> blockingAnswer,
