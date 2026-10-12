@@ -19,7 +19,7 @@ import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.CoreUtils;
 import com.azure.storage.blob.models.BlobErrorCode;
-import com.azure.storage.blob.models.SessionOptions;
+import com.azure.storage.blob.options.SessionOptions;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;

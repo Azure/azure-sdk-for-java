@@ -9,6 +9,7 @@ import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.implementation.accesshelpers.SessionProviderConstructorProxy;
 import com.azure.storage.blob.implementation.util.SessionCredential;
 import com.azure.storage.blob.implementation.util.SessionRequestContext;
+import com.azure.storage.blob.options.SessionOptions;
 import reactor.core.publisher.Mono;
 
 import java.time.Clock;

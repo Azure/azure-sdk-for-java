@@ -28,7 +28,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.models.BlobAudience;
-import com.azure.storage.blob.models.SessionOptions;
+import com.azure.storage.blob.options.SessionOptions;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.file.datalake.implementation.util.BuilderHelper;

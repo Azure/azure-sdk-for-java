@@ -1,7 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob.models;
+package com.azure.storage.blob.options;
+
+import com.azure.storage.blob.models.ContainerSessionProvider;
+import com.azure.storage.blob.models.SessionProvider;
 
 /**
  * Configures session-based authentication for Blob and Data Lake clients.

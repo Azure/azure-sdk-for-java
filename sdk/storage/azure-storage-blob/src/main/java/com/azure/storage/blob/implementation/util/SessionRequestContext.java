@@ -3,7 +3,7 @@
 
 package com.azure.storage.blob.implementation.util;
 
-import com.azure.storage.blob.models.SessionOptions;
+import com.azure.storage.blob.options.SessionOptions;
 
 /**
  * Carries the request-scoped parameters needed to obtain a {@link SessionCredential}, such as the target

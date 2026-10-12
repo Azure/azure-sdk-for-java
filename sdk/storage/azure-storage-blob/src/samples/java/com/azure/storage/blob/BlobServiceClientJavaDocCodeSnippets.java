@@ -14,7 +14,7 @@ import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.ContainerSessionProvider;
-import com.azure.storage.blob.models.SessionOptions;
+import com.azure.storage.blob.options.SessionOptions;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.ExponentialBackoffOptions;

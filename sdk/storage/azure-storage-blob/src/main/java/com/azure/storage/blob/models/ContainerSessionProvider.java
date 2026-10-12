@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob.models;
 
+import com.azure.storage.blob.options.SessionOptions;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpMethod;

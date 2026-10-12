@@ -18,6 +18,7 @@ import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.storage.blob.implementation.util.SessionCredential;
 import com.azure.storage.blob.implementation.util.SessionRequestContext;
+import com.azure.storage.blob.options.SessionOptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
