@@ -14,17 +14,17 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * The response from scheduled action resource requests, which contains the status of each resource.
+ * Results of a scheduled action operation for targeted resources.
  */
 @Immutable
 public final class ResourceOperationResponseInner implements JsonSerializable<ResourceOperationResponseInner> {
     /*
-     * The total number of resources operated on
+     * The number of resources included in the operation.
      */
     private int totalResources;
 
     /*
-     * The resource status of for each resource
+     * The operation result for each resource.
      */
     private List<ResourceStatus> resourcesStatuses;
 
@@ -35,7 +35,7 @@ public final class ResourceOperationResponseInner implements JsonSerializable<Re
     }
 
     /**
-     * Get the totalResources property: The total number of resources operated on.
+     * Get the totalResources property: The number of resources included in the operation.
      * 
      * @return the totalResources value.
      */
@@ -44,7 +44,7 @@ public final class ResourceOperationResponseInner implements JsonSerializable<Re
     }
 
     /**
-     * Get the resourcesStatuses property: The resource status of for each resource.
+     * Get the resourcesStatuses property: The operation result for each resource.
      * 
      * @return the resourcesStatuses value.
      */

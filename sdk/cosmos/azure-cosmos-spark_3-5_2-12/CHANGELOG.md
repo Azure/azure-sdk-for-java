@@ -1,6 +1,6 @@
 ## Release History
 
-### 4.50.0-beta.1 (Unreleased)
+### 4.51.0-beta.1 (Unreleased)
 
 #### Features Added
 
@@ -9,6 +9,13 @@
 #### Bugs Fixed
 
 #### Other Changes
+
+* Upgraded Jackson from `2.18.9` to `2.18.11`.
+
+### 4.50.0 (2026-09-22)
+
+#### Other Changes
+* Updated `azure-cosmos` to version `4.83.0`.
 
 ### 4.49.2 (2026-07-27)
 

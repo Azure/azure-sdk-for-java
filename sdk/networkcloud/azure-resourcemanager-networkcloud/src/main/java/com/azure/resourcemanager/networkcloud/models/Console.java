@@ -421,7 +421,7 @@ public interface Console {
              * have the corresponding SSH private key for logging in.
              * @return the next definition stage.
              */
-            Update withSshPublicKey(SshPublicKey sshPublicKey);
+            Update withSshPublicKey(SshPublicKeyPatch sshPublicKey);
         }
 
         /**

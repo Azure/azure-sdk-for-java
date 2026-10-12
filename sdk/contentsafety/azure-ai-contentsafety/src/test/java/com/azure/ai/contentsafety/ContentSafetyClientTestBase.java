@@ -36,6 +36,7 @@ class ContentSafetyClientTestBase extends TestProxyTestBase {
         ContentSafetyClientBuilder contentSafetyClientBuilder
             = new ContentSafetyClientBuilder().credential(new KeyCredential(key))
                 .endpoint(endpoint)
+                .serviceVersion(ContentSafetyServiceVersion.V2023_10_01)
                 .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
@@ -48,6 +49,7 @@ class ContentSafetyClientTestBase extends TestProxyTestBase {
         ContentSafetyClientBuilder contentSafetyClientAADBuilder
             = new ContentSafetyClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(endpoint)
+                .serviceVersion(ContentSafetyServiceVersion.V2023_10_01)
                 .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
@@ -61,6 +63,7 @@ class ContentSafetyClientTestBase extends TestProxyTestBase {
         ContentSafetyClientBuilder contentSafetyAsyncClientBuilder
             = new ContentSafetyClientBuilder().credential(new KeyCredential(key))
                 .endpoint(endpoint)
+                .serviceVersion(ContentSafetyServiceVersion.V2023_10_01)
                 .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
@@ -72,6 +75,7 @@ class ContentSafetyClientTestBase extends TestProxyTestBase {
 
         BlocklistClientBuilder blocklistClientBuilder = new BlocklistClientBuilder().credential(new KeyCredential(key))
             .endpoint(endpoint)
+            .serviceVersion(ContentSafetyServiceVersion.V2023_10_01)
             .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
@@ -84,6 +88,7 @@ class ContentSafetyClientTestBase extends TestProxyTestBase {
         BlocklistClientBuilder blocklistAsyncClientBuilder
             = new BlocklistClientBuilder().credential(new KeyCredential(key))
                 .endpoint(endpoint)
+                .serviceVersion(ContentSafetyServiceVersion.V2023_10_01)
                 .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
@@ -91,6 +96,6 @@ class ContentSafetyClientTestBase extends TestProxyTestBase {
         } else if (getTestMode() == TestMode.RECORD) {
             blocklistAsyncClientBuilder.addPolicy(interceptorManager.getRecordPolicy());
         }
-        blocklistAsyncClient = blocklistClientBuilder.buildAsyncClient();
+        blocklistAsyncClient = blocklistAsyncClientBuilder.buildAsyncClient();
     }
 }

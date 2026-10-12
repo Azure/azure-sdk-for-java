@@ -3,14 +3,14 @@
 
 package com.microsoft.azure.servicebus.security;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.time.Instant;
 import java.util.concurrent.CompletableFuture;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import com.microsoft.azure.servicebus.TestUtils;
 import com.microsoft.azure.servicebus.security.AzureActiveDirectoryTokenProvider.AuthenticationCallback;
 
 public class AadTokenProviderTests {
@@ -32,12 +32,12 @@ public class AadTokenProviderTests {
         assertEquals(TEST_AUDIENCE, token.getTokenAudience());
 
         // Should throw when null callback is provided
-        TestUtils.assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(IllegalArgumentException.class, () -> {
             TokenProvider.createAzureActiveDirectoryTokenProvider(null, TEST_AUTHORITY, null);
         });
 
         // Should throw when null authority is provided
-        TestUtils.assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(IllegalArgumentException.class, () -> {
             TokenProvider.createAzureActiveDirectoryTokenProvider(callback, null, null);
         });
     }

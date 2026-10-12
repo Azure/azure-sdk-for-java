@@ -12,10 +12,10 @@ public final class PureStoragePolicyListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PureStoragePolicyListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"storagePolicyDefinition\":\"kywggxkallatmel\",\"storagePoolId\":\"uipiccjzk\",\"provisioningState\":\"Succeeded\"},\"id\":\"vvcnayr\",\"name\":\"yrnxxmueedn\",\"type\":\"rdvstkwqqtch\"},{\"properties\":{\"storagePolicyDefinition\":\"lmfmtdaay\",\"storagePoolId\":\"dvwvgpio\",\"provisioningState\":\"Failed\"},\"id\":\"rtfudxepxg\",\"name\":\"qagvrvm\",\"type\":\"pkukghi\"}],\"nextLink\":\"blxgwimf\"}")
+            "{\"value\":[{\"properties\":{\"storagePolicyDefinition\":\"amxjezwlw\",\"storagePoolId\":\"wxuqlcvydypatdoo\",\"provisioningState\":\"Succeeded\"},\"id\":\"niodkooeb\",\"name\":\"nuj\",\"type\":\"emmsbvdkc\"},{\"properties\":{\"storagePolicyDefinition\":\"dtjinfw\",\"storagePoolId\":\"lfltka\",\"provisioningState\":\"Updating\"},\"id\":\"f\",\"name\":\"dlfoakggkfp\",\"type\":\"gaowpulpqblylsyx\"}],\"nextLink\":\"jnsjervtiagxsd\"}")
             .toObject(PureStoragePolicyListResult.class);
-        Assertions.assertEquals("kywggxkallatmel", model.value().get(0).properties().storagePolicyDefinition());
-        Assertions.assertEquals("uipiccjzk", model.value().get(0).properties().storagePoolId());
-        Assertions.assertEquals("blxgwimf", model.nextLink());
+        Assertions.assertEquals("amxjezwlw", model.value().get(0).properties().storagePolicyDefinition());
+        Assertions.assertEquals("wxuqlcvydypatdoo", model.value().get(0).properties().storagePoolId());
+        Assertions.assertEquals("jnsjervtiagxsd", model.nextLink());
     }
 }

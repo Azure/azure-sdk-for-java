@@ -8,6 +8,8 @@ import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import org.testng.annotations.Test;
 
 import java.util.UUID;
@@ -19,8 +21,8 @@ import static org.assertj.core.api.Assertions.assertThatCode;
  * Unit tests for the WorkloadId RNTBD header definition in RntbdConstants.
  * <p>
  *
- * These tests verify that the WorkloadId enum entry exists with the correct wire ID (0x00DC),
- * correct token type (Byte), is not required, and is not in the thin-client ordered header list
+ * These tests verify that the WorkloadId enum entry exists with the correct wire ID (0x00E7),
+ * correct token type (UShort), is not required, and is not in the thin-client ordered header list
  * (so it will be auto-encoded in the second pass of RntbdTokenStream.encode()).
  */
 public class RntbdWorkloadIdTests {
@@ -37,27 +39,44 @@ public class RntbdWorkloadIdTests {
 
     /**
      * Verifies that the WorkloadId enum entry exists in RntbdConstants.RntbdRequestHeader
-     * with the correct wire ID (0x00DC). This ID is used to identify the header in the
-     * binary RNTBD protocol when communicating in Direct mode.
+     * with the correct wire ID (0x00E7). This ID is used to identify the header in the
+     * binary RNTBD protocol when communicating in Direct mode and must match the
+     * service-side RequestIdentifiers.WorkloadId definition.
      */
     @Test(groups = { "unit" })
     public void workloadIdRntbdHeaderExists() {
         // Verify WorkloadId enum value exists with correct ID
         RntbdConstants.RntbdRequestHeader workloadIdHeader = RntbdConstants.RntbdRequestHeader.WorkloadId;
         assertThat(workloadIdHeader).isNotNull();
-        assertThat(workloadIdHeader.id()).isEqualTo((short) 0x00DC);
+        assertThat(workloadIdHeader.id()).isEqualTo((short) 0x00E7);
     }
 
     /**
-     * Verifies that the WorkloadId RNTBD header is defined as Byte token type,
-     * consistent with the ThroughputBucket pattern. The workload ID value (1-50)
-     * is encoded as a single byte on the wire.
+     * Verifies that the WorkloadId RNTBD header is defined as UShort token type,
+     * matching the service-side token definition. The workload ID value is encoded
+     * as an unsigned 16-bit integer on the wire.
      */
     @Test(groups = { "unit" })
-    public void workloadIdRntbdHeaderIsByteType() {
-        // Verify WorkloadId is Byte type (same as ThroughputBucket pattern)
+    public void workloadIdRntbdHeaderIsUShortType() {
         RntbdConstants.RntbdRequestHeader workloadIdHeader = RntbdConstants.RntbdRequestHeader.WorkloadId;
-        assertThat(workloadIdHeader.type()).isEqualTo(RntbdTokenType.Byte);
+        assertThat(workloadIdHeader.type()).isEqualTo(RntbdTokenType.UShort);
+    }
+
+    /**
+     * Verifies that WorkloadId does not reuse the wire ID of another request header.
+     * 0x00DB is ThroughputBucket and 0x00DC is reserved by the service for
+     * UpdateOfferStateToPendingForThroughputSplit.
+     */
+    @Test(groups = { "unit" })
+    public void workloadIdRntbdHeaderIdIsUnique() {
+        for (RntbdConstants.RntbdRequestHeader header : RntbdConstants.RntbdRequestHeader.values()) {
+            if (header != RntbdConstants.RntbdRequestHeader.WorkloadId) {
+                assertThat(header.id())
+                    .as("RNTBD request header %s shares wire ID with WorkloadId", header)
+                    .isNotEqualTo(RntbdConstants.RntbdRequestHeader.WorkloadId.id());
+            }
+        }
+        assertThat(RntbdConstants.RntbdRequestHeader.WorkloadId.id()).isNotEqualTo((short) 0x00DC);
     }
 
     /**
@@ -91,7 +110,26 @@ public class RntbdWorkloadIdTests {
 
         RntbdToken workloadIdToken = requestHeaders.get(RntbdConstants.RntbdRequestHeader.WorkloadId);
         assertThat(workloadIdToken.isPresent()).isTrue();
-        assertThat(workloadIdToken.getValue(Byte.class)).isEqualTo((byte) 15);
+        assertThat(workloadIdToken.getValue(Integer.class)).isEqualTo(15);
+    }
+
+    @Test(groups = { "unit" })
+    public void workloadIdIsEncodedAsTwoByteLittleEndianValue() {
+        RntbdRequestHeaders requestHeaders = createRequestHeaders("50");
+        RntbdToken workloadIdToken = requestHeaders.get(RntbdConstants.RntbdRequestHeader.WorkloadId);
+
+        ByteBuf buffer = Unpooled.buffer();
+        try {
+            workloadIdToken.encode(buffer);
+
+            // Token layout: identifier (ushort LE), token type (byte), value (ushort LE)
+            assertThat(buffer.readableBytes()).isEqualTo(Short.BYTES + Byte.BYTES + Short.BYTES);
+            assertThat(buffer.readUnsignedShortLE()).isEqualTo(0x00E7);
+            assertThat(buffer.readByte()).isEqualTo(RntbdTokenType.UShort.id());
+            assertThat(buffer.readUnsignedShortLE()).isEqualTo(50);
+        } finally {
+            buffer.release();
+        }
     }
 
     @Test(groups = { "unit" })
@@ -101,6 +139,26 @@ public class RntbdWorkloadIdTests {
         RntbdRequestHeaders requestHeaders = createRequestHeaders("not-a-number");
         RntbdToken workloadIdToken = requestHeaders.get(RntbdConstants.RntbdRequestHeader.WorkloadId);
         assertThat(workloadIdToken.isPresent()).isFalse();
+    }
+
+    @Test(groups = { "unit" })
+    public void workloadIdAtUShortBoundariesIsEncoded() {
+        assertThat(createRequestHeaders("0").get(RntbdConstants.RntbdRequestHeader.WorkloadId).getValue(Integer.class))
+            .isEqualTo(0);
+        assertThat(createRequestHeaders("65535").get(RntbdConstants.RntbdRequestHeader.WorkloadId).getValue(Integer.class))
+            .isEqualTo(65535);
+    }
+
+    @Test(groups = { "unit" })
+    public void workloadIdOutsideUShortRangeIsNotTruncatedAndIsIgnored() {
+        for (String value : new String[] { "65536", "65537", "-1", String.valueOf(Integer.MAX_VALUE) }) {
+            assertThatCode(() -> createRequestHeaders(value)).doesNotThrowAnyException();
+
+            RntbdToken workloadIdToken = createRequestHeaders(value).get(RntbdConstants.RntbdRequestHeader.WorkloadId);
+            assertThat(workloadIdToken.isPresent())
+                .as("workload id %s must not be truncated into a different value", value)
+                .isFalse();
+        }
     }
 
     private static RntbdRequestHeaders createRequestHeaders(String workloadId) {

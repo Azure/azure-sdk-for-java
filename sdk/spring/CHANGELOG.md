@@ -13,6 +13,13 @@ Upgrade Spring Boot dependencies version to 4.1.1 and Spring Cloud dependencies 
 
 - Fixed Service Bus JMS listener containers using `JmsPoolConnectionFactory` when both `spring.jms.servicebus.pool.enabled=true` and `spring.jms.cache.enabled=false`. The sender continues to use `JmsPoolConnectionFactory`, while listener containers now use a dedicated `ServiceBusJmsConnectionFactory`, enabling topic subscriptions on the Standard tier. ([#49308](https://github.com/Azure/azure-sdk-for-java/issues/49308))
 
+### Spring Cloud Azure Starter Monitor
+This section includes changes in `spring-cloud-azure-starter-monitor` module.
+
+#### Dependency Updates
+
+- Upgraded OpenTelemetry SDK dependencies from `1.58.0` to `1.65.0` and `opentelemetry-spring-boot-starter` from `2.24.0` to `2.31.1`. ([#50543](https://github.com/Azure/azure-sdk-for-java/pull/50543))
+
 ## 6.5.0 (2026-07-29)
 - This release is compatible with Spring Boot 3.5.0-3.5.14. (Note: 3.5.x (x>14) should be supported, but they aren't tested with this release.)
 - This release is compatible with Spring Cloud 2025.0.0-2025.0.2. (Note: 2025.0.x (x>2) should be supported, but they aren't tested with this release.)

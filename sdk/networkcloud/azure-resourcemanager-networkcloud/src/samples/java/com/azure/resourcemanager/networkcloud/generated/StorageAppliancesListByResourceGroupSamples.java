@@ -9,7 +9,7 @@ package com.azure.resourcemanager.networkcloud.generated;
  */
 public final class StorageAppliancesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/StorageAppliances_ListByResourceGroup.json
+     * x-ms-original-file: 2026-07-01/StorageAppliances_ListByResourceGroup.json
      */
     /**
      * Sample code: List storage appliances for resource group.

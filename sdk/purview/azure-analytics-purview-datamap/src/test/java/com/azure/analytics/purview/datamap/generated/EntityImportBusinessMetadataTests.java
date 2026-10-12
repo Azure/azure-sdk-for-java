@@ -5,6 +5,7 @@
 package com.azure.analytics.purview.datamap.generated;
 
 import com.azure.analytics.purview.datamap.models.BulkImportResult;
+import com.azure.analytics.purview.datamap.models.BusinessMetadataOptions;
 import com.azure.analytics.purview.datamap.models.ImportInfo;
 import com.azure.analytics.purview.datamap.models.ImportStatus;
 import java.util.List;
@@ -18,7 +19,7 @@ public final class EntityImportBusinessMetadataTests extends DataMapClientTestBa
     @Disabled
     public void testEntityImportBusinessMetadataTests() {
         // method invocation
-        BulkImportResult response = entityClient.importBusinessMetadata(null);
+        BulkImportResult response = entityClient.importBusinessMetadata((BusinessMetadataOptions) null);
 
         // response assertion
         Assertions.assertNotNull(response);

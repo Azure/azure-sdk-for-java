@@ -11,7 +11,7 @@ public final class LicensePropertiesInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LicensePropertiesInner model
-            = BinaryData.fromString("{\"kind\":\"LicenseProperties\",\"provisioningState\":\"Failed\"}")
+            = BinaryData.fromString("{\"kind\":\"LicenseProperties\",\"provisioningState\":\"Succeeded\"}")
                 .toObject(LicensePropertiesInner.class);
     }
 

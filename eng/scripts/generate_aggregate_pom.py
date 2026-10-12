@@ -3,7 +3,7 @@
 
 # Python version 3.4 or higher is required to run this script.
 
-# Use case: Creates an aggregate POM which contains all modules for which aggregate JavaDoc or code coverage reports are generated.
+# Use case: Creates an aggregate POM which contains all modules for which aggregate code coverage reports are generated.
 # Note: This script must be run from the root of the azure-sdk-for-java repository
 #
 # Flags
@@ -11,11 +11,10 @@
 #   --groups/--g: List of comma-separate Maven groups to include in generated pom. If no groups are specified all track 2 groups (com.azure, com.azure.resourcemanager and com.azure.spring) will be included.
 #
 # For example: To create an aggregate POM for Azure Storage
-#    python eng/scripts/generate_aggregate_coverage_pom.py --pl com.azure:azure-storage-blob,com.azure:azure-storage-common,...
+#    python eng/scripts/generate_aggregate_pom.py --pl com.azure:azure-storage-blob,com.azure:azure-storage-common,...
 
 import argparse
 from datetime import timedelta
-from io import TextIOWrapper
 import os
 import time
 from typing import Dict
@@ -43,10 +42,6 @@ external_dependency_versions_path = os.path.normpath(root_path + '/eng/versionin
 client_aggregate_pom_path = os.path.join(root_path, 'aggregate-pom.xml')
 
 jacoco_artifact_id = 'org.jacoco:jacoco-maven-plugin'
-javadoc_artifact_id = 'org.apache.maven.plugins:maven-javadoc-plugin'
-indent_1 = ' ' * 24
-indent_2 = ' ' * 28
-indent_3 = ' ' * 32
 
 jacoco_build = '''
   <build>
@@ -67,36 +62,7 @@ jacoco_build = '''
 '''
 
 
-start_javadoc_build = '''
-    <build>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-javadoc-plugin</artifactId>
-                    <version>{}</version>
-                    <configuration>
-                        <source>1.8</source>
-                        <doctitle>Azure SDK for Java Reference Documentation</doctitle>
-                        <windowtitle>Azure SDK for Java Reference Documentation</windowtitle>
-                        <detectJavaApiLink>false</detectJavaApiLink>
-                        <offline>true</offline>
-                        <linksource>false</linksource>
-                        <failOnError>true</failOnError>
-                        <failOnWarnings>true</failOnWarnings>
-                        <doclint>all</doclint>
-                        <quiet>true</quiet>
-'''
-
-end_javadoc_build = '''
-                    </configuration>
-                </plugin>
-            </plugins>
-        </pluginManagement>
-    </build>
-'''
-
-def create_aggregate_pom(project_list: str, groups: str, exclude_project_list: str, type: str):
+def create_aggregate_pom(project_list: str, groups: str, exclude_project_list: str):
 
     if groups is None:
         include_groups.append('com.azure')
@@ -144,94 +110,13 @@ def create_aggregate_pom(project_list: str, groups: str, exclude_project_list: s
 
         aggregatePom.write(end_modules)
 
-        if type == 'coverage':
-            aggregatePom.write(start_dependencies)
-            aggregatePom.write(dependencies)
-            aggregatePom.write(end_dependencies)
-            aggregatePom.write(jacoco_build.format(external_dependency_version[jacoco_artifact_id]))
-
-        if type == 'javadoc':
-            aggregatePom.write(distribution_management)
-            aggregatePom.write(start_javadoc_build.format(external_dependency_version[javadoc_artifact_id]))
-            writeJavadocConfiguration(aggregatePom)
-            aggregatePom.write(end_javadoc_build)
+        aggregatePom.write(start_dependencies)
+        aggregatePom.write(dependencies)
+        aggregatePom.write(end_dependencies)
+        aggregatePom.write(jacoco_build.format(external_dependency_version[jacoco_artifact_id]))
 
         aggregatePom.write(pom_file_end)
 
-
-def writeJavadocConfiguration(aggregatePom: TextIOWrapper):
-    with open(file='eng/scripts/aggregate_javadoc_configuration.txt', mode='r') as config:
-        links = []
-        excludedPackages = []
-        excludedFiles = []
-        groups = {}
-        offlineLinks = {}
-
-        for line in config:
-            stripped_line = line.strip()
-
-            if not stripped_line or stripped_line.startswith('#'):
-                continue
-
-            splits = stripped_line.split(';')
-            if splits[0] == 'Link' and len(splits) == 2:
-                links.append(splits[1])
-            elif splits[0] == 'ExcludePackage' and len(splits) == 2:
-                excludedPackages.append(splits[1])
-            elif splits[0] == 'ExcludeFile' and len(splits) == 2:
-                excludedFiles.append(splits[1])
-            elif splits[0] == 'Group' and len(splits) == 3:
-                groups[splits[1]] = splits[2]
-            elif splits[0] == 'OfflineLink' and len(splits) == 3:
-                offlineLinks[splits[1]] = splits[2]
-
-        # Write external JavaDoc links
-        aggregatePom.write(indent_1 + '<links>\n')
-        for link in links:
-            aggregatePom.write(indent_2 + '<link>')
-            aggregatePom.write(link)
-            aggregatePom.write('</link>\n')
-        aggregatePom.write(indent_1 + '</links>\n')
-
-        # Write excluded packages
-        aggregatePom.write(indent_1 + '<excludePackageNames>\n' + indent_2)
-        aggregatePom.write((':\n' + indent_2).join(excludedPackages))
-        aggregatePom.write(indent_2 + '\n' + indent_1 + '</excludePackageNames>\n')
-
-
-        # Write excluded files
-        aggregatePom.write(indent_1 + '<sourceFileExcludes>\n')
-        for excludedFile in excludedFiles:
-            aggregatePom.write(indent_2 + '<sourceFileExclude>')
-            aggregatePom.write(excludedFile)
-            aggregatePom.write('</sourceFileExclude>\n')
-        aggregatePom.write(indent_1 + '</sourceFileExcludes>\n')
-
-        # Write groups
-        aggregatePom.write(indent_1 + '<groups>\n')
-        for name, packages in groups.items():
-            aggregatePom.write(indent_2 + '<group>\n')
-            aggregatePom.write(indent_3 + '<title>')
-            aggregatePom.write(name)
-            aggregatePom.write('</title>\n')
-            aggregatePom.write(indent_3 + '<packages>')
-            aggregatePom.write(packages)
-            aggregatePom.write('</packages>\n')
-            aggregatePom.write(indent_2 + '</group>\n')
-        aggregatePom.write(indent_1 + '</groups>\n')
-
-        # Write offlink links
-        aggregatePom.write(indent_1 + '<offlineLinks>\n')
-        for url, location in offlineLinks.items():
-            aggregatePom.write(indent_2 + '<offlineLink>\n')
-            aggregatePom.write(indent_3 + '<url>')
-            aggregatePom.write(url)
-            aggregatePom.write('</url>\n')
-            aggregatePom.write(indent_3 + '<location>')
-            aggregatePom.write("${project.basedir}/" + location)
-            aggregatePom.write('</location>\n')
-            aggregatePom.write(indent_2 + '</offlineLink>\n')
-        aggregatePom.write(indent_1 + '</offlineLinks>\n')
 
 # Function that creates the Projects within the repository.
 # Projects contain a Maven identifier, module path, parent POM
@@ -239,8 +124,8 @@ def create_projects(project_list_identifiers: list, artifact_identifier_to_versi
     projects: Dict[str, Project] = {}
 
     for root, _, files in os.walk(root_path):
-        # Ignore sdk/e2e, sdk/template and azure-security-test-keyvault-jca
-        if 'e2e' in root or 'azure-security-test-keyvault-jca' in root or 'template' in root:
+        # Ignore sdk/template and azure-security-test-keyvault-jca
+        if 'azure-security-test-keyvault-jca' in root or 'template' in root:
             continue
 
         for file_name in files:
@@ -320,14 +205,14 @@ def load_external_dependency_version() -> Dict[str, str]:
 
 
 def main():
-    parser = argparse.ArgumentParser(description='Generates a POM for aggregate reports.')
+    parser = argparse.ArgumentParser(description='Generates a POM for aggregate code coverage reports.')
     parser.add_argument('--project-list', '--pl', type=str)
     parser.add_argument('--groups', '--g', type=str)
     parser.add_argument('--exclude-project-list', '--epl', type=str)
-    parser.add_argument('--type', '--t', required=True, type=str, choices=['coverage', 'javadoc'], help='Specify the type of aggregate pom to generate.')
+    parser.add_argument('--type', '--t', type=str, choices=['coverage'], help='Compatibility option; only aggregate code coverage is supported.')
     args = parser.parse_args()
     start_time = time.time()
-    create_aggregate_pom(args.project_list, args.groups, args.exclude_project_list, args.type)
+    create_aggregate_pom(args.project_list, args.groups, args.exclude_project_list)
     elapsed_time = time.time() - start_time
 
     print('Effective POM File')

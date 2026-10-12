@@ -265,77 +265,76 @@ public interface ScheduledAction {
     ScheduledAction refresh(Context context);
 
     /**
-     * Attach resources to the scheduled action so they are included in future occurrences.
+     * Adds resources to the specified scheduled action.
      * 
-     * @param body The content of the action request.
+     * @param body The resources to add to the scheduled action.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from scheduled action resource requests, which contains the status of each resource.
+     * @return results of a scheduled action operation for targeted resources.
      */
     ResourceOperationResponse attachResources(ResourceAttachRequest body);
 
     /**
-     * Attach resources to the scheduled action so they are included in future occurrences.
+     * Adds resources to the specified scheduled action.
      * 
-     * @param body The content of the action request.
+     * @param body The resources to add to the scheduled action.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from scheduled action resource requests, which contains the status of each resource.
+     * @return results of a scheduled action operation for targeted resources.
      */
     ResourceOperationResponse attachResources(ResourceAttachRequest body, Context context);
 
     /**
-     * Detach resources from the scheduled action so they are excluded from future occurrences.
+     * Removes resources from the specified scheduled action.
      * 
-     * @param body The content of the action request.
+     * @param body The resources to remove from the scheduled action.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from scheduled action resource requests, which contains the status of each resource.
+     * @return results of a scheduled action operation for targeted resources.
      */
     ResourceOperationResponse detachResources(ResourceDetachRequest body);
 
     /**
-     * Detach resources from the scheduled action so they are excluded from future occurrences.
+     * Removes resources from the specified scheduled action.
      * 
-     * @param body The content of the action request.
+     * @param body The resources to remove from the scheduled action.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from scheduled action resource requests, which contains the status of each resource.
+     * @return results of a scheduled action operation for targeted resources.
      */
     ResourceOperationResponse detachResources(ResourceDetachRequest body, Context context);
 
     /**
-     * A synchronous resource action.
+     * Updates resource-specific settings for the specified scheduled action.
      * 
-     * @param body The content of the action request.
+     * @param body The resource-specific settings to update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from scheduled action resource requests, which contains the status of each resource along
-     * with {@link Response}.
+     * @return results of a scheduled action operation for targeted resources along with {@link Response}.
      */
     Response<ResourceOperationResponse> patchResourcesWithResponse(ResourcePatchRequest body, Context context);
 
     /**
-     * A synchronous resource action.
+     * Updates resource-specific settings for the specified scheduled action.
      * 
-     * @param body The content of the action request.
+     * @param body The resource-specific settings to update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from scheduled action resource requests, which contains the status of each resource.
+     * @return results of a scheduled action operation for targeted resources.
      */
     ResourceOperationResponse patchResources(ResourcePatchRequest body);
 
     /**
-     * Disable the scheduled action so its future occurrences do not run.
+     * Disables the specified scheduled action so future occurrences do not run.
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -343,7 +342,7 @@ public interface ScheduledAction {
     void disable();
 
     /**
-     * Disable the scheduled action so its future occurrences do not run.
+     * Disables the specified scheduled action so future occurrences do not run.
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -353,7 +352,7 @@ public interface ScheduledAction {
     void disable(Context context);
 
     /**
-     * Enable a previously disabled scheduled action so its future occurrences run.
+     * Enables the specified scheduled action so new occurrences run.
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -361,7 +360,7 @@ public interface ScheduledAction {
     void enable();
 
     /**
-     * Enable a previously disabled scheduled action so its future occurrences run.
+     * Enables the specified scheduled action so new occurrences run.
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -371,45 +370,47 @@ public interface ScheduledAction {
     void enable(Context context);
 
     /**
-     * Cancel the next scheduled occurrence of the scheduled action.
+     * Cancels the next occurrence of the specified scheduled action.
      * 
-     * @param body The content of the action request.
+     * @param body The resources to cancel in the next occurrence. If no resource IDs are provided, the occurrence is
+     * canceled for all resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from scheduled action resource requests, which contains the status of each resource.
+     * @return results of a scheduled action operation for targeted resources.
      */
     ResourceOperationResponse cancelNextOccurrence(CancelOccurrenceRequest body);
 
     /**
-     * Cancel the next scheduled occurrence of the scheduled action.
+     * Cancels the next occurrence of the specified scheduled action.
      * 
-     * @param body The content of the action request.
+     * @param body The resources to cancel in the next occurrence. If no resource IDs are provided, the occurrence is
+     * canceled for all resources.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from scheduled action resource requests, which contains the status of each resource.
+     * @return results of a scheduled action operation for targeted resources.
      */
     ResourceOperationResponse cancelNextOccurrence(CancelOccurrenceRequest body, Context context);
 
     /**
-     * Trigger a manual occurrence of the scheduled action immediately, outside its normal schedule.
+     * Runs the specified scheduled action immediately.
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete proxy resource types can be created by aliasing this type using a specific property type.
+     * @return one scheduled execution of a scheduled action.
      */
     Occurrence triggerManualOccurrence();
 
     /**
-     * Trigger a manual occurrence of the scheduled action immediately, outside its normal schedule.
+     * Runs the specified scheduled action immediately.
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete proxy resource types can be created by aliasing this type using a specific property type.
+     * @return one scheduled execution of a scheduled action.
      */
     Occurrence triggerManualOccurrence(Context context);
 }

@@ -55,7 +55,8 @@ public final class MonitorQueryMetricsUtils {
 
     public static String getSubscriptionFromResourceId(String s) {
         int i = s.indexOf("subscriptions/") + 14;
-        String subscriptionId = s.substring(i, s.indexOf("/", i));
+        int subscriptionIdEndIndex = s.indexOf("/", i);
+        String subscriptionId = s.substring(i, subscriptionIdEndIndex == -1 ? s.length() : subscriptionIdEndIndex);
         return subscriptionId;
     }
 

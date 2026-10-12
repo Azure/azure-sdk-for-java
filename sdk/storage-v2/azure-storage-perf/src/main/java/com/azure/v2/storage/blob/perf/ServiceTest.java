@@ -17,7 +17,6 @@ import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpCredentialPolicy;
 import io.clientcore.core.http.pipeline.HttpPipelineNextPolicy;
 import io.clientcore.core.models.binarydata.BinaryData;
-import io.clientcore.core.utils.SharedExecutorService;
 import io.clientcore.http.netty4.NettyHttpClientBuilder;
 import io.clientcore.http.okhttp3.OkHttpHttpClientBuilder;
 import org.conscrypt.Conscrypt;
@@ -71,7 +70,7 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
         } else if (client.equals("noconfig")) {
             System.out.println("Configuring Default JDK HttpClient without Conscrypt");
             // Create a default JDK HttpClient without any specific configuration
-            httpClient = new JdkHttpClientBuilder().executor(SharedExecutorService.getInstance()).build();
+            httpClient = new JdkHttpClientBuilder().build();
         } else {
 
             // Add Conscrypt as a security provider
