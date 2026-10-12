@@ -793,16 +793,18 @@ Before you start debugging, make sure the code of your JCA jar is the same as yo
 
 ### Configure an HTTP proxy
 
-The Azure Key Vault JCA provider delegates proxy selection to the JDK. Select the proxy properties based on the protocol of the request URL:
+Except for VM IMDS requests, the Azure Key Vault JCA provider uses the JDK's proxy selection. The default JDK proxy selector uses the following system properties based on the protocol of the request URL:
 
 | Request URL | Proxy properties |
 | --- | --- |
 | `http://` | `http.proxyHost` and `http.proxyPort` |
 | `https://` | `https.proxyHost` and `https.proxyPort` |
 
-Key Vault and Microsoft Entra token endpoints use HTTPS, while AIA certificate URLs may use HTTP or HTTPS. Both protocols use `http.nonProxyHosts` for hosts that should be accessed directly. Separate hosts with `|` and use `*` as a wildcard.
+Key Vault and standard Microsoft Entra token endpoints use HTTPS, while AIA certificate URLs may use HTTP or HTTPS. The default JDK proxy selector uses `http.nonProxyHosts` for both protocols to identify hosts that should be accessed directly. Separate hosts with `|` and use `*` as a wildcard.
 
-VM managed identity authentication uses the HTTP IMDS endpoint at `169.254.169.254`. The provider always accesses this endpoint directly, bypassing JVM proxy properties and the default `ProxySelector`; no additional `http.nonProxyHosts` entry is required for IMDS. This follows the [IMDS proxy requirements](https://learn.microsoft.com/azure/virtual-machines/instance-metadata-service#proxies). Key Vault, Microsoft Entra, and AIA requests continue to use the configured proxy settings. App Service and Container Apps managed identity endpoints are supplied by their hosting environment and may use HTTP.
+VM managed identity authentication uses the HTTP IMDS endpoint at `169.254.169.254`. The provider opens IMDS connections with `Proxy.NO_PROXY` to bypass HTTP proxy routing; no additional `http.nonProxyHosts` entry is required for IMDS. This follows the [IMDS proxy requirements](https://learn.microsoft.com/azure/virtual-machines/instance-metadata-service#proxies).
+
+App Service and Container Apps managed identity endpoints are supplied by their hosting environment and may use HTTP. These requests use the JDK's proxy selection, like Key Vault, Microsoft Entra, and AIA requests; the IMDS bypass does not apply to them. When using the default JDK proxy selector, configure `http.nonProxyHosts` for the endpoint host if your environment requires direct access.
 
 For a Java application, pass the properties as JVM `-D` options before `-jar`:
 

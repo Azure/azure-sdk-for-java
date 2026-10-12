@@ -327,7 +327,7 @@ public final class AccessTokenUtil {
     }
 
     /**
-     * Get the access token on Azure App Service.
+     * Gets an access token from the Azure App Service environment endpoint using JDK proxy selection.
      *
      * @param resource The resource.
      * @param clientId The user-assigned managed identity (null if system-assigned).
@@ -368,7 +368,8 @@ public final class AccessTokenUtil {
     }
 
     /**
-     * Get the access token on Azure Container App (API version 2019-08-01)
+     * Gets an access token from the Azure Container Apps environment endpoint using JDK proxy selection
+     * (API version 2019-08-01).
      *
      * @param resource The resource.
      * @param clientId The user-assigned managed identity (null if system-assigned).
@@ -412,7 +413,7 @@ public final class AccessTokenUtil {
     }
 
     /**
-     * Get the authorization token on everything else but Azure App Service.
+     * Gets an access token from the VM IMDS endpoint, bypassing HTTP proxy routing.
      *
      * @param resource The resource.
      * @param identity The user-assigned identity (null if system-assigned).

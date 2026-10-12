@@ -281,7 +281,7 @@ public class HttpUtilConnectionTest {
         String originalProxyPort = System.getProperty("http.proxyPort");
         String originalNonProxyHosts = System.getProperty("http.nonProxyHosts");
         ProxySelector originalSelector = ProxySelector.getDefault();
-        AtomicInteger selectionCount = new AtomicInteger();
+        AtomicInteger httpSelectionCount = new AtomicInteger();
 
         try (LocalProxyServer proxy = new LocalProxyServer("200 OK", "{\"access_token\":\"proxy-token\"}");
             LocalProxyServer imds
@@ -293,9 +293,12 @@ public class HttpUtilConnectionTest {
                 ProxySelector.setDefault(new ProxySelector() {
                     @Override
                     public List<Proxy> select(URI uri) {
-                        selectionCount.incrementAndGet();
-                        return Collections.singletonList(new Proxy(Proxy.Type.HTTP,
-                            new InetSocketAddress(InetAddress.getLoopbackAddress(), proxy.getPort())));
+                        if ("http".equalsIgnoreCase(uri.getScheme()) || "https".equalsIgnoreCase(uri.getScheme())) {
+                            httpSelectionCount.incrementAndGet();
+                            return Collections.singletonList(new Proxy(Proxy.Type.HTTP,
+                                new InetSocketAddress(InetAddress.getLoopbackAddress(), proxy.getPort())));
+                        }
+                        return Collections.singletonList(Proxy.NO_PROXY);
                     }
 
                     @Override
@@ -311,7 +314,7 @@ public class HttpUtilConnectionTest {
             AccessToken token = AccessTokenUtil.getAccessTokenOnOthers("https://vault.azure.net", identity, endpoint);
 
             assertNull(proxy.getRequestLine(), "IMDS requests must never reach a proxy.");
-            assertEquals(0, selectionCount.get(), "IMDS requests must bypass the default ProxySelector.");
+            assertEquals(0, httpSelectionCount.get(), "IMDS HTTP requests must bypass the default ProxySelector.");
             imds.awaitCompletion();
             assertNotNull(token);
             assertEquals("imds-token", token.getAccessToken());

@@ -101,7 +101,7 @@ public final class HttpUtil {
     }
 
     /**
-     * Performs a direct HTTP GET request, bypassing all proxy configuration for VM IMDS authentication.
+     * Performs an HTTP GET request with {@link Proxy#NO_PROXY} to bypass HTTP proxy routing for VM IMDS authentication.
      *
      * @param uri the URI to send the GET request to
      * @param headers the headers to include in the request
