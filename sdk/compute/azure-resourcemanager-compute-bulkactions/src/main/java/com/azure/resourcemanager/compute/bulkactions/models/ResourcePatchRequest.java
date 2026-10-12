@@ -13,12 +13,12 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Request model perform a resource operation in a list of resources.
+ * Resource-specific settings to update in a scheduled action.
  */
 @Fluent
 public final class ResourcePatchRequest implements JsonSerializable<ResourcePatchRequest> {
     /*
-     * The list of resources we watch to patch
+     * The resources and notification settings to update.
      */
     private List<ScheduledActionResourceInput> resources;
 
@@ -29,7 +29,7 @@ public final class ResourcePatchRequest implements JsonSerializable<ResourcePatc
     }
 
     /**
-     * Get the resources property: The list of resources we watch to patch.
+     * Get the resources property: The resources and notification settings to update.
      * 
      * @return the resources value.
      */
@@ -38,7 +38,7 @@ public final class ResourcePatchRequest implements JsonSerializable<ResourcePatc
     }
 
     /**
-     * Set the resources property: The list of resources we watch to patch.
+     * Set the resources property: The resources and notification settings to update.
      * 
      * @param resources the resources value to set.
      * @return the ResourcePatchRequest object itself.

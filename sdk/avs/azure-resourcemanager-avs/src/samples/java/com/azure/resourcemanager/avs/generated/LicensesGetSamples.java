@@ -11,7 +11,7 @@ import com.azure.resourcemanager.avs.models.LicenseName;
  */
 public final class LicensesGetSamples {
     /*
-     * x-ms-original-file: 2025-09-01/Licenses_Get.json
+     * x-ms-original-file: 2026-03-01/Licenses_Get.json
      */
     /**
      * Sample code: Licenses_Get.

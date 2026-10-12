@@ -18,6 +18,7 @@ Describe 'Classify-PRChanges' -Tag 'UnitTest' {
         @{ Path = 'eng/lintingconfigs/checkstyle/track2/checkstyle.xml' }
         @{ Path = 'sdk/core/azure-core/checkstyle-suppressions.xml' }
         @{ Path = 'sdk/ai/azure-ai-agents/revapi.json' }
+        @{ Path = 'sdk/search/azure-search-documents/revapi-suppressions.json' }
         @{ Path = '.vscode/cspell.json' }
         @{ Path = 'sdk/storage/cspell.yml' }
         @{ Path = 'sdk/voicelive/azure-ai-voicelive/cspell.json' }

@@ -14,19 +14,19 @@ public final class MonitoringPropertiesOfDrillTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MonitoringPropertiesOfDrill model = BinaryData.fromString(
-            "{\"identity\":{\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentity\":\"ilqu\"},\"logAnalyticsWorkspaceId\":\"ydxtqm\",\"rawMetricsDataCollectionRuleId\":\"ox\",\"serviceGroupMetricsDataCollectionRuleId\":\"ggufhyaomtb\",\"dataCollectionEndpointId\":\"havgrvk\"}")
+            "{\"identity\":{\"type\":\"SystemAssigned\",\"userAssignedIdentity\":\"uutpwoqhih\"},\"logAnalyticsWorkspaceId\":\"qg\",\"rawMetricsDataCollectionRuleId\":\"pnfqntcyp\",\"serviceGroupMetricsDataCollectionRuleId\":\"jv\",\"dataCollectionEndpointId\":\"imwkslircizj\"}")
             .toObject(MonitoringPropertiesOfDrill.class);
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("ilqu", model.identity().userAssignedIdentity());
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("uutpwoqhih", model.identity().userAssignedIdentity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MonitoringPropertiesOfDrill model = new MonitoringPropertiesOfDrill()
-            .withIdentity(new AssociatedIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
-                .withUserAssignedIdentity("ilqu"));
+            .withIdentity(new AssociatedIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
+                .withUserAssignedIdentity("uutpwoqhih"));
         model = BinaryData.fromObject(model).toObject(MonitoringPropertiesOfDrill.class);
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("ilqu", model.identity().userAssignedIdentity());
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("uutpwoqhih", model.identity().userAssignedIdentity());
     }
 }

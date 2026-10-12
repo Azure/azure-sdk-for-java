@@ -293,7 +293,7 @@ public final class SearchManagementClientImpl extends AzureServiceClient impleme
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2026-03-01-preview";
+        this.apiVersion = "2026-09-01-preview";
         this.offerings = new OfferingsClientImpl(this);
         this.operations = new OperationsClientImpl(this);
         this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);

@@ -472,7 +472,7 @@ public final class NetworkCloudManagementClientImpl implements NetworkCloudManag
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2026-05-01-preview";
+        this.apiVersion = "2026-07-01";
         this.operations = new OperationsClientImpl(this);
         this.accessBridges = new AccessBridgesClientImpl(this);
         this.bareMetalMachines = new BareMetalMachinesClientImpl(this);

@@ -13,19 +13,19 @@ public final class FetchTieringCostInfoRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FetchTieringCostInfoRequest model = BinaryData.fromString(
-            "{\"objectType\":\"FetchTieringCostInfoRequest\",\"sourceTierType\":\"ArchivedRP\",\"targetTierType\":\"InstantRP\"}")
+            "{\"objectType\":\"FetchTieringCostInfoRequest\",\"sourceTierType\":\"ArchivedRP\",\"targetTierType\":\"Invalid\"}")
             .toObject(FetchTieringCostInfoRequest.class);
         Assertions.assertEquals(RecoveryPointTierType.ARCHIVED_RP, model.sourceTierType());
-        Assertions.assertEquals(RecoveryPointTierType.INSTANT_RP, model.targetTierType());
+        Assertions.assertEquals(RecoveryPointTierType.INVALID, model.targetTierType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         FetchTieringCostInfoRequest model
             = new FetchTieringCostInfoRequest().withSourceTierType(RecoveryPointTierType.ARCHIVED_RP)
-                .withTargetTierType(RecoveryPointTierType.INSTANT_RP);
+                .withTargetTierType(RecoveryPointTierType.INVALID);
         model = BinaryData.fromObject(model).toObject(FetchTieringCostInfoRequest.class);
         Assertions.assertEquals(RecoveryPointTierType.ARCHIVED_RP, model.sourceTierType());
-        Assertions.assertEquals(RecoveryPointTierType.INSTANT_RP, model.targetTierType());
+        Assertions.assertEquals(RecoveryPointTierType.INVALID, model.targetTierType());
     }
 }

@@ -10,8 +10,8 @@ import com.microsoft.azure.eventhubs.PartitionReceiver;
 import com.microsoft.azure.eventhubs.lib.ApiTestBase;
 import com.microsoft.azure.eventhubs.lib.TestBase;
 import com.microsoft.azure.eventhubs.lib.TestContext;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executors;
@@ -19,7 +19,7 @@ import java.util.concurrent.ScheduledExecutorService;
 
 public class EventHubClientTest extends ApiTestBase {
 
-    @Test()
+    @Test
     public void testParallelEventHubClients() throws Exception {
         final String consumerGroupName = TestContext.getConsumerGroupName();
         final String partitionId = "0";
@@ -46,7 +46,7 @@ public class EventHubClientTest extends ApiTestBase {
 
                 PartitionReceiver receiver = ehClient.createReceiverSync(consumerGroupName, partitionId, EventPosition.fromStartOfStream());
                 try {
-                    Assert.assertTrue(receiver.receiveSync(100).iterator().hasNext());
+                    Assertions.assertTrue(receiver.receiveSync(100).iterator().hasNext());
                 } finally {
                     receiver.closeSync();
                 }

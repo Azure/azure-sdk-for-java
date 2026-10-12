@@ -15,7 +15,7 @@ import java.util.Arrays;
  */
 public final class SecurityPoliciesInterfaceUpdateSamples {
     /*
-     * x-ms-original-file: 2025-03-01-preview/IpAccessRulesSecurityPolicyPatch.json
+     * x-ms-original-file: 2026-03-01/IpAccessRulesSecurityPolicyPatch.json
      */
     /**
      * Sample code: Update IpAccessRules SecurityPolicy.
@@ -34,7 +34,7 @@ public final class SecurityPoliciesInterfaceUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-03-01-preview/WafSecurityPolicyPatch.json
+     * x-ms-original-file: 2026-03-01/WafSecurityPolicyPatch.json
      */
     /**
      * Sample code: Update WAF SecurityPolicy.

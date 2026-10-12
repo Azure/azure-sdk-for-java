@@ -359,6 +359,29 @@ public final class ServerForPatch implements JsonSerializable<ServerForPatch> {
     }
 
     /**
+     * Get the sourceServerResourceId property: Identifier of the server to be used as the source of the new server.
+     * 
+     * @return the sourceServerResourceId value.
+     */
+    public String sourceServerResourceId() {
+        return this.innerProperties() == null ? null : this.innerProperties().sourceServerResourceId();
+    }
+
+    /**
+     * Set the sourceServerResourceId property: Identifier of the server to be used as the source of the new server.
+     * 
+     * @param sourceServerResourceId the sourceServerResourceId value to set.
+     * @return the ServerForPatch object itself.
+     */
+    public ServerForPatch withSourceServerResourceId(String sourceServerResourceId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServerPropertiesForPatch();
+        }
+        this.innerProperties().withSourceServerResourceId(sourceServerResourceId);
+        return this;
+    }
+
+    /**
      * Get the replicationRole property: Role of the server in a replication set.
      * 
      * @return the replicationRole value.
@@ -451,6 +474,31 @@ public final class ServerForPatch implements JsonSerializable<ServerForPatch> {
             this.innerProperties = new ServerPropertiesForPatch();
         }
         this.innerProperties().withCluster(cluster);
+        return this;
+    }
+
+    /**
+     * Get the fipsMode property: Indicates if FIPS (Federal Information Processing Standards) mode is enabled on the
+     * server. If not specified, the current value is preserved.
+     * 
+     * @return the fipsMode value.
+     */
+    public FipsMode fipsMode() {
+        return this.innerProperties() == null ? null : this.innerProperties().fipsMode();
+    }
+
+    /**
+     * Set the fipsMode property: Indicates if FIPS (Federal Information Processing Standards) mode is enabled on the
+     * server. If not specified, the current value is preserved.
+     * 
+     * @param fipsMode the fipsMode value to set.
+     * @return the ServerForPatch object itself.
+     */
+    public ServerForPatch withFipsMode(FipsMode fipsMode) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServerPropertiesForPatch();
+        }
+        this.innerProperties().withFipsMode(fipsMode);
         return this;
     }
 

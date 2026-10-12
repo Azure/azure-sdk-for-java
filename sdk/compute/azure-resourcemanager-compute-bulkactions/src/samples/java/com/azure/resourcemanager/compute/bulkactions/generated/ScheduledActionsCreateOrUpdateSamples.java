@@ -8,13 +8,9 @@ import com.azure.resourcemanager.compute.bulkactions.models.Language;
 import com.azure.resourcemanager.compute.bulkactions.models.Month;
 import com.azure.resourcemanager.compute.bulkactions.models.NotificationProperties;
 import com.azure.resourcemanager.compute.bulkactions.models.NotificationType;
-import com.azure.resourcemanager.compute.bulkactions.models.OptimizationPreference;
 import com.azure.resourcemanager.compute.bulkactions.models.ResourceType;
 import com.azure.resourcemanager.compute.bulkactions.models.ScheduledActionProperties;
 import com.azure.resourcemanager.compute.bulkactions.models.ScheduledActionType;
-import com.azure.resourcemanager.compute.bulkactions.models.ScheduledActionsDeadlineType;
-import com.azure.resourcemanager.compute.bulkactions.models.ScheduledActionsExecutionParameters;
-import com.azure.resourcemanager.compute.bulkactions.models.ScheduledActionsRetryPolicy;
 import com.azure.resourcemanager.compute.bulkactions.models.ScheduledActionsSchedule;
 import com.azure.resourcemanager.compute.bulkactions.models.WeekDay;
 import java.time.OffsetDateTime;
@@ -27,40 +23,61 @@ import java.util.Map;
  */
 public final class ScheduledActionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-08-06-preview/ScheduledActions_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-06-preview/ScheduledActions_CreateOrUpdate_BasicSuccess.json
      */
     /**
-     * Sample code: ScheduledActions_CreateOrUpdate_MaximumSet.
+     * Sample code: 01 - Create a new recurring scheduled action.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
-    public static void scheduledActionsCreateOrUpdateMaximumSet(
+    public static void zeroOneSpaceHyphenMinusSpaceCreateSpaceaSpacenewSpacerecurringSpacescheduledSpaceaction(
         com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.scheduledActions()
-            .define("myScheduledAction")
+            .define("weekday-start")
             .withRegion("eastus")
-            .withExistingResourceGroup("rgcompute")
-            .withTags(mapOf("key2102", "fakeTokenPlaceholder"))
+            .withExistingResourceGroup("example-rg")
             .withProperties(new ScheduledActionProperties().withResourceType(ResourceType.VIRTUAL_MACHINE)
                 .withActionType(ScheduledActionType.START)
-                .withStartTime(OffsetDateTime.parse("2025-04-17T00:23:55.281Z"))
-                .withEndTime(OffsetDateTime.parse("2025-04-17T00:23:55.286Z"))
+                .withStartTime(OffsetDateTime.parse("2026-09-15T07:00:00-07:00"))
+                .withSchedule(new ScheduledActionsSchedule().withScheduledTime("07:00:00")
+                    .withTimeZone("America/Los_Angeles")
+                    .withRequestedWeekDays(Arrays.asList(WeekDay.MONDAY, WeekDay.TUESDAY, WeekDay.WEDNESDAY,
+                        WeekDay.THURSDAY, WeekDay.FRIDAY)))
+                .withNotificationSettings(Arrays.asList()))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2026-10-06-preview/ScheduledActions_CreateOrUpdate_ComprehensiveSuccess.json
+     */
+    /**
+     * Sample code: 02 - Create a recurring scheduled action with comprehensive settings.
+     * 
+     * @param manager Entry point to ComputeBulkActionsManager.
+     */
+    public static void
+        zeroTwoSpaceHyphenMinusSpaceCreateSpaceaSpacerecurringSpacescheduledSpaceactionSpacewithSpacecomprehensiveSpacesettings(
+            com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
+        manager.scheduledActions()
+            .define("first-fifteenth-start")
+            .withRegion("eastus")
+            .withExistingResourceGroup("example-rg")
+            .withTags(mapOf("environment", "production"))
+            .withProperties(new ScheduledActionProperties().withResourceType(ResourceType.VIRTUAL_MACHINE)
+                .withActionType(ScheduledActionType.START)
+                .withStartTime(OffsetDateTime.parse("2026-09-01T19:00:00-07:00"))
+                .withEndTime(OffsetDateTime.parse("2027-09-01T19:00:00-07:00"))
                 .withSchedule(new ScheduledActionsSchedule().withScheduledTime("19:00:00")
                     .withTimeZone("America/Los_Angeles")
-                    .withRequestedWeekDays(Arrays.asList(WeekDay.MONDAY))
-                    .withRequestedMonths(Arrays.asList(Month.JANUARY))
-                    .withRequestedDaysOfTheMonth(Arrays.asList(15))
-                    .withExecutionParameters(new ScheduledActionsExecutionParameters()
-                        .withOptimizationPreference(OptimizationPreference.COST)
-                        .withRetryPolicy(
-                            new ScheduledActionsRetryPolicy().withRetryCount(17).withRetryWindowInMinutes(29)))
-                    .withDeadlineType(ScheduledActionsDeadlineType.UNKNOWN))
+                    .withRequestedWeekDays(Arrays.asList(WeekDay.ALL))
+                    .withRequestedMonths(Arrays.asList(Month.ALL))
+                    .withRequestedDaysOfTheMonth(Arrays.asList(1, 15)))
                 .withNotificationSettings(
                     Arrays.asList(new NotificationProperties().withDestination("admin@contoso.com")
                         .withType(NotificationType.EMAIL)
                         .withLanguage(Language.EN_US)
                         .withDisabled(true)))
-                .withDisabled(true))
+                .withDisabled(false))
             .create();
     }
 

@@ -23,7 +23,7 @@ public final class PrivateEndpointConnectionsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"privateEndpoint\":{\"id\":\"jwosytxitcskfck\"},\"privateLinkServiceConnectionState\":{\"status\":\"Failed\",\"description\":\"iekkezz\",\"actionsRequired\":\"hlyfjhdgqgg\"},\"groupIds\":[\"unygaeqid\",\"qfatpxllrxcyjm\"]},\"id\":\"dsuvarmywdmjsjqb\",\"name\":\"hhyxxrw\",\"type\":\"yc\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleted\",\"privateEndpoint\":{\"id\":\"ccbdre\"},\"privateLinkServiceConnectionState\":{\"status\":\"Failed\",\"description\":\"exdrrvqahqkg\",\"actionsRequired\":\"pwijnhy\"},\"groupIds\":[\"f\",\"cxzbfvoowvr\"]},\"id\":\"t\",\"name\":\"jqppyostronzmy\",\"type\":\"gfipnsxk\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,15 +32,15 @@ public final class PrivateEndpointConnectionsListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<PrivateEndpointConnection> response
-            = manager.privateEndpointConnections().list("oulpjrv", "ag", com.azure.core.util.Context.NONE);
+        PagedIterable<PrivateEndpointConnection> response = manager.privateEndpointConnections()
+            .list("itvgbmhrixkwm", "ijejvegrhbpn", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.FAILED,
             response.iterator().next().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("iekkezz",
+        Assertions.assertEquals("exdrrvqahqkg",
             response.iterator().next().privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("hlyfjhdgqgg",
+        Assertions.assertEquals("pwijnhy",
             response.iterator().next().privateLinkServiceConnectionState().actionsRequired());
-        Assertions.assertEquals("unygaeqid", response.iterator().next().groupIds().get(0));
+        Assertions.assertEquals("f", response.iterator().next().groupIds().get(0));
     }
 }

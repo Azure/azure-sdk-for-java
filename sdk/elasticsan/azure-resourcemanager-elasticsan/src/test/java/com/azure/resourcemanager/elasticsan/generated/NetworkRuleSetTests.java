@@ -15,18 +15,18 @@ public final class NetworkRuleSetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkRuleSet model
-            = BinaryData.fromString("{\"virtualNetworkRules\":[{\"id\":\"iucgygevqzn\",\"action\":\"Allow\"}]}")
+            = BinaryData.fromString("{\"virtualNetworkRules\":[{\"id\":\"dsuyonobgla\",\"action\":\"Allow\"}]}")
                 .toObject(NetworkRuleSet.class);
-        Assertions.assertEquals("iucgygevqzn", model.virtualNetworkRules().get(0).virtualNetworkResourceId());
+        Assertions.assertEquals("dsuyonobgla", model.virtualNetworkRules().get(0).virtualNetworkResourceId());
         Assertions.assertEquals(Action.ALLOW, model.virtualNetworkRules().get(0).action());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         NetworkRuleSet model = new NetworkRuleSet().withVirtualNetworkRules(Arrays
-            .asList(new VirtualNetworkRule().withVirtualNetworkResourceId("iucgygevqzn").withAction(Action.ALLOW)));
+            .asList(new VirtualNetworkRule().withVirtualNetworkResourceId("dsuyonobgla").withAction(Action.ALLOW)));
         model = BinaryData.fromObject(model).toObject(NetworkRuleSet.class);
-        Assertions.assertEquals("iucgygevqzn", model.virtualNetworkRules().get(0).virtualNetworkResourceId());
+        Assertions.assertEquals("dsuyonobgla", model.virtualNetworkRules().get(0).virtualNetworkResourceId());
         Assertions.assertEquals(Action.ALLOW, model.virtualNetworkRules().get(0).action());
     }
 }

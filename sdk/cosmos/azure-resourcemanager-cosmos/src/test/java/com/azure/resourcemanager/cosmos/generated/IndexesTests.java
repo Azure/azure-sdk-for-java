@@ -13,19 +13,19 @@ import org.junit.jupiter.api.Assertions;
 public final class IndexesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Indexes model = BinaryData.fromString("{\"dataType\":\"String\",\"precision\":1197375061,\"kind\":\"Hash\"}")
+        Indexes model = BinaryData.fromString("{\"dataType\":\"String\",\"precision\":1974218119,\"kind\":\"Hash\"}")
             .toObject(Indexes.class);
         Assertions.assertEquals(DataType.STRING, model.dataType());
-        Assertions.assertEquals(1197375061, model.precision());
+        Assertions.assertEquals(1974218119, model.precision());
         Assertions.assertEquals(IndexKind.HASH, model.kind());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Indexes model = new Indexes().withDataType(DataType.STRING).withPrecision(1197375061).withKind(IndexKind.HASH);
+        Indexes model = new Indexes().withDataType(DataType.STRING).withPrecision(1974218119).withKind(IndexKind.HASH);
         model = BinaryData.fromObject(model).toObject(Indexes.class);
         Assertions.assertEquals(DataType.STRING, model.dataType());
-        Assertions.assertEquals(1197375061, model.precision());
+        Assertions.assertEquals(1974218119, model.precision());
         Assertions.assertEquals(IndexKind.HASH, model.kind());
     }
 }

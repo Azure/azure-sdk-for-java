@@ -15,7 +15,7 @@ public class GetLedgerEntry {
             .ledgerEndpoint(Configuration.getGlobalConfiguration().get("LEDGERENDPOINT"))
             .buildClient();
         // BEGIN:com.azure.security.confidentialledger.generated.get-ledger-entry.get-ledger-entry
-        LedgerQueryResult response = confidentialLedgerClient.getLedgerEntry("2.15", null);
+        LedgerQueryResult response = confidentialLedgerClient.getLedgerEntry("2.15", (String) null);
         // END:com.azure.security.confidentialledger.generated.get-ledger-entry.get-ledger-entry
     }
 }
