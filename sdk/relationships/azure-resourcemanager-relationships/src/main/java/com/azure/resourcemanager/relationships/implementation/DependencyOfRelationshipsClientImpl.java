@@ -19,6 +19,10 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
@@ -30,6 +34,7 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.relationships.fluent.DependencyOfRelationshipsClient;
 import com.azure.resourcemanager.relationships.fluent.models.DependencyOfRelationshipInner;
+import com.azure.resourcemanager.relationships.implementation.models.DependencyOfRelationshipListResult;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -119,6 +124,40 @@ public final class DependencyOfRelationshipsClientImpl implements DependencyOfRe
             @QueryParam("api-version") String apiVersion,
             @PathParam(value = "resourceUri", encoded = true) String resourceUri, @PathParam("name") String name,
             Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/{resourceUri}/providers/Microsoft.Relationships/dependencyOf")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<DependencyOfRelationshipListResult>> listByParent(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam(value = "resourceUri", encoded = true) String resourceUri, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/{resourceUri}/providers/Microsoft.Relationships/dependencyOf")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<DependencyOfRelationshipListResult> listByParentSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam(value = "resourceUri", encoded = true) String resourceUri, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<DependencyOfRelationshipListResult>> listByParentNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<DependencyOfRelationshipListResult> listByParentNextSync(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -506,5 +545,168 @@ public final class DependencyOfRelationshipsClientImpl implements DependencyOfRe
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceUri, String name, Context context) {
         beginDelete(resourceUri, name, context).getFinalResult();
+    }
+
+    /**
+     * List DependencyOfRelationship resources by parent.
+     * 
+     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a DependencyOfRelationship list operation along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<DependencyOfRelationshipInner>> listByParentSinglePageAsync(String resourceUri) {
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listByParent(this.client.getEndpoint(), this.client.getApiVersion(),
+                resourceUri, accept, context))
+            .<PagedResponse<DependencyOfRelationshipInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * List DependencyOfRelationship resources by parent.
+     * 
+     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a DependencyOfRelationship list operation as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<DependencyOfRelationshipInner> listByParentAsync(String resourceUri) {
+        return new PagedFlux<>(() -> listByParentSinglePageAsync(resourceUri),
+            nextLink -> listByParentNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * List DependencyOfRelationship resources by parent.
+     * 
+     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a DependencyOfRelationship list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DependencyOfRelationshipInner> listByParentSinglePage(String resourceUri) {
+        final String accept = "application/json";
+        Response<DependencyOfRelationshipListResult> res = service.listByParentSync(this.client.getEndpoint(),
+            this.client.getApiVersion(), resourceUri, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * List DependencyOfRelationship resources by parent.
+     * 
+     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a DependencyOfRelationship list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DependencyOfRelationshipInner> listByParentSinglePage(String resourceUri, Context context) {
+        final String accept = "application/json";
+        Response<DependencyOfRelationshipListResult> res = service.listByParentSync(this.client.getEndpoint(),
+            this.client.getApiVersion(), resourceUri, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * List DependencyOfRelationship resources by parent.
+     * 
+     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a DependencyOfRelationship list operation as paginated response with
+     * {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<DependencyOfRelationshipInner> listByParent(String resourceUri) {
+        return new PagedIterable<>(() -> listByParentSinglePage(resourceUri),
+            nextLink -> listByParentNextSinglePage(nextLink));
+    }
+
+    /**
+     * List DependencyOfRelationship resources by parent.
+     * 
+     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a DependencyOfRelationship list operation as paginated response with
+     * {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<DependencyOfRelationshipInner> listByParent(String resourceUri, Context context) {
+        return new PagedIterable<>(() -> listByParentSinglePage(resourceUri, context),
+            nextLink -> listByParentNextSinglePage(nextLink, context));
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a DependencyOfRelationship list operation along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<DependencyOfRelationshipInner>> listByParentNextSinglePageAsync(String nextLink) {
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listByParentNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<DependencyOfRelationshipInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a DependencyOfRelationship list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DependencyOfRelationshipInner> listByParentNextSinglePage(String nextLink) {
+        final String accept = "application/json";
+        Response<DependencyOfRelationshipListResult> res
+            = service.listByParentNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a DependencyOfRelationship list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DependencyOfRelationshipInner> listByParentNextSinglePage(String nextLink, Context context) {
+        final String accept = "application/json";
+        Response<DependencyOfRelationshipListResult> res
+            = service.listByParentNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 }

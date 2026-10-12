@@ -20,8 +20,8 @@ public final class IngestionRunsListTests extends PlanetaryComputerProClientTest
     @Disabled
     public void testIngestionRunsListTests() {
         // method invocation
-        PagedIterable<IngestionRun> response
-            = ingestionClient.listRuns("naip-atl", "00000000-0000-0000-0000-000000000000", null, null);
+        PagedIterable<IngestionRun> response = ingestionClient.listRuns("naip-atl",
+            "00000000-0000-0000-0000-000000000000", (Integer) null, (Integer) null);
 
         // response assertion
         Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());

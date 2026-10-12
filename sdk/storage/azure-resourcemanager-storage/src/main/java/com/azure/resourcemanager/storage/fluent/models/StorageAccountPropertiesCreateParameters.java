@@ -191,6 +191,12 @@ public final class StorageAccountPropertiesCreateParameters
      */
     private StorageDataCollaborationPolicyProperties dataCollaborationPolicyProperties;
 
+    /*
+     * Allow or disallow cross AAD tenant user delegation SAS (shared access signature). The default interpretation is
+     * false for this property.
+     */
+    private Boolean allowCrossTenantDelegationSas;
+
     /**
      * Creates an instance of StorageAccountPropertiesCreateParameters class.
      */
@@ -817,6 +823,29 @@ public final class StorageAccountPropertiesCreateParameters
     }
 
     /**
+     * Get the allowCrossTenantDelegationSas property: Allow or disallow cross AAD tenant user delegation SAS (shared
+     * access signature). The default interpretation is false for this property.
+     * 
+     * @return the allowCrossTenantDelegationSas value.
+     */
+    public Boolean allowCrossTenantDelegationSas() {
+        return this.allowCrossTenantDelegationSas;
+    }
+
+    /**
+     * Set the allowCrossTenantDelegationSas property: Allow or disallow cross AAD tenant user delegation SAS (shared
+     * access signature). The default interpretation is false for this property.
+     * 
+     * @param allowCrossTenantDelegationSas the allowCrossTenantDelegationSas value to set.
+     * @return the StorageAccountPropertiesCreateParameters object itself.
+     */
+    public StorageAccountPropertiesCreateParameters
+        withAllowCrossTenantDelegationSas(Boolean allowCrossTenantDelegationSas) {
+        this.allowCrossTenantDelegationSas = allowCrossTenantDelegationSas;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -899,6 +928,7 @@ public final class StorageAccountPropertiesCreateParameters
         jsonWriter.writeJsonField("geoPriorityReplicationStatus", this.geoPriorityReplicationStatus);
         jsonWriter.writeJsonField("allowSharedKeyAccessForServices", this.allowSharedKeyAccessForServices);
         jsonWriter.writeJsonField("dataCollaborationPolicyProperties", this.dataCollaborationPolicyProperties);
+        jsonWriter.writeBooleanField("allowCrossTenantDelegationSas", this.allowCrossTenantDelegationSas);
         return jsonWriter.writeEndObject();
     }
 
@@ -998,6 +1028,9 @@ public final class StorageAccountPropertiesCreateParameters
                 } else if ("dataCollaborationPolicyProperties".equals(fieldName)) {
                     deserializedStorageAccountPropertiesCreateParameters.dataCollaborationPolicyProperties
                         = StorageDataCollaborationPolicyProperties.fromJson(reader);
+                } else if ("allowCrossTenantDelegationSas".equals(fieldName)) {
+                    deserializedStorageAccountPropertiesCreateParameters.allowCrossTenantDelegationSas
+                        = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }

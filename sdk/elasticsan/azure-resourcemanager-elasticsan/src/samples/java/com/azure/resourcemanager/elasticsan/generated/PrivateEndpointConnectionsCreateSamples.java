@@ -14,7 +14,7 @@ import java.util.Arrays;
  */
 public final class PrivateEndpointConnectionsCreateSamples {
     /*
-     * x-ms-original-file: 2025-09-01/PrivateEndpointConnections_Create_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-05-01-preview/PrivateEndpointConnections_Create_MaximumSet_Gen.json
      */
     /**
      * Sample code: PrivateEndpointConnections_Create_MaximumSet_Gen.
@@ -36,7 +36,7 @@ public final class PrivateEndpointConnectionsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/PrivateEndpointConnections_Create_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-05-01-preview/PrivateEndpointConnections_Create_MinimumSet_Gen.json
      */
     /**
      * Sample code: PrivateEndpointConnections_Create_MinimumSet_Gen.

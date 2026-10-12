@@ -14,7 +14,7 @@ import java.io.IOException;
  * Computer use preview
  *
  * A tool that controls a virtual computer. Learn more about the [computer
- * tool](https://platform.openai.com/docs/guides/tools-computer-use).
+ * tool](https://developers.openai.com/api/docs/guides/tools-computer-use).
  */
 @Immutable
 public final class ComputerUsePreviewTool extends Tool {

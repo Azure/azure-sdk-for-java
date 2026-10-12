@@ -8,11 +8,11 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * The type of notification supported.
+ * The delivery method for scheduled action notifications.
  */
 public final class NotificationType extends ExpandableStringEnum<NotificationType> {
     /**
-     * Notify through e-mail.
+     * Sends notifications by email.
      */
     public static final NotificationType EMAIL = fromString("Email");
 

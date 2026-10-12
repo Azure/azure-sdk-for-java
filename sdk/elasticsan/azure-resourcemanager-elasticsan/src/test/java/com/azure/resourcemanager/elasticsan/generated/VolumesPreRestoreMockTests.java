@@ -22,7 +22,7 @@ import reactor.core.publisher.Mono;
 public final class VolumesPreRestoreMockTests {
     @Test
     public void testPreRestore() throws Exception {
-        String responseStr = "{\"validationStatus\":\"zfoqouicybxar\"}";
+        String responseStr = "{\"validationStatus\":\"irctymoxoftpipiw\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,10 +32,10 @@ public final class VolumesPreRestoreMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PreValidationResponse response = manager.volumes()
-            .preRestore("q", "efkifr", "tpuqujmq",
-                new DiskSnapshotList().withDiskSnapshotIds(Arrays.asList("kfbtndoaongbjc", "tujitcjedft", "waezkojvd")),
+            .preRestore("vzzbtdcq", "pniyujviyl", "dshf",
+                new DiskSnapshotList().withDiskSnapshotIds(Arrays.asList("n", "bgye", "rymsgaojfmw", "cotmr")),
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("zfoqouicybxar", response.validationStatus());
+        Assertions.assertEquals("irctymoxoftpipiw", response.validationStatus());
     }
 }

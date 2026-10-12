@@ -8,21 +8,21 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Specify which action user wants to be performed on the resources.
+ * The operation performed by the scheduled action.
  */
 public final class ScheduledActionType extends ExpandableStringEnum<ScheduledActionType> {
     /**
-     * Perform a start action on the specified resources.
+     * Starts the targeted resources.
      */
     public static final ScheduledActionType START = fromString("Start");
 
     /**
-     * Perform a deallocate action on the specified resources.
+     * Deallocates the targeted resources.
      */
     public static final ScheduledActionType DEALLOCATE = fromString("Deallocate");
 
     /**
-     * Perform hibernate and deallocate on the specified resources.
+     * Hibernates the targeted resources.
      */
     public static final ScheduledActionType HIBERNATE = fromString("Hibernate");
 

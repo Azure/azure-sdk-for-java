@@ -7,24 +7,28 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Backup;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.GeographicallyRedundantBackup;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.ImmutableBackup;
 import org.junit.jupiter.api.Assertions;
 
 public final class BackupTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Backup model = BinaryData.fromString(
-            "{\"backupRetentionDays\":1817218794,\"geoRedundantBackup\":\"Enabled\",\"earliestRestoreDate\":\"2021-10-05T16:00:46Z\"}")
+            "{\"backupRetentionDays\":1392355180,\"geoRedundantBackup\":\"Disabled\",\"immutableBackup\":\"Disabled\",\"earliestRestoreDate\":\"2021-05-03T13:05:10Z\"}")
             .toObject(Backup.class);
-        Assertions.assertEquals(1817218794, model.backupRetentionDays());
-        Assertions.assertEquals(GeographicallyRedundantBackup.ENABLED, model.geoRedundantBackup());
+        Assertions.assertEquals(1392355180, model.backupRetentionDays());
+        Assertions.assertEquals(GeographicallyRedundantBackup.DISABLED, model.geoRedundantBackup());
+        Assertions.assertEquals(ImmutableBackup.DISABLED, model.immutableBackup());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Backup model = new Backup().withBackupRetentionDays(1817218794)
-            .withGeoRedundantBackup(GeographicallyRedundantBackup.ENABLED);
+        Backup model = new Backup().withBackupRetentionDays(1392355180)
+            .withGeoRedundantBackup(GeographicallyRedundantBackup.DISABLED)
+            .withImmutableBackup(ImmutableBackup.DISABLED);
         model = BinaryData.fromObject(model).toObject(Backup.class);
-        Assertions.assertEquals(1817218794, model.backupRetentionDays());
-        Assertions.assertEquals(GeographicallyRedundantBackup.ENABLED, model.geoRedundantBackup());
+        Assertions.assertEquals(1392355180, model.backupRetentionDays());
+        Assertions.assertEquals(GeographicallyRedundantBackup.DISABLED, model.geoRedundantBackup());
+        Assertions.assertEquals(ImmutableBackup.DISABLED, model.immutableBackup());
     }
 }

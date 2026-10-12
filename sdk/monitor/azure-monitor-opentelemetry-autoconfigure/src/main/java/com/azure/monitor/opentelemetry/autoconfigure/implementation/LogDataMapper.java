@@ -70,6 +70,7 @@ public class LogDataMapper {
             .exactString(LOG4J_MARKER, "Marker")
             .exactStringArray(LOGBACK_MARKER, "Marker");
 
+        CustomMeasurementsMapper.register(mappingsBuilder);
         SpanDataMapper.applyCommonTags(mappingsBuilder);
 
         MAPPINGS = mappingsBuilder.build();

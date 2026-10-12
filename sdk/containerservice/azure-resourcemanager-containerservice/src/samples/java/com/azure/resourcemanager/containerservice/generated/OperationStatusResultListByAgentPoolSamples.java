@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerservice.generated;
  */
 public final class OperationStatusResultListByAgentPoolSamples {
     /*
-     * x-ms-original-file: 2026-06-02-preview/OperationStatusResultListByAgentPool.json
+     * x-ms-original-file: 2026-07-02-preview/OperationStatusResultListByAgentPool.json
      */
     /**
      * Sample code: List Operations on Agent Pool.
@@ -24,7 +24,7 @@ public final class OperationStatusResultListByAgentPoolSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-02-preview/OperationStatusResultListByAgentPool_Active.json
+     * x-ms-original-file: 2026-07-02-preview/OperationStatusResultListByAgentPool_Active.json
      */
     /**
      * Sample code: List Active Operations on Agent Pool.

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.networkcloud.generated;
  */
 public final class RacksGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Racks_Get.json
+     * x-ms-original-file: 2026-07-01/Racks_Get.json
      */
     /**
      * Sample code: Get rack.
