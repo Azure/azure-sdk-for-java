@@ -11,7 +11,7 @@ import com.azure.resourcemanager.network.fluent.models.ConnectionSharedKeyInner;
  */
 public final class VirtualNetworkGatewayConnectionsSetSharedKeySamples {
     /*
-     * x-ms-original-file: 2026-01-01/VirtualNetworkGatewayConnectionSetSharedKey.json
+     * x-ms-original-file: 2026-03-01/VirtualNetworkGatewayConnectionSetSharedKey.json
      */
     /**
      * Sample code: SetVirtualNetworkGatewayConnectionSharedKey.
