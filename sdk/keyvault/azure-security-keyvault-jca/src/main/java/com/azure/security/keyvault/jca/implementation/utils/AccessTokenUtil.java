@@ -419,6 +419,10 @@ public final class AccessTokenUtil {
      * @return The authorization token.
      */
     private static AccessToken getAccessTokenOnOthers(String resource, String identity) {
+        return getAccessTokenOnOthers(resource, identity, OAUTH2_MANAGED_IDENTITY_TOKEN_URL);
+    }
+
+    static AccessToken getAccessTokenOnOthers(String resource, String identity, String endpoint) {
         LOGGER.entering("AccessTokenUtil", "getAccessTokenOnOthers", resource);
         LOGGER.info("Getting access token using managed identity");
 
@@ -430,13 +434,13 @@ public final class AccessTokenUtil {
 
         StringBuilder url = new StringBuilder();
 
-        url.append(OAUTH2_MANAGED_IDENTITY_TOKEN_URL).append(RESOURCE_FRAGMENT).append(resource);
+        url.append(endpoint).append(RESOURCE_FRAGMENT).append(resource);
 
         if (identity != null) {
             url.append("&object_id=").append(identity);
         }
 
-        String body = HttpUtil.get(url.toString(), Collections.singletonMap("Metadata", "true"));
+        String body = HttpUtil.getWithoutProxy(url.toString(), Collections.singletonMap("Metadata", "true"));
 
         if (body != null) {
             try {

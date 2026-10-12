@@ -800,7 +800,9 @@ The Azure Key Vault JCA provider delegates proxy selection to the JDK. Select th
 | `http://` | `http.proxyHost` and `http.proxyPort` |
 | `https://` | `https.proxyHost` and `https.proxyPort` |
 
-Key Vault and identity endpoints use HTTPS, while AIA certificate URLs may use HTTP or HTTPS. Both protocols use `http.nonProxyHosts` for hosts that should be accessed directly. Separate hosts with `|` and use `*` as a wildcard.
+Key Vault and Microsoft Entra token endpoints use HTTPS, while AIA certificate URLs may use HTTP or HTTPS. Both protocols use `http.nonProxyHosts` for hosts that should be accessed directly. Separate hosts with `|` and use `*` as a wildcard.
+
+VM managed identity authentication uses the HTTP IMDS endpoint at `169.254.169.254`. The provider always accesses this endpoint directly, bypassing JVM proxy properties and the default `ProxySelector`; no additional `http.nonProxyHosts` entry is required for IMDS. This follows the [IMDS proxy requirements](https://learn.microsoft.com/azure/virtual-machines/instance-metadata-service#proxies). Key Vault, Microsoft Entra, and AIA requests continue to use the configured proxy settings. App Service and Container Apps managed identity endpoints are supplied by their hosting environment and may use HTTP.
 
 For a Java application, pass the properties as JVM `-D` options before `-jar`:
 

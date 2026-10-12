@@ -17,6 +17,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PushbackInputStream;
 import java.net.HttpURLConnection;
+import java.net.Proxy;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
@@ -97,6 +98,18 @@ public final class HttpUtil {
      */
     public static String get(String uri, Map<String, String> headers) {
         return get(uri, headers, HttpUtil::openConnection);
+    }
+
+    /**
+     * Performs a direct HTTP GET request, bypassing all proxy configuration for VM IMDS authentication.
+     *
+     * @param uri the URI to send the GET request to
+     * @param headers the headers to include in the request
+     * @return the response body, or {@code null} if an I/O failure occurs
+     * @throws RuntimeException if the server returns a non-successful response
+     */
+    static String getWithoutProxy(String uri, Map<String, String> headers) {
+        return get(uri, headers, url -> openConnection(url, Proxy.NO_PROXY));
     }
 
     // Overloaded method that allows specifying a custom ConnectionFactory for testing purposes.
@@ -728,7 +741,14 @@ public final class HttpUtil {
     }
 
     static HttpURLConnection openConnection(String uri) throws IOException {
-        HttpURLConnection connection = (HttpURLConnection) URI.create(uri).toURL().openConnection();
+        return openConnection(uri, null);
+    }
+
+    private static HttpURLConnection openConnection(String uri, Proxy proxy) throws IOException {
+        URI parsedUri = URI.create(uri);
+        HttpURLConnection connection = (HttpURLConnection) (proxy == null
+            ? parsedUri.toURL().openConnection()
+            : parsedUri.toURL().openConnection(proxy));
 
         if (connection instanceof HttpsURLConnection) {
             HttpsURLConnection httpsConnection = (HttpsURLConnection) connection;

@@ -4,6 +4,7 @@
 package com.azure.security.keyvault.jca.implementation.utils;
 
 import com.azure.security.keyvault.jca.implementation.JreKeyStoreFactory;
+import com.azure.security.keyvault.jca.implementation.model.AccessToken;
 import org.bouncycastle.asn1.x500.X500Name;
 import org.bouncycastle.asn1.x509.BasicConstraints;
 import org.bouncycastle.asn1.x509.ExtendedKeyUsage;
@@ -19,6 +20,9 @@ import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.api.parallel.Isolated;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
@@ -32,8 +36,13 @@ import java.io.OutputStream;
 import java.math.BigInteger;
 import java.net.HttpURLConnection;
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
+import java.net.ProxySelector;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketAddress;
+import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
@@ -42,12 +51,15 @@ import java.security.PrivateKey;
 import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
 import java.util.Date;
+import java.util.Collections;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.zip.GZIPOutputStream;
 
 import static com.azure.security.keyvault.jca.implementation.utils.HttpUtil.ACCEPT_ENCODING_KEY;
@@ -58,7 +70,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@Isolated("Mutates the JRE trust store and HTTP/HTTPS proxy properties used by HttpUtil")
+@Isolated("Mutates the JRE trust store, proxy properties, and default ProxySelector used by HttpUtil")
 public class HttpUtilConnectionTest {
     private static final char[] KEY_PASSWORD = "changeit".toCharArray();
 
@@ -141,9 +153,10 @@ public class HttpUtilConnectionTest {
         }
     }
 
-    @Test
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
     @Timeout(20)
-    void realHttpGetUsesSystemProxy() throws Exception {
+    void realHttpGetUsesSystemProxy(boolean aiaRequest) throws Exception {
         String originalProxyHost = System.getProperty("http.proxyHost");
         String originalProxyPort = System.getProperty("http.proxyPort");
         String originalNonProxyHosts = System.getProperty("http.nonProxyHosts");
@@ -154,7 +167,10 @@ public class HttpUtilConnectionTest {
             System.setProperty("http.nonProxyHosts", "localhost|127.*|[::1]");
             proxy.start();
 
-            String result = HttpUtil.get("http://proxy-target.example.test/resource", null);
+            String requestUrl = "http://proxy-target.example.test/resource";
+            String result = aiaRequest
+                ? new String(HttpUtil.getAiaBytesWithMetadata(requestUrl).getBody(), StandardCharsets.UTF_8)
+                : HttpUtil.get(requestUrl, null);
 
             proxy.awaitCompletion();
             assertEquals("response", result);
@@ -226,6 +242,93 @@ public class HttpUtilConnectionTest {
         }
     }
 
+    @ParameterizedTest
+    @NullSource
+    @ValueSource(strings = "test-object-id")
+    @Timeout(20)
+    void realImdsTokenRequestBypassesSystemProxy(String identity) throws Exception {
+        assertImdsRequestBypassesProxy(identity, false);
+    }
+
+    @ParameterizedTest
+    @NullSource
+    @ValueSource(strings = "test-object-id")
+    @Timeout(20)
+    void realImdsTokenRequestBypassesCustomProxySelector(String identity) throws Exception {
+        assertImdsRequestBypassesProxy(identity, true);
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = { 400, 503 })
+    @Timeout(20)
+    void realImdsTokenRequestPreservesHttpFailure(int status) throws Exception {
+        try (LocalProxyServer imds = new LocalProxyServer(status + " Error", "")) {
+            imds.start();
+            String endpoint
+                = "http://localhost:" + imds.getPort() + "/metadata/identity/oauth2/token?api-version=2018-02-01";
+
+            RuntimeException failure = assertThrows(RuntimeException.class,
+                () -> AccessTokenUtil.getAccessTokenOnOthers("https://vault.azure.net", null, endpoint));
+
+            imds.awaitCompletion();
+            assertTrue(failure.getMessage().contains("HTTP status code was " + status));
+            assertEquals("true", imds.getRequestHeaders().get("Metadata"));
+        }
+    }
+
+    private static void assertImdsRequestBypassesProxy(String identity, boolean customProxySelector) throws Exception {
+        String originalProxyHost = System.getProperty("http.proxyHost");
+        String originalProxyPort = System.getProperty("http.proxyPort");
+        String originalNonProxyHosts = System.getProperty("http.nonProxyHosts");
+        ProxySelector originalSelector = ProxySelector.getDefault();
+        AtomicInteger selectionCount = new AtomicInteger();
+
+        try (LocalProxyServer proxy = new LocalProxyServer("200 OK", "{\"access_token\":\"proxy-token\"}");
+            LocalProxyServer imds
+                = new LocalProxyServer("200 OK", "{\"access_token\":\"imds-token\",\"expires_in\":3600}")) {
+            System.setProperty("http.proxyHost", InetAddress.getLoopbackAddress().getHostAddress());
+            System.setProperty("http.proxyPort", String.valueOf(proxy.getPort()));
+            System.setProperty("http.nonProxyHosts", "");
+            if (customProxySelector) {
+                ProxySelector.setDefault(new ProxySelector() {
+                    @Override
+                    public List<Proxy> select(URI uri) {
+                        selectionCount.incrementAndGet();
+                        return Collections.singletonList(new Proxy(Proxy.Type.HTTP,
+                            new InetSocketAddress(InetAddress.getLoopbackAddress(), proxy.getPort())));
+                    }
+
+                    @Override
+                    public void connectFailed(URI uri, SocketAddress address, IOException exception) {
+                    }
+                });
+            }
+            String endpoint
+                = "http://localhost:" + imds.getPort() + "/metadata/identity/oauth2/token?api-version=2018-02-01";
+            proxy.start();
+            imds.start();
+
+            AccessToken token = AccessTokenUtil.getAccessTokenOnOthers("https://vault.azure.net", identity, endpoint);
+
+            assertNull(proxy.getRequestLine(), "IMDS requests must never reach a proxy.");
+            assertEquals(0, selectionCount.get(), "IMDS requests must bypass the default ProxySelector.");
+            imds.awaitCompletion();
+            assertNotNull(token);
+            assertEquals("imds-token", token.getAccessToken());
+            assertEquals(3600, token.getExpiresIn());
+            String identityQuery = identity == null ? "" : "&object_id=" + identity;
+            assertEquals("GET /metadata/identity/oauth2/token?api-version=2018-02-01&resource=https://vault.azure.net"
+                + identityQuery + " HTTP/1.1", imds.getRequestLine());
+            assertEquals("true", imds.getRequestHeaders().get("Metadata"));
+            assertEquals(ACCEPT_ENCODING_VALUE, imds.getRequestHeaders().get(ACCEPT_ENCODING_KEY));
+        } finally {
+            ProxySelector.setDefault(originalSelector);
+            restoreSystemProperty("http.proxyHost", originalProxyHost);
+            restoreSystemProperty("http.proxyPort", originalProxyPort);
+            restoreSystemProperty("http.nonProxyHosts", originalNonProxyHosts);
+        }
+    }
+
     private static KeyPair generateKeyPair() throws Exception {
         KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
         keyPairGenerator.initialize(2048);
@@ -273,6 +376,7 @@ public class HttpUtilConnectionTest {
         private final byte[] responseBody;
         private final String responseStatus;
         private final CountDownLatch completed = new CountDownLatch(1);
+        private final Map<String, String> requestHeaders = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
         private final Thread proxyThread;
         private volatile String requestLine;
         private volatile Throwable failure;
@@ -297,6 +401,10 @@ public class HttpUtilConnectionTest {
             return requestLine;
         }
 
+        private Map<String, String> getRequestHeaders() {
+            return requestHeaders;
+        }
+
         private void serve() {
             try (Socket socket = serverSocket.accept()) {
                 socket.setSoTimeout(10_000);
@@ -307,6 +415,10 @@ public class HttpUtilConnectionTest {
                 String line;
                 while ((line = reader.readLine()) != null && !line.isEmpty()) {
                     headerCount++;
+                    int separator = line.indexOf(':');
+                    if (separator > 0) {
+                        requestHeaders.put(line.substring(0, separator), line.substring(separator + 1).trim());
+                    }
                 }
                 if (headerCount == 0) {
                     throw new IOException("The proxy request did not contain any headers.");
