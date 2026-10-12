@@ -19,6 +19,7 @@ import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.BlockBlobItem;
 import com.azure.storage.blob.models.ListBlobsOptions;
 import com.azure.storage.blob.models.PageBlobItem;
+import com.azure.storage.blob.models.StorageResponseSerializationFormat;
 import com.azure.storage.blob.sas.BlobSasPermission;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.blob.specialized.BlobAsyncClientBase;
@@ -311,19 +312,21 @@ public class VersioningAsyncTests extends BlobTestBase {
 
     @Test
     public void listBlobsWithVersion() {
-        Mono<Tuple4<BlockBlobItem, BlockBlobItem, BlockBlobItem, List<BlobItem>>> response = blobClient
-            .getBlockBlobAsyncClient()
-            .upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize())
-            .flatMap(blobItemV1 -> blobClient.getBlockBlobAsyncClient()
-                .upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), true)
-                .flatMap(blobItemV2 -> blobClient.getBlockBlobAsyncClient()
+        Mono<Tuple4<BlockBlobItem, BlockBlobItem, BlockBlobItem, List<BlobItem>>> response
+            = blobClient.getBlockBlobAsyncClient()
+                .upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize())
+                .flatMap(blobItemV1 -> blobClient.getBlockBlobAsyncClient()
                     .upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), true)
-                    .flatMap(blobItemV3 -> blobContainerClient
-                        .listBlobs(new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveVersions(true)),
-                            null)
-                        .collectList()
-                        .flatMap(list -> Mono.zip(Mono.just(blobItemV1), Mono.just(blobItemV2), Mono.just(blobItemV3),
-                            Mono.just(list))))));
+                    .flatMap(blobItemV2 -> blobClient.getBlockBlobAsyncClient()
+                        .upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), true)
+                        .flatMap(blobItemV3 -> blobContainerClient
+                            .listBlobs(
+                                new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveVersions(true))
+                                    .setStorageResponseSerializationFormat(StorageResponseSerializationFormat.XML),
+                                null)
+                            .collectList()
+                            .flatMap(list -> Mono.zip(Mono.just(blobItemV1), Mono.just(blobItemV2),
+                                Mono.just(blobItemV3), Mono.just(list))))));
 
         StepVerifier.create(response).assertNext(tuple -> {
             BlockBlobItem blobItemV1 = tuple.getT1();
