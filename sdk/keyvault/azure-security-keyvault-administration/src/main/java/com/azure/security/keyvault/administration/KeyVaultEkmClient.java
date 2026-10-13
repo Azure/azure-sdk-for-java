@@ -37,14 +37,14 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.EMPTY_OPTIONS;
-import static com.azure.security.keyvault.administration.KeyVaultEkmAsyncClient.toLongRunningOperationStatus;
+import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.toLongRunningOperationStatus;
+import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.transformToKeyVaultEkmPrivateEndpointOperation;
+import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.transformToKeyVaultEkmPrivateEndpoints;
+import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.validateRequiredParameter;
 import static com.azure.security.keyvault.administration.KeyVaultEkmAsyncClient.transformToEkmConnection;
 import static com.azure.security.keyvault.administration.KeyVaultEkmAsyncClient.transformToKeyVaultEkmConnection;
-import static com.azure.security.keyvault.administration.KeyVaultEkmAsyncClient.transformToKeyVaultEkmPrivateEndpointOperation;
-import static com.azure.security.keyvault.administration.KeyVaultEkmAsyncClient.transformToKeyVaultEkmPrivateEndpoints;
 import static com.azure.security.keyvault.administration.KeyVaultEkmAsyncClient.transformToKeyVaultEkmProxyClientCertificateInfo;
 import static com.azure.security.keyvault.administration.KeyVaultEkmAsyncClient.transformToKeyVaultEkmProxyInfo;
-import static com.azure.security.keyvault.administration.KeyVaultEkmAsyncClient.validateRequiredParameter;
 import static com.azure.security.keyvault.administration.implementation.KeyVaultAdministrationUtils.toKeyVaultAdministrationException;
 
 /**
@@ -236,6 +236,10 @@ public final class KeyVaultEkmClient {
      */
     KeyVaultEkmClient(KeyVaultAdministrationClientImpl implClient) {
         this.implClient = implClient;
+    }
+
+    Duration getDefaultPollingInterval() {
+        return DEFAULT_POLLING_INTERVAL;
     }
 
     /**
@@ -607,14 +611,13 @@ public final class KeyVaultEkmClient {
         BinaryData parameters = BinaryData.fromObject(
             new EkmPrivateEndpointCreateParameters(privateLinkServiceAlias).setRequestMessage(requestMessage));
 
-        return SyncPoller.createPoller(DEFAULT_POLLING_INTERVAL,
+        return SyncPoller.createPoller(getDefaultPollingInterval(),
             pollingContext -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
                 startEkmPrivateEndpointOperation(
                     () -> implClient.createEkmPrivateEndpointWithResponse(name, parameters, EMPTY_OPTIONS))),
             ekmPrivateEndpointPollOperation(), (pollingContext, activationResponse) -> {
                 throw LOGGER.logExceptionAsError(new RuntimeException("Cancellation is not supported"));
-            },
-            pollingContext -> pollingContext.getLatestResponse().getStatus()
+            }, pollingContext -> pollingContext.getLatestResponse().getStatus()
                 == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED ? getEkmPrivateEndpoint(name) : null);
     }
 
@@ -635,7 +638,7 @@ public final class KeyVaultEkmClient {
     public SyncPoller<KeyVaultEkmPrivateEndpointOperation, Void> beginDeleteEkmPrivateEndpoint(String name) {
         validateRequiredParameter(name, "name", LOGGER);
 
-        return SyncPoller.createPoller(DEFAULT_POLLING_INTERVAL,
+        return SyncPoller.createPoller(getDefaultPollingInterval(),
             pollingContext -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
                 startEkmPrivateEndpointOperation(
                     () -> implClient.deleteEkmPrivateEndpointWithResponse(name, EMPTY_OPTIONS))),
@@ -656,8 +659,9 @@ public final class KeyVaultEkmClient {
         }
     }
 
-    private Function<PollingContext<KeyVaultEkmPrivateEndpointOperation>,
-        PollResponse<KeyVaultEkmPrivateEndpointOperation>> ekmPrivateEndpointPollOperation() {
+    private
+        Function<PollingContext<KeyVaultEkmPrivateEndpointOperation>, PollResponse<KeyVaultEkmPrivateEndpointOperation>>
+        ekmPrivateEndpointPollOperation() {
         return pollingContext -> {
             String operationId = pollingContext.getLatestResponse().getValue().getOperationId();
 

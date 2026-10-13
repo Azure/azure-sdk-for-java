@@ -19,29 +19,28 @@ import com.azure.security.keyvault.administration.implementation.KeyVaultAdminis
 import com.azure.security.keyvault.administration.implementation.KeyVaultAdministrationUtils;
 import com.azure.security.keyvault.administration.implementation.models.EkmConnection;
 import com.azure.security.keyvault.administration.implementation.models.EkmPrivateEndpointCreateParameters;
-import com.azure.security.keyvault.administration.implementation.models.EkmPrivateEndpointListResult;
 import com.azure.security.keyvault.administration.implementation.models.EkmPrivateEndpointOperation;
 import com.azure.security.keyvault.administration.implementation.models.EkmProxyClientCertificateInfo;
 import com.azure.security.keyvault.administration.implementation.models.EkmProxyInfo;
-import com.azure.security.keyvault.administration.implementation.models.FullBackupOperationError;
-import com.azure.security.keyvault.administration.models.KeyVaultAdministrationError;
 import com.azure.security.keyvault.administration.models.KeyVaultAdministrationException;
 import com.azure.security.keyvault.administration.models.KeyVaultEkmConnection;
 import com.azure.security.keyvault.administration.models.KeyVaultEkmPrivateEndpoint;
 import com.azure.security.keyvault.administration.models.KeyVaultEkmPrivateEndpointOperation;
-import com.azure.security.keyvault.administration.models.KeyVaultEkmPrivateEndpointOperationStatus;
 import com.azure.security.keyvault.administration.models.KeyVaultEkmProxyClientCertificateInfo;
 import com.azure.security.keyvault.administration.models.KeyVaultEkmProxyInfo;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.EMPTY_OPTIONS;
+import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.toLongRunningOperationStatus;
+import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.transformToKeyVaultEkmPrivateEndpointOperation;
+import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.transformToKeyVaultEkmPrivateEndpoints;
+import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.validateRequiredParameter;
 
 /**
  * The {@link KeyVaultEkmAsyncClient} provides asynchronous methods to manage External Key Manager (EKM) connections
@@ -233,6 +232,10 @@ public final class KeyVaultEkmAsyncClient {
      */
     KeyVaultEkmAsyncClient(KeyVaultAdministrationClientImpl implClient) {
         this.implClient = implClient;
+    }
+
+    Duration getDefaultPollingInterval() {
+        return DEFAULT_POLLING_INTERVAL;
     }
 
     /**
@@ -575,7 +578,7 @@ public final class KeyVaultEkmAsyncClient {
         BinaryData parameters = BinaryData.fromObject(
             new EkmPrivateEndpointCreateParameters(privateLinkServiceAlias).setRequestMessage(requestMessage));
 
-        return new PollerFlux<>(DEFAULT_POLLING_INTERVAL,
+        return new PollerFlux<>(getDefaultPollingInterval(),
             pollingContext -> implClient.createEkmPrivateEndpointWithResponseAsync(name, parameters, EMPTY_OPTIONS)
                 .onErrorMap(KeyVaultAdministrationUtils::mapThrowableToKeyVaultAdministrationException)
                 .map(response -> transformToKeyVaultEkmPrivateEndpointOperation(
@@ -604,7 +607,7 @@ public final class KeyVaultEkmAsyncClient {
     public PollerFlux<KeyVaultEkmPrivateEndpointOperation, Void> beginDeleteEkmPrivateEndpoint(String name) {
         validateRequiredParameter(name, "name", LOGGER);
 
-        return new PollerFlux<>(DEFAULT_POLLING_INTERVAL,
+        return new PollerFlux<>(getDefaultPollingInterval(),
             pollingContext -> implClient.deleteEkmPrivateEndpointWithResponseAsync(name, EMPTY_OPTIONS)
                 .onErrorMap(KeyVaultAdministrationUtils::mapThrowableToKeyVaultAdministrationException)
                 .map(response -> transformToKeyVaultEkmPrivateEndpointOperation(
@@ -615,8 +618,9 @@ public final class KeyVaultEkmAsyncClient {
             pollingContext -> Mono.empty());
     }
 
-    private Function<PollingContext<KeyVaultEkmPrivateEndpointOperation>,
-        Mono<PollResponse<KeyVaultEkmPrivateEndpointOperation>>> ekmPrivateEndpointPollOperation() {
+    private
+        Function<PollingContext<KeyVaultEkmPrivateEndpointOperation>, Mono<PollResponse<KeyVaultEkmPrivateEndpointOperation>>>
+        ekmPrivateEndpointPollOperation() {
         return pollingContext -> {
             String operationId = pollingContext.getLatestResponse().getValue().getOperationId();
 
@@ -779,55 +783,5 @@ public final class KeyVaultEkmAsyncClient {
         transformToKeyVaultEkmProxyClientCertificateInfo(EkmProxyClientCertificateInfo certificateInfo) {
         return new KeyVaultEkmProxyClientCertificateInfo(certificateInfo.getCaCertificates(),
             certificateInfo.getSubjectCommonName());
-    }
-
-    static KeyVaultEkmPrivateEndpointOperation
-        transformToKeyVaultEkmPrivateEndpointOperation(EkmPrivateEndpointOperation operation) {
-        return new KeyVaultEkmPrivateEndpointOperation(operation.getJobId(), operation.getPrivateEndpointName(),
-            operation.getOperationType(),
-            operation.getStatus() == null
-                ? null
-                : KeyVaultEkmPrivateEndpointOperationStatus.fromString(operation.getStatus().toString()),
-            operation.getStatusDetails(), transformToKeyVaultAdministrationError(operation.getError()),
-            operation.getStartTime(), operation.getEndTime());
-    }
-
-    // Maps field by field; KeyVaultAdministrationUtils.toKeyVaultAdministrationError only recognizes Error.
-    static KeyVaultAdministrationError transformToKeyVaultAdministrationError(FullBackupOperationError error) {
-        return error == null
-            ? null
-            : new KeyVaultAdministrationError(error.getCode(), error.getMessage(),
-                transformToKeyVaultAdministrationError(error.getInnerError()));
-    }
-
-    static List<KeyVaultEkmPrivateEndpoint> transformToKeyVaultEkmPrivateEndpoints(BinaryData listResult) {
-        List<KeyVaultEkmPrivateEndpoint> privateEndpoints
-            = listResult.toObject(EkmPrivateEndpointListResult.class).getValue();
-
-        return privateEndpoints == null ? Collections.emptyList() : privateEndpoints;
-    }
-
-    static LongRunningOperationStatus toLongRunningOperationStatus(KeyVaultEkmPrivateEndpointOperationStatus status) {
-        if (KeyVaultEkmPrivateEndpointOperationStatus.SUCCEEDED.equals(status)) {
-            return LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
-        } else if (KeyVaultEkmPrivateEndpointOperationStatus.FAILED.equals(status)) {
-            return LongRunningOperationStatus.FAILED;
-        } else if (KeyVaultEkmPrivateEndpointOperationStatus.CANCELED.equals(status)) {
-            return LongRunningOperationStatus.USER_CANCELLED;
-        } else {
-            return LongRunningOperationStatus.IN_PROGRESS;
-        }
-    }
-
-    static void validateRequiredParameter(String value, String parameterName, ClientLogger logger) {
-        if (value == null) {
-            throw logger.logExceptionAsError(new NullPointerException(
-                String.format(KeyVaultAdministrationUtil.PARAMETER_REQUIRED, "'" + parameterName + "'")));
-        }
-
-        if (value.isEmpty()) {
-            throw logger
-                .logExceptionAsError(new IllegalArgumentException("'" + parameterName + "' cannot be empty."));
-        }
     }
 }
