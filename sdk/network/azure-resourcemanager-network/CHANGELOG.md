@@ -1,14 +1,71 @@
 # Release History
 
-## 2.62.0-beta.1 (Unreleased)
+## 2.62.0 (2026-10-09)
+
+- Package api-version Microsoft.Network: 2026-03-01, Microsoft.Compute: 2018-10-01.
 
 ### Features Added
 
-### Breaking Changes
+* `models.DdosMitigationRulePropertiesFormat` was added
+
+* `models.ExpressRouteLagAuthorizationUseStatus` was added
+
+* `models.DdosUdpDefaultMitigations` was added
+
+* `models.VirtualNetworkApplianceCapabilityKind` was added
+
+* `models.DdosTcpPerSourceRateLimitPolicy` was added
+
+* `models.DdosSourcePolicyOverride` was added
+
+* `models.Nat64Capability` was added
+
+* `models.DdosSourceMatchConditions` was added
+
+* `models.PLGatewayFastpathCapability` was added
+
+* `models.ExpressRouteLagAuthorizationPropertiesFormat` was added
+
+* `models.DdosGeoMatch` was added
+
+* `models.DdosTcpPerSourceConnectionRateLimitPolicy` was added
+
+* `models.DdosTcpDefaultMitigations` was added
+
+* `models.DdosMitigationTrafficScope` was added
+
+* `models.PLGatewayCapability` was added
+
+* `models.PLIPForwardersCapability` was added
+
+* `models.DdosSourcePolicyActionType` was added
+
+* `models.ProxyResourceVirtualNetworkApplianceCapabilityProperties` was added
+
+* `models.VirtualNetworkApplianceCapabilityProperties` was added
+
+* `models.DdosSourcePolicyAction` was added
+
+* `models.DdosUdpPerSourceRateLimitPolicy` was added
+
+* `models.VirtualNetworkApplianceCapabilityIpVersion` was added
+
+* `models.DdosContinent` was added
+
+* `models.DdosMitigationRule` was added
+
+#### `models.ExpressRouteLagPropertiesFormat` was modified
+
+* `withAuthorizations(java.util.List)` was added
+* `authorizations()` was added
+
+## 2.61.2 (2026-10-08)
+
+- Package api-version Microsoft.Network: 2026-01-01, Microsoft.Compute: 2018-10-01.
 
 ### Bugs Fixed
 
-### Other Changes
+- Fixed VMSS public IP address get and list operations to use the Compute API version `2018-10-01` instead of the Network API version.
 
 ## 2.61.1 (2026-10-06)
 
