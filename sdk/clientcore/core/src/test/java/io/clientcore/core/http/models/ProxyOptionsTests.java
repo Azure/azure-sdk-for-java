@@ -234,43 +234,35 @@ public class ProxyOptionsTests {
     private static Stream<Arguments> loadFromEnvironmentSupplier() {
         return Stream.of(
             // Basic Azure HTTPS proxy.
-            Arguments.of(
-                setJavaSystemProxyPrerequisiteToTrue(AZURE_HTTPS_PROXY_HOST_ONLY, null, true),
-                PROXY_HOST, 443, null, null, null),
+            Arguments.of(setJavaSystemProxyPrerequisiteToTrue(AZURE_HTTPS_PROXY_HOST_ONLY, null, true), PROXY_HOST, 443,
+                null, null, null),
 
             // Username only Azure HTTPS proxy.
-            Arguments.of(
-                setJavaSystemProxyPrerequisiteToTrue(AZURE_HTTPS_PROXY_WITH_USERNAME, null, true),
-                PROXY_HOST, 443, null, null, null),
+            Arguments.of(setJavaSystemProxyPrerequisiteToTrue(AZURE_HTTPS_PROXY_WITH_USERNAME, null, true), PROXY_HOST,
+                443, null, null, null),
 
             // Complete Azure HTTPS proxy.
-            Arguments.of(
-                setJavaSystemProxyPrerequisiteToTrue(AZURE_HTTPS_PROXY_WITH_USER_AND_PASS, null, true),
+            Arguments.of(setJavaSystemProxyPrerequisiteToTrue(AZURE_HTTPS_PROXY_WITH_USER_AND_PASS, null, true),
                 PROXY_HOST, 443, FAKE_PROXY_USER_PLACEHOLDER, FAKE_PROXY_PASSWORD_PLACEHOLDER, null),
 
             // Azure HTTPS proxy with non-proxying hosts.
-            Arguments.of(
-                setJavaSystemProxyPrerequisiteToTrue(AZURE_HTTPS_PROXY_HOST_ONLY, NON_PROXY_HOSTS, true),
+            Arguments.of(setJavaSystemProxyPrerequisiteToTrue(AZURE_HTTPS_PROXY_HOST_ONLY, NON_PROXY_HOSTS, true),
                 PROXY_HOST, 443, null, null, "(" + NON_PROXY_HOSTS + ")"),
 
             // Basic Azure HTTP proxy.
-            Arguments.of(
-                setJavaSystemProxyPrerequisiteToTrue(AZURE_HTTP_PROXY_HOST_ONLY, null, false),
-                PROXY_HOST, 80, null, null, null),
+            Arguments.of(setJavaSystemProxyPrerequisiteToTrue(AZURE_HTTP_PROXY_HOST_ONLY, null, false), PROXY_HOST, 80,
+                null, null, null),
 
             // Username only Azure HTTP proxy.
-            Arguments.of(
-                setJavaSystemProxyPrerequisiteToTrue(AZURE_HTTP_PROXY_WITH_USERNAME, null, false),
-                PROXY_HOST, 80, null, null, null),
+            Arguments.of(setJavaSystemProxyPrerequisiteToTrue(AZURE_HTTP_PROXY_WITH_USERNAME, null, false), PROXY_HOST,
+                80, null, null, null),
 
             // Complete Azure HTTP proxy.
-            Arguments.of(
-                setJavaSystemProxyPrerequisiteToTrue(AZURE_HTTP_PROXY_WITH_USER_AND_PASS, null, false),
+            Arguments.of(setJavaSystemProxyPrerequisiteToTrue(AZURE_HTTP_PROXY_WITH_USER_AND_PASS, null, false),
                 PROXY_HOST, 80, FAKE_PROXY_USER_PLACEHOLDER, FAKE_PROXY_PASSWORD_PLACEHOLDER, null),
 
             // Azure HTTP proxy with non-proxying hosts.
-            Arguments.of(
-                setJavaSystemProxyPrerequisiteToTrue(AZURE_HTTP_PROXY_HOST_ONLY, NON_PROXY_HOSTS, false),
+            Arguments.of(setJavaSystemProxyPrerequisiteToTrue(AZURE_HTTP_PROXY_HOST_ONLY, NON_PROXY_HOSTS, false),
                 PROXY_HOST, 80, null, null, "(" + NON_PROXY_HOSTS + ")"),
 
             /*
@@ -432,8 +424,8 @@ public class ProxyOptionsTests {
         /*
          * This emulates loading an environment formatted proxy.
          */
-        Configuration environmentProxyConfiguration = setJavaSystemProxyPrerequisiteToTrue("http://localhost:7777",
-            noProxyNonProxyHosts, true);
+        Configuration environmentProxyConfiguration
+            = setJavaSystemProxyPrerequisiteToTrue("http://localhost:7777", noProxyNonProxyHosts, true);
 
         Pattern environmentProxyConfigurationPattern
             = compile(fromConfiguration(environmentProxyConfiguration).getNonProxyHosts(), Pattern.CASE_INSENSITIVE);

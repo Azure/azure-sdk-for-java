@@ -331,7 +331,7 @@ public class NettyAsyncHttpClientBuilderTests {
             = () -> baseJavaProxyConfigurationSupplier.get().put(JAVA_NON_PROXY_HOSTS, rawJavaNonProxyHosts);
         Supplier<TestConfigurationSource> envNonProxyHostsSupplier
             = () -> new TestConfigurationSource().put(Configuration.PROPERTY_HTTP_PROXY, "http://localhost:12345")
-            .put(Configuration.PROPERTY_HTTPS_PROXY, "")
+                .put(Configuration.PROPERTY_HTTPS_PROXY, "")
                 .put(Configuration.PROPERTY_NO_PROXY, rawEnvNonProxyHosts)
                 .put(JAVA_SYSTEM_PROXY_PREREQUISITE, "true");
 
