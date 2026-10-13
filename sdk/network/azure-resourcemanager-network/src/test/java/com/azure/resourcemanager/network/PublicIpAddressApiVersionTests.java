@@ -70,7 +70,7 @@ public class PublicIpAddressApiVersionTests {
     public void getPublicIpAddressUsesNetworkApiVersion() {
         NetworkManagementClientImpl client = createClient(query -> {
             Assertions.assertTrue(query.startsWith("api-version="), query);
-            Assertions.assertFalse(query.startsWith("api-version=2018-"), query);
+            Assertions.assertNotEquals("api-version=" + COMPUTE_API_VERSION, query);
         }, "/providers/Microsoft.Network/publicIPAddresses/pip");
 
         Assertions.assertNotNull(
