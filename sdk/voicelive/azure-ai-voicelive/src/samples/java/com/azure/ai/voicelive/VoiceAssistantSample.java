@@ -15,9 +15,13 @@ import com.azure.ai.voicelive.models.InteractionModality;
 import com.azure.ai.voicelive.models.OutputAudioFormat;
 import com.azure.ai.voicelive.models.ServerEventType;
 import com.azure.ai.voicelive.models.ServerVadTurnDetection;
+import com.azure.ai.voicelive.models.SessionResponse;
+import com.azure.ai.voicelive.models.SessionResponseStatus;
 import com.azure.ai.voicelive.models.SessionServerEvent;
 import com.azure.ai.voicelive.models.SessionUpdateError;
 import com.azure.ai.voicelive.models.SessionUpdateResponseAudioDelta;
+import com.azure.ai.voicelive.models.SessionUpdateResponseAudioDone;
+import com.azure.ai.voicelive.models.SessionUpdateResponseDone;
 import com.azure.ai.voicelive.models.SessionUpdateSessionUpdated;
 import com.azure.ai.voicelive.models.VoiceLiveSessionOptions;
 import com.azure.core.credential.TokenCredential;
@@ -33,12 +37,16 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.TargetDataLine;
 
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -134,22 +142,30 @@ public final class VoiceAssistantSample {
      *
      * <p>Supports interruption handling where user speech can cancel ongoing assistant responses.</p>
      */
-    private static class AudioProcessor {
+    static final class AudioProcessor {
         private final VoiceLiveSessionAsyncClient session;
         private final AudioFormat audioFormat;
 
         // Audio capture components
         // volatile: shared between the reactor event thread (startCapture) and the audio capture worker thread
         private volatile TargetDataLine microphone;
+        private volatile Thread captureThread;
         private final AtomicBoolean isCapturing = new AtomicBoolean(false);
 
         // Audio playback components
         // volatile: shared between the reactor event thread (startPlayback) and the audio playback worker thread
         private volatile SourceDataLine speaker;
+        private volatile Thread playbackThread;
+        private final CountDownLatch playbackCompleted = new CountDownLatch(1);
+        private final AtomicReference<Throwable> playbackFailure = new AtomicReference<>();
+        private final CompletableFuture<Void> playbackTermination = new CompletableFuture<>();
+        private final Object playbackControlLock = new Object();
         private final BlockingQueue<AudioPlaybackPacket> playbackQueue = new LinkedBlockingQueue<>(1000);
         private final AtomicBoolean isPlaying = new AtomicBoolean(false);
         private final AtomicInteger nextSequenceNumber = new AtomicInteger(0);
         private final AtomicInteger playbackBase = new AtomicInteger(0);
+        private final VoiceAssistantPlaybackDiagnostics playbackDiagnostics
+            = new VoiceAssistantPlaybackDiagnostics();
 
         AudioProcessor(VoiceLiveSessionAsyncClient session) {
             this.session = session;
@@ -186,7 +202,7 @@ public final class VoiceAssistantSample {
                 isCapturing.set(true);
 
                 // Start capture thread
-                Thread captureThread = new Thread(this::captureAudioLoop, "VoiceLive-AudioCapture");
+                captureThread = new Thread(this::captureAudioLoop, "VoiceLive-AudioCapture");
                 captureThread.setDaemon(true);
                 captureThread.start();
 
@@ -220,7 +236,7 @@ public final class VoiceAssistantSample {
                 isPlaying.set(true);
 
                 // Start playback thread
-                Thread playbackThread = new Thread(this::playbackAudioLoop, "VoiceLive-AudioPlayback");
+                playbackThread = new Thread(this::playbackAudioLoop, "VoiceLive-AudioPlayback");
                 playbackThread.setDaemon(true);
                 playbackThread.start();
 
@@ -271,82 +287,193 @@ public final class VoiceAssistantSample {
          * Audio playback loop - runs in separate thread
          */
         private void playbackAudioLoop() {
-            while (isPlaying.get()) {
-                try {
+            try {
+                while (true) {
                     AudioPlaybackPacket packet = playbackQueue.take(); // Blocking wait
 
                     if (packet.audioData == null) {
-                        // Shutdown signal
+                        synchronized (playbackControlLock) {
+                            if (isPlaying.get() && speaker != null && speaker.isOpen()) {
+                                speaker.drain();
+                            }
+                        }
                         break;
                     }
 
-                    // Check if packet should be skipped (interrupted)
-                    int currentBase = playbackBase.get();
-                    if (packet.sequenceNumber < currentBase) {
-                        // Skip interrupted audio
-                        continue;
-                    }
+                    synchronized (playbackControlLock) {
+                        // Check and write under the same lock so interruption cannot flush between them.
+                        int currentBase = playbackBase.get();
+                        if (packet.sequenceNumber < currentBase) {
+                            playbackDiagnostics.recordSkippedPacket();
+                            continue;
+                        }
 
-                    // Play the audio
-                    if (speaker != null && speaker.isOpen()) {
-                        speaker.write(packet.audioData, 0, packet.audioData.length);
+                        if (speaker != null && speaker.isOpen()) {
+                            speaker.write(packet.audioData, 0, packet.audioData.length);
+                        }
                     }
-
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                    break;
-                } catch (Exception e) {
-                    System.err.println("❌ Error in audio playback: " + e.getMessage());
                 }
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                if (isPlaying.get()) {
+                    playbackFailure.compareAndSet(null, e);
+                }
+            } catch (Exception e) {
+                playbackFailure.compareAndSet(null, e);
+                System.err.println("❌ Error in audio playback: " + e.getMessage());
+            } finally {
+                Throwable failure = playbackFailure.get();
+                if (failure == null) {
+                    playbackTermination.complete(null);
+                } else {
+                    playbackTermination.completeExceptionally(failure);
+                }
+                playbackCompleted.countDown();
             }
+        }
+
+        Mono<Void> playbackFailure() {
+            return Mono.fromFuture(playbackTermination).then(Mono.<Void>never());
         }
 
         /**
          * Queue audio data for playback
          */
         void queueAudio(byte[] audioData) {
-            if (audioData != null && audioData.length > 0) {
-                int seqNum = nextSequenceNumber.getAndIncrement();
-                // offer() returns false if the bounded queue is full; warn so a slow consumer is visible
-                if (!playbackQueue.offer(new AudioPlaybackPacket(seqNum, audioData))) {
-                    System.err.println("Warning: playback queue full, dropping audio packet seq=" + seqNum);
-                }
+            if (audioData == null || audioData.length == 0) {
+                return;
             }
+
+            int seqNum = nextSequenceNumber.getAndIncrement();
+            // offer() returns false if the bounded queue is full; count drops without logging every delta.
+            boolean accepted = playbackQueue.offer(new AudioPlaybackPacket(seqNum, audioData));
+            playbackDiagnostics.recordAudioChunk(audioData.length, accepted, playbackQueue.size());
         }
 
         /**
          * Skip pending audio (for interruption handling)
          */
         void skipPendingAudio() {
-            playbackBase.set(nextSequenceNumber.get());
-            playbackQueue.clear();
+            int cutoff;
+            int removed = 0;
+            int queueDepth;
+            synchronized (playbackControlLock) {
+                cutoff = nextSequenceNumber.get();
+                playbackBase.set(cutoff);
 
-            // Also drain the speaker buffer to stop playback immediately
-            if (speaker != null && speaker.isOpen()) {
-                speaker.flush();
+                AudioPlaybackPacket packet;
+                while ((packet = playbackQueue.poll()) != null) {
+                    if (packet.audioData != null) {
+                        removed++;
+                    }
+                }
+                queueDepth = playbackQueue.size();
+
+                // Flush after advancing the cutoff and clearing queued audio.
+                if (speaker != null && speaker.isOpen()) {
+                    speaker.flush();
+                }
             }
+            playbackDiagnostics.recordSkip(removed);
+
+            System.out.println("Playback interruption: skipCount=" + playbackDiagnostics.getSkipOperationCount()
+                + ", removed=" + removed
+                + ", cutoff=" + cutoff
+                + ", totalSkipped=" + playbackDiagnostics.getSkippedPacketCount()
+                + ", queueCurrent=" + queueDepth
+                + ", queueHighWaterApprox=" + playbackDiagnostics.getHighWaterQueueDepth());
+        }
+
+        void printAudioSummary(SessionUpdateResponseAudioDone audioDone) {
+            System.out.println("Audio response complete: responseId=" + audioDone.getResponseId()
+                + ", itemId=" + audioDone.getItemId()
+                + ", outputIndex=" + audioDone.getOutputIndex()
+                + ", contentIndex=" + audioDone.getContentIndex()
+                + ", chunks=" + playbackDiagnostics.getAudioChunkCount()
+                + ", bytes=" + playbackDiagnostics.getAudioByteCount()
+                + ", dropped=" + playbackDiagnostics.getDroppedPacketCount()
+                + ", skipped=" + playbackDiagnostics.getSkippedPacketCount()
+                + ", queueCurrent=" + playbackQueue.size()
+                + ", queueHighWaterApprox=" + playbackDiagnostics.getHighWaterQueueDepth());
+        }
+
+        void printResponseSummary(String responseId, SessionResponseStatus status) {
+            System.out.println("✅ Response complete: responseId=" + responseId
+                + ", status=" + status
+                + ", chunks=" + playbackDiagnostics.getAudioChunkCount()
+                + ", bytes=" + playbackDiagnostics.getAudioByteCount()
+                + ", dropped=" + playbackDiagnostics.getDroppedPacketCount()
+                + ", skipped=" + playbackDiagnostics.getSkippedPacketCount()
+                + ", skipCalls=" + playbackDiagnostics.getSkipOperationCount()
+                + ", queueCurrent=" + playbackQueue.size()
+                + ", queueHighWaterApprox=" + playbackDiagnostics.getHighWaterQueueDepth());
         }
 
         /**
-         * Stop capture and playback
+         * Stop capture and drain queued playback after a normal receive-stream completion.
+         */
+        void shutdownGracefully() {
+            stopCapture();
+            if (isPlaying.get() && playbackThread != null) {
+                try {
+                    if (!playbackQueue.offer(new AudioPlaybackPacket(-1, null), 5, TimeUnit.SECONDS)) {
+                        throw new IllegalStateException("Timed out enqueueing playback drain marker");
+                    }
+                    if (!playbackCompleted.await(10, TimeUnit.SECONDS)) {
+                        throw new IllegalStateException("Timed out waiting for queued audio to drain");
+                    }
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    throw new IllegalStateException("Interrupted while draining queued audio", e);
+                }
+                Throwable failure = playbackFailure.get();
+                if (failure != null) {
+                    throw new IllegalStateException("Audio playback failed", failure);
+                }
+            }
+            isPlaying.set(false);
+            closeSpeaker(false);
+        }
+
+        /**
+         * Abort capture and playback without waiting for queued audio.
          */
         void shutdown() {
-            // Stop capture
+            stopCapture();
+            isPlaying.set(false);
+            playbackQueue.clear();
+            playbackQueue.offer(new AudioPlaybackPacket(-1, null));
+            Thread currentPlaybackThread = playbackThread;
+            if (currentPlaybackThread != null) {
+                currentPlaybackThread.interrupt();
+            }
+            closeSpeaker(true);
+        }
+
+        private void stopCapture() {
             isCapturing.set(false);
             if (microphone != null) {
                 microphone.stop();
                 microphone.close();
                 microphone = null;
             }
+            Thread currentCaptureThread = captureThread;
+            if (currentCaptureThread != null) {
+                currentCaptureThread.interrupt();
+            }
             System.out.println("🎤 Microphone capture stopped");
+        }
 
-            // Stop playback
-            isPlaying.set(false);
-            playbackQueue.offer(new AudioPlaybackPacket(-1, null)); // Shutdown signal
-            if (speaker != null) {
-                speaker.stop();
-                speaker.close();
-                speaker = null;
+        private void closeSpeaker(boolean flush) {
+            synchronized (playbackControlLock) {
+                if (speaker != null) {
+                    if (flush && speaker.isOpen()) {
+                        speaker.flush();
+                    }
+                    speaker.stop();
+                    speaker.close();
+                    speaker = null;
+                }
             }
             System.out.println("🔊 Audio playback stopped");
         }
@@ -455,39 +582,44 @@ public final class VoiceAssistantSample {
         System.out.println("✓ VoiceLive client created");
 
         AtomicReference<AudioProcessor> audioProcessorRef = new AtomicReference<>();
+        AtomicReference<VoiceLiveSessionAsyncClient> sessionRef = new AtomicReference<>();
+        Thread shutdownHook = new Thread(() -> {
+            shutdownAudio(audioProcessorRef);
+            closeSession(sessionRef);
+        }, "VoiceLive-Shutdown");
+        Runtime.getRuntime().addShutdownHook(shutdownHook);
 
-        // Latch keeps main alive until the event stream completes (or an error occurs).
-        final CountDownLatch completionLatch = new CountDownLatch(1);
-
-        // Start session. Session lifetime is local to this reactive chain — the session is
-        // captured by the lambda passed to flatMapMany and then threaded into per-event handling
-        // via flatMap, so no instance field or shared holder is needed.
-        client.startSession(DEFAULT_MODEL, null)
-            .flatMapMany(session -> {
-                System.out.println("✓ Session started successfully");
-                audioProcessorRef.set(new AudioProcessor(session));
-                return configureSession(session)
-                    .thenMany(session.receiveEvents())
-                    .flatMap(event -> handleServerEvent(event, audioProcessorRef.get()));
-            })
-            .subscribe(
-                ignored -> { },
-                error -> {
-                    System.err.println("❌ Error receiving events: " + error.getMessage());
-                    shutdownAudio(audioProcessorRef);
-                    completionLatch.countDown();
-                },
-                () -> {
-                    System.out.println("✓ Event stream completed");
-                    shutdownAudio(audioProcessorRef);
-                    completionLatch.countDown();
-                }
-            );
-
+        boolean streamCompleted = false;
         try {
-            completionLatch.await();
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
+            Mono.usingWhen(
+                client.startSession(DEFAULT_MODEL, null).doOnNext(session -> {
+                    System.out.println("✓ Session started successfully");
+                    sessionRef.set(session);
+                    audioProcessorRef.set(new AudioProcessor(session));
+                }),
+                session -> {
+                    AudioProcessor audioProcessor = audioProcessorRef.get();
+                    Mono<Void> eventStream = configureSession(session)
+                        .thenMany(session.receiveEvents())
+                        .doOnNext(event -> handleServerEvent(event, audioProcessor))
+                        .then();
+                    return Mono.firstWithSignal(eventStream, audioProcessor.playbackFailure());
+                },
+                session -> closeSessionAsync(session, sessionRef))
+                .block();
+            shutdownAudioGracefully(audioProcessorRef);
+            streamCompleted = true;
+            System.out.println("✓ Event stream completed");
+        } finally {
+            if (!streamCompleted) {
+                shutdownAudio(audioProcessorRef);
+            }
+            closeSession(sessionRef);
+            try {
+                Runtime.getRuntime().removeShutdownHook(shutdownHook);
+            } catch (IllegalStateException ignored) {
+                // JVM shutdown is already in progress and the hook is running.
+            }
         }
     }
 
@@ -500,12 +632,41 @@ public final class VoiceAssistantSample {
     }
 
     /**
-     * Cleanup audio processor.
+     * Stop capture and drain playback after a normal stream completion.
+     */
+    private static void shutdownAudioGracefully(AtomicReference<AudioProcessor> audioProcessorRef) {
+        AudioProcessor audioProcessor = audioProcessorRef.get();
+        if (audioProcessor != null) {
+            audioProcessor.shutdownGracefully();
+            audioProcessorRef.compareAndSet(audioProcessor, null);
+        }
+    }
+
+    /**
+     * Abort the audio processor.
      */
     private static void shutdownAudio(AtomicReference<AudioProcessor> audioProcessorRef) {
         AudioProcessor audioProcessor = audioProcessorRef.getAndSet(null);
         if (audioProcessor != null) {
             audioProcessor.shutdown();
+        }
+    }
+
+    private static Mono<Void> closeSessionAsync(VoiceLiveSessionAsyncClient session,
+        AtomicReference<VoiceLiveSessionAsyncClient> sessionRef) {
+        return session.closeAsync()
+            .timeout(Duration.ofSeconds(5))
+            .doOnSuccess(ignored -> sessionRef.compareAndSet(session, null));
+    }
+
+    private static void closeSession(AtomicReference<VoiceLiveSessionAsyncClient> sessionRef) {
+        VoiceLiveSessionAsyncClient session = sessionRef.getAndSet(null);
+        if (session != null) {
+            try {
+                session.closeAsync().block(Duration.ofSeconds(5));
+            } catch (Exception error) {
+                System.err.println("❌ Error closing session: " + error.getMessage());
+            }
         }
     }
 
@@ -546,56 +707,113 @@ public final class VoiceAssistantSample {
     }
 
     /**
-     * Handle a single server event. Returns a {@link Mono} so the per-event handling stays
-     * inside the reactive chain (no nested subscribe). The voice assistant doesn't send any
-     * follow-up events, so handlers always return {@link Mono#empty()}.
+     * Handle a single server event. Exceptions propagate through the receive stream.
      */
-    private static Mono<Void> handleServerEvent(SessionServerEvent event, AudioProcessor audioProcessor) {
+    static void handleServerEvent(SessionServerEvent event, AudioProcessor audioProcessor) {
         ServerEventType eventType = event.getType();
 
-        try {
-            if (eventType == ServerEventType.SESSION_CREATED) {
-                System.out.println("✓ Session created - initializing...");
-            } else if (event instanceof SessionUpdateSessionUpdated) {
-                System.out.println("✓ Session updated - starting audio");
+        if (eventType == ServerEventType.SESSION_CREATED) {
+            System.out.println("✓ Session created - initializing...");
+        } else if (event instanceof SessionUpdateSessionUpdated) {
+            System.out.println("✓ Session updated - starting audio");
 
-                // Print the full JSON representation
-                SessionUpdateSessionUpdated sessionUpdated = (SessionUpdateSessionUpdated) event;
-                System.out.println("📄 Session Updated Event (Full JSON):");
-                System.out.println(BinaryData.fromObject(sessionUpdated).toString());
+            // Print the full JSON representation
+            SessionUpdateSessionUpdated sessionUpdated = (SessionUpdateSessionUpdated) event;
+            System.out.println("📄 Session Updated Event (Full JSON):");
+            System.out.println(BinaryData.fromObject(sessionUpdated).toString());
 
-                audioProcessor.startPlayback();
-                audioProcessor.startCapture();
+            audioProcessor.startPlayback();
+            audioProcessor.startCapture();
 
-                System.out.println("🎤 VOICE ASSISTANT READY");
-                System.out.println("Start speaking to begin conversation");
-                System.out.println("Press Ctrl+C to exit");
-            } else if (eventType == ServerEventType.INPUT_AUDIO_BUFFER_SPEECH_STARTED) {
-                System.out.println("🎤 Speech detected");
-                // Server handles interruption automatically with interruptResponse=true
-                // Just clear any pending audio in the playback queue
-                audioProcessor.skipPendingAudio();
-            } else if (eventType == ServerEventType.INPUT_AUDIO_BUFFER_SPEECH_STOPPED) {
-                System.out.println("🤔 Speech ended - processing...");
-            } else if (event instanceof SessionUpdateResponseAudioDelta) {
-                SessionUpdateResponseAudioDelta audioEvent = (SessionUpdateResponseAudioDelta) event;
-                byte[] audioData = audioEvent.getDelta();
-                if (audioData != null && audioData.length > 0) {
-                    audioProcessor.queueAudio(audioData);
-                }
-            } else if (eventType == ServerEventType.RESPONSE_AUDIO_DONE) {
-                System.out.println("🎤 Ready for next input...");
-            } else if (eventType == ServerEventType.RESPONSE_DONE) {
-                System.out.println("✅ Response complete");
-            } else if (event instanceof SessionUpdateError) {
-                SessionUpdateError errorEvent = (SessionUpdateError) event;
-                System.out.println("❌ VoiceLive error: " + errorEvent.getError().getMessage());
+            System.out.println("🎤 VOICE ASSISTANT READY");
+            System.out.println("Start speaking to begin conversation");
+            System.out.println("Press Ctrl+C to exit");
+        } else if (eventType == ServerEventType.INPUT_AUDIO_BUFFER_SPEECH_STARTED) {
+            System.out.println("🎤 Speech detected");
+            // Server handles interruption automatically with interruptResponse=true.
+            // Preserve immediate queue clearing so pending assistant audio is not played.
+            audioProcessor.skipPendingAudio();
+        } else if (eventType == ServerEventType.INPUT_AUDIO_BUFFER_SPEECH_STOPPED) {
+            System.out.println("🤔 Speech ended - processing...");
+        } else if (event instanceof SessionUpdateResponseAudioDelta) {
+            audioProcessor.queueAudio(((SessionUpdateResponseAudioDelta) event).getDelta());
+        } else if (event instanceof SessionUpdateResponseAudioDone) {
+            audioProcessor.printAudioSummary((SessionUpdateResponseAudioDone) event);
+            System.out.println("🎤 Ready for next input...");
+        } else if (event instanceof SessionUpdateResponseDone) {
+            SessionResponse response = ((SessionUpdateResponseDone) event).getResponse();
+            String responseId = response == null ? null : response.getId();
+            SessionResponseStatus status = response == null ? null : response.getStatus();
+            if (audioProcessor == null) {
+                System.out.println("✅ Response complete: responseId=" + responseId + ", status=" + status);
+            } else {
+                audioProcessor.printResponseSummary(responseId, status);
             }
-        } catch (Exception e) {
-            System.err.println("❌ Error handling event: " + e.getMessage());
-            e.printStackTrace();
+        } else if (event instanceof SessionUpdateError) {
+            SessionUpdateError errorEvent = (SessionUpdateError) event;
+            String message = errorEvent.getError() == null
+                ? "Unknown VoiceLive error"
+                : errorEvent.getError().getMessage();
+            throw new IllegalStateException("VoiceLive error: " + message);
         }
+    }
+}
 
-        return Mono.empty();
+/**
+ * Hardware-independent aggregate playback diagnostics used by {@link VoiceAssistantSample}.
+ */
+final class VoiceAssistantPlaybackDiagnostics {
+    private final AtomicLong audioChunkCount = new AtomicLong(0);
+    private final AtomicLong audioByteCount = new AtomicLong(0);
+    private final AtomicLong droppedPacketCount = new AtomicLong(0);
+    private final AtomicLong skippedPacketCount = new AtomicLong(0);
+    private final AtomicLong skipOperationCount = new AtomicLong(0);
+    private final AtomicInteger highWaterQueueDepth = new AtomicInteger(0);
+
+    void recordAudioChunk(int byteCount, boolean accepted, int queueDepth) {
+        audioChunkCount.incrementAndGet();
+        audioByteCount.addAndGet(byteCount);
+        if (!accepted) {
+            droppedPacketCount.incrementAndGet();
+        }
+        recordQueueDepth(queueDepth);
+    }
+
+    void recordQueueDepth(int queueDepth) {
+        int normalizedQueueDepth = Math.max(0, queueDepth);
+        highWaterQueueDepth.updateAndGet(current -> Math.max(current, normalizedQueueDepth));
+    }
+
+    void recordSkippedPacket() {
+        skippedPacketCount.incrementAndGet();
+    }
+
+    void recordSkip(int removed) {
+        skippedPacketCount.addAndGet(removed);
+        skipOperationCount.incrementAndGet();
+    }
+
+    long getAudioChunkCount() {
+        return audioChunkCount.get();
+    }
+
+    long getAudioByteCount() {
+        return audioByteCount.get();
+    }
+
+    long getDroppedPacketCount() {
+        return droppedPacketCount.get();
+    }
+
+    long getSkippedPacketCount() {
+        return skippedPacketCount.get();
+    }
+
+    long getSkipOperationCount() {
+        return skipOperationCount.get();
+    }
+
+    int getHighWaterQueueDepth() {
+        return highWaterQueueDepth.get();
     }
 }
