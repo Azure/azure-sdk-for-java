@@ -282,13 +282,15 @@ public class NettyAsyncHttpClientBuilderTests {
                 .build(),
             DEFAULT_URL));
 
-        // Explicitly neutralize the ambient HTTPS_PROXY/NO_PROXY environment variables. ProxyOptions.fromConfiguration
-        // reads HTTPS_PROXY before HTTP_PROXY and reads NO_PROXY, and EnvironmentConfiguration falls back to the real
-        // System.getenv for any key the test source does not set. On CI agents that export a real HTTPS_PROXY/NO_PROXY
-        // (e.g. Windows) that would otherwise leak in and break these assertions, so the source must shadow them.
-        Configuration simpleEnvProxy = new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE,
+        // ProxyOptions.fromConfiguration gates the environment-variable proxy path on java.net.useSystemProxies, which
+        // is a JVM system property, so it is placed in the system-property source (the system-property lookup is
+        // consulted before the environment lookup, so an ambient -Djava.net.useSystemProxies would otherwise shadow
+        // it). HTTPS_PROXY/NO_PROXY are shadowed because fromConfiguration reads HTTPS_PROXY before HTTP_PROXY and
+        // reads NO_PROXY, and EnvironmentConfiguration falls back to the real System.getenv for any key left unset, so
+        // a CI agent that exports a real proxy (e.g. Windows) would otherwise leak in and break these assertions.
+        Configuration simpleEnvProxy = new ConfigurationBuilder(EMPTY_SOURCE,
+            new TestConfigurationSource().put(JAVA_SYSTEM_PROXY_PREREQUISITE, "true"),
             new TestConfigurationSource().put(Configuration.PROPERTY_HTTP_PROXY, "http://localhost:12345")
-                .put(JAVA_SYSTEM_PROXY_PREREQUISITE, "true")
                 .put(Configuration.PROPERTY_HTTPS_PROXY, "")
                 .put(Configuration.PROPERTY_NO_PROXY, "")).build();
         arguments.add(Arguments.of(true, false, simpleEnvProxy, DEFAULT_URL));
@@ -303,9 +305,9 @@ public class NettyAsyncHttpClientBuilderTests {
             new ConfigurationBuilder(EMPTY_SOURCE, javaProxyWithAuthentication, NEUTRAL_PROXY_ENV_SOURCE).build(),
             DEFAULT_URL));
 
-        Configuration envProxyWithAuthentication = new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE,
+        Configuration envProxyWithAuthentication = new ConfigurationBuilder(EMPTY_SOURCE,
+            new TestConfigurationSource().put(JAVA_SYSTEM_PROXY_PREREQUISITE, "true"),
             new TestConfigurationSource().put(Configuration.PROPERTY_HTTP_PROXY, "http://1:1@localhost:12345")
-                .put(JAVA_SYSTEM_PROXY_PREREQUISITE, "true")
                 .put(Configuration.PROPERTY_HTTPS_PROXY, "")
                 .put(Configuration.PROPERTY_NO_PROXY, "")).build();
         arguments.add(Arguments.of(true, true, envProxyWithAuthentication, DEFAULT_URL));
