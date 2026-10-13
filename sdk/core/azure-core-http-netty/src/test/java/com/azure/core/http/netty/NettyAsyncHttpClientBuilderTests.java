@@ -290,6 +290,7 @@ public class NettyAsyncHttpClientBuilderTests {
 
         Configuration simpleEnvProxy = new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE,
             new TestConfigurationSource().put(Configuration.PROPERTY_HTTP_PROXY, "http://localhost:12345")
+                .put(Configuration.PROPERTY_HTTPS_PROXY, "")
                 .put(JAVA_SYSTEM_PROXY_PREREQUISITE, "true")).build();
         arguments.add(Arguments.of(true, false, simpleEnvProxy, DEFAULT_URL));
 
@@ -304,6 +305,7 @@ public class NettyAsyncHttpClientBuilderTests {
 
         Configuration envProxyWithAuthentication = new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE,
             new TestConfigurationSource().put(Configuration.PROPERTY_HTTP_PROXY, "http://1:1@localhost:12345")
+                .put(Configuration.PROPERTY_HTTPS_PROXY, "")
                 .put(JAVA_SYSTEM_PROXY_PREREQUISITE, "true")).build();
         arguments.add(Arguments.of(true, true, envProxyWithAuthentication, DEFAULT_URL));
 
@@ -329,6 +331,7 @@ public class NettyAsyncHttpClientBuilderTests {
             = () -> baseJavaProxyConfigurationSupplier.get().put(JAVA_NON_PROXY_HOSTS, rawJavaNonProxyHosts);
         Supplier<TestConfigurationSource> envNonProxyHostsSupplier
             = () -> new TestConfigurationSource().put(Configuration.PROPERTY_HTTP_PROXY, "http://localhost:12345")
+            .put(Configuration.PROPERTY_HTTPS_PROXY, "")
                 .put(Configuration.PROPERTY_NO_PROXY, rawEnvNonProxyHosts)
                 .put(JAVA_SYSTEM_PROXY_PREREQUISITE, "true");
 
@@ -356,6 +359,7 @@ public class NettyAsyncHttpClientBuilderTests {
             = () -> javaNonProxyHostsSupplier.get().put(JAVA_HTTP_PROXY_USER, "1").put(JAVA_HTTP_PROXY_PASSWORD, "1");
         Supplier<TestConfigurationSource> authenticatedEnvNonProxyHostsSupplier
             = () -> new TestConfigurationSource().put(Configuration.PROPERTY_HTTP_PROXY, "http://1:1@localhost:12345")
+                .put(Configuration.PROPERTY_HTTPS_PROXY, "")
                 .put(Configuration.PROPERTY_NO_PROXY, rawEnvNonProxyHosts)
                 .put(JAVA_SYSTEM_PROXY_PREREQUISITE, "true");
 

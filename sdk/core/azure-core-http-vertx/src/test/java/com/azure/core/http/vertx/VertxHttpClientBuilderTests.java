@@ -135,6 +135,7 @@ public class VertxHttpClientBuilderTests {
             new TestConfigurationSource()
                 .put(Configuration.PROPERTY_HTTP_PROXY,
                     "http://" + PROXY_USER_INFO + "localhost:" + PROXY_SERVER_HTTP_PORT)
+                .put(Configuration.PROPERTY_HTTPS_PROXY, "")
                 .put("java.net.useSystemProxies", "true")).build();
 
         HttpClient httpClient = new VertxHttpClientBuilder().configuration(configuration).build();

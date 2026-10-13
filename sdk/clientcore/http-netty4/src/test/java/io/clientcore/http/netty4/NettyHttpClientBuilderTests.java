@@ -210,6 +210,7 @@ public class NettyHttpClientBuilderTests {
 
         arguments.add(
             Configuration.from(new TestConfigurationSource().put(Configuration.HTTP_PROXY, "http://localhost:12345")
+                .put(Configuration.HTTPS_PROXY, "")
                 .put(JAVA_SYSTEM_PROXY_PREREQUISITE, "true")));
 
         /*
@@ -221,6 +222,7 @@ public class NettyHttpClientBuilderTests {
 
         arguments.add(
             Configuration.from(new TestConfigurationSource().put(Configuration.HTTP_PROXY, "http://1:1@localhost:12345")
+                .put(Configuration.HTTPS_PROXY, "")
                 .put(JAVA_SYSTEM_PROXY_PREREQUISITE, "true")));
 
         /*
@@ -236,6 +238,7 @@ public class NettyHttpClientBuilderTests {
             .from(baseJavaProxyConfigurationSupplier.get().put(JAVA_NON_PROXY_HOSTS, rawJavaNonProxyHosts)));
         arguments.add(
             Configuration.from(new TestConfigurationSource().put(Configuration.HTTP_PROXY, "http://localhost:12345")
+                .put(Configuration.HTTPS_PROXY, "")
                 .put(Configuration.NO_PROXY, rawEnvNonProxyHosts)
                 .put(JAVA_SYSTEM_PROXY_PREREQUISITE, "true")));
 
@@ -248,6 +251,7 @@ public class NettyHttpClientBuilderTests {
             .put(JAVA_HTTP_PROXY_PASSWORD, "1")));
         arguments.add(
             Configuration.from(new TestConfigurationSource().put(Configuration.HTTP_PROXY, "http://1:1@localhost:12345")
+                .put(Configuration.HTTPS_PROXY, "")
                 .put(Configuration.NO_PROXY, rawEnvNonProxyHosts)
                 .put(JAVA_SYSTEM_PROXY_PREREQUISITE, "true")));
 
