@@ -188,45 +188,46 @@ final class GenAiTracingScope implements AutoCloseable {
 
     private void recordMetrics() {
         double durationSeconds = (System.nanoTime() - startTimeNanos) / 1_000_000_000.0;
-
-        Map<String, Object> baseAttributes = new HashMap<>();
-        String metricOperationName
-            = OPERATION_CHAT.equals(operationName) || OPERATION_INVOKE_AGENT.equals(operationName)
+        if (instrumentation.tokenUsageHistogram().isEnabled() || instrumentation.durationHistogram().isEnabled()){
+            Map<String, Object> baseAttributes = new HashMap<>();
+            String metricOperationName
+                = OPERATION_CHAT.equals(operationName) || OPERATION_INVOKE_AGENT.equals(operationName)
                 ? OPERATION_RESPONSES
                 : operationName;
-        baseAttributes.put(GEN_AI_OPERATION_NAME, metricOperationName);
-        baseAttributes.put(GEN_AI_PROVIDER_NAME, GEN_AI_PROVIDER_NAME_VALUE);
-        baseAttributes.put(SERVER_ADDRESS, serverAddress);
-        if (serverPort != DEFAULT_HTTPS_PORT) {
-            baseAttributes.put(SERVER_PORT, (long) serverPort);
-        }
-        String model = responseModel == null ? requestModel : responseModel;
-        if (model != null) {
-            baseAttributes.put(GEN_AI_REQUEST_MODEL, model);
-        }
-        if (errorType != null) {
-            baseAttributes.put(ERROR_TYPE, errorType);
-        }
-
-        final Meter meter = instrumentation.meter();
-        final DoubleHistogram durationHistogram = instrumentation.durationHistogram();
-        if (durationHistogram.isEnabled()) {
-            TelemetryAttributes durationAttrs = meter.createAttributes(baseAttributes);
-            durationHistogram.record(durationSeconds, durationAttrs, spanContext);
-        }
-
-        final DoubleHistogram tokenUsageHistogram = instrumentation.tokenUsageHistogram();
-        if (tokenUsageHistogram.isEnabled()) {
-            if (inputTokens != null && inputTokens > 0) {
-                Map<String, Object> inputAttrs = new HashMap<>(baseAttributes);
-                inputAttrs.put(GEN_AI_TOKEN_TYPE, TOKEN_TYPE_INPUT);
-                tokenUsageHistogram.record(inputTokens.doubleValue(), meter.createAttributes(inputAttrs), spanContext);
+            baseAttributes.put(GEN_AI_OPERATION_NAME, metricOperationName);
+            baseAttributes.put(GEN_AI_PROVIDER_NAME, GEN_AI_PROVIDER_NAME_VALUE);
+            baseAttributes.put(SERVER_ADDRESS, serverAddress);
+            if (serverPort != DEFAULT_HTTPS_PORT) {
+                baseAttributes.put(SERVER_PORT, (long) serverPort);
             }
-            if (outputTokens != null && outputTokens > 0) {
-                Map<String, Object> outputAttrs = new HashMap<>(baseAttributes);
-                outputAttrs.put(GEN_AI_TOKEN_TYPE, TOKEN_TYPE_OUTPUT);
-                tokenUsageHistogram.record(outputTokens.doubleValue(), meter.createAttributes(outputAttrs),
-                    spanContext);
+            String model = responseModel == null ? requestModel : responseModel;
+            if (model != null) {
+                baseAttributes.put(GEN_AI_REQUEST_MODEL, model);
+            }
+            if (errorType != null) {
+                baseAttributes.put(ERROR_TYPE, errorType);
+            }
+
+            final Meter meter = instrumentation.meter();
+            final DoubleHistogram durationHistogram = instrumentation.durationHistogram();
+            if (durationHistogram.isEnabled()) {
+                TelemetryAttributes durationAttrs = meter.createAttributes(baseAttributes);
+                durationHistogram.record(durationSeconds, durationAttrs, spanContext);
+            }
+
+            final DoubleHistogram tokenUsageHistogram = instrumentation.tokenUsageHistogram();
+            if (tokenUsageHistogram.isEnabled()) {
+                if (inputTokens != null && inputTokens > 0) {
+                    Map<String, Object> inputAttrs = new HashMap<>(baseAttributes);
+                    inputAttrs.put(GEN_AI_TOKEN_TYPE, TOKEN_TYPE_INPUT);
+                    tokenUsageHistogram.record(inputTokens.doubleValue(), meter.createAttributes(inputAttrs), spanContext);
+                }
+                if (outputTokens != null && outputTokens > 0) {
+                    Map<String, Object> outputAttrs = new HashMap<>(baseAttributes);
+                    outputAttrs.put(GEN_AI_TOKEN_TYPE, TOKEN_TYPE_OUTPUT);
+                    tokenUsageHistogram.record(outputTokens.doubleValue(), meter.createAttributes(outputAttrs),
+                        spanContext);
+                }
             }
         }
     }
