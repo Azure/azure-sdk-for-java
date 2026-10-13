@@ -19,9 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.logging.Logger;
-import java.util.stream.Stream;
 
 import static com.azure.security.keyvault.jca.implementation.utils.CertificateUtil.loadX509CertificateFromFile;
 import static com.azure.security.keyvault.jca.implementation.utils.CertificateUtil.loadX509CertificatesFromFile;
@@ -203,13 +201,11 @@ public final class SpecificPathCertificates implements AzureCertificates {
         List<File> files = new ArrayList<>();
         File filePackage = new File(certificatePath);
         File[] array = filePackage.listFiles();
-        Optional.ofNullable(array)
-            .map(Arrays::stream)
-            .orElseGet(Stream::empty)
-            .filter(Objects::nonNull)
-            .filter(File::isFile)
-            .filter(File::exists)
-            .filter(File::canRead)
+        if (array == null) {
+            return files;
+        }
+        Arrays.stream(array)
+            .filter(file -> Objects.nonNull(file) && file.exists() && file.isFile() && file.canRead())
             .forEach(files::add);
         return files;
     }

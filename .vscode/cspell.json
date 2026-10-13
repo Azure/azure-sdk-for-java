@@ -75,7 +75,8 @@
     "**/src/**/resources/**",
     "docs/spring/**",
     "sdk/core/.idea/**",
-    ".github/CODEOWNERS"
+    ".github/CODEOWNERS",
+    ".github/CODEOWNERS_baseline_errors.txt"
   ],
   "words": [
     "aadb",
@@ -267,6 +268,13 @@
     "xlsb"
   ],
   "overrides": [
+    {
+      "filename": ".github/skills/management-autopr-review/**",
+      "words": [
+        "autopr",
+        "vally"
+      ]
+    },
     {
       "filename": "**/pom.xml",
       "patterns": [
