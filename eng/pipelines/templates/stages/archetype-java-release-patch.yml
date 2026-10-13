@@ -231,13 +231,15 @@ stages:
                 versionSpec: $(PythonVersion)
 
             - ${{ if eq(parameters.PatchMergeBack, true) }}:
-              - pwsh: |
-                  $expectedArtifacts = $('$(ArtifactsJson)' | ConvertFrom-Json | ForEach-Object { "$($_.groupId):$($_.name)" })
-                  $(Build.SourcesDirectory)/eng/scripts/Create-Patch-Mergeback.ps1 `
-                    -ReleaseBranch "$(Build.SourceVersion)" `
-                    -BaseBranch main `
-                    -PatchChangelogPath "${{ parameters.PatchChangelogPath }}" `
-                    -ExpectedArtifacts $expectedArtifacts
+              - task: PowerShell@2
+                inputs:
+                  pwsh: true
+                  filePath: eng/scripts/Create-Patch-Mergeback.ps1
+                  arguments: >
+                    -ReleaseBranch "$(Build.SourceVersion)"
+                    -BaseBranch main
+                    -PatchChangelogPath "${{ parameters.PatchChangelogPath }}"
+                    -ExpectedArtifacts $('$(ArtifactsJson)' | ConvertFrom-Json | ForEach-Object { "$($_.groupId):$($_.name)" })
                 displayName: 'Prepare patch merge-back against main'
 
               - template: /eng/common/pipelines/templates/steps/create-pull-request.yml
