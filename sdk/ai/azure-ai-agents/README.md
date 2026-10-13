@@ -1147,10 +1147,10 @@ AgentVersionDetails agent = agentsClient.createAgentVersion("my-agent", definiti
 System.out.printf("Created agent %s (traced).%n", agent.getName());
 ```
 
-See [`TracingSample.java`](src/samples/java/com/azure/ai/agents/TracingSample.java) for a runnable example.
+See [`TracingSample.java`](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/TracingSample.java) for a runnable example.
 To inspect exported traces in the Foundry tracing UI, connect the Foundry project to an Application Insights resource
 and configure an Azure Monitor OpenTelemetry exporter. See
-[`TracingAzureMonitorSample.java`](src/samples/java/com/azure/ai/agents/TracingAzureMonitorSample.java) for the exporter
+[`TracingAzureMonitorSample.java`](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/TracingAzureMonitorSample.java) for the exporter
 setup.
 
 ## Troubleshooting
