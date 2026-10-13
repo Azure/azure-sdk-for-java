@@ -144,12 +144,12 @@ public final class SuppressionContractInner extends ProxyResource {
     }
 
     /**
-     * Get the expirationTimeStamp property: Gets or sets the expiration time stamp.
+     * Get the expirationTimestamp property: Gets or sets the expiration time stamp.
      * 
-     * @return the expirationTimeStamp value.
+     * @return the expirationTimestamp value.
      */
-    public OffsetDateTime expirationTimeStamp() {
-        return this.innerProperties() == null ? null : this.innerProperties().expirationTimeStamp();
+    public OffsetDateTime expirationTimestamp() {
+        return this.innerProperties() == null ? null : this.innerProperties().expirationTimestamp();
     }
 
     /**

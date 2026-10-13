@@ -45,8 +45,8 @@ public final class SuppressionContractImpl implements SuppressionContract, Suppr
         return this.innerModel().ttl();
     }
 
-    public OffsetDateTime expirationTimeStamp() {
-        return this.innerModel().expirationTimeStamp();
+    public OffsetDateTime expirationTimestamp() {
+        return this.innerModel().expirationTimestamp();
     }
 
     public SuppressionContractInner innerModel() {

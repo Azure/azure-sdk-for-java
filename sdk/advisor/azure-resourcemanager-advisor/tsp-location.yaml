@@ -1,4 +1,4 @@
 directory: specification/advisor/resource-manager/Microsoft.Advisor/Advisor
-commit: 2f40414843c3098af00f7a2773c139d67363ce75
+commit: fa7ed78f689a39d050007c9dd15eba7764a458b5
 repo: Azure/azure-rest-api-specs
 additionalDirectories: 

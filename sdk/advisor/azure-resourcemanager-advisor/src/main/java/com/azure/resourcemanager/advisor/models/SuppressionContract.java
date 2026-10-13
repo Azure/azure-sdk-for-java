@@ -56,11 +56,11 @@ public interface SuppressionContract {
     String ttl();
 
     /**
-     * Gets the expirationTimeStamp property: Gets or sets the expiration time stamp.
+     * Gets the expirationTimestamp property: Gets or sets the expiration time stamp.
      * 
-     * @return the expirationTimeStamp value.
+     * @return the expirationTimestamp value.
      */
-    OffsetDateTime expirationTimeStamp();
+    OffsetDateTime expirationTimestamp();
 
     /**
      * Gets the inner com.azure.resourcemanager.advisor.fluent.models.SuppressionContractInner object.

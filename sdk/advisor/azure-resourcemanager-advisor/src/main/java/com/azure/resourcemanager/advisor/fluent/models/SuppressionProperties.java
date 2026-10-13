@@ -31,7 +31,7 @@ public final class SuppressionProperties implements JsonSerializable<Suppression
     /*
      * Gets or sets the expiration time stamp.
      */
-    private OffsetDateTime expirationTimeStamp;
+    private OffsetDateTime expirationTimestamp;
 
     /**
      * Creates an instance of SuppressionProperties class.
@@ -80,12 +80,12 @@ public final class SuppressionProperties implements JsonSerializable<Suppression
     }
 
     /**
-     * Get the expirationTimeStamp property: Gets or sets the expiration time stamp.
+     * Get the expirationTimestamp property: Gets or sets the expiration time stamp.
      * 
-     * @return the expirationTimeStamp value.
+     * @return the expirationTimestamp value.
      */
-    public OffsetDateTime expirationTimeStamp() {
-        return this.expirationTimeStamp;
+    public OffsetDateTime expirationTimestamp() {
+        return this.expirationTimestamp;
     }
 
     /**
@@ -119,7 +119,7 @@ public final class SuppressionProperties implements JsonSerializable<Suppression
                 } else if ("ttl".equals(fieldName)) {
                     deserializedSuppressionProperties.ttl = reader.getString();
                 } else if ("expirationTimeStamp".equals(fieldName)) {
-                    deserializedSuppressionProperties.expirationTimeStamp = reader
+                    deserializedSuppressionProperties.expirationTimestamp = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();

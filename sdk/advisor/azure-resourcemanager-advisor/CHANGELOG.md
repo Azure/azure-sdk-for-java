@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.1 (2026-10-12)
+## 1.1.0-beta.1 (2026-10-13)
 
 - Azure Resource Manager Advisor client library for Java. This package contains Microsoft Azure SDK for Advisor Management SDK. REST APIs for Azure Advisor Resiliency Reviews. Package api-version 2026-08-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
@@ -19,19 +19,19 @@
 #### `models.ResourceMetadata` was modified
 
 * `ResourceMetadata()` was changed to private access
-* `withResourceId(java.lang.String)` was removed
-* `validate()` was removed
-* `withSource(java.lang.String)` was removed
-* `withAction(java.util.Map)` was removed
-* `withSingular(java.lang.String)` was removed
 * `withPlural(java.lang.String)` was removed
+* `withResourceId(java.lang.String)` was removed
+* `withSource(java.lang.String)` was removed
+* `withSingular(java.lang.String)` was removed
+* `validate()` was removed
+* `withAction(java.util.Map)` was removed
 
 #### `models.MetadataSupportedValueDetail` was modified
 
 * `MetadataSupportedValueDetail()` was changed to private access
-* `withId(java.lang.String)` was removed
 * `validate()` was removed
 * `withDisplayName(java.lang.String)` was removed
+* `withId(java.lang.String)` was removed
 
 #### `models.Recommendations` was modified
 
@@ -42,22 +42,18 @@
 #### `models.OperationDisplayInfo` was modified
 
 * `OperationDisplayInfo()` was changed to private access
-* `validate()` was removed
-* `withDescription(java.lang.String)` was removed
-* `withResource(java.lang.String)` was removed
-* `withOperation(java.lang.String)` was removed
 * `withProvider(java.lang.String)` was removed
+* `validate()` was removed
+* `withOperation(java.lang.String)` was removed
+* `withResource(java.lang.String)` was removed
+* `withDescription(java.lang.String)` was removed
 
 #### `models.ShortDescription` was modified
 
 * `ShortDescription()` was changed to private access
-* `validate()` was removed
 * `withProblem(java.lang.String)` was removed
+* `validate()` was removed
 * `withSolution(java.lang.String)` was removed
-
-#### `models.SuppressionContract` was modified
-
-* `expirationTimestamp()` was removed
 
 #### `models.DigestConfig` was modified
 
@@ -73,10 +69,10 @@
 
 #### `models.RecommendationsGenerateHeaders` was modified
 
-* `withRetryAfter(java.lang.String)` was removed
-* `validate()` was removed
-* `java.lang.String retryAfter()` -> `java.lang.Integer retryAfter()`
 * `withLocation(java.lang.String)` was removed
+* `java.lang.String retryAfter()` -> `java.lang.Integer retryAfter()`
+* `validate()` was removed
+* `withRetryAfter(java.lang.String)` was removed
 
 ### Features Added
 
@@ -164,18 +160,18 @@
 #### `models.Recommendations` was modified
 
 * `updateByServiceGroup(java.lang.String,java.lang.String,models.RecommendationPatchPayload)` was added
-* `updateByServiceGroupWithResponse(java.lang.String,java.lang.String,models.RecommendationPatchPayload,com.azure.core.util.Context)` was added
-* `list(java.lang.String,models.RecommendationListMode,java.lang.Integer,java.lang.String,com.azure.core.util.Context)` was added
+* `listByTenant(java.lang.String,java.lang.String,java.lang.Integer,java.lang.String,com.azure.core.util.Context)` was added
 * `getGenerateStatus(java.lang.String)` was added
 * `listByServiceGroup(java.lang.String)` was added
-* `update(java.lang.String,models.RecommendationPatchPayload)` was added
-* `getByServiceGroup(java.lang.String,java.lang.String)` was added
-* `listByTenant(java.lang.String)` was added
-* `listByTenant(java.lang.String,java.lang.String,java.lang.Integer,java.lang.String,com.azure.core.util.Context)` was added
-* `updateWithResponse(java.lang.String,models.RecommendationPatchPayload,com.azure.core.util.Context)` was added
-* `getByServiceGroupWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
-* `listByServiceGroup(java.lang.String,java.lang.String,models.RecommendationListMode,java.lang.Integer,java.lang.String,com.azure.core.util.Context)` was added
 * `getGenerateStatusWithResponse(java.lang.String,com.azure.core.util.Context)` was added
+* `list(java.lang.String,models.RecommendationListMode,java.lang.Integer,java.lang.String,com.azure.core.util.Context)` was added
+* `updateWithResponse(java.lang.String,models.RecommendationPatchPayload,com.azure.core.util.Context)` was added
+* `getByServiceGroup(java.lang.String,java.lang.String)` was added
+* `listByServiceGroup(java.lang.String,java.lang.String,models.RecommendationListMode,java.lang.Integer,java.lang.String,com.azure.core.util.Context)` was added
+* `update(java.lang.String,models.RecommendationPatchPayload)` was added
+* `updateByServiceGroupWithResponse(java.lang.String,java.lang.String,models.RecommendationPatchPayload,com.azure.core.util.Context)` was added
+* `listByTenant(java.lang.String)` was added
+* `getByServiceGroupWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
 
 #### `models.ConfigData$Definition` was modified
 
@@ -183,40 +179,39 @@
 
 #### `AdvisorManager` was modified
 
-* `advisorScores()` was added
-* `resiliencyReviews()` was added
-* `workloads()` was added
 * `assessments()` was added
+* `workloads()` was added
 * `resourceProviders()` was added
+* `advisorScores()` was added
 * `assessmentTypes()` was added
+* `resiliencyReviews()` was added
 
 #### `models.SuppressionContract` was modified
 
-* `expirationTimeStamp()` was added
 * `systemData()` was added
 
 #### `models.ResourceRecommendationBase` was modified
 
-* `suppressionId()` was added
+* `risk()` was added
+* `trackedProperties()` was added
+* `completionType()` was added
+* `postponedUntilDateTime()` was added
+* `scoreChangedAt()` was added
+* `lastRefreshed()` was added
+* `systemData()` was added
+* `savings()` was added
+* `notes()` was added
+* `criticalityScore()` was added
+* `resourceWorkload()` was added
 * `serviceGroupId()` was added
 * `recommendationStatus()` was added
-* `scoreChangedAt()` was added
-* `resourceWorkload()` was added
-* `risk()` was added
-* `systemData()` was added
-* `criticalityScore()` was added
-* `completionType()` was added
-* `notes()` was added
-* `savings()` was added
-* `createdTime()` was added
-* `control()` was added
-* `trackedProperties()` was added
 * `criticality()` was added
-* `lastRefreshed()` was added
 * `recommendationDismissReason()` was added
-* `postponedUntilDateTime()` was added
 * `review()` was added
 * `sourceSystem()` was added
+* `control()` was added
+* `suppressionId()` was added
+* `createdTime()` was added
 
 #### `models.RecommendationMetadatas` was modified
 
