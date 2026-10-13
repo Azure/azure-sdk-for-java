@@ -651,7 +651,7 @@ keyVaultSettingsAsyncClient.updateSetting(settingToUpdate)
 ```
 
 ## EKM operations
-An External Key Manager (EKM) connection allows a Managed HSM to communicate with an external key management proxy. The EKM client lets you create, retrieve, update, delete and check an EKM connection, as well as retrieve the EKM proxy client certificate.
+An External Key Manager (EKM) connection allows a Managed HSM to communicate with an external key management proxy. The EKM client lets you create, retrieve, update, delete and check an EKM connection, as well as retrieve the EKM proxy client certificate. It also lets you manage EKM proxy private endpoints, which allow an EKM connection to reach the EKM proxy through Azure Private Link.
 
 ### Examples
 #### Sync API
@@ -663,6 +663,11 @@ The following sections provide several code snippets covering some of the most c
 - [Deleting an EKM connection](#delete-an-ekm-connection)
 - [Checking an EKM connection](#check-an-ekm-connection)
 - [Retrieving the EKM proxy client certificate](#retrieve-the-ekm-proxy-client-certificate)
+- [Creating an EKM proxy private endpoint](#create-an-ekm-proxy-private-endpoint)
+- [Retrieving an EKM proxy private endpoint](#retrieve-an-ekm-proxy-private-endpoint)
+- [Listing EKM proxy private endpoints](#list-ekm-proxy-private-endpoints)
+- [Creating an EKM connection through a private endpoint](#create-an-ekm-connection-through-a-private-endpoint)
+- [Deleting an EKM proxy private endpoint](#delete-an-ekm-proxy-private-endpoint)
 
 ##### Create an EKM client
 Once you perform [the authentication set up that suits you best][default_azure_credential] and replaced **your-managed-hsm-url** with the URL for your key vault, you can create the `KeyVaultEkmClient`:
@@ -744,11 +749,78 @@ System.out.printf("Retrieved EKM proxy client certificate with subject common na
     certificateInfo.getSubjectCommonName());
 ```
 
+##### Create an EKM proxy private endpoint
+Create a private endpoint that connects the Managed HSM EKM proxy pool to a Private Link Service. A pool supports up to two private endpoints, and the Private Link Service owner has to approve the connection before an EKM connection can use it.
+
+```java readme-sample-beginCreateEkmPrivateEndpoint
+SyncPoller<KeyVaultEkmPrivateEndpointOperation, KeyVaultEkmPrivateEndpoint> createPoller =
+    keyVaultEkmClient.beginCreateEkmPrivateEndpoint("<private-endpoint-name>", "<private-link-service-alias>",
+        "Please approve this connection from my Managed HSM");
+PollResponse<KeyVaultEkmPrivateEndpointOperation> createResponse = createPoller.waitForCompletion();
+
+System.out.printf("EKM private endpoint creation finished with status '%s'.%n",
+    createResponse.getValue().getStatus());
+```
+
+##### Retrieve an EKM proxy private endpoint
+Retrieve an EKM proxy private endpoint to inspect its provisioning and connection states.
+
+```java readme-sample-getEkmPrivateEndpoint
+KeyVaultEkmPrivateEndpoint privateEndpoint = keyVaultEkmClient.getEkmPrivateEndpoint("<private-endpoint-name>");
+
+System.out.printf("Retrieved EKM private endpoint '%s' with provisioning state '%s'.%n",
+    privateEndpoint.getName(), privateEndpoint.getProvisioningState());
+```
+
+##### List EKM proxy private endpoints
+List the EKM proxy private endpoints for a Managed HSM account.
+
+```java readme-sample-listEkmPrivateEndpoints
+List<KeyVaultEkmPrivateEndpoint> privateEndpoints = keyVaultEkmClient.listEkmPrivateEndpoints();
+
+for (KeyVaultEkmPrivateEndpoint privateEndpoint : privateEndpoints) {
+    System.out.printf("Retrieved EKM private endpoint '%s' with provisioning state '%s'.%n",
+        privateEndpoint.getName(), privateEndpoint.getProvisioningState());
+}
+```
+
+##### Create an EKM connection through a private endpoint
+Once the private endpoint connection is approved, create an EKM connection that uses it. Set the host to the private endpoint's name, the connectivity mode to `KeyVaultEkmConnectivityMode.PRIVATE_ENDPOINT`, and the server subject common name so the EKM proxy's certificate can still be validated.
+
+```java readme-sample-createPrivateEkmConnection
+KeyVaultEkmConnection privateEkmConnectionToCreate =
+    new KeyVaultEkmConnection("<private-endpoint-name>",
+        Collections.singletonList("<server-ca-certificate>".getBytes()))
+        .setPathPrefix("<path-prefix>")
+        .setConnectivityMode(KeyVaultEkmConnectivityMode.PRIVATE_ENDPOINT)
+        .setServerSubjectCommonName("<server-subject-common-name>");
+
+KeyVaultEkmConnection createdEkmConnection =
+    keyVaultEkmClient.createEkmConnection(privateEkmConnectionToCreate);
+
+System.out.printf("Created EKM connection with connectivity mode '%s'.%n",
+    createdEkmConnection.getConnectivityMode());
+```
+
+##### Delete an EKM proxy private endpoint
+Delete an EKM proxy private endpoint. Any EKM connection that references the private endpoint must be deleted first.
+
+```java readme-sample-beginDeleteEkmPrivateEndpoint
+SyncPoller<KeyVaultEkmPrivateEndpointOperation, Void> deletePoller =
+    keyVaultEkmClient.beginDeleteEkmPrivateEndpoint("<private-endpoint-name>");
+PollResponse<KeyVaultEkmPrivateEndpointOperation> deleteResponse = deletePoller.waitForCompletion();
+
+System.out.printf("EKM private endpoint deletion finished with status '%s'.%n",
+    deleteResponse.getValue().getStatus());
+```
+
 #### Async API
 The following sections provide several code snippets covering some of the most common asynchronous Azure Key Vault EKM client tasks, including:
 - [Creating an EKM connection](#create-an-ekm-connection-asynchronously)
 - [Retrieving an EKM connection](#retrieve-an-ekm-connection-asynchronously)
 - [Checking an EKM connection](#check-an-ekm-connection-asynchronously)
+- [Creating an EKM proxy private endpoint](#create-an-ekm-proxy-private-endpoint-asynchronously)
+- [Listing EKM proxy private endpoints](#list-ekm-proxy-private-endpoints-asynchronously)
 
 ##### Create an EKM connection asynchronously
 Create an EKM connection for a Managed HSM account.
@@ -782,6 +854,32 @@ keyVaultEkmAsyncClient.checkEkmConnection()
     .subscribe(ekmProxyInfo ->
         System.out.printf("Checked EKM connection. Proxy vendor: '%s', proxy name: '%s'.%n",
             ekmProxyInfo.getProxyVendor(), ekmProxyInfo.getProxyName()));
+```
+
+##### Create an EKM proxy private endpoint asynchronously
+Create a private endpoint that connects the Managed HSM EKM proxy pool to a Private Link Service.
+
+```java readme-sample-beginCreateEkmPrivateEndpointAsync
+keyVaultEkmAsyncClient
+    .beginCreateEkmPrivateEndpoint("<private-endpoint-name>", "<private-link-service-alias>",
+        "Please approve this connection from my Managed HSM")
+    .last()
+    .subscribe(createResponse ->
+        System.out.printf("EKM private endpoint creation finished with status '%s'.%n",
+            createResponse.getValue().getStatus()));
+```
+
+##### List EKM proxy private endpoints asynchronously
+List the EKM proxy private endpoints for a Managed HSM account.
+
+```java readme-sample-listEkmPrivateEndpointsAsync
+keyVaultEkmAsyncClient.listEkmPrivateEndpoints()
+    .subscribe(privateEndpoints -> {
+        for (KeyVaultEkmPrivateEndpoint privateEndpoint : privateEndpoints) {
+            System.out.printf("Retrieved EKM private endpoint '%s' with provisioning state '%s'.%n",
+                privateEndpoint.getName(), privateEndpoint.getProvisioningState());
+        }
+    });
 ```
 
 ## Troubleshooting

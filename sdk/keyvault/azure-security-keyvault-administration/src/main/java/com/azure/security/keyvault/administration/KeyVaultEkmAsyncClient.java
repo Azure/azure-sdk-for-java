@@ -213,6 +213,135 @@ import static com.azure.security.keyvault.administration.KeyVaultAdministrationU
  *
  * <p><strong>Note:</strong> For the synchronous sample, refer to {@link KeyVaultEkmClient}.</p>
  *
+ * <br/>
+ *
+ * <hr/>
+ *
+ * <h2>Create an EKM Proxy Private Endpoint</h2>
+ * The {@link KeyVaultEkmAsyncClient} can be used to create a private endpoint that connects the Managed HSM EKM proxy
+ * pool to a Private Link Service.
+ *
+ * <p><strong>Code Sample:</strong></p>
+ * <p>The following code sample demonstrates how to asynchronously create an EKM proxy private endpoint, using the
+ * {@link KeyVaultEkmAsyncClient#beginCreateEkmPrivateEndpoint(String, String, String)} API.</p>
+ *
+ * <!-- src_embed com.azure.security.keyvault.administration.KeyVaultEkmAsyncClient.beginCreateEkmPrivateEndpoint#String-String-String -->
+ * <pre>
+ * keyVaultEkmAsyncClient
+ *     .beginCreateEkmPrivateEndpoint&#40;&quot;&lt;private-endpoint-name&gt;&quot;, &quot;&lt;private-link-service-alias&gt;&quot;,
+ *         &quot;Please approve this connection from my Managed HSM&quot;&#41;
+ *     .last&#40;&#41;
+ *     .flatMap&#40;AsyncPollResponse::getFinalResult&#41;
+ *     .subscribe&#40;createdPrivateEndpoint -&gt;
+ *         System.out.printf&#40;&quot;Created EKM private endpoint '%s'.%n&quot;, createdPrivateEndpoint.getName&#40;&#41;&#41;&#41;;
+ * </pre>
+ * <!-- end com.azure.security.keyvault.administration.KeyVaultEkmAsyncClient.beginCreateEkmPrivateEndpoint#String-String-String -->
+ *
+ * <p><strong>Note:</strong> For the synchronous sample, refer to {@link KeyVaultEkmClient}.</p>
+ *
+ * <br/>
+ *
+ * <hr/>
+ *
+ * <h2>Get an EKM Proxy Private Endpoint</h2>
+ * The {@link KeyVaultEkmAsyncClient} can be used to retrieve an EKM proxy private endpoint from the key vault.
+ *
+ * <p><strong>Code Sample:</strong></p>
+ * <p>The following code sample demonstrates how to asynchronously retrieve an EKM proxy private endpoint, using the
+ * {@link KeyVaultEkmAsyncClient#getEkmPrivateEndpoint(String)} API.</p>
+ *
+ * <!-- src_embed com.azure.security.keyvault.administration.KeyVaultEkmAsyncClient.getEkmPrivateEndpoint#String -->
+ * <pre>
+ * keyVaultEkmAsyncClient.getEkmPrivateEndpoint&#40;&quot;&lt;private-endpoint-name&gt;&quot;&#41;
+ *     .subscribe&#40;privateEndpoint -&gt;
+ *         System.out.printf&#40;&quot;Retrieved EKM private endpoint '%s' with provisioning state '%s'.%n&quot;,
+ *             privateEndpoint.getName&#40;&#41;, privateEndpoint.getProvisioningState&#40;&#41;&#41;&#41;;
+ * </pre>
+ * <!-- end com.azure.security.keyvault.administration.KeyVaultEkmAsyncClient.getEkmPrivateEndpoint#String -->
+ *
+ * <p><strong>Note:</strong> For the synchronous sample, refer to {@link KeyVaultEkmClient}.</p>
+ *
+ * <br/>
+ *
+ * <hr/>
+ *
+ * <h2>List EKM Proxy Private Endpoints</h2>
+ * The {@link KeyVaultEkmAsyncClient} can be used to list the EKM proxy private endpoints in the key vault.
+ *
+ * <p><strong>Code Sample:</strong></p>
+ * <p>The following code sample demonstrates how to asynchronously list the EKM proxy private endpoints, using the
+ * {@link KeyVaultEkmAsyncClient#listEkmPrivateEndpoints()} API.</p>
+ *
+ * <!-- src_embed com.azure.security.keyvault.administration.KeyVaultEkmAsyncClient.listEkmPrivateEndpoints -->
+ * <pre>
+ * keyVaultEkmAsyncClient.listEkmPrivateEndpoints&#40;&#41;
+ *     .subscribe&#40;privateEndpoints -&gt; &#123;
+ *         for &#40;KeyVaultEkmPrivateEndpoint privateEndpoint : privateEndpoints&#41; &#123;
+ *             System.out.printf&#40;&quot;Retrieved EKM private endpoint '%s' with provisioning state '%s'.%n&quot;,
+ *                 privateEndpoint.getName&#40;&#41;, privateEndpoint.getProvisioningState&#40;&#41;&#41;;
+ *         &#125;
+ *     &#125;&#41;;
+ * </pre>
+ * <!-- end com.azure.security.keyvault.administration.KeyVaultEkmAsyncClient.listEkmPrivateEndpoints -->
+ *
+ * <p><strong>Note:</strong> For the synchronous sample, refer to {@link KeyVaultEkmClient}.</p>
+ *
+ * <br/>
+ *
+ * <hr/>
+ *
+ * <h2>Create an EKM Connection Through a Private Endpoint</h2>
+ * Once the Private Link Service owner approves the private endpoint connection, the {@link KeyVaultEkmAsyncClient}
+ * can be used to create an EKM connection that reaches the EKM proxy through the private endpoint.
+ *
+ * <p><strong>Code Sample:</strong></p>
+ * <p>The following code sample demonstrates how to asynchronously create an EKM connection that uses
+ * {@link com.azure.security.keyvault.administration.models.KeyVaultEkmConnectivityMode#PRIVATE_ENDPOINT}, using the
+ * {@link KeyVaultEkmAsyncClient#createEkmConnection(KeyVaultEkmConnection)} API.</p>
+ *
+ * <!-- src_embed com.azure.security.keyvault.administration.KeyVaultEkmAsyncClient.createPrivateEkmConnection -->
+ * <pre>
+ * &#47;&#47; The host is the private endpoint's name, so the proxy's certificate is validated against the subject name.
+ * KeyVaultEkmConnection privateEkmConnectionToCreate =
+ *     new KeyVaultEkmConnection&#40;&quot;&lt;private-endpoint-name&gt;&quot;,
+ *         Collections.singletonList&#40;&quot;&lt;server-ca-certificate&gt;&quot;.getBytes&#40;&#41;&#41;&#41;
+ *         .setPathPrefix&#40;&quot;&lt;path-prefix&gt;&quot;&#41;
+ *         .setConnectivityMode&#40;KeyVaultEkmConnectivityMode.PRIVATE_ENDPOINT&#41;
+ *         .setServerSubjectCommonName&#40;&quot;&lt;server-subject-common-name&gt;&quot;&#41;;
+ *
+ * keyVaultEkmAsyncClient.createEkmConnection&#40;privateEkmConnectionToCreate&#41;
+ *     .subscribe&#40;createdEkmConnection -&gt;
+ *         System.out.printf&#40;&quot;Created EKM connection with connectivity mode '%s'.%n&quot;,
+ *             createdEkmConnection.getConnectivityMode&#40;&#41;&#41;&#41;;
+ * </pre>
+ * <!-- end com.azure.security.keyvault.administration.KeyVaultEkmAsyncClient.createPrivateEkmConnection -->
+ *
+ * <p><strong>Note:</strong> For the synchronous sample, refer to {@link KeyVaultEkmClient}.</p>
+ *
+ * <br/>
+ *
+ * <hr/>
+ *
+ * <h2>Delete an EKM Proxy Private Endpoint</h2>
+ * The {@link KeyVaultEkmAsyncClient} can be used to delete an EKM proxy private endpoint. The EKM connection that
+ * references the private endpoint must be deleted first.
+ *
+ * <p><strong>Code Sample:</strong></p>
+ * <p>The following code sample demonstrates how to asynchronously delete an EKM proxy private endpoint, using the
+ * {@link KeyVaultEkmAsyncClient#beginDeleteEkmPrivateEndpoint(String)} API.</p>
+ *
+ * <!-- src_embed com.azure.security.keyvault.administration.KeyVaultEkmAsyncClient.beginDeleteEkmPrivateEndpoint#String -->
+ * <pre>
+ * keyVaultEkmAsyncClient.beginDeleteEkmPrivateEndpoint&#40;&quot;&lt;private-endpoint-name&gt;&quot;&#41;
+ *     .last&#40;&#41;
+ *     .subscribe&#40;deleteResponse -&gt;
+ *         System.out.printf&#40;&quot;EKM private endpoint deletion finished with status '%s'.%n&quot;,
+ *             deleteResponse.getValue&#40;&#41;.getStatus&#40;&#41;&#41;&#41;;
+ * </pre>
+ * <!-- end com.azure.security.keyvault.administration.KeyVaultEkmAsyncClient.beginDeleteEkmPrivateEndpoint#String -->
+ *
+ * <p><strong>Note:</strong> For the synchronous sample, refer to {@link KeyVaultEkmClient}.</p>
+ *
  * @see com.azure.security.keyvault.administration
  * @see KeyVaultEkmClientBuilder
  */
