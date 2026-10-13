@@ -13,14 +13,14 @@ public final class MaintenanceWindowScheduleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MaintenanceWindowSchedule model
-            = BinaryData.fromString("{\"dayOfWeek\":\"Tuesday\"}").toObject(MaintenanceWindowSchedule.class);
-        Assertions.assertEquals(MaintenanceDayOfWeek.TUESDAY, model.dayOfWeek());
+            = BinaryData.fromString("{\"dayOfWeek\":\"Monday\"}").toObject(MaintenanceWindowSchedule.class);
+        Assertions.assertEquals(MaintenanceDayOfWeek.MONDAY, model.dayOfWeek());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MaintenanceWindowSchedule model = new MaintenanceWindowSchedule().withDayOfWeek(MaintenanceDayOfWeek.TUESDAY);
+        MaintenanceWindowSchedule model = new MaintenanceWindowSchedule().withDayOfWeek(MaintenanceDayOfWeek.MONDAY);
         model = BinaryData.fromObject(model).toObject(MaintenanceWindowSchedule.class);
-        Assertions.assertEquals(MaintenanceDayOfWeek.TUESDAY, model.dayOfWeek());
+        Assertions.assertEquals(MaintenanceDayOfWeek.MONDAY, model.dayOfWeek());
     }
 }

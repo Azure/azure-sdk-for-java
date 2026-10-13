@@ -11,7 +11,7 @@ import com.azure.resourcemanager.redisenterprise.models.ExportClusterParameters;
  */
 public final class DatabasesExportSamples {
     /*
-     * x-ms-original-file: 2026-06-01-preview/RedisEnterpriseDatabasesExport.json
+     * x-ms-original-file: 2026-09-01/RedisEnterpriseDatabasesExport.json
      */
     /**
      * Sample code: RedisEnterpriseDatabasesExport.
