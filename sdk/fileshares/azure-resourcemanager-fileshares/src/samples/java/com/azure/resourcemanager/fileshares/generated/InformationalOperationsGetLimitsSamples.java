@@ -4,12 +4,18 @@
 
 package com.azure.resourcemanager.fileshares.generated;
 
+import com.azure.resourcemanager.fileshares.models.FileShareLimitsRequest;
+import com.azure.resourcemanager.fileshares.models.FileShareOfferInput;
+import com.azure.resourcemanager.fileshares.models.MediaTier;
+import com.azure.resourcemanager.fileshares.models.Protocol;
+import com.azure.resourcemanager.fileshares.models.ScaleMode;
+
 /**
  * Samples for InformationalOperations GetLimits.
  */
 public final class InformationalOperationsGetLimitsSamples {
     /*
-     * x-ms-original-file: 2026-06-01/FileShare_GetLimits_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-09-01/FileShare_GetLimits_MinimumSet_Gen.json
      */
     /**
      * Sample code: FileShare_GetLimits_MinimumSet.
@@ -17,11 +23,13 @@ public final class InformationalOperationsGetLimitsSamples {
      * @param manager Entry point to FileSharesManager.
      */
     public static void fileShareGetLimitsMinimumSet(com.azure.resourcemanager.fileshares.FileSharesManager manager) {
-        manager.informationalOperations().getLimitsWithResponse("westus", com.azure.core.util.Context.NONE);
+        manager.informationalOperations()
+            .getLimitsWithResponse("westus", new FileShareLimitsRequest().withProperties(new FileShareOfferInput()),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: 2026-06-01/FileShare_GetLimits_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-01/FileShare_GetLimits_MaximumSet_Gen.json
      */
     /**
      * Sample code: FileShare_GetLimits_MaximumSet.
@@ -29,6 +37,11 @@ public final class InformationalOperationsGetLimitsSamples {
      * @param manager Entry point to FileSharesManager.
      */
     public static void fileShareGetLimitsMaximumSet(com.azure.resourcemanager.fileshares.FileSharesManager manager) {
-        manager.informationalOperations().getLimitsWithResponse("westus", com.azure.core.util.Context.NONE);
+        manager.informationalOperations()
+            .getLimitsWithResponse("westus",
+                new FileShareLimitsRequest().withProperties(new FileShareOfferInput().withProtocol(Protocol.NFS)
+                    .withMediaTier(MediaTier.HDD)
+                    .withScaleMode(ScaleMode.SCALE)),
+                com.azure.core.util.Context.NONE);
     }
 }

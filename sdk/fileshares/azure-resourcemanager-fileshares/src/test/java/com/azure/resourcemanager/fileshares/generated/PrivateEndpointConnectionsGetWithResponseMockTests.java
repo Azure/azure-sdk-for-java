@@ -22,7 +22,7 @@ public final class PrivateEndpointConnectionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"groupIds\":[\"cpdggkzzlvmbmp\"],\"privateEndpoint\":{\"id\":\"odfvuefywsbp\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"yhrfouyftaakcpw\",\"actionsRequired\":\"zvqtmnubexkp\"},\"provisioningState\":\"Creating\"},\"id\":\"ondjmq\",\"name\":\"xvy\",\"type\":\"omgkopkwho\"}";
+            = "{\"properties\":{\"groupIds\":[\"dowwquuvxzxclvit\"],\"privateEndpoint\":{\"id\":\"zonosgg\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"hfwdsjnkaljutiis\",\"actionsRequired\":\"cffgdkzzewk\"},\"provisioningState\":\"Deleting\"},\"id\":\"crailvpn\",\"name\":\"pfuflrw\",\"type\":\"mh\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,14 +32,14 @@ public final class PrivateEndpointConnectionsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PrivateEndpointConnection response = manager.privateEndpointConnections()
-            .getWithResponse("wuoegrpk", "jw", "iyq", com.azure.core.util.Context.NONE)
+            .getWithResponse("btbhjpglkfgohd", "euel", "phsdyhto", com.azure.core.util.Context.NONE)
             .getValue();
 
         Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.APPROVED,
             response.properties().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("yhrfouyftaakcpw",
+        Assertions.assertEquals("hfwdsjnkaljutiis",
             response.properties().privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("zvqtmnubexkp",
+        Assertions.assertEquals("cffgdkzzewk",
             response.properties().privateLinkServiceConnectionState().actionsRequired());
     }
 }

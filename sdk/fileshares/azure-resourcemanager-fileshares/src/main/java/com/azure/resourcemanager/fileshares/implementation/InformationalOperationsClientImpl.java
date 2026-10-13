@@ -26,6 +26,7 @@ import com.azure.resourcemanager.fileshares.fluent.InformationalOperationsClient
 import com.azure.resourcemanager.fileshares.fluent.models.FileShareLimitsResponseInner;
 import com.azure.resourcemanager.fileshares.fluent.models.FileShareProvisioningRecommendationResponseInner;
 import com.azure.resourcemanager.fileshares.fluent.models.FileShareUsageDataResponseInner;
+import com.azure.resourcemanager.fileshares.models.FileShareLimitsRequest;
 import com.azure.resourcemanager.fileshares.models.FileShareProvisioningRecommendationRequest;
 import reactor.core.publisher.Mono;
 
@@ -83,7 +84,8 @@ public final class InformationalOperationsClientImpl implements InformationalOpe
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<FileShareLimitsResponseInner>> getLimits(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("location") String location, @HeaderParam("Accept") String accept, Context context);
+            @PathParam("location") String location, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") FileShareLimitsRequest body, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.FileShares/locations/{location}/getLimits")
@@ -91,7 +93,8 @@ public final class InformationalOperationsClientImpl implements InformationalOpe
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<FileShareLimitsResponseInner> getLimitsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("location") String location, @HeaderParam("Accept") String accept, Context context);
+            @PathParam("location") String location, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") FileShareLimitsRequest body, Context context);
 
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.FileShares/locations/{location}/getProvisioningRecommendation")
         @ExpectedResponses({ 200 })
@@ -179,17 +182,19 @@ public final class InformationalOperationsClientImpl implements InformationalOpe
      * Get file shares limits.
      * 
      * @param location The name of the Azure region.
+     * @param body The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return file shares limits along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<FileShareLimitsResponseInner>> getLimitsWithResponseAsync(String location) {
+    private Mono<Response<FileShareLimitsResponseInner>> getLimitsWithResponseAsync(String location,
+        FileShareLimitsRequest body) {
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getLimits(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), location, accept, context))
+                this.client.getSubscriptionId(), location, accept, body, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -204,13 +209,15 @@ public final class InformationalOperationsClientImpl implements InformationalOpe
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<FileShareLimitsResponseInner> getLimitsAsync(String location) {
-        return getLimitsWithResponseAsync(location).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        final FileShareLimitsRequest body = null;
+        return getLimitsWithResponseAsync(location, body).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get file shares limits.
      * 
      * @param location The name of the Azure region.
+     * @param body The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -218,10 +225,11 @@ public final class InformationalOperationsClientImpl implements InformationalOpe
      * @return file shares limits along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<FileShareLimitsResponseInner> getLimitsWithResponse(String location, Context context) {
+    public Response<FileShareLimitsResponseInner> getLimitsWithResponse(String location, FileShareLimitsRequest body,
+        Context context) {
         final String accept = "application/json";
         return service.getLimitsSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), location, accept, context);
+            this.client.getSubscriptionId(), location, accept, body, context);
     }
 
     /**
@@ -235,7 +243,8 @@ public final class InformationalOperationsClientImpl implements InformationalOpe
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FileShareLimitsResponseInner getLimits(String location) {
-        return getLimitsWithResponse(location, Context.NONE).getValue();
+        final FileShareLimitsRequest body = null;
+        return getLimitsWithResponse(location, body, Context.NONE).getValue();
     }
 
     /**
