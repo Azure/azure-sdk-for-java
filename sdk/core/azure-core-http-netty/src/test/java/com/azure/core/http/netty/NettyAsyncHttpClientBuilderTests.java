@@ -73,6 +73,15 @@ public class NettyAsyncHttpClientBuilderTests {
     private static final String JAVA_HTTP_PROXY_PASSWORD = "http.proxyPassword";
     private static final ConfigurationSource EMPTY_SOURCE = new TestConfigurationSource();
 
+    // Environment source that shadows the ambient proxy environment variables (HTTP_PROXY/HTTPS_PROXY/NO_PROXY). These
+    // tests build explicit proxy Configurations, but EnvironmentConfiguration falls back to the real System.getenv for
+    // any proxy key a source leaves unset, so a CI agent that exports a real proxy would otherwise leak into
+    // ProxyOptions.fromConfiguration. Using this as the environment source keeps proxy resolution hermetic.
+    private static final ConfigurationSource NEUTRAL_PROXY_ENV_SOURCE
+        = new TestConfigurationSource().put(Configuration.PROPERTY_HTTP_PROXY, "")
+            .put(Configuration.PROPERTY_HTTPS_PROXY, "")
+            .put(Configuration.PROPERTY_NO_PROXY, "");
+
     private static final String SERVER_HTTP_URI = NettyHttpClientLocalTestServer.getServer().getHttpUri();
     private static final String DEFAULT_URL = SERVER_HTTP_URI + DEFAULT_PATH;
     private static final String PREBUILT_CLIENT_URL = SERVER_HTTP_URI + PREBUILT_CLIENT_PATH;
@@ -260,12 +269,19 @@ public class NettyAsyncHttpClientBuilderTests {
          * Simple non-authenticated HTTP proxies.
          */
         arguments.add(Arguments.of(true, false,
-            new ConfigurationBuilder(EMPTY_SOURCE, baseJavaProxyConfigurationSupplier.get(), EMPTY_SOURCE).build(),
+            new ConfigurationBuilder(EMPTY_SOURCE, baseJavaProxyConfigurationSupplier.get(), NEUTRAL_PROXY_ENV_SOURCE)
+                .build(),
             DEFAULT_URL));
 
+        // Explicitly neutralize the ambient HTTPS_PROXY/NO_PROXY environment variables. ProxyOptions.fromConfiguration
+        // reads HTTPS_PROXY before HTTP_PROXY and reads NO_PROXY, and EnvironmentConfiguration falls back to the real
+        // System.getenv for any key the test source does not set. On CI agents that export a real HTTPS_PROXY/NO_PROXY
+        // (e.g. Windows) that would otherwise leak in and break these assertions, so the source must shadow them.
         Configuration simpleEnvProxy = new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE,
             new TestConfigurationSource().put(Configuration.PROPERTY_HTTP_PROXY, "http://localhost:12345")
-                .put(JAVA_SYSTEM_PROXY_PREREQUISITE, "true")).build();
+                .put(JAVA_SYSTEM_PROXY_PREREQUISITE, "true")
+                .put(Configuration.PROPERTY_HTTPS_PROXY, "")
+                .put(Configuration.PROPERTY_NO_PROXY, "")).build();
         arguments.add(Arguments.of(true, false, simpleEnvProxy, DEFAULT_URL));
 
         /*
@@ -275,11 +291,14 @@ public class NettyAsyncHttpClientBuilderTests {
             .put(JAVA_HTTP_PROXY_USER, "1")
             .put(JAVA_HTTP_PROXY_PASSWORD, "1");
         arguments.add(Arguments.of(true, true,
-            new ConfigurationBuilder(EMPTY_SOURCE, javaProxyWithAuthentication, EMPTY_SOURCE).build(), DEFAULT_URL));
+            new ConfigurationBuilder(EMPTY_SOURCE, javaProxyWithAuthentication, NEUTRAL_PROXY_ENV_SOURCE).build(),
+            DEFAULT_URL));
 
         Configuration envProxyWithAuthentication = new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE,
             new TestConfigurationSource().put(Configuration.PROPERTY_HTTP_PROXY, "http://1:1@localhost:12345")
-                .put(JAVA_SYSTEM_PROXY_PREREQUISITE, "true")).build();
+                .put(JAVA_SYSTEM_PROXY_PREREQUISITE, "true")
+                .put(Configuration.PROPERTY_HTTPS_PROXY, "")
+                .put(Configuration.PROPERTY_NO_PROXY, "")).build();
         arguments.add(Arguments.of(true, true, envProxyWithAuthentication, DEFAULT_URL));
 
         /*
@@ -313,13 +332,15 @@ public class NettyAsyncHttpClientBuilderTests {
         for (Supplier<TestConfigurationSource> configurationSupplier : nonProxyHostsSuppliers) {
             for (String requestUrl : requestUrlsWithoutProxying) {
                 arguments.add(Arguments.of(false, false,
-                    new ConfigurationBuilder(EMPTY_SOURCE, configurationSupplier.get(), EMPTY_SOURCE).build(),
+                    new ConfigurationBuilder(EMPTY_SOURCE, configurationSupplier.get(), NEUTRAL_PROXY_ENV_SOURCE)
+                        .build(),
                     requestUrl));
             }
 
             for (String requestUrl : requestUrlsWithProxying) {
                 arguments.add(Arguments.of(true, false,
-                    new ConfigurationBuilder(EMPTY_SOURCE, configurationSupplier.get(), EMPTY_SOURCE).build(),
+                    new ConfigurationBuilder(EMPTY_SOURCE, configurationSupplier.get(), NEUTRAL_PROXY_ENV_SOURCE)
+                        .build(),
                     requestUrl));
             }
         }
@@ -340,13 +361,15 @@ public class NettyAsyncHttpClientBuilderTests {
         for (Supplier<TestConfigurationSource> configurationSupplier : authenticatedNonProxyHostsSuppliers) {
             for (String requestUrl : requestUrlsWithoutProxying) {
                 arguments.add(Arguments.of(false, true,
-                    new ConfigurationBuilder(EMPTY_SOURCE, configurationSupplier.get(), EMPTY_SOURCE).build(),
+                    new ConfigurationBuilder(EMPTY_SOURCE, configurationSupplier.get(), NEUTRAL_PROXY_ENV_SOURCE)
+                        .build(),
                     requestUrl));
             }
 
             for (String requestUrl : requestUrlsWithProxying) {
                 arguments.add(Arguments.of(true, true,
-                    new ConfigurationBuilder(EMPTY_SOURCE, configurationSupplier.get(), EMPTY_SOURCE).build(),
+                    new ConfigurationBuilder(EMPTY_SOURCE, configurationSupplier.get(), NEUTRAL_PROXY_ENV_SOURCE)
+                        .build(),
                     requestUrl));
             }
         }
@@ -356,7 +379,8 @@ public class NettyAsyncHttpClientBuilderTests {
 
     private static Stream<Arguments> buildWithExplicitConfigurationProxySupplier() {
         Supplier<ConfigurationBuilder> baseHttpProxy
-            = () -> new ConfigurationBuilder().putProperty("http.proxy.hostname", "localhost")
+            = () -> new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE, NEUTRAL_PROXY_ENV_SOURCE)
+                .putProperty("http.proxy.hostname", "localhost")
                 .putProperty("http.proxy.port", "12345");
 
         List<Arguments> arguments = new ArrayList<>();
