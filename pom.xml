@@ -213,6 +213,7 @@
     <module>sdk/postgresqlflexibleserver</module>
     <module>sdk/powerbidedicated</module>
     <module>sdk/privatedns</module>
+    <module>sdk/privatetrafficmanager</module>
     <module>sdk/programenrollment</module>
     <module>sdk/programmableconnectivity</module>
     <module>sdk/providerhub</module>
