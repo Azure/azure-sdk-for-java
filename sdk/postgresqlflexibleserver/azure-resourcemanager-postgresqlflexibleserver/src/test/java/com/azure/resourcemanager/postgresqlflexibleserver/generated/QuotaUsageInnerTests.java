@@ -12,13 +12,13 @@ public final class QuotaUsageInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         QuotaUsageInner model = BinaryData.fromString(
-            "{\"name\":{\"value\":\"yyprotwyp\",\"localizedValue\":\"d\"},\"limit\":6016947306008941575,\"unit\":\"gcmjkavl\",\"currentValue\":2229210040152376191,\"id\":\"ftpmdtzfjltfv\"}")
+            "{\"name\":{\"value\":\"sphaivmxyasflvg\",\"localizedValue\":\"zwywako\"},\"limit\":8488817138915627444,\"unit\":\"mjblmljhlny\",\"currentValue\":6616227600474251692,\"id\":\"yryuzcb\"}")
             .toObject(QuotaUsageInner.class);
-        Assertions.assertEquals("yyprotwyp", model.name().value());
-        Assertions.assertEquals("d", model.name().localizedValue());
-        Assertions.assertEquals(6016947306008941575L, model.limit());
-        Assertions.assertEquals("gcmjkavl", model.unit());
-        Assertions.assertEquals(2229210040152376191L, model.currentValue());
-        Assertions.assertEquals("ftpmdtzfjltfv", model.id());
+        Assertions.assertEquals("sphaivmxyasflvg", model.name().value());
+        Assertions.assertEquals("zwywako", model.name().localizedValue());
+        Assertions.assertEquals(8488817138915627444L, model.limit());
+        Assertions.assertEquals("mjblmljhlny", model.unit());
+        Assertions.assertEquals(6616227600474251692L, model.currentValue());
+        Assertions.assertEquals("yryuzcb", model.id());
     }
 }

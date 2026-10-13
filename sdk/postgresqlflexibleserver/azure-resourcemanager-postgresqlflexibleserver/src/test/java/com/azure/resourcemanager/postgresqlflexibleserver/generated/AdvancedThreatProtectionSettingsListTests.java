@@ -12,8 +12,8 @@ public final class AdvancedThreatProtectionSettingsListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AdvancedThreatProtectionSettingsList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"state\":\"Enabled\",\"creationTime\":\"2021-12-05T00:17:31Z\"},\"id\":\"hsasbhu\",\"name\":\"ypoh\",\"type\":\"uemsly\"},{\"properties\":{\"state\":\"Enabled\",\"creationTime\":\"2021-07-04T14:39:32Z\"},\"id\":\"foobrlttyms\",\"name\":\"nygq\",\"type\":\"nfwqzdzgtilaxhn\"}],\"nextLink\":\"qlyvijo\"}")
+            "{\"value\":[{\"properties\":{\"state\":\"Disabled\",\"creationTime\":\"2021-05-09T05:27:31Z\"},\"id\":\"klnsrmffey\",\"name\":\"xcktpiymerteeamm\",\"type\":\"qiekkkzddrt\"},{\"properties\":{\"state\":\"Enabled\",\"creationTime\":\"2021-06-22T03:21:50Z\"},\"id\":\"mxvavrefdee\",\"name\":\"vecuijpx\",\"type\":\"xs\"}],\"nextLink\":\"prtujwsawdd\"}")
             .toObject(AdvancedThreatProtectionSettingsList.class);
-        Assertions.assertEquals("qlyvijo", model.nextLink());
+        Assertions.assertEquals("prtujwsawdd", model.nextLink());
     }
 }
