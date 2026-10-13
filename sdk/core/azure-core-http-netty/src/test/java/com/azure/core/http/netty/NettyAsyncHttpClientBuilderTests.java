@@ -71,6 +71,7 @@ public class NettyAsyncHttpClientBuilderTests {
     private static final String JAVA_HTTP_PROXY_PORT = "http.proxyPort";
     private static final String JAVA_HTTP_PROXY_USER = "http.proxyUser";
     private static final String JAVA_HTTP_PROXY_PASSWORD = "http.proxyPassword";
+    private static final String JAVA_HTTPS_PROXY_HOST = "https.proxyHost";
     private static final ConfigurationSource EMPTY_SOURCE = new TestConfigurationSource();
 
     // Environment source that shadows the ambient proxy environment variables (HTTP_PROXY/HTTPS_PROXY/NO_PROXY). These
@@ -261,7 +262,15 @@ public class NettyAsyncHttpClientBuilderTests {
     private static Stream<Arguments> buildWithEnvConfigurationProxySupplier() {
         Supplier<TestConfigurationSource> baseJavaProxyConfigurationSupplier
             = () -> new TestConfigurationSource().put(JAVA_HTTP_PROXY_HOST, "localhost")
-                .put(JAVA_HTTP_PROXY_PORT, "12345");
+                .put(JAVA_HTTP_PROXY_PORT, "12345")
+                // Shadow the JVM proxy system properties ProxyOptions.fromConfiguration reads before the intended
+                // HTTP proxy, so the agent's -Dhttps.proxyHost / -Dhttp.nonProxyHosts / -Dhttp.proxyUser flags cannot
+                // leak in. User and password are shadowed with null because an empty string would be treated as an
+                // empty credential and wrongly select the authenticated proxy handler.
+                .put(JAVA_HTTPS_PROXY_HOST, "")
+                .put(JAVA_NON_PROXY_HOSTS, "")
+                .put(JAVA_HTTP_PROXY_USER, null)
+                .put(JAVA_HTTP_PROXY_PASSWORD, null);
 
         List<Arguments> arguments = new ArrayList<>();
 
