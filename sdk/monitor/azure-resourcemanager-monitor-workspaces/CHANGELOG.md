@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.1 (2026-10-09)
+## 1.1.0-beta.1 (2026-10-13)
 
 - Azure Resource Manager Monitor Workspaces client library for Java. This package contains Microsoft Azure SDK for Monitor Workspaces Management SDK.  Package api-version 2026-09-03-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
@@ -60,23 +60,23 @@
 
 #### `models.AzureMonitorWorkspace` was modified
 
-* `actions()` was added
 * `endpoints()` was added
 * `withActions(models.AzureMonitorWorkspaceActions)` was added
+* `actions()` was added
 
 #### `MonitorWorkspacesManager` was modified
 
-* `traceAssociationsAtResourceGroups()` was added
-* `metricConfigurations()` was added
 * `traceAssociations()` was added
-* `metricNamespaces()` was added
 * `traceContainers()` was added
 * `traceAssociationsAtSubscriptions()` was added
+* `metricNamespaces()` was added
+* `metricConfigurations()` was added
+* `traceAssociationsAtResourceGroups()` was added
 
 #### `models.MetricsContainer` was modified
 
-* `limits()` was added
 * `withLimits(models.MetricsLimits)` was added
+* `limits()` was added
 
 ## 1.0.0 (2026-06-25)
 
