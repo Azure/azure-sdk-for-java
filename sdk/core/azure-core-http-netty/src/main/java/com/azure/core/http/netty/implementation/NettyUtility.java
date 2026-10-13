@@ -38,7 +38,8 @@ public final class NettyUtility {
     // the SDK will fall back to using the JDK implementations.
     private static final List<String> REQUIRED_NETTY_VERSION_ARTIFACTS
         = Arrays.asList("netty-common", "netty-handler", "netty-handler-proxy", "netty-buffer", "netty-codec-base",
-            "netty-codec-compression", "netty-codec-http", "netty-codec-http2", "netty-codec-socks");
+            "netty-codec-compression", "netty-codec-dns", "netty-codec-http", "netty-codec-http2", "netty-codec-socks",
+            "netty-resolver", "netty-resolver-dns", "netty-transport");
     private static final List<String> OPTIONAL_NETTY_VERSION_ARTIFACTS = Arrays
         .asList("netty-transport-native-unix-common", "netty-transport-native-epoll", "netty-transport-native-kqueue");
 

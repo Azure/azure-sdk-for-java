@@ -57,7 +57,7 @@ add the direct dependency to your project as follows.
 
 ### Netty 4.2 compatibility
 
-Starting with `1.17.0-beta.1`, this library uses Netty `4.2.18.Final`, Reactor Netty `1.3.7`, and Reactor `3.8.7`.
+Starting with `1.17.0-beta.1`, this library uses Netty `4.2.19.Final`, Reactor Netty `1.3.7`, and Reactor `3.8.7`.
 Netty 4.1 and 4.2 must not be mixed on the classpath. If your application or framework manages these dependencies,
 align the entire Netty and Reactor stack when upgrading. Java 8 remains supported.
 
