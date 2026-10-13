@@ -264,9 +264,12 @@ stages:
                   }
                 displayName: Increment package versions
 
-              - script: |
-                  python --version
-                  python eng/versioning/update_versions.py --auto-version-increment --skip-readme
+              - task: PythonScript@0
+                inputs:
+                  scriptPath: eng/versioning/update_versions.py
+                  arguments: >
+                    --auto-version-increment
+                    --skip-readme
                 displayName: Update pom files for incremented versions
 
               - template: /eng/common/pipelines/templates/steps/create-pull-request.yml
