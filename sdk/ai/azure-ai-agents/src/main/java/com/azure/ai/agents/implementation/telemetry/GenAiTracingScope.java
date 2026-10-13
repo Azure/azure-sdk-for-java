@@ -188,12 +188,12 @@ final class GenAiTracingScope implements AutoCloseable {
 
     private void recordMetrics() {
         double durationSeconds = (System.nanoTime() - startTimeNanos) / 1_000_000_000.0;
-        if (instrumentation.tokenUsageHistogram().isEnabled() || instrumentation.durationHistogram().isEnabled()){
+        if (instrumentation.tokenUsageHistogram().isEnabled() || instrumentation.durationHistogram().isEnabled()) {
             Map<String, Object> baseAttributes = new HashMap<>();
             String metricOperationName
                 = OPERATION_CHAT.equals(operationName) || OPERATION_INVOKE_AGENT.equals(operationName)
-                ? OPERATION_RESPONSES
-                : operationName;
+                    ? OPERATION_RESPONSES
+                    : operationName;
             baseAttributes.put(GEN_AI_OPERATION_NAME, metricOperationName);
             baseAttributes.put(GEN_AI_PROVIDER_NAME, GEN_AI_PROVIDER_NAME_VALUE);
             baseAttributes.put(SERVER_ADDRESS, serverAddress);
@@ -220,7 +220,8 @@ final class GenAiTracingScope implements AutoCloseable {
                 if (inputTokens != null && inputTokens > 0) {
                     Map<String, Object> inputAttrs = new HashMap<>(baseAttributes);
                     inputAttrs.put(GEN_AI_TOKEN_TYPE, TOKEN_TYPE_INPUT);
-                    tokenUsageHistogram.record(inputTokens.doubleValue(), meter.createAttributes(inputAttrs), spanContext);
+                    tokenUsageHistogram.record(inputTokens.doubleValue(), meter.createAttributes(inputAttrs),
+                        spanContext);
                 }
                 if (outputTokens != null && outputTokens > 0) {
                     Map<String, Object> outputAttrs = new HashMap<>(baseAttributes);
