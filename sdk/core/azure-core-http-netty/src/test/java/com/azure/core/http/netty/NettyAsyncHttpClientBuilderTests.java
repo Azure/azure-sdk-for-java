@@ -291,6 +291,7 @@ public class NettyAsyncHttpClientBuilderTests {
         Configuration simpleEnvProxy = new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE,
             new TestConfigurationSource().put(Configuration.PROPERTY_HTTP_PROXY, "http://localhost:12345")
                 .put(Configuration.PROPERTY_HTTPS_PROXY, "")
+                .put(Configuration.PROPERTY_NO_PROXY, "")
                 .put(JAVA_SYSTEM_PROXY_PREREQUISITE, "true")).build();
         arguments.add(Arguments.of(true, false, simpleEnvProxy, DEFAULT_URL));
 
@@ -306,6 +307,7 @@ public class NettyAsyncHttpClientBuilderTests {
         Configuration envProxyWithAuthentication = new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE,
             new TestConfigurationSource().put(Configuration.PROPERTY_HTTP_PROXY, "http://1:1@localhost:12345")
                 .put(Configuration.PROPERTY_HTTPS_PROXY, "")
+                .put(Configuration.PROPERTY_NO_PROXY, "")
                 .put(JAVA_SYSTEM_PROXY_PREREQUISITE, "true")).build();
         arguments.add(Arguments.of(true, true, envProxyWithAuthentication, DEFAULT_URL));
 
