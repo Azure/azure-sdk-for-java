@@ -7,9 +7,13 @@ import com.azure.autorest.customization.LibraryCustomization;
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Modifier;
+import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.EnumDeclaration;
+import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.comments.LineComment;
 import com.github.javaparser.ast.expr.StringLiteralExpr;
+import com.github.javaparser.ast.stmt.BlockStmt;
+import com.github.javaparser.ast.stmt.IfStmt;
 import com.github.javaparser.javadoc.Javadoc;
 import org.slf4j.Logger;
 
@@ -72,19 +76,58 @@ public class CertificatesCustomizations extends Customization {
     }
 
     private static void customizePlatformManaged(LibraryCustomization customization) {
-        // The hand-written public PlatformManaged class lives in
-        // src/main/java/com/azure/security/keyvault/certificates/models/PlatformManaged.java.
-        // On regeneration, autorest produces an impl twin at
-        // implementation/models/PlatformManaged.java. Remove the impl twin and ensure the
-        // generated impl CertificatePolicy references the public class instead, otherwise
-        // the public models.CertificatePolicy (which exposes PlatformManaged) won't compile.
+        // The stable spec omits this preview-only property used by the hand-written public model.
         String implModelsDirectory = "src/main/java/com/azure/security/keyvault/certificates/implementation/models/";
         String publicPlatformManagedFqn = "com.azure.security.keyvault.certificates.models.PlatformManaged";
 
         customization.getRawEditor().removeFile(implModelsDirectory + "PlatformManaged.java");
 
         customization.getClass("com.azure.security.keyvault.certificates.implementation.models", "CertificatePolicy")
-            .customizeAst(ast -> ast.addImport(publicPlatformManagedFqn));
+            .customizeAst(ast -> {
+                ast.addImport(publicPlatformManagedFqn);
+                ClassOrInterfaceDeclaration policy = ast.getClassByName("CertificatePolicy")
+                    .orElseThrow(() -> new IllegalStateException("CertificatePolicy class not found"));
+                if (policy.getFieldByName("platformManaged").isPresent()) {
+                    return;
+                }
+
+                policy.getMembers().add(0, StaticJavaParser.parseBodyDeclaration(
+                    "@Generated private PlatformManaged platformManaged;"));
+
+                MethodDeclaration toJson = policy.getMethodsByName("toJson").stream().findFirst()
+                    .orElseThrow(() -> new IllegalStateException("CertificatePolicy.toJson method not found"));
+                int accessorIndex = policy.getMembers().indexOf(toJson);
+                policy.getMembers().add(accessorIndex, StaticJavaParser.parseMethodDeclaration(
+                    "@Generated public PlatformManaged getPlatformManaged() { return this.platformManaged; }")
+                    .setJavadocComment(new Javadoc(parseText("Gets the platform-managed certificate configuration."))
+                        .addBlockTag("return", "the platform-managed certificate configuration")));
+                policy.getMembers().add(accessorIndex + 1, StaticJavaParser.parseMethodDeclaration(
+                    "@Generated public CertificatePolicy setPlatformManaged(PlatformManaged platformManaged) {"
+                        + " this.platformManaged = platformManaged; return this; }")
+                    .setJavadocComment(new Javadoc(parseText("Sets the platform-managed certificate configuration."))
+                        .addBlockTag("param", "platformManaged the platform-managed certificate configuration")
+                        .addBlockTag("return", "the CertificatePolicy object itself")));
+
+                BlockStmt toJsonBody = toJson.getBody()
+                    .orElseThrow(() -> new IllegalStateException("CertificatePolicy.toJson body not found"));
+                toJsonBody.getStatements().add(toJsonBody.getStatements().size() - 1,
+                    StaticJavaParser.parseStatement(
+                        "jsonWriter.writeJsonField(\"platformManaged\", this.platformManaged);"));
+
+                MethodDeclaration fromJson = policy.getMethodsByName("fromJson").stream().findFirst()
+                    .orElseThrow(() -> new IllegalStateException("CertificatePolicy.fromJson method not found"));
+                IfStmt lastField = fromJson.findAll(IfStmt.class).stream()
+                    .filter(statement -> statement.getElseStmt().filter(elseStmt -> elseStmt.isBlockStmt()).isPresent())
+                    .findFirst()
+                    .orElseThrow(() -> new IllegalStateException(
+                        "CertificatePolicy.fromJson unknown-field branch not found"));
+                IfStmt platformManaged = StaticJavaParser.parseStatement(
+                    "if (\"platformManaged\".equals(fieldName)) {"
+                        + " deserializedCertificatePolicy.platformManaged = PlatformManaged.fromJson(reader); }")
+                    .asIfStmt();
+                platformManaged.setElseStmt(lastField.getElseStmt().get().clone());
+                lastField.setElseStmt(platformManaged);
+            });
     }
 
     private static void customizeCertificateKeyUsage(LibraryCustomization customization) {

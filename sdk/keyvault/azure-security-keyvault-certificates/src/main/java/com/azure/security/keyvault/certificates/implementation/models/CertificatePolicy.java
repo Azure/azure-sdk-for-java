@@ -9,6 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.security.keyvault.certificates.models.PlatformManaged;
 import java.io.IOException;
 import java.util.List;
 
@@ -17,6 +18,9 @@ import java.util.List;
  */
 @Fluent
 public final class CertificatePolicy implements JsonSerializable<CertificatePolicy> {
+
+    @Generated
+    private PlatformManaged platformManaged;
 
     /*
      * The certificate id.
@@ -210,6 +214,28 @@ public final class CertificatePolicy implements JsonSerializable<CertificatePoli
     }
 
     /**
+     * Gets the platform-managed certificate configuration.
+     *
+     * @return the platform-managed certificate configuration
+     */
+    @Generated
+    public PlatformManaged getPlatformManaged() {
+        return this.platformManaged;
+    }
+
+    /**
+     * Sets the platform-managed certificate configuration.
+     *
+     * @param platformManaged the platform-managed certificate configuration
+     * @return the CertificatePolicy object itself
+     */
+    @Generated
+    public CertificatePolicy setPlatformManaged(PlatformManaged platformManaged) {
+        this.platformManaged = platformManaged;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Generated
@@ -223,6 +249,7 @@ public final class CertificatePolicy implements JsonSerializable<CertificatePoli
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("issuer", this.issuerParameters);
         jsonWriter.writeJsonField("attributes", this.attributes);
+        jsonWriter.writeJsonField("platformManaged", this.platformManaged);
         return jsonWriter.writeEndObject();
     }
 
@@ -258,6 +285,8 @@ public final class CertificatePolicy implements JsonSerializable<CertificatePoli
                     deserializedCertificatePolicy.issuerParameters = IssuerParameters.fromJson(reader);
                 } else if ("attributes".equals(fieldName)) {
                     deserializedCertificatePolicy.attributes = CertificateAttributes.fromJson(reader);
+                } else if ("platformManaged".equals(fieldName)) {
+                    deserializedCertificatePolicy.platformManaged = PlatformManaged.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
