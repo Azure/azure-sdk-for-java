@@ -500,7 +500,10 @@ public class ProxyOptionsTests {
         if (isHttps) {
             testSource.put(Configuration.PROPERTY_HTTPS_PROXY, proxy);
         } else {
-            testSource.put(Configuration.PROPERTY_HTTP_PROXY, proxy);
+            testSource.put(Configuration.PROPERTY_HTTP_PROXY, proxy)
+                // Same as with non-proxy hosts, set HTTPS_PROXY to empty when testing HTTP_PROXY as HTTPS is checked
+                // first and could fall back to loading from System.properties or System.env.
+                .put(Configuration.PROPERTY_HTTPS_PROXY, "");
         }
 
         return new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE, testSource).build();
