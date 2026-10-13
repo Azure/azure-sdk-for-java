@@ -392,17 +392,21 @@ public final class AgentsClientBuilder
     }
 
     private com.openai.core.http.HttpClient createOpenAIHttpClient(String foundryFeatures) {
+        return HttpClientHelper.mapToOpenAIHttpClient(resolveOpenAIHttpPipeline(foundryFeatures));
+    }
+
+    private HttpPipeline resolveOpenAIHttpPipeline(String foundryFeatures) {
         HttpPipeline localPipeline = resolvePipeline(foundryFeatures);
         if (pipeline != null && tokenCredential != null) {
             localPipeline = FoundryPolicyHelper.prependPolicy(localPipeline,
                 new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES));
         }
-        return HttpClientHelper.mapToOpenAIHttpClient(localPipeline);
+        return localPipeline;
     }
 
     private com.openai.core.http.HttpClient createOpenAIHttpClient(String foundryFeatures,
         OpenAITracingContextBridge contextBridge) {
-        return HttpClientHelper.mapToOpenAIHttpClient(resolvePipeline(foundryFeatures), contextBridge);
+        return HttpClientHelper.mapToOpenAIHttpClient(resolveOpenAIHttpPipeline(foundryFeatures), contextBridge);
     }
 
     /**
