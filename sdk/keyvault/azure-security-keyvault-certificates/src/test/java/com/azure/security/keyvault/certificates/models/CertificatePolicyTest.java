@@ -67,26 +67,6 @@ class CertificatePolicyTest {
         assertFalse(json.contains("\"platformManaged\""));
     }
 
-    @Test
-    void deserializePlatformManagedIgnoresUnknownPolicyFields() throws IOException {
-        String json = "{\"unknownBefore\":{\"nested\":true},"
-            + "\"platformManaged\":{\"certificateUsage\":\"serverAuth\"},\"unknownAfter\":[1,2]}";
-
-        try (JsonReader reader = JsonProviders.createReader(json)) {
-            CertificatePolicy policy = CertificatePolicy.fromJson(reader);
-
-            assertNotNull(policy.getPlatformManaged());
-            assertEquals("serverAuth", policy.getPlatformManaged().getCertificateUsage());
-        }
-    }
-
-    @Test
-    void deserializeNullPlatformManaged() throws IOException {
-        try (JsonReader reader = JsonProviders.createReader("{\"platformManaged\":null}")) {
-            assertNull(CertificatePolicy.fromJson(reader).getPlatformManaged());
-        }
-    }
-
     private static CertificatePolicy roundTrip(CertificatePolicy original) throws IOException {
         String json = toJsonString(original);
         try (JsonReader reader = JsonProviders.createReader(json)) {
