@@ -55,7 +55,7 @@
     <dependency>
       <groupId>io.netty</groupId>
       <artifactId>netty-codec-http</artifactId>
-      <version>4.2.18.Final</version> <!-- {x-version-update;io.netty:netty-codec-http;external_dependency} -->
+      <version>4.2.19.Final</version> <!-- {x-version-update;io.netty:netty-codec-http;external_dependency} -->
     </dependency>
 
     <!-- Test dependencies -->
@@ -107,7 +107,7 @@
           <rules>
             <bannedDependencies>
               <includes combine.children="append">
-                <include>io.netty:netty-codec-http:[4.2.18.Final]</include> <!-- {x-include-update;io.netty:netty-codec-http;external_dependency} -->
+                <include>io.netty:netty-codec-http:[4.2.19.Final]</include> <!-- {x-include-update;io.netty:netty-codec-http;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
