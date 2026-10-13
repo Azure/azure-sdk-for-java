@@ -101,7 +101,7 @@ public interface ChangeFeedContextClient {
      * DELETE all cosmos items.
      *
      * @param cosmosItemIdentities the cosmos identities.
-     * @return A Flux of {@link CosmosBulkOperationResponse} which contains operation and it's response or exception.
+     * @return A Flux of {@link CosmosBulkOperationResponse} which contains operation and its response or exception.
      */
     Flux<CosmosBulkOperationResponse<Object>> deleteAllItems(List<CosmosItemIdentity> cosmosItemIdentities);
 
