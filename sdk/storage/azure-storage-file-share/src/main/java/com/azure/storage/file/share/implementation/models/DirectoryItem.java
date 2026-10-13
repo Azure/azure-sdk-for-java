@@ -48,12 +48,6 @@ public final class DirectoryItem implements XmlSerializable<DirectoryItem> {
     @Generated
     private String permissionKey;
 
-    /*
-     * The LinkCount property.
-     */
-    @Generated
-    private Long linkCount;
-
     /**
      * Creates an instance of DirectoryItem class.
      */
@@ -171,28 +165,6 @@ public final class DirectoryItem implements XmlSerializable<DirectoryItem> {
         return this;
     }
 
-    /**
-     * Get the linkCount property: The LinkCount property.
-     * 
-     * @return the linkCount value.
-     */
-    @Generated
-    public Long getLinkCount() {
-        return this.linkCount;
-    }
-
-    /**
-     * Set the linkCount property: The LinkCount property.
-     * 
-     * @param linkCount the linkCount value to set.
-     * @return the DirectoryItem object itself.
-     */
-    @Generated
-    public DirectoryItem setLinkCount(Long linkCount) {
-        this.linkCount = linkCount;
-        return this;
-    }
-
     @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
@@ -209,7 +181,6 @@ public final class DirectoryItem implements XmlSerializable<DirectoryItem> {
         xmlWriter.writeXml(this.properties, "Properties");
         xmlWriter.writeStringElement("Attributes", this.attributes);
         xmlWriter.writeStringElement("PermissionKey", this.permissionKey);
-        xmlWriter.writeNumberElement("LinkCount", this.linkCount);
         return xmlWriter.writeEndElement();
     }
 
@@ -255,8 +226,6 @@ public final class DirectoryItem implements XmlSerializable<DirectoryItem> {
                     deserializedDirectoryItem.attributes = reader.getStringElement();
                 } else if ("PermissionKey".equals(elementName.getLocalPart())) {
                     deserializedDirectoryItem.permissionKey = reader.getStringElement();
-                } else if ("LinkCount".equals(elementName.getLocalPart())) {
-                    deserializedDirectoryItem.linkCount = reader.getNullableElement(Long::parseLong);
                 } else {
                     reader.skipElement();
                 }
