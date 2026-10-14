@@ -50,6 +50,9 @@ public final class SessionOptions {
 
     /**
      * Creates session options in {@link SessionMode#AUTO} mode.
+     * Session-enabled clients using this instance share a provider and cache. The first enabled,
+     * token-authenticated client supplies the acquisition pipeline. Share these options only across compatible
+     * network contexts and authentication.
      */
     public SessionOptions() {
         this.endpoint = null;
@@ -59,8 +62,11 @@ public final class SessionOptions {
     /**
      * Creates session options with the endpoint and token credential used to acquire session credentials.
      * <p>
-     * Sessions remain disabled unless {@link #setSessionMode(SessionMode)} is set to
-     * {@link SessionMode#ENABLED}. Reuse this options instance across clients to share acquired session credentials.
+     * Sessions are disabled unless the mode is set to {@link SessionMode#ENABLED}. These values override only
+     * the acquisition endpoint and credential; other requests use the consuming client's settings. The first
+     * enabled, token-authenticated client supplies the acquisition pipeline used for refreshes. Clients using this
+     * instance share a provider and cache, so share options only across compatible network contexts and
+     * authentication. Use separate instances for independent caches.
      *
      * @param endpoint The storage account endpoint used to acquire sessions.
      * @param credential The token credential used to acquire sessions.

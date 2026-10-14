@@ -42,7 +42,7 @@ public final class SessionOptionsAccessor {
      * Gets the session acquisition endpoint.
      *
      * @param options Session options.
-     * @return The acquisition endpoint, or {@code null} when the options use the consuming client's pipeline.
+     * @return The acquisition endpoint, or {@code null} when the options use the consuming client's endpoint.
      */
     public static String getEndpoint(SessionOptions options) {
         return getAccessor().getEndpoint(options);
@@ -59,13 +59,13 @@ public final class SessionOptionsAccessor {
     }
 
     /**
-     * Gets or creates the session client owned by the options instance.
+     * Gets or creates the session provider owned by the options instance.
      *
      * @param options Session options.
-     * @param clientType Type of the internal session client.
-     * @param clientFactory Factory used to create the client once.
-     * @param <T> Internal session client type.
-     * @return The existing or newly created session client.
+     * @param clientType Type of the internal session provider.
+     * @param clientFactory Factory used to create the provider once.
+     * @param <T> Internal session provider type.
+     * @return The existing or newly created provider.
      */
     public static <T> T getOrCreateSessionClient(SessionOptions options, Class<T> clientType,
         Supplier<? extends T> clientFactory) {

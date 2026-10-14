@@ -36,8 +36,6 @@ import com.azure.storage.blob.implementation.accesshelpers.SessionOptionsAccesso
 import com.azure.storage.blob.models.BlobAudience;
 import com.azure.storage.blob.options.SessionOptions;
 import com.azure.storage.blob.options.SessionOptions.SessionMode;
-import com.azure.storage.blob.BlobServiceClient;
-import com.azure.storage.blob.BlobServiceClientBuilder;
 import java.time.Clock;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.BuilderUtils;
@@ -171,15 +169,17 @@ public final class BuilderHelper {
             } else {
                 BlobServiceVersion effectiveServiceVersion
                     = serviceVersion != null ? serviceVersion : BlobServiceVersion.getLatest();
-                SessionProvider sessionProvider;
-                if (SessionOptionsAccessor.getEndpoint(sessionOptions) == null) {
-                    String accountName = resolveSessionAccountName(endpoint, sessionOptions.getAccountName());
-                    sessionProvider = createDefaultSessionProvider(policies, bearerPolicy, postAuthenticationPolicies,
-                        logOptions, effectiveHttpClient, clientOptions, endpoint, effectiveServiceVersion, accountName);
-                } else {
-                    sessionProvider = SessionOptionsAccessor.getOrCreateSessionClient(sessionOptions,
-                        SessionProvider.class, () -> createCustomSessionProvider(sessionOptions));
-                }
+                SessionProvider sessionProvider = SessionOptionsAccessor.getOrCreateSessionClient(sessionOptions,
+                    SessionProvider.class, () -> {
+                        if (SessionOptionsAccessor.getEndpoint(sessionOptions) == null) {
+                            String accountName = resolveSessionAccountName(endpoint, sessionOptions.getAccountName());
+                            return createDefaultSessionProvider(policies, bearerPolicy, postAuthenticationPolicies,
+                                logOptions, effectiveHttpClient, clientOptions, endpoint, effectiveServiceVersion,
+                                accountName);
+                        }
+                        return createCustomSessionProvider(sessionOptions, policies, postAuthenticationPolicies,
+                            logOptions, effectiveHttpClient, clientOptions, effectiveServiceVersion, scope, logger);
+                    });
                 policies.add(new SessionAuthenticationPolicy(bearerPolicy, sessionProvider, sessionOptions));
             }
         }
@@ -233,14 +233,17 @@ public final class BuilderHelper {
             serviceVersion, accountName, Clock.systemUTC());
     }
 
-    private static ContainerSessionProvider createCustomSessionProvider(SessionOptions sessionOptions) {
-        String endpoint = SessionOptionsAccessor.getEndpoint(sessionOptions);
+    private static SessionProvider createCustomSessionProvider(SessionOptions sessionOptions,
+        List<HttpPipelinePolicy> preAuthPolicies, List<HttpPipelinePolicy> postAuthenticationPolicies,
+        HttpLogOptions logOptions, HttpClient httpClient, ClientOptions clientOptions,
+        BlobServiceVersion serviceVersion, String scope, ClientLogger logger) {
+        String endpoint = getSessionEndpoint(SessionOptionsAccessor.getEndpoint(sessionOptions));
         TokenCredential credential = SessionOptionsAccessor.getCredential(sessionOptions);
-        String sessionEndpoint = getSessionEndpoint(endpoint);
-        BlobServiceClient client
-            = new BlobServiceClientBuilder().endpoint(sessionEndpoint).credential(credential).buildClient();
-        return new ContainerSessionProvider(createSessionPipeline(client), sessionEndpoint,
-            BlobServiceVersion.getLatest(), sessionOptions.getAccountName(), Clock.systemUTC());
+        httpsValidation(credential, "bearer token", endpoint, logger);
+        String accountName = resolveSessionAccountName(endpoint, sessionOptions.getAccountName());
+        return createDefaultSessionProvider(preAuthPolicies,
+            new StorageBearerTokenChallengeAuthorizationPolicy(credential, scope), postAuthenticationPolicies,
+            logOptions, httpClient, clientOptions, endpoint, serviceVersion, accountName);
     }
 
     /**
@@ -264,39 +267,6 @@ public final class BuilderHelper {
      */
     public static boolean isSessionAuthenticationPolicy(HttpPipelinePolicy policy) {
         return policy instanceof SessionAuthenticationPolicy;
-    }
-
-    /**
-     * Copies an OAuth client's pipeline for session acquisition, excluding HTTP logging to protect session secrets.
-     * The CreateSession request is not eligible for session authentication and uses the bearer policy.
-     * @param client The HTTPS OAuth client.
-     * @return The session acquisition pipeline.
-     */
-    public static HttpPipeline createSessionPipeline(BlobServiceClient client) {
-        HttpPipeline pipeline = client.getHttpPipeline();
-        boolean bearer = false;
-        List<HttpPipelinePolicy> policies = new ArrayList<>();
-        for (int i = 0; i < pipeline.getPolicyCount(); i++) {
-            HttpPipelinePolicy policy = pipeline.getPolicy(i);
-            if (policy instanceof StorageSharedKeyCredentialPolicy || policy instanceof AzureSasCredentialPolicy) {
-                throw new IllegalArgumentException("The session provider requires an HTTPS OAuth client without SAS.");
-            }
-            bearer |= policy instanceof StorageBearerTokenChallengeAuthorizationPolicy
-                || policy instanceof SessionAuthenticationPolicy;
-            if (!(policy instanceof HttpLoggingPolicy)) {
-                policies.add(policy);
-            }
-        }
-        if (!bearer
-            || !"https".equalsIgnoreCase(BlobUrlParts.parse(client.getAccountUrl()).getScheme())
-            || !CoreUtils
-                .isNullOrEmpty(BlobUrlParts.parse(client.getAccountUrl()).getCommonSasQueryParameters().encode())) {
-            throw new IllegalArgumentException("The session provider requires an HTTPS OAuth client without SAS.");
-        }
-        return new HttpPipelineBuilder().httpClient(pipeline.getHttpClient())
-            .tracer(pipeline.getTracer())
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
-            .build();
     }
 
     private static HttpLoggingPolicy createSessionLoggingPolicy(HttpLogOptions logOptions) {

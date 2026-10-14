@@ -569,8 +569,9 @@ public class DataLakeServiceClientBuilder implements TokenCredentialTrait<DataLa
      * for eligible GET blob requests; requests that are not eligible for
      * session authentication, or for which session negotiation fails (for example, because HNS is not enabled),
      * transparently fall back to bearer token authentication.
-     * To share session credentials across independently built clients, reuse the same {@link SessionOptions} instance
-     * created with an endpoint and token credential.
+     * Clients using the same {@link SessionOptions} instance share a provider and cache; the first enabled,
+     * token-authenticated client supplies the acquisition pipeline. Share options only across compatible
+     * network contexts, or use separate instances for independent caches.
      *
      * @param sessionOptions The session options for the HTTP pipeline.
      * @return the updated DataLakeServiceClientBuilder object.

@@ -606,11 +606,11 @@ public final class BlobServiceClientBuilder implements TokenCredentialTrait<Blob
      * Sessions amortize authentication and authorization cost across many requests by signing them
      * with a lightweight HMAC key instead of a full bearer token. Container clients created via
      * {@link BlobServiceClient#getBlobContainerClient(String)} share the service client's pipeline.
-     * When this builder constructs a pipeline with a {@link TokenCredential} and sessions are enabled,
-     * session authentication is attempted only for eligible GET blob requests; all other requests continue
-     * to use bearer token authentication. Sessions are disabled by default. To share session credentials across
-     * independently built clients, reuse the same {@link SessionOptions} instance created with an endpoint and token
-     * credential. The no-argument options constructor scopes session acquisition to this client's pipeline.
+     * Sessions are disabled by default and apply only to eligible GET blob requests; others use bearer
+     * authentication. Clients using the same
+     * {@link SessionOptions} instance share a provider and cache; the first enabled, token-authenticated client
+     * supplies the acquisition pipeline. Share options only across compatible network contexts, or use
+     * separate instances for independent caches.
      *
      * @param sessionOptions The session options for the HTTP pipeline.
      * @return the updated BlobServiceClientBuilder object.

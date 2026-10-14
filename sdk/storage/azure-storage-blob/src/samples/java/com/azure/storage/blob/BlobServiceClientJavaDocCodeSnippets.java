@@ -4,6 +4,7 @@
 package com.azure.storage.blob;
 
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.HttpClient;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.models.BlobAnalyticsLogging;
 import com.azure.storage.blob.models.BlobContainerListDetails;
@@ -39,15 +40,16 @@ public class BlobServiceClientJavaDocCodeSnippets {
     /**
      * Configures session authentication using session options.
      * @param credential The OAuth credential.
+     * @param httpClient The HTTP transport configured for session acquisition and blob requests.
      */
-    public void configureSessionOptions(TokenCredential credential) {
+    public void configureSessionOptions(TokenCredential credential, HttpClient httpClient) {
         // BEGIN: com.azure.storage.blob.options.SessionOptions.create
         String endpoint = "https://account.blob.core.windows.net";
-        SessionOptions sessions
-            = new SessionOptions(endpoint, credential).setSessionMode(SessionOptions.SessionMode.ENABLED);
+        SessionOptions sessions = new SessionOptions(endpoint, credential)
+            .setSessionMode(SessionOptions.SessionMode.ENABLED);
 
         BlobServiceClient client = new BlobServiceClientBuilder().endpoint(endpoint).credential(credential)
-            .sessionOptions(sessions).buildClient();
+            .httpClient(httpClient).sessionOptions(sessions).buildClient();
         // END: com.azure.storage.blob.options.SessionOptions.create
     }
 

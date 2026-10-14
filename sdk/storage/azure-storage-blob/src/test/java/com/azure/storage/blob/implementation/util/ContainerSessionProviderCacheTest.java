@@ -61,8 +61,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * can be exercised without waiting for real credential expiration or hitting the service.
  * {@link ContainerSessionProviderTests} covers session acquisition through the service client; these tests
  * focus on cache timing, returned credentials, and CreateSession call counts. Per-container acquisition
- * cooldown is shared across independent pipelines that reuse the same {@link SessionOptions} instance. Tests install
- * an internal fake provider in the options to avoid network access.
+ * cooldown is shared across clients using the same options. Tests inject a clock-controlled provider into options;
+ * {@link SessionOptionsTests} covers provider creation and sharing through the public builders.
  */
 public class ContainerSessionProviderCacheTest {
 
@@ -93,7 +93,7 @@ public class ContainerSessionProviderCacheTest {
     }
 
     @Test
-    public void independentSyncClientsShareSessionsAndInvalidationAcrossReplacement() {
+    public void policiesUsingSameProviderShareSessionsAndInvalidationSync() {
         configureTestProvider();
         enqueueSessionResponse(CONTAINER_A, FIRST_TOKEN, now().plusMinutes(20));
         enqueueSessionResponse(CONTAINER_B, "container-b-token", now().plusMinutes(20));
@@ -117,7 +117,7 @@ public class ContainerSessionProviderCacheTest {
     }
 
     @Test
-    public void independentAsyncClientsShareSessionsAndInvalidationAcrossReplacement() {
+    public void policiesUsingSameProviderShareSessionsAndInvalidationAsync() {
         configureTestProvider();
         enqueueSessionResponse(CONTAINER_A, FIRST_TOKEN, now().plusMinutes(20));
         enqueueSessionResponse(CONTAINER_B, "container-b-token", now().plusMinutes(20));
@@ -167,7 +167,7 @@ public class ContainerSessionProviderCacheTest {
 
     @ParameterizedTest
     @CsvSource({ "403,", "500,", "503,", "599,", "400,FeatureNotEnabled", "400,featurenotenabled" })
-    public void independentSyncClientsShareCooldownAndExpiration(int status, String errorCode) {
+    public void policiesUsingSameProviderShareCooldownAndExpirationSync(int status, String errorCode) {
         enqueueCooldown(status, errorCode);
         HttpPipeline first = independentClientPipeline();
         assertSyncToken(first, CONTAINER_A, null);
@@ -185,7 +185,7 @@ public class ContainerSessionProviderCacheTest {
 
     @ParameterizedTest
     @CsvSource({ "403,", "500,", "503,", "599,", "400,FeatureNotEnabled", "400,featurenotenabled" })
-    public void independentAsyncClientsShareCooldownAndExpiration(int status, String errorCode) {
+    public void policiesUsingSameProviderShareCooldownAndExpirationAsync(int status, String errorCode) {
         enqueueCooldown(status, errorCode);
         HttpPipeline first = independentAsyncClientPipeline();
         assertAsyncToken(first, CONTAINER_A, null);
