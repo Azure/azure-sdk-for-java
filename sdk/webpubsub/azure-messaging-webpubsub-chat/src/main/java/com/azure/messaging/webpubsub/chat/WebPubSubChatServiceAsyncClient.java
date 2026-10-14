@@ -28,7 +28,9 @@ import com.azure.messaging.webpubsub.chat.models.ChatMessage;
 import com.azure.messaging.webpubsub.chat.models.ChatRole;
 import com.azure.messaging.webpubsub.chat.models.ChatRoom;
 import com.azure.messaging.webpubsub.chat.models.ChatRoomMember;
+import com.azure.messaging.webpubsub.chat.models.ChatTopic;
 import com.azure.messaging.webpubsub.chat.models.ChatUser;
+import com.azure.messaging.webpubsub.chat.models.ChatUserRoom;
 import com.azure.messaging.webpubsub.chat.models.GetClientAccessTokenOptions;
 import com.azure.messaging.webpubsub.chat.models.WebPubSubClientAccessToken;
 import java.util.stream.Collectors;
@@ -1659,5 +1661,821 @@ public final class WebPubSubChatServiceAsyncClient {
      */
     public Mono<WebPubSubClientAccessToken> getClientAccessToken(GetClientAccessTokenOptions options) {
         return WebPubSubClientAccessTokenFactory.createAsync(serviceClient, keyCredential, options);
+    }
+
+    /**
+     * List rooms with pagination.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>The maximum number of result items per page.</td></tr>
+     * <tr><td>continuationToken</td><td>String</td><td>No</td><td>Continuation token for pagination.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     title: String (Required)
+     *     defaultConversation: String (Required)
+     *     etag: String (Required)
+     * }
+     * }
+     * </pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return paged collection of ChatRoom items as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listRooms(RequestOptions requestOptions) {
+        return this.serviceClient.listRoomsAsync(requestOptions);
+    }
+
+    /**
+     * List topics in a room with pagination.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>The maximum number of result items per page.</td></tr>
+     * <tr><td>continuationToken</td><td>String</td><td>No</td><td>Continuation token for pagination.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     title: String (Optional, Required on create)
+     *     createdAt: OffsetDateTime (Required)
+     *     createdBy: String (Required)
+     *     state: String(Normal/Archived/SoftDeleted) (Optional, Required on create)
+     *     conversationId: String (Required)
+     *     etag: String (Required)
+     * }
+     * }
+     * </pre>
+     *
+     * @param roomId Room identifier.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return paged collection of ChatTopic items as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listTopics(String roomId, RequestOptions requestOptions) {
+        return this.serviceClient.listTopicsAsync(roomId, requestOptions);
+    }
+
+    /**
+     * Create or replace a topic.
+     *
+     * Create or replace a topic with a client-specified ID.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>If-Match</td><td>String</td><td>No</td><td>The request should only proceed if an entity matches this
+     * string.</td></tr>
+     * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>The request should only proceed if no entity matches this
+     * string.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     title: String (Optional, Required on create)
+     *     createdAt: OffsetDateTime (Required)
+     *     createdBy: String (Required)
+     *     state: String(Normal/Archived/SoftDeleted) (Optional, Required on create)
+     *     conversationId: String (Required)
+     *     etag: String (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     title: String (Optional, Required on create)
+     *     createdAt: OffsetDateTime (Required)
+     *     createdBy: String (Required)
+     *     state: String(Normal/Archived/SoftDeleted) (Optional, Required on create)
+     *     conversationId: String (Required)
+     *     etag: String (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The entity tag for the response.</td></tr>
+     * </table>
+     *
+     * @param roomId Room identifier.
+     * @param topicId Topic identifier unique within the room.
+     * @param resource The resource instance.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents a chat topic in a room along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> createOrReplaceTopicWithResponse(String roomId, String topicId,
+        BinaryData resource, RequestOptions requestOptions) {
+        return this.serviceClient.createOrReplaceTopicWithResponseAsync(roomId, topicId, resource, requestOptions);
+    }
+
+    /**
+     * Get topic information.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     title: String (Optional, Required on create)
+     *     createdAt: OffsetDateTime (Required)
+     *     createdBy: String (Required)
+     *     state: String(Normal/Archived/SoftDeleted) (Optional, Required on create)
+     *     conversationId: String (Required)
+     *     etag: String (Required)
+     * }
+     * }
+     * </pre>
+     *
+     * @param roomId Room identifier.
+     * @param topicId Topic identifier unique within the room.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return topic information along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getTopicWithResponse(String roomId, String topicId,
+        RequestOptions requestOptions) {
+        return this.serviceClient.getTopicWithResponseAsync(roomId, topicId, requestOptions);
+    }
+
+    /**
+     * Update a topic.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>If-Match</td><td>String</td><td>No</td><td>The request should only proceed if an entity matches this
+     * string.</td></tr>
+     * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>The request should only proceed if no entity matches this
+     * string.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     title: String (Optional, Required on create)
+     *     createdAt: OffsetDateTime (Required)
+     *     createdBy: String (Required)
+     *     state: String(Normal/Archived/SoftDeleted) (Optional, Required on create)
+     *     conversationId: String (Required)
+     *     etag: String (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     title: String (Optional, Required on create)
+     *     createdAt: OffsetDateTime (Required)
+     *     createdBy: String (Required)
+     *     state: String(Normal/Archived/SoftDeleted) (Optional, Required on create)
+     *     conversationId: String (Required)
+     *     etag: String (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The entity tag for the response.</td></tr>
+     * </table>
+     *
+     * @param roomId Room identifier.
+     * @param topicId Topic identifier unique within the room.
+     * @param resource The resource instance.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents a chat topic in a room along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> updateTopicWithResponse(String roomId, String topicId, BinaryData resource,
+        RequestOptions requestOptions) {
+        return this.serviceClient.updateTopicWithResponseAsync(roomId, topicId, resource, requestOptions);
+    }
+
+    /**
+     * Soft delete a topic.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>If-Match</td><td>String</td><td>No</td><td>The request should only proceed if an entity matches this
+     * string.</td></tr>
+     * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>The request should only proceed if no entity matches this
+     * string.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     *
+     * @param roomId Room identifier.
+     * @param topicId Topic identifier unique within the room.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteTopicWithResponse(String roomId, String topicId, RequestOptions requestOptions) {
+        return this.serviceClient.deleteTopicWithResponseAsync(roomId, topicId, requestOptions);
+    }
+
+    /**
+     * List all users with pagination.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>The maximum number of result items per page.</td></tr>
+     * <tr><td>continuationToken</td><td>String</td><td>No</td><td>Continuation token for pagination.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     kind: String(Human) (Required)
+     *     id: String (Required)
+     *     nickname: String (Required)
+     *     etag: String (Required)
+     * }
+     * }
+     * </pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return paged collection of ChatUser items as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listUsers(RequestOptions requestOptions) {
+        return this.serviceClient.listUsersAsync(requestOptions);
+    }
+
+    /**
+     * List rooms for a user with pagination.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>The maximum number of result items per page.</td></tr>
+     * <tr><td>continuationToken</td><td>String</td><td>No</td><td>Continuation token for pagination.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     title: String (Required)
+     *     defaultConversation: String (Required)
+     *     etag: String (Required)
+     * }
+     * }
+     * </pre>
+     *
+     * @param userId User identifier.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return paged collection of ChatUserRoom items as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listRoomsForUser(String userId, RequestOptions requestOptions) {
+        return this.serviceClient.listRoomsForUserAsync(userId, requestOptions);
+    }
+
+    /**
+     * List rooms with pagination.
+     *
+     * @param continuationToken Continuation token for pagination.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return paged collection of ChatRoom items as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<ChatRoom> listRooms(String continuationToken) {
+        // Generated convenience method for listRooms
+        RequestOptions requestOptions = new RequestOptions();
+        if (continuationToken != null) {
+            requestOptions.addQueryParam("continuationToken", continuationToken, false);
+        }
+        PagedFlux<BinaryData> pagedFluxResponse = listRooms(requestOptions);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
+                ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, ChatRoom>(pagedResponse.getRequest(),
+                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                pagedResponse.getValue()
+                    .stream()
+                    .map(protocolMethodData -> protocolMethodData.toObject(ChatRoom.class))
+                    .collect(Collectors.toList()),
+                pagedResponse.getContinuationToken(), null));
+        });
+    }
+
+    /**
+     * List rooms with pagination.
+     *
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return paged collection of ChatRoom items as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<ChatRoom> listRooms() {
+        // Generated convenience method for listRooms
+        RequestOptions requestOptions = new RequestOptions();
+        PagedFlux<BinaryData> pagedFluxResponse = listRooms(requestOptions);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
+                ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, ChatRoom>(pagedResponse.getRequest(),
+                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                pagedResponse.getValue()
+                    .stream()
+                    .map(protocolMethodData -> protocolMethodData.toObject(ChatRoom.class))
+                    .collect(Collectors.toList()),
+                pagedResponse.getContinuationToken(), null));
+        });
+    }
+
+    /**
+     * List topics in a room with pagination.
+     *
+     * @param roomId Room identifier.
+     * @param continuationToken Continuation token for pagination.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return paged collection of ChatTopic items as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<ChatTopic> listTopics(String roomId, String continuationToken) {
+        // Generated convenience method for listTopics
+        RequestOptions requestOptions = new RequestOptions();
+        if (continuationToken != null) {
+            requestOptions.addQueryParam("continuationToken", continuationToken, false);
+        }
+        PagedFlux<BinaryData> pagedFluxResponse = listTopics(roomId, requestOptions);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
+                ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, ChatTopic>(pagedResponse.getRequest(),
+                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                pagedResponse.getValue()
+                    .stream()
+                    .map(protocolMethodData -> protocolMethodData.toObject(ChatTopic.class))
+                    .collect(Collectors.toList()),
+                pagedResponse.getContinuationToken(), null));
+        });
+    }
+
+    /**
+     * List topics in a room with pagination.
+     *
+     * @param roomId Room identifier.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return paged collection of ChatTopic items as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<ChatTopic> listTopics(String roomId) {
+        // Generated convenience method for listTopics
+        RequestOptions requestOptions = new RequestOptions();
+        PagedFlux<BinaryData> pagedFluxResponse = listTopics(roomId, requestOptions);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
+                ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, ChatTopic>(pagedResponse.getRequest(),
+                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                pagedResponse.getValue()
+                    .stream()
+                    .map(protocolMethodData -> protocolMethodData.toObject(ChatTopic.class))
+                    .collect(Collectors.toList()),
+                pagedResponse.getContinuationToken(), null));
+        });
+    }
+
+    /**
+     * Create or replace a topic.
+     *
+     * Create or replace a topic with a client-specified ID.
+     *
+     * @param roomId Room identifier.
+     * @param topicId Topic identifier unique within the room.
+     * @param resource The resource instance.
+     * @param matchConditions Specifies HTTP options for conditional requests.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a chat topic in a room on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ChatTopic> createOrReplaceTopic(String roomId, String topicId, ChatTopic resource,
+        MatchConditions matchConditions) {
+        // Generated convenience method for createOrReplaceTopicWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        String ifMatch = matchConditions == null ? null : matchConditions.getIfMatch();
+        String ifNoneMatch = matchConditions == null ? null : matchConditions.getIfNoneMatch();
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        return createOrReplaceTopicWithResponse(roomId, topicId, BinaryData.fromObject(resource), requestOptions)
+            .flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(ChatTopic.class));
+    }
+
+    /**
+     * Create or replace a topic.
+     *
+     * Create or replace a topic with a client-specified ID.
+     *
+     * @param roomId Room identifier.
+     * @param topicId Topic identifier unique within the room.
+     * @param resource The resource instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a chat topic in a room on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ChatTopic> createOrReplaceTopic(String roomId, String topicId, ChatTopic resource) {
+        // Generated convenience method for createOrReplaceTopicWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return createOrReplaceTopicWithResponse(roomId, topicId, BinaryData.fromObject(resource), requestOptions)
+            .flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(ChatTopic.class));
+    }
+
+    /**
+     * Get topic information.
+     *
+     * @param roomId Room identifier.
+     * @param topicId Topic identifier unique within the room.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return topic information on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ChatTopic> getTopic(String roomId, String topicId) {
+        // Generated convenience method for getTopicWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getTopicWithResponse(roomId, topicId, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(ChatTopic.class));
+    }
+
+    /**
+     * Update a topic.
+     *
+     * @param roomId Room identifier.
+     * @param topicId Topic identifier unique within the room.
+     * @param resource The resource instance.
+     * @param matchConditions Specifies HTTP options for conditional requests.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a chat topic in a room on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ChatTopic> updateTopic(String roomId, String topicId, ChatTopic resource,
+        MatchConditions matchConditions) {
+        // Generated convenience method for updateTopicWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        String ifMatch = matchConditions == null ? null : matchConditions.getIfMatch();
+        String ifNoneMatch = matchConditions == null ? null : matchConditions.getIfNoneMatch();
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        JsonMergePatchHelper.getChatTopicAccessor().prepareModelForJsonMergePatch(resource, true);
+        BinaryData resourceInBinaryData = BinaryData.fromObject(resource);
+        // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
+        resourceInBinaryData.getLength();
+        JsonMergePatchHelper.getChatTopicAccessor().prepareModelForJsonMergePatch(resource, false);
+        return updateTopicWithResponse(roomId, topicId, resourceInBinaryData, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(ChatTopic.class));
+    }
+
+    /**
+     * Update a topic.
+     *
+     * @param roomId Room identifier.
+     * @param topicId Topic identifier unique within the room.
+     * @param resource The resource instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a chat topic in a room on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ChatTopic> updateTopic(String roomId, String topicId, ChatTopic resource) {
+        // Generated convenience method for updateTopicWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        JsonMergePatchHelper.getChatTopicAccessor().prepareModelForJsonMergePatch(resource, true);
+        BinaryData resourceInBinaryData = BinaryData.fromObject(resource);
+        // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
+        resourceInBinaryData.getLength();
+        JsonMergePatchHelper.getChatTopicAccessor().prepareModelForJsonMergePatch(resource, false);
+        return updateTopicWithResponse(roomId, topicId, resourceInBinaryData, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(ChatTopic.class));
+    }
+
+    /**
+     * Soft delete a topic.
+     *
+     * @param roomId Room identifier.
+     * @param topicId Topic identifier unique within the room.
+     * @param matchConditions Specifies HTTP options for conditional requests.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteTopic(String roomId, String topicId, MatchConditions matchConditions) {
+        // Generated convenience method for deleteTopicWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        String ifMatch = matchConditions == null ? null : matchConditions.getIfMatch();
+        String ifNoneMatch = matchConditions == null ? null : matchConditions.getIfNoneMatch();
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        return deleteTopicWithResponse(roomId, topicId, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Soft delete a topic.
+     *
+     * @param roomId Room identifier.
+     * @param topicId Topic identifier unique within the room.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteTopic(String roomId, String topicId) {
+        // Generated convenience method for deleteTopicWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return deleteTopicWithResponse(roomId, topicId, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * List all users with pagination.
+     *
+     * @param continuationToken Continuation token for pagination.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return paged collection of ChatUser items as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<ChatUser> listUsers(String continuationToken) {
+        // Generated convenience method for listUsers
+        RequestOptions requestOptions = new RequestOptions();
+        if (continuationToken != null) {
+            requestOptions.addQueryParam("continuationToken", continuationToken, false);
+        }
+        PagedFlux<BinaryData> pagedFluxResponse = listUsers(requestOptions);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
+                ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, ChatUser>(pagedResponse.getRequest(),
+                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                pagedResponse.getValue()
+                    .stream()
+                    .map(protocolMethodData -> protocolMethodData.toObject(ChatUser.class))
+                    .collect(Collectors.toList()),
+                pagedResponse.getContinuationToken(), null));
+        });
+    }
+
+    /**
+     * List all users with pagination.
+     *
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return paged collection of ChatUser items as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<ChatUser> listUsers() {
+        // Generated convenience method for listUsers
+        RequestOptions requestOptions = new RequestOptions();
+        PagedFlux<BinaryData> pagedFluxResponse = listUsers(requestOptions);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
+                ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, ChatUser>(pagedResponse.getRequest(),
+                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                pagedResponse.getValue()
+                    .stream()
+                    .map(protocolMethodData -> protocolMethodData.toObject(ChatUser.class))
+                    .collect(Collectors.toList()),
+                pagedResponse.getContinuationToken(), null));
+        });
+    }
+
+    /**
+     * List rooms for a user with pagination.
+     *
+     * @param userId User identifier.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return paged collection of ChatUserRoom items as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<ChatUserRoom> listRoomsForUser(String userId) {
+        // Generated convenience method for listRoomsForUser
+        RequestOptions requestOptions = new RequestOptions();
+        PagedFlux<BinaryData> pagedFluxResponse = listRoomsForUser(userId, requestOptions);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
+                ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, ChatUserRoom>(pagedResponse.getRequest(),
+                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                pagedResponse.getValue()
+                    .stream()
+                    .map(protocolMethodData -> protocolMethodData.toObject(ChatUserRoom.class))
+                    .collect(Collectors.toList()),
+                pagedResponse.getContinuationToken(), null));
+        });
+    }
+
+    /**
+     * List rooms for a user with pagination.
+     *
+     * @param userId User identifier.
+     * @param continuationToken Continuation token for pagination.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return paged collection of ChatUserRoom items as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<ChatUserRoom> listRoomsForUser(String userId, String continuationToken) {
+        // Generated convenience method for listRoomsForUser
+        RequestOptions requestOptions = new RequestOptions();
+        if (continuationToken != null) {
+            requestOptions.addQueryParam("continuationToken", continuationToken, false);
+        }
+        PagedFlux<BinaryData> pagedFluxResponse = listRoomsForUser(userId, requestOptions);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
+                ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, ChatUserRoom>(pagedResponse.getRequest(),
+                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                pagedResponse.getValue()
+                    .stream()
+                    .map(protocolMethodData -> protocolMethodData.toObject(ChatUserRoom.class))
+                    .collect(Collectors.toList()),
+                pagedResponse.getContinuationToken(), null));
+        });
     }
 }

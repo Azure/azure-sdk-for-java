@@ -6,6 +6,8 @@ Use this client library in an application server to:
 
 - Create and manage Chat roles and permissions.
 - Create users, rooms, and room memberships.
+- List rooms and users in a hub, or list the rooms associated with a user.
+- Create, get, update, list, and soft delete topics in a room.
 - Get room conversations and query persisted message history.
 - Update and delete persisted messages.
 - Generate client access credentials for Chat WebSocket clients.
@@ -21,19 +23,22 @@ Use this client library in an application server to:
 - An [Azure Web PubSub resource][create_instance].
 - A Web PubSub hub with [Chat enabled][enable_chat].
 
-### 1. Add the package to your project
+### Install the package
+
+The following dependency shows the current development version. It has not been
+released to Maven Central; build it locally when evaluating the new API.
 
 [//]: # ({x-version-update-start;com.azure:azure-messaging-webpubsub-chat;current})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-webpubsub-chat</artifactId>
-    <version>1.0.0-beta.1</version>
+    <version>1.0.0-beta.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
 
-### 2. Create and authenticate a `WebPubSubChatServiceClient`
+### Create and authenticate a client
 
 The client supports a connection string, an `AzureKeyCredential`, or a Microsoft Entra ID token credential. The hub passed to the client must have Chat enabled.
 
@@ -98,6 +103,19 @@ A user represents an application identity that can send and receive messages. A 
 
 A room groups users together and is the primary organizational unit for chat interactions. Every room has an automatically created default conversation.
 
+### Topic
+
+A topic is a named conversation in a room. Each topic has a title, creation time,
+creator, conversation ID, ETag, and lifecycle state. `ChatTopicState` includes
+`NORMAL`, `ARCHIVED`, and `SOFT_DELETED`. The August API adds topic management;
+topic deletion is a soft delete rather than a room deletion.
+
+### User's rooms
+
+`listRoomsForUser` returns read-only `ChatUserRoom` projections of the rooms
+associated with a user. A projection contains the room ID, title, default
+conversation ID, and ETag; it does not provide a separate room lifecycle.
+
 ### Room member
 
 A room member represents a user added to a room. Membership controls which users can receive and send messages in the room. Each room member is assigned a room role.
@@ -131,46 +149,131 @@ String memberRole = BuiltInChatRoles.ROOM_MEMBER;
 ChatPermission publishPermission = ChatPermission.ROOM_PUBLISH_MESSAGE;
 ```
 
-### Create and list a custom role
+The following examples are independent operations. Where an operation refers to
+`general`, `alice`, or `announcements`, the corresponding resources must already
+exist. All examples use the default `2026-08-01-preview` API version.
 
-```java readme-sample-manageChatRoles
+### Create a custom role
+
+```java readme-sample-createChatRole
 ChatRole moderator = new ChatRole(Arrays.asList(ChatPermission.ROOM_HISTORY,
     ChatPermission.ROOM_REMOVE_USER, ChatPermission.ROOM_PUBLISH_MESSAGE));
 client.createOrReplaceRole("room.moderator", moderator);
+```
 
+### List roles
+
+```java readme-sample-listChatRoles
 client.listRoles().forEach(role -> System.out.println(role.getName()));
+```
+
+### Delete a custom role
+
+```java readme-sample-deleteChatRole
 client.deleteRole("room.moderator");
 ```
 
-### Create a user, room, and room membership
+Remove references to a custom role before deleting it.
 
-```java readme-sample-manageChatRooms
-client.createOrReplaceRole("user.room_creator",
-    new ChatRole(Arrays.asList(ChatPermission.USER_CREATE_ROOM)));
-client.createOrReplaceRole("room.contributor",
-    new ChatRole(Arrays.asList(ChatPermission.ROOM_PUBLISH_MESSAGE)));
-client.createOrReplaceUser("alice", new HumanChatUser("Alice", "user.room_creator"));
+### Create a user
 
-ChatRoom room = client.createOrReplaceRoom("general", new ChatRoom("General"));
-ChatRoomMember member = client.createOrReplaceRoomMember(
-    room.getId(), "alice", new ChatRoomMember("room.contributor"));
-System.out.printf("%s: %s%n", member.getUserId(), member.getRoleName());
-
-client.deleteRoom(room.getId());
-client.deleteUser("alice");
-client.deleteRole("room.contributor");
-client.deleteRole("user.room_creator");
+```java readme-sample-createChatUser
+client.createOrReplaceUser("alice", new HumanChatUser("Alice", BuiltInChatRoles.USER_NORMAL));
 ```
 
-Delete dependent resources in reverse order when they are no longer needed: room, user, and then roles.
+### Create a room
+
+```java readme-sample-createChatRoom
+ChatRoom room = client.createOrReplaceRoom("general", new ChatRoom("General"));
+String defaultConversationId = room.getDefaultConversation();
+```
+
+### Add a room member
+
+```java readme-sample-addChatRoomMember
+ChatRoomMember member = client.createOrReplaceRoomMember(
+    "general", "alice", new ChatRoomMember(BuiltInChatRoles.ROOM_MEMBER));
+System.out.printf("%s: %s%n", member.getUserId(), member.getRoleName());
+```
+
+### List rooms
+
+```java readme-sample-listChatRooms
+client.listRooms().forEach(room -> System.out.printf("%s: %s%n", room.getId(), room.getTitle()));
+```
+
+### List users
+
+```java readme-sample-listChatUsers
+client.listUsers().forEach(user -> System.out.printf("%s: %s%n", user.getId(), user.getNickname()));
+```
+
+### List rooms for a user
+
+```java readme-sample-listChatRoomsForUser
+client.listRoomsForUser("alice").forEach(room ->
+    System.out.printf("%s: %s%n", room.getId(), room.getTitle()));
+```
+
+List operations return `PagedIterable` on the synchronous client and `PagedFlux`
+on the asynchronous client. Iteration fetches subsequent pages automatically.
+To process synchronous results page by page, use `iterableByPage(pageSize)`.
+
+### Create a topic
+
+The parent room must already exist.
+
+```java readme-sample-createChatTopic
+ChatTopic topic = client.createOrReplaceTopic("general", "announcements",
+    new ChatTopic().setTitle("Announcements"));
+String conversationId = topic.getConversationId();
+```
+
+Use the returned conversation ID when a Chat WebSocket client sends messages to
+the topic. This server-side library manages resources and persisted messages;
+it is not a WebSocket chat client.
+
+### Get a topic
+
+```java readme-sample-getChatTopic
+ChatTopic topic = client.getTopic("general", "announcements");
+System.out.printf("%s: %s%n", topic.getTitle(), topic.getState());
+```
+
+### Update a topic
+
+Only explicitly set properties are included in the merge-patch request.
+Use the overload accepting `MatchConditions` and the current ETag to prevent
+overwriting another caller's changes.
+
+```java readme-sample-updateChatTopic
+ChatTopic updated = client.updateTopic("general", "announcements",
+    new ChatTopic().setTitle("Archived announcements").setState(ChatTopicState.ARCHIVED));
+```
+
+### List topics
+
+```java readme-sample-listChatTopics
+client.listTopics("general").forEach(topic ->
+    System.out.printf("%s: %s%n", topic.getId(), topic.getTitle()));
+```
+
+### Soft delete a topic
+
+```java readme-sample-deleteChatTopic
+client.deleteTopic("general", "announcements");
+```
 
 ### List persisted messages
 
 ```java readme-sample-listChatMessages
-ChatRoom room = client.getRoom("general");
-client.listMessages(room.getDefaultConversation()).forEach(message ->
+String conversationId = "<conversation-id>";
+client.listMessages(conversationId).forEach(message ->
     System.out.printf("%s: %s%n", message.getCreatedBy(), message.getContent().getText()));
 ```
+
+Use a conversation ID returned by room or topic creation. Message history
+queries return messages from latest to earliest.
 
 ### Use the asynchronous client
 
@@ -179,13 +282,41 @@ WebPubSubChatServiceAsyncClient asyncClient = new WebPubSubChatServiceClientBuil
     .connectionString("<web-pubsub-connection-string>")
     .hub("chat")
     .buildAsyncClient();
-
-asyncClient.listRoles().subscribe(role -> System.out.println(role.getName()));
 ```
+
+Subscribe to the returned publisher to execute an asynchronous operation, and
+handle errors explicitly:
+
+```java readme-sample-listChatTopicsAsync
+asyncClient.listTopics("general").subscribe(
+    topic -> System.out.println(topic.getTitle()),
+    error -> System.err.println("Could not list topics: " + error.getMessage()));
+```
+
+#### Known asynchronous page-size limitation
+
+The generator currently ignores `byPage(pageSize)` on typed asynchronous
+collections. Default continuation paging is unaffected. Until
+[microsoft/typespec#12149](https://github.com/microsoft/typespec/issues/12149)
+is fixed in the emitter used by this package, use the existing protocol overload
+when an explicit asynchronous page size is required:
+
+```java readme-sample-listChatTopicsAsyncByPage
+asyncClient.listTopics("general", new RequestOptions()).byPage(10).subscribe(
+    page -> page.getValue().forEach(data -> System.out.println(data.toObject(ChatTopic.class).getTitle())),
+    error -> System.err.println("Could not list topic pages: " + error.getMessage()));
+```
+
+See [known generator issues](KNOWN_ISSUES.md) for verification and removal of the
+temporary test workaround. No paging customization is applied.
 
 ### Service API versions
 
-The client library targets the latest service API version by default. To use another supported version, pass a `WebPubSubChatServiceVersion` to the builder's `serviceVersion` method. Verify that the selected version supports the operations and models used by your application.
+The default is `WebPubSubChatServiceVersion.V2026_08_01_PREVIEW`. The library also
+supports `V2026_02_01_PREVIEW` for existing operations. Topic operations and the
+new room/user listing operations require the August version. To select a version,
+pass it to the builder's `serviceVersion` method. All operations are supported
+with the August API; no separate client is needed for existing operations.
 
 ## Troubleshooting
 
@@ -210,6 +341,8 @@ Explore the [complete package samples][samples] to learn how to:
 
 - Authenticate with a connection string, access key, or Microsoft Entra ID.
 - Manage roles, permissions, users, rooms, and room members.
+- List rooms and users, and query rooms associated with a user.
+- Manage topics and their lifecycle states.
 - Generate client access credentials.
 - Query, update, and delete message history.
 - Use synchronous and asynchronous clients.
