@@ -10,7 +10,6 @@ trigger:
       - sdk/healthinsights/
     exclude:
       - sdk/healthinsights/pom.xml
-      - sdk/healthinsights/azure-health-insights-cancerprofiling/pom.xml
       - sdk/healthinsights/azure-health-insights-clinicalmatching/pom.xml
       - sdk/healthinsights/azure-health-insights-radiologyinsights/pom.xml
 
@@ -27,17 +26,12 @@ pr:
       - sdk/healthinsights/
     exclude:
       - sdk/healthinsights/pom.xml
-      - sdk/healthinsights/azure-health-insights-cancerprofiling/pom.xml
       - sdk/healthinsights/azure-health-insights-clinicalmatching/pom.xml
       - sdk/healthinsights/azure-health-insights-radiologyinsights/pom.xml
 
 parameters:
 - name: release_azurehealthinsightsclinicalmatching
   displayName: 'azure-health-insights-clinicalmatching'
-  type: boolean
-  default: true
-- name: release_azurehealthinsightscancerprofiling
-  displayName: 'azure-health-insights-cancerprofiling'
   type: boolean
   default: true
 - name: release_azurehealthinsightsradiologyinsights
@@ -54,10 +48,6 @@ extends:
         groupId: com.azure
         safeName: azurehealthinsightsclinicalmatching
         releaseInBatch: ${{ parameters.release_azurehealthinsightsclinicalmatching }}
-      - name: azure-health-insights-cancerprofiling
-        groupId: com.azure
-        safeName: azurehealthinsightscancerprofiling
-        releaseInBatch: ${{ parameters.release_azurehealthinsightscancerprofiling }}
       - name: azure-health-insights-radiologyinsights
         groupId: com.azure
         safeName: azurehealthinsightsradiologyinsights
