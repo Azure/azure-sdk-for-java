@@ -58,7 +58,7 @@ RECORD creates real resources and can incur charges. The tests require an **exis
 they never create or delete the group itself. Each test generates a unique Edge Action name, checks that
 it is absent before creation, and cleans up its filters, versions (current default last), and parent.
 Do not use a resource group in which other processes modify these test-owned resources.
-The commands below use `rg-javasdk-edgeaction-tests`; ensure that group exists in the selected subscription.
+The commands below use `javasdk-edgeaction-tests-rg`; ensure that group exists in the selected subscription.
 
 ```powershell
 az login --tenant "<tenant-id>"
@@ -66,7 +66,7 @@ az account set --subscription "<subscription-id>"
 
 $env:AZURE_TENANT_ID = "<tenant-id>"
 $env:AZURE_SUBSCRIPTION_ID = "<subscription-id>"
-$env:AZURE_RESOURCE_GROUP_NAME = "rg-javasdk-edgeaction-tests"
+$env:AZURE_RESOURCE_GROUP_NAME = "javasdk-edgeaction-tests-rg"
 $env:AZURE_TEST_MODE = "RECORD"
 $env:AZURE_TEST_LOG_LEVEL = "BASIC"
 
