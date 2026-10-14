@@ -172,7 +172,7 @@ The application is responsible for calling `vertx.close()` after all clients usi
 Client options provide connection, read and write timeouts and proxy settings when supplied to the builder. The
 builder's response timeout still applies, and an explicit `maximumHttpVersion` overrides protocol/ALPN settings in a
 copy of the supplied options. HTTP/2 cleartext behavior can be configured through the supplied Vert.x
-`HttpClientOptions`. There is no portable HTTP/2-only equivalent shared by all four transports.
+`io.vertx.core.http.HttpClientOptions`.
 
 #### Customize the Maximum Header Size
 
@@ -195,15 +195,15 @@ HttpClient httpClient = new VertxHttpClientBuilder()
 
 #### Customize HTTP/2 cleartext behavior
 
-`HttpClientOptions.setHttp2ClearTextUpgrade` controls how Vert.x connects to cleartext HTTP/2 (`h2c`) servers.
-With `true` (the default), it starts with HTTP/1.1 and attempts an upgrade. If the server doesn't support the upgrade,
-it continues using HTTP/1.1.
+`HttpClientOptions.setHttp2ClearTextUpgrade` in `io.vertx.core.http` controls how Vert.x connects to cleartext HTTP/2
+(`h2c`) servers. With `true` (the default), it starts with HTTP/1.1 and attempts an upgrade. If the server doesn't
+support the upgrade, it continues using HTTP/1.1.
 
 Set it to `false` to use prior knowledge and start directly with HTTP/2, as in the following example. Use this only
 when the server is known to support cleartext HTTP/2, because there is no HTTP/1.1 fallback in this mode.
 
 ```java readme-sample-configureHttp2PriorKnowledge
-HttpClientOptions clientOptions = new HttpClientOptions()
+io.vertx.core.http.HttpClientOptions clientOptions = new io.vertx.core.http.HttpClientOptions()
     .setHttp2ClearTextUpgrade(false);
 HttpClient client = new VertxHttpClientBuilder()
     .httpClientOptions(clientOptions)
