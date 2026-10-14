@@ -228,9 +228,6 @@
 # PRLabel: %Communication - Call Automation
 /sdk/communication/azure-communication-callautomation/             @fhaghbin-msft @juntuchen-msft @minwoolee-msft @v-dharmarajv @Azure/azure-java-sdk
 
-# PRLabel: %Communication - Calling Server
-/sdk/communication/azure-communication-callingserver/              @minwoolee-msft @Azure/azure-java-sdk
-
 # PRLabel: %Communication - Chat
 /sdk/communication/azure-communication-chat/                       @ankitarorabit @Azure/azure-sdk-communication-code-reviewers @minnieliu @Azure/azure-java-sdk
 
