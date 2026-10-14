@@ -81,6 +81,9 @@ See [API design][design] for general introduction on design and key concepts on 
 
 For details on contributing to this repository, see the [contributing guide][cg].
 
+For the API `2026-10-01` integration tests, including Azure setup, recording, and offline playback, see
+[testing instructions](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/edgeactions/azure-resourcemanager-edgeactions/TESTING.md).
+
 This project welcomes contributions and suggestions. Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit <https://cla.microsoft.com>.
 
 When you submit a pull request, a CLA-bot will automatically determine whether you need to provide a CLA and decorate the PR appropriately (e.g., label, comment). Simply follow the instructions provided by the bot. You will only need to do this once across all repositories using our CLA.
