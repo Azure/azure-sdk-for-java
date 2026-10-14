@@ -12,7 +12,6 @@ trigger:
     exclude:
       - sdk/purview/pom.xml
       - sdk/purview/azure-analytics-purview-datamap/pom.xml
-      - sdk/purview/azure-analytics-purview-scanning/pom.xml
       - sdk/purview/azure-analytics-purview-sharing/pom.xml
       - sdk/purview/azure-analytics-purview-workflow/pom.xml
       - sdk/purview/azure-resourcemanager-purview/pom.xml
@@ -30,7 +29,6 @@ pr:
     exclude:
       - sdk/purview/pom.xml
       - sdk/purview/azure-analytics-purview-datamap/pom.xml
-      - sdk/purview/azure-analytics-purview-scanning/pom.xml
       - sdk/purview/azure-analytics-purview-sharing/pom.xml
       - sdk/purview/azure-analytics-purview-workflow/pom.xml
       - sdk/purview/azure-resourcemanager-purview/pom.xml
@@ -39,10 +37,6 @@ pr:
 parameters:
   - name: release_azureanalyticspurviewdatamap
     displayName: azure-analytics-purview-datamap
-    type: boolean
-    default: true
-  - name: release_azureanalyticspurviewscanning
-    displayName: azure-analytics-purview-scanning
     type: boolean
     default: true
   - name: release_azureresourcemanagerpurview
@@ -67,10 +61,6 @@ extends:
         groupId: com.azure
         safeName: azureanalyticspurviewdatamap
         releaseInBatch: ${{ parameters.release_azureanalyticspurviewdatamap }}
-      - name: azure-analytics-purview-scanning
-        groupId: com.azure
-        safeName: azureanalyticspurviewscanning
-        releaseInBatch: ${{ parameters.release_azureanalyticspurviewscanning }}
       - name: azure-resourcemanager-purview
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerpurview
