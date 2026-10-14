@@ -10,12 +10,10 @@ trigger:
     include:
       - sdk/synapse/ci.yml
       - sdk/synapse/azure-analytics-synapse-artifacts/
-      - sdk/synapse/azure-analytics-synapse-spark/
       - sdk/synapse/azure-resourcemanager-synapse/
     exclude:
       - sdk/synapse/pom.xml
       - sdk/synapse/azure-analytics-synapse-artifacts/pom.xml
-      - sdk/synapse/azure-analytics-synapse-spark/pom.xml
       - sdk/synapse/azure-resourcemanager-synapse/pom.xml
 
 pr:
@@ -29,21 +27,15 @@ pr:
     include:
       - sdk/synapse/ci.yml
       - sdk/synapse/azure-analytics-synapse-artifacts/
-      - sdk/synapse/azure-analytics-synapse-spark/
       - sdk/synapse/azure-resourcemanager-synapse/
     exclude:
       - sdk/synapse/pom.xml
       - sdk/synapse/azure-analytics-synapse-artifacts/pom.xml
-      - sdk/synapse/azure-analytics-synapse-spark/pom.xml
       - sdk/synapse/azure-resourcemanager-synapse/pom.xml
 
 parameters:
   - name: release_azureanalyticssynapseartifacts
     displayName: 'azure-analytics-synapse-artifacts'
-    type: boolean
-    default: true
-  - name: release_azureanalyticssynapsespark
-    displayName: 'azure-analytics-synapse-spark'
     type: boolean
     default: true
   - name: release_azureresourcemanagersynapse
@@ -60,10 +52,6 @@ extends:
         groupId: com.azure
         safeName: azureanalyticssynapseartifacts
         releaseInBatch: ${{ parameters.release_azureanalyticssynapseartifacts }}
-      - name: azure-analytics-synapse-spark
-        groupId: com.azure
-        safeName: azureanalyticssynapsespark
-        releaseInBatch: ${{ parameters.release_azureanalyticssynapsespark }}
       - name: azure-resourcemanager-synapse
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagersynapse
