@@ -98,6 +98,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
     private RxClientCollectionCache collectionCache;
     private GatewayServerErrorInjector gatewayServerErrorInjector;
     private final Map<String, String> additionalHeaders;
+    private final UserAgentContainer userAgentContainer;
 
     public RxGatewayStoreModel(
         DiagnosticsClientContext clientContext,
@@ -116,6 +117,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
             userAgentContainer = new UserAgentContainer();
         }
 
+        this.userAgentContainer = userAgentContainer;
         this.defaultHeaders = this.getDefaultHeaders(apiType, userAgentContainer);
 
         this.defaultConsistencyLevel = defaultConsistencyLevel;
@@ -137,6 +139,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
         this.httpClient = inner.httpClient;
         this.sessionContainer = inner.sessionContainer;
         this.additionalHeaders = inner.additionalHeaders;
+        this.userAgentContainer = inner.userAgentContainer;
     }
 
     protected Map<String, String> getDefaultHeaders(
@@ -496,6 +499,8 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                 }
             }
         }
+
+        httpHeaders.set(HttpConstants.HttpHeaders.USER_AGENT, this.getCurrentUserAgent());
 
         // Add override headers.
         if (headers != null) {
@@ -1079,6 +1084,10 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
 
     public Map<String, String> getDefaultHeaders() {
         return this.defaultHeaders;
+    }
+
+    protected String getCurrentUserAgent() {
+        return this.userAgentContainer.getUserAgent();
     }
 
     private void captureSessionToken(RxDocumentServiceRequest request, Map<String, String> responseHeaders) {
