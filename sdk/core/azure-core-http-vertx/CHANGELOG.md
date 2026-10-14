@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Fixed response timeouts and request cancellation leaving HTTP exchanges active and occupying pooled connections.
+
 ### Other Changes
 
 ## 1.2.0 (2026-09-29)

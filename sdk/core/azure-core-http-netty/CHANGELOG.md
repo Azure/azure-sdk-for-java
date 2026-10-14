@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Fixed response and read timeouts not being enforced when the write timeout is disabled.
+
 ### Other Changes
 
 ## 1.16.8 (2026-09-29)

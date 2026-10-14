@@ -126,17 +126,14 @@ public final class AzureSdkHandler extends ChannelDuplexHandler {
             }
         }
 
-        if (writeTimeoutMillis > 0) {
-            ctx.write(msg, promise.unvoid()).addListener((ChannelFutureListener) future -> {
-                lastWriteMillis = System.currentTimeMillis();
-                if (msg instanceof LastHttpContent) {
-                    endWriteTracking();
-                    startResponseTracking();
-                }
-            });
-        } else {
-            ctx.write(msg, promise.unvoid());
-        }
+        // Completing writing starts the response phase even when the write timeout is disabled.
+        ctx.write(msg, promise.unvoid()).addListener((ChannelFutureListener) future -> {
+            lastWriteMillis = System.currentTimeMillis();
+            if (msg instanceof LastHttpContent) {
+                endWriteTracking();
+                startResponseTracking();
+            }
+        });
     }
 
     void writeTimeoutRunnable(ChannelHandlerContext ctx) {

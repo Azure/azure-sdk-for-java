@@ -8,4 +8,6 @@
 
 ### Bugs Fixed
 
+- Fixed response and read timeouts not being enforced when the write timeout is disabled.
+
 ### Other Changes

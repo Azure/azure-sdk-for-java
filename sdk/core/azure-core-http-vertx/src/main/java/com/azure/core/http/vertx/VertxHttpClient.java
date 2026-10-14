@@ -40,10 +40,11 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.time.Duration;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.CancellationException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * {@link HttpClient} implementation for the Vert.x {@link io.vertx.core.http.HttpClient}.
@@ -125,13 +126,35 @@ class VertxHttpClient implements HttpClient {
 
         // Create the Promise that will be returned. Promise.promise() is an uncompleted Promise.
         Promise<HttpResponse> promise = Promise.promise();
+        CompletableFuture<HttpResponse> requestFuture = new CompletableFuture<>();
+        promise.future().onComplete(result -> {
+            if (result.failed()) {
+                requestFuture.completeExceptionally(result.cause());
+            } else if (!requestFuture.complete(result.result())) {
+                // Cancellation may win the race with a successful response. Do not leave that response unconsumed.
+                result.result().close();
+            }
+        });
+        requestFuture.whenComplete((response, error) -> {
+            if (requestFuture.isCancelled()) {
+                // Fail the Vert.x promise too, including when cancellation occurs before request acquisition.
+                promise.tryFail(new CancellationException("HTTP request was cancelled."));
+            }
+        });
+
         client.request(options).andThen(requestResult -> {
             if (requestResult.failed()) {
-                promise.fail(requestResult.cause());
+                promise.tryFail(requestResult.cause());
                 return;
             }
 
             HttpClientRequest vertxRequest = requestResult.result();
+            // A timed-out or cancelled response future does not abort the underlying HTTP exchange on its own.
+            promise.future().onFailure(ignored -> vertxRequest.reset());
+            if (promise.future().failed()) {
+                return;
+            }
+
             for (HttpHeader header : request.getHeaders()) {
                 // Potential optimization here would be creating a MultiMap wrapper around azure-core's
                 // HttpHeaders and using RequestOptions.setHeaders(MultiMap)
@@ -148,31 +171,31 @@ class VertxHttpClient implements HttpClient {
                 responseFuture = vertxRequest.response();
             }
 
-            responseFuture = responseFuture.onFailure(promise::fail);
+            responseFuture = responseFuture.onFailure(promise::tryFail);
 
             if (eagerlyReadResponse || ignoreResponseBody) {
                 responseFuture.andThen(responseResult -> {
                     if (responseResult.failed()) {
-                        promise.fail(responseResult.cause());
+                        promise.tryFail(responseResult.cause());
                         return;
                     }
 
                     HttpClientResponse vertxHttpResponse = responseResult.result();
                     vertxHttpResponse.body().andThen(bodyResult -> {
                         if (bodyResult.succeeded()) {
-                            promise.complete(
+                            promise.tryComplete(
                                 new BufferedVertxHttpResponse(request, vertxHttpResponse, bodyResult.result()));
                         } else {
-                            promise.fail(bodyResult.cause());
+                            promise.tryFail(bodyResult.cause());
                         }
                     });
                 });
             } else {
                 responseFuture.andThen(responseResult -> {
                     if (responseResult.succeeded()) {
-                        promise.complete(new VertxHttpResponse(request, responseResult.result()));
+                        promise.tryComplete(new VertxHttpResponse(request, responseResult.result()));
                     } else {
-                        promise.fail(responseResult.cause());
+                        promise.tryFail(responseResult.cause());
                     }
                 });
             }
@@ -180,7 +203,7 @@ class VertxHttpClient implements HttpClient {
             sendBody(contextView, request, progressReporter, vertxRequest, promise);
         });
 
-        return promise.future().toCompletionStage().toCompletableFuture();
+        return requestFuture;
     }
 
     private void sendBody(ContextView contextView, HttpRequest azureRequest, ProgressReporter progressReporter,
@@ -188,7 +211,7 @@ class VertxHttpClient implements HttpClient {
         BinaryData body = azureRequest.getBodyAsBinaryData();
 
         if (body == null) {
-            vertxRequest.send().onFailure(promise::fail);
+            vertxRequest.send().onFailure(promise::tryFail);
             return;
         }
 
@@ -226,7 +249,7 @@ class VertxHttpClient implements HttpClient {
                 cancelFallback.run();
                 writeOnce.run();
             });
-            vertxRequest.sendHead().onFailure(promise::fail);
+            vertxRequest.sendHead().onFailure(promise::tryFail);
         } else {
             writeBody(contextView, azureRequest, progressReporter, vertxRequest, promise, body, false);
         }
@@ -264,7 +287,7 @@ class VertxHttpClient implements HttpClient {
             // Once the head has been sent the body must be written onto the open request rather than sent as a
             // whole new request.
             Future<Void> written = headAlreadySent ? vertxRequest.end(buffer) : vertxRequest.send(buffer).mapEmpty();
-            written.onSuccess(ignored -> reportProgress(contentLength, progressReporter)).onFailure(promise::fail);
+            written.onSuccess(ignored -> reportProgress(contentLength, progressReporter)).onFailure(promise::tryFail);
         } else {
             // Right now both Flux<ByteBuffer> and InputStream bodies are being handled reactively.
             azureRequest.getBody()
