@@ -4,12 +4,14 @@
 
 package com.azure.resourcemanager.carbonoptimization.implementation;
 
+import com.azure.resourcemanager.carbonoptimization.fluent.models.CarbonEmissionDataInner;
 import com.azure.resourcemanager.carbonoptimization.fluent.models.CarbonEmissionDataListResultInner;
 import com.azure.resourcemanager.carbonoptimization.models.CarbonEmissionData;
 import com.azure.resourcemanager.carbonoptimization.models.CarbonEmissionDataListResult;
 import com.azure.resourcemanager.carbonoptimization.models.SubscriptionAccessDecision;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public final class CarbonEmissionDataListResultImpl implements CarbonEmissionDataListResult {
     private CarbonEmissionDataListResultInner innerObject;
@@ -23,9 +25,11 @@ public final class CarbonEmissionDataListResultImpl implements CarbonEmissionDat
     }
 
     public List<CarbonEmissionData> value() {
-        List<CarbonEmissionData> inner = this.innerModel().value();
+        List<CarbonEmissionDataInner> inner = this.innerModel().value();
         if (inner != null) {
-            return Collections.unmodifiableList(inner);
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new CarbonEmissionDataImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }

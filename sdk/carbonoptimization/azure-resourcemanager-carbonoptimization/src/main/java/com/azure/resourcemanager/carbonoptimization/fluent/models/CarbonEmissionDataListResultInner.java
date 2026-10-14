@@ -9,7 +9,6 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.carbonoptimization.models.CarbonEmissionData;
 import com.azure.resourcemanager.carbonoptimization.models.SubscriptionAccessDecision;
 import java.io.IOException;
 import java.util.List;
@@ -22,7 +21,7 @@ public final class CarbonEmissionDataListResultInner implements JsonSerializable
     /*
      * The CarbonEmissionData items on this page
      */
-    private List<CarbonEmissionData> value;
+    private List<CarbonEmissionDataInner> value;
 
     /*
      * The pagination token to fetch next page data, it's null or empty if it doesn't have next page data
@@ -45,7 +44,7 @@ public final class CarbonEmissionDataListResultInner implements JsonSerializable
      * 
      * @return the value value.
      */
-    public List<CarbonEmissionData> value() {
+    public List<CarbonEmissionDataInner> value() {
         return this.value;
     }
 
@@ -99,7 +98,8 @@ public final class CarbonEmissionDataListResultInner implements JsonSerializable
                 reader.nextToken();
 
                 if ("value".equals(fieldName)) {
-                    List<CarbonEmissionData> value = reader.readArray(reader1 -> CarbonEmissionData.fromJson(reader1));
+                    List<CarbonEmissionDataInner> value
+                        = reader.readArray(reader1 -> CarbonEmissionDataInner.fromJson(reader1));
                     deserializedCarbonEmissionDataListResultInner.value = value;
                 } else if ("skipToken".equals(fieldName)) {
                     deserializedCarbonEmissionDataListResultInner.skipToken = reader.getString();
