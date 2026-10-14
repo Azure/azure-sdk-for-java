@@ -22,8 +22,12 @@ An omitted group inherits from the declared parent; omitted packaging means JAR.
 No per-library JSON allowlist, parent-file list, or recorded POM hashes are needed.
 
 Control-plane/management libraries and older Track 1 data-plane libraries are
-excluded. Spring, standalone tools, performance projects, and POM-only modules
-also do not match this client-library scope. This follows the repository's
+excluded from Java-source eligibility. Their Java changes retain existing full
+validation. Spring, standalone tools, performance-parent projects, and POM-only
+modules also do not match this client-library scope. The Maven detector is
+convention-based and can admit related benchmark, stress, or sample modules
+using the client parent; required-validation overrides are handled separately.
+This follows the repository's
 [client and historical release documentation](../../README.md#available-packages)
 and the client-group/parent conventions in
 [`Language-Settings.ps1`](../scripts/Language-Settings.ps1) and
@@ -37,9 +41,10 @@ the classifier on real PRs in CI.
 JavaParser parses both versions of the modified files successfully as Java 8,
 with token storage, comment attribution, and original-line-separator detection
 disabled. It compares the exact `CompilationUnit.toString()` values without
-stripping whitespace. Comments are not attached to those compilation units;
-the parser's separate comment inventory supplies the lightweight directive gate.
-No token-position map, comment reattribution, second parser, or lexer is added.
+stripping whitespace. Comments are not attached to those compilation units.
+The comparator does not inspect Javadoc, comment inventories, tags, directives,
+or declaration attachment. No token-position map, comment reattribution,
+second parser, or lexer is added.
 
 Whitespace and comment-like text inside string and character literals remain
 part of the AST. Changed identifiers, operators, imports, annotations, and
@@ -48,34 +53,49 @@ Printer normalization can accept syntax changes such as equivalent array
 declarations or extra empty top-level declarations. The report therefore uses
 `ast-equivalent`, not `whitespace-only` or a claim of compiler equivalence.
 
-Ordinary Javadoc can be added, removed, moved, detached, or edited without
-tracking its declaration attachment. Known documentation tags, including
-documentation-only tags such as `hidden`, `summary`, and `snippet`, are recognized
-without validating their contents. Javadoc validity remains a Build/Analyze concern.
+Javadoc and ordinary comments can be added, removed, moved, detached, or edited.
+This includes `@deprecated` explanations, custom tags, `#method` references,
+`$filter` prose, snippet opening/closing markers, and directive-shaped text.
+Build and Analyze remain required independently of runtime-test selection and
+retain compilation, deprecation consistency, Javadoc, snippet, formatting,
+static-analysis, and applicable generation checks. Java annotations are code,
+so changing an actual `@Deprecated` annotation still fails AST equality.
 
-Compiler-sensitive cases use conservative file-level exclusions. Either source
-containing the raw sequence `\u` or the text `@deprecated` is rejected, even when
-that text is unchanged or occurs in a literal. This avoids approximating Unicode
-preprocessing or rebuilding the attribution needed to preserve deprecation metadata.
-Consequently, formatting-only edits to files with deprecated Javadoc no longer qualify.
-Byte-order marks, non-UTF-8 source, and unsupported Java syntax remain excluded.
+Unicode preprocessing remains a classifier safeguard: either source containing
+the raw sequence `\u` is rejected, even when that text is unchanged or occurs
+in a literal. The compiler translates these escapes before recognizing comments,
+so a successful build alone cannot establish that an apparent comment edit is
+non-executable. Byte-order marks, non-UTF-8 source, and unsuccessful or unsupported
+parses remain excluded.
 
-Known static-analysis, formatting, spelling, and documentation markers can change
-without retaining their text or code-relative position. These include
-`BEGIN:`/`END:`, `src_embed`, `codesnippet`, `CHECKSTYLE`, `NOSONAR`, `NOPMD`,
-`noinspection`, `formatter`, `spotless`, `cspell`, and localization suppressions.
-Generated-origin banners are not source-generation instructions.
-Build and Analyze retain their existing formatting, Javadoc, snippet,
-static-analysis, and generator checks.
+Delegating documentation checks requires their normal client-parent validation.
+A module with an explicitly disabled compilation/Javadoc/Checkstyle setting,
+disabled warning failures, or disabled `dep-ann` warnings is not eligible for
+Java-source exclusion (`required-validation-overridden`). Declared overrides
+inside optional profiles and unresolved override values also remain conservative;
+this is not a general Maven profile/property resolver.
 
-Source-generation and unclassified directive-shaped comments remain conservative:
-either source containing them is rejected, even if they are unchanged. Examples
-include `GEN-BEGIN`/`GEN-END`, generated regions, unclassified `tag::`/`end::`
-consumers, unknown HTML markers, and forms such as `@generate`, `#if`, or
-`custom-generator: enabled`. Unknown block/inline tag markers also remain
-unclassified. Known markers do not exempt an unknown directive in the same comment.
-Directive recognition uses the parse result's comment inventory rather than
-scanning string/character literals.
+## Generator-sensitive runtime-test inputs
+
+[`runtime-test-required-paths.json`](../scripts/runtime-test-required-paths.json)
+contains additive, case-sensitive Java path rules. A matching modified source
+keeps its owning library on runtime validation (`runtime-test-input-change`)
+without starting the comparator; unrelated libraries continue to be evaluated.
+Rules never make a library eligible, replace Maven-based scope detection, or
+change the existing test matrix.
+
+The initial rules cover model sources and `SystemEventNames.java` in the two
+Event Grid packages whose customizers extract event identifiers from generated
+model Javadoc. This is a precautionary exception, not a claim that edited
+checked-in Javadoc is reused during ordinary PR generation.
+
+Add a rule for a confirmed generator-sensitive source using `id`, repository
+`path`, and an explanatory `reason`. Paths are limited to `sdk/<service>/<library>/src/main/java/...java`;
+`*` matches zero or more characters, including directory separators.
+The rules are loaded with the engineering tool from its checkout. Missing,
+invalid, oversized, or duplicate rules make reporting inconclusive, not eligible.
+Changing this engineering configuration in a PR is a repository-wide input change
+and retains validation for all changed libraries.
 
 Additions, deletions, renames, mode changes, package-info, module-info, test/sample
 Java, libraries outside the Track 2 data-plane scope, and mixed functional changes
@@ -175,9 +195,12 @@ Accepted source comparisons use the per-file reason `ast-equivalent` and the
 library reason `supported-ast-equivalent-changes`. Schema version 3 replaces the
 previous token-based documentation/comment/whitespace reason codes because
 printed-AST equality also accepts some syntax normalizations.
-Compiler-sensitive exclusions distinguish `unsupported-unicode-escape` and
-`unsupported-deprecation`; unclassified directives use
-`unsupported-comment-directive`.
+The source-level compiler safeguard reports `unsupported-unicode-escape`.
+Documentation consistency is delegated to required validation rather than
+`unsupported-deprecation` or `unsupported-comment-directive` comparison results.
+Configured runtime-test inputs expose `RuntimeTestRule` and
+`RuntimeTestRuleReason` on the file result. Explicit validation overrides report
+`required-validation-overridden`.
 An unchanged source is not counted as an eligible edit. A library with only known
 consumer-documentation changes uses `existing-non-runtime-validation` without
 starting the Java parser.
@@ -231,16 +254,17 @@ Invoke-Pester -Path @(
 ```
 
 Java unit tests cover exact printed-AST comparison, syntax normalization,
-formatting, ordinary-comment edits, relaxed Javadoc attachment, file-level
-deprecation and Unicode exclusions, known static/documentation markers,
-unclassified directives, comments versus literals, unsuccessful/partial parses,
+formatting, ordinary-comment edits, relaxed Javadoc attachment and deprecation
+documentation, Unicode exclusion, references/query options/snippet markers,
+directive-shaped comments, comments versus literals, unsuccessful/partial parses,
 exact 2 MiB UTF-8 byte boundaries, per-pair flushing, more than 100 source pairs,
 and early termination.
 Pester uses disposable local Git repositories and the real parser to cover
 complete PR snapshots, target advancement, shallow history, sparse/dirty
 worktrees, automatic library detection, management/Track 1 exclusions, invalid
 POM metadata, mixed libraries and per-file change categories, service/repository
-shared inputs, PRs above the former file limit, first/middle/last rejection,
+shared inputs, additive runtime-test rules, explicit required-validation
+overrides, PRs above the former file limit, first/middle/last rejection,
 unread later source blobs, process cleanup, limits, force override, context
 guards, and incomplete-result handling.
 Parser setup is mandatory; missing dependencies are not reported as skipped or

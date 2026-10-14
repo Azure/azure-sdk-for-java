@@ -164,7 +164,7 @@ class DocumentationClassifierTests {
 
     @ParameterizedTest(name = "{0}")
     @MethodSource("compilerSensitiveEdits")
-    void excludesCompilerSensitiveSources(String name, String before, String after, String reason) {
+    void keepsUnicodeProtectionAndDelegatesDeprecation(String name, String before, String after, String reason) {
         assertEquals(reason, new DocumentationClassifier().compare(before, after), name);
     }
 
@@ -179,17 +179,17 @@ class DocumentationClassifierTests {
             Arguments.of("Unicode exposes executable code", plain,
                 plain.replace("// ordinary", "// ordinary \\u000a x=2;"),
                 "unsupported-unicode-escape"),
-            Arguments.of("deprecation added", SOURCE, deprecated, "unsupported-deprecation"),
-            Arguments.of("deprecation removed", deprecated, SOURCE, "unsupported-deprecation"),
+            Arguments.of("deprecation added", SOURCE, deprecated, "ast-equivalent"),
+            Arguments.of("deprecation removed", deprecated, SOURCE, "ast-equivalent"),
             Arguments.of("deprecation explanation", deprecated, deprecated.replace("Old.", "New."),
-                "unsupported-deprecation"),
+                "ast-equivalent"),
             Arguments.of("unchanged deprecation and formatting", deprecated, deprecated.replace("    ", "\t"),
-                "unsupported-deprecation"),
+                "ast-equivalent"),
             Arguments.of("deprecation moved", "class Example { /** @deprecated Old. */ int first; int second; }",
-                "class Example { int first; /** @deprecated Old. */ int second; }", "unsupported-deprecation"),
-            Arguments.of("deprecation-like literal is conservatively excluded",
+                "class Example { int first; /** @deprecated Old. */ int second; }", "ast-equivalent"),
+            Arguments.of("deprecation-like literal",
                 "class Example { String value = \"@deprecated\"; }",
-                "class Example {  String value = \"@deprecated\"; }", "unsupported-deprecation"));
+                "class Example {  String value = \"@deprecated\"; }", "ast-equivalent"));
     }
 
     @ParameterizedTest(name = "{0}")
@@ -226,8 +226,8 @@ class DocumentationClassifierTests {
 
     @ParameterizedTest(name = "{0}")
     @MethodSource("unclassifiedDirectiveEdits")
-    void excludesGenerationAndUnclassifiedDirectives(String name, String before, String after) {
-        assertEquals("unsupported-comment-directive", new DocumentationClassifier().compare(before, after), name);
+    void delegatesCommentDirectivesToValidationAndPathRules(String name, String before, String after) {
+        assertEquals("ast-equivalent", new DocumentationClassifier().compare(before, after), name);
     }
 
     static Stream<Arguments> unclassifiedDirectiveEdits() {
@@ -280,20 +280,43 @@ class DocumentationClassifierTests {
     }
 
     @Test
-    void doesNotReuseAnEarlierParseInventory() {
+    void comparesCodeAfterDifferentCommentEdits() {
         DocumentationClassifier classifier = new DocumentationClassifier();
-        assertEquals("unsupported-comment-directive", classifier.compare(SOURCE,
+        assertEquals("ast-equivalent", classifier.compare(SOURCE,
             SOURCE.replace("Gets the name.", "@generate value")));
         assertEquals("ast-equivalent",
             classifier.compare(SOURCE, SOURCE.replace("Gets the name.", "New description.")));
+        assertEquals("non-documentation-change",
+            classifier.compare(SOURCE, SOURCE.replace("\"name\"", "\"other\"")));
     }
 
     @Test
-    void boundsDirectiveScanningAcrossLongWhitespaceAndBlankLines() {
+    void parsesLongCommentWhitespaceAndBlankLines() {
         String spaces = String.join("", Collections.nCopies(64 * 1024, " "));
         String before = "/*" + spaces + String.join("", Collections.nCopies(64 * 1024, "\n"))
             + "*/ class Example {}";
         assertTimeoutPreemptively(Duration.ofSeconds(5), () ->
             assertEquals("ast-equivalent", new DocumentationClassifier().compare(before, before + "\n")));
+    }
+
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("existingDocumentationMarkers")
+    void acceptsExistingJavadocReferencesAndSnippetMarkers(String name, String before, String after) {
+        assertEquals("ast-equivalent", new DocumentationClassifier().compare(before, after), name);
+    }
+
+    static Stream<Arguments> existingDocumentationMarkers() {
+        return Stream.of(
+            Arguments.of("method reference", SOURCE,
+                SOURCE.replace("Gets the name.", "See {@link #getName()} for the name.")),
+            Arguments.of("query option", SOURCE,
+                SOURCE.replace("Gets the name.", "Use $filter to select matching resources.")),
+            Arguments.of("snippet closing marker", SOURCE,
+                SOURCE.replace("Gets the name.", "<!-- src_embed example.name -->Code.<!-- end example.name -->")),
+            Arguments.of("annotated deprecation explanation",
+                SOURCE.replace("public String", "@Deprecated public String")
+                    .replace("Gets the name.", "@deprecated Old explanation."),
+                SOURCE.replace("public String", "@Deprecated public String")
+                    .replace("Gets the name.", "@deprecated New explanation.")));
     }
 }

@@ -297,6 +297,77 @@ Describe 'Java documentation path classification index' -Tag 'UnitTest' {
     }
 }
 
+Describe 'Java runtime-test input rules' -Tag 'UnitTest' {
+    It 'loads additive rules without treating them as library eligibility' {
+        $rules = @(Get-JavaDocRuntimeTestInputRules)
+        $rules.Count | Should -Be 4
+        foreach ($rule in $rules) {
+            $rule.Pattern.IsMatch('sdk/example/example/src/main/java/Example.java') | Should -BeFalse
+        }
+        $rules[0].Pattern.IsMatch(
+            'sdk/eventgrid/azure-messaging-eventgrid-systemevents/src/main/java/com/azure/messaging/eventgrid/systemevents/models/StorageBlobCreatedEventData.java'
+        ) | Should -BeTrue
+        $rules[0].Pattern.IsMatch(
+            'sdk/eventgrid/azure-messaging-eventgrid-systemevents-extra/src/main/java/com/azure/messaging/eventgrid/systemevents/models/StorageBlobCreatedEventData.java'
+        ) | Should -BeFalse
+        $rules[0].Pattern.IsMatch(
+            'sdk/EventGrid/azure-messaging-eventgrid-systemevents/src/main/java/com/azure/messaging/eventgrid/systemevents/models/StorageBlobCreatedEventData.java'
+        ) | Should -BeFalse
+    }
+
+    It 'rejects unsupported or ambiguous rules: <Kind>' -TestCases @(
+        @{ Kind = 'missing' }
+        @{ Kind = 'malformed' }
+        @{ Kind = 'schema' }
+        @{ Kind = 'string-schema' }
+        @{ Kind = 'boolean-schema' }
+        @{ Kind = 'missing-rules' }
+        @{ Kind = 'duplicate-id' }
+        @{ Kind = 'duplicate-path' }
+        @{ Kind = 'absolute-path' }
+        @{ Kind = 'traversal' }
+        @{ Kind = 'unsupported-wildcard' }
+        @{ Kind = 'empty-reason' }
+        @{ Kind = 'oversized' }
+    ) {
+        param($Kind)
+        $path = Join-Path $TestDrive 'runtime-test-rules.json'
+        $configuration = @{
+            schemaVersion = 1
+            rules = @(@{
+                id = 'test-input'
+                path = 'sdk/example/example/src/main/java/*.java'
+                reason = 'Test rule.'
+            })
+        }
+        switch ($Kind) {
+            'schema' { $configuration.schemaVersion = 2 }
+            'string-schema' { $configuration.schemaVersion = '1' }
+            'boolean-schema' { $configuration.schemaVersion = $true }
+            'missing-rules' { $configuration.Remove('rules') }
+            'duplicate-id' { $configuration.rules += $configuration.rules[0] }
+            'duplicate-path' {
+                $configuration.rules += @{
+                    id = 'other-input'
+                    path = $configuration.rules[0].path
+                    reason = 'Ambiguous duplicate rule.'
+                }
+            }
+            'absolute-path' { $configuration.rules[0].path = '/sdk/example/example/src/main/java/*.java' }
+            'traversal' { $configuration.rules[0].path = 'sdk/example/example/src/main/java/../*.java' }
+            'unsupported-wildcard' { $configuration.rules[0].path = 'sdk/example/example/src/main/java/[A-Z].java' }
+            'empty-reason' { $configuration.rules[0].reason = '' }
+        }
+        if ($Kind -ne 'missing') {
+            $content = if ($Kind -eq 'malformed') { '{' } elseif ($Kind -eq 'oversized') {
+                ' ' * 131073
+            } else { $configuration | ConvertTo-Json -Depth 5 }
+            [IO.File]::WriteAllText($path, $content)
+        }
+        { Get-JavaDocRuntimeTestInputRules -Path $path } | Should -Throw
+    }
+}
+
 Describe 'Java documentation report-only classification' -Tag 'UnitTest' {
     BeforeEach {
         $script:SavedForce = $env:FORCE_FULL_VALIDATION
@@ -706,6 +777,11 @@ Describe 'Java documentation report-only classification' -Tag 'UnitTest' {
         @{ Kind = 'removed-javadoc'; ExpectedReason = 'ast-equivalent' }
         @{ Kind = 'syntax-normalization'; ExpectedReason = 'ast-equivalent' }
         @{ Kind = 'static-directive'; ExpectedReason = 'ast-equivalent' }
+        @{ Kind = 'unclassified-comment'; ExpectedReason = 'ast-equivalent' }
+        @{ Kind = 'deprecated-explanation'; ExpectedReason = 'ast-equivalent' }
+        @{ Kind = 'javadoc-reference'; ExpectedReason = 'ast-equivalent' }
+        @{ Kind = 'query-option'; ExpectedReason = 'ast-equivalent' }
+        @{ Kind = 'snippet-end'; ExpectedReason = 'ast-equivalent' }
     ) {
         param($Kind, $ExpectedReason)
         $fixture = New-JavaDocFixture
@@ -717,6 +793,11 @@ Describe 'Java documentation report-only classification' -Tag 'UnitTest' {
             'removed-javadoc' { $script:BeforeSource.Replace('/** Old description. */', '') }
             'syntax-normalization' { ';' + $script:BeforeSource + ';' }
             'static-directive' { $script:BeforeSource.Replace('return ', '/* @formatter:off */return ') }
+            'unclassified-comment' { $script:BeforeSource.Replace('return ', '/* @generate value */return ') }
+            'deprecated-explanation' { $script:BeforeSource.Replace('Old description.', '@deprecated Old API.') }
+            'javadoc-reference' { $script:BeforeSource.Replace('Old description.', 'See {@link #name()}.') }
+            'query-option' { $script:BeforeSource.Replace('Old description.', 'Use $filter to select resources.') }
+            'snippet-end' { $script:BeforeSource.Replace('Old description.', '<!-- end example.name -->') }
         }
         Write-FixtureFile $fixture.Root $fixture.JavaPath $after
         Save-FixtureCommit $fixture.Root
@@ -761,9 +842,7 @@ Describe 'Java documentation report-only classification' -Tag 'UnitTest' {
         }
     }
 
-    It 'rejects compiler-sensitive inputs, unclassified directives, and changed code: <Kind>' -TestCases @(
-        @{ Kind = 'tool-directive'; ExpectedReason = 'unsupported-comment-directive' }
-        @{ Kind = 'deprecation'; ExpectedReason = 'unsupported-deprecation' }
+    It 'rejects Unicode-sensitive inputs and changed code: <Kind>' -TestCases @(
         @{ Kind = 'unicode'; ExpectedReason = 'unsupported-unicode-escape' }
         @{ Kind = 'literal-whitespace'; ExpectedReason = 'non-documentation-change' }
         @{ Kind = 'commented-out-code'; ExpectedReason = 'non-documentation-change' }
@@ -771,8 +850,6 @@ Describe 'Java documentation report-only classification' -Tag 'UnitTest' {
         param($Kind, $ExpectedReason)
         $fixture = New-JavaDocFixture
         $after = switch ($Kind) {
-            'tool-directive' { $script:AfterSource.Replace('return ', '/* @generate value */return ') }
-            'deprecation' { $script:AfterSource.Replace('New description.', '@deprecated Old API.') }
             'unicode' { $script:AfterSource.Replace('New description.', '\u000a Not supported.') }
             'literal-whitespace' { $script:AfterSource.Replace('"name"', '" name "') }
             'commented-out-code' { $script:AfterSource.Replace('String name()', '/* String name()').Replace('"name"; }',
@@ -1007,6 +1084,126 @@ Describe 'Java documentation report-only classification' -Tag 'UnitTest' {
         $result.Files[0].MavenCoordinates | Should -BeExactly 'com.microsoft.azure:azure-example'
     }
 
+    It 'delegates documentation only when required validation is not explicitly weakened: <Setting>' -TestCases @(
+        @{ Setting = '<properties><checkstyle.skip>true</checkstyle.skip></properties>' }
+        @{ Setting = '<properties><maven.javadoc.skip>true</maven.javadoc.skip></properties>' }
+        @{ Setting = '<properties><skipCompile>${unsupported.setting}</skipCompile></properties>' }
+        @{ Setting = '<build><plugins><plugin><artifactId>maven-compiler-plugin</artifactId><configuration><failOnWarning>false</failOnWarning></configuration></plugin></plugins></build>' }
+        @{ Setting = '<build><plugins><plugin><artifactId>maven-compiler-plugin</artifactId><configuration><compilerArgs><arg>-Xlint:-dep-ann</arg></compilerArgs></configuration></plugin></plugins></build>' }
+        @{ Setting = '<build><plugins><plugin><artifactId>maven-compiler-plugin</artifactId><configuration><compilerArgs><arg>-Xlint:all,-dep-ann</arg></compilerArgs></configuration></plugin></plugins></build>' }
+        @{ Setting = '<profiles><profile><id>optional</id><properties><checkstyle.skip>true</checkstyle.skip></properties></profile></profiles>' }
+    ) {
+        param($Setting)
+        $fixture = New-JavaDocFixture -PomContent $script:Track2Pom.Replace('</project>', "$Setting</project>")
+        Write-FixtureFile $fixture.Root $fixture.JavaPath $script:AfterSource
+        Save-FixtureCommit $fixture.Root
+        Complete-JavaDocFixture $fixture
+        Mock Invoke-JavaDocComparisons { throw 'Parser should not run without required validation.' }
+        $result = Measure-Fixture $fixture
+        $result.Decision | Should -BeExactly 'NotEligible'
+        $result.Reason | Should -BeExactly 'required-validation-overridden'
+        $result.Files.Reason | Should -Contain 'required-validation-overridden'
+        $result.Error | Should -Not -BeNullOrEmpty
+        $result.WouldSuppressTests | Should -BeFalse
+        $result.SuppressionApplied | Should -BeFalse
+        Should -Invoke Invoke-JavaDocComparisons -Times 0
+    }
+
+    It 'permits explicit enabled validation settings' {
+        $settings = '<properties><checkstyle.skip>false</checkstyle.skip><maven.javadoc.skip>false</maven.javadoc.skip></properties>' +
+            '<build><plugins><plugin><artifactId>maven-compiler-plugin</artifactId>' +
+            '<configuration><failOnWarning>true</failOnWarning></configuration></plugin></plugins></build>'
+        $fixture = New-JavaDocFixture -PomContent $script:Track2Pom.Replace('</project>', "$settings</project>")
+        Write-FixtureFile $fixture.Root $fixture.JavaPath $script:AfterSource
+        Save-FixtureCommit $fixture.Root
+        Complete-JavaDocFixture $fixture
+        (Measure-Fixture $fixture).Decision | Should -BeExactly 'Eligible'
+    }
+
+    It 'keeps generator-sensitive sources on runtime validation: <Rule>' -TestCases @(
+        @{
+            Rule = 'eventgrid-systemevents-models'
+            Path = 'sdk/eventgrid/azure-messaging-eventgrid-systemevents/src/main/java/com/azure/messaging/eventgrid/systemevents/models/StorageBlobCreatedEventData.java'
+        }
+        @{
+            Rule = 'eventgrid-systemevents-mappings'
+            Path = 'sdk/eventgrid/azure-messaging-eventgrid-systemevents/src/main/java/com/azure/messaging/eventgrid/systemevents/SystemEventNames.java'
+        }
+        @{
+            Rule = 'eventgrid-legacy-models'
+            Path = 'sdk/eventgrid/azure-messaging-eventgrid/src/main/java/com/azure/messaging/eventgrid/systemevents/StorageBlobCreatedEventData.java'
+        }
+        @{
+            Rule = 'eventgrid-legacy-mappings'
+            Path = 'sdk/eventgrid/azure-messaging-eventgrid/src/main/java/com/azure/messaging/eventgrid/SystemEventNames.java'
+        }
+    ) {
+        param($Rule, $Path)
+        $fixture = New-JavaDocFixture -JavaPath $Path
+        Write-FixtureFile $fixture.Root $fixture.JavaPath $script:AfterSource
+        Save-FixtureCommit $fixture.Root
+        Complete-JavaDocFixture $fixture
+        Mock Invoke-JavaDocComparisons { throw 'Parser should not run for a runtime-test input.' }
+        $result = Measure-Fixture $fixture
+        $result.Decision | Should -BeExactly 'NotEligible'
+        $result.Reason | Should -BeExactly 'runtime-test-input-change'
+        $result.DecisionFile | Should -BeExactly $Path
+        $result.Files[0].RuntimeTestRule | Should -BeExactly $Rule
+        $result.Files[0].RuntimeTestRuleReason | Should -Not -BeNullOrEmpty
+        $result.ComparedFileCount | Should -Be 0
+        $result.WouldSuppressTests | Should -BeFalse
+        $result.SuppressionApplied | Should -BeFalse
+        Should -Invoke Invoke-JavaDocComparisons -Times 0
+    }
+
+    It 'blocks only the owning library for a configured runtime-test input' {
+        $fixture = New-LibraryFixture
+        Mock Get-JavaDocRuntimeTestInputRules {
+            [PSCustomObject]@{
+                Id = 'example-generator'
+                Pattern = [System.Management.Automation.WildcardPattern]::new(
+                    "$($fixture.Modules[0])/src/main/java/Example0.java",
+                    [System.Management.Automation.WildcardOptions]::CultureInvariant)
+                Reason = 'Example generated mapping.'
+            }
+        }
+        $result = Measure-Fixture $fixture
+        $result.Decision | Should -BeExactly 'PartiallyEligible'
+        $result.Libraries[0].Reason | Should -BeExactly 'runtime-test-input-change'
+        $result.Libraries[1].Decision | Should -BeExactly 'Eligible'
+        $result.ComparedFileCount | Should -Be 2
+        $result.EligibleLibraryCount | Should -Be 1
+        $result.WouldSuppressTests | Should -BeFalse
+    }
+
+    It 'keeps unrelated Event Grid client source eligible' {
+        $fixture = New-JavaDocFixture -JavaPath 'sdk/eventgrid/azure-messaging-eventgrid/src/main/java/com/azure/messaging/eventgrid/EventGridPublisherClient.java'
+        Write-FixtureFile $fixture.Root $fixture.JavaPath $script:AfterSource
+        Save-FixtureCommit $fixture.Root
+        Complete-JavaDocFixture $fixture
+        (Measure-Fixture $fixture).Decision | Should -BeExactly 'Eligible'
+    }
+
+    It 'does not authorize comparisons when runtime-test rules cannot be loaded' {
+        $fixture = New-EligibleFixture
+        Mock Get-JavaDocRuntimeTestInputRules { throw 'Runtime-test rules are invalid.' }
+        Mock Invoke-JavaDocComparisons { throw 'Parser should not run with invalid rules.' }
+        $result = Measure-Fixture $fixture
+        $result.Decision | Should -BeExactly 'Inconclusive'
+        $result.Error | Should -Match 'Runtime-test rules are invalid'
+        $result.WouldSuppressTests | Should -BeFalse
+        Should -Invoke Invoke-JavaDocComparisons -Times 0
+    }
+
+    It 'treats runtime-test rule edits as repository-wide engineering input' {
+        $fixture = New-LibraryFixture -SharedPath 'eng/scripts/runtime-test-required-paths.json'
+        $result = Measure-Fixture $fixture
+        $result.Decision | Should -BeExactly 'NotEligible'
+        $result.EligibleLibraryCount | Should -Be 0
+        $result.Libraries.Reason | Should -Not -Contain 'supported-ast-equivalent-changes'
+        $result.SharedChanges.SharedScope | Should -Contain 'repository'
+    }
+
     It 'keeps module discovery case-sensitive when caching metadata' {
         Mock Get-JavaDocMergeSnapshot {
             [PSCustomObject]@{
@@ -1033,6 +1230,7 @@ Describe 'Java documentation report-only classification' -Tag 'UnitTest' {
                 IsTrack2DataPlane = $ModulePath -ceq 'sdk/example/azure-example'
                 GroupId = 'com.azure'
                 ArtifactId = 'azure-example'
+                ValidationOverride = $null
             }
         }
         Mock Invoke-JavaDocComparisons {

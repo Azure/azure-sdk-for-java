@@ -5,9 +5,42 @@ Set-StrictMode -Version 3
 
 $script:JavaDocEligibleReasons = @('ast-equivalent')
 $script:JavaDocKnownReasons = $script:JavaDocEligibleReasons + @(
-    'no-source-edit', 'non-documentation-change', 'parse-error', 'unsupported-unicode-escape',
-    'unsupported-deprecation', 'unsupported-comment-directive'
+    'no-source-edit', 'non-documentation-change', 'parse-error', 'unsupported-unicode-escape'
 )
+
+function Get-JavaDocRuntimeTestInputRules {
+    param([string]$Path = (Join-Path $PSScriptRoot '..' 'runtime-test-required-paths.json'))
+
+    $file = Get-Item -LiteralPath $Path -ErrorAction Stop
+    if ($file.PSIsContainer -or $file.Length -gt 131072) {
+        throw 'Runtime-test input rules must be a regular JSON file at most 128 KiB.'
+    }
+    $configuration = Get-Content -LiteralPath $file.FullName -Raw | ConvertFrom-Json -ErrorAction Stop
+    if (($configuration.schemaVersion -isnot [int] -and $configuration.schemaVersion -isnot [long]) -or
+        $configuration.schemaVersion -ne 1 -or $configuration.rules -isnot [array]) {
+        throw 'Runtime-test input rules have an unsupported schema.'
+    }
+    $identifiers = [System.Collections.Generic.HashSet[string]]::new([System.StringComparer]::Ordinal)
+    $paths = [System.Collections.Generic.HashSet[string]]::new([System.StringComparer]::Ordinal)
+    $rules = @()
+    foreach ($rule in $configuration.rules) {
+        if ($rule.id -isnot [string] -or $rule.id -cnotmatch '^[a-z0-9][a-z0-9-]*$' -or
+            -not $identifiers.Add($rule.id) -or $rule.path -isnot [string] -or
+            $rule.path -cnotmatch '^sdk/[A-Za-z0-9._-]+/[A-Za-z0-9._-]+/src/main/java/[A-Za-z0-9._/*-]+\.java$' -or
+            -not $paths.Add($rule.path) -or $rule.path.Split('/') -contains '..' -or
+            $rule.reason -isnot [string] -or
+            [string]::IsNullOrWhiteSpace($rule.reason)) {
+            throw 'Runtime-test input rules contain an invalid or duplicate entry.'
+        }
+        $rules += [PSCustomObject]@{
+            Id = $rule.id
+            Pattern = [System.Management.Automation.WildcardPattern]::new(
+                $rule.path, [System.Management.Automation.WildcardOptions]::CultureInvariant)
+            Reason = $rule.reason
+        }
+    }
+    return $rules
+}
 
 function Start-JavaDocProcess {
     param(
@@ -215,10 +248,28 @@ function Get-JavaDocModuleClassification {
         $artifact -cmatch '^[A-Za-z0-9][A-Za-z0-9._-]*$' -and $artifact -notmatch 'mgmt|resourcemanager|spring' -and
         $parent -cin @('com.azure:azure-client-sdk-parent', 'com.azure.v2:azure-client-sdk-parent') -and
         $values.packaging -cin @('', 'jar')
+    $validationOverride = $null
+    $disabledChecks = @(
+        'skipCompile', 'skipTestCompile', 'maven.main.skip', 'maven.javadoc.skip', 'checkstyle.skip'
+    )
+    $settings = $project.SelectNodes('.//*')
+    foreach ($setting in $settings) {
+        $value = $setting.InnerText.Trim()
+        if (($setting.LocalName -cin $disabledChecks -and $value -cnotin @('false', '0')) -or
+            ($setting.LocalName -cin @('failOnWarning', 'failOnWarnings', 'maven.compiler.failOnWarning') -and
+                $value -cnotin @('true', '1')) -or
+            ($setting.LocalName -ceq 'arg' -and $value.StartsWith('-Xlint:', [System.StringComparison]::Ordinal) -and
+                ($value.Substring(7).Split(',') -contains '-dep-ann' -or
+                    $value.Substring(7).Split(',') -contains 'none'))) {
+            $validationOverride = "$($setting.LocalName)=$value"
+            break
+        }
+    }
     return [PSCustomObject]@{
         IsTrack2DataPlane = $isTrack2DataPlane
         GroupId = $group
         ArtifactId = $artifact
+        ValidationOverride = $validationOverride
     }
 }
 
@@ -540,6 +591,7 @@ function Get-JavaDocChangeReport {
         $legacyClassifier = Join-Path $PSScriptRoot '..' 'Classify-PRChanges.ps1'
         $pathClassification = & $legacyClassifier -ChangedFiles $snapshot.Changes.Path -PassThru 6>$null
         $pathIndex = New-JavaDocPathIndex -Classifications $pathClassification.Paths
+        $runtimeTestRules = @(Get-JavaDocRuntimeTestInputRules)
         $candidates = @()
         $owners = [System.Collections.Generic.Dictionary[string, object]]::new([System.StringComparer]::Ordinal)
         $libraries = [System.Collections.Generic.Dictionary[string, object]]::new([System.StringComparer]::Ordinal)
@@ -553,6 +605,8 @@ function Get-JavaDocChangeReport {
                 MavenCoordinates = $null
                 Compared = $false
                 Error = $null
+                RuntimeTestRule = $null
+                RuntimeTestRuleReason = $null
                 Reason = 'unsupported-path'
             }
             $result.Files += $file
@@ -602,6 +656,14 @@ function Get-JavaDocChangeReport {
                 $file.Reason = 'unsupported-source-layout'
                 continue
             }
+            $runtimeTestRule = $runtimeTestRules | Where-Object { $_.Pattern.IsMatch($change.Path) } |
+                Select-Object -First 1
+            if ($runtimeTestRule) {
+                $file.Reason = 'runtime-test-input-change'
+                $file.RuntimeTestRule = $runtimeTestRule.Id
+                $file.RuntimeTestRuleReason = $runtimeTestRule.Reason
+                continue
+            }
             $file.Reason = 'pending-source-comparison'
             $libraries[$file.Module].CandidateFileCount++
             $candidates += [PSCustomObject]@{ Change = $change; File = $file }
@@ -648,7 +710,11 @@ function Get-JavaDocChangeReport {
             } | Select-Object -First 1
             if ($triggeringFile) {
                 $library.Decision = 'NotEligible'
-                $library.Reason = 'unsupported-or-mixed-changes'
+                $library.Reason = if ($triggeringFile.Reason -ceq 'runtime-test-input-change') {
+                    'runtime-test-input-change'
+                } else {
+                    'unsupported-or-mixed-changes'
+                }
                 $library.DecisionFile = $triggeringFile.Path
                 continue
             }
@@ -670,6 +736,13 @@ function Get-JavaDocChangeReport {
                 $library.Reason = 'unsupported-library-kind'
                 foreach ($file in $library.Files | Where-Object Reason -CEQ 'pending-source-comparison') {
                     $file.Reason = 'not-track2-data-plane'
+                }
+            } elseif ($library.CandidateFileCount -gt 0 -and $metadata.ValidationOverride) {
+                $library.Decision = 'NotEligible'
+                $library.Reason = 'required-validation-overridden'
+                $library.Error = $metadata.ValidationOverride
+                foreach ($file in $library.Files | Where-Object Reason -CEQ 'pending-source-comparison') {
+                    $file.Reason = 'required-validation-overridden'
                 }
             }
         }

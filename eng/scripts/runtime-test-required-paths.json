@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "rules": [
+    {
+      "id": "eventgrid-systemevents-models",
+      "path": "sdk/eventgrid/azure-messaging-eventgrid-systemevents/src/main/java/com/azure/messaging/eventgrid/systemevents/models/*.java",
+      "reason": "Event Grid customization extracts event identifiers from generated model Javadoc."
+    },
+    {
+      "id": "eventgrid-systemevents-mappings",
+      "path": "sdk/eventgrid/azure-messaging-eventgrid-systemevents/src/main/java/com/azure/messaging/eventgrid/systemevents/SystemEventNames.java",
+      "reason": "Event Grid event constants and deserialization mappings are generated from model Javadoc."
+    },
+    {
+      "id": "eventgrid-legacy-models",
+      "path": "sdk/eventgrid/azure-messaging-eventgrid/src/main/java/com/azure/messaging/eventgrid/systemevents/*.java",
+      "reason": "The older Event Grid customization also extracts event identifiers from generated model Javadoc."
+    },
+    {
+      "id": "eventgrid-legacy-mappings",
+      "path": "sdk/eventgrid/azure-messaging-eventgrid/src/main/java/com/azure/messaging/eventgrid/SystemEventNames.java",
+      "reason": "The older Event Grid package contains generated event constants and deserialization mappings."
+    }
+  ]
+}
