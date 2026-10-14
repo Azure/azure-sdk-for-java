@@ -129,7 +129,7 @@ extends:
           AdditionalModules:
             - name: azure-cosmos-tests
               groupId: com.azure
-          TimeoutInMinutes: 60
+          TimeoutInMinutes: 30
           MaxParallel: 1
           TestGoals: 'verify'
           TestOptions: '$(ProfileFlag) $(AdditionalArgs) -DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false'
