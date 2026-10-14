@@ -102,13 +102,14 @@ public class BuilderHelperTests {
             }
             reads.incrementAndGet();
             assertEquals(HttpMethod.GET, request.getHttpMethod());
-            assertTrue(request.getHeaders().getValue(HttpHeaderName.AUTHORIZATION)
-                .startsWith("Session datalake-session:"));
+            assertTrue(
+                request.getHeaders().getValue(HttpHeaderName.AUTHORIZATION).startsWith("Session datalake-session:"));
             return Mono.just(new MockHttpResponse(request, 200, "data".getBytes(StandardCharsets.UTF_8))
                 .addHeader(HttpHeaderName.CONTENT_LENGTH.toString(), "4")
                 .addHeader(HttpHeaderName.CONTENT_TYPE.toString(), "application/octet-stream")
                 .addHeader(HttpHeaderName.ETAG.toString(), "\"etag\"")
-                .addHeader(HttpHeaderName.LAST_MODIFIED.toString(), new DateTimeRfc1123(OffsetDateTime.now()).toString()));
+                .addHeader(HttpHeaderName.LAST_MODIFIED.toString(),
+                    new DateTimeRfc1123(OffsetDateTime.now()).toString()));
         };
         DataLakeServiceClientBuilder builder
             = new DataLakeServiceClientBuilder().endpoint("https://account.dfs.core.windows.net")
@@ -120,10 +121,12 @@ public class BuilderHelperTests {
         if (async) {
             for (int i = 0; i < 2; i++) {
                 DataLakeServiceAsyncClient client = builder.buildAsyncClient();
-                StepVerifier.create(client.getFileSystemAsyncClient("filesystem").getFileAsyncClient("file" + i)
-                    .read().collectList()).assertNext(buffers -> {
+                StepVerifier.create(
+                    client.getFileSystemAsyncClient("filesystem").getFileAsyncClient("file" + i).read().collectList())
+                    .assertNext(buffers -> {
                         assertEquals(4, buffers.stream().mapToInt(buffer -> buffer.remaining()).sum());
-                    }).verifyComplete();
+                    })
+                    .verifyComplete();
             }
         } else {
             for (int i = 0; i < 2; i++) {

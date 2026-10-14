@@ -83,8 +83,9 @@ public class SessionOptionsTests {
     @ParameterizedTest
     @ValueSource(booleans = { true, false })
     public void sharedOptionsReuseProviderAcrossIndependentClients(boolean customOptions) {
-        SessionOptions options = (customOptions ? new SessionOptions(ENDPOINT, new MockTokenCredential()) : new SessionOptions())
-            .setSessionMode(SessionOptions.SessionMode.ENABLED);
+        SessionOptions options
+            = (customOptions ? new SessionOptions(ENDPOINT, new MockTokenCredential()) : new SessionOptions())
+                .setSessionMode(SessionOptions.SessionMode.ENABLED);
         BlobServiceClient first = serviceClientBuilder().sessionOptions(options).buildClient();
         SessionProvider provider = existingProvider(options);
         BlobServiceClient second = serviceClientBuilder().sessionOptions(options).buildClient();
@@ -96,8 +97,9 @@ public class SessionOptionsTests {
         assertNotSame(first.getHttpPipeline(), second.getHttpPipeline());
         assertSame(provider, existingProvider(options));
 
-        SessionOptions separate = (customOptions ? new SessionOptions(ENDPOINT, new MockTokenCredential()) : new SessionOptions())
-            .setSessionMode(SessionOptions.SessionMode.ENABLED);
+        SessionOptions separate
+            = (customOptions ? new SessionOptions(ENDPOINT, new MockTokenCredential()) : new SessionOptions())
+                .setSessionMode(SessionOptions.SessionMode.ENABLED);
         serviceClientBuilder().sessionOptions(separate).buildClient();
         assertNotSame(provider, existingProvider(separate));
     }
@@ -148,8 +150,15 @@ public class SessionOptionsTests {
     }
 
     @ParameterizedTest
-    @CsvSource({ "true,true,true", "true,true,false", "true,false,true", "true,false,false",
-        "false,true,true", "false,true,false", "false,false,true", "false,false,false" })
+    @CsvSource({
+        "true,true,true",
+        "true,true,false",
+        "true,false,true",
+        "true,false,false",
+        "false,true,true",
+        "false,true,false",
+        "false,false,true",
+        "false,false,false" })
     public void sharedProviderRetainsFirstBuildersTransportAndPolicies(boolean customOptions, boolean asyncFirst,
         boolean sameTransport) {
         ConcurrentHashMap<String, AtomicInteger> acquisitions = new ConcurrentHashMap<>();
@@ -157,10 +166,11 @@ public class SessionOptionsTests {
         AtomicInteger loggedAcquisitions = new AtomicInteger();
         TokenCredential acquisitionCredential
             = context -> Mono.just(new AccessToken("acquisition-token", OffsetDateTime.now().plusHours(1)));
-        SessionOptions options = (customOptions ? new SessionOptions(ENDPOINT, acquisitionCredential) : new SessionOptions())
-            .setSessionMode(SessionOptions.SessionMode.ENABLED);
-        HttpClient firstTransport = consumerTransport(sameTransport ? null : "first", customOptions,
-            acquisitions, downloads);
+        SessionOptions options
+            = (customOptions ? new SessionOptions(ENDPOINT, acquisitionCredential) : new SessionOptions())
+                .setSessionMode(SessionOptions.SessionMode.ENABLED);
+        HttpClient firstTransport
+            = consumerTransport(sameTransport ? null : "first", customOptions, acquisitions, downloads);
         HttpClient secondTransport
             = sameTransport ? firstTransport : consumerTransport("second", customOptions, acquisitions, downloads);
         HttpLogOptions logOptions = new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
@@ -183,7 +193,8 @@ public class SessionOptionsTests {
         assertEquals(2, downloads.get("second").get(), "Independent clients should reuse the same session.");
 
         SessionProvider provider = existingProvider(options);
-        SessionRequestContext context = new SessionRequestContext().setAccountName("account").setContainerName("container");
+        SessionRequestContext context
+            = new SessionRequestContext().setAccountName("account").setContainerName("container");
         assertTrue(provider.invalidateSession(context, provider.getSession(context)));
         downloadFromDerivedClients(second, !asyncFirst);
         assertEquals(2, acquisitions.get("first").get(), "Reacquisition must retain the original pipeline.");
@@ -270,9 +281,10 @@ public class SessionOptionsTests {
             () -> serviceClientBuilder().sessionOptions(options).buildClient());
     }
 
-    private static BlobServiceClientBuilder consumerBuilder(SessionOptions options, HttpClient transport,
-        String name, HttpLogOptions logOptions) {
-        return serviceClientBuilder().httpClient(transport).sessionOptions(options)
+    private static BlobServiceClientBuilder consumerBuilder(SessionOptions options, HttpClient transport, String name,
+        HttpLogOptions logOptions) {
+        return serviceClientBuilder().httpClient(transport)
+            .sessionOptions(options)
             .serviceVersion(BlobServiceVersion.V2026_10_06)
             .httpLogOptions(logOptions)
             .addPolicy(new HttpLoggingPolicy(logOptions))
@@ -308,9 +320,8 @@ public class SessionOptionsTests {
     private static Mono<HttpResponse> sessionResponse(HttpRequest request, String token) {
         String body = "<CreateSessionResult><Id>test-session</Id><Expiration>"
             + new DateTimeRfc1123(OffsetDateTime.now().plusHours(1))
-            + "</Expiration><AuthenticationType>HMAC</AuthenticationType><Credentials>"
-            + "<SessionToken>" + token + "</SessionToken>"
-            + "<SessionKey>dGVzdFNlc3Npb25LZXkxMjM0NTY3ODkwMTIzNDU2Nzg5MA==</SessionKey>"
+            + "</Expiration><AuthenticationType>HMAC</AuthenticationType><Credentials>" + "<SessionToken>" + token
+            + "</SessionToken>" + "<SessionKey>dGVzdFNlc3Npb25LZXkxMjM0NTY3ODkwMTIzNDU2Nzg5MA==</SessionKey>"
             + "</Credentials></CreateSessionResult>";
         return Mono.just(new MockHttpResponse(request, 201, body.getBytes(StandardCharsets.UTF_8))
             .addHeader(HttpHeaderName.CONTENT_TYPE.toString(), "application/xml"));
@@ -327,15 +338,19 @@ public class SessionOptionsTests {
     private static BlobServiceClientBuilder serviceClientBuilder() {
         TokenCredential credential
             = context -> Mono.just(new AccessToken("consumer-token", OffsetDateTime.now().plusHours(1)));
-        return new BlobServiceClientBuilder().endpoint(ENDPOINT).credential(credential).httpClient(new NoOpHttpClient());
+        return new BlobServiceClientBuilder().endpoint(ENDPOINT)
+            .credential(credential)
+            .httpClient(new NoOpHttpClient());
     }
 
     private static void downloadFromDerivedClients(BlobServiceClientBuilder builder, boolean async) {
         if (async) {
             BlobServiceAsyncClient service = builder.buildAsyncClient();
             for (int i = 0; i < 2; i++) {
-                StepVerifier.create(service.getBlobContainerAsyncClient("container").getBlobAsyncClient("blob" + i)
-                    .downloadContent()).assertNext(content -> assertEquals("data", content.toString())).verifyComplete();
+                StepVerifier.create(
+                    service.getBlobContainerAsyncClient("container").getBlobAsyncClient("blob" + i).downloadContent())
+                    .assertNext(content -> assertEquals("data", content.toString()))
+                    .verifyComplete();
             }
         } else {
             BlobServiceClient service = builder.buildClient();

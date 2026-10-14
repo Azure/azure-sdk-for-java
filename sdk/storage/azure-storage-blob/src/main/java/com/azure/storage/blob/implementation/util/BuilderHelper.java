@@ -169,8 +169,8 @@ public final class BuilderHelper {
             } else {
                 BlobServiceVersion effectiveServiceVersion
                     = serviceVersion != null ? serviceVersion : BlobServiceVersion.getLatest();
-                SessionProvider sessionProvider = SessionOptionsAccessor.getOrCreateSessionClient(sessionOptions,
-                    SessionProvider.class, () -> {
+                SessionProvider sessionProvider
+                    = SessionOptionsAccessor.getOrCreateSessionClient(sessionOptions, SessionProvider.class, () -> {
                         if (SessionOptionsAccessor.getEndpoint(sessionOptions) == null) {
                             String accountName = resolveSessionAccountName(endpoint, sessionOptions.getAccountName());
                             return createDefaultSessionProvider(policies, bearerPolicy, postAuthenticationPolicies,

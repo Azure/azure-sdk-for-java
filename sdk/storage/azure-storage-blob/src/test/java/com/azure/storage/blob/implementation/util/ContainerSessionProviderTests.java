@@ -74,9 +74,9 @@ public class ContainerSessionProviderTests extends BlobTestBase {
     @Test
     public void createSessionSyncUsesProvidedHttpPipeline() {
         AtomicInteger policyInvocationCount = new AtomicInteger();
-        ContainerSessionProvider sessionProvider = new ContainerSessionProvider(createOAuthPipeline(policyInvocationCount),
-            ENVIRONMENT.getPrimaryAccount().getBlobEndpoint(), BlobServiceVersion.getLatest(),
-            ENVIRONMENT.getPrimaryAccount().getName(), Clock.systemUTC());
+        ContainerSessionProvider sessionProvider = new ContainerSessionProvider(
+            createOAuthPipeline(policyInvocationCount), ENVIRONMENT.getPrimaryAccount().getBlobEndpoint(),
+            BlobServiceVersion.getLatest(), ENVIRONMENT.getPrimaryAccount().getName(), Clock.systemUTC());
 
         SessionCredential credential
             = sessionProvider.getSession(new SessionRequestContext().setContainerName(cc.getBlobContainerName()));
@@ -93,9 +93,9 @@ public class ContainerSessionProviderTests extends BlobTestBase {
     public void actualExpirationCausesSessionReplacement() {
         AtomicInteger policyInvocationCount = new AtomicInteger();
         MutableClock clock = new MutableClock(Instant.now());
-        ContainerSessionProvider sessionProvider = new ContainerSessionProvider(createOAuthPipeline(policyInvocationCount),
-            ENVIRONMENT.getPrimaryAccount().getBlobEndpoint(), BlobServiceVersion.getLatest(),
-            ENVIRONMENT.getPrimaryAccount().getName(), clock);
+        ContainerSessionProvider sessionProvider = new ContainerSessionProvider(
+            createOAuthPipeline(policyInvocationCount), ENVIRONMENT.getPrimaryAccount().getBlobEndpoint(),
+            BlobServiceVersion.getLatest(), ENVIRONMENT.getPrimaryAccount().getName(), clock);
         SessionRequestContext context = new SessionRequestContext().setContainerName(cc.getBlobContainerName());
 
         SessionCredential first = sessionProvider.getSession(context);
@@ -111,9 +111,9 @@ public class ContainerSessionProviderTests extends BlobTestBase {
     @Test
     public void createSessionAsyncUsesProvidedHttpPipeline() {
         AtomicInteger policyInvocationCount = new AtomicInteger();
-        ContainerSessionProvider sessionProvider = new ContainerSessionProvider(createOAuthPipeline(policyInvocationCount),
-            ENVIRONMENT.getPrimaryAccount().getBlobEndpoint(), BlobServiceVersion.getLatest(),
-            ENVIRONMENT.getPrimaryAccount().getName(), Clock.systemUTC());
+        ContainerSessionProvider sessionProvider = new ContainerSessionProvider(
+            createOAuthPipeline(policyInvocationCount), ENVIRONMENT.getPrimaryAccount().getBlobEndpoint(),
+            BlobServiceVersion.getLatest(), ENVIRONMENT.getPrimaryAccount().getName(), Clock.systemUTC());
 
         StepVerifier
             .create(sessionProvider
