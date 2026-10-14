@@ -366,9 +366,6 @@
 # ServiceLabel: %Load Testing
 # AzureSdkOwners:                                                   @Harshan01 @mitsha-microsoft @ninallam @prativen
 
-# PRLabel: %Models Repository
-/sdk/modelsrepository/                                             @abhipsaMisra @andyk-ms @brycewang-microsoft @digimaun @timtay-microsoft @Azure/azure-java-sdk
-
 # PRLabel: %Monitor
 /sdk/monitor/azure-monitor-ingestion*/                             @Azure/azure-sdk-write-monitor-data-plane @jairmyree @Azure/azure-java-sdk
 

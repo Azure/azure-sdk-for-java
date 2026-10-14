@@ -31,7 +31,6 @@ Group;Azure Event Grid;com.azure.messaging.eventgrid*
 Group;Azure Event Hubs;com.azure.messaging.eventhubs*
 Group;Azure Form Recognizer;com.azure.ai.formrecognizer*
 Group;Azure Identity;com.azure.identity*
-Group;Azure IoT Models Repository;com.azure.iot.modelsrepository*
 Group;Azure Key Vault;com.azure.security.keyvault*
 Group;Azure Metrics Advisor;com.azure.ai.metricsadvisor*
 Group;Azure Monitor - Ingestion;com.azure.monitor.ingestion*
