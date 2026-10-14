@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob.models;
+package com.azure.storage.blob.implementation.util;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
@@ -16,8 +16,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobServiceClientBuilder;
-import com.azure.storage.blob.implementation.util.SessionCredential;
-import com.azure.storage.blob.implementation.util.SessionRequestContext;
+import com.azure.storage.blob.implementation.accesshelpers.SessionOptionsAccessor;
 import com.azure.storage.blob.options.SessionOptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -54,18 +53,18 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * Deterministic, network-free tests for {@link ContainerSessionProvider}'s time-based, per-container caching
+ * Deterministic, network-free tests for {@link ContainerSessionClient}'s time-based, per-container caching
  * behavior.
  * <p>
- * These tests drive {@link ContainerSessionProvider} with an injectable {@link Clock} and a fake HTTP transport
+ * These tests drive {@link ContainerSessionClient} with an injectable {@link Clock} and a fake HTTP transport
  * ({@link CreateSessionTransport}) so the expiry, proactive-refresh, and per-container independence logic
  * can be exercised without waiting for real credential expiration or hitting the service.
- * {@link ContainerSessionProviderTests} covers session acquisition through the service client; these tests
+ * {@link ContainerSessionClientTests} covers session acquisition through the service client; these tests
  * focus on cache timing, returned credentials, and CreateSession call counts. Per-container acquisition
- * cooldown is shared across independently constructed client pipelines.
- * Independent-client sharing tests use the session provider's injected transport.
+ * cooldown is shared across independent pipelines that reuse the same {@link SessionOptions} instance. Tests install
+ * an internal fake client in the options to avoid network access.
  */
-public class ContainerSessionProviderCacheTest {
+public class ContainerSessionClientCacheTest {
 
     private static final String ACCOUNT_NAME = "testaccount";
     private static final String CONTAINER_A = "container-a";
@@ -79,7 +78,8 @@ public class ContainerSessionProviderCacheTest {
 
     private MutableClock clock;
     private CreateSessionTransport httpClient;
-    private ContainerSessionProvider provider;
+    private ContainerSessionClient provider;
+    private SessionOptions sessionOptions;
 
     @BeforeEach
     public void setup() {
@@ -87,8 +87,9 @@ public class ContainerSessionProviderCacheTest {
         httpClient = new CreateSessionTransport();
 
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(httpClient).build();
-        provider = new ContainerSessionProvider(pipeline, "https://" + ACCOUNT_NAME + ".blob.core.windows.net",
+        provider = new ContainerSessionClient(pipeline, "https://" + ACCOUNT_NAME + ".blob.core.windows.net",
             BlobServiceVersion.getLatest(), ACCOUNT_NAME, clock);
+        initializeSessionOptions();
     }
 
     @Test
@@ -159,8 +160,9 @@ public class ContainerSessionProviderCacheTest {
     private void configureTestProvider() {
         clock = new MutableClock(Instant.now());
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(httpClient).build();
-        provider = new ContainerSessionProvider(pipeline, "https://" + ACCOUNT_NAME + ".blob.core.windows.net",
+        provider = new ContainerSessionClient(pipeline, "https://" + ACCOUNT_NAME + ".blob.core.windows.net",
             BlobServiceVersion.getLatest(), ACCOUNT_NAME, clock);
+        initializeSessionOptions();
     }
 
     @ParameterizedTest
@@ -234,6 +236,7 @@ public class ContainerSessionProviderCacheTest {
         enqueueSessionResponse(CONTAINER_A, FIRST_TOKEN, now().plusMinutes(20));
         enqueueSessionResponse(CONTAINER_A, SECOND_TOKEN, now().plusMinutes(20));
         assertSyncToken(overrideAccountBuilder().buildClient().getHttpPipeline(), CONTAINER_A, FIRST_TOKEN);
+        sessionOptions.setAccountName(null);
         assertEquals("override-account",
             provider.getSession(contextFor(CONTAINER_A).setAccountName("override-account")).getAccountName());
         assertSyncToken(independentClientPipeline(), CONTAINER_A, SECOND_TOKEN);
@@ -246,6 +249,7 @@ public class ContainerSessionProviderCacheTest {
         enqueueSessionResponse(CONTAINER_A, FIRST_TOKEN, now().plusMinutes(20));
         enqueueSessionResponse(CONTAINER_A, SECOND_TOKEN, now().plusMinutes(20));
         assertAsyncToken(overrideAccountBuilder().buildAsyncClient().getHttpPipeline(), CONTAINER_A, FIRST_TOKEN);
+        sessionOptions.setAccountName(null);
         StepVerifier.create(provider.getSessionAsync(contextFor(CONTAINER_A).setAccountName("override-account")))
             .assertNext(credential -> assertEquals("override-account", credential.getAccountName()))
             .verifyComplete();
@@ -257,18 +261,22 @@ public class ContainerSessionProviderCacheTest {
     }
 
     private BlobServiceClientBuilder overrideAccountBuilder() {
-        return independentClientBuilder()
-            .sessionOptions(new SessionOptions().setSessionMode(SessionOptions.SessionMode.ENABLED)
-                .setSessionProvider(provider)
-                .setAccountName("override-account"));
+        sessionOptions.setAccountName("override-account");
+        return independentClientBuilder();
     }
 
     private BlobServiceClientBuilder independentClientBuilder() {
         return new BlobServiceClientBuilder().endpoint("https://" + ACCOUNT_NAME + ".blob.core.windows.net")
             .credential(new MockTokenCredential())
             .httpClient(httpClient)
-            .sessionOptions(
-                new SessionOptions().setSessionMode(SessionOptions.SessionMode.ENABLED).setSessionProvider(provider));
+            .sessionOptions(sessionOptions);
+    }
+
+    private void initializeSessionOptions() {
+        sessionOptions
+            = new SessionOptions("https://" + ACCOUNT_NAME + ".blob.core.windows.net", new MockTokenCredential())
+                .setSessionMode(SessionOptions.SessionMode.ENABLED);
+        SessionOptionsAccessor.getOrCreateSessionClient(sessionOptions, SessionProvider.class, () -> provider);
     }
 
     private HttpPipeline independentClientPipeline() {

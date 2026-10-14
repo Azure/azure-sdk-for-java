@@ -27,12 +27,8 @@ import com.azure.core.util.Header;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.util.BuilderHelper;
 import com.azure.storage.blob.implementation.util.ModelHelper;
-import com.azure.storage.blob.implementation.util.SessionCredential;
 import com.azure.storage.blob.options.SessionOptions;
 import com.azure.storage.blob.options.SessionOptions.SessionMode;
-import com.azure.storage.blob.models.SessionProvider;
-import com.azure.storage.blob.implementation.util.SessionRequestContext;
-import com.azure.storage.blob.models.TestSessionProvider;
 import com.azure.storage.blob.specialized.AppendBlobClient;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.blob.specialized.PageBlobClient;
@@ -885,60 +881,6 @@ public class BuilderHelperTests {
                 BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(), new NoOpHttpClient(), new ArrayList<>(),
                 new ArrayList<>(), null, null, new ClientLogger(BuilderHelperTests.class),
                 new SessionOptions().setSessionMode(SessionMode.ENABLED), BlobServiceVersion.getLatest()));
-    }
-
-    @Test
-    public void suppliedSessionProviderIsWiredIntoPipelineWithResolvedRequestContext() {
-        AtomicReference<SessionRequestContext> capturedContext = new AtomicReference<>();
-        SessionProvider provider = createCapturingSessionProvider(capturedContext);
-
-        HttpPipeline pipeline = buildPipelineWithSessionProvider(provider);
-        HttpRequest request = new HttpRequest(HttpMethod.GET, ENDPOINT + "container/blob");
-
-        StepVerifier.create(pipeline.send(request)).expectNextCount(1).verifyComplete();
-
-        assertNotNull(capturedContext.get(), "Supplied session provider should have been invoked by the pipeline");
-        assertEquals("container", capturedContext.get().getContainerName());
-        assertEquals("account", capturedContext.get().getAccountName());
-    }
-
-    private SessionProvider createCapturingSessionProvider(AtomicReference<SessionRequestContext> capture) {
-        SessionCredential credential = new SessionCredential("session-token",
-            "dGVzdFNlc3Npb25LZXkxMjM0NTY3ODkwMTIzNDU2Nzg5MA==", OffsetDateTime.now().plusMinutes(5), "account");
-
-        return new TestSessionProvider() {
-            @Override
-            public boolean isRequestEligible(com.azure.core.http.HttpRequest request) {
-                return request != null && request.getHttpMethod() == com.azure.core.http.HttpMethod.GET;
-            }
-
-            @Override
-            public Mono<SessionCredential> getSessionAsync(SessionRequestContext context) {
-                capture.set(context);
-                return Mono.just(credential);
-            }
-
-            @Override
-            public boolean invalidateSession(SessionRequestContext context, SessionCredential rejectedCredential) {
-                return false;
-            }
-
-            @Override
-            public void refreshSession(SessionRequestContext context) {
-            }
-        };
-    }
-
-    private HttpPipeline buildPipelineWithSessionProvider(SessionProvider provider) {
-        SessionOptions options = new SessionOptions().setSessionMode(SessionMode.ENABLED).setSessionProvider(provider);
-        HttpClient mockClient = request -> {
-            MockHttpResponse response = new MockHttpResponse(request, 200);
-            return Mono.just(response);
-        };
-
-        return BuilderHelper.buildPipeline(null, new MockTokenCredential(), null, null, ENDPOINT, REQUEST_RETRY_OPTIONS,
-            null, BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(), mockClient, new ArrayList<>(),
-            new ArrayList<>(), null, null, new ClientLogger(BuilderHelperTests.class), options, null);
     }
 
     private static SessionLoggingTestContext createSessionLoggingTestContext(HttpLogDetailLevel logLevel) {

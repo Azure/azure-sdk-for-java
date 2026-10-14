@@ -3,8 +3,14 @@
 
 package com.azure.storage.blob.options;
 
-import com.azure.storage.blob.models.ContainerSessionProvider;
-import com.azure.storage.blob.models.SessionProvider;
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.blob.implementation.accesshelpers.SessionOptionsAccessor;
+
+import java.util.Objects;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+import java.util.function.Supplier;
 
 /**
  * Configures session-based authentication for Blob and Data Lake clients.
@@ -13,14 +19,56 @@ import com.azure.storage.blob.models.SessionProvider;
  */
 public final class SessionOptions {
 
+    private static final ClientLogger LOGGER = new ClientLogger(SessionOptions.class);
+
     private SessionMode sessionMode = SessionMode.AUTO;
     private String accountName;
-    private SessionProvider sessionProvider;
+    private final String endpoint;
+    private final TokenCredential credential;
+    private final Lock sessionClientLock = new ReentrantLock();
+    private Object sessionClient;
+
+    static {
+        SessionOptionsAccessor.setAccessor(new SessionOptionsAccessor.SessionOptionsAccessorImpl() {
+            @Override
+            public String getEndpoint(SessionOptions options) {
+                return options.endpoint;
+            }
+
+            @Override
+            public TokenCredential getCredential(SessionOptions options) {
+                return options.credential;
+            }
+
+            @Override
+            public <T> T getOrCreateSessionClient(SessionOptions options, Class<T> clientType,
+                Supplier<? extends T> clientFactory) {
+                return options.getOrCreateSessionClient(clientType, clientFactory);
+            }
+        });
+    }
 
     /**
      * Creates session options in {@link SessionMode#AUTO} mode.
      */
     public SessionOptions() {
+        this.endpoint = null;
+        this.credential = null;
+    }
+
+    /**
+     * Creates session options with the endpoint and token credential used to acquire session credentials.
+     * <p>
+     * Sessions remain disabled unless {@link #setSessionMode(SessionMode)} is set to
+     * {@link SessionMode#ENABLED}. Reuse this options instance across clients to share acquired session credentials.
+     *
+     * @param endpoint The storage account endpoint used to acquire sessions.
+     * @param credential The token credential used to acquire sessions.
+     * @throws NullPointerException if {@code endpoint} or {@code credential} is null.
+     */
+    public SessionOptions(String endpoint, TokenCredential credential) {
+        this.endpoint = Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
+        this.credential = Objects.requireNonNull(credential, "'credential' cannot be null.");
     }
 
     /**
@@ -64,29 +112,20 @@ public final class SessionOptions {
         return this;
     }
 
-    /**
-     * Gets the provider used by this client.
-     *
-     * @return the supplied provider, or {@code null} if the SDK will create one.
-     */
-    public SessionProvider getSessionProvider() {
-        return sessionProvider;
-    }
-
-    /**
-     * Sets an SDK-owned provider, such as {@link ContainerSessionProvider}. Share it across Blob or Data Lake clients
-     * using the same account endpoint and network context to reuse session state. When {@code null}, the SDK creates a
-     * provider for this client hierarchy.
-     * <p>
-     * Supplying a provider does not enable sessions; also select {@link SessionMode#ENABLED}. The built-in provider
-     * uses the default HTTP transport and client configuration to acquire sessions.
-     *
-     * @param sessionProvider the SDK provider, or {@code null} to create a provider for this client hierarchy.
-     * @return the updated {@link SessionOptions} object.
-     */
-    public SessionOptions setSessionProvider(SessionProvider sessionProvider) {
-        this.sessionProvider = sessionProvider;
-        return this;
+    <T> T getOrCreateSessionClient(Class<T> clientType, Supplier<? extends T> clientFactory) {
+        sessionClientLock.lock();
+        try {
+            if (sessionClient == null) {
+                sessionClient = Objects.requireNonNull(clientFactory.get(), "'clientFactory' returned null.");
+            }
+            if (!clientType.isInstance(sessionClient)) {
+                throw LOGGER.logExceptionAsError(
+                    new IllegalStateException("Session client was initialized with an incompatible type."));
+            }
+            return clientType.cast(sessionClient);
+        } finally {
+            sessionClientLock.unlock();
+        }
     }
 
     /**
@@ -107,7 +146,7 @@ public final class SessionOptions {
 
         /**
          * Enables session authentication for eligible requests on clients configured with a
-         * {@link com.azure.core.credential.TokenCredential}. The built-in provider requires an account name, which is
+         * {@link TokenCredential}. Session authentication requires an account name, which is
          * determined from the endpoint or {@link SessionOptions#getAccountName()}.
          */
         ENABLED

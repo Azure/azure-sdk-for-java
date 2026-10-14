@@ -13,10 +13,8 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobUrlParts;
-import com.azure.storage.blob.implementation.accesshelpers.SessionProviderConstructorProxy;
 import com.azure.storage.blob.options.SessionOptions;
 import com.azure.storage.blob.options.SessionOptions.SessionMode;
-import com.azure.storage.blob.models.SessionProvider;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.policy.StorageBearerTokenChallengeAuthorizationPolicy;
 import reactor.core.publisher.Mono;
@@ -46,8 +44,6 @@ import java.util.Objects;
  */
 final class SessionAuthenticationPolicy implements HttpPipelinePolicy {
     private static final ClientLogger LOGGER = new ClientLogger(SessionAuthenticationPolicy.class);
-    private static final SessionProviderConstructorProxy.SessionProviderConstructorAccessor SESSION_PROVIDER_ACCESSOR
-        = SessionProviderConstructorProxy.getAccessor();
     private static final HttpHeaderName X_MS_AUTH_INFO = HttpHeaderName.fromString("x-ms-auth-info");
     private static final HttpHeaderName X_MS_DATE = HttpHeaderName.fromString("x-ms-date");
     private static final String SESSION_EXPIRING = "session_expiring";
@@ -99,7 +95,7 @@ final class SessionAuthenticationPolicy implements HttpPipelinePolicy {
         HttpPipelineNextPolicy retryNext = next.clone();
         Mono<SessionCredential> sessionMono;
         try {
-            sessionMono = SESSION_PROVIDER_ACCESSOR.getSessionAsync(sessionProvider, requestContext);
+            sessionMono = sessionProvider.getSessionAsync(requestContext);
         } catch (RuntimeException ex) {
             handleSessionAcquisitionFailure(ex);
             return bearerPolicy.process(context, next);
@@ -125,7 +121,7 @@ final class SessionAuthenticationPolicy implements HttpPipelinePolicy {
         HttpPipelineNextSyncPolicy retryNext = next.clone();
         SessionCredential session;
         try {
-            session = SESSION_PROVIDER_ACCESSOR.getSession(sessionProvider, requestContext);
+            session = sessionProvider.getSession(requestContext);
         } catch (RuntimeException ex) {
             handleSessionAcquisitionFailure(ex);
             return bearerPolicy.processSync(context, next);
@@ -144,7 +140,7 @@ final class SessionAuthenticationPolicy implements HttpPipelinePolicy {
             return null;
         }
 
-        if (!SESSION_PROVIDER_ACCESSOR.isRequestEligible(sessionProvider, context.getHttpRequest())) {
+        if (!sessionProvider.isRequestEligible(context.getHttpRequest())) {
             return null;
         }
 
@@ -242,14 +238,13 @@ final class SessionAuthenticationPolicy implements HttpPipelinePolicy {
      * request can acquire a new session. A credential already replaced by a concurrent refresh is left unchanged.
      */
     private void handleSessionRejection(SessionRequestContext requestContext, SessionCredential session) {
-        logSessionInvalidation(requestContext,
-            SESSION_PROVIDER_ACCESSOR.invalidateSession(sessionProvider, requestContext, session));
+        logSessionInvalidation(requestContext, sessionProvider.invalidateSession(requestContext, session));
     }
 
     private void handleSessionExpiringHeader(HttpResponse response, SessionRequestContext requestContext) {
         String authInfo = response.getHeaderValue(X_MS_AUTH_INFO);
         if (authInfo != null && authInfo.contains(SESSION_EXPIRING)) {
-            SESSION_PROVIDER_ACCESSOR.refreshSession(sessionProvider, requestContext);
+            sessionProvider.refreshSession(requestContext);
         }
     }
 

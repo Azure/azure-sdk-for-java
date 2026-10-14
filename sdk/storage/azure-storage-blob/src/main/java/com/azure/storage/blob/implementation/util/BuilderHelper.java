@@ -32,12 +32,12 @@ import com.azure.core.util.tracing.Tracer;
 import com.azure.core.util.tracing.TracerProvider;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobUrlParts;
+import com.azure.storage.blob.implementation.accesshelpers.SessionOptionsAccessor;
 import com.azure.storage.blob.models.BlobAudience;
 import com.azure.storage.blob.options.SessionOptions;
 import com.azure.storage.blob.options.SessionOptions.SessionMode;
-import com.azure.storage.blob.models.SessionProvider;
-import com.azure.storage.blob.implementation.accesshelpers.SessionProviderConstructorProxy;
 import com.azure.storage.blob.BlobServiceClient;
+import com.azure.storage.blob.BlobServiceClientBuilder;
 import java.time.Clock;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.BuilderUtils;
@@ -95,7 +95,7 @@ public final class BuilderHelper {
      * @param configuration Configuration store contain environment settings.
      * @param logger {@link ClientLogger} used to log any exception.
      * @param audience {@link BlobAudience} used to determine the audience of the blob.
-     * @param sessionOptions {@link SessionOptions} containing the session mode, account name, and optional provider.
+     * @param sessionOptions {@link SessionOptions} containing the session mode and optional acquisition configuration.
      * @param serviceVersion The service version for session creation; defaults to the latest version when null.
      * @return A new {@link HttpPipeline} from the passed values.
      */
@@ -171,11 +171,14 @@ public final class BuilderHelper {
             } else {
                 BlobServiceVersion effectiveServiceVersion
                     = serviceVersion != null ? serviceVersion : BlobServiceVersion.getLatest();
-                SessionProvider sessionProvider = sessionOptions.getSessionProvider();
-                if (sessionProvider == null) {
+                SessionProvider sessionProvider;
+                if (SessionOptionsAccessor.getEndpoint(sessionOptions) == null) {
                     String accountName = resolveSessionAccountName(endpoint, sessionOptions.getAccountName());
                     sessionProvider = createDefaultSessionProvider(policies, bearerPolicy, postAuthenticationPolicies,
                         logOptions, effectiveHttpClient, clientOptions, endpoint, effectiveServiceVersion, accountName);
+                } else {
+                    sessionProvider = SessionOptionsAccessor.getOrCreateSessionClient(sessionOptions,
+                        SessionProvider.class, () -> createConfiguredSessionClient(sessionOptions));
                 }
                 policies.add(new SessionAuthenticationPolicy(bearerPolicy, sessionProvider, sessionOptions));
             }
@@ -226,9 +229,18 @@ public final class BuilderHelper {
         HttpLoggingPolicy sessionLoggingPolicy = createSessionLoggingPolicy(logOptions);
         bearerPolicies.replaceAll(policy -> policy instanceof HttpLoggingPolicy ? sessionLoggingPolicy : policy);
 
-        return SessionProviderConstructorProxy.getAccessor()
-            .create(createPipeline(bearerPolicies, httpClient, clientOptions), endpoint, serviceVersion, accountName,
-                Clock.systemUTC());
+        return new ContainerSessionClient(createPipeline(bearerPolicies, httpClient, clientOptions), endpoint,
+            serviceVersion, accountName, Clock.systemUTC());
+    }
+
+    private static ContainerSessionClient createConfiguredSessionClient(SessionOptions sessionOptions) {
+        String endpoint = SessionOptionsAccessor.getEndpoint(sessionOptions);
+        TokenCredential credential = SessionOptionsAccessor.getCredential(sessionOptions);
+        String sessionEndpoint = getSessionEndpoint(endpoint);
+        BlobServiceClient client
+            = new BlobServiceClientBuilder().endpoint(sessionEndpoint).credential(credential).buildClient();
+        return new ContainerSessionClient(createSessionPipeline(client), sessionEndpoint,
+            BlobServiceVersion.getLatest(), sessionOptions.getAccountName(), Clock.systemUTC());
     }
 
     /**

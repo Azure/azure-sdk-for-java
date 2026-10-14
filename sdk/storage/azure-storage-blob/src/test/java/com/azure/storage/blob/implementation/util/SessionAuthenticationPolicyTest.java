@@ -20,7 +20,6 @@ import com.azure.storage.blob.BlobTestBase;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.options.SessionOptions;
 import com.azure.storage.blob.options.SessionOptions.SessionMode;
-import com.azure.storage.blob.models.TestSessionProvider;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.policy.StorageBearerTokenChallengeAuthorizationPolicy;
 import com.azure.storage.common.policy.RequestRetryOptions;

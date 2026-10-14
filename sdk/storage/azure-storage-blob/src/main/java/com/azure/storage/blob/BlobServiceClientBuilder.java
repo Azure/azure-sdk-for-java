@@ -608,9 +608,9 @@ public final class BlobServiceClientBuilder implements TokenCredentialTrait<Blob
      * {@link BlobServiceClient#getBlobContainerClient(String)} share the service client's pipeline.
      * When this builder constructs a pipeline with a {@link TokenCredential} and sessions are enabled,
      * session authentication is attempted only for eligible GET blob requests; all other requests continue
-     * to use bearer token authentication. Sessions are disabled by default. If the options do not specify a
-     * {@link com.azure.storage.blob.models.SessionProvider}, the SDK creates a built-in provider scoped to
-     * this service client's pipeline.
+     * to use bearer token authentication. Sessions are disabled by default. To share session credentials across
+     * independently built clients, reuse the same {@link SessionOptions} instance created with an endpoint and token
+     * credential. The no-argument options constructor scopes session acquisition to this client's pipeline.
      *
      * @param sessionOptions The session options for the HTTP pipeline.
      * @return the updated BlobServiceClientBuilder object.

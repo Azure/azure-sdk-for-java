@@ -13,7 +13,6 @@ import com.azure.storage.blob.models.BlobServiceProperties;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.StorageAccountInfo;
-import com.azure.storage.blob.models.ContainerSessionProvider;
 import com.azure.storage.blob.options.SessionOptions;
 import com.azure.core.credential.TokenCredential;
 import com.azure.storage.blob.options.BlobContainerCreateOptions;
@@ -38,19 +37,18 @@ public class BlobServiceClientJavaDocCodeSnippets {
     private final Duration timeout = Duration.ofSeconds(30);
 
     /**
-     * Configures session authentication using the default session provider.
+     * Configures session authentication using session options.
      * @param credential The OAuth credential.
      */
-    public void configureSessionProvider(TokenCredential credential) {
-        // BEGIN: com.azure.storage.blob.models.ContainerSessionProvider.create
+    public void configureSessionOptions(TokenCredential credential) {
+        // BEGIN: com.azure.storage.blob.options.SessionOptions.create
         String endpoint = "https://account.blob.core.windows.net";
-        ContainerSessionProvider provider = new ContainerSessionProvider(endpoint, credential);
-        SessionOptions sessions = new SessionOptions().setSessionMode(SessionOptions.SessionMode.ENABLED)
-            .setSessionProvider(provider);
+        SessionOptions sessions
+            = new SessionOptions(endpoint, credential).setSessionMode(SessionOptions.SessionMode.ENABLED);
 
         BlobServiceClient client = new BlobServiceClientBuilder().endpoint(endpoint).credential(credential)
             .sessionOptions(sessions).buildClient();
-        // END: com.azure.storage.blob.models.ContainerSessionProvider.create
+        // END: com.azure.storage.blob.options.SessionOptions.create
     }
 
     /**
