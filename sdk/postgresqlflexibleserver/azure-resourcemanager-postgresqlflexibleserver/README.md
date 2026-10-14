@@ -32,7 +32,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure.resourcemanager</groupId>
     <artifactId>azure-resourcemanager-postgresqlflexibleserver</artifactId>
-    <version>2.1.0</version>
+    <version>3.0.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -82,7 +82,7 @@ server = postgreSqlManager.servers()
         .withPasswordAuth(PasswordBasedAuth.ENABLED))
     .withIdentity(new UserAssignedIdentity().withType(IdentityType.NONE))
     .withDataEncryption(new DataEncryption().withType(DataEncryptionType.SYSTEM_MANAGED))
-    .withVersion(PostgresMajorVersion.ONE_FOUR)
+    .withVersion("14")
     .withAvailabilityZone("2")
     .withStorage(new Storage().withStorageSizeGB(128))
     .withBackup(new Backup().withGeoRedundantBackup(GeographicallyRedundantBackup.DISABLED)

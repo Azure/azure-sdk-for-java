@@ -17,7 +17,6 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.DataEncryptionT
 import com.azure.resourcemanager.postgresqlflexibleserver.models.GeographicallyRedundantBackup;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.MicrosoftEntraAuth;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.PasswordBasedAuth;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.PostgresMajorVersion;
 import com.azure.resourcemanager.test.utils.TestUtilities;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.AuthConfig;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Backup;
@@ -102,7 +101,7 @@ public class PostgreSqlManagerTests extends TestProxyTestBase {
                     .withPasswordAuth(PasswordBasedAuth.ENABLED))
                 .withIdentity(new UserAssignedIdentity().withType(IdentityType.NONE))
                 .withDataEncryption(new DataEncryption().withType(DataEncryptionType.SYSTEM_MANAGED))
-                .withVersion(PostgresMajorVersion.ONE_FOUR)
+                .withVersion("14")
                 .withAvailabilityZone("2")
                 .withStorage(new Storage().withStorageSizeGB(128))
                 .withBackup(new Backup().withGeoRedundantBackup(GeographicallyRedundantBackup.DISABLED)
