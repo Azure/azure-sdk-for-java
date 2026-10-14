@@ -811,16 +811,6 @@ service
 
 <br/>
 <details>
-<summary> devspaces </summary>
-
-* [package-2019-04-01](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devspaces/resource-manager#tag-package-2019-04-01)
-    * [1.0.0-beta.3](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-devspaces/1.0.0-beta.3)
-    * [1.0.0-beta.2](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-devspaces/1.0.0-beta.2)
-    * [1.0.0-beta.1](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-devspaces/1.0.0-beta.1)
-</details>
-
-<br/>
-<details>
 <summary> devtestlabs </summary>
 
 * [package-2018-09](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devtestlabs/resource-manager#tag-package-2018-09)
