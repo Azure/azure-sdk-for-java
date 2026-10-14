@@ -149,9 +149,6 @@
 # PRLabel: %Azure Quantum
 /sdk/quantum/                                                      @vxfield @Azure/azure-java-sdk
 
-# PRLabel: %AgriFood
-/sdk/agrifood/                                                     @Azure/azure-java-sdk
-
 # PRLabel: %Azure SDK Tools
 /sdk/tools/                                                        @srnagar @jonathangiles @Azure/azure-java-sdk
 

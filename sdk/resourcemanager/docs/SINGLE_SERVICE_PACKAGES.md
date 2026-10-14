@@ -28,15 +28,6 @@ service
 
 <br/>
 <details>
-<summary> agrifood </summary>
-
-* [package-preview-2021-09](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/agrifood/resource-manager#tag-package-preview-2021-09)
-    * [1.0.0-beta.2](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-agrifood/1.0.0-beta.2)
-    * [1.0.0-beta.1](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-agrifood/1.0.0-beta.1)
-</details>
-
-<br/>
-<details>
 <summary> alertsmanagement </summary>
 
 * [package-2021-08](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/alertsmanagement/resource-manager#tag-package-2021-08)

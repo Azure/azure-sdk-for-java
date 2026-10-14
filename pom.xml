@@ -11,7 +11,6 @@
   <modules>
     <module>common/perf-test-core</module>
     <module>sdk/advisor</module>
-    <module>sdk/agrifood</module>
     <module>sdk/ai</module>
     <module>sdk/alertsmanagement</module>
     <module>sdk/anomalydetector</module>
