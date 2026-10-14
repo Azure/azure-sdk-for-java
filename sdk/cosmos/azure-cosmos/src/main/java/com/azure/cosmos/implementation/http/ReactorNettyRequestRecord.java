@@ -39,6 +39,7 @@ public final class ReactorNettyRequestRecord {
     private volatile Instant timeSent;
     private volatile Instant timeReceived;
     private volatile Instant timeCompleted;
+    private volatile boolean responseProcessingCompleted;
     private volatile String channelId;
     private volatile String parentChannelId;
     private volatile boolean http2;
@@ -102,6 +103,14 @@ public final class ReactorNettyRequestRecord {
      */
     public Instant timeCompleted() {
         return this.timeCompleted;
+    }
+
+    public boolean isResponseProcessingCompleted() {
+        return this.responseProcessingCompleted;
+    }
+
+    public void markResponseProcessingCompleted() {
+        this.responseProcessingCompleted = true;
     }
 
     /**

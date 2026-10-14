@@ -771,6 +771,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.reactorHttpClient = httpClient();
 
             this.globalEndpointManager = new GlobalEndpointManager(asDatabaseAccountManagerInternal(), this.connectionPolicy, configs);
+            this.diagnosticsClientConfig.withCrossRegionalHedgingDisabledByAccount(
+                this.globalEndpointManager.getCrossRegionalHedgingDisabledByAccount());
             this.isRegionScopedSessionCapturingEnabledOnClientOrSystemConfig = isRegionScopedSessionCapturingEnabled;
 
             this.sessionContainer = new SessionContainer(this.serviceEndpoint.getHost(), disableSessionCapturing);
@@ -3738,9 +3740,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             return this.cosmosEndToEndOperationLatencyPolicyConfig;
         }
 
-        // If request options level and client-level e2e latency policy config,
-        // rely on PPAF enforced defaults
-        if (operationType.isReadOnlyOperation()) {
+        // If request options level and client-level e2e latency policy config are absent,
+        // rely on PPAF enforced defaults only while the account allows hedging.
+        if (operationType.isReadOnlyOperation()
+            && !this.globalEndpointManager.getCrossRegionalHedgingDisabledByAccount().get()) {
             return this.ppafEnforcedE2ELatencyPolicyConfigForReads;
         }
 
@@ -8787,6 +8790,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         if (!(endToEndPolicyConfig.getAvailabilityStrategy() instanceof ThresholdBasedAvailabilityStrategy)) {
+            return EMPTY_REGION_LIST;
+        }
+
+        if (this.globalEndpointManager.getCrossRegionalHedgingDisabledByAccount().get()) {
             return EMPTY_REGION_LIST;
         }
 
