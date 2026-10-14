@@ -11,8 +11,10 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.RPExtendedInfoResourceListInner;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.RecoveryPointResourceInner;
 import com.azure.resourcemanager.recoveryservicesbackup.models.GetRPExtendedInfoRequestResource;
+import com.azure.resourcemanager.recoveryservicesbackup.models.RecoveryPointsGetRPExtendedInfoOperationResultResponse;
 
 /**
  * An instance of this class provides access to all the operations defined in RecoveryPointsClient.
@@ -111,8 +113,8 @@ public interface RecoveryPointsClient {
      * @return the {@link SyncPoller} for polling of list of the additional details of recovery points.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginGetRPExtendedInfo(String resourceGroupName, String vaultName,
-        String fabricName, GetRPExtendedInfoRequestResource parameters);
+    SyncPoller<PollResult<RPExtendedInfoResourceListInner>, RPExtendedInfoResourceListInner> beginGetRPExtendedInfo(
+        String resourceGroupName, String vaultName, String fabricName, GetRPExtendedInfoRequestResource parameters);
 
     /**
      * Triggers fetching the additional details of a recovery point, which are not returned by the recovery point GET
@@ -131,8 +133,9 @@ public interface RecoveryPointsClient {
      * @return the {@link SyncPoller} for polling of list of the additional details of recovery points.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginGetRPExtendedInfo(String resourceGroupName, String vaultName,
-        String fabricName, GetRPExtendedInfoRequestResource parameters, Context context);
+    SyncPoller<PollResult<RPExtendedInfoResourceListInner>, RPExtendedInfoResourceListInner> beginGetRPExtendedInfo(
+        String resourceGroupName, String vaultName, String fabricName, GetRPExtendedInfoRequestResource parameters,
+        Context context);
 
     /**
      * Triggers fetching the additional details of a recovery point, which are not returned by the recovery point GET
@@ -147,9 +150,10 @@ public interface RecoveryPointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of the additional details of recovery points.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void getRPExtendedInfo(String resourceGroupName, String vaultName, String fabricName,
+    RPExtendedInfoResourceListInner getRPExtendedInfo(String resourceGroupName, String vaultName, String fabricName,
         GetRPExtendedInfoRequestResource parameters);
 
     /**
@@ -166,9 +170,10 @@ public interface RecoveryPointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of the additional details of recovery points.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void getRPExtendedInfo(String resourceGroupName, String vaultName, String fabricName,
+    RPExtendedInfoResourceListInner getRPExtendedInfo(String resourceGroupName, String vaultName, String fabricName,
         GetRPExtendedInfoRequestResource parameters, Context context);
 
     /**
@@ -180,66 +185,31 @@ public interface RecoveryPointsClient {
      * @param fabricName Fabric name associated with the backed up items.
      * @param operationId OperationID which represents the prior getRPExtendedInfo operation whose result needs to be
      * fetched.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of list of the additional details of recovery points.
+     * @return list of the additional details of recovery points.
      */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginGetRPExtendedInfoOperationResult(String resourceGroupName, String vaultName,
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    RecoveryPointsGetRPExtendedInfoOperationResultResponse getRPExtendedInfoOperationResultWithResponse(
+        String resourceGroupName, String vaultName, String fabricName, String operationId, Context context);
+
+    /**
+     * Returns the additional details of the recovery points fetched by a prior getRPExtendedInfo operation. Returns
+     * 202 Accepted while the operation is still running.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vaultName The name of the recovery services vault.
+     * @param fabricName Fabric name associated with the backed up items.
+     * @param operationId OperationID which represents the prior getRPExtendedInfo operation whose result needs to be
+     * fetched.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of the additional details of recovery points.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    RPExtendedInfoResourceListInner getRPExtendedInfoOperationResult(String resourceGroupName, String vaultName,
         String fabricName, String operationId);
-
-    /**
-     * Returns the additional details of the recovery points fetched by a prior getRPExtendedInfo operation. Returns
-     * 202 Accepted while the operation is still running.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the recovery services vault.
-     * @param fabricName Fabric name associated with the backed up items.
-     * @param operationId OperationID which represents the prior getRPExtendedInfo operation whose result needs to be
-     * fetched.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of list of the additional details of recovery points.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginGetRPExtendedInfoOperationResult(String resourceGroupName, String vaultName,
-        String fabricName, String operationId, Context context);
-
-    /**
-     * Returns the additional details of the recovery points fetched by a prior getRPExtendedInfo operation. Returns
-     * 202 Accepted while the operation is still running.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the recovery services vault.
-     * @param fabricName Fabric name associated with the backed up items.
-     * @param operationId OperationID which represents the prior getRPExtendedInfo operation whose result needs to be
-     * fetched.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void getRPExtendedInfoOperationResult(String resourceGroupName, String vaultName, String fabricName,
-        String operationId);
-
-    /**
-     * Returns the additional details of the recovery points fetched by a prior getRPExtendedInfo operation. Returns
-     * 202 Accepted while the operation is still running.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the recovery services vault.
-     * @param fabricName Fabric name associated with the backed up items.
-     * @param operationId OperationID which represents the prior getRPExtendedInfo operation whose result needs to be
-     * fetched.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void getRPExtendedInfoOperationResult(String resourceGroupName, String vaultName, String fabricName,
-        String operationId, Context context);
 }

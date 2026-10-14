@@ -12,18 +12,21 @@ import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager;
 import com.azure.resourcemanager.recoveryservicesbackup.models.GetRPExtendedInfoRequest;
 import com.azure.resourcemanager.recoveryservicesbackup.models.GetRPExtendedInfoRequestResource;
+import com.azure.resourcemanager.recoveryservicesbackup.models.RPExtendedInfoResourceList;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
 public final class RecoveryPointsGetRPExtendedInfoMockTests {
     @Test
     public void testGetRPExtendedInfo() throws Exception {
-        String responseStr = "{}";
+        String responseStr
+            = "{\"value\":[{\"location\":\"jqgir\",\"tags\":{\"vctsfaeuhw\":\"lyvxchp\"},\"eTag\":\"knstvzuzha\",\"properties\":{\"objectType\":\"RPExtendedInfo\"},\"id\":\"mlppdpgzvzqazvb\",\"name\":\"arkptgongruatsyi\",\"type\":\"sjqhenigbeqngu\"},{\"location\":\"byjdeayscse\",\"tags\":{\"vmuw\":\"jemexmnv\",\"rdlhvdvmiphbe\":\"xlniwmcpm\",\"kdclacroczf\":\"eqjzm\"},\"eTag\":\"ner\",\"properties\":{\"objectType\":\"RPExtendedInfo\"},\"id\":\"uxzshxz\",\"name\":\"zbzuzudlev\",\"type\":\"skejcgwfsgq\"}],\"nextLink\":\"t\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,7 +35,7 @@ public final class RecoveryPointsGetRPExtendedInfoMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.recoveryPoints()
+        RPExtendedInfoResourceList response = manager.recoveryPoints()
             .getRPExtendedInfo("ficudyhiz", "aczmuh", "cakznhokhoitwhrj",
                 new GetRPExtendedInfoRequestResource().withLocation("mmazdnckid")
                     .withTags(mapOf("zbawkikcdgfh", "glhzqp", "cfiwhagxsurejq", "ssdpjeyoqxded"))
@@ -41,6 +44,10 @@ public final class RecoveryPointsGetRPExtendedInfoMockTests {
                         .withRecoveryPointIds(Arrays.asList("koxdupnamgl", "ouigdmfivjqte", "dqqigdydkghpc"))),
                 com.azure.core.util.Context.NONE);
 
+        Assertions.assertEquals("t", response.nextLink());
+        Assertions.assertEquals("jqgir", response.value().get(0).location());
+        Assertions.assertEquals("lyvxchp", response.value().get(0).tags().get("vctsfaeuhw"));
+        Assertions.assertEquals("knstvzuzha", response.value().get(0).eTag());
     }
 
     // Use "Map.of" if available

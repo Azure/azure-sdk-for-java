@@ -98,8 +98,9 @@ public interface RecoveryPoints {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of the additional details of recovery points.
      */
-    void getRPExtendedInfo(String resourceGroupName, String vaultName, String fabricName,
+    RPExtendedInfoResourceList getRPExtendedInfo(String resourceGroupName, String vaultName, String fabricName,
         GetRPExtendedInfoRequestResource parameters);
 
     /**
@@ -116,25 +117,10 @@ public interface RecoveryPoints {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of the additional details of recovery points.
      */
-    void getRPExtendedInfo(String resourceGroupName, String vaultName, String fabricName,
+    RPExtendedInfoResourceList getRPExtendedInfo(String resourceGroupName, String vaultName, String fabricName,
         GetRPExtendedInfoRequestResource parameters, Context context);
-
-    /**
-     * Returns the additional details of the recovery points fetched by a prior getRPExtendedInfo operation. Returns
-     * 202 Accepted while the operation is still running.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the recovery services vault.
-     * @param fabricName Fabric name associated with the backed up items.
-     * @param operationId OperationID which represents the prior getRPExtendedInfo operation whose result needs to be
-     * fetched.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void getRPExtendedInfoOperationResult(String resourceGroupName, String vaultName, String fabricName,
-        String operationId);
 
     /**
      * Returns the additional details of the recovery points fetched by a prior getRPExtendedInfo operation. Returns
@@ -149,7 +135,25 @@ public interface RecoveryPoints {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of the additional details of recovery points.
      */
-    void getRPExtendedInfoOperationResult(String resourceGroupName, String vaultName, String fabricName,
-        String operationId, Context context);
+    Response<RPExtendedInfoResourceList> getRPExtendedInfoOperationResultWithResponse(String resourceGroupName,
+        String vaultName, String fabricName, String operationId, Context context);
+
+    /**
+     * Returns the additional details of the recovery points fetched by a prior getRPExtendedInfo operation. Returns
+     * 202 Accepted while the operation is still running.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vaultName The name of the recovery services vault.
+     * @param fabricName Fabric name associated with the backed up items.
+     * @param operationId OperationID which represents the prior getRPExtendedInfo operation whose result needs to be
+     * fetched.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of the additional details of recovery points.
+     */
+    RPExtendedInfoResourceList getRPExtendedInfoOperationResult(String resourceGroupName, String vaultName,
+        String fabricName, String operationId);
 }

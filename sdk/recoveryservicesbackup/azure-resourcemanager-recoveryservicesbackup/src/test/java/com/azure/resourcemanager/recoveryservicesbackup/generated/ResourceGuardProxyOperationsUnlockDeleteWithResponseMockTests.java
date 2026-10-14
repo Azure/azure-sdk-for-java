@@ -22,7 +22,7 @@ import reactor.core.publisher.Mono;
 public final class ResourceGuardProxyOperationsUnlockDeleteWithResponseMockTests {
     @Test
     public void testUnlockDeleteWithResponse() throws Exception {
-        String responseStr = "{\"unlockDeleteExpiryTime\":\"crxoxdj\"}";
+        String responseStr = "{\"unlockDeleteExpiryTime\":\"twujjzgx\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,12 +32,13 @@ public final class ResourceGuardProxyOperationsUnlockDeleteWithResponseMockTests
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         UnlockDeleteResponse response = manager.resourceGuardProxyOperations()
-            .unlockDeleteWithResponse("uklajvcfoc", "hapejov", "kwxnhwhhnoyrza",
-                new UnlockDeleteRequest().withResourceGuardOperationRequests(Arrays.asList("e"))
-                    .withResourceToBeDeleted("mjenvjeatea"),
+            .unlockDeleteWithResponse("nsm", "ffiwjbctvbp", "ujqjtotdxp",
+                new UnlockDeleteRequest()
+                    .withResourceGuardOperationRequests(Arrays.asList("slhwuusieckty", "h", "uxidhhxomilddxj"))
+                    .withResourceToBeDeleted("ugxwjwilmqrslaat"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("crxoxdj", response.unlockDeleteExpiryTime());
+        Assertions.assertEquals("twujjzgx", response.unlockDeleteExpiryTime());
     }
 }

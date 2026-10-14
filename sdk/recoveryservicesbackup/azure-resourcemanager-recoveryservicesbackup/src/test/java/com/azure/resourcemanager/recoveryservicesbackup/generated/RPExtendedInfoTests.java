@@ -10,6 +10,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.RPExtendedInfo;
 public final class RPExtendedInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RPExtendedInfo model = BinaryData.fromString("{}").toObject(RPExtendedInfo.class);
+        RPExtendedInfo model
+            = BinaryData.fromString("{\"objectType\":\"RPExtendedInfo\"}").toObject(RPExtendedInfo.class);
     }
 }

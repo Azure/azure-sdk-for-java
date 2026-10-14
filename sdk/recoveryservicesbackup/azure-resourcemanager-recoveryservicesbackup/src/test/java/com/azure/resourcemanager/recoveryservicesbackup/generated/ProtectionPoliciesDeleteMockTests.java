@@ -28,7 +28,7 @@ public final class ProtectionPoliciesDeleteMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.protectionPolicies()
-            .delete("kesliky", "hzixyqhfnkvy", "qqqdseipnquwz", com.azure.core.util.Context.NONE);
+            .delete("tsbbibtic", "hqvumspbfs", "eqbbewfcuqfpy", com.azure.core.util.Context.NONE);
 
     }
 }

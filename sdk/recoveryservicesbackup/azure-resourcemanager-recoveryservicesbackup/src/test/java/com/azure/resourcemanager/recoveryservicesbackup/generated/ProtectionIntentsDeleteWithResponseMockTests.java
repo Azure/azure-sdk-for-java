@@ -28,8 +28,7 @@ public final class ProtectionIntentsDeleteWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.protectionIntents()
-            .deleteWithResponse("iiqqcqikclsmalns", "woykdnonaaxwm", "zrujlqcwnyn", "lei",
-                com.azure.core.util.Context.NONE);
+            .deleteWithResponse("uif", "ulxfaryrvjl", "dezvjqw", "hoyiyaxqvjweiw", com.azure.core.util.Context.NONE);
 
     }
 }

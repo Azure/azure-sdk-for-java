@@ -16,11 +16,27 @@ import java.io.IOException;
  * this class.
  */
 @Immutable
-public final class RPExtendedInfo implements JsonSerializable<RPExtendedInfo> {
+public class RPExtendedInfo implements JsonSerializable<RPExtendedInfo> {
+    /*
+     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of
+     * types.
+     */
+    private String objectType = "RPExtendedInfo";
+
     /**
      * Creates an instance of RPExtendedInfo class.
      */
-    private RPExtendedInfo() {
+    protected RPExtendedInfo() {
+    }
+
+    /**
+     * Get the objectType property: This property will be used as the discriminator for deciding the specific types in
+     * the polymorphic chain of types.
+     * 
+     * @return the objectType value.
+     */
+    public String objectType() {
+        return this.objectType;
     }
 
     /**
@@ -29,6 +45,7 @@ public final class RPExtendedInfo implements JsonSerializable<RPExtendedInfo> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("objectType", this.objectType);
         return jsonWriter.writeEndObject();
     }
 
@@ -42,12 +59,41 @@ public final class RPExtendedInfo implements JsonSerializable<RPExtendedInfo> {
      */
     public static RPExtendedInfo fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("objectType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("IaasVMRPExtendedInfo".equals(discriminatorValue)) {
+                    return IaasVMRPExtendedInfo.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static RPExtendedInfo fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
             RPExtendedInfo deserializedRPExtendedInfo = new RPExtendedInfo();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                reader.skipChildren();
+                if ("objectType".equals(fieldName)) {
+                    deserializedRPExtendedInfo.objectType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
             }
 
             return deserializedRPExtendedInfo;

@@ -22,7 +22,7 @@ public final class BackupPoliciesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"backupManagementType\":\"ProtectionPolicy\",\"protectedItemsCount\":400188640,\"resourceGuardOperationRequests\":[\"zwushlcxpblal\",\"hezpfkissaidqzs\"]},\"tags\":{\"fiafc\":\"qdsgptotxj\",\"z\":\"lrtbfij\"},\"location\":\"o\",\"eTag\":\"olbuauktwieope\",\"id\":\"lxqdwr\",\"name\":\"wyil\",\"type\":\"pibkgxyxyaux\"}]}";
+            = "{\"value\":[{\"properties\":{\"backupManagementType\":\"ProtectionPolicy\",\"protectedItemsCount\":402964205,\"resourceGuardOperationRequests\":[\"wafbjzmp\",\"rguyfa\"]},\"tags\":{\"cjwwdx\":\"ocbygvthrmxk\",\"acagae\":\"mrawppkeboozfl\"},\"location\":\"oiqclmgdtwgab\",\"eTag\":\"f\",\"id\":\"zbwjecooyvht\",\"name\":\"qbpel\",\"type\":\"iibncgagdvcdqhf\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,13 +32,13 @@ public final class BackupPoliciesListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ProtectionPolicyResource> response
-            = manager.backupPolicies().list("cx", "ibiwksdegyxsb", "pzvoikv", com.azure.core.util.Context.NONE);
+            = manager.backupPolicies().list("xgkrh", "iehycpnowawonoe", "r", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(400188640, response.iterator().next().properties().protectedItemsCount());
-        Assertions.assertEquals("zwushlcxpblal",
+        Assertions.assertEquals(402964205, response.iterator().next().properties().protectedItemsCount());
+        Assertions.assertEquals("wafbjzmp",
             response.iterator().next().properties().resourceGuardOperationRequests().get(0));
-        Assertions.assertEquals("qdsgptotxj", response.iterator().next().tags().get("fiafc"));
-        Assertions.assertEquals("o", response.iterator().next().location());
-        Assertions.assertEquals("olbuauktwieope", response.iterator().next().etag());
+        Assertions.assertEquals("ocbygvthrmxk", response.iterator().next().tags().get("cjwwdx"));
+        Assertions.assertEquals("oiqclmgdtwgab", response.iterator().next().location());
+        Assertions.assertEquals("f", response.iterator().next().etag());
     }
 }

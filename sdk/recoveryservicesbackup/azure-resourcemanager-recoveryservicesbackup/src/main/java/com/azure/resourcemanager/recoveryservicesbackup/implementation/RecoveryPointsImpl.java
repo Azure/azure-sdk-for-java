@@ -10,10 +10,13 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.RecoveryPointsClient;
+import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.RPExtendedInfoResourceListInner;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.RecoveryPointResourceInner;
 import com.azure.resourcemanager.recoveryservicesbackup.models.GetRPExtendedInfoRequestResource;
+import com.azure.resourcemanager.recoveryservicesbackup.models.RPExtendedInfoResourceList;
 import com.azure.resourcemanager.recoveryservicesbackup.models.RecoveryPointResource;
 import com.azure.resourcemanager.recoveryservicesbackup.models.RecoveryPoints;
+import com.azure.resourcemanager.recoveryservicesbackup.models.RecoveryPointsGetRPExtendedInfoOperationResultResponse;
 
 public final class RecoveryPointsImpl implements RecoveryPoints {
     private static final ClientLogger LOGGER = new ClientLogger(RecoveryPointsImpl.class);
@@ -62,25 +65,50 @@ public final class RecoveryPointsImpl implements RecoveryPoints {
         return ResourceManagerUtils.mapPage(inner, inner1 -> new RecoveryPointResourceImpl(inner1, this.manager()));
     }
 
-    public void getRPExtendedInfo(String resourceGroupName, String vaultName, String fabricName,
+    public RPExtendedInfoResourceList getRPExtendedInfo(String resourceGroupName, String vaultName, String fabricName,
         GetRPExtendedInfoRequestResource parameters) {
-        this.serviceClient().getRPExtendedInfo(resourceGroupName, vaultName, fabricName, parameters);
+        RPExtendedInfoResourceListInner inner
+            = this.serviceClient().getRPExtendedInfo(resourceGroupName, vaultName, fabricName, parameters);
+        if (inner != null) {
+            return new RPExtendedInfoResourceListImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
-    public void getRPExtendedInfo(String resourceGroupName, String vaultName, String fabricName,
+    public RPExtendedInfoResourceList getRPExtendedInfo(String resourceGroupName, String vaultName, String fabricName,
         GetRPExtendedInfoRequestResource parameters, Context context) {
-        this.serviceClient().getRPExtendedInfo(resourceGroupName, vaultName, fabricName, parameters, context);
+        RPExtendedInfoResourceListInner inner
+            = this.serviceClient().getRPExtendedInfo(resourceGroupName, vaultName, fabricName, parameters, context);
+        if (inner != null) {
+            return new RPExtendedInfoResourceListImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
-    public void getRPExtendedInfoOperationResult(String resourceGroupName, String vaultName, String fabricName,
-        String operationId) {
-        this.serviceClient().getRPExtendedInfoOperationResult(resourceGroupName, vaultName, fabricName, operationId);
+    public Response<RPExtendedInfoResourceList> getRPExtendedInfoOperationResultWithResponse(String resourceGroupName,
+        String vaultName, String fabricName, String operationId, Context context) {
+        RecoveryPointsGetRPExtendedInfoOperationResultResponse inner = this.serviceClient()
+            .getRPExtendedInfoOperationResultWithResponse(resourceGroupName, vaultName, fabricName, operationId,
+                context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new RPExtendedInfoResourceListImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
-    public void getRPExtendedInfoOperationResult(String resourceGroupName, String vaultName, String fabricName,
-        String operationId, Context context) {
-        this.serviceClient()
-            .getRPExtendedInfoOperationResult(resourceGroupName, vaultName, fabricName, operationId, context);
+    public RPExtendedInfoResourceList getRPExtendedInfoOperationResult(String resourceGroupName, String vaultName,
+        String fabricName, String operationId) {
+        RPExtendedInfoResourceListInner inner = this.serviceClient()
+            .getRPExtendedInfoOperationResult(resourceGroupName, vaultName, fabricName, operationId);
+        if (inner != null) {
+            return new RPExtendedInfoResourceListImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     private RecoveryPointsClient serviceClient() {

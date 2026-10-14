@@ -32,9 +32,11 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.RecoveryPointsClient;
+import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.RPExtendedInfoResourceListInner;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.RecoveryPointResourceInner;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.models.RecoveryPointResourceList;
 import com.azure.resourcemanager.recoveryservicesbackup.models.GetRPExtendedInfoRequestResource;
+import com.azure.resourcemanager.recoveryservicesbackup.models.RecoveryPointsGetRPExtendedInfoOperationResultResponse;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -141,8 +143,9 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/getRPExtendedInfoOperationResult/{operationId}")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> getRPExtendedInfoOperationResult(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+        Mono<RecoveryPointsGetRPExtendedInfoOperationResultResponse> getRPExtendedInfoOperationResult(
+            @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vaultName") String vaultName,
             @PathParam("fabricName") String fabricName, @PathParam("operationId") String operationId,
             @HeaderParam("Accept") String accept, Context context);
@@ -151,8 +154,9 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/getRPExtendedInfoOperationResult/{operationId}")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<BinaryData> getRPExtendedInfoOperationResultSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+        RecoveryPointsGetRPExtendedInfoOperationResultResponse getRPExtendedInfoOperationResultSync(
+            @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vaultName") String vaultName,
             @PathParam("fabricName") String fabricName, @PathParam("operationId") String operationId,
             @HeaderParam("Accept") String accept, Context context);
@@ -532,11 +536,13 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
      * @return the {@link PollerFlux} for polling of list of the additional details of recovery points.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginGetRPExtendedInfoAsync(String resourceGroupName, String vaultName,
-        String fabricName, GetRPExtendedInfoRequestResource parameters) {
+    private PollerFlux<PollResult<RPExtendedInfoResourceListInner>, RPExtendedInfoResourceListInner>
+        beginGetRPExtendedInfoAsync(String resourceGroupName, String vaultName, String fabricName,
+            GetRPExtendedInfoRequestResource parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono
             = getRPExtendedInfoWithResponseAsync(resourceGroupName, vaultName, fabricName, parameters);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+        return this.client.<RPExtendedInfoResourceListInner, RPExtendedInfoResourceListInner>getLroResult(mono,
+            this.client.getHttpPipeline(), RPExtendedInfoResourceListInner.class, RPExtendedInfoResourceListInner.class,
             this.client.getContext());
     }
 
@@ -556,11 +562,13 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
      * @return the {@link SyncPoller} for polling of list of the additional details of recovery points.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginGetRPExtendedInfo(String resourceGroupName, String vaultName,
-        String fabricName, GetRPExtendedInfoRequestResource parameters) {
+    public SyncPoller<PollResult<RPExtendedInfoResourceListInner>, RPExtendedInfoResourceListInner>
+        beginGetRPExtendedInfo(String resourceGroupName, String vaultName, String fabricName,
+            GetRPExtendedInfoRequestResource parameters) {
         Response<BinaryData> response
             = getRPExtendedInfoWithResponse(resourceGroupName, vaultName, fabricName, parameters);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return this.client.<RPExtendedInfoResourceListInner, RPExtendedInfoResourceListInner>getLroResult(response,
+            RPExtendedInfoResourceListInner.class, RPExtendedInfoResourceListInner.class, Context.NONE);
     }
 
     /**
@@ -580,11 +588,13 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
      * @return the {@link SyncPoller} for polling of list of the additional details of recovery points.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginGetRPExtendedInfo(String resourceGroupName, String vaultName,
-        String fabricName, GetRPExtendedInfoRequestResource parameters, Context context) {
+    public SyncPoller<PollResult<RPExtendedInfoResourceListInner>, RPExtendedInfoResourceListInner>
+        beginGetRPExtendedInfo(String resourceGroupName, String vaultName, String fabricName,
+            GetRPExtendedInfoRequestResource parameters, Context context) {
         Response<BinaryData> response
             = getRPExtendedInfoWithResponse(resourceGroupName, vaultName, fabricName, parameters, context);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
+        return this.client.<RPExtendedInfoResourceListInner, RPExtendedInfoResourceListInner>getLroResult(response,
+            RPExtendedInfoResourceListInner.class, RPExtendedInfoResourceListInner.class, context);
     }
 
     /**
@@ -603,8 +613,8 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
      * @return list of the additional details of recovery points on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> getRPExtendedInfoAsync(String resourceGroupName, String vaultName, String fabricName,
-        GetRPExtendedInfoRequestResource parameters) {
+    private Mono<RPExtendedInfoResourceListInner> getRPExtendedInfoAsync(String resourceGroupName, String vaultName,
+        String fabricName, GetRPExtendedInfoRequestResource parameters) {
         return beginGetRPExtendedInfoAsync(resourceGroupName, vaultName, fabricName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -622,11 +632,12 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of the additional details of recovery points.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void getRPExtendedInfo(String resourceGroupName, String vaultName, String fabricName,
-        GetRPExtendedInfoRequestResource parameters) {
-        beginGetRPExtendedInfo(resourceGroupName, vaultName, fabricName, parameters).getFinalResult();
+    public RPExtendedInfoResourceListInner getRPExtendedInfo(String resourceGroupName, String vaultName,
+        String fabricName, GetRPExtendedInfoRequestResource parameters) {
+        return beginGetRPExtendedInfo(resourceGroupName, vaultName, fabricName, parameters).getFinalResult();
     }
 
     /**
@@ -643,11 +654,12 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of the additional details of recovery points.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void getRPExtendedInfo(String resourceGroupName, String vaultName, String fabricName,
-        GetRPExtendedInfoRequestResource parameters, Context context) {
-        beginGetRPExtendedInfo(resourceGroupName, vaultName, fabricName, parameters, context).getFinalResult();
+    public RPExtendedInfoResourceListInner getRPExtendedInfo(String resourceGroupName, String vaultName,
+        String fabricName, GetRPExtendedInfoRequestResource parameters, Context context) {
+        return beginGetRPExtendedInfo(resourceGroupName, vaultName, fabricName, parameters, context).getFinalResult();
     }
 
     /**
@@ -662,12 +674,12 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of the additional details of recovery points along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return list of the additional details of recovery points on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> getRPExtendedInfoOperationResultWithResponseAsync(String resourceGroupName,
-        String vaultName, String fabricName, String operationId) {
+    private Mono<RecoveryPointsGetRPExtendedInfoOperationResultResponse>
+        getRPExtendedInfoOperationResultWithResponseAsync(String resourceGroupName, String vaultName, String fabricName,
+            String operationId) {
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getRPExtendedInfoOperationResult(this.client.getEndpoint(),
@@ -688,15 +700,13 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of the additional details of recovery points along with {@link Response}.
+     * @return list of the additional details of recovery points on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Response<BinaryData> getRPExtendedInfoOperationResultWithResponse(String resourceGroupName,
+    private Mono<RPExtendedInfoResourceListInner> getRPExtendedInfoOperationResultAsync(String resourceGroupName,
         String vaultName, String fabricName, String operationId) {
-        final String accept = "application/json";
-        return service.getRPExtendedInfoOperationResultSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, vaultName, fabricName, operationId, accept,
-            Context.NONE);
+        return getRPExtendedInfoOperationResultWithResponseAsync(resourceGroupName, vaultName, fabricName, operationId)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -712,11 +722,11 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of the additional details of recovery points along with {@link Response}.
+     * @return list of the additional details of recovery points.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Response<BinaryData> getRPExtendedInfoOperationResultWithResponse(String resourceGroupName,
-        String vaultName, String fabricName, String operationId, Context context) {
+    public RecoveryPointsGetRPExtendedInfoOperationResultResponse getRPExtendedInfoOperationResultWithResponse(
+        String resourceGroupName, String vaultName, String fabricName, String operationId, Context context) {
         final String accept = "application/json";
         return service.getRPExtendedInfoOperationResultSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, vaultName, fabricName, operationId, accept, context);
@@ -734,121 +744,13 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of list of the additional details of recovery points.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginGetRPExtendedInfoOperationResultAsync(String resourceGroupName,
-        String vaultName, String fabricName, String operationId) {
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = getRPExtendedInfoOperationResultWithResponseAsync(resourceGroupName, vaultName, fabricName, operationId);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            this.client.getContext());
-    }
-
-    /**
-     * Returns the additional details of the recovery points fetched by a prior getRPExtendedInfo operation. Returns
-     * 202 Accepted while the operation is still running.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the recovery services vault.
-     * @param fabricName Fabric name associated with the backed up items.
-     * @param operationId OperationID which represents the prior getRPExtendedInfo operation whose result needs to be
-     * fetched.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of list of the additional details of recovery points.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginGetRPExtendedInfoOperationResult(String resourceGroupName,
-        String vaultName, String fabricName, String operationId) {
-        Response<BinaryData> response
-            = getRPExtendedInfoOperationResultWithResponse(resourceGroupName, vaultName, fabricName, operationId);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
-    }
-
-    /**
-     * Returns the additional details of the recovery points fetched by a prior getRPExtendedInfo operation. Returns
-     * 202 Accepted while the operation is still running.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the recovery services vault.
-     * @param fabricName Fabric name associated with the backed up items.
-     * @param operationId OperationID which represents the prior getRPExtendedInfo operation whose result needs to be
-     * fetched.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of list of the additional details of recovery points.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginGetRPExtendedInfoOperationResult(String resourceGroupName,
-        String vaultName, String fabricName, String operationId, Context context) {
-        Response<BinaryData> response = getRPExtendedInfoOperationResultWithResponse(resourceGroupName, vaultName,
-            fabricName, operationId, context);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
-    }
-
-    /**
-     * Returns the additional details of the recovery points fetched by a prior getRPExtendedInfo operation. Returns
-     * 202 Accepted while the operation is still running.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the recovery services vault.
-     * @param fabricName Fabric name associated with the backed up items.
-     * @param operationId OperationID which represents the prior getRPExtendedInfo operation whose result needs to be
-     * fetched.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of the additional details of recovery points on successful completion of {@link Mono}.
+     * @return list of the additional details of recovery points.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> getRPExtendedInfoOperationResultAsync(String resourceGroupName, String vaultName,
+    public RPExtendedInfoResourceListInner getRPExtendedInfoOperationResult(String resourceGroupName, String vaultName,
         String fabricName, String operationId) {
-        return beginGetRPExtendedInfoOperationResultAsync(resourceGroupName, vaultName, fabricName, operationId).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Returns the additional details of the recovery points fetched by a prior getRPExtendedInfo operation. Returns
-     * 202 Accepted while the operation is still running.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the recovery services vault.
-     * @param fabricName Fabric name associated with the backed up items.
-     * @param operationId OperationID which represents the prior getRPExtendedInfo operation whose result needs to be
-     * fetched.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void getRPExtendedInfoOperationResult(String resourceGroupName, String vaultName, String fabricName,
-        String operationId) {
-        beginGetRPExtendedInfoOperationResult(resourceGroupName, vaultName, fabricName, operationId).getFinalResult();
-    }
-
-    /**
-     * Returns the additional details of the recovery points fetched by a prior getRPExtendedInfo operation. Returns
-     * 202 Accepted while the operation is still running.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the recovery services vault.
-     * @param fabricName Fabric name associated with the backed up items.
-     * @param operationId OperationID which represents the prior getRPExtendedInfo operation whose result needs to be
-     * fetched.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void getRPExtendedInfoOperationResult(String resourceGroupName, String vaultName, String fabricName,
-        String operationId, Context context) {
-        beginGetRPExtendedInfoOperationResult(resourceGroupName, vaultName, fabricName, operationId, context)
-            .getFinalResult();
+        return getRPExtendedInfoOperationResultWithResponse(resourceGroupName, vaultName, fabricName, operationId,
+            Context.NONE).getValue();
     }
 
     /**

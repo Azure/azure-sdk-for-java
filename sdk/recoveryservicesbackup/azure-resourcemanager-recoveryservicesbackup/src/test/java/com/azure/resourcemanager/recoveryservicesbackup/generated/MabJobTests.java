@@ -18,7 +18,7 @@ public final class MabJobTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MabJob model = BinaryData.fromString(
-            "{\"jobType\":\"MabJob\",\"duration\":\"PT41H36M26S\",\"actionsInfo\":[\"Cancellable\"],\"mabServerName\":\"otz\",\"mabServerType\":\"DPMContainer\",\"workloadType\":\"Exchange\",\"errorDetails\":[{\"errorString\":\"ryf\",\"recommendations\":[\"asigrowsocne\",\"uygdjboqgr\"]}],\"extendedInfo\":{\"tasksList\":[{\"taskId\":\"qevadrmmw\",\"startTime\":\"2021-08-07T05:06:34Z\",\"endTime\":\"2021-06-28T17:19:04Z\",\"duration\":\"PT43H5M20S\",\"status\":\"z\"},{\"taskId\":\"iidisczskoswoqiq\",\"startTime\":\"2021-01-11T05:00:37Z\",\"endTime\":\"2021-11-05T09:28:24Z\",\"duration\":\"PT100H19M4S\",\"status\":\"krrcoiisbamnpp\"}],\"propertyBag\":{\"zxuizhyhnepkpe\":\"kuztdsbezaxyfu\",\"xdazv\":\"iarxqiubxdukec\",\"dblnsntrp\":\"hctmmkosz\"},\"dynamicErrorMessage\":\"qkio\"},\"entityFriendlyName\":\"btfmhklbnldpvcbh\",\"backupManagementType\":\"Invalid\",\"operation\":\"quwusq\",\"status\":\"trpb\",\"startTime\":\"2021-05-29T20:09:55Z\",\"endTime\":\"2021-02-20T07:50:30Z\",\"activityId\":\"atvlmbjwcolbm\"}")
+            "{\"jobType\":\"MabJob\",\"duration\":\"PT41H36M26S\",\"actionsInfo\":[\"Cancellable\"],\"mabServerName\":\"otz\",\"mabServerType\":\"DPMContainer\",\"workloadType\":\"SAPHanaDatabase\",\"errorDetails\":[{\"errorString\":\"ryf\",\"recommendations\":[\"asigrowsocne\",\"uygdjboqgr\"]}],\"extendedInfo\":{\"tasksList\":[{\"taskId\":\"qevadrmmw\",\"startTime\":\"2021-08-07T05:06:34Z\",\"endTime\":\"2021-06-28T17:19:04Z\",\"duration\":\"PT43H5M20S\",\"status\":\"z\"},{\"taskId\":\"iidisczskoswoqiq\",\"startTime\":\"2021-01-11T05:00:37Z\",\"endTime\":\"2021-11-05T09:28:24Z\",\"duration\":\"PT100H19M4S\",\"status\":\"krrcoiisbamnpp\"}],\"propertyBag\":{\"zxuizhyhnepkpe\":\"kuztdsbezaxyfu\",\"xdazv\":\"iarxqiubxdukec\",\"dblnsntrp\":\"hctmmkosz\"},\"dynamicErrorMessage\":\"qkio\"},\"entityFriendlyName\":\"btfmhklbnldpvcbh\",\"backupManagementType\":\"Invalid\",\"operation\":\"quwusq\",\"status\":\"trpb\",\"startTime\":\"2021-05-29T20:09:55Z\",\"endTime\":\"2021-02-20T07:50:30Z\",\"activityId\":\"atvlmbjwcolbm\"}")
             .toObject(MabJob.class);
         Assertions.assertEquals("btfmhklbnldpvcbh", model.entityFriendlyName());
         Assertions.assertEquals(BackupManagementType.INVALID, model.backupManagementType());
@@ -31,7 +31,7 @@ public final class MabJobTests {
         Assertions.assertEquals(JobSupportedAction.CANCELLABLE, model.actionsInfo().get(0));
         Assertions.assertEquals("otz", model.mabServerName());
         Assertions.assertEquals(MabServerType.DPMCONTAINER, model.mabServerType());
-        Assertions.assertEquals(WorkloadType.EXCHANGE, model.workloadType());
+        Assertions.assertEquals(WorkloadType.SAPHANA_DATABASE, model.workloadType());
         Assertions.assertEquals("qevadrmmw", model.extendedInfo().tasksList().get(0).taskId());
         Assertions.assertEquals(OffsetDateTime.parse("2021-08-07T05:06:34Z"),
             model.extendedInfo().tasksList().get(0).startTime());

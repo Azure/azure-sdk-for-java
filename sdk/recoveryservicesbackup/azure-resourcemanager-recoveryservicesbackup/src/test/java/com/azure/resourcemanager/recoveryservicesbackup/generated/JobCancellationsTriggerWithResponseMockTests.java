@@ -28,7 +28,7 @@ public final class JobCancellationsTriggerWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.jobCancellations()
-            .triggerWithResponse("ncgagdvc", "qhftzbpyfaofd", "phtnc", com.azure.core.util.Context.NONE);
+            .triggerWithResponse("mcolmu", "pyvaosdkluwzx", "ygz", com.azure.core.util.Context.NONE);
 
     }
 }

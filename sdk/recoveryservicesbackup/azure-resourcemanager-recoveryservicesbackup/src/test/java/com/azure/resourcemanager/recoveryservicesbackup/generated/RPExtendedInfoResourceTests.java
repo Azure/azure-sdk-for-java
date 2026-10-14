@@ -12,7 +12,7 @@ public final class RPExtendedInfoResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RPExtendedInfoResource model = BinaryData.fromString(
-            "{\"location\":\"ukyefchnmnahmnxh\",\"tags\":{\"fifhxwrsnew\":\"qirwrweoox\",\"sycxhxzgaz\":\"ozqvbubqmam\"},\"eTag\":\"abo\",\"properties\":{},\"id\":\"mfqhppubowse\",\"name\":\"dfgkmtdh\",\"type\":\"rngbtcjuahokqtob\"}")
+            "{\"location\":\"ukyefchnmnahmnxh\",\"tags\":{\"fifhxwrsnew\":\"qirwrweoox\",\"sycxhxzgaz\":\"ozqvbubqmam\"},\"eTag\":\"abo\",\"properties\":{\"objectType\":\"RPExtendedInfo\"},\"id\":\"mfqhppubowse\",\"name\":\"dfgkmtdh\",\"type\":\"rngbtcjuahokqtob\"}")
             .toObject(RPExtendedInfoResource.class);
         Assertions.assertEquals("ukyefchnmnahmnxh", model.location());
         Assertions.assertEquals("qirwrweoox", model.tags().get("fifhxwrsnew"));

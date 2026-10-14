@@ -2810,8 +2810,8 @@ public final class RecoveryPointsGetRPExtendedInfoOperationResultSamples {
     public static void getRPExtendedInfoOperationResult(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
         manager.recoveryPoints()
-            .getRPExtendedInfoOperationResult("testRG", "testVault", "Azure", "00000000-0000-0000-0000-000000000000",
-                com.azure.core.util.Context.NONE);
+            .getRPExtendedInfoOperationResultWithResponse("testRG", "testVault", "Azure",
+                "00000000-0000-0000-0000-000000000000", com.azure.core.util.Context.NONE);
     }
 }
 ```

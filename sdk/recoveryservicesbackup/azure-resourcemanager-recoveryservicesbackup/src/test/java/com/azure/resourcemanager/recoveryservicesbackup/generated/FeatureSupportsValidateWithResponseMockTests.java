@@ -22,7 +22,7 @@ import reactor.core.publisher.Mono;
 public final class FeatureSupportsValidateWithResponseMockTests {
     @Test
     public void testValidateWithResponse() throws Exception {
-        String responseStr = "{\"supportStatus\":\"Invalid\"}";
+        String responseStr = "{\"supportStatus\":\"DefaultON\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,9 +32,9 @@ public final class FeatureSupportsValidateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         AzureVMResourceFeatureSupportResponse response = manager.featureSupports()
-            .validateWithResponse("efoi", new FeatureSupportRequest(), com.azure.core.util.Context.NONE)
+            .validateWithResponse("qixbnjrqvzyuexo", new FeatureSupportRequest(), com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(SupportStatus.INVALID, response.supportStatus());
+        Assertions.assertEquals(SupportStatus.DEFAULT_ON, response.supportStatus());
     }
 }

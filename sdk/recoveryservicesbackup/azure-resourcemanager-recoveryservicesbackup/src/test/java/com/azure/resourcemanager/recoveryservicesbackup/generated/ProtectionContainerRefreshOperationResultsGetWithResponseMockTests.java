@@ -28,7 +28,7 @@ public final class ProtectionContainerRefreshOperationResultsGetWithResponseMock
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.protectionContainerRefreshOperationResults()
-            .getWithResponse("ecovs", "qhzrtdbak", "limzfvppk", "qsifjmclng", com.azure.core.util.Context.NONE);
+            .getWithResponse("rhzz", "opueo", "usvwluj", "pwnibittozt", com.azure.core.util.Context.NONE);
 
     }
 }

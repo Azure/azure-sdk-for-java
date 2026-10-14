@@ -17,11 +17,11 @@ public final class AzureFileShareProtectionPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureFileShareProtectionPolicy model = BinaryData.fromString(
-            "{\"backupManagementType\":\"AzureStorage\",\"workLoadType\":\"VMwareVM\",\"schedulePolicy\":{\"schedulePolicyType\":\"SchedulePolicy\"},\"retentionPolicy\":{\"retentionPolicyType\":\"RetentionPolicy\"},\"vaultRetentionPolicy\":{\"vaultRetention\":{\"retentionPolicyType\":\"RetentionPolicy\"},\"snapshotRetentionInDays\":1247903870},\"timeZone\":\"xybwfdbkjbzten\",\"protectedItemsCount\":2080896315,\"resourceGuardOperationRequests\":[\"kjtjknsx\"]}")
+            "{\"backupManagementType\":\"AzureStorage\",\"workLoadType\":\"FileFolder\",\"schedulePolicy\":{\"schedulePolicyType\":\"SchedulePolicy\"},\"retentionPolicy\":{\"retentionPolicyType\":\"RetentionPolicy\"},\"vaultRetentionPolicy\":{\"vaultRetention\":{\"retentionPolicyType\":\"RetentionPolicy\"},\"snapshotRetentionInDays\":1247903870},\"timeZone\":\"xybwfdbkjbzten\",\"protectedItemsCount\":2080896315,\"resourceGuardOperationRequests\":[\"kjtjknsx\"]}")
             .toObject(AzureFileShareProtectionPolicy.class);
         Assertions.assertEquals(2080896315, model.protectedItemsCount());
         Assertions.assertEquals("kjtjknsx", model.resourceGuardOperationRequests().get(0));
-        Assertions.assertEquals(WorkloadType.VMWARE_VM, model.workLoadType());
+        Assertions.assertEquals(WorkloadType.FILE_FOLDER, model.workLoadType());
         Assertions.assertEquals(1247903870, model.vaultRetentionPolicy().snapshotRetentionInDays());
         Assertions.assertEquals("xybwfdbkjbzten", model.timeZone());
     }
@@ -30,7 +30,7 @@ public final class AzureFileShareProtectionPolicyTests {
     public void testSerialize() throws Exception {
         AzureFileShareProtectionPolicy model = new AzureFileShareProtectionPolicy().withProtectedItemsCount(2080896315)
             .withResourceGuardOperationRequests(Arrays.asList("kjtjknsx"))
-            .withWorkLoadType(WorkloadType.VMWARE_VM)
+            .withWorkLoadType(WorkloadType.FILE_FOLDER)
             .withSchedulePolicy(new SchedulePolicy())
             .withRetentionPolicy(new RetentionPolicy())
             .withVaultRetentionPolicy(new VaultRetentionPolicy().withVaultRetention(new RetentionPolicy())
@@ -39,7 +39,7 @@ public final class AzureFileShareProtectionPolicyTests {
         model = BinaryData.fromObject(model).toObject(AzureFileShareProtectionPolicy.class);
         Assertions.assertEquals(2080896315, model.protectedItemsCount());
         Assertions.assertEquals("kjtjknsx", model.resourceGuardOperationRequests().get(0));
-        Assertions.assertEquals(WorkloadType.VMWARE_VM, model.workLoadType());
+        Assertions.assertEquals(WorkloadType.FILE_FOLDER, model.workLoadType());
         Assertions.assertEquals(1247903870, model.vaultRetentionPolicy().snapshotRetentionInDays());
         Assertions.assertEquals("xybwfdbkjbzten", model.timeZone());
     }

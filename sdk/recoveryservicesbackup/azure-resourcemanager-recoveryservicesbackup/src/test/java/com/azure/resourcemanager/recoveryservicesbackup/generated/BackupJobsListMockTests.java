@@ -23,7 +23,7 @@ public final class BackupJobsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"jobType\":\"Job\",\"entityFriendlyName\":\"rguyfa\",\"backupManagementType\":\"DPM\",\"operation\":\"cbygvthrmx\",\"status\":\"cjwwdx\",\"startTime\":\"2021-08-06T12:54:02Z\",\"endTime\":\"2021-07-21T01:13Z\",\"activityId\":\"pkeboozflyac\"},\"tags\":{\"i\":\"eda\"},\"location\":\"lm\",\"eTag\":\"twgabdx\",\"id\":\"uz\",\"name\":\"wjecooyvhtuqbpe\",\"type\":\"nii\"}]}";
+            = "{\"value\":[{\"properties\":{\"jobType\":\"Job\",\"entityFriendlyName\":\"ojermhzicsbfdjhy\",\"backupManagementType\":\"Invalid\",\"operation\":\"yukibxigl\",\"status\":\"hzwxq\",\"startTime\":\"2021-04-26T03:29:12Z\",\"endTime\":\"2021-10-03T15:49:59Z\",\"activityId\":\"lhvtozyagj\"},\"tags\":{\"ylhyyx\":\"k\",\"klvqzrwtrdgscn\":\"f\",\"on\":\"q\",\"mezyo\":\"gnwxl\"},\"location\":\"pthceopvkv\",\"eTag\":\"fve\",\"id\":\"bpbokhmml\",\"name\":\"dyarnggcjfwblq\",\"type\":\"xka\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,21 +33,20 @@ public final class BackupJobsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<JobResource> response = manager.backupJobs()
-            .list("yljeknfqnwjjqx", "wkdnjrxgkrhwiehy", "pnowawonoehrguql", "fwafbjz",
-                com.azure.core.util.Context.NONE);
+            .list("wrdtnagzlgpy", "ixihzqj", "tsmuydqftt", "acybdueurgmcdcpk", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("rguyfa", response.iterator().next().properties().entityFriendlyName());
-        Assertions.assertEquals(BackupManagementType.DPM,
+        Assertions.assertEquals("ojermhzicsbfdjhy", response.iterator().next().properties().entityFriendlyName());
+        Assertions.assertEquals(BackupManagementType.INVALID,
             response.iterator().next().properties().backupManagementType());
-        Assertions.assertEquals("cbygvthrmx", response.iterator().next().properties().operation());
-        Assertions.assertEquals("cjwwdx", response.iterator().next().properties().status());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-06T12:54:02Z"),
+        Assertions.assertEquals("yukibxigl", response.iterator().next().properties().operation());
+        Assertions.assertEquals("hzwxq", response.iterator().next().properties().status());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-26T03:29:12Z"),
             response.iterator().next().properties().startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-21T01:13Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-03T15:49:59Z"),
             response.iterator().next().properties().endTime());
-        Assertions.assertEquals("pkeboozflyac", response.iterator().next().properties().activityId());
-        Assertions.assertEquals("eda", response.iterator().next().tags().get("i"));
-        Assertions.assertEquals("lm", response.iterator().next().location());
-        Assertions.assertEquals("twgabdx", response.iterator().next().etag());
+        Assertions.assertEquals("lhvtozyagj", response.iterator().next().properties().activityId());
+        Assertions.assertEquals("k", response.iterator().next().tags().get("ylhyyx"));
+        Assertions.assertEquals("pthceopvkv", response.iterator().next().location());
+        Assertions.assertEquals("fve", response.iterator().next().etag());
     }
 }

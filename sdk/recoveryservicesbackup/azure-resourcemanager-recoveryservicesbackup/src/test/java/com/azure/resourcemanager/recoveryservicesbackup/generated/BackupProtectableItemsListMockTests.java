@@ -23,7 +23,7 @@ public final class BackupProtectableItemsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"location\":\"lizedvbia\",\"tags\":{\"wkhojqttbspvkhg\":\"srgekzyqxadyfhb\"},\"eTag\":\"qjsgyzst\",\"properties\":{\"protectableItemType\":\"WorkloadProtectableItem\",\"backupManagementType\":\"zx\",\"workloadType\":\"nsfdrlduye\",\"friendlyName\":\"iitt\",\"protectionState\":\"Protected\"},\"id\":\"qwrldaxur\",\"name\":\"qa\",\"type\":\"csozjv\"}]}";
+            = "{\"value\":[{\"location\":\"grkkderfrswq\",\"tags\":{\"cwn\":\"epwoggg\",\"zpgf\":\"htfmcqbsudzpgc\"},\"eTag\":\"mjd\",\"properties\":{\"protectableItemType\":\"WorkloadProtectableItem\",\"backupManagementType\":\"zg\",\"workloadType\":\"odkynrc\",\"friendlyName\":\"avf\",\"protectionState\":\"Protected\"},\"id\":\"mmxjdnajuopj\",\"name\":\"yqmkwlh\",\"type\":\"cwlo\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,14 +33,14 @@ public final class BackupProtectableItemsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<WorkloadProtectableItemResource> response = manager.backupProtectableItems()
-            .list("tfbclakkuc", "dwnhczbutoucgjti", "jwayhi", "qqwwvgwks", com.azure.core.util.Context.NONE);
+            .list("mejjqhddwvmq", "iyoo", "yfozkbnzxbypfqp", "aix", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("lizedvbia", response.iterator().next().location());
-        Assertions.assertEquals("srgekzyqxadyfhb", response.iterator().next().tags().get("wkhojqttbspvkhg"));
-        Assertions.assertEquals("qjsgyzst", response.iterator().next().eTag());
-        Assertions.assertEquals("zx", response.iterator().next().properties().backupManagementType());
-        Assertions.assertEquals("nsfdrlduye", response.iterator().next().properties().workloadType());
-        Assertions.assertEquals("iitt", response.iterator().next().properties().friendlyName());
+        Assertions.assertEquals("grkkderfrswq", response.iterator().next().location());
+        Assertions.assertEquals("epwoggg", response.iterator().next().tags().get("cwn"));
+        Assertions.assertEquals("mjd", response.iterator().next().eTag());
+        Assertions.assertEquals("zg", response.iterator().next().properties().backupManagementType());
+        Assertions.assertEquals("odkynrc", response.iterator().next().properties().workloadType());
+        Assertions.assertEquals("avf", response.iterator().next().properties().friendlyName());
         Assertions.assertEquals(ProtectionStatus.PROTECTED, response.iterator().next().properties().protectionState());
     }
 }

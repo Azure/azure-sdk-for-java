@@ -28,11 +28,11 @@ public final class AzureVmWorkloadProtectionPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureVmWorkloadProtectionPolicy model = BinaryData.fromString(
-            "{\"backupManagementType\":\"AzureWorkload\",\"workLoadType\":\"Exchange\",\"vmWorkloadPolicyType\":\"Invalid\",\"settings\":{\"timeZone\":\"oaiancznvodrrs\",\"issqlcompression\":true,\"isCompression\":false},\"subProtectionPolicy\":[{\"policyType\":\"Log\",\"schedulePolicy\":{\"schedulePolicyType\":\"SchedulePolicy\"},\"retentionPolicy\":{\"retentionPolicyType\":\"RetentionPolicy\"},\"tieringPolicy\":{\"bqlj\":{\"tieringMode\":\"TierAfter\",\"duration\":911130137,\"durationType\":\"Months\"},\"ocokule\":{\"tieringMode\":\"DoNotTier\",\"duration\":1041753015,\"durationType\":\"Days\"},\"ffaweyur\":{\"tieringMode\":\"TierAfter\",\"duration\":1169307081,\"durationType\":\"Months\"}},\"snapshotBackupAdditionalDetails\":{\"instantRpRetentionRangeInDays\":53244063,\"instantRPDetails\":\"dxravj\",\"userAssignedManagedIdentityDetails\":{\"identityArmId\":\"brxmrgch\",\"identityName\":\"pxkiyf\",\"userAssignedIdentityProperties\":{\"clientId\":\"bajbuscgduusi\",\"principalId\":\"cblevpmc\"}}}}],\"makePolicyConsistent\":false,\"protectedItemsCount\":1886598268,\"resourceGuardOperationRequests\":[\"xlzgsjgkzzl\",\"afhbzf\"]}")
+            "{\"backupManagementType\":\"AzureWorkload\",\"workLoadType\":\"SQLInstance\",\"vmWorkloadPolicyType\":\"Invalid\",\"settings\":{\"timeZone\":\"oaiancznvodrrs\",\"issqlcompression\":true,\"isCompression\":false},\"subProtectionPolicy\":[{\"policyType\":\"Log\",\"schedulePolicy\":{\"schedulePolicyType\":\"SchedulePolicy\"},\"retentionPolicy\":{\"retentionPolicyType\":\"RetentionPolicy\"},\"tieringPolicy\":{\"bqlj\":{\"tieringMode\":\"TierAfter\",\"duration\":911130137,\"durationType\":\"Months\"},\"ocokule\":{\"tieringMode\":\"DoNotTier\",\"duration\":1041753015,\"durationType\":\"Days\"},\"ffaweyur\":{\"tieringMode\":\"TierAfter\",\"duration\":1169307081,\"durationType\":\"Months\"}},\"snapshotBackupAdditionalDetails\":{\"instantRpRetentionRangeInDays\":53244063,\"instantRPDetails\":\"dxravj\",\"userAssignedManagedIdentityDetails\":{\"identityArmId\":\"brxmrgch\",\"identityName\":\"pxkiyf\",\"userAssignedIdentityProperties\":{\"clientId\":\"bajbuscgduusi\",\"principalId\":\"cblevpmc\"}}}}],\"makePolicyConsistent\":false,\"protectedItemsCount\":1886598268,\"resourceGuardOperationRequests\":[\"xlzgsjgkzzl\",\"afhbzf\"]}")
             .toObject(AzureVmWorkloadProtectionPolicy.class);
         Assertions.assertEquals(1886598268, model.protectedItemsCount());
         Assertions.assertEquals("xlzgsjgkzzl", model.resourceGuardOperationRequests().get(0));
-        Assertions.assertEquals(WorkloadType.EXCHANGE, model.workLoadType());
+        Assertions.assertEquals(WorkloadType.SQLINSTANCE, model.workLoadType());
         Assertions.assertEquals(VMWorkloadPolicyType.INVALID, model.vmWorkloadPolicyType());
         Assertions.assertEquals("oaiancznvodrrs", model.settings().timeZone());
         Assertions.assertTrue(model.settings().issqlcompression());
@@ -81,7 +81,7 @@ public final class AzureVmWorkloadProtectionPolicyTests {
         AzureVmWorkloadProtectionPolicy model
             = new AzureVmWorkloadProtectionPolicy().withProtectedItemsCount(1886598268)
                 .withResourceGuardOperationRequests(Arrays.asList("xlzgsjgkzzl", "afhbzf"))
-                .withWorkLoadType(WorkloadType.EXCHANGE)
+                .withWorkLoadType(WorkloadType.SQLINSTANCE)
                 .withVmWorkloadPolicyType(VMWorkloadPolicyType.INVALID)
                 .withSettings(
                     new Settings().withTimeZone("oaiancznvodrrs").withIssqlcompression(true).withIsCompression(false))
@@ -113,7 +113,7 @@ public final class AzureVmWorkloadProtectionPolicyTests {
         model = BinaryData.fromObject(model).toObject(AzureVmWorkloadProtectionPolicy.class);
         Assertions.assertEquals(1886598268, model.protectedItemsCount());
         Assertions.assertEquals("xlzgsjgkzzl", model.resourceGuardOperationRequests().get(0));
-        Assertions.assertEquals(WorkloadType.EXCHANGE, model.workLoadType());
+        Assertions.assertEquals(WorkloadType.SQLINSTANCE, model.workLoadType());
         Assertions.assertEquals(VMWorkloadPolicyType.INVALID, model.vmWorkloadPolicyType());
         Assertions.assertEquals("oaiancznvodrrs", model.settings().timeZone());
         Assertions.assertTrue(model.settings().issqlcompression());
