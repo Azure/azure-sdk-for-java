@@ -96,8 +96,8 @@
 
 #### `models.StorageAccountUpdateParameters` was modified
 
-* `turboTier()` was added
 * `withTurboTier(models.TurboTier)` was added
+* `turboTier()` was added
 
 #### `models.NspAccessRuleProperties` was modified
 
@@ -110,8 +110,8 @@
 
 #### `models.StorageAccountCreateParameters` was modified
 
-* `turboTier()` was added
 * `withTurboTier(models.TurboTier)` was added
+* `turboTier()` was added
 
 ## 2.58.2 (2026-10-09)
 
