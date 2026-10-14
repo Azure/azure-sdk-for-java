@@ -8,6 +8,7 @@ import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.CosmosStoredProcedureProperties;
 import com.azure.cosmos.models.CosmosStoredProcedureRequestOptions;
 import com.azure.cosmos.models.CosmosStoredProcedureResponse;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.rx.TestSuiteBase;
@@ -106,13 +107,14 @@ public class CosmosSyncStoredProcTest extends TestSuiteBase {
 
     @Test(groups = {"fast"}, timeOut = TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void replaceStoredProcedure() throws Exception {
-        CosmosStoredProcedureProperties storedProcedureDef = getCosmosStoredProcedureProperties();
+        final String storedProcedureId = UUID.randomUUID().toString();
+        CosmosStoredProcedureProperties storedProcedureDef = new CosmosStoredProcedureProperties(
+            storedProcedureId, "function() {var x = 10;}");
 
         CosmosStoredProcedureResponse response = container.getScripts().createStoredProcedure(storedProcedureDef);
         validateResponse(storedProcedureDef, response);
         validateDiagnostics(response, false);
 
-        final String storedProcedureId = storedProcedureDef.getId();
         CosmosStoredProcedureResponse readResponse = retryOnNotFound(
             () -> container.getScripts()
                 .getStoredProcedure(storedProcedureId)
@@ -121,11 +123,15 @@ public class CosmosSyncStoredProcTest extends TestSuiteBase {
         validateDiagnostics(readResponse, false);
         //replace
         storedProcedureDef = readResponse.getProperties();
+        String storedProcedureLink = "dbs/" + getSharedCosmosDatabase(client.asyncClient()).getId()
+            + "/colls/" + container.getId() + "/sprocs/" + storedProcedureId;
+        // Replace uses the model's self-link rather than the handle's ID.
+        ModelBridgeInternal.getResource(storedProcedureDef).setSelfLink(storedProcedureLink);
         storedProcedureDef.setBody("function(){ var y = 20;}");
         final CosmosStoredProcedureProperties firstReplacement = storedProcedureDef;
         CosmosStoredProcedureResponse replaceResponse = retryOnNotFound(
             () -> container.getScripts()
-                .getStoredProcedure(firstReplacement.getId())
+                .getStoredProcedure(storedProcedureId)
                 .replace(firstReplacement));
         validateResponse(storedProcedureDef, replaceResponse);
         validateDiagnostics(replaceResponse, false);
@@ -134,7 +140,7 @@ public class CosmosSyncStoredProcTest extends TestSuiteBase {
         final CosmosStoredProcedureProperties secondReplacement = storedProcedureDef;
         CosmosStoredProcedureResponse replaceResponse2 = retryOnNotFound(
             () -> container.getScripts()
-                .getStoredProcedure(secondReplacement.getId())
+                .getStoredProcedure(storedProcedureId)
                 .replace(secondReplacement, new CosmosStoredProcedureRequestOptions()));
         validateResponse(storedProcedureDef, replaceResponse2);
         validateDiagnostics(replaceResponse2, false);
