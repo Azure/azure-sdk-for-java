@@ -8,10 +8,6 @@
 - Added External Key Manager (EKM) proxy private endpoint support to `KeyVaultEkmClient` and `KeyVaultEkmAsyncClient`, including the `beginCreateEkmPrivateEndpoint`, `getEkmPrivateEndpoint`, `listEkmPrivateEndpoints`, `beginDeleteEkmPrivateEndpoint`, and `getEkmPrivateEndpointOperationStatus` operations.
 - Added `KeyVaultEkmConnectivityMode` to `KeyVaultEkmConnection` to route an EKM connection through an EKM proxy private endpoint.
 
-### Breaking Changes
-
-### Bugs Fixed
-
 ### Other Changes
 
 - The default service version is now `2026-07-01-preview`.
