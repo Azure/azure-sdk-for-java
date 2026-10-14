@@ -10,7 +10,6 @@
   <version>1.0.0</version><!-- Need not change for every release-->
   <modules>
     <module>azure-analytics-purview-datamap</module>
-    <module>azure-analytics-purview-workflow</module>
     <module>azure-resourcemanager-purview</module>
   </modules>
 </project>

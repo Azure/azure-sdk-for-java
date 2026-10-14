@@ -12,7 +12,6 @@ trigger:
     exclude:
       - sdk/purview/pom.xml
       - sdk/purview/azure-analytics-purview-datamap/pom.xml
-      - sdk/purview/azure-analytics-purview-workflow/pom.xml
       - sdk/purview/azure-resourcemanager-purview/pom.xml
 
 pr:
@@ -28,7 +27,6 @@ pr:
     exclude:
       - sdk/purview/pom.xml
       - sdk/purview/azure-analytics-purview-datamap/pom.xml
-      - sdk/purview/azure-analytics-purview-workflow/pom.xml
       - sdk/purview/azure-resourcemanager-purview/pom.xml
 
 
@@ -41,10 +39,6 @@ parameters:
     displayName: azure-resourcemanager-purview
     type: boolean
     default: false
-  - name: release_azureanalyticspurviewworkflow
-    displayName: azure-analytics-purview-workflow
-    type: boolean
-    default: true
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
@@ -59,7 +53,3 @@ extends:
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerpurview
         releaseInBatch: ${{ parameters.release_azureresourcemanagerpurview }}
-      - name: azure-analytics-purview-workflow
-        groupId: com.azure
-        safeName: azureanalyticspurviewworkflow
-        releaseInBatch: ${{ parameters.release_azureanalyticspurviewworkflow }}
