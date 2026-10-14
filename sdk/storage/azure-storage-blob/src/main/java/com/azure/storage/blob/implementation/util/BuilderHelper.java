@@ -178,7 +178,7 @@ public final class BuilderHelper {
                         logOptions, effectiveHttpClient, clientOptions, endpoint, effectiveServiceVersion, accountName);
                 } else {
                     sessionProvider = SessionOptionsAccessor.getOrCreateSessionClient(sessionOptions,
-                        SessionProvider.class, () -> createConfiguredSessionProvider(sessionOptions));
+                        SessionProvider.class, () -> createCustomSessionProvider(sessionOptions));
                 }
                 policies.add(new SessionAuthenticationPolicy(bearerPolicy, sessionProvider, sessionOptions));
             }
@@ -233,7 +233,7 @@ public final class BuilderHelper {
             serviceVersion, accountName, Clock.systemUTC());
     }
 
-    private static ContainerSessionProvider createConfiguredSessionProvider(SessionOptions sessionOptions) {
+    private static ContainerSessionProvider createCustomSessionProvider(SessionOptions sessionOptions) {
         String endpoint = SessionOptionsAccessor.getEndpoint(sessionOptions);
         TokenCredential credential = SessionOptionsAccessor.getCredential(sessionOptions);
         String sessionEndpoint = getSessionEndpoint(endpoint);
