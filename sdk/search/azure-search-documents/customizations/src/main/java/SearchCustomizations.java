@@ -292,7 +292,8 @@ public class SearchCustomizations extends Customization {
     private static String streamEventDocumentation() {
         return "Events are polymorphic: see {@link KnowledgeBaseRetrievalStreamEvent} for the known subtypes. "
             + "Use a known subtype's {@code getValue()} to access its typed payload, for example "
-            + "{@link com.azure.search.documents.knowledgebases.models.KnowledgeBaseAnswerCompletedStreamEvent#getValue()}. "
+            + "{@link com.azure.search.documents.knowledgebases.models.KnowledgeBaseAnswerCompletedStreamEvent"
+            + "#getValue()}. "
             + "Unrecognized events expose only their names through "
             + "{@link KnowledgeBaseRetrievalStreamEvent#getEventName()}; their payloads are not available.\n\n";
     }
@@ -302,7 +303,8 @@ public class SearchCustomizations extends Customization {
             + "import com.azure.core.annotation.Generated;\n\n" + "/**\n"
             + " * Abstract base for polymorphic events emitted by a streaming knowledge base retrieval.\n"
             + " * Known events expose typed payloads through their subtype's {@code getValue()} method.\n"
-            + " * Unrecognized events expose only their names through {@link #getEventName()}; their payloads are not available.\n"
+            + " * Unrecognized events expose only their names through {@link #getEventName()}; "
+            + "their payloads are not available.\n"
             + " * Stream events are envelopes, not JSON payload models; serialize the typed payload instead.\n" + " *\n"
             + " * @see KnowledgeBaseRetrievalStartedStreamEvent\n" + " * @see KnowledgeBaseActivityStartedStreamEvent\n"
             + " * @see KnowledgeBaseActivityCompletedStreamEvent\n"
