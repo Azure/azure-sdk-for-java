@@ -702,7 +702,10 @@ public final class KeyVaultEkmClient {
      * @param privateLinkServiceAlias The alias of the Private Link Service that the private endpoint connects to.
      *
      * @return A {@link SyncPoller} polling on the {@link KeyVaultEkmPrivateEndpointOperation operation} status, whose
-     * final result is the created {@link KeyVaultEkmPrivateEndpoint private endpoint}.
+     * final result is the created {@link KeyVaultEkmPrivateEndpoint private endpoint}. If the operation fails, the
+     * poller does not throw: its last poll response has status {@link LongRunningOperationStatus#FAILED}, the final
+     * result is {@code null}, and the failure details are available from
+     * {@link KeyVaultEkmPrivateEndpointOperation#getError()}.
      *
      * @throws NullPointerException if {@code name} or {@code privateLinkServiceAlias} is {@code null}.
      * @throws IllegalArgumentException if {@code name} or {@code privateLinkServiceAlias} is empty.
@@ -730,7 +733,10 @@ public final class KeyVaultEkmClient {
      * endpoint connection.
      *
      * @return A {@link SyncPoller} polling on the {@link KeyVaultEkmPrivateEndpointOperation operation} status, whose
-     * final result is the created {@link KeyVaultEkmPrivateEndpoint private endpoint}.
+     * final result is the created {@link KeyVaultEkmPrivateEndpoint private endpoint}. If the operation fails, the
+     * poller does not throw: its last poll response has status {@link LongRunningOperationStatus#FAILED}, the final
+     * result is {@code null}, and the failure details are available from
+     * {@link KeyVaultEkmPrivateEndpointOperation#getError()}.
      *
      * @throws NullPointerException if {@code name} or {@code privateLinkServiceAlias} is {@code null}.
      * @throws IllegalArgumentException if {@code name} or {@code privateLinkServiceAlias} is empty.
@@ -762,7 +768,10 @@ public final class KeyVaultEkmClient {
      *
      * @param name The name of the private endpoint to delete.
      *
-     * @return A {@link SyncPoller} polling on the {@link KeyVaultEkmPrivateEndpointOperation operation} status.
+     * @return A {@link SyncPoller} polling on the {@link KeyVaultEkmPrivateEndpointOperation operation} status. If the
+     * operation fails, the poller does not throw: its last poll response has status
+     * {@link LongRunningOperationStatus#FAILED} and the failure details are available from
+     * {@link KeyVaultEkmPrivateEndpointOperation#getError()}.
      *
      * @throws NullPointerException if {@code name} is {@code null}.
      * @throws IllegalArgumentException if {@code name} is empty.
