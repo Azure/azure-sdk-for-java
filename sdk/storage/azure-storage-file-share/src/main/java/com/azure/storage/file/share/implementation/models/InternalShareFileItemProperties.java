@@ -14,9 +14,6 @@ public class InternalShareFileItemProperties implements ShareFileItemProperties 
     private final OffsetDateTime changedOn;
     private final OffsetDateTime lastModified;
     private final String eTag;
-    private final String owner;
-    private final String group;
-    private final String fileMode;
 
     /**
      * Creates an instance of share item properties.
@@ -30,34 +27,12 @@ public class InternalShareFileItemProperties implements ShareFileItemProperties 
      */
     public InternalShareFileItemProperties(OffsetDateTime createdOn, OffsetDateTime lastAccessedOn,
         OffsetDateTime lastWrittenOn, OffsetDateTime changedOn, OffsetDateTime lastModified, String eTag) {
-        this(createdOn, lastAccessedOn, lastWrittenOn, changedOn, lastModified, eTag, null, null, null);
-    }
-
-    /**
-     * Creates an instance of share item properties.
-     *
-     * @param createdOn Datetime the item was created.
-     * @param lastAccessedOn Datetime the item was last accessed.
-     * @param lastWrittenOn Datetime the item was last written.
-     * @param changedOn Datetime the item was last changed.
-     * @param lastModified Datetime the item was last modified.
-     * @param eTag ETag of the item.
-     * @param owner Owner user identifier (UID) of the item.
-     * @param group Owning group identifier (GID) of the item.
-     * @param fileMode POSIX file mode of the item.
-     */
-    public InternalShareFileItemProperties(OffsetDateTime createdOn, OffsetDateTime lastAccessedOn,
-        OffsetDateTime lastWrittenOn, OffsetDateTime changedOn, OffsetDateTime lastModified, String eTag, String owner,
-        String group, String fileMode) {
         this.createdOn = createdOn;
         this.lastAccessedOn = lastAccessedOn;
         this.lastWrittenOn = lastWrittenOn;
         this.changedOn = changedOn;
         this.lastModified = lastModified;
         this.eTag = eTag;
-        this.owner = owner;
-        this.group = group;
-        this.fileMode = fileMode;
     }
 
     /**
@@ -100,29 +75,5 @@ public class InternalShareFileItemProperties implements ShareFileItemProperties 
      */
     public String getETag() {
         return eTag;
-    }
-
-    /**
-     * @return Owner user identifier (UID) of this item.
-     */
-    @Override
-    public String getOwner() {
-        return owner;
-    }
-
-    /**
-     * @return Owning group identifier (GID) of this item.
-     */
-    @Override
-    public String getGroup() {
-        return group;
-    }
-
-    /**
-     * @return POSIX file mode of this item.
-     */
-    @Override
-    public String getFileMode() {
-        return fileMode;
     }
 }
