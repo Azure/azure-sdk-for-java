@@ -42,6 +42,7 @@ import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.TypeReference;
 import com.azure.security.keyvault.administration.KeyVaultAdministrationServiceVersion;
+import com.azure.security.keyvault.administration.implementation.models.EkmPrivateEndpointOperation;
 import com.azure.security.keyvault.administration.implementation.models.FullBackupOperation;
 import com.azure.security.keyvault.administration.implementation.models.RestoreOperation;
 import com.azure.security.keyvault.administration.implementation.models.SelectiveKeyRestoreOperation;
@@ -554,6 +555,108 @@ public final class KeyVaultAdministrationClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> deleteEkmConnectionSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
+
+        @Get("/ekm/privateendpoint/operations/{operationId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> getEkmPrivateEndpointOperationStatus(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @QueryParam("api-version") String apiVersion, @PathParam("operationId") String operationId,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("/ekm/privateendpoint/operations/{operationId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getEkmPrivateEndpointOperationStatusSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @QueryParam("api-version") String apiVersion, @PathParam("operationId") String operationId,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Post("/ekm/privateendpoint/{peName}")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> createEkmPrivateEndpoint(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @QueryParam("api-version") String apiVersion, @PathParam("peName") String peName,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData parameters, RequestOptions requestOptions, Context context);
+
+        @Post("/ekm/privateendpoint/{peName}")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> createEkmPrivateEndpointSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @QueryParam("api-version") String apiVersion, @PathParam("peName") String peName,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData parameters, RequestOptions requestOptions, Context context);
+
+        @Delete("/ekm/privateendpoint/{peName}")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> deleteEkmPrivateEndpoint(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @QueryParam("api-version") String apiVersion, @PathParam("peName") String peName,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Delete("/ekm/privateendpoint/{peName}")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> deleteEkmPrivateEndpointSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @QueryParam("api-version") String apiVersion, @PathParam("peName") String peName,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("/ekm/privateendpoint/{peName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> getEkmPrivateEndpoint(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @QueryParam("api-version") String apiVersion, @PathParam("peName") String peName,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("/ekm/privateendpoint/{peName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getEkmPrivateEndpointSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @QueryParam("api-version") String apiVersion, @PathParam("peName") String peName,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("/ekm/privateendpoint")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> listEkmPrivateEndpoints(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
+
+        @Get("/ekm/privateendpoint")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listEkmPrivateEndpointsSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
     }
@@ -2716,6 +2819,7 @@ public final class KeyVaultAdministrationClientImpl {
      *         byte[] (Required)
      *     ]
      *     server_subject_common_name: String (Optional)
+     *     connectivity_mode: String(Public/PrivateEndpoint) (Optional)
      * }
      * }
      * </pre>
@@ -2752,6 +2856,7 @@ public final class KeyVaultAdministrationClientImpl {
      *         byte[] (Required)
      *     ]
      *     server_subject_common_name: String (Optional)
+     *     connectivity_mode: String(Public/PrivateEndpoint) (Optional)
      * }
      * }
      * </pre>
@@ -2924,6 +3029,7 @@ public final class KeyVaultAdministrationClientImpl {
      *         byte[] (Required)
      *     ]
      *     server_subject_common_name: String (Optional)
+     *     connectivity_mode: String(Public/PrivateEndpoint) (Optional)
      * }
      * }
      * </pre>
@@ -2939,6 +3045,7 @@ public final class KeyVaultAdministrationClientImpl {
      *         byte[] (Required)
      *     ]
      *     server_subject_common_name: String (Optional)
+     *     connectivity_mode: String(Public/PrivateEndpoint) (Optional)
      * }
      * }
      * </pre>
@@ -2976,6 +3083,7 @@ public final class KeyVaultAdministrationClientImpl {
      *         byte[] (Required)
      *     ]
      *     server_subject_common_name: String (Optional)
+     *     connectivity_mode: String(Public/PrivateEndpoint) (Optional)
      * }
      * }
      * </pre>
@@ -2991,6 +3099,7 @@ public final class KeyVaultAdministrationClientImpl {
      *         byte[] (Required)
      *     ]
      *     server_subject_common_name: String (Optional)
+     *     connectivity_mode: String(Public/PrivateEndpoint) (Optional)
      * }
      * }
      * </pre>
@@ -3028,6 +3137,7 @@ public final class KeyVaultAdministrationClientImpl {
      *         byte[] (Required)
      *     ]
      *     server_subject_common_name: String (Optional)
+     *     connectivity_mode: String(Public/PrivateEndpoint) (Optional)
      * }
      * }
      * </pre>
@@ -3043,6 +3153,7 @@ public final class KeyVaultAdministrationClientImpl {
      *         byte[] (Required)
      *     ]
      *     server_subject_common_name: String (Optional)
+     *     connectivity_mode: String(Public/PrivateEndpoint) (Optional)
      * }
      * }
      * </pre>
@@ -3080,6 +3191,7 @@ public final class KeyVaultAdministrationClientImpl {
      *         byte[] (Required)
      *     ]
      *     server_subject_common_name: String (Optional)
+     *     connectivity_mode: String(Public/PrivateEndpoint) (Optional)
      * }
      * }
      * </pre>
@@ -3095,6 +3207,7 @@ public final class KeyVaultAdministrationClientImpl {
      *         byte[] (Required)
      *     ]
      *     server_subject_common_name: String (Optional)
+     *     connectivity_mode: String(Public/PrivateEndpoint) (Optional)
      * }
      * }
      * </pre>
@@ -3132,6 +3245,7 @@ public final class KeyVaultAdministrationClientImpl {
      *         byte[] (Required)
      *     ]
      *     server_subject_common_name: String (Optional)
+     *     connectivity_mode: String(Public/PrivateEndpoint) (Optional)
      * }
      * }
      * </pre>
@@ -3166,6 +3280,7 @@ public final class KeyVaultAdministrationClientImpl {
      *         byte[] (Required)
      *     ]
      *     server_subject_common_name: String (Optional)
+     *     connectivity_mode: String(Public/PrivateEndpoint) (Optional)
      * }
      * }
      * </pre>
@@ -3182,5 +3297,898 @@ public final class KeyVaultAdministrationClientImpl {
         final String accept = "application/json";
         return service.deleteEkmConnectionSync(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), accept,
             requestOptions, Context.NONE);
+    }
+
+    /**
+     * Gets the status of an EKM proxy private endpoint operation.
+     *
+     * The External Key Manager (EKM) private endpoint operation status. Returns the status of a private endpoint create
+     * or delete operation. This operation requires ekm/read permission.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     jobId: String (Optional)
+     *     privateEndpointName: String (Optional)
+     *     operationType: String(Create/Delete) (Optional)
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Optional)
+     *     statusDetails: String (Optional)
+     *     startTime: Long (Optional)
+     *     endTime: Long (Optional)
+     *     error (Optional): {
+     *         code: String (Optional)
+     *         message: String (Optional)
+     *         innererror (Optional): (recursive schema, see innererror above)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param operationId The identifier of the private endpoint operation.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the status of an EKM proxy private endpoint operation.
+     *
+     * The External Key Manager (EKM) private endpoint operation status along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getEkmPrivateEndpointOperationStatusWithResponseAsync(String operationId,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.getEkmPrivateEndpointOperationStatus(this.getVaultBaseUrl(),
+            this.getServiceVersion().getVersion(), operationId, accept, requestOptions, context));
+    }
+
+    /**
+     * Gets the status of an EKM proxy private endpoint operation.
+     *
+     * The External Key Manager (EKM) private endpoint operation status. Returns the status of a private endpoint create
+     * or delete operation. This operation requires ekm/read permission.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     jobId: String (Optional)
+     *     privateEndpointName: String (Optional)
+     *     operationType: String(Create/Delete) (Optional)
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Optional)
+     *     statusDetails: String (Optional)
+     *     startTime: Long (Optional)
+     *     endTime: Long (Optional)
+     *     error (Optional): {
+     *         code: String (Optional)
+     *         message: String (Optional)
+     *         innererror (Optional): (recursive schema, see innererror above)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param operationId The identifier of the private endpoint operation.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the status of an EKM proxy private endpoint operation.
+     *
+     * The External Key Manager (EKM) private endpoint operation status along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getEkmPrivateEndpointOperationStatusWithResponse(String operationId,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.getEkmPrivateEndpointOperationStatusSync(this.getVaultBaseUrl(),
+            this.getServiceVersion().getVersion(), operationId, accept, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Creates an EKM proxy private endpoint.
+     *
+     * The External Key Manager (EKM) creates a private endpoint to the EKM proxy Private Link Service. A pool may have
+     * up to two private endpoints. This operation requires ekm/write permission.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     privateLinkServiceId: String (Required)
+     *     requestMessage: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     jobId: String (Optional)
+     *     privateEndpointName: String (Optional)
+     *     operationType: String(Create/Delete) (Optional)
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Optional)
+     *     statusDetails: String (Optional)
+     *     startTime: Long (Optional)
+     *     endTime: Long (Optional)
+     *     error (Optional): {
+     *         code: String (Optional)
+     *         message: String (Optional)
+     *         innererror (Optional): (recursive schema, see innererror above)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param peName The name of the private endpoint. Must be 1-24 characters, start and end with an alphanumeric
+     * character, and contain only alphanumeric characters and hyphens.
+     * @param parameters The parameters to create the private endpoint.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a long-running operation on an EKM proxy private endpoint along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> createEkmPrivateEndpointWithResponseAsync(String peName, BinaryData parameters,
+        RequestOptions requestOptions) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.createEkmPrivateEndpoint(this.getVaultBaseUrl(),
+            this.getServiceVersion().getVersion(), peName, contentType, accept, parameters, requestOptions, context));
+    }
+
+    /**
+     * Creates an EKM proxy private endpoint.
+     *
+     * The External Key Manager (EKM) creates a private endpoint to the EKM proxy Private Link Service. A pool may have
+     * up to two private endpoints. This operation requires ekm/write permission.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     privateLinkServiceId: String (Required)
+     *     requestMessage: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     jobId: String (Optional)
+     *     privateEndpointName: String (Optional)
+     *     operationType: String(Create/Delete) (Optional)
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Optional)
+     *     statusDetails: String (Optional)
+     *     startTime: Long (Optional)
+     *     endTime: Long (Optional)
+     *     error (Optional): {
+     *         code: String (Optional)
+     *         message: String (Optional)
+     *         innererror (Optional): (recursive schema, see innererror above)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param peName The name of the private endpoint. Must be 1-24 characters, start and end with an alphanumeric
+     * character, and contain only alphanumeric characters and hyphens.
+     * @param parameters The parameters to create the private endpoint.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a long-running operation on an EKM proxy private endpoint along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> createEkmPrivateEndpointWithResponse(String peName, BinaryData parameters,
+        RequestOptions requestOptions) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.createEkmPrivateEndpointSync(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(),
+            peName, contentType, accept, parameters, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Creates an EKM proxy private endpoint.
+     *
+     * The External Key Manager (EKM) creates a private endpoint to the EKM proxy Private Link Service. A pool may have
+     * up to two private endpoints. This operation requires ekm/write permission.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     privateLinkServiceId: String (Required)
+     *     requestMessage: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     jobId: String (Optional)
+     *     privateEndpointName: String (Optional)
+     *     operationType: String(Create/Delete) (Optional)
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Optional)
+     *     statusDetails: String (Optional)
+     *     startTime: Long (Optional)
+     *     endTime: Long (Optional)
+     *     error (Optional): {
+     *         code: String (Optional)
+     *         message: String (Optional)
+     *         innererror (Optional): (recursive schema, see innererror above)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param peName The name of the private endpoint. Must be 1-24 characters, start and end with an alphanumeric
+     * character, and contain only alphanumeric characters and hyphens.
+     * @param parameters The parameters to create the private endpoint.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link PollerFlux} for polling of a long-running operation on an EKM proxy private endpoint.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<EkmPrivateEndpointOperation, EkmPrivateEndpointOperation>
+        beginCreateEkmPrivateEndpointWithModelAsync(String peName, BinaryData parameters,
+            RequestOptions requestOptions) {
+        return PollerFlux.create(Duration.ofSeconds(1),
+            () -> this.createEkmPrivateEndpointWithResponseAsync(peName, parameters, requestOptions),
+            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
+                .setContext(requestOptions != null && requestOptions.getContext() != null
+                    ? requestOptions.getContext()
+                    : Context.NONE)
+                .setServiceVersion(this.getServiceVersion().getVersion())),
+            TypeReference.createInstance(EkmPrivateEndpointOperation.class),
+            TypeReference.createInstance(EkmPrivateEndpointOperation.class));
+    }
+
+    /**
+     * Creates an EKM proxy private endpoint.
+     *
+     * The External Key Manager (EKM) creates a private endpoint to the EKM proxy Private Link Service. A pool may have
+     * up to two private endpoints. This operation requires ekm/write permission.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     privateLinkServiceId: String (Required)
+     *     requestMessage: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     jobId: String (Optional)
+     *     privateEndpointName: String (Optional)
+     *     operationType: String(Create/Delete) (Optional)
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Optional)
+     *     statusDetails: String (Optional)
+     *     startTime: Long (Optional)
+     *     endTime: Long (Optional)
+     *     error (Optional): {
+     *         code: String (Optional)
+     *         message: String (Optional)
+     *         innererror (Optional): (recursive schema, see innererror above)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param peName The name of the private endpoint. Must be 1-24 characters, start and end with an alphanumeric
+     * character, and contain only alphanumeric characters and hyphens.
+     * @param parameters The parameters to create the private endpoint.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link SyncPoller} for polling of a long-running operation on an EKM proxy private endpoint.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<EkmPrivateEndpointOperation, EkmPrivateEndpointOperation>
+        beginCreateEkmPrivateEndpointWithModel(String peName, BinaryData parameters, RequestOptions requestOptions) {
+        return SyncPoller.createPoller(Duration.ofSeconds(1),
+            () -> this.createEkmPrivateEndpointWithResponse(peName, parameters, requestOptions),
+            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
+                .setContext(requestOptions != null && requestOptions.getContext() != null
+                    ? requestOptions.getContext()
+                    : Context.NONE)
+                .setServiceVersion(this.getServiceVersion().getVersion())),
+            TypeReference.createInstance(EkmPrivateEndpointOperation.class),
+            TypeReference.createInstance(EkmPrivateEndpointOperation.class));
+    }
+
+    /**
+     * Creates an EKM proxy private endpoint.
+     *
+     * The External Key Manager (EKM) creates a private endpoint to the EKM proxy Private Link Service. A pool may have
+     * up to two private endpoints. This operation requires ekm/write permission.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     privateLinkServiceId: String (Required)
+     *     requestMessage: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     jobId: String (Optional)
+     *     privateEndpointName: String (Optional)
+     *     operationType: String(Create/Delete) (Optional)
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Optional)
+     *     statusDetails: String (Optional)
+     *     startTime: Long (Optional)
+     *     endTime: Long (Optional)
+     *     error (Optional): {
+     *         code: String (Optional)
+     *         message: String (Optional)
+     *         innererror (Optional): (recursive schema, see innererror above)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param peName The name of the private endpoint. Must be 1-24 characters, start and end with an alphanumeric
+     * character, and contain only alphanumeric characters and hyphens.
+     * @param parameters The parameters to create the private endpoint.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link PollerFlux} for polling of a long-running operation on an EKM proxy private endpoint.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginCreateEkmPrivateEndpointAsync(String peName, BinaryData parameters,
+        RequestOptions requestOptions) {
+        return PollerFlux.create(Duration.ofSeconds(1),
+            () -> this.createEkmPrivateEndpointWithResponseAsync(peName, parameters, requestOptions),
+            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
+                .setContext(requestOptions != null && requestOptions.getContext() != null
+                    ? requestOptions.getContext()
+                    : Context.NONE)
+                .setServiceVersion(this.getServiceVersion().getVersion())),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Creates an EKM proxy private endpoint.
+     *
+     * The External Key Manager (EKM) creates a private endpoint to the EKM proxy Private Link Service. A pool may have
+     * up to two private endpoints. This operation requires ekm/write permission.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     privateLinkServiceId: String (Required)
+     *     requestMessage: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     jobId: String (Optional)
+     *     privateEndpointName: String (Optional)
+     *     operationType: String(Create/Delete) (Optional)
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Optional)
+     *     statusDetails: String (Optional)
+     *     startTime: Long (Optional)
+     *     endTime: Long (Optional)
+     *     error (Optional): {
+     *         code: String (Optional)
+     *         message: String (Optional)
+     *         innererror (Optional): (recursive schema, see innererror above)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param peName The name of the private endpoint. Must be 1-24 characters, start and end with an alphanumeric
+     * character, and contain only alphanumeric characters and hyphens.
+     * @param parameters The parameters to create the private endpoint.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link SyncPoller} for polling of a long-running operation on an EKM proxy private endpoint.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, BinaryData> beginCreateEkmPrivateEndpoint(String peName, BinaryData parameters,
+        RequestOptions requestOptions) {
+        return SyncPoller.createPoller(Duration.ofSeconds(1),
+            () -> this.createEkmPrivateEndpointWithResponse(peName, parameters, requestOptions),
+            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
+                .setContext(requestOptions != null && requestOptions.getContext() != null
+                    ? requestOptions.getContext()
+                    : Context.NONE)
+                .setServiceVersion(this.getServiceVersion().getVersion())),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Deletes an EKM proxy private endpoint.
+     *
+     * The External Key Manager (EKM) deletes an existing EKM proxy private endpoint. The operation is rejected while an
+     * EKM connection still references the private endpoint. This operation requires ekm/write permission.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     jobId: String (Optional)
+     *     privateEndpointName: String (Optional)
+     *     operationType: String(Create/Delete) (Optional)
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Optional)
+     *     statusDetails: String (Optional)
+     *     startTime: Long (Optional)
+     *     endTime: Long (Optional)
+     *     error (Optional): {
+     *         code: String (Optional)
+     *         message: String (Optional)
+     *         innererror (Optional): (recursive schema, see innererror above)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param peName The name of the private endpoint to delete.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a long-running operation on an EKM proxy private endpoint along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> deleteEkmPrivateEndpointWithResponseAsync(String peName,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.deleteEkmPrivateEndpoint(this.getVaultBaseUrl(),
+            this.getServiceVersion().getVersion(), peName, accept, requestOptions, context));
+    }
+
+    /**
+     * Deletes an EKM proxy private endpoint.
+     *
+     * The External Key Manager (EKM) deletes an existing EKM proxy private endpoint. The operation is rejected while an
+     * EKM connection still references the private endpoint. This operation requires ekm/write permission.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     jobId: String (Optional)
+     *     privateEndpointName: String (Optional)
+     *     operationType: String(Create/Delete) (Optional)
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Optional)
+     *     statusDetails: String (Optional)
+     *     startTime: Long (Optional)
+     *     endTime: Long (Optional)
+     *     error (Optional): {
+     *         code: String (Optional)
+     *         message: String (Optional)
+     *         innererror (Optional): (recursive schema, see innererror above)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param peName The name of the private endpoint to delete.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a long-running operation on an EKM proxy private endpoint along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> deleteEkmPrivateEndpointWithResponse(String peName, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.deleteEkmPrivateEndpointSync(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(),
+            peName, accept, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Deletes an EKM proxy private endpoint.
+     *
+     * The External Key Manager (EKM) deletes an existing EKM proxy private endpoint. The operation is rejected while an
+     * EKM connection still references the private endpoint. This operation requires ekm/write permission.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     jobId: String (Optional)
+     *     privateEndpointName: String (Optional)
+     *     operationType: String(Create/Delete) (Optional)
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Optional)
+     *     statusDetails: String (Optional)
+     *     startTime: Long (Optional)
+     *     endTime: Long (Optional)
+     *     error (Optional): {
+     *         code: String (Optional)
+     *         message: String (Optional)
+     *         innererror (Optional): (recursive schema, see innererror above)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param peName The name of the private endpoint to delete.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link PollerFlux} for polling of a long-running operation on an EKM proxy private endpoint.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<EkmPrivateEndpointOperation, Void> beginDeleteEkmPrivateEndpointWithModelAsync(String peName,
+        RequestOptions requestOptions) {
+        return PollerFlux.create(Duration.ofSeconds(1),
+            () -> this.deleteEkmPrivateEndpointWithResponseAsync(peName, requestOptions),
+            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
+                .setContext(requestOptions != null && requestOptions.getContext() != null
+                    ? requestOptions.getContext()
+                    : Context.NONE)
+                .setServiceVersion(this.getServiceVersion().getVersion())),
+            TypeReference.createInstance(EkmPrivateEndpointOperation.class), TypeReference.createInstance(Void.class));
+    }
+
+    /**
+     * Deletes an EKM proxy private endpoint.
+     *
+     * The External Key Manager (EKM) deletes an existing EKM proxy private endpoint. The operation is rejected while an
+     * EKM connection still references the private endpoint. This operation requires ekm/write permission.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     jobId: String (Optional)
+     *     privateEndpointName: String (Optional)
+     *     operationType: String(Create/Delete) (Optional)
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Optional)
+     *     statusDetails: String (Optional)
+     *     startTime: Long (Optional)
+     *     endTime: Long (Optional)
+     *     error (Optional): {
+     *         code: String (Optional)
+     *         message: String (Optional)
+     *         innererror (Optional): (recursive schema, see innererror above)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param peName The name of the private endpoint to delete.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link SyncPoller} for polling of a long-running operation on an EKM proxy private endpoint.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<EkmPrivateEndpointOperation, Void> beginDeleteEkmPrivateEndpointWithModel(String peName,
+        RequestOptions requestOptions) {
+        return SyncPoller.createPoller(Duration.ofSeconds(1),
+            () -> this.deleteEkmPrivateEndpointWithResponse(peName, requestOptions),
+            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
+                .setContext(requestOptions != null && requestOptions.getContext() != null
+                    ? requestOptions.getContext()
+                    : Context.NONE)
+                .setServiceVersion(this.getServiceVersion().getVersion())),
+            TypeReference.createInstance(EkmPrivateEndpointOperation.class), TypeReference.createInstance(Void.class));
+    }
+
+    /**
+     * Deletes an EKM proxy private endpoint.
+     *
+     * The External Key Manager (EKM) deletes an existing EKM proxy private endpoint. The operation is rejected while an
+     * EKM connection still references the private endpoint. This operation requires ekm/write permission.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     jobId: String (Optional)
+     *     privateEndpointName: String (Optional)
+     *     operationType: String(Create/Delete) (Optional)
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Optional)
+     *     statusDetails: String (Optional)
+     *     startTime: Long (Optional)
+     *     endTime: Long (Optional)
+     *     error (Optional): {
+     *         code: String (Optional)
+     *         message: String (Optional)
+     *         innererror (Optional): (recursive schema, see innererror above)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param peName The name of the private endpoint to delete.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link PollerFlux} for polling of a long-running operation on an EKM proxy private endpoint.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, Void> beginDeleteEkmPrivateEndpointAsync(String peName,
+        RequestOptions requestOptions) {
+        return PollerFlux.create(Duration.ofSeconds(1),
+            () -> this.deleteEkmPrivateEndpointWithResponseAsync(peName, requestOptions),
+            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
+                .setContext(requestOptions != null && requestOptions.getContext() != null
+                    ? requestOptions.getContext()
+                    : Context.NONE)
+                .setServiceVersion(this.getServiceVersion().getVersion())),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(Void.class));
+    }
+
+    /**
+     * Deletes an EKM proxy private endpoint.
+     *
+     * The External Key Manager (EKM) deletes an existing EKM proxy private endpoint. The operation is rejected while an
+     * EKM connection still references the private endpoint. This operation requires ekm/write permission.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     jobId: String (Optional)
+     *     privateEndpointName: String (Optional)
+     *     operationType: String(Create/Delete) (Optional)
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Optional)
+     *     statusDetails: String (Optional)
+     *     startTime: Long (Optional)
+     *     endTime: Long (Optional)
+     *     error (Optional): {
+     *         code: String (Optional)
+     *         message: String (Optional)
+     *         innererror (Optional): (recursive schema, see innererror above)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param peName The name of the private endpoint to delete.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link SyncPoller} for polling of a long-running operation on an EKM proxy private endpoint.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, Void> beginDeleteEkmPrivateEndpoint(String peName, RequestOptions requestOptions) {
+        return SyncPoller.createPoller(Duration.ofSeconds(1),
+            () -> this.deleteEkmPrivateEndpointWithResponse(peName, requestOptions),
+            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
+                .setContext(requestOptions != null && requestOptions.getContext() != null
+                    ? requestOptions.getContext()
+                    : Context.NONE)
+                .setServiceVersion(this.getServiceVersion().getVersion())),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(Void.class));
+    }
+
+    /**
+     * Gets an EKM proxy private endpoint.
+     *
+     * The External Key Manager (EKM) gets an existing EKM proxy private endpoint. This operation requires ekm/read
+     * permission.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Optional)
+     *     location: String (Optional)
+     *     provisioningState: String(Succeeded/Failed/Updating/Deleting) (Optional)
+     *     properties (Optional): {
+     *         privateLinkServiceId: String (Optional)
+     *         privateLinkServiceConnectionName: String (Optional)
+     *     }
+     *     privateLinkServiceConnectionState (Optional): {
+     *         status: String(Pending/Approved/Rejected/Disconnected) (Optional)
+     *         description: String (Optional)
+     *         actionsRequired: String (Optional)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param peName The name of the private endpoint to get.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return an EKM proxy private endpoint.
+     *
+     * The External Key Manager (EKM) gets an existing EKM proxy private endpoint along with {@link Response} on
+     * successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getEkmPrivateEndpointWithResponseAsync(String peName,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.getEkmPrivateEndpoint(this.getVaultBaseUrl(),
+            this.getServiceVersion().getVersion(), peName, accept, requestOptions, context));
+    }
+
+    /**
+     * Gets an EKM proxy private endpoint.
+     *
+     * The External Key Manager (EKM) gets an existing EKM proxy private endpoint. This operation requires ekm/read
+     * permission.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Optional)
+     *     location: String (Optional)
+     *     provisioningState: String(Succeeded/Failed/Updating/Deleting) (Optional)
+     *     properties (Optional): {
+     *         privateLinkServiceId: String (Optional)
+     *         privateLinkServiceConnectionName: String (Optional)
+     *     }
+     *     privateLinkServiceConnectionState (Optional): {
+     *         status: String(Pending/Approved/Rejected/Disconnected) (Optional)
+     *         description: String (Optional)
+     *         actionsRequired: String (Optional)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param peName The name of the private endpoint to get.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return an EKM proxy private endpoint.
+     *
+     * The External Key Manager (EKM) gets an existing EKM proxy private endpoint along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getEkmPrivateEndpointWithResponse(String peName, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.getEkmPrivateEndpointSync(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), peName,
+            accept, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Lists the EKM proxy private endpoints.
+     *
+     * The External Key Manager (EKM) lists all EKM proxy private endpoints on the pool. This operation requires
+     * ekm/read permission.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     value (Optional): [
+     *          (Optional){
+     *             name: String (Optional)
+     *             location: String (Optional)
+     *             provisioningState: String(Succeeded/Failed/Updating/Deleting) (Optional)
+     *             properties (Optional): {
+     *                 privateLinkServiceId: String (Optional)
+     *                 privateLinkServiceConnectionName: String (Optional)
+     *             }
+     *             privateLinkServiceConnectionState (Optional): {
+     *                 status: String(Pending/Approved/Rejected/Disconnected) (Optional)
+     *                 description: String (Optional)
+     *                 actionsRequired: String (Optional)
+     *             }
+     *         }
+     *     ]
+     * }
+     * }
+     * </pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the result of a request to list EKM proxy private endpoints along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> listEkmPrivateEndpointsWithResponseAsync(RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.listEkmPrivateEndpoints(this.getVaultBaseUrl(),
+            this.getServiceVersion().getVersion(), accept, requestOptions, context));
+    }
+
+    /**
+     * Lists the EKM proxy private endpoints.
+     *
+     * The External Key Manager (EKM) lists all EKM proxy private endpoints on the pool. This operation requires
+     * ekm/read permission.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     value (Optional): [
+     *          (Optional){
+     *             name: String (Optional)
+     *             location: String (Optional)
+     *             provisioningState: String(Succeeded/Failed/Updating/Deleting) (Optional)
+     *             properties (Optional): {
+     *                 privateLinkServiceId: String (Optional)
+     *                 privateLinkServiceConnectionName: String (Optional)
+     *             }
+     *             privateLinkServiceConnectionState (Optional): {
+     *                 status: String(Pending/Approved/Rejected/Disconnected) (Optional)
+     *                 description: String (Optional)
+     *                 actionsRequired: String (Optional)
+     *             }
+     *         }
+     *     ]
+     * }
+     * }
+     * </pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the result of a request to list EKM proxy private endpoints along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> listEkmPrivateEndpointsWithResponse(RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.listEkmPrivateEndpointsSync(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(),
+            accept, requestOptions, Context.NONE);
     }
 }

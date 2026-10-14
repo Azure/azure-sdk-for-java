@@ -10,6 +10,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.security.keyvault.administration.models.KeyVaultEkmConnectivityMode;
 import java.io.IOException;
 import java.util.List;
 
@@ -43,6 +44,13 @@ public final class EkmConnection implements JsonSerializable<EkmConnection> {
      */
     @Generated
     private String serverSubjectCommonName;
+
+    /*
+     * The connectivity mode used to reach the EKM proxy. Defaults to "Public". In "PrivateEndpoint" mode, the host
+     * field holds the name of a private endpoint (peName) instead of a DNS name or IP address.
+     */
+    @Generated
+    private KeyVaultEkmConnectivityMode connectivityMode;
 
     /**
      * Creates an instance of EkmConnection class.
@@ -123,6 +131,32 @@ public final class EkmConnection implements JsonSerializable<EkmConnection> {
     }
 
     /**
+     * Get the connectivityMode property: The connectivity mode used to reach the EKM proxy. Defaults to "Public". In
+     * "PrivateEndpoint" mode, the host field holds the name of a private endpoint (peName) instead of a DNS name or IP
+     * address.
+     * 
+     * @return the connectivityMode value.
+     */
+    @Generated
+    public KeyVaultEkmConnectivityMode getConnectivityMode() {
+        return this.connectivityMode;
+    }
+
+    /**
+     * Set the connectivityMode property: The connectivity mode used to reach the EKM proxy. Defaults to "Public". In
+     * "PrivateEndpoint" mode, the host field holds the name of a private endpoint (peName) instead of a DNS name or IP
+     * address.
+     * 
+     * @param connectivityMode the connectivityMode value to set.
+     * @return the EkmConnection object itself.
+     */
+    @Generated
+    public EkmConnection setConnectivityMode(KeyVaultEkmConnectivityMode connectivityMode) {
+        this.connectivityMode = connectivityMode;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Generated
@@ -134,6 +168,8 @@ public final class EkmConnection implements JsonSerializable<EkmConnection> {
             (writer, element) -> writer.writeBinary(element));
         jsonWriter.writeStringField("path_prefix", this.pathPrefix);
         jsonWriter.writeStringField("server_subject_common_name", this.serverSubjectCommonName);
+        jsonWriter.writeStringField("connectivity_mode",
+            this.connectivityMode == null ? null : this.connectivityMode.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -153,6 +189,7 @@ public final class EkmConnection implements JsonSerializable<EkmConnection> {
             List<byte[]> serverCaCertificates = null;
             String pathPrefix = null;
             String serverSubjectCommonName = null;
+            KeyVaultEkmConnectivityMode connectivityMode = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -165,6 +202,8 @@ public final class EkmConnection implements JsonSerializable<EkmConnection> {
                     pathPrefix = reader.getString();
                 } else if ("server_subject_common_name".equals(fieldName)) {
                     serverSubjectCommonName = reader.getString();
+                } else if ("connectivity_mode".equals(fieldName)) {
+                    connectivityMode = KeyVaultEkmConnectivityMode.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
@@ -172,6 +211,7 @@ public final class EkmConnection implements JsonSerializable<EkmConnection> {
             EkmConnection deserializedEkmConnection = new EkmConnection(host, serverCaCertificates);
             deserializedEkmConnection.pathPrefix = pathPrefix;
             deserializedEkmConnection.serverSubjectCommonName = serverSubjectCommonName;
+            deserializedEkmConnection.connectivityMode = connectivityMode;
 
             return deserializedEkmConnection;
         });

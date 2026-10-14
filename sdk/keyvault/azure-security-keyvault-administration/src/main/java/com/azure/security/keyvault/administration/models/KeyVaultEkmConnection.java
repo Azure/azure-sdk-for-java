@@ -21,12 +21,15 @@ public final class KeyVaultEkmConnection {
     private final List<byte[]> serverCaCertificates;
     private String pathPrefix;
     private String serverSubjectCommonName;
+    private KeyVaultEkmConnectivityMode connectivityMode;
 
     /**
      * Creates a new {@link KeyVaultEkmConnection} with the specified details.
      *
      * @param host The EKM proxy FQDN (Fully Qualified Domain Name). Only allowed characters are {@code a-z},
-     * {@code A-Z}, {@code 0-9}, hyphen ({@code -}), dot ({@code .}), and colon ({@code :}).
+     * {@code A-Z}, {@code 0-9}, hyphen ({@code -}), dot ({@code .}), and colon ({@code :}). When the
+     * {@link #getConnectivityMode() connectivity mode} is {@link KeyVaultEkmConnectivityMode#PRIVATE_ENDPOINT}, this is
+     * the name of an EKM proxy private endpoint instead.
      * @param serverCaCertificates The root CA certificate chain that issued the proxy server's certificate. A list of
      * certificates in the certificate chain, each in DER format.
      * @throws IllegalArgumentException if {@code host} is {@code null} or empty.
@@ -45,7 +48,9 @@ public final class KeyVaultEkmConnection {
 
     /**
      * Get the EKM proxy FQDN (Fully Qualified Domain Name). Only allowed characters are {@code a-z}, {@code A-Z},
-     * {@code 0-9}, hyphen ({@code -}), dot ({@code .}), and colon ({@code :}).
+     * {@code 0-9}, hyphen ({@code -}), dot ({@code .}), and colon ({@code :}). When the
+     * {@link #getConnectivityMode() connectivity mode} is {@link KeyVaultEkmConnectivityMode#PRIVATE_ENDPOINT}, this is
+     * the name of an EKM proxy private endpoint instead.
      *
      * @return The host value.
      */
@@ -100,6 +105,32 @@ public final class KeyVaultEkmConnection {
      */
     public KeyVaultEkmConnection setServerSubjectCommonName(String serverSubjectCommonName) {
         this.serverSubjectCommonName = serverSubjectCommonName;
+        return this;
+    }
+
+    /**
+     * Get the connectivity mode used to reach the EKM proxy. If not set, the service uses
+     * {@link KeyVaultEkmConnectivityMode#PUBLIC}.
+     *
+     * @return The connectivity mode.
+     */
+    public KeyVaultEkmConnectivityMode getConnectivityMode() {
+        return this.connectivityMode;
+    }
+
+    /**
+     * Set the connectivity mode used to reach the EKM proxy. When set to
+     * {@link KeyVaultEkmConnectivityMode#PRIVATE_ENDPOINT}, {@link #getHost() host} must be the name of an EKM proxy
+     * private endpoint, and {@link #setServerSubjectCommonName(String) the server subject common name} should be set
+     * so the EKM proxy's server certificate can still be validated.
+     * <p>
+     * Requires service version {@code 2026-07-01-preview} or later.
+     *
+     * @param connectivityMode The connectivity mode to set.
+     * @return The updated {@link KeyVaultEkmConnection} object.
+     */
+    public KeyVaultEkmConnection setConnectivityMode(KeyVaultEkmConnectivityMode connectivityMode) {
+        this.connectivityMode = connectivityMode;
         return this;
     }
 }

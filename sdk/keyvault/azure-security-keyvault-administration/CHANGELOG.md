@@ -1,6 +1,6 @@
 # Release History
 
-## 4.9.0-beta.2 (Unreleased)
+## 4.9.0-beta.3 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,18 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 4.9.0-beta.2 (2026-10-14)
+
+### Features Added
+
+- Added support for service version `2026-07-01-preview`.
+- Added External Key Manager (EKM) proxy private endpoint support to `KeyVaultEkmClient` and `KeyVaultEkmAsyncClient`, including the `beginCreateEkmPrivateEndpoint`, `getEkmPrivateEndpoint`, `listEkmPrivateEndpoints`, `beginDeleteEkmPrivateEndpoint`, and `getEkmPrivateEndpointOperationStatus` operations.
+- Added `KeyVaultEkmConnectivityMode` to `KeyVaultEkmConnection` to route an EKM connection through an EKM proxy private endpoint.
+
+### Other Changes
+
+- The default service version is now `2026-07-01-preview`.
 
 ## 4.8.3 (2026-10-06)
 

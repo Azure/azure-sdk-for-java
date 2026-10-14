@@ -37,7 +37,11 @@ public enum KeyVaultAdministrationServiceVersion implements ServiceVersion {
     /**
      * Service version {@code 2026-01-01-preview}.
      */
-    V2026_01_01_PREVIEW("2026-01-01-preview");
+    V2026_01_01_PREVIEW("2026-01-01-preview"),
+    /**
+     * Service version {@code 2026-07-01-preview}.
+     */
+    V2026_07_01_PREVIEW("2026-07-01-preview");
 
     private final String version;
 
@@ -59,6 +63,6 @@ public enum KeyVaultAdministrationServiceVersion implements ServiceVersion {
      * @return The latest {@link KeyVaultAdministrationServiceVersion}.
      */
     public static KeyVaultAdministrationServiceVersion getLatest() {
-        return V2026_01_01_PREVIEW;
+        return V2026_07_01_PREVIEW;
     }
 }
