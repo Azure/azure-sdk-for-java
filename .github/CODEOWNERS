@@ -183,9 +183,6 @@
 # AzureSdkOwners:                                                  @alzimmermsft @jonathangiles @vcolin7
 # ServiceLabel: %clientcore
 
-# PRLabel: %Cognitive - Anomaly Detector
-/sdk/anomalydetector/                                              @mengaims @Azure/azure-java-sdk
-
 # ServiceLabel: %Cognitive - Anomaly Detector
 # ServiceOwners:                                                   @bowgong @yingqunpku
 

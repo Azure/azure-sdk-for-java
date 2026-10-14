@@ -14,7 +14,6 @@
     <module>sdk/agrifood</module>
     <module>sdk/ai</module>
     <module>sdk/alertsmanagement</module>
-    <module>sdk/anomalydetector</module>
     <module>sdk/apicenter</module>
     <module>sdk/apimanagement</module>
     <module>sdk/appcomplianceautomation</module>
