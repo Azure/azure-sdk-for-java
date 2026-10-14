@@ -10,14 +10,12 @@ trigger:
     include:
       - sdk/synapse/ci.yml
       - sdk/synapse/azure-analytics-synapse-artifacts/
-      - sdk/synapse/azure-analytics-synapse-managedprivateendpoints/
       - sdk/synapse/azure-analytics-synapse-monitoring/
       - sdk/synapse/azure-analytics-synapse-spark/
       - sdk/synapse/azure-resourcemanager-synapse/
     exclude:
       - sdk/synapse/pom.xml
       - sdk/synapse/azure-analytics-synapse-artifacts/pom.xml
-      - sdk/synapse/azure-analytics-synapse-managedprivateendpoints/pom.xml
       - sdk/synapse/azure-analytics-synapse-monitoring/pom.xml
       - sdk/synapse/azure-analytics-synapse-spark/pom.xml
       - sdk/synapse/azure-resourcemanager-synapse/pom.xml
@@ -33,14 +31,12 @@ pr:
     include:
       - sdk/synapse/ci.yml
       - sdk/synapse/azure-analytics-synapse-artifacts/
-      - sdk/synapse/azure-analytics-synapse-managedprivateendpoints/
       - sdk/synapse/azure-analytics-synapse-monitoring/
       - sdk/synapse/azure-analytics-synapse-spark/
       - sdk/synapse/azure-resourcemanager-synapse/
     exclude:
       - sdk/synapse/pom.xml
       - sdk/synapse/azure-analytics-synapse-artifacts/pom.xml
-      - sdk/synapse/azure-analytics-synapse-managedprivateendpoints/pom.xml
       - sdk/synapse/azure-analytics-synapse-monitoring/pom.xml
       - sdk/synapse/azure-analytics-synapse-spark/pom.xml
       - sdk/synapse/azure-resourcemanager-synapse/pom.xml
@@ -52,10 +48,6 @@ parameters:
     default: true
   - name: release_azureanalyticssynapsespark
     displayName: 'azure-analytics-synapse-spark'
-    type: boolean
-    default: true
-  - name: release_azureanalyticssynapsemanagedprivateendpoints
-    displayName: 'azure-analytics-synapse-managedprivateendpoints'
     type: boolean
     default: true
   - name: release_azureanalyticssynapsemonitoring
@@ -80,10 +72,6 @@ extends:
         groupId: com.azure
         safeName: azureanalyticssynapsespark
         releaseInBatch: ${{ parameters.release_azureanalyticssynapsespark }}
-      - name: azure-analytics-synapse-managedprivateendpoints
-        groupId: com.azure
-        safeName: azureanalyticssynapsemanagedprivateendpoints
-        releaseInBatch: ${{ parameters.release_azureanalyticssynapsemanagedprivateendpoints }}
       - name: azure-analytics-synapse-monitoring
         groupId: com.azure
         safeName: azureanalyticssynapsemonitoring
