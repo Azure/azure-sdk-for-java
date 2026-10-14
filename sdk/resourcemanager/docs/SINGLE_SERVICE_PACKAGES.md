@@ -1018,16 +1018,6 @@ service
 
 <br/>
 <details>
-<summary> hanaonazure </summary>
-
-* [package-2017-11](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/hanaonazure/resource-manager#tag-package-2017-11)
-    * [1.0.0-beta.3](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-hanaonazure/1.0.0-beta.3)
-    * [1.0.0-beta.2](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-hanaonazure/1.0.0-beta.2)
-    * [1.0.0-beta.1](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-hanaonazure/1.0.0-beta.1)
-</details>
-
-<br/>
-<details>
 <summary> hardwaresecuritymodules </summary>
 
 * [package-2021-11](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/hardwaresecuritymodules/resource-manager#tag-package-2021-11)
