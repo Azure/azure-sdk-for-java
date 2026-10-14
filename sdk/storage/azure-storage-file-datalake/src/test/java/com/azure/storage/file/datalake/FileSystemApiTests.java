@@ -2579,7 +2579,12 @@ public class FileSystemApiTests extends DataLakeTestBase {
         assertFalse(dfsAuthorizationHeaders.isEmpty(),
             "Expected to observe at least one DFS endpoint request; saw none");
         assertTrue(dfsAuthorizationHeaders.stream().allMatch(auth -> auth.startsWith("Bearer ")),
-            "Expected all DFS endpoint requests to use Bearer auth; saw " + dfsAuthorizationHeaders);
+            // Avoid printing full headers
+            "Expected all DFS endpoint requests to use Bearer auth; saw " + dfsAuthorizationHeaders.stream()
+                .map(auth -> auth.length() < 10
+                    ? "******"
+                    : auth.substring(0, 5) + "..." + auth.substring(auth.length() - 5))
+                .collect(Collectors.toList()));
     }
 
     private DataLakeFileSystemClient sessionEnabledFileSystemClient(HttpPipelinePolicy... policies) {
