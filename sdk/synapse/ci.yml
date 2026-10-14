@@ -9,7 +9,6 @@ trigger:
   paths:
     include:
       - sdk/synapse/ci.yml
-      - sdk/synapse/azure-analytics-synapse-accesscontrol/
       - sdk/synapse/azure-analytics-synapse-artifacts/
       - sdk/synapse/azure-analytics-synapse-managedprivateendpoints/
       - sdk/synapse/azure-analytics-synapse-monitoring/
@@ -17,7 +16,6 @@ trigger:
       - sdk/synapse/azure-resourcemanager-synapse/
     exclude:
       - sdk/synapse/pom.xml
-      - sdk/synapse/azure-analytics-synapse-accesscontrol/pom.xml
       - sdk/synapse/azure-analytics-synapse-artifacts/pom.xml
       - sdk/synapse/azure-analytics-synapse-managedprivateendpoints/pom.xml
       - sdk/synapse/azure-analytics-synapse-monitoring/pom.xml
@@ -34,7 +32,6 @@ pr:
   paths:
     include:
       - sdk/synapse/ci.yml
-      - sdk/synapse/azure-analytics-synapse-accesscontrol/
       - sdk/synapse/azure-analytics-synapse-artifacts/
       - sdk/synapse/azure-analytics-synapse-managedprivateendpoints/
       - sdk/synapse/azure-analytics-synapse-monitoring/
@@ -42,7 +39,6 @@ pr:
       - sdk/synapse/azure-resourcemanager-synapse/
     exclude:
       - sdk/synapse/pom.xml
-      - sdk/synapse/azure-analytics-synapse-accesscontrol/pom.xml
       - sdk/synapse/azure-analytics-synapse-artifacts/pom.xml
       - sdk/synapse/azure-analytics-synapse-managedprivateendpoints/pom.xml
       - sdk/synapse/azure-analytics-synapse-monitoring/pom.xml
@@ -50,10 +46,6 @@ pr:
       - sdk/synapse/azure-resourcemanager-synapse/pom.xml
 
 parameters:
-  - name: release_azureanalyticssynapseaccesscontrol
-    displayName: 'azure-analytics-synapse-accesscontrol'
-    type: boolean
-    default: true
   - name: release_azureanalyticssynapseartifacts
     displayName: 'azure-analytics-synapse-artifacts'
     type: boolean
@@ -80,10 +72,6 @@ extends:
   parameters:
     ServiceDirectory: synapse
     Artifacts:
-      - name: azure-analytics-synapse-accesscontrol
-        groupId: com.azure
-        safeName: azureanalyticssynapseaccesscontrol
-        releaseInBatch: ${{ parameters.release_azureanalyticssynapseaccesscontrol }}
       - name: azure-analytics-synapse-artifacts
         groupId: com.azure
         safeName: azureanalyticssynapseartifacts
