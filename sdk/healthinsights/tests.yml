@@ -9,9 +9,6 @@ extends:
   parameters:
     ServiceDirectory: healthinsights
     Artifacts:
-      - name: azure-health-insights-clinicalmatching
-        groupId: com.azure
-        safeName: azurehealthinsightsclinicalmatching
       - name: azure-health-insights-radiologyinsights
         groupId: com.azure
         safeName: azurehealthinsightsradiologyinsights
