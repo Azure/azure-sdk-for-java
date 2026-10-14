@@ -146,12 +146,26 @@ final class ServerSentEventStream {
                 return Flux.empty();
             }
             ByteBuffer input = signal.get().duplicate();
-            return Flux.<ServerSentEventFrame>generate(sink -> {
-                ServerSentEventFrame frame = decoder.nextFrame(input);
-                if (frame == null) {
-                    sink.complete();
-                } else {
-                    sink.next(frame);
+            // Iterable exhaustion completes without another request after the last frame.
+            return Flux.fromIterable(() -> new Iterator<ServerSentEventFrame>() {
+                private ServerSentEventFrame next;
+
+                @Override
+                public boolean hasNext() {
+                    if (next == null) {
+                        next = decoder.nextFrame(input);
+                    }
+                    return next != null;
+                }
+
+                @Override
+                public ServerSentEventFrame next() {
+                    if (!hasNext()) {
+                        throw new NoSuchElementException();
+                    }
+                    ServerSentEventFrame frame = next;
+                    next = null;
+                    return frame;
                 }
             });
         }, 1).concatWith(Flux.defer(() -> {

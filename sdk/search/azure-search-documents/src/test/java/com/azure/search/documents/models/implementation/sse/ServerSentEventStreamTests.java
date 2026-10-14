@@ -28,6 +28,7 @@ import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.CharacterCodingException;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -633,6 +634,24 @@ public class ServerSentEventStreamTests {
         StepVerifier.create(ServerSentEventStreams.toFlux(response(body), CONVERTER))
             .expectNext("message:first")
             .verifyErrorSatisfies(error -> assertSame(failure, error));
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    public void asyncExactDemandPropagatesCompletionAndTransportError(boolean transportError) {
+        IOException failure = new IOException("transport failed");
+        for (String suffix : Arrays.asList("", ": trailing comment\r\n\r\n")) {
+            Flux<ByteBuffer> bytes = Flux.just(buffer("data: first\r\n\r\n" + suffix));
+            BinaryData body = reactiveBody(transportError ? bytes.concatWith(Flux.error(failure)) : bytes);
+            StepVerifier.Step<String> verifier
+                = StepVerifier.create(ServerSentEventStreams.toFlux(response(body), CONVERTER), 1)
+                    .expectNext("message:first");
+            if (transportError) {
+                verifier.expectErrorSatisfies(error -> assertSame(failure, error)).verify(Duration.ofSeconds(5));
+            } else {
+                verifier.expectComplete().verify(Duration.ofSeconds(5));
+            }
+        }
     }
 
     @Test
