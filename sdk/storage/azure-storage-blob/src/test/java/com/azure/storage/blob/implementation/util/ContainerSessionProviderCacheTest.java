@@ -53,18 +53,18 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * Deterministic, network-free tests for {@link ContainerSessionClient}'s time-based, per-container caching
+ * Deterministic, network-free tests for {@link ContainerSessionProvider}'s time-based, per-container caching
  * behavior.
  * <p>
- * These tests drive {@link ContainerSessionClient} with an injectable {@link Clock} and a fake HTTP transport
+ * These tests drive {@link ContainerSessionProvider} with an injectable {@link Clock} and a fake HTTP transport
  * ({@link CreateSessionTransport}) so the expiry, proactive-refresh, and per-container independence logic
  * can be exercised without waiting for real credential expiration or hitting the service.
- * {@link ContainerSessionClientTests} covers session acquisition through the service client; these tests
+ * {@link ContainerSessionProviderTests} covers session acquisition through the service client; these tests
  * focus on cache timing, returned credentials, and CreateSession call counts. Per-container acquisition
  * cooldown is shared across independent pipelines that reuse the same {@link SessionOptions} instance. Tests install
- * an internal fake client in the options to avoid network access.
+ * an internal fake provider in the options to avoid network access.
  */
-public class ContainerSessionClientCacheTest {
+public class ContainerSessionProviderCacheTest {
 
     private static final String ACCOUNT_NAME = "testaccount";
     private static final String CONTAINER_A = "container-a";
@@ -78,7 +78,7 @@ public class ContainerSessionClientCacheTest {
 
     private MutableClock clock;
     private CreateSessionTransport httpClient;
-    private ContainerSessionClient provider;
+    private ContainerSessionProvider provider;
     private SessionOptions sessionOptions;
 
     @BeforeEach
@@ -87,7 +87,7 @@ public class ContainerSessionClientCacheTest {
         httpClient = new CreateSessionTransport();
 
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(httpClient).build();
-        provider = new ContainerSessionClient(pipeline, "https://" + ACCOUNT_NAME + ".blob.core.windows.net",
+        provider = new ContainerSessionProvider(pipeline, "https://" + ACCOUNT_NAME + ".blob.core.windows.net",
             BlobServiceVersion.getLatest(), ACCOUNT_NAME, clock);
         initializeSessionOptions();
     }
@@ -160,7 +160,7 @@ public class ContainerSessionClientCacheTest {
     private void configureTestProvider() {
         clock = new MutableClock(Instant.now());
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(httpClient).build();
-        provider = new ContainerSessionClient(pipeline, "https://" + ACCOUNT_NAME + ".blob.core.windows.net",
+        provider = new ContainerSessionProvider(pipeline, "https://" + ACCOUNT_NAME + ".blob.core.windows.net",
             BlobServiceVersion.getLatest(), ACCOUNT_NAME, clock);
         initializeSessionOptions();
     }

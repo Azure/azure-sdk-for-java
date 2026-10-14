@@ -33,13 +33,13 @@ import java.util.concurrent.ConcurrentHashMap;
 import static com.azure.storage.common.implementation.Constants.HeaderConstants.ERROR_CODE_HEADER_NAME;
 
 /**
- * An SDK-managed, thread-safe session client that caches credentials per container.
+ * An SDK-managed, thread-safe session provider that caches credentials per container.
  */
-final class ContainerSessionClient extends SessionProvider {
+final class ContainerSessionProvider extends SessionProvider {
 
     static final int IDLE_EVICTION_THRESHOLD_MINUTES = 1;
 
-    private static final ClientLogger LOGGER = new ClientLogger(ContainerSessionClient.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ContainerSessionProvider.class);
     private static final Duration IDLE_EVICTION_THRESHOLD = Duration.ofMinutes(IDLE_EVICTION_THRESHOLD_MINUTES);
     private static final Duration DEFAULT_EXPIRATION_OFFSET = Duration.ofMinutes(5L);
     private static final String FEATURE_NOT_ENABLED = "FeatureNotEnabled";
@@ -50,7 +50,7 @@ final class ContainerSessionClient extends SessionProvider {
     private final Clock clock;
     private final ConcurrentHashMap<String, ContainerSessionCache> containerSessionCaches = new ConcurrentHashMap<>();
 
-    ContainerSessionClient(HttpPipeline bearerPipeline, String url, BlobServiceVersion serviceVersion,
+    ContainerSessionProvider(HttpPipeline bearerPipeline, String url, BlobServiceVersion serviceVersion,
         String accountName, Clock clock) {
         this.endpoint = BuilderHelper.getSessionEndpoint(url);
         this.azureBlobStorage = new AzureBlobStorageImplBuilder().pipeline(bearerPipeline)
@@ -225,7 +225,7 @@ final class ContainerSessionClient extends SessionProvider {
         private final Clock clock;
         private volatile SessionCredential fallback;
 
-        private ContainerSessionCache(ContainerSessionClient provider, Clock clock, String containerName,
+        private ContainerSessionCache(ContainerSessionProvider provider, Clock clock, String containerName,
             String resolvedAccountName, OffsetDateTime lastAccess) {
             this.clock = clock;
             this.cache = new AutoRefreshingCache<>(() -> {

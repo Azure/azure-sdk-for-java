@@ -178,7 +178,7 @@ public final class BuilderHelper {
                         logOptions, effectiveHttpClient, clientOptions, endpoint, effectiveServiceVersion, accountName);
                 } else {
                     sessionProvider = SessionOptionsAccessor.getOrCreateSessionClient(sessionOptions,
-                        SessionProvider.class, () -> createConfiguredSessionClient(sessionOptions));
+                        SessionProvider.class, () -> createConfiguredSessionProvider(sessionOptions));
                 }
                 policies.add(new SessionAuthenticationPolicy(bearerPolicy, sessionProvider, sessionOptions));
             }
@@ -229,17 +229,17 @@ public final class BuilderHelper {
         HttpLoggingPolicy sessionLoggingPolicy = createSessionLoggingPolicy(logOptions);
         bearerPolicies.replaceAll(policy -> policy instanceof HttpLoggingPolicy ? sessionLoggingPolicy : policy);
 
-        return new ContainerSessionClient(createPipeline(bearerPolicies, httpClient, clientOptions), endpoint,
+        return new ContainerSessionProvider(createPipeline(bearerPolicies, httpClient, clientOptions), endpoint,
             serviceVersion, accountName, Clock.systemUTC());
     }
 
-    private static ContainerSessionClient createConfiguredSessionClient(SessionOptions sessionOptions) {
+    private static ContainerSessionProvider createConfiguredSessionProvider(SessionOptions sessionOptions) {
         String endpoint = SessionOptionsAccessor.getEndpoint(sessionOptions);
         TokenCredential credential = SessionOptionsAccessor.getCredential(sessionOptions);
         String sessionEndpoint = getSessionEndpoint(endpoint);
         BlobServiceClient client
             = new BlobServiceClientBuilder().endpoint(sessionEndpoint).credential(credential).buildClient();
-        return new ContainerSessionClient(createSessionPipeline(client), sessionEndpoint,
+        return new ContainerSessionProvider(createSessionPipeline(client), sessionEndpoint,
             BlobServiceVersion.getLatest(), sessionOptions.getAccountName(), Clock.systemUTC());
     }
 
