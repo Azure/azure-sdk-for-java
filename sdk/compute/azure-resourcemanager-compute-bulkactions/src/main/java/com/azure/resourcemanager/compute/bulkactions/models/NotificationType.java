@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * The delivery method for scheduled action notifications.
+ * The delivery method for recurring bulk action notifications.
  */
 public final class NotificationType extends ExpandableStringEnum<NotificationType> {
     /**
