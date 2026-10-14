@@ -41,10 +41,14 @@ public final class ChangeFeedProcessorItem {
 
     /**
      * Gets the change feed previous item.
-     * For delete operations, previous image is always going to be provided.
-     * The previous image on replace operations is not going to be exposed by default and requires account-level or container-level opt-in.
+     * A previous image is available only when it was captured for the operation under the effective container or
+     * account-level retention settings and is still available in the change feed retention window.
+     * Replace operations include patch operations and upserts that update an existing item.
+     * Creating an item has no previous image. Delete operations do not always include a previous image.
      *
-     * @return change feed previous item.
+     * @see CosmosContainerProperties#setChangeFeedPreviousImageRetentionMode(CosmosChangeFeedPreviousImageRetentionMode)
+     *
+     * @return the change feed previous item, or {@code null} if no previous image is included.
      */
     public JsonNode getPrevious() {
         return previous;
