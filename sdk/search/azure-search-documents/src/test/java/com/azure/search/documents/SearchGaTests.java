@@ -5,6 +5,7 @@ package com.azure.search.documents;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
@@ -12,6 +13,7 @@ import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.FluxUtil;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
+import com.azure.search.documents.implementation.SearchUtils;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
 import com.azure.search.documents.indexes.SearchIndexerClientBuilder;
 import com.azure.search.documents.indexes.models.ContentUnderstandingSkill;
@@ -23,6 +25,7 @@ import com.azure.search.documents.indexes.models.FileKnowledgeSource;
 import com.azure.search.documents.indexes.models.FileKnowledgeSourceParameters;
 import com.azure.search.documents.indexes.models.KnowledgeBase;
 import com.azure.search.documents.indexes.models.KnowledgeSource;
+import com.azure.search.documents.indexes.models.KnowledgeSourceFileCapacity;
 import com.azure.search.documents.indexes.models.KnowledgeSourceKind;
 import com.azure.search.documents.indexes.models.KnowledgeSourceReference;
 import com.azure.search.documents.indexes.models.SearchIndex;
@@ -32,8 +35,8 @@ import com.azure.search.documents.knowledgebases.models.KnowledgeRetrievalLowRea
 import com.azure.search.documents.knowledgebases.models.KnowledgeRetrievalMediumReasoningEffort;
 import com.azure.search.documents.knowledgebases.models.KnowledgeRetrievalOutputMode;
 import com.azure.search.documents.knowledgebases.models.KnowledgeRetrievalSemanticIntent;
-import com.azure.search.documents.models.KnowledgeSourceFileCapacity;
 import com.azure.search.documents.models.SearchOptions;
+import com.azure.search.documents.models.SearchRequest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
@@ -44,6 +47,8 @@ import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.Map;
@@ -68,6 +73,103 @@ public class SearchGaTests {
         for (SearchServiceVersion version : SearchServiceVersion.values()) {
             assertFalse(version.getVersion().contains("preview"));
         }
+    }
+
+    @Test
+    public void searchOptionsForwardEveryGeneratedRequestProperty() throws IOException, ReflectiveOperationException {
+        String json = "{\"count\":false,\"facets\":[\"category\"],\"filter\":\"category eq 'Hotel'\","
+            + "\"highlight\":\"title,content\",\"highlightPostTag\":\"</b>\",\"highlightPreTag\":\"<b>\","
+            + "\"minimumCoverage\":90.0,\"moreLikeThis\":\"hotel-1\",\"orderby\":\"title asc\","
+            + "\"queryType\":\"semantic\",\"scoringStatistics\":\"global\",\"sessionId\":\"session\","
+            + "\"scoringParameters\":[\"location--122,44\"],\"scoringProfile\":\"profile\",\"debug\":\"all\","
+            + "\"search\":\"hotel\",\"searchFields\":\"title,content\",\"searchMode\":\"all\",\"select\":\"id,title\","
+            + "\"skip\":0,\"top\":5,\"semanticConfiguration\":\"semantic\",\"semanticErrorHandling\":\"partial\","
+            + "\"semanticMaxWaitInMilliseconds\":1000,\"semanticQuery\":\"Find hotels\",\"answers\":\"extractive\","
+            + "\"captions\":\"extractive\",\"vectorQueries\":[{\"kind\":\"vector\",\"vector\":[0.1,0.2],"
+            + "\"fields\":\"vector\",\"k\":3}],\"vectorFilterMode\":\"preFilter\"}";
+        SearchRequest expected;
+        try (JsonReader reader = JsonProviders.createReader(json)) {
+            expected = SearchRequest.fromJson(reader);
+        }
+        SearchOptions options = new SearchOptions();
+        for (Method getter : SearchRequest.class.getDeclaredMethods()) {
+            if (!Modifier.isPublic(getter.getModifiers())
+                || Modifier.isStatic(getter.getModifiers())
+                || getter.getParameterCount() != 0
+                || !(getter.getName().startsWith("get") || getter.getName().startsWith("is"))) {
+                continue;
+            }
+            Object value = getter.invoke(expected);
+            assertNotNull(value, "Populate the generated request property in the parity fixture: " + getter.getName());
+            String property = getter.getName().substring(getter.getName().startsWith("is") ? 2 : 3);
+            SearchOptions.class.getMethod("set" + property, getter.getReturnType()).invoke(options, value);
+        }
+
+        assertEquals(expected.toJsonString(), SearchUtils.fromSearchOptions(options).toJsonString());
+    }
+
+    @Test
+    public void bothSearchClientsSendMoreLikeThis() {
+        AtomicInteger requestCount = new AtomicInteger();
+        HttpClient httpClient = request -> FluxUtil.collectBytesInByteBufferStream(request.getBody())
+            .flatMap(body -> Mono.fromCallable(() -> {
+                try (JsonReader reader = JsonProviders.createReader(body)) {
+                    assertEquals("hotel-1", reader.readMap(JsonReader::readUntyped).get("moreLikeThis"));
+                }
+                requestCount.incrementAndGet();
+                return new MockHttpResponse(request, 200, new HttpHeaders(),
+                    "{\"value\":[]}".getBytes(StandardCharsets.UTF_8));
+            }));
+        SearchClientBuilder builder = new SearchClientBuilder().endpoint(ENDPOINT)
+            .credential(CREDENTIAL)
+            .indexName("index")
+            .httpClient(httpClient);
+        SearchOptions options = new SearchOptions().setMoreLikeThis("hotel-1");
+
+        assertEquals(0, builder.buildClient().search(options).stream().count());
+        assertEquals(0L, builder.buildAsyncClient().search(options).count().block());
+        assertEquals(2, requestCount.get());
+    }
+
+    @ParameterizedTest
+    @MethodSource("searchAuthorizationOptions")
+    public void bothSearchClientsForwardAuthorizationOnEveryPage(SearchOptions options, RequestOptions requestOptions,
+        String querySourceAuthorization, String enableElevatedRead) {
+        AtomicInteger requestCount = new AtomicInteger();
+        HttpClient httpClient = request -> {
+            assertEquals(querySourceAuthorization,
+                request.getHeaders().getValue(HttpHeaderName.fromString("x-ms-query-source-authorization")));
+            assertEquals(enableElevatedRead,
+                request.getHeaders().getValue(HttpHeaderName.fromString("x-ms-enable-elevated-read")));
+            String body = requestCount.incrementAndGet() % 2 != 0
+                ? "{\"value\":[{\"@search.score\":1,\"id\":\"1\"}],"
+                    + "\"@search.nextPageParameters\":{\"search\":\"hotel\"},"
+                    + "\"@odata.nextLink\":\"https://example.search.windows.net/indexes('index')/docs/search"
+                    + "?api-version=2026-10-01\"}"
+                : "{\"value\":[{\"@search.score\":1,\"id\":\"2\"}]}";
+            return Mono
+                .just(new MockHttpResponse(request, 200, new HttpHeaders(), body.getBytes(StandardCharsets.UTF_8)));
+        };
+        SearchClientBuilder builder = new SearchClientBuilder().endpoint(ENDPOINT)
+            .credential(CREDENTIAL)
+            .indexName("index")
+            .httpClient(httpClient);
+
+        assertEquals(2, builder.buildClient().search(options, requestOptions).stream().count());
+        assertEquals(2L, builder.buildAsyncClient().search(options, requestOptions).count().block());
+        assertEquals(4, requestCount.get());
+    }
+
+    private static Stream<Arguments> searchAuthorizationOptions() {
+        return Stream.of(Arguments.of(null, null, null, null), Arguments.of(new SearchOptions(),
+            new RequestOptions()
+                .setHeader(HttpHeaderName.fromString("x-ms-query-source-authorization"), "request-token")
+                .setHeader(HttpHeaderName.fromString("x-ms-enable-elevated-read"), "false"),
+            "request-token", "false"),
+            Arguments.of(new SearchOptions().setQuerySourceAuthorization("query-token").setEnableElevatedRead(true),
+                null, "query-token", "true"),
+            Arguments.of(new SearchOptions().setQuerySourceAuthorization("query-token").setEnableElevatedRead(false),
+                new RequestOptions(), "query-token", "false"));
     }
 
     @ParameterizedTest(name = "{0}")

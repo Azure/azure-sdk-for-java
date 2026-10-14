@@ -391,6 +391,24 @@ SearchPagedIterable searchResultsIterable = SEARCH_CLIENT.search(options);
 // ...
 ```
 
+To find documents similar to an existing document, supply its key with `setMoreLikeThis`.
+Do not combine this option with search text.
+
+```java readme-sample-searchMoreLikeThis
+SearchOptions options = new SearchOptions().setMoreLikeThis("hotel-1").setTop(5);
+SEARCH_CLIENT.search(options).forEach(result -> System.out.println(result.getAdditionalProperties()));
+```
+
+For permission-filtered search, supply the user's query-source authorization token. These header options are preserved
+on continuation pages. Elevated reads bypass document-level permission checks and are disabled in this example.
+
+```java readme-sample-searchWithDocumentPermissions
+SearchOptions options = new SearchOptions().setSearchText("hotel")
+    .setQuerySourceAuthorization(querySourceToken)
+    .setEnableElevatedRead(false);
+SEARCH_CLIENT.search(options).forEach(result -> System.out.println(result.getAdditionalProperties()));
+```
+
 ### Creating an index
 
 You can use the [`SearchIndexClient`](#create-a-searchindexclient) to create a search index. Indexes can also define

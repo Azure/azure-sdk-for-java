@@ -195,6 +195,22 @@ public class ReadmeSamples {
         // END: readme-sample-searchWithStronglyType
     }
 
+    public void searchMoreLikeThis() {
+        // BEGIN: readme-sample-searchMoreLikeThis
+        SearchOptions options = new SearchOptions().setMoreLikeThis("hotel-1").setTop(5);
+        SEARCH_CLIENT.search(options).forEach(result -> System.out.println(result.getAdditionalProperties()));
+        // END: readme-sample-searchMoreLikeThis
+    }
+
+    public void searchWithDocumentPermissions(String querySourceToken) {
+        // BEGIN: readme-sample-searchWithDocumentPermissions
+        SearchOptions options = new SearchOptions().setSearchText("hotel")
+            .setQuerySourceAuthorization(querySourceToken)
+            .setEnableElevatedRead(false);
+        SEARCH_CLIENT.search(options).forEach(result -> System.out.println(result.getAdditionalProperties()));
+        // END: readme-sample-searchWithDocumentPermissions
+    }
+
     public void searchWithSearchOptions() {
         // BEGIN: readme-sample-searchWithSearchOptions
         SearchOptions options = new SearchOptions().setSearchText("luxury")

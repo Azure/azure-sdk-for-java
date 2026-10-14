@@ -592,7 +592,7 @@ public final class SearchClientImpl {
      *         captions: String(none/extractive) (Optional)
      *         vectorQueries (Optional): [
      *              (Optional){
-     *                 kind: String(vector/text/imageUrl/imageBinary) (Required)
+     *                 kind: String(vector/text) (Required)
      *                 k: Integer (Optional)
      *                 fields: String (Optional)
      *                 exhaustive: Boolean (Optional)
@@ -600,7 +600,7 @@ public final class SearchClientImpl {
      *                 weight: Float (Optional)
      *             }
      *         ]
-     *         vectorFilterMode: String(postFilter/preFilter/strictPostFilter) (Optional)
+     *         vectorFilterMode: String(postFilter/preFilter) (Optional)
      *     }
      *     value (Required): [
      *          (Required){
@@ -844,7 +844,7 @@ public final class SearchClientImpl {
      *         captions: String(none/extractive) (Optional)
      *         vectorQueries (Optional): [
      *              (Optional){
-     *                 kind: String(vector/text/imageUrl/imageBinary) (Required)
+     *                 kind: String(vector/text) (Required)
      *                 k: Integer (Optional)
      *                 fields: String (Optional)
      *                 exhaustive: Boolean (Optional)
@@ -852,7 +852,7 @@ public final class SearchClientImpl {
      *                 weight: Float (Optional)
      *             }
      *         ]
-     *         vectorFilterMode: String(postFilter/preFilter/strictPostFilter) (Optional)
+     *         vectorFilterMode: String(postFilter/preFilter) (Optional)
      *     }
      *     value (Required): [
      *          (Required){
@@ -975,7 +975,7 @@ public final class SearchClientImpl {
      *     captions: String(none/extractive) (Optional)
      *     vectorQueries (Optional): [
      *          (Optional){
-     *             kind: String(vector/text/imageUrl/imageBinary) (Required)
+     *             kind: String(vector/text) (Required)
      *             k: Integer (Optional)
      *             fields: String (Optional)
      *             exhaustive: Boolean (Optional)
@@ -983,7 +983,7 @@ public final class SearchClientImpl {
      *             weight: Float (Optional)
      *         }
      *     ]
-     *     vectorFilterMode: String(postFilter/preFilter/strictPostFilter) (Optional)
+     *     vectorFilterMode: String(postFilter/preFilter) (Optional)
      * }
      * }
      * </pre>
@@ -1058,7 +1058,7 @@ public final class SearchClientImpl {
      *         captions: String(none/extractive) (Optional)
      *         vectorQueries (Optional): [
      *              (Optional){
-     *                 kind: String(vector/text/imageUrl/imageBinary) (Required)
+     *                 kind: String(vector/text) (Required)
      *                 k: Integer (Optional)
      *                 fields: String (Optional)
      *                 exhaustive: Boolean (Optional)
@@ -1066,7 +1066,7 @@ public final class SearchClientImpl {
      *                 weight: Float (Optional)
      *             }
      *         ]
-     *         vectorFilterMode: String(postFilter/preFilter/strictPostFilter) (Optional)
+     *         vectorFilterMode: String(postFilter/preFilter) (Optional)
      *     }
      *     value (Required): [
      *          (Required){
@@ -1193,7 +1193,7 @@ public final class SearchClientImpl {
      *     captions: String(none/extractive) (Optional)
      *     vectorQueries (Optional): [
      *          (Optional){
-     *             kind: String(vector/text/imageUrl/imageBinary) (Required)
+     *             kind: String(vector/text) (Required)
      *             k: Integer (Optional)
      *             fields: String (Optional)
      *             exhaustive: Boolean (Optional)
@@ -1201,7 +1201,7 @@ public final class SearchClientImpl {
      *             weight: Float (Optional)
      *         }
      *     ]
-     *     vectorFilterMode: String(postFilter/preFilter/strictPostFilter) (Optional)
+     *     vectorFilterMode: String(postFilter/preFilter) (Optional)
      * }
      * }
      * </pre>
@@ -1276,7 +1276,7 @@ public final class SearchClientImpl {
      *         captions: String(none/extractive) (Optional)
      *         vectorQueries (Optional): [
      *              (Optional){
-     *                 kind: String(vector/text/imageUrl/imageBinary) (Required)
+     *                 kind: String(vector/text) (Required)
      *                 k: Integer (Optional)
      *                 fields: String (Optional)
      *                 exhaustive: Boolean (Optional)
@@ -1284,7 +1284,7 @@ public final class SearchClientImpl {
      *                 weight: Float (Optional)
      *             }
      *         ]
-     *         vectorFilterMode: String(postFilter/preFilter/strictPostFilter) (Optional)
+     *         vectorFilterMode: String(postFilter/preFilter) (Optional)
      *     }
      *     value (Required): [
      *          (Required){

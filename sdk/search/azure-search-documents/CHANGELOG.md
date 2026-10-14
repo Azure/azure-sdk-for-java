@@ -9,6 +9,7 @@
   retrieval streaming, low and medium reasoning effort, model activity, and knowledge base CORS configuration.
 - Added `KnowledgeSourceFileCapacity` for file knowledge source capacity information.
 - Added `modelName` and `modelDeployment` configuration to `ContentUnderstandingSkill`.
+- Added newly supported GPT model names to `AzureOpenAIModelName`.
 
 ### Breaking Changes
 
@@ -33,6 +34,11 @@ The following changes apply when upgrading from the preceding `12.1.0` beta rele
   `KnowledgeBaseRetrievalStreamEvent.getEventName()`. Their payloads are not available.
 - Removed JSON serialization and deserialization APIs from retrieval stream event wrappers. Their typed payload
   models retain these APIs.
+- Removed preview-only image vector queries, `VectorFilterMode.STRICT_POST_FILTER`, Azure Machine Learning vectorizers,
+  and `AIFoundryModelCatalogName`.
+- Moved `KnowledgeSourceFileCapacity` to `com.azure.search.documents.indexes.models`.
+- Removed `KnowledgeBaseAgenticReasoningActivityRecord.getRetrievalReasoningEffort()`. The effective reasoning effort
+  remains available through the `retrieval.started` streaming event's typed payload.
 
 ### Bugs Fixed
 
@@ -40,6 +46,9 @@ The following changes apply when upgrading from the preceding `12.1.0` beta rele
   demand pauses.
 - Fixed synchronous retrieval streaming to deliver terminal events before reporting response cleanup failures on the
   next iterator access or explicit close.
+- Fixed `SearchOptions.moreLikeThis` being omitted from search requests.
+- Fixed query-source authorization and elevated-read options not being forwarded as search headers, including on
+  continuation pages.
 
 ### Other Changes
 

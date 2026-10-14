@@ -233,10 +233,6 @@ public class VectorQuery implements JsonSerializable<VectorQuery> {
                     return VectorizedQuery.fromJson(readerToUse.reset());
                 } else if ("text".equals(discriminatorValue)) {
                     return VectorizableTextQuery.fromJson(readerToUse.reset());
-                } else if ("imageUrl".equals(discriminatorValue)) {
-                    return VectorizableImageUrlQuery.fromJson(readerToUse.reset());
-                } else if ("imageBinary".equals(discriminatorValue)) {
-                    return VectorizableImageBinaryQuery.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

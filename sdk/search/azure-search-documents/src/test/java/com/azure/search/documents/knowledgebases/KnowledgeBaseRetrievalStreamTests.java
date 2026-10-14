@@ -16,6 +16,7 @@ import com.azure.search.documents.knowledgebases.models.KnowledgeBaseActivityCom
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseActivityRecord;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseActivityStartedEvent;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseActivityStartedStreamEvent;
+import com.azure.search.documents.knowledgebases.models.KnowledgeBaseAgenticReasoningActivityRecord;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseAnswerCompletedEvent;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseAnswerCompletedStreamEvent;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseErrorStreamEvent;
@@ -26,6 +27,7 @@ import com.azure.search.documents.knowledgebases.models.KnowledgeBaseResponseCom
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalOptions;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalStartedEvent;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalStartedStreamEvent;
+import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalStatusCode;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalStreamEvent;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseStreamErrorEvent;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseSearchIndexActivityRecord;
@@ -188,6 +190,42 @@ public class KnowledgeBaseRetrievalStreamTests {
         assertEquals(converted.isTerminal() ? 1 : 2, events.size());
         assertTypedEvent(converted, events.get(0));
         assertTrue(events.get(events.size() - 1).isTerminal());
+    }
+
+    @Test
+    public void bothClientsPreserveAgenticReasoningInProgressAndCompletedResponse() throws IOException {
+        String activity = "{\"type\":\"agenticReasoning\",\"id\":4,\"reasoningTokens\":42,\"elapsedMs\":25}";
+        String body = frame("activity.completed", activity)
+            + frame("response.completed", "{\"statusCode\":200,\"response\":{\"activity\":[" + activity + "]}}");
+        List<KnowledgeBaseRetrievalStreamEvent> syncEvents = new ArrayList<>();
+        try (CloseableIterableStream<KnowledgeBaseRetrievalStreamEvent> stream
+            = createBuilder(body, null).buildClient().retrieveStream(new KnowledgeBaseRetrievalOptions())) {
+            stream.forEach(syncEvents::add);
+        }
+        List<KnowledgeBaseRetrievalStreamEvent> asyncEvents = createBuilder(body, null).buildAsyncClient()
+            .retrieveStream(new KnowledgeBaseRetrievalOptions())
+            .collectList()
+            .block();
+
+        for (List<KnowledgeBaseRetrievalStreamEvent> events : Arrays.asList(syncEvents, asyncEvents)) {
+            assertNotNull(events);
+            assertEquals(2, events.size());
+            KnowledgeBaseActivityCompletedStreamEvent progress
+                = assertInstanceOf(KnowledgeBaseActivityCompletedStreamEvent.class, events.get(0));
+            KnowledgeBaseResponseCompletedStreamEvent completed
+                = assertInstanceOf(KnowledgeBaseResponseCompletedStreamEvent.class, events.get(1));
+            assertEquals(KnowledgeBaseRetrievalStatusCode.OK, completed.getValue().getStatusCode());
+            assertEquals(1, completed.getValue().getResponse().getActivity().size());
+            for (KnowledgeBaseActivityRecord record : Arrays.asList(progress.getValue(),
+                completed.getValue().getResponse().getActivity().get(0))) {
+                KnowledgeBaseAgenticReasoningActivityRecord reasoning
+                    = assertInstanceOf(KnowledgeBaseAgenticReasoningActivityRecord.class, record);
+                assertEquals(4, reasoning.getId());
+                assertEquals(42, reasoning.getReasoningTokens());
+                assertEquals(25, reasoning.getElapsedMs());
+            }
+            assertEvent(completed, "response.completed", true);
+        }
     }
 
     @ParameterizedTest

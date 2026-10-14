@@ -358,69 +358,6 @@ public final class KnowledgeBaseRetrievalClient {
     }
 
     /**
-     * KnowledgeBase retrieves relevant data from backing stores.
-     *
-     * @param retrievalRequest The retrieval request to process.
-     * @param querySourceAuthorization Token identifying the user for which the query is being executed. This token is
-     * used to enforce security restrictions on documents.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the output contract for the retrieval response.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public KnowledgeBaseRetrievalResult retrieve(KnowledgeBaseRetrievalOptions retrievalRequest,
-        String querySourceAuthorization) {
-        // Generated convenience method for hiddenGeneratedRetrieveWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (querySourceAuthorization != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-query-source-authorization"),
-                querySourceAuthorization);
-        }
-        return hiddenGeneratedRetrieveWithResponse(BinaryData.fromObject(retrievalRequest), requestOptions).getValue()
-            .toObject(KnowledgeBaseRetrievalResult.class);
-    }
-
-    /**
-     * Retrieves relevant data from backing stores and streams progress and results as server-sent
-     * events.
-     *
-     * Process the response incrementally using server-sent event framing. Each event contains an
-     * event name and a JSON-encoded data payload. The stream ends with either a `response.completed`
-     * event or an `error` event. OpenAPI 2.0 represents the response body as a string, so generated
-     * clients may expose the raw response without typed event parsing. Do not deserialize the
-     * complete response body as a single JSON document.
-     *
-     * @param retrievalRequest The retrieval request to process.
-     * @param querySourceAuthorization Token identifying the user for which the query is being executed. This token is
-     * used to enforce security restrictions on documents.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    BinaryData hiddenGeneratedRetrieveStream(KnowledgeBaseRetrievalOptions retrievalRequest,
-        String querySourceAuthorization) {
-        // Generated convenience method for hiddenGeneratedRetrieveStreamWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (querySourceAuthorization != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-query-source-authorization"),
-                querySourceAuthorization);
-        }
-        return hiddenGeneratedRetrieveStreamWithResponse(BinaryData.fromObject(retrievalRequest), requestOptions)
-            .getValue();
-    }
-
-    /**
      * Retrieves relevant data from backing stores and streams progress and results as server-sent events.
      *
      * Events are polymorphic: see {@link KnowledgeBaseRetrievalStreamEvent} for the known subtypes. Use a known
@@ -484,5 +421,68 @@ public final class KnowledgeBaseRetrievalClient {
         return ServerSentEventStreams.toIterableStream(
             hiddenGeneratedRetrieveStreamWithResponse(BinaryData.fromObject(retrievalRequest), requestOptions),
             KnowledgeBaseRetrievalStreamEventConverter::convert, KnowledgeBaseRetrievalStreamEvent::isTerminal);
+    }
+
+    /**
+     * KnowledgeBase retrieves relevant data from backing stores.
+     *
+     * @param retrievalRequest The retrieval request to process.
+     * @param querySourceAuthorization Token identifying the user for which the query is being executed. This token is
+     * used to enforce security restrictions on documents.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the output contract for the retrieval response.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public KnowledgeBaseRetrievalResult retrieve(KnowledgeBaseRetrievalOptions retrievalRequest,
+        String querySourceAuthorization) {
+        // Generated convenience method for hiddenGeneratedRetrieveWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (querySourceAuthorization != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-query-source-authorization"),
+                querySourceAuthorization);
+        }
+        return hiddenGeneratedRetrieveWithResponse(BinaryData.fromObject(retrievalRequest), requestOptions).getValue()
+            .toObject(KnowledgeBaseRetrievalResult.class);
+    }
+
+    /**
+     * Retrieves relevant data from backing stores and streams progress and results as server-sent
+     * events.
+     *
+     * Process the response incrementally using server-sent event framing. Each event contains an
+     * event name and a JSON-encoded data payload. The stream ends with either a `response.completed`
+     * event or an `error` event. OpenAPI 2.0 represents the response body as a string, so generated
+     * clients may expose the raw response without typed event parsing. Do not deserialize the
+     * complete response body as a single JSON document.
+     *
+     * @param retrievalRequest The retrieval request to process.
+     * @param querySourceAuthorization Token identifying the user for which the query is being executed. This token is
+     * used to enforce security restrictions on documents.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    BinaryData hiddenGeneratedRetrieveStream(KnowledgeBaseRetrievalOptions retrievalRequest,
+        String querySourceAuthorization) {
+        // Generated convenience method for hiddenGeneratedRetrieveStreamWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (querySourceAuthorization != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-query-source-authorization"),
+                querySourceAuthorization);
+        }
+        return hiddenGeneratedRetrieveStreamWithResponse(BinaryData.fromObject(retrievalRequest), requestOptions)
+            .getValue();
     }
 }

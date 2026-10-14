@@ -4,6 +4,7 @@
 package com.azure.search.documents;
 
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.util.CloseableIterableStream;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
 import com.azure.search.documents.indexes.models.AzureOpenAIModelName;
@@ -22,9 +23,10 @@ import com.azure.search.documents.indexes.models.SemanticPrioritizedFields;
 import com.azure.search.documents.indexes.models.SemanticSearch;
 import com.azure.search.documents.knowledgebases.KnowledgeBaseRetrievalClient;
 import com.azure.search.documents.knowledgebases.KnowledgeBaseRetrievalClientBuilder;
-import com.azure.search.documents.knowledgebases.models.KnowledgeBaseAgenticReasoningActivityRecord;
+import com.azure.search.documents.knowledgebases.models.KnowledgeBaseErrorStreamEvent;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalOptions;
-import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalResult;
+import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalStartedStreamEvent;
+import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalStreamEvent;
 import com.azure.search.documents.knowledgebases.models.KnowledgeRetrievalLowReasoningEffort;
 import com.azure.search.documents.knowledgebases.models.KnowledgeRetrievalMediumReasoningEffort;
 import com.azure.search.documents.knowledgebases.models.KnowledgeRetrievalOutputMode;
@@ -35,6 +37,8 @@ import com.azure.search.documents.models.IndexActionType;
 import com.azure.search.documents.models.IndexDocumentsBatch;
 import com.azure.search.documents.models.IndexDocumentsResult;
 
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -42,6 +46,7 @@ import java.util.UUID;
 
 /**
  * Demonstrates knowledge-base and request-level retrieval configuration precedence.
+ * The effective reasoning effort is reported by the typed {@code retrieval.started} stream event.
  *
  * <p>Set {@code SEARCH_ENDPOINT}, {@code SEARCH_API_KEY}, {@code SEARCH_OPENAI_ENDPOINT},
  * {@code SEARCH_OPENAI_API_KEY}, {@code SEARCH_OPENAI_DEPLOYMENT_NAME}, and {@code SEARCH_OPENAI_MODEL_NAME}. The
@@ -92,7 +97,7 @@ public class KnowledgeBaseConfigurationExample {
                 .buildClient();
 
             // With neither a request nor KB reasoning setting, the service default is low.
-            verifyReasoningEffort(retrievalClient.retrieve(createRequest()), KnowledgeRetrievalReasoningEffortKind.LOW);
+            verifyReasoningEffort(retrievalClient, createRequest(), KnowledgeRetrievalReasoningEffortKind.LOW);
 
             knowledgeBase.setRetrievalReasoningEffort(new KnowledgeRetrievalMediumReasoningEffort());
             searchIndexClient.createOrUpdateKnowledgeBase(knowledgeBase);
@@ -103,15 +108,14 @@ public class KnowledgeBaseConfigurationExample {
                 throw new IllegalStateException("The KB reasoning effort wasn't persisted.");
             }
 
-            verifyReasoningEffort(retrievalClient.retrieve(createRequest()),
-                KnowledgeRetrievalReasoningEffortKind.MEDIUM);
+            verifyReasoningEffort(retrievalClient, createRequest(), KnowledgeRetrievalReasoningEffortKind.MEDIUM);
 
             // Request reasoning overrides the persisted KB setting without changing it.
             KnowledgeBaseRetrievalOptions requestOverride = createRequest()
                 .setRetrievalReasoningEffort(new KnowledgeRetrievalLowReasoningEffort())
                 .setMaxOutputDocuments(2)
                 .setMaxOutputSizeInTokens(5000);
-            verifyReasoningEffort(retrievalClient.retrieve(requestOverride), KnowledgeRetrievalReasoningEffortKind.LOW);
+            verifyReasoningEffort(retrievalClient, requestOverride, KnowledgeRetrievalReasoningEffortKind.LOW);
 
             KnowledgeBase unchangedKnowledgeBase = searchIndexClient.getKnowledgeBase(knowledgeBaseName);
             if (!(unchangedKnowledgeBase.getRetrievalReasoningEffort()
@@ -177,25 +181,27 @@ public class KnowledgeBaseConfigurationExample {
             .setIncludeActivity(true);
     }
 
-    private static void verifyReasoningEffort(KnowledgeBaseRetrievalResult result,
-        KnowledgeRetrievalReasoningEffortKind expectedKind) {
-        KnowledgeBaseAgenticReasoningActivityRecord activity = findReasoningActivity(result);
-        if (activity.getRetrievalReasoningEffort() == null
-            || !expectedKind.equals(activity.getRetrievalReasoningEffort().getKind())) {
-            throw new IllegalStateException("The retrieval didn't use the expected reasoning effort.");
+    private static void verifyReasoningEffort(KnowledgeBaseRetrievalClient client,
+        KnowledgeBaseRetrievalOptions request, KnowledgeRetrievalReasoningEffortKind expectedKind) {
+        boolean reasoningEffortReported = false;
+        try (CloseableIterableStream<KnowledgeBaseRetrievalStreamEvent> events = client.retrieveStream(request)) {
+            for (KnowledgeBaseRetrievalStreamEvent event : events) {
+                if (event instanceof KnowledgeBaseRetrievalStartedStreamEvent) {
+                    KnowledgeBaseRetrievalStartedStreamEvent started = (KnowledgeBaseRetrievalStartedStreamEvent) event;
+                    if (started.getValue().getReasoningEffort() == null
+                        || !expectedKind.equals(started.getValue().getReasoningEffort().getKind())) {
+                        throw new IllegalStateException("The retrieval didn't use the expected reasoning effort.");
+                    }
+                    reasoningEffortReported = true;
+                } else if (event instanceof KnowledgeBaseErrorStreamEvent) {
+                    throw new IllegalStateException("The retrieval stream reported an error.");
+                }
+            }
+        } catch (IOException exception) {
+            throw new UncheckedIOException("Failed to close the knowledge base retrieval stream.", exception);
         }
-    }
-
-    private static KnowledgeBaseAgenticReasoningActivityRecord
-        findReasoningActivity(KnowledgeBaseRetrievalResult result) {
-        if (result.getActivity() == null) {
-            throw new IllegalStateException("The retrieval response didn't contain activity records.");
+        if (!reasoningEffortReported) {
+            throw new IllegalStateException("The stream didn't report the effective reasoning effort.");
         }
-        return result.getActivity()
-            .stream()
-            .filter(KnowledgeBaseAgenticReasoningActivityRecord.class::isInstance)
-            .map(KnowledgeBaseAgenticReasoningActivityRecord.class::cast)
-            .findFirst()
-            .orElseThrow(() -> new IllegalStateException("The response didn't contain agentic reasoning activity."));
     }
 }

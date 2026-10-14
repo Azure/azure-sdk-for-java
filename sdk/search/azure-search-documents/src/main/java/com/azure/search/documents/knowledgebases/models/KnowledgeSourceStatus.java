@@ -10,10 +10,10 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.search.documents.indexes.models.KnowledgeSourceFileCapacity;
 import com.azure.search.documents.indexes.models.KnowledgeSourceKind;
 import com.azure.search.documents.indexes.models.KnowledgeSourceSynchronizationStatus;
 import com.azure.search.documents.knowledgebases.implementation.KnowledgeSourceDurationParser;
-import com.azure.search.documents.models.KnowledgeSourceFileCapacity;
 import java.io.IOException;
 import java.time.Duration;
 

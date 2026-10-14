@@ -235,7 +235,7 @@ public final class SearchClient {
                             "Continuation token uses invalid apiVersion that doesn't match client serviceVersion."));
                 }
                 response = searchWithResponse(BinaryData.fromObject(continuationToken.getNextPageParameters()),
-                    requestOptions);
+                    SearchUtils.addSearchHeaders(requestOptions, options));
             }
             return new SearchPagedResponse(response, serviceClient.getServiceVersion());
         });
@@ -415,7 +415,7 @@ public final class SearchClient {
      *     captions: String(none/extractive) (Optional)
      *     vectorQueries (Optional): [
      *          (Optional){
-     *             kind: String(vector/text/imageUrl/imageBinary) (Required)
+     *             kind: String(vector/text) (Required)
      *             k: Integer (Optional)
      *             fields: String (Optional)
      *             exhaustive: Boolean (Optional)
@@ -423,7 +423,7 @@ public final class SearchClient {
      *             weight: Float (Optional)
      *         }
      *     ]
-     *     vectorFilterMode: String(postFilter/preFilter/strictPostFilter) (Optional)
+     *     vectorFilterMode: String(postFilter/preFilter) (Optional)
      * }
      * }
      * </pre>
@@ -498,7 +498,7 @@ public final class SearchClient {
      *         captions: String(none/extractive) (Optional)
      *         vectorQueries (Optional): [
      *              (Optional){
-     *                 kind: String(vector/text/imageUrl/imageBinary) (Required)
+     *                 kind: String(vector/text) (Required)
      *                 k: Integer (Optional)
      *                 fields: String (Optional)
      *                 exhaustive: Boolean (Optional)
@@ -506,7 +506,7 @@ public final class SearchClient {
      *                 weight: Float (Optional)
      *             }
      *         ]
-     *         vectorFilterMode: String(postFilter/preFilter/strictPostFilter) (Optional)
+     *         vectorFilterMode: String(postFilter/preFilter) (Optional)
      *     }
      *     value (Required): [
      *          (Required){
