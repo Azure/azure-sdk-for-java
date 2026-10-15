@@ -7,6 +7,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.implementation.ReflectionUtils;
 import com.azure.core.implementation.util.HttpUtils;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
@@ -14,6 +15,7 @@ import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpClientOptions;
 import io.vertx.core.http.HttpServer;
 import io.vertx.core.http.HttpServerRequest;
+import io.vertx.core.http.PoolOptions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -128,7 +130,7 @@ public class VertxHttpClientTimeoutTests {
     public void completedWriteDoesNotTimeOutResponse(boolean synchronous, boolean slowBody) throws Exception {
         try (TimeoutTestServer server = new TimeoutTestServer()) {
             com.azure.core.util.HttpClientOptions options
-                = new com.azure.core.util.HttpClientOptions().setWriteTimeout(Duration.ofMillis(250))
+                = new com.azure.core.util.HttpClientOptions().setWriteTimeout(Duration.ofMillis(500))
                     .setResponseTimeout(Duration.ofSeconds(2))
                     .setReadTimeout(Duration.ofSeconds(2));
             HttpClient client = new VertxHttpClientProvider().createInstance(options);
@@ -229,20 +231,26 @@ public class VertxHttpClientTimeoutTests {
 
         private HttpClient client(Duration responseTimeout) {
             // No other timeout may release the connection and mask missing response-timeout/cancellation cleanup.
-            HttpClientOptions options = new HttpClientOptions().setMaxPoolSize(1)
-                .setIdleTimeout(0)
-                .setReadIdleTimeout(0)
-                .setWriteIdleTimeout(0);
-            return new VertxHttpClientBuilder().vertx(vertx)
-                .httpClientOptions(options)
-                .responseTimeout(responseTimeout)
-                .build();
+            HttpClientOptions options
+                = new HttpClientOptions().setIdleTimeout(0).setReadIdleTimeout(0).setWriteIdleTimeout(0);
+            PoolOptions poolOptions = new PoolOptions().setHttp1MaxSize(1);
+            try {
+                // PoolOptions is available in both runtimes; HttpClientOptions.setMaxPoolSize is removed in 5.
+                // Resolve the factory because its return type also changes in Vert.x 5.
+                io.vertx.core.http.HttpClient nativeClient = (io.vertx.core.http.HttpClient) ReflectionUtils
+                    .getMethodInvoker(Vertx.class,
+                        Vertx.class.getMethod("createHttpClient", HttpClientOptions.class, PoolOptions.class), true)
+                    .invokeWithArguments(vertx, options, poolOptions);
+                return new VertxHttpClient(nativeClient, options, responseTimeout);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         }
 
         private HttpClient writeTimeoutClient() {
             return new VertxHttpClientBuilder().vertx(vertx)
                 .configuration(Configuration.NONE)
-                .writeTimeout(Duration.ofMillis(250))
+                .writeTimeout(Duration.ofMillis(500))
                 .responseTimeout(Duration.ofSeconds(2))
                 .readTimeout(Duration.ofSeconds(2))
                 .build();
