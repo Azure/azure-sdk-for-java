@@ -14,23 +14,23 @@ public final class VirtualMachineInstancePropertiesSecurityProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VirtualMachineInstancePropertiesSecurityProfile model = BinaryData.fromString(
-            "{\"enableTPM\":false,\"uefiSettings\":{\"secureBootEnabled\":false},\"securityType\":\"ConfidentialVM\"}")
+            "{\"enableTPM\":true,\"uefiSettings\":{\"secureBootEnabled\":true},\"securityType\":\"ConfidentialVM\"}")
             .toObject(VirtualMachineInstancePropertiesSecurityProfile.class);
-        Assertions.assertFalse(model.enableTPM());
-        Assertions.assertFalse(model.uefiSettings().secureBootEnabled());
+        Assertions.assertTrue(model.enableTPM());
+        Assertions.assertTrue(model.uefiSettings().secureBootEnabled());
         Assertions.assertEquals(SecurityTypes.CONFIDENTIAL_VM, model.securityType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         VirtualMachineInstancePropertiesSecurityProfile model
-            = new VirtualMachineInstancePropertiesSecurityProfile().withEnableTPM(false)
+            = new VirtualMachineInstancePropertiesSecurityProfile().withEnableTPM(true)
                 .withUefiSettings(
-                    new VirtualMachineInstancePropertiesSecurityProfileUefiSettings().withSecureBootEnabled(false))
+                    new VirtualMachineInstancePropertiesSecurityProfileUefiSettings().withSecureBootEnabled(true))
                 .withSecurityType(SecurityTypes.CONFIDENTIAL_VM);
         model = BinaryData.fromObject(model).toObject(VirtualMachineInstancePropertiesSecurityProfile.class);
-        Assertions.assertFalse(model.enableTPM());
-        Assertions.assertFalse(model.uefiSettings().secureBootEnabled());
+        Assertions.assertTrue(model.enableTPM());
+        Assertions.assertTrue(model.uefiSettings().secureBootEnabled());
         Assertions.assertEquals(SecurityTypes.CONFIDENTIAL_VM, model.securityType());
     }
 }

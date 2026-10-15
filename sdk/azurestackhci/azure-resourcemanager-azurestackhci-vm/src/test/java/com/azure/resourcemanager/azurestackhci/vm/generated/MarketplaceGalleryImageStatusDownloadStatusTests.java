@@ -12,8 +12,8 @@ public final class MarketplaceGalleryImageStatusDownloadStatusTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MarketplaceGalleryImageStatusDownloadStatus model
-            = BinaryData.fromString("{\"downloadSizeInMB\":5538754849059417919}")
+            = BinaryData.fromString("{\"downloadSizeInMB\":1617028943376388649}")
                 .toObject(MarketplaceGalleryImageStatusDownloadStatus.class);
-        Assertions.assertEquals(5538754849059417919L, model.downloadSizeInMB());
+        Assertions.assertEquals(1617028943376388649L, model.downloadSizeInMB());
     }
 }

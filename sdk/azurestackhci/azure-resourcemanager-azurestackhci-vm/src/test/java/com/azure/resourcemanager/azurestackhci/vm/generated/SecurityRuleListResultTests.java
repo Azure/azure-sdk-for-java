@@ -16,20 +16,19 @@ public final class SecurityRuleListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SecurityRuleListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"description\":\"nxytxh\",\"protocol\":\"Icmp\",\"sourceAddressPrefixes\":[\"zpfzabglc\",\"hxw\"],\"destinationAddressPrefixes\":[\"yqiklbbovplwzb\"],\"sourcePortRanges\":[\"yuguosvmkfssx\"],\"destinationPortRanges\":[\"kfplgmgsxnk\",\"zkd\"],\"access\":\"Allow\",\"priority\":1649575445,\"direction\":\"Outbound\",\"provisioningState\":\"Canceled\"},\"extendedLocation\":{\"name\":\"wiyighxpkdw\",\"type\":\"CustomLocation\"},\"id\":\"uebbaumnyqup\",\"name\":\"deoj\",\"type\":\"a\"}],\"nextLink\":\"khsmtxpsiebt\"}")
+            "{\"value\":[{\"properties\":{\"description\":\"jkbegibtnmxiebww\",\"protocol\":\"Udp\",\"sourceAddressPrefixes\":[\"yqcgwrtzjuzgwy\",\"mhtxongmtsavjcb\"],\"destinationAddressPrefixes\":[\"qpsrknftguvri\",\"hprwmdyv\",\"qtayri\"],\"sourcePortRanges\":[\"oyq\"],\"destinationPortRanges\":[\"rmcqiby\",\"nojvknmefqsg\",\"vah\",\"pjyzhpv\"],\"access\":\"Deny\",\"priority\":1600165537,\"direction\":\"Outbound\",\"provisioningState\":\"Failed\"},\"extendedLocation\":{\"name\":\"djzlmwlx\",\"type\":\"CustomLocation\"},\"id\":\"fhzovawjvzunluth\",\"name\":\"n\",\"type\":\"rnxipei\"}],\"nextLink\":\"jzuaejxdultskzbb\"}")
             .toObject(SecurityRuleListResult.class);
-        Assertions.assertEquals("nxytxh", model.value().get(0).properties().description());
-        Assertions.assertEquals(SecurityRuleProtocol.ICMP, model.value().get(0).properties().protocol());
-        Assertions.assertEquals("zpfzabglc", model.value().get(0).properties().sourceAddressPrefixes().get(0));
-        Assertions.assertEquals("yqiklbbovplwzb",
-            model.value().get(0).properties().destinationAddressPrefixes().get(0));
-        Assertions.assertEquals("yuguosvmkfssx", model.value().get(0).properties().sourcePortRanges().get(0));
-        Assertions.assertEquals("kfplgmgsxnk", model.value().get(0).properties().destinationPortRanges().get(0));
-        Assertions.assertEquals(SecurityRuleAccess.ALLOW, model.value().get(0).properties().access());
-        Assertions.assertEquals(1649575445, model.value().get(0).properties().priority());
+        Assertions.assertEquals("jkbegibtnmxiebww", model.value().get(0).properties().description());
+        Assertions.assertEquals(SecurityRuleProtocol.UDP, model.value().get(0).properties().protocol());
+        Assertions.assertEquals("yqcgwrtzjuzgwy", model.value().get(0).properties().sourceAddressPrefixes().get(0));
+        Assertions.assertEquals("qpsrknftguvri", model.value().get(0).properties().destinationAddressPrefixes().get(0));
+        Assertions.assertEquals("oyq", model.value().get(0).properties().sourcePortRanges().get(0));
+        Assertions.assertEquals("rmcqiby", model.value().get(0).properties().destinationPortRanges().get(0));
+        Assertions.assertEquals(SecurityRuleAccess.DENY, model.value().get(0).properties().access());
+        Assertions.assertEquals(1600165537, model.value().get(0).properties().priority());
         Assertions.assertEquals(SecurityRuleDirection.OUTBOUND, model.value().get(0).properties().direction());
-        Assertions.assertEquals("wiyighxpkdw", model.value().get(0).extendedLocation().name());
+        Assertions.assertEquals("djzlmwlx", model.value().get(0).extendedLocation().name());
         Assertions.assertEquals(ExtendedLocationTypes.CUSTOM_LOCATION, model.value().get(0).extendedLocation().type());
-        Assertions.assertEquals("khsmtxpsiebt", model.nextLink());
+        Assertions.assertEquals("jzuaejxdultskzbb", model.nextLink());
     }
 }

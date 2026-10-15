@@ -12,18 +12,18 @@ public final class OsProfileUpdateWindowsConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OsProfileUpdateWindowsConfiguration model
-            = BinaryData.fromString("{\"provisionVMAgent\":false,\"provisionVMConfigAgent\":true}")
+            = BinaryData.fromString("{\"provisionVMAgent\":false,\"provisionVMConfigAgent\":false}")
                 .toObject(OsProfileUpdateWindowsConfiguration.class);
         Assertions.assertFalse(model.provisionVMAgent());
-        Assertions.assertTrue(model.provisionVMConfigAgent());
+        Assertions.assertFalse(model.provisionVMConfigAgent());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         OsProfileUpdateWindowsConfiguration model
-            = new OsProfileUpdateWindowsConfiguration().withProvisionVMAgent(false).withProvisionVMConfigAgent(true);
+            = new OsProfileUpdateWindowsConfiguration().withProvisionVMAgent(false).withProvisionVMConfigAgent(false);
         model = BinaryData.fromObject(model).toObject(OsProfileUpdateWindowsConfiguration.class);
         Assertions.assertFalse(model.provisionVMAgent());
-        Assertions.assertTrue(model.provisionVMConfigAgent());
+        Assertions.assertFalse(model.provisionVMConfigAgent());
     }
 }

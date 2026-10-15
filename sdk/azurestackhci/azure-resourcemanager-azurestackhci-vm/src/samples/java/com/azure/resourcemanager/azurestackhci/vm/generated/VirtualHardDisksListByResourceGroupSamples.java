@@ -9,7 +9,7 @@ package com.azure.resourcemanager.azurestackhci.vm.generated;
  */
 public final class VirtualHardDisksListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/VirtualHardDisks_ListByResourceGroup.json
+     * x-ms-original-file: 2026-07-01-preview/VirtualHardDisks_ListByResourceGroup.json
      */
     /**
      * Sample code: ListVirtualHardDiskByResourceGroup.
