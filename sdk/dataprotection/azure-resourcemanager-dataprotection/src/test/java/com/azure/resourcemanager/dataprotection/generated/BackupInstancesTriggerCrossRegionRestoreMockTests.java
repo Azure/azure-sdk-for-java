@@ -28,7 +28,7 @@ import reactor.core.publisher.Mono;
 public final class BackupInstancesTriggerCrossRegionRestoreMockTests {
     @Test
     public void testTriggerCrossRegionRestore() throws Exception {
-        String responseStr = "{\"objectType\":\"OperationJobExtendedInfo\",\"jobId\":\"nvbroylaxx\"}";
+        String responseStr = "{\"objectType\":\"OperationJobExtendedInfo\",\"jobId\":\"pqhe\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -38,19 +38,19 @@ public final class BackupInstancesTriggerCrossRegionRestoreMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         OperationJobExtendedInfo response = manager.backupInstances()
-            .triggerCrossRegionRestore("irudh", "m", new CrossRegionRestoreRequestObject()
+            .triggerCrossRegionRestore("cohdx", "zlmcmuapcvhdb", new CrossRegionRestoreRequestObject()
                 .withRestoreRequestObject(new AzureBackupRestoreRequest()
                     .withRestoreTargetInfo(new RestoreTargetInfoBase().withRecoveryOption(RecoveryOption.FAIL_IF_EXISTS)
-                        .withRestoreLocation("ckdlpag"))
+                        .withRestoreLocation("qqxeyskon"))
                     .withSourceDataStoreType(SourceDataStoreType.VAULT_STORE)
-                    .withSourceResourceId("x")
-                    .withResourceGuardOperationRequests(Arrays.asList("lc", "xwmdboxd", "gsftufqobrjlnacg"))
-                    .withIdentityDetails(new IdentityDetails().withUseSystemAssignedIdentity(false)
-                        .withUserAssignedIdentityArmUrl("hxkizvytnrzv")))
-                .withCrossRegionRestoreDetails(
-                    new CrossRegionRestoreDetails().withSourceRegion("lj").withSourceBackupInstanceId("aaeranokqgukk")),
+                    .withSourceResourceId("nkfkbgbzb")
+                    .withResourceGuardOperationRequests(Arrays.asList("eqocljmygvk", "qkjjeokbz"))
+                    .withIdentityDetails(new IdentityDetails().withUseSystemAssignedIdentity(true)
+                        .withUserAssignedIdentityArmUrl("xcczurtl")))
+                .withCrossRegionRestoreDetails(new CrossRegionRestoreDetails().withSourceRegion("ipqxbkwvzgnzv")
+                    .withSourceBackupInstanceId("fbzdixzmqpnoda")),
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("nvbroylaxx", response.jobId());
+        Assertions.assertEquals("pqhe", response.jobId());
     }
 }

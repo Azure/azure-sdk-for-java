@@ -1,14 +1,86 @@
 # Release History
 
-## 1.7.0-beta.2 (Unreleased)
+## 1.7.0-beta.2 (2026-10-15)
+
+- Azure Resource Manager Data Protection client library for Java. This package contains Microsoft Azure SDK for Data Protection Management SDK. Open API 2.0 Specs for Azure Data Protection service. Package api-version 2026-08-31-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Features Added
 
-### Breaking Changes
+* `models.RecoveryPointFromDppCrossTenantVaults` was added
 
-### Bugs Fixed
+* `models.CrossTenantVaultMappingStatusResponse` was added
 
-### Other Changes
+* `models.CrossTenantBackupInstance` was added
+
+* `models.CrossTenantVaultMapping$Definition` was added
+
+* `models.DppCrossTenantVaultMappingStatus` was added
+
+* `models.CrossTenantBackupInstanceResource` was added
+
+* `models.CrossTenantVaultMappingRemoveRequest` was added
+
+* `models.CrossTenantSecretStoreBasedAuthCredentials` was added
+
+* `models.BackupInstanceOperationResultFromDppCrossTenantVaultsGetHeaders` was added
+
+* `models.CrossTenantVaultMapping` was added
+
+* `models.BackupInstanceOperationResultFromDppCrossTenantVaultsGetResponse` was added
+
+* `models.RestoresFromDppCrossTenantVaults` was added
+
+* `models.CrossTenantAuthCredentials` was added
+
+* `models.CrossTenantVaultMappingRemoveRequestProperties` was added
+
+* `models.DppCrossTenantVaultMappings` was added
+
+* `models.BackupInstanceOperationStatusFromDppCrossTenantVaults` was added
+
+* `models.BackupInstancesFromDppCrossTenantVaults` was added
+
+* `models.VaultMappingState` was added
+
+* `models.CrossTenantVaultMapping$UpdateStages` was added
+
+* `models.BackupInstanceOperationResultFromDppCrossTenantVaults` was added
+
+* `models.ValidateRestoreFromDppCrossTenantVaults` was added
+
+* `models.RecoveryPointsFromDppCrossTenantVaults` was added
+
+* `models.CrossTenantVaultMappingProperties` was added
+
+* `models.CrossTenantSecretStoreResource` was added
+
+* `models.JobFromDppCrossTenantVaults` was added
+
+* `models.RestorableTimeRangesFromDppCrossTenantVaults` was added
+
+* `models.CrossTenantVaultMapping$DefinitionStages` was added
+
+* `models.BackupInstanceFromDppCrossTenantVaults` was added
+
+* `models.CrossTenantVaultMapping$Update` was added
+
+* `models.BackupJobsFromDppCrossTenantVaults` was added
+
+#### `DataProtectionManager` was modified
+
+* `restoresFromDppCrossTenantVaults()` was added
+* `backupInstanceOperationResultFromDppCrossTenantVaults()` was added
+* `recoveryPointsFromDppCrossTenantVaults()` was added
+* `dppCrossTenantVaultMappings()` was added
+* `recoveryPointFromDppCrossTenantVaults()` was added
+* `backupInstanceOperationStatusFromDppCrossTenantVaults()` was added
+* `backupInstanceFromDppCrossTenantVaults()` was added
+* `backupInstancesFromDppCrossTenantVaults()` was added
+* `validateRestoreFromDppCrossTenantVaults()` was added
+* `dppCrossTenantVaultMappingStatus()` was added
+* `backupJobsFromDppCrossTenantVaults()` was added
+* `jobFromDppCrossTenantVaults()` was added
+* `restorableTimeRangesFromDppCrossTenantVaults()` was added
 
 ## 1.7.0-beta.1 (2026-09-28)
 
