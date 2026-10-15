@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Fixed proxy authentication retrying non-CONNECT requests after a 407 response.
+
 ### Other Changes
 
 ## 1.0.0-beta.2 (2025-03-12)

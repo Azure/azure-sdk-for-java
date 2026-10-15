@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Fixed proxy authentication retrying non-CONNECT requests after a 407 response.
+
 ### Other Changes
 
 ## 1.13.8 (2026-09-29)

@@ -41,7 +41,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 public class ProxyAuthenticatorTests {
     private static final String PREEMPTIVE_AUTHENTICATE = "Preemptive Authenticate";
-    private static final Request DEFAULT_REQUEST = new Request.Builder().get().url("http://localhost:8888/get").build();
+    private static final Request DEFAULT_REQUEST
+        = new Request.Builder().method("CONNECT", null).url("http://localhost:8888/get").build();
     private static final Address DEFAULT_ADDRESS = new Address("localhost", 80, Dns.SYSTEM, SocketFactory.getDefault(),
         null, null, null, Authenticator.NONE, null, Collections.singletonList(Protocol.HTTP_1_1),
         Collections.singletonList(ConnectionSpec.MODERN_TLS), ProxySelector.getDefault());
@@ -107,6 +108,29 @@ public class ProxyAuthenticatorTests {
             Arguments.of(new Headers.Builder().add("Proxy-Authenticate: Basic")
                 .add("Proxy-Authenticate: " + DIGEST_CHALLENGE)
                 .build(), DIGEST_PREDICATE));
+    }
+
+    /**
+     * Tests that non-CONNECT challenges aren't retried, even when proxy credentials have been cached.
+     */
+    @ParameterizedTest
+    @MethodSource("authorizationIsAppliedSupplier")
+    public void nonConnectChallengesAreNotRetried(Headers challengeHeaders, Predicate<String> expectedPredicate) {
+        ProxyAuthenticator proxyAuthenticator = new ProxyAuthenticator("1", "1");
+
+        Response connectResponse = mockResponse("This is a test", challengeHeaders);
+        Response httpResponse
+            = connectResponse.newBuilder().request(DEFAULT_REQUEST.newBuilder().get().build()).build();
+
+        assertNull(proxyAuthenticator.authenticate(null, httpResponse));
+
+        Request connectRequest = proxyAuthenticator.authenticate(null, connectResponse);
+        assertNotNull(connectRequest);
+        assertTrue(expectedPredicate.test(connectRequest.header(PROXY_AUTHORIZATION)));
+
+        assertNull(proxyAuthenticator.authenticate(null, httpResponse));
+        assertNull(
+            proxyAuthenticator.authenticate(null, httpResponse.newBuilder().message(PREEMPTIVE_AUTHENTICATE).build()));
     }
 
     /**

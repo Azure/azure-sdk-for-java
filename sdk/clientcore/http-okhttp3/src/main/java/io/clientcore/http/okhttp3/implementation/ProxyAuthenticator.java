@@ -23,7 +23,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import static io.clientcore.core.http.models.HttpHeaderName.PROXY_AUTHORIZATION;
 
 /**
- * This class handles authorizing requests being sent through a proxy which require authentication.
+ * This class handles authorizing CONNECT requests being sent through a proxy which require authentication.
  */
 public final class ProxyAuthenticator implements Authenticator {
     private static final String PREEMPTIVE_AUTHENTICATE = "Preemptive Authenticate";
@@ -82,10 +82,15 @@ public final class ProxyAuthenticator implements Authenticator {
      * @param route Route being used to reach the server.
      * @param response Response from the server requesting authentication.
      *
-     * @return The initial request with an authorization header applied.
+     * @return The request to use for proxy authentication, or {@code null} if the request method isn't {@code CONNECT}.
      */
     @Override
     public Request authenticate(Route route, Response response) {
+        // Only authenticate CONNECT requests; other 407 responses must be returned without a retry.
+        if (!"CONNECT".equals(response.request().method())) {
+            return null;
+        }
+
         // Handle preemptive authentication
         if (PREEMPTIVE_AUTHENTICATE.equalsIgnoreCase(response.message())) {
             // If we have already authenticated, apply the stored Proxy-Authorization header.

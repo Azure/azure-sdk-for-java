@@ -24,7 +24,7 @@ import static com.azure.core.util.AuthorizationChallengeHandler.PROXY_AUTHENTICA
 import static com.azure.core.util.AuthorizationChallengeHandler.PROXY_AUTHORIZATION;
 
 /**
- * This class handles authorizing requests being sent through a proxy which require authentication.
+ * This class handles authorizing CONNECT requests being sent through a proxy which require authentication.
  */
 public final class ProxyAuthenticator implements Authenticator {
     private static final String VALIDATION_ERROR_TEMPLATE = "The '%s' returned in the 'Proxy-Authentication-Info' "
@@ -79,10 +79,15 @@ public final class ProxyAuthenticator implements Authenticator {
     /**
      * @param route Route being used to reach the server.
      * @param response Response from the server requesting authentication.
-     * @return The initial request with an authorization header applied.
+     * @return The request to use for proxy authentication, or {@code null} if the request method isn't {@code CONNECT}.
      */
     @Override
     public Request authenticate(Route route, Response response) {
+        // Only authenticate CONNECT requests; other 407 responses must be returned without a retry.
+        if (!PROXY_METHOD.equals(response.request().method())) {
+            return null;
+        }
+
         String authorizationHeader
             = challengeHandler.attemptToPipelineAuthorization(PROXY_METHOD, PROXY_URI_PATH, NO_BODY);
 
