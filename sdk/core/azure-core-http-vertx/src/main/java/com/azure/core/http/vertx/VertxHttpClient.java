@@ -344,7 +344,8 @@ class VertxHttpClient implements HttpClient {
             this.timeout = timeout;
             this.promise = promise;
             this.executor = executor;
-            this.timeoutNanos = timeout == null || timeout.isZero() || timeout.isNegative() ? 0
+            this.timeoutNanos = timeout == null || timeout.isZero() || timeout.isNegative()
+                ? 0
                 : TimeUnit.MILLISECONDS.toNanos(Math.max(1, timeout.toMillis()));
         }
 

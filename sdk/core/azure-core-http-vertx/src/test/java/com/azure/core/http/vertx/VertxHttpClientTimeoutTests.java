@@ -233,8 +233,8 @@ public class VertxHttpClientTimeoutTests {
                 .writeTimeout(Duration.ZERO)
                 .responseTimeout(Duration.ZERO)
                 .build();
-            HttpClient client = new VertxHttpClient(base.client, base.buildOptions, Duration.ZERO,
-                Duration.ofMinutes(1), scheduler);
+            HttpClient client
+                = new VertxHttpClient(base.client, base.buildOptions, Duration.ZERO, Duration.ofMinutes(1), scheduler);
             CompletableFuture<Void> emitted = new CompletableFuture<>();
             Flux<ByteBuffer> body = Flux.range(0, 1024)
                 .map(ignored -> ByteBuffer.wrap(new byte[] { 1 }))
