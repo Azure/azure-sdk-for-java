@@ -17,6 +17,35 @@ import java.util.Collections;
 
 public class EdgeActionExecutionFiltersIntegrationTests extends EdgeActionsTestBase {
     @Test
+    public void createsExecutionFilterWithoutCodeDeployment() {
+        createEdgeAction();
+        EdgeActionVersion version = createVersion("v1", EdgeActionVersionDeploymentType.FILE);
+        String filterName = "undeployedfilter";
+        EdgeActionExecutionFilter filter = manager.edgeActionExecutionFilters()
+            .define(filterName)
+            .withRegion("global")
+            .withExistingEdgeAction(resourceGroupName, edgeActionName)
+            .withProperties(new EdgeActionExecutionFilterProperties().withVersionId(version.id())
+                .withExecutionFilterIdentifierHeaderName("X-Java-Undeployed")
+                .withExecutionFilterIdentifierHeaderValue("no-code"))
+            .create();
+        Assertions.assertEquals(filterName, filter.name());
+        assertResourceIdEquals(version.id(), filter.properties().versionId());
+        Assertions.assertEquals("X-Java-Undeployed", filter.properties().executionFilterIdentifierHeaderName());
+        Assertions.assertEquals("no-code", filter.properties().executionFilterIdentifierHeaderValue());
+
+        EdgeActionExecutionFilter retrieved
+            = manager.edgeActionExecutionFilters().get(resourceGroupName, edgeActionName, filterName);
+        assertResourceIdEquals(filter.id(), retrieved.id());
+        assertResourceIdEquals(version.id(), retrieved.properties().versionId());
+        Assertions.assertEquals("X-Java-Undeployed", retrieved.properties().executionFilterIdentifierHeaderName());
+        Assertions.assertEquals("no-code", retrieved.properties().executionFilterIdentifierHeaderValue());
+
+        manager.edgeActionExecutionFilters().delete(resourceGroupName, edgeActionName, filterName);
+        assertNotFound(() -> manager.edgeActionExecutionFilters().get(resourceGroupName, edgeActionName, filterName));
+    }
+
+    @Test
     public void createsUpdatesListsAndDeletesExecutionFilter() throws IOException {
         createEdgeAction();
         EdgeActionVersion first = deployVersion("v1", EdgeActionVersionDeploymentType.FILE);
