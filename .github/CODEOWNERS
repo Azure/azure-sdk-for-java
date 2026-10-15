@@ -85,9 +85,6 @@
 # Client Libraries
 ####################
 
-# PRLabel: %AgriFood
-/sdk/agrifood/                                                     @Azure/azure-java-sdk
-
 # PRLabel: %AI
 /sdk/ai/                                                           @Azure/ai-foundry-devex @Azure/azure-java-sdk
 

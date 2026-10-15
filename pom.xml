@@ -11,7 +11,6 @@
   <modules>
     <module>common/perf-test-core</module>
     <module>sdk/advisor</module>
-    <module>sdk/agrifood</module>
     <module>sdk/ai</module>
     <module>sdk/alertsmanagement</module>
     <module>sdk/apicenter</module>
@@ -100,7 +99,6 @@
     <module>sdk/deviceregistry</module>
     <module>sdk/deviceupdate</module>
     <module>sdk/devopsinfrastructure</module>
-    <module>sdk/devspaces</module>
     <module>sdk/devtestlabs</module>
     <module>sdk/digitaltwins</module>
     <module>sdk/disconnectedoperations</module>
@@ -127,7 +125,6 @@
     <module>sdk/formrecognizer</module>
     <module>sdk/frontdoor</module>
     <module>sdk/graphservices</module>
-    <module>sdk/hanaonazure</module>
     <module>sdk/hardwaresecuritymodules</module>
     <module>sdk/hdinsight</module>
     <module>sdk/healthbot</module>
