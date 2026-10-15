@@ -37,6 +37,7 @@ public final class ShareFilePropertiesHelper {
          * @param contentLength The number of bytes present in the response body.
          * @param contentType The content type specified for the file. The default content type is
          * application/octet-stream.
+         * @param contentLanguage The content language specified for the file.
          * @param contentMd5 The MD5 hash of the file to check the message content integrity.
          * @param contentEncoding This header returns the value that was specified for the Content-Encoding request header.
          * @param cacheControl This header is returned if it was previously specified for the file.
@@ -67,15 +68,16 @@ public final class ShareFilePropertiesHelper {
          * completely encrypted using the specified algorithm. Otherwise, the value is set to false.
          * @param smbProperties The SMB properties of the file.
          * @param posixProperties The NFS properties of the file.
+         * @param fileName The name of the file when returned by a file-ID request.
          * @return A new instance of {@link ShareFileProperties}.
          */
         ShareFileProperties create(String eTag, OffsetDateTime lastModified, Map<String, String> metadata,
-            String fileType, Long contentLength, String contentType, byte[] contentMd5, String contentEncoding,
-            String cacheControl, String contentDisposition, LeaseStatusType leaseStatusType,
+            String fileType, Long contentLength, String contentType, String contentLanguage, byte[] contentMd5,
+            String contentEncoding, String cacheControl, String contentDisposition, LeaseStatusType leaseStatusType,
             LeaseStateType leaseStateType, LeaseDurationType leaseDurationType, OffsetDateTime copyCompletionTime,
             String copyStatusDescription, String copyId, String copyProgress, String copySource,
             CopyStatusType copyStatus, Boolean isServerEncrypted, FileSmbProperties smbProperties,
-            FilePosixProperties posixProperties);
+            FilePosixProperties posixProperties, String fileName);
     }
 
     /**
@@ -97,6 +99,7 @@ public final class ShareFilePropertiesHelper {
      * @param contentLength The number of bytes present in the response body.
      * @param contentType The content type specified for the file. The default content type is
      * application/octet-stream.
+     * @param contentLanguage The content language specified for the file.
      * @param contentMd5 The MD5 hash of the file to check the message content integrity.
      * @param contentEncoding This header returns the value that was specified for the Content-Encoding request header.
      * @param cacheControl This header is returned if it was previously specified for the file.
@@ -127,14 +130,16 @@ public final class ShareFilePropertiesHelper {
      * completely encrypted using the specified algorithm. Otherwise, the value is set to false.
      * @param smbProperties The SMB properties of the file.
      * @param posixProperties The NFS properties of the file.
+     * @param fileName The name of the file when returned by a file-ID request.
      * @return A new instance of {@link ShareFileProperties}.
      */
     public static ShareFileProperties create(String eTag, OffsetDateTime lastModified, Map<String, String> metadata,
-        String fileType, Long contentLength, String contentType, byte[] contentMd5, String contentEncoding,
-        String cacheControl, String contentDisposition, LeaseStatusType leaseStatusType, LeaseStateType leaseStateType,
-        LeaseDurationType leaseDurationType, OffsetDateTime copyCompletionTime, String copyStatusDescription,
-        String copyId, String copyProgress, String copySource, CopyStatusType copyStatus, Boolean isServerEncrypted,
-        FileSmbProperties smbProperties, FilePosixProperties posixProperties) {
+        String fileType, Long contentLength, String contentType, String contentLanguage, byte[] contentMd5,
+        String contentEncoding, String cacheControl, String contentDisposition, LeaseStatusType leaseStatusType,
+        LeaseStateType leaseStateType, LeaseDurationType leaseDurationType, OffsetDateTime copyCompletionTime,
+        String copyStatusDescription, String copyId, String copyProgress, String copySource, CopyStatusType copyStatus,
+        Boolean isServerEncrypted, FileSmbProperties smbProperties, FilePosixProperties posixProperties,
+        String fileName) {
         // This looks odd but is necessary, it is possible to engage the access helper before anywhere else in the
         // application accesses ShareFileProperties which triggers the accessor to be configured. So, if the accessor
         // is null this effectively pokes the class to set up the accessor.
@@ -144,9 +149,9 @@ public final class ShareFilePropertiesHelper {
         }
 
         assert accessor != null;
-        return accessor.create(eTag, lastModified, metadata, fileType, contentLength, contentType, contentMd5,
-            contentEncoding, cacheControl, contentDisposition, leaseStatusType, leaseStateType, leaseDurationType,
-            copyCompletionTime, copyStatusDescription, copyId, copyProgress, copySource, copyStatus, isServerEncrypted,
-            smbProperties, posixProperties);
+        return accessor.create(eTag, lastModified, metadata, fileType, contentLength, contentType, contentLanguage,
+            contentMd5, contentEncoding, cacheControl, contentDisposition, leaseStatusType, leaseStateType,
+            leaseDurationType, copyCompletionTime, copyStatusDescription, copyId, copyProgress, copySource, copyStatus,
+            isServerEncrypted, smbProperties, posixProperties, fileName);
     }
 }

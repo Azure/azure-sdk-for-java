@@ -16,7 +16,7 @@ autorest
 ### Code generation settings
 ``` yaml
 use: '@autorest/java@4.1.63'
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/15d7f54a5389d5906ffb4e56bb2f38fe5525c0d3/specification/storage/data-plane/Microsoft.FileStorage/stable/2026-06-06/file.json
+input-file: https://raw.githubusercontent.com/browndav-msft/azure-rest-api-specs/07f71db82db9fb100b4097666db6fddff84fd0a3/specification/storage/data-plane/Microsoft.FileStorage/stable/2027-03-07/file.json
 java: true
 output-folder: ../
 namespace: com.azure.storage.file.share
@@ -97,6 +97,30 @@ directive:
         op.put.responses["201"].headers["x-ms-file-creation-time"].format = "date-time";
         op.put.responses["201"].headers["x-ms-file-last-write-time"].format = "date-time";
         op.put.responses["201"].headers["x-ms-file-change-time"].format = "date-time";
+        op.get.responses["200"].headers["x-ms-file-creation-time"].format = "date-time";
+        op.get.responses["200"].headers["x-ms-file-last-write-time"].format = "date-time";
+        op.get.responses["200"].headers["x-ms-file-change-time"].format = "date-time";
+```
+
+### /{shareName}
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]
+  transform: >
+        const op = $["/{shareName}"];
+        op.head.responses["200"].headers["x-ms-file-creation-time"].format = "date-time";
+        op.head.responses["200"].headers["x-ms-file-last-write-time"].format = "date-time";
+        op.head.responses["200"].headers["x-ms-file-change-time"].format = "date-time";
+```
+
+### /{shareName}?comp=hardlinks
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]
+  transform: >
+        const op = $["/{shareName}?comp=hardlinks"];
         op.get.responses["200"].headers["x-ms-file-creation-time"].format = "date-time";
         op.get.responses["200"].headers["x-ms-file-last-write-time"].format = "date-time";
         op.get.responses["200"].headers["x-ms-file-change-time"].format = "date-time";
