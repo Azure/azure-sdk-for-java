@@ -13,7 +13,12 @@ public enum WebPubSubChatServiceVersion implements ServiceVersion {
     /**
      * Enum value 2026-02-01-preview.
      */
-    V2026_02_01_PREVIEW("2026-02-01-preview");
+    V2026_02_01_PREVIEW("2026-02-01-preview"),
+
+    /**
+     * Enum value 2026-08-01-preview.
+     */
+    V2026_08_01_PREVIEW("2026-08-01-preview");
 
     private final String version;
 
@@ -35,6 +40,6 @@ public enum WebPubSubChatServiceVersion implements ServiceVersion {
      * @return The latest {@link WebPubSubChatServiceVersion}.
      */
     public static WebPubSubChatServiceVersion getLatest() {
-        return V2026_02_01_PREVIEW;
+        return V2026_08_01_PREVIEW;
     }
 }
