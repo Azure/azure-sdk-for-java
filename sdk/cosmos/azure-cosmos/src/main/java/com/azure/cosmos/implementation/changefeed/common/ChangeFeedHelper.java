@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.changefeed.common;
 
+import com.azure.cosmos.models.CosmosItemRequestOptions;
+
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -23,6 +25,20 @@ public class ChangeFeedHelper {
     public static final int HTTP_STATUS_CODE_PRECONDITION_FAILED = 412;
     public static final int HTTP_STATUS_CODE_TOO_MANY_REQUESTS = 429;
     public static final int HTTP_STATUS_CODE_INTERNAL_SERVER_ERROR = 500;
+
+    /**
+     * Disables content response on write for a lease container write request. Lease state is preserved locally
+     * and only the new ETag (concurrency token) is taken from the response headers, so the response body is
+     * never needed. This overrides the content-response-on-write setting of the lease client.
+     *
+     * @param options the request options to update; a new instance is created when null.
+     * @return the request options with content response on write disabled.
+     */
+    public static CosmosItemRequestOptions withContentResponseOnWriteDisabled(CosmosItemRequestOptions options) {
+        CosmosItemRequestOptions effectiveOptions = options != null ? options : new CosmosItemRequestOptions();
+        effectiveOptions.setContentResponseOnWriteEnabled(false);
+        return effectiveOptions;
+    }
 
     public static String getDatabaseLink(String databaseName) {
         return String.format("/dbs/%s", databaseName);

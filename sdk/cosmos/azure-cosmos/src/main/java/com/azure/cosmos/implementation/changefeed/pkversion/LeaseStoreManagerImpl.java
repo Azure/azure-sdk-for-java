@@ -176,7 +176,8 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
         return this.leaseDocumentClient.createItem(
             this.settings.getLeaseCollectionLink(),
                 documentServiceLease,
-                this.requestOptionsFactory.createItemRequestOptions(documentServiceLease),
+                ChangeFeedHelper.withContentResponseOnWriteDisabled(
+                    this.requestOptionsFactory.createItemRequestOptions(documentServiceLease)),
                 false)
             .onErrorResume( ex -> {
                 if (ex instanceof CosmosException) {
@@ -200,11 +201,16 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
                 }
 
                 InternalObjectNode document = BridgeInternal.getProperties(documentResourceResponse);
+                if (document != null) {
+                    return documentServiceLease
+                        .withId(document.getId())
+                        .withETag(document.getETag())
+                        .withTs(document.getString(Constants.Properties.LAST_MODIFIED));
+                }
 
-                return documentServiceLease
-                    .withId(document.getId())
-                    .withETag(document.getETag())
-                    .withTs(document.getString(Constants.Properties.LAST_MODIFIED));
+                // Lease writes are issued with content response on write disabled - the submitted lease is what got
+                // persisted, so only the concurrency token needs to be taken from the response headers.
+                return documentServiceLease.withETag(documentResourceResponse.getETag());
             });
     }
 
