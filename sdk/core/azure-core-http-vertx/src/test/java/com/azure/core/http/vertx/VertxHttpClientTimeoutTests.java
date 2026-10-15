@@ -22,7 +22,10 @@ import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Scheduler;
+import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
+import reactor.test.scheduler.VirtualTimeScheduler;
 
 import java.nio.ByteBuffer;
 import java.time.Duration;
@@ -42,6 +45,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class VertxHttpClientTimeoutTests {
     private static final Duration TEST_TIMEOUT = Duration.ofSeconds(5);
+    private static final Duration UPLOAD_BUFFER_DELAY = Duration.ofMillis(100);
+    private static final int UPLOAD_BUFFER_COUNT = 6;
 
     @ParameterizedTest
     @CsvSource({ "false, false", "false, true", "true, false", "true, true" })
@@ -176,8 +181,7 @@ public class VertxHttpClientTimeoutTests {
         try (TimeoutTestServer server = new TimeoutTestServer()) {
             HttpRequest request = server.request("/upload")
                 .setHttpMethod(HttpMethod.POST)
-                .setBody(
-                    Flux.interval(Duration.ofMillis(100)).take(6).map(ignored -> ByteBuffer.wrap(new byte[] { 1 })));
+                .setBody(uploadBodyWithProgress(Schedulers.parallel()));
             StepVerifier.create(server.writeTimeoutClient()
                 .send(request)
                 .flatMap(response -> Mono.using(() -> response, HttpResponse::getBodyAsString, HttpResponse::close)))
@@ -188,7 +192,38 @@ public class VertxHttpClientTimeoutTests {
     }
 
     @Test
-    public void smallBufferUploadKeepsTimerQueueBounded() throws Exception {
+    public void uploadProgressBodyRespectsBackpressure() {
+        // Keep virtual time local instead of replacing the schedulers used by concurrent HTTP tests.
+        VirtualTimeScheduler scheduler = VirtualTimeScheduler.create();
+        try {
+            StepVerifier.create(uploadBodyWithProgress(scheduler), 1)
+                .expectSubscription()
+                .then(() -> scheduler.advanceTimeBy(UPLOAD_BUFFER_DELAY))
+                .expectNextCount(1)
+                // A delayed write can withhold demand for several ticks. The old interval source overflowed here.
+                .then(() -> scheduler.advanceTimeBy(Duration.ofSeconds(1)))
+                .thenRequest(UPLOAD_BUFFER_COUNT - 1L)
+                .then(() -> scheduler.advanceTimeBy(UPLOAD_BUFFER_DELAY.multipliedBy(UPLOAD_BUFFER_COUNT - 1L)))
+                .expectNextCount(UPLOAD_BUFFER_COUNT - 1L)
+                .expectComplete()
+                .verify(TEST_TIMEOUT);
+        } finally {
+            scheduler.dispose();
+        }
+    }
+
+    private static Flux<ByteBuffer> uploadBodyWithProgress(Scheduler scheduler) {
+        // The upload subscriber requests one buffer at a time after each asynchronous write or drain. Unlike
+        // interval(), this source waits for demand instead of overflowing if a write takes longer than one tick.
+        // Six delayed buffers still keep the upload active longer than the 500 ms write timeout.
+        return Flux.range(0, UPLOAD_BUFFER_COUNT)
+            .delayElements(UPLOAD_BUFFER_DELAY, scheduler)
+            .map(ignored -> ByteBuffer.wrap(new byte[] { 1 }));
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    public void smallBufferUploadKeepsTimerQueueBounded(boolean completeUpload) throws Exception {
         ScheduledThreadPoolExecutor scheduler = new ScheduledThreadPoolExecutor(1);
         CompletableFuture<HttpResponse> pending = null;
         try (TimeoutTestServer server = new TimeoutTestServer()) {
@@ -201,18 +236,28 @@ public class VertxHttpClientTimeoutTests {
             HttpClient client = new VertxHttpClient(base.client, base.buildOptions, Duration.ZERO,
                 Duration.ofMinutes(1), scheduler);
             CompletableFuture<Void> emitted = new CompletableFuture<>();
-            HttpRequest request = server.request("/upload").setHttpMethod(HttpMethod.POST)
-                .setBody(Flux.range(0, 1024)
-                    .map(ignored -> ByteBuffer.wrap(new byte[] { 1 }))
-                    .doOnComplete(() -> emitted.complete(null))
-                    .concatWith(Flux.never()));
+            Flux<ByteBuffer> body = Flux.range(0, 1024)
+                .map(ignored -> ByteBuffer.wrap(new byte[] { 1 }))
+                .doOnComplete(() -> emitted.complete(null));
+            if (!completeUpload) {
+                body = body.concatWith(Flux.never());
+            }
+            HttpRequest request = server.request("/upload").setHttpMethod(HttpMethod.POST).setBody(body);
             pending = client.send(request).toFuture();
             emitted.get(TEST_TIMEOUT.toMillis(), TimeUnit.MILLISECONDS);
 
             // Deliberately retain canceled tasks, matching the default shared scheduler's policy.
             assertFalse(scheduler.getRemoveOnCancelPolicy());
             assertEquals(1, scheduler.getQueue().size(), "buffer progress must not enqueue another timeout task");
-            assertFalse(pending.isDone(), "the request should still be waiting for its final body chunk");
+            if (completeUpload) {
+                try (HttpResponse response = pending.get(TEST_TIMEOUT.toMillis(), TimeUnit.MILLISECONDS)) {
+                    assertEquals("ok", response.getBodyAsString().block(TEST_TIMEOUT));
+                }
+            } else {
+                assertFalse(pending.isDone(), "the request should still be waiting for its final body chunk");
+                assertTrue(pending.cancel(true));
+            }
+            assertEquals(1, scheduler.getQueue().size(), "finishing the upload must not leave per-buffer timers");
         } finally {
             if (pending != null) {
                 pending.cancel(true);

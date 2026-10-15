@@ -66,9 +66,8 @@ class JdkHttpClient implements HttpClient {
         this.writeTimeout
             = (writeTimeout != null && !writeTimeout.isNegative() && !writeTimeout.isZero()) ? writeTimeout : null;
 
-        // The responseTimeout is used by JDK 'HttpRequest.timeout()' which will throw an exception when the timeout
-        // is non-null and is zero or negative. We treat zero or negative as an infinite timeout, so reset to null to
-        // prevent the exception from being thrown and have the behavior we want.
+        // Nonpositive response timeouts disable both the continue-handshake and post-upload response deadlines.
+        // Bodiless requests use the native JDK timeout, which also requires a strictly positive duration.
         this.responseTimeout = (responseTimeout != null && !responseTimeout.isNegative() && !responseTimeout.isZero())
             ? responseTimeout
             : null;
@@ -155,7 +154,7 @@ class JdkHttpClient implements HttpClient {
         CompletableFuture<HttpResponse> result = new CompletableFuture<>();
         ResponseTimeout watcher = new ResponseTimeout(timeout, result);
         java.net.http.HttpRequest jdkRequest = new AzureJdkHttpRequest(request, context, restrictedHeaders, LOGGER,
-            writeTimeout, responseTimeout, watcher::uploadStarted, watcher::start);
+            writeTimeout, responseTimeout, watcher::uploadStarted, watcher::uploadCompleted);
         CompletableFuture<java.net.http.HttpResponse<T>> exchange = jdkHttpClient.sendAsync(jdkRequest, info -> {
             watcher.responseReceived();
             return bodyHandler.apply(info);
@@ -202,7 +201,8 @@ class JdkHttpClient implements HttpClient {
             this.result = result;
         }
 
-        private synchronized void start() {
+        private synchronized void uploadCompleted() {
+            // Start a fresh response deadline only after the publisher has finished the upload.
             schedule("Response");
         }
 
@@ -215,6 +215,7 @@ class JdkHttpClient implements HttpClient {
 
         private synchronized void uploadStarted() {
             uploadStarted = true;
+            // Body publication has its own write timeout. Do not count it against the continue-wait deadline.
             cancelTask();
         }
 

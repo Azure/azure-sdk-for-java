@@ -316,7 +316,7 @@ class VertxHttpClient implements HttpClient {
             // Right now both Flux<ByteBuffer> and InputStream bodies are being handled reactively.
             azureRequest.getBody()
                 .subscribe(new VertxRequestWriteSubscriber(vertxRequest::exceptionHandler, vertxRequest::drainHandler,
-                    buffer -> vertxRequest.write(buffer).onSuccess(ignored -> writeWatcher.start()),
+                    buffer -> vertxRequest.write(buffer).onSuccess(ignored -> writeWatcher.progress()),
                     vertxRequest::writeQueueFull, vertxRequest::reset,
                     () -> vertxRequest.end().onSuccess(ignored -> writeWatcher.close()), promise, progressReporter,
                     contextView));
@@ -350,16 +350,20 @@ class VertxHttpClient implements HttpClient {
 
         private synchronized long start() {
             long current = ++generation;
-            if (!closed
-                && !promise.future().isComplete()
-                && timeoutNanos > 0) {
+            progress();
+            return current;
+        }
+
+        private synchronized void progress() {
+            if (!closed && !promise.future().isComplete() && timeoutNanos > 0) {
+                // Buffers update a timestamp, not the scheduled task. The shared executor retains canceled tasks
+                // until their deadlines, so replacing a task per buffer would retain the entire upload's history.
                 lastProgressNanos = System.nanoTime();
                 if (task == null) {
                     long watchdog = ++watchdogGeneration;
                     task = executor.schedule(() -> timedOut(watchdog), timeoutNanos, TimeUnit.NANOSECONDS);
                 }
             }
-            return current;
         }
 
         private synchronized void pause(long current) {
