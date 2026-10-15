@@ -9,11 +9,11 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.netapp.fluent.models.NetAppAccountInner;
 import com.azure.resourcemanager.netapp.models.AccountEncryption;
+import com.azure.resourcemanager.netapp.models.AccountEncryptionPatch;
 import com.azure.resourcemanager.netapp.models.ActiveDirectory;
+import com.azure.resourcemanager.netapp.models.ActiveDirectoryPatch;
 import com.azure.resourcemanager.netapp.models.ChangeKeyVault;
 import com.azure.resourcemanager.netapp.models.EncryptionTransitionRequest;
-import com.azure.resourcemanager.netapp.models.EntraIdConfig;
-import com.azure.resourcemanager.netapp.models.EntraIdConfigPatch;
 import com.azure.resourcemanager.netapp.models.GetKeyVaultStatusResponse;
 import com.azure.resourcemanager.netapp.models.LdapConfiguration;
 import com.azure.resourcemanager.netapp.models.LdapConfigurationPatch;
@@ -78,10 +78,6 @@ public final class NetAppAccountImpl implements NetAppAccount, NetAppAccount.Def
         } else {
             return Collections.emptyList();
         }
-    }
-
-    public EntraIdConfig entraIdConfig() {
-        return this.innerModel().entraIdConfig();
     }
 
     public AccountEncryption encryption() {
@@ -268,38 +264,18 @@ public final class NetAppAccountImpl implements NetAppAccount, NetAppAccount.Def
     }
 
     public NetAppAccountImpl withActiveDirectories(List<ActiveDirectory> activeDirectories) {
-        if (isInCreateMode()) {
-            this.innerModel().withActiveDirectories(activeDirectories);
-            return this;
-        } else {
-            this.updateBody.withActiveDirectories(activeDirectories);
-            return this;
-        }
-    }
-
-    public NetAppAccountImpl withEntraIdConfig(EntraIdConfig entraIdConfig) {
-        this.innerModel().withEntraIdConfig(entraIdConfig);
+        this.innerModel().withActiveDirectories(activeDirectories);
         return this;
     }
 
     public NetAppAccountImpl withEncryption(AccountEncryption encryption) {
-        if (isInCreateMode()) {
-            this.innerModel().withEncryption(encryption);
-            return this;
-        } else {
-            this.updateBody.withEncryption(encryption);
-            return this;
-        }
+        this.innerModel().withEncryption(encryption);
+        return this;
     }
 
     public NetAppAccountImpl withNfsV4IdDomain(String nfsV4IdDomain) {
-        if (isInCreateMode()) {
-            this.innerModel().withNfsV4IdDomain(nfsV4IdDomain);
-            return this;
-        } else {
-            this.updateBody.withNfsV4IdDomain(nfsV4IdDomain);
-            return this;
-        }
+        this.innerModel().withNfsV4IdDomain(nfsV4IdDomain);
+        return this;
     }
 
     public NetAppAccountImpl withLdapConfiguration(LdapConfiguration ldapConfiguration) {
@@ -307,8 +283,18 @@ public final class NetAppAccountImpl implements NetAppAccount, NetAppAccount.Def
         return this;
     }
 
-    public NetAppAccountImpl withEntraIdConfig(EntraIdConfigPatch entraIdConfig) {
-        this.updateBody.withEntraIdConfig(entraIdConfig);
+    public NetAppAccountImpl withActiveDirectoriesForUpdate(List<ActiveDirectoryPatch> activeDirectories) {
+        this.updateBody.withActiveDirectories(activeDirectories);
+        return this;
+    }
+
+    public NetAppAccountImpl withEncryption(AccountEncryptionPatch encryption) {
+        this.updateBody.withEncryption(encryption);
+        return this;
+    }
+
+    public NetAppAccountImpl withNfsV4IDDomain(String nfsV4IDDomain) {
+        this.updateBody.withNfsV4IDDomain(nfsV4IDDomain);
         return this;
     }
 

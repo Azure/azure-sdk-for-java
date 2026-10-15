@@ -9,9 +9,8 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.netapp.models.AccountEncryption;
-import com.azure.resourcemanager.netapp.models.ActiveDirectory;
-import com.azure.resourcemanager.netapp.models.EntraIdConfigPatch;
+import com.azure.resourcemanager.netapp.models.AccountEncryptionPatch;
+import com.azure.resourcemanager.netapp.models.ActiveDirectoryPatch;
 import com.azure.resourcemanager.netapp.models.LdapConfigurationPatch;
 import java.io.IOException;
 import java.util.List;
@@ -24,23 +23,18 @@ public final class AccountPropertiesPatch implements JsonSerializable<AccountPro
     /*
      * Active Directories
      */
-    private List<ActiveDirectory> activeDirectories;
+    private List<ActiveDirectoryPatch> activeDirectories;
 
     /*
      * Encryption settings
      */
-    private AccountEncryption encryption;
+    private AccountEncryptionPatch encryption;
 
     /*
      * Domain for NFSv4 user ID mapping. This property will be set for all NetApp accounts in the subscription and
      * region and only affect non ldap NFSv4 volumes.
      */
-    private String nfsV4IdDomain;
-
-    /*
-     * Entra ID configuration for the account.
-     */
-    private EntraIdConfigPatch entraIdConfig;
+    private String nfsV4IDDomain;
 
     /*
      * LDAP Configuration for the account.
@@ -58,7 +52,7 @@ public final class AccountPropertiesPatch implements JsonSerializable<AccountPro
      * 
      * @return the activeDirectories value.
      */
-    public List<ActiveDirectory> activeDirectories() {
+    public List<ActiveDirectoryPatch> activeDirectories() {
         return this.activeDirectories;
     }
 
@@ -68,7 +62,7 @@ public final class AccountPropertiesPatch implements JsonSerializable<AccountPro
      * @param activeDirectories the activeDirectories value to set.
      * @return the AccountPropertiesPatch object itself.
      */
-    public AccountPropertiesPatch withActiveDirectories(List<ActiveDirectory> activeDirectories) {
+    public AccountPropertiesPatch withActiveDirectories(List<ActiveDirectoryPatch> activeDirectories) {
         this.activeDirectories = activeDirectories;
         return this;
     }
@@ -78,7 +72,7 @@ public final class AccountPropertiesPatch implements JsonSerializable<AccountPro
      * 
      * @return the encryption value.
      */
-    public AccountEncryption encryption() {
+    public AccountEncryptionPatch encryption() {
         return this.encryption;
     }
 
@@ -88,50 +82,30 @@ public final class AccountPropertiesPatch implements JsonSerializable<AccountPro
      * @param encryption the encryption value to set.
      * @return the AccountPropertiesPatch object itself.
      */
-    public AccountPropertiesPatch withEncryption(AccountEncryption encryption) {
+    public AccountPropertiesPatch withEncryption(AccountEncryptionPatch encryption) {
         this.encryption = encryption;
         return this;
     }
 
     /**
-     * Get the nfsV4IdDomain property: Domain for NFSv4 user ID mapping. This property will be set for all NetApp
+     * Get the nfsV4IDDomain property: Domain for NFSv4 user ID mapping. This property will be set for all NetApp
      * accounts in the subscription and region and only affect non ldap NFSv4 volumes.
      * 
-     * @return the nfsV4IdDomain value.
+     * @return the nfsV4IDDomain value.
      */
-    public String nfsV4IdDomain() {
-        return this.nfsV4IdDomain;
+    public String nfsV4IDDomain() {
+        return this.nfsV4IDDomain;
     }
 
     /**
-     * Set the nfsV4IdDomain property: Domain for NFSv4 user ID mapping. This property will be set for all NetApp
+     * Set the nfsV4IDDomain property: Domain for NFSv4 user ID mapping. This property will be set for all NetApp
      * accounts in the subscription and region and only affect non ldap NFSv4 volumes.
      * 
-     * @param nfsV4IdDomain the nfsV4IdDomain value to set.
+     * @param nfsV4IDDomain the nfsV4IDDomain value to set.
      * @return the AccountPropertiesPatch object itself.
      */
-    public AccountPropertiesPatch withNfsV4IdDomain(String nfsV4IdDomain) {
-        this.nfsV4IdDomain = nfsV4IdDomain;
-        return this;
-    }
-
-    /**
-     * Get the entraIdConfig property: Entra ID configuration for the account.
-     * 
-     * @return the entraIdConfig value.
-     */
-    public EntraIdConfigPatch entraIdConfig() {
-        return this.entraIdConfig;
-    }
-
-    /**
-     * Set the entraIdConfig property: Entra ID configuration for the account.
-     * 
-     * @param entraIdConfig the entraIdConfig value to set.
-     * @return the AccountPropertiesPatch object itself.
-     */
-    public AccountPropertiesPatch withEntraIdConfig(EntraIdConfigPatch entraIdConfig) {
-        this.entraIdConfig = entraIdConfig;
+    public AccountPropertiesPatch withNfsV4IDDomain(String nfsV4IDDomain) {
+        this.nfsV4IDDomain = nfsV4IDDomain;
         return this;
     }
 
@@ -167,9 +141,6 @@ public final class AccountPropertiesPatch implements JsonSerializable<AccountPro
         if (encryption() != null) {
             encryption().validate();
         }
-        if (entraIdConfig() != null) {
-            entraIdConfig().validate();
-        }
         if (ldapConfiguration() != null) {
             ldapConfiguration().validate();
         }
@@ -184,8 +155,7 @@ public final class AccountPropertiesPatch implements JsonSerializable<AccountPro
         jsonWriter.writeArrayField("activeDirectories", this.activeDirectories,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("encryption", this.encryption);
-        jsonWriter.writeStringField("nfsV4IDDomain", this.nfsV4IdDomain);
-        jsonWriter.writeJsonField("entraIdConfig", this.entraIdConfig);
+        jsonWriter.writeStringField("nfsV4IDDomain", this.nfsV4IDDomain);
         jsonWriter.writeJsonField("ldapConfiguration", this.ldapConfiguration);
         return jsonWriter.writeEndObject();
     }
@@ -206,15 +176,13 @@ public final class AccountPropertiesPatch implements JsonSerializable<AccountPro
                 reader.nextToken();
 
                 if ("activeDirectories".equals(fieldName)) {
-                    List<ActiveDirectory> activeDirectories
-                        = reader.readArray(reader1 -> ActiveDirectory.fromJson(reader1));
+                    List<ActiveDirectoryPatch> activeDirectories
+                        = reader.readArray(reader1 -> ActiveDirectoryPatch.fromJson(reader1));
                     deserializedAccountPropertiesPatch.activeDirectories = activeDirectories;
                 } else if ("encryption".equals(fieldName)) {
-                    deserializedAccountPropertiesPatch.encryption = AccountEncryption.fromJson(reader);
+                    deserializedAccountPropertiesPatch.encryption = AccountEncryptionPatch.fromJson(reader);
                 } else if ("nfsV4IDDomain".equals(fieldName)) {
-                    deserializedAccountPropertiesPatch.nfsV4IdDomain = reader.getString();
-                } else if ("entraIdConfig".equals(fieldName)) {
-                    deserializedAccountPropertiesPatch.entraIdConfig = EntraIdConfigPatch.fromJson(reader);
+                    deserializedAccountPropertiesPatch.nfsV4IDDomain = reader.getString();
                 } else if ("ldapConfiguration".equals(fieldName)) {
                     deserializedAccountPropertiesPatch.ldapConfiguration = LdapConfigurationPatch.fromJson(reader);
                 } else {
