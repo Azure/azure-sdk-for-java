@@ -28,6 +28,7 @@ import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import javax.servlet.ServletException;
@@ -313,6 +314,51 @@ public class OkHttpHttpClientBuilderTests {
             return chain.proceed(chain.request());
         };
         HttpClient client = new OkHttpHttpClientBuilder().addNetworkInterceptor(validatorInterceptor).build();
+
+        try (Response<BinaryData> response
+            = client.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(defaultUri))) {
+            assertEquals(200, response.getStatusCode());
+        }
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+        "123, 234, 345, 123, 234, 345",
+        "0, 0, 0, 0, 0, 0",
+        "-1, -2, -3, 0, 0, 0",
+        "invalid, invalid, invalid, 10000, 60000, 60000" })
+    public void configuredTimeoutsAreUsed(String connect, String read, String write, int expectedConnect,
+        int expectedRead, int expectedWrite) {
+        Configuration configuration
+            = Configuration.from(new TestConfigurationSource().put(Configuration.REQUEST_CONNECT_TIMEOUT_IN_MS, connect)
+                .put(Configuration.REQUEST_READ_TIMEOUT_IN_MS, read)
+                .put(Configuration.REQUEST_WRITE_TIMEOUT_IN_MS, write));
+
+        validateTimeouts(new OkHttpHttpClientBuilder().configuration(configuration), expectedConnect, expectedRead,
+            expectedWrite);
+    }
+
+    @Test
+    public void explicitTimeoutsOverrideConfiguration() {
+        Configuration configuration
+            = Configuration.from(new TestConfigurationSource().put(Configuration.REQUEST_CONNECT_TIMEOUT_IN_MS, "123")
+                .put(Configuration.REQUEST_READ_TIMEOUT_IN_MS, "234")
+                .put(Configuration.REQUEST_WRITE_TIMEOUT_IN_MS, "345"));
+
+        validateTimeouts(new OkHttpHttpClientBuilder().configuration(configuration)
+            .connectionTimeout(Duration.ofMillis(1001))
+            .readTimeout(Duration.ofMillis(1002))
+            .writeTimeout(Duration.ofMillis(1003)), 1001, 1002, 1003);
+    }
+
+    private static void validateTimeouts(OkHttpHttpClientBuilder builder, int connect, int read, int write) {
+        HttpClient client = builder.addNetworkInterceptor(chain -> {
+            assertEquals(connect, chain.connectTimeoutMillis());
+            assertEquals(read, chain.readTimeoutMillis());
+            assertEquals(write, chain.writeTimeoutMillis());
+            assertEquals(0, chain.call().timeout().timeoutNanos());
+            return chain.proceed(chain.request());
+        }).build();
 
         try (Response<BinaryData> response
             = client.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(defaultUri))) {

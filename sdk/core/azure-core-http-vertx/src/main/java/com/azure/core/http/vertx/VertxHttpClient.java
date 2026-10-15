@@ -23,6 +23,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.Contexts;
 import com.azure.core.util.ProgressReporter;
+import com.azure.core.util.SharedExecutorService;
 import com.azure.core.util.logging.ClientLogger;
 import io.vertx.core.Future;
 import io.vertx.core.Promise;
@@ -43,7 +44,9 @@ import java.util.Objects;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -59,6 +62,7 @@ class VertxHttpClient implements HttpClient {
     final io.vertx.core.http.HttpClient client;
     final HttpClientOptions buildOptions;
     private final Duration responseTimeout;
+    private final Duration writeTimeout;
 
     /**
      * Constructs a {@link VertxHttpClient}.
@@ -66,9 +70,15 @@ class VertxHttpClient implements HttpClient {
      * @param client The Vert.x {@link io.vertx.core.http.HttpClient}
      */
     VertxHttpClient(io.vertx.core.http.HttpClient client, HttpClientOptions buildOptions, Duration responseTimeout) {
+        this(client, buildOptions, responseTimeout, Duration.ZERO);
+    }
+
+    VertxHttpClient(io.vertx.core.http.HttpClient client, HttpClientOptions buildOptions, Duration responseTimeout,
+        Duration writeTimeout) {
         this.client = Objects.requireNonNull(client, "client cannot be null");
         this.buildOptions = buildOptions;
         this.responseTimeout = responseTimeout;
+        this.writeTimeout = writeTimeout;
     }
 
     @Override
@@ -154,6 +164,8 @@ class VertxHttpClient implements HttpClient {
             if (promise.future().failed()) {
                 return;
             }
+            WriteTimeout writeWatcher = new WriteTimeout(writeTimeout, promise);
+            promise.future().onComplete(ignored -> writeWatcher.close());
 
             for (HttpHeader header : request.getHeaders()) {
                 // Potential optimization here would be creating a MultiMap wrapper around azure-core's
@@ -200,18 +212,19 @@ class VertxHttpClient implements HttpClient {
                 });
             }
 
-            sendBody(contextView, request, progressReporter, vertxRequest, promise);
+            sendBody(contextView, request, progressReporter, vertxRequest, promise, writeWatcher);
         });
 
         return requestFuture;
     }
 
     private void sendBody(ContextView contextView, HttpRequest azureRequest, ProgressReporter progressReporter,
-        HttpClientRequest vertxRequest, Promise<HttpResponse> promise) {
+        HttpClientRequest vertxRequest, Promise<HttpResponse> promise, WriteTimeout writeWatcher) {
         BinaryData body = azureRequest.getBodyAsBinaryData();
 
         if (body == null) {
-            vertxRequest.send().onFailure(promise::tryFail);
+            writeWatcher.start();
+            vertxRequest.end().onSuccess(ignored -> writeWatcher.close()).onFailure(promise::tryFail);
             return;
         }
 
@@ -221,7 +234,7 @@ class VertxHttpClient implements HttpClient {
             AtomicBoolean bodyWritten = new AtomicBoolean();
             Runnable writeOnce = () -> {
                 if (bodyWritten.compareAndSet(false, true)) {
-                    writeBody(contextView, azureRequest, progressReporter, vertxRequest, promise, body, true);
+                    writeBody(contextView, azureRequest, progressReporter, vertxRequest, promise, body, writeWatcher);
                 }
             };
 
@@ -249,9 +262,10 @@ class VertxHttpClient implements HttpClient {
                 cancelFallback.run();
                 writeOnce.run();
             });
-            vertxRequest.sendHead().onFailure(promise::tryFail);
+            long headerWrite = writeWatcher.start();
+            vertxRequest.sendHead().onSuccess(ignored -> writeWatcher.pause(headerWrite)).onFailure(promise::tryFail);
         } else {
-            writeBody(contextView, azureRequest, progressReporter, vertxRequest, promise, body, false);
+            writeBody(contextView, azureRequest, progressReporter, vertxRequest, promise, body, writeWatcher);
         }
     }
 
@@ -274,7 +288,8 @@ class VertxHttpClient implements HttpClient {
     }
 
     private void writeBody(ContextView contextView, HttpRequest azureRequest, ProgressReporter progressReporter,
-        HttpClientRequest vertxRequest, Promise<HttpResponse> promise, BinaryData body, boolean headAlreadySent) {
+        HttpClientRequest vertxRequest, Promise<HttpResponse> promise, BinaryData body, WriteTimeout writeWatcher) {
+        writeWatcher.start();
         BinaryDataContent bodyContent = BinaryDataHelper.getContent(body);
         if (bodyContent instanceof ByteArrayContent
             || bodyContent instanceof ByteBufferContent
@@ -284,16 +299,19 @@ class VertxHttpClient implements HttpClient {
             // are in-memory and have a length.
             long contentLength = bodyContent.getLength();
             Buffer buffer = Buffer.buffer(bodyContent.toBytes());
-            // Once the head has been sent the body must be written onto the open request rather than sent as a
-            // whole new request.
-            Future<Void> written = headAlreadySent ? vertxRequest.end(buffer) : vertxRequest.send(buffer).mapEmpty();
-            written.onSuccess(ignored -> reportProgress(contentLength, progressReporter)).onFailure(promise::tryFail);
+            // end() completes with the write, whereas send() completes only after receiving response headers.
+            vertxRequest.end(buffer).onSuccess(ignored -> {
+                writeWatcher.close();
+                reportProgress(contentLength, progressReporter);
+            }).onFailure(promise::tryFail);
         } else {
             // Right now both Flux<ByteBuffer> and InputStream bodies are being handled reactively.
             azureRequest.getBody()
                 .subscribe(new VertxRequestWriteSubscriber(vertxRequest::exceptionHandler, vertxRequest::drainHandler,
-                    vertxRequest::write, vertxRequest::writeQueueFull, vertxRequest::reset, vertxRequest::end, promise,
-                    progressReporter, contextView));
+                    buffer -> vertxRequest.write(buffer).onSuccess(ignored -> writeWatcher.start()),
+                    vertxRequest::writeQueueFull, vertxRequest::reset,
+                    () -> vertxRequest.end().onSuccess(ignored -> writeWatcher.close()), promise, progressReporter,
+                    contextView));
         }
     }
 
@@ -303,4 +321,62 @@ class VertxHttpClient implements HttpClient {
         }
     }
 
+    private static final class WriteTimeout {
+        private final Duration timeout;
+        private final Promise<HttpResponse> promise;
+        private ScheduledFuture<?> task;
+        private long generation;
+        private boolean closed;
+
+        private WriteTimeout(Duration timeout, Promise<HttpResponse> promise) {
+            this.timeout = timeout;
+            this.promise = promise;
+        }
+
+        private synchronized long start() {
+            long current = ++generation;
+            if (!closed
+                && !promise.future().isComplete()
+                && timeout != null
+                && !timeout.isZero()
+                && !timeout.isNegative()) {
+                cancelTask();
+                task = SharedExecutorService.getInstance()
+                    .schedule(() -> timedOut(current), Math.max(1, timeout.toMillis()), TimeUnit.MILLISECONDS);
+            }
+            return current;
+        }
+
+        private synchronized void pause(long current) {
+            // A late header-write completion must not pause a body write that has already begun.
+            if (current == generation) {
+                ++generation;
+                cancelTask();
+            }
+        }
+
+        private void timedOut(long current) {
+            synchronized (this) {
+                if (closed || current != generation) {
+                    return;
+                }
+                closed = true;
+                cancelTask();
+            }
+            promise.tryFail(new TimeoutException("Request write timed out after " + timeout + "."));
+        }
+
+        private synchronized void close() {
+            closed = true;
+            ++generation;
+            cancelTask();
+        }
+
+        private void cancelTask() {
+            if (task != null) {
+                task.cancel(false);
+                task = null;
+            }
+        }
+    }
 }

@@ -22,6 +22,7 @@ import java.net.SocketTimeoutException;
 import java.net.URI;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.util.Locale;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -47,8 +48,10 @@ public class VertxHttpClientExpectContinueTests {
             HttpRequest request = new HttpRequest(HttpMethod.PUT, server.url()).setBody(BODY);
             request.getHeaders().set(HttpHeaderName.EXPECT, expectHeaderValue);
 
-            HttpClient client = new VertxHttpClientProvider().createInstance();
-            HttpResponse response = client.send(request).block();
+            HttpClient client = new VertxHttpClientBuilder().writeTimeout(Duration.ofMillis(250))
+                .responseTimeout(Duration.ofSeconds(3))
+                .build();
+            HttpResponse response = client.send(request).block(Duration.ofSeconds(5));
 
             assertNotNull(response);
             assertEquals(201, response.getStatusCode());
@@ -70,8 +73,10 @@ public class VertxHttpClientExpectContinueTests {
             HttpRequest request = new HttpRequest(HttpMethod.PUT, server.url()).setBody(BODY);
             request.getHeaders().set(HttpHeaderName.EXPECT, "100-continue");
 
-            HttpClient client = new VertxHttpClientProvider().createInstance();
-            HttpResponse response = client.send(request).block();
+            HttpClient client = new VertxHttpClientBuilder().writeTimeout(Duration.ofMillis(250))
+                .responseTimeout(Duration.ofSeconds(3))
+                .build();
+            HttpResponse response = client.send(request).block(Duration.ofSeconds(5));
 
             assertNotNull(response, "the request did not complete");
             assertEquals(201, response.getStatusCode());

@@ -9,6 +9,7 @@
 ### Bugs Fixed
 
 - Fixed response timeouts and request cancellation leaving HTTP exchanges active and occupying pooled connections.
+- Fixed the SDK write timeout continuing to run after writing completed, incorrectly terminating slow responses.
 
 ### Other Changes
 

@@ -233,11 +233,12 @@ public class VertxHttpClientBuilder {
         }
 
         HttpClientOptions buildOptions = this.httpClientOptions;
+        Duration writeTimeout = Duration.ZERO;
         if (buildOptions == null) {
+            writeTimeout = getTimeout(this.writeTimeout, getDefaultWriteTimeout());
             buildOptions = new HttpClientOptions().setIdleTimeoutUnit(TimeUnit.MILLISECONDS)
                 .setConnectTimeout((int) getTimeout(this.connectTimeout, getDefaultConnectTimeout()).toMillis())
-                .setReadIdleTimeout((int) getTimeout(this.readTimeout, getDefaultReadTimeout()).toMillis())
-                .setWriteIdleTimeout((int) getTimeout(this.writeTimeout, getDefaultWriteTimeout()).toMillis());
+                .setReadIdleTimeout((int) getTimeout(this.readTimeout, getDefaultReadTimeout()).toMillis());
 
             // For now, set the max header size to 256 KB. Follow up to see if this should be configurable.
             buildOptions.setMaxHeaderSize(256 * 1024);
@@ -287,7 +288,8 @@ public class VertxHttpClientBuilder {
         }
 
         io.vertx.core.http.HttpClient client = VERTX_HTTP_CLIENT_FACTORY.apply(configuredVertx, buildOptions);
-        return new VertxHttpClient(client, buildOptions, getTimeout(this.responseTimeout, getDefaultResponseTimeout()));
+        return new VertxHttpClient(client, buildOptions, getTimeout(this.responseTimeout, getDefaultResponseTimeout()),
+            writeTimeout);
     }
 
     static Vertx getVertx(Iterator<VertxProvider> iterator) {

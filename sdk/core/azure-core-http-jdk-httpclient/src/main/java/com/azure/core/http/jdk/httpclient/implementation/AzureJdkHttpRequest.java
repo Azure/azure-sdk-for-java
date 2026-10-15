@@ -17,10 +17,12 @@ import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpHeaders;
 import java.net.http.HttpRequest;
+import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.util.Optional;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.concurrent.Flow;
 
 import static java.net.http.HttpRequest.BodyPublishers.noBody;
 
@@ -41,17 +43,19 @@ public final class AzureJdkHttpRequest extends HttpRequest {
     private final Optional<Duration> responseTimeout;
 
     /**
-     * Creates a new instance of the JDK HttpRequest.
+     * Creates a request with a callback when its body has finished being published.
      *
-     * @param azureCoreRequest The Azure Core request to create the JDK HttpRequest from.
-     * @param context The context of the request.
-     * @param restrictedHeaders The set of restricted headers.
-     * @param logger The logger to log warnings to.
-     * @param writeTimeout The write timeout of the request.
-     * @param responseTimeout The response timeout of the request.
+     * @param azureCoreRequest The Azure Core request.
+     * @param context The request context.
+     * @param restrictedHeaders The restricted header names.
+     * @param logger The logger.
+     * @param writeTimeout The write timeout.
+     * @param responseTimeout The response timeout.
+     * @param writeCompleted Callback after publishing the request body, or null to use the native request timeout.
      */
     public AzureJdkHttpRequest(com.azure.core.http.HttpRequest azureCoreRequest, Context context,
-        Set<String> restrictedHeaders, ClientLogger logger, Duration writeTimeout, Duration responseTimeout) {
+        Set<String> restrictedHeaders, ClientLogger logger, Duration writeTimeout, Duration responseTimeout,
+        Runnable writeCompleted) {
         HttpMethod method = azureCoreRequest.getHttpMethod();
         ProgressReporter progressReporter = Contexts.with(context).getHttpRequestProgressReporter();
         responseTimeout = (Duration) context.getData(HttpUtils.AZURE_RESPONSE_TIMEOUT)
@@ -59,9 +63,13 @@ public final class AzureJdkHttpRequest extends HttpRequest {
             .orElse(responseTimeout);
 
         this.method = method.toString();
-        this.bodyPublisher = (method == HttpMethod.GET || method == HttpMethod.HEAD)
+        BodyPublisher publisher = (method == HttpMethod.GET || method == HttpMethod.HEAD)
             ? noBody()
             : BodyPublisherUtils.toBodyPublisher(azureCoreRequest, writeTimeout, progressReporter);
+        boolean hasBody = publisher.contentLength() != 0;
+        this.bodyPublisher = (hasBody && writeCompleted != null)
+            ? new CompletionTrackingPublisher(publisher, writeCompleted)
+            : publisher;
 
         // The JDK enters its wait path on this flag alone, so only opt in when there is content to withhold. A
         // zero length publisher has nothing to send; a negative length means the length is not known ahead of time,
@@ -77,7 +85,12 @@ public final class AzureJdkHttpRequest extends HttpRequest {
         this.headers = HttpHeaders
             .of(new HeaderFilteringMap(HttpHeadersAccessHelper.getRawHeaderMap(azureCoreRequest.getHeaders()),
                 restrictedHeaders, logger), (ignored1, ignored2) -> true);
-        this.responseTimeout = Optional.ofNullable(responseTimeout);
+        // The JDK does not subscribe to a zero-length publisher, so keep its native deadline for bodiless requests.
+        // Non-empty uploads use the completion callback instead; a native deadline would also time out the upload.
+        this.responseTimeout = (writeCompleted == null || !hasBody)
+            && responseTimeout != null
+            && !responseTimeout.isZero()
+            && !responseTimeout.isNegative() ? Optional.of(responseTimeout) : Optional.empty();
     }
 
     @Override
@@ -132,5 +145,46 @@ public final class AzureJdkHttpRequest extends HttpRequest {
     @Override
     public HttpHeaders headers() {
         return headers;
+    }
+
+    private static final class CompletionTrackingPublisher implements BodyPublisher {
+        private final BodyPublisher publisher;
+        private final Runnable writeCompleted;
+
+        private CompletionTrackingPublisher(BodyPublisher publisher, Runnable writeCompleted) {
+            this.publisher = publisher;
+            this.writeCompleted = writeCompleted;
+        }
+
+        @Override
+        public long contentLength() {
+            return publisher.contentLength();
+        }
+
+        @Override
+        public void subscribe(Flow.Subscriber<? super ByteBuffer> subscriber) {
+            publisher.subscribe(new Flow.Subscriber<ByteBuffer>() {
+                @Override
+                public void onSubscribe(Flow.Subscription subscription) {
+                    subscriber.onSubscribe(subscription);
+                }
+
+                @Override
+                public void onNext(ByteBuffer item) {
+                    subscriber.onNext(item);
+                }
+
+                @Override
+                public void onError(Throwable throwable) {
+                    subscriber.onError(throwable);
+                }
+
+                @Override
+                public void onComplete() {
+                    subscriber.onComplete();
+                    writeCompleted.run();
+                }
+            });
+        }
     }
 }

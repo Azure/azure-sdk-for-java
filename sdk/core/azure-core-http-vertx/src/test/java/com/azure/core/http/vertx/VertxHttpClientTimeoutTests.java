@@ -8,6 +8,7 @@ import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.implementation.util.HttpUtils;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpClientOptions;
@@ -17,9 +18,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -120,6 +123,67 @@ public class VertxHttpClientTimeoutTests {
         }
     }
 
+    @ParameterizedTest
+    @CsvSource({ "false, false", "false, true", "true, false", "true, true" })
+    public void completedWriteDoesNotTimeOutResponse(boolean synchronous, boolean slowBody) throws Exception {
+        try (TimeoutTestServer server = new TimeoutTestServer()) {
+            com.azure.core.util.HttpClientOptions options
+                = new com.azure.core.util.HttpClientOptions().setWriteTimeout(Duration.ofMillis(250))
+                    .setResponseTimeout(Duration.ofSeconds(2))
+                    .setReadTimeout(Duration.ofSeconds(2));
+            HttpClient client = new VertxHttpClientProvider().createInstance(options);
+            HttpRequest request = server.request(slowBody ? "/slow-body" : "/slow-headers");
+            if (synchronous) {
+                try (HttpResponse response = client.sendSync(request, Context.NONE)) {
+                    assertEquals("ok", response.getBodyAsString().block(TEST_TIMEOUT));
+                }
+            } else {
+                StepVerifier
+                    .create(client.send(request)
+                        .flatMap(
+                            response -> Mono.using(() -> response, HttpResponse::getBodyAsString, HttpResponse::close)))
+                    .expectNext("ok")
+                    .expectComplete()
+                    .verify(TEST_TIMEOUT);
+            }
+        }
+    }
+
+    @Test
+    public void stalledUploadTimesOutAndCancelsBody() throws Exception {
+        try (TimeoutTestServer server = new TimeoutTestServer()) {
+            CompletableFuture<Void> cancelled = new CompletableFuture<>();
+            HttpRequest request = server.request("/upload")
+                .setHttpMethod(HttpMethod.POST)
+                .setBody(Flux.just(ByteBuffer.wrap(new byte[] { 1 }))
+                    .concatWith(Flux.never())
+                    .doOnCancel(() -> cancelled.complete(null)));
+            HttpClient client = server.writeTimeoutClient();
+
+            StepVerifier.create(client.send(request))
+                .expectErrorMatches(error -> error instanceof TimeoutException && error.getMessage().contains("write"))
+                .verify(TEST_TIMEOUT);
+            cancelled.get(TEST_TIMEOUT.toMillis(), TimeUnit.MILLISECONDS);
+            assertFastRequestSucceeds(client, server);
+        }
+    }
+
+    @Test
+    public void uploadProgressRestartsWriteTimeout() throws Exception {
+        try (TimeoutTestServer server = new TimeoutTestServer()) {
+            HttpRequest request = server.request("/upload")
+                .setHttpMethod(HttpMethod.POST)
+                .setBody(
+                    Flux.interval(Duration.ofMillis(100)).take(6).map(ignored -> ByteBuffer.wrap(new byte[] { 1 })));
+            StepVerifier.create(server.writeTimeoutClient()
+                .send(request)
+                .flatMap(response -> Mono.using(() -> response, HttpResponse::getBodyAsString, HttpResponse::close)))
+                .expectNext("ok")
+                .expectComplete()
+                .verify(TEST_TIMEOUT);
+        }
+    }
+
     private static void assertFastRequestSucceeds(HttpClient client, TimeoutTestServer server) {
         StepVerifier
             .create(client.send(server.request("/fast"))
@@ -146,6 +210,13 @@ public class VertxHttpClientTimeoutTests {
                             .setChunked(true)
                             .write("partial")
                             .onSuccess(ignored -> received.complete(request));
+                    } else if ("/slow-headers".equals(request.path())) {
+                        vertx.setTimer(600, ignored -> request.response().end("ok"));
+                    } else if ("/slow-body".equals(request.path())) {
+                        request.response().setChunked(true).write("o");
+                        vertx.setTimer(600, ignored -> request.response().end("k"));
+                    } else if ("/upload".equals(request.path())) {
+                        request.body().onSuccess(ignored -> request.response().end("ok"));
                     } else {
                         request.response().end("ok");
                     }
@@ -165,6 +236,15 @@ public class VertxHttpClientTimeoutTests {
             return new VertxHttpClientBuilder().vertx(vertx)
                 .httpClientOptions(options)
                 .responseTimeout(responseTimeout)
+                .build();
+        }
+
+        private HttpClient writeTimeoutClient() {
+            return new VertxHttpClientBuilder().vertx(vertx)
+                .configuration(Configuration.NONE)
+                .writeTimeout(Duration.ofMillis(250))
+                .responseTimeout(Duration.ofSeconds(2))
+                .readTimeout(Duration.ofSeconds(2))
                 .build();
         }
 

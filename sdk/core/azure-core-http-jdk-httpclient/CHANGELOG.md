@@ -8,6 +8,10 @@
 
 ### Bugs Fixed
 
+- Fixed client construction failing when the connection timeout is disabled.
+- Fixed per-call response timeout overrides incorrectly changing asynchronous response-body read timeouts.
+- Fixed response timeouts expiring during otherwise valid request-body uploads.
+
 ### Other Changes
 
 ## 1.2.0 (2026-09-29)
