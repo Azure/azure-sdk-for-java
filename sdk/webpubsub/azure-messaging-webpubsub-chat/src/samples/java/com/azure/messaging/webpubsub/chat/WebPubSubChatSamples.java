@@ -4,7 +4,6 @@
 package com.azure.messaging.webpubsub.chat;
 
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.http.rest.RequestOptions;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.webpubsub.chat.models.BuiltInChatRoles;
 import com.azure.messaging.webpubsub.chat.models.ChatPermission;
@@ -211,11 +210,11 @@ public final class WebPubSubChatSamples {
         // END: readme-sample-listChatTopicsAsync
     }
 
-    /** Uses protocol paging while the typed async page-size override is awaiting an upstream fix. */
+    /** Lists typed topics asynchronously with an explicit page size. */
     public void listTopicsAsyncByPage(WebPubSubChatServiceAsyncClient asyncClient) {
         // BEGIN: readme-sample-listChatTopicsAsyncByPage
-        asyncClient.listTopics("general", new RequestOptions()).byPage(10).subscribe(
-            page -> page.getValue().forEach(data -> System.out.println(data.toObject(ChatTopic.class).getTitle())),
+        asyncClient.listTopics("general").byPage(10).subscribe(
+            page -> page.getValue().forEach(topic -> System.out.println(topic.getTitle())),
             error -> System.err.println("Could not list topic pages: " + error.getMessage()));
         // END: readme-sample-listChatTopicsAsyncByPage
     }

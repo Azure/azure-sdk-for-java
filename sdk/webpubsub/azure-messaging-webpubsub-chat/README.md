@@ -293,22 +293,15 @@ asyncClient.listTopics("general").subscribe(
     error -> System.err.println("Could not list topics: " + error.getMessage()));
 ```
 
-#### Known asynchronous page-size limitation
+#### Asynchronous paging
 
-The generator currently ignores `byPage(pageSize)` on typed asynchronous
-collections. Default continuation paging is unaffected. Until
-[microsoft/typespec#12149](https://github.com/microsoft/typespec/issues/12149)
-is fixed in the emitter used by this package, use the existing protocol overload
-when an explicit asynchronous page size is required:
+Use `byPage(pageSize)` on typed asynchronous collections to request a page size:
 
 ```java readme-sample-listChatTopicsAsyncByPage
-asyncClient.listTopics("general", new RequestOptions()).byPage(10).subscribe(
-    page -> page.getValue().forEach(data -> System.out.println(data.toObject(ChatTopic.class).getTitle())),
+asyncClient.listTopics("general").byPage(10).subscribe(
+    page -> page.getValue().forEach(topic -> System.out.println(topic.getTitle())),
     error -> System.err.println("Could not list topic pages: " + error.getMessage()));
 ```
-
-See [known generator issues](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/webpubsub/azure-messaging-webpubsub-chat/KNOWN_ISSUES.md) for verification and removal of the
-temporary test workaround. No paging customization is applied.
 
 ### Service API versions
 

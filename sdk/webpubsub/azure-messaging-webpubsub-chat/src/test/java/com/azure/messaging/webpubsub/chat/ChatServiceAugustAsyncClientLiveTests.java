@@ -6,8 +6,6 @@ package com.azure.messaging.webpubsub.chat;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.MatchConditions;
 import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.RequestOptions;
-import com.azure.core.util.BinaryData;
 import com.azure.messaging.webpubsub.chat.models.BuiltInChatRoles;
 import com.azure.messaging.webpubsub.chat.models.ChatRoom;
 import com.azure.messaging.webpubsub.chat.models.ChatRoomMember;
@@ -76,15 +74,13 @@ public class ChatServiceAugustAsyncClientLiveTests extends ChatServiceClientTest
             assertEquals(412, stale.getResponse().getStatusCode());
 
             asyncClient.createOrReplaceTopic(roomId, secondTopicId, new ChatTopic().setTitle("Second topic")).block();
-            // Protocol paging preserves page size until microsoft/typespec#12149 is fixed.
-            List<PagedResponse<BinaryData>> pages
-                = asyncClient.listTopics(roomId, new RequestOptions()).byPage(1).take(2).collectList().block();
+            List<PagedResponse<ChatTopic>> pages
+                = asyncClient.listTopics(roomId).byPage(1).take(2).collectList().block();
             assertEquals(2, pages.size());
             assertEquals(1, pages.get(0).getValue().size());
             assertNotNull(pages.get(0).getContinuationToken());
             assertEquals(1, pages.get(1).getValue().size());
-            assertNotEquals(pages.get(0).getValue().get(0).toObject(ChatTopic.class).getId(),
-                pages.get(1).getValue().get(0).toObject(ChatTopic.class).getId());
+            assertNotEquals(pages.get(0).getValue().get(0).getId(), pages.get(1).getValue().get(0).getId());
             List<String> topicIds = asyncClient.listTopics(roomId).map(ChatTopic::getId).collectList().block();
             assertTrue(topicIds.contains(firstTopicId));
             assertTrue(topicIds.contains(secondTopicId));
@@ -113,20 +109,16 @@ public class ChatServiceAugustAsyncClientLiveTests extends ChatServiceClientTest
                 .createOrReplaceUser(secondUserId, new HumanChatUser("Second user", BuiltInChatRoles.USER_NORMAL))
                 .block();
 
-            List<String> roomIds = asyncClient.listRooms(new RequestOptions())
+            List<String> roomIds = asyncClient.listRooms()
                 .byPage(1)
                 .flatMapIterable(PagedResponse::getValue)
-                .map(data -> data.toObject(ChatRoom.class).getId())
+                .map(ChatRoom::getId)
                 .collectList()
                 .block();
             assertTrue(roomIds.contains(firstRoomId));
             assertTrue(roomIds.contains(secondRoomId));
-            List<ChatUser> users = entraAsyncClient.listUsers(new RequestOptions())
-                .byPage(1)
-                .flatMapIterable(PagedResponse::getValue)
-                .map(data -> data.toObject(ChatUser.class))
-                .collectList()
-                .block();
+            List<ChatUser> users
+                = entraAsyncClient.listUsers().byPage(1).flatMapIterable(PagedResponse::getValue).collectList().block();
             assertTrue(
                 users.stream().anyMatch(user -> firstUserId.equals(user.getId()) && user instanceof HumanChatUser));
             assertTrue(users.stream().anyMatch(user -> secondUserId.equals(user.getId())));
@@ -157,14 +149,13 @@ public class ChatServiceAugustAsyncClientLiveTests extends ChatServiceClientTest
                 .createOrReplaceRoomMember(secondRoomId, userId, new ChatRoomMember(BuiltInChatRoles.ROOM_MEMBER))
                 .block();
 
-            List<PagedResponse<BinaryData>> pages
-                = asyncClient.listRoomsForUser(userId, new RequestOptions()).byPage(1).collectList().block();
+            List<PagedResponse<ChatUserRoom>> pages
+                = asyncClient.listRoomsForUser(userId).byPage(1).collectList().block();
             assertEquals(2, pages.size());
             assertEquals(1, pages.get(0).getValue().size());
             assertNotNull(pages.get(0).getContinuationToken());
             assertEquals(1, pages.get(1).getValue().size());
-            assertNotEquals(pages.get(0).getValue().get(0).toObject(ChatUserRoom.class).getId(),
-                pages.get(1).getValue().get(0).toObject(ChatUserRoom.class).getId());
+            assertNotEquals(pages.get(0).getValue().get(0).getId(), pages.get(1).getValue().get(0).getId());
             List<ChatUserRoom> rooms = asyncClient.listRoomsForUser(userId).collectList().block();
             assertEquals(2, rooms.size());
             assertTrue(rooms.stream()

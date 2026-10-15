@@ -13,10 +13,12 @@
 
 ### Bugs Fixed
 
+- Regenerated with Java emitter 0.48.1 to preserve page-size overrides on typed asynchronous collections, including continuation requests.
+
 ### Other Changes
 
 - Verified all existing and new operations end to end with `2026-08-01-preview` in Central US EUAP; removed the temporary server routing workaround and restored the complete live/playback suite.
-- Tracked the upstream typed asynchronous page-size defect in [microsoft/typespec#12149](https://github.com/microsoft/typespec/issues/12149). No paging customization is applied; tests temporarily use protocol overloads for asynchronous page-size checks.
+- Enabled all typed asynchronous page-size regression cases and removed the temporary protocol paging workaround from tests and samples.
 
 ## 1.0.0-beta.1 (2026-09-15)
 

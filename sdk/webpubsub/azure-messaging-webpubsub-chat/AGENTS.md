@@ -1,9 +1,10 @@
 # Web PubSub Chat development constraints
 
 Before changing tests, recording tests, regenerating, or releasing this package,
-read [KNOWN_ISSUES.md](KNOWN_ISSUES.md) for the pending upstream Java
-generator paging fix. Do not add a paging customization; preserve strict
-regression assertions and verify the upstream fix after regeneration.
+read [KNOWN_ISSUES.md](KNOWN_ISSUES.md) for resolved generator defects and their
+regression coverage. Preserve the enabled typed async paging tests and strict
+first-page/continuation assertions after regeneration. Do not restore the
+removed protocol paging workaround or add a paging customization.
 
 Run live tests against a Chat-enabled resource in the TTL = 7 days subscription.
 The server routing fix was verified in Central US EUAP on 2026-10-13 using the

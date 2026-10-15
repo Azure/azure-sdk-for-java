@@ -11,7 +11,6 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.test.utils.MockTokenCredential;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Mono;
@@ -36,7 +35,6 @@ public class WebPubSubChatPaginationTests {
         assertPageSize(requests);
     }
 
-    @Disabled("Awaiting upstream Java generator fix: https://github.com/microsoft/typespec/issues/12149")
     @ParameterizedTest
     @ValueSource(strings = { "roles", "members", "messages", "rooms", "topics", "users", "userRooms" })
     public void asyncPageSizeReachesFirstAndNextRequests(String operation) {
