@@ -25,6 +25,7 @@ import com.azure.storage.blob.implementation.util.BlobUserAgentModificationPolic
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.RetryPolicyType;
 import org.junit.jupiter.api.BeforeEach;
@@ -51,6 +52,7 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -255,6 +257,29 @@ public class EncryptedBlobClientBuilderTests {
             .buildEncryptedBlobClient();
 
         sendAndValidateUserAgentHeader(cryptoClient.getHttpPipeline(), cryptoClient.getBlobUrl());
+    }
+
+    @Test
+    public void encryptedBlobClientPipelineDoesNotSupportDataLocality() {
+        EncryptedBlobClient encryptedBlobClient = new EncryptedBlobClientBuilder().endpoint(ENDPOINT)
+            .containerName("container")
+            .blobName("blob")
+            .credential(CREDENTIALS)
+            .key(new FakeKey("keyId", randomData), "keyWrapAlgorithm")
+            .buildEncryptedBlobClient();
+
+        // The encrypted pipeline never installs DataLocalityPolicy, so the chunked download paths must skip the
+        // getLayout call entirely rather than pay for a round trip whose result nothing can act on. The decryption
+        // policy would also mishandle the layout response, and layout offsets are ciphertext rather than plaintext.
+        assertFalse(StorageImplUtils.pipelineSupportsDataLocality(encryptedBlobClient.getHttpPipeline()));
+
+        BlobClient blobClient = new BlobClientBuilder().endpoint(ENDPOINT)
+            .containerName("container")
+            .blobName("blob")
+            .credential(CREDENTIALS)
+            .buildClient();
+
+        assertTrue(StorageImplUtils.pipelineSupportsDataLocality(blobClient.getHttpPipeline()));
     }
 
     private static Stream<Arguments> getNonEncodedBlobNameSupplier() {

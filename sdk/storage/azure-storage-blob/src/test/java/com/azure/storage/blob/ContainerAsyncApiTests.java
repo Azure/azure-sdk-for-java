@@ -1534,7 +1534,6 @@ public class ContainerAsyncApiTests extends BlobTestBase {
                 assertNull(blob.getObjectReplicationSourcePolicies());
             }
         }).verifyComplete();
-
     }
 
     @Test
