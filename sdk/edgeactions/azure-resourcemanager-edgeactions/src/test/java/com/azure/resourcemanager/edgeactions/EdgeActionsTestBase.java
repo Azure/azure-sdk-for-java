@@ -29,6 +29,8 @@ import org.junit.jupiter.api.function.Executable;
 
 import java.io.IOException;
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -41,19 +43,45 @@ abstract class EdgeActionsTestBase extends ResourceManagerTestProxyTestBase {
     protected String edgeActionName;
 
     EdgeActionsTestBase() {
-        String subscription = "(?i)(?<=/subscriptions/)[^/?]+";
+        addSanitizers(edgeActionsSanitizers().toArray(new TestProxySanitizer[0]));
+    }
+
+    static List<TestProxySanitizer> edgeActionsSanitizers() {
+        // TestProxyUtils embeds patterns directly in JSON, so regex escapes also need JSON escaping.
+        String subscription = "(?i)(?<=/subscriptions/)[^/?\\\\s\\\"\\\\\\\\#]+";
         String zeroUuid = "00000000-0000-0000-0000-000000000000";
-        // The service's polling URLs contain opaque authorization parameters.
-        String pollingSecret = "(?i)(?<=[?&][tcsh]=)[^&#]+";
-        addSanitizers(new TestProxySanitizer("$..versionId", subscription, zeroUuid, TestProxySanitizerType.BODY_KEY),
+        // Stop at JSON string boundaries as well as query delimiters when sanitizing embedded polling URLs.
+        String pollingSecret = "(?i)(?<=[?&][tcsh]=)[^&\\\\s\\\"\\\\\\\\#]+";
+        List<TestProxySanitizer> sanitizers = new ArrayList<>(Arrays.asList(
+            new TestProxySanitizer(subscription, zeroUuid, TestProxySanitizerType.BODY_REGEX),
             new TestProxySanitizer("$..systemData.createdBy", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
             new TestProxySanitizer("$..systemData.lastModifiedBy", null, REDACTED_VALUE,
                 TestProxySanitizerType.BODY_KEY),
-            new TestProxySanitizer(pollingSecret, REDACTED_VALUE, TestProxySanitizerType.URL));
-        for (String header : new String[] { "Location", "Azure-AsyncOperation", "Operation-Location" }) {
-            addSanitizers(new TestProxySanitizer(header, subscription, zeroUuid, TestProxySanitizerType.HEADER),
-                new TestProxySanitizer(header, pollingSecret, REDACTED_VALUE, TestProxySanitizerType.HEADER));
+            new TestProxySanitizer(pollingSecret, REDACTED_VALUE, TestProxySanitizerType.URL),
+            new TestProxySanitizer(pollingSecret, REDACTED_VALUE, TestProxySanitizerType.BODY_REGEX)));
+        for (String field : new String[] { "tenantId", "clientId", "principalId" }) {
+            sanitizers.add(new TestProxySanitizer("$.." + field, null, zeroUuid, TestProxySanitizerType.BODY_KEY));
         }
+        for (String field : new String[] { "access_token", "refresh_token", "id_token", "client_secret" }) {
+            sanitizers
+                .add(new TestProxySanitizer("$.." + field, null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY));
+        }
+        for (String header : new String[] {
+            "x-ms-correlation-request-id",
+            "x-ms-routing-request-id",
+            "x-ms-operation-identifier",
+            "x-ms-original-request-ids",
+            "X-MSEdge-Ref",
+            "Set-Cookie",
+            "Cookie" }) {
+            sanitizers.add(new TestProxySanitizer(header, null, REDACTED_VALUE, TestProxySanitizerType.HEADER));
+        }
+        for (String header : new String[] { "Location", "Azure-AsyncOperation", "Operation-Location" }) {
+            sanitizers.add(new TestProxySanitizer(header, subscription, zeroUuid, TestProxySanitizerType.HEADER));
+            sanitizers
+                .add(new TestProxySanitizer(header, pollingSecret, REDACTED_VALUE, TestProxySanitizerType.HEADER));
+        }
+        return sanitizers;
     }
 
     @Override
