@@ -5,16 +5,12 @@ package com.azure.storage.common.policy;
 
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpPipelineCallContext;
-import com.azure.core.http.HttpPipelineNextPolicy;
-import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
-import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.HttpPipelineSyncPolicy;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
-import reactor.core.publisher.Mono;
 
 import java.util.Optional;
 
@@ -27,7 +23,7 @@ import java.util.Optional;
  * property on the call context, for example via
  * {@code context.addData(DataLocalityPolicy.LAYOUT_ENDPOINT_KEY, endpoint)} before issuing the request.
  */
-public final class DataLocalityPolicy implements HttpPipelinePolicy {
+public final class DataLocalityPolicy extends HttpPipelineSyncPolicy {
     private static final ClientLogger LOGGER = new ClientLogger(DataLocalityPolicy.class);
 
     /**
@@ -44,15 +40,8 @@ public final class DataLocalityPolicy implements HttpPipelinePolicy {
     }
 
     @Override
-    public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+    protected void beforeSendingRequest(HttpPipelineCallContext context) {
         applyLayoutEndpoint(context);
-        return next.process();
-    }
-
-    @Override
-    public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
-        applyLayoutEndpoint(context);
-        return next.processSync();
     }
 
     private static void applyLayoutEndpoint(HttpPipelineCallContext context) {
