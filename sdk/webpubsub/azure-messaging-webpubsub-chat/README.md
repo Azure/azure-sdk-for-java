@@ -307,7 +307,7 @@ asyncClient.listTopics("general", new RequestOptions()).byPage(10).subscribe(
     error -> System.err.println("Could not list topic pages: " + error.getMessage()));
 ```
 
-See [known generator issues](KNOWN_ISSUES.md) for verification and removal of the
+See [known generator issues](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/webpubsub/azure-messaging-webpubsub-chat/KNOWN_ISSUES.md) for verification and removal of the
 temporary test workaround. No paging customization is applied.
 
 ### Service API versions
@@ -351,7 +351,7 @@ Explore the [complete package samples][samples] to learn how to:
 
 - [Azure Web PubSub documentation][webpubsub_documentation]
 - [Web PubSub Chat documentation][product_documentation]
-- [Web PubSub Chat REST API][rest_api]
+- [Web PubSub Chat REST API specification][rest_api]
 - [Azure SDK for Java design guidelines][design_guidelines]
 
 ## Contributing
@@ -377,7 +377,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [azure_identity_auth]: https://learn.microsoft.com/azure/developer/java/sdk/authentication/overview
 [entra_authorization]: https://learn.microsoft.com/azure/azure-web-pubsub/concept-azure-ad-authorization
 [logging]: https://learn.microsoft.com/azure/developer/java/sdk/logging-overview
-[rest_api]: https://learn.microsoft.com/rest/api/webpubsub/dataplane/webpubsubchat/web-pub-sub-chat-service
+[rest_api]: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/webpubsub/data-plane/WebPubSubChat
 [design_guidelines]: https://azure.github.io/azure-sdk/java_introduction.html
 [contributing]: https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
