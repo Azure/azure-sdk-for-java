@@ -3,6 +3,11 @@
 ## 12.32.0-beta.2 (Unreleased)
 
 ### Features Added
+- Added support for change feed on premium file shares. Added `ShareCreateOptions.setChangeFeedEnabled`,
+  `setChangeFeedRetentionInDays` and `ShareSetPropertiesOptions.setChangeFeedEnabled`,
+  `setChangeFeedRetentionInDays` to enable and configure change feed.
+- Added `ShareProperties.isChangeFeedEnabled()`, `getChangeFeedRetentionInDays()` and
+  `getChangeFeedBlobContainerName()`.
 
 ### Breaking Changes
 

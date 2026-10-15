@@ -5,6 +5,7 @@ package com.azure.storage.file.share;
 
 import com.azure.storage.file.share.models.NtfsFileAttributes;
 import com.azure.storage.file.share.models.ShareFileUploadRangeOptions;
+import com.azure.storage.file.share.models.ShareProperties;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
@@ -15,6 +16,18 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ModelTests {
+
+    @Test
+    void sharePropertiesChangeFeedDefaultsAndClearing() {
+        ShareProperties properties = new ShareProperties();
+        assertNull(properties.isChangeFeedEnabled());
+        assertNull(properties.getChangeFeedRetentionInDays());
+
+        properties.setChangeFeedEnabled(true).setChangeFeedRetentionInDays(7);
+        properties.setChangeFeedEnabled(null).setChangeFeedRetentionInDays(null);
+        assertNull(properties.isChangeFeedEnabled());
+        assertNull(properties.getChangeFeedRetentionInDays());
+    }
 
     @Test
     void ntfsToAttributes() {
