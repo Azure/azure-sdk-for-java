@@ -4,6 +4,9 @@
 
 ### Features Added
 
+- Added opt-in session-based authentication for eligible Blob GET requests, configured through `SessionOptions` and
+  `ContainerSessionProvider`.
+
 ### Breaking Changes
 
 ### Bugs Fixed

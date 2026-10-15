@@ -14,6 +14,7 @@ import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.AzureSasCredentialPolicy;
+import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -28,11 +29,17 @@ import com.azure.core.util.TracingOptions;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.core.util.tracing.TracerProvider;
+import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobUrlParts;
+import com.azure.storage.blob.implementation.accesshelpers.SessionOptionsAccessor;
 import com.azure.storage.blob.models.BlobAudience;
+import com.azure.storage.blob.options.SessionOptions;
+import com.azure.storage.blob.options.SessionOptions.SessionMode;
+import java.time.Clock;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.BuilderUtils;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.implementation.credentials.CredentialValidator;
 import com.azure.storage.common.policy.MetadataValidationPolicy;
 import com.azure.storage.common.policy.RequestRetryOptions;
@@ -45,6 +52,7 @@ import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
 
 import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -66,7 +74,8 @@ public final class BuilderHelper {
     }
 
     /**
-     * Constructs a {@link HttpPipeline} from values passed from a builder.
+     * Constructs a {@link HttpPipeline} from values passed from a builder, with optional session-based
+     * authentication support.
      *
      * @param storageSharedKeyCredential {@link StorageSharedKeyCredential} if present.
      * @param tokenCredential {@link TokenCredential} if present.
@@ -83,6 +92,8 @@ public final class BuilderHelper {
      * @param configuration Configuration store contain environment settings.
      * @param logger {@link ClientLogger} used to log any exception.
      * @param audience {@link BlobAudience} used to determine the audience of the blob.
+     * @param sessionOptions {@link SessionOptions} containing the session mode and optional acquisition configuration.
+     * @param serviceVersion The service version for session creation; defaults to the latest version when null.
      * @return A new {@link HttpPipeline} from the passed values.
      */
     public static HttpPipeline buildPipeline(StorageSharedKeyCredential storageSharedKeyCredential,
@@ -90,10 +101,14 @@ public final class BuilderHelper {
         RequestRetryOptions retryOptions, RetryOptions coreRetryOptions, HttpLogOptions logOptions,
         ClientOptions clientOptions, HttpClient httpClient, List<HttpPipelinePolicy> perCallPolicies,
         List<HttpPipelinePolicy> perRetryPolicies, Configuration configuration, BlobAudience audience,
-        ClientLogger logger) {
+        ClientLogger logger, SessionOptions sessionOptions, BlobServiceVersion serviceVersion) {
 
         CredentialValidator.validateCredentialsNotAmbiguous(storageSharedKeyCredential, tokenCredential,
             azureSasCredential, sasToken, logger);
+
+        boolean sessionsEnabled = tokenCredential != null
+            && sessionOptions != null
+            && ModelHelper.resolveSessionMode(sessionOptions.getSessionMode()) == SessionMode.ENABLED;
 
         // Closest to API goes first, closest to wire goes last.
         List<HttpPipelinePolicy> policies = new ArrayList<>();
@@ -124,12 +139,28 @@ public final class BuilderHelper {
             policies.add(new StorageSharedKeyCredentialPolicy(storageSharedKeyCredential));
         }
 
+        // When sessions are enabled, a single SessionAuthenticationPolicy is added as the auth policy. It wraps the
+        // bearer token policy and delegates to it for requests that aren't session-eligible. CreateSession requests
+        // are sent through this same pipeline by the session acquirer, which is bound once the pipeline is built.
+        SessionAcquirer sessionAcquirer = null;
         if (tokenCredential != null) {
             httpsValidation(tokenCredential, "bearer token", endpoint, logger);
             String scope = audience != null
                 ? ((audience.toString().endsWith("/") ? audience + ".default" : audience + "/.default"))
                 : Constants.STORAGE_SCOPE;
-            policies.add(new StorageBearerTokenChallengeAuthorizationPolicy(tokenCredential, scope));
+            StorageBearerTokenChallengeAuthorizationPolicy bearerPolicy
+                = new StorageBearerTokenChallengeAuthorizationPolicy(tokenCredential, scope);
+
+            if (!sessionsEnabled) {
+                policies.add(bearerPolicy);
+            } else {
+                sessionAcquirer = createSessionAcquirer(sessionOptions, endpoint, serviceVersion, scope, logger);
+                // The provider owns only the session cache, so every client sharing these options shares sessions.
+                SessionProvider sessionProvider = SessionOptionsAccessor.getOrCreateSessionClient(sessionOptions,
+                    SessionProvider.class, () -> new ContainerSessionProvider(Clock.systemUTC()));
+                policies.add(
+                    new SessionAuthenticationPolicy(bearerPolicy, sessionProvider, sessionAcquirer, sessionOptions));
+            }
         }
 
         if (azureSasCredential != null) {
@@ -144,10 +175,110 @@ public final class BuilderHelper {
 
         policies.add(getResponseValidationPolicy());
 
-        policies.add(new HttpLoggingPolicy(logOptions));
+        HttpLoggingPolicy loggingPolicy = new HttpLoggingPolicy(logOptions);
+        if (sessionsEnabled) {
+            // CreateSession responses contain the session key. Logging policies added by the customer or by SPI
+            // providers skip CreateSession, and the builder's logging policy logs it without the body or custom
+            // loggers. All other requests are logged exactly as configured.
+            policies.replaceAll(
+                policy -> policy instanceof HttpLoggingPolicy ? new SessionAwareLoggingPolicy(policy, null) : policy);
+            policies.add(new SessionAwareLoggingPolicy(loggingPolicy, createSessionLoggingPolicy(logOptions)));
+        } else {
+            policies.add(loggingPolicy);
+        }
 
         policies.add(new ScrubEtagPolicy());
 
+        HttpPipeline pipeline = createPipeline(policies, httpClient, clientOptions);
+        if (sessionAcquirer != null) {
+            sessionAcquirer.bind(pipeline);
+        }
+        return pipeline;
+    }
+
+    private static String resolveSessionAccountName(String endpoint, String accountName) {
+        if (!CoreUtils.isNullOrEmpty(accountName)) {
+            return accountName;
+        }
+
+        BlobUrlParts endpointParts = BlobUrlParts.parse(endpoint);
+        String host = endpointParts.getHost();
+        if (StorageImplUtils.isServiceEndpoint(host, Constants.UrlConstants.BLOB_URI_SUBDOMAIN)
+            || StorageImplUtils.isServiceEndpoint(host, Constants.UrlConstants.DFS_URI_SUBDOMAIN)) {
+            return endpointParts.getAccountName();
+        }
+
+        throw new IllegalArgumentException(
+            "The account name must be provided when sessions are used with a custom endpoint.");
+    }
+
+    /**
+     * Creates the {@link SessionAcquirer} for a client. CreateSession is sent to the client's endpoint with the
+     * client's credential, unless the {@link SessionOptions} override the acquisition endpoint and credential.
+     */
+    private static SessionAcquirer createSessionAcquirer(SessionOptions sessionOptions, String endpoint,
+        BlobServiceVersion serviceVersion, String scope, ClientLogger logger) {
+        String acquisitionEndpoint = SessionOptionsAccessor.getEndpoint(sessionOptions);
+        StorageBearerTokenChallengeAuthorizationPolicy acquisitionBearerPolicy = null;
+        if (acquisitionEndpoint == null) {
+            acquisitionEndpoint = endpoint;
+        } else {
+            TokenCredential credential = SessionOptionsAccessor.getCredential(sessionOptions);
+            httpsValidation(credential, "bearer token", acquisitionEndpoint, logger);
+            acquisitionBearerPolicy = new StorageBearerTokenChallengeAuthorizationPolicy(credential, scope);
+        }
+
+        String sessionEndpoint = getSessionEndpoint(acquisitionEndpoint);
+        String accountName = resolveSessionAccountName(sessionEndpoint, sessionOptions.getAccountName());
+        return new SessionAcquirer(sessionEndpoint, serviceVersion, accountName, acquisitionBearerPolicy);
+    }
+
+    /**
+     * Removes resource and query components while retaining supported account paths.
+     * @param endpoint The Blob endpoint.
+     * @return The account endpoint.
+     */
+    public static String getSessionEndpoint(String endpoint) {
+        try {
+            return getEndpoint(BlobUrlParts.parse(endpoint));
+        } catch (MalformedURLException e) {
+            throw new IllegalArgumentException("Invalid session endpoint.", e);
+        }
+    }
+
+    /**
+     * Determines whether a pipeline policy provides session authentication.
+     *
+     * @param policy The pipeline policy to inspect. This was added to support the session authentication policy's internal delegation to a bearer token policy.
+     * @return Whether the policy provides session authentication.
+     */
+    public static boolean isSessionAuthenticationPolicy(HttpPipelinePolicy policy) {
+        return policy instanceof SessionAuthenticationPolicy;
+    }
+
+    private static HttpLoggingPolicy createSessionLoggingPolicy(HttpLogOptions logOptions) {
+        HttpLogOptions sourceOptions = logOptions == null ? new HttpLogOptions() : logOptions;
+        HttpLogDetailLevel logLevel = sourceOptions.getLogLevel();
+        if (logLevel == HttpLogDetailLevel.BODY) {
+            logLevel = HttpLogDetailLevel.BASIC;
+        } else if (logLevel == HttpLogDetailLevel.BODY_AND_HEADERS) {
+            logLevel = HttpLogDetailLevel.HEADERS;
+        }
+
+        // Custom loggers receive the raw response and could read the credential payload, so don't copy them.
+        HttpLogOptions sessionLogOptions = new HttpLogOptions().setLogLevel(logLevel)
+            .setAllowedHttpHeaderNames(new HashSet<>(sourceOptions.getAllowedHttpHeaderNames()))
+            .setAllowedQueryParamNames(new HashSet<>(sourceOptions.getAllowedQueryParamNames()))
+            .disableRedactedHeaderLogging(sourceOptions.isRedactedHeaderLoggingDisabled());
+        return new HttpLoggingPolicy(sessionLogOptions);
+    }
+
+    /**
+     * Creates an {@link HttpPipeline} from an ordered policy list, applying the transport, client options and tracer
+     * configuration shared by every pipeline this helper builds.
+     */
+    private static HttpPipeline createPipeline(List<HttpPipelinePolicy> policies, HttpClient httpClient,
+        ClientOptions clientOptions) {
         return new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .clientOptions(clientOptions)
@@ -237,4 +368,5 @@ public final class BuilderHelper {
     public static void logCredentialChange(ClientLogger logger, String newCredentialType) {
         logger.info("Credential set to '{}' when it was previously configured.", newCredentialType);
     }
+
 }
