@@ -116,9 +116,6 @@ import com.azure.resourcemanager.computefleet.models.WindowsPatchAssessmentMode;
 import com.azure.resourcemanager.computefleet.models.WindowsVMGuestPatchAutomaticByPlatformRebootSetting;
 import com.azure.resourcemanager.computefleet.models.WindowsVMGuestPatchAutomaticByPlatformSettings;
 import com.azure.resourcemanager.computefleet.models.WindowsVMGuestPatchMode;
-import com.azure.resourcemanager.computefleet.models.ZoneAllocationPolicy;
-import com.azure.resourcemanager.computefleet.models.ZoneDistributionStrategy;
-import com.azure.resourcemanager.computefleet.models.ZonePreference;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -128,14 +125,15 @@ import java.util.Map;
  */
 public final class FleetsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-07-01-preview/Fleets_CreateOrUpdate.json
+     * x-ms-original-file: 2026-08-01/Fleets_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
-     * Sample code: Fleets_CreateOrUpdate.
+     * Sample code: Fleets_CreateOrUpdate_MaximumSet_Gen.
      * 
      * @param manager Entry point to ComputeFleetManager.
      */
-    public static void fleetsCreateOrUpdate(com.azure.resourcemanager.computefleet.ComputeFleetManager manager) {
+    public static void
+        fleetsCreateOrUpdateMaximumSetGen(com.azure.resourcemanager.computefleet.ComputeFleetManager manager) {
         manager.fleets()
             .define("myFleet")
             .withRegion("westus")
@@ -621,12 +619,8 @@ public final class FleetsCreateOrUpdateSamples {
                         .withPlatformFaultDomainCount(1)
                         .withAdditionalVirtualMachineCapabilities(
                             new AdditionalCapabilities().withUltraSSDEnabled(true).withHibernationEnabled(true)))
-                .withMode(FleetMode.INSTANCE)
-                .withCapacityType(CapacityType.VCPU)
-                .withZoneAllocationPolicy(
-                    new ZoneAllocationPolicy().withDistributionStrategy(ZoneDistributionStrategy.PRIORITIZED)
-                        .withZonePreferences(Arrays.asList(new ZonePreference().withZone("1").withRank(0),
-                            new ZonePreference().withZone("2").withRank(1)))))
+                .withMode(FleetMode.LAUNCH)
+                .withCapacityType(CapacityType.VM))
             .withZones(Arrays.asList("1", "2"))
             .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
                 .withUserAssignedIdentities(mapOf()))

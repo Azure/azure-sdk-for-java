@@ -13,22 +13,22 @@ public final class HorizonDbFirewallRuleInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HorizonDbFirewallRuleInner model = BinaryData.fromString(
-            "{\"properties\":{\"startIpAddress\":\"swjdkirso\",\"endIpAddress\":\"dqxhcrmnohjtckwh\",\"description\":\"oifiyipjxsqwpgr\",\"provisioningState\":\"InProgress\"},\"id\":\"orcjxvsnby\",\"name\":\"qabnmoc\",\"type\":\"cyshurzafbljjgp\"}")
+            "{\"properties\":{\"startIpAddress\":\"jkcpr\",\"endIpAddress\":\"nwbxgjvtbvpyssz\",\"description\":\"rujqg\",\"provisioningState\":\"Canceled\"},\"id\":\"ouqfprwz\",\"name\":\"bngui\",\"type\":\"nwui\"}")
             .toObject(HorizonDbFirewallRuleInner.class);
-        Assertions.assertEquals("swjdkirso", model.properties().startIpAddress());
-        Assertions.assertEquals("dqxhcrmnohjtckwh", model.properties().endIpAddress());
-        Assertions.assertEquals("oifiyipjxsqwpgr", model.properties().description());
+        Assertions.assertEquals("jkcpr", model.properties().startIpAddress());
+        Assertions.assertEquals("nwbxgjvtbvpyssz", model.properties().endIpAddress());
+        Assertions.assertEquals("rujqg", model.properties().description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         HorizonDbFirewallRuleInner model = new HorizonDbFirewallRuleInner()
-            .withProperties(new HorizonDbFirewallRuleProperties().withStartIpAddress("swjdkirso")
-                .withEndIpAddress("dqxhcrmnohjtckwh")
-                .withDescription("oifiyipjxsqwpgr"));
+            .withProperties(new HorizonDbFirewallRuleProperties().withStartIpAddress("jkcpr")
+                .withEndIpAddress("nwbxgjvtbvpyssz")
+                .withDescription("rujqg"));
         model = BinaryData.fromObject(model).toObject(HorizonDbFirewallRuleInner.class);
-        Assertions.assertEquals("swjdkirso", model.properties().startIpAddress());
-        Assertions.assertEquals("dqxhcrmnohjtckwh", model.properties().endIpAddress());
-        Assertions.assertEquals("oifiyipjxsqwpgr", model.properties().description());
+        Assertions.assertEquals("jkcpr", model.properties().startIpAddress());
+        Assertions.assertEquals("nwbxgjvtbvpyssz", model.properties().endIpAddress());
+        Assertions.assertEquals("rujqg", model.properties().description());
     }
 }

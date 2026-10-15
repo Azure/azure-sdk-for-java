@@ -12,9 +12,9 @@ public final class ObjectRecommendationPropertiesImplementationDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ObjectRecommendationPropertiesImplementationDetails model
-            = BinaryData.fromString("{\"method\":\"qoli\",\"script\":\"raiouaubrjtl\"}")
+            = BinaryData.fromString("{\"method\":\"texoqqpwc\",\"script\":\"ufmhrunc\"}")
                 .toObject(ObjectRecommendationPropertiesImplementationDetails.class);
-        Assertions.assertEquals("qoli", model.method());
-        Assertions.assertEquals("raiouaubrjtl", model.script());
+        Assertions.assertEquals("texoqqpwc", model.method());
+        Assertions.assertEquals("ufmhrunc", model.script());
     }
 }

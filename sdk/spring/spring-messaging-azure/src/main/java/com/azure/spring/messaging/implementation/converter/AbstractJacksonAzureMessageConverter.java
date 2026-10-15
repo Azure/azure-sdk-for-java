@@ -5,15 +5,14 @@ package com.azure.spring.messaging.implementation.converter;
 
 import com.azure.spring.messaging.converter.AzureMessageConverter;
 import com.azure.spring.messaging.converter.ConversionException;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.lang.NonNull;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.util.Assert;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -41,7 +40,7 @@ public abstract class AbstractJacksonAzureMessageConverter<I, O> implements Azur
     protected byte[] toPayload(Object object) {
         try {
             return getObjectMapper().writeValueAsBytes(object);
-        } catch (JsonProcessingException e) {
+        } catch (JacksonException e) {
             throw new ConversionException("Failed to write JSON: " + object, e);
         }
     }
@@ -58,7 +57,7 @@ public abstract class AbstractJacksonAzureMessageConverter<I, O> implements Azur
     protected <U> U fromPayload(Object payload, Class<U> payloadType) {
         try {
             return getObjectMapper().readerFor(payloadType).readValue((byte[]) payload);
-        } catch (IOException e) {
+        } catch (JacksonException e) {
             throw new ConversionException("Failed to read JSON: " + Arrays.toString((byte[]) payload), e);
         }
     }

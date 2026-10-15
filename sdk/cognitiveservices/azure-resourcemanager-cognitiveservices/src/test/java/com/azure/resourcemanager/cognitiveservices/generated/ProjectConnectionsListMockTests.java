@@ -25,7 +25,7 @@ public final class ProjectConnectionsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"authType\":\"ConnectionPropertiesV2\",\"category\":\"GoogleAdWords\",\"createdByWorkspaceArmId\":\"rhzz\",\"error\":\"pue\",\"expiryTime\":\"2021-02-25T05:55:38Z\",\"group\":\"NoSQL\",\"isSharedToAll\":true,\"metadata\":{\"ttoztj\":\"opwnib\"},\"peRequirement\":\"NotRequired\",\"peStatus\":\"Active\",\"sharedUserList\":[\"mwcaddtgctxegtv\"],\"target\":\"yurbel\",\"useWorkspaceManagedIdentity\":false},\"id\":\"ryizwbxgde\",\"name\":\"xlayunomir\",\"type\":\"p\"}]}";
+            = "{\"value\":[{\"properties\":{\"authType\":\"ConnectionPropertiesV2\",\"category\":\"AzureDatabricksDeltaLake\",\"createdByWorkspaceArmId\":\"wukokgoojj\",\"error\":\"ktubcmunhg\",\"expiryTime\":\"2021-10-05T16:13:21Z\",\"group\":\"Database\",\"isSharedToAll\":false,\"metadata\":{\"cnihkswxmfurqmw\":\"cuufkrfn\",\"t\":\"wwp\",\"mytzuaedrlh\":\"motahbqsvnk\"},\"peRequirement\":\"NotApplicable\",\"peStatus\":\"Inactive\",\"sharedUserList\":[\"hkvxz\"],\"target\":\"i\",\"useWorkspaceManagedIdentity\":true},\"id\":\"ftgpqoswgf\",\"name\":\"vjmghpakbqyhl\",\"type\":\"ornfbm\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,20 +35,21 @@ public final class ProjectConnectionsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ConnectionPropertiesV2BasicResource> response = manager.projectConnections()
-            .list("doey", "fpnimtwuuhaueg", "kwmnfeub", "zjy", "kwfugiphrrkuu", false,
+            .list("arsbbdddwokqxail", "qk", "yqjvzvc", "rdspzesfkqqxu", "vzflbrous", false,
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(ConnectionCategory.GOOGLE_AD_WORDS, response.iterator().next().properties().category());
-        Assertions.assertEquals("pue", response.iterator().next().properties().error());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-25T05:55:38Z"),
+        Assertions.assertEquals(ConnectionCategory.AZURE_DATABRICKS_DELTA_LAKE,
+            response.iterator().next().properties().category());
+        Assertions.assertEquals("ktubcmunhg", response.iterator().next().properties().error());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-05T16:13:21Z"),
             response.iterator().next().properties().expiryTime());
-        Assertions.assertTrue(response.iterator().next().properties().isSharedToAll());
-        Assertions.assertEquals("opwnib", response.iterator().next().properties().metadata().get("ttoztj"));
-        Assertions.assertEquals(ManagedPERequirement.NOT_REQUIRED,
+        Assertions.assertFalse(response.iterator().next().properties().isSharedToAll());
+        Assertions.assertEquals("cuufkrfn", response.iterator().next().properties().metadata().get("cnihkswxmfurqmw"));
+        Assertions.assertEquals(ManagedPERequirement.NOT_APPLICABLE,
             response.iterator().next().properties().peRequirement());
-        Assertions.assertEquals(ManagedPEStatus.ACTIVE, response.iterator().next().properties().peStatus());
-        Assertions.assertEquals("mwcaddtgctxegtv", response.iterator().next().properties().sharedUserList().get(0));
-        Assertions.assertEquals("yurbel", response.iterator().next().properties().target());
-        Assertions.assertFalse(response.iterator().next().properties().useWorkspaceManagedIdentity());
+        Assertions.assertEquals(ManagedPEStatus.INACTIVE, response.iterator().next().properties().peStatus());
+        Assertions.assertEquals("hkvxz", response.iterator().next().properties().sharedUserList().get(0));
+        Assertions.assertEquals("i", response.iterator().next().properties().target());
+        Assertions.assertTrue(response.iterator().next().properties().useWorkspaceManagedIdentity());
     }
 }

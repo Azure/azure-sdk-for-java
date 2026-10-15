@@ -9,6 +9,7 @@ import com.azure.core.management.SubResource;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.network.models.DdosFrontendIpConfigurationSettings;
 import com.azure.resourcemanager.network.models.IpAllocationMethod;
 import com.azure.resourcemanager.network.models.IpVersion;
 import com.azure.resourcemanager.network.models.ProvisioningState;
@@ -321,6 +322,58 @@ public final class FrontendIpConfigurationInner extends SubResourceModel {
      */
     public ProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the ddosSettings property: The DDoS protection settings associated with the frontend IP configuration.
+     * 
+     * @return the ddosSettings value.
+     */
+    public DdosFrontendIpConfigurationSettings ddosSettings() {
+        return this.innerProperties() == null ? null : this.innerProperties().ddosSettings();
+    }
+
+    /**
+     * Set the ddosSettings property: The DDoS protection settings associated with the frontend IP configuration.
+     * 
+     * @param ddosSettings the ddosSettings value to set.
+     * @return the FrontendIpConfigurationInner object itself.
+     */
+    public FrontendIpConfigurationInner withDdosSettings(DdosFrontendIpConfigurationSettings ddosSettings) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new FrontendIpConfigurationPropertiesFormatInner();
+        }
+        this.innerProperties().withDdosSettings(ddosSettings);
+        return this;
+    }
+
+    /**
+     * Get the enableConnectionTracking property: Enables UDP flow tracking for traffic associated with the frontend IP
+     * configuration. When enabled, packets belonging to the same UDP flow are consistently directed to the same backend
+     * instance. This setting applies to all associated load balancing rules and takes precedence over rule-level
+     * enableConnectionTracking settings.
+     * 
+     * @return the enableConnectionTracking value.
+     */
+    public Boolean enableConnectionTracking() {
+        return this.innerProperties() == null ? null : this.innerProperties().enableConnectionTracking();
+    }
+
+    /**
+     * Set the enableConnectionTracking property: Enables UDP flow tracking for traffic associated with the frontend IP
+     * configuration. When enabled, packets belonging to the same UDP flow are consistently directed to the same backend
+     * instance. This setting applies to all associated load balancing rules and takes precedence over rule-level
+     * enableConnectionTracking settings.
+     * 
+     * @param enableConnectionTracking the enableConnectionTracking value to set.
+     * @return the FrontendIpConfigurationInner object itself.
+     */
+    public FrontendIpConfigurationInner withEnableConnectionTracking(Boolean enableConnectionTracking) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new FrontendIpConfigurationPropertiesFormatInner();
+        }
+        this.innerProperties().withEnableConnectionTracking(enableConnectionTracking);
+        return this;
     }
 
     /**

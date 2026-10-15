@@ -3,10 +3,18 @@
 
 package com.azure.spring.cloud.service.implementation.servicebus.factory;
 
+import com.azure.core.util.ClientOptions;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
+import com.azure.spring.cloud.core.customizer.AzureServiceClientBuilderCustomizer;
 import com.azure.spring.cloud.service.implementation.servicebus.properties.ServiceBusSenderClientTestProperties;
 import com.azure.spring.cloud.service.servicebus.properties.ServiceBusEntityType;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentMatchers;
+import org.mockito.InOrder;
+import org.mockito.Mockito;
+
+import java.util.Collections;
+import java.util.List;
 
 import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.doReturn;
@@ -32,6 +40,29 @@ class ServiceBusSenderClientBuilderFactoryTests extends AbstractServiceBusSubCli
         builder.buildClient();
 
         verify(builder, times(1)).queueName("test-queue");
+    }
+
+    @Test
+    void serviceBusClientBuilderCustomizerAppliedAsLastStep() {
+        ServiceBusSenderClientTestProperties properties = createMinimalServiceProperties();
+        properties.setShareServiceBusClientBuilder(false);
+
+        ServiceBusClientBuilder rootBuilder = mock(ServiceBusClientBuilder.class);
+        @SuppressWarnings("unchecked")
+        AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder> customizer =
+            mock(AzureServiceClientBuilderCustomizer.class);
+
+        ServiceBusSenderClientBuilderFactory factory =
+            new CustomizerTestFactory(properties, Collections.singletonList(customizer), rootBuilder);
+
+        factory.build();
+
+        InOrder inOrder = Mockito.inOrder(rootBuilder, customizer);
+        inOrder.verify(rootBuilder, atLeast(1))
+               .clientOptions(ArgumentMatchers.any(ClientOptions.class));
+        inOrder.verify(customizer, times(1)).customize(rootBuilder);
+        inOrder.verify(rootBuilder, Mockito.never())
+               .clientOptions(ArgumentMatchers.any(ClientOptions.class));
     }
 
     @Override
@@ -97,6 +128,26 @@ class ServiceBusSenderClientBuilderFactoryTests extends AbstractServiceBusSubCli
                 TestServiceBusClientBuilderFactory clientBuilderFactory = spy(new TestServiceBusClientBuilderFactory(properties));
                 this.serviceBusClientBuilder = clientBuilderFactory.build();
             }
+            return this.serviceBusClientBuilder;
+        }
+    }
+
+    static class CustomizerTestFactory extends ServiceBusSenderClientBuilderFactory {
+        private final ServiceBusClientBuilder serviceBusClientBuilder;
+        CustomizerTestFactory(ServiceBusSenderClientTestProperties properties,
+                              List<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder>> customizers,
+                              ServiceBusClientBuilder serviceBusClientBuilder) {
+            super(properties, customizers);
+            this.serviceBusClientBuilder = serviceBusClientBuilder;
+        }
+
+        @Override
+        public ServiceBusClientBuilder.ServiceBusSenderClientBuilder createBuilderInstance() {
+            return mock(ServiceBusClientBuilder.ServiceBusSenderClientBuilder.class);
+        }
+
+        @Override
+        protected ServiceBusClientBuilder getServiceBusClientBuilder() {
             return this.serviceBusClientBuilder;
         }
     }

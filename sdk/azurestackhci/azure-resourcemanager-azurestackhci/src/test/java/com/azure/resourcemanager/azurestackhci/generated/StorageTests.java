@@ -17,29 +17,29 @@ public final class StorageTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Storage model = BinaryData.fromString(
-            "{\"configurationMode\":\"pvkvpbjxbk\",\"storageType\":\"SANS2D\",\"s2d\":{\"volumeType\":\"ThinProvisioned\",\"overprovisioningRatio\":\"2\"},\"san\":{\"infraVolLunId\":\"budurgkakmo\",\"infraPerfLunId\":\"hjjklff\"}}")
+            "{\"configurationMode\":\"emwabnet\",\"storageType\":\"SAN\",\"s2d\":{\"volumeType\":\"Fixed\",\"overprovisioningRatio\":\"0\"},\"san\":{\"infraVolLunId\":\"vwiwubmwmbesld\",\"infraPerfLunId\":\"wwtppj\"}}")
             .toObject(Storage.class);
-        Assertions.assertEquals("pvkvpbjxbk", model.configurationMode());
-        Assertions.assertEquals(StorageType.SANS2D, model.storageType());
-        Assertions.assertEquals(VolumeType.THIN_PROVISIONED, model.s2d().volumeType());
-        Assertions.assertEquals(OverprovisioningRatio.TWO, model.s2d().overprovisioningRatio());
-        Assertions.assertEquals("budurgkakmo", model.san().infraVolLunId());
-        Assertions.assertEquals("hjjklff", model.san().infraPerfLunId());
+        Assertions.assertEquals("emwabnet", model.configurationMode());
+        Assertions.assertEquals(StorageType.SAN, model.storageType());
+        Assertions.assertEquals(VolumeType.FIXED, model.s2d().volumeType());
+        Assertions.assertEquals(OverprovisioningRatio.ZERO, model.s2d().overprovisioningRatio());
+        Assertions.assertEquals("vwiwubmwmbesld", model.san().infraVolLunId());
+        Assertions.assertEquals("wwtppj", model.san().infraPerfLunId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Storage model = new Storage().withConfigurationMode("pvkvpbjxbk")
-            .withStorageType(StorageType.SANS2D)
-            .withS2d(new StorageS2dConfig().withVolumeType(VolumeType.THIN_PROVISIONED)
-                .withOverprovisioningRatio(OverprovisioningRatio.TWO))
-            .withSan(new StorageSanConfig().withInfraVolLunId("budurgkakmo").withInfraPerfLunId("hjjklff"));
+        Storage model = new Storage().withConfigurationMode("emwabnet")
+            .withStorageType(StorageType.SAN)
+            .withS2d(new StorageS2dConfig().withVolumeType(VolumeType.FIXED)
+                .withOverprovisioningRatio(OverprovisioningRatio.ZERO))
+            .withSan(new StorageSanConfig().withInfraVolLunId("vwiwubmwmbesld").withInfraPerfLunId("wwtppj"));
         model = BinaryData.fromObject(model).toObject(Storage.class);
-        Assertions.assertEquals("pvkvpbjxbk", model.configurationMode());
-        Assertions.assertEquals(StorageType.SANS2D, model.storageType());
-        Assertions.assertEquals(VolumeType.THIN_PROVISIONED, model.s2d().volumeType());
-        Assertions.assertEquals(OverprovisioningRatio.TWO, model.s2d().overprovisioningRatio());
-        Assertions.assertEquals("budurgkakmo", model.san().infraVolLunId());
-        Assertions.assertEquals("hjjklff", model.san().infraPerfLunId());
+        Assertions.assertEquals("emwabnet", model.configurationMode());
+        Assertions.assertEquals(StorageType.SAN, model.storageType());
+        Assertions.assertEquals(VolumeType.FIXED, model.s2d().volumeType());
+        Assertions.assertEquals(OverprovisioningRatio.ZERO, model.s2d().overprovisioningRatio());
+        Assertions.assertEquals("vwiwubmwmbesld", model.san().infraVolLunId());
+        Assertions.assertEquals("wwtppj", model.san().infraPerfLunId());
     }
 }

@@ -17,19 +17,14 @@ import java.io.IOException;
 @Fluent
 public final class EvaluationRule implements JsonSerializable<EvaluationRule> {
     /*
-     * Configure to use ML-based dynamic thresholds. When used, degradedRule and unhealthyRule must not be set.
+     * Degraded rule with static threshold.
      */
-    private DynamicDetectionRule dynamicDetectionRule;
+    private ThresholdRuleV2 degradedRule;
 
     /*
-     * Degraded rule with static threshold. When used, dynamicDetectionRule must not be set.
+     * Unhealthy rule with static threshold.
      */
-    private ThresholdRule degradedRule;
-
-    /*
-     * Unhealthy rule with static threshold. When used, dynamicDetectionRule must not be set.
-     */
-    private ThresholdRule unhealthyRule;
+    private ThresholdRuleV2 unhealthyRule;
 
     /**
      * Creates an instance of EvaluationRule class.
@@ -38,67 +33,41 @@ public final class EvaluationRule implements JsonSerializable<EvaluationRule> {
     }
 
     /**
-     * Get the dynamicDetectionRule property: Configure to use ML-based dynamic thresholds. When used, degradedRule and
-     * unhealthyRule must not be set.
-     * 
-     * @return the dynamicDetectionRule value.
-     */
-    public DynamicDetectionRule dynamicDetectionRule() {
-        return this.dynamicDetectionRule;
-    }
-
-    /**
-     * Set the dynamicDetectionRule property: Configure to use ML-based dynamic thresholds. When used, degradedRule and
-     * unhealthyRule must not be set.
-     * 
-     * @param dynamicDetectionRule the dynamicDetectionRule value to set.
-     * @return the EvaluationRule object itself.
-     */
-    public EvaluationRule withDynamicDetectionRule(DynamicDetectionRule dynamicDetectionRule) {
-        this.dynamicDetectionRule = dynamicDetectionRule;
-        return this;
-    }
-
-    /**
-     * Get the degradedRule property: Degraded rule with static threshold. When used, dynamicDetectionRule must not be
-     * set.
+     * Get the degradedRule property: Degraded rule with static threshold.
      * 
      * @return the degradedRule value.
      */
-    public ThresholdRule degradedRule() {
+    public ThresholdRuleV2 degradedRule() {
         return this.degradedRule;
     }
 
     /**
-     * Set the degradedRule property: Degraded rule with static threshold. When used, dynamicDetectionRule must not be
-     * set.
+     * Set the degradedRule property: Degraded rule with static threshold.
      * 
      * @param degradedRule the degradedRule value to set.
      * @return the EvaluationRule object itself.
      */
-    public EvaluationRule withDegradedRule(ThresholdRule degradedRule) {
+    public EvaluationRule withDegradedRule(ThresholdRuleV2 degradedRule) {
         this.degradedRule = degradedRule;
         return this;
     }
 
     /**
-     * Get the unhealthyRule property: Unhealthy rule with static threshold. When used, dynamicDetectionRule must not be
-     * set.
+     * Get the unhealthyRule property: Unhealthy rule with static threshold.
      * 
      * @return the unhealthyRule value.
      */
-    public ThresholdRule unhealthyRule() {
+    public ThresholdRuleV2 unhealthyRule() {
         return this.unhealthyRule;
     }
 
     /**
-     * Set the unhealthyRule property: Unhealthy rule with static threshold. When used, dynamicDetectionRule must not be
-     * set.
+     * Set the unhealthyRule property: Unhealthy rule with static threshold.
      * 
      * @param unhealthyRule the unhealthyRule value to set.
      * @return the EvaluationRule object itself.
      */
-    public EvaluationRule withUnhealthyRule(ThresholdRule unhealthyRule) {
+    public EvaluationRule withUnhealthyRule(ThresholdRuleV2 unhealthyRule) {
         this.unhealthyRule = unhealthyRule;
         return this;
     }
@@ -109,9 +78,8 @@ public final class EvaluationRule implements JsonSerializable<EvaluationRule> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("dynamicDetectionRule", this.dynamicDetectionRule);
-        jsonWriter.writeJsonField("degradedRule", this.degradedRule);
         jsonWriter.writeJsonField("unhealthyRule", this.unhealthyRule);
+        jsonWriter.writeJsonField("degradedRule", this.degradedRule);
         return jsonWriter.writeEndObject();
     }
 
@@ -121,6 +89,7 @@ public final class EvaluationRule implements JsonSerializable<EvaluationRule> {
      * @param jsonReader The JsonReader being read.
      * @return An instance of EvaluationRule if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the EvaluationRule.
      */
     public static EvaluationRule fromJson(JsonReader jsonReader) throws IOException {
@@ -130,12 +99,10 @@ public final class EvaluationRule implements JsonSerializable<EvaluationRule> {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("dynamicDetectionRule".equals(fieldName)) {
-                    deserializedEvaluationRule.dynamicDetectionRule = DynamicDetectionRule.fromJson(reader);
+                if ("unhealthyRule".equals(fieldName)) {
+                    deserializedEvaluationRule.unhealthyRule = ThresholdRuleV2.fromJson(reader);
                 } else if ("degradedRule".equals(fieldName)) {
-                    deserializedEvaluationRule.degradedRule = ThresholdRule.fromJson(reader);
-                } else if ("unhealthyRule".equals(fieldName)) {
-                    deserializedEvaluationRule.unhealthyRule = ThresholdRule.fromJson(reader);
+                    deserializedEvaluationRule.degradedRule = ThresholdRuleV2.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

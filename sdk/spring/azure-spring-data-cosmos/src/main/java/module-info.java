@@ -13,6 +13,7 @@ module com.azure.spring.data.cosmos {
     requires spring.context;
     requires spring.core;
     requires spring.data.commons;
+    requires spring.boot.data.commons;
     requires spring.expression;
     requires spring.tx;
     requires spring.web;

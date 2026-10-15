@@ -23,7 +23,7 @@ import reactor.core.publisher.Mono;
 public final class NetAppResourcesCheckQuotaAvailabilityWithResponseMockTests {
     @Test
     public void testCheckQuotaAvailabilityWithResponse() throws Exception {
-        String responseStr = "{\"isAvailable\":true,\"reason\":\"AlreadyExists\",\"message\":\"qgu\"}";
+        String responseStr = "{\"isAvailable\":true,\"reason\":\"Invalid\",\"message\":\"xolousdv\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,16 +32,16 @@ public final class NetAppResourcesCheckQuotaAvailabilityWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        CheckAvailabilityResponse response
-            = manager.netAppResources()
-                .checkQuotaAvailabilityWithResponse("jiuazjc", new QuotaAvailabilityRequest().withName("mxitpfinzcpd")
-                    .withType(
-                        CheckQuotaNameResourceTypes.MICROSOFT_NET_APP_NET_APP_ACCOUNTS_CAPACITY_POOLS_VOLUMES_BACKUPS)
-                    .withResourceGroup("krlgjm"), com.azure.core.util.Context.NONE)
-                .getValue();
+        CheckAvailabilityResponse response = manager.netAppResources()
+            .checkQuotaAvailabilityWithResponse("gtznsvlrdsmovp",
+                new QuotaAvailabilityRequest().withName("myndnox")
+                    .withType(CheckQuotaNameResourceTypes.MICROSOFT_NET_APP_NET_APP_ACCOUNTS_CAPACITY_POOLS_VOLUMES)
+                    .withResourceGroup("nrqa"),
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertTrue(response.isAvailable());
-        Assertions.assertEquals(InAvailabilityReasonType.ALREADY_EXISTS, response.reason());
-        Assertions.assertEquals("qgu", response.message());
+        Assertions.assertEquals(InAvailabilityReasonType.INVALID, response.reason());
+        Assertions.assertEquals("xolousdv", response.message());
     }
 }

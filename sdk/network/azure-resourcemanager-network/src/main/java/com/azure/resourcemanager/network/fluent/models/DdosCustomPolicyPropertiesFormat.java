@@ -11,6 +11,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.DdosDetectionRule;
+import com.azure.resourcemanager.network.models.DdosMitigationRule;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import java.io.IOException;
 import java.util.List;
@@ -37,9 +38,19 @@ public final class DdosCustomPolicyPropertiesFormat implements JsonSerializable<
     private List<DdosDetectionRule> detectionRules;
 
     /*
+     * The list of DDoS mitigation rules associated with the custom policy.
+     */
+    private List<DdosMitigationRule> mitigationRules;
+
+    /*
      * The list of frontend IP configurations associated with the custom policy.
      */
     private List<SubResource> frontEndIpConfiguration;
+
+    /*
+     * The list of public IP addresses associated with the custom policy. This list is read-only.
+     */
+    private List<SubResource> publicIPAddresses;
 
     /**
      * Creates an instance of DdosCustomPolicyPropertiesFormat class.
@@ -88,6 +99,26 @@ public final class DdosCustomPolicyPropertiesFormat implements JsonSerializable<
     }
 
     /**
+     * Get the mitigationRules property: The list of DDoS mitigation rules associated with the custom policy.
+     * 
+     * @return the mitigationRules value.
+     */
+    public List<DdosMitigationRule> mitigationRules() {
+        return this.mitigationRules;
+    }
+
+    /**
+     * Set the mitigationRules property: The list of DDoS mitigation rules associated with the custom policy.
+     * 
+     * @param mitigationRules the mitigationRules value to set.
+     * @return the DdosCustomPolicyPropertiesFormat object itself.
+     */
+    public DdosCustomPolicyPropertiesFormat withMitigationRules(List<DdosMitigationRule> mitigationRules) {
+        this.mitigationRules = mitigationRules;
+        return this;
+    }
+
+    /**
      * Get the frontEndIpConfiguration property: The list of frontend IP configurations associated with the custom
      * policy.
      * 
@@ -110,6 +141,16 @@ public final class DdosCustomPolicyPropertiesFormat implements JsonSerializable<
     }
 
     /**
+     * Get the publicIPAddresses property: The list of public IP addresses associated with the custom policy. This list
+     * is read-only.
+     * 
+     * @return the publicIPAddresses value.
+     */
+    public List<SubResource> publicIPAddresses() {
+        return this.publicIPAddresses;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -117,6 +158,9 @@ public final class DdosCustomPolicyPropertiesFormat implements JsonSerializable<
     public void validate() {
         if (detectionRules() != null) {
             detectionRules().forEach(e -> e.validate());
+        }
+        if (mitigationRules() != null) {
+            mitigationRules().forEach(e -> e.validate());
         }
     }
 
@@ -127,6 +171,8 @@ public final class DdosCustomPolicyPropertiesFormat implements JsonSerializable<
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("detectionRules", this.detectionRules,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("mitigationRules", this.mitigationRules,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("frontEndIpConfiguration", this.frontEndIpConfiguration,
             (writer, element) -> writer.writeJson(element));
@@ -158,10 +204,17 @@ public final class DdosCustomPolicyPropertiesFormat implements JsonSerializable<
                     List<DdosDetectionRule> detectionRules
                         = reader.readArray(reader1 -> DdosDetectionRule.fromJson(reader1));
                     deserializedDdosCustomPolicyPropertiesFormat.detectionRules = detectionRules;
+                } else if ("mitigationRules".equals(fieldName)) {
+                    List<DdosMitigationRule> mitigationRules
+                        = reader.readArray(reader1 -> DdosMitigationRule.fromJson(reader1));
+                    deserializedDdosCustomPolicyPropertiesFormat.mitigationRules = mitigationRules;
                 } else if ("frontEndIpConfiguration".equals(fieldName)) {
                     List<SubResource> frontEndIpConfiguration
                         = reader.readArray(reader1 -> SubResource.fromJson(reader1));
                     deserializedDdosCustomPolicyPropertiesFormat.frontEndIpConfiguration = frontEndIpConfiguration;
+                } else if ("publicIPAddresses".equals(fieldName)) {
+                    List<SubResource> publicIPAddresses = reader.readArray(reader1 -> SubResource.fromJson(reader1));
+                    deserializedDdosCustomPolicyPropertiesFormat.publicIPAddresses = publicIPAddresses;
                 } else {
                     reader.skipChildren();
                 }

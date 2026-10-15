@@ -187,7 +187,7 @@ public final class EdgeActionsManagementClientImpl implements EdgeActionsManagem
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2025-12-01-preview";
+        this.apiVersion = "2026-10-01";
         this.edgeActions = new EdgeActionsClientImpl(this);
         this.edgeActionVersions = new EdgeActionVersionsClientImpl(this);
         this.edgeActionExecutionFilters = new EdgeActionExecutionFiltersClientImpl(this);
@@ -304,7 +304,7 @@ public final class EdgeActionsManagementClientImpl implements EdgeActionsManagem
             super(null);
             this.statusCode = statusCode;
             this.httpHeaders = httpHeaders;
-            this.responseBody = responseBody == null ? null : responseBody.getBytes(StandardCharsets.UTF_8);
+            this.responseBody = responseBody == null ? new byte[0] : responseBody.getBytes(StandardCharsets.UTF_8);
         }
 
         public int getStatusCode() {

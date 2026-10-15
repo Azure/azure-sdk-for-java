@@ -803,7 +803,7 @@ public interface NewRelicMonitorResource {
     NewRelicMonitorResource linkSaaS(SaaSData body, Context context);
 
     /**
-     * Resubscribes the New Relic Organization of the underline Monitor Resource to be billed by Azure Marketplace
+     * Resubscribes the New Relic Organization of the underlying Monitor Resource to be billed by Azure Marketplace.
      * 
      * A long-running resource action.
      * 
@@ -814,7 +814,7 @@ public interface NewRelicMonitorResource {
     NewRelicMonitorResource resubscribe();
 
     /**
-     * Resubscribes the New Relic Organization of the underline Monitor Resource to be billed by Azure Marketplace
+     * Resubscribes the New Relic Organization of the underlying Monitor Resource to be billed by Azure Marketplace.
      * 
      * A long-running resource action.
      * 

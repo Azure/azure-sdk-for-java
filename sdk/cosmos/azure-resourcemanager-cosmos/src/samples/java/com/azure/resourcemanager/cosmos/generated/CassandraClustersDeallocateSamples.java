@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class CassandraClustersDeallocateSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/CosmosDBManagedCassandraClusterDeallocate.json
+     * x-ms-original-file: 2026-04-01-preview/CosmosDBManagedCassandraClusterDeallocate.json
      */
     /**
      * Sample code: CosmosDBManagedCassandraClusterDeallocate.

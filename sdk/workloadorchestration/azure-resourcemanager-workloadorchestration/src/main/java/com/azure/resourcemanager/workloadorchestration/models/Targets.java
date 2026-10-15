@@ -189,7 +189,7 @@ public interface Targets {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return resolved Configuration.
      */
     ResolvedConfiguration resolveConfiguration(String resourceGroupName, String targetName,
         SolutionTemplateParameter body);
@@ -204,7 +204,7 @@ public interface Targets {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return resolved Configuration.
      */
     ResolvedConfiguration resolveConfiguration(String resourceGroupName, String targetName,
         SolutionTemplateParameter body, Context context);
@@ -218,7 +218,7 @@ public interface Targets {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return solution Version Resource.
      */
     SolutionVersion reviewSolutionVersion(String resourceGroupName, String targetName, SolutionTemplateParameter body);
 
@@ -232,7 +232,7 @@ public interface Targets {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return solution Version Resource.
      */
     SolutionVersion reviewSolutionVersion(String resourceGroupName, String targetName, SolutionTemplateParameter body,
         Context context);
@@ -246,7 +246,7 @@ public interface Targets {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return solution Version Resource.
      */
     SolutionVersion publishSolutionVersion(String resourceGroupName, String targetName, SolutionVersionParameter body);
 
@@ -260,7 +260,7 @@ public interface Targets {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return solution Version Resource.
      */
     SolutionVersion publishSolutionVersion(String resourceGroupName, String targetName, SolutionVersionParameter body,
         Context context);
@@ -274,7 +274,7 @@ public interface Targets {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return solution Version Resource.
      */
     SolutionVersion updateExternalValidationStatus(String resourceGroupName, String targetName,
         UpdateExternalValidationStatusParameter body);
@@ -289,7 +289,7 @@ public interface Targets {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return solution Version Resource.
      */
     SolutionVersion updateExternalValidationStatus(String resourceGroupName, String targetName,
         UpdateExternalValidationStatusParameter body, Context context);

@@ -11,7 +11,7 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.ThreatProtectio
  */
 public final class AdvancedThreatProtectionSettingsGetSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/AdvancedThreatProtectionSettingsGet.json
+     * x-ms-original-file: 2026-07-01-preview/AdvancedThreatProtectionSettingsGet.json
      */
     /**
      * Sample code: Get state of advanced threat protection settings for a server.

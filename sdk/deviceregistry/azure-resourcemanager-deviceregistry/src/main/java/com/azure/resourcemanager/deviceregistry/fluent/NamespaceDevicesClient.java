@@ -267,7 +267,7 @@ public interface NamespaceDevicesClient {
         Context context);
 
     /**
-     * A long-running resource action.
+     * The revoke operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The name of the namespace.
@@ -276,14 +276,14 @@ public interface NamespaceDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of request payload for revoking device credentials.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRevoke(String resourceGroupName, String namespaceName, String deviceName,
         DeviceCredentialsRevokeRequest body);
 
     /**
-     * A long-running resource action.
+     * The revoke operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The name of the namespace.
@@ -293,14 +293,14 @@ public interface NamespaceDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of request payload for revoking device credentials.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRevoke(String resourceGroupName, String namespaceName, String deviceName,
         DeviceCredentialsRevokeRequest body, Context context);
 
     /**
-     * A long-running resource action.
+     * The revoke operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The name of the namespace.
@@ -314,7 +314,7 @@ public interface NamespaceDevicesClient {
     void revoke(String resourceGroupName, String namespaceName, String deviceName, DeviceCredentialsRevokeRequest body);
 
     /**
-     * A long-running resource action.
+     * The revoke operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The name of the namespace.

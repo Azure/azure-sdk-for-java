@@ -16,18 +16,18 @@ public final class ManagedServiceIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManagedServiceIdentity model = BinaryData.fromString(
-            "{\"principalId\":\"kgymareqnajxqug\",\"tenantId\":\"ky\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"byxbaaabjy\":{\"principalId\":\"dgssofwqmzqal\",\"clientId\":\"mnjijpxacqqudf\"},\"wmewzsyy\":{\"principalId\":\"yffimrzrtuzqogs\",\"clientId\":\"nevfdnw\"},\"frxtrthzvaytdwk\":{\"principalId\":\"uzsoi\",\"clientId\":\"ud\"}}}")
+            "{\"principalId\":\"omzlfmi\",\"tenantId\":\"wbnb\",\"type\":\"None\",\"userAssignedIdentities\":{\"uhashsfwx\":{\"principalId\":\"wkz\",\"clientId\":\"liourqhak\"},\"ovbvmeueciv\":{\"principalId\":\"owzxcu\",\"clientId\":\"cjooxdjebwpucwwf\"},\"it\":{\"principalId\":\"zceuojgjrw\",\"clientId\":\"eiotwmcdytdx\"}}}")
             .toObject(ManagedServiceIdentity.class);
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.type());
+        Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagedServiceIdentity model = new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
-            .withUserAssignedIdentities(mapOf("byxbaaabjy", new UserAssignedIdentity(), "wmewzsyy",
-                new UserAssignedIdentity(), "frxtrthzvaytdwk", new UserAssignedIdentity()));
+        ManagedServiceIdentity model = new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE)
+            .withUserAssignedIdentities(mapOf("uhashsfwx", new UserAssignedIdentity(), "ovbvmeueciv",
+                new UserAssignedIdentity(), "it", new UserAssignedIdentity()));
         model = BinaryData.fromObject(model).toObject(ManagedServiceIdentity.class);
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.type());
+        Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.type());
     }
 
     // Use "Map.of" if available

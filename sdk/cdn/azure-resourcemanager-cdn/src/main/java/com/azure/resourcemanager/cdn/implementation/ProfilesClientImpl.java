@@ -2017,7 +2017,7 @@ public final class ProfilesClientImpl implements InnerSupportsGet<ProfileInner>,
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return result for canMigrate operation along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> cdnCanMigrateToAfdWithResponseAsync(String resourceGroupName,
@@ -2054,7 +2054,7 @@ public final class ProfilesClientImpl implements InnerSupportsGet<ProfileInner>,
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return result for canMigrate operation along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> cdnCanMigrateToAfdWithResponseAsync(String resourceGroupName,
@@ -2089,7 +2089,7 @@ public final class ProfilesClientImpl implements InnerSupportsGet<ProfileInner>,
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of result for canMigrate operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<CanMigrateResultInner>, CanMigrateResultInner>
@@ -2110,7 +2110,7 @@ public final class ProfilesClientImpl implements InnerSupportsGet<ProfileInner>,
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of result for canMigrate operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<CanMigrateResultInner>, CanMigrateResultInner>
@@ -2131,7 +2131,7 @@ public final class ProfilesClientImpl implements InnerSupportsGet<ProfileInner>,
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of result for canMigrate operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CanMigrateResultInner>, CanMigrateResultInner>
@@ -2149,7 +2149,7 @@ public final class ProfilesClientImpl implements InnerSupportsGet<ProfileInner>,
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of result for canMigrate operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CanMigrateResultInner>, CanMigrateResultInner>
@@ -2166,7 +2166,7 @@ public final class ProfilesClientImpl implements InnerSupportsGet<ProfileInner>,
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return result for canMigrate operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CanMigrateResultInner> cdnCanMigrateToAfdAsync(String resourceGroupName, String profileName) {
@@ -2184,7 +2184,7 @@ public final class ProfilesClientImpl implements InnerSupportsGet<ProfileInner>,
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return result for canMigrate operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CanMigrateResultInner> cdnCanMigrateToAfdAsync(String resourceGroupName, String profileName,
@@ -2202,7 +2202,7 @@ public final class ProfilesClientImpl implements InnerSupportsGet<ProfileInner>,
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return result for canMigrate operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CanMigrateResultInner cdnCanMigrateToAfd(String resourceGroupName, String profileName) {
@@ -2219,7 +2219,7 @@ public final class ProfilesClientImpl implements InnerSupportsGet<ProfileInner>,
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return result for canMigrate operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CanMigrateResultInner cdnCanMigrateToAfd(String resourceGroupName, String profileName, Context context) {
@@ -2237,7 +2237,7 @@ public final class ProfilesClientImpl implements InnerSupportsGet<ProfileInner>,
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return result for migrate operation along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> cdnMigrateToAfdWithResponseAsync(String resourceGroupName,
@@ -2284,7 +2284,7 @@ public final class ProfilesClientImpl implements InnerSupportsGet<ProfileInner>,
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return result for migrate operation along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> cdnMigrateToAfdWithResponseAsync(String resourceGroupName,
@@ -2329,7 +2329,7 @@ public final class ProfilesClientImpl implements InnerSupportsGet<ProfileInner>,
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of result for migrate operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<MigrateResultInner>, MigrateResultInner> beginCdnMigrateToAfdAsync(
@@ -2352,7 +2352,7 @@ public final class ProfilesClientImpl implements InnerSupportsGet<ProfileInner>,
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of result for migrate operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<MigrateResultInner>, MigrateResultInner> beginCdnMigrateToAfdAsync(
@@ -2376,7 +2376,7 @@ public final class ProfilesClientImpl implements InnerSupportsGet<ProfileInner>,
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of result for migrate operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MigrateResultInner>, MigrateResultInner> beginCdnMigrateToAfd(String resourceGroupName,
@@ -2396,7 +2396,7 @@ public final class ProfilesClientImpl implements InnerSupportsGet<ProfileInner>,
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of result for migrate operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MigrateResultInner>, MigrateResultInner> beginCdnMigrateToAfd(String resourceGroupName,
@@ -2416,7 +2416,7 @@ public final class ProfilesClientImpl implements InnerSupportsGet<ProfileInner>,
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return result for migrate operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MigrateResultInner> cdnMigrateToAfdAsync(String resourceGroupName, String profileName,
@@ -2437,7 +2437,7 @@ public final class ProfilesClientImpl implements InnerSupportsGet<ProfileInner>,
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return result for migrate operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<MigrateResultInner> cdnMigrateToAfdAsync(String resourceGroupName, String profileName,
@@ -2457,7 +2457,7 @@ public final class ProfilesClientImpl implements InnerSupportsGet<ProfileInner>,
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return result for migrate operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MigrateResultInner cdnMigrateToAfd(String resourceGroupName, String profileName,
@@ -2477,7 +2477,7 @@ public final class ProfilesClientImpl implements InnerSupportsGet<ProfileInner>,
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return result for migrate operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MigrateResultInner cdnMigrateToAfd(String resourceGroupName, String profileName,

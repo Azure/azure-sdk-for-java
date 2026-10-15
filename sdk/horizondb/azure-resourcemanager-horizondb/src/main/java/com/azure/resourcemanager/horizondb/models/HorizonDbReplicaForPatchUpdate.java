@@ -12,12 +12,12 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * HorizonDb replica for update operations.
+ * HorizonDB replica for update operations.
  */
 @Fluent
 public final class HorizonDbReplicaForPatchUpdate implements JsonSerializable<HorizonDbReplicaForPatchUpdate> {
     /*
-     * Properties of a HorizonDb replica for update operations.
+     * Properties of a HorizonDB replica for update operations.
      */
     private HorizonDbReplicaPropertiesForPatchUpdate properties;
 
@@ -28,7 +28,7 @@ public final class HorizonDbReplicaForPatchUpdate implements JsonSerializable<Ho
     }
 
     /**
-     * Get the properties property: Properties of a HorizonDb replica for update operations.
+     * Get the properties property: Properties of a HorizonDB replica for update operations.
      * 
      * @return the properties value.
      */
@@ -37,7 +37,7 @@ public final class HorizonDbReplicaForPatchUpdate implements JsonSerializable<Ho
     }
 
     /**
-     * Set the properties property: Properties of a HorizonDb replica for update operations.
+     * Set the properties property: Properties of a HorizonDB replica for update operations.
      * 
      * @param properties the properties value to set.
      * @return the HorizonDbReplicaForPatchUpdate object itself.

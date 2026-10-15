@@ -9,7 +9,7 @@ package com.azure.resourcemanager.compute.generated;
  */
 public final class DisksListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-01-02/diskExamples/Disk_ListByResourceGroup.json
+     * x-ms-original-file: 2026-03-02/diskExamples/Disk_ListByResourceGroup.json
      */
     /**
      * Sample code: list all managed disks in a resource group.

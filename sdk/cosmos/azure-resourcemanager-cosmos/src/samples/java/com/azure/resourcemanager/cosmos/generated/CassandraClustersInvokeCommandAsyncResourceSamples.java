@@ -14,7 +14,7 @@ import java.io.IOException;
  */
 public final class CassandraClustersInvokeCommandAsyncResourceSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/CosmosDBManagedCassandraCommandAsync.json
+     * x-ms-original-file: 2026-04-01-preview/CosmosDBManagedCassandraCommandAsync.json
      */
     /**
      * Sample code: CosmosDBManagedCassandraCommandAsync.

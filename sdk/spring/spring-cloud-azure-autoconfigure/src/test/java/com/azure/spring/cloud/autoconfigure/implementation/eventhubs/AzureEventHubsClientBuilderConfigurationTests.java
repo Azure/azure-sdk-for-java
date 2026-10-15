@@ -6,6 +6,7 @@ package com.azure.spring.cloud.autoconfigure.implementation.eventhubs;
 import com.azure.data.appconfiguration.ConfigurationClientBuilder;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.spring.cloud.autoconfigure.implementation.TestBuilderCustomizer;
+import com.azure.spring.cloud.autoconfigure.implementation.context.AzureContextUtils;
 import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.eventhubs.properties.AzureEventHubsConnectionDetails;
 import com.azure.spring.cloud.core.provider.connectionstring.StaticConnectionStringProvider;
@@ -93,10 +94,24 @@ class AzureEventHubsClientBuilderConfigurationTests {
                 "spring.cloud.azure.eventhubs.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test-namespace")
             )
             .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
-            .withBean("user-defined-builder", EventHubClientBuilder.class, EventHubClientBuilder::new)
+            .withBean(AzureContextUtils.EVENT_HUB_CLIENT_BUILDER_BEAN_NAME, EventHubClientBuilder.class, EventHubClientBuilder::new)
             .run(context -> {
                 assertThat(context).hasSingleBean(EventHubClientBuilder.class);
-                assertThat(context).hasBean("user-defined-builder");
+                assertThat(context).hasBean(AzureContextUtils.EVENT_HUB_CLIENT_BUILDER_BEAN_NAME);
+            });
+    }
+
+    @Test
+    void userDefinedEventHubsClientBuilderUnderCustomNameShouldNotSuppressAutoconfigure() {
+        this.contextRunner
+            .withPropertyValues(
+                "spring.cloud.azure.eventhubs.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test-namespace")
+            )
+            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
+            .withBean("user-defined-builder", EventHubClientBuilder.class, EventHubClientBuilder::new)
+            .run(context -> {
+                assertThat(context).getBeanNames(EventHubClientBuilder.class)
+                    .containsExactlyInAnyOrder("user-defined-builder", AzureContextUtils.EVENT_HUB_CLIENT_BUILDER_BEAN_NAME);
             });
     }
 

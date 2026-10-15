@@ -10,7 +10,7 @@ package com.azure.resourcemanager.connectedcache.generated;
 public final class EnterpriseMccCacheNodesOperationsGetCacheNodeAutoUpdateHistorySamples {
     /*
      * x-ms-original-file:
-     * 2024-11-30-preview/EnterpriseMccCacheNodesOperations_GetCacheNodeAutoUpdateHistory_MaximumSet_Gen.json
+     * 2026-06-01/EnterpriseMccCacheNodesOperations_GetCacheNodeAutoUpdateHistory_MaximumSet_Gen.json
      */
     /**
      * Sample code: EnterpriseMccCacheNodesOperations_GetCacheNodeAutoUpdateHistory_MaximumSet.

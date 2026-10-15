@@ -14,21 +14,20 @@ public final class CommitmentPlanAccountAssociationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CommitmentPlanAccountAssociationInner model = BinaryData.fromString(
-            "{\"properties\":{\"accountId\":\"xmubyyntwlrbq\"},\"etag\":\"oievseotgqrlltm\",\"tags\":{\"efuzmuvpbttd\":\"auwzizxbmpgc\",\"pglkf\":\"morppxebmnzbtbh\",\"phsdyhto\":\"ohdneuel\",\"v\":\"fikdowwqu\"},\"id\":\"xclvit\",\"name\":\"hqzonosggbhcoh\",\"type\":\"wdsjnkalju\"}")
+            "{\"properties\":{\"accountId\":\"ronzmyhgfip\"},\"etag\":\"xkmcwaekrrjre\",\"tags\":{\"lik\":\"tsgumhj\"},\"id\":\"wslolbqp\",\"name\":\"uzlm\",\"type\":\"felfktg\"}")
             .toObject(CommitmentPlanAccountAssociationInner.class);
-        Assertions.assertEquals("auwzizxbmpgc", model.tags().get("efuzmuvpbttd"));
-        Assertions.assertEquals("xmubyyntwlrbq", model.accountId());
+        Assertions.assertEquals("tsgumhj", model.tags().get("lik"));
+        Assertions.assertEquals("ronzmyhgfip", model.accountId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CommitmentPlanAccountAssociationInner model = new CommitmentPlanAccountAssociationInner()
-            .withTags(mapOf("efuzmuvpbttd", "auwzizxbmpgc", "pglkf", "morppxebmnzbtbh", "phsdyhto", "ohdneuel", "v",
-                "fikdowwqu"))
-            .withAccountId("xmubyyntwlrbq");
+        CommitmentPlanAccountAssociationInner model
+            = new CommitmentPlanAccountAssociationInner().withTags(mapOf("lik", "tsgumhj"))
+                .withAccountId("ronzmyhgfip");
         model = BinaryData.fromObject(model).toObject(CommitmentPlanAccountAssociationInner.class);
-        Assertions.assertEquals("auwzizxbmpgc", model.tags().get("efuzmuvpbttd"));
-        Assertions.assertEquals("xmubyyntwlrbq", model.accountId());
+        Assertions.assertEquals("tsgumhj", model.tags().get("lik"));
+        Assertions.assertEquals("ronzmyhgfip", model.accountId());
     }
 
     // Use "Map.of" if available

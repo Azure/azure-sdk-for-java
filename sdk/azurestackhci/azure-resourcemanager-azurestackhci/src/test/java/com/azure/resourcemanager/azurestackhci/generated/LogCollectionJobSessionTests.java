@@ -11,7 +11,7 @@ public final class LogCollectionJobSessionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LogCollectionJobSession model = BinaryData.fromString(
-            "{\"startTime\":\"icrmnzh\",\"endTime\":\"mqgjsxvpq\",\"timeCollected\":\"frmbodthsqq\",\"logSize\":641449139,\"status\":\"Succeeded\",\"correlationId\":\"a\"}")
+            "{\"startTime\":\"atutmzlbiojlvfhr\",\"endTime\":\"pn\",\"timeCollected\":\"vcwwyyurmochppr\",\"logSize\":474630322,\"status\":\"NotStarted\",\"correlationId\":\"k\"}")
             .toObject(LogCollectionJobSession.class);
     }
 }

@@ -9,7 +9,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Media streaming subscription state.
+ * Current state of media streaming session.
  */
 public final class MediaStreamingSubscriptionStateInternal
     extends ExpandableStringEnum<MediaStreamingSubscriptionStateInternal> {

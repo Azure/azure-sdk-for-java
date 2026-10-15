@@ -19,6 +19,8 @@ import com.azure.resourcemanager.servicefabricmanagedclusters.models.ManagedReso
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.NetworkSecurityRule;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.NodeTypeNatConfig;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.NodeTypeSku;
+import com.azure.resourcemanager.servicefabricmanagedclusters.models.ProxyAgentSettings;
+import com.azure.resourcemanager.servicefabricmanagedclusters.models.ScaleInPolicy;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.SecurityEncryptionType;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.SecurityType;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.VaultSecretGroup;
@@ -1506,6 +1508,56 @@ public final class NodeTypeInner extends ProxyResource {
             this.innerProperties = new NodeTypeProperties();
         }
         this.innerProperties().withEnableResilientEphemeralOsDisk(enableResilientEphemeralOsDisk);
+        return this;
+    }
+
+    /**
+     * Get the scaleInPolicy property: Specifies the scale in policy for the node type, which will be used when scale in
+     * happens on the cluster. If not specified, the default is Default which means the platform will decide which nodes
+     * to remove during scale in.
+     * 
+     * @return the scaleInPolicy value.
+     */
+    public ScaleInPolicy scaleInPolicy() {
+        return this.innerProperties() == null ? null : this.innerProperties().scaleInPolicy();
+    }
+
+    /**
+     * Set the scaleInPolicy property: Specifies the scale in policy for the node type, which will be used when scale in
+     * happens on the cluster. If not specified, the default is Default which means the platform will decide which nodes
+     * to remove during scale in.
+     * 
+     * @param scaleInPolicy the scaleInPolicy value to set.
+     * @return the NodeTypeInner object itself.
+     */
+    public NodeTypeInner withScaleInPolicy(ScaleInPolicy scaleInPolicy) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NodeTypeProperties();
+        }
+        this.innerProperties().withScaleInPolicy(scaleInPolicy);
+        return this;
+    }
+
+    /**
+     * Get the proxyAgentSettings property: Specifies the settings for the proxy agent on the node type.
+     * 
+     * @return the proxyAgentSettings value.
+     */
+    public ProxyAgentSettings proxyAgentSettings() {
+        return this.innerProperties() == null ? null : this.innerProperties().proxyAgentSettings();
+    }
+
+    /**
+     * Set the proxyAgentSettings property: Specifies the settings for the proxy agent on the node type.
+     * 
+     * @param proxyAgentSettings the proxyAgentSettings value to set.
+     * @return the NodeTypeInner object itself.
+     */
+    public NodeTypeInner withProxyAgentSettings(ProxyAgentSettings proxyAgentSettings) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NodeTypeProperties();
+        }
+        this.innerProperties().withProxyAgentSettings(proxyAgentSettings);
         return this;
     }
 

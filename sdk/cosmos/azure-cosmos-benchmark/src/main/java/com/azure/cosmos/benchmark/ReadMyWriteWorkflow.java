@@ -71,13 +71,13 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<PojoizedJson> {
 
             switch (j) {
                 case 0:
-                    // write a random document to cosmodb and update the cache.
+                    // write a random document to cosmosdb and update the cache.
                     // then try to read the document which just was written
                     obs = writeDocument()
                             .flatMap(this::readDocument);
                     break;
                 case 1:
-                    // write a random document to cosmodb and update the cache.
+                    // write a random document to cosmosdb and update the cache.
                     // then try to query for the document which just was written
                     obs = writeDocument()
                             .flatMap(d -> singlePartitionQuery(d)

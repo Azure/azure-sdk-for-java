@@ -18,10 +18,10 @@ import com.azure.core.util.Context;
 import com.azure.data.appconfiguration.ConfigurationClient;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshot;
-import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.data.appconfiguration.models.SnapshotComposition;
 import com.azure.spring.cloud.appconfiguration.config.implementation.configuration.WatchedConfigurationSettings;
+import com.azure.spring.cloud.appconfiguration.config.implementation.http.policy.TracingInfo;
 
 import io.netty.handler.codec.http.HttpResponseStatus;
 
@@ -43,6 +43,8 @@ class AppConfigurationReplicaClient {
 
     private final ConfigurationClient client;
 
+    private final TracingInfo tracingInfo;
+
     private Instant backoffEndTime;
 
     private int failedAttempts;
@@ -52,11 +54,14 @@ class AppConfigurationReplicaClient {
      * @param endpoint client endpoint
      * @param originClient origin client identifier
      * @param client Configuration Client to App Configuration store
+     * @param tracingInfo tracing info for this client
      */
-    AppConfigurationReplicaClient(String endpoint, String originClient, ConfigurationClient client) {
+    AppConfigurationReplicaClient(String endpoint, String originClient, ConfigurationClient client,
+        TracingInfo tracingInfo) {
         this.endpoint = endpoint;
         this.originClient = originClient;
         this.client = client;
+        this.tracingInfo = tracingInfo;
         this.backoffEndTime = Instant.now().minusMillis(INITIAL_BACKOFF_OFFSET_MS);
         this.failedAttempts = 0;
     }
@@ -96,6 +101,13 @@ class AppConfigurationReplicaClient {
      */
     String getOriginClient() {
         return originClient;
+    }
+
+    /**
+     * @return tracingInfo for this client
+     */
+    TracingInfo getTracingInfo() {
+        return tracingInfo;
     }
 
     /**
@@ -151,15 +163,14 @@ class AppConfigurationReplicaClient {
     }
 
     /**
-     * Gets configuration settings using watched configuration settings. This method retrieves all settings matching the
-     * selector and captures ETags for collection-based refresh monitoring.
-     * 
+     * Lists configuration settings page by page, capturing ETags for collection-based refresh monitoring.
+     *
      * @param settingSelector selector criteria for configuration settings
      * @param context Azure SDK context for request correlation
-     * @return WatchedConfigurationSettings containing the retrieved configuration settings and match conditions
+     * @return WatchedConfigurationSettings containing the retrieved settings and match conditions
      * @throws HttpResponseException if the request fails
      */
-    WatchedConfigurationSettings loadWatchedSettings(SettingSelector settingSelector, Context context) {
+    WatchedConfigurationSettings listSettingsByPage(SettingSelector settingSelector, Context context) {
         List<ConfigurationSetting> configurationSettings = new ArrayList<>();
         List<MatchConditions> checks = new ArrayList<>();
         try {
@@ -168,39 +179,6 @@ class AppConfigurationReplicaClient {
                     new MatchConditions().setIfNoneMatch(pagedResponse.getHeaders().getValue(HttpHeaderName.ETAG)));
                 for (ConfigurationSetting setting : pagedResponse.getValue()) {
                     configurationSettings.add(NormalizeNull.normalizeNullLabel(setting));
-                }
-            });
-
-            // Needs to happen after or we don't know if the request succeeded or failed.
-            this.failedAttempts = 0;
-            settingSelector.setMatchConditions(checks);
-            return new WatchedConfigurationSettings(settingSelector, configurationSettings);
-        } catch (HttpResponseException e) {
-            throw handleHttpResponseException(e);
-        } catch (UncheckedIOException e) {
-            throw new AppConfigurationStatusException(e.getMessage(), null, null);
-        }
-    }
-
-    /**
-     * Lists feature flags from the Azure App Configuration store.
-     * 
-     * @param settingSelector selector criteria for feature flags
-     * @param context Azure SDK context for request correlation
-     * @return WatchedConfigurationSettings containing the retrieved feature flags and match conditions
-     * @throws HttpResponseException if the request fails
-     */
-    WatchedConfigurationSettings listFeatureFlags(SettingSelector settingSelector, Context context)
-        throws HttpResponseException {
-        List<ConfigurationSetting> configurationSettings = new ArrayList<>();
-        List<MatchConditions> checks = new ArrayList<>();
-        try {
-            client.listConfigurationSettings(settingSelector, context).streamByPage().forEach(pagedResponse -> {
-                checks.add(
-                    new MatchConditions().setIfNoneMatch(pagedResponse.getHeaders().getValue(HttpHeaderName.ETAG)));
-                for (ConfigurationSetting featureFlag : pagedResponse.getValue()) {
-                    configurationSettings
-                        .add((FeatureFlagConfigurationSetting) NormalizeNull.normalizeNullLabel(featureFlag));
                 }
             });
 
@@ -245,11 +223,26 @@ class AppConfigurationReplicaClient {
         }
     }
 
+    /**
+     * Checks if any watched configuration settings have been modified by comparing ETags.
+     *
+     * @param settingSelector selector with match conditions to check for modifications
+     * @param context Azure SDK context for request correlation
+     * @return true if any settings have been modified, false otherwise
+     * @throws HttpResponseException if the request fails
+     */
     boolean checkWatchKeys(SettingSelector settingSelector, Context context) {
-        List<PagedResponse<ConfigurationSetting>> results = client
-            .listConfigurationSettings(settingSelector, context)
-            .streamByPage().filter(pagedResponse -> pagedResponse.getStatusCode() != HTTP_NOT_MODIFIED).toList();
-        return !results.isEmpty();
+        try {
+            List<PagedResponse<ConfigurationSetting>> results = client
+                .listConfigurationSettings(settingSelector, context)
+                .streamByPage().filter(pagedResponse -> pagedResponse.getStatusCode() != HTTP_NOT_MODIFIED).toList();
+            this.failedAttempts = 0;
+            return !results.isEmpty();
+        } catch (HttpResponseException e) {
+            throw handleHttpResponseException(e);
+        } catch (UncheckedIOException e) {
+            throw new AppConfigurationStatusException(e.getMessage(), null, null);
+        }
     }
 
     /**

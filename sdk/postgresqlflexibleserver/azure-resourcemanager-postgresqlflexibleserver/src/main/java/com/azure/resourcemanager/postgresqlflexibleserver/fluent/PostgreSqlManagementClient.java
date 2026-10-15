@@ -110,6 +110,27 @@ public interface PostgreSqlManagementClient {
     VirtualEndpointsClient getVirtualEndpoints();
 
     /**
+     * Gets the MaintenanceEventsClient object to access its operations.
+     * 
+     * @return the MaintenanceEventsClient object.
+     */
+    MaintenanceEventsClient getMaintenanceEvents();
+
+    /**
+     * Gets the MajorVersionUpgradePrechecksClient object to access its operations.
+     * 
+     * @return the MajorVersionUpgradePrechecksClient object.
+     */
+    MajorVersionUpgradePrechecksClient getMajorVersionUpgradePrechecks();
+
+    /**
+     * Gets the DbAgentsClient object to access its operations.
+     * 
+     * @return the DbAgentsClient object.
+     */
+    DbAgentsClient getDbAgents();
+
+    /**
      * Gets the AdministratorsMicrosoftEntrasClient object to access its operations.
      * 
      * @return the AdministratorsMicrosoftEntrasClient object.

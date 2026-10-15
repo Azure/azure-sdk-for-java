@@ -13,16 +13,16 @@ public final class AuthenticationSettingInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AuthenticationSettingInner model = BinaryData.fromString(
-            "{\"properties\":{\"authenticationKind\":\"AuthenticationSettingProperties\",\"provisioningState\":\"Failed\",\"displayName\":\"kcciwwzjuqkhr\"},\"id\":\"jiwkuofoskghsau\",\"name\":\"imjm\",\"type\":\"xieduugidyjrr\"}")
+            "{\"properties\":{\"authenticationKind\":\"AuthenticationSettingProperties\",\"provisioningState\":\"Failed\",\"displayName\":\"pxjmflbvvnchr\"},\"id\":\"ciwwzjuqkhr\",\"name\":\"ajiwkuo\",\"type\":\"oskg\"}")
             .toObject(AuthenticationSettingInner.class);
-        Assertions.assertEquals("kcciwwzjuqkhr", model.properties().displayName());
+        Assertions.assertEquals("pxjmflbvvnchr", model.properties().displayName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AuthenticationSettingInner model = new AuthenticationSettingInner()
-            .withProperties(new AuthenticationSettingProperties().withDisplayName("kcciwwzjuqkhr"));
+            .withProperties(new AuthenticationSettingProperties().withDisplayName("pxjmflbvvnchr"));
         model = BinaryData.fromObject(model).toObject(AuthenticationSettingInner.class);
-        Assertions.assertEquals("kcciwwzjuqkhr", model.properties().displayName());
+        Assertions.assertEquals("pxjmflbvvnchr", model.properties().displayName());
     }
 }

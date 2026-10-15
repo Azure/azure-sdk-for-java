@@ -267,7 +267,7 @@ public final class StacsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listMosaics(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> getMosaics(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("collectionId") String collectionId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -277,7 +277,7 @@ public final class StacsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listMosaicsSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> getMosaicsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("collectionId") String collectionId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -309,7 +309,7 @@ public final class StacsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> createOrReplaceCollection(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> replaceCollection(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("collectionId") String collectionId,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
@@ -320,7 +320,7 @@ public final class StacsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> createOrReplaceCollectionSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> replaceCollectionSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("collectionId") String collectionId,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
@@ -521,7 +521,7 @@ public final class StacsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listRenderOptions(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> getRenderOptions(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("collectionId") String collectionId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -531,7 +531,7 @@ public final class StacsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listRenderOptionsSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> getRenderOptionsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("collectionId") String collectionId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -603,7 +603,7 @@ public final class StacsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getConformanceClass(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> getConformanceClasses(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
@@ -613,7 +613,7 @@ public final class StacsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getConformanceClassSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> getConformanceClassesSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
@@ -665,7 +665,7 @@ public final class StacsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> createOrReplaceItem(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> replaceItem(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("collectionId") String collectionId,
             @PathParam("itemId") String itemId, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
@@ -677,7 +677,7 @@ public final class StacsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> createOrReplaceItemSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> replaceItemSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("collectionId") String collectionId,
             @PathParam("itemId") String itemId, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
@@ -843,7 +843,7 @@ public final class StacsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listQueryables(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> getQueryables(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
@@ -853,7 +853,7 @@ public final class StacsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listQueryablesSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> getQueryablesSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
@@ -932,7 +932,7 @@ public final class StacsImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -968,7 +968,7 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *     }
@@ -994,7 +994,7 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *     }
@@ -1022,10 +1022,10 @@ public final class StacsImpl {
      *         (recursive schema, see above)
      *     ]
      *     summaries (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *      (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      * }
      * }
@@ -1043,8 +1043,8 @@ public final class StacsImpl {
      * Represents a STAC collection along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createCollectionAssetWithResponseAsync(String collectionId, BinaryData body,
-        RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> createCollectionAssetWithResponseInternalAsync(String collectionId,
+        BinaryData body, RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.createCollectionAsset(this.client.getEndpoint(),
@@ -1084,7 +1084,7 @@ public final class StacsImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -1120,7 +1120,7 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *     }
@@ -1146,7 +1146,7 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *     }
@@ -1174,10 +1174,10 @@ public final class StacsImpl {
      *         (recursive schema, see above)
      *     ]
      *     summaries (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *      (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      * }
      * }
@@ -1195,7 +1195,7 @@ public final class StacsImpl {
      * Represents a STAC collection along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createCollectionAssetWithResponse(String collectionId, BinaryData body,
+    public Response<BinaryData> createCollectionAssetWithResponseInternal(String collectionId, BinaryData body,
         RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
         final String accept = "application/json";
@@ -1235,7 +1235,7 @@ public final class StacsImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -1271,7 +1271,7 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *     }
@@ -1297,7 +1297,7 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *     }
@@ -1325,10 +1325,10 @@ public final class StacsImpl {
      *         (recursive schema, see above)
      *     ]
      *     summaries (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *      (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      * }
      * }
@@ -1347,8 +1347,8 @@ public final class StacsImpl {
      * Represents a STAC collection along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> replaceCollectionAssetWithResponseAsync(String collectionId, String assetId,
-        BinaryData body, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> replaceCollectionAssetWithResponseInternalAsync(String collectionId,
+        String assetId, BinaryData body, RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.replaceCollectionAsset(this.client.getEndpoint(),
@@ -1387,7 +1387,7 @@ public final class StacsImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -1423,7 +1423,7 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *     }
@@ -1449,7 +1449,7 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *     }
@@ -1477,10 +1477,10 @@ public final class StacsImpl {
      *         (recursive schema, see above)
      *     ]
      *     summaries (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *      (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      * }
      * }
@@ -1499,8 +1499,8 @@ public final class StacsImpl {
      * Represents a STAC collection along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> replaceCollectionAssetWithResponse(String collectionId, String assetId, BinaryData body,
-        RequestOptions requestOptions) {
+    public Response<BinaryData> replaceCollectionAssetWithResponseInternal(String collectionId, String assetId,
+        BinaryData body, RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
         final String accept = "application/json";
         return service.replaceCollectionAssetSync(this.client.getEndpoint(),
@@ -1539,7 +1539,7 @@ public final class StacsImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -1575,7 +1575,7 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *     }
@@ -1601,7 +1601,7 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *     }
@@ -1629,10 +1629,10 @@ public final class StacsImpl {
      *         (recursive schema, see above)
      *     ]
      *     summaries (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *      (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      * }
      * }
@@ -1688,7 +1688,7 @@ public final class StacsImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -1724,7 +1724,7 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *     }
@@ -1750,7 +1750,7 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *     }
@@ -1778,10 +1778,10 @@ public final class StacsImpl {
      *         (recursive schema, see above)
      *     ]
      *     summaries (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *      (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      * }
      * }
@@ -1833,7 +1833,7 @@ public final class StacsImpl {
      *                 description: String (Optional)
      *                 cql (Required): [
      *                      (Required){
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                 ]
      *             }
@@ -1875,7 +1875,7 @@ public final class StacsImpl {
      *         ]
      *         defaultLocation (Optional): (recursive schema, see defaultLocation above)
      *         defaultCustomQuery (Optional): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *     }
      * }
@@ -1928,7 +1928,7 @@ public final class StacsImpl {
      *                 description: String (Optional)
      *                 cql (Required): [
      *                      (Required){
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                 ]
      *             }
@@ -1970,7 +1970,7 @@ public final class StacsImpl {
      *         ]
      *         defaultLocation (Optional): (recursive schema, see defaultLocation above)
      *         defaultCustomQuery (Optional): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *     }
      * }
@@ -2009,7 +2009,7 @@ public final class StacsImpl {
      *     description: String (Optional)
      *     cql (Required): [
      *          (Required){
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *     ]
      * }
@@ -2026,7 +2026,7 @@ public final class StacsImpl {
      *     description: String (Optional)
      *     cql (Required): [
      *          (Required){
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *     ]
      * }
@@ -2067,7 +2067,7 @@ public final class StacsImpl {
      *     description: String (Optional)
      *     cql (Required): [
      *          (Required){
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *     ]
      * }
@@ -2084,7 +2084,7 @@ public final class StacsImpl {
      *     description: String (Optional)
      *     cql (Required): [
      *          (Required){
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *     ]
      * }
@@ -2123,7 +2123,7 @@ public final class StacsImpl {
      *     description: String (Optional)
      *     cql (Required): [
      *          (Required){
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *     ]
      * }
@@ -2140,7 +2140,7 @@ public final class StacsImpl {
      *     description: String (Optional)
      *     cql (Required): [
      *          (Required){
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *     ]
      * }
@@ -2182,7 +2182,7 @@ public final class StacsImpl {
      *     description: String (Optional)
      *     cql (Required): [
      *          (Required){
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *     ]
      * }
@@ -2199,7 +2199,7 @@ public final class StacsImpl {
      *     description: String (Optional)
      *     cql (Required): [
      *          (Required){
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *     ]
      * }
@@ -2281,7 +2281,7 @@ public final class StacsImpl {
      *     description: String (Optional)
      *     cql (Required): [
      *          (Required){
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *     ]
      * }
@@ -2322,7 +2322,7 @@ public final class StacsImpl {
      *     description: String (Optional)
      *     cql (Required): [
      *          (Required){
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *     ]
      * }
@@ -2363,7 +2363,7 @@ public final class StacsImpl {
      *         description: String (Optional)
      *         cql (Required): [
      *              (Required){
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         ]
      *     }
@@ -2383,9 +2383,9 @@ public final class StacsImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listMosaicsWithResponseAsync(String collectionId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getMosaicsWithResponseAsync(String collectionId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.listMosaics(this.client.getEndpoint(),
+        return FluxUtil.withContext(context -> service.getMosaics(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), collectionId, accept, requestOptions, context));
     }
 
@@ -2404,7 +2404,7 @@ public final class StacsImpl {
      *         description: String (Optional)
      *         cql (Required): [
      *              (Required){
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         ]
      *     }
@@ -2423,9 +2423,9 @@ public final class StacsImpl {
      * Get the mosaic definitions for a given collection along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listMosaicsWithResponse(String collectionId, RequestOptions requestOptions) {
+    public Response<BinaryData> getMosaicsWithResponse(String collectionId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.listMosaicsSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
+        return service.getMosaicsSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
             collectionId, accept, requestOptions, Context.NONE);
     }
 
@@ -2460,7 +2460,7 @@ public final class StacsImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -2496,7 +2496,7 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *     }
@@ -2522,7 +2522,7 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *     }
@@ -2550,10 +2550,10 @@ public final class StacsImpl {
      *         (recursive schema, see above)
      *     ]
      *     summaries (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *      (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      * }
      * }
@@ -2640,7 +2640,7 @@ public final class StacsImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -2676,7 +2676,7 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *     }
@@ -2702,7 +2702,7 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *     }
@@ -2730,10 +2730,10 @@ public final class StacsImpl {
      *         (recursive schema, see above)
      *     ]
      *     summaries (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *      (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      * }
      * }
@@ -2818,7 +2818,7 @@ public final class StacsImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -2854,7 +2854,7 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *     }
@@ -2880,7 +2880,7 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *     }
@@ -2908,10 +2908,10 @@ public final class StacsImpl {
      *         (recursive schema, see above)
      *     ]
      *     summaries (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *      (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      * }
      * }
@@ -3002,7 +3002,7 @@ public final class StacsImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -3038,7 +3038,7 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *     }
@@ -3064,7 +3064,7 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *     }
@@ -3092,10 +3092,10 @@ public final class StacsImpl {
      *         (recursive schema, see above)
      *     ]
      *     summaries (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *      (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      * }
      * }
@@ -3185,7 +3185,7 @@ public final class StacsImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -3221,7 +3221,7 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *     }
@@ -3247,7 +3247,7 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *     }
@@ -3275,10 +3275,10 @@ public final class StacsImpl {
      *         (recursive schema, see above)
      *     ]
      *     summaries (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *      (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      * }
      * }
@@ -3369,7 +3369,7 @@ public final class StacsImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -3405,7 +3405,7 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *     }
@@ -3431,7 +3431,7 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *     }
@@ -3459,10 +3459,10 @@ public final class StacsImpl {
      *         (recursive schema, see above)
      *     ]
      *     summaries (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *      (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      * }
      * }
@@ -3522,9 +3522,9 @@ public final class StacsImpl {
     }
 
     /**
-     * Create or update Collection
+     * Replace Collection
      * 
-     * Create or replace a collection in the GeoCatalog instance.
+     * Replace an existing collection in the GeoCatalog instance.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -3552,7 +3552,7 @@ public final class StacsImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -3588,7 +3588,7 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *     }
@@ -3614,7 +3614,7 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *     }
@@ -3642,10 +3642,10 @@ public final class StacsImpl {
      *         (recursive schema, see above)
      *     ]
      *     summaries (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *      (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      * }
      * }
@@ -3678,7 +3678,7 @@ public final class StacsImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -3714,7 +3714,7 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *     }
@@ -3740,7 +3740,7 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *     }
@@ -3768,10 +3768,10 @@ public final class StacsImpl {
      *         (recursive schema, see above)
      *     ]
      *     summaries (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *      (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      * }
      * }
@@ -3789,19 +3789,19 @@ public final class StacsImpl {
      * Represents a STAC collection along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrReplaceCollectionWithResponseAsync(String collectionId, BinaryData body,
+    public Mono<Response<BinaryData>> replaceCollectionWithResponseAsync(String collectionId, BinaryData body,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createOrReplaceCollection(this.client.getEndpoint(),
+        return FluxUtil.withContext(context -> service.replaceCollection(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), collectionId, contentType, accept, body, requestOptions,
             context));
     }
 
     /**
-     * Create or update Collection
+     * Replace Collection
      * 
-     * Create or replace a collection in the GeoCatalog instance.
+     * Replace an existing collection in the GeoCatalog instance.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -3829,7 +3829,7 @@ public final class StacsImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -3865,7 +3865,7 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *     }
@@ -3891,7 +3891,7 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *     }
@@ -3919,10 +3919,10 @@ public final class StacsImpl {
      *         (recursive schema, see above)
      *     ]
      *     summaries (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *      (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      * }
      * }
@@ -3955,7 +3955,7 @@ public final class StacsImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -3991,7 +3991,7 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *     }
@@ -4017,7 +4017,7 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *     }
@@ -4045,10 +4045,10 @@ public final class StacsImpl {
      *         (recursive schema, see above)
      *     ]
      *     summaries (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *      (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      * }
      * }
@@ -4066,13 +4066,12 @@ public final class StacsImpl {
      * Represents a STAC collection along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrReplaceCollectionWithResponse(String collectionId, BinaryData body,
+    public Response<BinaryData> replaceCollectionWithResponse(String collectionId, BinaryData body,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.createOrReplaceCollectionSync(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), collectionId, contentType, accept, body, requestOptions,
-            Context.NONE);
+        return service.replaceCollectionSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
+            collectionId, contentType, accept, body, requestOptions, Context.NONE);
     }
 
     /**
@@ -4449,7 +4448,7 @@ public final class StacsImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -4485,7 +4484,7 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *     }
@@ -4511,7 +4510,7 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *     }
@@ -4539,10 +4538,10 @@ public final class StacsImpl {
      *         (recursive schema, see above)
      *     ]
      *     summaries (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *      (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      * }
      * }
@@ -4606,7 +4605,7 @@ public final class StacsImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -4642,7 +4641,7 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *     }
@@ -4668,7 +4667,7 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *     }
@@ -4696,10 +4695,10 @@ public final class StacsImpl {
      *         (recursive schema, see above)
      *     ]
      *     summaries (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *      (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      * }
      * }
@@ -4753,7 +4752,7 @@ public final class StacsImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -4803,7 +4802,7 @@ public final class StacsImpl {
      *                         String (Optional)
      *                     ]
      *                      (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                 }
      *             }
@@ -4829,7 +4828,7 @@ public final class StacsImpl {
      *                         String (Optional)
      *                     ]
      *                      (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                 }
      *             }
@@ -4857,10 +4856,10 @@ public final class StacsImpl {
      *                 (recursive schema, see above)
      *             ]
      *             summaries (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *              (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *     ]
@@ -4916,7 +4915,7 @@ public final class StacsImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -4966,7 +4965,7 @@ public final class StacsImpl {
      *                         String (Optional)
      *                     ]
      *                      (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                 }
      *             }
@@ -4992,7 +4991,7 @@ public final class StacsImpl {
      *                         String (Optional)
      *                     ]
      *                      (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                 }
      *             }
@@ -5020,10 +5019,10 @@ public final class StacsImpl {
      *                 (recursive schema, see above)
      *             ]
      *             summaries (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *              (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *     ]
@@ -5826,10 +5825,10 @@ public final class StacsImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listRenderOptionsWithResponseAsync(String collectionId,
+    public Mono<Response<BinaryData>> getRenderOptionsWithResponseAsync(String collectionId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.listRenderOptions(this.client.getEndpoint(),
+        return FluxUtil.withContext(context -> service.getRenderOptions(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), collectionId, accept, requestOptions, context));
     }
 
@@ -5890,9 +5889,9 @@ public final class StacsImpl {
      * Get all render options for a given collection along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listRenderOptionsWithResponse(String collectionId, RequestOptions requestOptions) {
+    public Response<BinaryData> getRenderOptionsWithResponse(String collectionId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.listRenderOptionsSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
+        return service.getRenderOptionsSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
             collectionId, accept, requestOptions, Context.NONE);
     }
 
@@ -5909,8 +5908,6 @@ public final class StacsImpl {
      * </pre>
      * 
      * @param collectionId STAC Collection ID.
-     * @param accept The accept parameter. Allowed values: "image/png", "image/jpeg", "image/jpg", "image/webp",
-     * "image/jp2", "image/tiff; application=geotiff", "application/x-binary".
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -5921,8 +5918,10 @@ public final class StacsImpl {
      * Get thumbnail for given collection along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getCollectionThumbnailWithResponseAsync(String collectionId, String accept,
+    public Mono<Response<BinaryData>> getCollectionThumbnailWithResponseAsync(String collectionId,
         RequestOptions requestOptions) {
+        final String accept
+            = "image/png, image/jpeg, image/jpg, image/webp, image/jp2, image/tiff; application=geotiff, application/x-binary";
         return FluxUtil.withContext(context -> service.getCollectionThumbnail(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), collectionId, accept, requestOptions, context));
     }
@@ -5940,8 +5939,6 @@ public final class StacsImpl {
      * </pre>
      * 
      * @param collectionId STAC Collection ID.
-     * @param accept The accept parameter. Allowed values: "image/png", "image/jpeg", "image/jpg", "image/webp",
-     * "image/jp2", "image/tiff; application=geotiff", "application/x-binary".
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -5952,8 +5949,9 @@ public final class StacsImpl {
      * Get thumbnail for given collection along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getCollectionThumbnailWithResponse(String collectionId, String accept,
-        RequestOptions requestOptions) {
+    public Response<BinaryData> getCollectionThumbnailWithResponse(String collectionId, RequestOptions requestOptions) {
+        final String accept
+            = "image/png, image/jpeg, image/jpg, image/webp, image/jp2, image/tiff; application=geotiff, application/x-binary";
         return service.getCollectionThumbnailSync(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), collectionId, accept, requestOptions, Context.NONE);
     }
@@ -6177,9 +6175,9 @@ public final class StacsImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getConformanceClassWithResponseAsync(RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getConformanceClassesWithResponseAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getConformanceClass(this.client.getEndpoint(),
+        return FluxUtil.withContext(context -> service.getConformanceClasses(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
@@ -6209,10 +6207,10 @@ public final class StacsImpl {
      * Represents the OGC API conformance declaration along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getConformanceClassWithResponse(RequestOptions requestOptions) {
+    public Response<BinaryData> getConformanceClassesWithResponse(RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getConformanceClassSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-            accept, requestOptions, Context.NONE);
+        return service.getConformanceClassesSync(this.client.getEndpoint(),
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -6250,7 +6248,7 @@ public final class StacsImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -6312,7 +6310,7 @@ public final class StacsImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -6360,7 +6358,7 @@ public final class StacsImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -6460,7 +6458,7 @@ public final class StacsImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -6558,7 +6556,7 @@ public final class StacsImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -6661,7 +6659,7 @@ public final class StacsImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -6764,7 +6762,7 @@ public final class StacsImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -6867,7 +6865,7 @@ public final class StacsImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -6949,7 +6947,7 @@ public final class StacsImpl {
     }
 
     /**
-     * Create or replace a STAC item in a collection.
+     * Replace a STAC item in a collection.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -6970,7 +6968,7 @@ public final class StacsImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -7018,7 +7016,7 @@ public final class StacsImpl {
      *         start_datetime: OffsetDateTime (Optional)
      *         end_datetime: OffsetDateTime (Optional)
      *          (Optional): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *     }
      *     assets (Optional, Required on create): {
@@ -7043,7 +7041,7 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *     }
@@ -7097,17 +7095,17 @@ public final class StacsImpl {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<BinaryData>> createOrReplaceItemWithResponseAsync(String collectionId, String itemId,
-        BinaryData body, RequestOptions requestOptions) {
+    private Mono<Response<BinaryData>> replaceItemWithResponseAsync(String collectionId, String itemId, BinaryData body,
+        RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createOrReplaceItem(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), collectionId, itemId, contentType, accept, body,
-            requestOptions, context));
+        return FluxUtil.withContext(
+            context -> service.replaceItem(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
+                collectionId, itemId, contentType, accept, body, requestOptions, context));
     }
 
     /**
-     * Create or replace a STAC item in a collection.
+     * Replace a STAC item in a collection.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -7128,7 +7126,7 @@ public final class StacsImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -7176,7 +7174,7 @@ public final class StacsImpl {
      *         start_datetime: OffsetDateTime (Optional)
      *         end_datetime: OffsetDateTime (Optional)
      *          (Optional): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *     }
      *     assets (Optional, Required on create): {
@@ -7201,7 +7199,7 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *     }
@@ -7254,16 +7252,16 @@ public final class StacsImpl {
      * @return microsoft Planetary Computer Pro geo-catalog operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Response<BinaryData> createOrReplaceItemWithResponse(String collectionId, String itemId, BinaryData body,
+    private Response<BinaryData> replaceItemWithResponse(String collectionId, String itemId, BinaryData body,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.createOrReplaceItemSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
+        return service.replaceItemSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
             collectionId, itemId, contentType, accept, body, requestOptions, Context.NONE);
     }
 
     /**
-     * Create or replace a STAC item in a collection.
+     * Replace a STAC item in a collection.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -7284,7 +7282,7 @@ public final class StacsImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -7332,7 +7330,7 @@ public final class StacsImpl {
      *         start_datetime: OffsetDateTime (Optional)
      *         end_datetime: OffsetDateTime (Optional)
      *          (Optional): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *     }
      *     assets (Optional, Required on create): {
@@ -7357,7 +7355,7 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *     }
@@ -7410,10 +7408,10 @@ public final class StacsImpl {
      * @return the {@link PollerFlux} for polling of microsoft Planetary Computer Pro geo-catalog operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<Operation, Void> beginCreateOrReplaceItemWithModelAsync(String collectionId, String itemId,
+    public PollerFlux<Operation, Void> beginReplaceItemWithModelAsync(String collectionId, String itemId,
         BinaryData body, RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
-            () -> this.createOrReplaceItemWithResponseAsync(collectionId, itemId, body, requestOptions),
+            () -> this.replaceItemWithResponseAsync(collectionId, itemId, body, requestOptions),
             new DefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
                 .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
                 .setContext(requestOptions != null && requestOptions.getContext() != null
@@ -7424,7 +7422,7 @@ public final class StacsImpl {
     }
 
     /**
-     * Create or replace a STAC item in a collection.
+     * Replace a STAC item in a collection.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -7445,7 +7443,7 @@ public final class StacsImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -7493,7 +7491,7 @@ public final class StacsImpl {
      *         start_datetime: OffsetDateTime (Optional)
      *         end_datetime: OffsetDateTime (Optional)
      *          (Optional): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *     }
      *     assets (Optional, Required on create): {
@@ -7518,7 +7516,7 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *     }
@@ -7571,10 +7569,10 @@ public final class StacsImpl {
      * @return the {@link SyncPoller} for polling of microsoft Planetary Computer Pro geo-catalog operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<Operation, Void> beginCreateOrReplaceItemWithModel(String collectionId, String itemId,
-        BinaryData body, RequestOptions requestOptions) {
+    public SyncPoller<Operation, Void> beginReplaceItemWithModel(String collectionId, String itemId, BinaryData body,
+        RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
-            () -> this.createOrReplaceItemWithResponse(collectionId, itemId, body, requestOptions),
+            () -> this.replaceItemWithResponse(collectionId, itemId, body, requestOptions),
             new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
                 .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
                 .setContext(requestOptions != null && requestOptions.getContext() != null
@@ -7585,7 +7583,7 @@ public final class StacsImpl {
     }
 
     /**
-     * Create or replace a STAC item in a collection.
+     * Replace a STAC item in a collection.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -7606,7 +7604,7 @@ public final class StacsImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -7654,7 +7652,7 @@ public final class StacsImpl {
      *         start_datetime: OffsetDateTime (Optional)
      *         end_datetime: OffsetDateTime (Optional)
      *          (Optional): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *     }
      *     assets (Optional, Required on create): {
@@ -7679,7 +7677,7 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *     }
@@ -7732,10 +7730,10 @@ public final class StacsImpl {
      * @return the {@link PollerFlux} for polling of microsoft Planetary Computer Pro geo-catalog operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginCreateOrReplaceItemAsync(String collectionId, String itemId,
-        BinaryData body, RequestOptions requestOptions) {
+    public PollerFlux<BinaryData, BinaryData> beginReplaceItemAsync(String collectionId, String itemId, BinaryData body,
+        RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
-            () -> this.createOrReplaceItemWithResponseAsync(collectionId, itemId, body, requestOptions),
+            () -> this.replaceItemWithResponseAsync(collectionId, itemId, body, requestOptions),
             new DefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
                 .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
                 .setContext(requestOptions != null && requestOptions.getContext() != null
@@ -7746,7 +7744,7 @@ public final class StacsImpl {
     }
 
     /**
-     * Create or replace a STAC item in a collection.
+     * Replace a STAC item in a collection.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -7767,7 +7765,7 @@ public final class StacsImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -7815,7 +7813,7 @@ public final class StacsImpl {
      *         start_datetime: OffsetDateTime (Optional)
      *         end_datetime: OffsetDateTime (Optional)
      *          (Optional): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *     }
      *     assets (Optional, Required on create): {
@@ -7840,7 +7838,7 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *     }
@@ -7893,10 +7891,10 @@ public final class StacsImpl {
      * @return the {@link SyncPoller} for polling of microsoft Planetary Computer Pro geo-catalog operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginCreateOrReplaceItem(String collectionId, String itemId,
-        BinaryData body, RequestOptions requestOptions) {
+    public SyncPoller<BinaryData, BinaryData> beginReplaceItem(String collectionId, String itemId, BinaryData body,
+        RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
-            () -> this.createOrReplaceItemWithResponse(collectionId, itemId, body, requestOptions),
+            () -> this.replaceItemWithResponse(collectionId, itemId, body, requestOptions),
             new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
                 .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
                 .setContext(requestOptions != null && requestOptions.getContext() != null
@@ -8239,6 +8237,15 @@ public final class StacsImpl {
 
     /**
      * Fetch a single STAC Item.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>sign</td><td>String</td><td>No</td><td>Whether to sign asset URLs in the response. Allowed values:
+     * "true", "false".</td></tr>
+     * <tr><td>duration</td><td>Integer</td><td>No</td><td>URL signature duration in minutes.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -8259,7 +8266,7 @@ public final class StacsImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -8307,7 +8314,7 @@ public final class StacsImpl {
      *         start_datetime: OffsetDateTime (Optional)
      *         end_datetime: OffsetDateTime (Optional)
      *          (Optional): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *     }
      *     assets (Optional, Required on create): {
@@ -8332,7 +8339,7 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *     }
@@ -8362,6 +8369,15 @@ public final class StacsImpl {
 
     /**
      * Fetch a single STAC Item.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>sign</td><td>String</td><td>No</td><td>Whether to sign asset URLs in the response. Allowed values:
+     * "true", "false".</td></tr>
+     * <tr><td>duration</td><td>Integer</td><td>No</td><td>URL signature duration in minutes.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -8382,7 +8398,7 @@ public final class StacsImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -8430,7 +8446,7 @@ public final class StacsImpl {
      *         start_datetime: OffsetDateTime (Optional)
      *         end_datetime: OffsetDateTime (Optional)
      *          (Optional): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *     }
      *     assets (Optional, Required on create): {
@@ -8455,7 +8471,7 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *     }
@@ -8543,6 +8559,10 @@ public final class StacsImpl {
      * If a feature has multiple temporal properties, it is the decision of the
      * server whether only a single temporal property is used to determine
      * the extent or all relevant temporal properties.</td></tr>
+     * <tr><td>sign</td><td>String</td><td>No</td><td>Whether to sign asset URLs in the response. Allowed values:
+     * "true", "false".</td></tr>
+     * <tr><td>duration</td><td>Integer</td><td>No</td><td>URL signature duration in minutes.</td></tr>
+     * <tr><td>token</td><td>String</td><td>No</td><td>Pagination token for fetching the next set of results.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -8565,7 +8585,7 @@ public final class StacsImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -8626,7 +8646,7 @@ public final class StacsImpl {
      *                 start_datetime: OffsetDateTime (Optional)
      *                 end_datetime: OffsetDateTime (Optional)
      *                  (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *             }
      *             assets (Optional, Required on create): {
@@ -8651,7 +8671,7 @@ public final class StacsImpl {
      *                         String (Optional)
      *                     ]
      *                      (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                 }
      *             }
@@ -8752,6 +8772,10 @@ public final class StacsImpl {
      * If a feature has multiple temporal properties, it is the decision of the
      * server whether only a single temporal property is used to determine
      * the extent or all relevant temporal properties.</td></tr>
+     * <tr><td>sign</td><td>String</td><td>No</td><td>Whether to sign asset URLs in the response. Allowed values:
+     * "true", "false".</td></tr>
+     * <tr><td>duration</td><td>Integer</td><td>No</td><td>URL signature duration in minutes.</td></tr>
+     * <tr><td>token</td><td>String</td><td>No</td><td>Pagination token for fetching the next set of results.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -8774,7 +8798,7 @@ public final class StacsImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -8835,7 +8859,7 @@ public final class StacsImpl {
      *                 start_datetime: OffsetDateTime (Optional)
      *                 end_datetime: OffsetDateTime (Optional)
      *                  (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *             }
      *             assets (Optional, Required on create): {
@@ -8860,7 +8884,7 @@ public final class StacsImpl {
      *                         String (Optional)
      *                     ]
      *                      (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                 }
      *             }
@@ -8919,7 +8943,7 @@ public final class StacsImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -8967,7 +8991,7 @@ public final class StacsImpl {
      *         start_datetime: OffsetDateTime (Optional)
      *         end_datetime: OffsetDateTime (Optional)
      *          (Optional): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *     }
      *     assets (Optional, Required on create): {
@@ -8992,7 +9016,7 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *     }
@@ -9076,7 +9100,7 @@ public final class StacsImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -9124,7 +9148,7 @@ public final class StacsImpl {
      *         start_datetime: OffsetDateTime (Optional)
      *         end_datetime: OffsetDateTime (Optional)
      *          (Optional): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *     }
      *     assets (Optional, Required on create): {
@@ -9149,7 +9173,7 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *     }
@@ -9233,7 +9257,7 @@ public final class StacsImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -9281,7 +9305,7 @@ public final class StacsImpl {
      *         start_datetime: OffsetDateTime (Optional)
      *         end_datetime: OffsetDateTime (Optional)
      *          (Optional): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *     }
      *     assets (Optional, Required on create): {
@@ -9306,7 +9330,7 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *     }
@@ -9394,7 +9418,7 @@ public final class StacsImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -9442,7 +9466,7 @@ public final class StacsImpl {
      *         start_datetime: OffsetDateTime (Optional)
      *         end_datetime: OffsetDateTime (Optional)
      *          (Optional): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *     }
      *     assets (Optional, Required on create): {
@@ -9467,7 +9491,7 @@ public final class StacsImpl {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *     }
@@ -9545,7 +9569,7 @@ public final class StacsImpl {
      *      (Required){
      *         name: String (Required)
      *         definition (Required): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *         create_index: Boolean (Optional)
      *         data_type: String(string/number/boolean/timestamp/date) (Optional)
@@ -9562,7 +9586,7 @@ public final class StacsImpl {
      *      (Required){
      *         name: String (Required)
      *         definition (Required): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *         create_index: Boolean (Optional)
      *         data_type: String(string/number/boolean/timestamp/date) (Optional)
@@ -9602,7 +9626,7 @@ public final class StacsImpl {
      *      (Required){
      *         name: String (Required)
      *         definition (Required): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *         create_index: Boolean (Optional)
      *         data_type: String(string/number/boolean/timestamp/date) (Optional)
@@ -9619,7 +9643,7 @@ public final class StacsImpl {
      *      (Required){
      *         name: String (Required)
      *         definition (Required): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *         create_index: Boolean (Optional)
      *         data_type: String(string/number/boolean/timestamp/date) (Optional)
@@ -9658,7 +9682,7 @@ public final class StacsImpl {
      * {
      *     name: String (Required)
      *     definition (Required): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     create_index: Boolean (Optional)
      *     data_type: String(string/number/boolean/timestamp/date) (Optional)
@@ -9673,7 +9697,7 @@ public final class StacsImpl {
      * {
      *     name: String (Required)
      *     definition (Required): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     create_index: Boolean (Optional)
      *     data_type: String(string/number/boolean/timestamp/date) (Optional)
@@ -9714,7 +9738,7 @@ public final class StacsImpl {
      * {
      *     name: String (Required)
      *     definition (Required): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     create_index: Boolean (Optional)
      *     data_type: String(string/number/boolean/timestamp/date) (Optional)
@@ -9729,7 +9753,7 @@ public final class StacsImpl {
      * {
      *     name: String (Required)
      *     definition (Required): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     create_index: Boolean (Optional)
      *     data_type: String(string/number/boolean/timestamp/date) (Optional)
@@ -9808,7 +9832,7 @@ public final class StacsImpl {
      * {@code
      * {
      *      (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      * }
      * }
@@ -9822,9 +9846,9 @@ public final class StacsImpl {
      * @return queryable definitions response along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listQueryablesWithResponseAsync(RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getQueryablesWithResponseAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.listQueryables(this.client.getEndpoint(),
+        return FluxUtil.withContext(context -> service.getQueryables(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
@@ -9838,7 +9862,7 @@ public final class StacsImpl {
      * {@code
      * {
      *      (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      * }
      * }
@@ -9852,9 +9876,9 @@ public final class StacsImpl {
      * @return queryable definitions response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listQueryablesWithResponse(RequestOptions requestOptions) {
+    public Response<BinaryData> getQueryablesWithResponse(RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.listQueryablesSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
+        return service.getQueryablesSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
             accept, requestOptions, Context.NONE);
     }
 
@@ -9868,7 +9892,7 @@ public final class StacsImpl {
      * {@code
      * {
      *      (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      * }
      * }
@@ -9900,7 +9924,7 @@ public final class StacsImpl {
      * {@code
      * {
      *      (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      * }
      * }
@@ -9958,10 +9982,10 @@ public final class StacsImpl {
      *     datetime: String (Optional)
      *     limit: Integer (Optional)
      *     conf (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     query (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     sortby (Optional): [
      *          (Optional){
@@ -9980,7 +10004,7 @@ public final class StacsImpl {
      *         }
      *     ]
      *     filter (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     filter-crs: String (Optional)
      *     filter-lang: String(cql-json/cql2-json/cql2-text) (Optional)
@@ -10009,7 +10033,7 @@ public final class StacsImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -10070,7 +10094,7 @@ public final class StacsImpl {
      *                 start_datetime: OffsetDateTime (Optional)
      *                 end_datetime: OffsetDateTime (Optional)
      *                  (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *             }
      *             assets (Optional, Required on create): {
@@ -10095,7 +10119,7 @@ public final class StacsImpl {
      *                         String (Optional)
      *                     ]
      *                      (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                 }
      *             }
@@ -10170,10 +10194,10 @@ public final class StacsImpl {
      *     datetime: String (Optional)
      *     limit: Integer (Optional)
      *     conf (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     query (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     sortby (Optional): [
      *          (Optional){
@@ -10192,7 +10216,7 @@ public final class StacsImpl {
      *         }
      *     ]
      *     filter (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     filter-crs: String (Optional)
      *     filter-lang: String(cql-json/cql2-json/cql2-text) (Optional)
@@ -10221,7 +10245,7 @@ public final class StacsImpl {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -10282,7 +10306,7 @@ public final class StacsImpl {
      *                 start_datetime: OffsetDateTime (Optional)
      *                 end_datetime: OffsetDateTime (Optional)
      *                  (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *             }
      *             assets (Optional, Required on create): {
@@ -10307,7 +10331,7 @@ public final class StacsImpl {
      *                         String (Optional)
      *                     ]
      *                      (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                 }
      *             }

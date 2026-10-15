@@ -1312,6 +1312,8 @@ public class ServiceBusSenderAsyncClientRecoveryIsolatedTest {
             doNothing().when(sender).open();
             when(amqpSendLink.getLinkSize())
                 .thenReturn(Mono.just(ServiceBusSenderAsyncClient.MAX_MESSAGE_LENGTH_BYTES));
+            when(amqpSendLink.getMaxBatchSize())
+                .thenReturn(Mono.just(ServiceBusSenderAsyncClient.MAX_MESSAGE_LENGTH_BYTES));
             when(amqpSendLink.getEndpointStates())
                 .thenReturn(sendLinkStateSink.asFlux().distinctUntilChanged().map(state -> toAmqpEndpointState(state)));
         }

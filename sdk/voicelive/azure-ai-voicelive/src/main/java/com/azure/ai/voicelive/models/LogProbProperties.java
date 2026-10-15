@@ -25,12 +25,6 @@ public final class LogProbProperties implements JsonSerializable<LogProbProperti
     private final String token;
 
     /*
-     * The log probability of the token.
-     */
-    @Generated
-    private final double logprob;
-
-    /*
      * The bytes that were used to generate the log probability.
      */
     @Generated
@@ -40,13 +34,13 @@ public final class LogProbProperties implements JsonSerializable<LogProbProperti
      * Creates an instance of LogProbProperties class.
      *
      * @param token the token value to set.
-     * @param logprob the logprob value to set.
+     * @param logProb the logProb value to set.
      * @param bytes the bytes value to set.
      */
     @Generated
-    private LogProbProperties(String token, double logprob, List<Integer> bytes) {
+    private LogProbProperties(String token, double logProb, List<Integer> bytes) {
         this.token = token;
-        this.logprob = logprob;
+        this.logProb = logProb;
         this.bytes = bytes;
     }
 
@@ -58,16 +52,6 @@ public final class LogProbProperties implements JsonSerializable<LogProbProperti
     @Generated
     public String getToken() {
         return this.token;
-    }
-
-    /**
-     * Get the logprob property: The log probability of the token.
-     *
-     * @return the logprob value.
-     */
-    @Generated
-    public double getLogprob() {
-        return this.logprob;
     }
 
     /**
@@ -88,7 +72,7 @@ public final class LogProbProperties implements JsonSerializable<LogProbProperti
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("token", this.token);
-        jsonWriter.writeDoubleField("logprob", this.logprob);
+        jsonWriter.writeDoubleField("logprob", this.logProb);
         jsonWriter.writeArrayField("bytes", this.bytes, (writer, element) -> writer.writeInt(element));
         return jsonWriter.writeEndObject();
     }
@@ -106,7 +90,7 @@ public final class LogProbProperties implements JsonSerializable<LogProbProperti
     public static LogProbProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String token = null;
-            double logprob = 0.0;
+            double logProb = 0.0;
             List<Integer> bytes = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -114,14 +98,30 @@ public final class LogProbProperties implements JsonSerializable<LogProbProperti
                 if ("token".equals(fieldName)) {
                     token = reader.getString();
                 } else if ("logprob".equals(fieldName)) {
-                    logprob = reader.getDouble();
+                    logProb = reader.getDouble();
                 } else if ("bytes".equals(fieldName)) {
                     bytes = reader.readArray(reader1 -> reader1.getInt());
                 } else {
                     reader.skipChildren();
                 }
             }
-            return new LogProbProperties(token, logprob, bytes);
+            return new LogProbProperties(token, logProb, bytes);
         });
+    }
+
+    /*
+     * The log probability of the token.
+     */
+    @Generated
+    private final double logProb;
+
+    /**
+     * Get the logProb property: The log probability of the token.
+     *
+     * @return the logProb value.
+     */
+    @Generated
+    public double getLogProb() {
+        return this.logProb;
     }
 }

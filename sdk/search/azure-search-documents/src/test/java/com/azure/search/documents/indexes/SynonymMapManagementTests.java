@@ -3,11 +3,13 @@
 package com.azure.search.documents.indexes;
 
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
 import com.azure.search.documents.SearchTestBase;
 import com.azure.search.documents.TestHelpers;
 import com.azure.search.documents.indexes.models.SynonymMap;
+import com.azure.search.documents.indexes.models.ListingSearchType;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
@@ -506,6 +508,28 @@ public class SynonymMapManagementTests extends SearchTestBase {
     }
 
     @Test
+    public void canListSynonymMapsByPrefixAcrossPagesSync() {
+        String prefix = testResourceNamer.randomName("paged-synonym-", 24);
+        List<String> expectedNames = createSynonymMapsForPagination(prefix);
+        List<PagedResponse<SynonymMap>> pages = new ArrayList<>();
+
+        client.getSynonymMaps(null, prefix, 1, ListingSearchType.PREFIX).iterableByPage().forEach(pages::add);
+
+        assertSynonymMapPages(expectedNames, pages);
+    }
+
+    @Test
+    public void canListSynonymMapsByPrefixAcrossPagesAsync() {
+        String prefix = testResourceNamer.randomName("paged-synonym-", 24);
+        List<String> expectedNames = createSynonymMapsForPagination(prefix);
+
+        StepVerifier
+            .create(asyncClient.getSynonymMaps(null, prefix, 1, ListingSearchType.PREFIX).byPage().collectList())
+            .assertNext(pages -> assertSynonymMapPages(expectedNames, pages))
+            .verifyComplete();
+    }
+
+    @Test
     public void deleteSynonymMapIfNotChangedWorksOnlyOnCurrentResourceSyncAndAsync() {
         SynonymMap stale = client.createOrUpdateSynonymMapWithResponse(createTestSynonymMap(), null).getValue();
 
@@ -546,6 +570,27 @@ public class SynonymMapManagementTests extends SearchTestBase {
     static void assertSynonymMapsEqual(SynonymMap expected, SynonymMap actual) {
         assertEquals(expected.getName(), actual.getName());
         assertEquals(expected.getSynonyms(), actual.getSynonyms());
+    }
+
+    private List<String> createSynonymMapsForPagination(String prefix) {
+        List<String> names = Arrays.asList(prefix + "one", prefix + "two");
+        names.forEach(name -> {
+            client.createSynonymMap(new SynonymMap(name, "word1,word2"));
+            synonymMapsToDelete.add(name);
+        });
+        return names;
+    }
+
+    private static void assertSynonymMapPages(List<String> expectedNames, List<PagedResponse<SynonymMap>> pages) {
+        assertEquals(expectedNames.size(), pages.size());
+        assertEquals(new HashSet<>(expectedNames),
+            pages.stream()
+                .flatMap(page -> page.getElements().stream())
+                .map(SynonymMap::getName)
+                .collect(Collectors.toSet()));
+        pages.forEach(page -> assertEquals(1, page.getElements().stream().count()));
+        assertNotNull(pages.get(0).getContinuationToken());
+        org.junit.jupiter.api.Assertions.assertNull(pages.get(pages.size() - 1).getContinuationToken());
     }
 
     SynonymMap createTestSynonymMap() {

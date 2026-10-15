@@ -12,8 +12,8 @@ public final class QuotaUsageListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         QuotaUsageList model = BinaryData.fromString(
-            "{\"value\":[{\"name\":{\"value\":\"cgyypro\",\"localizedValue\":\"ypundmbxhugc\"},\"limit\":299484230763503241,\"unit\":\"lgorb\",\"currentValue\":2304427621056901546,\"id\":\"dtzfjltfvnzcy\"}],\"nextLink\":\"otp\"}")
+            "{\"value\":[{\"name\":{\"value\":\"j\",\"localizedValue\":\"cvbmqzb\"},\"limit\":1217844899495018315,\"unit\":\"jrnwxacev\",\"currentValue\":3621469567957484158,\"id\":\"yxoaf\"},{\"name\":{\"value\":\"qltfaey\",\"localizedValue\":\"nm\"},\"limit\":3765841685495474303,\"unit\":\"r\",\"currentValue\":6212930626984689307,\"id\":\"ypoq\"},{\"name\":{\"value\":\"lqhykprlpyz\",\"localizedValue\":\"ciqdsme\"},\"limit\":4627205265824000180,\"unit\":\"fuxtyasiibmiybnn\",\"currentValue\":8674518560231481251,\"id\":\"ljhnmgixhcmav\"}],\"nextLink\":\"foudor\"}")
             .toObject(QuotaUsageList.class);
-        Assertions.assertEquals("otp", model.nextLink());
+        Assertions.assertEquals("foudor", model.nextLink());
     }
 }

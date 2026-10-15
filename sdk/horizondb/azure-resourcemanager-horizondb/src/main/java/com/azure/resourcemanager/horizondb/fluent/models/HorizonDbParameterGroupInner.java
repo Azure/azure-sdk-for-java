@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.util.Map;
 
 /**
- * Represents the HorizonDb parameter group.
+ * Represents the HorizonDB parameter group.
  */
 @Fluent
 public final class HorizonDbParameterGroupInner extends Resource {

@@ -1,0 +1,13 @@
+diff --git a/sdk/contosowidgets/azure-resourcemanager-contosowidgets/src/main/java/com/azure/resourcemanager/contosowidgets/models/WidgetCreateResponse.java b/sdk/contosowidgets/azure-resourcemanager-contosowidgets/src/main/java/com/azure/resourcemanager/contosowidgets/models/WidgetCreateResponse.java
+new file mode 100644
+--- /dev/null
++++ b/sdk/contosowidgets/azure-resourcemanager-contosowidgets/src/main/java/com/azure/resourcemanager/contosowidgets/models/WidgetCreateResponse.java
+@@ -0,0 +1,8 @@
++package com.azure.resourcemanager.contosowidgets.models;
++
++public final class WidgetCreateResponse {
++    private final WidgetCreateHeaders headers;
++    public WidgetCreateHeaders getHeaders() {
++        return headers;
++    }
++}

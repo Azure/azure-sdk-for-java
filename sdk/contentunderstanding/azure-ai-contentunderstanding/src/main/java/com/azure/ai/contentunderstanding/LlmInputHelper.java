@@ -17,9 +17,9 @@ import com.azure.ai.contentunderstanding.models.DocumentPage;
 import com.azure.core.models.ResponseError;
 import com.azure.core.util.BinaryData;
 
+import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -53,10 +53,23 @@ import java.util.regex.Pattern;
  */
 public final class LlmInputHelper {
 
-    private static final Set<String> RESERVED_METADATA_KEYS = Collections.unmodifiableSet(
-        new HashSet<>(Arrays.asList("contentType", "timeRange", "category", "pages", "fields", "rai_warnings")));
+    private static final String CUSTOM_METADATA_FRONT_MATTER_KEY = "customMetadata";
 
     private static final Pattern PAGE_BREAK_PATTERN = Pattern.compile("\\n*<!-- PageBreak -->\\n*");
+
+    // Marker emitted by toLlmInput at each page boundary. Future Content Understanding
+    // service versions emit this same marker directly in the returned markdown (per
+    // ContentUnderstanding-Docs#249). When the helper sees any occurrence of this
+    // prefix in the input markdown it treats the service as having already paginated
+    // the content and skips its own injection to avoid duplicate markers.
+    private static final String INPUT_PAGE_MARKER_PREFIX = "<!-- InputPageNumber:";
+
+    // Message prefixes the Content Understanding service has been observed to emit
+    // into the warnings collection that are *not* real Responsible-AI warnings (they
+    // are internal telemetry counters). The helper drops any warning whose message
+    // starts with one of these prefixes before rendering the warnings: block, so
+    // the noise never reaches the LLM.
+    private static final String[] TELEMETRY_MESSAGE_PREFIXES = { "LLMStats:" };
 
     // YAML quoting patterns
     private static final Pattern YAML_SPECIAL_START = Pattern.compile("^[-?:,\\[\\]{}#&*!|>'\"%@`]");
@@ -73,19 +86,23 @@ public final class LlmInputHelper {
     /**
      * Convert a Content Understanding analysis result into LLM-friendly text.
      *
-     * <p>Produces a YAML front matter block (delimited by {@code ---}) followed by a
-     * markdown body. The YAML front matter may include:
-     * {@code contentType} (document, audioVisual),
-     * {@code pages} (page number or range),
-     * {@code timeRange} (media time span for multi-segment audio/video),
-     * {@code category} (classification label),
-     * {@code fields} (extracted structured fields as YAML),
-     * {@code rai_warnings} (content safety flags),
-     * and any caller-supplied metadata entries.
+    * <p>Produces a YAML front matter block (delimited by {@code ---}) followed by a markdown body. The front matter
+    * includes {@code mimeType} and may include caller-supplied {@code customMetadata}, service-extracted
+    * {@code metadata}, {@code pages}, {@code timeRange}, {@code category}, {@code fields}, and {@code warnings}.
      *
      * <p>The markdown body contains the extracted text with page-break markers
-     * ({@code <!-- page N -->}) inserted at page boundaries so downstream consumers
-     * can locate content by page number.
+     * ({@code <!-- InputPageNumber: N -->}) inserted at page boundaries so downstream
+     * consumers can locate content by page number. {@code N} is the <strong>original
+     * 1-based page number from the source document</strong> (i.e., the page index in
+     * the analyzed PDF), not a counter that restarts at 1 for each call. This matters
+     * when the analyze request specifies a {@link com.azure.ai.contentunderstanding.models.ContentRange}
+     * (e.g., {@code "2-3,5"}): the markers in the output will read
+     * {@code InputPageNumber: 2}, {@code 3}, {@code 5} &mdash; not {@code 1},
+     * {@code 2}, {@code 3}. Downstream consumers (RAG indexers, page-citation prompts)
+     * can rely on the marker value to cite the correct source page even when only a
+     * subset of pages was analyzed. If the service markdown already contains
+     * {@code <!-- InputPageNumber:} markers, the helper passes them through unchanged
+     * to avoid duplicates.
      *
      * @param result the {@link AnalysisResult} from a Content Understanding analyze operation.
      * @return a formatted string with YAML front matter followed by markdown content.
@@ -97,44 +114,41 @@ public final class LlmInputHelper {
     }
 
     /**
-     * Convert a Content Understanding analysis result into LLM-friendly text with metadata.
+     * Convert a Content Understanding analysis result into LLM-friendly text with custom metadata.
      *
-     * <p>This is a convenience overload for the common case where only metadata needs
-     * to be supplied (e.g., {@code {"source": "invoice.pdf"}} for RAG pipelines).
+     * <p>This is a convenience overload for the common case where only custom metadata needs to be supplied, such as
+     * {@code {"source": "invoice.pdf"}} for RAG pipelines.
      *
      * @param result the {@link AnalysisResult} from a Content Understanding analyze operation.
-     * @param metadata user-supplied key-value pairs to include in the YAML front matter.
-     *     Keys must not conflict with helper-generated keys ({@code contentType}, {@code timeRange},
-     *     {@code category}, {@code pages}, {@code fields}, {@code rai_warnings}).
-     * @return a formatted string with YAML front matter followed by markdown content.
-     *     Returns an empty string when {@code result.getContents()} is empty.
-     * @throws NullPointerException if {@code result} is null.
-     * @throws IllegalArgumentException if {@code metadata} contains a reserved front matter key.
+     * @param customMetadata user-supplied key-value pairs to include under the {@code customMetadata} YAML front-matter
+     * block. This block is separate from service-extracted {@code metadata}.
+    * @return a formatted string with YAML front matter followed by markdown content.
+    *     Returns an empty string when {@code result.getContents()} is empty.
+    * @throws NullPointerException if {@code result} is null.
      */
-    public static String toLlmInput(AnalysisResult result, Map<String, Object> metadata) {
-        return toLlmInput(result, metadata, null);
+    public static String toLlmInput(AnalysisResult result, Map<String, Object> customMetadata) {
+        return toLlmInput(result, customMetadata, null);
     }
 
     /**
-     * Convert a Content Understanding analysis result into LLM-friendly text with metadata
+     * Convert a Content Understanding analysis result into LLM-friendly text with custom metadata
      * and rendering options.
      *
-     * @param result the {@link AnalysisResult} from a Content Understanding analyze operation.
-     * @param metadata optional user-supplied key-value pairs to include in the YAML front matter.
-     *     Pass {@code null} for no metadata.
+    * @param result the {@link AnalysisResult} from a Content Understanding analyze operation.
+    * @param customMetadata optional user-supplied key-value pairs to include under the {@code customMetadata} YAML
+    * front-matter block. Pass {@code null} for no custom metadata.
      * @param options optional rendering options controlling field/markdown inclusion.
      *     Pass {@code null} for defaults (both fields and markdown included).
      * @return a formatted string with YAML front matter followed by markdown content.
      *     Returns an empty string when {@code result.getContents()} is empty.
      * @throws NullPointerException if {@code result} is null.
-     * @throws IllegalArgumentException if {@code metadata} contains a reserved front matter key.
      */
-    public static String toLlmInput(AnalysisResult result, Map<String, Object> metadata, ToLlmInputOptions options) {
+    public static String toLlmInput(AnalysisResult result, Map<String, Object> customMetadata,
+        ToLlmInputOptions options) {
         Objects.requireNonNull(result, "'result' must not be null.");
 
         boolean includeFields = options == null || options.isIncludeFields();
         boolean includeMarkdown = options == null || options.isIncludeMarkdown();
-        validateMetadata(metadata);
 
         List<AnalysisContent> contents = result.getContents();
         if (contents == null || contents.isEmpty()) {
@@ -156,35 +170,14 @@ public final class LlmInputHelper {
 
         List<String> blocks = new ArrayList<>();
         for (RenderableContent rc : renderable) {
-            String block = renderContentBlock(rc, result, includeFields, includeMarkdown, metadata, isMultiSegment);
+            String block
+                = renderContentBlock(rc, result, includeFields, includeMarkdown, customMetadata, isMultiSegment);
             if (block != null && !block.isEmpty()) {
                 blocks.add(block);
             }
         }
 
         return String.join("\n\n*****\n\n", blocks);
-    }
-
-    // -----------------------------------------------------------------------
-    // Metadata validation
-    // -----------------------------------------------------------------------
-
-    private static void validateMetadata(Map<String, Object> metadata) {
-        if (metadata == null || metadata.isEmpty()) {
-            return;
-        }
-        List<String> reserved = new ArrayList<>();
-        for (String key : metadata.keySet()) {
-            if (RESERVED_METADATA_KEYS.contains(key)) {
-                reserved.add(key);
-            }
-        }
-        if (!reserved.isEmpty()) {
-            Collections.sort(reserved);
-            throw new IllegalArgumentException(
-                "metadata contains reserved front matter key(s): " + String.join(", ", reserved)
-                    + ". Use custom keys such as 'source', 'documentId', or 'department' instead.");
-        }
     }
 
     // -----------------------------------------------------------------------
@@ -276,9 +269,11 @@ public final class LlmInputHelper {
      */
     private static final class RenderableContent {
         final AnalysisContentKind kind;
+        final String mimeType;
         final String category;
         final String markdown;
         final Map<String, ContentField> fields;
+        final Map<String, String> metadata;
         final int startPageNumber;
         final int endPageNumber;
         final List<DocumentPage> pages;
@@ -288,9 +283,11 @@ public final class LlmInputHelper {
         // Wrap an existing AnalysisContent
         RenderableContent(AnalysisContent content) {
             this.kind = content.getKind();
+            this.mimeType = content.getMimeType();
             this.category = content.getCategory();
             this.markdown = content.getMarkdown();
             this.fields = content.getFields();
+            this.metadata = content.getMetadata();
 
             if (content instanceof DocumentContent) {
                 DocumentContent dc = (DocumentContent) content;
@@ -316,11 +313,13 @@ public final class LlmInputHelper {
         }
 
         // Synthetic segment
-        RenderableContent(String category, String markdown, int startPageNumber, int endPageNumber) {
+        RenderableContent(String mimeType, String category, String markdown, int startPageNumber, int endPageNumber) {
             this.kind = AnalysisContentKind.DOCUMENT;
+            this.mimeType = mimeType;
             this.category = category;
             this.markdown = markdown;
             this.fields = null;
+            this.metadata = null;
             this.pages = null;
             this.startPageNumber = startPageNumber;
             this.endPageNumber = endPageNumber;
@@ -366,7 +365,10 @@ public final class LlmInputHelper {
         // Collect paths of routed top-level content items
         Set<String> routedPaths = new HashSet<>();
         for (AnalysisContent c : contents) {
-            if (c instanceof DocumentContent && c.getCategory() != null && c.getPath() != null) {
+            if (c instanceof DocumentContent
+                && c.getCategory() != null
+                && !c.getCategory().isEmpty()
+                && c.getPath() != null) {
                 routedPaths.add(c.getPath());
             }
         }
@@ -379,7 +381,9 @@ public final class LlmInputHelper {
             if (c instanceof DocumentContent) {
                 DocumentContent dc = (DocumentContent) c;
                 List<DocumentContentSegment> segments = dc.getSegments();
-                if (segments != null && !segments.isEmpty() && dc.getCategory() == null) {
+                if (segments != null
+                    && !segments.isEmpty()
+                    && (dc.getCategory() == null || dc.getCategory().isEmpty())) {
                     expandedClassification = true;
                     String parentPath = dc.getPath() != null ? dc.getPath() : "";
 
@@ -398,7 +402,7 @@ public final class LlmInputHelper {
                             }
                         }
 
-                        ordered.add(new OrderedContent(new RenderableContent(seg.getCategory(), md,
+                        ordered.add(new OrderedContent(new RenderableContent(dc.getMimeType(), seg.getCategory(), md,
                             seg.getStartPageNumber(), seg.getEndPageNumber()), originalOrder++));
                     }
                     continue;
@@ -433,38 +437,52 @@ public final class LlmInputHelper {
     }
 
     private static String renderContentBlock(RenderableContent content, AnalysisResult result, boolean includeFields,
-        boolean includeMarkdown, Map<String, Object> metadata, boolean isMultiSegment) {
+        boolean includeMarkdown, Map<String, Object> customMetadata, boolean isMultiSegment) {
 
         // Build ordered front matter entries
         List<Object[]> fm = new ArrayList<>();
 
-        // 1. contentType
-        fm.add(new Object[] { "contentType", content.kind != null ? content.kind.toString() : "unknown" });
+        // 1. mimeType
+        fm.add(new Object[] {
+            "mimeType",
+            content.mimeType == null || content.mimeType.isEmpty() ? "unknown" : content.mimeType });
 
-        // 2. user metadata
-        if (metadata != null) {
-            for (Map.Entry<String, Object> entry : metadata.entrySet()) {
-                fm.add(new Object[] { entry.getKey(), entry.getValue() });
+        // 2. caller-supplied metadata, nested to avoid collisions with helper-owned keys
+        if (customMetadata != null) {
+            Map<String, Object> normalizedCustomMetadata = normalizeMetadata(customMetadata);
+            fm.add(new Object[] { CUSTOM_METADATA_FRONT_MATTER_KEY, normalizedCustomMetadata });
+        }
+
+        // 3. metadata extracted by the service
+        if (content.metadata != null && !content.metadata.isEmpty()) {
+            Map<String, Object> normalizedMetadata = new LinkedHashMap<>();
+            for (Map.Entry<String, String> entry : content.metadata.entrySet()) {
+                if (entry.getValue() != null) {
+                    normalizedMetadata.put(entry.getKey(), entry.getValue());
+                }
+            }
+            if (!normalizedMetadata.isEmpty()) {
+                fm.add(new Object[] { "metadata", normalizedMetadata });
             }
         }
 
-        // 3. timeRange (only multi-segment audioVisual)
+        // 4. timeRange (only multi-segment audioVisual)
         if (content.kind == AnalysisContentKind.AUDIO_VISUAL && isMultiSegment) {
             fm.add(new Object[] { "timeRange", formatTimeRange(content.startTimeMs, content.endTimeMs) });
         }
 
-        // 4. category
-        if (content.category != null) {
+        // 5. category
+        if (content.category != null && !content.category.isEmpty()) {
             fm.add(new Object[] { "category", content.category });
         }
 
-        // 5. pages
+        // 6. pages
         Object pagesVal = formatPages(content);
         if (pagesVal != null) {
             fm.add(new Object[] { "pages", pagesVal });
         }
 
-        // Build complex entries separately (fields, rai_warnings need structured YAML)
+        // Build complex entries separately (fields and warnings need structured YAML)
         Map<String, Object> resolvedFields = null;
         if (includeFields && content.fields != null && !content.fields.isEmpty()) {
             resolvedFields = resolveFields(content.fields);
@@ -498,6 +516,9 @@ public final class LlmInputHelper {
     // -----------------------------------------------------------------------
 
     private static String addPageMarkers(RenderableContent content, String markdown) {
+        if (hasInputPageMarker(markdown)) {
+            return markdown;
+        }
         if (content.pages != null && !content.pages.isEmpty()) {
             String result = pageMarkersFromSpans(markdown, content.pages);
             // Identity check: if spans were found, result differs from input
@@ -506,6 +527,10 @@ public final class LlmInputHelper {
             }
         }
         return pageMarkersFromBreaks(markdown, content);
+    }
+
+    private static boolean hasInputPageMarker(String markdown) {
+        return markdown != null && markdown.contains(INPUT_PAGE_MARKER_PREFIX);
     }
 
     private static String pageMarkersFromSpans(String markdown, List<DocumentPage> pages) {
@@ -539,7 +564,7 @@ public final class LlmInputHelper {
             if (adj > prev) {
                 sb.append(cleaned, prev, adj);
             }
-            sb.append("<!-- page ").append(marker[1]).append(" -->\n\n");
+            sb.append(INPUT_PAGE_MARKER_PREFIX).append(' ').append(marker[1]).append(" -->\n\n");
             prev = adj;
         }
         if (prev < cleaned.length()) {
@@ -565,7 +590,7 @@ public final class LlmInputHelper {
         for (int i = 0; i < chunks.length; i++) {
             String text = chunks[i].trim();
             if (!text.isEmpty()) {
-                parts.add("<!-- page " + (startPage + i) + " -->\n\n" + text);
+                parts.add(INPUT_PAGE_MARKER_PREFIX + " " + (startPage + i) + " -->\n\n" + text);
             }
         }
         return String.join("\n\n", parts);
@@ -646,18 +671,91 @@ public final class LlmInputHelper {
             if (w == null) {
                 continue;
             }
+            String message = w.getMessage();
+            // Skip internal service telemetry strings (e.g. "LLMStats: ...") that
+            // occasionally leak into the warnings collection. These are not
+            // Responsible-AI warnings and would otherwise be rendered into the
+            // LLM-facing warnings: block.
+            if (message != null && isTelemetryMessage(message)) {
+                continue;
+            }
             Map<String, String> entry = new LinkedHashMap<>();
             if (w.getCode() != null && !w.getCode().isEmpty()) {
                 entry.put("code", w.getCode());
             }
-            if (w.getMessage() != null && !w.getMessage().isEmpty()) {
-                entry.put("message", w.getMessage());
+            if (message != null && !message.isEmpty()) {
+                entry.put("message", message);
+            }
+            Object serialized = BinaryData.fromObject(w).toObject(Object.class);
+            if (serialized instanceof Map) {
+                Object target = ((Map<?, ?>) serialized).get("target");
+                if (target instanceof String && !((String) target).isEmpty()) {
+                    entry.put("target", (String) target);
+                }
             }
             if (!entry.isEmpty()) {
                 items.add(entry);
             }
         }
         return items;
+    }
+
+    private static boolean isTelemetryMessage(String message) {
+        // Strip leading whitespace (case-sensitive prefix match).
+        int i = 0;
+        while (i < message.length() && (message.charAt(i) == ' ' || message.charAt(i) == '\t')) {
+            i++;
+        }
+        for (String prefix : TELEMETRY_MESSAGE_PREFIXES) {
+            if (message.regionMatches(false, i, prefix, 0, prefix.length())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static Map<String, Object> normalizeMetadata(Map<String, ?> metadata) {
+        Map<String, Object> normalized = new LinkedHashMap<>();
+        for (Map.Entry<String, ?> entry : metadata.entrySet()) {
+            normalized.put(entry.getKey(), normalizeMetadataValue(entry.getValue()));
+        }
+        return normalized;
+    }
+
+    private static Object normalizeMetadataValue(Object value) {
+        if (value == null) {
+            return null;
+        }
+        if (value instanceof String) {
+            return value;
+        }
+        if (value instanceof BinaryData) {
+            return normalizeMetadataValue(((BinaryData) value).toObject(Object.class));
+        }
+        if (value instanceof Map) {
+            Map<Object, Object> normalized = new LinkedHashMap<>();
+            for (Map.Entry<?, ?> entry : ((Map<?, ?>) value).entrySet()) {
+                Object nestedValue = normalizeMetadataValue(entry.getValue());
+                normalized.put(entry.getKey(), nestedValue);
+            }
+            return normalized;
+        }
+        if (value.getClass().isArray()) {
+            List<Object> normalized = new ArrayList<>();
+            int length = Array.getLength(value);
+            for (int index = 0; index < length; index++) {
+                normalized.add(normalizeMetadataValue(Array.get(value, index)));
+            }
+            return normalized;
+        }
+        if (value instanceof Iterable) {
+            List<Object> normalized = new ArrayList<>();
+            for (Object item : (Iterable<?>) value) {
+                normalized.add(normalizeMetadataValue(item));
+            }
+            return normalized;
+        }
+        return value;
     }
 
     // -----------------------------------------------------------------------
@@ -706,12 +804,17 @@ public final class LlmInputHelper {
         return needsQuote ? "'" + s.replace("'", "''") + "'" : s;
     }
 
+    private static String indentScalarContinuationLines(Object value, int indent) {
+        String scalar = yamlScalar(value).replace("\r\n", "\n").replace('\r', '\n');
+        return scalar.replace("\n", "\n" + repeat("  ", indent));
+    }
+
     private static String buildFrontMatter(List<Object[]> simpleEntries, Map<String, Object> fields,
         List<Map<String, String>> warnings) {
         List<String> lines = new ArrayList<>();
         lines.add("---");
 
-        // Simple key-value entries and user metadata.
+        // Ordered scalar and structured entries.
         for (Object[] entry : simpleEntries) {
             emitEntry(lines, entry[0], entry[1], 0);
         }
@@ -722,9 +825,9 @@ public final class LlmInputHelper {
             emitMapping(lines, fields, 1);
         }
 
-        // rai_warnings (structured list)
+        // warnings (structured list)
         if (warnings != null && !warnings.isEmpty()) {
-            lines.add("rai_warnings:");
+            lines.add("warnings:");
             emitWarningSequence(lines, warnings, 0);
         }
 
@@ -740,6 +843,7 @@ public final class LlmInputHelper {
 
     private static void emitEntry(List<String> lines, Object key, Object value, int indent) {
         if (value == null) {
+            lines.add(repeat("  ", indent) + yamlScalar(key) + ": null");
             return;
         }
         String prefix = repeat("  ", indent);
@@ -748,6 +852,7 @@ public final class LlmInputHelper {
         if (value instanceof Map) {
             Map<?, ?> nested = (Map<?, ?>) value;
             if (nested.isEmpty()) {
+                lines.add(prefix + safeKey + ": {}");
                 return;
             }
             lines.add(prefix + safeKey + ":");
@@ -755,12 +860,13 @@ public final class LlmInputHelper {
         } else if (value instanceof List) {
             List<?> list = (List<?>) value;
             if (list.isEmpty()) {
+                lines.add(prefix + safeKey + ": []");
                 return;
             }
             lines.add(prefix + safeKey + ":");
             emitSequence(lines, list, indent);
         } else {
-            lines.add(prefix + safeKey + ": " + yamlScalar(value));
+            lines.add(prefix + safeKey + ": " + indentScalarContinuationLines(value, indent + 1));
         }
     }
 
@@ -772,19 +878,18 @@ public final class LlmInputHelper {
                 boolean first = true;
                 for (Map.Entry<?, ?> entry : map.entrySet()) {
                     Object entryValue = entry.getValue();
-                    if (entryValue == null) {
-                        continue;
-                    }
                     String tag = first ? prefix + "- " : prefix + "  ";
                     String safeKey = yamlScalar(entry.getKey());
 
-                    if (entryValue instanceof Map) {
+                    if (entryValue == null) {
+                        lines.add(tag + safeKey + ": null");
+                    } else if (entryValue instanceof Map) {
                         Map<?, ?> nested = (Map<?, ?>) entryValue;
                         if (!nested.isEmpty()) {
                             lines.add(tag + safeKey + ":");
                             emitMapping(lines, nested, indent + 2);
                         } else {
-                            lines.add(tag + safeKey + ": " + yamlScalar(entryValue));
+                            lines.add(tag + safeKey + ": {}");
                         }
                     } else if (entryValue instanceof List) {
                         List<?> list = (List<?>) entryValue;
@@ -792,15 +897,15 @@ public final class LlmInputHelper {
                             lines.add(tag + safeKey + ":");
                             emitSequence(lines, list, indent + 2);
                         } else {
-                            lines.add(tag + safeKey + ": " + yamlScalar(entryValue));
+                            lines.add(tag + safeKey + ": []");
                         }
                     } else {
-                        lines.add(tag + safeKey + ": " + yamlScalar(entryValue));
+                        lines.add(tag + safeKey + ": " + indentScalarContinuationLines(entryValue, indent + 2));
                     }
                     first = false;
                 }
             } else {
-                lines.add(prefix + "- " + yamlScalar(item));
+                lines.add(prefix + "- " + indentScalarContinuationLines(item, indent + 1));
             }
         }
     }
@@ -811,7 +916,8 @@ public final class LlmInputHelper {
             boolean first = true;
             for (Map.Entry<String, String> entry : w.entrySet()) {
                 String tag = first ? prefix + "- " : prefix + "  ";
-                lines.add(tag + yamlScalar(entry.getKey()) + ": " + yamlScalar(entry.getValue()));
+                lines.add(tag + yamlScalar(entry.getKey()) + ": "
+                    + indentScalarContinuationLines(entry.getValue(), indent + 2));
                 first = false;
             }
         }

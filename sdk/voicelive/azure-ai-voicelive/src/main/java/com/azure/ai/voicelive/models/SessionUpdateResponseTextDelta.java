@@ -14,7 +14,7 @@ import java.io.IOException;
  * Returned when the text value of a "text" content part is updated.
  */
 @Immutable
-public final class SessionUpdateResponseTextDelta extends SessionUpdate {
+public final class SessionUpdateResponseTextDelta extends SessionServerEvent {
 
     /*
      * The type of event.

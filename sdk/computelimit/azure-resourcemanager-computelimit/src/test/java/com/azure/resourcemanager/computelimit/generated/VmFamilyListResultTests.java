@@ -12,9 +12,9 @@ public final class VmFamilyListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VmFamilyListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"category\":\"oulzndlikwyq\",\"provisioningState\":\"Canceled\"},\"id\":\"ibmadgakeqsrxy\",\"name\":\"zqqedq\",\"type\":\"tbciqfouflmm\"},{\"properties\":{\"category\":\"smodmgloug\",\"provisioningState\":\"Canceled\"},\"id\":\"tmut\",\"name\":\"uqktap\",\"type\":\"pwgcuertu\"},{\"properties\":{\"category\":\"o\",\"provisioningState\":\"Succeeded\"},\"id\":\"hbmdgbbjfdd\",\"name\":\"mbmbexppbh\",\"type\":\"q\"}],\"nextLink\":\"ol\"}")
+            "{\"value\":[{\"properties\":{\"category\":\"uckyf\",\"provisioningState\":\"Failed\"},\"id\":\"idf\",\"name\":\"zwdzuh\",\"type\":\"ymwisdkft\"},{\"properties\":{\"category\":\"mnteiwao\",\"provisioningState\":\"Succeeded\"},\"id\":\"ijcmmx\",\"name\":\"cufufsrpymz\",\"type\":\"dnsezcxtbzs\"}],\"nextLink\":\"yc\"}")
             .toObject(VmFamilyListResult.class);
-        Assertions.assertEquals("oulzndlikwyq", model.value().get(0).properties().category());
-        Assertions.assertEquals("ol", model.nextLink());
+        Assertions.assertEquals("uckyf", model.value().get(0).properties().category());
+        Assertions.assertEquals("yc", model.nextLink());
     }
 }

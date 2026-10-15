@@ -21,13 +21,13 @@ public final class OperationsDeleteWithResponseMockTests {
         String responseStr = "{}";
 
         HttpClient httpClient
-            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+            = response -> Mono.just(new MockHttpResponse(response, 204, responseStr.getBytes(StandardCharsets.UTF_8)));
         ProviderHubManager manager = ProviderHubManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.operations().deleteWithResponse("fj", com.azure.core.util.Context.NONE);
+        manager.operations().deleteWithResponse("nsqxtltc", com.azure.core.util.Context.NONE);
 
     }
 }

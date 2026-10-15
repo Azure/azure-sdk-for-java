@@ -146,20 +146,26 @@ class ChangeFeedQueryImpl<T> {
 
         if (this.options.getReadConsistencyStrategy() != null) {
 
-            String readConsistencyStrategyName = options.getReadConsistencyStrategy().toString();
-            this.client.validateAndLogNonDefaultReadConsistencyStrategy(readConsistencyStrategyName);
-            headers.put(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY, readConsistencyStrategyName);
+            this.client.validateReadConsistencyStrategy(options.getReadConsistencyStrategy());
+
+            if (this.options.getReadConsistencyStrategy() != ReadConsistencyStrategy.DEFAULT) {
+                headers.put(
+                    HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY,
+                    options.getReadConsistencyStrategy().toString());
+            }
 
             consistencyLevelOverrideApplicable =
                 this.options.getReadConsistencyStrategy() == ReadConsistencyStrategy.DEFAULT;
         }
 
         if (consistencyLevelOverrideApplicable && this.client.getReadConsistencyStrategy() != null) {
-            String readConsistencyStrategyName = this.client.getReadConsistencyStrategy().toString();
-            this.client.validateAndLogNonDefaultReadConsistencyStrategy(readConsistencyStrategyName);
-            headers.put(
-                HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY,
-                readConsistencyStrategyName);
+            this.client.validateReadConsistencyStrategy(this.client.getReadConsistencyStrategy());
+
+            if (this.client.getReadConsistencyStrategy() != ReadConsistencyStrategy.DEFAULT) {
+                headers.put(
+                    HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY,
+                    this.client.getReadConsistencyStrategy().toString());
+            }
 
             consistencyLevelOverrideApplicable =
                 this.client.getReadConsistencyStrategy() == ReadConsistencyStrategy.DEFAULT;

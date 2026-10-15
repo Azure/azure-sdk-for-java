@@ -4,18 +4,23 @@
 package com.azure.ai.contentunderstanding.tests;
 
 import com.azure.ai.contentunderstanding.models.AudioVisualSource;
+import com.azure.ai.contentunderstanding.models.ContentField;
 import com.azure.ai.contentunderstanding.models.ContentSource;
 import com.azure.ai.contentunderstanding.models.DocumentSource;
 import com.azure.ai.contentunderstanding.models.PointF;
 import com.azure.ai.contentunderstanding.models.Rectangle;
 import com.azure.ai.contentunderstanding.models.RectangleF;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -91,6 +96,16 @@ public class ContentSourceTest {
     }
 
     @Test
+    public void documentSourceParseOnlySeparatorsThrows() {
+        assertThrows(IllegalArgumentException.class, () -> DocumentSource.parse("; ;"));
+    }
+
+    @Test
+    public void documentSourceParseTrailingPageGarbageThrows() {
+        assertThrows(IllegalArgumentException.class, () -> DocumentSource.parse("D(1abc)"));
+    }
+
+    @Test
     public void documentSourceParseBoundingBoxComputed() {
         List<DocumentSource> sources
             = DocumentSource.parse("D(1,0.5712,1.4062,2.1087,1.4088,2.1084,1.5762,0.5709,1.5736)");
@@ -108,6 +123,70 @@ public class ContentSourceTest {
     public void documentSourceParseInvalidPageNumberThrows() {
         assertThrows(IllegalArgumentException.class,
             () -> DocumentSource.parse("D(0,0.0,0.0,1.0,0.0,1.0,1.0,0.0,1.0)"));
+    }
+
+    @Test
+    public void documentSourceParsePageOnly() {
+        List<DocumentSource> sources = DocumentSource.parse("D(3)");
+        assertEquals(1, sources.size());
+        DocumentSource source = sources.get(0);
+
+        assertEquals(3, source.getPageNumber());
+        assertNull(source.getPolygon(), "Polygon must be null for page-only D(page) form.");
+        assertNull(source.getBoundingBox(), "BoundingBox must be null for page-only D(page) form.");
+        assertEquals("D(3)", source.getRawValue());
+    }
+
+    @Test
+    public void documentSourceParseTriangleAccepts3Points() {
+        // 1 page + 3 points = 7 params
+        List<DocumentSource> sources = DocumentSource.parse("D(1,0.0,0.0,2.0,0.0,1.0,1.5)");
+        DocumentSource source = sources.get(0);
+
+        assertEquals(1, source.getPageNumber());
+        assertNotNull(source.getPolygon());
+        assertEquals(3, source.getPolygon().size());
+        assertNotNull(source.getBoundingBox());
+        assertEquals(0.0f, source.getBoundingBox().getX(), 0.0001f);
+        assertEquals(0.0f, source.getBoundingBox().getY(), 0.0001f);
+        assertEquals(2.0f, source.getBoundingBox().getWidth(), 0.0001f);
+        assertEquals(1.5f, source.getBoundingBox().getHeight(), 0.0001f);
+    }
+
+    @Test
+    public void documentSourceParsePentagonAccepts5Points() {
+        // 1 page + 5 points = 11 params
+        List<DocumentSource> sources = DocumentSource.parse("D(2,0.0,0.0,2.0,0.0,2.5,1.0,1.0,2.0,-0.5,1.0)");
+        DocumentSource source = sources.get(0);
+
+        assertEquals(2, source.getPageNumber());
+        assertNotNull(source.getPolygon());
+        assertEquals(5, source.getPolygon().size());
+        assertNotNull(source.getBoundingBox());
+        assertEquals(-0.5f, source.getBoundingBox().getX(), 0.0001f);
+        assertEquals(0.0f, source.getBoundingBox().getY(), 0.0001f);
+        assertEquals(3.0f, source.getBoundingBox().getWidth(), 0.0001f); // 2.5 - (-0.5)
+        assertEquals(2.0f, source.getBoundingBox().getHeight(), 0.0001f);
+    }
+
+    @Test
+    public void documentSourceParseOddCoordCountThrows() {
+        // 1 page + 7 coords = 8 params (odd coord count, not a valid pair set)
+        assertThrows(IllegalArgumentException.class, () -> DocumentSource.parse("D(1,0.0,0.0,1.0,0.0,1.0,1.0,0.5)"));
+    }
+
+    @Test
+    public void documentSourceParseMultiRegionWithPageOnly() {
+        // Mix of page-only and full polygon segments must all parse successfully.
+        List<DocumentSource> sources = DocumentSource.parse("D(1);D(2,0.0,0.0,1.0,0.0,1.0,1.0,0.0,1.0)");
+
+        assertEquals(2, sources.size());
+        assertEquals(1, sources.get(0).getPageNumber());
+        assertNull(sources.get(0).getPolygon());
+        assertNull(sources.get(0).getBoundingBox());
+        assertEquals(2, sources.get(1).getPageNumber());
+        assertNotNull(sources.get(1).getPolygon());
+        assertEquals(4, sources.get(1).getPolygon().size());
     }
 
     // =================== AudioVisualSource Parsing ===================
@@ -160,6 +239,16 @@ public class ContentSourceTest {
     }
 
     @Test
+    public void audioVisualSourceParseOnlySeparatorsThrows() {
+        assertThrows(IllegalArgumentException.class, () -> AudioVisualSource.parse("; ;"));
+    }
+
+    @Test
+    public void audioVisualSourceParseTrailingTimeGarbageThrows() {
+        assertThrows(IllegalArgumentException.class, () -> AudioVisualSource.parse("AV(1abc)"));
+    }
+
+    @Test
     public void audioVisualSourceParseMultiSegment() {
         String input = "AV(0,100,200,50,60);AV(1000,105,205,50,60)";
         List<AudioVisualSource> sources = AudioVisualSource.parse(input);
@@ -179,6 +268,91 @@ public class ContentSourceTest {
     public void audioVisualSourceGetTimeZero() {
         AudioVisualSource source = AudioVisualSource.parse("AV(0)").get(0);
         assertEquals(Duration.ZERO, source.getTime());
+    }
+
+    // =================== ContentSource Parsing ===================
+
+    @Test
+    public void contentSourceParseAllDocumentPrefixReturnsDocumentSource() {
+        List<ContentSource> sources = ContentSource.parseAll("D(1,0.0,0.0,1.0,0.0,1.0,1.0,0.0,1.0)");
+
+        assertEquals(1, sources.size());
+        assertInstanceOf(DocumentSource.class, sources.get(0));
+    }
+
+    @Test
+    public void contentSourceParseAllAudioVisualPrefixReturnsAudioVisualSource() {
+        List<ContentSource> sources = ContentSource.parseAll("AV(5000,100,200,50,60)");
+
+        assertEquals(1, sources.size());
+        assertInstanceOf(AudioVisualSource.class, sources.get(0));
+    }
+
+    @Test
+    public void contentSourceParseAllMultiRegionDocumentReturnsAll() {
+        List<ContentSource> sources = ContentSource.parseAll("D(1,0.0,0.0,1.0,0.0,1.0,1.0,0.0,1.0);D(2)");
+
+        assertEquals(2, sources.size());
+        assertInstanceOf(DocumentSource.class, sources.get(0));
+        assertInstanceOf(DocumentSource.class, sources.get(1));
+    }
+
+    @Test
+    public void contentSourceParseAllUnknownPrefixThrows() {
+        assertThrows(IllegalArgumentException.class, () -> ContentSource.parseAll("R(1,2,3)"));
+    }
+
+    @Test
+    public void contentSourceParseAllNullThrows() {
+        assertThrows(NullPointerException.class, () -> ContentSource.parseAll(null));
+    }
+
+    @Test
+    public void contentSourceParseAllWhitespaceThrows() {
+        assertThrows(IllegalArgumentException.class, () -> ContentSource.parseAll("   "));
+    }
+
+    @Test
+    public void contentSourceParseAllOnlySeparatorsThrows() {
+        assertThrows(IllegalArgumentException.class, () -> ContentSource.parseAll("; ;"));
+    }
+
+    // =================== ContentField.getSources ===================
+
+    @Test
+    public void contentFieldGetSourcesNullSourceReturnsNull() {
+        ContentField field = parseContentField("{\"type\":\"string\",\"valueString\":\"value\"}");
+
+        assertNull(field.getSources());
+    }
+
+    @Test
+    public void contentFieldGetSourcesEmptySourceReturnsNull() {
+        ContentField field = parseContentField("{\"type\":\"string\",\"valueString\":\"value\",\"source\":\"\"}");
+
+        assertNull(field.getSources());
+    }
+
+    @Test
+    public void contentFieldGetSourcesDocumentSourceReturnsParsedList() {
+        ContentField field = parseContentField(
+            "{\"type\":\"string\",\"valueString\":\"value\",\"source\":\"D(1,0.0,0.0,1.0,0.0,1.0,1.0,0.0,1.0)\"}");
+
+        assertNotNull(field.getSources());
+        assertEquals(1, field.getSources().size());
+        assertInstanceOf(DocumentSource.class, field.getSources().get(0));
+        assertEquals(1, ((DocumentSource) field.getSources().get(0)).getPageNumber());
+    }
+
+    @Test
+    public void contentFieldGetSourcesMultiRegionReturnsAll() {
+        ContentField field = parseContentField("{\"type\":\"string\",\"valueString\":\"value\","
+            + "\"source\":\"D(1);D(2,0.0,0.0,1.0,0.0,1.0,1.0,0.0,1.0)\"}");
+
+        assertNotNull(field.getSources());
+        assertEquals(2, field.getSources().size());
+        assertInstanceOf(DocumentSource.class, field.getSources().get(0));
+        assertInstanceOf(DocumentSource.class, field.getSources().get(1));
     }
 
     // =================== ContentSource.toRawString ===================
@@ -205,6 +379,17 @@ public class ContentSourceTest {
     @Test
     public void contentSourceToRawStringEmptyList() {
         assertEquals("", ContentSource.toRawString(Arrays.asList()));
+    }
+
+    @Test
+    public void contentSourceToRawStringMixedSourcesRoundTrips() {
+        String raw = "D(1);AV(5000,100,200,50,60)";
+        List<ContentSource> sources = ContentSource.parseAll(raw);
+
+        assertEquals(2, sources.size());
+        assertInstanceOf(DocumentSource.class, sources.get(0));
+        assertInstanceOf(AudioVisualSource.class, sources.get(1));
+        assertEquals(raw, ContentSource.toRawString(sources));
     }
 
     // =================== Geometry Types ===================
@@ -279,5 +464,13 @@ public class ContentSourceTest {
     private static void assertPointApproximate(float expectedX, float expectedY, PointF actual) {
         assertEquals(expectedX, actual.getX(), 0.0001f, "X coordinate mismatch");
         assertEquals(expectedY, actual.getY(), 0.0001f, "Y coordinate mismatch");
+    }
+
+    private static ContentField parseContentField(String json) {
+        try (JsonReader reader = JsonProviders.createReader(json)) {
+            return ContentField.fromJson(reader);
+        } catch (IOException exception) {
+            throw new RuntimeException("Failed to parse ContentField fixture.", exception);
+        }
     }
 }

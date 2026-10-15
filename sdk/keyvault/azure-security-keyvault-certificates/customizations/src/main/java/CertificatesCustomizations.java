@@ -25,6 +25,7 @@ public class CertificatesCustomizations extends Customization {
     public void customize(LibraryCustomization libraryCustomization, Logger logger) {
         removeFiles(libraryCustomization.getRawEditor());
         customizeError(libraryCustomization);
+        customizePlatformManaged(libraryCustomization);
         customizeCertificateKeyType(libraryCustomization);
         customizeCertificateKeyUsage(libraryCustomization);
         customizeServiceVersion(libraryCustomization);
@@ -70,6 +71,22 @@ public class CertificatesCustomizations extends Customization {
                     }));
     }
 
+    private static void customizePlatformManaged(LibraryCustomization customization) {
+        // The hand-written public PlatformManaged class lives in
+        // src/main/java/com/azure/security/keyvault/certificates/models/PlatformManaged.java.
+        // On regeneration, autorest produces an impl twin at
+        // implementation/models/PlatformManaged.java. Remove the impl twin and ensure the
+        // generated impl CertificatePolicy references the public class instead, otherwise
+        // the public models.CertificatePolicy (which exposes PlatformManaged) won't compile.
+        String implModelsDirectory = "src/main/java/com/azure/security/keyvault/certificates/implementation/models/";
+        String publicPlatformManagedFqn = "com.azure.security.keyvault.certificates.models.PlatformManaged";
+
+        customization.getRawEditor().removeFile(implModelsDirectory + "PlatformManaged.java");
+
+        customization.getClass("com.azure.security.keyvault.certificates.implementation.models", "CertificatePolicy")
+            .customizeAst(ast -> ast.addImport(publicPlatformManagedFqn));
+    }
+
     private static void customizeCertificateKeyUsage(LibraryCustomization customization) {
         customization.getClass("com.azure.security.keyvault.certificates.models", "CertificateKeyUsage")
             .customizeAst(ast ->
@@ -104,7 +121,7 @@ public class CertificatesCustomizations extends Customization {
             .setJavadocComment("The versions of Azure Key Vault Certificates supported by this client library.");
 
         for (String version : Arrays.asList("7.0", "7.1", "7.2", "7.3", "7.4", "7.5", "7.6",
-            "2025-07-01")) {
+            "2025-07-01", "2026-03-01-preview")) {
             enumDeclaration.addEnumConstant("V" + version.replace('.', '_').replace('-', '_').toUpperCase())
                 .setJavadocComment("Service version {@code " + version + "}.")
                 .addArgument(new StringLiteralExpr(version));
@@ -125,7 +142,7 @@ public class CertificatesCustomizations extends Customization {
             .setType("CertificateServiceVersion")
             .setJavadocComment(new Javadoc(parseText("Gets the latest service version supported by this client library."))
                 .addBlockTag("return", "The latest {@link CertificateServiceVersion}."))
-            .setBody(StaticJavaParser.parseBlock("{ return V2025_07_01; }"));
+            .setBody(StaticJavaParser.parseBlock("{ return V2026_03_01_PREVIEW; }"));
 
         customization.getRawEditor()
             .addFile("src/main/java/com/azure/security/keyvault/certificates/CertificateServiceVersion.java",

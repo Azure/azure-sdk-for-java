@@ -12,16 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class BackupRequestBaseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BackupRequestBase model = BinaryData.fromString("{\"backupSettings\":{\"backupName\":\"giagtcojo\"}}")
+        BackupRequestBase model = BinaryData.fromString("{\"backupSettings\":{\"backupName\":\"zwculkbawpfajnj\"}}")
             .toObject(BackupRequestBase.class);
-        Assertions.assertEquals("giagtcojo", model.backupSettings().backupName());
+        Assertions.assertEquals("zwculkbawpfajnj", model.backupSettings().backupName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         BackupRequestBase model
-            = new BackupRequestBase().withBackupSettings(new BackupSettings().withBackupName("giagtcojo"));
+            = new BackupRequestBase().withBackupSettings(new BackupSettings().withBackupName("zwculkbawpfajnj"));
         model = BinaryData.fromObject(model).toObject(BackupRequestBase.class);
-        Assertions.assertEquals("giagtcojo", model.backupSettings().backupName());
+        Assertions.assertEquals("zwculkbawpfajnj", model.backupSettings().backupName());
     }
 }

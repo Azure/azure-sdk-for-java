@@ -12,8 +12,8 @@ public final class CommitmentTierListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CommitmentTierListResult model = BinaryData.fromString(
-            "{\"nextLink\":\"bnoit\",\"value\":[{\"kind\":\"trgdgxvc\",\"skuName\":\"raswugyxpqit\",\"hostingModel\":\"ConnectedContainer\",\"planType\":\"l\",\"tier\":\"skbuhzaca\",\"maxCount\":149181411,\"quota\":{\"quantity\":1393690559949786756,\"unit\":\"cujp\"},\"cost\":{\"commitmentMeterId\":\"zakuejk\",\"overageMeterId\":\"bizt\"}}]}")
+            "{\"nextLink\":\"mefgvqcpdwjgqux\",\"value\":[{\"kind\":\"landkdcdjhunhgh\",\"skuName\":\"awnrrnquoxsotir\",\"hostingModel\":\"ProvisionedWeb\",\"planType\":\"eobfsxstcyilbvzm\",\"tier\":\"cjzlquzexokjxebj\",\"maxCount\":1964355203,\"quota\":{\"quantity\":8319276055113449087,\"unit\":\"wmvogljsv\"},\"cost\":{\"commitmentMeterId\":\"idnwceha\",\"overageMeterId\":\"do\"}}]}")
             .toObject(CommitmentTierListResult.class);
-        Assertions.assertEquals("bnoit", model.nextLink());
+        Assertions.assertEquals("mefgvqcpdwjgqux", model.nextLink());
     }
 }

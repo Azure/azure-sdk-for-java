@@ -31,12 +31,12 @@ final class TestUtils {
 
     static String getSocketIOEndpoint() {
         return Configuration.getGlobalConfiguration()
-            .get("WEB_PUB_SUB_SOCKETIO_ENDPOINT", "http://testsocketioendpoint.webpubsubdev.azure.com");
+            .get("WEB_PUB_SUB_SOCKETIO_ENDPOINT", "https://testsocketioendpoint.webpubsubdev.azure.com");
     }
 
     static String getEndpoint() {
         return Configuration.getGlobalConfiguration()
-            .get("WEB_PUB_SUB_ENDPOINT", "http://testendpoint.webpubsubdev.azure.com");
+            .get("WEB_PUB_SUB_ENDPOINT", "https://testendpoint.webpubsubdev.azure.com");
     }
 
     static String getConnectionString() {

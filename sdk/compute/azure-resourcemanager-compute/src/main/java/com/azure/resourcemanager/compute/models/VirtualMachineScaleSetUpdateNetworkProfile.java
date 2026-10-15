@@ -37,6 +37,11 @@ public final class VirtualMachineScaleSetUpdateNetworkProfile
      */
     private NetworkApiVersion networkApiVersion;
 
+    /*
+     * Specifies the interconnect group profile to associate with the scale set. Minimum api-version: 2026-03-01.
+     */
+    private InterconnectGroupProfile interconnectGroupProfile;
+
     /**
      * Creates an instance of VirtualMachineScaleSetUpdateNetworkProfile class.
      */
@@ -113,6 +118,29 @@ public final class VirtualMachineScaleSetUpdateNetworkProfile
     }
 
     /**
+     * Get the interconnectGroupProfile property: Specifies the interconnect group profile to associate with the scale
+     * set. Minimum api-version: 2026-03-01.
+     * 
+     * @return the interconnectGroupProfile value.
+     */
+    public InterconnectGroupProfile interconnectGroupProfile() {
+        return this.interconnectGroupProfile;
+    }
+
+    /**
+     * Set the interconnectGroupProfile property: Specifies the interconnect group profile to associate with the scale
+     * set. Minimum api-version: 2026-03-01.
+     * 
+     * @param interconnectGroupProfile the interconnectGroupProfile value to set.
+     * @return the VirtualMachineScaleSetUpdateNetworkProfile object itself.
+     */
+    public VirtualMachineScaleSetUpdateNetworkProfile
+        withInterconnectGroupProfile(InterconnectGroupProfile interconnectGroupProfile) {
+        this.interconnectGroupProfile = interconnectGroupProfile;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -123,6 +151,9 @@ public final class VirtualMachineScaleSetUpdateNetworkProfile
         }
         if (networkInterfaceConfigurations() != null) {
             networkInterfaceConfigurations().forEach(e -> e.validate());
+        }
+        if (interconnectGroupProfile() != null) {
+            interconnectGroupProfile().validate();
         }
     }
 
@@ -137,6 +168,7 @@ public final class VirtualMachineScaleSetUpdateNetworkProfile
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("networkApiVersion",
             this.networkApiVersion == null ? null : this.networkApiVersion.toString());
+        jsonWriter.writeJsonField("interconnectGroupProfile", this.interconnectGroupProfile);
         return jsonWriter.writeEndObject();
     }
 
@@ -167,6 +199,9 @@ public final class VirtualMachineScaleSetUpdateNetworkProfile
                 } else if ("networkApiVersion".equals(fieldName)) {
                     deserializedVirtualMachineScaleSetUpdateNetworkProfile.networkApiVersion
                         = NetworkApiVersion.fromString(reader.getString());
+                } else if ("interconnectGroupProfile".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetUpdateNetworkProfile.interconnectGroupProfile
+                        = InterconnectGroupProfile.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

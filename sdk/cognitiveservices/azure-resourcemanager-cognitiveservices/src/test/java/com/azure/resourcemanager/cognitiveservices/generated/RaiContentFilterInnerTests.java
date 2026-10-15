@@ -13,9 +13,9 @@ public final class RaiContentFilterInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RaiContentFilterInner model = BinaryData.fromString(
-            "{\"properties\":{\"name\":\"zslesjcbher\",\"isMultiLevelFilter\":false,\"source\":\"Prompt\"},\"id\":\"djc\",\"name\":\"bquwrbehw\",\"type\":\"gohbuffkmrq\"}")
+            "{\"properties\":{\"name\":\"uy\",\"isMultiLevelFilter\":false,\"source\":\"Prompt\"},\"id\":\"daultxijjumfq\",\"name\":\"azlnqnmcjngzqdqx\",\"type\":\"bjwgnyfus\"}")
             .toObject(RaiContentFilterInner.class);
-        Assertions.assertEquals("zslesjcbher", model.properties().name());
+        Assertions.assertEquals("uy", model.properties().name());
         Assertions.assertFalse(model.properties().isMultiLevelFilter());
         Assertions.assertEquals(RaiPolicyContentSource.PROMPT, model.properties().source());
     }

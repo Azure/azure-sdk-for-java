@@ -8,19 +8,18 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Indicates if high availability with zone redundancy is supported in this location. 'Enabled' means high availability
- * with zone redundancy is supported. 'Disabled' stands for high availability with zone redundancy is not supported.
- * Will be deprecated in the future. Look to Supported Features for 'ZoneRedundantHa'.
+ * Indicates if high availability with zone redundancy is supported in this location. Will be deprecated in the future.
+ * Look to Supported Features for 'ZoneRedundantHa'.
  */
 public final class ZoneRedundantHighAvailabilitySupport
     extends ExpandableStringEnum<ZoneRedundantHighAvailabilitySupport> {
     /**
-     * Static value Enabled for ZoneRedundantHighAvailabilitySupport.
+     * High availability with zone redundancy is supported.
      */
     public static final ZoneRedundantHighAvailabilitySupport ENABLED = fromString("Enabled");
 
     /**
-     * Static value Disabled for ZoneRedundantHighAvailabilitySupport.
+     * High availability with zone redundancy is not supported.
      */
     public static final ZoneRedundantHighAvailabilitySupport DISABLED = fromString("Disabled");
 

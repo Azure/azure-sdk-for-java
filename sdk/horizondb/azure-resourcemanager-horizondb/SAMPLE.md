@@ -1,6 +1,13 @@
 # Code snippets and samples
 
 
+## HorizonDbAdministrators
+
+- [CreateOrUpdate](#horizondbadministrators_createorupdate)
+- [Delete](#horizondbadministrators_delete)
+- [Get](#horizondbadministrators_get)
+- [List](#horizondbadministrators_list)
+
 ## HorizonDbClusters
 
 - [CreateOrUpdate](#horizondbclusters_createorupdate)
@@ -8,6 +15,9 @@
 - [GetByResourceGroup](#horizondbclusters_getbyresourcegroup)
 - [List](#horizondbclusters_list)
 - [ListByResourceGroup](#horizondbclusters_listbyresourcegroup)
+- [Restart](#horizondbclusters_restart)
+- [Start](#horizondbclusters_start)
+- [Stop](#horizondbclusters_stop)
 - [Update](#horizondbclusters_update)
 
 ## HorizonDbFirewallRules
@@ -38,7 +48,7 @@
 - [Delete](#horizondbprivateendpointconnections_delete)
 - [Get](#horizondbprivateendpointconnections_get)
 - [List](#horizondbprivateendpointconnections_list)
-- [Update](#horizondbprivateendpointconnections_update)
+- [UpdateStatus](#horizondbprivateendpointconnections_updatestatus)
 
 ## HorizonDbPrivateLinkResources
 
@@ -56,6 +66,106 @@
 ## Operations
 
 - [List](#operations_list)
+### HorizonDbAdministrators_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.horizondb.models.HorizonDbAdministratorPropertiesForAdd;
+import com.azure.resourcemanager.horizondb.models.PrincipalTypes;
+
+/**
+ * Samples for HorizonDbAdministrators CreateOrUpdate.
+ */
+public final class HorizonDbAdministratorsCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: 2026-05-01-preview/Administrators_CreateOrUpdate.json
+     */
+    /**
+     * Sample code: Create or update a HorizonDB administrator.
+     * 
+     * @param manager Entry point to HorizonDbManager.
+     */
+    public static void
+        createOrUpdateAHorizonDBAdministrator(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
+        manager.horizonDbAdministrators()
+            .define("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee")
+            .withExistingCluster("exampleresourcegroup", "examplecluster")
+            .withProperties(new HorizonDbAdministratorPropertiesForAdd().withPrincipalName("admin@contoso.com")
+                .withPrincipalType(PrincipalTypes.USER)
+                .withTenantId("11111111-2222-3333-4444-555555555555"))
+            .create();
+    }
+}
+```
+
+### HorizonDbAdministrators_Delete
+
+```java
+/**
+ * Samples for HorizonDbAdministrators Delete.
+ */
+public final class HorizonDbAdministratorsDeleteSamples {
+    /*
+     * x-ms-original-file: 2026-05-01-preview/Administrators_Delete.json
+     */
+    /**
+     * Sample code: Delete a HorizonDB administrator.
+     * 
+     * @param manager Entry point to HorizonDbManager.
+     */
+    public static void deleteAHorizonDBAdministrator(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
+        manager.horizonDbAdministrators()
+            .delete("exampleresourcegroup", "examplecluster", "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### HorizonDbAdministrators_Get
+
+```java
+/**
+ * Samples for HorizonDbAdministrators Get.
+ */
+public final class HorizonDbAdministratorsGetSamples {
+    /*
+     * x-ms-original-file: 2026-05-01-preview/Administrators_Get.json
+     */
+    /**
+     * Sample code: Get a HorizonDB administrator.
+     * 
+     * @param manager Entry point to HorizonDbManager.
+     */
+    public static void getAHorizonDBAdministrator(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
+        manager.horizonDbAdministrators()
+            .getWithResponse("exampleresourcegroup", "examplecluster", "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### HorizonDbAdministrators_List
+
+```java
+/**
+ * Samples for HorizonDbAdministrators List.
+ */
+public final class HorizonDbAdministratorsListSamples {
+    /*
+     * x-ms-original-file: 2026-05-01-preview/Administrators_List.json
+     */
+    /**
+     * Sample code: List HorizonDB administrators in a cluster.
+     * 
+     * @param manager Entry point to HorizonDbManager.
+     */
+    public static void
+        listHorizonDBAdministratorsInACluster(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
+        manager.horizonDbAdministrators()
+            .list("exampleresourcegroup", "examplecluster", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### HorizonDbClusters_CreateOrUpdate
 
 ```java
@@ -70,14 +180,14 @@ import java.util.Map;
  */
 public final class HorizonDbClustersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-01-20-preview/Clusters_CreateOrUpdate.json
+     * x-ms-original-file: 2026-05-01-preview/Clusters_CreateOrUpdate.json
      */
     /**
-     * Sample code: Create or update a HorizonDb cluster.
+     * Sample code: Create or update a HorizonDB cluster.
      * 
      * @param manager Entry point to HorizonDbManager.
      */
-    public static void createOrUpdateAHorizonDbCluster(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
+    public static void createOrUpdateAHorizonDBCluster(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
         manager.horizonDbClusters()
             .define("examplecluster")
             .withRegion("westus2")
@@ -87,11 +197,9 @@ public final class HorizonDbClustersCreateOrUpdateSamples {
                 .withAdministratorLoginPassword("fakeTokenPlaceholder")
                 .withVersion("17")
                 .withCreateMode(CreateModeCluster.CREATE)
-                .withSourceClusterResourceId(
-                    "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/examplesourceresourcegroup/providers/Microsoft.HorizonDb/clusters/examplesourcecluster")
                 .withReplicaCount(2)
                 .withVCores(4)
-                .withZonePlacementPolicy(ZonePlacementPolicy.STRICT))
+                .withZonePlacementPolicy(ZonePlacementPolicy.BEST_EFFORT))
             .create();
     }
 
@@ -117,14 +225,14 @@ public final class HorizonDbClustersCreateOrUpdateSamples {
  */
 public final class HorizonDbClustersDeleteSamples {
     /*
-     * x-ms-original-file: 2026-01-20-preview/Clusters_Delete.json
+     * x-ms-original-file: 2026-05-01-preview/Clusters_Delete.json
      */
     /**
-     * Sample code: Delete a HorizonDb cluster.
+     * Sample code: Delete a HorizonDB cluster.
      * 
      * @param manager Entry point to HorizonDbManager.
      */
-    public static void deleteAHorizonDbCluster(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
+    public static void deleteAHorizonDBCluster(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
         manager.horizonDbClusters().delete("exampleresourcegroup", "examplecluster", com.azure.core.util.Context.NONE);
     }
 }
@@ -138,14 +246,14 @@ public final class HorizonDbClustersDeleteSamples {
  */
 public final class HorizonDbClustersGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-01-20-preview/Clusters_Get.json
+     * x-ms-original-file: 2026-05-01-preview/Clusters_Get.json
      */
     /**
-     * Sample code: Get a HorizonDb cluster.
+     * Sample code: Get a HorizonDB cluster.
      * 
      * @param manager Entry point to HorizonDbManager.
      */
-    public static void getAHorizonDbCluster(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
+    public static void getAHorizonDBCluster(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
         manager.horizonDbClusters()
             .getByResourceGroupWithResponse("exampleresourcegroup", "examplecluster", com.azure.core.util.Context.NONE);
     }
@@ -160,15 +268,15 @@ public final class HorizonDbClustersGetByResourceGroupSamples {
  */
 public final class HorizonDbClustersListSamples {
     /*
-     * x-ms-original-file: 2026-01-20-preview/Clusters_ListBySubscription.json
+     * x-ms-original-file: 2026-05-01-preview/Clusters_ListBySubscription.json
      */
     /**
-     * Sample code: List HorizonDb clusters by subscription.
+     * Sample code: List HorizonDB clusters by subscription.
      * 
      * @param manager Entry point to HorizonDbManager.
      */
     public static void
-        listHorizonDbClustersBySubscription(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
+        listHorizonDBClustersBySubscription(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
         manager.horizonDbClusters().list(com.azure.core.util.Context.NONE);
     }
 }
@@ -182,16 +290,79 @@ public final class HorizonDbClustersListSamples {
  */
 public final class HorizonDbClustersListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-01-20-preview/Clusters_ListByResourceGroup.json
+     * x-ms-original-file: 2026-05-01-preview/Clusters_ListByResourceGroup.json
      */
     /**
-     * Sample code: List HorizonDb clusters in a resource group.
+     * Sample code: List HorizonDB clusters in a resource group.
      * 
      * @param manager Entry point to HorizonDbManager.
      */
     public static void
-        listHorizonDbClustersInAResourceGroup(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
+        listHorizonDBClustersInAResourceGroup(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
         manager.horizonDbClusters().listByResourceGroup("exampleresourcegroup", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### HorizonDbClusters_Restart
+
+```java
+/**
+ * Samples for HorizonDbClusters Restart.
+ */
+public final class HorizonDbClustersRestartSamples {
+    /*
+     * x-ms-original-file: 2026-05-01-preview/Clusters_Restart.json
+     */
+    /**
+     * Sample code: Restart a HorizonDB cluster.
+     * 
+     * @param manager Entry point to HorizonDbManager.
+     */
+    public static void restartAHorizonDBCluster(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
+        manager.horizonDbClusters().restart("exampleresourcegroup", "examplecluster", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### HorizonDbClusters_Start
+
+```java
+/**
+ * Samples for HorizonDbClusters Start.
+ */
+public final class HorizonDbClustersStartSamples {
+    /*
+     * x-ms-original-file: 2026-05-01-preview/Clusters_Start.json
+     */
+    /**
+     * Sample code: Start a HorizonDB cluster.
+     * 
+     * @param manager Entry point to HorizonDbManager.
+     */
+    public static void startAHorizonDBCluster(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
+        manager.horizonDbClusters().start("exampleresourcegroup", "examplecluster", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### HorizonDbClusters_Stop
+
+```java
+/**
+ * Samples for HorizonDbClusters Stop.
+ */
+public final class HorizonDbClustersStopSamples {
+    /*
+     * x-ms-original-file: 2026-05-01-preview/Clusters_Stop.json
+     */
+    /**
+     * Sample code: Stop a HorizonDB cluster.
+     * 
+     * @param manager Entry point to HorizonDbManager.
+     */
+    public static void stopAHorizonDBCluster(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
+        manager.horizonDbClusters().stop("exampleresourcegroup", "examplecluster", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -209,14 +380,14 @@ import java.util.Map;
  */
 public final class HorizonDbClustersUpdateSamples {
     /*
-     * x-ms-original-file: 2026-01-20-preview/Clusters_Update.json
+     * x-ms-original-file: 2026-05-01-preview/Clusters_Update.json
      */
     /**
-     * Sample code: Update a HorizonDb cluster.
+     * Sample code: Update a HorizonDB cluster.
      * 
      * @param manager Entry point to HorizonDbManager.
      */
-    public static void updateAHorizonDbCluster(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
+    public static void updateAHorizonDBCluster(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
         HorizonDbCluster resource = manager.horizonDbClusters()
             .getByResourceGroupWithResponse("exampleresourcegroup", "examplecluster", com.azure.core.util.Context.NONE)
             .getValue();
@@ -252,15 +423,15 @@ import com.azure.resourcemanager.horizondb.models.HorizonDbFirewallRulePropertie
  */
 public final class HorizonDbFirewallRulesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-01-20-preview/FirewallRules_CreateOrUpdate.json
+     * x-ms-original-file: 2026-05-01-preview/FirewallRules_CreateOrUpdate.json
      */
     /**
-     * Sample code: Create or update a HorizonDb firewall rule.
+     * Sample code: Create or update a HorizonDB firewall rule.
      * 
      * @param manager Entry point to HorizonDbManager.
      */
     public static void
-        createOrUpdateAHorizonDbFirewallRule(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
+        createOrUpdateAHorizonDBFirewallRule(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
         manager.horizonDbFirewallRules()
             .define("examplefirewallrule")
             .withExistingPool("exampleresourcegroup", "examplecluster", "examplepool")
@@ -280,14 +451,14 @@ public final class HorizonDbFirewallRulesCreateOrUpdateSamples {
  */
 public final class HorizonDbFirewallRulesDeleteSamples {
     /*
-     * x-ms-original-file: 2026-01-20-preview/FirewallRules_Delete.json
+     * x-ms-original-file: 2026-05-01-preview/FirewallRules_Delete.json
      */
     /**
-     * Sample code: Delete a HorizonDb firewall rule.
+     * Sample code: Delete a HorizonDB firewall rule.
      * 
      * @param manager Entry point to HorizonDbManager.
      */
-    public static void deleteAHorizonDbFirewallRule(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
+    public static void deleteAHorizonDBFirewallRule(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
         manager.horizonDbFirewallRules()
             .delete("exampleresourcegroup", "examplecluster", "examplepool", "examplefirewallrule",
                 com.azure.core.util.Context.NONE);
@@ -303,14 +474,14 @@ public final class HorizonDbFirewallRulesDeleteSamples {
  */
 public final class HorizonDbFirewallRulesGetSamples {
     /*
-     * x-ms-original-file: 2026-01-20-preview/FirewallRules_Get.json
+     * x-ms-original-file: 2026-05-01-preview/FirewallRules_Get.json
      */
     /**
-     * Sample code: Get a HorizonDb firewall rule.
+     * Sample code: Get a HorizonDB firewall rule.
      * 
      * @param manager Entry point to HorizonDbManager.
      */
-    public static void getAHorizonDbFirewallRule(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
+    public static void getAHorizonDBFirewallRule(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
         manager.horizonDbFirewallRules()
             .getWithResponse("exampleresourcegroup", "examplecluster", "examplepool", "examplefirewallrule",
                 com.azure.core.util.Context.NONE);
@@ -326,14 +497,14 @@ public final class HorizonDbFirewallRulesGetSamples {
  */
 public final class HorizonDbFirewallRulesListSamples {
     /*
-     * x-ms-original-file: 2026-01-20-preview/FirewallRules_List.json
+     * x-ms-original-file: 2026-05-01-preview/FirewallRules_List.json
      */
     /**
-     * Sample code: List HorizonDb firewall rules in a pool.
+     * Sample code: List HorizonDB firewall rules in a pool.
      * 
      * @param manager Entry point to HorizonDbManager.
      */
-    public static void listHorizonDbFirewallRulesInAPool(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
+    public static void listHorizonDBFirewallRulesInAPool(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
         manager.horizonDbFirewallRules()
             .list("exampleresourcegroup", "examplecluster", "examplepool", com.azure.core.util.Context.NONE);
     }
@@ -354,15 +525,15 @@ import java.util.Map;
  */
 public final class HorizonDbParameterGroupsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-01-20-preview/ParameterGroups_CreateOrUpdate.json
+     * x-ms-original-file: 2026-05-01-preview/ParameterGroups_CreateOrUpdate.json
      */
     /**
-     * Sample code: Create or update a HorizonDb parameter group.
+     * Sample code: Create or update a HorizonDB parameter group.
      * 
      * @param manager Entry point to HorizonDbManager.
      */
     public static void
-        createOrUpdateAHorizonDbParameterGroup(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
+        createOrUpdateAHorizonDBParameterGroup(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
         manager.horizonDbParameterGroups()
             .define("exampleparametergroup")
             .withRegion("westus2")
@@ -400,14 +571,14 @@ public final class HorizonDbParameterGroupsCreateOrUpdateSamples {
  */
 public final class HorizonDbParameterGroupsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-01-20-preview/ParameterGroups_Delete.json
+     * x-ms-original-file: 2026-05-01-preview/ParameterGroups_Delete.json
      */
     /**
-     * Sample code: Delete a HorizonDb parameter group.
+     * Sample code: Delete a HorizonDB parameter group.
      * 
      * @param manager Entry point to HorizonDbManager.
      */
-    public static void deleteAHorizonDbParameterGroup(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
+    public static void deleteAHorizonDBParameterGroup(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
         manager.horizonDbParameterGroups()
             .delete("exampleresourcegroup", "exampleparametergroup", com.azure.core.util.Context.NONE);
     }
@@ -422,14 +593,14 @@ public final class HorizonDbParameterGroupsDeleteSamples {
  */
 public final class HorizonDbParameterGroupsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-01-20-preview/ParameterGroups_Get.json
+     * x-ms-original-file: 2026-05-01-preview/ParameterGroups_Get.json
      */
     /**
-     * Sample code: Get a HorizonDb parameter group.
+     * Sample code: Get a HorizonDB parameter group.
      * 
      * @param manager Entry point to HorizonDbManager.
      */
-    public static void getAHorizonDbParameterGroup(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
+    public static void getAHorizonDBParameterGroup(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
         manager.horizonDbParameterGroups()
             .getByResourceGroupWithResponse("exampleresourcegroup", "exampleparametergroup",
                 com.azure.core.util.Context.NONE);
@@ -445,15 +616,15 @@ public final class HorizonDbParameterGroupsGetByResourceGroupSamples {
  */
 public final class HorizonDbParameterGroupsListSamples {
     /*
-     * x-ms-original-file: 2026-01-20-preview/ParameterGroups_ListBySubscription.json
+     * x-ms-original-file: 2026-05-01-preview/ParameterGroups_ListBySubscription.json
      */
     /**
-     * Sample code: List HorizonDb parameter groups in a subscription.
+     * Sample code: List HorizonDB parameter groups in a subscription.
      * 
      * @param manager Entry point to HorizonDbManager.
      */
     public static void
-        listHorizonDbParameterGroupsInASubscription(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
+        listHorizonDBParameterGroupsInASubscription(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
         manager.horizonDbParameterGroups().list(com.azure.core.util.Context.NONE);
     }
 }
@@ -467,15 +638,15 @@ public final class HorizonDbParameterGroupsListSamples {
  */
 public final class HorizonDbParameterGroupsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-01-20-preview/ParameterGroups_ListByResourceGroup.json
+     * x-ms-original-file: 2026-05-01-preview/ParameterGroups_ListByResourceGroup.json
      */
     /**
-     * Sample code: List HorizonDb parameter groups in a resource group.
+     * Sample code: List HorizonDB parameter groups in a resource group.
      * 
      * @param manager Entry point to HorizonDbManager.
      */
     public static void
-        listHorizonDbParameterGroupsInAResourceGroup(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
+        listHorizonDBParameterGroupsInAResourceGroup(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
         manager.horizonDbParameterGroups()
             .listByResourceGroup("exampleresourcegroup", com.azure.core.util.Context.NONE);
     }
@@ -490,15 +661,15 @@ public final class HorizonDbParameterGroupsListByResourceGroupSamples {
  */
 public final class HorizonDbParameterGroupsListConnectionsSamples {
     /*
-     * x-ms-original-file: 2026-01-20-preview/ParameterGroups_ListConnections.json
+     * x-ms-original-file: 2026-05-01-preview/ParameterGroups_ListConnections.json
      */
     /**
-     * Sample code: List connections for a HorizonDb parameter group.
+     * Sample code: List connections for a HorizonDB parameter group.
      * 
      * @param manager Entry point to HorizonDbManager.
      */
     public static void
-        listConnectionsForAHorizonDbParameterGroup(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
+        listConnectionsForAHorizonDBParameterGroup(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
         manager.horizonDbParameterGroups()
             .listConnections("exampleresourcegroup", "exampleparametergroup", com.azure.core.util.Context.NONE);
     }
@@ -513,7 +684,7 @@ public final class HorizonDbParameterGroupsListConnectionsSamples {
  */
 public final class HorizonDbParameterGroupsListVersionsSamples {
     /*
-     * x-ms-original-file: 2026-01-20-preview/ParameterGroups_ListVersions.json
+     * x-ms-original-file: 2026-05-01-preview/ParameterGroups_ListVersions.json
      */
     /**
      * Sample code: List parameter groups filtered by version.
@@ -543,14 +714,14 @@ import java.util.Map;
  */
 public final class HorizonDbParameterGroupsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-01-20-preview/ParameterGroups_Update.json
+     * x-ms-original-file: 2026-05-01-preview/ParameterGroups_Update.json
      */
     /**
-     * Sample code: Update a HorizonDb parameter group.
+     * Sample code: Update a HorizonDB parameter group.
      * 
      * @param manager Entry point to HorizonDbManager.
      */
-    public static void updateAHorizonDbParameterGroup(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
+    public static void updateAHorizonDBParameterGroup(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
         HorizonDbParameterGroup resource = manager.horizonDbParameterGroups()
             .getByResourceGroupWithResponse("exampleresourcegroup", "exampleparametergroup",
                 com.azure.core.util.Context.NONE)
@@ -587,14 +758,14 @@ public final class HorizonDbParameterGroupsUpdateSamples {
  */
 public final class HorizonDbPoolsGetSamples {
     /*
-     * x-ms-original-file: 2026-01-20-preview/Pools_Get.json
+     * x-ms-original-file: 2026-05-01-preview/Pools_Get.json
      */
     /**
-     * Sample code: Get a HorizonDb pool.
+     * Sample code: Get a HorizonDB pool.
      * 
      * @param manager Entry point to HorizonDbManager.
      */
-    public static void getAHorizonDbPool(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
+    public static void getAHorizonDBPool(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
         manager.horizonDbPools()
             .getWithResponse("exampleresourcegroup", "examplecluster", "examplepool", com.azure.core.util.Context.NONE);
     }
@@ -609,14 +780,14 @@ public final class HorizonDbPoolsGetSamples {
  */
 public final class HorizonDbPoolsListSamples {
     /*
-     * x-ms-original-file: 2026-01-20-preview/Pools_List.json
+     * x-ms-original-file: 2026-05-01-preview/Pools_List.json
      */
     /**
-     * Sample code: List HorizonDb pools in a cluster.
+     * Sample code: List HorizonDB pools in a cluster.
      * 
      * @param manager Entry point to HorizonDbManager.
      */
-    public static void listHorizonDbPoolsInACluster(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
+    public static void listHorizonDBPoolsInACluster(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
         manager.horizonDbPools().list("exampleresourcegroup", "examplecluster", com.azure.core.util.Context.NONE);
     }
 }
@@ -630,7 +801,7 @@ public final class HorizonDbPoolsListSamples {
  */
 public final class HorizonDbPrivateEndpointConnectionsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-01-20-preview/PrivateEndpointConnections_Delete.json
+     * x-ms-original-file: 2026-05-01-preview/PrivateEndpointConnections_Delete.json
      */
     /**
      * Sample code: Delete a private endpoint connection.
@@ -639,7 +810,8 @@ public final class HorizonDbPrivateEndpointConnectionsDeleteSamples {
      */
     public static void deleteAPrivateEndpointConnection(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
         manager.horizonDbPrivateEndpointConnections()
-            .delete("exampleresourcegroup", "exampleprivateendpointconnection.1fa229cd-bf3f-47f0-8c49-afb36723997e",
+            .delete("exampleresourcegroup", "examplecluster",
+                "exampleprivateendpointconnection.1fa229cd-bf3f-47f0-8c49-afb36723997e",
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -653,7 +825,7 @@ public final class HorizonDbPrivateEndpointConnectionsDeleteSamples {
  */
 public final class HorizonDbPrivateEndpointConnectionsGetSamples {
     /*
-     * x-ms-original-file: 2026-01-20-preview/PrivateEndpointConnections_Get.json
+     * x-ms-original-file: 2026-05-01-preview/PrivateEndpointConnections_Get.json
      */
     /**
      * Sample code: Get a private endpoint connection.
@@ -677,7 +849,7 @@ public final class HorizonDbPrivateEndpointConnectionsGetSamples {
  */
 public final class HorizonDbPrivateEndpointConnectionsListSamples {
     /*
-     * x-ms-original-file: 2026-01-20-preview/PrivateEndpointConnections_List.json
+     * x-ms-original-file: 2026-05-01-preview/PrivateEndpointConnections_List.json
      */
     /**
      * Sample code: List all private endpoint connections on a cluster.
@@ -692,20 +864,20 @@ public final class HorizonDbPrivateEndpointConnectionsListSamples {
 }
 ```
 
-### HorizonDbPrivateEndpointConnections_Update
+### HorizonDbPrivateEndpointConnections_UpdateStatus
 
 ```java
-import com.azure.resourcemanager.horizondb.models.OptionalPropertiesUpdateableProperties;
-import com.azure.resourcemanager.horizondb.models.PrivateEndpointConnectionUpdate;
+import com.azure.resourcemanager.horizondb.fluent.models.PrivateEndpointConnectionResourceInner;
+import com.azure.resourcemanager.horizondb.models.PrivateEndpointConnectionProperties;
 import com.azure.resourcemanager.horizondb.models.PrivateEndpointServiceConnectionStatus;
 import com.azure.resourcemanager.horizondb.models.PrivateLinkServiceConnectionState;
 
 /**
- * Samples for HorizonDbPrivateEndpointConnections Update.
+ * Samples for HorizonDbPrivateEndpointConnections UpdateStatus.
  */
-public final class HorizonDbPrivateEndpointConnectionsUpdateSamples {
+public final class HorizonDbPrivateEndpointConnectionsUpdateStatusSamples {
     /*
-     * x-ms-original-file: 2026-01-20-preview/PrivateEndpointConnections_Update.json
+     * x-ms-original-file: 2026-05-01-preview/PrivateEndpointConnections_UpdateStatus.json
      */
     /**
      * Sample code: Approve or reject a private endpoint connection.
@@ -715,8 +887,9 @@ public final class HorizonDbPrivateEndpointConnectionsUpdateSamples {
     public static void
         approveOrRejectAPrivateEndpointConnection(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
         manager.horizonDbPrivateEndpointConnections()
-            .update("exampleresourcegroup", "exampleprivateendpointconnection.1fa229cd-bf3f-47f0-8c49-afb36723997e",
-                new PrivateEndpointConnectionUpdate().withProperties(new OptionalPropertiesUpdateableProperties()
+            .updateStatusWithResponse("exampleresourcegroup", "examplecluster",
+                "exampleprivateendpointconnection.1fa229cd-bf3f-47f0-8c49-afb36723997e",
+                new PrivateEndpointConnectionResourceInner().withProperties(new PrivateEndpointConnectionProperties()
                     .withPrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState()
                         .withStatus(PrivateEndpointServiceConnectionStatus.APPROVED)
                         .withDescription("Approved by johndoe@contoso.com"))),
@@ -733,15 +906,15 @@ public final class HorizonDbPrivateEndpointConnectionsUpdateSamples {
  */
 public final class HorizonDbPrivateLinkResourcesGetSamples {
     /*
-     * x-ms-original-file: 2026-01-20-preview/PrivateLinkResources_Get.json
+     * x-ms-original-file: 2026-05-01-preview/PrivateLinkResources_Get.json
      */
     /**
-     * Sample code: Gets a private link resource for HorizonDb.
+     * Sample code: Gets a private link resource for HorizonDB.
      * 
      * @param manager Entry point to HorizonDbManager.
      */
     public static void
-        getsAPrivateLinkResourceForHorizonDb(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
+        getsAPrivateLinkResourceForHorizonDB(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
         manager.horizonDbPrivateLinkResources()
             .getWithResponse("exampleresourcegroup", "examplecluster", "default", com.azure.core.util.Context.NONE);
     }
@@ -756,15 +929,15 @@ public final class HorizonDbPrivateLinkResourcesGetSamples {
  */
 public final class HorizonDbPrivateLinkResourcesListSamples {
     /*
-     * x-ms-original-file: 2026-01-20-preview/PrivateLinkResources_List.json
+     * x-ms-original-file: 2026-05-01-preview/PrivateLinkResources_List.json
      */
     /**
-     * Sample code: Gets private link resources for HorizonDb.
+     * Sample code: Gets private link resources for HorizonDB.
      * 
      * @param manager Entry point to HorizonDbManager.
      */
     public static void
-        getsPrivateLinkResourcesForHorizonDb(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
+        getsPrivateLinkResourcesForHorizonDB(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
         manager.horizonDbPrivateLinkResources()
             .list("exampleresourcegroup", "examplecluster", com.azure.core.util.Context.NONE);
     }
@@ -782,14 +955,14 @@ import com.azure.resourcemanager.horizondb.models.ReplicaRole;
  */
 public final class HorizonDbReplicasCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-01-20-preview/Replicas_CreateOrUpdate.json
+     * x-ms-original-file: 2026-05-01-preview/Replicas_CreateOrUpdate.json
      */
     /**
-     * Sample code: Create or update a HorizonDb replica.
+     * Sample code: Create or update a HorizonDB replica.
      * 
      * @param manager Entry point to HorizonDbManager.
      */
-    public static void createOrUpdateAHorizonDbReplica(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
+    public static void createOrUpdateAHorizonDBReplica(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
         manager.horizonDbReplicas()
             .define("examplereplica")
             .withExistingPool("exampleresourcegroup", "examplecluster", "examplepool")
@@ -807,14 +980,14 @@ public final class HorizonDbReplicasCreateOrUpdateSamples {
  */
 public final class HorizonDbReplicasDeleteSamples {
     /*
-     * x-ms-original-file: 2026-01-20-preview/Replicas_Delete.json
+     * x-ms-original-file: 2026-05-01-preview/Replicas_Delete.json
      */
     /**
-     * Sample code: Delete a HorizonDb replica.
+     * Sample code: Delete a HorizonDB replica.
      * 
      * @param manager Entry point to HorizonDbManager.
      */
-    public static void deleteAHorizonDbReplica(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
+    public static void deleteAHorizonDBReplica(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
         manager.horizonDbReplicas()
             .delete("exampleresourcegroup", "examplecluster", "examplepool", "examplereplica",
                 com.azure.core.util.Context.NONE);
@@ -830,14 +1003,14 @@ public final class HorizonDbReplicasDeleteSamples {
  */
 public final class HorizonDbReplicasGetSamples {
     /*
-     * x-ms-original-file: 2026-01-20-preview/Replicas_Get.json
+     * x-ms-original-file: 2026-05-01-preview/Replicas_Get.json
      */
     /**
-     * Sample code: Get a HorizonDb replica.
+     * Sample code: Get a HorizonDB replica.
      * 
      * @param manager Entry point to HorizonDbManager.
      */
-    public static void getAHorizonDbReplica(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
+    public static void getAHorizonDBReplica(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
         manager.horizonDbReplicas()
             .getWithResponse("exampleresourcegroup", "examplecluster", "examplepool", "examplereplica",
                 com.azure.core.util.Context.NONE);
@@ -853,14 +1026,14 @@ public final class HorizonDbReplicasGetSamples {
  */
 public final class HorizonDbReplicasListSamples {
     /*
-     * x-ms-original-file: 2026-01-20-preview/Replicas_List.json
+     * x-ms-original-file: 2026-05-01-preview/Replicas_List.json
      */
     /**
-     * Sample code: List HorizonDb replicas in a pool.
+     * Sample code: List HorizonDB replicas in a pool.
      * 
      * @param manager Entry point to HorizonDbManager.
      */
-    public static void listHorizonDbReplicasInAPool(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
+    public static void listHorizonDBReplicasInAPool(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
         manager.horizonDbReplicas()
             .list("exampleresourcegroup", "examplecluster", "examplepool", com.azure.core.util.Context.NONE);
     }
@@ -879,14 +1052,14 @@ import com.azure.resourcemanager.horizondb.models.ReplicaRole;
  */
 public final class HorizonDbReplicasUpdateSamples {
     /*
-     * x-ms-original-file: 2026-01-20-preview/Replicas_Update.json
+     * x-ms-original-file: 2026-05-01-preview/Replicas_Update.json
      */
     /**
-     * Sample code: Update a HorizonDb replica.
+     * Sample code: Update a HorizonDB replica.
      * 
      * @param manager Entry point to HorizonDbManager.
      */
-    public static void updateAHorizonDbReplica(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
+    public static void updateAHorizonDBReplica(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
         HorizonDbReplica resource = manager.horizonDbReplicas()
             .getWithResponse("exampleresourcegroup", "examplecluster", "examplepool", "examplereplica",
                 com.azure.core.util.Context.NONE)
@@ -906,15 +1079,15 @@ public final class HorizonDbReplicasUpdateSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2026-01-20-preview/Operations_List.json
+     * x-ms-original-file: 2026-05-01-preview/Operations_List.json
      */
     /**
-     * Sample code: List operations for Microsoft.HorizonDb.
+     * Sample code: List operations for Microsoft.HorizonDB.
      * 
      * @param manager Entry point to HorizonDbManager.
      */
     public static void
-        listOperationsForMicrosoftHorizonDb(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
+        listOperationsForMicrosoftHorizonDB(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
         manager.operations().list(com.azure.core.util.Context.NONE);
     }
 }

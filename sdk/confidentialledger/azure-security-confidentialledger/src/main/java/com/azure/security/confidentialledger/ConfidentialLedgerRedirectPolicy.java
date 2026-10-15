@@ -20,27 +20,30 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * A redirect policy for Confidential Ledger that preserves the Authorization header on redirect.
+ * A redirect policy for Confidential Ledger that preserves the Authorization header on trusted
+ * redirects while enforcing a strict redirect destination policy.
  *
  * <p>The Confidential Ledger service uses a distributed network of nodes. Write operations (POST)
- * may be redirected from a secondary node to the primary node via HTTP 307/308 redirects. The
- * standard {@link com.azure.core.http.policy.RedirectPolicy RedirectPolicy} in azure-core strips
+ * may be redirected from the load-balanced endpoint to a specific node via HTTP 307/308 redirects.
+ * The standard {@link com.azure.core.http.policy.RedirectPolicy RedirectPolicy} in azure-core strips
  * the Authorization header on redirect for security, and only allows GET/HEAD methods by default.
  * This policy addresses both issues for Confidential Ledger by:</p>
  *
  * <ul>
  *   <li>Following redirects for all HTTP methods including POST</li>
- *   <li>Preserving the Authorization header when the redirect target shares the same scheme and
- *       the same host or a subdomain of the original Confidential Ledger endpoint</li>
+ *   <li>Preserving the Authorization header when the redirect target is a trusted Confidential
+ *       Ledger destination</li>
  * </ul>
  *
- * <p>The Authorization header is preserved when the redirect target is a trusted Confidential
- * Ledger destination — specifically when the redirect URL has the same scheme and the redirect
- * host is the same as, or a subdomain of, the original host (e.g.,
+ * <p><strong>Redirect destination policy.</strong> A redirect is only followed when the target uses
+ * the same scheme and the target host is the original ledger host or one of its subdomains (e.g.,
  * {@code accledger-2.myledger.confidential-ledger.azure.com} is a subdomain of
- * {@code myledger.confidential-ledger.azure.com}). The port is not considered as part of this
- * trust decision; if the redirect goes to an unrelated host, the Authorization header is
- * stripped for security.</p>
+ * {@code myledger.confidential-ledger.azure.com}). The host comparison is case-insensitive and
+ * ignores the port. Redirects to sibling ledgers, parent domains, unrelated hosts, or look-alike
+ * suffix domains are refused: they are logged at the warning level and never followed, so the
+ * sensitive Authorization header is never forwarded to an unintended destination. This prevents a
+ * misconfigured or malicious load balancer from redirecting a request — along with its sensitive
+ * headers — to a destination outside the original ledger.</p>
  *
  * <p>This class is intended to be used internally by the Confidential Ledger client builders.</p>
  */
@@ -58,16 +61,23 @@ public final class ConfidentialLedgerRedirectPolicy implements HttpPipelinePolic
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        return attemptRedirect(context, next, context.getHttpRequest(), 1, new HashSet<>());
+        // Capture the pristine request URL so that every redirect hop is validated against the
+        // original ledger endpoint rather than the previous (already-redirected) target.
+        String originalRequestUrl = context.getHttpRequest().getUrl().toString();
+        return attemptRedirect(context, next, context.getHttpRequest(), 1, new HashSet<>(), originalRequestUrl);
     }
 
     @Override
     public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
-        return attemptRedirectSync(context, next, context.getHttpRequest(), 1, new HashSet<>());
+        // Capture the pristine request URL so that every redirect hop is validated against the
+        // original ledger endpoint rather than the previous (already-redirected) target.
+        String originalRequestUrl = context.getHttpRequest().getUrl().toString();
+        return attemptRedirectSync(context, next, context.getHttpRequest(), 1, new HashSet<>(), originalRequestUrl);
     }
 
     private Mono<HttpResponse> attemptRedirect(HttpPipelineCallContext context, HttpPipelineNextPolicy next,
-        HttpRequest originalHttpRequest, int redirectAttempt, Set<String> attemptedRedirectUrls) {
+        HttpRequest originalHttpRequest, int redirectAttempt, Set<String> attemptedRedirectUrls,
+        String originalRequestUrl) {
 
         HttpRequest requestCopy = originalHttpRequest.copy();
         // Save the Authorization header before sending. Downstream policies or the HTTP client
@@ -76,16 +86,18 @@ public final class ConfidentialLedgerRedirectPolicy implements HttpPipelinePolic
         context.setHttpRequest(requestCopy);
 
         return next.clone().process().flatMap(httpResponse -> {
-            if (shouldRedirect(httpResponse, redirectAttempt, attemptedRedirectUrls)) {
+            if (shouldRedirect(httpResponse, redirectAttempt, attemptedRedirectUrls, originalRequestUrl)) {
                 HttpRequest redirectRequest = createRedirectRequest(httpResponse, originalHttpRequest, savedAuthHeader);
-                return attemptRedirect(context, next, redirectRequest, redirectAttempt + 1, attemptedRedirectUrls);
+                return attemptRedirect(context, next, redirectRequest, redirectAttempt + 1, attemptedRedirectUrls,
+                    originalRequestUrl);
             }
             return Mono.just(httpResponse);
         });
     }
 
     private HttpResponse attemptRedirectSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next,
-        HttpRequest originalHttpRequest, int redirectAttempt, Set<String> attemptedRedirectUrls) {
+        HttpRequest originalHttpRequest, int redirectAttempt, Set<String> attemptedRedirectUrls,
+        String originalRequestUrl) {
 
         HttpRequest requestCopy = originalHttpRequest.copy();
         // Save the Authorization header before sending. Downstream policies or the HTTP client
@@ -95,9 +107,10 @@ public final class ConfidentialLedgerRedirectPolicy implements HttpPipelinePolic
 
         HttpResponse httpResponse = next.clone().processSync();
 
-        if (shouldRedirect(httpResponse, redirectAttempt, attemptedRedirectUrls)) {
+        if (shouldRedirect(httpResponse, redirectAttempt, attemptedRedirectUrls, originalRequestUrl)) {
             HttpRequest redirectRequest = createRedirectRequest(httpResponse, originalHttpRequest, savedAuthHeader);
-            return attemptRedirectSync(context, next, redirectRequest, redirectAttempt + 1, attemptedRedirectUrls);
+            return attemptRedirectSync(context, next, redirectRequest, redirectAttempt + 1, attemptedRedirectUrls,
+                originalRequestUrl);
         }
 
         return httpResponse;
@@ -106,7 +119,8 @@ public final class ConfidentialLedgerRedirectPolicy implements HttpPipelinePolic
     /**
      * Determines whether the response is a redirect that should be followed.
      */
-    private boolean shouldRedirect(HttpResponse httpResponse, int tryCount, Set<String> attemptedRedirectUrls) {
+    private boolean shouldRedirect(HttpResponse httpResponse, int tryCount, Set<String> attemptedRedirectUrls,
+        String originalRequestUrl) {
         if (!isRedirectStatusCode(httpResponse.getStatusCode())) {
             return false;
         }
@@ -121,6 +135,17 @@ public final class ConfidentialLedgerRedirectPolicy implements HttpPipelinePolic
         String redirectUrl = httpResponse.getHeaderValue(HttpHeaderName.LOCATION);
         if (redirectUrl == null) {
             LOGGER.atWarning().log("Redirect status code received but no Location header present.");
+            return false;
+        }
+
+        // Enforce the redirect destination policy: only follow redirects whose target is the
+        // original ledger host (or one of its subdomains) using the same scheme. Anything else —
+        // sibling ledgers, parent domains, unrelated hosts, or look-alike suffix domains — is
+        // refused and never followed, so the Authorization header is not forwarded to it.
+        if (!isAllowedRedirectTarget(originalRequestUrl, redirectUrl)) {
+            LOGGER.atWarning()
+                .addKeyValue("redirectUrl", redirectUrl)
+                .log("Refusing to follow redirect to disallowed target.");
             return false;
         }
 
@@ -141,8 +166,11 @@ public final class ConfidentialLedgerRedirectPolicy implements HttpPipelinePolic
     }
 
     /**
-     * Creates a redirect request, preserving the Authorization header if the redirect stays within
-     * the same host (same-origin).
+     * Creates a redirect request from the original (pre-send) request, re-adding the saved
+     * Authorization header.
+     *
+     * <p>The redirect target has already been validated as an allowed Confidential Ledger
+     * destination by {@link #shouldRedirect}, so the Authorization header is safe to forward.</p>
      *
      * @param httpResponse the redirect response containing the Location header
      * @param originalRequest the original request before it was sent downstream
@@ -158,13 +186,7 @@ public final class ConfidentialLedgerRedirectPolicy implements HttpPipelinePolic
         redirectRequest.setUrl(redirectUrl);
 
         if (savedAuthHeader != null) {
-            if (isTrustedRedirect(originalRequest.getUrl().toString(), redirectUrl)) {
-                // Re-add the saved Authorization header for trusted ACL redirects.
-                redirectRequest.getHeaders().set(HttpHeaderName.AUTHORIZATION, savedAuthHeader);
-            } else {
-                LOGGER.atVerbose().log("Redirect target is not a trusted host; stripping Authorization header.");
-                redirectRequest.getHeaders().remove(HttpHeaderName.AUTHORIZATION);
-            }
+            redirectRequest.getHeaders().set(HttpHeaderName.AUTHORIZATION, savedAuthHeader);
         }
 
         httpResponse.close();
@@ -179,17 +201,19 @@ public final class ConfidentialLedgerRedirectPolicy implements HttpPipelinePolic
     }
 
     /**
-     * Checks if the redirect target is a trusted Confidential Ledger destination.
+     * Checks whether the redirect target is an allowed Confidential Ledger destination.
      *
      * <p>Confidential Ledger redirects from the load-balanced endpoint
      * (e.g., {@code myledger.confidential-ledger.azure.com}) to a specific node
      * (e.g., {@code accledger-2.myledger.confidential-ledger.azure.com:16385}).
      * The node hostname is a subdomain of the original host, so a simple host equality check
-     * would incorrectly treat this as cross-origin. This method checks that the redirect target
-     * shares the same scheme and that the redirect host is either the same as or a subdomain of
-     * the original host, which covers the ACL node redirect pattern.</p>
+     * would incorrectly reject this legitimate redirect. A redirect target is allowed only when it
+     * shares the same scheme and the redirect host is either the same as, or a subdomain of, the
+     * original host. The comparison is case-insensitive and ignores the port. Sibling ledgers,
+     * parent domains, unrelated hosts, and look-alike suffix domains are rejected. If either URL
+     * cannot be parsed, or either host is empty, the redirect is rejected (fail safe).</p>
      */
-    private static boolean isTrustedRedirect(String originalUrl, String redirectUrl) {
+    private static boolean isAllowedRedirectTarget(String originalUrl, String redirectUrl) {
         try {
             URL original = new URL(originalUrl);
             URL redirect = new URL(redirectUrl);
@@ -201,12 +225,17 @@ public final class ConfidentialLedgerRedirectPolicy implements HttpPipelinePolic
             String originalHost = original.getHost().toLowerCase(java.util.Locale.ROOT);
             String redirectHost = redirect.getHost().toLowerCase(java.util.Locale.ROOT);
 
+            // Fail safe: if either host cannot be determined, do not follow the redirect.
+            if (originalHost.isEmpty() || redirectHost.isEmpty()) {
+                return false;
+            }
+
             // Exact host match or the redirect host is a subdomain of the original host.
             // e.g., accledger-2.myledger.confidential-ledger.azure.com is a subdomain of
             //        myledger.confidential-ledger.azure.com
             return redirectHost.equals(originalHost) || redirectHost.endsWith("." + originalHost);
         } catch (MalformedURLException e) {
-            LOGGER.atWarning().log("Failed to parse URL for trusted redirect check; stripping Authorization header.");
+            LOGGER.atWarning().log("Failed to parse URL for redirect destination check; refusing to follow redirect.");
             return false;
         }
     }

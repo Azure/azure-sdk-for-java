@@ -22,28 +22,28 @@ import java.time.format.DateTimeFormatter;
 public final class LtrBackupOperationResponseProperties
     implements JsonSerializable<LtrBackupOperationResponseProperties> {
     /*
-     * Size of datasource in bytes
+     * Size of datasource in bytes.
      */
     private Long datasourceSizeInBytes;
 
     /*
-     * Data transferred in bytes
+     * Data transferred in bytes.
      */
     private Long dataTransferredInBytes;
 
     /*
-     * Name of Backup operation
+     * Name of Backup operation.
      */
     private String backupName;
 
     /*
      * Metadata to be stored in RP. Store everything that will be required to perform a successful restore using this
-     * Recovery point. e.g. Versions, DataFormat etc
+     * Recovery point. e.g. Versions, DataFormat etc.
      */
     private String backupMetadata;
 
     /*
-     * Service-set extensible enum indicating the status of operation
+     * Service-set extensible enum indicating the status of operation.
      */
     private ExecutionStatus status;
 
@@ -58,17 +58,17 @@ public final class LtrBackupOperationResponseProperties
     private OffsetDateTime endTime;
 
     /*
-     * PercentageCompleted
+     * Percentage completed.
      */
     private Double percentComplete;
 
     /*
-     * The error code.
+     * Error code.
      */
     private String errorCode;
 
     /*
-     * The error message.
+     * Error message.
      */
     private String errorMessage;
 
@@ -143,7 +143,7 @@ public final class LtrBackupOperationResponseProperties
     }
 
     /**
-     * Get the percentComplete property: PercentageCompleted.
+     * Get the percentComplete property: Percentage completed.
      * 
      * @return the percentComplete value.
      */
@@ -152,7 +152,7 @@ public final class LtrBackupOperationResponseProperties
     }
 
     /**
-     * Get the errorCode property: The error code.
+     * Get the errorCode property: Error code.
      * 
      * @return the errorCode value.
      */
@@ -161,7 +161,7 @@ public final class LtrBackupOperationResponseProperties
     }
 
     /**
-     * Get the errorMessage property: The error message.
+     * Get the errorMessage property: Error message.
      * 
      * @return the errorMessage value.
      */

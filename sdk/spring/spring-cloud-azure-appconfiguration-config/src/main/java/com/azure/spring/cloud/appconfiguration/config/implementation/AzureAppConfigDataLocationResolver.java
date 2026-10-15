@@ -60,7 +60,7 @@ public class AzureAppConfigDataLocationResolver
         Binder binder = context.getBinder();
         
         // Check if Azure App Configuration is enabled
-        Boolean enabled = binder.bind(AppConfigurationProperties.CONFIG_PREFIX + ".enabled", Boolean.class).orElse(true);
+        boolean enabled = binder.bind(AppConfigurationProperties.CONFIG_PREFIX + ".enabled", Boolean.class).orElse(true);
         if (!enabled) {
             return false;
         }

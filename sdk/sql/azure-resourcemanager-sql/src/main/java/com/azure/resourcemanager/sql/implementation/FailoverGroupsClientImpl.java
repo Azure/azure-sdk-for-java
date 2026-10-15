@@ -1174,7 +1174,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return a failover group along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> failoverWithResponseAsync(String resourceGroupName, String serverName,
@@ -1215,7 +1215,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return a failover group along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> failoverWithResponseAsync(String resourceGroupName, String serverName,
@@ -1254,7 +1254,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of a failover group.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<FailoverGroupInner>, FailoverGroupInner> beginFailoverAsync(String resourceGroupName,
@@ -1275,7 +1275,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of a failover group.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<FailoverGroupInner>, FailoverGroupInner> beginFailoverAsync(String resourceGroupName,
@@ -1296,7 +1296,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of a failover group.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FailoverGroupInner>, FailoverGroupInner> beginFailover(String resourceGroupName,
@@ -1314,7 +1314,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of a failover group.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FailoverGroupInner>, FailoverGroupInner> beginFailover(String resourceGroupName,
@@ -1331,7 +1331,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return a failover group on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FailoverGroupInner> failoverAsync(String resourceGroupName, String serverName,
@@ -1350,7 +1350,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return a failover group on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<FailoverGroupInner> failoverAsync(String resourceGroupName, String serverName,
@@ -1368,7 +1368,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return a failover group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FailoverGroupInner failover(String resourceGroupName, String serverName, String failoverGroupName) {
@@ -1385,7 +1385,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return a failover group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FailoverGroupInner failover(String resourceGroupName, String serverName, String failoverGroupName,
@@ -1402,7 +1402,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return a failover group along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> forceFailoverAllowDataLossWithResponseAsync(String resourceGroupName,
@@ -1444,7 +1444,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return a failover group along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> forceFailoverAllowDataLossWithResponseAsync(String resourceGroupName,
@@ -1483,7 +1483,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of a failover group.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<FailoverGroupInner>, FailoverGroupInner>
@@ -1504,7 +1504,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of a failover group.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<FailoverGroupInner>, FailoverGroupInner> beginForceFailoverAllowDataLossAsync(
@@ -1525,7 +1525,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of a failover group.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FailoverGroupInner>, FailoverGroupInner>
@@ -1544,7 +1544,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of a failover group.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FailoverGroupInner>, FailoverGroupInner> beginForceFailoverAllowDataLoss(
@@ -1562,7 +1562,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return a failover group on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FailoverGroupInner> forceFailoverAllowDataLossAsync(String resourceGroupName, String serverName,
@@ -1581,7 +1581,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return a failover group on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<FailoverGroupInner> forceFailoverAllowDataLossAsync(String resourceGroupName, String serverName,
@@ -1599,7 +1599,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return a failover group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FailoverGroupInner forceFailoverAllowDataLoss(String resourceGroupName, String serverName,
@@ -1617,7 +1617,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return a failover group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FailoverGroupInner forceFailoverAllowDataLoss(String resourceGroupName, String serverName,
@@ -1635,7 +1635,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return a failover group along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> tryPlannedBeforeForcedFailoverWithResponseAsync(String resourceGroupName,
@@ -1678,7 +1678,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return a failover group along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> tryPlannedBeforeForcedFailoverWithResponseAsync(String resourceGroupName,
@@ -1718,7 +1718,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of a failover group.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<FailoverGroupInner>, FailoverGroupInner> beginTryPlannedBeforeForcedFailoverAsync(
@@ -1740,7 +1740,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of a failover group.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<FailoverGroupInner>, FailoverGroupInner> beginTryPlannedBeforeForcedFailoverAsync(
@@ -1762,7 +1762,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of a failover group.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FailoverGroupInner>, FailoverGroupInner>
@@ -1782,7 +1782,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of a failover group.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FailoverGroupInner>, FailoverGroupInner> beginTryPlannedBeforeForcedFailover(
@@ -1801,7 +1801,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return a failover group on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FailoverGroupInner> tryPlannedBeforeForcedFailoverAsync(String resourceGroupName, String serverName,
@@ -1821,7 +1821,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return a failover group on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<FailoverGroupInner> tryPlannedBeforeForcedFailoverAsync(String resourceGroupName, String serverName,
@@ -1841,7 +1841,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return a failover group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FailoverGroupInner tryPlannedBeforeForcedFailover(String resourceGroupName, String serverName,
@@ -1860,7 +1860,7 @@ public final class FailoverGroupsClientImpl implements FailoverGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return a failover group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FailoverGroupInner tryPlannedBeforeForcedFailover(String resourceGroupName, String serverName,

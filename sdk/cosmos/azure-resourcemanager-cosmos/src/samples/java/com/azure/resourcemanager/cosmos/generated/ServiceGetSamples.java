@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class ServiceGetSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/CosmosDBDataTransferServiceGet.json
+     * x-ms-original-file: 2026-04-01-preview/CosmosDBDataTransferServiceGet.json
      */
     /**
      * Sample code: DataTransferServiceGet.
@@ -23,7 +23,7 @@ public final class ServiceGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-11-01-preview/CosmosDBGraphAPIComputeServiceGet.json
+     * x-ms-original-file: 2026-04-01-preview/CosmosDBGraphAPIComputeServiceGet.json
      */
     /**
      * Sample code: GraphAPIComputeServiceGet.
@@ -37,7 +37,7 @@ public final class ServiceGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-11-01-preview/services/sqldedicatedgateway/CosmosDBSqlDedicatedGatewayServiceGet.json
+     * x-ms-original-file: 2026-04-01-preview/services/sqldedicatedgateway/CosmosDBSqlDedicatedGatewayServiceGet.json
      */
     /**
      * Sample code: SqlDedicatedGatewayServiceGet.
@@ -51,7 +51,7 @@ public final class ServiceGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-11-01-preview/CosmosDBMaterializedViewsBuilderServiceGet.json
+     * x-ms-original-file: 2026-04-01-preview/CosmosDBMaterializedViewsBuilderServiceGet.json
      */
     /**
      * Sample code: MaterializedViewsBuilderServiceGet.

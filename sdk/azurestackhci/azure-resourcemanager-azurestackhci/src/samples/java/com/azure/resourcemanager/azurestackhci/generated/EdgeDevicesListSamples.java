@@ -9,7 +9,7 @@ package com.azure.resourcemanager.azurestackhci.generated;
  */
 public final class EdgeDevicesListSamples {
     /*
-     * x-ms-original-file: 2026-04-01-preview/ListEdgeDevices.json
+     * x-ms-original-file: 2026-04-30/ListEdgeDevices.json
      */
     /**
      * Sample code: List Edge Devices.

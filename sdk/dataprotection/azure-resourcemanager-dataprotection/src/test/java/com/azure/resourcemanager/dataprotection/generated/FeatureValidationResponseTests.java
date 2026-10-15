@@ -14,11 +14,11 @@ public final class FeatureValidationResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FeatureValidationResponse model = BinaryData.fromString(
-            "{\"objectType\":\"FeatureValidationResponse\",\"featureType\":\"DataSourceType\",\"features\":[{\"featureName\":\"ao\",\"supportStatus\":\"NotSupported\",\"exposureControlledFeatures\":[\"cyyysfgdot\"]},{\"featureName\":\"biipuip\",\"supportStatus\":\"AlphaPreview\",\"exposureControlledFeatures\":[\"macjekn\",\"zshq\"]},{\"featureName\":\"impevf\",\"supportStatus\":\"AlphaPreview\",\"exposureControlledFeatures\":[\"rilbywdx\",\"miccwrwfscjfnyn\",\"zqujizdvoqytiby\",\"wb\"]},{\"featureName\":\"gyavu\",\"supportStatus\":\"PrivatePreview\",\"exposureControlledFeatures\":[\"oxoismsksbpim\",\"qolj\"]}]}")
+            "{\"objectType\":\"FeatureValidationResponse\",\"featureType\":\"DataSourceType\",\"features\":[{\"featureName\":\"rkjpvdwxfzwii\",\"supportStatus\":\"AlphaPreview\",\"exposureControlledFeatures\":[\"hyzsxjrkamb\",\"rnegvmn\"]},{\"featureName\":\"q\",\"supportStatus\":\"AlphaPreview\",\"exposureControlledFeatures\":[\"spastjbkkdmf\",\"vestmjl\",\"rriloz\",\"peewchpxlkt\"]}]}")
             .toObject(FeatureValidationResponse.class);
         Assertions.assertEquals(FeatureType.DATA_SOURCE_TYPE, model.featureType());
-        Assertions.assertEquals("ao", model.features().get(0).featureName());
-        Assertions.assertEquals(FeatureSupportStatus.NOT_SUPPORTED, model.features().get(0).supportStatus());
-        Assertions.assertEquals("cyyysfgdot", model.features().get(0).exposureControlledFeatures().get(0));
+        Assertions.assertEquals("rkjpvdwxfzwii", model.features().get(0).featureName());
+        Assertions.assertEquals(FeatureSupportStatus.ALPHA_PREVIEW, model.features().get(0).supportStatus());
+        Assertions.assertEquals("hyzsxjrkamb", model.features().get(0).exposureControlledFeatures().get(0));
     }
 }

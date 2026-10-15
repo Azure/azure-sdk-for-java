@@ -1153,7 +1153,7 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return autonomous Database resource model along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> switchoverWithResponseAsync(String resourceGroupName,
@@ -1176,7 +1176,7 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return autonomous Database resource model along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> switchoverWithResponse(String resourceGroupName, String autonomousdatabasename,
@@ -1198,7 +1198,7 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return autonomous Database resource model along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> switchoverWithResponse(String resourceGroupName, String autonomousdatabasename,
@@ -1219,7 +1219,7 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of autonomous Database resource model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AutonomousDatabaseInner>, AutonomousDatabaseInner>
@@ -1240,7 +1240,7 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of autonomous Database resource model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AutonomousDatabaseInner>, AutonomousDatabaseInner>
@@ -1260,7 +1260,7 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of autonomous Database resource model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AutonomousDatabaseInner>, AutonomousDatabaseInner>
@@ -1280,7 +1280,7 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return autonomous Database resource model on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AutonomousDatabaseInner> switchoverAsync(String resourceGroupName, String autonomousdatabasename,
@@ -1298,7 +1298,7 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return autonomous Database resource model.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AutonomousDatabaseInner switchover(String resourceGroupName, String autonomousdatabasename,
@@ -1316,7 +1316,7 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return autonomous Database resource model.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AutonomousDatabaseInner switchover(String resourceGroupName, String autonomousdatabasename,
@@ -1333,7 +1333,7 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return autonomous Database resource model along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> failoverWithResponseAsync(String resourceGroupName,
@@ -1356,7 +1356,7 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return autonomous Database resource model along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> failoverWithResponse(String resourceGroupName, String autonomousdatabasename,
@@ -1378,7 +1378,7 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return autonomous Database resource model along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> failoverWithResponse(String resourceGroupName, String autonomousdatabasename,
@@ -1399,7 +1399,7 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of autonomous Database resource model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AutonomousDatabaseInner>, AutonomousDatabaseInner>
@@ -1420,7 +1420,7 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of autonomous Database resource model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AutonomousDatabaseInner>, AutonomousDatabaseInner>
@@ -1440,7 +1440,7 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of autonomous Database resource model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AutonomousDatabaseInner>, AutonomousDatabaseInner>
@@ -1459,7 +1459,7 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return autonomous Database resource model on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AutonomousDatabaseInner> failoverAsync(String resourceGroupName, String autonomousdatabasename,
@@ -1477,7 +1477,7 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return autonomous Database resource model.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AutonomousDatabaseInner failover(String resourceGroupName, String autonomousdatabasename,
@@ -1495,7 +1495,7 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return autonomous Database resource model.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AutonomousDatabaseInner failover(String resourceGroupName, String autonomousdatabasename, PeerDbDetails body,
@@ -1593,7 +1593,7 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return autonomous Database resource model along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> restoreWithResponseAsync(String resourceGroupName,
@@ -1616,7 +1616,7 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return autonomous Database resource model along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> restoreWithResponse(String resourceGroupName, String autonomousdatabasename,
@@ -1638,7 +1638,7 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return autonomous Database resource model along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> restoreWithResponse(String resourceGroupName, String autonomousdatabasename,
@@ -1659,7 +1659,7 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of autonomous Database resource model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AutonomousDatabaseInner>, AutonomousDatabaseInner> beginRestoreAsync(
@@ -1680,7 +1680,7 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of autonomous Database resource model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AutonomousDatabaseInner>, AutonomousDatabaseInner>
@@ -1700,7 +1700,7 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of autonomous Database resource model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AutonomousDatabaseInner>, AutonomousDatabaseInner> beginRestore(
@@ -1720,7 +1720,7 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return autonomous Database resource model on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AutonomousDatabaseInner> restoreAsync(String resourceGroupName, String autonomousdatabasename,
@@ -1738,7 +1738,7 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return autonomous Database resource model.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AutonomousDatabaseInner restore(String resourceGroupName, String autonomousdatabasename,
@@ -1756,7 +1756,7 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return autonomous Database resource model.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AutonomousDatabaseInner restore(String resourceGroupName, String autonomousdatabasename,
@@ -1772,7 +1772,7 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return autonomous Database resource model along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> shrinkWithResponseAsync(String resourceGroupName,
@@ -1792,7 +1792,7 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return autonomous Database resource model along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> shrinkWithResponse(String resourceGroupName, String autonomousdatabasename) {
@@ -1810,7 +1810,7 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return autonomous Database resource model along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> shrinkWithResponse(String resourceGroupName, String autonomousdatabasename,
@@ -1828,7 +1828,7 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of autonomous Database resource model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AutonomousDatabaseInner>, AutonomousDatabaseInner>
@@ -1847,7 +1847,7 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of autonomous Database resource model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AutonomousDatabaseInner>, AutonomousDatabaseInner>
@@ -1866,7 +1866,7 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of autonomous Database resource model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AutonomousDatabaseInner>, AutonomousDatabaseInner>
@@ -1884,7 +1884,7 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return autonomous Database resource model on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AutonomousDatabaseInner> shrinkAsync(String resourceGroupName, String autonomousdatabasename) {
@@ -1900,7 +1900,7 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return autonomous Database resource model.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AutonomousDatabaseInner shrink(String resourceGroupName, String autonomousdatabasename) {
@@ -1916,7 +1916,7 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return autonomous Database resource model.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AutonomousDatabaseInner shrink(String resourceGroupName, String autonomousdatabasename, Context context) {
@@ -1932,7 +1932,7 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return autonomous Database resource model along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> changeDisasterRecoveryConfigurationWithResponseAsync(
@@ -1955,7 +1955,7 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return autonomous Database resource model along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> changeDisasterRecoveryConfigurationWithResponse(String resourceGroupName,
@@ -1977,7 +1977,7 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return autonomous Database resource model along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> changeDisasterRecoveryConfigurationWithResponse(String resourceGroupName,
@@ -1998,7 +1998,7 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of autonomous Database resource model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AutonomousDatabaseInner>, AutonomousDatabaseInner>
@@ -2020,7 +2020,7 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of autonomous Database resource model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AutonomousDatabaseInner>, AutonomousDatabaseInner>
@@ -2042,7 +2042,7 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of autonomous Database resource model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AutonomousDatabaseInner>, AutonomousDatabaseInner>
@@ -2063,7 +2063,7 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return autonomous Database resource model on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AutonomousDatabaseInner> changeDisasterRecoveryConfigurationAsync(String resourceGroupName,
@@ -2081,7 +2081,7 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return autonomous Database resource model.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AutonomousDatabaseInner changeDisasterRecoveryConfiguration(String resourceGroupName,
@@ -2100,7 +2100,7 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return autonomous Database resource model.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AutonomousDatabaseInner changeDisasterRecoveryConfiguration(String resourceGroupName,
@@ -2118,7 +2118,7 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return autonomous Database resource model along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> actionWithResponseAsync(String resourceGroupName,
@@ -2141,7 +2141,7 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return autonomous Database resource model along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> actionWithResponse(String resourceGroupName, String autonomousdatabasename,
@@ -2163,7 +2163,7 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return autonomous Database resource model along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> actionWithResponse(String resourceGroupName, String autonomousdatabasename,
@@ -2184,7 +2184,7 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of autonomous Database resource model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AutonomousDatabaseInner>, AutonomousDatabaseInner> beginActionAsync(
@@ -2205,7 +2205,7 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of autonomous Database resource model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AutonomousDatabaseInner>, AutonomousDatabaseInner>
@@ -2225,7 +2225,7 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of autonomous Database resource model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AutonomousDatabaseInner>, AutonomousDatabaseInner> beginAction(
@@ -2245,7 +2245,7 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return autonomous Database resource model on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AutonomousDatabaseInner> actionAsync(String resourceGroupName, String autonomousdatabasename,
@@ -2263,7 +2263,7 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return autonomous Database resource model.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AutonomousDatabaseInner action(String resourceGroupName, String autonomousdatabasename,
@@ -2281,7 +2281,7 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return autonomous Database resource model.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AutonomousDatabaseInner action(String resourceGroupName, String autonomousdatabasename,

@@ -8,16 +8,16 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * The name of the tuning option.
+ * Name of the tuning option.
  */
 public final class TuningOptionParameterEnum extends ExpandableStringEnum<TuningOptionParameterEnum> {
     /**
-     * Static value index for TuningOptionParameterEnum.
+     * Index related recommendations.
      */
     public static final TuningOptionParameterEnum INDEX = fromString("index");
 
     /**
-     * Static value table for TuningOptionParameterEnum.
+     * Table related recommendations.
      */
     public static final TuningOptionParameterEnum TABLE = fromString("table");
 

@@ -8,7 +8,7 @@ import java.util.Base64;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 
-import com.azure.ai.voicelive.models.ClientEvent;
+import com.azure.ai.voicelive.models.SessionClientEvent;
 import com.azure.ai.voicelive.models.ClientEventInputAudioBufferAppend;
 import com.azure.ai.voicelive.models.ClientEventResponseCancel;
 import com.azure.ai.voicelive.models.ClientEventResponseCreate;
@@ -16,7 +16,7 @@ import com.azure.ai.voicelive.models.ClientEventSessionUpdate;
 import com.azure.ai.voicelive.models.ClientEventType;
 import com.azure.ai.voicelive.models.ResponseTokenStatistics;
 import com.azure.ai.voicelive.models.SessionResponse;
-import com.azure.ai.voicelive.models.SessionUpdate;
+import com.azure.ai.voicelive.models.SessionServerEvent;
 import com.azure.ai.voicelive.models.SessionUpdateConversationItemCreated;
 import com.azure.ai.voicelive.models.SessionUpdateError;
 import com.azure.ai.voicelive.models.SessionUpdateErrorDetails;
@@ -454,7 +454,7 @@ public final class VoiceLiveTracer {
      * @param event The client event being sent.
      * @param jsonPayload The serialized JSON payload.
      */
-    public void traceSend(ClientEvent event, String jsonPayload) {
+    public void traceSend(SessionClientEvent event, String jsonPayload) {
         Context parentCtx = connectContext.get();
         if (parentCtx == null) {
             return;
@@ -516,7 +516,7 @@ public final class VoiceLiveTracer {
      * @param update The parsed session update event.
      * @param rawPayload The raw JSON payload string (for message size and content recording).
      */
-    public void traceRecv(SessionUpdate update, String rawPayload) {
+    public void traceRecv(SessionServerEvent update, String rawPayload) {
         Context parentCtx = connectContext.get();
         if (parentCtx == null) {
             return;
@@ -691,7 +691,7 @@ public final class VoiceLiveTracer {
     // Counter Tracking
     // ============================================================================
 
-    private void trackSendCounters(ClientEvent event, String jsonPayload) {
+    private void trackSendCounters(SessionClientEvent event, String jsonPayload) {
         // Track audio bytes sent from input_audio_buffer.append
         if (event instanceof ClientEventInputAudioBufferAppend) {
             ClientEventInputAudioBufferAppend appendEvent = (ClientEventInputAudioBufferAppend) event;
@@ -863,7 +863,7 @@ public final class VoiceLiveTracer {
         return null;
     }
 
-    private void trackRecvCounters(SessionUpdate update) {
+    private void trackRecvCounters(SessionServerEvent update) {
         // Track session ID from session.created / session.updated
         if (update instanceof SessionUpdateSessionCreated) {
             VoiceLiveSessionResponse session = ((SessionUpdateSessionCreated) update).getSession();
@@ -935,7 +935,7 @@ public final class VoiceLiveTracer {
     /**
      * Tracks response metadata (id, conversation_id, finish_reasons) on the recv span.
      */
-    private void trackResponseMetadata(SessionUpdate update, Span span) {
+    private void trackResponseMetadata(SessionServerEvent update, Span span) {
         if (update instanceof SessionUpdateResponseDone) {
             SessionResponse response = ((SessionUpdateResponseDone) update).getResponse();
             if (response != null) {
@@ -972,7 +972,7 @@ public final class VoiceLiveTracer {
      * conversation.item.created, response.output_item.added/done,
      * and response.function_call_arguments.delta/done events.
      */
-    private void trackRecvItemAttributes(SessionUpdate update, Span span) {
+    private void trackRecvItemAttributes(SessionServerEvent update, Span span) {
         // conversation.item.created -> item_id
         if (update instanceof SessionUpdateConversationItemCreated) {
             SessionUpdateConversationItemCreated itemCreated = (SessionUpdateConversationItemCreated) update;
@@ -1034,20 +1034,20 @@ public final class VoiceLiveTracer {
         }
     }
 
-    private void trackRecvTokenUsage(SessionUpdate update, Span span) {
+    private void trackRecvTokenUsage(SessionServerEvent update, Span span) {
         if (update instanceof SessionUpdateResponseDone) {
             SessionResponse response = ((SessionUpdateResponseDone) update).getResponse();
             if (response != null) {
                 ResponseTokenStatistics usage = response.getUsage();
                 if (usage != null) {
-                    span.setAttribute(GEN_AI_USAGE_INPUT_TOKENS, (long) usage.getInputTokens());
-                    span.setAttribute(GEN_AI_USAGE_OUTPUT_TOKENS, (long) usage.getOutputTokens());
+                    span.setAttribute(GEN_AI_USAGE_INPUT_TOKENS, usage.getInputTokenCount());
+                    span.setAttribute(GEN_AI_USAGE_OUTPUT_TOKENS, usage.getOutputTokenCount());
                 }
             }
         }
     }
 
-    private void trackErrorEvents(SessionUpdate update, Span span) {
+    private void trackErrorEvents(SessionServerEvent update, Span span) {
         if (update instanceof SessionUpdateError) {
             SessionUpdateError errorUpdate = (SessionUpdateError) update;
             SessionUpdateErrorDetails errorDetails = errorUpdate.getError();

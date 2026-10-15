@@ -12,7 +12,7 @@ import com.azure.resourcemanager.artifactsigning.models.SkuName;
  */
 public final class CodeSigningAccountsCreateSamples {
     /*
-     * x-ms-original-file: 2025-10-13/CodeSigningAccounts_Create.json
+     * x-ms-original-file: 2026-05-15-preview/CodeSigningAccounts_Create.json
      */
     /**
      * Sample code: Create an artifact signing account.

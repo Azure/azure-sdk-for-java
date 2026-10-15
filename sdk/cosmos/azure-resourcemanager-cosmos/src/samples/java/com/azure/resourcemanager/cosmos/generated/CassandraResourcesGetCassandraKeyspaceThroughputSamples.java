@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class CassandraResourcesGetCassandraKeyspaceThroughputSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/CosmosDBCassandraKeyspaceThroughputGet.json
+     * x-ms-original-file: 2026-04-01-preview/CosmosDBCassandraKeyspaceThroughputGet.json
      */
     /**
      * Sample code: CosmosDBCassandraKeyspaceThroughputGet.

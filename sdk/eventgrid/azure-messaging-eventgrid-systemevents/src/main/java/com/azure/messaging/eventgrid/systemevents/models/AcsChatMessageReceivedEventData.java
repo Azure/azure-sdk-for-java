@@ -33,6 +33,12 @@ public final class AcsChatMessageReceivedEventData extends AcsChatMessageEventBa
     private Map<String, String> metadata;
 
     /*
+     * The Sequence id of the message
+     */
+    @Generated
+    private Long sequenceId;
+
+    /*
      * The display name of the sender
      */
     @Generated
@@ -86,6 +92,17 @@ public final class AcsChatMessageReceivedEventData extends AcsChatMessageEventBa
     }
 
     /**
+     * Get the sequenceId property: The Sequence id of the message.
+     *
+     * @return the sequenceId value.
+     */
+    @Generated
+    @Override
+    public Long getSequenceId() {
+        return this.sequenceId;
+    }
+
+    /**
      * Get the senderDisplayName property: The display name of the sender.
      *
      * @return the senderDisplayName value.
@@ -124,6 +141,7 @@ public final class AcsChatMessageReceivedEventData extends AcsChatMessageEventBa
         jsonWriter.writeLongField("version", getVersion());
         jsonWriter.writeStringField("transactionId", getTransactionId());
         jsonWriter.writeStringField("senderDisplayName", getSenderDisplayName());
+        jsonWriter.writeNumberField("sequenceId", getSequenceId());
         jsonWriter.writeStringField("messageBody", this.messageBody);
         return jsonWriter.writeEndObject();
     }
@@ -149,6 +167,7 @@ public final class AcsChatMessageReceivedEventData extends AcsChatMessageEventBa
             long version = 0L;
             String transactionId = null;
             String senderDisplayName = null;
+            Long sequenceId = null;
             String messageBody = null;
             Map<String, String> metadata = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -173,6 +192,8 @@ public final class AcsChatMessageReceivedEventData extends AcsChatMessageEventBa
                     transactionId = reader.getString();
                 } else if ("senderDisplayName".equals(fieldName)) {
                     senderDisplayName = reader.getString();
+                } else if ("sequenceId".equals(fieldName)) {
+                    sequenceId = reader.getNullable(JsonReader::getLong);
                 } else if ("messageBody".equals(fieldName)) {
                     messageBody = reader.getString();
                 } else if ("metadata".equals(fieldName)) {
@@ -186,6 +207,7 @@ public final class AcsChatMessageReceivedEventData extends AcsChatMessageEventBa
                     senderCommunicationIdentifier, composeTime, type, version, messageBody);
             deserializedAcsChatMessageReceivedEventData.transactionId = transactionId;
             deserializedAcsChatMessageReceivedEventData.senderDisplayName = senderDisplayName;
+            deserializedAcsChatMessageReceivedEventData.sequenceId = sequenceId;
             deserializedAcsChatMessageReceivedEventData.metadata = metadata;
             return deserializedAcsChatMessageReceivedEventData;
         });

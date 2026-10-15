@@ -34,7 +34,9 @@ import java.util.HashMap;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 class ServiceBusMessageChannelBinderTest {
@@ -104,9 +106,11 @@ class ServiceBusMessageChannelBinderTest {
         String description = "testDescription";
         ErrorMessage msg = new ErrorMessage(new RuntimeException(description), originalMessage);
         handler.handleMessage(msg);
+        verify(messageContext, never()).deadLetter();
         verify(messageContext).deadLetter(captor.capture());
         assertEquals("exception-message", captor.getValue().getDeadLetterReason());
         assertEquals(description, captor.getValue().getDeadLetterErrorDescription());
+        verifyNoMoreInteractions(messageContext);
     }
 
     @Test

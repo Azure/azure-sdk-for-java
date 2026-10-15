@@ -15,12 +15,15 @@ import com.azure.ai.contentunderstanding.models.ContentSource;
 import com.azure.ai.contentunderstanding.models.ContentSpan;
 import com.azure.ai.contentunderstanding.models.AnalysisContent;
 import com.azure.ai.contentunderstanding.models.ContentObjectField;
+import com.azure.ai.contentunderstanding.models.ContentNumberField;
+import com.azure.ai.contentunderstanding.models.ContentStringField;
 import com.azure.ai.contentunderstanding.models.DocumentSource;
 import com.azure.ai.contentunderstanding.models.UsageDetails;
 import com.azure.core.util.polling.SyncPoller;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -115,7 +118,8 @@ public class Sample03_AnalyzeInvoiceTest extends ContentUnderstandingClientTestB
             System.out.println();
 
             // Extract simple string fields using getValue() convenience method
-            // getValue() returns the typed value regardless of field type (StringField, NumberField, DateField, etc.)
+            // getValue() returns the typed value regardless of field type
+            // (ContentStringField, ContentNumberField, ContentDateField, etc.)
             ContentField customerNameField
                 = documentContent.getFields() != null ? documentContent.getFields().get("CustomerName") : null;
             ContentField invoiceDateField
@@ -236,6 +240,7 @@ public class Sample03_AnalyzeInvoiceTest extends ContentUnderstandingClientTestB
                 "End page should be >= start page");
             int totalPages = docContent.getEndPageNumber() - docContent.getStartPageNumber() + 1;
             assertTrue(totalPages > 0, "Total pages should be positive");
+            assertInvoiceFields(docContent);
             System.out.println("Document has " + totalPages + " page(s) from " + docContent.getStartPageNumber()
                 + " to " + docContent.getEndPageNumber());
 
@@ -259,9 +264,70 @@ public class Sample03_AnalyzeInvoiceTest extends ContentUnderstandingClientTestB
         // BEGIN:Assertion_ContentUnderstandingInvoiceToLlmInput
         assertNotNull(llmText, "LLM input text should not be null");
         assertTrue(llmText.startsWith("---\n"));
-        assertTrue(llmText.contains("contentType: document"));
+        assertTrue(llmText.contains("mimeType: application/pdf"));
         assertTrue(llmText.contains("fields:"));
         System.out.println("Invoice LLM input text generated (" + llmText.length() + " characters)");
         // END:Assertion_ContentUnderstandingInvoiceToLlmInput
+    }
+
+    static void assertInvoiceFields(DocumentContent document) {
+        assertNotNull(document.getFields(), "Document fields should not be null");
+
+        ContentField customerName = document.getFields().get("CustomerName");
+        assertTrue(customerName instanceof ContentStringField, "CustomerName should be a string field");
+        String customerNameValue = ((ContentStringField) customerName).getValue();
+        assertNotNull(customerNameValue, "CustomerName should not be null");
+        assertFalse(customerNameValue.trim().isEmpty(), "CustomerName should not be empty");
+        assertFieldGrounding(customerName, "CustomerName");
+
+        ContentField invoiceDate = document.getFields().get("InvoiceDate");
+        assertNotNull(invoiceDate, "InvoiceDate field should exist");
+        assertNotNull(invoiceDate.getValue(), "InvoiceDate value should not be null");
+        assertFieldGrounding(invoiceDate, "InvoiceDate");
+
+        ContentField totalAmount = document.getFields().get("TotalAmount");
+        assertTrue(totalAmount instanceof ContentObjectField, "TotalAmount should be an object field");
+        ContentObjectField totalAmountObject = (ContentObjectField) totalAmount;
+        ContentField amount = totalAmountObject.getFieldOrDefault("Amount");
+        assertTrue(amount instanceof ContentNumberField, "TotalAmount.Amount should be a number field");
+        assertNotNull(((ContentNumberField) amount).getValue(), "TotalAmount.Amount should not be null");
+        ContentField currency = totalAmountObject.getFieldOrDefault("CurrencyCode");
+        assertTrue(currency instanceof ContentStringField, "TotalAmount.CurrencyCode should be a string field");
+        String currencyValue = ((ContentStringField) currency).getValue();
+        assertNotNull(currencyValue, "CurrencyCode should not be null");
+        assertEquals(3, currencyValue.length(), "CurrencyCode should contain three characters");
+
+        ContentField lineItems = document.getFields().get("LineItems");
+        assertTrue(lineItems instanceof ContentArrayField, "LineItems should be an array field");
+        ContentArrayField lineItemsArray = (ContentArrayField) lineItems;
+        assertTrue(lineItemsArray.size() > 0, "LineItems should contain at least one item");
+        for (int index = 0; index < lineItemsArray.size(); index++) {
+            assertTrue(lineItemsArray.get(index) instanceof ContentObjectField,
+                "Each line item should be an object field");
+            ContentField description
+                = ((ContentObjectField) lineItemsArray.get(index)).getFieldOrDefault("Description");
+            assertTrue(description instanceof ContentStringField,
+                "Each line item should contain a string Description field");
+            String descriptionValue = ((ContentStringField) description).getValue();
+            assertNotNull(descriptionValue, "Line item Description should not be null");
+            assertFalse(descriptionValue.trim().isEmpty(), "Line item Description should not be empty");
+        }
+    }
+
+    private static void assertFieldGrounding(ContentField field, String fieldName) {
+        assertNotNull(field.getSpans(), fieldName + " spans should not be null");
+        assertFalse(field.getSpans().isEmpty(), fieldName + " should have at least one span");
+        field.getSpans().forEach(span -> {
+            assertTrue(span.getOffset() >= 0, fieldName + " span offset should be non-negative");
+            assertTrue(span.getLength() > 0, fieldName + " span length should be positive");
+        });
+        if (field.getSources() != null && !field.getSources().isEmpty()) {
+            assertTrue(field.getSources().get(0) instanceof DocumentSource,
+                fieldName + " source should be a DocumentSource");
+            DocumentSource source = (DocumentSource) field.getSources().get(0);
+            assertTrue(source.getPageNumber() >= 1, fieldName + " source page should be positive");
+            assertNotNull(source.getPolygon(), fieldName + " source polygon should not be null");
+            assertEquals(4, source.getPolygon().size(), fieldName + " source polygon should have four points");
+        }
     }
 }

@@ -8,17 +8,18 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Flag to enable or disable the automatic growth of storage size of a server when available space is nearing zero and
- * conditions allow for automatically growing storage size.
+ * Indicates if the server is configured to automatically grow storage size when available space is nearing zero and
+ * conditions allow for automatic growing storage size.
  */
 public final class StorageAutoGrow extends ExpandableStringEnum<StorageAutoGrow> {
     /**
-     * Static value Enabled for StorageAutoGrow.
+     * Server should automatically grow storage size when available space is nearing zero and conditions allow for
+     * automatically growing storage size.
      */
     public static final StorageAutoGrow ENABLED = fromString("Enabled");
 
     /**
-     * Static value Disabled for StorageAutoGrow.
+     * Server should not automatically grow storage size when available space is nearing zero.
      */
     public static final StorageAutoGrow DISABLED = fromString("Disabled");
 

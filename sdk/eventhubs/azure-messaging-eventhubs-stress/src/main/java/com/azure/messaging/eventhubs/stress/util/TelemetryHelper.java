@@ -23,11 +23,7 @@ import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.context.Context;
 import io.opentelemetry.context.Scope;
 import io.opentelemetry.instrumentation.logback.appender.v1_0.OpenTelemetryAppender;
-import io.opentelemetry.instrumentation.runtimemetrics.java8.Classes;
-import io.opentelemetry.instrumentation.runtimemetrics.java8.Cpu;
-import io.opentelemetry.instrumentation.runtimemetrics.java8.GarbageCollector;
-import io.opentelemetry.instrumentation.runtimemetrics.java8.MemoryPools;
-import io.opentelemetry.instrumentation.runtimemetrics.java8.Threads;
+import io.opentelemetry.instrumentation.runtimetelemetry.RuntimeTelemetry;
 import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdk;
 import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdkBuilder;
 import io.opentelemetry.sdk.trace.data.LinkData;
@@ -89,13 +85,17 @@ public class TelemetryHelper {
      * Initializes telemetry helper: sets up Azure Monitor exporter, enables JVM metrics collection.
      */
     private static OpenTelemetry init() {
+        System.setProperty("otel.java.global-autoconfigure.enabled", "true");
+
+        AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
         String applicationInsightsConnectionString = System.getenv("APPLICATIONINSIGHTS_CONNECTION_STRING");
         if (applicationInsightsConnectionString == null) {
-            return OpenTelemetry.noop();
+            System.setProperty("otel.traces.exporter", "none");
+            System.setProperty("otel.metrics.exporter", "none");
+            System.setProperty("otel.logs.exporter", "none");
+        } else {
+            AzureMonitorAutoConfigure.customize(sdkBuilder, applicationInsightsConnectionString);
         }
-        AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
-
-        AzureMonitorAutoConfigure.customize(sdkBuilder, applicationInsightsConnectionString);
 
         String instanceId = System.getenv("CONTAINER_NAME");
         OpenTelemetry otel = sdkBuilder
@@ -120,11 +120,7 @@ public class TelemetryHelper {
             .setResultAsGlobal()
             .build()
             .getOpenTelemetrySdk();
-        Classes.registerObservers(otel);
-        Cpu.registerObservers(otel);
-        MemoryPools.registerObservers(otel);
-        Threads.registerObservers(otel);
-        GarbageCollector.registerObservers(otel, false); // false disables the capture of the GC cause
+        RuntimeTelemetry.create(otel);
         OpenTelemetryAppender.install(otel);
 
         return otel;
@@ -237,7 +233,6 @@ public class TelemetryHelper {
         span.setAttribute(AttributeKey.stringKey("eventHubName"), options.getEventHubsEventHubName());
         span.setAttribute(AttributeKey.stringKey("consumerGroupName"), options.getEventHubsConsumerGroup());
         span.setAttribute(AttributeKey.longKey("messageSize"), options.getMessageSize());
-        span.setAttribute(AttributeKey.booleanKey("useV2"), options.useV2Stack());
         span.setAttribute(AttributeKey.stringKey("hostname"), System.getenv().get("HOSTNAME"));
         span.setAttribute(AttributeKey.stringKey("jreVersion"), System.getProperty("java.version"));
         span.setAttribute(AttributeKey.stringKey("jreVendor"), System.getProperty("java.vendor"));

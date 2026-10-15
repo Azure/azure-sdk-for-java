@@ -13,19 +13,19 @@ public final class MaintenanceRescheduleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MaintenanceReschedule model
-            = BinaryData.fromString("{\"rescheduleTime\":\"2021-04-03T19:52:37Z\",\"message\":\"zlmwlxkvugfhz\"}")
+            = BinaryData.fromString("{\"rescheduleTime\":\"2021-08-16T05:02:45Z\",\"message\":\"qqnvwpmq\"}")
                 .toObject(MaintenanceReschedule.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-03T19:52:37Z"), model.rescheduleTime());
-        Assertions.assertEquals("zlmwlxkvugfhz", model.message());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-16T05:02:45Z"), model.rescheduleTime());
+        Assertions.assertEquals("qqnvwpmq", model.message());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MaintenanceReschedule model
-            = new MaintenanceReschedule().withRescheduleTime(OffsetDateTime.parse("2021-04-03T19:52:37Z"))
-                .withMessage("zlmwlxkvugfhz");
+            = new MaintenanceReschedule().withRescheduleTime(OffsetDateTime.parse("2021-08-16T05:02:45Z"))
+                .withMessage("qqnvwpmq");
         model = BinaryData.fromObject(model).toObject(MaintenanceReschedule.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-03T19:52:37Z"), model.rescheduleTime());
-        Assertions.assertEquals("zlmwlxkvugfhz", model.message());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-16T05:02:45Z"), model.rescheduleTime());
+        Assertions.assertEquals("qqnvwpmq", model.message());
     }
 }

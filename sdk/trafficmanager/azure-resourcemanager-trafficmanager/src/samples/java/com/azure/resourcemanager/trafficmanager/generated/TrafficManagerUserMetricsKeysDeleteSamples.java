@@ -9,7 +9,7 @@ package com.azure.resourcemanager.trafficmanager.generated;
  */
 public final class TrafficManagerUserMetricsKeysDeleteSamples {
     /*
-     * x-ms-original-file: 2022-04-01/TrafficManagerUserMetricsKeys-DELETE.json
+     * x-ms-original-file: 2026-09-01/TrafficManagerUserMetricsKeys-DELETE.json
      */
     /**
      * Sample code: TrafficManagerUserMetricsKeys-DELETE.

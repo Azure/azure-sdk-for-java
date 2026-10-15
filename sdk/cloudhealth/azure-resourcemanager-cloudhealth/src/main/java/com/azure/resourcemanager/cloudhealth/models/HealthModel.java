@@ -221,7 +221,7 @@ public interface HealthModel {
     /**
      * The template for HealthModel update.
      */
-    interface Update extends UpdateStages.WithTags, UpdateStages.WithIdentity, UpdateStages.WithProperties {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithIdentity {
         /**
          * Executes the update request.
          * 
@@ -266,19 +266,6 @@ public interface HealthModel {
              * @return the next definition stage.
              */
             Update withIdentity(ManagedServiceIdentity identity);
-        }
-
-        /**
-         * The stage of the HealthModel update allowing to specify properties.
-         */
-        interface WithProperties {
-            /**
-             * Specifies the properties property: The resource-specific properties for this resource..
-             * 
-             * @param properties The resource-specific properties for this resource.
-             * @return the next definition stage.
-             */
-            Update withProperties(HealthModelUpdateProperties properties);
         }
     }
 

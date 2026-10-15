@@ -35,6 +35,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
@@ -47,6 +48,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -361,7 +363,9 @@ public class FaultInjectionMetadataRequestRuleTests extends FaultInjectionTestBa
             container.createItem(TestObject.create()).block();
         }
 
-        List<FeedRange> feedRanges = container.getFeedRanges().block();
+        List<FeedRange> feedRanges = getFeedRangesWithRetry(
+            container,
+            "get feed ranges for metadata fault injection setup");
         assertThat(feedRanges.size()).isGreaterThan(1);
 
         CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
@@ -537,24 +541,31 @@ public class FaultInjectionMetadataRequestRuleTests extends FaultInjectionTestBa
         int applyLimit,
         boolean shouldInjectPreferredRegionsOnClient) throws JsonProcessingException {
 
-        // We need to create a new client because client may have marked region unavailable in other tests
-        // which can impact the test result
-        CosmosAsyncClient testClient = getClientBuilder()
-            .contentResponseOnWriteEnabled(true)
-            .preferredRegions(shouldInjectPreferredRegionsOnClient ? this.writePreferredLocations : Collections.emptyList())
-            .endToEndOperationLatencyPolicyConfig(
-                new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofMinutes(10)).build())
-            .buildAsyncClient();
+        String originalSharedPkRangeCacheSetting =
+            System.getProperty("COSMOS.SHARED_PARTITION_KEY_RANGE_CACHE_ENABLED");
+        System.setProperty("COSMOS.SHARED_PARTITION_KEY_RANGE_CACHE_ENABLED", "false");
 
-        CosmosAsyncContainer container =
-            testClient
-                .getDatabase(this.cosmosAsyncContainer.getDatabase().getId())
-                .getContainer(this.cosmosAsyncContainer.getId());
+        CosmosAsyncClient testClient = null;
+        FaultInjectionRule pkRangesConnectionDelayRule = null;
+        FaultInjectionRule dataOperationGoneRule = null;
+        try {
+            // We need to create a new client because client may have marked region unavailable in other tests
+            // which can impact the test result
+            testClient = getClientBuilder()
+                .contentResponseOnWriteEnabled(true)
+                .preferredRegions(shouldInjectPreferredRegionsOnClient ? this.writePreferredLocations : Collections.emptyList())
+                .endToEndOperationLatencyPolicyConfig(
+                    new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofMinutes(10)).build())
+                .buildAsyncClient();
 
-        // Test to validate partition key ranges request is being injected connection timeout
-        String pkRangesConnectionDelay = "PkRanges-connectionDelay-" + UUID.randomUUID();
-        FaultInjectionRule pkRangesConnectionDelayRule =
-            new FaultInjectionRuleBuilder(pkRangesConnectionDelay)
+            CosmosAsyncContainer container =
+                testClient
+                    .getDatabase(this.cosmosAsyncContainer.getDatabase().getId())
+                    .getContainer(this.cosmosAsyncContainer.getId());
+
+            // Test to validate partition key ranges request is being injected connection timeout
+            String pkRangesConnectionDelay = "PkRanges-connectionDelay-" + UUID.randomUUID();
+            pkRangesConnectionDelayRule = new FaultInjectionRuleBuilder(pkRangesConnectionDelay)
                 .condition(
                     new FaultInjectionConditionBuilder()
                         .region(this.writePreferredLocations.get(0))
@@ -571,8 +582,7 @@ public class FaultInjectionMetadataRequestRuleTests extends FaultInjectionTestBa
                 .duration(Duration.ofMinutes(5))
                 .build();
 
-        FaultInjectionRule dataOperationGoneRule =
-            new FaultInjectionRuleBuilder("DataOperation-gone-" + UUID.randomUUID())
+            dataOperationGoneRule = new FaultInjectionRuleBuilder("DataOperation-gone-" + UUID.randomUUID())
                 .condition(
                     new FaultInjectionConditionBuilder()
                         .operationType(FaultInjectionOperationType.CREATE_ITEM)
@@ -586,7 +596,7 @@ public class FaultInjectionMetadataRequestRuleTests extends FaultInjectionTestBa
                 )
                 .duration(Duration.ofMinutes(5))
                 .build();
-        try {
+
             // create few items to first make sure the collection cache, pkRanges cache is being populated
             for (int i = 0; i < 10; i++) {
                 container.createItem(TestObject.create()).block();
@@ -599,9 +609,12 @@ public class FaultInjectionMetadataRequestRuleTests extends FaultInjectionTestBa
 
             try {
                 CosmosDiagnostics cosmosDiagnostics = container.createItem(TestObject.create()).block().getDiagnostics();
+                long ruleHitCount = pkRangesConnectionDelayRule.getHitCount();
+                assertThat(ruleHitCount).isGreaterThan(0);
                 // The PkRanges requests may have retried in another region,
-                // but the create request will only be retried locally for PARTITION_IS_SPLITTING
-                assertThat(cosmosDiagnostics.getContactedRegionNames().size()).isEqualTo(1);
+                // and connection delays may mark the first region unavailable before the create succeeds.
+                assertThat(cosmosDiagnostics.getContactedRegionNames().contains(
+                    this.writePreferredLocations.get(0).toLowerCase(Locale.ROOT))).isTrue();
 
                 // validate PARTITION_KEY_RANGE_LOOK_UP
                 ObjectNode diagnosticsNode = (ObjectNode) Utils.getSimpleObjectMapper().readTree(cosmosDiagnostics.toString());
@@ -624,19 +637,107 @@ public class FaultInjectionMetadataRequestRuleTests extends FaultInjectionTestBa
 
                 assertThat(pkRangesLookup).isNotNull();
                 if (faultInjectionServerErrorType == FaultInjectionServerErrorType.CONNECTION_DELAY) {
-                    assertThat(pkRangesLookup.get("durationinMS").asLong()).isGreaterThanOrEqualTo(45 * 1000 * Math.min(applyLimit, 3)); // the duration will be at least one connection timeout
+                    assertThat(pkRangesLookup.get("durationinMS").asLong())
+                        .isGreaterThanOrEqualTo(45 * 1000 * Math.min(ruleHitCount, 3));
                 }
 
                 if (faultInjectionServerErrorType == FaultInjectionServerErrorType.RESPONSE_DELAY) {
-                    assertThat(pkRangesLookup.get("durationinMS").asLong()).isGreaterThanOrEqualTo(500 * Math.min(applyLimit, 3)); // the duration will be at least one response timeout
+                    assertThat(pkRangesLookup.get("durationinMS").asLong())
+                        .isGreaterThanOrEqualTo(500 * Math.min(ruleHitCount, 3));
                 }
 
             } catch (CosmosException cosmosException) {
                 fail("CreateItem should have succeeded. " + cosmosException.getDiagnostics());
             }
         } finally {
-            pkRangesConnectionDelayRule.disable();
-            dataOperationGoneRule.disable();
+            if (originalSharedPkRangeCacheSetting == null) {
+                System.clearProperty("COSMOS.SHARED_PARTITION_KEY_RANGE_CACHE_ENABLED");
+            } else {
+                System.setProperty(
+                    "COSMOS.SHARED_PARTITION_KEY_RANGE_CACHE_ENABLED", originalSharedPkRangeCacheSetting);
+            }
+            if (pkRangesConnectionDelayRule != null) {
+                pkRangesConnectionDelayRule.disable();
+            }
+            if (dataOperationGoneRule != null) {
+                dataOperationGoneRule.disable();
+            }
+            safeClose(testClient);
+        }
+    }
+
+    @Test(groups = { "multi-region", "multi-master" }, dataProvider = "preferredRegionsConfigProvider", timeOut = 4 * TIMEOUT)
+    public void faultInjectionServerErrorRuleTests_PartitionKeyRanges_OwnerResourceNotExistsCrossRegionRetry(
+        boolean shouldInjectPreferredRegionsOnClient) {
+
+        if (this.readPreferredLocations.size() < 2) {
+            throw new SkipException("This test requires at least two read regions.");
+        }
+
+        CosmosAsyncClient testClient = null;
+        FaultInjectionRule pkRangesOwnerResourceNotExistsRule = null;
+
+        // The partition-key-range (routing map) cache is shared across clients targeting the same
+        // service endpoint. Without disabling sharing, this client could reuse a routing map already
+        // populated by another client - e.g. a previous data-provider iteration targeting the same
+        // account and container - and therefore skip the METADATA_REQUEST_PARTITION_KEY_RANGES this
+        // test injects a fault on, leaving the rule's hit count at 0. Disable sharing for this client
+        // so it always issues its own partition-key-range metadata request.
+        String originalSharedPkRangeCacheSetting =
+            System.getProperty("COSMOS.SHARED_PARTITION_KEY_RANGE_CACHE_ENABLED");
+        System.setProperty("COSMOS.SHARED_PARTITION_KEY_RANGE_CACHE_ENABLED", "false");
+
+        try {
+            testClient = getClientBuilder()
+                .contentResponseOnWriteEnabled(true)
+                .preferredRegions(shouldInjectPreferredRegionsOnClient ? this.readPreferredLocations : Collections.emptyList())
+                .buildAsyncClient();
+
+            CosmosAsyncContainer container =
+                testClient
+                    .getDatabase(this.cosmosAsyncContainer.getDatabase().getId())
+                    .getContainer(this.cosmosAsyncContainer.getId());
+
+            String pkRangesOwnerResourceNotExists = "PkRanges-ownerResourceNotExists-" + UUID.randomUUID();
+            pkRangesOwnerResourceNotExistsRule =
+                new FaultInjectionRuleBuilder(pkRangesOwnerResourceNotExists)
+                    .condition(
+                        new FaultInjectionConditionBuilder()
+                            .region(this.readPreferredLocations.get(0))
+                            .operationType(FaultInjectionOperationType.METADATA_REQUEST_PARTITION_KEY_RANGES)
+                            .build()
+                    )
+                    .result(
+                        FaultInjectionResultBuilders
+                            .getResultBuilder(FaultInjectionServerErrorType.OWNER_RESOURCE_NOT_EXISTS)
+                            .times(Integer.MAX_VALUE)
+                            .build()
+                    )
+                    .duration(Duration.ofMinutes(5))
+                    .build();
+
+            CosmosFaultInjectionHelper.configureFaultInjectionRules(
+                    container,
+                    Arrays.asList(pkRangesOwnerResourceNotExistsRule))
+                .block();
+
+            CosmosItemResponse<TestObject> itemResponse = container.createItem(TestObject.create()).block();
+
+            assertThat(itemResponse).isNotNull();
+            assertThat(pkRangesOwnerResourceNotExistsRule.getHitCount()).isGreaterThan(0);
+        } catch (CosmosException cosmosException) {
+            fail("CreateItem should have succeeded by retrying partition key range metadata in another region. "
+                + cosmosException.getDiagnostics());
+        } finally {
+            if (originalSharedPkRangeCacheSetting == null) {
+                System.clearProperty("COSMOS.SHARED_PARTITION_KEY_RANGE_CACHE_ENABLED");
+            } else {
+                System.setProperty(
+                    "COSMOS.SHARED_PARTITION_KEY_RANGE_CACHE_ENABLED", originalSharedPkRangeCacheSetting);
+            }
+            if (pkRangesOwnerResourceNotExistsRule != null) {
+                pkRangesOwnerResourceNotExistsRule.disable();
+            }
             safeClose(testClient);
         }
     }

@@ -66,35 +66,6 @@ public final class SearchServiceCounters implements JsonSerializable<SearchServi
     private final ResourceCounter skillsetCounter;
 
     /**
-     * Creates an instance of SearchServiceCounters class.
-     *
-     * @param aliasCounter the aliasCounter value to set.
-     * @param documentCounter the documentCounter value to set.
-     * @param indexCounter the indexCounter value to set.
-     * @param indexerCounter the indexerCounter value to set.
-     * @param dataSourceCounter the dataSourceCounter value to set.
-     * @param storageSizeCounter the storageSizeCounter value to set.
-     * @param synonymMapCounter the synonymMapCounter value to set.
-     * @param skillsetCounter the skillsetCounter value to set.
-     * @param vectorIndexSizeInBytes the vectorIndexSizeInBytes value to set.
-     */
-    @Generated
-    private SearchServiceCounters(ResourceCounter aliasCounter, ResourceCounter documentCounter,
-        ResourceCounter indexCounter, ResourceCounter indexerCounter, ResourceCounter dataSourceCounter,
-        ResourceCounter storageSizeCounter, ResourceCounter synonymMapCounter, ResourceCounter skillsetCounter,
-        ResourceCounter vectorIndexSizeInBytes) {
-        this.aliasCounter = aliasCounter;
-        this.documentCounter = documentCounter;
-        this.indexCounter = indexCounter;
-        this.indexerCounter = indexerCounter;
-        this.dataSourceCounter = dataSourceCounter;
-        this.storageSizeCounter = storageSizeCounter;
-        this.synonymMapCounter = synonymMapCounter;
-        this.skillsetCounter = skillsetCounter;
-        this.vectorIndexSizeInBytes = vectorIndexSizeInBytes;
-    }
-
-    /**
      * Get the aliasCounter property: Total number of aliases.
      *
      * @return the aliasCounter value.
@@ -190,6 +161,8 @@ public final class SearchServiceCounters implements JsonSerializable<SearchServi
         jsonWriter.writeJsonField("synonymMaps", this.synonymMapCounter);
         jsonWriter.writeJsonField("skillsetCount", this.skillsetCounter);
         jsonWriter.writeJsonField("vectorIndexSize", this.vectorIndexSizeInBytes);
+        jsonWriter.writeJsonField("knowledgeBasesCount", this.knowledgeBaseCounter);
+        jsonWriter.writeJsonField("knowledgeSourcesCount", this.knowledgeSourceCounter);
         return jsonWriter.writeEndObject();
     }
 
@@ -214,6 +187,8 @@ public final class SearchServiceCounters implements JsonSerializable<SearchServi
             ResourceCounter synonymMapCounter = null;
             ResourceCounter skillsetCounter = null;
             ResourceCounter vectorIndexSizeInBytes = null;
+            ResourceCounter knowledgeBaseCounter = null;
+            ResourceCounter knowledgeSourceCounter = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -235,12 +210,17 @@ public final class SearchServiceCounters implements JsonSerializable<SearchServi
                     skillsetCounter = ResourceCounter.fromJson(reader);
                 } else if ("vectorIndexSize".equals(fieldName)) {
                     vectorIndexSizeInBytes = ResourceCounter.fromJson(reader);
+                } else if ("knowledgeBasesCount".equals(fieldName)) {
+                    knowledgeBaseCounter = ResourceCounter.fromJson(reader);
+                } else if ("knowledgeSourcesCount".equals(fieldName)) {
+                    knowledgeSourceCounter = ResourceCounter.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
             return new SearchServiceCounters(aliasCounter, documentCounter, indexCounter, indexerCounter,
-                dataSourceCounter, storageSizeCounter, synonymMapCounter, skillsetCounter, vectorIndexSizeInBytes);
+                dataSourceCounter, storageSizeCounter, synonymMapCounter, skillsetCounter, vectorIndexSizeInBytes,
+                knowledgeBaseCounter, knowledgeSourceCounter);
         });
     }
 
@@ -259,5 +239,71 @@ public final class SearchServiceCounters implements JsonSerializable<SearchServi
     @Generated
     public ResourceCounter getVectorIndexSizeInBytes() {
         return this.vectorIndexSizeInBytes;
+    }
+
+    /*
+     * Total number of knowledge bases.
+     */
+    @Generated
+    private final ResourceCounter knowledgeBaseCounter;
+
+    /*
+     * Total number of knowledge sources.
+     */
+    @Generated
+    private final ResourceCounter knowledgeSourceCounter;
+
+    /**
+     * Creates an instance of SearchServiceCounters class.
+     *
+     * @param aliasCounter the aliasCounter value to set.
+     * @param documentCounter the documentCounter value to set.
+     * @param indexCounter the indexCounter value to set.
+     * @param indexerCounter the indexerCounter value to set.
+     * @param dataSourceCounter the dataSourceCounter value to set.
+     * @param storageSizeCounter the storageSizeCounter value to set.
+     * @param synonymMapCounter the synonymMapCounter value to set.
+     * @param skillsetCounter the skillsetCounter value to set.
+     * @param vectorIndexSizeInBytes the vectorIndexSizeInBytes value to set.
+     * @param knowledgeBaseCounter the knowledgeBaseCounter value to set.
+     * @param knowledgeSourceCounter the knowledgeSourceCounter value to set.
+     */
+    @Generated
+    private SearchServiceCounters(ResourceCounter aliasCounter, ResourceCounter documentCounter,
+        ResourceCounter indexCounter, ResourceCounter indexerCounter, ResourceCounter dataSourceCounter,
+        ResourceCounter storageSizeCounter, ResourceCounter synonymMapCounter, ResourceCounter skillsetCounter,
+        ResourceCounter vectorIndexSizeInBytes, ResourceCounter knowledgeBaseCounter,
+        ResourceCounter knowledgeSourceCounter) {
+        this.aliasCounter = aliasCounter;
+        this.documentCounter = documentCounter;
+        this.indexCounter = indexCounter;
+        this.indexerCounter = indexerCounter;
+        this.dataSourceCounter = dataSourceCounter;
+        this.storageSizeCounter = storageSizeCounter;
+        this.synonymMapCounter = synonymMapCounter;
+        this.skillsetCounter = skillsetCounter;
+        this.vectorIndexSizeInBytes = vectorIndexSizeInBytes;
+        this.knowledgeBaseCounter = knowledgeBaseCounter;
+        this.knowledgeSourceCounter = knowledgeSourceCounter;
+    }
+
+    /**
+     * Get the knowledgeBaseCounter property: Total number of knowledge bases.
+     *
+     * @return the knowledgeBaseCounter value.
+     */
+    @Generated
+    public ResourceCounter getKnowledgeBaseCounter() {
+        return this.knowledgeBaseCounter;
+    }
+
+    /**
+     * Get the knowledgeSourceCounter property: Total number of knowledge sources.
+     *
+     * @return the knowledgeSourceCounter value.
+     */
+    @Generated
+    public ResourceCounter getKnowledgeSourceCounter() {
+        return this.knowledgeSourceCounter;
     }
 }

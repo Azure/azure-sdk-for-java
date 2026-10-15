@@ -17,6 +17,7 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.Cluster;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.CreateMode;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.CreateModeForPatch;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.DataEncryption;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.FipsMode;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.HighAvailability;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.HighAvailabilityForPatch;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.MaintenanceWindow;
@@ -33,6 +34,8 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.ServerForPatch;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.ServerState;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Sku;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.SkuForPatch;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.StartMajorVersionUpgradePrecheckRequest;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.StartMajorVersionUpgradePrecheckResponse;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Storage;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.UserAssignedIdentity;
 import java.time.OffsetDateTime;
@@ -178,6 +181,10 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
         return this.innerModel().cluster();
     }
 
+    public FipsMode fipsMode() {
+        return this.innerModel().fipsMode();
+    }
+
     public Region region() {
         return Region.fromName(this.regionName());
     }
@@ -304,6 +311,16 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
         return serviceManager.servers().migrateNetworkMode(resourceGroupName, serverName, context);
     }
 
+    public StartMajorVersionUpgradePrecheckResponse
+        startMajorVersionUpgradePrecheck(StartMajorVersionUpgradePrecheckRequest body) {
+        return serviceManager.servers().startMajorVersionUpgradePrecheck(resourceGroupName, serverName, body);
+    }
+
+    public StartMajorVersionUpgradePrecheckResponse
+        startMajorVersionUpgradePrecheck(StartMajorVersionUpgradePrecheckRequest body, Context context) {
+        return serviceManager.servers().startMajorVersionUpgradePrecheck(resourceGroupName, serverName, body, context);
+    }
+
     public ServerImpl withRegion(Region location) {
         this.innerModel().withLocation(location.toString());
         return this;
@@ -410,8 +427,13 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
     }
 
     public ServerImpl withSourceServerResourceId(String sourceServerResourceId) {
-        this.innerModel().withSourceServerResourceId(sourceServerResourceId);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withSourceServerResourceId(sourceServerResourceId);
+            return this;
+        } else {
+            this.updateParameters.withSourceServerResourceId(sourceServerResourceId);
+            return this;
+        }
     }
 
     public ServerImpl withPointInTimeUtc(OffsetDateTime pointInTimeUtc) {
@@ -450,6 +472,16 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
             return this;
         } else {
             this.updateParameters.withCluster(cluster);
+            return this;
+        }
+    }
+
+    public ServerImpl withFipsMode(FipsMode fipsMode) {
+        if (isInCreateMode()) {
+            this.innerModel().withFipsMode(fipsMode);
+            return this;
+        } else {
+            this.updateParameters.withFipsMode(fipsMode);
             return this;
         }
     }

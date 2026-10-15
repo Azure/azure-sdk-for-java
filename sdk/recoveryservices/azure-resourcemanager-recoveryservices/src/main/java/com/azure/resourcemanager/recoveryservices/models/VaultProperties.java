@@ -73,6 +73,11 @@ public final class VaultProperties implements JsonSerializable<VaultProperties> 
     private MonitoringSettings monitoringSettings;
 
     /*
+     * Cost Management Settings of the vault
+     */
+    private CostManagementSettings costManagementSettings;
+
+    /*
      * Restore Settings of the vault
      */
     private RestoreSettings restoreSettings;
@@ -101,6 +106,11 @@ public final class VaultProperties implements JsonSerializable<VaultProperties> 
      * ResourceGuardOperationRequests on which LAC check will be performed
      */
     private List<String> resourceGuardOperationRequests;
+
+    /*
+     * Region of choice settings for this vault.
+     */
+    private RegionOfChoiceSettings regionOfChoiceSettings;
 
     /**
      * Creates an instance of VaultProperties class.
@@ -265,6 +275,26 @@ public final class VaultProperties implements JsonSerializable<VaultProperties> 
     }
 
     /**
+     * Get the costManagementSettings property: Cost Management Settings of the vault.
+     * 
+     * @return the costManagementSettings value.
+     */
+    public CostManagementSettings costManagementSettings() {
+        return this.costManagementSettings;
+    }
+
+    /**
+     * Set the costManagementSettings property: Cost Management Settings of the vault.
+     * 
+     * @param costManagementSettings the costManagementSettings value to set.
+     * @return the VaultProperties object itself.
+     */
+    public VaultProperties withCostManagementSettings(CostManagementSettings costManagementSettings) {
+        this.costManagementSettings = costManagementSettings;
+        return this;
+    }
+
+    /**
      * Get the restoreSettings property: Restore Settings of the vault.
      * 
      * @return the restoreSettings value.
@@ -366,6 +396,26 @@ public final class VaultProperties implements JsonSerializable<VaultProperties> 
     }
 
     /**
+     * Get the regionOfChoiceSettings property: Region of choice settings for this vault.
+     * 
+     * @return the regionOfChoiceSettings value.
+     */
+    public RegionOfChoiceSettings regionOfChoiceSettings() {
+        return this.regionOfChoiceSettings;
+    }
+
+    /**
+     * Set the regionOfChoiceSettings property: Region of choice settings for this vault.
+     * 
+     * @param regionOfChoiceSettings the regionOfChoiceSettings value to set.
+     * @return the VaultProperties object itself.
+     */
+    public VaultProperties withRegionOfChoiceSettings(RegionOfChoiceSettings regionOfChoiceSettings) {
+        this.regionOfChoiceSettings = regionOfChoiceSettings;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -377,11 +427,13 @@ public final class VaultProperties implements JsonSerializable<VaultProperties> 
         jsonWriter.writeStringField("publicNetworkAccess",
             this.publicNetworkAccess == null ? null : this.publicNetworkAccess.toString());
         jsonWriter.writeJsonField("monitoringSettings", this.monitoringSettings);
+        jsonWriter.writeJsonField("costManagementSettings", this.costManagementSettings);
         jsonWriter.writeJsonField("restoreSettings", this.restoreSettings);
         jsonWriter.writeJsonField("redundancySettings", this.redundancySettings);
         jsonWriter.writeJsonField("securitySettings", this.securitySettings);
         jsonWriter.writeArrayField("resourceGuardOperationRequests", this.resourceGuardOperationRequests,
             (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("regionOfChoiceSettings", this.regionOfChoiceSettings);
         return jsonWriter.writeEndObject();
     }
 
@@ -428,6 +480,8 @@ public final class VaultProperties implements JsonSerializable<VaultProperties> 
                         = PublicNetworkAccess.fromString(reader.getString());
                 } else if ("monitoringSettings".equals(fieldName)) {
                     deserializedVaultProperties.monitoringSettings = MonitoringSettings.fromJson(reader);
+                } else if ("costManagementSettings".equals(fieldName)) {
+                    deserializedVaultProperties.costManagementSettings = CostManagementSettings.fromJson(reader);
                 } else if ("restoreSettings".equals(fieldName)) {
                     deserializedVaultProperties.restoreSettings = RestoreSettings.fromJson(reader);
                 } else if ("redundancySettings".equals(fieldName)) {
@@ -441,6 +495,8 @@ public final class VaultProperties implements JsonSerializable<VaultProperties> 
                 } else if ("resourceGuardOperationRequests".equals(fieldName)) {
                     List<String> resourceGuardOperationRequests = reader.readArray(reader1 -> reader1.getString());
                     deserializedVaultProperties.resourceGuardOperationRequests = resourceGuardOperationRequests;
+                } else if ("regionOfChoiceSettings".equals(fieldName)) {
+                    deserializedVaultProperties.regionOfChoiceSettings = RegionOfChoiceSettings.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

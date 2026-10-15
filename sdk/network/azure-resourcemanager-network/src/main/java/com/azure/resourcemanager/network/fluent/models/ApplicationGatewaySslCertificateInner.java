@@ -9,6 +9,7 @@ import com.azure.core.management.SubResource;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.network.models.ApplicationGatewayManagedHsm;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import java.io.IOException;
 
@@ -177,6 +178,29 @@ public final class ApplicationGatewaySslCertificateInner extends SubResource {
             this.innerProperties = new ApplicationGatewaySslCertificatePropertiesFormat();
         }
         this.innerProperties().withKeyVaultSecretId(keyVaultSecretId);
+        return this;
+    }
+
+    /**
+     * Get the hsm property: Managed HSM properties of the Application Gateway resource.
+     * 
+     * @return the hsm value.
+     */
+    public ApplicationGatewayManagedHsm hsm() {
+        return this.innerProperties() == null ? null : this.innerProperties().hsm();
+    }
+
+    /**
+     * Set the hsm property: Managed HSM properties of the Application Gateway resource.
+     * 
+     * @param hsm the hsm value to set.
+     * @return the ApplicationGatewaySslCertificateInner object itself.
+     */
+    public ApplicationGatewaySslCertificateInner withHsm(ApplicationGatewayManagedHsm hsm) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewaySslCertificatePropertiesFormat();
+        }
+        this.innerProperties().withHsm(hsm);
         return this;
     }
 

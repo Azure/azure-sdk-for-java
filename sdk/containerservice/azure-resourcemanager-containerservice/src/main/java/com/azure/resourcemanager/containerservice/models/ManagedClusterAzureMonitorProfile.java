@@ -24,6 +24,12 @@ public final class ManagedClusterAzureMonitorProfile implements JsonSerializable
     private ManagedClusterAzureMonitorProfileMetrics metrics;
 
     /*
+     * Set this to enable and configure Azure Monitor Container Insights for the cluster, which collects Kubernetes
+     * events, inventory, and container stdout & stderr logs. See aka.ms/AzureMonitorContainerInsights for an overview.
+     */
+    private ManagedClusterAzureMonitorProfileContainerInsights containerInsights;
+
+    /*
      * Application Monitoring Profile for Kubernetes Application Container. Collects application logs, metrics and
      * traces through auto-instrumentation of the application using Azure Monitor OpenTelemetry based SDKs. See
      * aka.ms/AzureMonitorApplicationMonitoring for an overview.
@@ -61,6 +67,31 @@ public final class ManagedClusterAzureMonitorProfile implements JsonSerializable
     }
 
     /**
+     * Get the containerInsights property: Set this to enable and configure Azure Monitor Container Insights for the
+     * cluster, which collects Kubernetes events, inventory, and container stdout &amp; stderr logs. See
+     * aka.ms/AzureMonitorContainerInsights for an overview.
+     * 
+     * @return the containerInsights value.
+     */
+    public ManagedClusterAzureMonitorProfileContainerInsights containerInsights() {
+        return this.containerInsights;
+    }
+
+    /**
+     * Set the containerInsights property: Set this to enable and configure Azure Monitor Container Insights for the
+     * cluster, which collects Kubernetes events, inventory, and container stdout &amp; stderr logs. See
+     * aka.ms/AzureMonitorContainerInsights for an overview.
+     * 
+     * @param containerInsights the containerInsights value to set.
+     * @return the ManagedClusterAzureMonitorProfile object itself.
+     */
+    public ManagedClusterAzureMonitorProfile
+        withContainerInsights(ManagedClusterAzureMonitorProfileContainerInsights containerInsights) {
+        this.containerInsights = containerInsights;
+        return this;
+    }
+
+    /**
      * Get the appMonitoring property: Application Monitoring Profile for Kubernetes Application Container. Collects
      * application logs, metrics and traces through auto-instrumentation of the application using Azure Monitor
      * OpenTelemetry based SDKs. See aka.ms/AzureMonitorApplicationMonitoring for an overview.
@@ -94,6 +125,9 @@ public final class ManagedClusterAzureMonitorProfile implements JsonSerializable
         if (metrics() != null) {
             metrics().validate();
         }
+        if (containerInsights() != null) {
+            containerInsights().validate();
+        }
         if (appMonitoring() != null) {
             appMonitoring().validate();
         }
@@ -106,6 +140,7 @@ public final class ManagedClusterAzureMonitorProfile implements JsonSerializable
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("metrics", this.metrics);
+        jsonWriter.writeJsonField("containerInsights", this.containerInsights);
         jsonWriter.writeJsonField("appMonitoring", this.appMonitoring);
         return jsonWriter.writeEndObject();
     }
@@ -129,6 +164,9 @@ public final class ManagedClusterAzureMonitorProfile implements JsonSerializable
                 if ("metrics".equals(fieldName)) {
                     deserializedManagedClusterAzureMonitorProfile.metrics
                         = ManagedClusterAzureMonitorProfileMetrics.fromJson(reader);
+                } else if ("containerInsights".equals(fieldName)) {
+                    deserializedManagedClusterAzureMonitorProfile.containerInsights
+                        = ManagedClusterAzureMonitorProfileContainerInsights.fromJson(reader);
                 } else if ("appMonitoring".equals(fieldName)) {
                     deserializedManagedClusterAzureMonitorProfile.appMonitoring
                         = ManagedClusterAzureMonitorProfileAppMonitoring.fromJson(reader);

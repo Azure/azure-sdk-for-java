@@ -50,7 +50,7 @@ public class TranscribeWithDiarizationSample {
             AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData));
 
             // Configure speaker diarization
-            TranscriptionDiarizationOptions diarizationOptions = new TranscriptionDiarizationOptions()
+            TranscriptionDiarizationOptions diarizationOptions = new TranscriptionDiarizationOptions(true)
                 .setMaxSpeakers(5); // Maximum number of speakers to detect (2-36)
 
             TranscriptionOptions options = new TranscriptionOptions(audioFileDetails)
@@ -68,8 +68,8 @@ public class TranscribeWithDiarizationSample {
             if (result.getPhrases() != null && !result.getPhrases().isEmpty()) {
                 for (TranscribedPhrase phrase : result.getPhrases()) {
                     int speakerId = phrase.getSpeaker() != null ? phrase.getSpeaker() : 0;
-                    double startTime = phrase.getOffset() / 1000.0;
-                    double endTime = (phrase.getOffset() + phrase.getDuration().toMillis()) / 1000.0;
+                    double startTime = phrase.getOffset().toMillis() / 1000.0;
+                    double endTime = (phrase.getOffset().toMillis() + phrase.getDuration().toMillis()) / 1000.0;
 
                     System.out.println(String.format("\n[Speaker %d] (%.2fs - %.2fs)",
                         speakerId, startTime, endTime));

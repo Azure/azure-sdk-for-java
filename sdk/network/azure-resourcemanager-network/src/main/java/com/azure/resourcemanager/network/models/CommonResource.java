@@ -20,62 +20,29 @@ import java.io.IOException;
 @Immutable
 public class CommonResource extends ProxyResource {
     /*
-     * Fully qualified resource ID for the resource. E.g.
-     * "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    private String id;
+    private SystemData systemData;
 
     /*
-     * The name of the resource
-     */
-    private String name;
-
-    /*
-     * The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+     * The type of the resource.
      */
     private String type;
 
     /*
-     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * The name of the resource.
      */
-    private SystemData systemData;
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
 
     /**
      * Creates an instance of CommonResource class.
      */
     public CommonResource() {
-    }
-
-    /**
-     * Get the id property: Fully qualified resource ID for the resource. E.g.
-     * "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}".
-     * 
-     * @return the id value.
-     */
-    @Override
-    public String id() {
-        return this.id;
-    }
-
-    /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
-    }
-
-    /**
-     * Get the type property: The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or
-     * "Microsoft.Storage/storageAccounts".
-     * 
-     * @return the type value.
-     */
-    @Override
-    public String type() {
-        return this.type;
     }
 
     /**
@@ -96,6 +63,36 @@ public class CommonResource extends ProxyResource {
     CommonResource withSystemData(SystemData systemData) {
         this.systemData = systemData;
         return this;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -121,6 +118,7 @@ public class CommonResource extends ProxyResource {
      * @param jsonReader The JsonReader being read.
      * @return An instance of CommonResource if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the CommonResource.
      */
     public static CommonResource fromJson(JsonReader jsonReader) throws IOException {

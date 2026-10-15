@@ -70,7 +70,7 @@ public class TestPlanetaryComputer01bStacCollectionTests extends PlanetaryComput
         System.out.println("Testing listMosaics for collection: " + collectionId);
 
         // Act
-        List<StacMosaic> mosaics = stacClient.listMosaics(collectionId);
+        List<StacMosaic> mosaics = stacClient.getMosaics(collectionId);
 
         // Assert
         assertNotNull(mosaics, "Mosaics should not be null");
@@ -150,7 +150,7 @@ public class TestPlanetaryComputer01bStacCollectionTests extends PlanetaryComput
         System.out.println("Testing getQueryables (global queryables)");
 
         // Act - Using protocol method for raw JSON response
-        Response<BinaryData> response = stacClient.listQueryablesWithResponse(new RequestOptions());
+        Response<BinaryData> response = stacClient.getQueryablesWithResponse(new RequestOptions());
 
         // Assert
         assertNotNull(response, "Response should not be null");

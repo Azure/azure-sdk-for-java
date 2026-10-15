@@ -1,7 +1,4 @@
 parameters:
-  - name: SDKType
-    type: string
-    default: bom
   - name: ServiceDirectory
     type: string
     default: 'not-specified' # Set a default that breaks in obvious ways.
@@ -27,14 +24,13 @@ jobs:
       os: linux
 
     steps:
-      - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
-        parameters:
-          Paths:
-            - 'sdk/${{ parameters.ServiceDirectory }}'
-            - '**/*.xml'
-            - '**/*.md'
-            - '!sdk/**/test-recordings'
-            - '!sdk/**/session-records'
+      - checkout: self
+        fetchFilter: tree:0
+        fetchDepth: 0
+        fetchTags: false
+        sparseCheckoutPatterns: /* !/*/ /eng /.config sdk/${{ parameters.ServiceDirectory }} **/*.xml **/*.md !sdk/**/test-recordings !sdk/**/session-records
+        env:
+          AGENT_SOURCE_CHECKOUT_QUIET: 'true'
 
       - script: |
           echo "##vso[build.addbuildtag]Scheduled"

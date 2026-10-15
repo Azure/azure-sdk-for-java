@@ -79,7 +79,8 @@ public abstract class ContentSource {
      * @param source The source string (may contain {@code ;} delimiters).
      * @return An unmodifiable list of {@link ContentSource} instances.
      * @throws NullPointerException if {@code source} is null.
-     * @throws IllegalArgumentException if {@code source} is empty or any segment has an unrecognized format.
+     * @throws IllegalArgumentException if {@code source} contains no source segments or any segment has an
+     * unrecognized format.
      */
     public static List<ContentSource> parseAll(String source) {
         Objects.requireNonNull(source, "'source' cannot be null.");
@@ -93,6 +94,10 @@ public abstract class ContentSource {
             if (!trimmed.isEmpty()) {
                 results.add(parseSingle(trimmed));
             }
+        }
+        if (results.isEmpty()) {
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("'source' must contain at least one source segment."));
         }
         return Collections.unmodifiableList(results);
     }

@@ -13,9 +13,11 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.elasticsan.fluent.models.PreValidationResponseInner;
 import com.azure.resourcemanager.elasticsan.fluent.models.VolumeInner;
+import com.azure.resourcemanager.elasticsan.models.DeleteType;
 import com.azure.resourcemanager.elasticsan.models.DiskSnapshotList;
 import com.azure.resourcemanager.elasticsan.models.VolumeNameList;
 import com.azure.resourcemanager.elasticsan.models.VolumeUpdate;
+import com.azure.resourcemanager.elasticsan.models.XMsAccessSoftDeletedResources;
 import com.azure.resourcemanager.elasticsan.models.XMsDeleteSnapshots;
 import com.azure.resourcemanager.elasticsan.models.XMsForceDelete;
 
@@ -222,6 +224,8 @@ public interface VolumesClient {
      * Default value is false.
      * @param xMsForceDelete Optional, used to delete volume if active sessions present. Allowed value are only true or
      * false. Default value is false.
+     * @param deleteType Optional. Specifies that the delete operation should be a permanent delete for the soft deleted
+     * volume. The value of deleteType can only be 'permanent'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -231,7 +235,7 @@ public interface VolumesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String elasticSanName,
         String volumeGroupName, String volumeName, XMsDeleteSnapshots xMsDeleteSnapshots, XMsForceDelete xMsForceDelete,
-        Context context);
+        DeleteType deleteType, Context context);
 
     /**
      * Delete an Volume.
@@ -258,6 +262,8 @@ public interface VolumesClient {
      * Default value is false.
      * @param xMsForceDelete Optional, used to delete volume if active sessions present. Allowed value are only true or
      * false. Default value is false.
+     * @param deleteType Optional. Specifies that the delete operation should be a permanent delete for the soft deleted
+     * volume. The value of deleteType can only be 'permanent'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -265,7 +271,7 @@ public interface VolumesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void delete(String resourceGroupName, String elasticSanName, String volumeGroupName, String volumeName,
-        XMsDeleteSnapshots xMsDeleteSnapshots, XMsForceDelete xMsForceDelete, Context context);
+        XMsDeleteSnapshots xMsDeleteSnapshots, XMsForceDelete xMsForceDelete, DeleteType deleteType, Context context);
 
     /**
      * List Volumes in a VolumeGroup.
@@ -288,6 +294,8 @@ public interface VolumesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param elasticSanName The name of the ElasticSan.
      * @param volumeGroupName The name of the VolumeGroup.
+     * @param xMsAccessSoftDeletedResources Optional, returns only soft deleted volumes if set to true. If set to false
+     * or if not specified, returns only active volumes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -296,7 +304,7 @@ public interface VolumesClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<VolumeInner> listByVolumeGroup(String resourceGroupName, String elasticSanName,
-        String volumeGroupName, Context context);
+        String volumeGroupName, XMsAccessSoftDeletedResources xMsAccessSoftDeletedResources, Context context);
 
     /**
      * Validate whether a disk snapshot backup can be taken for list of volumes.
@@ -309,7 +317,7 @@ public interface VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of response object for pre validation api.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PreValidationResponseInner>, PreValidationResponseInner> beginPreBackup(
@@ -327,7 +335,7 @@ public interface VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of response object for pre validation api.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PreValidationResponseInner>, PreValidationResponseInner> beginPreBackup(
@@ -345,7 +353,7 @@ public interface VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response object for pre validation api.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     PreValidationResponseInner preBackup(String resourceGroupName, String elasticSanName, String volumeGroupName,
@@ -363,7 +371,7 @@ public interface VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response object for pre validation api.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     PreValidationResponseInner preBackup(String resourceGroupName, String elasticSanName, String volumeGroupName,
@@ -380,7 +388,7 @@ public interface VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of response object for pre validation api.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PreValidationResponseInner>, PreValidationResponseInner> beginPreRestore(
@@ -398,7 +406,7 @@ public interface VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of response object for pre validation api.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PreValidationResponseInner>, PreValidationResponseInner> beginPreRestore(
@@ -416,7 +424,7 @@ public interface VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response object for pre validation api.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     PreValidationResponseInner preRestore(String resourceGroupName, String elasticSanName, String volumeGroupName,
@@ -434,7 +442,7 @@ public interface VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response object for pre validation api.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     PreValidationResponseInner preRestore(String resourceGroupName, String elasticSanName, String volumeGroupName,

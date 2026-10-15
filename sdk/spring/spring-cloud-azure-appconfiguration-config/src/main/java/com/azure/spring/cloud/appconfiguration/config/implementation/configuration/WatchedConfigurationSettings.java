@@ -9,9 +9,9 @@ import com.azure.data.appconfiguration.models.SettingSelector;
 
 public class WatchedConfigurationSettings {
 
-    private SettingSelector settingSelector;
+    private final SettingSelector settingSelector;
 
-    private List<ConfigurationSetting> configurationSettings;
+    private final List<ConfigurationSetting> configurationSettings;
 
     public WatchedConfigurationSettings(SettingSelector settingSelector,
         List<ConfigurationSetting> configurationSettings) {
@@ -27,24 +27,10 @@ public class WatchedConfigurationSettings {
     }
 
     /**
-     * @param settingSelector the settingSelector to set
-     */
-    public void setSettingSelector(SettingSelector settingSelector) {
-        this.settingSelector = settingSelector;
-    }
-
-    /**
      * @return the configurationSettings
      */
     public List<ConfigurationSetting> getConfigurationSettings() {
         return configurationSettings;
-    }
-
-    /**
-     * @param configurations the configurations to set
-     */
-    public void setConfigurationSettings(List<ConfigurationSetting> configurations) {
-        this.configurationSettings = configurations;
     }
 
 }

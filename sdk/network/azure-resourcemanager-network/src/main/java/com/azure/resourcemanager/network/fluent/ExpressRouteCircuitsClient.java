@@ -18,11 +18,15 @@ import com.azure.resourcemanager.network.fluent.models.ExpressRouteCircuitStatsI
 import com.azure.resourcemanager.network.fluent.models.ExpressRouteCircuitsArpTableListResultInner;
 import com.azure.resourcemanager.network.fluent.models.ExpressRouteCircuitsRoutesTableListResultInner;
 import com.azure.resourcemanager.network.fluent.models.ExpressRouteCircuitsRoutesTableSummaryListResultInner;
+import com.azure.resourcemanager.network.fluent.models.ExpressRouteLinkFailoverAllTestsDetailsInner;
+import com.azure.resourcemanager.network.fluent.models.ExpressRouteLinkFailoverSingleTestDetailsInner;
+import com.azure.resourcemanager.network.models.ExpressRouteLinkFailoverStopApiParameters;
 import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
 import java.nio.ByteBuffer;
+import java.util.List;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -468,6 +472,494 @@ public interface ExpressRouteCircuitsClient extends InnerSupportsGet<ExpressRout
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ExpressRouteCircuitStatsInner getStats(String resourceGroupName, String circuitName);
+
+    /**
+     * Retrieves the details of all the link failover tests performed on the express route circuit.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param circuitName The name of express route circuit.
+     * @param failoverTestType The type of failover test.
+     * @param fetchLatest Fetch only the latest tests.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> getCircuitLinkFailoverAllTestsDetailsWithResponseAsync(String resourceGroupName,
+        String circuitName, String failoverTestType, Boolean fetchLatest);
+
+    /**
+     * Retrieves the details of all the link failover tests performed on the express route circuit.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param circuitName The name of express route circuit.
+     * @param failoverTestType The type of failover test.
+     * @param fetchLatest Fetch only the latest tests.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<List<ExpressRouteLinkFailoverAllTestsDetailsInner>>, List<ExpressRouteLinkFailoverAllTestsDetailsInner>>
+        beginGetCircuitLinkFailoverAllTestsDetailsAsync(String resourceGroupName, String circuitName,
+            String failoverTestType, Boolean fetchLatest);
+
+    /**
+     * Retrieves the details of all the link failover tests performed on the express route circuit.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param circuitName The name of express route circuit.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<List<ExpressRouteLinkFailoverAllTestsDetailsInner>>, List<ExpressRouteLinkFailoverAllTestsDetailsInner>>
+        beginGetCircuitLinkFailoverAllTestsDetailsAsync(String resourceGroupName, String circuitName);
+
+    /**
+     * Retrieves the details of all the link failover tests performed on the express route circuit.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param circuitName The name of express route circuit.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<List<ExpressRouteLinkFailoverAllTestsDetailsInner>>, List<ExpressRouteLinkFailoverAllTestsDetailsInner>>
+        beginGetCircuitLinkFailoverAllTestsDetails(String resourceGroupName, String circuitName);
+
+    /**
+     * Retrieves the details of all the link failover tests performed on the express route circuit.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param circuitName The name of express route circuit.
+     * @param failoverTestType The type of failover test.
+     * @param fetchLatest Fetch only the latest tests.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<List<ExpressRouteLinkFailoverAllTestsDetailsInner>>, List<ExpressRouteLinkFailoverAllTestsDetailsInner>>
+        beginGetCircuitLinkFailoverAllTestsDetails(String resourceGroupName, String circuitName,
+            String failoverTestType, Boolean fetchLatest, Context context);
+
+    /**
+     * Retrieves the details of all the link failover tests performed on the express route circuit.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param circuitName The name of express route circuit.
+     * @param failoverTestType The type of failover test.
+     * @param fetchLatest Fetch only the latest tests.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<List<ExpressRouteLinkFailoverAllTestsDetailsInner>> getCircuitLinkFailoverAllTestsDetailsAsync(
+        String resourceGroupName, String circuitName, String failoverTestType, Boolean fetchLatest);
+
+    /**
+     * Retrieves the details of all the link failover tests performed on the express route circuit.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param circuitName The name of express route circuit.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<List<ExpressRouteLinkFailoverAllTestsDetailsInner>>
+        getCircuitLinkFailoverAllTestsDetailsAsync(String resourceGroupName, String circuitName);
+
+    /**
+     * Retrieves the details of all the link failover tests performed on the express route circuit.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param circuitName The name of express route circuit.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    List<ExpressRouteLinkFailoverAllTestsDetailsInner> getCircuitLinkFailoverAllTestsDetails(String resourceGroupName,
+        String circuitName);
+
+    /**
+     * Retrieves the details of all the link failover tests performed on the express route circuit.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param circuitName The name of express route circuit.
+     * @param failoverTestType The type of failover test.
+     * @param fetchLatest Fetch only the latest tests.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    List<ExpressRouteLinkFailoverAllTestsDetailsInner> getCircuitLinkFailoverAllTestsDetails(String resourceGroupName,
+        String circuitName, String failoverTestType, Boolean fetchLatest, Context context);
+
+    /**
+     * Retrieves the details of a particular link failover test performed on the express route circuit.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param circuitName The name of express route circuit.
+     * @param linkType The link type.
+     * @param circuitTestCategory The circuit test category.
+     * @param failoverTestId The unique Guid value which identifies the test.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> getCircuitLinkFailoverSingleTestDetailsWithResponseAsync(String resourceGroupName,
+        String circuitName, String linkType, String circuitTestCategory, String failoverTestId);
+
+    /**
+     * Retrieves the details of a particular link failover test performed on the express route circuit.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param circuitName The name of express route circuit.
+     * @param linkType The link type.
+     * @param circuitTestCategory The circuit test category.
+     * @param failoverTestId The unique Guid value which identifies the test.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<List<ExpressRouteLinkFailoverSingleTestDetailsInner>>, List<ExpressRouteLinkFailoverSingleTestDetailsInner>>
+        beginGetCircuitLinkFailoverSingleTestDetailsAsync(String resourceGroupName, String circuitName, String linkType,
+            String circuitTestCategory, String failoverTestId);
+
+    /**
+     * Retrieves the details of a particular link failover test performed on the express route circuit.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param circuitName The name of express route circuit.
+     * @param linkType The link type.
+     * @param circuitTestCategory The circuit test category.
+     * @param failoverTestId The unique Guid value which identifies the test.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<List<ExpressRouteLinkFailoverSingleTestDetailsInner>>, List<ExpressRouteLinkFailoverSingleTestDetailsInner>>
+        beginGetCircuitLinkFailoverSingleTestDetails(String resourceGroupName, String circuitName, String linkType,
+            String circuitTestCategory, String failoverTestId);
+
+    /**
+     * Retrieves the details of a particular link failover test performed on the express route circuit.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param circuitName The name of express route circuit.
+     * @param linkType The link type.
+     * @param circuitTestCategory The circuit test category.
+     * @param failoverTestId The unique Guid value which identifies the test.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<List<ExpressRouteLinkFailoverSingleTestDetailsInner>>, List<ExpressRouteLinkFailoverSingleTestDetailsInner>>
+        beginGetCircuitLinkFailoverSingleTestDetails(String resourceGroupName, String circuitName, String linkType,
+            String circuitTestCategory, String failoverTestId, Context context);
+
+    /**
+     * Retrieves the details of a particular link failover test performed on the express route circuit.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param circuitName The name of express route circuit.
+     * @param linkType The link type.
+     * @param circuitTestCategory The circuit test category.
+     * @param failoverTestId The unique Guid value which identifies the test.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<List<ExpressRouteLinkFailoverSingleTestDetailsInner>> getCircuitLinkFailoverSingleTestDetailsAsync(
+        String resourceGroupName, String circuitName, String linkType, String circuitTestCategory,
+        String failoverTestId);
+
+    /**
+     * Retrieves the details of a particular link failover test performed on the express route circuit.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param circuitName The name of express route circuit.
+     * @param linkType The link type.
+     * @param circuitTestCategory The circuit test category.
+     * @param failoverTestId The unique Guid value which identifies the test.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    List<ExpressRouteLinkFailoverSingleTestDetailsInner> getCircuitLinkFailoverSingleTestDetails(
+        String resourceGroupName, String circuitName, String linkType, String circuitTestCategory,
+        String failoverTestId);
+
+    /**
+     * Retrieves the details of a particular link failover test performed on the express route circuit.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param circuitName The name of express route circuit.
+     * @param linkType The link type.
+     * @param circuitTestCategory The circuit test category.
+     * @param failoverTestId The unique Guid value which identifies the test.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    List<ExpressRouteLinkFailoverSingleTestDetailsInner> getCircuitLinkFailoverSingleTestDetails(
+        String resourceGroupName, String circuitName, String linkType, String circuitTestCategory,
+        String failoverTestId, Context context);
+
+    /**
+     * Starts link failover simulation on the express route circuit for the specified link type and test category.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param circuitName The name of express route circuit.
+     * @param linkType The link type.
+     * @param circuitTestCategory The circuit test category.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> startCircuitLinkFailoverTestWithResponseAsync(String resourceGroupName,
+        String circuitName, String linkType, String circuitTestCategory);
+
+    /**
+     * Starts link failover simulation on the express route circuit for the specified link type and test category.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param circuitName The name of express route circuit.
+     * @param linkType The link type.
+     * @param circuitTestCategory The circuit test category.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<String>, String> beginStartCircuitLinkFailoverTestAsync(String resourceGroupName,
+        String circuitName, String linkType, String circuitTestCategory);
+
+    /**
+     * Starts link failover simulation on the express route circuit for the specified link type and test category.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param circuitName The name of express route circuit.
+     * @param linkType The link type.
+     * @param circuitTestCategory The circuit test category.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<String>, String> beginStartCircuitLinkFailoverTest(String resourceGroupName,
+        String circuitName, String linkType, String circuitTestCategory);
+
+    /**
+     * Starts link failover simulation on the express route circuit for the specified link type and test category.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param circuitName The name of express route circuit.
+     * @param linkType The link type.
+     * @param circuitTestCategory The circuit test category.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<String>, String> beginStartCircuitLinkFailoverTest(String resourceGroupName,
+        String circuitName, String linkType, String circuitTestCategory, Context context);
+
+    /**
+     * Starts link failover simulation on the express route circuit for the specified link type and test category.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param circuitName The name of express route circuit.
+     * @param linkType The link type.
+     * @param circuitTestCategory The circuit test category.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<String> startCircuitLinkFailoverTestAsync(String resourceGroupName, String circuitName, String linkType,
+        String circuitTestCategory);
+
+    /**
+     * Starts link failover simulation on the express route circuit for the specified link type and test category.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param circuitName The name of express route circuit.
+     * @param linkType The link type.
+     * @param circuitTestCategory The circuit test category.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    String startCircuitLinkFailoverTest(String resourceGroupName, String circuitName, String linkType,
+        String circuitTestCategory);
+
+    /**
+     * Starts link failover simulation on the express route circuit for the specified link type and test category.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param circuitName The name of express route circuit.
+     * @param linkType The link type.
+     * @param circuitTestCategory The circuit test category.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    String startCircuitLinkFailoverTest(String resourceGroupName, String circuitName, String linkType,
+        String circuitTestCategory, Context context);
+
+    /**
+     * Stops link failover simulation on the express route circuit.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param circuitName The name of express route circuit.
+     * @param stopParameters Parameters supplied to stop the link failover simulation on the express route circuit.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> stopCircuitLinkFailoverTestWithResponseAsync(String resourceGroupName,
+        String circuitName, ExpressRouteLinkFailoverStopApiParameters stopParameters);
+
+    /**
+     * Stops link failover simulation on the express route circuit.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param circuitName The name of express route circuit.
+     * @param stopParameters Parameters supplied to stop the link failover simulation on the express route circuit.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<String>, String> beginStopCircuitLinkFailoverTestAsync(String resourceGroupName,
+        String circuitName, ExpressRouteLinkFailoverStopApiParameters stopParameters);
+
+    /**
+     * Stops link failover simulation on the express route circuit.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param circuitName The name of express route circuit.
+     * @param stopParameters Parameters supplied to stop the link failover simulation on the express route circuit.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<String>, String> beginStopCircuitLinkFailoverTest(String resourceGroupName,
+        String circuitName, ExpressRouteLinkFailoverStopApiParameters stopParameters);
+
+    /**
+     * Stops link failover simulation on the express route circuit.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param circuitName The name of express route circuit.
+     * @param stopParameters Parameters supplied to stop the link failover simulation on the express route circuit.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<String>, String> beginStopCircuitLinkFailoverTest(String resourceGroupName,
+        String circuitName, ExpressRouteLinkFailoverStopApiParameters stopParameters, Context context);
+
+    /**
+     * Stops link failover simulation on the express route circuit.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param circuitName The name of express route circuit.
+     * @param stopParameters Parameters supplied to stop the link failover simulation on the express route circuit.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<String> stopCircuitLinkFailoverTestAsync(String resourceGroupName, String circuitName,
+        ExpressRouteLinkFailoverStopApiParameters stopParameters);
+
+    /**
+     * Stops link failover simulation on the express route circuit.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param circuitName The name of express route circuit.
+     * @param stopParameters Parameters supplied to stop the link failover simulation on the express route circuit.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    String stopCircuitLinkFailoverTest(String resourceGroupName, String circuitName,
+        ExpressRouteLinkFailoverStopApiParameters stopParameters);
+
+    /**
+     * Stops link failover simulation on the express route circuit.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param circuitName The name of express route circuit.
+     * @param stopParameters Parameters supplied to stop the link failover simulation on the express route circuit.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    String stopCircuitLinkFailoverTest(String resourceGroupName, String circuitName,
+        ExpressRouteLinkFailoverStopApiParameters stopParameters, Context context);
 
     /**
      * Gets the currently advertised ARP table associated with the express route circuit in a resource group.

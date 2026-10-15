@@ -44,6 +44,7 @@ public final class ChatMessageImageUrl implements JsonSerializable<ChatMessageIm
     }
 
     /*
+     * 
      * The evaluation quality setting to use, which controls relative prioritization of speed, token consumption, and
      * accuracy.
      */
@@ -51,8 +52,8 @@ public final class ChatMessageImageUrl implements JsonSerializable<ChatMessageIm
     private ChatMessageImageDetailLevel detail;
 
     /**
-     * Get the detail property: The evaluation quality setting to use, which controls relative prioritization of speed,
-     * token consumption, and
+     * Get the detail property:
+     * The evaluation quality setting to use, which controls relative prioritization of speed, token consumption, and
      * accuracy.
      *
      * @return the detail value.
@@ -63,8 +64,8 @@ public final class ChatMessageImageUrl implements JsonSerializable<ChatMessageIm
     }
 
     /**
-     * Set the detail property: The evaluation quality setting to use, which controls relative prioritization of speed,
-     * token consumption, and
+     * Set the detail property:
+     * The evaluation quality setting to use, which controls relative prioritization of speed, token consumption, and
      * accuracy.
      *
      * @param detail the detail value to set.

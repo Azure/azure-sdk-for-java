@@ -68,4 +68,29 @@ public class AppConfigurationConstants {
     public static final String FEATURE_FLAG_REFERENCE = "FeatureFlagReference";
 
     public static final String E_TAG = "ETag";
+
+    /**
+     * AI mime profile identifier in content type.
+     */
+    public static final String APP_CONFIG_AI_MIME_PROFILE = "azconfig.io/mime-profiles/ai";
+
+    /**
+     * AI Chat Completion mime profile identifier in content type.
+     */
+    public static final String APP_CONFIG_AICC_MIME_PROFILE = "azconfig.io/mime-profiles/ai-chat-completion";
+
+    /**
+     * Constant for tracing load balancing usage.
+     */
+    public static final String LOAD_BALANCING_FEATURE = "LB";
+
+    /**
+     * Constant for tracing AI configuration usage.
+     */
+    public static final String AI_CONFIGURATION_FEATURE = "AI";
+
+    /**
+     * Constant for tracing AI Chat Completion configuration usage.
+     */
+    public static final String AI_CHAT_COMPLETION_FEATURE = "AICC";
 }

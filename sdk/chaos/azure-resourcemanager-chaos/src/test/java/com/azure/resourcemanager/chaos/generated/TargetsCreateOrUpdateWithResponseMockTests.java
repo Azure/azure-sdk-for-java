@@ -9,6 +9,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
+import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.chaos.ChaosManager;
 import com.azure.resourcemanager.chaos.fluent.models.TargetInner;
 import com.azure.resourcemanager.chaos.models.Target;
@@ -24,7 +25,7 @@ public final class TargetsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{},\"location\":\"gytguslfead\",\"id\":\"gq\",\"name\":\"kyhejhzisxgf\",\"type\":\"elolppvksrpqvuj\"}";
+            = "{\"properties\":{\"hlaiwd\":\"\\\"datav\\\"\",\"hzdtxetlgydlh\":\"\\\"dataxsmlz\\\"\",\"b\":\"\\\"datavlnnpx\\\"\",\"gjekglklby\":\"\\\"datafiqgeaar\\\"\"},\"location\":\"idwcwvmzegjon\",\"id\":\"jirwgdnqzbrfk\",\"name\":\"pzhz\",\"type\":\"tk\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,11 +35,17 @@ public final class TargetsCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Target response = manager.targets()
-            .createOrUpdateWithResponse("hka", "vwitqscyw", "ggwoluhczb", "emh", "i",
-                new TargetInner().withProperties(mapOf()).withLocation("rgzdwmsweyp"), com.azure.core.util.Context.NONE)
+            .createOrUpdateWithResponse("tjklntikyjuzk", "bqzolxr", "vhqjwtrhtgvg", "pcrrk", "lawjmjsmwrok",
+                new TargetInner()
+                    .withProperties(mapOf("nuchlgmltxdwhmo",
+                        BinaryData.fromBytes("\"dataxfzzzwyjafitlhgu\"".getBytes(StandardCharsets.UTF_8)), "zvlnsnnjz",
+                        BinaryData.fromBytes("\"dataus\"".getBytes(StandardCharsets.UTF_8)), "mwamxqzragpgdph",
+                        BinaryData.fromBytes("\"datapafolp\"".getBytes(StandardCharsets.UTF_8))))
+                    .withLocation("dulajvlejchcs"),
+                com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("gytguslfead", response.location());
+        Assertions.assertEquals("idwcwvmzegjon", response.location());
     }
 
     // Use "Map.of" if available

@@ -12,7 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The settings for the long term backup.
+ * Settings for the long term backup.
  */
 @Fluent
 public final class BackupSettings implements JsonSerializable<BackupSettings> {

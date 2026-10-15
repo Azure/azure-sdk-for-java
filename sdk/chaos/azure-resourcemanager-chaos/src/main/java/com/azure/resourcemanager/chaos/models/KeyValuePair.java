@@ -12,7 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * A map to describe the settings of an action.
+ * A key-value pair used to describe parameters for actions or configurations.
  */
 @Fluent
 public final class KeyValuePair implements JsonSerializable<KeyValuePair> {

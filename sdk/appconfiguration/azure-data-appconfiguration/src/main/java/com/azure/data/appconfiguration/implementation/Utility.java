@@ -3,6 +3,14 @@
 
 package com.azure.data.appconfiguration.implementation;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
+
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpResponse;
@@ -10,26 +18,16 @@ import com.azure.core.http.MatchConditions;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.ResponseBase;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.appconfiguration.implementation.models.KeyValue;
-import com.azure.data.appconfiguration.implementation.models.SnapshotUpdateParameters;
-import com.azure.data.appconfiguration.implementation.models.UpdateSnapshotHeaders;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshot;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshotStatus;
 import com.azure.data.appconfiguration.models.SettingFields;
-import reactor.core.publisher.Mono;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.concurrent.atomic.AtomicInteger;
+import reactor.core.publisher.Mono;
 
 /**
  * App Configuration Utility methods, use internally.
@@ -61,7 +59,8 @@ public class Utility {
             .setEtag(setting.getETag())
             .setLastModified(setting.getLastModified())
             .setLocked(setting.isReadOnly())
-            .setTags(setting.getTags());
+            .setTags(setting.getTags())
+            .setDescription(setting.getDescription());
     }
 
     // SettingFields[] to List<SettingFields>
@@ -113,23 +112,16 @@ public class Utility {
     }
 
     public static Response<ConfigurationSnapshot> updateSnapshotSync(String snapshotName,
-        MatchConditions matchConditions, ConfigurationSnapshotStatus status, AzureAppConfigurationImpl serviceClient,
+        MatchConditions matchConditions, ConfigurationSnapshotStatus status, ConfigurationClientImpl serviceClient,
         Context context) {
         final String ifMatch = matchConditions == null ? null : matchConditions.getIfMatch();
-
-        final ResponseBase<UpdateSnapshotHeaders, ConfigurationSnapshot> response
-            = serviceClient.updateSnapshotWithResponse(snapshotName, new SnapshotUpdateParameters().setStatus(status),
-                ifMatch, null, context);
-        return new SimpleResponse<>(response, response.getValue());
+        return ImplBridge.updateSnapshotWithResponse(serviceClient, snapshotName, status, ifMatch, context);
     }
 
     public static Mono<Response<ConfigurationSnapshot>> updateSnapshotAsync(String snapshotName,
-        MatchConditions matchConditions, ConfigurationSnapshotStatus status, AzureAppConfigurationImpl serviceClient) {
+        MatchConditions matchConditions, ConfigurationSnapshotStatus status, ConfigurationClientImpl serviceClient) {
         final String ifMatch = matchConditions == null ? null : matchConditions.getIfMatch();
-        return serviceClient
-            .updateSnapshotWithResponseAsync(snapshotName, new SnapshotUpdateParameters().setStatus(status), ifMatch,
-                null)
-            .map(response -> new SimpleResponse<>(response, response.getValue()));
+        return ImplBridge.updateSnapshotWithResponseAsync(serviceClient, snapshotName, status, ifMatch, Context.NONE);
     }
 
     // Parse the next link from the link header, if it exists. And return the continuation token url without the "<" and ">"
@@ -209,5 +201,46 @@ public class Utility {
             tagsFilters = null;
         }
         return tagsFilters;
+    }
+
+    // Convert a HEAD response to a PagedResponse with empty items.
+    public static PagedResponse<ConfigurationSetting> toHeadPagedResponse(Response<Void> response) {
+        String continuationToken = parseNextLink(response.getHeaders().getValue(HttpHeaderName.LINK));
+        return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+            Collections.emptyList(), continuationToken, null);
+    }
+
+    // Handle 304 status code from HEAD request to a valid response - Async handler
+    public static Mono<PagedResponse<ConfigurationSetting>>
+        handleHeadNotModifiedErrorToValidResponse(HttpResponseException error) {
+        HttpResponse httpResponse = error.getResponse();
+        if (httpResponse == null) {
+            return Mono.error(error);
+        }
+
+        String continuationToken = parseNextLink(httpResponse.getHeaderValue(HttpHeaderName.LINK));
+        if (httpResponse.getStatusCode() == 304) {
+            return Mono.just(new PagedResponseBase<>(httpResponse.getRequest(), httpResponse.getStatusCode(),
+                httpResponse.getHeaders(), Collections.emptyList(), continuationToken, null));
+        }
+
+        return Mono.error(error);
+    }
+
+    // Handle 304 status code from HEAD request to a valid response - Sync handler
+    public static PagedResponse<ConfigurationSetting>
+        handleHeadNotModifiedErrorToValidResponse(HttpResponseException error, ClientLogger logger) {
+        HttpResponse httpResponse = error.getResponse();
+        if (httpResponse == null) {
+            throw logger.logExceptionAsError(error);
+        }
+
+        String continuationToken = parseNextLink(httpResponse.getHeaderValue(HttpHeaderName.LINK));
+        if (httpResponse.getStatusCode() == 304) {
+            return new PagedResponseBase<>(httpResponse.getRequest(), httpResponse.getStatusCode(),
+                httpResponse.getHeaders(), Collections.emptyList(), continuationToken, null);
+        }
+
+        throw logger.logExceptionAsError(error);
     }
 }

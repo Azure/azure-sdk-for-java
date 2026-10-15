@@ -22,6 +22,11 @@ public final class AgentPoolSshAccess extends ExpandableStringEnum<AgentPoolSshA
     public static final AgentPoolSshAccess DISABLED = fromString("Disabled");
 
     /**
+     * SSH to node with EntraId integration. More information can be found under https://aka.ms/aks/ssh/aad.
+     */
+    public static final AgentPoolSshAccess ENTRA_ID = fromString("EntraId");
+
+    /**
      * Creates a new instance of AgentPoolSshAccess value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

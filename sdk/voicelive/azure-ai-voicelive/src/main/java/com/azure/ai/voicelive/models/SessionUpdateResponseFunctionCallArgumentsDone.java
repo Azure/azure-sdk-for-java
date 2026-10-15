@@ -15,7 +15,7 @@ import java.io.IOException;
  * Also emitted when a Response is interrupted, incomplete, or cancelled.
  */
 @Immutable
-public final class SessionUpdateResponseFunctionCallArgumentsDone extends SessionUpdate {
+public final class SessionUpdateResponseFunctionCallArgumentsDone extends SessionServerEvent {
 
     /*
      * The type of event.

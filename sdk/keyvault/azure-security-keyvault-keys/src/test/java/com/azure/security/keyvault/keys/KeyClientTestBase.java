@@ -30,9 +30,11 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.security.keyvault.keys.implementation.KeyVaultCredentialPolicy;
+import com.azure.security.keyvault.keys.models.CreateExternalKeyOptions;
 import com.azure.security.keyvault.keys.models.CreateKeyOptions;
 import com.azure.security.keyvault.keys.models.CreateOctKeyOptions;
 import com.azure.security.keyvault.keys.models.CreateRsaKeyOptions;
+import com.azure.security.keyvault.keys.models.ExternalKey;
 import com.azure.security.keyvault.keys.models.KeyReleasePolicy;
 import com.azure.security.keyvault.keys.models.KeyRotationLifetimeAction;
 import com.azure.security.keyvault.keys.models.KeyRotationPolicy;
@@ -517,6 +519,18 @@ public abstract class KeyClientTestBase extends TestProxyTestBase {
                 .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC));
 
         testRunner.accept(createKeyOptions);
+    }
+
+    void createExternalKeyRunner(Consumer<CreateExternalKeyOptions> testRunner) {
+        // The external key identifier is picked up from an environment variable when running live or recording. In
+        // playback mode the variable is not required and a default value is used, since the response is served from
+        // the recording.
+        final String externalKeyId
+            = Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_EXTERNAL_KEY_ID", "external-key-reference-id");
+        final CreateExternalKeyOptions keyToCreate = new CreateExternalKeyOptions(
+            testResourceNamer.randomName("externalKey", 20), new ExternalKey(externalKeyId));
+
+        testRunner.accept(keyToCreate);
     }
 
     /**

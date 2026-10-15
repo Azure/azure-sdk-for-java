@@ -21,7 +21,7 @@ public final class CapabilityTypesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"publisher\":\"lazszrn\",\"targetType\":\"iin\",\"displayName\":\"pwp\",\"description\":\"lwbtlhf\",\"parametersSchema\":\"jcdh\",\"urn\":\"fjvfbgofeljagr\",\"kind\":\"qhl\",\"azureRbacActions\":[\"iiiojnalghf\",\"vtvsexsowueluq\",\"hahhxvrhmzkwpj\",\"wws\"],\"azureRbacDataActions\":[\"hftqsxhqxujxukn\",\"xdigrjg\",\"ufzdmsyq\",\"fi\"],\"requiredAzureRoleDefinitionIds\":[\"botzingamvppho\",\"zqzudph\",\"amvdkfwynwcvtbv\",\"ayhmtnvyqiatkz\"],\"runtimeProperties\":{\"kind\":\"npwzcjaes\"}},\"id\":\"v\",\"name\":\"ccyajg\",\"type\":\"qfhwyg\"}]}";
+            = "{\"value\":[{\"properties\":{\"publisher\":\"pemmucfxhik\",\"targetType\":\"lrmymyincqlhri\",\"displayName\":\"sl\",\"description\":\"iiovgqcgxu\",\"parametersSchema\":\"qkctotiowlxte\",\"urn\":\"ptjgwdt\",\"kind\":\"kranblwphqlkcc\",\"azureRbacActions\":[\"ygqwahoiu\",\"wgniipr\"],\"azureRbacDataActions\":[\"awuwzdufypivls\",\"bjpmcubk\",\"ifoxxkubvphav\",\"mhbrbqgvg\"],\"requiredAzureRoleDefinitionIds\":[\"bbttefjo\",\"nssqyzqed\",\"kdfrdbiqmrjgeihf\",\"lg\"],\"runtimeProperties\":{\"kind\":\"iwzcxmjpbyeph\"}},\"id\":\"t\",\"name\":\"ljvrcmyfqipgxhnp\",\"type\":\"myqwcab\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,8 +30,8 @@ public final class CapabilityTypesListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<CapabilityType> response
-            = manager.capabilityTypes().list("lfzxiavrmbzonoki", "rjqc", "rgz", com.azure.core.util.Context.NONE);
+        PagedIterable<CapabilityType> response = manager.capabilityTypes()
+            .list("ujdjltymkmvg", "ihywartspph", "ixkykxd", com.azure.core.util.Context.NONE);
 
     }
 }

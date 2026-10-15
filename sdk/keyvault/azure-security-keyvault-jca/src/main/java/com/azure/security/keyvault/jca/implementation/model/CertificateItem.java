@@ -20,6 +20,11 @@ public class CertificateItem implements JsonSerializable<CertificateItem> {
     private String id;
 
     /**
+     * Stores the management attributes of the certificate.
+     */
+    private CertificateItemAttributes attributes;
+
+    /**
      * Get the id.
      *
      * @return the id.
@@ -37,10 +42,42 @@ public class CertificateItem implements JsonSerializable<CertificateItem> {
         this.id = id;
     }
 
+    /**
+     * Get the management attributes of the certificate.
+     *
+     * @return the management attributes of the certificate, or {@code null} if not specified.
+     */
+    public CertificateItemAttributes getAttributes() {
+        return attributes;
+    }
+
+    /**
+     * Set the management attributes of the certificate.
+     *
+     * @param attributes the management attributes of the certificate.
+     */
+    public void setAttributes(CertificateItemAttributes attributes) {
+        this.attributes = attributes;
+    }
+
+    /**
+     * Indicates whether the certificate is enabled.
+     * <p>
+     * A certificate is considered enabled unless its attributes explicitly mark it as disabled (i.e.
+     * {@code attributes.enabled == false}). When the attributes or the {@code enabled} flag are absent, the certificate
+     * is treated as enabled for backward compatibility.
+     *
+     * @return {@code false} only when the certificate is explicitly disabled, otherwise {@code true}.
+     */
+    public boolean isEnabled() {
+        return attributes == null || !Boolean.FALSE.equals(attributes.isEnabled());
+    }
+
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeJsonField("attributes", this.attributes);
 
         return jsonWriter.writeEndObject();
     }
@@ -66,6 +103,8 @@ public class CertificateItem implements JsonSerializable<CertificateItem> {
 
                 if ("id".equals(fieldName)) {
                     deserializedCertificateItem.id = reader.getString();
+                } else if ("attributes".equals(fieldName)) {
+                    deserializedCertificateItem.attributes = CertificateItemAttributes.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

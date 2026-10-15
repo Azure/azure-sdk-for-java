@@ -33,6 +33,7 @@ import java.util.UUID;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Uploads all Micrometer metrics with full tag dimensions to a Cosmos DB container.
@@ -82,6 +83,7 @@ public class CosmosMetricsReporter {
     private final CpuMemoryReader cpuReader;
     private final ScheduledExecutorService scheduler;
     private final boolean enabled;
+    private final AtomicBoolean isStopped;
 
     private CosmosMetricsReporter(
         MeterRegistry micrometerRegistry,
@@ -95,6 +97,7 @@ public class CosmosMetricsReporter {
         this.commitId = reporterConfig.getCommitId();
         this.concurrency = concurrency;
         this.cpuReader = new CpuMemoryReader();
+        this.isStopped = new AtomicBoolean(false);
 
         this.micrometerRegistry = micrometerRegistry;
         this.cosmosClient = new CosmosClientBuilder()
@@ -128,8 +131,12 @@ public class CosmosMetricsReporter {
     }
 
     public void report() {
-        if (!enabled) return;
+        if (!enabled || isStopped.get()) return;
 
+        reportCore();
+    }
+
+    private void reportCore() {
         String timestamp = TIMESTAMP_FORMATTER.format(Instant.now());
         double cpuPercent = round(cpuReader.getSystemWideCpuUsage() * 100);
 
@@ -153,7 +160,9 @@ public class CosmosMetricsReporter {
     }
 
     public void stop() {
-        if (!enabled) return;
+        if (!enabled || !isStopped.compareAndSet(false, true)) return;
+
+        reportCore();
 
         scheduler.shutdown();
         try {
@@ -161,8 +170,6 @@ public class CosmosMetricsReporter {
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
-
-        report();
 
         if (cosmosClient != null) {
             cosmosClient.close();

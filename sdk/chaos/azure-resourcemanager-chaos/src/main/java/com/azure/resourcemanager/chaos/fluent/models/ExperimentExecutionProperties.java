@@ -10,6 +10,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.chaos.models.ProvisioningState;
 import java.io.IOException;
 import java.time.OffsetDateTime;
 
@@ -32,6 +33,11 @@ public final class ExperimentExecutionProperties implements JsonSerializable<Exp
      * String that represents the stop date time.
      */
     private OffsetDateTime stoppedAt;
+
+    /*
+     * Resource provisioning state. Not currently in use for executions.
+     */
+    private ProvisioningState provisioningState;
 
     /**
      * Creates an instance of ExperimentExecutionProperties class.
@@ -67,6 +73,15 @@ public final class ExperimentExecutionProperties implements JsonSerializable<Exp
     }
 
     /**
+     * Get the provisioningState property: Resource provisioning state. Not currently in use for executions.
+     * 
+     * @return the provisioningState value.
+     */
+    public ProvisioningState provisioningState() {
+        return this.provisioningState;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -99,6 +114,9 @@ public final class ExperimentExecutionProperties implements JsonSerializable<Exp
                 } else if ("stoppedAt".equals(fieldName)) {
                     deserializedExperimentExecutionProperties.stoppedAt = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedExperimentExecutionProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

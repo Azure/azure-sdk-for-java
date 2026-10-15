@@ -1,0 +1,10 @@
+{
+  "from": "sender@example.com",
+  "to": "recipient@example.com",
+  "receivedTimeStamp": "2026-05-19T18:30:00Z",
+  "channelType": "whatsapp",
+  "messageType": "text",
+  "content": "Hello, world!",
+  "messageId": "11111111-2222-3333-4444-555555555555",
+  "fromBSUID": "BSUID-FROM-1234567890"
+}

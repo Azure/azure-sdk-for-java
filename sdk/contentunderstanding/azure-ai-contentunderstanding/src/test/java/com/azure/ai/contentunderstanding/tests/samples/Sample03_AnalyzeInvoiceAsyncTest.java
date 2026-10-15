@@ -4,7 +4,6 @@
 
 package com.azure.ai.contentunderstanding.tests.samples;
 
-import com.azure.ai.contentunderstanding.models.AnalysisInput;
 import com.azure.ai.contentunderstanding.models.AnalysisResult;
 import com.azure.ai.contentunderstanding.models.ContentArrayField;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus;
@@ -14,10 +13,8 @@ import com.azure.ai.contentunderstanding.models.ContentField;
 import com.azure.ai.contentunderstanding.models.ContentSpan;
 import com.azure.ai.contentunderstanding.models.AnalysisContent;
 import com.azure.ai.contentunderstanding.models.ContentObjectField;
-import com.azure.ai.contentunderstanding.models.DocumentSource;
 import com.azure.ai.contentunderstanding.models.UsageDetails;
-import com.azure.core.util.polling.LongRunningOperationStatus;
-import com.azure.core.util.polling.PollerFlux;
+import com.azure.ai.contentunderstanding.samples.Sample03_AnalyzeInvoiceAsync;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -25,7 +22,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -48,30 +44,15 @@ public class Sample03_AnalyzeInvoiceAsyncTest extends ContentUnderstandingClient
         String invoiceUrl
             = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-dotnet/main/ContentUnderstanding.Common/data/invoice.pdf";
 
-        AnalysisInput input = new AnalysisInput();
-        input.setUrl(invoiceUrl);
+        ContentAnalyzerAnalyzeOperationStatus operationStatus
+            = Sample03_AnalyzeInvoiceAsync.analyzeInvoice(contentUnderstandingAsyncClient, invoiceUrl);
 
-        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> operation
-            = contentUnderstandingAsyncClient.beginAnalyze("prebuilt-invoice", Arrays.asList(input));
-
-        // Wait for the operation to complete and get the operation status
-        // In a real application, you would use subscribe() instead of block()
-        ContentAnalyzerAnalyzeOperationStatus operationStatus = operation.last().map(pollResponse -> {
-            if (!pollResponse.getStatus().isComplete()) {
-                throw new RuntimeException("Polling did not complete: " + pollResponse.getStatus());
-            }
-            if (pollResponse.getStatus() != LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
-                throw new RuntimeException("Operation failed with status: " + pollResponse.getStatus());
-            }
-            return pollResponse.getValue();
-        }).block(); // block() is used here for testing; in production, use subscribe()
-
+        assertNotNull(operationStatus, "Analysis operation status should not be null");
         AnalysisResult result = operationStatus.getResult();
         // END:ContentUnderstandingAnalyzeInvoiceAsync
 
         // BEGIN:Assertion_ContentUnderstandingAnalyzeInvoiceAsync
         assertNotNull(invoiceUrl, "Invoice URL should not be null");
-        assertNotNull(operation, "Analysis operation should not be null");
         assertNotNull(result, "Analysis result should not be null");
         assertNotNull(result.getContents(), "Result should contain contents");
         assertTrue(result.getContents().size() > 0, "Result should have at least one content");
@@ -125,7 +106,8 @@ public class Sample03_AnalyzeInvoiceAsyncTest extends ContentUnderstandingClient
             System.out.println();
 
             // Extract simple string fields using getValue() convenience method
-            // getValue() returns the typed value regardless of field type (StringField, NumberField, DateField, etc.)
+            // getValue() returns the typed value regardless of field type
+            // (ContentStringField, ContentNumberField, ContentDateField, etc.)
             ContentField customerNameField
                 = documentContent.getFields() != null ? documentContent.getFields().get("CustomerName") : null;
             ContentField invoiceDateField
@@ -238,6 +220,7 @@ public class Sample03_AnalyzeInvoiceAsyncTest extends ContentUnderstandingClient
                 "End page should be >= start page");
             int totalPages = docContent.getEndPageNumber() - docContent.getStartPageNumber() + 1;
             assertTrue(totalPages > 0, "Total pages should be positive");
+            Sample03_AnalyzeInvoiceTest.assertInvoiceFields(docContent);
             System.out.println("Document has " + totalPages + " page(s) from " + docContent.getStartPageNumber()
                 + " to " + docContent.getEndPageNumber());
 
@@ -257,7 +240,7 @@ public class Sample03_AnalyzeInvoiceAsyncTest extends ContentUnderstandingClient
         // BEGIN:Assertion_ContentUnderstandingInvoiceToLlmInputAsync
         assertNotNull(llmText, "LLM input text should not be null");
         assertTrue(llmText.startsWith("---\n"));
-        assertTrue(llmText.contains("contentType: document"));
+        assertTrue(llmText.contains("mimeType: application/pdf"));
         assertTrue(llmText.contains("fields:"));
         System.out.println("Invoice LLM input text generated (" + llmText.length() + " characters)");
         // END:Assertion_ContentUnderstandingInvoiceToLlmInputAsync

@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Properties of a HorizonDb parameter group for update operations.
+ * Properties of a HorizonDB parameter group for update operations.
  */
 @Fluent
 public final class HorizonDbParameterGroupPropertiesForPatchUpdate

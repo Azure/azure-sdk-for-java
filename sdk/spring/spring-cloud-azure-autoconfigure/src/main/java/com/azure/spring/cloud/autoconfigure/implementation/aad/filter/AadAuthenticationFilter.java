@@ -69,7 +69,7 @@ public class AadAuthenticationFilter extends OncePerRequestFilter {
                 endpoints,
                 aadAuthenticationProperties,
                 resourceRetriever,
-                false
+                true
             ),
             restTemplateBuilder
         );
@@ -97,7 +97,7 @@ public class AadAuthenticationFilter extends OncePerRequestFilter {
                 endpoints,
                 aadAuthenticationProperties,
                 resourceRetriever,
-                false,
+                true,
                 jwkSetCache
             ),
             restTemplateBuilder

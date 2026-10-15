@@ -120,6 +120,7 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
         documents = new ArrayList<>();
         client = getClientBuilder().buildAsyncClient();
         documentCollection = getSharedMultiPartitionCosmosContainerWithCompositeAndSpatialIndexes(client);
+        waitForCollectionToBeAvailableToRead(documentCollection, /* probeClient */ null);
         cleanUpContainer(documentCollection);
 
         expectCount(documentCollection, 0);

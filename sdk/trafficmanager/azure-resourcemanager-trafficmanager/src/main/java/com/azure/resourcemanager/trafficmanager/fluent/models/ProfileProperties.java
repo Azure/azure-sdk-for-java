@@ -13,6 +13,7 @@ import com.azure.resourcemanager.trafficmanager.models.AllowedEndpointRecordType
 import com.azure.resourcemanager.trafficmanager.models.DnsConfig;
 import com.azure.resourcemanager.trafficmanager.models.MonitorConfig;
 import com.azure.resourcemanager.trafficmanager.models.ProfileStatus;
+import com.azure.resourcemanager.trafficmanager.models.RecordType;
 import com.azure.resourcemanager.trafficmanager.models.TrafficRoutingMethod;
 import com.azure.resourcemanager.trafficmanager.models.TrafficViewEnrollmentStatus;
 import java.io.IOException;
@@ -63,6 +64,13 @@ public final class ProfileProperties implements JsonSerializable<ProfileProperti
      * Maximum number of endpoints to be returned for MultiValue routing type.
      */
     private Long maxReturn;
+
+    /*
+     * When record type is set, a traffic manager profile will allow only endpoints that match this type. If it is not
+     * set, traffic manager profile will allow adding all types of endpoints. It is returned as null when this is not
+     * set.
+     */
+    private RecordType recordType;
 
     /**
      * Creates an instance of ProfileProperties class.
@@ -236,6 +244,30 @@ public final class ProfileProperties implements JsonSerializable<ProfileProperti
     }
 
     /**
+     * Get the recordType property: When record type is set, a traffic manager profile will allow only endpoints that
+     * match this type. If it is not set, traffic manager profile will allow adding all types of endpoints. It is
+     * returned as null when this is not set.
+     * 
+     * @return the recordType value.
+     */
+    public RecordType recordType() {
+        return this.recordType;
+    }
+
+    /**
+     * Set the recordType property: When record type is set, a traffic manager profile will allow only endpoints that
+     * match this type. If it is not set, traffic manager profile will allow adding all types of endpoints. It is
+     * returned as null when this is not set.
+     * 
+     * @param recordType the recordType value to set.
+     * @return the ProfileProperties object itself.
+     */
+    public ProfileProperties withRecordType(RecordType recordType) {
+        this.recordType = recordType;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -269,6 +301,7 @@ public final class ProfileProperties implements JsonSerializable<ProfileProperti
         jsonWriter.writeArrayField("allowedEndpointRecordTypes", this.allowedEndpointRecordTypes,
             (writer, element) -> writer.writeString(element == null ? null : element.toString()));
         jsonWriter.writeNumberField("maxReturn", this.maxReturn);
+        jsonWriter.writeStringField("recordType", this.recordType == null ? null : this.recordType.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -308,6 +341,8 @@ public final class ProfileProperties implements JsonSerializable<ProfileProperti
                     deserializedProfileProperties.allowedEndpointRecordTypes = allowedEndpointRecordTypes;
                 } else if ("maxReturn".equals(fieldName)) {
                     deserializedProfileProperties.maxReturn = reader.getNullable(JsonReader::getLong);
+                } else if ("recordType".equals(fieldName)) {
+                    deserializedProfileProperties.recordType = RecordType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

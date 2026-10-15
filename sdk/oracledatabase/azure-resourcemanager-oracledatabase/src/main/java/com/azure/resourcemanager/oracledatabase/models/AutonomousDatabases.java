@@ -113,7 +113,7 @@ public interface AutonomousDatabases {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return autonomous Database resource model.
      */
     AutonomousDatabase switchover(String resourceGroupName, String autonomousdatabasename, PeerDbDetails body);
 
@@ -127,7 +127,7 @@ public interface AutonomousDatabases {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return autonomous Database resource model.
      */
     AutonomousDatabase switchover(String resourceGroupName, String autonomousdatabasename, PeerDbDetails body,
         Context context);
@@ -141,7 +141,7 @@ public interface AutonomousDatabases {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return autonomous Database resource model.
      */
     AutonomousDatabase failover(String resourceGroupName, String autonomousdatabasename, PeerDbDetails body);
 
@@ -155,7 +155,7 @@ public interface AutonomousDatabases {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return autonomous Database resource model.
      */
     AutonomousDatabase failover(String resourceGroupName, String autonomousdatabasename, PeerDbDetails body,
         Context context);
@@ -198,7 +198,7 @@ public interface AutonomousDatabases {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return autonomous Database resource model.
      */
     AutonomousDatabase restore(String resourceGroupName, String autonomousdatabasename,
         RestoreAutonomousDatabaseDetails body);
@@ -213,7 +213,7 @@ public interface AutonomousDatabases {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return autonomous Database resource model.
      */
     AutonomousDatabase restore(String resourceGroupName, String autonomousdatabasename,
         RestoreAutonomousDatabaseDetails body, Context context);
@@ -226,7 +226,7 @@ public interface AutonomousDatabases {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return autonomous Database resource model.
      */
     AutonomousDatabase shrink(String resourceGroupName, String autonomousdatabasename);
 
@@ -239,7 +239,7 @@ public interface AutonomousDatabases {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return autonomous Database resource model.
      */
     AutonomousDatabase shrink(String resourceGroupName, String autonomousdatabasename, Context context);
 
@@ -252,7 +252,7 @@ public interface AutonomousDatabases {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return autonomous Database resource model.
      */
     AutonomousDatabase changeDisasterRecoveryConfiguration(String resourceGroupName, String autonomousdatabasename,
         DisasterRecoveryConfigurationDetails body);
@@ -267,7 +267,7 @@ public interface AutonomousDatabases {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return autonomous Database resource model.
      */
     AutonomousDatabase changeDisasterRecoveryConfiguration(String resourceGroupName, String autonomousdatabasename,
         DisasterRecoveryConfigurationDetails body, Context context);
@@ -281,7 +281,7 @@ public interface AutonomousDatabases {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return autonomous Database resource model.
      */
     AutonomousDatabase action(String resourceGroupName, String autonomousdatabasename,
         AutonomousDatabaseLifecycleAction body);
@@ -296,7 +296,7 @@ public interface AutonomousDatabases {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return autonomous Database resource model.
      */
     AutonomousDatabase action(String resourceGroupName, String autonomousdatabasename,
         AutonomousDatabaseLifecycleAction body, Context context);

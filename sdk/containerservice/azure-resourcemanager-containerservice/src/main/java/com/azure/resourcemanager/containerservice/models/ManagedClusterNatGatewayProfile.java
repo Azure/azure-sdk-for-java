@@ -18,6 +18,12 @@ import java.util.List;
 @Fluent
 public final class ManagedClusterNatGatewayProfile implements JsonSerializable<ManagedClusterNatGatewayProfile> {
     /*
+     * The SKU of the managed cluster NAT Gateway. Defaults to 'StandardV2' where available in the region, otherwise
+     * 'Standard'.
+     */
+    private ManagedClusterNATGatewaySku sku;
+
+    /*
      * Profile of the managed outbound IP resources of the cluster NAT gateway.
      */
     private ManagedClusterManagedOutboundIpProfile managedOutboundIpProfile;
@@ -26,6 +32,16 @@ public final class ManagedClusterNatGatewayProfile implements JsonSerializable<M
      * The effective outbound IP resources of the cluster NAT gateway.
      */
     private List<ResourceReference> effectiveOutboundIPs;
+
+    /*
+     * Desired outbound IP Prefix resources for the managed NAT Gateway. Only compatible with NAT Gateway V2.
+     */
+    private ManagedClusterNATGatewayProfileOutboundIpPrefixes outboundIpPrefixes;
+
+    /*
+     * Desired outbound IP resources for the managed NAT Gateway.
+     */
+    private ManagedClusterNATGatewayProfileOutboundIPs outboundIps;
 
     /*
      * Desired outbound flow idle timeout in minutes. Allowed values are in the range of 4 to 120 (inclusive). The
@@ -37,6 +53,28 @@ public final class ManagedClusterNatGatewayProfile implements JsonSerializable<M
      * Creates an instance of ManagedClusterNatGatewayProfile class.
      */
     public ManagedClusterNatGatewayProfile() {
+    }
+
+    /**
+     * Get the sku property: The SKU of the managed cluster NAT Gateway. Defaults to 'StandardV2' where available in the
+     * region, otherwise 'Standard'.
+     * 
+     * @return the sku value.
+     */
+    public ManagedClusterNATGatewaySku sku() {
+        return this.sku;
+    }
+
+    /**
+     * Set the sku property: The SKU of the managed cluster NAT Gateway. Defaults to 'StandardV2' where available in the
+     * region, otherwise 'Standard'.
+     * 
+     * @param sku the sku value to set.
+     * @return the ManagedClusterNatGatewayProfile object itself.
+     */
+    public ManagedClusterNatGatewayProfile withSku(ManagedClusterNATGatewaySku sku) {
+        this.sku = sku;
+        return this;
     }
 
     /**
@@ -69,6 +107,49 @@ public final class ManagedClusterNatGatewayProfile implements JsonSerializable<M
      */
     public List<ResourceReference> effectiveOutboundIPs() {
         return this.effectiveOutboundIPs;
+    }
+
+    /**
+     * Get the outboundIpPrefixes property: Desired outbound IP Prefix resources for the managed NAT Gateway. Only
+     * compatible with NAT Gateway V2.
+     * 
+     * @return the outboundIpPrefixes value.
+     */
+    public ManagedClusterNATGatewayProfileOutboundIpPrefixes outboundIpPrefixes() {
+        return this.outboundIpPrefixes;
+    }
+
+    /**
+     * Set the outboundIpPrefixes property: Desired outbound IP Prefix resources for the managed NAT Gateway. Only
+     * compatible with NAT Gateway V2.
+     * 
+     * @param outboundIpPrefixes the outboundIpPrefixes value to set.
+     * @return the ManagedClusterNatGatewayProfile object itself.
+     */
+    public ManagedClusterNatGatewayProfile
+        withOutboundIpPrefixes(ManagedClusterNATGatewayProfileOutboundIpPrefixes outboundIpPrefixes) {
+        this.outboundIpPrefixes = outboundIpPrefixes;
+        return this;
+    }
+
+    /**
+     * Get the outboundIps property: Desired outbound IP resources for the managed NAT Gateway.
+     * 
+     * @return the outboundIps value.
+     */
+    public ManagedClusterNATGatewayProfileOutboundIPs outboundIps() {
+        return this.outboundIps;
+    }
+
+    /**
+     * Set the outboundIps property: Desired outbound IP resources for the managed NAT Gateway.
+     * 
+     * @param outboundIps the outboundIps value to set.
+     * @return the ManagedClusterNatGatewayProfile object itself.
+     */
+    public ManagedClusterNatGatewayProfile withOutboundIps(ManagedClusterNATGatewayProfileOutboundIPs outboundIps) {
+        this.outboundIps = outboundIps;
+        return this;
     }
 
     /**
@@ -105,6 +186,12 @@ public final class ManagedClusterNatGatewayProfile implements JsonSerializable<M
         if (effectiveOutboundIPs() != null) {
             effectiveOutboundIPs().forEach(e -> e.validate());
         }
+        if (outboundIpPrefixes() != null) {
+            outboundIpPrefixes().validate();
+        }
+        if (outboundIps() != null) {
+            outboundIps().validate();
+        }
     }
 
     /**
@@ -113,7 +200,10 @@ public final class ManagedClusterNatGatewayProfile implements JsonSerializable<M
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("sku", this.sku == null ? null : this.sku.toString());
         jsonWriter.writeJsonField("managedOutboundIPProfile", this.managedOutboundIpProfile);
+        jsonWriter.writeJsonField("outboundIPPrefixes", this.outboundIpPrefixes);
+        jsonWriter.writeJsonField("outboundIPs", this.outboundIps);
         jsonWriter.writeNumberField("idleTimeoutInMinutes", this.idleTimeoutInMinutes);
         return jsonWriter.writeEndObject();
     }
@@ -134,13 +224,22 @@ public final class ManagedClusterNatGatewayProfile implements JsonSerializable<M
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("managedOutboundIPProfile".equals(fieldName)) {
+                if ("sku".equals(fieldName)) {
+                    deserializedManagedClusterNatGatewayProfile.sku
+                        = ManagedClusterNATGatewaySku.fromString(reader.getString());
+                } else if ("managedOutboundIPProfile".equals(fieldName)) {
                     deserializedManagedClusterNatGatewayProfile.managedOutboundIpProfile
                         = ManagedClusterManagedOutboundIpProfile.fromJson(reader);
                 } else if ("effectiveOutboundIPs".equals(fieldName)) {
                     List<ResourceReference> effectiveOutboundIPs
                         = reader.readArray(reader1 -> ResourceReference.fromJson(reader1));
                     deserializedManagedClusterNatGatewayProfile.effectiveOutboundIPs = effectiveOutboundIPs;
+                } else if ("outboundIPPrefixes".equals(fieldName)) {
+                    deserializedManagedClusterNatGatewayProfile.outboundIpPrefixes
+                        = ManagedClusterNATGatewayProfileOutboundIpPrefixes.fromJson(reader);
+                } else if ("outboundIPs".equals(fieldName)) {
+                    deserializedManagedClusterNatGatewayProfile.outboundIps
+                        = ManagedClusterNATGatewayProfileOutboundIPs.fromJson(reader);
                 } else if ("idleTimeoutInMinutes".equals(fieldName)) {
                     deserializedManagedClusterNatGatewayProfile.idleTimeoutInMinutes
                         = reader.getNullable(JsonReader::getInt);

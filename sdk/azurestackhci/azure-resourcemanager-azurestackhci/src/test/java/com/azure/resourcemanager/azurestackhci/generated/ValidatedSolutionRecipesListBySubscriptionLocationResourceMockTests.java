@@ -22,7 +22,7 @@ public final class ValidatedSolutionRecipesListBySubscriptionLocationResourceMoc
     @Test
     public void testListBySubscriptionLocationResource() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"recipeContent\":{\"info\":{\"solutionType\":\"vamsxrwq\",\"version\":\"wdflgq\"},\"capabilities\":{\"clusterCapabilities\":[{\"capabilityName\":\"zeqzvdbboffgx\"},{\"capabilityName\":\"aelxtp\"},{\"capabilityName\":\"cyatbxd\"}],\"nodeCapabilities\":[{\"capabilityName\":\"vy\"},{\"capabilityName\":\"tkmxvztshnugfbp\"},{\"capabilityName\":\"igkflvovriq\"},{\"capabilityName\":\"uzwbkqcgzygtdj\"}]},\"components\":[{\"name\":\"barptxur\",\"type\":\"uoyyumhzpstocq\",\"requiredVersion\":\"vttyhpbiln\",\"installOrder\":8398277389757736316,\"tags\":[\"uwu\",\"usydscizvkayiox\"],\"payloads\":[{\"identifier\":\"qs\",\"hash\":\"l\",\"fileName\":\"lefeombodvdgf\",\"url\":\"akqsjymcfv\"}],\"metadata\":{}},{\"name\":\"ceuyuqktcktnb\",\"type\":\"kfnxrlncmlzvvrme\",\"requiredVersion\":\"hqsacj\",\"installOrder\":4596962949385724198,\"tags\":[\"fwcbawapndmtq\",\"mkmzvag\",\"xfblsxyfq\"],\"payloads\":[{\"identifier\":\"d\",\"hash\":\"kllefmizdcsrvb\",\"fileName\":\"nasgfyxhsx\",\"url\":\"gqbmxbpqcnxske\"}],\"metadata\":{}}]},\"signature\":\"vmazuflfpi\"},\"id\":\"fh\",\"name\":\"dncokqr\",\"type\":\"ivbhmnimjlyhb\"}]}";
+            = "{\"value\":[{\"properties\":{\"recipeContent\":{\"info\":{\"solutionType\":\"ozvbwfc\",\"version\":\"jhbp\"},\"capabilities\":{\"clusterCapabilities\":[{\"capabilityName\":\"hscmyhrhjvszfqbo\"},{\"capabilityName\":\"ndwpppqw\"}],\"nodeCapabilities\":[{\"capabilityName\":\"oevzzufytdxmly\"},{\"capabilityName\":\"zlyvapbkrbuog\"}]},\"components\":[{\"name\":\"dltlcu\",\"type\":\"aizijvaylzeohlp\",\"requiredVersion\":\"tqkrvmhvbvvcpwtq\",\"installOrder\":5396436300631814121,\"tags\":[\"hmz\",\"dffetevr\"],\"payloads\":[{\"identifier\":\"k\",\"hash\":\"wacycsyotctkhf\",\"fileName\":\"fsatvcsx\",\"url\":\"mhnmizhvprhqqw\"},{\"identifier\":\"ublehhkplobz\",\"hash\":\"ottaksadz\",\"fileName\":\"ghmmtbtdvucfvvra\",\"url\":\"beurdeewl\"},{\"identifier\":\"uxpcbwkdwj\",\"hash\":\"jiznioroofmftas\",\"fileName\":\"mcreihu\",\"url\":\"trnighm\"},{\"identifier\":\"nuwqxungro\",\"hash\":\"gwfmsxjwdylwxm\",\"fileName\":\"zjow\",\"url\":\"ugeerclbltbhpwac\"}],\"metadata\":{}}]},\"signature\":\"urjwmvwryvdifkii\"},\"id\":\"pruccwme\",\"name\":\"btxsytrtexeg\",\"type\":\"mrqjywi\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,12 +32,12 @@ public final class ValidatedSolutionRecipesListBySubscriptionLocationResourceMoc
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ValidatedSolutionRecipe> response = manager.validatedSolutionRecipes()
-            .listBySubscriptionLocationResource("ldmxxbjh", com.azure.core.util.Context.NONE);
+            .listBySubscriptionLocationResource("dczvothmkh", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("vamsxrwq",
+        Assertions.assertEquals("ozvbwfc",
             response.iterator().next().properties().recipeContent().info().solutionType());
-        Assertions.assertEquals("wdflgq", response.iterator().next().properties().recipeContent().info().version());
-        Assertions.assertEquals("zeqzvdbboffgx",
+        Assertions.assertEquals("jhbp", response.iterator().next().properties().recipeContent().info().version());
+        Assertions.assertEquals("hscmyhrhjvszfqbo",
             response.iterator()
                 .next()
                 .properties()
@@ -46,7 +46,7 @@ public final class ValidatedSolutionRecipesListBySubscriptionLocationResourceMoc
                 .clusterCapabilities()
                 .get(0)
                 .capabilityName());
-        Assertions.assertEquals("vy",
+        Assertions.assertEquals("oevzzufytdxmly",
             response.iterator()
                 .next()
                 .properties()
@@ -55,24 +55,24 @@ public final class ValidatedSolutionRecipesListBySubscriptionLocationResourceMoc
                 .nodeCapabilities()
                 .get(0)
                 .capabilityName());
-        Assertions.assertEquals("barptxur",
+        Assertions.assertEquals("dltlcu",
             response.iterator().next().properties().recipeContent().components().get(0).name());
-        Assertions.assertEquals("uoyyumhzpstocq",
+        Assertions.assertEquals("aizijvaylzeohlp",
             response.iterator().next().properties().recipeContent().components().get(0).type());
-        Assertions.assertEquals("vttyhpbiln",
+        Assertions.assertEquals("tqkrvmhvbvvcpwtq",
             response.iterator().next().properties().recipeContent().components().get(0).requiredVersion());
-        Assertions.assertEquals(8398277389757736316L,
+        Assertions.assertEquals(5396436300631814121L,
             response.iterator().next().properties().recipeContent().components().get(0).installOrder());
-        Assertions.assertEquals("uwu",
+        Assertions.assertEquals("hmz",
             response.iterator().next().properties().recipeContent().components().get(0).tags().get(0));
-        Assertions.assertEquals("qs",
+        Assertions.assertEquals("k",
             response.iterator().next().properties().recipeContent().components().get(0).payloads().get(0).identifier());
-        Assertions.assertEquals("l",
+        Assertions.assertEquals("wacycsyotctkhf",
             response.iterator().next().properties().recipeContent().components().get(0).payloads().get(0).hash());
-        Assertions.assertEquals("lefeombodvdgf",
+        Assertions.assertEquals("fsatvcsx",
             response.iterator().next().properties().recipeContent().components().get(0).payloads().get(0).fileName());
-        Assertions.assertEquals("akqsjymcfv",
+        Assertions.assertEquals("mhnmizhvprhqqw",
             response.iterator().next().properties().recipeContent().components().get(0).payloads().get(0).url());
-        Assertions.assertEquals("vmazuflfpi", response.iterator().next().properties().signature());
+        Assertions.assertEquals("urjwmvwryvdifkii", response.iterator().next().properties().signature());
     }
 }

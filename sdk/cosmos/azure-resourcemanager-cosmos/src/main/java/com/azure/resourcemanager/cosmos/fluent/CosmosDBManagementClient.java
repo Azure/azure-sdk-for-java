@@ -152,6 +152,27 @@ public interface CosmosDBManagementClient {
     PrivateLinkResourcesClient getPrivateLinkResources();
 
     /**
+     * Gets the SoftDeletedDatabaseAccountsClient object to access its operations.
+     * 
+     * @return the SoftDeletedDatabaseAccountsClient object.
+     */
+    SoftDeletedDatabaseAccountsClient getSoftDeletedDatabaseAccounts();
+
+    /**
+     * Gets the SoftDeletedSqlDatabasesClient object to access its operations.
+     * 
+     * @return the SoftDeletedSqlDatabasesClient object.
+     */
+    SoftDeletedSqlDatabasesClient getSoftDeletedSqlDatabases();
+
+    /**
+     * Gets the SoftDeletedSqlContainersClient object to access its operations.
+     * 
+     * @return the SoftDeletedSqlContainersClient object.
+     */
+    SoftDeletedSqlContainersClient getSoftDeletedSqlContainers();
+
+    /**
      * Gets the ChaosFaultsClient object to access its operations.
      * 
      * @return the ChaosFaultsClient object.

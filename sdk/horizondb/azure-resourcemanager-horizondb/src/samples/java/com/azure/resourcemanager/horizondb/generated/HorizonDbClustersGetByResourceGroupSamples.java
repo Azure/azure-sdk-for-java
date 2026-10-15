@@ -9,14 +9,14 @@ package com.azure.resourcemanager.horizondb.generated;
  */
 public final class HorizonDbClustersGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-01-20-preview/Clusters_Get.json
+     * x-ms-original-file: 2026-05-01-preview/Clusters_Get.json
      */
     /**
-     * Sample code: Get a HorizonDb cluster.
+     * Sample code: Get a HorizonDB cluster.
      * 
      * @param manager Entry point to HorizonDbManager.
      */
-    public static void getAHorizonDbCluster(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
+    public static void getAHorizonDBCluster(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
         manager.horizonDbClusters()
             .getByResourceGroupWithResponse("exampleresourcegroup", "examplecluster", com.azure.core.util.Context.NONE);
     }

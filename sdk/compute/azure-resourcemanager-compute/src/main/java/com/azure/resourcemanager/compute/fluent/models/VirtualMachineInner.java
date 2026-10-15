@@ -18,6 +18,7 @@ import com.azure.resourcemanager.compute.models.CapacityReservationProfile;
 import com.azure.resourcemanager.compute.models.DiagnosticsProfile;
 import com.azure.resourcemanager.compute.models.ExtendedLocation;
 import com.azure.resourcemanager.compute.models.HardwareProfile;
+import com.azure.resourcemanager.compute.models.InterconnectBlockProfile;
 import com.azure.resourcemanager.compute.models.NetworkProfile;
 import com.azure.resourcemanager.compute.models.OSProfile;
 import com.azure.resourcemanager.compute.models.Placement;
@@ -933,6 +934,31 @@ public final class VirtualMachineInner extends Resource {
             this.innerProperties = new VirtualMachinePropertiesInner();
         }
         this.innerProperties().withCapacityReservation(capacityReservation);
+        return this;
+    }
+
+    /**
+     * Get the interconnectBlockProfile property: Specifies information about the Interconnect Block that is used to
+     * allocate the Virtual Machine. Minimum api-version: 2026-03-01.
+     * 
+     * @return the interconnectBlockProfile value.
+     */
+    public InterconnectBlockProfile interconnectBlockProfile() {
+        return this.innerProperties() == null ? null : this.innerProperties().interconnectBlockProfile();
+    }
+
+    /**
+     * Set the interconnectBlockProfile property: Specifies information about the Interconnect Block that is used to
+     * allocate the Virtual Machine. Minimum api-version: 2026-03-01.
+     * 
+     * @param interconnectBlockProfile the interconnectBlockProfile value to set.
+     * @return the VirtualMachineInner object itself.
+     */
+    public VirtualMachineInner withInterconnectBlockProfile(InterconnectBlockProfile interconnectBlockProfile) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachinePropertiesInner();
+        }
+        this.innerProperties().withInterconnectBlockProfile(interconnectBlockProfile);
         return this;
     }
 

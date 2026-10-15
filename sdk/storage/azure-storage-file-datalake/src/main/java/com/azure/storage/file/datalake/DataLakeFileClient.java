@@ -117,8 +117,8 @@ public class DataLakeFileClient extends DataLakePathClient {
         super(dataLakePathClient.dataLakePathAsyncClient, dataLakePathClient.getBlockBlobClient(),
             dataLakePathClient.getHttpPipeline(), dataLakePathClient.getAccountUrl(),
             dataLakePathClient.getServiceVersion(), dataLakePathClient.getAccountName(),
-            dataLakePathClient.getFileSystemName(), Utility.urlEncode(dataLakePathClient.pathName),
-            PathResourceType.FILE, dataLakePathClient.getSasToken(), dataLakePathClient.getCpkInfo(),
+            dataLakePathClient.getFileSystemName(), dataLakePathClient.pathName, PathResourceType.FILE,
+            dataLakePathClient.getSasToken(), dataLakePathClient.getCpkInfo(),
             dataLakePathClient.isTokenCredentialAuthenticated());
         this.dataLakeFileAsyncClient = new DataLakeFileAsyncClient(dataLakePathClient.dataLakePathAsyncClient);
     }

@@ -12,22 +12,22 @@ import java.util.Collection;
  */
 public final class IdentityType extends ExpandableStringEnum<IdentityType> {
     /**
-     * Static value None for IdentityType.
+     * No managed identity is assigned to the server.
      */
     public static final IdentityType NONE = fromString("None");
 
     /**
-     * Static value UserAssigned for IdentityType.
+     * One or more managed identities provided by the user are assigned to the server.
      */
     public static final IdentityType USER_ASSIGNED = fromString("UserAssigned");
 
     /**
-     * Static value SystemAssigned for IdentityType.
+     * Azure automatically creates and manages the identity associated to the lifecycle of the server.
      */
     public static final IdentityType SYSTEM_ASSIGNED = fromString("SystemAssigned");
 
     /**
-     * Static value SystemAssigned,UserAssigned for IdentityType.
+     * Both system-assigned and user-assigned identities are assigned to the server.
      */
     public static final IdentityType SYSTEM_ASSIGNED_USER_ASSIGNED = fromString("SystemAssigned,UserAssigned");
 

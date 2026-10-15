@@ -109,6 +109,12 @@ public class SqlDatabaseForElasticPoolImpl implements
     }
 
     @Override
+    public SqlDatabaseForElasticPoolImpl withManagedIdentity(String managedIdentityResourceId) {
+        this.sqlDatabase.withManagedIdentity(managedIdentityResourceId);
+        return this;
+    }
+
+    @Override
     public SqlDatabaseForElasticPoolImpl fromRestorePoint(RestorePoint restorePoint) {
         this.sqlDatabase.fromRestorePoint(restorePoint);
         return this;

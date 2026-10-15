@@ -10,6 +10,7 @@ import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.containerregistry.models.AdditionalAuthenticationProperties;
 import com.azure.resourcemanager.containerregistry.models.IdentityProperties;
 import com.azure.resourcemanager.containerregistry.models.ProvisioningState;
 import java.io.IOException;
@@ -146,6 +147,32 @@ public final class CacheRuleInner extends ProxyResource {
             this.innerProperties = new CacheRuleProperties();
         }
         this.innerProperties().withCredentialSetResourceId(credentialSetResourceId);
+        return this;
+    }
+
+    /**
+     * Get the additionalAuthenticationProperties property: Authentication configuration used by the cache rule to
+     * access the upstream source repository.
+     * 
+     * @return the additionalAuthenticationProperties value.
+     */
+    public AdditionalAuthenticationProperties additionalAuthenticationProperties() {
+        return this.innerProperties() == null ? null : this.innerProperties().additionalAuthenticationProperties();
+    }
+
+    /**
+     * Set the additionalAuthenticationProperties property: Authentication configuration used by the cache rule to
+     * access the upstream source repository.
+     * 
+     * @param additionalAuthenticationProperties the additionalAuthenticationProperties value to set.
+     * @return the CacheRuleInner object itself.
+     */
+    public CacheRuleInner
+        withAdditionalAuthenticationProperties(AdditionalAuthenticationProperties additionalAuthenticationProperties) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CacheRuleProperties();
+        }
+        this.innerProperties().withAdditionalAuthenticationProperties(additionalAuthenticationProperties);
         return this;
     }
 

@@ -18,7 +18,6 @@ Group;Azure Core - Serializer - JSON - Gson;com.azure.core.serializer.json.gson*
 Group;Azure Core - Serializer - JSON - Jackson;com.azure.core.serializer.json.jackson*
 Group;Azure Core - Test;com.azure.core.test*
 Group;Azure Core - Tracing - OpenTelemetry;com.azure.core.tracing.opentelemetry*
-Group;Azure Agrifood;com.azure.verticals.agrifood.farming*
 Group;Azure Anomaly Detector;com.azure.ai.anomalydetector*
 Group;Azure App Configuration;com.azure.data.appconfiguration*
 Group;Azure Communication;com.azure.communication*
@@ -39,7 +38,6 @@ Group;Azure Monitor - Ingestion;com.azure.monitor.ingestion*
 Group;Azure Monitor - Logs and Metrics query;com.azure.monitor.query*
 Group;Azure Monitor - OpenTelemetry Exporter;com.azure.monitor.opentelemetry.exporter*
 Group;Azure Monitor - Azure Monitor OpenTelemetry SDK Autoconfigure Distro;com.azure.monitor.opentelemetry.autoconfigure*
-Group;Azure Personalizer;com.azure.ai.personalizer*
 Group;Azure Purview Administration;com.azure.analytics.purview.administration*
 Group;Azure Purview Catalog;com.azure.analytics.purview.catalog*
 Group;Azure Purview Scanning;com.azure.analytics.purview.scanning*

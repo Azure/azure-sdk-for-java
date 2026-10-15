@@ -109,7 +109,7 @@ public interface Volumes {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return volume resource.
      */
     Volume populateAvailabilityZone(String resourceGroupName, String accountName, String poolName, String volumeName);
 
@@ -124,7 +124,7 @@ public interface Volumes {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return volume resource.
      */
     Volume populateAvailabilityZone(String resourceGroupName, String accountName, String poolName, String volumeName,
         Context context);
@@ -197,7 +197,7 @@ public interface Volumes {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return volume resource.
      */
     Volume splitCloneFromParent(String resourceGroupName, String accountName, String poolName, String volumeName);
 
@@ -212,7 +212,7 @@ public interface Volumes {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return volume resource.
      */
     Volume splitCloneFromParent(String resourceGroupName, String accountName, String poolName, String volumeName,
         Context context);
@@ -257,7 +257,7 @@ public interface Volumes {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return group Id list for Ldap user.
      */
     GetGroupIdListForLdapUserResponse listGetGroupIdListForLdapUser(String resourceGroupName, String accountName,
         String poolName, String volumeName, GetGroupIdListForLdapUserRequest body);
@@ -274,7 +274,7 @@ public interface Volumes {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return group Id list for Ldap user.
      */
     GetGroupIdListForLdapUserResponse listGetGroupIdListForLdapUser(String resourceGroupName, String accountName,
         String poolName, String volumeName, GetGroupIdListForLdapUserRequest body, Context context);

@@ -14,7 +14,7 @@ import java.io.IOException;
  * MCP list tools completed message.
  */
 @Immutable
-public final class ServerEventMcpListToolsCompleted extends SessionUpdate {
+public final class ServerEventMcpListToolsCompleted extends SessionServerEvent {
 
     /*
      * The type of event.

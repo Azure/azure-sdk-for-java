@@ -153,47 +153,57 @@ private[spark] class CosmosReadManyByPartitionKeyReader(
             taskContext,
             pkIterator)
 
-          new Iterator[Row] {
-            private val isClosed = new AtomicBoolean(false)
-
-            private def closeReader(): Unit = {
-              if (isClosed.compareAndSet(false, true)) {
-                reader.close()
-              }
-            }
-
-            if (taskContext != null) {
-              taskContext.addTaskCompletionListener[Unit](_ => closeReader())
-            }
-
-            override def hasNext: Boolean = {
-              try {
-                val hasMore = reader.next()
-                if (!hasMore) {
-                  closeReader()
-                }
-                hasMore
-              } catch {
-                case error: Throwable =>
-                  closeReader()
-                  throw error
-              }
-            }
-
-            override def next(): Row = {
-              try {
-                reader.getCurrentRow()
-              } catch {
-                case error: Throwable =>
-                  closeReader()
-                  throw error
-              }
-            }
-          }
+          CosmosReadManyByPartitionKeyReader.closeOnTaskCompletion(reader.rowIterator, taskContext)
         },
         preservesPartitioning = true
       ),
       schema)
+  }
+}
+
+private[spark] object CosmosReadManyByPartitionKeyReader {
+
+  private[spark] trait CloseableIterator[+T] extends Iterator[T] with AutoCloseable
+
+  private[spark] def closeOnTaskCompletion[T](sourceIterator: CloseableIterator[T], taskContext: TaskContext): Iterator[T] = {
+    new Iterator[T] {
+      private val isClosed = new AtomicBoolean(false)
+
+      private def closeIterator(): Unit = {
+        if (isClosed.compareAndSet(false, true)) {
+          sourceIterator.close()
+        }
+      }
+
+      if (taskContext != null) {
+        taskContext.addTaskCompletionListener[Unit](_ => closeIterator())
+      }
+
+      override def hasNext: Boolean = {
+        try {
+          val hasMore = !isClosed.get() && sourceIterator.hasNext
+          if (!hasMore) {
+            closeIterator()
+          }
+
+          hasMore
+        } catch {
+          case error: Throwable =>
+            closeIterator()
+            throw error
+        }
+      }
+
+      override def next(): T = {
+        try {
+          sourceIterator.next()
+        } catch {
+          case error: Throwable =>
+            closeIterator()
+            throw error
+        }
+      }
+    }
   }
 }
 

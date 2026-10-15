@@ -25,16 +25,6 @@ public final class PrivateZoneInner extends Resource {
     private PrivateZoneProperties innerProperties;
 
     /*
-     * Resource tags.
-     */
-    private Map<String, String> tags;
-
-    /*
-     * The Azure Region where the resource lives
-     */
-    private String location;
-
-    /*
      * The ETag of the zone.
      */
     private String etag;
@@ -72,46 +62,6 @@ public final class PrivateZoneInner extends Resource {
      */
     private PrivateZoneProperties innerProperties() {
         return this.innerProperties;
-    }
-
-    /**
-     * Get the tags property: Resource tags.
-     * 
-     * @return the tags value.
-     */
-    public Map<String, String> tags() {
-        return this.tags;
-    }
-
-    /**
-     * Set the tags property: Resource tags.
-     * 
-     * @param tags the tags value to set.
-     * @return the PrivateZoneInner object itself.
-     */
-    public PrivateZoneInner withTags(Map<String, String> tags) {
-        this.tags = tags;
-        return this;
-    }
-
-    /**
-     * Get the location property: The Azure Region where the resource lives.
-     * 
-     * @return the location value.
-     */
-    public String location() {
-        return this.location;
-    }
-
-    /**
-     * Set the location property: The Azure Region where the resource lives.
-     * 
-     * @param location the location value to set.
-     * @return the PrivateZoneInner object itself.
-     */
-    public PrivateZoneInner withLocation(String location) {
-        this.location = location;
-        return this;
     }
 
     /**
@@ -171,6 +121,24 @@ public final class PrivateZoneInner extends Resource {
     @Override
     public String id() {
         return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public PrivateZoneInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public PrivateZoneInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
     }
 
     /**
@@ -275,9 +243,9 @@ public final class PrivateZoneInner extends Resource {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("properties", this.innerProperties);
-        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeStringField("location", this.location);
         jsonWriter.writeStringField("etag", this.etag);
         return jsonWriter.writeEndObject();
     }
@@ -304,13 +272,13 @@ public final class PrivateZoneInner extends Resource {
                     deserializedPrivateZoneInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedPrivateZoneInner.type = reader.getString();
-                } else if ("properties".equals(fieldName)) {
-                    deserializedPrivateZoneInner.innerProperties = PrivateZoneProperties.fromJson(reader);
+                } else if ("location".equals(fieldName)) {
+                    deserializedPrivateZoneInner.withLocation(reader.getString());
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
-                    deserializedPrivateZoneInner.tags = tags;
-                } else if ("location".equals(fieldName)) {
-                    deserializedPrivateZoneInner.location = reader.getString();
+                    deserializedPrivateZoneInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedPrivateZoneInner.innerProperties = PrivateZoneProperties.fromJson(reader);
                 } else if ("etag".equals(fieldName)) {
                     deserializedPrivateZoneInner.etag = reader.getString();
                 } else if ("systemData".equals(fieldName)) {

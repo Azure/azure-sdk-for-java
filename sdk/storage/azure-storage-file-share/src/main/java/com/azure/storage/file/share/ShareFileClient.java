@@ -70,6 +70,7 @@ import com.azure.storage.file.share.models.ShareFileMetadataInfo;
 import com.azure.storage.file.share.models.ShareFilePermission;
 import com.azure.storage.file.share.models.ShareFileProperties;
 import com.azure.storage.file.share.models.ShareFileRange;
+import com.azure.storage.file.share.models.ShareFileRangeItem;
 import com.azure.storage.file.share.models.ShareFileRangeList;
 import com.azure.storage.file.share.models.ShareFileSymbolicLinkInfo;
 import com.azure.storage.file.share.models.ShareFileUploadInfo;
@@ -84,6 +85,7 @@ import com.azure.storage.file.share.options.ShareFileCreateHardLinkOptions;
 import com.azure.storage.file.share.options.ShareFileCreateOptions;
 import com.azure.storage.file.share.options.ShareFileCreateSymbolicLinkOptions;
 import com.azure.storage.file.share.options.ShareFileDownloadOptions;
+import com.azure.storage.file.share.options.ShareFileListRangesOptions;
 import com.azure.storage.file.share.options.ShareFileListRangesDiffOptions;
 import com.azure.storage.file.share.options.ShareFileRenameOptions;
 import com.azure.storage.file.share.options.ShareFileSeekableByteChannelReadOptions;
@@ -111,6 +113,7 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import static com.azure.storage.common.implementation.StorageImplUtils.sendRequest;
+import static com.azure.storage.file.share.implementation.util.ModelHelper.toShareFileRangeItems;
 
 /**
  * This class provides a client that contains all the operations for interacting files under Azure Storage File Service.
@@ -2469,7 +2472,9 @@ public class ShareFileClient {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/list-ranges">Azure Docs</a>.</p>
      *
      * @return {@link ShareFileRange ranges} in the files.
+     * @deprecated Use {@link #listAllRanges()} instead.
      */
+    @Deprecated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ShareFileRange> listRanges() {
         return listRanges((ShareFileRange) null, null, null);
@@ -2500,7 +2505,9 @@ public class ShareFileClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return {@link ShareFileRange ranges} in the files that satisfy the requirements
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
+     * @deprecated Use {@link #listAllRanges(ShareFileListRangesOptions, Duration, Context)} instead.
      */
+    @Deprecated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ShareFileRange> listRanges(ShareFileRange range, Duration timeout, Context context) {
         return this.listRanges(range, null, timeout, context);
@@ -2533,7 +2540,9 @@ public class ShareFileClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return {@link ShareFileRange ranges} in the files that satisfy the requirements
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
+     * @deprecated Use {@link #listAllRanges(ShareFileListRangesOptions, Duration, Context)} instead.
      */
+    @Deprecated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ShareFileRange> listRanges(ShareFileRange range, ShareRequestConditions requestConditions,
         Duration timeout, Context context) {
@@ -2541,12 +2550,11 @@ public class ShareFileClient {
         ShareRequestConditions finalRequestConditions
             = requestConditions == null ? new ShareRequestConditions() : requestConditions;
         String rangeString = range == null ? null : range.toString();
-
         try {
             Callable<ResponseBase<FilesGetRangeListHeaders, ShareFileRangeList>> operation
                 = () -> this.azureFileStorageClient.getFiles()
                     .getRangeListWithResponse(shareName, filePath, snapshot, null, null, rangeString,
-                        finalRequestConditions.getLeaseId(), null, finalContext);
+                        finalRequestConditions.getLeaseId(), null, null, null, finalContext);
 
             ResponseBase<FilesGetRangeListHeaders, ShareFileRangeList> response
                 = sendRequest(operation, timeout, ShareStorageException.class);
@@ -2567,6 +2575,96 @@ public class ShareFileClient {
         } catch (RuntimeException e) {
             throw LOGGER.logExceptionAsError(e);
         }
+    }
+
+    /**
+     * Lists all ranges for the file as a paged iterable.
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/list-ranges">Azure Docs</a>.</p>
+     *
+     * @return {@link ShareFileRangeItem ranges} in the file.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ShareFileRangeItem> listAllRanges() {
+        return listAllRanges(new ShareFileListRangesOptions(), null, Context.NONE);
+    }
+
+    /**
+     * Lists all ranges for the file as a paged iterable.
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/list-ranges">Azure Docs</a>.</p>
+     *
+     * @param options Optional parameters.
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return {@link ShareFileRangeItem ranges} in the file.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ShareFileRangeItem> listAllRanges(ShareFileListRangesOptions options, Duration timeout,
+        Context context) {
+        StorageImplUtils.assertNotNull("options", options);
+        return listAllRangesInternal(options.getRange(), options.getRequestConditions(), null, null, false, timeout,
+            context);
+    }
+
+    /**
+     * Lists ranges that have changed between the file and the specified snapshot as a paged iterable.
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/list-ranges">Azure Docs</a>.</p>
+     *
+     * @param previousSnapshot Specifies that the response will contain only ranges that were changed between target
+     * file and previous snapshot. Changed ranges include both updated and cleared ranges. The target file may be a
+     * snapshot, as long as the snapshot specified by previousSnapshot is the older of the two.
+     * @return {@link ShareFileRangeItem ranges} in the file.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ShareFileRangeItem> listAllRangesDiff(String previousSnapshot) {
+        return listAllRangesDiff(new ShareFileListRangesDiffOptions(previousSnapshot), null, Context.NONE);
+    }
+
+    /**
+     * Lists ranges that have changed between the file and the specified snapshot as a paged iterable.
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/list-ranges">Azure Docs</a>.</p>
+     *
+     * @param options {@link ShareFileListRangesDiffOptions}
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return {@link ShareFileRangeItem ranges} in the file.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ShareFileRangeItem> listAllRangesDiff(ShareFileListRangesDiffOptions options, Duration timeout,
+        Context context) {
+        StorageImplUtils.assertNotNull("options", options);
+        return listAllRangesInternal(options.getRange(), options.getRequestConditions(), options.getPreviousSnapshot(),
+            options.isRenameIncluded(), true, timeout, context);
+    }
+
+    private PagedIterable<ShareFileRangeItem> listAllRangesInternal(ShareFileRange range,
+        ShareRequestConditions requestConditions, String previousSnapshot, Boolean supportRename,
+        boolean includeClearRanges, Duration timeout, Context context) {
+        Context finalContext = context == null ? Context.NONE : context;
+        ShareRequestConditions finalRequestConditions
+            = requestConditions == null ? new ShareRequestConditions() : requestConditions;
+
+        BiFunction<String, Integer, PagedResponse<ShareFileRangeItem>> nextPageRetriever = (marker, pageSize) -> {
+            ResponseBase<FilesGetRangeListHeaders, ShareFileRangeList> response = listRangesWithResponse(range,
+                finalRequestConditions, previousSnapshot, supportRename, marker, pageSize, timeout, finalContext);
+
+            return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+                toShareFileRangeItems(response.getValue(), includeClearRanges), response.getValue().getNextMarker(),
+                response.getDeserializedHeaders());
+        };
+        Function<Integer, PagedResponse<ShareFileRangeItem>> firstPageRetriever
+            = pageSize -> nextPageRetriever.apply(null, pageSize);
+
+        return new PagedIterable<>(firstPageRetriever, nextPageRetriever);
     }
 
     /**
@@ -2594,7 +2692,9 @@ public class ShareFileClient {
      * snapshot, as long as the snapshot specified by previousSnapshot is the older of the two.
      * @return {@link ShareFileRange ranges} in the files that satisfy the requirements
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
+     * @deprecated Use {@link #listAllRangesDiff(String)} instead.
      */
+    @Deprecated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ShareFileRangeList listRangesDiff(String previousSnapshot) {
         return this.listRangesDiffWithResponse(new ShareFileListRangesDiffOptions(previousSnapshot), null, Context.NONE)
@@ -2629,7 +2729,9 @@ public class ShareFileClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return {@link ShareFileRange ranges} in the files that satisfy the requirements
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
+     * @deprecated Use {@link #listAllRangesDiff(ShareFileListRangesDiffOptions, Duration, Context)} instead.
      */
+    @Deprecated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareFileRangeList> listRangesDiffWithResponse(ShareFileListRangesDiffOptions options,
         Duration timeout, Context context) {
@@ -2639,7 +2741,7 @@ public class ShareFileClient {
         String rangeString = options.getRange() == null ? null : options.getRange().toString();
         Callable<Response<ShareFileRangeList>> operation = () -> this.azureFileStorageClient.getFiles()
             .getRangeListNoCustomHeadersWithResponse(shareName, filePath, snapshot, options.getPreviousSnapshot(), null,
-                rangeString, requestConditions.getLeaseId(), options.isRenameIncluded(), finalContext);
+                rangeString, requestConditions.getLeaseId(), options.isRenameIncluded(), null, null, finalContext);
 
         return sendRequest(operation, timeout, ShareStorageException.class);
     }
@@ -3305,5 +3407,20 @@ public class ShareFileClient {
         UserDelegationKey userDelegationKey, Consumer<String> stringToSignHandler, Context context) {
         return new ShareSasImplUtil(shareServiceSasSignatureValues, getShareName(), getFilePath())
             .generateUserDelegationSas(userDelegationKey, accountName, stringToSignHandler, context);
+    }
+
+    ResponseBase<FilesGetRangeListHeaders, ShareFileRangeList> listRangesWithResponse(ShareFileRange range,
+        ShareRequestConditions requestConditions, String previousSnapshot, Boolean supportRename, String marker,
+        Integer maxResultsPerPage, Duration timeout, Context context) {
+        ShareRequestConditions finalRequestConditions
+            = requestConditions == null ? new ShareRequestConditions() : requestConditions;
+        String rangeString = range == null ? null : range.toString();
+
+        Callable<ResponseBase<FilesGetRangeListHeaders, ShareFileRangeList>> operation
+            = () -> this.azureFileStorageClient.getFiles()
+                .getRangeListWithResponse(shareName, filePath, snapshot, previousSnapshot, null, rangeString,
+                    finalRequestConditions.getLeaseId(), supportRename, marker, maxResultsPerPage, context);
+
+        return sendRequest(operation, timeout, ShareStorageException.class);
     }
 }

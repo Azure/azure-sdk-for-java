@@ -20,7 +20,7 @@ import java.util.Map;
 public final class DiskEncryptionSetsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * 2025-01-02/diskEncryptionSetExamples/DiskEncryptionSet_Create_WithKeyVaultFromADifferentTenant.json
+     * 2026-03-02/diskEncryptionSetExamples/DiskEncryptionSet_Create_WithKeyVaultFromADifferentTenant.json
      */
     /**
      * Sample code: create a disk encryption set with key vault from a different tenant.
@@ -43,7 +43,7 @@ public final class DiskEncryptionSetsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-01-02/diskEncryptionSetExamples/DiskEncryptionSet_Create.json
+     * x-ms-original-file: 2026-03-02/diskEncryptionSetExamples/DiskEncryptionSet_Create.json
      */
     /**
      * Sample code: create a disk encryption set.
@@ -65,7 +65,7 @@ public final class DiskEncryptionSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * 2025-01-02/diskEncryptionSetExamples/DiskEncryptionSet_Create_WithKeyVaultFromADifferentSubscription.json
+     * 2026-03-02/diskEncryptionSetExamples/DiskEncryptionSet_Create_WithKeyVaultFromADifferentSubscription.json
      */
     /**
      * Sample code: create a disk encryption set with key vault from a different subscription.

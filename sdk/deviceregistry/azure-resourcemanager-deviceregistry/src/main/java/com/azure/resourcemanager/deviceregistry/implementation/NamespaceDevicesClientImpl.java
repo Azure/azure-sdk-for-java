@@ -935,7 +935,7 @@ public final class NamespaceDevicesClientImpl implements NamespaceDevicesClient 
     }
 
     /**
-     * A long-running resource action.
+     * The revoke operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The name of the namespace.
@@ -944,7 +944,8 @@ public final class NamespaceDevicesClientImpl implements NamespaceDevicesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return request payload for revoking device credentials along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> revokeWithResponseAsync(String resourceGroupName, String namespaceName,
@@ -959,7 +960,7 @@ public final class NamespaceDevicesClientImpl implements NamespaceDevicesClient 
     }
 
     /**
-     * A long-running resource action.
+     * The revoke operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The name of the namespace.
@@ -968,7 +969,7 @@ public final class NamespaceDevicesClientImpl implements NamespaceDevicesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return request payload for revoking device credentials along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> revokeWithResponse(String resourceGroupName, String namespaceName, String deviceName,
@@ -981,7 +982,7 @@ public final class NamespaceDevicesClientImpl implements NamespaceDevicesClient 
     }
 
     /**
-     * A long-running resource action.
+     * The revoke operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The name of the namespace.
@@ -991,7 +992,7 @@ public final class NamespaceDevicesClientImpl implements NamespaceDevicesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return request payload for revoking device credentials along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> revokeWithResponse(String resourceGroupName, String namespaceName, String deviceName,
@@ -1004,7 +1005,7 @@ public final class NamespaceDevicesClientImpl implements NamespaceDevicesClient 
     }
 
     /**
-     * A long-running resource action.
+     * The revoke operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The name of the namespace.
@@ -1013,7 +1014,7 @@ public final class NamespaceDevicesClientImpl implements NamespaceDevicesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of request payload for revoking device credentials.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginRevokeAsync(String resourceGroupName, String namespaceName,
@@ -1025,7 +1026,7 @@ public final class NamespaceDevicesClientImpl implements NamespaceDevicesClient 
     }
 
     /**
-     * A long-running resource action.
+     * The revoke operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The name of the namespace.
@@ -1034,7 +1035,7 @@ public final class NamespaceDevicesClientImpl implements NamespaceDevicesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of request payload for revoking device credentials.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRevoke(String resourceGroupName, String namespaceName,
@@ -1044,7 +1045,7 @@ public final class NamespaceDevicesClientImpl implements NamespaceDevicesClient 
     }
 
     /**
-     * A long-running resource action.
+     * The revoke operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The name of the namespace.
@@ -1054,7 +1055,7 @@ public final class NamespaceDevicesClientImpl implements NamespaceDevicesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of request payload for revoking device credentials.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRevoke(String resourceGroupName, String namespaceName,
@@ -1064,7 +1065,7 @@ public final class NamespaceDevicesClientImpl implements NamespaceDevicesClient 
     }
 
     /**
-     * A long-running resource action.
+     * The revoke operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The name of the namespace.
@@ -1073,7 +1074,7 @@ public final class NamespaceDevicesClientImpl implements NamespaceDevicesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return request payload for revoking device credentials on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> revokeAsync(String resourceGroupName, String namespaceName, String deviceName,
@@ -1083,7 +1084,7 @@ public final class NamespaceDevicesClientImpl implements NamespaceDevicesClient 
     }
 
     /**
-     * A long-running resource action.
+     * The revoke operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The name of the namespace.
@@ -1100,7 +1101,7 @@ public final class NamespaceDevicesClientImpl implements NamespaceDevicesClient 
     }
 
     /**
-     * A long-running resource action.
+     * The revoke operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The name of the namespace.

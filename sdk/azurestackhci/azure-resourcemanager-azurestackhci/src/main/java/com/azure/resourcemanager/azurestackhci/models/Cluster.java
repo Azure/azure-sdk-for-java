@@ -98,13 +98,6 @@ public interface Cluster {
     String cloudId();
 
     /**
-     * Gets the ring property: The ring to which this cluster belongs to.
-     * 
-     * @return the ring value.
-     */
-    String ring();
-
-    /**
      * Gets the cloudManagementEndpoint property: Endpoint configured for management from the Azure portal.
      * 
      * @return the cloudManagementEndpoint value.
@@ -259,21 +252,6 @@ public interface Cluster {
      * @return the clusterPattern value.
      */
     ClusterPattern clusterPattern();
-
-    /**
-     * Gets the confidentialVmProperties property: Represents the Confidential Virtual Machine (CVM) support intent and
-     * current status for the cluster resource.
-     * 
-     * @return the confidentialVmProperties value.
-     */
-    ConfidentialVmProperties confidentialVmProperties();
-
-    /**
-     * Gets the sdnProperties property: Software Defined Networking Properties of the cluster.
-     * 
-     * @return the sdnProperties value.
-     */
-    ClusterSdnProperties sdnProperties();
 
     /**
      * Gets the localAvailabilityZones property: Local Availability Zone information for HCI cluster.
@@ -780,7 +758,7 @@ public interface Cluster {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return cluster details.
      */
     Cluster updateSecretsLocations(SecretsLocationsChangeRequest body);
 
@@ -792,7 +770,7 @@ public interface Cluster {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return cluster details.
      */
     Cluster updateSecretsLocations(SecretsLocationsChangeRequest body, Context context);
 
@@ -844,7 +822,7 @@ public interface Cluster {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return cluster details.
      */
     Cluster extendSoftwareAssuranceBenefit(SoftwareAssuranceChangeRequest softwareAssuranceChangeRequest);
 
@@ -856,33 +834,10 @@ public interface Cluster {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return cluster details.
      */
     Cluster extendSoftwareAssuranceBenefit(SoftwareAssuranceChangeRequest softwareAssuranceChangeRequest,
         Context context);
-
-    /**
-     * Changes ring of a cluster.
-     * 
-     * @param changeRingRequest Change ring request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    Cluster changeRing(ChangeRingRequest changeRingRequest);
-
-    /**
-     * Changes ring of a cluster.
-     * 
-     * @param changeRingRequest Change ring request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    Cluster changeRing(ChangeRingRequest changeRingRequest, Context context);
 
     /**
      * Trigger Log Collection on a cluster.
@@ -891,7 +846,7 @@ public interface Cluster {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return cluster details.
      */
     Cluster triggerLogCollection(LogCollectionRequest logCollectionRequest);
 
@@ -903,7 +858,7 @@ public interface Cluster {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return cluster details.
      */
     Cluster triggerLogCollection(LogCollectionRequest logCollectionRequest, Context context);
 
@@ -914,7 +869,7 @@ public interface Cluster {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return cluster details.
      */
     Cluster configureRemoteSupport(RemoteSupportRequest remoteSupportRequest);
 
@@ -926,7 +881,7 @@ public interface Cluster {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return cluster details.
      */
     Cluster configureRemoteSupport(RemoteSupportRequest remoteSupportRequest, Context context);
 }

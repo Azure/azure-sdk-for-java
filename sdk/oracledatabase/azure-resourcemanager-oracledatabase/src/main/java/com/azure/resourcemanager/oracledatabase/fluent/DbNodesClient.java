@@ -86,7 +86,7 @@ public interface DbNodesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the DbNode resource belonging to vmCluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DbNodeInner>, DbNodeInner> beginAction(String resourceGroupName, String cloudvmclustername,
@@ -103,7 +103,7 @@ public interface DbNodesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the DbNode resource belonging to vmCluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DbNodeInner>, DbNodeInner> beginAction(String resourceGroupName, String cloudvmclustername,
@@ -119,7 +119,7 @@ public interface DbNodesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the DbNode resource belonging to vmCluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     DbNodeInner action(String resourceGroupName, String cloudvmclustername, String dbnodeocid, DbNodeAction body);
@@ -135,7 +135,7 @@ public interface DbNodesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the DbNode resource belonging to vmCluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     DbNodeInner action(String resourceGroupName, String cloudvmclustername, String dbnodeocid, DbNodeAction body,

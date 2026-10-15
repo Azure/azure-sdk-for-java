@@ -50,14 +50,11 @@ public interface Relationships {
      * @param healthModelName Name of health model resource.
      * @param relationshipName Name of the relationship. Must be unique within a health model. For example, a
      * concatenation of parentEntityName and childEntityName can be used as the name.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(String resourceGroupName, String healthModelName, String relationshipName,
-        Context context);
+    void delete(String resourceGroupName, String healthModelName, String relationshipName);
 
     /**
      * Delete a Relationship.
@@ -66,11 +63,12 @@ public interface Relationships {
      * @param healthModelName Name of health model resource.
      * @param relationshipName Name of the relationship. Must be unique within a health model. For example, a
      * concatenation of parentEntityName and childEntityName can be used as the name.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(String resourceGroupName, String healthModelName, String relationshipName);
+    void delete(String resourceGroupName, String healthModelName, String relationshipName, Context context);
 
     /**
      * List Relationship resources by HealthModel.
@@ -141,9 +139,8 @@ public interface Relationships {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
      */
-    Response<Void> deleteByIdWithResponse(String id, Context context);
+    void deleteByIdWithResponse(String id, Context context);
 
     /**
      * Begins definition for a new Relationship resource.

@@ -16,6 +16,8 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.compute.fluent.models.AccessUriInner;
 import com.azure.resourcemanager.compute.fluent.models.SnapshotInner;
 import com.azure.resourcemanager.compute.models.GrantAccessData;
+import com.azure.resourcemanager.compute.models.ImmutabilityPolicyData;
+import com.azure.resourcemanager.compute.models.ImmutabilityPolicyLockData;
 import com.azure.resourcemanager.compute.models.SnapshotUpdate;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
@@ -487,7 +489,7 @@ public interface SnapshotsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return a disk access SAS uri along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> grantAccessWithResponseAsync(String resourceGroupName, String snapshotName,
@@ -503,7 +505,7 @@ public interface SnapshotsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of a disk access SAS uri.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<AccessUriInner>, AccessUriInner> beginGrantAccessAsync(String resourceGroupName,
@@ -519,7 +521,7 @@ public interface SnapshotsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of a disk access SAS uri.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AccessUriInner>, AccessUriInner> beginGrantAccess(String resourceGroupName,
@@ -536,7 +538,7 @@ public interface SnapshotsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of a disk access SAS uri.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AccessUriInner>, AccessUriInner> beginGrantAccess(String resourceGroupName,
@@ -552,7 +554,7 @@ public interface SnapshotsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return a disk access SAS uri on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<AccessUriInner> grantAccessAsync(String resourceGroupName, String snapshotName,
@@ -568,7 +570,7 @@ public interface SnapshotsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return a disk access SAS uri.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     AccessUriInner grantAccess(String resourceGroupName, String snapshotName, GrantAccessData grantAccessData);
@@ -584,7 +586,7 @@ public interface SnapshotsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return a disk access SAS uri.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     AccessUriInner grantAccess(String resourceGroupName, String snapshotName, GrantAccessData grantAccessData,
@@ -688,4 +690,267 @@ public interface SnapshotsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void revokeAccess(String resourceGroupName, String snapshotName, Context context);
+
+    /**
+     * Updates the immutability policy of a snapshot. Sets or extends an unlocked immutability policy with the specified
+     * duration and type. If the snapshot already has a locked policy, the request will be rejected. Use
+     * updateImmutabilityPolicyLock to lock an immutability policy.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param snapshotName The name of the snapshot that is being created. The name can't be changed after the snapshot
+     * is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The max name length is 80 characters.
+     * @param immutabilityPolicyData Immutability policy data supplied in the body of the update immutability policy
+     * operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return snapshot resource along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> updateImmutabilityPolicyWithResponseAsync(String resourceGroupName,
+        String snapshotName, ImmutabilityPolicyData immutabilityPolicyData);
+
+    /**
+     * Updates the immutability policy of a snapshot. Sets or extends an unlocked immutability policy with the specified
+     * duration and type. If the snapshot already has a locked policy, the request will be rejected. Use
+     * updateImmutabilityPolicyLock to lock an immutability policy.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param snapshotName The name of the snapshot that is being created. The name can't be changed after the snapshot
+     * is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The max name length is 80 characters.
+     * @param immutabilityPolicyData Immutability policy data supplied in the body of the update immutability policy
+     * operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of snapshot resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<SnapshotInner>, SnapshotInner> beginUpdateImmutabilityPolicyAsync(String resourceGroupName,
+        String snapshotName, ImmutabilityPolicyData immutabilityPolicyData);
+
+    /**
+     * Updates the immutability policy of a snapshot. Sets or extends an unlocked immutability policy with the specified
+     * duration and type. If the snapshot already has a locked policy, the request will be rejected. Use
+     * updateImmutabilityPolicyLock to lock an immutability policy.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param snapshotName The name of the snapshot that is being created. The name can't be changed after the snapshot
+     * is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The max name length is 80 characters.
+     * @param immutabilityPolicyData Immutability policy data supplied in the body of the update immutability policy
+     * operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of snapshot resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<SnapshotInner>, SnapshotInner> beginUpdateImmutabilityPolicy(String resourceGroupName,
+        String snapshotName, ImmutabilityPolicyData immutabilityPolicyData);
+
+    /**
+     * Updates the immutability policy of a snapshot. Sets or extends an unlocked immutability policy with the specified
+     * duration and type. If the snapshot already has a locked policy, the request will be rejected. Use
+     * updateImmutabilityPolicyLock to lock an immutability policy.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param snapshotName The name of the snapshot that is being created. The name can't be changed after the snapshot
+     * is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The max name length is 80 characters.
+     * @param immutabilityPolicyData Immutability policy data supplied in the body of the update immutability policy
+     * operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of snapshot resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<SnapshotInner>, SnapshotInner> beginUpdateImmutabilityPolicy(String resourceGroupName,
+        String snapshotName, ImmutabilityPolicyData immutabilityPolicyData, Context context);
+
+    /**
+     * Updates the immutability policy of a snapshot. Sets or extends an unlocked immutability policy with the specified
+     * duration and type. If the snapshot already has a locked policy, the request will be rejected. Use
+     * updateImmutabilityPolicyLock to lock an immutability policy.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param snapshotName The name of the snapshot that is being created. The name can't be changed after the snapshot
+     * is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The max name length is 80 characters.
+     * @param immutabilityPolicyData Immutability policy data supplied in the body of the update immutability policy
+     * operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return snapshot resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<SnapshotInner> updateImmutabilityPolicyAsync(String resourceGroupName, String snapshotName,
+        ImmutabilityPolicyData immutabilityPolicyData);
+
+    /**
+     * Updates the immutability policy of a snapshot. Sets or extends an unlocked immutability policy with the specified
+     * duration and type. If the snapshot already has a locked policy, the request will be rejected. Use
+     * updateImmutabilityPolicyLock to lock an immutability policy.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param snapshotName The name of the snapshot that is being created. The name can't be changed after the snapshot
+     * is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The max name length is 80 characters.
+     * @param immutabilityPolicyData Immutability policy data supplied in the body of the update immutability policy
+     * operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return snapshot resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SnapshotInner updateImmutabilityPolicy(String resourceGroupName, String snapshotName,
+        ImmutabilityPolicyData immutabilityPolicyData);
+
+    /**
+     * Updates the immutability policy of a snapshot. Sets or extends an unlocked immutability policy with the specified
+     * duration and type. If the snapshot already has a locked policy, the request will be rejected. Use
+     * updateImmutabilityPolicyLock to lock an immutability policy.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param snapshotName The name of the snapshot that is being created. The name can't be changed after the snapshot
+     * is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The max name length is 80 characters.
+     * @param immutabilityPolicyData Immutability policy data supplied in the body of the update immutability policy
+     * operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return snapshot resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SnapshotInner updateImmutabilityPolicy(String resourceGroupName, String snapshotName,
+        ImmutabilityPolicyData immutabilityPolicyData, Context context);
+
+    /**
+     * Locks the immutability policy of a snapshot. Once locked, the policy cannot be reduced or removed until the lock
+     * period expires.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param snapshotName The name of the snapshot that is being created. The name can't be changed after the snapshot
+     * is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The max name length is 80 characters.
+     * @param immutabilityPolicyData Immutability policy data supplied in the body of the update immutability policy
+     * lock operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return snapshot resource along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> updateImmutabilityPolicyLockWithResponseAsync(String resourceGroupName,
+        String snapshotName, ImmutabilityPolicyLockData immutabilityPolicyData);
+
+    /**
+     * Locks the immutability policy of a snapshot. Once locked, the policy cannot be reduced or removed until the lock
+     * period expires.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param snapshotName The name of the snapshot that is being created. The name can't be changed after the snapshot
+     * is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The max name length is 80 characters.
+     * @param immutabilityPolicyData Immutability policy data supplied in the body of the update immutability policy
+     * lock operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of snapshot resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<SnapshotInner>, SnapshotInner> beginUpdateImmutabilityPolicyLockAsync(
+        String resourceGroupName, String snapshotName, ImmutabilityPolicyLockData immutabilityPolicyData);
+
+    /**
+     * Locks the immutability policy of a snapshot. Once locked, the policy cannot be reduced or removed until the lock
+     * period expires.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param snapshotName The name of the snapshot that is being created. The name can't be changed after the snapshot
+     * is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The max name length is 80 characters.
+     * @param immutabilityPolicyData Immutability policy data supplied in the body of the update immutability policy
+     * lock operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of snapshot resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<SnapshotInner>, SnapshotInner> beginUpdateImmutabilityPolicyLock(String resourceGroupName,
+        String snapshotName, ImmutabilityPolicyLockData immutabilityPolicyData);
+
+    /**
+     * Locks the immutability policy of a snapshot. Once locked, the policy cannot be reduced or removed until the lock
+     * period expires.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param snapshotName The name of the snapshot that is being created. The name can't be changed after the snapshot
+     * is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The max name length is 80 characters.
+     * @param immutabilityPolicyData Immutability policy data supplied in the body of the update immutability policy
+     * lock operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of snapshot resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<SnapshotInner>, SnapshotInner> beginUpdateImmutabilityPolicyLock(String resourceGroupName,
+        String snapshotName, ImmutabilityPolicyLockData immutabilityPolicyData, Context context);
+
+    /**
+     * Locks the immutability policy of a snapshot. Once locked, the policy cannot be reduced or removed until the lock
+     * period expires.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param snapshotName The name of the snapshot that is being created. The name can't be changed after the snapshot
+     * is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The max name length is 80 characters.
+     * @param immutabilityPolicyData Immutability policy data supplied in the body of the update immutability policy
+     * lock operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return snapshot resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<SnapshotInner> updateImmutabilityPolicyLockAsync(String resourceGroupName, String snapshotName,
+        ImmutabilityPolicyLockData immutabilityPolicyData);
+
+    /**
+     * Locks the immutability policy of a snapshot. Once locked, the policy cannot be reduced or removed until the lock
+     * period expires.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param snapshotName The name of the snapshot that is being created. The name can't be changed after the snapshot
+     * is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The max name length is 80 characters.
+     * @param immutabilityPolicyData Immutability policy data supplied in the body of the update immutability policy
+     * lock operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return snapshot resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SnapshotInner updateImmutabilityPolicyLock(String resourceGroupName, String snapshotName,
+        ImmutabilityPolicyLockData immutabilityPolicyData);
+
+    /**
+     * Locks the immutability policy of a snapshot. Once locked, the policy cannot be reduced or removed until the lock
+     * period expires.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param snapshotName The name of the snapshot that is being created. The name can't be changed after the snapshot
+     * is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The max name length is 80 characters.
+     * @param immutabilityPolicyData Immutability policy data supplied in the body of the update immutability policy
+     * lock operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return snapshot resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SnapshotInner updateImmutabilityPolicyLock(String resourceGroupName, String snapshotName,
+        ImmutabilityPolicyLockData immutabilityPolicyData, Context context);
 }

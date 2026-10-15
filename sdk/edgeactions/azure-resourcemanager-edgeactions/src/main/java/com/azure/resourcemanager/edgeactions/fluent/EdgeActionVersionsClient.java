@@ -119,7 +119,10 @@ public interface EdgeActionVersionsClient {
         EdgeActionVersionInner resource, Context context);
 
     /**
-     * Update a EdgeActionVersion.
+     * Updates the tags of an Edge Action version. Omitted tags are preserved, an empty tags object clears all tags, and
+     * supplied tags replace the entire tag collection. Null tags are rejected. Version properties are not changed. If
+     * deploymentType or isDefaultVersion is supplied, it must match the existing value; use swapDefault to change the
+     * default version.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.
@@ -136,7 +139,10 @@ public interface EdgeActionVersionsClient {
         String edgeActionName, String version, EdgeActionVersionUpdate properties);
 
     /**
-     * Update a EdgeActionVersion.
+     * Updates the tags of an Edge Action version. Omitted tags are preserved, an empty tags object clears all tags, and
+     * supplied tags replace the entire tag collection. Null tags are rejected. Version properties are not changed. If
+     * deploymentType or isDefaultVersion is supplied, it must match the existing value; use swapDefault to change the
+     * default version.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.
@@ -154,7 +160,10 @@ public interface EdgeActionVersionsClient {
         String edgeActionName, String version, EdgeActionVersionUpdate properties, Context context);
 
     /**
-     * Update a EdgeActionVersion.
+     * Updates the tags of an Edge Action version. Omitted tags are preserved, an empty tags object clears all tags, and
+     * supplied tags replace the entire tag collection. Null tags are rejected. Version properties are not changed. If
+     * deploymentType or isDefaultVersion is supplied, it must match the existing value; use swapDefault to change the
+     * default version.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.
@@ -170,7 +179,10 @@ public interface EdgeActionVersionsClient {
         EdgeActionVersionUpdate properties);
 
     /**
-     * Update a EdgeActionVersion.
+     * Updates the tags of an Edge Action version. Omitted tags are preserved, an empty tags object clears all tags, and
+     * supplied tags replace the entire tag collection. Null tags are rejected. Version properties are not changed. If
+     * deploymentType or isDefaultVersion is supplied, it must match the existing value; use swapDefault to change the
+     * default version.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.
@@ -281,7 +293,7 @@ public interface EdgeActionVersionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of represents an edge action version.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<EdgeActionVersionPropertiesInner>, EdgeActionVersionPropertiesInner>
@@ -298,7 +310,7 @@ public interface EdgeActionVersionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of represents an edge action version.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<EdgeActionVersionPropertiesInner>, EdgeActionVersionPropertiesInner> beginDeployVersionCode(
@@ -314,7 +326,7 @@ public interface EdgeActionVersionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return represents an edge action version.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     EdgeActionVersionPropertiesInner deployVersionCode(String resourceGroupName, String edgeActionName, String version,
@@ -331,7 +343,7 @@ public interface EdgeActionVersionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return represents an edge action version.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     EdgeActionVersionPropertiesInner deployVersionCode(String resourceGroupName, String edgeActionName, String version,

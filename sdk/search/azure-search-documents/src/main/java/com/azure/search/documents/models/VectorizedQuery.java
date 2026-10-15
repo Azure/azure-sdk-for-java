@@ -112,6 +112,9 @@ public final class VectorizedQuery extends VectorQuery {
         jsonWriter.writeBooleanField("exhaustive", isExhaustive());
         jsonWriter.writeNumberField("oversampling", getOversampling());
         jsonWriter.writeNumberField("weight", getWeight());
+        jsonWriter.writeJsonField("threshold", getThreshold());
+        jsonWriter.writeStringField("filterOverride", getFilterOverride());
+        jsonWriter.writeNumberField("perDocumentVectorLimit", getPerDocumentVectorLimit());
         jsonWriter.writeArrayField("vector", this.vector, (writer, element) -> writer.writeFloat(element));
         jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
         return jsonWriter.writeEndObject();
@@ -134,6 +137,9 @@ public final class VectorizedQuery extends VectorQuery {
             Boolean exhaustive = null;
             Double oversampling = null;
             Float weight = null;
+            VectorThreshold threshold = null;
+            String filterOverride = null;
+            Integer perDocumentVectorLimit = null;
             List<Float> vector = null;
             VectorQueryKind kind = VectorQueryKind.VECTOR;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -149,6 +155,12 @@ public final class VectorizedQuery extends VectorQuery {
                     oversampling = reader.getNullable(JsonReader::getDouble);
                 } else if ("weight".equals(fieldName)) {
                     weight = reader.getNullable(JsonReader::getFloat);
+                } else if ("threshold".equals(fieldName)) {
+                    threshold = VectorThreshold.fromJson(reader);
+                } else if ("filterOverride".equals(fieldName)) {
+                    filterOverride = reader.getString();
+                } else if ("perDocumentVectorLimit".equals(fieldName)) {
+                    perDocumentVectorLimit = reader.getNullable(JsonReader::getInt);
                 } else if ("vector".equals(fieldName)) {
                     vector = reader.readArray(reader1 -> reader1.getFloat());
                 } else if ("kind".equals(fieldName)) {
@@ -163,6 +175,9 @@ public final class VectorizedQuery extends VectorQuery {
             deserializedVectorizedQuery.setExhaustive(exhaustive);
             deserializedVectorizedQuery.setOversampling(oversampling);
             deserializedVectorizedQuery.setWeight(weight);
+            deserializedVectorizedQuery.setThreshold(threshold);
+            deserializedVectorizedQuery.setFilterOverride(filterOverride);
+            deserializedVectorizedQuery.setPerDocumentVectorLimit(perDocumentVectorLimit);
             deserializedVectorizedQuery.kind = kind;
             return deserializedVectorizedQuery;
         });
@@ -175,6 +190,36 @@ public final class VectorizedQuery extends VectorQuery {
     @Override
     public VectorizedQuery setWeight(Float weight) {
         super.setWeight(weight);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public VectorizedQuery setThreshold(VectorThreshold threshold) {
+        super.setThreshold(threshold);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public VectorizedQuery setFilterOverride(String filterOverride) {
+        super.setFilterOverride(filterOverride);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public VectorizedQuery setPerDocumentVectorLimit(Integer perDocumentVectorLimit) {
+        super.setPerDocumentVectorLimit(perDocumentVectorLimit);
         return this;
     }
 }

@@ -4,9 +4,9 @@ package com.azure.spring.cloud.appconfiguration.config.implementation.properties
 
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
@@ -126,7 +126,7 @@ public class AppConfigurationProperties {
             store.validateAndInit();
         }
 
-        Map<String, Boolean> existingEndpoints = new HashMap<>();
+        Set<String> existingEndpoints = new HashSet<>();
 
         for (ConfigStore store : this.stores) {
             if (!store.isEnabled()) {
@@ -134,16 +134,14 @@ public class AppConfigurationProperties {
             }
             if (!store.getEndpoints().isEmpty()) {
                 for (String endpoint : store.getEndpoints()) {
-                    if (existingEndpoints.containsKey(endpoint)) {
-                        throw new IllegalArgumentException("Duplicate store name exists.");
+                    if (!existingEndpoints.add(endpoint)) {
+                        throw new IllegalArgumentException("Duplicate endpoint exists: " + endpoint);
                     }
-                    existingEndpoints.put(endpoint, true);
                 }
             } else if (StringUtils.hasText(store.getEndpoint())) {
-                if (existingEndpoints.containsKey(store.getEndpoint())) {
-                    throw new IllegalArgumentException("Duplicate store name exists.");
+                if (!existingEndpoints.add(store.getEndpoint())) {
+                    throw new IllegalArgumentException("Duplicate endpoint exists: " + store.getEndpoint());
                 }
-                existingEndpoints.put(store.getEndpoint(), true);
             }
         }
         if (refreshInterval != null) {

@@ -23,7 +23,7 @@ public final class HorizonDbReplicasCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"role\":\"Read\",\"status\":\"Disabled\",\"fullyQualifiedDomainName\":\"dsjnka\",\"availabilityZone\":\"utiiswacf\",\"provisioningState\":\"Succeeded\"},\"id\":\"zzewkfvhqcrai\",\"name\":\"vpnpp\",\"type\":\"uflrwd\"}";
+            = "{\"properties\":{\"role\":\"Read\",\"status\":\"Disabled\",\"fullyQualifiedDomainName\":\"zar\",\"availabilityZone\":\"lquuijfqkacewii\",\"provisioningState\":\"Succeeded\"},\"id\":\"bjibwwiftohq\",\"name\":\"vpuvks\",\"type\":\"plsaknynfsynljph\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,12 +33,13 @@ public final class HorizonDbReplicasCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         HorizonDbReplica response = manager.horizonDbReplicas()
-            .define("bmnzbtbhjpgl")
-            .withExistingPool("u", "lauwzizxbmpgcjef", "zmuvpbttdumorppx")
-            .withProperties(new HorizonDbReplicaProperties().withRole(ReplicaRole.READ).withAvailabilityZone("hsd"))
+            .define("afnn")
+            .withExistingPool("qlpqwcciuq", "bdbutauvf", "tkuwhhmhykojo")
+            .withProperties(
+                new HorizonDbReplicaProperties().withRole(ReplicaRole.READ_WRITE).withAvailabilityZone("kcdyhbpk"))
             .create();
 
         Assertions.assertEquals(ReplicaRole.READ, response.properties().role());
-        Assertions.assertEquals("utiiswacf", response.properties().availabilityZone());
+        Assertions.assertEquals("lquuijfqkacewii", response.properties().availabilityZone());
     }
 }

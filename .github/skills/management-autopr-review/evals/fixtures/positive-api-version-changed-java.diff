@@ -1,0 +1,13 @@
+diff --git a/sdk/contosowidgets/azure-resourcemanager-contosowidgets/src/main/java/com/azure/resourcemanager/contosowidgets/WidgetManager.java b/sdk/contosowidgets/azure-resourcemanager-contosowidgets/src/main/java/com/azure/resourcemanager/contosowidgets/WidgetManager.java
+index 74889d4..a2aa811 100644
+--- a/sdk/contosowidgets/azure-resourcemanager-contosowidgets/src/main/java/com/azure/resourcemanager/contosowidgets/WidgetManager.java
++++ b/sdk/contosowidgets/azure-resourcemanager-contosowidgets/src/main/java/com/azure/resourcemanager/contosowidgets/WidgetManager.java
+@@ -25,4 +25,8 @@ public final class WidgetManager {
+     public Widgets widgets() {
+         return widgets;
+     }
++
++    public Schedules schedules() {
++        return schedules;
++    }
+ }

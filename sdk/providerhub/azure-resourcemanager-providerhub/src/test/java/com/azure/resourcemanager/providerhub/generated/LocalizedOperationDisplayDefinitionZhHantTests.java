@@ -11,27 +11,26 @@ import org.junit.jupiter.api.Assertions;
 public final class LocalizedOperationDisplayDefinitionZhHantTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LocalizedOperationDisplayDefinitionZhHant model = BinaryData
-            .fromString(
-                "{\"provider\":\"y\",\"resource\":\"vpo\",\"operation\":\"krsgsgb\",\"description\":\"huzqgn\"}")
+        LocalizedOperationDisplayDefinitionZhHant model = BinaryData.fromString(
+            "{\"provider\":\"gjmfxumvfcl\",\"resource\":\"yo\",\"operation\":\"wxnb\",\"description\":\"fezzxscyhwzdg\"}")
             .toObject(LocalizedOperationDisplayDefinitionZhHant.class);
-        Assertions.assertEquals("y", model.provider());
-        Assertions.assertEquals("vpo", model.resource());
-        Assertions.assertEquals("krsgsgb", model.operation());
-        Assertions.assertEquals("huzqgn", model.description());
+        Assertions.assertEquals("gjmfxumvfcl", model.provider());
+        Assertions.assertEquals("yo", model.resource());
+        Assertions.assertEquals("wxnb", model.operation());
+        Assertions.assertEquals("fezzxscyhwzdg", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         LocalizedOperationDisplayDefinitionZhHant model
-            = new LocalizedOperationDisplayDefinitionZhHant().withProvider("y")
-                .withResource("vpo")
-                .withOperation("krsgsgb")
-                .withDescription("huzqgn");
+            = new LocalizedOperationDisplayDefinitionZhHant().withProvider("gjmfxumvfcl")
+                .withResource("yo")
+                .withOperation("wxnb")
+                .withDescription("fezzxscyhwzdg");
         model = BinaryData.fromObject(model).toObject(LocalizedOperationDisplayDefinitionZhHant.class);
-        Assertions.assertEquals("y", model.provider());
-        Assertions.assertEquals("vpo", model.resource());
-        Assertions.assertEquals("krsgsgb", model.operation());
-        Assertions.assertEquals("huzqgn", model.description());
+        Assertions.assertEquals("gjmfxumvfcl", model.provider());
+        Assertions.assertEquals("yo", model.resource());
+        Assertions.assertEquals("wxnb", model.operation());
+        Assertions.assertEquals("fezzxscyhwzdg", model.description());
     }
 }

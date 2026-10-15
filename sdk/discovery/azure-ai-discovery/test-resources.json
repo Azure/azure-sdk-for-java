@@ -1,0 +1,147 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "baseName": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().name]",
+      "metadata": {
+        "description": "The base resource name."
+      }
+    },
+    "testApplicationOid": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "The client OID to grant access to test resources."
+      }
+    },
+    "tenantId": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "The tenant ID to which the application and resources belong."
+      }
+    },
+    "location": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().location]",
+      "metadata": {
+        "description": "The location of the resource. By default, this is the same as the resource group."
+      }
+    },
+    "workspaceEndpoint": {
+      "type": "string",
+      "defaultValue": "https://test-wkspc.workspace.discovery.azure.com",
+      "metadata": {
+        "description": "Endpoint of a pre-provisioned Discovery Workspace service. Supplied at test time; not deployed by this template."
+      }
+    },
+    "bookshelfEndpoint": {
+      "type": "string",
+      "defaultValue": "https://test-bkshlf.bookshelf.discovery.azure.com",
+      "metadata": {
+        "description": "Endpoint of a pre-provisioned Discovery Bookshelf service. Supplied at test time; not deployed by this template."
+      }
+    },
+    "projectName": {
+      "type": "string",
+      "defaultValue": "test-project",
+      "metadata": {
+        "description": "Name of a pre-provisioned Discovery project used by Workspace tests."
+      }
+    },
+    "investigationName": {
+      "type": "string",
+      "defaultValue": "test-invst",
+      "metadata": {
+        "description": "Name of a pre-provisioned investigation used by Workspace tests."
+      }
+    },
+    "agentName": {
+      "type": "string",
+      "defaultValue": "test-agent",
+      "metadata": {
+        "description": "Name of a pre-provisioned agent used by Workspace tests."
+      }
+    },
+    "knowledgeBaseName": {
+      "type": "string",
+      "defaultValue": "test-kb",
+      "metadata": {
+        "description": "Name of a pre-provisioned knowledge base used by Bookshelf tests."
+      }
+    },
+    "toolId": {
+      "type": "string",
+      "defaultValue": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.Discovery/tools/testtool",
+      "metadata": {
+        "description": "Resource ID of a pre-provisioned Discovery tool used by Tools tests."
+      }
+    },
+    "nodePoolId": {
+      "type": "string",
+      "defaultValue": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.Discovery/supercomputers/test-sc/nodePools/nodepool1",
+      "metadata": {
+        "description": "Resource ID of a pre-provisioned node pool used by Tools tests."
+      }
+    },
+    "storageAssetId": {
+      "type": "string",
+      "defaultValue": "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/test-rg/providers/microsoft.discovery/storagecontainers/test-storage/storageassets/test-sa",
+      "metadata": {
+        "description": "Resource ID of a pre-provisioned storage asset used by Bookshelf tests."
+      }
+    },
+    "userAssignedIdentity": {
+      "type": "string",
+      "defaultValue": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-mi",
+      "metadata": {
+        "description": "Resource ID of a user-assigned managed identity used by Bookshelf tests."
+      }
+    }
+  },
+  "resources": [],
+  "outputs": {
+    "AZURE_DISCOVERY_WORKSPACE_ENDPOINT": {
+      "type": "string",
+      "value": "[parameters('workspaceEndpoint')]"
+    },
+    "AZURE_DISCOVERY_BOOKSHELF_ENDPOINT": {
+      "type": "string",
+      "value": "[parameters('bookshelfEndpoint')]"
+    },
+    "AZURE_DISCOVERY_PROJECT_NAME": {
+      "type": "string",
+      "value": "[parameters('projectName')]"
+    },
+    "AZURE_DISCOVERY_INVESTIGATION_NAME": {
+      "type": "string",
+      "value": "[parameters('investigationName')]"
+    },
+    "AGENT_NAME": {
+      "type": "string",
+      "value": "[parameters('agentName')]"
+    },
+    "KNOWLEDGE_BASE_NAME": {
+      "type": "string",
+      "value": "[parameters('knowledgeBaseName')]"
+    },
+    "TOOL_ID": {
+      "type": "string",
+      "value": "[parameters('toolId')]"
+    },
+    "NODE_POOL_ID": {
+      "type": "string",
+      "value": "[parameters('nodePoolId')]"
+    },
+    "STORAGE_ASSET_ID": {
+      "type": "string",
+      "value": "[parameters('storageAssetId')]"
+    },
+    "USER_ASSIGNED_IDENTITY": {
+      "type": "string",
+      "value": "[parameters('userAssignedIdentity')]"
+    }
+  }
+}

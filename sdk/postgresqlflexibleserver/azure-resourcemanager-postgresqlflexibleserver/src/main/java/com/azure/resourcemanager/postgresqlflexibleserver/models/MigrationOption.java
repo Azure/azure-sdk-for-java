@@ -12,17 +12,17 @@ import java.util.Collection;
  */
 public final class MigrationOption extends ExpandableStringEnum<MigrationOption> {
     /**
-     * Static value Validate for MigrationOption.
+     * Validate the migration without performing it.
      */
     public static final MigrationOption VALIDATE = fromString("Validate");
 
     /**
-     * Static value Migrate for MigrationOption.
+     * Perform the migration.
      */
     public static final MigrationOption MIGRATE = fromString("Migrate");
 
     /**
-     * Static value ValidateAndMigrate for MigrationOption.
+     * Validate and perform the migration.
      */
     public static final MigrationOption VALIDATE_AND_MIGRATE = fromString("ValidateAndMigrate");
 

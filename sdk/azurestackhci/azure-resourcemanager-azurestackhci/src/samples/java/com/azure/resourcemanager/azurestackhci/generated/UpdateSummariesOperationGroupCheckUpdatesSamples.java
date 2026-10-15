@@ -11,7 +11,7 @@ import com.azure.resourcemanager.azurestackhci.models.CheckUpdatesRequest;
  */
 public final class UpdateSummariesOperationGroupCheckUpdatesSamples {
     /*
-     * x-ms-original-file: 2026-04-01-preview/UpdateSummaries_CheckUpdates.json
+     * x-ms-original-file: 2026-04-30/UpdateSummaries_CheckUpdates.json
      */
     /**
      * Sample code: Check for updates.
@@ -24,7 +24,7 @@ public final class UpdateSummariesOperationGroupCheckUpdatesSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-04-01-preview/UpdateSummaries_CheckUpdates_MaximumSet.json
+     * x-ms-original-file: 2026-04-30/UpdateSummaries_CheckUpdates_MaximumSet.json
      */
     /**
      * Sample code: Check for specific update by name.

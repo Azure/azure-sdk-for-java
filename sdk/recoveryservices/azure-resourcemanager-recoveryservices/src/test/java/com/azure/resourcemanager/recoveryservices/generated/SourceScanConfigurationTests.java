@@ -15,21 +15,21 @@ public final class SourceScanConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SourceScanConfiguration model = BinaryData.fromString(
-            "{\"state\":\"Invalid\",\"sourceScanIdentity\":{\"operationIdentityType\":\"SystemAssigned\",\"userAssignedIdentity\":\"hqjbasvmsmj\"}}")
+            "{\"state\":\"Invalid\",\"sourceScanIdentity\":{\"operationIdentityType\":\"UserAssigned\",\"userAssignedIdentity\":\"sntnbybkzgcw\"}}")
             .toObject(SourceScanConfiguration.class);
         Assertions.assertEquals(State.INVALID, model.state());
-        Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED, model.sourceScanIdentity().operationIdentityType());
-        Assertions.assertEquals("hqjbasvmsmj", model.sourceScanIdentity().userAssignedIdentity());
+        Assertions.assertEquals(IdentityType.USER_ASSIGNED, model.sourceScanIdentity().operationIdentityType());
+        Assertions.assertEquals("sntnbybkzgcw", model.sourceScanIdentity().userAssignedIdentity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SourceScanConfiguration model = new SourceScanConfiguration().withState(State.INVALID)
-            .withSourceScanIdentity(new AssociatedIdentity().withOperationIdentityType(IdentityType.SYSTEM_ASSIGNED)
-                .withUserAssignedIdentity("hqjbasvmsmj"));
+            .withSourceScanIdentity(new AssociatedIdentity().withOperationIdentityType(IdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentity("sntnbybkzgcw"));
         model = BinaryData.fromObject(model).toObject(SourceScanConfiguration.class);
         Assertions.assertEquals(State.INVALID, model.state());
-        Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED, model.sourceScanIdentity().operationIdentityType());
-        Assertions.assertEquals("hqjbasvmsmj", model.sourceScanIdentity().userAssignedIdentity());
+        Assertions.assertEquals(IdentityType.USER_ASSIGNED, model.sourceScanIdentity().operationIdentityType());
+        Assertions.assertEquals("sntnbybkzgcw", model.sourceScanIdentity().userAssignedIdentity());
     }
 }

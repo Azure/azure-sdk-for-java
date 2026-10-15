@@ -13,22 +13,22 @@ public final class AzureSqlProtectedItemExtendedInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureSqlProtectedItemExtendedInfo model = BinaryData.fromString(
-            "{\"oldestRecoveryPoint\":\"2021-10-29T02:59:08Z\",\"recoveryPointCount\":61185346,\"policyState\":\"refovgmkqsleyyvx\"}")
+            "{\"oldestRecoveryPoint\":\"2021-07-14T20:07:14Z\",\"recoveryPointCount\":500448783,\"policyState\":\"lexxbczwtru\"}")
             .toObject(AzureSqlProtectedItemExtendedInfo.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-29T02:59:08Z"), model.oldestRecoveryPoint());
-        Assertions.assertEquals(61185346, model.recoveryPointCount());
-        Assertions.assertEquals("refovgmkqsleyyvx", model.policyState());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-14T20:07:14Z"), model.oldestRecoveryPoint());
+        Assertions.assertEquals(500448783, model.recoveryPointCount());
+        Assertions.assertEquals("lexxbczwtru", model.policyState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureSqlProtectedItemExtendedInfo model = new AzureSqlProtectedItemExtendedInfo()
-            .withOldestRecoveryPoint(OffsetDateTime.parse("2021-10-29T02:59:08Z"))
-            .withRecoveryPointCount(61185346)
-            .withPolicyState("refovgmkqsleyyvx");
+            .withOldestRecoveryPoint(OffsetDateTime.parse("2021-07-14T20:07:14Z"))
+            .withRecoveryPointCount(500448783)
+            .withPolicyState("lexxbczwtru");
         model = BinaryData.fromObject(model).toObject(AzureSqlProtectedItemExtendedInfo.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-29T02:59:08Z"), model.oldestRecoveryPoint());
-        Assertions.assertEquals(61185346, model.recoveryPointCount());
-        Assertions.assertEquals("refovgmkqsleyyvx", model.policyState());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-14T20:07:14Z"), model.oldestRecoveryPoint());
+        Assertions.assertEquals(500448783, model.recoveryPointCount());
+        Assertions.assertEquals("lexxbczwtru", model.policyState());
     }
 }

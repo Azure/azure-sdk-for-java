@@ -33,7 +33,7 @@ import java.util.Map;
  */
 public final class DatabaseAccountsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/CosmosDBDatabaseAccountPatch.json
+     * x-ms-original-file: 2026-04-01-preview/CosmosDBDatabaseAccountPatch.json
      */
     /**
      * Sample code: CosmosDBDatabaseAccountPatch.
@@ -80,7 +80,8 @@ public final class DatabaseAccountsUpdateSamples {
                 .withMinimalTlsVersion(MinimalTlsVersion.TLS)
                 .withEnablePriorityBasedExecution(true)
                 .withDefaultPriorityLevel(DefaultPriorityLevel.LOW)
-                .withEnablePerRegionPerPartitionAutoscale(true), com.azure.core.util.Context.NONE);
+                .withEnablePerRegionPerPartitionAutoscale(true)
+                .withEnforceHierarchicalPartitionKeyIdLastLevel(false), com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

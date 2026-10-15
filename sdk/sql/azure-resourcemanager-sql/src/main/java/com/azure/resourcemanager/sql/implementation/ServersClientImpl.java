@@ -1246,7 +1246,8 @@ public final class ServersClientImpl implements InnerSupportsGet<ServerInner>, I
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return an ImportExport operation result resource along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> importDatabaseWithResponseAsync(String resourceGroupName, String serverName,
@@ -1290,7 +1291,8 @@ public final class ServersClientImpl implements InnerSupportsGet<ServerInner>, I
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return an ImportExport operation result resource along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> importDatabaseWithResponseAsync(String resourceGroupName,
@@ -1331,7 +1333,7 @@ public final class ServersClientImpl implements InnerSupportsGet<ServerInner>, I
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of an ImportExport operation result resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ImportExportOperationResultInner>, ImportExportOperationResultInner>
@@ -1353,7 +1355,7 @@ public final class ServersClientImpl implements InnerSupportsGet<ServerInner>, I
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of an ImportExport operation result resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ImportExportOperationResultInner>, ImportExportOperationResultInner>
@@ -1376,7 +1378,7 @@ public final class ServersClientImpl implements InnerSupportsGet<ServerInner>, I
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of an ImportExport operation result resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ImportExportOperationResultInner>, ImportExportOperationResultInner>
@@ -1394,7 +1396,7 @@ public final class ServersClientImpl implements InnerSupportsGet<ServerInner>, I
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of an ImportExport operation result resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ImportExportOperationResultInner>, ImportExportOperationResultInner>
@@ -1412,7 +1414,7 @@ public final class ServersClientImpl implements InnerSupportsGet<ServerInner>, I
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return an ImportExport operation result resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ImportExportOperationResultInner> importDatabaseAsync(String resourceGroupName, String serverName,
@@ -1431,7 +1433,7 @@ public final class ServersClientImpl implements InnerSupportsGet<ServerInner>, I
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return an ImportExport operation result resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ImportExportOperationResultInner> importDatabaseAsync(String resourceGroupName, String serverName,
@@ -1449,7 +1451,7 @@ public final class ServersClientImpl implements InnerSupportsGet<ServerInner>, I
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return an ImportExport operation result resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ImportExportOperationResultInner importDatabase(String resourceGroupName, String serverName,
@@ -1467,7 +1469,7 @@ public final class ServersClientImpl implements InnerSupportsGet<ServerInner>, I
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return an ImportExport operation result resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ImportExportOperationResultInner importDatabase(String resourceGroupName, String serverName,
@@ -1483,7 +1485,8 @@ public final class ServersClientImpl implements InnerSupportsGet<ServerInner>, I
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return an RefreshExternalGovernanceStatus operation result resource along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> refreshStatusWithResponseAsync(String resourceGroupName,
@@ -1519,7 +1522,8 @@ public final class ServersClientImpl implements InnerSupportsGet<ServerInner>, I
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return an RefreshExternalGovernanceStatus operation result resource along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> refreshStatusWithResponseAsync(String resourceGroupName, String serverName,
@@ -1553,7 +1557,7 @@ public final class ServersClientImpl implements InnerSupportsGet<ServerInner>, I
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of an RefreshExternalGovernanceStatus operation result resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
@@ -1575,7 +1579,7 @@ public final class ServersClientImpl implements InnerSupportsGet<ServerInner>, I
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of an RefreshExternalGovernanceStatus operation result resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private
@@ -1597,7 +1601,7 @@ public final class ServersClientImpl implements InnerSupportsGet<ServerInner>, I
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of an RefreshExternalGovernanceStatus operation result resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
@@ -1615,7 +1619,7 @@ public final class ServersClientImpl implements InnerSupportsGet<ServerInner>, I
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of an RefreshExternalGovernanceStatus operation result resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
@@ -1632,7 +1636,7 @@ public final class ServersClientImpl implements InnerSupportsGet<ServerInner>, I
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return an RefreshExternalGovernanceStatus operation result resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RefreshExternalGovernanceStatusOperationResultInner> refreshStatusAsync(String resourceGroupName,
@@ -1650,7 +1654,7 @@ public final class ServersClientImpl implements InnerSupportsGet<ServerInner>, I
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return an RefreshExternalGovernanceStatus operation result resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<RefreshExternalGovernanceStatusOperationResultInner> refreshStatusAsync(String resourceGroupName,
@@ -1667,7 +1671,7 @@ public final class ServersClientImpl implements InnerSupportsGet<ServerInner>, I
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return an RefreshExternalGovernanceStatus operation result resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RefreshExternalGovernanceStatusOperationResultInner refreshStatus(String resourceGroupName,
@@ -1684,7 +1688,7 @@ public final class ServersClientImpl implements InnerSupportsGet<ServerInner>, I
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return an RefreshExternalGovernanceStatus operation result resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RefreshExternalGovernanceStatusOperationResultInner refreshStatus(String resourceGroupName,

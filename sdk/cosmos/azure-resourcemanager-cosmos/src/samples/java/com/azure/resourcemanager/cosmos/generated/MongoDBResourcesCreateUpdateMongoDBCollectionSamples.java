@@ -22,7 +22,7 @@ import java.util.Map;
  */
 public final class MongoDBResourcesCreateUpdateMongoDBCollectionSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/CosmosDBMongoDBCollectionRestore.json
+     * x-ms-original-file: 2026-04-01-preview/CosmosDBMongoDBCollectionRestore.json
      */
     /**
      * Sample code: CosmosDBMongoDBCollectionRestore.
@@ -46,7 +46,7 @@ public final class MongoDBResourcesCreateUpdateMongoDBCollectionSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-11-01-preview/CosmosDBMongoDBCollectionCreateUpdate.json
+     * x-ms-original-file: 2026-04-01-preview/CosmosDBMongoDBCollectionCreateUpdate.json
      */
     /**
      * Sample code: CosmosDBMongoDBCollectionCreateUpdate.

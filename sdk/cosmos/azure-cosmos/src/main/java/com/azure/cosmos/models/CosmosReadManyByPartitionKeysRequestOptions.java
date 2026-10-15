@@ -11,7 +11,6 @@ import com.azure.cosmos.implementation.CosmosQueryRequestOptionsBase;
 import com.azure.cosmos.implementation.CosmosReadManyByPartitionKeysRequestOptionsImpl;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.Utils;
-import com.azure.cosmos.util.Beta;
 
 import java.time.Duration;
 import java.util.List;
@@ -143,18 +142,19 @@ public final class CosmosReadManyByPartitionKeysRequestOptions {
      *
      * @return the read consistency strategy.
      */
-    @Beta(value = Beta.SinceVersion.V4_69_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ReadConsistencyStrategy getReadConsistencyStrategy() {
         return this.actualRequestOptions.getReadConsistencyStrategy();
     }
 
     /**
      * Sets the read consistency strategy required for the request.
+     * <p>Honored across Direct, Gateway V1 (compute gateway), and Gateway V2 (thin client proxy) connection modes.
+     * {@code GLOBAL_STRONG} is rejected client-side with a {@link com.azure.cosmos.CosmosException} (HTTP 400)
+     * when the account's default consistency is not {@link com.azure.cosmos.ConsistencyLevel#STRONG}. Such failures must NOT be retried.</p>
      *
      * @param readConsistencyStrategy the read consistency strategy.
      * @return the {@link CosmosReadManyByPartitionKeysRequestOptions} for fluent chaining.
      */
-    @Beta(value = Beta.SinceVersion.V4_69_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosReadManyByPartitionKeysRequestOptions setReadConsistencyStrategy(
         ReadConsistencyStrategy readConsistencyStrategy) {
         this.actualRequestOptions.setReadConsistencyStrategy(readConsistencyStrategy);

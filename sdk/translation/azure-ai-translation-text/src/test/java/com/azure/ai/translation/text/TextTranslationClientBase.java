@@ -36,7 +36,9 @@ public class TextTranslationClientBase extends TestProxyTestBase {
     public void beforeTest() {
         if (getTestMode() != TestMode.LIVE) {
             interceptorManager.addMatchers(Collections.singletonList(new CustomMatcher()
-                .setHeadersKeyOnlyMatch(Arrays.asList("Ocp-Apim-Subscription-Region", "Ocp-Apim-ResourceId"))));
+                .setHeadersKeyOnlyMatch(Arrays.asList("Ocp-Apim-Subscription-Region", "Ocp-Apim-ResourceId"))
+                // Ignore api-version so recordings made with 2025-10-01-preview match requests using 2026-06-06.
+                .setIgnoredQueryParameters(Arrays.asList("api-version"))));
         }
     }
 

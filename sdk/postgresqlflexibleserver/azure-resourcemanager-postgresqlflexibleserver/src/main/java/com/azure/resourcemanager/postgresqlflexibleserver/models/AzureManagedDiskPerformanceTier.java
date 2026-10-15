@@ -12,72 +12,72 @@ import java.util.Collection;
  */
 public final class AzureManagedDiskPerformanceTier extends ExpandableStringEnum<AzureManagedDiskPerformanceTier> {
     /**
-     * Static value P1 for AzureManagedDiskPerformanceTier.
+     * Entry-level SSD for minimal IOPS, ideal for light development or testing workloads.
      */
     public static final AzureManagedDiskPerformanceTier P1 = fromString("P1");
 
     /**
-     * Static value P2 for AzureManagedDiskPerformanceTier.
+     * Slightly higher IOPS for small-scale applications needing consistent low latency.
      */
     public static final AzureManagedDiskPerformanceTier P2 = fromString("P2");
 
     /**
-     * Static value P3 for AzureManagedDiskPerformanceTier.
+     * Balanced performance for basic production workloads with moderate throughput.
      */
     public static final AzureManagedDiskPerformanceTier P3 = fromString("P3");
 
     /**
-     * Static value P4 for AzureManagedDiskPerformanceTier.
+     * Enhanced IOPS for growing apps with predictable performance needs.
      */
     public static final AzureManagedDiskPerformanceTier P4 = fromString("P4");
 
     /**
-     * Static value P6 for AzureManagedDiskPerformanceTier.
+     * Mid-tier SSD for steady workloads requiring reliable throughput and latency.
      */
     public static final AzureManagedDiskPerformanceTier P6 = fromString("P6");
 
     /**
-     * Static value P10 for AzureManagedDiskPerformanceTier.
+     * Popular choice for general-purpose production workloads with scalable performance.
      */
     public static final AzureManagedDiskPerformanceTier P10 = fromString("P10");
 
     /**
-     * Static value P15 for AzureManagedDiskPerformanceTier.
+     * High IOPS tier for demanding apps with frequent read/write operations.
      */
     public static final AzureManagedDiskPerformanceTier P15 = fromString("P15");
 
     /**
-     * Static value P20 for AzureManagedDiskPerformanceTier.
+     * Entry point for high-performance Solid State Disks (SSDs), suitable for small-scale I/O-intensive workloads.
      */
     public static final AzureManagedDiskPerformanceTier P20 = fromString("P20");
 
     /**
-     * Static value P30 for AzureManagedDiskPerformanceTier.
+     * Balanced tier for moderate throughput and latency-sensitive applications.
      */
     public static final AzureManagedDiskPerformanceTier P30 = fromString("P30");
 
     /**
-     * Static value P40 for AzureManagedDiskPerformanceTier.
+     * Enhanced performance for growing production workloads with consistent IOPS demands.
      */
     public static final AzureManagedDiskPerformanceTier P40 = fromString("P40");
 
     /**
-     * Static value P50 for AzureManagedDiskPerformanceTier.
+     * Optimized for enterprise-grade applications needing sustained high throughput.
      */
     public static final AzureManagedDiskPerformanceTier P50 = fromString("P50");
 
     /**
-     * Static value P60 for AzureManagedDiskPerformanceTier.
+     * High-capacity tier for large databases and analytics workloads with elevated IOPS.
      */
     public static final AzureManagedDiskPerformanceTier P60 = fromString("P60");
 
     /**
-     * Static value P70 for AzureManagedDiskPerformanceTier.
+     * Designed for mission-critical systems requiring ultra-low latency and high concurrency.
      */
     public static final AzureManagedDiskPerformanceTier P70 = fromString("P70");
 
     /**
-     * Static value P80 for AzureManagedDiskPerformanceTier.
+     * Top-tier SSD for maximum IOPS and throughput, ideal for the most demanding workloads.
      */
     public static final AzureManagedDiskPerformanceTier P80 = fromString("P80");
 

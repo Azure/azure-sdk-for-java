@@ -12,11 +12,10 @@ import org.junit.jupiter.api.Assertions;
 public final class SqlDataDirectoryTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SqlDataDirectory model = BinaryData
-            .fromString("{\"type\":\"Invalid\",\"path\":\"luudfdlwggytsb\",\"logicalName\":\"ovvtgseinqfiu\"}")
+        SqlDataDirectory model = BinaryData.fromString("{\"type\":\"Log\",\"path\":\"kpzi\",\"logicalName\":\"j\"}")
             .toObject(SqlDataDirectory.class);
-        Assertions.assertEquals(SqlDataDirectoryType.INVALID, model.type());
-        Assertions.assertEquals("luudfdlwggytsb", model.path());
-        Assertions.assertEquals("ovvtgseinqfiu", model.logicalName());
+        Assertions.assertEquals(SqlDataDirectoryType.LOG, model.type());
+        Assertions.assertEquals("kpzi", model.path());
+        Assertions.assertEquals("j", model.logicalName());
     }
 }

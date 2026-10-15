@@ -219,7 +219,8 @@ public interface UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of a multi-stage process to perform update operations across members
+     * of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<UpdateRunInner>, UpdateRunInner> beginStart(String resourceGroupName, String fleetName,
@@ -236,7 +237,8 @@ public interface UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of a multi-stage process to perform update operations across members
+     * of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<UpdateRunInner>, UpdateRunInner> beginStart(String resourceGroupName, String fleetName,
@@ -251,7 +253,7 @@ public interface UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return a multi-stage process to perform update operations across members of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     UpdateRunInner start(String resourceGroupName, String fleetName, String updateRunName);
@@ -267,7 +269,7 @@ public interface UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return a multi-stage process to perform update operations across members of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     UpdateRunInner start(String resourceGroupName, String fleetName, String updateRunName, String ifMatch,
@@ -282,7 +284,8 @@ public interface UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of a multi-stage process to perform update operations across members
+     * of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<UpdateRunInner>, UpdateRunInner> beginStop(String resourceGroupName, String fleetName,
@@ -299,7 +302,8 @@ public interface UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of a multi-stage process to perform update operations across members
+     * of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<UpdateRunInner>, UpdateRunInner> beginStop(String resourceGroupName, String fleetName,
@@ -314,7 +318,7 @@ public interface UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return a multi-stage process to perform update operations across members of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     UpdateRunInner stop(String resourceGroupName, String fleetName, String updateRunName);
@@ -330,7 +334,7 @@ public interface UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return a multi-stage process to perform update operations across members of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     UpdateRunInner stop(String resourceGroupName, String fleetName, String updateRunName, String ifMatch,
@@ -346,7 +350,8 @@ public interface UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of a multi-stage process to perform update operations across members
+     * of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<UpdateRunInner>, UpdateRunInner> beginSkip(String resourceGroupName, String fleetName,
@@ -364,7 +369,8 @@ public interface UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of a multi-stage process to perform update operations across members
+     * of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<UpdateRunInner>, UpdateRunInner> beginSkip(String resourceGroupName, String fleetName,
@@ -380,7 +386,7 @@ public interface UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return a multi-stage process to perform update operations across members of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     UpdateRunInner skip(String resourceGroupName, String fleetName, String updateRunName, SkipProperties body);
@@ -397,7 +403,7 @@ public interface UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return a multi-stage process to perform update operations across members of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     UpdateRunInner skip(String resourceGroupName, String fleetName, String updateRunName, SkipProperties body,

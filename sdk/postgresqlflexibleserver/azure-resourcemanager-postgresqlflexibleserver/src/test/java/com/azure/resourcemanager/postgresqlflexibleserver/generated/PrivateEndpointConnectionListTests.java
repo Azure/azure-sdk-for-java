@@ -12,7 +12,7 @@ public final class PrivateEndpointConnectionListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrivateEndpointConnectionList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"groupIds\":[\"mnzgmwznmabi\",\"nsorgjhxbldt\",\"wwrlkdmtncv\",\"kotl\"],\"privateEndpoint\":{\"id\":\"yhgsy\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"jlt\",\"actionsRequired\":\"bnnhadoocrkvcik\"},\"provisioningState\":\"Succeeded\"},\"id\":\"amqgxqquezikyw\",\"name\":\"gxk\",\"type\":\"lla\"}],\"nextLink\":\"elwuipi\"}")
+            "{\"value\":[{\"properties\":{\"groupIds\":[\"hckqqzqioxiy\"],\"privateEndpoint\":{\"id\":\"i\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"edyatrwyhqmibzyh\",\"actionsRequired\":\"tsmypyynpcdp\"},\"provisioningState\":\"Deleting\"},\"id\":\"g\",\"name\":\"wznm\",\"type\":\"biknsorgjhxbld\"},{\"properties\":{\"groupIds\":[\"rlkdmtncvokotl\",\"xdy\"],\"privateEndpoint\":{\"id\":\"y\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"jlt\",\"actionsRequired\":\"bnnhadoocrkvcik\"},\"provisioningState\":\"Succeeded\"},\"id\":\"amqgxqquezikyw\",\"name\":\"gxk\",\"type\":\"lla\"}],\"nextLink\":\"elwuipi\"}")
             .toObject(PrivateEndpointConnectionList.class);
         Assertions.assertEquals("elwuipi", model.nextLink());
     }

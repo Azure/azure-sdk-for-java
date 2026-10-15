@@ -8,13 +8,18 @@ import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
+import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.PathsHelper;
+import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
+import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
+import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.implementation.BackoffRetryUtility;
@@ -50,6 +55,9 @@ class QueryPlanRetriever {
     // new NonStreamingOrderBy query feature the client might run into some issue of not being able to recognize this,
     // and throw a 400 exception. If the environment variable `AZURE_COSMOS_DISABLE_NON_STREAMING_ORDER_BY` is set to
     // True to opt out of this new query feature, we will return the OLD query features to operate correctly.
+    // TODO: Add ListAndSetAggregate after Java supports MAKELIST/MAKESET query aggregation.
+    // TODO: Add HybridSearchSkipOrderByRewrite after the Java hybrid query pipeline can consume the optimized plan.
+    // TODO: Add CountIf after Java implements a CountIf aggregator in SingleGroupAggregator.
     private static final String SUPPORTED_QUERY_FEATURES = QueryFeature.Aggregate.name() + ", " +
                                                                QueryFeature.CompositeAggregate.name() + ", " +
                                                                QueryFeature.MultipleOrderBy.name() + ", " +
@@ -81,13 +89,16 @@ class QueryPlanRetriever {
                                                                                IDocumentQueryClient queryClient,
                                                                                SqlQuerySpec sqlQuerySpec,
                                                                                String resourceLink,
-                                                                               CosmosQueryRequestOptions initialQueryRequestOptions) {
+                                                                               CosmosQueryRequestOptions initialQueryRequestOptions,
+                                                                               DocumentCollection collection) {
 
         CosmosQueryRequestOptions nonNullRequestOptions = initialQueryRequestOptions != null
             ? initialQueryRequestOptions
             : new CosmosQueryRequestOptions();
 
         PartitionKey partitionKey = nonNullRequestOptions.getPartitionKey();
+
+        PartitionKeyDefinition partitionKeyDefinition = collection != null ? collection.getPartitionKey() : null;
 
         final Map<String, String> requestHeaders = new HashMap<>();
         requestHeaders.put(HttpConstants.HttpHeaders.CONTENT_TYPE, RuntimeConstants.MediaTypes.JSON);
@@ -106,7 +117,14 @@ class QueryPlanRetriever {
                                                                                  ResourceType.Document,
                                                                                  resourceLink,
                                                                                  requestHeaders);
-        queryPlanRequest.useGatewayMode = true;
+        // Route the query-plan request based on the thin-client opt-in, not on collection
+        // metadata. When thin client is enabled and eligible for this request, leave gateway
+        // mode off so the request is routed through the Gateway V2 thin-client proxy;
+        // otherwise force Gateway V1 (preserving the legacy query-plan routing).
+        // Configs.isThinClientQueryPlanEnabled() is a kill-switch (system property /
+        // environment variable) that forces query-plan requests back onto Gateway V1.
+        queryPlanRequest.useGatewayMode =
+            !(queryClient.useThinClient(queryPlanRequest) && Configs.isThinClientQueryPlanEnabled());
 
         // Create a defensive copy to prevent concurrent modification of the shared
         // SqlQuerySpec's internal ObjectNode when multiple threads retrieve the query
@@ -138,10 +156,29 @@ class QueryPlanRetriever {
                 return BackoffRetryUtility.executeRetry(() -> {
                     retryPolicyInstance.onBeforeSendRequest(req);
                     return queryClient.executeQueryAsync(req).flatMap(rxDocumentServiceResponse -> {
-                        PartitionedQueryExecutionInfo partitionedQueryExecutionInfo =
-                            new PartitionedQueryExecutionInfo(
-                                (ObjectNode) rxDocumentServiceResponse.getResponseBody(),
-                                rxDocumentServiceResponse.getGatewayHttpRequestTimeline());
+                        ObjectNode responseBody = (ObjectNode) rxDocumentServiceResponse.getResponseBody();
+                        RequestTimeline timeline = rxDocumentServiceResponse.getGatewayHttpRequestTimeline();
+
+                        PartitionedQueryExecutionInfo partitionedQueryExecutionInfo;
+
+                        // In thin client mode, the proxy returns queryRanges in PartitionKeyInternal
+                        // format (e.g., {"min": ["value"], "max": ["Infinity"]}). Convert to sorted
+                        // List<Range<String>> with EPK hex strings and pass directly to the DTO —
+                        // avoiding a redundant JSON round-trip.
+                        if (req.useThinClientMode && partitionKeyDefinition == null) {
+                            throw new IllegalStateException(
+                                "PartitionKeyDefinition must not be null in thin client mode. "
+                                + "Ensure DocumentCollection is resolved before calling getQueryPlanThroughGatewayAsync.");
+                        }
+
+                        if (req.useThinClientMode) {
+                            partitionedQueryExecutionInfo = new PartitionedQueryExecutionInfo(
+                                responseBody, timeline, partitionKeyDefinition);
+                        } else {
+                            partitionedQueryExecutionInfo = new PartitionedQueryExecutionInfo(
+                                responseBody, timeline);
+                        }
+
                         return Mono.just(partitionedQueryExecutionInfo);
                     });
                 }, retryPolicyInstance);

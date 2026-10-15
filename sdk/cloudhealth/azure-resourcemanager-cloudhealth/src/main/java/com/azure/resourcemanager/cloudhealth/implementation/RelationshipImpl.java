@@ -62,18 +62,14 @@ public final class RelationshipImpl implements Relationship, Relationship.Defini
     public Relationship create() {
         this.innerObject = serviceManager.serviceClient()
             .getRelationships()
-            .createOrUpdateWithResponse(resourceGroupName, healthModelName, relationshipName, this.innerModel(),
-                Context.NONE)
-            .getValue();
+            .createOrUpdate(resourceGroupName, healthModelName, relationshipName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Relationship create(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getRelationships()
-            .createOrUpdateWithResponse(resourceGroupName, healthModelName, relationshipName, this.innerModel(),
-                context)
-            .getValue();
+            .createOrUpdate(resourceGroupName, healthModelName, relationshipName, this.innerModel(), context);
         return this;
     }
 
@@ -90,18 +86,14 @@ public final class RelationshipImpl implements Relationship, Relationship.Defini
     public Relationship apply() {
         this.innerObject = serviceManager.serviceClient()
             .getRelationships()
-            .createOrUpdateWithResponse(resourceGroupName, healthModelName, relationshipName, this.innerModel(),
-                Context.NONE)
-            .getValue();
+            .createOrUpdate(resourceGroupName, healthModelName, relationshipName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Relationship apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getRelationships()
-            .createOrUpdateWithResponse(resourceGroupName, healthModelName, relationshipName, this.innerModel(),
-                context)
-            .getValue();
+            .createOrUpdate(resourceGroupName, healthModelName, relationshipName, this.innerModel(), context);
         return this;
     }
 

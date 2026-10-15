@@ -338,7 +338,7 @@ public interface ServerDnsAliasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return a server DNS alias along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> acquireWithResponseAsync(String resourceGroupName, String serverName,
@@ -354,7 +354,7 @@ public interface ServerDnsAliasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of a server DNS alias.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ServerDnsAliasInner>, ServerDnsAliasInner> beginAcquireAsync(String resourceGroupName,
@@ -370,7 +370,7 @@ public interface ServerDnsAliasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of a server DNS alias.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ServerDnsAliasInner>, ServerDnsAliasInner> beginAcquire(String resourceGroupName,
@@ -387,7 +387,7 @@ public interface ServerDnsAliasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of a server DNS alias.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ServerDnsAliasInner>, ServerDnsAliasInner> beginAcquire(String resourceGroupName,
@@ -403,7 +403,7 @@ public interface ServerDnsAliasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return a server DNS alias on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ServerDnsAliasInner> acquireAsync(String resourceGroupName, String serverName, String dnsAliasName,
@@ -419,7 +419,7 @@ public interface ServerDnsAliasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return a server DNS alias.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ServerDnsAliasInner acquire(String resourceGroupName, String serverName, String dnsAliasName,
@@ -436,7 +436,7 @@ public interface ServerDnsAliasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return a server DNS alias.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ServerDnsAliasInner acquire(String resourceGroupName, String serverName, String dnsAliasName,

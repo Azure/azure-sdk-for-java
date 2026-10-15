@@ -13,18 +13,18 @@ public final class HorizonDbReplicaPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HorizonDbReplicaProperties model = BinaryData.fromString(
-            "{\"role\":\"Read\",\"status\":\"Healthy\",\"fullyQualifiedDomainName\":\"tmut\",\"availabilityZone\":\"qktapspwgcuert\",\"provisioningState\":\"Canceled\"}")
+            "{\"role\":\"ReadWrite\",\"status\":\"Dropping\",\"fullyQualifiedDomainName\":\"iawxklry\",\"availabilityZone\":\"wckbasyypnd\",\"provisioningState\":\"InProgress\"}")
             .toObject(HorizonDbReplicaProperties.class);
-        Assertions.assertEquals(ReplicaRole.READ, model.role());
-        Assertions.assertEquals("qktapspwgcuert", model.availabilityZone());
+        Assertions.assertEquals(ReplicaRole.READ_WRITE, model.role());
+        Assertions.assertEquals("wckbasyypnd", model.availabilityZone());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         HorizonDbReplicaProperties model
-            = new HorizonDbReplicaProperties().withRole(ReplicaRole.READ).withAvailabilityZone("qktapspwgcuert");
+            = new HorizonDbReplicaProperties().withRole(ReplicaRole.READ_WRITE).withAvailabilityZone("wckbasyypnd");
         model = BinaryData.fromObject(model).toObject(HorizonDbReplicaProperties.class);
-        Assertions.assertEquals(ReplicaRole.READ, model.role());
-        Assertions.assertEquals("qktapspwgcuert", model.availabilityZone());
+        Assertions.assertEquals(ReplicaRole.READ_WRITE, model.role());
+        Assertions.assertEquals("wckbasyypnd", model.availabilityZone());
     }
 }

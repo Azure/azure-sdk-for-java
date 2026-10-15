@@ -710,7 +710,7 @@ public final class StorageAccountInner extends Resource {
 
     /**
      * Get the minimumTlsVersion property: Set the minimum TLS version to be permitted on requests to storage. The
-     * default interpretation is TLS 1.0 for this property.
+     * default interpretation is TLS 1.0 for this property. Minimum TLS version 1.3 version is not supported.
      * 
      * @return the minimumTlsVersion value.
      */
@@ -720,7 +720,7 @@ public final class StorageAccountInner extends Resource {
 
     /**
      * Set the minimumTlsVersion property: Set the minimum TLS version to be permitted on requests to storage. The
-     * default interpretation is TLS 1.0 for this property.
+     * default interpretation is TLS 1.0 for this property. Minimum TLS version 1.3 version is not supported.
      * 
      * @param minimumTlsVersion the minimumTlsVersion value to set.
      * @return the StorageAccountInner object itself.
@@ -1059,6 +1059,31 @@ public final class StorageAccountInner extends Resource {
             this.innerProperties = new StorageAccountPropertiesInner();
         }
         this.innerProperties().withDataCollaborationPolicyProperties(dataCollaborationPolicyProperties);
+        return this;
+    }
+
+    /**
+     * Get the allowCrossTenantDelegationSas property: Allow or disallow cross AAD tenant user delegation SAS (shared
+     * access signature). The default interpretation is false for this property.
+     * 
+     * @return the allowCrossTenantDelegationSas value.
+     */
+    public Boolean allowCrossTenantDelegationSas() {
+        return this.innerProperties() == null ? null : this.innerProperties().allowCrossTenantDelegationSas();
+    }
+
+    /**
+     * Set the allowCrossTenantDelegationSas property: Allow or disallow cross AAD tenant user delegation SAS (shared
+     * access signature). The default interpretation is false for this property.
+     * 
+     * @param allowCrossTenantDelegationSas the allowCrossTenantDelegationSas value to set.
+     * @return the StorageAccountInner object itself.
+     */
+    public StorageAccountInner withAllowCrossTenantDelegationSas(Boolean allowCrossTenantDelegationSas) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageAccountPropertiesInner();
+        }
+        this.innerProperties().withAllowCrossTenantDelegationSas(allowCrossTenantDelegationSas);
         return this;
     }
 

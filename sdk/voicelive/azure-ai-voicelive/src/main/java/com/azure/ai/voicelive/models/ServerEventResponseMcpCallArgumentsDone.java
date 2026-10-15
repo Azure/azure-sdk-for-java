@@ -14,7 +14,7 @@ import java.io.IOException;
  * Indicates the completion of the arguments for an MCP tool call.
  */
 @Immutable
-public final class ServerEventResponseMcpCallArgumentsDone extends SessionUpdate {
+public final class ServerEventResponseMcpCallArgumentsDone extends SessionServerEvent {
 
     /*
      * The type of event.

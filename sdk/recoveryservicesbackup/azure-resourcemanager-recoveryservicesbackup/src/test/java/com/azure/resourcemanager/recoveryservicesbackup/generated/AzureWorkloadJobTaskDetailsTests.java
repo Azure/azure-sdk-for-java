@@ -11,10 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class AzureWorkloadJobTaskDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzureWorkloadJobTaskDetails model
-            = BinaryData.fromString("{\"taskId\":\"spzhzmtksjc\",\"status\":\"digsxcdgl\"}")
-                .toObject(AzureWorkloadJobTaskDetails.class);
-        Assertions.assertEquals("spzhzmtksjc", model.taskId());
-        Assertions.assertEquals("digsxcdgl", model.status());
+        AzureWorkloadJobTaskDetails model = BinaryData.fromString("{\"taskId\":\"qi\",\"status\":\"xtkcudfbsfar\"}")
+            .toObject(AzureWorkloadJobTaskDetails.class);
+        Assertions.assertEquals("qi", model.taskId());
+        Assertions.assertEquals("xtkcudfbsfar", model.status());
     }
 }

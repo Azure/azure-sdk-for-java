@@ -41,6 +41,7 @@ import com.azure.security.keyvault.keys.implementation.models.KeyUpdateParameter
 import com.azure.security.keyvault.keys.implementation.models.KeyVaultKeysModelsUtils;
 import com.azure.security.keyvault.keys.implementation.models.RandomBytes;
 import com.azure.security.keyvault.keys.models.CreateEcKeyOptions;
+import com.azure.security.keyvault.keys.models.CreateExternalKeyOptions;
 import com.azure.security.keyvault.keys.models.CreateKeyOptions;
 import com.azure.security.keyvault.keys.models.CreateOctKeyOptions;
 import com.azure.security.keyvault.keys.models.CreateRsaKeyOptions;
@@ -368,6 +369,109 @@ public final class KeyAsyncClient {
         return (e.getResponse() != null && e.getResponse().getStatusCode() == 400)
             ? new ResourceModifiedException(e.getMessage(), e.getResponse(), e.getValue())
             : e;
+    }
+
+    /**
+     * Registers an external key with a Managed HSM and stores it in the key vault. An external key references key
+     * material that is owned by an external Hardware Security Module (HSM); the Managed HSM stores only a reference to
+     * that material. It requires the {@code keys/create} permission.
+     *
+     * <p>External keys are mutually exclusive with a {@link KeyType key type}, so no key type is sent to the service.
+     * External keys are only supported on Managed HSM configured to use External Key Management (EKM), with service
+     * version {@code 2026-01-01-preview} or newer. They are not supported on a standard Key Vault.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Registers an external key which activates in one day and expires in one year. Subscribes to the call
+     * asynchronously and prints out the newly {@link KeyVaultKey created key} details when a response has been
+     * received.</p>
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyAsyncClient.createExternalKey#CreateExternalKeyOptions -->
+     * <pre>
+     * CreateExternalKeyOptions createExternalKeyOptions =
+     *     new CreateExternalKeyOptions&#40;&quot;keyName&quot;, new ExternalKey&#40;&quot;external-key-reference-id&quot;&#41;&#41;
+     *         .setNotBefore&#40;OffsetDateTime.now&#40;&#41;.plusDays&#40;1&#41;&#41;
+     *         .setExpiresOn&#40;OffsetDateTime.now&#40;&#41;.plusYears&#40;1&#41;&#41;;
+     *
+     * keyAsyncClient.createExternalKey&#40;createExternalKeyOptions&#41;
+     *     .contextWrite&#40;Context.of&#40;&quot;key1&quot;, &quot;value1&quot;, &quot;key2&quot;, &quot;value2&quot;&#41;&#41;
+     *     .subscribe&#40;key -&gt;
+     *         System.out.printf&#40;&quot;Created external key with name: %s and id: %s %n&quot;, key.getName&#40;&#41;,
+     *             key.getId&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.KeyAsyncClient.createExternalKey#CreateExternalKeyOptions -->
+     *
+     * @param createExternalKeyOptions The {@link CreateExternalKeyOptions options object} containing information about
+     * the external key being registered.
+     *
+     * @return A {@link Mono} containing the {@link KeyVaultKey created key}.
+     *
+     * @throws HttpResponseException If {@link CreateExternalKeyOptions#getName()} is an empty string.
+     * @throws NullPointerException If {@code createExternalKeyOptions} is null.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<KeyVaultKey> createExternalKey(CreateExternalKeyOptions createExternalKeyOptions) {
+        return createExternalKeyWithResponse(createExternalKeyOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Registers an external key with a Managed HSM and stores it in the key vault. An external key references key
+     * material that is owned by an external Hardware Security Module (HSM); the Managed HSM stores only a reference to
+     * that material. It requires the {@code keys/create} permission.
+     *
+     * <p>External keys are mutually exclusive with a {@link KeyType key type}, so no key type is sent to the service.
+     * External keys are only supported on Managed HSM configured to use External Key Management (EKM), with service
+     * version {@code 2026-01-01-preview} or newer. They are not supported on a standard Key Vault.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Registers an external key which activates in one day and expires in one year. Subscribes to the call
+     * asynchronously and prints out the newly {@link KeyVaultKey created key} details contained in the
+     * {@link Response HTTP response} when it has been received.</p>
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyAsyncClient.createExternalKeyWithResponse#CreateExternalKeyOptions -->
+     * <pre>
+     * CreateExternalKeyOptions options =
+     *     new CreateExternalKeyOptions&#40;&quot;keyName&quot;, new ExternalKey&#40;&quot;external-key-reference-id&quot;&#41;&#41;
+     *         .setNotBefore&#40;OffsetDateTime.now&#40;&#41;.plusDays&#40;1&#41;&#41;
+     *         .setExpiresOn&#40;OffsetDateTime.now&#40;&#41;.plusYears&#40;1&#41;&#41;;
+     *
+     * keyAsyncClient.createExternalKeyWithResponse&#40;options&#41;
+     *     .contextWrite&#40;Context.of&#40;&quot;key1&quot;, &quot;value1&quot;, &quot;key2&quot;, &quot;value2&quot;&#41;&#41;
+     *     .subscribe&#40;response -&gt;
+     *         System.out.printf&#40;&quot;Created external key with name: %s and id: %s %n&quot;,
+     *             response.getValue&#40;&#41;.getName&#40;&#41;, response.getValue&#40;&#41;.getId&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.KeyAsyncClient.createExternalKeyWithResponse#CreateExternalKeyOptions -->
+     *
+     * @param createExternalKeyOptions The {@link CreateExternalKeyOptions options object} containing information about
+     * the external key being registered.
+     *
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the
+     * {@link KeyVaultKey created key}.
+     *
+     * @throws HttpResponseException If {@link CreateExternalKeyOptions#getName()} is an empty string.
+     * @throws NullPointerException If {@code createExternalKeyOptions} is null.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<KeyVaultKey>>
+        createExternalKeyWithResponse(CreateExternalKeyOptions createExternalKeyOptions) {
+        try {
+            if (createExternalKeyOptions == null) {
+                return monoError(LOGGER, new NullPointerException("'createExternalKeyOptions' cannot be null."));
+            }
+
+            KeyCreateParameters keyCreateParameters = new KeyCreateParameters(createExternalKeyOptions.getKeyType())
+                .setKeyOps(createExternalKeyOptions.getKeyOperations())
+                .setKeyAttributes(createKeyAttributes(createExternalKeyOptions))
+                .setTags(createExternalKeyOptions.getTags())
+                .setReleasePolicy(mapKeyReleasePolicy(createExternalKeyOptions.getReleasePolicy()));
+
+            return implClient
+                .createKeyWithResponseAsync(createExternalKeyOptions.getName(),
+                    BinaryData.fromObject(keyCreateParameters), EMPTY_OPTIONS)
+                .onErrorMap(HttpResponseException.class, KeyAsyncClient::mapCreateKeyException)
+                .map(response -> new SimpleResponse<>(response,
+                    createKeyVaultKey(response.getValue().toObject(KeyBundle.class))));
+        } catch (RuntimeException e) {
+            return monoError(LOGGER, e);
+        }
     }
 
     /**

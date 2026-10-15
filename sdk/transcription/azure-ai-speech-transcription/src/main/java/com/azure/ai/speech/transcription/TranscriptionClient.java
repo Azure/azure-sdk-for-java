@@ -5,7 +5,7 @@ package com.azure.ai.speech.transcription;
 
 import com.azure.ai.speech.transcription.implementation.MultipartFormDataHelper;
 import com.azure.ai.speech.transcription.implementation.TranscriptionClientImpl;
-import com.azure.ai.speech.transcription.models.TranscriptionContent;
+import com.azure.ai.speech.transcription.models.AudioFileDetails;
 import com.azure.ai.speech.transcription.models.TranscriptionOptions;
 import com.azure.ai.speech.transcription.models.TranscriptionResult;
 import com.azure.core.annotation.Generated;
@@ -47,6 +47,68 @@ public final class TranscriptionClient {
     @Generated
     TranscriptionClient(TranscriptionClientImpl serviceClient) {
         this.serviceClient = serviceClient;
+    }
+
+    /**
+     * Transcribes the provided audio stream with the specified options.
+     *
+     * <p><strong>Sample</strong></p>
+     *
+     * <pre>
+     * TranscriptionResult result = client.transcribe(new TranscriptionOptions(&quot;https://example.com/audio.wav&quot;));
+     * </pre>
+     *
+     * @param options the transcription options including audio file details or audio URL
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of the transcribe operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public TranscriptionResult transcribe(TranscriptionOptions options) {
+        return transcribeWithResponse(options, null).getValue();
+    }
+
+    /**
+     * Transcribes the provided audio stream with the specified options and returns the full HTTP
+     * response, useful for inspecting status code and headers (for example the
+     * {@code x-ms-request-id} header used in support escalations).
+     *
+     * <p><strong>Sample</strong></p>
+     *
+     * <pre>
+     * Response&lt;TranscriptionResult&gt; response
+     *     = client.transcribeWithResponse(new TranscriptionOptions(&quot;https://example.com/audio.wav&quot;), new RequestOptions());
+     * System.out.println(&quot;Status: &quot; + response.getStatusCode());
+     * TranscriptionResult result = response.getValue();
+     * </pre>
+     *
+     * @param options the transcription options including audio file details or audio URL
+     * @param requestOptions the options to configure the HTTP request before HTTP client sends it
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response containing the result of the transcribe operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<TranscriptionResult> transcribeWithResponse(TranscriptionOptions options,
+        RequestOptions requestOptions) {
+        AudioFileDetails audio = options.getFileDetails();
+        RequestOptions effectiveRequestOptions = requestOptions == null ? new RequestOptions() : requestOptions;
+        Response<BinaryData> response = transcribeWithResponseInternal(
+            new MultipartFormDataHelper(effectiveRequestOptions).serializeJsonField("definition", options)
+                .serializeFileField("audio", audio == null ? null : audio.getContent(),
+                    audio == null ? null : audio.getContentType(), audio == null ? null : audio.getFilename())
+                .end()
+                .getRequestBody(),
+            effectiveRequestOptions);
+        return new SimpleResponse<>(response, response.getValue().toObject(TranscriptionResult.class));
     }
 
     /**
@@ -95,103 +157,9 @@ public final class TranscriptionClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> transcribeWithResponse(BinaryData body, RequestOptions requestOptions) {
+    Response<BinaryData> transcribeWithResponseInternal(BinaryData body, RequestOptions requestOptions) {
         // Operation 'transcribe' is of content-type 'multipart/form-data'. Protocol API is not usable and hence not
         // generated.
-        return this.serviceClient.transcribeWithResponse(body, requestOptions);
-    }
-
-    /**
-     * Transcribes the provided audio stream.
-     *
-     * @param body The body of the multipart request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of the transcribe operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    TranscriptionResult transcribe(TranscriptionContent body) {
-        // Generated convenience method for transcribeWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return transcribeWithResponse(
-            new MultipartFormDataHelper(requestOptions).serializeJsonField("definition", body.getOptions())
-                .serializeFileField("audio", body.getAudio() == null ? null : body.getAudio().getContent(),
-                    body.getAudio() == null ? null : body.getAudio().getContentType(),
-                    body.getAudio() == null ? null : body.getAudio().getFilename())
-                .end()
-                .getRequestBody(),
-            requestOptions).getValue().toObject(TranscriptionResult.class);
-    }
-
-    /**
-     * Transcribes the provided audio stream with the specified options.
-     *
-     * <p><strong>Sample</strong></p>
-     *
-     * <pre>
-     * TranscriptionResult result = client.transcribe(new TranscriptionOptions(&quot;https://example.com/audio.wav&quot;));
-     * </pre>
-     *
-     * @param options the transcription options including audio file details or audio URL
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of the transcribe operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public TranscriptionResult transcribe(TranscriptionOptions options) {
-        TranscriptionContent requestContent = new TranscriptionContent(options);
-        if (options.getFileDetails() != null) {
-            requestContent.setAudio(options.getFileDetails());
-        }
-        return transcribe(requestContent);
-    }
-
-    /**
-     * Transcribes the provided audio stream with the specified options and returns the full HTTP
-     * response, useful for inspecting status code and headers (for example the
-     * {@code x-ms-request-id} header used in support escalations).
-     *
-     * <p><strong>Sample</strong></p>
-     *
-     * <pre>
-     * Response&lt;TranscriptionResult&gt; response
-     *     = client.transcribeWithResponse(new TranscriptionOptions(&quot;https://example.com/audio.wav&quot;));
-     * System.out.println(&quot;Status: &quot; + response.getStatusCode());
-     * TranscriptionResult result = response.getValue();
-     * </pre>
-     *
-     * @param options the transcription options including audio file details or audio URL
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response containing the result of the transcribe operation.
-     */
-    public Response<TranscriptionResult> transcribeWithResponse(TranscriptionOptions options) {
-        TranscriptionContent requestContent = new TranscriptionContent(options);
-        if (options.getFileDetails() != null) {
-            requestContent.setAudio(options.getFileDetails());
-        }
-        RequestOptions requestOptions = new RequestOptions();
-        Response<BinaryData> response = transcribeWithResponse(
-            new MultipartFormDataHelper(requestOptions).serializeJsonField("definition", requestContent.getOptions())
-                .serializeFileField("audio",
-                    requestContent.getAudio() == null ? null : requestContent.getAudio().getContent(),
-                    requestContent.getAudio() == null ? null : requestContent.getAudio().getContentType(),
-                    requestContent.getAudio() == null ? null : requestContent.getAudio().getFilename())
-                .end()
-                .getRequestBody(),
-            requestOptions);
-        return new SimpleResponse<>(response, response.getValue().toObject(TranscriptionResult.class));
+        return this.serviceClient.transcribeWithResponseInternal(body, requestOptions);
     }
 }

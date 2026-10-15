@@ -28,7 +28,7 @@ import java.util.Map;
  */
 public final class GremlinResourcesCreateUpdateGremlinGraphSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/CosmosDBGremlinGraphCreateUpdate.json
+     * x-ms-original-file: 2026-04-01-preview/CosmosDBGremlinGraphCreateUpdate.json
      */
     /**
      * Sample code: CosmosDBGremlinGraphCreateUpdate.

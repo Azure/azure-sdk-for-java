@@ -17,7 +17,7 @@ import java.util.Map;
  */
 public final class ClustersUpdateSamples {
     /*
-     * x-ms-original-file: 2026-04-01-preview/UpdateCluster.json
+     * x-ms-original-file: 2026-04-30/UpdateCluster.json
      */
     /**
      * Sample code: Update cluster.

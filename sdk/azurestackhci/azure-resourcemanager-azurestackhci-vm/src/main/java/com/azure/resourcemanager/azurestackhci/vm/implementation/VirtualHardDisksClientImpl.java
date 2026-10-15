@@ -1045,7 +1045,8 @@ public final class VirtualHardDisksClientImpl implements VirtualHardDisksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return response for uploading virtual hard disk along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> uploadWithResponseAsync(String resourceGroupName,
@@ -1068,7 +1069,7 @@ public final class VirtualHardDisksClientImpl implements VirtualHardDisksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return response for uploading virtual hard disk along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> uploadWithResponse(String resourceGroupName, String virtualHardDiskName,
@@ -1090,7 +1091,7 @@ public final class VirtualHardDisksClientImpl implements VirtualHardDisksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return response for uploading virtual hard disk along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> uploadWithResponse(String resourceGroupName, String virtualHardDiskName,
@@ -1111,7 +1112,7 @@ public final class VirtualHardDisksClientImpl implements VirtualHardDisksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of response for uploading virtual hard disk.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<VirtualHardDiskUploadResponseInner>, VirtualHardDiskUploadResponseInner>
@@ -1131,7 +1132,7 @@ public final class VirtualHardDisksClientImpl implements VirtualHardDisksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of response for uploading virtual hard disk.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualHardDiskUploadResponseInner>, VirtualHardDiskUploadResponseInner>
@@ -1151,7 +1152,7 @@ public final class VirtualHardDisksClientImpl implements VirtualHardDisksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of response for uploading virtual hard disk.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualHardDiskUploadResponseInner>, VirtualHardDiskUploadResponseInner> beginUpload(
@@ -1170,7 +1171,7 @@ public final class VirtualHardDisksClientImpl implements VirtualHardDisksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return response for uploading virtual hard disk on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<VirtualHardDiskUploadResponseInner> uploadAsync(String resourceGroupName, String virtualHardDiskName,
@@ -1188,7 +1189,7 @@ public final class VirtualHardDisksClientImpl implements VirtualHardDisksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response for uploading virtual hard disk.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualHardDiskUploadResponseInner upload(String resourceGroupName, String virtualHardDiskName,
@@ -1206,7 +1207,7 @@ public final class VirtualHardDisksClientImpl implements VirtualHardDisksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response for uploading virtual hard disk.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualHardDiskUploadResponseInner upload(String resourceGroupName, String virtualHardDiskName,

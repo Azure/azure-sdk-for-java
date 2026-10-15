@@ -12,37 +12,37 @@ import java.util.Collection;
  */
 public final class MigrationState extends ExpandableStringEnum<MigrationState> {
     /**
-     * Static value InProgress for MigrationState.
+     * Migration is in progress.
      */
     public static final MigrationState IN_PROGRESS = fromString("InProgress");
 
     /**
-     * Static value WaitingForUserAction for MigrationState.
+     * Migration is waiting for user action.
      */
     public static final MigrationState WAITING_FOR_USER_ACTION = fromString("WaitingForUserAction");
 
     /**
-     * Static value Canceled for MigrationState.
+     * Migration has been canceled.
      */
     public static final MigrationState CANCELED = fromString("Canceled");
 
     /**
-     * Static value Failed for MigrationState.
+     * Migration has failed.
      */
     public static final MigrationState FAILED = fromString("Failed");
 
     /**
-     * Static value Succeeded for MigrationState.
+     * Migration has succeeded.
      */
     public static final MigrationState SUCCEEDED = fromString("Succeeded");
 
     /**
-     * Static value ValidationFailed for MigrationState.
+     * Validation for migration has failed.
      */
     public static final MigrationState VALIDATION_FAILED = fromString("ValidationFailed");
 
     /**
-     * Static value CleaningUp for MigrationState.
+     * Migration is cleaning up resources.
      */
     public static final MigrationState CLEANING_UP = fromString("CleaningUp");
 

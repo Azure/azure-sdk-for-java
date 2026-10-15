@@ -12,19 +12,19 @@ import org.junit.jupiter.api.Assertions;
 public final class AssociatedIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AssociatedIdentity model = BinaryData
-            .fromString("{\"operationIdentityType\":\"UserAssigned\",\"userAssignedIdentity\":\"gsntnbybkzgcwr\"}")
-            .toObject(AssociatedIdentity.class);
+        AssociatedIdentity model
+            = BinaryData.fromString("{\"operationIdentityType\":\"UserAssigned\",\"userAssignedIdentity\":\"xxwr\"}")
+                .toObject(AssociatedIdentity.class);
         Assertions.assertEquals(IdentityType.USER_ASSIGNED, model.operationIdentityType());
-        Assertions.assertEquals("gsntnbybkzgcwr", model.userAssignedIdentity());
+        Assertions.assertEquals("xxwr", model.userAssignedIdentity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AssociatedIdentity model = new AssociatedIdentity().withOperationIdentityType(IdentityType.USER_ASSIGNED)
-            .withUserAssignedIdentity("gsntnbybkzgcwr");
+            .withUserAssignedIdentity("xxwr");
         model = BinaryData.fromObject(model).toObject(AssociatedIdentity.class);
         Assertions.assertEquals(IdentityType.USER_ASSIGNED, model.operationIdentityType());
-        Assertions.assertEquals("gsntnbybkzgcwr", model.userAssignedIdentity());
+        Assertions.assertEquals("xxwr", model.userAssignedIdentity());
     }
 }

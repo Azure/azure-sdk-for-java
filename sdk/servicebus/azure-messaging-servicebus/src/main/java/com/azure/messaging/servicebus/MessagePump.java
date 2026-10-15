@@ -6,6 +6,7 @@ package com.azure.messaging.servicebus;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.instrumentation.ReceiverKind;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusReceiverInstrumentation;
+import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import org.reactivestreams.Publisher;
 import reactor.core.Disposable;
 import reactor.core.Disposables;
@@ -17,6 +18,8 @@ import reactor.core.scheduler.Schedulers;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -56,6 +59,16 @@ final class MessagePump {
     private final boolean enableAutoLockRenew;
     private final Scheduler workerScheduler;
     private final ServiceBusReceiverInstrumentation instrumentation;
+    private final AtomicInteger activeHandlerCount = new AtomicInteger(0);
+    private final Object drainLock = new Object();
+    private final ThreadLocal<Boolean> isHandlerThread = ThreadLocal.withInitial(() -> Boolean.FALSE);
+    private volatile boolean closing;
+    // True when the receive mode is PEEK_LOCK, in which case it is safe to skip handler dispatch
+    // for messages that arrive after closing=true (the broker still owns the lock and will
+    // redeliver). False for RECEIVE_AND_DELETE, where the broker has already removed the message
+    // before delivery - skipping the handler in that mode would lose the message permanently, so
+    // we must always invoke processMessage even during the drain window.
+    private final boolean skipDuringDrain;
 
     /**
      * Instantiate {@link MessagePump} that pumps messages emitted by the given {@code client}. The messages
@@ -85,6 +98,13 @@ final class MessagePump {
         this.concurrency = concurrency;
         this.enableAutoDisposition = enableAutoDisposition;
         this.enableAutoLockRenew = client.isAutoLockRenewRequested();
+        // Cached at construction so the hot path (handleMessage) reads a primitive instead of
+        // walking the receiver options each call. PEEK_LOCK is safe to skip during drain (broker
+        // redelivers); RECEIVE_AND_DELETE is not (message would be lost). When the client cannot
+        // report a receive mode (test mocks that didn't stub getReceiverOptions()) default to the
+        // safer no-skip behavior so messages cannot be dropped silently.
+        final ReceiverOptions options = client.getReceiverOptions();
+        this.skipDuringDrain = options != null && options.getReceiveMode() == ServiceBusReceiveMode.PEEK_LOCK;
         if (concurrency > 1) {
             this.workerScheduler = Schedulers.boundedElastic();
         } else {
@@ -138,24 +158,59 @@ final class MessagePump {
     }
 
     private void handleMessage(ServiceBusReceivedMessage message) {
-        instrumentation.instrumentProcess(message, ReceiverKind.PROCESSOR, msg -> {
-            final Disposable lockRenewDisposable;
-            if (enableAutoLockRenew) {
-                lockRenewDisposable = client.beginLockRenewal(message);
-            } else {
-                lockRenewDisposable = Disposables.disposed();
+        // Fast-path early return: avoid counting skip-path invocations against the drain. Under
+        // sustained throughput with concurrency > 1, the upstream subscription is still live
+        // while drainHandlers() is waiting (the subscription is only disposed after drain returns),
+        // so flatMap keeps dispatching messages. If we incremented the counter for every skip
+        // we could keep activeHandlerCount > 0 long enough to push drain to its timeout. Reading
+        // the volatile flag here ensures messages that arrive after closing=true is set are
+        // dropped without touching the drain's exit condition.
+        //
+        // Skip is gated on PEEK_LOCK only: in that mode the broker still owns the lock and will
+        // redeliver any message we drop. In RECEIVE_AND_DELETE, the broker has already removed
+        // the message before delivery, so dropping it here would lose it permanently - those
+        // messages must always reach processMessage even during the drain window.
+        if (closing && skipDuringDrain) {
+            logger.atVerbose().log("Skipping handler execution (early), pump is closing.");
+            return;
+        }
+        activeHandlerCount.incrementAndGet();
+        isHandlerThread.set(Boolean.TRUE);
+        try {
+            // closing may have flipped between the early check above and this point
+            // (a check-then-act race). Re-check inside the counted region so the rare race-loser
+            // still skips work; the increment will be balanced by the decrement in finally and
+            // notifyAll the drain. Same RECEIVE_AND_DELETE exemption applies.
+            if (closing && skipDuringDrain) {
+                logger.atVerbose().log("Skipping handler execution, pump is closing.");
+                return;
             }
-            final Throwable error = notifyMessage(message);
-            if (enableAutoDisposition) {
-                if (error == null) {
-                    complete(message);
+            instrumentation.instrumentProcess(message, ReceiverKind.PROCESSOR, msg -> {
+                final Disposable lockRenewDisposable;
+                if (enableAutoLockRenew) {
+                    lockRenewDisposable = client.beginLockRenewal(message);
                 } else {
-                    abandon(message);
+                    lockRenewDisposable = Disposables.disposed();
+                }
+                final Throwable error = notifyMessage(message);
+                if (enableAutoDisposition) {
+                    if (error == null) {
+                        complete(message);
+                    } else {
+                        abandon(message);
+                    }
+                }
+                lockRenewDisposable.dispose();
+                return error;
+            });
+        } finally {
+            isHandlerThread.remove();
+            if (activeHandlerCount.decrementAndGet() <= 1) {
+                synchronized (drainLock) {
+                    drainLock.notifyAll();
                 }
             }
-            lockRenewDisposable.dispose();
-            return error;
-        });
+        }
     }
 
     private Throwable notifyMessage(ServiceBusReceivedMessage message) {
@@ -191,6 +246,64 @@ final class MessagePump {
         } catch (Exception e) {
             logger.atVerbose().log("Failed to abandon message", e);
         }
+    }
+
+    /**
+     * Wait for in-flight message handlers to complete, up to the specified timeout.
+     * This is called during processor close to ensure graceful shutdown — messages currently
+     * being processed are allowed to complete (including settlement) before the underlying client
+     * is disposed.
+     *
+     * <p><strong>Re-entrant semantics:</strong> when invoked from within a message handler
+     * (i.e. the calling thread is the handler thread itself), this method waits only for
+     * <em>other</em> concurrent handlers to complete and excludes the calling handler from the
+     * wait condition - waiting for the calling handler to finish would self-deadlock. In that
+     * case, this method may return {@code true} while the calling handler is still executing.</p>
+     *
+     * @param timeout the maximum time to wait for in-flight handlers to complete.
+     * @return {@code true} if all in-flight handlers (excluding the calling handler on the
+     *     re-entrant path) completed within the timeout, {@code false} otherwise.
+     */
+    boolean drainHandlers(Duration timeout) {
+        closing = true;
+        final int threshold;
+        if (isHandlerThread.get()) {
+            // Re-entrant call from within a message handler (e.g., user called close() inside processMessage).
+            // Cannot wait for this thread's own handler to complete (would self-deadlock), but we can
+            // wait for OTHER concurrent handlers to finish settlement before the underlying client is disposed.
+            threshold = 1;
+            if (activeHandlerCount.get() <= threshold) {
+                return true;
+            }
+            logger.atInfo()
+                .addKeyValue("otherActiveHandlers", activeHandlerCount.get() - 1)
+                .log("drainHandlers called from within a message handler (re-entrant). "
+                    + "Waiting for other active handlers to complete.");
+        } else {
+            threshold = 0;
+        }
+        final long deadline = System.nanoTime() + timeout.toNanos();
+        synchronized (drainLock) {
+            while (activeHandlerCount.get() > threshold) {
+                final long remainingNanos = deadline - System.nanoTime();
+                if (remainingNanos <= 0) {
+                    logger.atWarning()
+                        .addKeyValue("activeHandlers", activeHandlerCount.get())
+                        .log("Drain timeout expired with active handlers still running.");
+                    return false;
+                }
+                try {
+                    final long millis = TimeUnit.NANOSECONDS.toMillis(remainingNanos);
+                    final int nanos = (int) (remainingNanos % 1_000_000);
+                    drainLock.wait(millis, nanos);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    logger.atWarning().log("Drain interrupted while waiting for in-flight handlers.");
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     private void logCPUResourcesConcurrencyMismatch() {

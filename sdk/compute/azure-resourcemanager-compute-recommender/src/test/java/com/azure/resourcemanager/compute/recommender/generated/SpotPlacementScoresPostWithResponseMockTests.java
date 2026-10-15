@@ -24,7 +24,7 @@ public final class SpotPlacementScoresPostWithResponseMockTests {
     @Test
     public void testPostWithResponse() throws Exception {
         String responseStr
-            = "{\"desiredLocations\":[\"wrwclxxwrljd\",\"uskcqvkocrcj\",\"kwt\",\"hxbnjbiksqrg\"],\"desiredSizes\":[{\"sku\":\"inqpjwnzll\"},{\"sku\":\"mppeebvmgxs\"},{\"sku\":\"kyqduujit\"}],\"desiredCount\":1447556622,\"availabilityZones\":true,\"placementScores\":[{\"sku\":\"ndhkrw\",\"region\":\"appd\",\"availabilityZone\":\"dkvwrwjfe\",\"score\":\"nhutjeltmrldhugj\",\"isQuotaAvailable\":true},{\"sku\":\"tqxhocdgeab\",\"region\":\"phut\",\"availabilityZone\":\"ndv\",\"score\":\"ozwyiftyhxhuro\",\"isQuotaAvailable\":true}]}";
+            = "{\"desiredLocations\":[\"wtgrhpdjpj\",\"masxazjpqyegu\",\"lhbxxhejjzzvdud\"],\"desiredSizes\":[{\"sku\":\"lfh\"},{\"sku\":\"wmc\"},{\"sku\":\"pwlbjnpg\"}],\"desiredCount\":1146215181,\"availabilityZones\":true,\"placementScores\":[{\"sku\":\"xnltyfsoppu\",\"region\":\"esnzwde\",\"availabilityZone\":\"avo\",\"score\":\"zdmohctbqvu\",\"isQuotaAvailable\":false},{\"sku\":\"ndnvo\",\"region\":\"ujjugwdkcglh\",\"availabilityZone\":\"azjdyggd\",\"score\":\"ixhbkuofqweykhm\",\"isQuotaAvailable\":true},{\"sku\":\"fyexfwhy\",\"region\":\"i\",\"availabilityZone\":\"yvdcsitynnaa\",\"score\":\"ectehf\",\"isQuotaAvailable\":false}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,22 +34,24 @@ public final class SpotPlacementScoresPostWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SpotPlacementScoresResponse response = manager.spotPlacementScores()
-            .postWithResponse("eofjaeqjh",
-                new SpotPlacementScoresInput().withDesiredLocations(Arrays.asList("asvm"))
-                    .withDesiredSizes(Arrays.asList(new ResourceSize().withSku("ulngsntn")))
-                    .withDesiredCount(588307069)
-                    .withAvailabilityZones(false),
+            .postWithResponse("bqqwxrj",
+                new SpotPlacementScoresInput().withDesiredLocations(Arrays.asList("llnwsubi"))
+                    .withDesiredSizes(Arrays.asList(new ResourceSize().withSku("mpmngnzscxaqwoo"),
+                        new ResourceSize().withSku("cbonqvpk"), new ResourceSize().withSku("rxnjeaseipheofl"),
+                        new ResourceSize().withSku("eyy")))
+                    .withDesiredCount(354708232)
+                    .withAvailabilityZones(true),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("wrwclxxwrljd", response.desiredLocations().get(0));
-        Assertions.assertEquals("inqpjwnzll", response.desiredSizes().get(0).sku());
-        Assertions.assertEquals(1447556622, response.desiredCount());
+        Assertions.assertEquals("wtgrhpdjpj", response.desiredLocations().get(0));
+        Assertions.assertEquals("lfh", response.desiredSizes().get(0).sku());
+        Assertions.assertEquals(1146215181, response.desiredCount());
         Assertions.assertTrue(response.availabilityZones());
-        Assertions.assertEquals("ndhkrw", response.placementScores().get(0).sku());
-        Assertions.assertEquals("appd", response.placementScores().get(0).region());
-        Assertions.assertEquals("dkvwrwjfe", response.placementScores().get(0).availabilityZone());
-        Assertions.assertEquals("nhutjeltmrldhugj", response.placementScores().get(0).score());
-        Assertions.assertTrue(response.placementScores().get(0).isQuotaAvailable());
+        Assertions.assertEquals("xnltyfsoppu", response.placementScores().get(0).sku());
+        Assertions.assertEquals("esnzwde", response.placementScores().get(0).region());
+        Assertions.assertEquals("avo", response.placementScores().get(0).availabilityZone());
+        Assertions.assertEquals("zdmohctbqvu", response.placementScores().get(0).score());
+        Assertions.assertFalse(response.placementScores().get(0).isQuotaAvailable());
     }
 }

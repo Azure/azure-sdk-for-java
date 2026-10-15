@@ -20,7 +20,7 @@ public final class ArcSettingsCreateIdentityMockTests {
     @Test
     public void testCreateIdentity() throws Exception {
         String responseStr
-            = "{\"properties\":{\"arcApplicationClientId\":\"uudrizwkwkjxlaac\",\"arcApplicationTenantId\":\"ik\",\"arcServicePrincipalObjectId\":\"lssybzbev\",\"arcApplicationObjectId\":\"nrommki\"}}";
+            = "{\"properties\":{\"arcApplicationClientId\":\"fewxqouox\",\"arcApplicationTenantId\":\"nmckaprhkn\",\"arcServicePrincipalObjectId\":\"ijgencdgmoq\",\"arcApplicationObjectId\":\"qih\"}}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class ArcSettingsCreateIdentityMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ArcIdentityResponse response = manager.arcSettings()
-            .createIdentity("rjzgkbrauxbo", "fq", "nqbjxgjwsrer", com.azure.core.util.Context.NONE);
+            .createIdentity("czygxv", "ajpxecxqnwhscoza", "mvgxsmpknpwir", com.azure.core.util.Context.NONE);
 
     }
 }

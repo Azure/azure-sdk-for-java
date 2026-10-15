@@ -12,7 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * An Azure action group for patch operations.
+ * Action group settings for patch operations.
  */
 @Fluent
 public final class ActionGroupPatch implements JsonSerializable<ActionGroupPatch> {

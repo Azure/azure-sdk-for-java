@@ -4,14 +4,13 @@
 package com.azure.spring.cloud.autoconfigure.implementation.aad.security.graph;
 
 import com.azure.spring.cloud.autoconfigure.implementation.aad.configuration.properties.AadAuthenticationProperties;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.client.ExpectedCount;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.web.client.RestTemplate;
+import tools.jackson.databind.json.JsonMapper;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -30,12 +29,12 @@ class GraphClientTest {
     private static final String FAKE_GRAPH_MEMBERSHIP_URI = "http://localhost:8080/v1.0/me/memberOf";
 
     @Test
-    void testGetUserMembershipsCorrectly() throws JsonProcessingException {
+    void testGetUserMembershipsCorrectly() {
         Memberships memberships = new Memberships(null, new ArrayList<>());
         RestTemplate restTemplate = new RestTemplate();
         GraphClient graphClient = new GraphClient(new AadAuthenticationProperties(), restTemplate);
         MockRestServiceServer mockServer = MockRestServiceServer.createServer(restTemplate);
-        mockServer.expect(ExpectedCount.once(), requestTo(FAKE_GRAPH_MEMBERSHIP_URI)).andRespond(withSuccess(new ObjectMapper().writeValueAsString(memberships), MediaType.APPLICATION_JSON));
+        mockServer.expect(ExpectedCount.once(), requestTo(FAKE_GRAPH_MEMBERSHIP_URI)).andRespond(withSuccess(JsonMapper.builder().build().writeValueAsString(memberships), MediaType.APPLICATION_JSON));
 
         Optional<Memberships> userMemberships = graphClient.getUserMemberships(FAKE_ACCESS_TOKEN, FAKE_GRAPH_MEMBERSHIP_URI);
 

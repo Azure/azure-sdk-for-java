@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.util.Map;
 
 /**
- * Represents the HorizonDb pool.
+ * Represents the HorizonDB pool.
  */
 @Immutable
 public final class HorizonDbPoolInner extends ProxyResource {

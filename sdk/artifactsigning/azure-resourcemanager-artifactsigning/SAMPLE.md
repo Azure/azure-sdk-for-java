@@ -7,7 +7,7 @@
 - [Delete](#certificateprofiles_delete)
 - [Get](#certificateprofiles_get)
 - [ListByCodeSigningAccount](#certificateprofiles_listbycodesigningaccount)
-- [RevokeCertificate](#certificateprofiles_revokecertificate)
+- [RevokeCertificates](#certificateprofiles_revokecertificates)
 
 ## CodeSigningAccounts
 
@@ -32,7 +32,7 @@ import com.azure.resourcemanager.artifactsigning.models.ProfileType;
  */
 public final class CertificateProfilesCreateSamples {
     /*
-     * x-ms-original-file: 2025-10-13/CertificateProfiles_Create.json
+     * x-ms-original-file: 2026-05-15-preview/CertificateProfiles_Create.json
      */
     /**
      * Sample code: Create a certificate profile.
@@ -48,6 +48,7 @@ public final class CertificateProfilesCreateSamples {
             .withIncludeStreetAddress(false)
             .withIncludePostalCode(true)
             .withIdentityValidationId("00000000-1234-5678-3333-444444444444")
+            .withProgramType("test")
             .create();
     }
 }
@@ -61,7 +62,7 @@ public final class CertificateProfilesCreateSamples {
  */
 public final class CertificateProfilesDeleteSamples {
     /*
-     * x-ms-original-file: 2025-10-13/CertificateProfiles_Delete.json
+     * x-ms-original-file: 2026-05-15-preview/CertificateProfiles_Delete.json
      */
     /**
      * Sample code: Delete a certificate profile.
@@ -84,7 +85,7 @@ public final class CertificateProfilesDeleteSamples {
  */
 public final class CertificateProfilesGetSamples {
     /*
-     * x-ms-original-file: 2025-10-13/CertificateProfiles_Get.json
+     * x-ms-original-file: 2026-05-15-preview/CertificateProfiles_Get.json
      */
     /**
      * Sample code: Get details of a certificate profile.
@@ -107,7 +108,7 @@ public final class CertificateProfilesGetSamples {
  */
 public final class CertificateProfilesListByCodeSigningAccountSamples {
     /*
-     * x-ms-original-file: 2025-10-13/CertificateProfiles_ListByCodeSigningAccount.json
+     * x-ms-original-file: 2026-05-15-preview/CertificateProfiles_ListByCodeSigningAccount.json
      */
     /**
      * Sample code: List certificate profiles under an artifact signing account.
@@ -122,33 +123,41 @@ public final class CertificateProfilesListByCodeSigningAccountSamples {
 }
 ```
 
-### CertificateProfiles_RevokeCertificate
+### CertificateProfiles_RevokeCertificates
 
 ```java
 import com.azure.resourcemanager.artifactsigning.models.RevokeCertificate;
+import com.azure.resourcemanager.artifactsigning.models.RevokeCertificateList;
 import java.time.OffsetDateTime;
+import java.util.Arrays;
 
 /**
- * Samples for CertificateProfiles RevokeCertificate.
+ * Samples for CertificateProfiles RevokeCertificates.
  */
-public final class CertificateProfilesRevokeCertificateSamples {
+public final class CertificateProfilesRevokeCertificatesSamples {
     /*
-     * x-ms-original-file: 2025-10-13/CertificateProfiles_RevokeCertificate.json
+     * x-ms-original-file: 2026-05-15-preview/CertificateProfiles_RevokeCertificates.json
      */
     /**
-     * Sample code: Revoke a certificate under a certificate profile.
+     * Sample code: Revoke certificates under a certificate profile.
      * 
      * @param manager Entry point to ArtifactSigningManager.
      */
-    public static void revokeACertificateUnderACertificateProfile(
+    public static void revokeCertificatesUnderACertificateProfile(
         com.azure.resourcemanager.artifactsigning.ArtifactSigningManager manager) {
         manager.certificateProfiles()
-            .revokeCertificateWithResponse("MyResourceGroup", "MyAccount", "profileA",
-                new RevokeCertificate().withSerialNumber("xxxxxxxxxxxxxxxxxx")
-                    .withThumbprint("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
-                    .withEffectiveAt(OffsetDateTime.parse("2023-11-12T23:40:25+00:00"))
-                    .withReason("KeyCompromised")
-                    .withRemarks("test"),
+            .revokeCertificatesWithResponse("MyResourceGroup", "MyAccount", "profileA",
+                new RevokeCertificateList().withRevokeCertificates(Arrays.asList(
+                    new RevokeCertificate().withSerialNumber("xxxxxxxxxxxxxxxxxx")
+                        .withThumbprint("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
+                        .withEffectiveAt(OffsetDateTime.parse("2023-11-12T23:40:25+00:00"))
+                        .withReason("KeyCompromised")
+                        .withRemarks("test"),
+                    new RevokeCertificate().withSerialNumber("yyyyyyyyyyyyyyyyyy")
+                        .withThumbprint("yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy")
+                        .withEffectiveAt(OffsetDateTime.parse("2023-11-12T23:40:25+00:00"))
+                        .withReason("KeyCompromised")
+                        .withRemarks("test"))),
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -164,7 +173,7 @@ import com.azure.resourcemanager.artifactsigning.models.CheckNameAvailability;
  */
 public final class CodeSigningAccountsCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: 2025-10-13/CodeSigningAccounts_CheckNameAvailability.json
+     * x-ms-original-file: 2026-05-15-preview/CodeSigningAccounts_CheckNameAvailability.json
      */
     /**
      * Sample code: Checks if the artifact signing account name is available.
@@ -193,7 +202,7 @@ import com.azure.resourcemanager.artifactsigning.models.SkuName;
  */
 public final class CodeSigningAccountsCreateSamples {
     /*
-     * x-ms-original-file: 2025-10-13/CodeSigningAccounts_Create.json
+     * x-ms-original-file: 2026-05-15-preview/CodeSigningAccounts_Create.json
      */
     /**
      * Sample code: Create an artifact signing account.
@@ -220,7 +229,7 @@ public final class CodeSigningAccountsCreateSamples {
  */
 public final class CodeSigningAccountsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-10-13/CodeSigningAccounts_Delete.json
+     * x-ms-original-file: 2026-05-15-preview/CodeSigningAccounts_Delete.json
      */
     /**
      * Sample code: Delete an artifact signing account.
@@ -242,7 +251,7 @@ public final class CodeSigningAccountsDeleteSamples {
  */
 public final class CodeSigningAccountsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-10-13/CodeSigningAccounts_Get.json
+     * x-ms-original-file: 2026-05-15-preview/CodeSigningAccounts_Get.json
      */
     /**
      * Sample code: Get an artifact signing account.
@@ -265,7 +274,7 @@ public final class CodeSigningAccountsGetByResourceGroupSamples {
  */
 public final class CodeSigningAccountsListSamples {
     /*
-     * x-ms-original-file: 2025-10-13/CodeSigningAccounts_ListBySubscription.json
+     * x-ms-original-file: 2026-05-15-preview/CodeSigningAccounts_ListBySubscription.json
      */
     /**
      * Sample code: Lists artifact signing accounts within a subscription.
@@ -287,7 +296,7 @@ public final class CodeSigningAccountsListSamples {
  */
 public final class CodeSigningAccountsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-10-13/CodeSigningAccounts_ListByResourceGroup.json
+     * x-ms-original-file: 2026-05-15-preview/CodeSigningAccounts_ListByResourceGroup.json
      */
     /**
      * Sample code: Lists artifact signing accounts within a resource group.
@@ -313,7 +322,7 @@ import java.util.Map;
  */
 public final class CodeSigningAccountsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-10-13/CodeSigningAccounts_Update.json
+     * x-ms-original-file: 2026-05-15-preview/CodeSigningAccounts_Update.json
      */
     /**
      * Sample code: Update an artifact signing account.
@@ -350,7 +359,7 @@ public final class CodeSigningAccountsUpdateSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2025-10-13/Operations_List.json
+     * x-ms-original-file: 2026-05-15-preview/Operations_List.json
      */
     /**
      * Sample code: List artifact signing account operations.

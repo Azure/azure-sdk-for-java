@@ -18,6 +18,7 @@ import java.io.IOException;
 @Fluent
 public final class VMDiskSecurityProfile implements JsonSerializable<VMDiskSecurityProfile> {
     /*
+     * 
      * Specifies the EncryptionType of the managed disk. It is set to
      * DiskWithVMGuestState for encryption of the managed disk along with VMGuestState
      * blob, VMGuestStateOnly for encryption of just the VMGuestState blob, and
@@ -27,6 +28,7 @@ public final class VMDiskSecurityProfile implements JsonSerializable<VMDiskSecur
     private SecurityEncryptionTypes securityEncryptionType;
 
     /*
+     * 
      * Specifies the customer managed disk encryption set resource id for the managed
      * disk that is used for Customer Managed Key encrypted ConfidentialVM OS Disk and
      * VMGuest blob.
@@ -40,7 +42,8 @@ public final class VMDiskSecurityProfile implements JsonSerializable<VMDiskSecur
     }
 
     /**
-     * Get the securityEncryptionType property: Specifies the EncryptionType of the managed disk. It is set to
+     * Get the securityEncryptionType property:
+     * Specifies the EncryptionType of the managed disk. It is set to
      * DiskWithVMGuestState for encryption of the managed disk along with VMGuestState
      * blob, VMGuestStateOnly for encryption of just the VMGuestState blob, and
      * NonPersistedTPM for not persisting firmware state in the VMGuestState blob..
@@ -53,7 +56,8 @@ public final class VMDiskSecurityProfile implements JsonSerializable<VMDiskSecur
     }
 
     /**
-     * Set the securityEncryptionType property: Specifies the EncryptionType of the managed disk. It is set to
+     * Set the securityEncryptionType property:
+     * Specifies the EncryptionType of the managed disk. It is set to
      * DiskWithVMGuestState for encryption of the managed disk along with VMGuestState
      * blob, VMGuestStateOnly for encryption of just the VMGuestState blob, and
      * NonPersistedTPM for not persisting firmware state in the VMGuestState blob..
@@ -68,8 +72,8 @@ public final class VMDiskSecurityProfile implements JsonSerializable<VMDiskSecur
     }
 
     /**
-     * Get the diskEncryptionSet property: Specifies the customer managed disk encryption set resource id for the
-     * managed
+     * Get the diskEncryptionSet property:
+     * Specifies the customer managed disk encryption set resource id for the managed
      * disk that is used for Customer Managed Key encrypted ConfidentialVM OS Disk and
      * VMGuest blob.
      * 
@@ -80,8 +84,8 @@ public final class VMDiskSecurityProfile implements JsonSerializable<VMDiskSecur
     }
 
     /**
-     * Set the diskEncryptionSet property: Specifies the customer managed disk encryption set resource id for the
-     * managed
+     * Set the diskEncryptionSet property:
+     * Specifies the customer managed disk encryption set resource id for the managed
      * disk that is used for Customer Managed Key encrypted ConfidentialVM OS Disk and
      * VMGuest blob.
      * 

@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class ThroughputPoolCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/throughputPool/CosmosDBThroughputPoolCreate.json
+     * x-ms-original-file: 2026-04-01-preview/throughputPool/CosmosDBThroughputPoolCreate.json
      */
     /**
      * Sample code: CosmosDB ThroughputPool Create.

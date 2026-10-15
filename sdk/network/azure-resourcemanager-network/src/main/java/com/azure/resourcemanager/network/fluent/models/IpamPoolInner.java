@@ -36,18 +36,17 @@ public final class IpamPoolInner extends CommonTrackedResource {
     private SystemData systemData;
 
     /*
-     * The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+     * The type of the resource.
      */
     private String type;
 
     /*
-     * The name of the resource
+     * The name of the resource.
      */
     private String name;
 
     /*
-     * Fully qualified resource ID for the resource. E.g.
-     * "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+     * Fully qualified resource Id for the resource.
      */
     private String id;
 
@@ -97,8 +96,7 @@ public final class IpamPoolInner extends CommonTrackedResource {
     }
 
     /**
-     * Get the type property: The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or
-     * "Microsoft.Storage/storageAccounts".
+     * Get the type property: The type of the resource.
      * 
      * @return the type value.
      */
@@ -118,8 +116,7 @@ public final class IpamPoolInner extends CommonTrackedResource {
     }
 
     /**
-     * Get the id property: Fully qualified resource ID for the resource. E.g.
-     * "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}".
+     * Get the id property: Fully qualified resource Id for the resource.
      * 
      * @return the id value.
      */
@@ -195,14 +192,14 @@ public final class IpamPoolInner extends CommonTrackedResource {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("location".equals(fieldName)) {
-                    deserializedIpamPoolInner.withLocation(reader.getString());
-                } else if ("id".equals(fieldName)) {
+                if ("id".equals(fieldName)) {
                     deserializedIpamPoolInner.id = reader.getString();
                 } else if ("name".equals(fieldName)) {
                     deserializedIpamPoolInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedIpamPoolInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedIpamPoolInner.withLocation(reader.getString());
                 } else if ("systemData".equals(fieldName)) {
                     deserializedIpamPoolInner.systemData = SystemData.fromJson(reader);
                 } else if ("tags".equals(fieldName)) {

@@ -4,58 +4,43 @@
 
 package com.azure.resourcemanager.providerhub.models;
 
+import com.azure.core.util.ExpandableStringEnum;
+import java.util.Collection;
+
 /**
  * The resource access policy.
  */
-public enum ResourceAccessPolicy {
+public final class ResourceAccessPolicy extends ExpandableStringEnum<ResourceAccessPolicy> {
     /**
-     * Enum value NotSpecified.
+     * Static value NotSpecified for ResourceAccessPolicy.
      */
-    NOT_SPECIFIED("NotSpecified"),
+    public static final ResourceAccessPolicy NOT_SPECIFIED = fromString("NotSpecified");
 
     /**
-     * Enum value AcisReadAllowed.
-     */
-    ACIS_READ_ALLOWED("AcisReadAllowed"),
-
-    /**
-     * Enum value AcisActionAllowed.
-     */
-    ACIS_ACTION_ALLOWED("AcisActionAllowed");
-
-    /**
-     * The actual serialized value for a ResourceAccessPolicy instance.
-     */
-    private final String value;
-
-    ResourceAccessPolicy(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a ResourceAccessPolicy instance.
+     * Creates a new instance of ResourceAccessPolicy value.
      * 
-     * @param value the serialized value to parse.
-     * @return the parsed ResourceAccessPolicy object, or null if unable to parse.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    public static ResourceAccessPolicy fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        ResourceAccessPolicy[] items = ResourceAccessPolicy.values();
-        for (ResourceAccessPolicy item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    @Deprecated
+    public ResourceAccessPolicy() {
     }
 
     /**
-     * {@inheritDoc}
+     * Creates or finds a ResourceAccessPolicy from its string representation.
+     * 
+     * @param name a name to look for.
+     * @return the corresponding ResourceAccessPolicy.
      */
-    @Override
-    public String toString() {
-        return this.value;
+    public static ResourceAccessPolicy fromString(String name) {
+        return fromString(name, ResourceAccessPolicy.class);
+    }
+
+    /**
+     * Gets known ResourceAccessPolicy values.
+     * 
+     * @return known ResourceAccessPolicy values.
+     */
+    public static Collection<ResourceAccessPolicy> values() {
+        return values(ResourceAccessPolicy.class);
     }
 }

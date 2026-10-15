@@ -35,6 +35,12 @@ public abstract class AzureContextUtils {
         "springCloudAzureEventHubsClientBuilderFactory";
 
     /**
+     * Event Hubs client builder bean name.
+     */
+    public static final String EVENT_HUB_CLIENT_BUILDER_BEAN_NAME =
+        "springCloudAzureEventHubsClientBuilder";
+
+    /**
      * Event Hubs consumer client builder factory bean name.
      */
     public static final String EVENT_HUB_CONSUMER_CLIENT_BUILDER_FACTORY_BEAN_NAME =

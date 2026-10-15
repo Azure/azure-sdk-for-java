@@ -739,7 +739,8 @@ public final class TransparentDataEncryptionsClientImpl implements TransparentDa
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return a logical database transparent data encryption scan state along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> resumeWithResponseAsync(String resourceGroupName, String serverName,
@@ -783,7 +784,8 @@ public final class TransparentDataEncryptionsClientImpl implements TransparentDa
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return a logical database transparent data encryption scan state along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> resumeWithResponseAsync(String resourceGroupName, String serverName,
@@ -825,7 +827,7 @@ public final class TransparentDataEncryptionsClientImpl implements TransparentDa
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of a logical database transparent data encryption scan state.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
@@ -851,7 +853,7 @@ public final class TransparentDataEncryptionsClientImpl implements TransparentDa
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of a logical database transparent data encryption scan state.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private
@@ -877,7 +879,7 @@ public final class TransparentDataEncryptionsClientImpl implements TransparentDa
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of a logical database transparent data encryption scan state.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
@@ -898,7 +900,7 @@ public final class TransparentDataEncryptionsClientImpl implements TransparentDa
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of a logical database transparent data encryption scan state.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
@@ -918,7 +920,7 @@ public final class TransparentDataEncryptionsClientImpl implements TransparentDa
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return a logical database transparent data encryption scan state on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LogicalDatabaseTransparentDataEncryptionInner> resumeAsync(String resourceGroupName, String serverName,
@@ -938,7 +940,7 @@ public final class TransparentDataEncryptionsClientImpl implements TransparentDa
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return a logical database transparent data encryption scan state on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<LogicalDatabaseTransparentDataEncryptionInner> resumeAsync(String resourceGroupName, String serverName,
@@ -957,7 +959,7 @@ public final class TransparentDataEncryptionsClientImpl implements TransparentDa
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return a logical database transparent data encryption scan state.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LogicalDatabaseTransparentDataEncryptionInner resume(String resourceGroupName, String serverName,
@@ -976,7 +978,7 @@ public final class TransparentDataEncryptionsClientImpl implements TransparentDa
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return a logical database transparent data encryption scan state.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LogicalDatabaseTransparentDataEncryptionInner resume(String resourceGroupName, String serverName,
@@ -994,7 +996,8 @@ public final class TransparentDataEncryptionsClientImpl implements TransparentDa
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return a logical database transparent data encryption scan state along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> suspendWithResponseAsync(String resourceGroupName, String serverName,
@@ -1038,7 +1041,8 @@ public final class TransparentDataEncryptionsClientImpl implements TransparentDa
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return a logical database transparent data encryption scan state along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> suspendWithResponseAsync(String resourceGroupName, String serverName,
@@ -1080,7 +1084,7 @@ public final class TransparentDataEncryptionsClientImpl implements TransparentDa
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of a logical database transparent data encryption scan state.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
@@ -1106,7 +1110,7 @@ public final class TransparentDataEncryptionsClientImpl implements TransparentDa
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of a logical database transparent data encryption scan state.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private
@@ -1132,7 +1136,7 @@ public final class TransparentDataEncryptionsClientImpl implements TransparentDa
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of a logical database transparent data encryption scan state.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
@@ -1153,7 +1157,7 @@ public final class TransparentDataEncryptionsClientImpl implements TransparentDa
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of a logical database transparent data encryption scan state.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
@@ -1173,7 +1177,7 @@ public final class TransparentDataEncryptionsClientImpl implements TransparentDa
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return a logical database transparent data encryption scan state on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LogicalDatabaseTransparentDataEncryptionInner> suspendAsync(String resourceGroupName, String serverName,
@@ -1193,7 +1197,7 @@ public final class TransparentDataEncryptionsClientImpl implements TransparentDa
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return a logical database transparent data encryption scan state on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<LogicalDatabaseTransparentDataEncryptionInner> suspendAsync(String resourceGroupName,
@@ -1212,7 +1216,7 @@ public final class TransparentDataEncryptionsClientImpl implements TransparentDa
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return a logical database transparent data encryption scan state.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LogicalDatabaseTransparentDataEncryptionInner suspend(String resourceGroupName, String serverName,
@@ -1231,7 +1235,7 @@ public final class TransparentDataEncryptionsClientImpl implements TransparentDa
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return a logical database transparent data encryption scan state.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LogicalDatabaseTransparentDataEncryptionInner suspend(String resourceGroupName, String serverName,

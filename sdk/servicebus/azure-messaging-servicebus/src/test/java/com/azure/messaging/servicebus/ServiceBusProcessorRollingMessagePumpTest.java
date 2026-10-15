@@ -14,6 +14,7 @@ import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
 import java.io.IOException;
+import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.doNothing;
@@ -48,7 +49,7 @@ public class ServiceBusProcessorRollingMessagePumpTest {
 
         final RollingMessagePump pump = new RollingMessagePump(builder, m -> {
         }, e -> {
-        }, 1, false);
+        }, 1, false, Duration.ofSeconds(30));
 
         pump.dispose();
         assertThrows(IllegalStateException.class, () -> pump.begin());
@@ -64,7 +65,7 @@ public class ServiceBusProcessorRollingMessagePumpTest {
 
         final RollingMessagePump pump = new RollingMessagePump(builder, m -> {
         }, e -> {
-        }, 1, false);
+        }, 1, false, Duration.ofSeconds(30));
 
         pump.begin();
         try {
@@ -87,7 +88,7 @@ public class ServiceBusProcessorRollingMessagePumpTest {
 
         final RollingMessagePump pump = new RollingMessagePump(builder, m -> {
         }, e -> {
-        }, 1, false);
+        }, 1, false, Duration.ofSeconds(30));
 
         StepVerifier.create(pump.beginIntern()).thenAwait().thenCancel().verify();
 

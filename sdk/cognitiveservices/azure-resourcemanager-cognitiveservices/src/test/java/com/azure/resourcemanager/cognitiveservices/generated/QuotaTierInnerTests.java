@@ -14,16 +14,16 @@ public final class QuotaTierInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         QuotaTierInner model = BinaryData.fromString(
-            "{\"properties\":{\"currentTierName\":\"munjdxvglnkvx\",\"tierUpgradePolicy\":\"NoAutoUpgrade\",\"assignmentDate\":\"2021-03-26T02:38:58Z\",\"tierUpgradeEligibilityInfo\":{\"nextTierName\":\"ivbgkcv\",\"upgradeAvailabilityStatus\":\"NotAvailable\",\"upgradeApplicableDate\":\"2020-12-28T02:44:39Z\",\"upgradeUnavailabilityReason\":\"qdf\"}},\"id\":\"oniypfpubcpzgp\",\"name\":\"tivhjknidibgqjx\",\"type\":\"p\"}")
+            "{\"properties\":{\"currentTierName\":\"qxuwyvca\",\"tierUpgradePolicy\":\"OnceUpgradeIsAvailable\",\"assignmentDate\":\"2021-06-20T08:40:01Z\",\"tierUpgradeEligibilityInfo\":{\"nextTierName\":\"s\",\"upgradeAvailabilityStatus\":\"NotAvailable\",\"upgradeApplicableDate\":\"2021-10-19T07:33:38Z\",\"upgradeUnavailabilityReason\":\"zlbscmnlziji\"}},\"id\":\"ehgmvflnwyv\",\"name\":\"kxrerlniylylyfwx\",\"type\":\"utgqztwh\"}")
             .toObject(QuotaTierInner.class);
-        Assertions.assertEquals(TierUpgradePolicy.NO_AUTO_UPGRADE, model.properties().tierUpgradePolicy());
+        Assertions.assertEquals(TierUpgradePolicy.ONCE_UPGRADE_IS_AVAILABLE, model.properties().tierUpgradePolicy());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        QuotaTierInner model = new QuotaTierInner()
-            .withProperties(new QuotaTierProperties().withTierUpgradePolicy(TierUpgradePolicy.NO_AUTO_UPGRADE));
+        QuotaTierInner model = new QuotaTierInner().withProperties(
+            new QuotaTierProperties().withTierUpgradePolicy(TierUpgradePolicy.ONCE_UPGRADE_IS_AVAILABLE));
         model = BinaryData.fromObject(model).toObject(QuotaTierInner.class);
-        Assertions.assertEquals(TierUpgradePolicy.NO_AUTO_UPGRADE, model.properties().tierUpgradePolicy());
+        Assertions.assertEquals(TierUpgradePolicy.ONCE_UPGRADE_IS_AVAILABLE, model.properties().tierUpgradePolicy());
     }
 }

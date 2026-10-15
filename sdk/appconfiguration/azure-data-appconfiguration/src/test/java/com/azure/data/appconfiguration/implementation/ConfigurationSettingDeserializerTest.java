@@ -58,6 +58,13 @@ public class ConfigurationSettingDeserializerTest {
             parseSecretReferenceFieldValue(KEY, SECRET_REFERENCE_VALUE_JSON));
     }
 
+    @Test
+    public void descriptionIsCopiedFromKeyValue() {
+        final String description = "the description";
+        final KeyValue keyValue = new KeyValue().setKey(KEY).setValue(SETTING_VALUE).setDescription(description);
+        assertEquals(description, toConfigurationSetting(keyValue).getDescription());
+    }
+
     @ParameterizedTest
     @MethodSource("deserializeSupplier")
     public <T extends ConfigurationSetting> void deserialize(String json, T expectedGeo) {
@@ -141,5 +148,6 @@ public class ConfigurationSettingDeserializerTest {
         assertEquals(expect.getContentType(), actual.getContentType());
         assertEquals(expect.getLastModified(), actual.getLastModified());
         assertEquals(expect.getTags(), actual.getTags());
+        assertEquals(expect.getDescription(), actual.getDescription());
     }
 }

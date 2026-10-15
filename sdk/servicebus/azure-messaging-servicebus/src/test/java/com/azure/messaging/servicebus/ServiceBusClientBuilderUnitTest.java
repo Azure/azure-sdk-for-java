@@ -198,6 +198,60 @@ public class ServiceBusClientBuilderUnitTest {
         assertNotNull(builder.buildAsyncClient());
     }
 
+    /**
+     * Verifies that {@code drainTimeout(Duration)} on both processor builders rejects null
+     * (NullPointerException) and zero/negative values (IllegalArgumentException), matching the
+     * documented contract on {@code ServiceBusProcessorClientOptions.setDrainTimeout(Duration)}.
+     */
+    @Test
+    public void processorBuilderDrainTimeoutValidation() {
+        // Non-session processor builder.
+        assertThrowsExactly(NullPointerException.class,
+            () -> createMinimalValidClientBuilder().processor().drainTimeout(null));
+        assertThrowsExactly(IllegalArgumentException.class,
+            () -> createMinimalValidClientBuilder().processor().drainTimeout(Duration.ZERO));
+        assertThrowsExactly(IllegalArgumentException.class,
+            () -> createMinimalValidClientBuilder().processor().drainTimeout(Duration.ofSeconds(-1)));
+
+        // Session processor builder.
+        assertThrowsExactly(NullPointerException.class,
+            () -> createMinimalValidClientBuilder().sessionProcessor().drainTimeout(null));
+        assertThrowsExactly(IllegalArgumentException.class,
+            () -> createMinimalValidClientBuilder().sessionProcessor().drainTimeout(Duration.ZERO));
+        assertThrowsExactly(IllegalArgumentException.class,
+            () -> createMinimalValidClientBuilder().sessionProcessor().drainTimeout(Duration.ofSeconds(-1)));
+    }
+
+    /**
+     * Verifies that a positive {@code drainTimeout(Duration)} is accepted on both processor
+     * builders and propagates through to a buildable processor client (no validation exception
+     * during build).
+     */
+    @Test
+    public void processorBuilderDrainTimeoutPositiveAccepted() {
+        // Non-session processor builder accepts a positive duration and builds successfully.
+        final ServiceBusProcessorClient processorClient = createMinimalValidClientBuilder().processor()
+            .queueName("fakequeue")
+            .drainTimeout(Duration.ofSeconds(5))
+            .processMessage(x -> {
+            })
+            .processError(x -> {
+            })
+            .buildProcessorClient();
+        assertNotNull(processorClient);
+
+        // Session processor builder accepts a positive duration and builds successfully.
+        final ServiceBusProcessorClient sessionProcessorClient = createMinimalValidClientBuilder().sessionProcessor()
+            .queueName("fakequeue")
+            .drainTimeout(Duration.ofSeconds(5))
+            .processMessage(x -> {
+            })
+            .processError(x -> {
+            })
+            .buildProcessorClient();
+        assertNotNull(sessionProcessorClient);
+    }
+
     private static ServiceBusClientBuilder createMinimalValidClientBuilder() {
         return new ServiceBusClientBuilder().credential(FAKE_TOKEN_CREDENTIAL).fullyQualifiedNamespace(NAMESPACE_NAME);
     }

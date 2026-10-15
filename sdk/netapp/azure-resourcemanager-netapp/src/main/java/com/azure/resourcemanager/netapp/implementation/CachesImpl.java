@@ -84,23 +84,45 @@ public final class CachesImpl implements Caches {
         }
     }
 
-    public void poolChange(String resourceGroupName, String accountName, String poolName, String cacheName,
+    public Cache poolChange(String resourceGroupName, String accountName, String poolName, String cacheName,
         PoolChangeRequest body) {
-        this.serviceClient().poolChange(resourceGroupName, accountName, poolName, cacheName, body);
+        CacheInner inner = this.serviceClient().poolChange(resourceGroupName, accountName, poolName, cacheName, body);
+        if (inner != null) {
+            return new CacheImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
-    public void poolChange(String resourceGroupName, String accountName, String poolName, String cacheName,
+    public Cache poolChange(String resourceGroupName, String accountName, String poolName, String cacheName,
         PoolChangeRequest body, Context context) {
-        this.serviceClient().poolChange(resourceGroupName, accountName, poolName, cacheName, body, context);
+        CacheInner inner
+            = this.serviceClient().poolChange(resourceGroupName, accountName, poolName, cacheName, body, context);
+        if (inner != null) {
+            return new CacheImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
-    public void resetSmbPassword(String resourceGroupName, String accountName, String poolName, String cacheName) {
-        this.serviceClient().resetSmbPassword(resourceGroupName, accountName, poolName, cacheName);
+    public Cache resetSmbPassword(String resourceGroupName, String accountName, String poolName, String cacheName) {
+        CacheInner inner = this.serviceClient().resetSmbPassword(resourceGroupName, accountName, poolName, cacheName);
+        if (inner != null) {
+            return new CacheImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
-    public void resetSmbPassword(String resourceGroupName, String accountName, String poolName, String cacheName,
+    public Cache resetSmbPassword(String resourceGroupName, String accountName, String poolName, String cacheName,
         Context context) {
-        this.serviceClient().resetSmbPassword(resourceGroupName, accountName, poolName, cacheName, context);
+        CacheInner inner
+            = this.serviceClient().resetSmbPassword(resourceGroupName, accountName, poolName, cacheName, context);
+        if (inner != null) {
+            return new CacheImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Cache getById(String id) {

@@ -222,6 +222,13 @@ public final class ConfigStore {
         this.featureFlags = featureFlags;
     }
 
+    /**
+     * Checks whether this config store contains the given endpoint. Used by the
+     * web library to match incoming refresh requests to a known store.
+     *
+     * @param endpoint the endpoint URL to check
+     * @return {@code true} if the primary endpoint or any replica endpoint starts with the given value
+     */
     public boolean containsEndpoint(String endpoint) {
         if (this.endpoint.startsWith(endpoint)) {
             return true;

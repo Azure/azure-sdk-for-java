@@ -2,6 +2,12 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.faultinjection;
 
+import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.OperationType;
+import com.azure.cosmos.implementation.ResourceType;
+import com.azure.cosmos.implementation.RxDocumentServiceRequest;
+import com.azure.cosmos.implementation.directconnectivity.WFConstants;
 import com.azure.cosmos.test.faultinjection.FaultInjectionCondition;
 import com.azure.cosmos.test.faultinjection.FaultInjectionConditionBuilder;
 import com.azure.cosmos.test.faultinjection.FaultInjectionConnectionErrorType;
@@ -11,11 +17,14 @@ import com.azure.cosmos.test.faultinjection.FaultInjectionResultBuilders;
 import com.azure.cosmos.test.faultinjection.FaultInjectionRule;
 import com.azure.cosmos.test.faultinjection.FaultInjectionRuleBuilder;
 import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorType;
+import com.azure.cosmos.test.implementation.faultinjection.FaultInjectionServerErrorResultInternal;
 import org.assertj.core.api.Assertions;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.time.Duration;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.testng.AssertJUnit.assertTrue;
@@ -48,7 +57,6 @@ public class FaultInjectionUnitTest {
 
     @Test(groups = "unit")
     public void faultInjectionRule_metadataRequestConfig() {
-        // validate for metadata request, only CONNECTION_DELAY, RESPONSE_DELAY, TOO_MANY_REQUEST error type supported
         List<FaultInjectionOperationType> metadataOperationTypes =
             Arrays.asList(
                 FaultInjectionOperationType.METADATA_REQUEST_ADDRESS_REFRESH,
@@ -63,11 +71,34 @@ public class FaultInjectionUnitTest {
                 FaultInjectionServerErrorType.CONNECTION_DELAY,
                 FaultInjectionServerErrorType.RESPONSE_DELAY);
 
+        List<FaultInjectionServerErrorType> validAddressRefreshServerErrorTypes =
+            Arrays.asList(
+                FaultInjectionServerErrorType.REQUEST_TIMEOUT,
+                FaultInjectionServerErrorType.INTERNAL_SERVER_ERROR,
+                FaultInjectionServerErrorType.CONNECTION_RESET_BY_DOWNSTREAM_SERVICE,
+                FaultInjectionServerErrorType.COMPUTE_INTERNAL_ERROR,
+                FaultInjectionServerErrorType.PARTITION_FAILOVER_ERROR_CODE,
+                FaultInjectionServerErrorType.SERVICE_UNAVAILABLE_WITH_UNKNOWN_SUBSTATUS,
+                FaultInjectionServerErrorType.SERVICE_UNAVAILABLE_LEASE_NOT_FOUND,
+                FaultInjectionServerErrorType.CHANNEL_CLOSED,
+                FaultInjectionServerErrorType.SERVER_COMPLETING_PARTITION_MIGRATION_EXCEEDED_RETRY_LIMIT,
+                FaultInjectionServerErrorType.SERVER_READ_QUORUM_NOT_MET);
 
         for (FaultInjectionOperationType faultInjectionOperationTpe : FaultInjectionOperationType.values()) {
             for (FaultInjectionServerErrorType faultInjectionServerErrorType : FaultInjectionServerErrorType.values()) {
 
-                if (metadataOperationTypes.contains(faultInjectionOperationTpe) && !validMetadataServerErrorTypes.contains(faultInjectionServerErrorType)) {
+                boolean isPartitionKeyRangeMetadataRequest =
+                    faultInjectionOperationTpe == FaultInjectionOperationType.METADATA_REQUEST_PARTITION_KEY_RANGES;
+                boolean isPartitionKeyRangeMetadataNotFound =
+                    faultInjectionServerErrorType == FaultInjectionServerErrorType.OWNER_RESOURCE_NOT_EXISTS
+                        || faultInjectionServerErrorType == FaultInjectionServerErrorType.COLLECTION_NOT_AVAILABLE_FOR_READ;
+                boolean isSupportedMetadataErrorType =
+                    validMetadataServerErrorTypes.contains(faultInjectionServerErrorType)
+                        || (isPartitionKeyRangeMetadataRequest && isPartitionKeyRangeMetadataNotFound)
+                        || (faultInjectionOperationTpe == FaultInjectionOperationType.METADATA_REQUEST_ADDRESS_REFRESH
+                            && validAddressRefreshServerErrorTypes.contains(faultInjectionServerErrorType));
+
+                if (metadataOperationTypes.contains(faultInjectionOperationTpe) && !isSupportedMetadataErrorType) {
                     try {
                         new FaultInjectionRuleBuilder("metadataRule")
                             .condition(new FaultInjectionConditionBuilder().operationType(faultInjectionOperationTpe).build())
@@ -98,6 +129,40 @@ public class FaultInjectionUnitTest {
                 }
             }
         }
+    }
+
+    @DataProvider(name = "serverErrorStatusCodes")
+    public Object[][] serverErrorStatusCodes() {
+        return new Object[][] {
+            {FaultInjectionServerErrorType.REQUEST_TIMEOUT, 408, 0},
+            {FaultInjectionServerErrorType.INTERNAL_SERVER_ERROR, 500, 0},
+            {FaultInjectionServerErrorType.CONNECTION_RESET_BY_DOWNSTREAM_SERVICE, 500, 102},
+            {FaultInjectionServerErrorType.COMPUTE_INTERNAL_ERROR, 500, 1021},
+            {FaultInjectionServerErrorType.PARTITION_FAILOVER_ERROR_CODE, 500, 3010},
+            {FaultInjectionServerErrorType.SERVICE_UNAVAILABLE_WITH_UNKNOWN_SUBSTATUS, 503, 0},
+            {FaultInjectionServerErrorType.SERVICE_UNAVAILABLE_LEASE_NOT_FOUND, 503, 1022},
+            {FaultInjectionServerErrorType.CHANNEL_CLOSED, 503, 20006},
+            {FaultInjectionServerErrorType.SERVER_COMPLETING_PARTITION_MIGRATION_EXCEEDED_RETRY_LIMIT, 503, 21004},
+            {FaultInjectionServerErrorType.SERVER_READ_QUORUM_NOT_MET, 503, 21007},
+            {FaultInjectionServerErrorType.SERVICE_UNAVAILABLE, 503, HttpConstants.SubStatusCodes.SERVER_GENERATED_503}
+        };
+    }
+
+    @Test(groups = "unit", dataProvider = "serverErrorStatusCodes")
+    public void faultInjectionServerErrorStatusCodes(
+        FaultInjectionServerErrorType errorType, int statusCode, int subStatusCode) {
+
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
+            null, OperationType.Read, "dbs/db/colls/coll", ResourceType.Address, Collections.emptyMap());
+        FaultInjectionServerErrorResultInternal result = new FaultInjectionServerErrorResultInternal(
+            errorType, 1, Duration.ZERO, true, 1.0);
+
+        CosmosException exception = result.getInjectedServerError(request);
+
+        Assertions.assertThat(exception.getStatusCode()).isEqualTo(statusCode);
+        Assertions.assertThat(exception.getSubStatusCode()).isEqualTo(subStatusCode);
+        Assertions.assertThat(exception.getResponseHeaders().getOrDefault(WFConstants.BackendHeaders.SUB_STATUS, "0"))
+            .isEqualTo(Integer.toString(subStatusCode));
     }
 
     @Test(groups = "unit")

@@ -12,12 +12,12 @@ import java.util.Collection;
  */
 public final class MigrateRolesAndPermissions extends ExpandableStringEnum<MigrateRolesAndPermissions> {
     /**
-     * Static value True for MigrateRolesAndPermissions.
+     * Roles and permissions will be migrated.
      */
     public static final MigrateRolesAndPermissions TRUE = fromString("True");
 
     /**
-     * Static value False for MigrateRolesAndPermissions.
+     * Roles and permissions will not be migrated.
      */
     public static final MigrateRolesAndPermissions FALSE = fromString("False");
 

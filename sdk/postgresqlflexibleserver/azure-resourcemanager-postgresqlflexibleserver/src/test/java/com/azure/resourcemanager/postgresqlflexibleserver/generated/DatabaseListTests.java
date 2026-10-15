@@ -12,10 +12,10 @@ public final class DatabaseListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DatabaseList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"charset\":\"byuqerpqlp\",\"collation\":\"cciuqgbdbutau\"},\"id\":\"btkuwhh\",\"name\":\"hykojoxafnndlpic\",\"type\":\"koymkcd\"}],\"nextLink\":\"bpkkpwdre\"}")
+            "{\"value\":[{\"properties\":{\"charset\":\"sxsdqrhzoymibm\",\"collation\":\"yiba\"},\"id\":\"fluszdtm\",\"name\":\"rkwofyyvoqa\",\"type\":\"piexpbtgiw\"}],\"nextLink\":\"oenwashr\"}")
             .toObject(DatabaseList.class);
-        Assertions.assertEquals("byuqerpqlp", model.value().get(0).charset());
-        Assertions.assertEquals("cciuqgbdbutau", model.value().get(0).collation());
-        Assertions.assertEquals("bpkkpwdre", model.nextLink());
+        Assertions.assertEquals("sxsdqrhzoymibm", model.value().get(0).charset());
+        Assertions.assertEquals("yiba", model.value().get(0).collation());
+        Assertions.assertEquals("oenwashr", model.nextLink());
     }
 }

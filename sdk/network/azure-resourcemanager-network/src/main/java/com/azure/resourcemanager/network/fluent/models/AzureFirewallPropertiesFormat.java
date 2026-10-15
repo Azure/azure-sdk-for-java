@@ -10,6 +10,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.network.models.AfcConfiguration;
 import com.azure.resourcemanager.network.models.AzureFirewallApplicationRuleCollection;
 import com.azure.resourcemanager.network.models.AzureFirewallAutoscaleConfiguration;
 import com.azure.resourcemanager.network.models.AzureFirewallIpConfiguration;
@@ -98,6 +99,16 @@ public final class AzureFirewallPropertiesFormat implements JsonSerializable<Azu
      * Properties to provide a custom autoscale configuration to this azure firewall.
      */
     private AzureFirewallAutoscaleConfiguration autoscaleConfiguration;
+
+    /*
+     * AFC configuration for the Azure Firewall.
+     */
+    private AfcConfiguration afcConfiguration;
+
+    /*
+     * Indicates whether the AI security add-on is enabled for the Azure Firewall.
+     */
+    private Boolean aiSecurityAddOn;
 
     /**
      * Creates an instance of AzureFirewallPropertiesFormat class.
@@ -371,6 +382,35 @@ public final class AzureFirewallPropertiesFormat implements JsonSerializable<Azu
     }
 
     /**
+     * Get the afcConfiguration property: AFC configuration for the Azure Firewall.
+     * 
+     * @return the afcConfiguration value.
+     */
+    public AfcConfiguration afcConfiguration() {
+        return this.afcConfiguration;
+    }
+
+    /**
+     * Get the aiSecurityAddOn property: Indicates whether the AI security add-on is enabled for the Azure Firewall.
+     * 
+     * @return the aiSecurityAddOn value.
+     */
+    public Boolean aiSecurityAddOn() {
+        return this.aiSecurityAddOn;
+    }
+
+    /**
+     * Set the aiSecurityAddOn property: Indicates whether the AI security add-on is enabled for the Azure Firewall.
+     * 
+     * @param aiSecurityAddOn the aiSecurityAddOn value to set.
+     * @return the AzureFirewallPropertiesFormat object itself.
+     */
+    public AzureFirewallPropertiesFormat withAiSecurityAddOn(Boolean aiSecurityAddOn) {
+        this.aiSecurityAddOn = aiSecurityAddOn;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -403,6 +443,9 @@ public final class AzureFirewallPropertiesFormat implements JsonSerializable<Azu
         if (autoscaleConfiguration() != null) {
             autoscaleConfiguration().validate();
         }
+        if (afcConfiguration() != null) {
+            afcConfiguration().validate();
+        }
     }
 
     /**
@@ -429,6 +472,7 @@ public final class AzureFirewallPropertiesFormat implements JsonSerializable<Azu
         jsonWriter.writeMapField("additionalProperties", this.additionalProperties,
             (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("autoscaleConfiguration", this.autoscaleConfiguration);
+        jsonWriter.writeBooleanField("aiSecurityAddOn", this.aiSecurityAddOn);
         return jsonWriter.writeEndObject();
     }
 
@@ -491,6 +535,11 @@ public final class AzureFirewallPropertiesFormat implements JsonSerializable<Azu
                 } else if ("autoscaleConfiguration".equals(fieldName)) {
                     deserializedAzureFirewallPropertiesFormat.autoscaleConfiguration
                         = AzureFirewallAutoscaleConfiguration.fromJson(reader);
+                } else if ("afcConfiguration".equals(fieldName)) {
+                    deserializedAzureFirewallPropertiesFormat.afcConfiguration = AfcConfiguration.fromJson(reader);
+                } else if ("aiSecurityAddOn".equals(fieldName)) {
+                    deserializedAzureFirewallPropertiesFormat.aiSecurityAddOn
+                        = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }

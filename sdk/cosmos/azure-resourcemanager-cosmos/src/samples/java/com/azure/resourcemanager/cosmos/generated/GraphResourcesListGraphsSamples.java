@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class GraphResourcesListGraphsSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/CosmosDBGraphResourceList.json
+     * x-ms-original-file: 2026-04-01-preview/CosmosDBGraphResourceList.json
      */
     /**
      * Sample code: CosmosDBSqlDatabaseList.

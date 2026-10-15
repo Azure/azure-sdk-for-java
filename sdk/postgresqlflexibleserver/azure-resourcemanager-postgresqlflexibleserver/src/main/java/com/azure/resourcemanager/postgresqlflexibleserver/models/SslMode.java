@@ -13,22 +13,23 @@ import java.util.Collection;
  */
 public final class SslMode extends ExpandableStringEnum<SslMode> {
     /**
-     * Static value Prefer for SslMode.
+     * Prefer SSL connection. If the server does not support SSL, the connection will be established without SSL.
      */
     public static final SslMode PREFER = fromString("Prefer");
 
     /**
-     * Static value Require for SslMode.
+     * Require SSL connection. If the server does not support SSL, the connection will fail.
      */
     public static final SslMode REQUIRE = fromString("Require");
 
     /**
-     * Static value VerifyCA for SslMode.
+     * Require SSL connection and verify the server certificate against the CA certificate.
      */
     public static final SslMode VERIFY_CA = fromString("VerifyCA");
 
     /**
-     * Static value VerifyFull for SslMode.
+     * Require SSL connection, verify the server certificate against the CA certificate, and verify that the server
+     * hostname matches the certificate.
      */
     public static final SslMode VERIFY_FULL = fromString("VerifyFull");
 

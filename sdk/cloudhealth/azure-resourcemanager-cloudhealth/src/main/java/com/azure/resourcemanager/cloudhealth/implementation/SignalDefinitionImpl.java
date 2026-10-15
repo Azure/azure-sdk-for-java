@@ -63,18 +63,14 @@ public final class SignalDefinitionImpl
     public SignalDefinition create() {
         this.innerObject = serviceManager.serviceClient()
             .getSignalDefinitions()
-            .createOrUpdateWithResponse(resourceGroupName, healthModelName, signalDefinitionName, this.innerModel(),
-                Context.NONE)
-            .getValue();
+            .createOrUpdate(resourceGroupName, healthModelName, signalDefinitionName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public SignalDefinition create(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getSignalDefinitions()
-            .createOrUpdateWithResponse(resourceGroupName, healthModelName, signalDefinitionName, this.innerModel(),
-                context)
-            .getValue();
+            .createOrUpdate(resourceGroupName, healthModelName, signalDefinitionName, this.innerModel(), context);
         return this;
     }
 
@@ -91,18 +87,14 @@ public final class SignalDefinitionImpl
     public SignalDefinition apply() {
         this.innerObject = serviceManager.serviceClient()
             .getSignalDefinitions()
-            .createOrUpdateWithResponse(resourceGroupName, healthModelName, signalDefinitionName, this.innerModel(),
-                Context.NONE)
-            .getValue();
+            .createOrUpdate(resourceGroupName, healthModelName, signalDefinitionName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public SignalDefinition apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getSignalDefinitions()
-            .createOrUpdateWithResponse(resourceGroupName, healthModelName, signalDefinitionName, this.innerModel(),
-                context)
-            .getValue();
+            .createOrUpdate(resourceGroupName, healthModelName, signalDefinitionName, this.innerModel(), context);
         return this;
     }
 

@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public final class CassandraResourcesUpdateCassandraViewThroughputSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/CosmosDBCassandraViewThroughputUpdate.json
+     * x-ms-original-file: 2026-04-01-preview/CosmosDBCassandraViewThroughputUpdate.json
      */
     /**
      * Sample code: CosmosDBCassandraViewThroughputUpdate.

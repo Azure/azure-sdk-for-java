@@ -27,6 +27,11 @@ public final class SignalKind extends ExpandableStringEnum<SignalKind> {
     public static final SignalKind PROMETHEUS_METRICS_QUERY = fromString("PrometheusMetricsQuery");
 
     /**
+     * Static value External for SignalKind.
+     */
+    public static final SignalKind EXTERNAL_SIGNAL = fromString("External");
+
+    /**
      * Creates a new instance of SignalKind value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

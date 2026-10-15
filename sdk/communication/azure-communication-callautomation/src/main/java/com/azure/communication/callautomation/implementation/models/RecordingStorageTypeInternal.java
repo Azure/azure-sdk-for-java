@@ -13,16 +13,16 @@ import java.util.Collection;
 public final class RecordingStorageTypeInternal extends ExpandableStringEnum<RecordingStorageTypeInternal> {
 
     /**
-     * Storage managed by Azure Communication Services.
+     * Static value azureCommunicationServices for RecordingStorageTypeInternal.
      */
     @Generated
-    public static final RecordingStorageTypeInternal ACS = fromString("AzureCommunicationServices");
+    public static final RecordingStorageTypeInternal ACS = fromString("azureCommunicationServices");
 
     /**
-     * Storage managed by provided Azure blob.
+     * Static value azureBlobStorage for RecordingStorageTypeInternal.
      */
     @Generated
-    public static final RecordingStorageTypeInternal AZURE_BLOB_STORAGE = fromString("AzureBlobStorage");
+    public static final RecordingStorageTypeInternal AZURE_BLOB_STORAGE = fromString("azureBlobStorage");
 
     /**
      * Creates a new instance of RecordingStorageTypeInternal value.

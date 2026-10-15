@@ -42,6 +42,11 @@ public final class ProvisioningState extends ExpandableStringEnum<ProvisioningSt
     public static final ProvisioningState DELETING = fromString("Deleting");
 
     /**
+     * Action is running.
+     */
+    public static final ProvisioningState RUNNING = fromString("Running");
+
+    /**
      * Creates a new instance of ProvisioningState value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

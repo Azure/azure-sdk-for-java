@@ -9,18 +9,18 @@ package com.azure.resourcemanager.msi.generated;
  */
 public final class SystemAssignedIdentitiesGetByScopeSamples {
     /*
-     * x-ms-original-file: 2025-05-31-preview/SystemAssignedIdentityGet.json
+     * x-ms-original-file: 2024-11-30/SystemAssignedIdentityGet.json
      */
     /**
-     * Sample code: SystemAssignedIdentityGet.
+     * Sample code: MsiOperationsList.
      * 
      * @param manager Entry point to MsiManager.
      */
-    public static void systemAssignedIdentityGet(com.azure.resourcemanager.msi.MsiManager manager) {
+    public static void msiOperationsList(com.azure.resourcemanager.msi.MsiManager manager) {
         manager.serviceClient()
             .getSystemAssignedIdentities()
             .getByScopeWithResponse(
-                "subscriptions/subId/resourceGroups/resourceGroupName/providers/Resource.Provider/resourceType/resourceName/identities/default",
+                "subscriptions/12345678-1234-5678-9012-123456789012/resourceGroups/resourceGroupName",
                 com.azure.core.util.Context.NONE);
     }
 }

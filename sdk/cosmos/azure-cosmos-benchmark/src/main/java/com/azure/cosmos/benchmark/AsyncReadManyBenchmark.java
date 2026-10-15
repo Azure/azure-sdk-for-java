@@ -4,6 +4,7 @@
 package com.azure.cosmos.benchmark;
 
 import com.azure.cosmos.models.CosmosItemIdentity;
+import com.azure.cosmos.models.CosmosReadManyRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 
@@ -37,6 +38,8 @@ class AsyncReadManyBenchmark extends AsyncBenchmark<FeedResponse<PojoizedJson>> 
             cosmosItemIdentities.add(new CosmosItemIdentity(partitionKey, doc.getId()));
         }
 
-        return cosmosAsyncContainer.readMany(cosmosItemIdentities, PojoizedJson.class);
+        CosmosReadManyRequestOptions options = new CosmosReadManyRequestOptions();
+        options.setExcludedRegions(workloadConfig.getExcludedRegionsList());
+        return cosmosAsyncContainer.readMany(cosmosItemIdentities, options, PojoizedJson.class);
     }
 }

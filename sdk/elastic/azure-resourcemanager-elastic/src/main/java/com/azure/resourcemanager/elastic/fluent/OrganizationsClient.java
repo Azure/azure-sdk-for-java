@@ -28,7 +28,7 @@ public interface OrganizationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of monitor resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ElasticMonitorResourceInner>, ElasticMonitorResourceInner>
@@ -44,7 +44,7 @@ public interface OrganizationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of monitor resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ElasticMonitorResourceInner>, ElasticMonitorResourceInner>
@@ -58,7 +58,7 @@ public interface OrganizationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return monitor resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ElasticMonitorResourceInner resubscribe(String resourceGroupName, String monitorName);
@@ -73,7 +73,7 @@ public interface OrganizationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return monitor resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ElasticMonitorResourceInner resubscribe(String resourceGroupName, String monitorName, ResubscribeProperties body,

@@ -9,6 +9,8 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Shell tool
@@ -79,6 +81,11 @@ public final class FunctionShellToolParameter extends Tool {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeJsonField("environment", this.environment);
+        jsonWriter.writeArrayField("allowed_callers", this.allowedCallers,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeMapField("tool_configs", this.toolConfigs, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -102,11 +109,134 @@ public final class FunctionShellToolParameter extends Tool {
                 } else if ("environment".equals(fieldName)) {
                     deserializedFunctionShellToolParameter.environment
                         = FunctionShellToolParamEnvironment.fromJson(reader);
+                } else if ("allowed_callers".equals(fieldName)) {
+                    List<CallableToolAllowedCaller> allowedCallers
+                        = reader.readArray(reader1 -> CallableToolAllowedCaller.fromString(reader1.getString()));
+                    deserializedFunctionShellToolParameter.allowedCallers = allowedCallers;
+                } else if ("name".equals(fieldName)) {
+                    deserializedFunctionShellToolParameter.name = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedFunctionShellToolParameter.description = reader.getString();
+                } else if ("tool_configs".equals(fieldName)) {
+                    Map<String, ToolConfig> toolConfigs = reader.readMap(reader1 -> ToolConfig.fromJson(reader1));
+                    deserializedFunctionShellToolParameter.toolConfigs = toolConfigs;
                 } else {
                     reader.skipChildren();
                 }
             }
             return deserializedFunctionShellToolParameter;
         });
+    }
+
+    /*
+     * Deprecated. This property is deprecated and will be removed in a future version.
+     */
+    @Generated
+    private String name;
+
+    /*
+     * Deprecated. This property is deprecated and will be removed in a future version.
+     */
+    @Generated
+    private String description;
+
+    /*
+     * Deprecated. This property is deprecated and will be removed in a future version.
+     */
+    @Generated
+    private Map<String, ToolConfig> toolConfigs;
+
+    /**
+     * Get the name property: Deprecated. This property is deprecated and will be removed in a future version.
+     *
+     * @return the name value.
+     */
+    @Generated
+    public String getName() {
+        return this.name;
+    }
+
+    /**
+     * Set the name property: Deprecated. This property is deprecated and will be removed in a future version.
+     *
+     * @param name the name value to set.
+     * @return the FunctionShellToolParameter object itself.
+     */
+    @Generated
+    public FunctionShellToolParameter setName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    /**
+     * Get the description property: Deprecated. This property is deprecated and will be removed in a future version.
+     *
+     * @return the description value.
+     */
+    @Generated
+    public String getDescription() {
+        return this.description;
+    }
+
+    /**
+     * Set the description property: Deprecated. This property is deprecated and will be removed in a future version.
+     *
+     * @param description the description value to set.
+     * @return the FunctionShellToolParameter object itself.
+     */
+    @Generated
+    public FunctionShellToolParameter setDescription(String description) {
+        this.description = description;
+        return this;
+    }
+
+    /**
+     * Get the toolConfigs property: Deprecated. This property is deprecated and will be removed in a future version.
+     *
+     * @return the toolConfigs value.
+     */
+    @Generated
+    public Map<String, ToolConfig> getToolConfigs() {
+        return this.toolConfigs;
+    }
+
+    /**
+     * Set the toolConfigs property: Deprecated. This property is deprecated and will be removed in a future version.
+     *
+     * @param toolConfigs the toolConfigs value to set.
+     * @return the FunctionShellToolParameter object itself.
+     */
+    @Generated
+    public FunctionShellToolParameter setToolConfigs(Map<String, ToolConfig> toolConfigs) {
+        this.toolConfigs = toolConfigs;
+        return this;
+    }
+
+    /*
+     * The allowed_callers property.
+     */
+    @Generated
+    private List<CallableToolAllowedCaller> allowedCallers;
+
+    /**
+     * Get the allowedCallers property: The allowed_callers property.
+     *
+     * @return the allowedCallers value.
+     */
+    @Generated
+    public List<CallableToolAllowedCaller> getAllowedCallers() {
+        return this.allowedCallers;
+    }
+
+    /**
+     * Set the allowedCallers property: The allowed_callers property.
+     *
+     * @param allowedCallers the allowedCallers value to set.
+     * @return the FunctionShellToolParameter object itself.
+     */
+    @Generated
+    public FunctionShellToolParameter setAllowedCallers(List<CallableToolAllowedCaller> allowedCallers) {
+        this.allowedCallers = allowedCallers;
+        return this;
     }
 }

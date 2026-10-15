@@ -39,6 +39,12 @@ public final class AcsChatMessageEditedEventData extends AcsChatMessageEventBase
     private final OffsetDateTime editTime;
 
     /*
+     * The Sequence id of the message
+     */
+    @Generated
+    private Long sequenceId;
+
+    /*
      * The display name of the sender
      */
     @Generated
@@ -104,6 +110,17 @@ public final class AcsChatMessageEditedEventData extends AcsChatMessageEventBase
     }
 
     /**
+     * Get the sequenceId property: The Sequence id of the message.
+     *
+     * @return the sequenceId value.
+     */
+    @Generated
+    @Override
+    public Long getSequenceId() {
+        return this.sequenceId;
+    }
+
+    /**
      * Get the senderDisplayName property: The display name of the sender.
      *
      * @return the senderDisplayName value.
@@ -142,6 +159,7 @@ public final class AcsChatMessageEditedEventData extends AcsChatMessageEventBase
         jsonWriter.writeLongField("version", getVersion());
         jsonWriter.writeStringField("transactionId", getTransactionId());
         jsonWriter.writeStringField("senderDisplayName", getSenderDisplayName());
+        jsonWriter.writeNumberField("sequenceId", getSequenceId());
         jsonWriter.writeStringField("messageBody", this.messageBody);
         jsonWriter.writeStringField("editTime",
             this.editTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.editTime));
@@ -169,6 +187,7 @@ public final class AcsChatMessageEditedEventData extends AcsChatMessageEventBase
             long version = 0L;
             String transactionId = null;
             String senderDisplayName = null;
+            Long sequenceId = null;
             String messageBody = null;
             OffsetDateTime editTime = null;
             Map<String, String> metadata = null;
@@ -194,6 +213,8 @@ public final class AcsChatMessageEditedEventData extends AcsChatMessageEventBase
                     transactionId = reader.getString();
                 } else if ("senderDisplayName".equals(fieldName)) {
                     senderDisplayName = reader.getString();
+                } else if ("sequenceId".equals(fieldName)) {
+                    sequenceId = reader.getNullable(JsonReader::getLong);
                 } else if ("messageBody".equals(fieldName)) {
                     messageBody = reader.getString();
                 } else if ("editTime".equals(fieldName)) {
@@ -210,6 +231,7 @@ public final class AcsChatMessageEditedEventData extends AcsChatMessageEventBase
                     senderCommunicationIdentifier, composeTime, type, version, messageBody, editTime);
             deserializedAcsChatMessageEditedEventData.transactionId = transactionId;
             deserializedAcsChatMessageEditedEventData.senderDisplayName = senderDisplayName;
+            deserializedAcsChatMessageEditedEventData.sequenceId = sequenceId;
             deserializedAcsChatMessageEditedEventData.metadata = metadata;
             return deserializedAcsChatMessageEditedEventData;
         });

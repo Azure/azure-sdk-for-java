@@ -14,7 +14,7 @@ import java.io.IOException;
  * Indicates completion of viseme animation delivery for a response.
  */
 @Immutable
-public final class SessionUpdateResponseAnimationVisemeDone extends SessionUpdate {
+public final class SessionUpdateResponseAnimationVisemeDone extends SessionServerEvent {
 
     /*
      * The type of event.

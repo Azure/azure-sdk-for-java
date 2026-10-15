@@ -21,6 +21,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import static com.azure.spring.cloud.autoconfigure.implementation.context.AzureContextUtils.EVENT_HUB_CLIENT_BUILDER_BEAN_NAME;
 import static com.azure.spring.cloud.autoconfigure.implementation.context.AzureContextUtils.EVENT_HUB_PRODUCER_CLIENT_BUILDER_BEAN_NAME;
 import static com.azure.spring.cloud.autoconfigure.implementation.context.AzureContextUtils.EVENT_HUB_PRODUCER_CLIENT_BUILDER_FACTORY_BEAN_NAME;
 
@@ -34,24 +35,24 @@ import static com.azure.spring.cloud.autoconfigure.implementation.context.AzureC
 @ConditionalOnAnyProperty(prefix = "spring.cloud.azure.eventhubs", name = { "event-hub-name", "producer.event-hub-name" })
 class AzureEventHubsProducerClientConfiguration {
 
-    @ConditionalOnMissingProperty(prefix = "spring.cloud.azure.eventhubs.producer", name = { "connection-string", "namespace" })
-    @ConditionalOnBean(EventHubClientBuilder.class)
+    @ConditionalOnMissingProperty(prefix = "spring.cloud.azure.eventhubs.producer", name = { "connection-string", "namespace", "event-hub-name" })
+    @ConditionalOnBean(name = EVENT_HUB_CLIENT_BUILDER_BEAN_NAME)
     @Configuration(proxyBeanMethods = false)
     static class SharedProducerConnectionConfiguration {
         @Bean
         @ConditionalOnMissingBean
-        EventHubProducerAsyncClient eventHubProducerAsyncClient(EventHubClientBuilder builder) {
+        EventHubProducerAsyncClient eventHubProducerAsyncClient(@Qualifier(EVENT_HUB_CLIENT_BUILDER_BEAN_NAME) EventHubClientBuilder builder) {
             return builder.buildAsyncProducerClient();
         }
 
         @Bean
         @ConditionalOnMissingBean
-        EventHubProducerClient eventHubProducerClient(EventHubClientBuilder builder) {
+        EventHubProducerClient eventHubProducerClient(@Qualifier(EVENT_HUB_CLIENT_BUILDER_BEAN_NAME) EventHubClientBuilder builder) {
             return builder.buildProducerClient();
         }
     }
 
-    @ConditionalOnAnyProperty(prefix = "spring.cloud.azure.eventhubs.producer", name = { "connection-string", "namespace" })
+    @ConditionalOnAnyProperty(prefix = "spring.cloud.azure.eventhubs.producer", name = { "connection-string", "namespace", "event-hub-name" })
     @Configuration(proxyBeanMethods = false)
     static class DedicatedProducerConnectionConfiguration {
 

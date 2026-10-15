@@ -43,11 +43,6 @@ public final class HciReportedProperties extends ReportedProperties {
     private HciHardwareProfile hardwareProfile;
 
     /*
-     * CVM support details for edge device.
-     */
-    private ConfidentialVmProfile confidentialVmProfile;
-
-    /*
      * Most recent edge device sync timestamp in UTC.
      */
     private OffsetDateTime lastSyncTimestamp;
@@ -114,16 +109,6 @@ public final class HciReportedProperties extends ReportedProperties {
     }
 
     /**
-     * Get the confidentialVmProfile property: CVM support details for edge device.
-     * 
-     * @return the confidentialVmProfile value.
-     */
-    @Override
-    public ConfidentialVmProfile confidentialVmProfile() {
-        return this.confidentialVmProfile;
-    }
-
-    /**
      * Get the lastSyncTimestamp property: Most recent edge device sync timestamp in UTC.
      * 
      * @return the lastSyncTimestamp value.
@@ -184,8 +169,6 @@ public final class HciReportedProperties extends ReportedProperties {
                 } else if ("lastSyncTimestamp".equals(fieldName)) {
                     deserializedHciReportedProperties.lastSyncTimestamp = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
-                } else if ("confidentialVmProfile".equals(fieldName)) {
-                    deserializedHciReportedProperties.confidentialVmProfile = ConfidentialVmProfile.fromJson(reader);
                 } else if ("networkProfile".equals(fieldName)) {
                     deserializedHciReportedProperties.networkProfile = HciNetworkProfile.fromJson(reader);
                 } else if ("osProfile".equals(fieldName)) {

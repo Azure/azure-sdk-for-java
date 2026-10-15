@@ -13,4 +13,5 @@ module com.azure.ai.projects {
     exports com.azure.ai.projects.models;
 
     opens com.azure.ai.projects.models to com.azure.core;
+    opens com.azure.ai.projects.implementation.models to com.azure.core;
 }

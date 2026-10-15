@@ -26,11 +26,6 @@ public final class DdosProtectionPlanInner extends Resource {
     private DdosProtectionPlanPropertiesFormat innerProperties;
 
     /*
-     * Resource tags.
-     */
-    private Map<String, String> tags;
-
-    /*
      * A unique read-only string that changes whenever the resource is updated.
      */
     private String etag;
@@ -63,26 +58,6 @@ public final class DdosProtectionPlanInner extends Resource {
      */
     private DdosProtectionPlanPropertiesFormat innerProperties() {
         return this.innerProperties;
-    }
-
-    /**
-     * Get the tags property: Resource tags.
-     * 
-     * @return the tags value.
-     */
-    public Map<String, String> tags() {
-        return this.tags;
-    }
-
-    /**
-     * Set the tags property: Resource tags.
-     * 
-     * @param tags the tags value to set.
-     * @return the DdosProtectionPlanInner object itself.
-     */
-    public DdosProtectionPlanInner withTags(Map<String, String> tags) {
-        this.tags = tags;
-        return this;
     }
 
     /**
@@ -130,6 +105,15 @@ public final class DdosProtectionPlanInner extends Resource {
     @Override
     public DdosProtectionPlanInner withLocation(String location) {
         super.withLocation(location);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public DdosProtectionPlanInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
         return this;
     }
 
@@ -191,8 +175,8 @@ public final class DdosProtectionPlanInner extends Resource {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("properties", this.innerProperties);
-        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -220,12 +204,12 @@ public final class DdosProtectionPlanInner extends Resource {
                     deserializedDdosProtectionPlanInner.type = reader.getString();
                 } else if ("location".equals(fieldName)) {
                     deserializedDdosProtectionPlanInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedDdosProtectionPlanInner.withTags(tags);
                 } else if ("properties".equals(fieldName)) {
                     deserializedDdosProtectionPlanInner.innerProperties
                         = DdosProtectionPlanPropertiesFormat.fromJson(reader);
-                } else if ("tags".equals(fieldName)) {
-                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
-                    deserializedDdosProtectionPlanInner.tags = tags;
                 } else if ("etag".equals(fieldName)) {
                     deserializedDdosProtectionPlanInner.etag = reader.getString();
                 } else {

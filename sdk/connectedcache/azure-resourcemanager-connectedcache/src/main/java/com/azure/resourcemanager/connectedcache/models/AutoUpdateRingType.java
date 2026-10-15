@@ -27,6 +27,16 @@ public final class AutoUpdateRingType extends ExpandableStringEnum<AutoUpdateRin
     public static final AutoUpdateRingType FAST = fromString("Fast");
 
     /**
+     * customer selection of stable update to install mcc on their physical vm.
+     */
+    public static final AutoUpdateRingType STABLE = fromString("Stable");
+
+    /**
+     * customer selection of beta update to install mcc on their physical vm.
+     */
+    public static final AutoUpdateRingType BETA = fromString("Beta");
+
+    /**
      * Creates a new instance of AutoUpdateRingType value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

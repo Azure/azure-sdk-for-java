@@ -115,7 +115,8 @@ public final class OutboundRulesOperationsClientImpl implements OutboundRulesOpe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return list of outbound rules for the managed network of a cognitive services account along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OutboundRuleBasicResourceInner>> postSinglePageAsync(String resourceGroupName,
@@ -152,7 +153,8 @@ public final class OutboundRulesOperationsClientImpl implements OutboundRulesOpe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedFlux}.
+     * @return list of outbound rules for the managed network of a cognitive services account as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<OutboundRuleBasicResourceInner> postAsync(String resourceGroupName, String accountName,
@@ -173,7 +175,8 @@ public final class OutboundRulesOperationsClientImpl implements OutboundRulesOpe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse}.
+     * @return list of outbound rules for the managed network of a cognitive services account along with
+     * {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OutboundRuleBasicResourceInner> postSinglePage(String resourceGroupName, String accountName,
@@ -203,7 +206,8 @@ public final class OutboundRulesOperationsClientImpl implements OutboundRulesOpe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse}.
+     * @return list of outbound rules for the managed network of a cognitive services account along with
+     * {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OutboundRuleBasicResourceInner> postSinglePage(String resourceGroupName, String accountName,
@@ -231,7 +235,8 @@ public final class OutboundRulesOperationsClientImpl implements OutboundRulesOpe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedIterable}.
+     * @return list of outbound rules for the managed network of a cognitive services account as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OutboundRuleBasicResourceInner> post(String resourceGroupName, String accountName,
@@ -253,7 +258,8 @@ public final class OutboundRulesOperationsClientImpl implements OutboundRulesOpe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedIterable}.
+     * @return list of outbound rules for the managed network of a cognitive services account as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OutboundRuleBasicResourceInner> post(String resourceGroupName, String accountName,
@@ -273,7 +279,8 @@ public final class OutboundRulesOperationsClientImpl implements OutboundRulesOpe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return list of outbound rules for the managed network of a cognitive services account along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OutboundRuleBasicResourceInner>> postNextSinglePageAsync(String nextLink) {
@@ -294,7 +301,8 @@ public final class OutboundRulesOperationsClientImpl implements OutboundRulesOpe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse}.
+     * @return list of outbound rules for the managed network of a cognitive services account along with
+     * {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OutboundRuleBasicResourceInner> postNextSinglePage(String nextLink) {
@@ -316,7 +324,8 @@ public final class OutboundRulesOperationsClientImpl implements OutboundRulesOpe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse}.
+     * @return list of outbound rules for the managed network of a cognitive services account along with
+     * {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OutboundRuleBasicResourceInner> postNextSinglePage(String nextLink, Context context) {

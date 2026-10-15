@@ -315,7 +315,7 @@ public final class EasmClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteDataConnection(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("dataConnectionName") String dataConnectionName,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            RequestOptions requestOptions, Context context);
 
         @Delete("/dataConnections/{dataConnectionName}")
         @ExpectedResponses({ 204 })
@@ -325,7 +325,7 @@ public final class EasmClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteDataConnectionSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("dataConnectionName") String dataConnectionName,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            RequestOptions requestOptions, Context context);
 
         @Get("/discoGroups")
         @ExpectedResponses({ 200 })
@@ -419,7 +419,7 @@ public final class EasmClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> runDiscoGroup(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("groupName") String groupName,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            RequestOptions requestOptions, Context context);
 
         @Post("/discoGroups/{groupName}:run")
         @ExpectedResponses({ 204 })
@@ -429,7 +429,7 @@ public final class EasmClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> runDiscoGroupSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("groupName") String groupName,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            RequestOptions requestOptions, Context context);
 
         @Get("/discoGroups/{groupName}/runs")
         @ExpectedResponses({ 200 })
@@ -625,7 +625,7 @@ public final class EasmClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteSavedFilter(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("filterName") String filterName,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            RequestOptions requestOptions, Context context);
 
         @Delete("/savedFilters/{filterName}")
         @ExpectedResponses({ 204 })
@@ -635,7 +635,7 @@ public final class EasmClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteSavedFilterSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("filterName") String filterName,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            RequestOptions requestOptions, Context context);
 
         @Get("/tasks")
         @ExpectedResponses({ 200 })
@@ -1886,9 +1886,8 @@ public final class EasmClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteDataConnectionWithResponseAsync(String dataConnectionName,
         RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.deleteDataConnection(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), dataConnectionName, accept, requestOptions, context));
+            this.getServiceVersion().getVersion(), dataConnectionName, requestOptions, context));
     }
 
     /**
@@ -1904,9 +1903,8 @@ public final class EasmClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteDataConnectionWithResponse(String dataConnectionName, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return service.deleteDataConnectionSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            dataConnectionName, accept, requestOptions, Context.NONE);
+            dataConnectionName, requestOptions, Context.NONE);
     }
 
     /**
@@ -2698,9 +2696,8 @@ public final class EasmClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> runDiscoGroupWithResponseAsync(String groupName, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.runDiscoGroup(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), groupName, accept, requestOptions, context));
+            this.getServiceVersion().getVersion(), groupName, requestOptions, context));
     }
 
     /**
@@ -2716,8 +2713,7 @@ public final class EasmClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> runDiscoGroupWithResponse(String groupName, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.runDiscoGroupSync(this.getEndpoint(), this.getServiceVersion().getVersion(), groupName, accept,
+        return service.runDiscoGroupSync(this.getEndpoint(), this.getServiceVersion().getVersion(), groupName,
             requestOptions, Context.NONE);
     }
 
@@ -4057,9 +4053,8 @@ public final class EasmClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteSavedFilterWithResponseAsync(String filterName, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.deleteSavedFilter(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), filterName, accept, requestOptions, context));
+            this.getServiceVersion().getVersion(), filterName, requestOptions, context));
     }
 
     /**
@@ -4075,9 +4070,8 @@ public final class EasmClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteSavedFilterWithResponse(String filterName, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return service.deleteSavedFilterSync(this.getEndpoint(), this.getServiceVersion().getVersion(), filterName,
-            accept, requestOptions, Context.NONE);
+            requestOptions, Context.NONE);
     }
 
     /**
@@ -5111,20 +5105,26 @@ public final class EasmClientImpl {
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
 
-    private List<BinaryData> getValues(BinaryData binaryData, String path) {
+    private List<BinaryData> getValues(BinaryData binaryData, String... path) {
         try {
-            Map<?, ?> obj = binaryData.toObject(Map.class);
-            List<?> values = (List<?>) obj.get(path);
+            Object value = binaryData.toObject(Map.class);
+            for (String segment : path) {
+                value = ((Map<?, ?>) value).get(segment);
+            }
+            List<?> values = (List<?>) value;
             return values.stream().map(BinaryData::fromObject).collect(Collectors.toList());
         } catch (RuntimeException e) {
             return null;
         }
     }
 
-    private String getNextLink(BinaryData binaryData, String path) {
+    private String getNextLink(BinaryData binaryData, String... path) {
         try {
-            Map<?, ?> obj = binaryData.toObject(Map.class);
-            return (String) obj.get(path);
+            Object value = binaryData.toObject(Map.class);
+            for (String segment : path) {
+                value = ((Map<?, ?>) value).get(segment);
+            }
+            return (String) value;
         } catch (RuntimeException e) {
             return null;
         }

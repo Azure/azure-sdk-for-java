@@ -1,7 +1,7 @@
 # TypeSpec Java Quickstart
 
 
-This guide covers the end-to-end workflow for generating, building, testing, and releasing a Java SDK from a TypeSpec specification. For OpenAPI 2.0 specs, see [Working with AutoRest](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/autorest.md).
+This guide covers the end-to-end workflow for generating, building, testing, and releasing a Java SDK from a TypeSpec specification.
 
 ---
 
@@ -101,6 +101,8 @@ Set `partial-update: true` in `tspconfig.yaml` emitter options. TypeSpec-Java wi
   customization-class: customization/src/main/java/MyCustomization.java
 ```
 
+See [TypeSpec Java Customization](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/typespec-java-customization.md) for guidance on writing AST-based Java customizations.
+
 ---
 
 ## 5. Improve Documentation
@@ -191,7 +193,7 @@ Key steps:
 | Version mismatch | `python eng/versioning/update_versions.py --sr` |
 | Spelling errors | Fix or add to `.vscode/cspell.json` |
 | SpotBugs / Checkstyle | Fix code; see [code-quality.md](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/code-quality.md) |
-| RevApi breaking change | Add suppression to `eng/code-quality-reports/src/main/resources/revapi/revapi.json` |
+| RevApi breaking change | Fix the incompatibility, or add an approved exception to the SDK-local `revapi-suppressions.json`; see [RevApi suppressions](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/code-quality.md#adding-a-revapi-suppression) |
 | TypeSpec code outdated | Re-run `tsp-client update` |
 | Insufficient test coverage | Lower thresholds for beta: add `<jacoco.min.linecoverage>0.2</jacoco.min.linecoverage>` to POM |
 
@@ -211,7 +213,6 @@ Key steps:
 
 ## See Also
 
-- [Working with AutoRest](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/autorest.md) — for OpenAPI 2.0 specs
 - [Adding a Module](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/adding-a-module.md)
 - [Building](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/building.md)
 - [JavaDoc and Code Snippets](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/javadocs.md)

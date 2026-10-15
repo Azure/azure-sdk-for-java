@@ -21,7 +21,7 @@ public final class IspCacheNodesOperationsGetCacheNodeMccIssueDetailsHistoryWith
     @Test
     public void testGetCacheNodeMccIssueDetailsHistoryWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"customerId\":\"i\",\"cacheNodeId\":\"nhn\",\"mccIssueHistory\":[{\"mccIssueType\":\"fq\",\"toastString\":\"gxmrhublwp\",\"detailString\":\"sutrgjup\",\"helpLink\":\"utpwoqhihejqgw\",\"issueStartDate\":\"2021-03-21T20:16:43Z\",\"issueEndDate\":\"2021-06-25T01:59:21Z\"},{\"mccIssueType\":\"tcypsxjvfoim\",\"toastString\":\"slirciz\",\"detailString\":\"vydfceacvlhvygdy\",\"helpLink\":\"umrtwnawjsl\",\"issueStartDate\":\"2021-11-14T12:50:10Z\",\"issueEndDate\":\"2021-06-28T20:11:56Z\"},{\"mccIssueType\":\"gcyztsfmznbae\",\"toastString\":\"hchqnrnrpx\",\"detailString\":\"uwrykqgaifmvikl\",\"helpLink\":\"dvk\",\"issueStartDate\":\"2021-01-06T00:18:15Z\",\"issueEndDate\":\"2021-04-25T06:44:31Z\"}]},\"location\":\"nxcvds\",\"tags\":{\"fzg\":\"jivolvtnov\",\"jltduceam\":\"mjdftu\",\"ejwcwwqiok\":\"mczuo\"},\"id\":\"ssxmojms\",\"name\":\"p\",\"type\":\"jpr\"}";
+            = "{\"properties\":{\"customerId\":\"m\",\"cacheNodeId\":\"pmguaadraufac\",\"mccIssueHistory\":[{\"mccIssueType\":\"zov\",\"toastString\":\"j\",\"detailString\":\"uxxpshne\",\"helpLink\":\"ulfgslqu\",\"issueStartDate\":\"2021-07-12T23:03:26Z\",\"issueEndDate\":\"2021-01-04T01:29:23Z\"},{\"mccIssueType\":\"nrdsutujbazpjuoh\",\"toastString\":\"nyfln\",\"detailString\":\"wmd\",\"helpLink\":\"wpklvxw\",\"issueStartDate\":\"2021-05-16T15:58:14Z\",\"issueEndDate\":\"2021-06-19T17:26:37Z\"},{\"mccIssueType\":\"gpqch\",\"toastString\":\"zepn\",\"detailString\":\"jcrxgibbdaxcon\",\"helpLink\":\"zauorsuk\",\"issueStartDate\":\"2021-02-20T07:01:30Z\",\"issueEndDate\":\"2021-09-20T10:27:45Z\"},{\"mccIssueType\":\"lhlv\",\"toastString\":\"uepzl\",\"detailString\":\"hw\",\"helpLink\":\"oldweyuqdu\",\"issueStartDate\":\"2021-08-14T17:59:55Z\",\"issueEndDate\":\"2021-06-17T06:57:21Z\"}]},\"location\":\"wrbiorkt\",\"tags\":{\"miloxggdufiqndie\":\"wjhhgdnhxmsivf\",\"s\":\"zaofjchvcyy\",\"onmacjekniz\":\"gdotcubiipuipwo\"},\"id\":\"hqvcimpevfgmblr\",\"name\":\"ilbywdxsm\",\"type\":\"ccwr\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,11 +31,11 @@ public final class IspCacheNodesOperationsGetCacheNodeMccIssueDetailsHistoryWith
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         MccCacheNodeIssueHistory response = manager.ispCacheNodesOperations()
-            .getCacheNodeMccIssueDetailsHistoryWithResponse("lihhyuspskasdvlm", "wdgzxulucv", "amrsreuzv",
+            .getCacheNodeMccIssueDetailsHistoryWithResponse("uffkmrqemvvh", "xtdr", "futacoebjvewzc",
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("nxcvds", response.location());
-        Assertions.assertEquals("jivolvtnov", response.tags().get("fzg"));
+        Assertions.assertEquals("wrbiorkt", response.location());
+        Assertions.assertEquals("wjhhgdnhxmsivf", response.tags().get("miloxggdufiqndie"));
     }
 }

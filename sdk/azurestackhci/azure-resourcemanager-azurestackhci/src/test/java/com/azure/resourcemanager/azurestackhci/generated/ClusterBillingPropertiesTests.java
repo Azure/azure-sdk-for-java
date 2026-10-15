@@ -12,10 +12,10 @@ public final class ClusterBillingPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClusterBillingProperties model = BinaryData.fromString(
-            "{\"nextBillingModel\":{\"billingModel\":\"mszkkfo\",\"capabilitiesEnabled\":[\"yfkzik\",\"jawneaiv\",\"wczelpci\"],\"trialDaysRemaining\":97.68141611514669}}")
+            "{\"nextBillingModel\":{\"billingModel\":\"ck\",\"capabilitiesEnabled\":[\"hrxsbk\",\"vpycanuzbp\",\"kafkuwbcrnwbm\"],\"trialDaysRemaining\":39.313377855702626}}")
             .toObject(ClusterBillingProperties.class);
-        Assertions.assertEquals("mszkkfo", model.nextBillingModel().billingModel());
-        Assertions.assertEquals("yfkzik", model.nextBillingModel().capabilitiesEnabled().get(0));
-        Assertions.assertEquals(97.68141611514669D, model.nextBillingModel().trialDaysRemaining());
+        Assertions.assertEquals("ck", model.nextBillingModel().billingModel());
+        Assertions.assertEquals("hrxsbk", model.nextBillingModel().capabilitiesEnabled().get(0));
+        Assertions.assertEquals(39.313377855702626D, model.nextBillingModel().trialDaysRemaining());
     }
 }

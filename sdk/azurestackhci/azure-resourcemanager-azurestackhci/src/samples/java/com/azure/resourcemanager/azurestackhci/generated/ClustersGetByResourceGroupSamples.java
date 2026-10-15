@@ -9,7 +9,7 @@ package com.azure.resourcemanager.azurestackhci.generated;
  */
 public final class ClustersGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-04-01-preview/GetCluster.json
+     * x-ms-original-file: 2026-04-30/GetCluster.json
      */
     /**
      * Sample code: Get cluster.

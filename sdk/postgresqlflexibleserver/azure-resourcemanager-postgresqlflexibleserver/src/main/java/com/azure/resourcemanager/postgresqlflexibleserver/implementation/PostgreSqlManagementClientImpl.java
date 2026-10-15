@@ -35,7 +35,10 @@ import com.azure.resourcemanager.postgresqlflexibleserver.fluent.CapabilitiesByS
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.CapturedLogsClient;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.ConfigurationsClient;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.DatabasesClient;
+import com.azure.resourcemanager.postgresqlflexibleserver.fluent.DbAgentsClient;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.FirewallRulesClient;
+import com.azure.resourcemanager.postgresqlflexibleserver.fluent.MaintenanceEventsClient;
+import com.azure.resourcemanager.postgresqlflexibleserver.fluent.MajorVersionUpgradePrechecksClient;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.MigrationsClient;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.NameAvailabilitiesClient;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.OperationsClient;
@@ -275,6 +278,48 @@ public final class PostgreSqlManagementClientImpl implements PostgreSqlManagemen
     }
 
     /**
+     * The MaintenanceEventsClient object to access its operations.
+     */
+    private final MaintenanceEventsClient maintenanceEvents;
+
+    /**
+     * Gets the MaintenanceEventsClient object to access its operations.
+     * 
+     * @return the MaintenanceEventsClient object.
+     */
+    public MaintenanceEventsClient getMaintenanceEvents() {
+        return this.maintenanceEvents;
+    }
+
+    /**
+     * The MajorVersionUpgradePrechecksClient object to access its operations.
+     */
+    private final MajorVersionUpgradePrechecksClient majorVersionUpgradePrechecks;
+
+    /**
+     * Gets the MajorVersionUpgradePrechecksClient object to access its operations.
+     * 
+     * @return the MajorVersionUpgradePrechecksClient object.
+     */
+    public MajorVersionUpgradePrechecksClient getMajorVersionUpgradePrechecks() {
+        return this.majorVersionUpgradePrechecks;
+    }
+
+    /**
+     * The DbAgentsClient object to access its operations.
+     */
+    private final DbAgentsClient dbAgents;
+
+    /**
+     * Gets the DbAgentsClient object to access its operations.
+     * 
+     * @return the DbAgentsClient object.
+     */
+    public DbAgentsClient getDbAgents() {
+        return this.dbAgents;
+    }
+
+    /**
      * The AdministratorsMicrosoftEntrasClient object to access its operations.
      */
     private final AdministratorsMicrosoftEntrasClient administratorsMicrosoftEntras;
@@ -487,7 +532,7 @@ public final class PostgreSqlManagementClientImpl implements PostgreSqlManagemen
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2026-01-01-preview";
+        this.apiVersion = "2026-07-01-preview";
         this.operations = new OperationsClientImpl(this);
         this.migrations = new MigrationsClientImpl(this);
         this.servers = new ServersClientImpl(this);
@@ -497,6 +542,9 @@ public final class PostgreSqlManagementClientImpl implements PostgreSqlManagemen
         this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
         this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);
         this.virtualEndpoints = new VirtualEndpointsClientImpl(this);
+        this.maintenanceEvents = new MaintenanceEventsClientImpl(this);
+        this.majorVersionUpgradePrechecks = new MajorVersionUpgradePrechecksClientImpl(this);
+        this.dbAgents = new DbAgentsClientImpl(this);
         this.administratorsMicrosoftEntras = new AdministratorsMicrosoftEntrasClientImpl(this);
         this.capabilitiesByServers = new CapabilitiesByServersClientImpl(this);
         this.capturedLogs = new CapturedLogsClientImpl(this);
@@ -624,7 +672,7 @@ public final class PostgreSqlManagementClientImpl implements PostgreSqlManagemen
             super(null);
             this.statusCode = statusCode;
             this.httpHeaders = httpHeaders;
-            this.responseBody = responseBody == null ? null : responseBody.getBytes(StandardCharsets.UTF_8);
+            this.responseBody = responseBody == null ? new byte[0] : responseBody.getBytes(StandardCharsets.UTF_8);
         }
 
         public int getStatusCode() {

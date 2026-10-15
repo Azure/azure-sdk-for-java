@@ -9,7 +9,7 @@ package com.azure.resourcemanager.azurestackhci.generated;
  */
 public final class UpdatesListSamples {
     /*
-     * x-ms-original-file: 2026-04-01-preview/ListUpdates.json
+     * x-ms-original-file: 2026-04-30/ListUpdates.json
      */
     /**
      * Sample code: List available updates.

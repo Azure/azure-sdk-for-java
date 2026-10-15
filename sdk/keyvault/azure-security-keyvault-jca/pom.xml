@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -14,7 +13,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-security-keyvault-jca</artifactId>
-  <version>2.12.0-beta.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-jca;current} -->
+  <version>2.13.0-beta.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-jca;current} -->
   <name>JCA Provider for Azure Key Vault</name>
   <description>The Java Crypto Architecture (JCA) Provider for Azure Key Vault</description>
 
@@ -32,14 +31,8 @@
     <dependency>
       <groupId>org.bouncycastle</groupId>
       <artifactId>bcpkix-lts8on</artifactId>
-      <version>2.73.8</version> <!-- {x-version-update;org.bouncycastle:bcpkix-lts8on;external_dependency} -->
+      <version>2.73.11</version> <!-- {x-version-update;org.bouncycastle:bcpkix-lts8on;external_dependency} -->
       <optional>true</optional>
-    </dependency>
-    <!-- Apache HttpClient -->
-    <dependency>
-      <groupId>org.apache.httpcomponents.client5</groupId>
-      <artifactId>httpclient5</artifactId>
-      <version>5.4.3</version> <!-- {x-version-update;org.apache.httpcomponents.client5:httpclient5;external_dependency} -->
     </dependency>
     <!-- Conscrypt -->
     <dependency>
@@ -55,44 +48,10 @@
       <version>1.5.1</version> <!-- {x-version-update;com.azure:azure-json;dependency} -->
       <optional>true</optional>
     </dependency>
-    <!-- SLF4j -->
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-nop</artifactId>
-      <version>1.7.36</version> <!-- {x-version-update;org.slf4j:slf4j-nop;external_dependency} -->
-    </dependency>
-    <!-- Tests -->
-    <dependency>
-      <groupId>org.mockito</groupId>
-      <artifactId>mockito-inline</artifactId>
-      <version>4.11.0</version> <!-- {x-version-update;org.mockito:mockito-inline;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <!-- bytebuddy dependencies are required for mockito 4.11.0 to work with Java 21. Mockito 4.11.0 is the last release -->
-    <!-- of Mockito supporting Java 8 as a baseline. -->
-    <dependency>
-      <groupId>net.bytebuddy</groupId>
-      <artifactId>byte-buddy</artifactId>
-      <version>1.17.7</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>net.bytebuddy</groupId>
-      <artifactId>byte-buddy-agent</artifactId>
-      <version>1.17.7</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy-agent;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <!-- For some reason upgrading past Mockito 4.6.1 requires this to be added. -->
-    <dependency>
-      <groupId>com.github.spotbugs</groupId>
-      <artifactId>spotbugs-annotations</artifactId>
-      <version>4.8.3</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-annotations;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.58.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.60.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
       <scope>test</scope>
     </dependency>
     <!-- JUnit -->
@@ -121,7 +80,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
-        <version>3.4.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
+        <version>3.5.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
         <configuration>
           <excludes>
             <exclude>module-info.java</exclude>
@@ -131,7 +90,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
-        <version>3.6.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-shade-plugin;external_dependency} -->
+        <version>3.6.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-shade-plugin;external_dependency} -->
         <executions>
           <execution>
             <id>minimize-shade</id>
@@ -218,14 +177,6 @@
                   <pattern>com.azure.json</pattern>
                   <shadedPattern>com.azure.security.keyvault.jca.implementation.shaded.com.azure.json</shadedPattern>
                 </relocation>
-                <relocation>
-                  <pattern>org.apache.hc</pattern>
-                  <shadedPattern>com.azure.security.keyvault.jca.implementation.shaded.org.apache.hc</shadedPattern>
-                </relocation>
-                <relocation>
-                  <pattern>org.slf4j</pattern>
-                  <shadedPattern>com.azure.security.keyvault.jca.implementation.shaded.org.slf4j</shadedPattern>
-                </relocation>
               </relocations>
               <transformers>
                 <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
@@ -259,15 +210,13 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.6.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <version>3.6.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
         <configuration>
           <rules>
             <bannedDependencies>
               <includes>
-                <include>org.bouncycastle:bcpkix-lts8on:[2.73.8]</include> <!-- {x-include-update;org.bouncycastle:bcpkix-lts8on;external_dependency} -->
+                <include>org.bouncycastle:bcpkix-lts8on:[2.73.11]</include> <!-- {x-include-update;org.bouncycastle:bcpkix-lts8on;external_dependency} -->
                 <include>org.conscrypt:conscrypt-openjdk-uber:[2.5.2]</include> <!-- {x-include-update;org.conscrypt:conscrypt-openjdk-uber;external_dependency} -->
-                <include>org.apache.httpcomponents.client5:httpclient5:[5.4.3]</include> <!-- {x-include-update;org.apache.httpcomponents.client5:httpclient5;external_dependency} -->
-                <include>org.slf4j:slf4j-nop:[1.7.36]</include> <!-- {x-include-update;org.slf4j:slf4j-nop;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

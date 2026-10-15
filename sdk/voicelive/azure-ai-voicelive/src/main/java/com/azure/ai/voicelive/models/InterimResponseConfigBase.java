@@ -144,10 +144,10 @@ public class InterimResponseConfigBase implements JsonSerializable<InterimRespon
                     }
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
-                if ("llm_interim_response".equals(discriminatorValue)) {
-                    return LlmInterimResponseConfig.fromJson(readerToUse.reset());
-                } else if ("static_interim_response".equals(discriminatorValue)) {
+                if ("static_interim_response".equals(discriminatorValue)) {
                     return StaticInterimResponseConfig.fromJson(readerToUse.reset());
+                } else if ("llm_interim_response".equals(discriminatorValue)) {
+                    return LlmInterimResponseConfig.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

@@ -518,7 +518,10 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
     }
 
     /**
-     * Update a EdgeActionVersion.
+     * Updates the tags of an Edge Action version. Omitted tags are preserved, an empty tags object clears all tags, and
+     * supplied tags replace the entire tag collection. Null tags are rejected. Version properties are not changed. If
+     * deploymentType or isDefaultVersion is supplied, it must match the existing value; use swapDefault to change the
+     * default version.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.
@@ -543,7 +546,10 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
     }
 
     /**
-     * Update a EdgeActionVersion.
+     * Updates the tags of an Edge Action version. Omitted tags are preserved, an empty tags object clears all tags, and
+     * supplied tags replace the entire tag collection. Null tags are rejected. Version properties are not changed. If
+     * deploymentType or isDefaultVersion is supplied, it must match the existing value; use swapDefault to change the
+     * default version.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.
@@ -566,7 +572,10 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
     }
 
     /**
-     * Update a EdgeActionVersion.
+     * Updates the tags of an Edge Action version. Omitted tags are preserved, an empty tags object clears all tags, and
+     * supplied tags replace the entire tag collection. Null tags are rejected. Version properties are not changed. If
+     * deploymentType or isDefaultVersion is supplied, it must match the existing value; use swapDefault to change the
+     * default version.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.
@@ -590,7 +599,10 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
     }
 
     /**
-     * Update a EdgeActionVersion.
+     * Updates the tags of an Edge Action version. Omitted tags are preserved, an empty tags object clears all tags, and
+     * supplied tags replace the entire tag collection. Null tags are rejected. Version properties are not changed. If
+     * deploymentType or isDefaultVersion is supplied, it must match the existing value; use swapDefault to change the
+     * default version.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.
@@ -613,7 +625,10 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
     }
 
     /**
-     * Update a EdgeActionVersion.
+     * Updates the tags of an Edge Action version. Omitted tags are preserved, an empty tags object clears all tags, and
+     * supplied tags replace the entire tag collection. Null tags are rejected. Version properties are not changed. If
+     * deploymentType or isDefaultVersion is supplied, it must match the existing value; use swapDefault to change the
+     * default version.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.
@@ -634,7 +649,10 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
     }
 
     /**
-     * Update a EdgeActionVersion.
+     * Updates the tags of an Edge Action version. Omitted tags are preserved, an empty tags object clears all tags, and
+     * supplied tags replace the entire tag collection. Null tags are rejected. Version properties are not changed. If
+     * deploymentType or isDefaultVersion is supplied, it must match the existing value; use swapDefault to change the
+     * default version.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.
@@ -657,7 +675,10 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
     }
 
     /**
-     * Update a EdgeActionVersion.
+     * Updates the tags of an Edge Action version. Omitted tags are preserved, an empty tags object clears all tags, and
+     * supplied tags replace the entire tag collection. Null tags are rejected. Version properties are not changed. If
+     * deploymentType or isDefaultVersion is supplied, it must match the existing value; use swapDefault to change the
+     * default version.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.
@@ -677,7 +698,10 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
     }
 
     /**
-     * Update a EdgeActionVersion.
+     * Updates the tags of an Edge Action version. Omitted tags are preserved, an empty tags object clears all tags, and
+     * supplied tags replace the entire tag collection. Null tags are rejected. Version properties are not changed. If
+     * deploymentType or isDefaultVersion is supplied, it must match the existing value; use swapDefault to change the
+     * default version.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.
@@ -695,7 +719,10 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
     }
 
     /**
-     * Update a EdgeActionVersion.
+     * Updates the tags of an Edge Action version. Omitted tags are preserved, an empty tags object clears all tags, and
+     * supplied tags replace the entire tag collection. Null tags are rejected. Version properties are not changed. If
+     * deploymentType or isDefaultVersion is supplied, it must match the existing value; use swapDefault to change the
+     * default version.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.
@@ -999,7 +1026,7 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return represents an edge action version along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deployVersionCodeWithResponseAsync(String resourceGroupName,
@@ -1023,7 +1050,7 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return represents an edge action version along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deployVersionCodeWithResponse(String resourceGroupName, String edgeActionName,
@@ -1046,7 +1073,7 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return represents an edge action version along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deployVersionCodeWithResponse(String resourceGroupName, String edgeActionName,
@@ -1068,7 +1095,7 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of represents an edge action version.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<EdgeActionVersionPropertiesInner>, EdgeActionVersionPropertiesInner>
@@ -1091,7 +1118,7 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of represents an edge action version.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EdgeActionVersionPropertiesInner>, EdgeActionVersionPropertiesInner>
@@ -1112,7 +1139,7 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of represents an edge action version.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EdgeActionVersionPropertiesInner>, EdgeActionVersionPropertiesInner>
@@ -1134,7 +1161,7 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return represents an edge action version on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<EdgeActionVersionPropertiesInner> deployVersionCodeAsync(String resourceGroupName,
@@ -1153,7 +1180,7 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return represents an edge action version.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EdgeActionVersionPropertiesInner deployVersionCode(String resourceGroupName, String edgeActionName,
@@ -1172,7 +1199,7 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return represents an edge action version.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EdgeActionVersionPropertiesInner deployVersionCode(String resourceGroupName, String edgeActionName,

@@ -6,7 +6,7 @@
             <id>azure-sdk-for-java</id>
             <name>Azure Artifacts Maven Mirror</name>
             <url>https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-java/maven/v1</url>
-            <mirrorOf>external:*,!confluent,!repository.spring.milestone,!docs-public-packages</mirrorOf>
+            <mirrorOf>external:*,!docs-public-packages</mirrorOf>
         </mirror>
     </mirrors>
     <profiles>

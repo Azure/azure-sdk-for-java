@@ -9,9 +9,11 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.util.Base64Url;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.keys.models.CreateEcKeyOptions;
+import com.azure.security.keyvault.keys.models.CreateExternalKeyOptions;
 import com.azure.security.keyvault.keys.models.CreateKeyOptions;
 import com.azure.security.keyvault.keys.models.CreateOctKeyOptions;
 import com.azure.security.keyvault.keys.models.CreateRsaKeyOptions;
+import com.azure.security.keyvault.keys.models.ExternalKey;
 import com.azure.security.keyvault.keys.models.ImportKeyOptions;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
 import com.azure.security.keyvault.keys.models.KeyAttestation;
@@ -134,6 +136,39 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
                 System.out.printf("Created key with name: %s and id: %s %n", octKey.getName(),
                     octKey.getId()));
         // END: com.azure.security.keyvault.keys.KeyAsyncClient.createOctKey#CreateOctKeyOptions
+    }
+
+    /**
+     * Generates code samples for using {@link KeyAsyncClient#createExternalKey(CreateExternalKeyOptions)} and
+     * {@link KeyAsyncClient#createExternalKeyWithResponse(CreateExternalKeyOptions)}.
+     */
+    public void createExternalKey() {
+        KeyAsyncClient keyAsyncClient = createAsyncClient();
+        // BEGIN: com.azure.security.keyvault.keys.KeyAsyncClient.createExternalKey#CreateExternalKeyOptions
+        CreateExternalKeyOptions createExternalKeyOptions =
+            new CreateExternalKeyOptions("keyName", new ExternalKey("external-key-reference-id"))
+                .setNotBefore(OffsetDateTime.now().plusDays(1))
+                .setExpiresOn(OffsetDateTime.now().plusYears(1));
+
+        keyAsyncClient.createExternalKey(createExternalKeyOptions)
+            .contextWrite(Context.of("key1", "value1", "key2", "value2"))
+            .subscribe(key ->
+                System.out.printf("Created external key with name: %s and id: %s %n", key.getName(),
+                    key.getId()));
+        // END: com.azure.security.keyvault.keys.KeyAsyncClient.createExternalKey#CreateExternalKeyOptions
+
+        // BEGIN: com.azure.security.keyvault.keys.KeyAsyncClient.createExternalKeyWithResponse#CreateExternalKeyOptions
+        CreateExternalKeyOptions options =
+            new CreateExternalKeyOptions("keyName", new ExternalKey("external-key-reference-id"))
+                .setNotBefore(OffsetDateTime.now().plusDays(1))
+                .setExpiresOn(OffsetDateTime.now().plusYears(1));
+
+        keyAsyncClient.createExternalKeyWithResponse(options)
+            .contextWrite(Context.of("key1", "value1", "key2", "value2"))
+            .subscribe(response ->
+                System.out.printf("Created external key with name: %s and id: %s %n",
+                    response.getValue().getName(), response.getValue().getId()));
+        // END: com.azure.security.keyvault.keys.KeyAsyncClient.createExternalKeyWithResponse#CreateExternalKeyOptions
     }
 
     /**

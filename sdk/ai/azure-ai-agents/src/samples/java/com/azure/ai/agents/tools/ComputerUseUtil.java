@@ -219,7 +219,7 @@ public final class ComputerUseUtil {
             SearchState currentState,
             Map<String, ScreenshotInfo> screenshots) {
 
-        ResponseComputerToolCall.Action action = computerCall.action();
+        ResponseComputerToolCall.Action action = computerCall.action().get();
         String actionType = getActionType(action);
 
         System.out.printf("Executing computer action: %s%n", actionType);

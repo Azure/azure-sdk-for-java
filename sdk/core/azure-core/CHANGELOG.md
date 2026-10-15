@@ -1,6 +1,6 @@
 # Release History
 
-## 1.59.0-beta.1 (Unreleased)
+## 1.61.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,60 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.60.0 (2026-09-29)
+
+### Features Added
+
+- Added `CloseableIterableStream<T>` for resource-backed iteration with deterministic cleanup.
+
+### Bugs Fixed
+
+- Fixed retention of unused shared executors and shutdown hooks by serializing executor initialization.
+- Registering or removing the shutdown hook that closes the shared executor service no longer fails when the JVM is
+  already shutting down. `Runtime.addShutdownHook` throws `IllegalStateException` once shutdown has begun, which
+  surfaced to callers of `SharedExecutorService` as `IllegalStateException: Shutdown in progress` when work, such as
+  an in-flight request draining during shutdown, needed the executor after it had been closed. A hook registered at
+  that point could never run, so this case is now logged and the work continues.
+
+### Other Changes
+
+- Upgraded Jackson from `2.18.9` to `2.18.11`.
+
+## 1.59.1 (2026-08-27)
+
+### Bugs Fixed
+
+- Fixed synchronous streaming of non-replayable `BinaryData` response bodies.
+
+## 1.59.0 (2026-08-12)
+
+### Features Added
+
+- Added `azure-deprecating` to the default allowed (unsanitized) HTTP request and response header list so it is logged without redaction. ([#49946](https://github.com/Azure/azure-sdk-for-java/pull/49946))
+- Promoted `AccessTokenCache` to a public API in the `com.azure.core.credential` package. This class provides a thread-safe, proactively refreshing token cache that wraps a `TokenCredential`, supporting both synchronous and asynchronous token retrieval.
+
+### Bugs Fixed
+
+- Fixed a bug where retrying requests with bodies created from a mark/reset-capable `InputStream` could fail because the stream was closed between retry attempts. ([#49650](https://github.com/Azure/azure-sdk-for-java/pull/49650))
+- Fixed GraalVM native-image compilation with SLF4J 2 by no longer forcing Azure Core logging and logging provider
+  classes to initialize at image build time. ([#49844](https://github.com/Azure/azure-sdk-for-java/issues/49844))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded Jackson from `2.18.7` to `2.18.9`.
+- Upgraded Reactor from `3.7.18` to `3.7.19`.
+
+## 1.58.1 (2026-06-08)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded Jackson from `2.18.6` to `2.18.7`.
+- Upgraded Reactor from `3.7.17` to `3.7.18`.
 
 ## 1.58.0 (2026-04-28)
 

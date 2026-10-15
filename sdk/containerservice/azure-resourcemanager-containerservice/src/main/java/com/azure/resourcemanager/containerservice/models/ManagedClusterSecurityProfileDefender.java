@@ -29,6 +29,14 @@ public final class ManagedClusterSecurityProfileDefender
      */
     private ManagedClusterSecurityProfileDefenderSecurityMonitoring securityMonitoring;
 
+    /*
+     * Microsoft Defender settings for security gating. This validates container images eligibility for deployment based
+     * on Defender for Containers security findings. Using Admission Controller, it either audits or prevents deployment
+     * of images that do not meet security standards. For more information, see
+     * https://aka.ms/KubernetesDefenderAuditRule.
+     */
+    private ManagedClusterSecurityProfileDefenderSecurityGating securityGating;
+
     /**
      * Creates an instance of ManagedClusterSecurityProfileDefender class.
      */
@@ -84,6 +92,33 @@ public final class ManagedClusterSecurityProfileDefender
     }
 
     /**
+     * Get the securityGating property: Microsoft Defender settings for security gating. This validates container images
+     * eligibility for deployment based on Defender for Containers security findings. Using Admission Controller, it
+     * either audits or prevents deployment of images that do not meet security standards. For more information, see
+     * https://aka.ms/KubernetesDefenderAuditRule.
+     * 
+     * @return the securityGating value.
+     */
+    public ManagedClusterSecurityProfileDefenderSecurityGating securityGating() {
+        return this.securityGating;
+    }
+
+    /**
+     * Set the securityGating property: Microsoft Defender settings for security gating. This validates container images
+     * eligibility for deployment based on Defender for Containers security findings. Using Admission Controller, it
+     * either audits or prevents deployment of images that do not meet security standards. For more information, see
+     * https://aka.ms/KubernetesDefenderAuditRule.
+     * 
+     * @param securityGating the securityGating value to set.
+     * @return the ManagedClusterSecurityProfileDefender object itself.
+     */
+    public ManagedClusterSecurityProfileDefender
+        withSecurityGating(ManagedClusterSecurityProfileDefenderSecurityGating securityGating) {
+        this.securityGating = securityGating;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -91,6 +126,9 @@ public final class ManagedClusterSecurityProfileDefender
     public void validate() {
         if (securityMonitoring() != null) {
             securityMonitoring().validate();
+        }
+        if (securityGating() != null) {
+            securityGating().validate();
         }
     }
 
@@ -102,6 +140,7 @@ public final class ManagedClusterSecurityProfileDefender
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("logAnalyticsWorkspaceResourceId", this.logAnalyticsWorkspaceResourceId);
         jsonWriter.writeJsonField("securityMonitoring", this.securityMonitoring);
+        jsonWriter.writeJsonField("securityGating", this.securityGating);
         return jsonWriter.writeEndObject();
     }
 
@@ -127,6 +166,9 @@ public final class ManagedClusterSecurityProfileDefender
                 } else if ("securityMonitoring".equals(fieldName)) {
                     deserializedManagedClusterSecurityProfileDefender.securityMonitoring
                         = ManagedClusterSecurityProfileDefenderSecurityMonitoring.fromJson(reader);
+                } else if ("securityGating".equals(fieldName)) {
+                    deserializedManagedClusterSecurityProfileDefender.securityGating
+                        = ManagedClusterSecurityProfileDefenderSecurityGating.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

@@ -8,7 +8,6 @@ import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.ReadConsistencyStrategy;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
-import com.azure.cosmos.util.Beta;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -72,7 +71,6 @@ public final class CosmosRequestOptions {
      * @param readConsistencyStrategy the read consistency strategy.
      * @return current CosmosRequestOptions.
      */
-    @Beta(value = Beta.SinceVersion.V4_69_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosRequestOptions setReadConsistencyStrategy(ReadConsistencyStrategy readConsistencyStrategy) {
         this.readConsistencyStrategy = readConsistencyStrategy;
         return this;
@@ -433,7 +431,6 @@ public final class CosmosRequestOptions {
      *
      * @return the read consistency strategy.
      */
-    @Beta(value = Beta.SinceVersion.V4_69_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ReadConsistencyStrategy getReadConsistencyStrategy() {
         return this.readConsistencyStrategy;
     }

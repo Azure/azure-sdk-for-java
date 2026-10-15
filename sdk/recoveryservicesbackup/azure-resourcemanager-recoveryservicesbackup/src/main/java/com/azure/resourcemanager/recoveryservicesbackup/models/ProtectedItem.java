@@ -111,6 +111,11 @@ public class ProtectedItem implements JsonSerializable<ProtectedItem> {
     private Integer softDeleteRetentionPeriodInDays;
 
     /*
+     * Source location of the protected item datasource.
+     */
+    private String sourceLocation;
+
+    /*
      * ID of the vault which protects this item
      */
     private String vaultId;
@@ -486,6 +491,26 @@ public class ProtectedItem implements JsonSerializable<ProtectedItem> {
     }
 
     /**
+     * Get the sourceLocation property: Source location of the protected item datasource.
+     * 
+     * @return the sourceLocation value.
+     */
+    public String sourceLocation() {
+        return this.sourceLocation;
+    }
+
+    /**
+     * Set the sourceLocation property: Source location of the protected item datasource.
+     * 
+     * @param sourceLocation the sourceLocation value to set.
+     * @return the ProtectedItem object itself.
+     */
+    ProtectedItem withSourceLocation(String sourceLocation) {
+        this.sourceLocation = sourceLocation;
+        return this;
+    }
+
+    /**
      * Get the vaultId property: ID of the vault which protects this item.
      * 
      * @return the vaultId value.
@@ -602,8 +627,6 @@ public class ProtectedItem implements JsonSerializable<ProtectedItem> {
                     return AzureVmWorkloadSapHanaDBInstanceProtectedItem.fromJson(readerToUse.reset());
                 } else if ("AzureVmWorkloadSQLDatabase".equals(discriminatorValue)) {
                     return AzureVmWorkloadSqlDatabaseProtectedItem.fromJson(readerToUse.reset());
-                } else if ("AzureVmWorkloadSQLInstance".equals(discriminatorValue)) {
-                    return AzureVmWorkloadSQLInstanceProtectedItem.fromJson(readerToUse.reset());
                 } else if ("DPMProtectedItem".equals(discriminatorValue)) {
                     return DpmProtectedItem.fromJson(readerToUse.reset());
                 } else if ("GenericProtectedItem".equals(discriminatorValue)) {
@@ -665,6 +688,8 @@ public class ProtectedItem implements JsonSerializable<ProtectedItem> {
                     deserializedProtectedItem.policyName = reader.getString();
                 } else if ("softDeleteRetentionPeriodInDays".equals(fieldName)) {
                     deserializedProtectedItem.softDeleteRetentionPeriodInDays = reader.getNullable(JsonReader::getInt);
+                } else if ("sourceLocation".equals(fieldName)) {
+                    deserializedProtectedItem.sourceLocation = reader.getString();
                 } else if ("vaultId".equals(fieldName)) {
                     deserializedProtectedItem.vaultId = reader.getString();
                 } else if ("sourceSideScanInfo".equals(fieldName)) {

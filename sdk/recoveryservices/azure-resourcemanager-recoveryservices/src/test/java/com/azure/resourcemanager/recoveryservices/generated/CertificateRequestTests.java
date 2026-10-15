@@ -14,15 +14,15 @@ public final class CertificateRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CertificateRequest model
-            = BinaryData.fromString("{\"properties\":{\"authType\":\"AAD\"}}").toObject(CertificateRequest.class);
-        Assertions.assertEquals(AuthType.AAD, model.properties().authType());
+            = BinaryData.fromString("{\"properties\":{\"authType\":\"Invalid\"}}").toObject(CertificateRequest.class);
+        Assertions.assertEquals(AuthType.INVALID, model.properties().authType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CertificateRequest model
-            = new CertificateRequest().withProperties(new RawCertificateData().withAuthType(AuthType.AAD));
+            = new CertificateRequest().withProperties(new RawCertificateData().withAuthType(AuthType.INVALID));
         model = BinaryData.fromObject(model).toObject(CertificateRequest.class);
-        Assertions.assertEquals(AuthType.AAD, model.properties().authType());
+        Assertions.assertEquals(AuthType.INVALID, model.properties().authType());
     }
 }

@@ -15,19 +15,20 @@ public final class BackupsLongTermRetentionRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BackupsLongTermRetentionRequest model = BinaryData.fromString(
-            "{\"targetDetails\":{\"sasUriList\":[\"mozuxylfsb\",\"kadpysown\"]},\"backupSettings\":{\"backupName\":\"tgkbugrjqctojc\"}}")
+            "{\"targetDetails\":{\"sasUriList\":[\"dmxzr\",\"oaimlnw\",\"aaomylweazu\"]},\"backupSettings\":{\"backupName\":\"cse\"}}")
             .toObject(BackupsLongTermRetentionRequest.class);
-        Assertions.assertEquals("tgkbugrjqctojc", model.backupSettings().backupName());
-        Assertions.assertEquals("mozuxylfsb", model.targetDetails().sasUriList().get(0));
+        Assertions.assertEquals("cse", model.backupSettings().backupName());
+        Assertions.assertEquals("dmxzr", model.targetDetails().sasUriList().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BackupsLongTermRetentionRequest model = new BackupsLongTermRetentionRequest()
-            .withBackupSettings(new BackupSettings().withBackupName("tgkbugrjqctojc"))
-            .withTargetDetails(new BackupStoreDetails().withSasUriList(Arrays.asList("mozuxylfsb", "kadpysown")));
+        BackupsLongTermRetentionRequest model
+            = new BackupsLongTermRetentionRequest().withBackupSettings(new BackupSettings().withBackupName("cse"))
+                .withTargetDetails(
+                    new BackupStoreDetails().withSasUriList(Arrays.asList("dmxzr", "oaimlnw", "aaomylweazu")));
         model = BinaryData.fromObject(model).toObject(BackupsLongTermRetentionRequest.class);
-        Assertions.assertEquals("tgkbugrjqctojc", model.backupSettings().backupName());
-        Assertions.assertEquals("mozuxylfsb", model.targetDetails().sasUriList().get(0));
+        Assertions.assertEquals("cse", model.backupSettings().backupName());
+        Assertions.assertEquals("dmxzr", model.targetDetails().sasUriList().get(0));
     }
 }

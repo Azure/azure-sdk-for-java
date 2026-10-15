@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class CassandraClustersInvokeCommandSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/CosmosDBManagedCassandraCommand.json
+     * x-ms-original-file: 2026-04-01-preview/CosmosDBManagedCassandraCommand.json
      */
     /**
      * Sample code: CosmosDBManagedCassandraCommand.

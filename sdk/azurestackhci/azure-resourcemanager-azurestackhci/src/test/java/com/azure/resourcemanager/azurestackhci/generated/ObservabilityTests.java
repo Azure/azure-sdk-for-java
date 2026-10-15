@@ -12,9 +12,9 @@ public final class ObservabilityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Observability model
-            = BinaryData.fromString("{\"streamingDataClient\":true,\"euLocation\":false,\"episodicDataUpload\":false}")
+            = BinaryData.fromString("{\"streamingDataClient\":false,\"euLocation\":false,\"episodicDataUpload\":false}")
                 .toObject(Observability.class);
-        Assertions.assertTrue(model.streamingDataClient());
+        Assertions.assertFalse(model.streamingDataClient());
         Assertions.assertFalse(model.euLocation());
         Assertions.assertFalse(model.episodicDataUpload());
     }
@@ -22,9 +22,9 @@ public final class ObservabilityTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         Observability model
-            = new Observability().withStreamingDataClient(true).withEuLocation(false).withEpisodicDataUpload(false);
+            = new Observability().withStreamingDataClient(false).withEuLocation(false).withEpisodicDataUpload(false);
         model = BinaryData.fromObject(model).toObject(Observability.class);
-        Assertions.assertTrue(model.streamingDataClient());
+        Assertions.assertFalse(model.streamingDataClient());
         Assertions.assertFalse(model.euLocation());
         Assertions.assertFalse(model.episodicDataUpload());
     }

@@ -24,36 +24,6 @@ public final class TranslationText implements JsonSerializable<TranslationText> 
     private final String language;
 
     /*
-     * An integer indicating the number of characters in the source text string
-     */
-    @Generated
-    private Integer sourceCharacters;
-
-    /*
-     * An integer indicating the number of tokens used in generating the translated text
-     */
-    @Generated
-    private Integer instructionTokens;
-
-    /*
-     * An integer indicating the number of tokens used in the source sentence
-     */
-    @Generated
-    private Integer sourceTokens;
-
-    /*
-     * An integer indicating the number of tokens used in the translation response
-     */
-    @Generated
-    private Integer responseTokens;
-
-    /*
-     * An integer indicating the number of tokens used in the target sentence
-     */
-    @Generated
-    private Integer targetTokens;
-
-    /*
      * A string giving the translated text.
      */
     @Generated
@@ -82,57 +52,6 @@ public final class TranslationText implements JsonSerializable<TranslationText> 
     }
 
     /**
-     * Get the sourceCharacters property: An integer indicating the number of characters in the source text string.
-     *
-     * @return the sourceCharacters value.
-     */
-    @Generated
-    public Integer getSourceCharacters() {
-        return this.sourceCharacters;
-    }
-
-    /**
-     * Get the instructionTokens property: An integer indicating the number of tokens used in generating the translated
-     * text.
-     *
-     * @return the instructionTokens value.
-     */
-    @Generated
-    public Integer getInstructionTokens() {
-        return this.instructionTokens;
-    }
-
-    /**
-     * Get the sourceTokens property: An integer indicating the number of tokens used in the source sentence.
-     *
-     * @return the sourceTokens value.
-     */
-    @Generated
-    public Integer getSourceTokens() {
-        return this.sourceTokens;
-    }
-
-    /**
-     * Get the responseTokens property: An integer indicating the number of tokens used in the translation response.
-     *
-     * @return the responseTokens value.
-     */
-    @Generated
-    public Integer getResponseTokens() {
-        return this.responseTokens;
-    }
-
-    /**
-     * Get the targetTokens property: An integer indicating the number of tokens used in the target sentence.
-     *
-     * @return the targetTokens value.
-     */
-    @Generated
-    public Integer getTargetTokens() {
-        return this.targetTokens;
-    }
-
-    /**
      * Get the text property: A string giving the translated text.
      *
      * @return the text value.
@@ -151,11 +70,11 @@ public final class TranslationText implements JsonSerializable<TranslationText> 
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("language", this.language);
         jsonWriter.writeStringField("text", this.text);
-        jsonWriter.writeNumberField("sourceCharacters", this.sourceCharacters);
-        jsonWriter.writeNumberField("instructionTokens", this.instructionTokens);
-        jsonWriter.writeNumberField("sourceTokens", this.sourceTokens);
-        jsonWriter.writeNumberField("responseTokens", this.responseTokens);
-        jsonWriter.writeNumberField("targetTokens", this.targetTokens);
+        jsonWriter.writeNumberField("sourceCharacters", this.sourceCharacterCount);
+        jsonWriter.writeNumberField("instructionTokens", this.instructionTokenCount);
+        jsonWriter.writeNumberField("sourceTokens", this.sourceTokenCount);
+        jsonWriter.writeNumberField("responseTokens", this.responseTokenCount);
+        jsonWriter.writeNumberField("targetTokens", this.targetTokenCount);
         return jsonWriter.writeEndObject();
     }
 
@@ -173,11 +92,11 @@ public final class TranslationText implements JsonSerializable<TranslationText> 
         return jsonReader.readObject(reader -> {
             String language = null;
             String text = null;
-            Integer sourceCharacters = null;
-            Integer instructionTokens = null;
-            Integer sourceTokens = null;
-            Integer responseTokens = null;
-            Integer targetTokens = null;
+            Integer sourceCharacterCount = null;
+            Integer instructionTokenCount = null;
+            Integer sourceTokenCount = null;
+            Integer responseTokenCount = null;
+            Integer targetTokenCount = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -186,26 +105,107 @@ public final class TranslationText implements JsonSerializable<TranslationText> 
                 } else if ("text".equals(fieldName)) {
                     text = reader.getString();
                 } else if ("sourceCharacters".equals(fieldName)) {
-                    sourceCharacters = reader.getNullable(JsonReader::getInt);
+                    sourceCharacterCount = reader.getNullable(JsonReader::getInt);
                 } else if ("instructionTokens".equals(fieldName)) {
-                    instructionTokens = reader.getNullable(JsonReader::getInt);
+                    instructionTokenCount = reader.getNullable(JsonReader::getInt);
                 } else if ("sourceTokens".equals(fieldName)) {
-                    sourceTokens = reader.getNullable(JsonReader::getInt);
+                    sourceTokenCount = reader.getNullable(JsonReader::getInt);
                 } else if ("responseTokens".equals(fieldName)) {
-                    responseTokens = reader.getNullable(JsonReader::getInt);
+                    responseTokenCount = reader.getNullable(JsonReader::getInt);
                 } else if ("targetTokens".equals(fieldName)) {
-                    targetTokens = reader.getNullable(JsonReader::getInt);
+                    targetTokenCount = reader.getNullable(JsonReader::getInt);
                 } else {
                     reader.skipChildren();
                 }
             }
             TranslationText deserializedTranslationText = new TranslationText(language, text);
-            deserializedTranslationText.sourceCharacters = sourceCharacters;
-            deserializedTranslationText.instructionTokens = instructionTokens;
-            deserializedTranslationText.sourceTokens = sourceTokens;
-            deserializedTranslationText.responseTokens = responseTokens;
-            deserializedTranslationText.targetTokens = targetTokens;
+            deserializedTranslationText.sourceCharacterCount = sourceCharacterCount;
+            deserializedTranslationText.instructionTokenCount = instructionTokenCount;
+            deserializedTranslationText.sourceTokenCount = sourceTokenCount;
+            deserializedTranslationText.responseTokenCount = responseTokenCount;
+            deserializedTranslationText.targetTokenCount = targetTokenCount;
             return deserializedTranslationText;
         });
+    }
+
+    /*
+     * An integer indicating the number of characters in the source text string
+     */
+    @Generated
+    private Integer sourceCharacterCount;
+
+    /*
+     * An integer indicating the number of tokens used in generating the translated text
+     */
+    @Generated
+    private Integer instructionTokenCount;
+
+    /*
+     * An integer indicating the number of tokens used in the source sentence
+     */
+    @Generated
+    private Integer sourceTokenCount;
+
+    /*
+     * An integer indicating the number of tokens used in the translation response
+     */
+    @Generated
+    private Integer responseTokenCount;
+
+    /*
+     * An integer indicating the number of tokens used in the target sentence
+     */
+    @Generated
+    private Integer targetTokenCount;
+
+    /**
+     * Get the sourceCharacterCount property: An integer indicating the number of characters in the source text string.
+     *
+     * @return the sourceCharacterCount value.
+     */
+    @Generated
+    public Integer getSourceCharacterCount() {
+        return this.sourceCharacterCount;
+    }
+
+    /**
+     * Get the instructionTokenCount property: An integer indicating the number of tokens used in generating the
+     * translated text.
+     *
+     * @return the instructionTokenCount value.
+     */
+    @Generated
+    public Integer getInstructionTokenCount() {
+        return this.instructionTokenCount;
+    }
+
+    /**
+     * Get the sourceTokenCount property: An integer indicating the number of tokens used in the source sentence.
+     *
+     * @return the sourceTokenCount value.
+     */
+    @Generated
+    public Integer getSourceTokenCount() {
+        return this.sourceTokenCount;
+    }
+
+    /**
+     * Get the responseTokenCount property: An integer indicating the number of tokens used in the translation response.
+     *
+     * @return the responseTokenCount value.
+     */
+    @Generated
+    public Integer getResponseTokenCount() {
+        return this.responseTokenCount;
+    }
+
+    /**
+     * Get the targetTokenCount property: An integer indicating the number of tokens used in the target sentence.
+     *
+     * @return the targetTokenCount value.
+     */
+    @Generated
+    public Integer getTargetTokenCount() {
+        return this.targetTokenCount;
     }
 }

@@ -10,8 +10,6 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.resourcemanager.monitor.fluent.AlertRuleManagementClient;
 import com.azure.resourcemanager.monitor.fluent.AlertRulesClient;
-import com.azure.resourcemanager.monitor.fluent.DiagnosticSettingsCategoriesClient;
-import com.azure.resourcemanager.monitor.fluent.DiagnosticSettingsOperationsClient;
 import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
 import java.time.Duration;
 
@@ -105,34 +103,6 @@ public final class AlertRuleManagementClientImpl extends AzureServiceClient impl
     }
 
     /**
-     * The DiagnosticSettingsOperationsClient object to access its operations.
-     */
-    private final DiagnosticSettingsOperationsClient diagnosticSettingsOperations;
-
-    /**
-     * Gets the DiagnosticSettingsOperationsClient object to access its operations.
-     * 
-     * @return the DiagnosticSettingsOperationsClient object.
-     */
-    public DiagnosticSettingsOperationsClient getDiagnosticSettingsOperations() {
-        return this.diagnosticSettingsOperations;
-    }
-
-    /**
-     * The DiagnosticSettingsCategoriesClient object to access its operations.
-     */
-    private final DiagnosticSettingsCategoriesClient diagnosticSettingsCategories;
-
-    /**
-     * Gets the DiagnosticSettingsCategoriesClient object to access its operations.
-     * 
-     * @return the DiagnosticSettingsCategoriesClient object.
-     */
-    public DiagnosticSettingsCategoriesClient getDiagnosticSettingsCategories() {
-        return this.diagnosticSettingsCategories;
-    }
-
-    /**
      * Initializes an instance of AlertRuleManagementClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
@@ -151,7 +121,5 @@ public final class AlertRuleManagementClientImpl extends AzureServiceClient impl
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
         this.alertRules = new AlertRulesClientImpl(this);
-        this.diagnosticSettingsOperations = new DiagnosticSettingsOperationsClientImpl(this);
-        this.diagnosticSettingsCategories = new DiagnosticSettingsCategoriesClientImpl(this);
     }
 }

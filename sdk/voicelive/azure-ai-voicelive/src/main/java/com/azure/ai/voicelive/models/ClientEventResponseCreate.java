@@ -25,7 +25,7 @@ import java.io.IOException;
  * configuration for this Response only.
  */
 @Fluent
-public final class ClientEventResponseCreate extends ClientEvent {
+public final class ClientEventResponseCreate extends SessionClientEvent {
 
     /*
      * The type of event.

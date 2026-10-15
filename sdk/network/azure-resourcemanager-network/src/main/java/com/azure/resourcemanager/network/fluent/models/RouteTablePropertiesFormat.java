@@ -9,6 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.network.models.DisablePeeringRoute;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import java.io.IOException;
 import java.util.List;
@@ -32,6 +33,12 @@ public final class RouteTablePropertiesFormat implements JsonSerializable<RouteT
      * Whether to disable the routes learned by BGP on that route table. True means disable.
      */
     private Boolean disableBgpRoutePropagation;
+
+    /*
+     * Whether to disable the routes learned by peering on the route table. 'None' means peering routes are enabled,
+     * 'All' means all peering routes are disabled.
+     */
+    private DisablePeeringRoute disablePeeringRoute;
 
     /*
      * The provisioning state of the route table resource.
@@ -101,6 +108,28 @@ public final class RouteTablePropertiesFormat implements JsonSerializable<RouteT
     }
 
     /**
+     * Get the disablePeeringRoute property: Whether to disable the routes learned by peering on the route table. 'None'
+     * means peering routes are enabled, 'All' means all peering routes are disabled.
+     * 
+     * @return the disablePeeringRoute value.
+     */
+    public DisablePeeringRoute disablePeeringRoute() {
+        return this.disablePeeringRoute;
+    }
+
+    /**
+     * Set the disablePeeringRoute property: Whether to disable the routes learned by peering on the route table. 'None'
+     * means peering routes are enabled, 'All' means all peering routes are disabled.
+     * 
+     * @param disablePeeringRoute the disablePeeringRoute value to set.
+     * @return the RouteTablePropertiesFormat object itself.
+     */
+    public RouteTablePropertiesFormat withDisablePeeringRoute(DisablePeeringRoute disablePeeringRoute) {
+        this.disablePeeringRoute = disablePeeringRoute;
+        return this;
+    }
+
+    /**
      * Get the provisioningState property: The provisioning state of the route table resource.
      * 
      * @return the provisioningState value.
@@ -140,6 +169,8 @@ public final class RouteTablePropertiesFormat implements JsonSerializable<RouteT
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("routes", this.routes, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeBooleanField("disableBgpRoutePropagation", this.disableBgpRoutePropagation);
+        jsonWriter.writeStringField("disablePeeringRoute",
+            this.disablePeeringRoute == null ? null : this.disablePeeringRoute.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -167,6 +198,9 @@ public final class RouteTablePropertiesFormat implements JsonSerializable<RouteT
                 } else if ("disableBgpRoutePropagation".equals(fieldName)) {
                     deserializedRouteTablePropertiesFormat.disableBgpRoutePropagation
                         = reader.getNullable(JsonReader::getBoolean);
+                } else if ("disablePeeringRoute".equals(fieldName)) {
+                    deserializedRouteTablePropertiesFormat.disablePeeringRoute
+                        = DisablePeeringRoute.fromString(reader.getString());
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedRouteTablePropertiesFormat.provisioningState
                         = ProvisioningState.fromString(reader.getString());

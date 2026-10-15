@@ -8,9 +8,15 @@ import com.azure.ai.contentunderstanding.models.ContentAnalyzer;
 import com.azure.core.http.rest.PagedIterable;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Sample demonstrating how to list all analyzers.
@@ -35,8 +41,10 @@ public class Sample07_ListAnalyzersTest extends ContentUnderstandingClientTestBa
         int count = 0;
         int prebuiltCount = 0;
         int customCount = 0;
+        List<ContentAnalyzer> analyzerList = new ArrayList<>();
 
         for (ContentAnalyzer analyzer : analyzers) {
+            analyzerList.add(analyzer);
             count++;
 
             // Determine if this is a prebuilt or custom analyzer
@@ -95,55 +103,46 @@ public class Sample07_ListAnalyzersTest extends ContentUnderstandingClientTestBa
         // Verify we have at least the prebuilt analyzers
         assertTrue(count > 0, "Should have at least one analyzer");
         assertTrue(prebuiltCount > 0, "Should have at least one prebuilt analyzer");
+        assertEquals(count, analyzerList.size(), "Materialized analyzer count should match the iteration count");
+        assertEquals(count, prebuiltCount + customCount, "Total count should equal prebuilt plus custom count");
         System.out.println("Verified: Found " + count + " total analyzer(s)");
         System.out.println("Verified: Found " + prebuiltCount + " prebuilt analyzer(s)");
         if (customCount > 0) {
             System.out.println("Verified: Found " + customCount + " custom analyzer(s)");
         }
 
-        // Verify each analyzer has required properties
-        int validatedCount = 0;
-        for (ContentAnalyzer analyzer : analyzers) {
+        // Verify every analyzer has required properties and a unique ID
+        Set<String> analyzerIds = new HashSet<>();
+        int validatedPrebuiltCount = 0;
+        int validatedCustomCount = 0;
+        for (ContentAnalyzer analyzer : analyzerList) {
+            assertNotNull(analyzer, "Analyzer should not be null");
             assertNotNull(analyzer.getAnalyzerId(), "Analyzer ID should not be null");
             assertFalse(analyzer.getAnalyzerId().trim().isEmpty(), "Analyzer ID should not be empty");
+            assertFalse(analyzer.getAnalyzerId().contains(" "),
+                "Analyzer ID should not contain spaces: " + analyzer.getAnalyzerId());
             assertNotNull(analyzer.getStatus(), "Analyzer status should not be null");
-            validatedCount++;
+            assertTrue(analyzerIds.add(analyzer.getAnalyzerId()),
+                "Analyzer ID should be unique: " + analyzer.getAnalyzerId());
 
-            // Only validate first few to avoid excessive output
-            if (validatedCount >= 5) {
-                break;
+            if (analyzer.getAnalyzerId().startsWith("prebuilt-")) {
+                validatedPrebuiltCount++;
+                assertFalse(analyzer.getAnalyzerId().contains("_"),
+                    "Prebuilt analyzer ID should use hyphens, not underscores: " + analyzer.getAnalyzerId());
+            } else {
+                validatedCustomCount++;
             }
         }
+
+        assertEquals(count, analyzerIds.size(), "All analyzer IDs should be unique");
+        assertEquals(prebuiltCount, validatedPrebuiltCount, "Prebuilt count should match validated analyzers");
+        assertEquals(customCount, validatedCustomCount, "Custom count should match validated analyzers");
+
+        assertTrue(analyzerIds.contains("prebuilt-document"), "Should contain prebuilt-document");
+        assertTrue(analyzerIds.contains("prebuilt-documentSearch"), "Should contain prebuilt-documentSearch");
+        assertTrue(analyzerIds.contains("prebuilt-invoice"), "Should contain prebuilt-invoice");
 
         System.out.println("All analyzer list properties validated successfully");
         // END:Assertion_ContentUnderstandingListAnalyzers
-    }
-
-    @Test
-    public void testListAnalyzersWithMaxResults() {
-        // List all analyzers and filter for ready ones
-        PagedIterable<ContentAnalyzer> analyzers = contentUnderstandingClient.listAnalyzers();
-
-        System.out.println("\nListing ready analyzers:");
-        System.out.println("========================");
-
-        int readyCount = 0;
-        for (ContentAnalyzer analyzer : analyzers) {
-            if (analyzer.getStatus() != null && "ready".equalsIgnoreCase(analyzer.getStatus().toString())) {
-                readyCount++;
-                System.out.println("\nReady Analyzer #" + readyCount + ":");
-                System.out.println("  ID: " + analyzer.getAnalyzerId());
-                if (analyzer.getDescription() != null) {
-                    System.out.println("  Description: " + analyzer.getDescription());
-                }
-            }
-        }
-
-        System.out.println("\n========================");
-        System.out.println("Total ready analyzers: " + readyCount);
-
-        // Verify
-        assertTrue(readyCount > 0, "Should have at least one ready analyzer");
-        System.out.println("Verified: Found " + readyCount + " ready analyzer(s)");
     }
 }

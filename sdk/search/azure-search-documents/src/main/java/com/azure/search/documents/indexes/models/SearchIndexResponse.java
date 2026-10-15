@@ -326,6 +326,9 @@ public final class SearchIndexResponse implements JsonSerializable<SearchIndexRe
         jsonWriter.writeJsonField("similarity", this.similarity);
         jsonWriter.writeJsonField("semantic", this.semanticSearch);
         jsonWriter.writeJsonField("vectorSearch", this.vectorSearch);
+        jsonWriter.writeStringField("permissionFilterOption",
+            this.permissionFilterOption == null ? null : this.permissionFilterOption.toString());
+        jsonWriter.writeBooleanField("purviewEnabled", this.purviewEnabled);
         jsonWriter.writeStringField("@odata.etag", this.eTag);
         return jsonWriter.writeEndObject();
     }
@@ -358,6 +361,8 @@ public final class SearchIndexResponse implements JsonSerializable<SearchIndexRe
             SimilarityAlgorithm similarity = null;
             SemanticSearch semanticSearch = null;
             VectorSearch vectorSearch = null;
+            SearchIndexPermissionFilterOption permissionFilterOption = null;
+            Boolean purviewEnabled = null;
             String eTag = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -394,6 +399,10 @@ public final class SearchIndexResponse implements JsonSerializable<SearchIndexRe
                     semanticSearch = SemanticSearch.fromJson(reader);
                 } else if ("vectorSearch".equals(fieldName)) {
                     vectorSearch = VectorSearch.fromJson(reader);
+                } else if ("permissionFilterOption".equals(fieldName)) {
+                    permissionFilterOption = SearchIndexPermissionFilterOption.fromString(reader.getString());
+                } else if ("purviewEnabled".equals(fieldName)) {
+                    purviewEnabled = reader.getNullable(JsonReader::getBoolean);
                 } else if ("@odata.etag".equals(fieldName)) {
                     eTag = reader.getString();
                 } else {
@@ -416,6 +425,8 @@ public final class SearchIndexResponse implements JsonSerializable<SearchIndexRe
             deserializedSearchIndexResponse.similarity = similarity;
             deserializedSearchIndexResponse.semanticSearch = semanticSearch;
             deserializedSearchIndexResponse.vectorSearch = vectorSearch;
+            deserializedSearchIndexResponse.permissionFilterOption = permissionFilterOption;
+            deserializedSearchIndexResponse.purviewEnabled = purviewEnabled;
             deserializedSearchIndexResponse.eTag = eTag;
             return deserializedSearchIndexResponse;
         });
@@ -435,5 +446,38 @@ public final class SearchIndexResponse implements JsonSerializable<SearchIndexRe
     @Generated
     public SemanticSearch getSemanticSearch() {
         return this.semanticSearch;
+    }
+
+    /*
+     * A value indicating whether permission filtering is enabled for the index.
+     */
+    @Generated
+    private SearchIndexPermissionFilterOption permissionFilterOption;
+
+    /*
+     * A value indicating whether Purview is enabled for the index.
+     */
+    @Generated
+    private Boolean purviewEnabled;
+
+    /**
+     * Get the permissionFilterOption property: A value indicating whether permission filtering is enabled for the
+     * index.
+     *
+     * @return the permissionFilterOption value.
+     */
+    @Generated
+    public SearchIndexPermissionFilterOption getPermissionFilterOption() {
+        return this.permissionFilterOption;
+    }
+
+    /**
+     * Get the purviewEnabled property: A value indicating whether Purview is enabled for the index.
+     *
+     * @return the purviewEnabled value.
+     */
+    @Generated
+    public Boolean isPurviewEnabled() {
+        return this.purviewEnabled;
     }
 }

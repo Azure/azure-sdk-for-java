@@ -107,6 +107,7 @@ The cryptography client performs the cryptographic operations locally or calls t
 ### Sync API
 The following sections provide several code snippets covering some of the most common Azure Key Vault Key service tasks, including:
 - [Create a key](#create-a-key)
+- [Create an external key](#create-an-external-key)
 - [Retrieve a key](#retrieve-a-key)
 - [Update an existing key](#update-an-existing-key)
 - [Delete a key](#delete-a-key)
@@ -128,6 +129,18 @@ KeyVaultKey ecKey = keyClient.createEcKey(new CreateEcKeyOptions("CloudEcKey")
     .setCurveName(KeyCurveName.P_256)
     .setExpiresOn(OffsetDateTime.now().plusYears(1)));
 System.out.printf("Key created with name \"%s\" and id %s%n", ecKey.getName(), ecKey.getId());
+```
+
+#### Create an external key
+Register an external key with a Managed HSM. An external key references key material that is owned by an external Hardware Security Module (HSM); the Managed HSM stores only a reference to that material.
+- `createExternalKey` registers the external key in the Managed HSM. This is only supported on a Managed HSM configured to use External Key Management (EKM).
+
+```java readme-sample-createExternalKey
+// External keys are only supported on a Managed HSM configured to use External Key Management (EKM).
+KeyVaultKey externalKey = keyClient.createExternalKey(
+    new CreateExternalKeyOptions("CloudExternalKey", new ExternalKey("external-key-reference-id"))
+        .setExpiresOn(OffsetDateTime.now().plusYears(1)));
+System.out.printf("Key created with name \"%s\" and id %s%n", externalKey.getName(), externalKey.getId());
 ```
 
 #### Retrieve a key

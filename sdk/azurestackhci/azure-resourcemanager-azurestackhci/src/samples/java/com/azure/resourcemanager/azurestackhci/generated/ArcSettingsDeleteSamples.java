@@ -9,7 +9,7 @@ package com.azure.resourcemanager.azurestackhci.generated;
  */
 public final class ArcSettingsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-04-01-preview/DeleteArcSetting.json
+     * x-ms-original-file: 2026-04-30/DeleteArcSetting.json
      */
     /**
      * Sample code: Delete ArcSetting.

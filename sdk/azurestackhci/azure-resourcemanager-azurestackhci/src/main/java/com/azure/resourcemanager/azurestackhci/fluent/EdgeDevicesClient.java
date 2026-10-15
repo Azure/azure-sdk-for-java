@@ -193,7 +193,7 @@ public interface EdgeDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of an Accepted response with an Operation-Location header.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ValidateResponseInner>, ValidateResponseInner> beginValidate(String resourceUri,
@@ -209,7 +209,7 @@ public interface EdgeDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of an Accepted response with an Operation-Location header.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ValidateResponseInner>, ValidateResponseInner> beginValidate(String resourceUri,
@@ -224,7 +224,7 @@ public interface EdgeDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return an Accepted response with an Operation-Location header.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ValidateResponseInner validate(String resourceUri, String edgeDeviceName, ValidateRequest validateRequest);
@@ -239,7 +239,7 @@ public interface EdgeDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return an Accepted response with an Operation-Location header.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ValidateResponseInner validate(String resourceUri, String edgeDeviceName, ValidateRequest validateRequest,

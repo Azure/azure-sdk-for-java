@@ -10,7 +10,6 @@ import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.msi.models.AssignmentRestrictions;
 import com.azure.resourcemanager.msi.models.IsolationScope;
 import java.io.IOException;
 import java.util.Map;
@@ -166,31 +165,6 @@ public final class IdentityInner extends Resource {
             this.innerProperties = new UserAssignedIdentityProperties();
         }
         this.innerProperties().withIsolationScope(isolationScope);
-        return this;
-    }
-
-    /**
-     * Get the assignmentRestrictions property: Restrictions on which resource providers this identity can be assigned
-     * to.
-     * 
-     * @return the assignmentRestrictions value.
-     */
-    public AssignmentRestrictions assignmentRestrictions() {
-        return this.innerProperties() == null ? null : this.innerProperties().assignmentRestrictions();
-    }
-
-    /**
-     * Set the assignmentRestrictions property: Restrictions on which resource providers this identity can be assigned
-     * to.
-     * 
-     * @param assignmentRestrictions the assignmentRestrictions value to set.
-     * @return the IdentityInner object itself.
-     */
-    public IdentityInner withAssignmentRestrictions(AssignmentRestrictions assignmentRestrictions) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new UserAssignedIdentityProperties();
-        }
-        this.innerProperties().withAssignmentRestrictions(assignmentRestrictions);
         return this;
     }
 

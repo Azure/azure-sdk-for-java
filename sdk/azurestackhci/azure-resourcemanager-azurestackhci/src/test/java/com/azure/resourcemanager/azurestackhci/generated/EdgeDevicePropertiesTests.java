@@ -15,55 +15,70 @@ public final class EdgeDevicePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EdgeDeviceProperties model = BinaryData.fromString(
-            "{\"deviceConfiguration\":{\"nicDetails\":[{\"adapterName\":\"tgrdogypx\",\"interfaceDescription\":\"vbfihwuhvctafsr\",\"componentId\":\"rblmli\",\"driverVersion\":\"xihspnxwq\",\"ip4Address\":\"nepzwakls\",\"subnetMask\":\"bqqqagwwrxa\",\"defaultGateway\":\"zisglrrczezkhh\",\"dnsServers\":[\"jadhqoawj\"],\"defaultIsolationId\":\"yueayfbpcmsp\"},{\"adapterName\":\"yrrueqth\",\"interfaceDescription\":\"gnmbscbbxigdhx\",\"componentId\":\"d\",\"driverVersion\":\"pedbwdpyqy\",\"ip4Address\":\"xubmdnafcbqw\",\"subnetMask\":\"mjel\",\"defaultGateway\":\"acigel\",\"dnsServers\":[\"d\",\"vqvwzkjopwbe\",\"nrlkwzdqy\"],\"defaultIsolationId\":\"ceakxc\"}],\"deviceMetadata\":\"soqfyiaseqchkrt\"},\"provisioningState\":\"DisableInProgress\"}")
+            "{\"deviceConfiguration\":{\"nicDetails\":[{\"adapterName\":\"tomflrytswfpf\",\"interfaceDescription\":\"gycxnmskwhqjjys\",\"componentId\":\"rlpshhkv\",\"driverVersion\":\"dwqslsrhmpqvw\",\"ip4Address\":\"kondcb\",\"subnetMask\":\"imuvqejosovyrrl\",\"defaultGateway\":\"esi\",\"dnsServers\":[\"tljqobbpih\",\"hcecybmrqbr\",\"bbmpxdlvykfre\",\"crse\"],\"defaultIsolationId\":\"jksghudg\"},{\"adapterName\":\"xog\",\"interfaceDescription\":\"gsv\",\"componentId\":\"jkxibda\",\"driverVersion\":\"rkmdyom\",\"ip4Address\":\"fbvfbhdy\",\"subnetMask\":\"hpwpgddeimawzovg\",\"defaultGateway\":\"um\",\"dnsServers\":[\"jcjcazt\",\"wsnsqowx\",\"comlikytwvczc\",\"wka\"],\"defaultIsolationId\":\"ejyfdvlvhbwrnfx\"},{\"adapterName\":\"ddpqt\",\"interfaceDescription\":\"hn\",\"componentId\":\"aoyankcoeqswa\",\"driverVersion\":\"ltytmhdr\",\"ip4Address\":\"nnhdrl\",\"subnetMask\":\"gjc\",\"defaultGateway\":\"guxhem\",\"dnsServers\":[\"waeeczgfb\",\"kklelssxblycs\",\"zujksrlsmdes\"],\"defaultIsolationId\":\"lpvmjcdoewbidy\"}],\"deviceMetadata\":\"eowxvgpi\"},\"provisioningState\":\"DisableInProgress\"}")
             .toObject(EdgeDeviceProperties.class);
-        Assertions.assertEquals("tgrdogypx", model.deviceConfiguration().nicDetails().get(0).adapterName());
-        Assertions.assertEquals("vbfihwuhvctafsr",
+        Assertions.assertEquals("tomflrytswfpf", model.deviceConfiguration().nicDetails().get(0).adapterName());
+        Assertions.assertEquals("gycxnmskwhqjjys",
             model.deviceConfiguration().nicDetails().get(0).interfaceDescription());
-        Assertions.assertEquals("rblmli", model.deviceConfiguration().nicDetails().get(0).componentId());
-        Assertions.assertEquals("xihspnxwq", model.deviceConfiguration().nicDetails().get(0).driverVersion());
-        Assertions.assertEquals("nepzwakls", model.deviceConfiguration().nicDetails().get(0).ip4Address());
-        Assertions.assertEquals("bqqqagwwrxa", model.deviceConfiguration().nicDetails().get(0).subnetMask());
-        Assertions.assertEquals("zisglrrczezkhh", model.deviceConfiguration().nicDetails().get(0).defaultGateway());
-        Assertions.assertEquals("jadhqoawj", model.deviceConfiguration().nicDetails().get(0).dnsServers().get(0));
-        Assertions.assertEquals("yueayfbpcmsp", model.deviceConfiguration().nicDetails().get(0).defaultIsolationId());
-        Assertions.assertEquals("soqfyiaseqchkrt", model.deviceConfiguration().deviceMetadata());
+        Assertions.assertEquals("rlpshhkv", model.deviceConfiguration().nicDetails().get(0).componentId());
+        Assertions.assertEquals("dwqslsrhmpqvw", model.deviceConfiguration().nicDetails().get(0).driverVersion());
+        Assertions.assertEquals("kondcb", model.deviceConfiguration().nicDetails().get(0).ip4Address());
+        Assertions.assertEquals("imuvqejosovyrrl", model.deviceConfiguration().nicDetails().get(0).subnetMask());
+        Assertions.assertEquals("esi", model.deviceConfiguration().nicDetails().get(0).defaultGateway());
+        Assertions.assertEquals("tljqobbpih", model.deviceConfiguration().nicDetails().get(0).dnsServers().get(0));
+        Assertions.assertEquals("jksghudg", model.deviceConfiguration().nicDetails().get(0).defaultIsolationId());
+        Assertions.assertEquals("eowxvgpi", model.deviceConfiguration().deviceMetadata());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         EdgeDeviceProperties model
-            = new EdgeDeviceProperties().withDeviceConfiguration(new DeviceConfiguration().withNicDetails(Arrays.asList(
-                new NicDetail().withAdapterName("tgrdogypx")
-                    .withInterfaceDescription("vbfihwuhvctafsr")
-                    .withComponentId("rblmli")
-                    .withDriverVersion("xihspnxwq")
-                    .withIp4Address("nepzwakls")
-                    .withSubnetMask("bqqqagwwrxa")
-                    .withDefaultGateway("zisglrrczezkhh")
-                    .withDnsServers(Arrays.asList("jadhqoawj"))
-                    .withDefaultIsolationId("yueayfbpcmsp"),
-                new NicDetail().withAdapterName("yrrueqth")
-                    .withInterfaceDescription("gnmbscbbxigdhx")
-                    .withComponentId("d")
-                    .withDriverVersion("pedbwdpyqy")
-                    .withIp4Address("xubmdnafcbqw")
-                    .withSubnetMask("mjel")
-                    .withDefaultGateway("acigel")
-                    .withDnsServers(Arrays.asList("d", "vqvwzkjopwbe", "nrlkwzdqy"))
-                    .withDefaultIsolationId("ceakxc")))
-                .withDeviceMetadata("soqfyiaseqchkrt"));
+            = new EdgeDeviceProperties()
+                .withDeviceConfiguration(
+                    new DeviceConfiguration()
+                        .withNicDetails(
+                            Arrays
+                                .asList(
+                                    new NicDetail().withAdapterName("tomflrytswfpf")
+                                        .withInterfaceDescription("gycxnmskwhqjjys")
+                                        .withComponentId("rlpshhkv")
+                                        .withDriverVersion("dwqslsrhmpqvw")
+                                        .withIp4Address("kondcb")
+                                        .withSubnetMask("imuvqejosovyrrl")
+                                        .withDefaultGateway("esi")
+                                        .withDnsServers(
+                                            Arrays.asList("tljqobbpih", "hcecybmrqbr", "bbmpxdlvykfre", "crse"))
+                                        .withDefaultIsolationId("jksghudg"),
+                                    new NicDetail().withAdapterName("xog")
+                                        .withInterfaceDescription("gsv")
+                                        .withComponentId("jkxibda")
+                                        .withDriverVersion("rkmdyom")
+                                        .withIp4Address("fbvfbhdy")
+                                        .withSubnetMask("hpwpgddeimawzovg")
+                                        .withDefaultGateway("um")
+                                        .withDnsServers(Arrays.asList("jcjcazt", "wsnsqowx", "comlikytwvczc", "wka"))
+                                        .withDefaultIsolationId("ejyfdvlvhbwrnfx"),
+                                    new NicDetail().withAdapterName("ddpqt")
+                                        .withInterfaceDescription("hn")
+                                        .withComponentId("aoyankcoeqswa")
+                                        .withDriverVersion("ltytmhdr")
+                                        .withIp4Address("nnhdrl")
+                                        .withSubnetMask("gjc")
+                                        .withDefaultGateway("guxhem")
+                                        .withDnsServers(Arrays.asList("waeeczgfb", "kklelssxblycs", "zujksrlsmdes"))
+                                        .withDefaultIsolationId("lpvmjcdoewbidy")))
+                        .withDeviceMetadata("eowxvgpi"));
         model = BinaryData.fromObject(model).toObject(EdgeDeviceProperties.class);
-        Assertions.assertEquals("tgrdogypx", model.deviceConfiguration().nicDetails().get(0).adapterName());
-        Assertions.assertEquals("vbfihwuhvctafsr",
+        Assertions.assertEquals("tomflrytswfpf", model.deviceConfiguration().nicDetails().get(0).adapterName());
+        Assertions.assertEquals("gycxnmskwhqjjys",
             model.deviceConfiguration().nicDetails().get(0).interfaceDescription());
-        Assertions.assertEquals("rblmli", model.deviceConfiguration().nicDetails().get(0).componentId());
-        Assertions.assertEquals("xihspnxwq", model.deviceConfiguration().nicDetails().get(0).driverVersion());
-        Assertions.assertEquals("nepzwakls", model.deviceConfiguration().nicDetails().get(0).ip4Address());
-        Assertions.assertEquals("bqqqagwwrxa", model.deviceConfiguration().nicDetails().get(0).subnetMask());
-        Assertions.assertEquals("zisglrrczezkhh", model.deviceConfiguration().nicDetails().get(0).defaultGateway());
-        Assertions.assertEquals("jadhqoawj", model.deviceConfiguration().nicDetails().get(0).dnsServers().get(0));
-        Assertions.assertEquals("yueayfbpcmsp", model.deviceConfiguration().nicDetails().get(0).defaultIsolationId());
-        Assertions.assertEquals("soqfyiaseqchkrt", model.deviceConfiguration().deviceMetadata());
+        Assertions.assertEquals("rlpshhkv", model.deviceConfiguration().nicDetails().get(0).componentId());
+        Assertions.assertEquals("dwqslsrhmpqvw", model.deviceConfiguration().nicDetails().get(0).driverVersion());
+        Assertions.assertEquals("kondcb", model.deviceConfiguration().nicDetails().get(0).ip4Address());
+        Assertions.assertEquals("imuvqejosovyrrl", model.deviceConfiguration().nicDetails().get(0).subnetMask());
+        Assertions.assertEquals("esi", model.deviceConfiguration().nicDetails().get(0).defaultGateway());
+        Assertions.assertEquals("tljqobbpih", model.deviceConfiguration().nicDetails().get(0).dnsServers().get(0));
+        Assertions.assertEquals("jksghudg", model.deviceConfiguration().nicDetails().get(0).defaultIsolationId());
+        Assertions.assertEquals("eowxvgpi", model.deviceConfiguration().deviceMetadata());
     }
 }

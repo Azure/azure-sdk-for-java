@@ -11,6 +11,7 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.query.HybridSearchBadRequestException;
 import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosFullTextIndex;
 import com.azure.cosmos.models.CosmosFullTextPath;
 import com.azure.cosmos.models.CosmosFullTextPolicy;
@@ -27,7 +28,6 @@ import com.azure.cosmos.models.PartitionKeyDefinitionVersion;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
-import com.azure.cosmos.models.ThroughputProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -50,6 +50,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static com.azure.cosmos.rx.TestSuiteBase.createDatabase;
+import static com.azure.cosmos.rx.TestSuiteBase.createCollection;
 import static com.azure.cosmos.rx.TestSuiteBase.safeClose;
 import static com.azure.cosmos.rx.TestSuiteBase.safeDeleteDatabase;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -88,8 +89,11 @@ public class HybridSearchQueryTest {
         CosmosContainerProperties containerProperties = new CosmosContainerProperties(containerId, partitionKeyDef);
         containerProperties.setIndexingPolicy(populateIndexingPolicy());
         containerProperties.setFullTextPolicy(populateFullTextPolicy());
-        database.createContainer(containerProperties, ThroughputProperties.createManualThroughput(10000)).block();
-        container = database.getContainer(containerId);
+        container = createCollection(
+            database,
+            containerProperties,
+            new CosmosContainerRequestOptions(),
+            10000);
 
         // Insert documents with pk field based on (index % 2) + 1, so even ids → pk="1", odd ids → pk="2"
         List<Document> documents = loadProductsFromJson();
@@ -111,8 +115,11 @@ public class HybridSearchQueryTest {
         CosmosContainerProperties hpkContainerProperties = new CosmosContainerProperties(hpkContainerId, hpkDef);
         hpkContainerProperties.setIndexingPolicy(populateIndexingPolicy());
         hpkContainerProperties.setFullTextPolicy(populateFullTextPolicy());
-        database.createContainer(hpkContainerProperties, ThroughputProperties.createManualThroughput(10000)).block();
-        hpkContainer = database.getContainer(hpkContainerId);
+        hpkContainer = createCollection(
+            database,
+            hpkContainerProperties,
+            new CosmosContainerRequestOptions(),
+            10000);
 
         // Insert documents with pk and category fields for hierarchical partition key
         // pk = (index % 2) + 1, category = "A" for index % 3 == 0, "B" otherwise

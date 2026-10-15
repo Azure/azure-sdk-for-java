@@ -194,6 +194,13 @@ public interface CognitiveServicesManagementClient {
     QuotaTiersClient getQuotaTiers();
 
     /**
+     * Gets the ArcDeploymentsClient object to access its operations.
+     * 
+     * @return the ArcDeploymentsClient object.
+     */
+    ArcDeploymentsClient getArcDeployments();
+
+    /**
      * Gets the AgentApplicationsClient object to access its operations.
      * 
      * @return the AgentApplicationsClient object.
@@ -201,11 +208,46 @@ public interface CognitiveServicesManagementClient {
     AgentApplicationsClient getAgentApplications();
 
     /**
+     * Gets the ManagedComputeDeploymentsClient object to access its operations.
+     * 
+     * @return the ManagedComputeDeploymentsClient object.
+     */
+    ManagedComputeDeploymentsClient getManagedComputeDeployments();
+
+    /**
      * Gets the ComputeOperationsClient object to access its operations.
      * 
      * @return the ComputeOperationsClient object.
      */
     ComputeOperationsClient getComputeOperations();
+
+    /**
+     * Gets the ManagedComputeUsagesOperationGroupsClient object to access its operations.
+     * 
+     * @return the ManagedComputeUsagesOperationGroupsClient object.
+     */
+    ManagedComputeUsagesOperationGroupsClient getManagedComputeUsagesOperationGroups();
+
+    /**
+     * Gets the ComputesClient object to access its operations.
+     * 
+     * @return the ComputesClient object.
+     */
+    ComputesClient getComputes();
+
+    /**
+     * Gets the WorkbenchesClient object to access its operations.
+     * 
+     * @return the WorkbenchesClient object.
+     */
+    WorkbenchesClient getWorkbenches();
+
+    /**
+     * Gets the ManagedComputeCapacitiesClient object to access its operations.
+     * 
+     * @return the ManagedComputeCapacitiesClient object.
+     */
+    ManagedComputeCapacitiesClient getManagedComputeCapacities();
 
     /**
      * Gets the PrivateLinkResourcesClient object to access its operations.

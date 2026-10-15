@@ -22,7 +22,7 @@ public final class ProviderMonitorSettingsListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Created\"},\"location\":\"a\",\"tags\":{\"wuj\":\"p\",\"gtvh\":\"zgxqgqwlxr\",\"korvvm\":\"tqqykbkkteozejog\",\"h\":\"mcofn\"},\"id\":\"bsn\",\"name\":\"snqliwkmzojfe\",\"type\":\"yalhtgm\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\"},\"location\":\"vjykofveze\",\"tags\":{\"zcntogffjwajnrtw\":\"kqtwqlepjjzkcasf\",\"zkn\":\"vaqkifmxawost\",\"vwfnqqwypvn\":\"rkmjqncfvdscnhe\"},\"id\":\"r\",\"name\":\"b\",\"type\":\"od\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,9 +32,9 @@ public final class ProviderMonitorSettingsListByResourceGroupMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ProviderMonitorSetting> response
-            = manager.providerMonitorSettings().listByResourceGroup("gxwjwil", com.azure.core.util.Context.NONE);
+            = manager.providerMonitorSettings().listByResourceGroup("ylztp", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("a", response.iterator().next().location());
-        Assertions.assertEquals("p", response.iterator().next().tags().get("wuj"));
+        Assertions.assertEquals("vjykofveze", response.iterator().next().location());
+        Assertions.assertEquals("kqtwqlepjjzkcasf", response.iterator().next().tags().get("zcntogffjwajnrtw"));
     }
 }

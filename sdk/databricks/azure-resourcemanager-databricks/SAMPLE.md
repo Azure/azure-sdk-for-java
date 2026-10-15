@@ -53,15 +53,14 @@
  */
 public final class AccessConnectorsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/databricks/resource-manager/Microsoft.Databricks/stable/2023-05-01/examples/
-     * AccessConnectorCreateOrUpdateWithUserAssigned.json
+     * x-ms-original-file: 2026-01-01/AccessConnectorCreateOrUpdate.json
      */
     /**
-     * Sample code: Create an azure databricks accessConnector with UserAssigned Identity.
+     * Sample code: Create an Azure Databricks Access Connector with SystemAssigned Identity.
      * 
      * @param manager Entry point to AzureDatabricksManager.
      */
-    public static void createAnAzureDatabricksAccessConnectorWithUserAssignedIdentity(
+    public static void createAnAzureDatabricksAccessConnectorWithSystemAssignedIdentity(
         com.azure.resourcemanager.databricks.AzureDatabricksManager manager) {
         manager.accessConnectors()
             .define("myAccessConnector")
@@ -71,15 +70,14 @@ public final class AccessConnectorsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/databricks/resource-manager/Microsoft.Databricks/stable/2023-05-01/examples/
-     * AccessConnectorCreateOrUpdate.json
+     * x-ms-original-file: 2026-01-01/AccessConnectorCreateOrUpdateWithUserAssigned.json
      */
     /**
-     * Sample code: Create an azure databricks accessConnector with SystemAssigned Identity.
+     * Sample code: Create an Azure Databricks Access Connector with UserAssigned Identity.
      * 
      * @param manager Entry point to AzureDatabricksManager.
      */
-    public static void createAnAzureDatabricksAccessConnectorWithSystemAssignedIdentity(
+    public static void createAnAzureDatabricksAccessConnectorWithUserAssignedIdentity(
         com.azure.resourcemanager.databricks.AzureDatabricksManager manager) {
         manager.accessConnectors()
             .define("myAccessConnector")
@@ -98,12 +96,10 @@ public final class AccessConnectorsCreateOrUpdateSamples {
  */
 public final class AccessConnectorsDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/databricks/resource-manager/Microsoft.Databricks/stable/2023-05-01/examples/AccessConnectorDelete.
-     * json
+     * x-ms-original-file: 2026-01-01/AccessConnectorDelete.json
      */
     /**
-     * Sample code: Delete an azure databricks accessConnector.
+     * Sample code: Delete an Azure Databricks Access Connector.
      * 
      * @param manager Entry point to AzureDatabricksManager.
      */
@@ -122,11 +118,10 @@ public final class AccessConnectorsDeleteSamples {
  */
 public final class AccessConnectorsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/databricks/resource-manager/Microsoft.Databricks/stable/2023-05-01/examples/AccessConnectorGet.json
+     * x-ms-original-file: 2026-01-01/AccessConnectorGet.json
      */
     /**
-     * Sample code: Get an azure databricks accessConnector.
+     * Sample code: Get an Azure Databricks Access Connector.
      * 
      * @param manager Entry point to AzureDatabricksManager.
      */
@@ -146,11 +141,10 @@ public final class AccessConnectorsGetByResourceGroupSamples {
  */
 public final class AccessConnectorsListSamples {
     /*
-     * x-ms-original-file: specification/databricks/resource-manager/Microsoft.Databricks/stable/2023-05-01/examples/
-     * AccessConnectorsListBySubscriptionId.json
+     * x-ms-original-file: 2026-01-01/AccessConnectorsListBySubscriptionId.json
      */
     /**
-     * Sample code: Lists all the azure databricks accessConnectors within a subscription.
+     * Sample code: Lists all the Azure Databricks Access Connectors within a subscription.
      * 
      * @param manager Entry point to AzureDatabricksManager.
      */
@@ -169,11 +163,10 @@ public final class AccessConnectorsListSamples {
  */
 public final class AccessConnectorsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/databricks/resource-manager/Microsoft.Databricks/stable/2023-05-01/examples/
-     * AccessConnectorsListByResourceGroup.json
+     * x-ms-original-file: 2026-01-01/AccessConnectorsListByResourceGroup.json
      */
     /**
-     * Sample code: Lists azure databricks accessConnectors within a resource group.
+     * Sample code: Lists Azure Databricks Access Connectors within a resource group.
      * 
      * @param manager Entry point to AzureDatabricksManager.
      */
@@ -196,11 +189,10 @@ import java.util.Map;
  */
 public final class AccessConnectorsUpdateSamples {
     /*
-     * x-ms-original-file: specification/databricks/resource-manager/Microsoft.Databricks/stable/2023-05-01/examples/
-     * AccessConnectorPatchUpdate.json
+     * x-ms-original-file: 2026-01-01/AccessConnectorPatchUpdate.json
      */
     /**
-     * Sample code: Update an azure databricks accessConnector.
+     * Sample code: Update an Azure Databricks Access Connector.
      * 
      * @param manager Entry point to AzureDatabricksManager.
      */
@@ -234,8 +226,7 @@ public final class AccessConnectorsUpdateSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/databricks/resource-manager/Microsoft.Databricks/stable/2023-02-01/examples/OperationsList.json
+     * x-ms-original-file: 2026-01-01/OperationsList.json
      */
     /**
      * Sample code: Operations.
@@ -256,8 +247,7 @@ public final class OperationsListSamples {
  */
 public final class OutboundNetworkDependenciesEndpointsListSamples {
     /*
-     * x-ms-original-file: specification/databricks/resource-manager/Microsoft.Databricks/stable/2023-02-01/examples/
-     * OutboundNetworkDependenciesEndpointsList.json
+     * x-ms-original-file: 2026-01-01/OutboundNetworkDependenciesEndpointsList.json
      */
     /**
      * Sample code: List OutboundNetworkDependenciesEndpoints by Workspace.
@@ -284,8 +274,7 @@ import com.azure.resourcemanager.databricks.models.PrivateLinkServiceConnectionS
  */
 public final class PrivateEndpointConnectionsCreateSamples {
     /*
-     * x-ms-original-file: specification/databricks/resource-manager/Microsoft.Databricks/stable/2023-02-01/examples/
-     * PrivateEndpointConnectionsUpdate.json
+     * x-ms-original-file: 2026-01-01/PrivateEndpointConnectionsUpdate.json
      */
     /**
      * Sample code: Update a private endpoint connection.
@@ -313,8 +302,7 @@ public final class PrivateEndpointConnectionsCreateSamples {
  */
 public final class PrivateEndpointConnectionsDeleteSamples {
     /*
-     * x-ms-original-file: specification/databricks/resource-manager/Microsoft.Databricks/stable/2023-02-01/examples/
-     * PrivateEndpointConnectionsDelete.json
+     * x-ms-original-file: 2026-01-01/PrivateEndpointConnectionsDelete.json
      */
     /**
      * Sample code: Remove a private endpoint connection.
@@ -338,8 +326,7 @@ public final class PrivateEndpointConnectionsDeleteSamples {
  */
 public final class PrivateEndpointConnectionsGetSamples {
     /*
-     * x-ms-original-file: specification/databricks/resource-manager/Microsoft.Databricks/stable/2023-02-01/examples/
-     * PrivateEndpointConnectionsGet.json
+     * x-ms-original-file: 2026-01-01/PrivateEndpointConnectionsGet.json
      */
     /**
      * Sample code: Get a private endpoint connection.
@@ -363,8 +350,7 @@ public final class PrivateEndpointConnectionsGetSamples {
  */
 public final class PrivateEndpointConnectionsListSamples {
     /*
-     * x-ms-original-file: specification/databricks/resource-manager/Microsoft.Databricks/stable/2023-02-01/examples/
-     * ListPrivateEndpointConnections.json
+     * x-ms-original-file: 2026-01-01/ListPrivateEndpointConnections.json
      */
     /**
      * Sample code: List private endpoint connections.
@@ -386,9 +372,7 @@ public final class PrivateEndpointConnectionsListSamples {
  */
 public final class PrivateLinkResourcesGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/databricks/resource-manager/Microsoft.Databricks/stable/2023-02-01/examples/PrivateLinkResourcesGet
-     * .json
+     * x-ms-original-file: 2026-01-01/PrivateLinkResourcesGet.json
      */
     /**
      * Sample code: Get a private link resource.
@@ -410,8 +394,7 @@ public final class PrivateLinkResourcesGetSamples {
  */
 public final class PrivateLinkResourcesListSamples {
     /*
-     * x-ms-original-file: specification/databricks/resource-manager/Microsoft.Databricks/stable/2023-02-01/examples/
-     * ListPrivateLinkResources.json
+     * x-ms-original-file: 2026-01-01/ListPrivateLinkResources.json
      */
     /**
      * Sample code: List private link resources.
@@ -434,8 +417,7 @@ import com.azure.resourcemanager.databricks.models.VirtualNetworkPeeringProperti
  */
 public final class VNetPeeringCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/databricks/resource-manager/Microsoft.Databricks/stable/2023-02-01/examples/
-     * WorkspaceVirtualNetworkPeeringCreateOrUpdate.json
+     * x-ms-original-file: 2026-01-01/WorkspaceVirtualNetworkPeeringCreateOrUpdate.json
      */
     /**
      * Sample code: Create vNet Peering for Workspace.
@@ -446,7 +428,7 @@ public final class VNetPeeringCreateOrUpdateSamples {
         createVNetPeeringForWorkspace(com.azure.resourcemanager.databricks.AzureDatabricksManager manager) {
         manager.vNetPeerings()
             .define("vNetPeeringTest")
-            .withExistingWorkspace("rg", "myWorkspace")
+            .withExistingWorkspace("subramantest", "adbworkspace")
             .withRemoteVirtualNetwork(new VirtualNetworkPeeringPropertiesFormatRemoteVirtualNetwork().withId(
                 "/subscriptions/0140911e-1040-48da-8bc9-b99fb3dd88a6/resourceGroups/subramantest/providers/Microsoft.Network/virtualNetworks/subramanvnet"))
             .withAllowVirtualNetworkAccess(true)
@@ -466,8 +448,7 @@ public final class VNetPeeringCreateOrUpdateSamples {
  */
 public final class VNetPeeringDeleteSamples {
     /*
-     * x-ms-original-file: specification/databricks/resource-manager/Microsoft.Databricks/stable/2023-02-01/examples/
-     * WorkspaceVirtualNetworkPeeringDelete.json
+     * x-ms-original-file: 2026-01-01/WorkspaceVirtualNetworkPeeringDelete.json
      */
     /**
      * Sample code: Delete a workspace vNet Peering.
@@ -476,7 +457,8 @@ public final class VNetPeeringDeleteSamples {
      */
     public static void
         deleteAWorkspaceVNetPeering(com.azure.resourcemanager.databricks.AzureDatabricksManager manager) {
-        manager.vNetPeerings().delete("rg", "myWorkspace", "vNetPeering", com.azure.core.util.Context.NONE);
+        manager.vNetPeerings()
+            .delete("subramantest", "adbworkspace", "vNetPeeringTest", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -489,8 +471,7 @@ public final class VNetPeeringDeleteSamples {
  */
 public final class VNetPeeringGetSamples {
     /*
-     * x-ms-original-file: specification/databricks/resource-manager/Microsoft.Databricks/stable/2023-02-01/examples/
-     * WorkspaceVirtualNetPeeringGet.json
+     * x-ms-original-file: 2026-01-01/WorkspaceVirtualNetPeeringGet.json
      */
     /**
      * Sample code: Get a workspace with vNet Peering Configured.
@@ -499,7 +480,8 @@ public final class VNetPeeringGetSamples {
      */
     public static void
         getAWorkspaceWithVNetPeeringConfigured(com.azure.resourcemanager.databricks.AzureDatabricksManager manager) {
-        manager.vNetPeerings().getWithResponse("rg", "myWorkspace", "vNetPeering", com.azure.core.util.Context.NONE);
+        manager.vNetPeerings()
+            .getWithResponse("subramantest", "adbworkspace", "vNetPeeringTest", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -512,8 +494,7 @@ public final class VNetPeeringGetSamples {
  */
 public final class VNetPeeringListByWorkspaceSamples {
     /*
-     * x-ms-original-file: specification/databricks/resource-manager/Microsoft.Databricks/stable/2023-02-01/examples/
-     * WorkspaceVirtualNetPeeringList.json
+     * x-ms-original-file: 2026-01-01/WorkspaceVirtualNetPeeringList.json
      */
     /**
      * Sample code: List all vNet Peerings for the workspace.
@@ -522,7 +503,7 @@ public final class VNetPeeringListByWorkspaceSamples {
      */
     public static void
         listAllVNetPeeringsForTheWorkspace(com.azure.resourcemanager.databricks.AzureDatabricksManager manager) {
-        manager.vNetPeerings().listByWorkspace("rg", "myWorkspace", com.azure.core.util.Context.NONE);
+        manager.vNetPeerings().listByWorkspace("subramantest", "adbworkspace", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -530,17 +511,32 @@ public final class VNetPeeringListByWorkspaceSamples {
 ### Workspaces_CreateOrUpdate
 
 ```java
+import com.azure.resourcemanager.databricks.models.AutomaticClusterUpdateDefinition;
+import com.azure.resourcemanager.databricks.models.AutomaticClusterUpdateValue;
+import com.azure.resourcemanager.databricks.models.ComplianceSecurityProfileDefinition;
+import com.azure.resourcemanager.databricks.models.ComplianceSecurityProfileValue;
+import com.azure.resourcemanager.databricks.models.ComputeMode;
+import com.azure.resourcemanager.databricks.models.DefaultCatalogProperties;
+import com.azure.resourcemanager.databricks.models.DefaultStorageFirewall;
 import com.azure.resourcemanager.databricks.models.Encryption;
 import com.azure.resourcemanager.databricks.models.EncryptionEntitiesDefinition;
 import com.azure.resourcemanager.databricks.models.EncryptionKeySource;
+import com.azure.resourcemanager.databricks.models.EnhancedSecurityComplianceDefinition;
+import com.azure.resourcemanager.databricks.models.EnhancedSecurityMonitoringDefinition;
+import com.azure.resourcemanager.databricks.models.EnhancedSecurityMonitoringValue;
+import com.azure.resourcemanager.databricks.models.IdentityType;
+import com.azure.resourcemanager.databricks.models.InitialType;
 import com.azure.resourcemanager.databricks.models.KeySource;
 import com.azure.resourcemanager.databricks.models.ManagedDiskEncryption;
 import com.azure.resourcemanager.databricks.models.ManagedDiskEncryptionKeyVaultProperties;
+import com.azure.resourcemanager.databricks.models.Sku;
 import com.azure.resourcemanager.databricks.models.WorkspaceCustomBooleanParameter;
 import com.azure.resourcemanager.databricks.models.WorkspaceCustomParameters;
 import com.azure.resourcemanager.databricks.models.WorkspaceCustomStringParameter;
 import com.azure.resourcemanager.databricks.models.WorkspaceEncryptionParameter;
+import com.azure.resourcemanager.databricks.models.WorkspacePropertiesAccessConnector;
 import com.azure.resourcemanager.databricks.models.WorkspacePropertiesEncryption;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -549,8 +545,26 @@ import java.util.Map;
  */
 public final class WorkspacesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/databricks/resource-manager/Microsoft.Databricks/stable/2023-02-01/examples/
-     * WorkspaceManagedDiskEncryptionCreate.json
+     * x-ms-original-file: 2026-01-01/WorkspaceCreateServerless.json
+     */
+    /**
+     * Sample code: Create or update serverless workspace.
+     * 
+     * @param manager Entry point to AzureDatabricksManager.
+     */
+    public static void
+        createOrUpdateServerlessWorkspace(com.azure.resourcemanager.databricks.AzureDatabricksManager manager) {
+        manager.workspaces()
+            .define("myWorkspace")
+            .withRegion("westus")
+            .withExistingResourceGroup("rg")
+            .withComputeMode(ComputeMode.SERVERLESS)
+            .withSku(new Sku().withName("premium"))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2026-01-01/WorkspaceManagedDiskEncryptionCreate.json
      */
     /**
      * Sample code: Create a workspace with Customer-Managed Key (CMK) encryption for Managed Disks.
@@ -563,7 +577,10 @@ public final class WorkspacesCreateOrUpdateSamples {
             .define("myWorkspace")
             .withRegion("westus")
             .withExistingResourceGroup("rg")
-            .withManagedResourceGroupId("/subscriptions/subid/resourceGroups/myManagedRG")
+            .withComputeMode(ComputeMode.HYBRID)
+            .withSku(new Sku().withName("premium"))
+            .withManagedResourceGroupId(
+                "/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/myManagedRG")
             .withEncryption(
                 new WorkspacePropertiesEncryption()
                     .withEntities(
@@ -578,8 +595,7 @@ public final class WorkspacesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/databricks/resource-manager/Microsoft.Databricks/stable/2023-02-01/examples/
-     * WorkspaceManagedDiskEncryptionUpdate.json
+     * x-ms-original-file: 2026-01-01/WorkspaceManagedDiskEncryptionUpdate.json
      */
     /**
      * Sample code: Update a workspace with Customer-Managed Key (CMK) encryption for Managed Disks.
@@ -592,8 +608,11 @@ public final class WorkspacesCreateOrUpdateSamples {
             .define("myWorkspace")
             .withRegion("westus")
             .withExistingResourceGroup("rg")
-            .withManagedResourceGroupId("/subscriptions/subid/resourceGroups/myManagedRG")
+            .withComputeMode(ComputeMode.HYBRID)
             .withTags(mapOf("mytag1", "myvalue1"))
+            .withSku(new Sku().withName("premium"))
+            .withManagedResourceGroupId(
+                "/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/myManagedRG")
             .withEncryption(
                 new WorkspacePropertiesEncryption()
                     .withEntities(
@@ -608,8 +627,7 @@ public final class WorkspacesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/databricks/resource-manager/Microsoft.Databricks/stable/2023-02-01/examples/DisableEncryption.json
+     * x-ms-original-file: 2026-01-01/DisableEncryption.json
      */
     /**
      * Sample code: Revert Customer-Managed Key (CMK) encryption to Microsoft Managed Keys encryption on a workspace.
@@ -622,15 +640,17 @@ public final class WorkspacesCreateOrUpdateSamples {
             .define("myWorkspace")
             .withRegion("westus")
             .withExistingResourceGroup("rg")
-            .withManagedResourceGroupId("/subscriptions/subid/resourceGroups/myManagedRG")
+            .withComputeMode(ComputeMode.HYBRID)
+            .withSku(new Sku().withName("premium"))
+            .withManagedResourceGroupId(
+                "/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/myManagedRG")
             .withParameters(new WorkspaceCustomParameters().withEncryption(
                 new WorkspaceEncryptionParameter().withValue(new Encryption().withKeySource(KeySource.DEFAULT))))
             .create();
     }
 
     /*
-     * x-ms-original-file:
-     * specification/databricks/resource-manager/Microsoft.Databricks/stable/2023-02-01/examples/PrepareEncryption.json
+     * x-ms-original-file: 2026-01-01/PrepareEncryption.json
      */
     /**
      * Sample code: Create a workspace which is ready for Customer-Managed Key (CMK) encryption.
@@ -643,15 +663,46 @@ public final class WorkspacesCreateOrUpdateSamples {
             .define("myWorkspace")
             .withRegion("westus")
             .withExistingResourceGroup("rg")
-            .withManagedResourceGroupId("/subscriptions/subid/resourceGroups/myManagedRG")
+            .withComputeMode(ComputeMode.HYBRID)
+            .withSku(new Sku().withName("premium"))
+            .withManagedResourceGroupId(
+                "/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/myManagedRG")
             .withParameters(new WorkspaceCustomParameters()
                 .withPrepareEncryption(new WorkspaceCustomBooleanParameter().withValue(true)))
             .create();
     }
 
     /*
-     * x-ms-original-file: specification/databricks/resource-manager/Microsoft.Databricks/stable/2023-02-01/examples/
-     * WorkspaceCreateWithParameters.json
+     * x-ms-original-file: 2026-01-01/WorkspaceEnhancedSecurityComplianceCreateOrUpdate.json
+     */
+    /**
+     * Sample code: Create or update a workspace with Enhanced Security &amp; Compliance Add-On.
+     * 
+     * @param manager Entry point to AzureDatabricksManager.
+     */
+    public static void createOrUpdateAWorkspaceWithEnhancedSecurityComplianceAddOn(
+        com.azure.resourcemanager.databricks.AzureDatabricksManager manager) {
+        manager.workspaces()
+            .define("myWorkspace")
+            .withRegion("eastus2")
+            .withExistingResourceGroup("rg")
+            .withComputeMode(ComputeMode.HYBRID)
+            .withSku(new Sku().withName("premium"))
+            .withManagedResourceGroupId(
+                "/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/myManagedRG")
+            .withEnhancedSecurityCompliance(new EnhancedSecurityComplianceDefinition()
+                .withAutomaticClusterUpdate(
+                    new AutomaticClusterUpdateDefinition().withValue(AutomaticClusterUpdateValue.ENABLED))
+                .withComplianceSecurityProfile(
+                    new ComplianceSecurityProfileDefinition().withComplianceStandards(Arrays.asList("PCI_DSS", "HIPAA"))
+                        .withValue(ComplianceSecurityProfileValue.ENABLED))
+                .withEnhancedSecurityMonitoring(
+                    new EnhancedSecurityMonitoringDefinition().withValue(EnhancedSecurityMonitoringValue.ENABLED)))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2026-01-01/WorkspaceCreateWithParameters.json
      */
     /**
      * Sample code: Create or update workspace with custom parameters.
@@ -664,18 +715,28 @@ public final class WorkspacesCreateOrUpdateSamples {
             .define("myWorkspace")
             .withRegion("westus")
             .withExistingResourceGroup("rg")
-            .withManagedResourceGroupId("/subscriptions/subid/resourceGroups/myManagedRG")
+            .withComputeMode(ComputeMode.HYBRID)
+            .withSku(new Sku().withName("premium"))
+            .withManagedResourceGroupId(
+                "/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/myManagedRG")
             .withParameters(new WorkspaceCustomParameters()
                 .withCustomVirtualNetworkId(new WorkspaceCustomStringParameter().withValue(
-                    "/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Network/virtualNetworks/myNetwork"))
+                    "/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rg/providers/Microsoft.Network/virtualNetworks/myNetwork"))
                 .withCustomPublicSubnetName(new WorkspaceCustomStringParameter().withValue("myPublicSubnet"))
                 .withCustomPrivateSubnetName(new WorkspaceCustomStringParameter().withValue("myPrivateSubnet")))
+            .withDefaultCatalog(
+                new DefaultCatalogProperties().withInitialType(InitialType.HIVE_METASTORE).withInitialName(""))
+            .withAccessConnector(new WorkspacePropertiesAccessConnector().withId(
+                "/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/adbrg/providers/Microsoft.Databricks/accessConnectors/myAccessConnector")
+                .withIdentityType(IdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentityId(
+                    "/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myIdentity"))
+            .withDefaultStorageFirewall(DefaultStorageFirewall.ENABLED)
             .create();
     }
 
     /*
-     * x-ms-original-file:
-     * specification/databricks/resource-manager/Microsoft.Databricks/stable/2023-02-01/examples/WorkspaceCreate.json
+     * x-ms-original-file: 2026-01-01/WorkspaceCreate.json
      */
     /**
      * Sample code: Create or update workspace.
@@ -687,13 +748,21 @@ public final class WorkspacesCreateOrUpdateSamples {
             .define("myWorkspace")
             .withRegion("westus")
             .withExistingResourceGroup("rg")
-            .withManagedResourceGroupId("/subscriptions/subid/resourceGroups/myManagedRG")
+            .withComputeMode(ComputeMode.HYBRID)
+            .withSku(new Sku().withName("premium"))
+            .withManagedResourceGroupId(
+                "/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/myManagedRG")
+            .withDefaultCatalog(
+                new DefaultCatalogProperties().withInitialType(InitialType.UNITY_CATALOG).withInitialName(""))
+            .withAccessConnector(new WorkspacePropertiesAccessConnector().withId(
+                "/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/adbrg/providers/Microsoft.Databricks/accessConnectors/myAccessConnector")
+                .withIdentityType(IdentityType.SYSTEM_ASSIGNED))
+            .withDefaultStorageFirewall(DefaultStorageFirewall.ENABLED)
             .create();
     }
 
     /*
-     * x-ms-original-file:
-     * specification/databricks/resource-manager/Microsoft.Databricks/stable/2023-02-01/examples/EnableEncryption.json
+     * x-ms-original-file: 2026-01-01/EnableEncryption.json
      */
     /**
      * Sample code: Enable Customer-Managed Key (CMK) encryption on a workspace which is prepared for encryption.
@@ -706,7 +775,10 @@ public final class WorkspacesCreateOrUpdateSamples {
             .define("myWorkspace")
             .withRegion("westus")
             .withExistingResourceGroup("rg")
-            .withManagedResourceGroupId("/subscriptions/subid/resourceGroups/myManagedRG")
+            .withComputeMode(ComputeMode.HYBRID)
+            .withSku(new Sku().withName("premium"))
+            .withManagedResourceGroupId(
+                "/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/myManagedRG")
             .withParameters(new WorkspaceCustomParameters()
                 .withPrepareEncryption(new WorkspaceCustomBooleanParameter().withValue(true))
                 .withEncryption(new WorkspaceEncryptionParameter()
@@ -739,8 +811,20 @@ public final class WorkspacesCreateOrUpdateSamples {
  */
 public final class WorkspacesDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/databricks/resource-manager/Microsoft.Databricks/stable/2023-02-01/examples/WorkspaceDelete.json
+     * x-ms-original-file: 2026-01-01/WorkspaceDeleteForceDeletion.json
+     */
+    /**
+     * Sample code: Delete a workspace with forceDeletion parameter.
+     * 
+     * @param manager Entry point to AzureDatabricksManager.
+     */
+    public static void deleteAWorkspaceWithForceDeletionParameter(
+        com.azure.resourcemanager.databricks.AzureDatabricksManager manager) {
+        manager.workspaces().delete("rg", "myWorkspace", false, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-01-01/WorkspaceDelete.json
      */
     /**
      * Sample code: Delete a workspace.
@@ -748,7 +832,7 @@ public final class WorkspacesDeleteSamples {
      * @param manager Entry point to AzureDatabricksManager.
      */
     public static void deleteAWorkspace(com.azure.resourcemanager.databricks.AzureDatabricksManager manager) {
-        manager.workspaces().delete("rg", "myWorkspace", com.azure.core.util.Context.NONE);
+        manager.workspaces().delete("rg", "myWorkspace", null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -761,8 +845,7 @@ public final class WorkspacesDeleteSamples {
  */
 public final class WorkspacesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/databricks/resource-manager/Microsoft.Databricks/stable/2023-02-01/examples/WorkspaceGet.json
+     * x-ms-original-file: 2026-01-01/WorkspaceGet.json
      */
     /**
      * Sample code: Get a workspace.
@@ -774,8 +857,7 @@ public final class WorkspacesGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: specification/databricks/resource-manager/Microsoft.Databricks/stable/2023-02-01/examples/
-     * WorkspaceManagedDiskEncryptionGet.json
+     * x-ms-original-file: 2026-01-01/WorkspaceManagedDiskEncryptionGet.json
      */
     /**
      * Sample code: Get a workspace with Customer-Managed Key (CMK) encryption for Managed Disks.
@@ -788,9 +870,20 @@ public final class WorkspacesGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/databricks/resource-manager/Microsoft.Databricks/stable/2023-02-01/examples/WorkspaceGetParameters.
-     * json
+     * x-ms-original-file: 2026-01-01/WorkspaceEnhancedSecurityComplianceGet.json
+     */
+    /**
+     * Sample code: Get a workspace with Enhanced Security &amp; Compliance Add-On.
+     * 
+     * @param manager Entry point to AzureDatabricksManager.
+     */
+    public static void getAWorkspaceWithEnhancedSecurityComplianceAddOn(
+        com.azure.resourcemanager.databricks.AzureDatabricksManager manager) {
+        manager.workspaces().getByResourceGroupWithResponse("rg", "myWorkspace", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-01-01/WorkspaceGetParameters.json
      */
     /**
      * Sample code: Get a workspace with custom parameters.
@@ -812,8 +905,7 @@ public final class WorkspacesGetByResourceGroupSamples {
  */
 public final class WorkspacesListSamples {
     /*
-     * x-ms-original-file: specification/databricks/resource-manager/Microsoft.Databricks/stable/2023-02-01/examples/
-     * WorkspacesListBySubscription.json
+     * x-ms-original-file: 2026-01-01/WorkspacesListBySubscription.json
      */
     /**
      * Sample code: Lists workspaces.
@@ -834,8 +926,7 @@ public final class WorkspacesListSamples {
  */
 public final class WorkspacesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/databricks/resource-manager/Microsoft.Databricks/stable/2023-02-01/examples/
-     * WorkspacesListByResourceGroup.json
+     * x-ms-original-file: 2026-01-01/WorkspacesListByResourceGroup.json
      */
     /**
      * Sample code: Lists workspaces.
@@ -860,8 +951,7 @@ import java.util.Map;
  */
 public final class WorkspacesUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/databricks/resource-manager/Microsoft.Databricks/stable/2023-02-01/examples/WorkspaceUpdate.json
+     * x-ms-original-file: 2026-01-01/WorkspaceUpdate.json
      */
     /**
      * Sample code: Update a workspace's tags.

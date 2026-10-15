@@ -650,6 +650,140 @@ keyVaultSettingsAsyncClient.updateSetting(settingToUpdate)
             updatedSetting.asBoolean()));
 ```
 
+## EKM operations
+An External Key Manager (EKM) connection allows a Managed HSM to communicate with an external key management proxy. The EKM client lets you create, retrieve, update, delete and check an EKM connection, as well as retrieve the EKM proxy client certificate.
+
+### Examples
+#### Sync API
+The following sections provide several code snippets covering some of the most common Azure Key Vault EKM client tasks, including:
+- [Creating an EKM client](#create-an-ekm-client)
+- [Creating an EKM connection](#create-an-ekm-connection)
+- [Retrieving an EKM connection](#retrieve-an-ekm-connection)
+- [Updating an EKM connection](#update-an-ekm-connection)
+- [Deleting an EKM connection](#delete-an-ekm-connection)
+- [Checking an EKM connection](#check-an-ekm-connection)
+- [Retrieving the EKM proxy client certificate](#retrieve-the-ekm-proxy-client-certificate)
+
+##### Create an EKM client
+Once you perform [the authentication set up that suits you best][default_azure_credential] and replaced **your-managed-hsm-url** with the URL for your key vault, you can create the `KeyVaultEkmClient`:
+
+```java readme-sample-createEkmClient
+KeyVaultEkmClient keyVaultEkmClient = new KeyVaultEkmClientBuilder()
+    .vaultUrl("<your-managed-hsm-url>")
+    .credential(new DefaultAzureCredentialBuilder().build())
+    .buildClient();
+```
+
+> NOTE: For using an asynchronous client use `KeyVaultEkmAsyncClient` instead of `KeyVaultEkmClient` and call `buildAsyncClient()`.
+
+##### Create an EKM connection
+Create an EKM connection for a Managed HSM account.
+
+```java readme-sample-createEkmConnection
+KeyVaultEkmConnection ekmConnectionToCreate =
+    new KeyVaultEkmConnection("<ekm-proxy-host>",
+        Collections.singletonList("<server-ca-certificate>".getBytes()))
+        .setPathPrefix("<path-prefix>")
+        .setServerSubjectCommonName("<server-subject-common-name>");
+
+KeyVaultEkmConnection createdEkmConnection = keyVaultEkmClient.createEkmConnection(ekmConnectionToCreate);
+
+System.out.printf("Created EKM connection with host '%s'.%n", createdEkmConnection.getHost());
+```
+
+##### Retrieve an EKM connection
+Retrieve the EKM connection for a Managed HSM account.
+
+```java readme-sample-getEkmConnection
+KeyVaultEkmConnection ekmConnection = keyVaultEkmClient.getEkmConnection();
+
+System.out.printf("Retrieved EKM connection with host '%s'.%n", ekmConnection.getHost());
+```
+
+##### Update an EKM connection
+Update the EKM connection for a Managed HSM account.
+
+```java readme-sample-updateEkmConnection
+KeyVaultEkmConnection ekmConnectionToUpdate =
+    new KeyVaultEkmConnection("<ekm-proxy-host>",
+        Collections.singletonList("<server-ca-certificate>".getBytes()))
+        .setPathPrefix("<path-prefix>")
+        .setServerSubjectCommonName("<server-subject-common-name>");
+
+KeyVaultEkmConnection updatedEkmConnection = keyVaultEkmClient.updateEkmConnection(ekmConnectionToUpdate);
+
+System.out.printf("Updated EKM connection with host '%s'.%n", updatedEkmConnection.getHost());
+```
+
+##### Delete an EKM connection
+Delete the EKM connection for a Managed HSM account.
+
+```java readme-sample-deleteEkmConnection
+KeyVaultEkmConnection deletedEkmConnection = keyVaultEkmClient.deleteEkmConnection();
+
+System.out.printf("Deleted EKM connection with host '%s'.%n", deletedEkmConnection.getHost());
+```
+
+##### Check an EKM connection
+Check the EKM connection for a Managed HSM account.
+
+```java readme-sample-checkEkmConnection
+KeyVaultEkmProxyInfo ekmProxyInfo = keyVaultEkmClient.checkEkmConnection();
+
+System.out.printf("Checked EKM connection. Proxy vendor: '%s', proxy name: '%s'.%n",
+    ekmProxyInfo.getProxyVendor(), ekmProxyInfo.getProxyName());
+```
+
+##### Retrieve the EKM proxy client certificate
+Retrieve the EKM proxy client certificate for a Managed HSM account.
+
+```java readme-sample-getEkmCertificate
+KeyVaultEkmProxyClientCertificateInfo certificateInfo = keyVaultEkmClient.getEkmCertificate();
+
+System.out.printf("Retrieved EKM proxy client certificate with subject common name '%s'.%n",
+    certificateInfo.getSubjectCommonName());
+```
+
+#### Async API
+The following sections provide several code snippets covering some of the most common asynchronous Azure Key Vault EKM client tasks, including:
+- [Creating an EKM connection](#create-an-ekm-connection-asynchronously)
+- [Retrieving an EKM connection](#retrieve-an-ekm-connection-asynchronously)
+- [Checking an EKM connection](#check-an-ekm-connection-asynchronously)
+
+##### Create an EKM connection asynchronously
+Create an EKM connection for a Managed HSM account.
+
+```java readme-sample-createEkmConnectionAsync
+KeyVaultEkmConnection ekmConnectionToCreate =
+    new KeyVaultEkmConnection("<ekm-proxy-host>",
+        Collections.singletonList("<server-ca-certificate>".getBytes()))
+        .setPathPrefix("<path-prefix>")
+        .setServerSubjectCommonName("<server-subject-common-name>");
+
+keyVaultEkmAsyncClient.createEkmConnection(ekmConnectionToCreate)
+    .subscribe(createdEkmConnection ->
+        System.out.printf("Created EKM connection with host '%s'.%n", createdEkmConnection.getHost()));
+```
+
+##### Retrieve an EKM connection asynchronously
+Retrieve the EKM connection for a Managed HSM account.
+
+```java readme-sample-getEkmConnectionAsync
+keyVaultEkmAsyncClient.getEkmConnection()
+    .subscribe(ekmConnection ->
+        System.out.printf("Retrieved EKM connection with host '%s'.%n", ekmConnection.getHost()));
+```
+
+##### Check an EKM connection asynchronously
+Check the EKM connection for a Managed HSM account.
+
+```java readme-sample-checkEkmConnectionAsync
+keyVaultEkmAsyncClient.checkEkmConnection()
+    .subscribe(ekmProxyInfo ->
+        System.out.printf("Checked EKM connection. Proxy vendor: '%s', proxy name: '%s'.%n",
+            ekmProxyInfo.getProxyVendor(), ekmProxyInfo.getProxyName()));
+```
+
 ## Troubleshooting
 See our [troubleshooting guide](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-administration/TROUBLESHOOTING.md) for details on how to diagnose various failure scenarios.
 

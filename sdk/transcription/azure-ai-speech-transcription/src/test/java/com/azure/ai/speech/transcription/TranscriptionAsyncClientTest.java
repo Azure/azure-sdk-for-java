@@ -57,7 +57,7 @@ class TranscriptionAsyncClientTest extends TranscriptionClientTestBase {
     @Test
     public void testTranscribeAsyncWithDiarizationFromFile() {
         transcribeAndVerifyResult("testTranscribeAsyncWithDiarizationFromFile",
-            fromAudioFile().setDiarizationOptions(new TranscriptionDiarizationOptions().setMaxSpeakers(5)));
+            fromAudioFile().setDiarizationOptions(new TranscriptionDiarizationOptions(true).setMaxSpeakers(5)));
     }
 
     @Test
@@ -75,7 +75,7 @@ class TranscriptionAsyncClientTest extends TranscriptionClientTestBase {
     @Test
     public void testTranscribeAsyncAllOptionsFromFile() {
         TranscriptionOptions options = fromAudioFile().setLocales(Collections.singletonList("en-US"))
-            .setDiarizationOptions(new TranscriptionDiarizationOptions().setMaxSpeakers(5))
+            .setDiarizationOptions(new TranscriptionDiarizationOptions(true).setMaxSpeakers(5))
             .setProfanityFilterMode(ProfanityFilterMode.MASKED)
             .setActiveChannels(Collections.singletonList(0));
 
@@ -91,7 +91,7 @@ class TranscriptionAsyncClientTest extends TranscriptionClientTestBase {
     @Test
     public void testTranscribeAsyncWithAllOptionsFromFileWithResponse() {
         TranscriptionOptions options = fromAudioFile().setLocales(Arrays.asList("en-US", "es-ES"))
-            .setDiarizationOptions(new TranscriptionDiarizationOptions().setMaxSpeakers(5))
+            .setDiarizationOptions(new TranscriptionDiarizationOptions(true).setMaxSpeakers(5))
             .setProfanityFilterMode(ProfanityFilterMode.REMOVED)
             .setActiveChannels(Arrays.asList(0, 1));
 
@@ -176,9 +176,11 @@ class TranscriptionAsyncClientTest extends TranscriptionClientTestBase {
     private void transcribeAndVerifyResponse(String testName, TranscriptionOptions options,
         RequestOptions requestOptions) {
         BinaryData multipartBody = createMultipartBody(options, requestOptions);
-        StepVerifier.create(client.transcribeWithResponse(multipartBody, requestOptions)).assertNext(response -> {
-            printHttpRequestAndResponse(response);
-            validateTranscriptionResult(testName, response.getValue().toObject(TranscriptionResult.class));
-        }).verifyComplete();
+        StepVerifier.create(client.transcribeWithResponseInternal(multipartBody, requestOptions))
+            .assertNext(response -> {
+                printHttpRequestAndResponse(response);
+                validateTranscriptionResult(testName, response.getValue().toObject(TranscriptionResult.class));
+            })
+            .verifyComplete();
     }
 }

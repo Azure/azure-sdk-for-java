@@ -12,10 +12,10 @@ public final class NextBillingModelTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NextBillingModel model = BinaryData.fromString(
-            "{\"billingModel\":\"eae\",\"capabilitiesEnabled\":[\"bfatklddxbjhwu\",\"an\"],\"trialDaysRemaining\":14.726119453613007}")
+            "{\"billingModel\":\"yvjusrtslhsp\",\"capabilitiesEnabled\":[\"emaofmxagkvt\",\"elmqk\",\"hahvljuahaq\",\"hcdhmdual\"],\"trialDaysRemaining\":52.6878090627963}")
             .toObject(NextBillingModel.class);
-        Assertions.assertEquals("eae", model.billingModel());
-        Assertions.assertEquals("bfatklddxbjhwu", model.capabilitiesEnabled().get(0));
-        Assertions.assertEquals(14.726119453613007D, model.trialDaysRemaining());
+        Assertions.assertEquals("yvjusrtslhsp", model.billingModel());
+        Assertions.assertEquals("emaofmxagkvt", model.capabilitiesEnabled().get(0));
+        Assertions.assertEquals(52.6878090627963D, model.trialDaysRemaining());
     }
 }

@@ -23,6 +23,8 @@ import java.util.stream.Collectors;
 
 public final class OpenAIJsonHelper {
 
+    private static final ObjectMapper OPENAI_MODEL_MAPPER = ObjectMappers.jsonMapper();
+
     private static final ObjectMapper MAPPER = ObjectMappers.jsonMapper()
         .rebuild()
         .configure(MapperFeature.AUTO_DETECT_FIELDS, true)
@@ -110,7 +112,7 @@ public final class OpenAIJsonHelper {
             return null;
         }
         try {
-            String json = MAPPER.writeValueAsString(openAIObject);
+            String json = OPENAI_MODEL_MAPPER.writeValueAsString(openAIObject);
             try (JsonReader reader = JsonProviders.createReader(new StringReader(json))) {
                 reader.nextToken();
                 return BinaryData.fromObject(reader.readUntyped());
@@ -118,6 +120,21 @@ public final class OpenAIJsonHelper {
         } catch (IOException e) {
             throw new RuntimeException("Failed to convert OpenAI type to BinaryData", e);
         }
+    }
+
+    /**
+     * Converts a list of OpenAI SDK types to a list of BinaryData objects.
+     *
+     * @param <S> The source OpenAI SDK type.
+     * @param openAIObjects The list of OpenAI SDK objects to convert.
+     *
+     * @return The equivalent list of BinaryData objects, or null if the input is null.
+     */
+    public static <S> List<BinaryData> toBinaryDataList(List<S> openAIObjects) {
+        if (openAIObjects == null) {
+            return null;
+        }
+        return openAIObjects.stream().map(obj -> toBinaryData(obj)).collect(Collectors.toList());
     }
 
     /**
@@ -133,10 +150,25 @@ public final class OpenAIJsonHelper {
             return null;
         }
         try {
-            return MAPPER.readValue(data.toString(), type);
+            return OPENAI_MODEL_MAPPER.readValue(data.toString(), type);
         } catch (IOException e) {
             throw new RuntimeException("Failed to deserialize BinaryData to OpenAI type", e);
         }
+    }
+
+    /**
+     * Deserializes a list of {@link BinaryData} values to a list of openai-java types.
+     *
+     * @param dataList the list of BinaryData values containing JSON.
+     * @param type the target openai-java class.
+     * @param <T> the target type.
+     * @return the deserialized list, or null if the input is null.
+     */
+    public static <T> List<T> fromBinaryDataList(List<BinaryData> dataList, Class<T> type) {
+        if (dataList == null) {
+            return null;
+        }
+        return dataList.stream().map(data -> fromBinaryData(data, type)).collect(Collectors.toList());
     }
 
     /**
@@ -160,16 +192,41 @@ public final class OpenAIJsonHelper {
         }
         try {
             String json = BinaryData.fromObject(obj).toString();
-            Map<String, Object> map = MAPPER.readValue(json, new TypeReference<Map<String, Object>>() {
-            });
-            Map<String, JsonValue> result = new HashMap<>();
-            for (Map.Entry<String, Object> entry : map.entrySet()) {
-                result.put(entry.getKey(), JsonValue.from(entry.getValue()));
-            }
-            return result;
+            return jsonStringToJsonValueMap(json);
         } catch (IOException e) {
             throw new RuntimeException("Failed to flatten JsonSerializable to JsonValue map", e);
         }
+    }
+
+    /**
+     * Parses raw JSON bytes representing a top-level JSON object into a map of property names to
+     * {@link JsonValue} entries, suitable for placing on an openai-java request builder via
+     * {@code additionalBodyProperties(Map)}. The strongly-typed builder fields remain unset, so
+     * the serialized output of the resulting params matches the original JSON.
+     *
+     * @param body the JSON body bytes; the content must represent a JSON object.
+     * @return a map of property names to {@link JsonValue} entries, or an empty map if the input is null.
+     * @throws RuntimeException if the input is not a valid JSON object.
+     */
+    public static Map<String, JsonValue> jsonBodyToValueMap(BinaryData body) {
+        if (body == null) {
+            return new HashMap<>();
+        }
+        try {
+            return jsonStringToJsonValueMap(body.toString());
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to parse JSON body to JsonValue map", e);
+        }
+    }
+
+    private static Map<String, JsonValue> jsonStringToJsonValueMap(String json) throws IOException {
+        Map<String, Object> map = MAPPER.readValue(json, new TypeReference<Map<String, Object>>() {
+        });
+        Map<String, JsonValue> result = new HashMap<>();
+        for (Map.Entry<String, Object> entry : map.entrySet()) {
+            result.put(entry.getKey(), JsonValue.from(entry.getValue()));
+        }
+        return result;
     }
 
     /**

@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.CustomDnsConfigPropertiesFormat;
+import com.azure.resourcemanager.network.models.PrivateEndpointBillingSku;
 import com.azure.resourcemanager.network.models.PrivateEndpointIpConfiguration;
 import com.azure.resourcemanager.network.models.PrivateEndpointIpVersionType;
 import com.azure.resourcemanager.network.models.PrivateLinkServiceConnection;
@@ -73,6 +74,11 @@ public final class PrivateEndpointPropertiesInner implements JsonSerializable<Pr
      * The custom name of the network interface attached to the private endpoint.
      */
     private String customNetworkInterfaceName;
+
+    /*
+     * The billing sku of the private endpoint.
+     */
+    private PrivateEndpointBillingSku billingSku;
 
     /**
      * Creates an instance of PrivateEndpointPropertiesInner class.
@@ -275,6 +281,26 @@ public final class PrivateEndpointPropertiesInner implements JsonSerializable<Pr
     }
 
     /**
+     * Get the billingSku property: The billing sku of the private endpoint.
+     * 
+     * @return the billingSku value.
+     */
+    public PrivateEndpointBillingSku billingSku() {
+        return this.billingSku;
+    }
+
+    /**
+     * Set the billingSku property: The billing sku of the private endpoint.
+     * 
+     * @param billingSku the billingSku value to set.
+     * @return the PrivateEndpointPropertiesInner object itself.
+     */
+    public PrivateEndpointPropertiesInner withBillingSku(PrivateEndpointBillingSku billingSku) {
+        this.billingSku = billingSku;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -322,6 +348,7 @@ public final class PrivateEndpointPropertiesInner implements JsonSerializable<Pr
         jsonWriter.writeArrayField("ipConfigurations", this.ipConfigurations,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("customNetworkInterfaceName", this.customNetworkInterfaceName);
+        jsonWriter.writeStringField("billingSku", this.billingSku == null ? null : this.billingSku.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -377,6 +404,9 @@ public final class PrivateEndpointPropertiesInner implements JsonSerializable<Pr
                     deserializedPrivateEndpointPropertiesInner.ipConfigurations = ipConfigurations;
                 } else if ("customNetworkInterfaceName".equals(fieldName)) {
                     deserializedPrivateEndpointPropertiesInner.customNetworkInterfaceName = reader.getString();
+                } else if ("billingSku".equals(fieldName)) {
+                    deserializedPrivateEndpointPropertiesInner.billingSku
+                        = PrivateEndpointBillingSku.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

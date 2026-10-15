@@ -26,6 +26,7 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.resourcemanager.horizondb.fluent.HorizonDbAdministratorsClient;
 import com.azure.resourcemanager.horizondb.fluent.HorizonDbClustersClient;
 import com.azure.resourcemanager.horizondb.fluent.HorizonDbFirewallRulesClient;
 import com.azure.resourcemanager.horizondb.fluent.HorizonDbManagementClient;
@@ -246,6 +247,20 @@ public final class HorizonDbManagementClientImpl implements HorizonDbManagementC
     }
 
     /**
+     * The HorizonDbAdministratorsClient object to access its operations.
+     */
+    private final HorizonDbAdministratorsClient horizonDbAdministrators;
+
+    /**
+     * Gets the HorizonDbAdministratorsClient object to access its operations.
+     * 
+     * @return the HorizonDbAdministratorsClient object.
+     */
+    public HorizonDbAdministratorsClient getHorizonDbAdministrators() {
+        return this.horizonDbAdministrators;
+    }
+
+    /**
      * Initializes an instance of HorizonDbManagementClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
@@ -262,7 +277,7 @@ public final class HorizonDbManagementClientImpl implements HorizonDbManagementC
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2026-01-20-preview";
+        this.apiVersion = "2026-05-01-preview";
         this.operations = new OperationsClientImpl(this);
         this.horizonDbClusters = new HorizonDbClustersClientImpl(this);
         this.horizonDbPools = new HorizonDbPoolsClientImpl(this);
@@ -271,6 +286,7 @@ public final class HorizonDbManagementClientImpl implements HorizonDbManagementC
         this.horizonDbPrivateEndpointConnections = new HorizonDbPrivateEndpointConnectionsClientImpl(this);
         this.horizonDbPrivateLinkResources = new HorizonDbPrivateLinkResourcesClientImpl(this);
         this.horizonDbParameterGroups = new HorizonDbParameterGroupsClientImpl(this);
+        this.horizonDbAdministrators = new HorizonDbAdministratorsClientImpl(this);
     }
 
     /**
@@ -384,7 +400,7 @@ public final class HorizonDbManagementClientImpl implements HorizonDbManagementC
             super(null);
             this.statusCode = statusCode;
             this.httpHeaders = httpHeaders;
-            this.responseBody = responseBody == null ? null : responseBody.getBytes(StandardCharsets.UTF_8);
+            this.responseBody = responseBody == null ? new byte[0] : responseBody.getBytes(StandardCharsets.UTF_8);
         }
 
         public int getStatusCode() {

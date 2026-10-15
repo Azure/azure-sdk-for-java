@@ -8,16 +8,16 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Defines values for MigrationListFilter.
+ * Indicates the filter to apply when listing migrations.
  */
 public final class MigrationListFilter extends ExpandableStringEnum<MigrationListFilter> {
     /**
-     * Static value Active for MigrationListFilter.
+     * Only active (in-progress) migrations.
      */
     public static final MigrationListFilter ACTIVE = fromString("Active");
 
     /**
-     * Static value All for MigrationListFilter.
+     * All migrations.
      */
     public static final MigrationListFilter ALL = fromString("All");
 

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.compute.generated;
  */
 public final class DiskRestorePointGetSamples {
     /*
-     * x-ms-original-file: 2025-01-02/diskRestorePointExamples/DiskRestorePoint_Get.json
+     * x-ms-original-file: 2026-03-02/diskRestorePointExamples/DiskRestorePoint_Get.json
      */
     /**
      * Sample code: get an incremental disk restorePoint resource.
@@ -25,8 +25,24 @@ public final class DiskRestorePointGetSamples {
     }
 
     /*
+     * x-ms-original-file: 2026-03-02/diskRestorePointExamples/DiskRestorePoint_Get_WithInstantAccess.json
+     */
+    /**
+     * Sample code: get a disk restorePoint resource with InstantAccess snapshotAccessState.
+     * 
+     * @param manager Entry point to ComputeManager.
+     */
+    public static void getADiskRestorePointResourceWithInstantAccessSnapshotAccessState(
+        com.azure.resourcemanager.compute.ComputeManager manager) {
+        manager.serviceClient()
+            .getDiskRestorePoints()
+            .getWithResponse("myResourceGroup", "rpc", "vmrp",
+                "TestDisk45ceb03433006d1baee_5c1528-43e2-4c77-9c55-a78bf5a5fc88", com.azure.core.util.Context.NONE);
+    }
+
+    /*
      * x-ms-original-file:
-     * 2025-01-02/diskRestorePointExamples/DiskRestorePoint_Get_WhenSourceResourceIsFromDifferentRegion.json
+     * 2026-03-02/diskRestorePointExamples/DiskRestorePoint_Get_WhenSourceResourceIsFromDifferentRegion.json
      */
     /**
      * Sample code: get an incremental disk restorePoint when source resource is from a different region.
@@ -39,5 +55,21 @@ public final class DiskRestorePointGetSamples {
             .getDiskRestorePoints()
             .getWithResponse("myResourceGroup", "rpc", "vmrp",
                 "TestDisk45ceb03433006d1baee0_b70cd924-3362-4a80-93c2-9415eaa12745", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-03-02/diskRestorePointExamples/DiskRestorePoint_Get_WithConfidentialVMVersion.json
+     */
+    /**
+     * Sample code: get a ConfidentialVM incremental disk restorePoint resource with confidentialVMVersion.
+     * 
+     * @param manager Entry point to ComputeManager.
+     */
+    public static void getAConfidentialVMIncrementalDiskRestorePointResourceWithConfidentialVMVersion(
+        com.azure.resourcemanager.compute.ComputeManager manager) {
+        manager.serviceClient()
+            .getDiskRestorePoints()
+            .getWithResponse("myResourceGroup", "rpc", "vmrp",
+                "myConfidentialDisk_c4bc27e0-ccf6-494e-a740-af34de775527", com.azure.core.util.Context.NONE);
     }
 }

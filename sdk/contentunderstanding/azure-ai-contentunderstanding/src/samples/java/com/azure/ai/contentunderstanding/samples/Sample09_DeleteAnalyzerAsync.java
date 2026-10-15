@@ -8,20 +8,16 @@ import com.azure.ai.contentunderstanding.ContentUnderstandingAsyncClient;
 import com.azure.ai.contentunderstanding.ContentUnderstandingClientBuilder;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzer;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzerConfig;
-import com.azure.ai.contentunderstanding.models.ContentFieldDefinition;
-import com.azure.ai.contentunderstanding.models.ContentFieldSchema;
-import com.azure.ai.contentunderstanding.models.ContentFieldType;
-import com.azure.ai.contentunderstanding.models.GenerationMethod;
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.exception.HttpResponseException;
+import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
 
 /**
  * Sample demonstrating how to delete an analyzer asynchronously.
@@ -30,10 +26,12 @@ import java.util.concurrent.TimeUnit;
  * 2. Verifying the analyzer exists
  * 3. Deleting the analyzer
  * 4. Verifying the analyzer no longer exists
+ *
+ * <p>Deleting an analyzer is permanent and only custom analyzers can be deleted.</p>
  */
 public class Sample09_DeleteAnalyzerAsync {
 
-    public static void main(String[] args) throws InterruptedException {
+     public static void main(String[] args) {
         // BEGIN: com.azure.ai.contentunderstanding.sample09Async.buildClient
         String endpoint = System.getenv("CONTENTUNDERSTANDING_ENDPOINT");
         String key = System.getenv("CONTENTUNDERSTANDING_KEY");
@@ -56,91 +54,73 @@ public class Sample09_DeleteAnalyzerAsync {
         String analyzerId = "analyzer_to_delete_" + System.currentTimeMillis();
         System.out.println("Creating temporary analyzer '" + analyzerId + "'...");
 
-        Map<String, ContentFieldDefinition> fields = new HashMap<>();
-        ContentFieldDefinition titleDef = new ContentFieldDefinition();
-        titleDef.setType(ContentFieldType.STRING);
-        titleDef.setMethod(GenerationMethod.EXTRACT);
-        titleDef.setDescription("Document title");
-        fields.put("title", titleDef);
-
-        ContentFieldSchema fieldSchema = new ContentFieldSchema();
-        fieldSchema.setName("temp_schema");
-        fieldSchema.setDescription("Temporary schema for deletion demo");
-        fieldSchema.setFields(fields);
-
         Map<String, String> models = new HashMap<>();
-        models.put("completion", "gpt-4.1");
-        models.put("embedding", "text-embedding-3-large");
+        models.put("completion", SampleModelConfiguration.getCompletionModel());
 
-        ContentAnalyzer analyzer = new ContentAnalyzer()
-            .setBaseAnalyzerId("prebuilt-document")
-            .setDescription("Temporary analyzer for deletion demo")
-            .setConfig(new ContentAnalyzerConfig()
-                .setOcrEnabled(true)
-                .setLayoutEnabled(true))
-            .setFieldSchema(fieldSchema)
+        ContentAnalyzer analyzer = new ContentAnalyzer().setBaseAnalyzerId("prebuilt-document")
+            .setDescription("Simple analyzer for deletion example")
+            .setConfig(new ContentAnalyzerConfig().setReturnDetails(true))
             .setModels(models);
 
-        PollerFlux<?, ContentAnalyzer> createPoller = client.beginCreateAnalyzer(analyzerId, analyzer, true);
-        
         String finalAnalyzerId = analyzerId; // For use in lambda
 
-        CountDownLatch latch = new CountDownLatch(1);
+        Mono<ContentAnalyzer> createdAnalyzer = client.beginCreateAnalyzer(analyzerId, analyzer, true)
+            .last()
+            .flatMap(response -> requireSuccessfulResult(response.getStatus(), response.getFinalResult(),
+                "Analyzer creation"));
 
-        createPoller.last()
-            .flatMap(pollResponse -> {
-                if (pollResponse.getStatus().isComplete()) {
-                    System.out.println("Polling completed successfully");
-                    return pollResponse.getFinalResult();
-                } else {
-                    return Mono.error(new RuntimeException(
-                        "Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
-                }
-            })
-            .doOnNext(result -> {
+        runWithFailureCleanup(createdAnalyzer,
+            ignored -> client.getAnalyzer(finalAnalyzerId).doOnNext(retrievedAnalyzer -> {
                 System.out.println("Temporary analyzer created: " + finalAnalyzerId);
-            })
-            .then(client.getAnalyzer(finalAnalyzerId))
-            .doOnNext(retrievedAnalyzer -> {
                 System.out.println("Verified analyzer exists with ID: " + retrievedAnalyzer.getAnalyzerId());
-            })
-            .then(client.deleteAnalyzer(finalAnalyzerId))
-            .doOnSuccess(v -> {
+            }).then(client.deleteAnalyzer(finalAnalyzerId)).doOnSuccess(ignoredDelete -> {
                 System.out.println("Analyzer deleted successfully: " + finalAnalyzerId);
-            })
-            .then(client.getAnalyzer(finalAnalyzerId))
-            .doOnNext(ignored -> {
-                // Should not reach here if analyzer was deleted
-                System.out.println("Warning: Analyzer still exists after deletion");
-            })
-            .onErrorResume(ResourceNotFoundException.class, e -> {
-                System.out.println("Confirmed: Analyzer no longer exists");
-                return Mono.empty();
-            })
-            .doOnError(error -> {
-                if (!(error instanceof ResourceNotFoundException)) {
-                    System.err.println("Error occurred: " + error.getMessage());
-                    error.printStackTrace();
-                }
-            })
-            .subscribe(
-                result -> {
-                    // Success - operations completed
-                    latch.countDown();
-                },
-                error -> {
-                    if (!(error instanceof ResourceNotFoundException)) {
-                        // Error already handled in doOnError
-                    }
-                    latch.countDown();
-                }
-            );
+            }).then(verifyDeleted(client.getAnalyzer(finalAnalyzerId), finalAnalyzerId))
+                .then(verifyNotListed(client.listAnalyzers(), finalAnalyzerId)),
+            ignored -> client.deleteAnalyzer(finalAnalyzerId)).block();
         // END:ContentUnderstandingDeleteAnalyzerAsync
+    }
 
-        // The .subscribe() creation is not a blocking call. For the purpose of this example,
-        // we use a CountDownLatch so the program does not end before the async operations complete.
-        if (!latch.await(2, TimeUnit.MINUTES)) {
-            System.err.println("Timed out waiting for async operations to complete.");
+    static <T> Mono<T> requireSuccessfulResult(LongRunningOperationStatus status, Mono<T> finalResult,
+        String operationName) {
+        if (status != LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
+            return Mono.error(
+                new IllegalStateException(operationName + " completed unsuccessfully with status: " + status));
         }
+        return finalResult
+            .switchIfEmpty(Mono.error(new IllegalStateException(operationName + " completed without a final result.")));
+    }
+
+    static <T> Mono<Void> runWithFailureCleanup(Mono<T> resource, Function<T, Mono<Void>> operation,
+        Function<T, Mono<Void>> cleanup) {
+        return Mono.usingWhen(resource, operation, ignored -> Mono.empty(),
+            (value, error) -> cleanup.apply(value), cleanup);
+    }
+
+    static Mono<Void> verifyDeleted(Mono<ContentAnalyzer> getAnalyzer, String analyzerId) {
+        return getAnalyzer
+            .flatMap(ignored -> Mono.<Void>error(
+                new IllegalStateException("Deleted analyzer '" + analyzerId + "' is still retrievable.")))
+            .switchIfEmpty(Mono.error(
+                new IllegalStateException("Get analyzer completed without confirming deletion for '" + analyzerId + "'.")))
+            .onErrorResume(HttpResponseException.class, exception -> {
+                int statusCode = exception.getResponse().getStatusCode();
+                if (statusCode != 404 && statusCode != 400) {
+                    return Mono.error(exception);
+                }
+                System.out.println("Confirmed: Analyzer no longer exists (status " + statusCode + ")");
+                return Mono.empty();
+            });
+    }
+
+    static Mono<Void> verifyNotListed(Flux<ContentAnalyzer> analyzers, String analyzerId) {
+        return analyzers.any(analyzer -> analyzerId.equals(analyzer.getAnalyzerId())).flatMap(found -> {
+            if (found) {
+                return Mono.error(
+                    new IllegalStateException("Deleted analyzer '" + analyzerId + "' still appears in the list."));
+            }
+            System.out.println("Confirmed: Analyzer no longer appears in the analyzer list");
+            return Mono.empty();
+        });
     }
 }

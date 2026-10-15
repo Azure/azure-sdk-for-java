@@ -3,8 +3,11 @@
 package com.azure.ai.projects;
 
 import com.azure.ai.projects.models.DatasetVersion;
+import com.azure.ai.projects.models.FileDatasetVersion;
+import com.azure.ai.projects.models.FolderDatasetVersion;
 import com.azure.ai.projects.models.PendingUploadRequest;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.test.annotation.LiveOnly;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -48,6 +51,28 @@ public class DatasetsAsyncClientTest extends ClientTestBase {
     @LiveOnly
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
+    public void testCreateDatasetWithFileWithResponse(HttpClient httpClient, AIProjectsServiceVersion serviceVersion)
+        throws FileNotFoundException, URISyntaxException {
+        DatasetsAsyncClient datasetsAsyncClient = getDatasetsAsyncClient(httpClient, serviceVersion);
+
+        String datasetName = "java-test-async-file-response-" + UUID.randomUUID().toString().substring(0, 8);
+        String datasetVersionString = "1";
+
+        Path filePath = getPath("product_info.md");
+
+        StepVerifier.create(datasetsAsyncClient.createDatasetWithFileWithResponse(datasetName, datasetVersionString,
+            filePath, new RequestOptions())).assertNext(response -> {
+                FileDatasetVersion createdDatasetVersion = response.getValue().toObject(FileDatasetVersion.class);
+                assertFileDatasetVersion(createdDatasetVersion, datasetName, datasetVersionString, null);
+            }).verifyComplete();
+
+        StepVerifier.create(datasetsAsyncClient.deleteDatasetVersion(datasetName, datasetVersionString))
+            .verifyComplete();
+    }
+
+    @LiveOnly
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
     public void testCreateDatasetWithFolder(HttpClient httpClient, AIProjectsServiceVersion serviceVersion)
         throws IOException {
         DatasetsAsyncClient datasetsAsyncClient = getDatasetsAsyncClient(httpClient, serviceVersion);
@@ -66,6 +91,42 @@ public class DatasetsAsyncClientTest extends ClientTestBase {
                 .create(datasetsAsyncClient.createDatasetWithFolder(datasetName, datasetVersionString, tempFolder))
                 .assertNext(createdDatasetVersion -> assertDatasetVersion(createdDatasetVersion, datasetName,
                     datasetVersionString))
+                .verifyComplete();
+
+            StepVerifier.create(datasetsAsyncClient.deleteDatasetVersion(datasetName, datasetVersionString))
+                .verifyComplete();
+        } finally {
+            Files.deleteIfExists(file1);
+            Files.deleteIfExists(file2);
+            Files.deleteIfExists(tempFolder);
+        }
+    }
+
+    @LiveOnly
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
+    public void testCreateDatasetWithFolderWithResponse(HttpClient httpClient, AIProjectsServiceVersion serviceVersion)
+        throws IOException {
+        DatasetsAsyncClient datasetsAsyncClient = getDatasetsAsyncClient(httpClient, serviceVersion);
+
+        String datasetName = "java-test-async-folder-response-" + UUID.randomUUID().toString().substring(0, 8);
+        String datasetVersionString = "1";
+
+        Path tempFolder = Files.createTempDirectory("test-folder-dataset");
+        Path file1 = tempFolder.resolve("file1.txt");
+        Path file2 = tempFolder.resolve("file2.txt");
+        Files.write(file1, "Test content 1".getBytes());
+        Files.write(file2, "Test content 2".getBytes());
+
+        try {
+            StepVerifier
+                .create(datasetsAsyncClient.createDatasetWithFolderWithResponse(datasetName, datasetVersionString,
+                    tempFolder, new RequestOptions()))
+                .assertNext(response -> {
+                    FolderDatasetVersion createdDatasetVersion
+                        = response.getValue().toObject(FolderDatasetVersion.class);
+                    assertDatasetVersion(createdDatasetVersion, datasetName, datasetVersionString);
+                })
                 .verifyComplete();
 
             StepVerifier.create(datasetsAsyncClient.deleteDatasetVersion(datasetName, datasetVersionString))

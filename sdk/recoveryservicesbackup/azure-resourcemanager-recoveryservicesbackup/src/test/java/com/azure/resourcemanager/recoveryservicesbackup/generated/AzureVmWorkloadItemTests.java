@@ -13,16 +13,16 @@ public final class AzureVmWorkloadItemTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureVmWorkloadItem model = BinaryData.fromString(
-            "{\"workloadItemType\":\"AzureVmWorkloadItem\",\"parentName\":\"ojocqwogf\",\"serverName\":\"jvusfzldmozux\",\"isAutoProtectable\":false,\"subinquireditemcount\":2142846069,\"subWorkloadItemCount\":233477103,\"backupManagementType\":\"dp\",\"workloadType\":\"own\",\"friendlyName\":\"gkbugrjqct\",\"protectionState\":\"ProtectionFailed\"}")
+            "{\"workloadItemType\":\"AzureVmWorkloadItem\",\"parentName\":\"tjuewbcihx\",\"serverName\":\"whcjyxcc\",\"isAutoProtectable\":true,\"subinquireditemcount\":436827826,\"subWorkloadItemCount\":1093154656,\"backupManagementType\":\"kudzpxgwj\",\"workloadType\":\"mag\",\"friendlyName\":\"cyohpfkyrkdbd\",\"protectionState\":\"NotProtected\"}")
             .toObject(AzureVmWorkloadItem.class);
-        Assertions.assertEquals("dp", model.backupManagementType());
-        Assertions.assertEquals("own", model.workloadType());
-        Assertions.assertEquals("gkbugrjqct", model.friendlyName());
-        Assertions.assertEquals(ProtectionStatus.PROTECTION_FAILED, model.protectionState());
-        Assertions.assertEquals("ojocqwogf", model.parentName());
-        Assertions.assertEquals("jvusfzldmozux", model.serverName());
-        Assertions.assertFalse(model.isAutoProtectable());
-        Assertions.assertEquals(2142846069, model.subinquireditemcount());
-        Assertions.assertEquals(233477103, model.subWorkloadItemCount());
+        Assertions.assertEquals("kudzpxgwj", model.backupManagementType());
+        Assertions.assertEquals("mag", model.workloadType());
+        Assertions.assertEquals("cyohpfkyrkdbd", model.friendlyName());
+        Assertions.assertEquals(ProtectionStatus.NOT_PROTECTED, model.protectionState());
+        Assertions.assertEquals("tjuewbcihx", model.parentName());
+        Assertions.assertEquals("whcjyxcc", model.serverName());
+        Assertions.assertTrue(model.isAutoProtectable());
+        Assertions.assertEquals(436827826, model.subinquireditemcount());
+        Assertions.assertEquals(1093154656, model.subWorkloadItemCount());
     }
 }

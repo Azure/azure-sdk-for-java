@@ -107,19 +107,19 @@ public interface PublicCloudConnectors {
     PagedIterable<PublicCloudConnector> list(Context context);
 
     /**
-     * A long-running resource action.
+     * The testPermissions operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param publicCloudConnector Represent public cloud connectors resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the current status of an async operation.
      */
     OperationStatusResult testPermissions(String resourceGroupName, String publicCloudConnector);
 
     /**
-     * A long-running resource action.
+     * The testPermissions operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param publicCloudConnector Represent public cloud connectors resource.
@@ -127,7 +127,7 @@ public interface PublicCloudConnectors {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the current status of an async operation.
      */
     OperationStatusResult testPermissions(String resourceGroupName, String publicCloudConnector, Context context);
 

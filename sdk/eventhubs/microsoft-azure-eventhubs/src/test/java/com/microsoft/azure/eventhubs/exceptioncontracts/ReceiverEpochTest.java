@@ -12,11 +12,11 @@ import com.microsoft.azure.eventhubs.ReceiverDisconnectedException;
 import com.microsoft.azure.eventhubs.lib.ApiTestBase;
 import com.microsoft.azure.eventhubs.lib.TestBase;
 import com.microsoft.azure.eventhubs.lib.TestContext;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.time.Duration;
@@ -32,20 +32,20 @@ public class ReceiverEpochTest extends ApiTestBase {
 
     private PartitionReceiver receiver;
 
-    @BeforeClass
+    @BeforeAll
     public static void initializeEventHub() throws EventHubException, IOException {
         final ConnectionStringBuilder connectionString = TestContext.getConnectionString();
         ehClient = EventHubClient.createFromConnectionStringSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
     }
 
-    @AfterClass
+    @AfterAll
     public static void cleanup() throws EventHubException {
         if (ehClient != null) {
             ehClient.closeSync();
         }
     }
 
-    @Test(expected = ReceiverDisconnectedException.class)
+    @Test
     public void testEpochReceiverWins() throws EventHubException, InterruptedException, ExecutionException {
         int sendEventCount = 5;
 
@@ -58,16 +58,18 @@ public class ReceiverEpochTest extends ApiTestBase {
             receiverLowEpoch.receiveSync(20);
             receiver = ehClient.createEpochReceiverSync(CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.fromEnqueuedTime(Instant.now()), Long.MAX_VALUE);
 
-            for (int retryCount = 0; retryCount < sendEventCount; retryCount++) {
-                // retry to flush all messages in cache
-                receiverLowEpoch.receiveSync(10);
-            }
+            Assertions.assertThrows(ReceiverDisconnectedException.class, () -> {
+                for (int retryCount = 0; retryCount < sendEventCount; retryCount++) {
+                    // retry to flush all messages in cache
+                    receiverLowEpoch.receiveSync(10);
+                }
+            });
         } finally {
             receiverLowEpoch.closeSync();
         }
     }
 
-    @Test(expected = ReceiverDisconnectedException.class)
+    @Test
     public void testOldHighestEpochWins() throws EventHubException, InterruptedException, ExecutionException {
         Instant testStartTime = Instant.now();
         long epoch = Math.abs(new Random().nextLong());
@@ -78,16 +80,20 @@ public class ReceiverEpochTest extends ApiTestBase {
 
         receiver = ehClient.createEpochReceiverSync(CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.fromEnqueuedTime(testStartTime), epoch);
         receiver.setReceiveTimeout(Duration.ofSeconds(10));
-        PartitionReceiver epochReceiver = ehClient.createEpochReceiverSync(CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.fromStartOfStream(), epoch - 10);
-        try {
-            TestBase.pushEventsToPartition(ehClient, PARTITION_ID, 5).get();
-            Assert.assertTrue(receiver.receiveSync(10).iterator().hasNext());
-        } finally {
-            epochReceiver.closeSync();
-        }
+        final long lowerEpoch = epoch - 10;
+        Assertions.assertThrows(ReceiverDisconnectedException.class, () -> {
+            PartitionReceiver epochReceiver = ehClient.createEpochReceiverSync(
+                CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.fromStartOfStream(), lowerEpoch);
+            try {
+                TestBase.pushEventsToPartition(ehClient, PARTITION_ID, 5).get();
+                Assertions.assertTrue(receiver.receiveSync(10).iterator().hasNext());
+            } finally {
+                epochReceiver.closeSync();
+            }
+        });
     }
 
-    @Test(expected = ReceiverDisconnectedException.class)
+    @Test
     public void testNewHighestEpochWins() throws EventHubException, InterruptedException, ExecutionException {
         int sendEventCount = 5;
         long epoch = new Random().nextInt(Integer.MAX_VALUE);
@@ -101,16 +107,18 @@ public class ReceiverEpochTest extends ApiTestBase {
 
             receiver = ehClient.createEpochReceiverSync(CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.fromEnqueuedTime(Instant.now()), Long.MAX_VALUE);
 
-            for (int retryCount = 0; retryCount < sendEventCount; retryCount++) {
-                // retry to flush all messages in cache
-                receiverLowEpoch.receiveSync(10);
-            }
+            Assertions.assertThrows(ReceiverDisconnectedException.class, () -> {
+                for (int retryCount = 0; retryCount < sendEventCount; retryCount++) {
+                    // retry to flush all messages in cache
+                    receiverLowEpoch.receiveSync(10);
+                }
+            });
         } finally {
             receiverLowEpoch.closeSync();
         }
     }
 
-    @After
+    @AfterEach
     public void testCleanup() throws EventHubException {
         if (receiver != null) {
             receiver.closeSync();

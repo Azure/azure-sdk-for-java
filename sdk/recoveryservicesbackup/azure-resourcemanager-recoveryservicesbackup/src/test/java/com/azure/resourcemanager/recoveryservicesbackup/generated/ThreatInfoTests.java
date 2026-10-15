@@ -14,9 +14,9 @@ public final class ThreatInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ThreatInfo model = BinaryData.fromString(
-            "{\"threatTitle\":\"cvpa\",\"threatDescription\":\"sreuzvxurisjnh\",\"lastUpdatedTime\":\"2021-02-28T18:44:38Z\",\"threatState\":\"InProgress\",\"threatStartTime\":\"2021-08-30T04:18:03Z\",\"threatEndTime\":\"2021-04-19T17:28:41Z\",\"threatURI\":\"xmrhu\",\"threatSeverity\":\"Critical\"}")
+            "{\"threatTitle\":\"vqqaatjinrvgo\",\"threatDescription\":\"mfiibfggj\",\"lastUpdatedTime\":\"2021-04-08T04:20:38Z\",\"threatState\":\"InProgress\",\"threatStartTime\":\"2021-03-31T22:10:33Z\",\"threatEndTime\":\"2021-01-31T00:57:49Z\",\"threatURI\":\"tkkgllqwjy\",\"threatSeverity\":\"Warning\"}")
             .toObject(ThreatInfo.class);
         Assertions.assertEquals(ThreatState.IN_PROGRESS, model.threatState());
-        Assertions.assertEquals(ThreatSeverity.CRITICAL, model.threatSeverity());
+        Assertions.assertEquals(ThreatSeverity.WARNING, model.threatSeverity());
     }
 }

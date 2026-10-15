@@ -7,8 +7,6 @@ import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.Configuration;
-import com.azure.core.util.ConfigurationBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -41,12 +39,6 @@ public final class TestUtils {
             .consumerGroup(options.getEventHubsConsumerGroup())
             .checkpointStore(new BlobCheckpointStore(getContainerClient(options)));
 
-        if (options.useV2Stack()) {
-            Configuration configuration
-                = new ConfigurationBuilder().putProperty("com.azure.messaging.eventhubs.v2", "true").build();
-
-            builder.configuration(configuration);
-        }
         return builder;
     }
 
@@ -67,13 +59,6 @@ public final class TestUtils {
             .eventHubName(options.getEventHubsEventHubName())
             .transportType(options.getAmqpTransportType())
             .consumerGroup(options.getEventHubsConsumerGroup());
-
-        if (options.useV2Stack()) {
-            Configuration configuration
-                = new ConfigurationBuilder().putProperty("com.azure.messaging.eventhubs.v2", "true").build();
-
-            builder.configuration(configuration);
-        }
 
         return builder;
     }

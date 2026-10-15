@@ -11,7 +11,6 @@
   <modules>
     <module>common/perf-test-core</module>
     <module>sdk/advisor</module>
-    <module>sdk/agrifood</module>
     <module>sdk/ai</module>
     <module>sdk/alertsmanagement</module>
     <module>sdk/anomalydetector</module>
@@ -27,7 +26,6 @@
     <module>sdk/appservice</module>
     <module>sdk/arizeaiobservabilityeval</module>
     <module>sdk/artifactsigning</module>
-    <module>sdk/astro</module>
     <module>sdk/attestation</module>
     <module>sdk/authorization</module>
     <module>sdk/automanage</module>
@@ -52,6 +50,7 @@
     <module>sdk/cognitiveservices</module>
     <module>sdk/commerce</module>
     <module>sdk/communication</module>
+    <module>sdk/commvaultcontentstore</module>
     <module>sdk/compute</module>
     <module>sdk/computebulkactions</module>
     <module>sdk/computefleet</module>
@@ -66,7 +65,9 @@
     <module>sdk/containerorchestratorruntime</module>
     <module>sdk/containerregistry</module>
     <module>sdk/containerservice</module>
+    <module>sdk/containerserviceaimanager</module>
     <module>sdk/containerservicefleet</module>
+    <module>sdk/containerservicepreparedimgspec</module>
     <module>sdk/containerservicesafeguards</module>
     <module>sdk/contentsafety</module>
     <module>sdk/contentunderstanding</module>
@@ -99,10 +100,10 @@
     <module>sdk/deviceregistry</module>
     <module>sdk/deviceupdate</module>
     <module>sdk/devopsinfrastructure</module>
-    <module>sdk/devspaces</module>
     <module>sdk/devtestlabs</module>
     <module>sdk/digitaltwins</module>
     <module>sdk/disconnectedoperations</module>
+    <module>sdk/discovery</module>
     <module>sdk/dns</module>
     <module>sdk/dnsresolver</module>
     <module>sdk/documentintelligence</module>
@@ -115,16 +116,17 @@
     <module>sdk/education</module>
     <module>sdk/elastic</module>
     <module>sdk/elasticsan</module>
+    <module>sdk/enclave</module>
     <module>sdk/eventgrid</module>
     <module>sdk/eventhubs</module>
     <module>sdk/extendedlocation</module>
     <module>sdk/fabric</module>
     <module>sdk/face</module>
+    <module>sdk/fileshares</module>
     <module>sdk/fluidrelay</module>
     <module>sdk/formrecognizer</module>
     <module>sdk/frontdoor</module>
     <module>sdk/graphservices</module>
-    <module>sdk/hanaonazure</module>
     <module>sdk/hardwaresecuritymodules</module>
     <module>sdk/hdinsight</module>
     <module>sdk/healthbot</module>
@@ -178,6 +180,7 @@
     <module>sdk/msi</module>
     <module>sdk/mysql</module>
     <module>sdk/mysqlflexibleserver</module>
+    <module>sdk/napsteromniagentapi</module>
     <module>sdk/neonpostgres</module>
     <module>sdk/netapp</module>
     <module>sdk/network</module>
@@ -196,17 +199,18 @@
     <module>sdk/paloaltonetworks</module>
     <module>sdk/parents</module>
     <module>sdk/peering</module>
-    <module>sdk/personalizer</module>
     <module>sdk/pineconevectordb</module>
     <module>sdk/planetarycomputer</module>
+    <module>sdk/platformvalidation</module>
     <module>sdk/playwright</module>
     <module>sdk/playwrighttesting</module>
     <module>sdk/policyinsights</module>
-    <module>sdk/portalservices</module>
+    <module>sdk/portalservicescopilot</module>
     <module>sdk/postgresql</module>
     <module>sdk/postgresqlflexibleserver</module>
     <module>sdk/powerbidedicated</module>
     <module>sdk/privatedns</module>
+    <module>sdk/programenrollment</module>
     <module>sdk/programmableconnectivity</module>
     <module>sdk/providerhub</module>
     <module>sdk/purestorageblock</module>
@@ -219,11 +223,13 @@
     <module>sdk/recoveryservicesdatareplication</module>
     <module>sdk/recoveryservicessiterecovery</module>
     <module>sdk/redhatopenshift</module>
+    <module>sdk/redhatopenshifthcp</module>
     <module>sdk/redis</module>
     <module>sdk/redisenterprise</module>
     <module>sdk/relationships</module>
     <module>sdk/relay</module>
     <module>sdk/reservations</module>
+    <module>sdk/resiliencemanagement</module>
     <module>sdk/resourceconnector</module>
     <module>sdk/resourcegraph</module>
     <module>sdk/resourcehealth</module>
@@ -261,6 +267,7 @@
     <module>sdk/storagediscovery</module>
     <module>sdk/storagemover</module>
     <module>sdk/storagepool</module>
+    <module>sdk/storagesync</module>
     <module>sdk/streamanalytics</module>
     <module>sdk/subscription</module>
     <module>sdk/support</module>
@@ -276,7 +283,6 @@
     <module>sdk/transcription</module>
     <module>sdk/translation</module>
     <module>sdk/trustedsigning</module>
-    <module>sdk/virtualenclaves</module>
     <module>sdk/vision</module>
     <module>sdk/vmwarecloudsimple</module>
     <module>sdk/voicelive</module>

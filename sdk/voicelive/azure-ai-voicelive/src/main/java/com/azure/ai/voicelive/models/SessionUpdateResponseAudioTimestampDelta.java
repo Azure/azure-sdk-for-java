@@ -14,7 +14,7 @@ import java.io.IOException;
  * Represents a word-level audio timestamp delta for a response.
  */
 @Immutable
-public final class SessionUpdateResponseAudioTimestampDelta extends SessionUpdate {
+public final class SessionUpdateResponseAudioTimestampDelta extends SessionServerEvent {
 
     /*
      * The type of event.

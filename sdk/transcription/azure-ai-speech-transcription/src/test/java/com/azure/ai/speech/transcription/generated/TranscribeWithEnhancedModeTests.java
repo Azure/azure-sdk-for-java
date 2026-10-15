@@ -24,7 +24,7 @@ public final class TranscribeWithEnhancedModeTests extends TranscriptionClientTe
         // response assertion
         Assertions.assertNotNull(response);
         // verify property "duration"
-        Assertions.assertEquals(2000, response.getDuration());
+        Assertions.assertEquals(2000, response.getDuration().toMillis());
         // verify property "combinedPhrases"
         List<ChannelCombinedPhrases> responseCombinedPhrases = response.getCombinedPhrases();
         ChannelCombinedPhrases responseCombinedPhrasesFirstItem = responseCombinedPhrases.iterator().next();
@@ -34,15 +34,15 @@ public final class TranscribeWithEnhancedModeTests extends TranscriptionClientTe
         List<TranscribedPhrase> responsePhrases = response.getPhrases();
         TranscribedPhrase responsePhrasesFirstItem = responsePhrases.iterator().next();
         Assertions.assertNotNull(responsePhrasesFirstItem);
-        Assertions.assertEquals(40, responsePhrasesFirstItem.getOffset());
-        Assertions.assertEquals(320, responsePhrasesFirstItem.getDuration());
+        Assertions.assertEquals(40, responsePhrasesFirstItem.getOffset().toMillis());
+        Assertions.assertEquals(320, responsePhrasesFirstItem.getDuration().toMillis());
         Assertions.assertEquals("天气", responsePhrasesFirstItem.getText());
         List<TranscribedWord> responsePhrasesFirstItemWords = responsePhrasesFirstItem.getWords();
         TranscribedWord responsePhrasesFirstItemWordsFirstItem = responsePhrasesFirstItemWords.iterator().next();
         Assertions.assertNotNull(responsePhrasesFirstItemWordsFirstItem);
         Assertions.assertEquals("天", responsePhrasesFirstItemWordsFirstItem.getText());
-        Assertions.assertEquals(0, responsePhrasesFirstItemWordsFirstItem.getOffset());
-        Assertions.assertEquals(0, responsePhrasesFirstItemWordsFirstItem.getDuration());
+        Assertions.assertEquals(0, responsePhrasesFirstItemWordsFirstItem.getOffset().toMillis());
+        Assertions.assertEquals(0, responsePhrasesFirstItemWordsFirstItem.getDuration().toMillis());
         Assertions.assertEquals("zh-CN", responsePhrasesFirstItem.getLocale());
         Assertions.assertEquals(0.78983736, responsePhrasesFirstItem.getConfidence());
     }

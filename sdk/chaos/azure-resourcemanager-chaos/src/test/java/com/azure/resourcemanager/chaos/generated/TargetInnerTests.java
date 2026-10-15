@@ -6,6 +6,7 @@ package com.azure.resourcemanager.chaos.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.chaos.fluent.models.TargetInner;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
@@ -14,16 +15,19 @@ public final class TargetInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TargetInner model = BinaryData.fromString(
-            "{\"properties\":{},\"location\":\"mayhuybbkpodepoo\",\"id\":\"nuvamiheogna\",\"name\":\"xzxtheo\",\"type\":\"usivye\"}")
+            "{\"properties\":{\"i\":\"\\\"datafpdvhpfxxypi\\\"\",\"inuvamiheogn\":\"\\\"datamayhuybbkpodepoo\\\"\"},\"location\":\"xzxtheo\",\"id\":\"si\",\"name\":\"yevc\",\"type\":\"iqihn\"}")
             .toObject(TargetInner.class);
-        Assertions.assertEquals("mayhuybbkpodepoo", model.location());
+        Assertions.assertEquals("xzxtheo", model.location());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TargetInner model = new TargetInner().withProperties(mapOf()).withLocation("mayhuybbkpodepoo");
+        TargetInner model = new TargetInner()
+            .withProperties(mapOf("i", BinaryData.fromBytes("\"datafpdvhpfxxypi\"".getBytes(StandardCharsets.UTF_8)),
+                "inuvamiheogn", BinaryData.fromBytes("\"datamayhuybbkpodepoo\"".getBytes(StandardCharsets.UTF_8))))
+            .withLocation("xzxtheo");
         model = BinaryData.fromObject(model).toObject(TargetInner.class);
-        Assertions.assertEquals("mayhuybbkpodepoo", model.location());
+        Assertions.assertEquals("xzxtheo", model.location());
     }
 
     // Use "Map.of" if available

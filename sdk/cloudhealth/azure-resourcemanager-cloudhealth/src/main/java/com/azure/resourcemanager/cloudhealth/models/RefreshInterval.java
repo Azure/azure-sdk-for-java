@@ -27,6 +27,11 @@ public final class RefreshInterval extends ExpandableStringEnum<RefreshInterval>
     public static final RefreshInterval PT10M = fromString("PT10M");
 
     /**
+     * Fifteen Minutes.
+     */
+    public static final RefreshInterval PT15M = fromString("PT15M");
+
+    /**
      * Thirty Minutes.
      */
     public static final RefreshInterval PT30M = fromString("PT30M");

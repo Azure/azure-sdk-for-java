@@ -127,6 +127,7 @@ public class DocumentQueryExecutionContextFactory {
             query,
             resourceLink,
             cosmosQueryRequestOptions,
+            collection,
             queryPlanCachingEnabled,
             queryPlanCache)
             .flatMap(
@@ -145,6 +146,7 @@ public class DocumentQueryExecutionContextFactory {
         SqlQuerySpec query,
         String resourceLink,
         CosmosQueryRequestOptions cosmosQueryRequestOptions,
+        DocumentCollection collection,
         boolean queryPlanCachingEnabled,
         Map<String, PartitionedQueryExecutionInfo> queryPlanCache) {
 
@@ -163,7 +165,8 @@ public class DocumentQueryExecutionContextFactory {
             client,
             query,
             resourceLink,
-            cosmosQueryRequestOptions)
+            cosmosQueryRequestOptions,
+            collection)
             .doOnNext(partitionedQueryExecutionInfo -> {
                 if (queryPlanCachingEnabled && isScopedToSinglePartition(cosmosQueryRequestOptions)) {
                     tryCacheQueryPlan(query, partitionedQueryExecutionInfo, queryPlanCache);
@@ -346,6 +349,7 @@ public class DocumentQueryExecutionContextFactory {
         SqlQuerySpec sqlQuerySpec,
         String resourceLink,
         CosmosQueryRequestOptions queryRequestOptions,
+        DocumentCollection collection,
         boolean queryPlanCachingEnabled,
         Map<String, PartitionedQueryExecutionInfo> queryPlanCache) {
 
@@ -355,6 +359,7 @@ public class DocumentQueryExecutionContextFactory {
             sqlQuerySpec,
             resourceLink,
             queryRequestOptions,
+            collection,
             queryPlanCachingEnabled,
             queryPlanCache);
     }

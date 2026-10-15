@@ -104,7 +104,11 @@ public interface VirtualMachineScaleSetVM
      *
      * @return VHD URI of the custom image that the virtual machine instance operating system is based on, null will be
      *     returned if the operating system is based on platform image
+     * @deprecated Unmanaged disks are deprecated by Azure and being retired. Use managed disks instead. See
+     * <a href="https://learn.microsoft.com/azure/virtual-machines/unmanaged-disks-deprecation">Unmanaged disks
+     * deprecation</a>.
      */
+    @Deprecated
     String storedImageUnmanagedVhdUri();
 
     /**
@@ -118,7 +122,11 @@ public interface VirtualMachineScaleSetVM
      * Gets VHD URI to the operating system disk.
      *
      * @return VHD URI to the operating system disk
+     * @deprecated Unmanaged disks are deprecated by Azure and being retired. Use managed disks instead. See
+     * <a href="https://learn.microsoft.com/azure/virtual-machines/unmanaged-disks-deprecation">Unmanaged disks
+     * deprecation</a>.
      */
+    @Deprecated
     String osUnmanagedDiskVhdUri();
 
     /**

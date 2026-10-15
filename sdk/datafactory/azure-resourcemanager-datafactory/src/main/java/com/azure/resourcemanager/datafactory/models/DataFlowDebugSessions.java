@@ -21,7 +21,7 @@ public interface DataFlowDebugSessions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response body structure for creating data flow debug session.
      */
     CreateDataFlowDebugSessionResponse create(String resourceGroupName, String factoryName,
         CreateDataFlowDebugSessionRequest request);
@@ -36,7 +36,7 @@ public interface DataFlowDebugSessions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response body structure for creating data flow debug session.
      */
     CreateDataFlowDebugSessionResponse create(String resourceGroupName, String factoryName,
         CreateDataFlowDebugSessionRequest request, Context context);
@@ -132,7 +132,7 @@ public interface DataFlowDebugSessions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response body structure of data flow result for data preview, statistics or expression preview.
      */
     DataFlowDebugCommandResponse executeCommand(String resourceGroupName, String factoryName,
         DataFlowDebugCommandRequest request);
@@ -147,7 +147,7 @@ public interface DataFlowDebugSessions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response body structure of data flow result for data preview, statistics or expression preview.
      */
     DataFlowDebugCommandResponse executeCommand(String resourceGroupName, String factoryName,
         DataFlowDebugCommandRequest request, Context context);

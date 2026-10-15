@@ -6,6 +6,8 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRequestConditions;
+import com.azure.storage.common.ContentValidationAlgorithm;
+import com.azure.storage.common.ValidatableContent;
 
 import java.util.Collection;
 import java.util.Map;
@@ -14,7 +16,7 @@ import java.util.Objects;
 /**
  * Options for obtaining a {@link java.nio.channels.SeekableByteChannel} backed by an Azure Storage Share File.
  */
-public final class BlockBlobSeekableByteChannelWriteOptions {
+public final class BlockBlobSeekableByteChannelWriteOptions implements ValidatableContent {
     /**
      * Mode to open the channel for writing.
      */
@@ -60,6 +62,7 @@ public final class BlockBlobSeekableByteChannelWriteOptions {
     private Map<String, String> tags;
     private AccessTier tier;
     private BlobRequestConditions conditions;
+    private ContentValidationAlgorithm contentValidationAlgorithm;
 
     /**
      * Options constructor.
@@ -199,4 +202,28 @@ public final class BlockBlobSeekableByteChannelWriteOptions {
         return this;
     }
 
+    /**
+     * Gets the algorithm to use for transfer content validation on the request. See {@link ContentValidationAlgorithm}
+     * for more details.
+     *
+     * @return The transfer validation checksum algorithm.
+     */
+    @Override
+    public ContentValidationAlgorithm getContentValidationAlgorithm() {
+        return contentValidationAlgorithm;
+    }
+
+    /**
+     * Sets the algorithm to use for transfer content validation on the request. See {@link ContentValidationAlgorithm}
+     * for more details.
+     *
+     * @param contentValidationAlgorithm The transfer validation checksum algorithm.
+     * @return The updated instance.
+     */
+    @Override
+    public BlockBlobSeekableByteChannelWriteOptions
+        setContentValidationAlgorithm(ContentValidationAlgorithm contentValidationAlgorithm) {
+        this.contentValidationAlgorithm = contentValidationAlgorithm;
+        return this;
+    }
 }

@@ -9,7 +9,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Transcription subscription state.
+ * Current state of transcription session.
  */
 public final class TranscriptionSubscriptionStateInternal
     extends ExpandableStringEnum<TranscriptionSubscriptionStateInternal> {

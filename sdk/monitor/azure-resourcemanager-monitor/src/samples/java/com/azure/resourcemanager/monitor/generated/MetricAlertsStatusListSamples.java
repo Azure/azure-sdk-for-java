@@ -9,7 +9,7 @@ package com.azure.resourcemanager.monitor.generated;
  */
 public final class MetricAlertsStatusListSamples {
     /*
-     * x-ms-original-file: 2024-03-01-preview/getMetricAlertStatus.json
+     * x-ms-original-file: 2026-01-01/getMetricAlertStatus.json
      */
     /**
      * Sample code: Get an alert rule status.

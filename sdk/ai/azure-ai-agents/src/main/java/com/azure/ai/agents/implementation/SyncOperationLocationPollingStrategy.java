@@ -29,7 +29,7 @@ import java.util.Map;
  * @param <U> the type of the final result object to deserialize into, or BinaryData if raw response body should be
  * kept
  */
-public final class SyncOperationLocationPollingStrategy<T, U> extends SyncOperationResourcePollingStrategy<T, U> {
+public class SyncOperationLocationPollingStrategy<T, U> extends SyncOperationResourcePollingStrategy<T, U> {
 
     private static final ClientLogger LOGGER = new ClientLogger(SyncOperationLocationPollingStrategy.class);
 
@@ -57,8 +57,7 @@ public final class SyncOperationLocationPollingStrategy<T, U> extends SyncOperat
      * @throws NullPointerException if {@code pollingStrategyOptions} is null.
      */
     public SyncOperationLocationPollingStrategy(PollingStrategyOptions pollingStrategyOptions, String propertyName) {
-        super(PollingUtils.OPERATION_LOCATION_HEADER,
-            AgentsServicePollUtils.withFoundryFeatures(pollingStrategyOptions));
+        super(PollingUtils.OPERATION_LOCATION_HEADER, pollingStrategyOptions);
         this.propertyName = propertyName;
         this.endpoint = pollingStrategyOptions.getEndpoint();
         this.serializer = pollingStrategyOptions.getSerializer() != null

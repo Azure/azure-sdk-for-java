@@ -127,17 +127,20 @@ public class ReadManyByPartitionKeyContinuationTokenTest {
 
     @Test(groups = { "unit" })
     public void setFeedResponseContinuationToken_handlesEmptyHeadersWithoutCopyingNormalCase() {
-        Map<String, String> immutableEmptyHeaders = Collections.emptyMap();
+        // Immutable inputs are normalized to a mutable map at FeedResponse construction
+        // time (so the field stays final). Clearing a continuation token on an empty
+        // header map is a no-op and must not throw.
         FeedResponse<String> emptyResponse = ModelBridgeInternal.createFeedResponse(
             Collections.emptyList(),
-            immutableEmptyHeaders);
+            Collections.emptyMap());
 
         ModelBridgeInternal.setFeedResponseContinuationToken(null, emptyResponse);
 
         assertThat(emptyResponse.getContinuationToken()).isNull();
-        assertThat(emptyResponse.getResponseHeaders()).isSameAs(immutableEmptyHeaders);
         assertThat(emptyResponse.getResponseHeaders()).isEmpty();
 
+        // Mutable header maps are passed through without copying, preserving the
+        // reference returned by getResponseHeaders().
         Map<String, String> normalHeaders = new HashMap<>();
         normalHeaders.put(HttpConstants.HttpHeaders.ACTIVITY_ID, "test-activity-id");
         FeedResponse<String> normalResponse = ModelBridgeInternal.createFeedResponse(
@@ -148,6 +151,30 @@ public class ReadManyByPartitionKeyContinuationTokenTest {
 
         assertThat(normalResponse.getContinuationToken()).isEqualTo("token");
         assertThat(normalResponse.getResponseHeaders()).isSameAs(normalHeaders);
+    }
+
+    /**
+     * Reproduces the customer-reported failure path: the parallel query pipeline's
+     * "artificial empty page" branch (ParallelDocumentQueryExecutionContext.headerResponse)
+     * emits a FeedResponse whose header map is {@code Utils.immutableMapOf(...)} - i.e. a
+     * non-empty {@code Collections.unmodifiableMap} wrapper. When such a page reaches the
+     * readManyByPartitionKeys stamping lambda, setFeedResponseContinuationToken attempts
+     * to put the composite token into the immutable map, throwing UnsupportedOperationException.
+     */
+    @Test(groups = { "unit" })
+    public void setFeedResponseContinuationToken_immutableNonEmptyHeaders_doesNotThrow() {
+        Map<String, String> immutableSingleEntryHeaders =
+            Utils.immutableMapOf(HttpConstants.HttpHeaders.REQUEST_CHARGE, "1.23");
+        FeedResponse<String> response = ModelBridgeInternal.createFeedResponse(
+            Collections.emptyList(),
+            immutableSingleEntryHeaders);
+
+        ModelBridgeInternal.setFeedResponseContinuationToken("composite-token", response);
+
+        assertThat(response.getContinuationToken()).isEqualTo("composite-token");
+        assertThat(response.getResponseHeaders())
+            .containsEntry(HttpConstants.HttpHeaders.CONTINUATION, "composite-token")
+            .containsEntry(HttpConstants.HttpHeaders.REQUEST_CHARGE, "1.23");
     }
 
     @Test(groups = { "unit" })

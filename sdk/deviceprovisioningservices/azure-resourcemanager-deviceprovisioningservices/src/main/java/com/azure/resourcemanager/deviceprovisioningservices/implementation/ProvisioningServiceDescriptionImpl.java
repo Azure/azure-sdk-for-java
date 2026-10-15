@@ -160,7 +160,7 @@ public final class ProvisioningServiceDescriptionImpl implements ProvisioningSer
     public ProvisioningServiceDescription refresh() {
         this.innerObject = serviceManager.serviceClient()
             .getIotDpsResources()
-            .getByResourceGroupWithResponse(provisioningServiceName, resourceGroupName, Context.NONE)
+            .getByResourceGroupWithResponse(resourceGroupName, provisioningServiceName, Context.NONE)
             .getValue();
         return this;
     }
@@ -168,7 +168,7 @@ public final class ProvisioningServiceDescriptionImpl implements ProvisioningSer
     public ProvisioningServiceDescription refresh(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getIotDpsResources()
-            .getByResourceGroupWithResponse(provisioningServiceName, resourceGroupName, context)
+            .getByResourceGroupWithResponse(resourceGroupName, provisioningServiceName, context)
             .getValue();
         return this;
     }

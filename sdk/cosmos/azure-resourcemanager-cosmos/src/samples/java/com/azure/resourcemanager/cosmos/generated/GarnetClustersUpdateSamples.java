@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.cosmos.generated;
 
 import com.azure.resourcemanager.cosmos.models.ClusterType;
+import com.azure.resourcemanager.cosmos.models.GarnetAuthenticationType;
 import com.azure.resourcemanager.cosmos.models.GarnetClusterResourcePatch;
 import com.azure.resourcemanager.cosmos.models.GarnetClusterResourcePatchProperties;
 
@@ -13,7 +14,7 @@ import com.azure.resourcemanager.cosmos.models.GarnetClusterResourcePatchPropert
  */
 public final class GarnetClustersUpdateSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/CosmosDBGarnetClusterPatch.json
+     * x-ms-original-file: 2026-04-01-preview/CosmosDBGarnetClusterPatch.json
      */
     /**
      * Sample code: CosmosDBGarnetClusterPatch.
@@ -25,7 +26,9 @@ public final class GarnetClustersUpdateSamples {
             .getGarnetClusters()
             .update("garnet-prod-rg", "garnet-prod",
                 new GarnetClusterResourcePatch()
-                    .withProperties(new GarnetClusterResourcePatchProperties().withClusterType(ClusterType.PRODUCTION)),
+                    .withProperties(new GarnetClusterResourcePatchProperties().withClusterType(ClusterType.PRODUCTION)
+                        .withAuthenticationMethod(GarnetAuthenticationType.ENTRA)
+                        .withPersistence(true)),
                 com.azure.core.util.Context.NONE);
     }
 }

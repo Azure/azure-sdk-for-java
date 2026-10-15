@@ -13,7 +13,11 @@ import org.springframework.context.annotation.Bean;
 
 @ConditionalOnMissingBean(type = "com.azure.spring.cloud.autoconfigure.implementation.servicebus.properties.AzureServiceBusConnectionDetails")
 @ConditionalOnProperty(value = "spring.cloud.azure.servicebus.enabled", havingValue = "true", matchIfMissing = true)
-@ConditionalOnAnyProperty(prefix = "spring.cloud.azure.servicebus", name = {"connection-string", "namespace"})
+@ConditionalOnAnyProperty(prefix = "spring.cloud.azure.servicebus",
+    name = {"connection-string", "namespace",
+        "producer.connection-string", "producer.namespace",
+        "consumer.connection-string", "consumer.namespace",
+        "processor.connection-string", "processor.namespace"})
 class ConfigurationWithoutConnectionDetailsBean {
 
     private final AzureGlobalProperties azureGlobalProperties;

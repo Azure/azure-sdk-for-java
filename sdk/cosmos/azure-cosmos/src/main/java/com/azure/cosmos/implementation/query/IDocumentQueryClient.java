@@ -74,7 +74,7 @@ public interface IDocumentQueryClient {
 
     ConsistencyLevel getConsistencyLevel();
 
-    void validateAndLogNonDefaultReadConsistencyStrategy(String readConsistencyStrategyName);
+    void validateReadConsistencyStrategy(ReadConsistencyStrategy readConsistencyStrategy);
 
     /// <summary>
     /// A client query compatibility mode when making query request.
@@ -110,4 +110,6 @@ public interface IDocumentQueryClient {
     GlobalEndpointManager getGlobalEndpointManager();
 
     GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker getGlobalPartitionEndpointManagerForCircuitBreaker();
+
+    boolean useThinClient(RxDocumentServiceRequest request);
 }

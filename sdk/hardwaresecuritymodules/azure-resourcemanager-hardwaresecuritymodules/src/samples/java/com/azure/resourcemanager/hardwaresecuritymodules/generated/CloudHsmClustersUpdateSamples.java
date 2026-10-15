@@ -16,7 +16,7 @@ import java.util.Map;
  */
 public final class CloudHsmClustersUpdateSamples {
     /*
-     * x-ms-original-file: 2025-03-31/CloudHsmCluster_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-12-01-preview/CloudHsmCluster_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: CloudHsmCluster_Update_MaximumSet_Gen.

@@ -18,13 +18,15 @@ import java.io.IOException;
 @Fluent
 public final class HoldRequest implements JsonSerializable<HoldRequest> {
     /*
-     * Participant to be held from the call.
+     * Identifies a participant in Azure Communication services. A participant is, for example, a phone number or an
+     * Azure communication user. This model is polymorphic: Apart from kind and rawId, at most one further property may
+     * be set which must match the kind enum value.
      */
     @Generated
     private CommunicationIdentifierModel targetParticipant;
 
     /*
-     * Prompt to play while in hold.
+     * The playSourceInfo property.
      */
     @Generated
     private PlaySourceInternal playSourceInfo;
@@ -50,7 +52,9 @@ public final class HoldRequest implements JsonSerializable<HoldRequest> {
     }
 
     /**
-     * Get the targetParticipant property: Participant to be held from the call.
+     * Get the targetParticipant property: Identifies a participant in Azure Communication services. A participant is,
+     * for example, a phone number or an Azure communication user. This model is polymorphic: Apart from kind and rawId,
+     * at most one further property may be set which must match the kind enum value.
      * 
      * @return the targetParticipant value.
      */
@@ -60,7 +64,9 @@ public final class HoldRequest implements JsonSerializable<HoldRequest> {
     }
 
     /**
-     * Set the targetParticipant property: Participant to be held from the call.
+     * Set the targetParticipant property: Identifies a participant in Azure Communication services. A participant is,
+     * for example, a phone number or an Azure communication user. This model is polymorphic: Apart from kind and rawId,
+     * at most one further property may be set which must match the kind enum value.
      * 
      * @param targetParticipant the targetParticipant value to set.
      * @return the HoldRequest object itself.
@@ -72,7 +78,7 @@ public final class HoldRequest implements JsonSerializable<HoldRequest> {
     }
 
     /**
-     * Get the playSourceInfo property: Prompt to play while in hold.
+     * Get the playSourceInfo property: The playSourceInfo property.
      * 
      * @return the playSourceInfo value.
      */
@@ -82,7 +88,7 @@ public final class HoldRequest implements JsonSerializable<HoldRequest> {
     }
 
     /**
-     * Set the playSourceInfo property: Prompt to play while in hold.
+     * Set the playSourceInfo property: The playSourceInfo property.
      * 
      * @param playSourceInfo the playSourceInfo value to set.
      * @return the HoldRequest object itself.

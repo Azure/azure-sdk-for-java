@@ -57,6 +57,13 @@ public interface HorizonDbCluster {
     HorizonDbClusterProperties properties();
 
     /**
+     * Gets the identity property: The managed service identities assigned to this resource.
+     * 
+     * @return the identity value.
+     */
+    ManagedServiceIdentity identity();
+
+    /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      * 
      * @return the systemData value.
@@ -146,7 +153,8 @@ public interface HorizonDbCluster {
          * The stage of the HorizonDbCluster definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithProperties {
+        interface WithCreate
+            extends DefinitionStages.WithTags, DefinitionStages.WithProperties, DefinitionStages.WithIdentity {
             /**
              * Executes the create request.
              * 
@@ -188,6 +196,19 @@ public interface HorizonDbCluster {
              */
             WithCreate withProperties(HorizonDbClusterProperties properties);
         }
+
+        /**
+         * The stage of the HorizonDbCluster definition allowing to specify identity.
+         */
+        interface WithIdentity {
+            /**
+             * Specifies the identity property: The managed service identities assigned to this resource..
+             * 
+             * @param identity The managed service identities assigned to this resource.
+             * @return the next definition stage.
+             */
+            WithCreate withIdentity(ManagedServiceIdentity identity);
+        }
     }
 
     /**
@@ -200,7 +221,7 @@ public interface HorizonDbCluster {
     /**
      * The template for HorizonDbCluster update.
      */
-    interface Update extends UpdateStages.WithTags, UpdateStages.WithProperties {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithIdentity, UpdateStages.WithProperties {
         /**
          * Executes the update request.
          * 
@@ -235,13 +256,26 @@ public interface HorizonDbCluster {
         }
 
         /**
+         * The stage of the HorizonDbCluster update allowing to specify identity.
+         */
+        interface WithIdentity {
+            /**
+             * Specifies the identity property: The managed service identities assigned to this resource..
+             * 
+             * @param identity The managed service identities assigned to this resource.
+             * @return the next definition stage.
+             */
+            Update withIdentity(ManagedServiceIdentity identity);
+        }
+
+        /**
          * The stage of the HorizonDbCluster update allowing to specify properties.
          */
         interface WithProperties {
             /**
-             * Specifies the properties property: The properties that can be updated for a HorizonDb cluster..
+             * Specifies the properties property: The properties that can be updated for a HorizonDB cluster..
              * 
-             * @param properties The properties that can be updated for a HorizonDb cluster.
+             * @param properties The properties that can be updated for a HorizonDB cluster.
              * @return the next definition stage.
              */
             Update withProperties(HorizonDbClusterPropertiesForPatchUpdate properties);
@@ -262,4 +296,58 @@ public interface HorizonDbCluster {
      * @return the refreshed resource.
      */
     HorizonDbCluster refresh(Context context);
+
+    /**
+     * Starts a stopped HorizonDB cluster.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void start();
+
+    /**
+     * Starts a stopped HorizonDB cluster.
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void start(Context context);
+
+    /**
+     * Stops a running HorizonDB cluster.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void stop();
+
+    /**
+     * Stops a running HorizonDB cluster.
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void stop(Context context);
+
+    /**
+     * Restarts a HorizonDB cluster.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void restart();
+
+    /**
+     * Restarts a HorizonDB cluster.
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void restart(Context context);
 }

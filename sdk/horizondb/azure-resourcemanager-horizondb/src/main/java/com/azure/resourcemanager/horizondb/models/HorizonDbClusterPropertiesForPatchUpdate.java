@@ -12,7 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Properties of a HorizonDb cluster for update operations.
+ * Properties of a HorizonDB cluster for update operations.
  */
 @Fluent
 public final class HorizonDbClusterPropertiesForPatchUpdate
@@ -31,6 +31,21 @@ public final class HorizonDbClusterPropertiesForPatchUpdate
      * Defines connection to a parameter group.
      */
     private HorizonDbClusterParameterGroupConnectionProperties parameterGroup;
+
+    /*
+     * Authentication configuration for the HorizonDB cluster.
+     */
+    private HorizonDbClusterAuthConfig authConfig;
+
+    /*
+     * The compute model for the cluster.
+     */
+    private HorizonDbComputeModel computeModel;
+
+    /*
+     * Mirroring configuration for the HorizonDB cluster.
+     */
+    private HorizonDbClusterMirroring mirroring;
 
     /**
      * Creates an instance of HorizonDbClusterPropertiesForPatchUpdate class.
@@ -100,6 +115,66 @@ public final class HorizonDbClusterPropertiesForPatchUpdate
     }
 
     /**
+     * Get the authConfig property: Authentication configuration for the HorizonDB cluster.
+     * 
+     * @return the authConfig value.
+     */
+    public HorizonDbClusterAuthConfig authConfig() {
+        return this.authConfig;
+    }
+
+    /**
+     * Set the authConfig property: Authentication configuration for the HorizonDB cluster.
+     * 
+     * @param authConfig the authConfig value to set.
+     * @return the HorizonDbClusterPropertiesForPatchUpdate object itself.
+     */
+    public HorizonDbClusterPropertiesForPatchUpdate withAuthConfig(HorizonDbClusterAuthConfig authConfig) {
+        this.authConfig = authConfig;
+        return this;
+    }
+
+    /**
+     * Get the computeModel property: The compute model for the cluster.
+     * 
+     * @return the computeModel value.
+     */
+    public HorizonDbComputeModel computeModel() {
+        return this.computeModel;
+    }
+
+    /**
+     * Set the computeModel property: The compute model for the cluster.
+     * 
+     * @param computeModel the computeModel value to set.
+     * @return the HorizonDbClusterPropertiesForPatchUpdate object itself.
+     */
+    public HorizonDbClusterPropertiesForPatchUpdate withComputeModel(HorizonDbComputeModel computeModel) {
+        this.computeModel = computeModel;
+        return this;
+    }
+
+    /**
+     * Get the mirroring property: Mirroring configuration for the HorizonDB cluster.
+     * 
+     * @return the mirroring value.
+     */
+    public HorizonDbClusterMirroring mirroring() {
+        return this.mirroring;
+    }
+
+    /**
+     * Set the mirroring property: Mirroring configuration for the HorizonDB cluster.
+     * 
+     * @param mirroring the mirroring value to set.
+     * @return the HorizonDbClusterPropertiesForPatchUpdate object itself.
+     */
+    public HorizonDbClusterPropertiesForPatchUpdate withMirroring(HorizonDbClusterMirroring mirroring) {
+        this.mirroring = mirroring;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -108,6 +183,9 @@ public final class HorizonDbClusterPropertiesForPatchUpdate
         jsonWriter.writeStringField("administratorLoginPassword", this.administratorLoginPassword);
         jsonWriter.writeNumberField("vCores", this.vCores);
         jsonWriter.writeJsonField("parameterGroup", this.parameterGroup);
+        jsonWriter.writeJsonField("authConfig", this.authConfig);
+        jsonWriter.writeJsonField("computeModel", this.computeModel);
+        jsonWriter.writeJsonField("mirroring", this.mirroring);
         return jsonWriter.writeEndObject();
     }
 
@@ -136,6 +214,15 @@ public final class HorizonDbClusterPropertiesForPatchUpdate
                 } else if ("parameterGroup".equals(fieldName)) {
                     deserializedHorizonDbClusterPropertiesForPatchUpdate.parameterGroup
                         = HorizonDbClusterParameterGroupConnectionProperties.fromJson(reader);
+                } else if ("authConfig".equals(fieldName)) {
+                    deserializedHorizonDbClusterPropertiesForPatchUpdate.authConfig
+                        = HorizonDbClusterAuthConfig.fromJson(reader);
+                } else if ("computeModel".equals(fieldName)) {
+                    deserializedHorizonDbClusterPropertiesForPatchUpdate.computeModel
+                        = HorizonDbComputeModel.fromJson(reader);
+                } else if ("mirroring".equals(fieldName)) {
+                    deserializedHorizonDbClusterPropertiesForPatchUpdate.mirroring
+                        = HorizonDbClusterMirroring.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

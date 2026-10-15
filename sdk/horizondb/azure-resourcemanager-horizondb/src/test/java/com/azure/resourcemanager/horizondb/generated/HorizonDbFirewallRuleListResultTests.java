@@ -12,11 +12,11 @@ public final class HorizonDbFirewallRuleListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HorizonDbFirewallRuleListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"startIpAddress\":\"fepgzgq\",\"endIpAddress\":\"xzlocxscp\",\"description\":\"erhhbcsglumm\",\"provisioningState\":\"Canceled\"},\"id\":\"aodxo\",\"name\":\"nbdxk\",\"type\":\"pxokajionp\"}],\"nextLink\":\"ex\"}")
+            "{\"value\":[{\"properties\":{\"startIpAddress\":\"ymwisdkft\",\"endIpAddress\":\"wxmnteiwao\",\"description\":\"km\",\"provisioningState\":\"Succeeded\"},\"id\":\"mxdcufufsrp\",\"name\":\"mzidnsezcxtb\",\"type\":\"sgfyccsnew\"},{\"properties\":{\"startIpAddress\":\"wzjeiach\",\"endIpAddress\":\"oosflnr\",\"description\":\"fqpte\",\"provisioningState\":\"Failed\"},\"id\":\"vypyqrimzinpv\",\"name\":\"wjdk\",\"type\":\"rsoodqxhcrmnoh\"}],\"nextLink\":\"ckwhds\"}")
             .toObject(HorizonDbFirewallRuleListResult.class);
-        Assertions.assertEquals("fepgzgq", model.value().get(0).properties().startIpAddress());
-        Assertions.assertEquals("xzlocxscp", model.value().get(0).properties().endIpAddress());
-        Assertions.assertEquals("erhhbcsglumm", model.value().get(0).properties().description());
-        Assertions.assertEquals("ex", model.nextLink());
+        Assertions.assertEquals("ymwisdkft", model.value().get(0).properties().startIpAddress());
+        Assertions.assertEquals("wxmnteiwao", model.value().get(0).properties().endIpAddress());
+        Assertions.assertEquals("km", model.value().get(0).properties().description());
+        Assertions.assertEquals("ckwhds", model.nextLink());
     }
 }

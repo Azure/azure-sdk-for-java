@@ -24,7 +24,8 @@ public interface OutboundRulesOperations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedIterable}.
+     * @return list of outbound rules for the managed network of a cognitive services account as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<OutboundRuleBasicResource> post(String resourceGroupName, String accountName,
         String managedNetworkName, ManagedNetworkSettingsBasicResourceInner body);
@@ -42,7 +43,8 @@ public interface OutboundRulesOperations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedIterable}.
+     * @return list of outbound rules for the managed network of a cognitive services account as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<OutboundRuleBasicResource> post(String resourceGroupName, String accountName,
         String managedNetworkName, ManagedNetworkSettingsBasicResourceInner body, Context context);

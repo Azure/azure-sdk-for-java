@@ -14,6 +14,7 @@ import com.azure.resourcemanager.cloudhealth.CloudHealthManager;
 import com.azure.resourcemanager.cloudhealth.models.DiscoveryRule;
 import com.azure.resourcemanager.cloudhealth.models.DiscoveryRuleRecommendedSignalsBehavior;
 import com.azure.resourcemanager.cloudhealth.models.DiscoveryRuleRelationshipDiscoveryBehavior;
+import com.azure.resourcemanager.cloudhealth.models.ResourceHealthAvailabilityStateSignalBehavior;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
@@ -24,7 +25,7 @@ public final class DiscoveryRulesListByHealthModelMockTests {
     @Test
     public void testListByHealthModel() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Creating\",\"displayName\":\"yhddvia\",\"resourceGraphQuery\":\"egfnmntfpmvmemfn\",\"authenticationSetting\":\"zdwvvbalxl\",\"discoverRelationships\":\"Disabled\",\"addRecommendedSignals\":\"Enabled\",\"deletionDate\":\"2021-02-04T22:36:53Z\",\"errorMessage\":\"db\",\"numberOfDiscoveredEntities\":1253836101,\"entityName\":\"wrd\"},\"id\":\"fukuvsjcswsmystu\",\"name\":\"uqypfcvle\",\"type\":\"chpqbmfpjba\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"displayName\":\"biqmrjgei\",\"authenticationSetting\":\"fqlggw\",\"discoverRelationships\":\"Disabled\",\"addRecommendedSignals\":\"Disabled\",\"specification\":{\"kind\":\"DiscoveryRuleSpecification\"},\"addResourceHealthSignal\":\"Disabled\",\"error\":{\"message\":\"mjpb\",\"context\":[\"hmgtvljvrcmyfqi\",\"gxhnpomyqwcabv\",\"ui\",\"eeyaswl\"]},\"entityName\":\"ugmrmf\"},\"id\":\"rxwtoaukhfkvc\",\"name\":\"sizmoae\",\"type\":\"sx\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,15 +35,16 @@ public final class DiscoveryRulesListByHealthModelMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<DiscoveryRule> response = manager.discoveryRules()
-            .listByHealthModel("stcyohpfkyrkdbd", "iogsjkmnwq", OffsetDateTime.parse("2021-04-07T00:43:37Z"),
+            .listByHealthModel("gvgovpbbttefjo", "nssqyzqed", OffsetDateTime.parse("2021-10-18T06:30:24Z"),
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("yhddvia", response.iterator().next().properties().displayName());
-        Assertions.assertEquals("egfnmntfpmvmemfn", response.iterator().next().properties().resourceGraphQuery());
-        Assertions.assertEquals("zdwvvbalxl", response.iterator().next().properties().authenticationSetting());
+        Assertions.assertEquals("biqmrjgei", response.iterator().next().properties().displayName());
+        Assertions.assertEquals("fqlggw", response.iterator().next().properties().authenticationSetting());
         Assertions.assertEquals(DiscoveryRuleRelationshipDiscoveryBehavior.DISABLED,
             response.iterator().next().properties().discoverRelationships());
-        Assertions.assertEquals(DiscoveryRuleRecommendedSignalsBehavior.ENABLED,
+        Assertions.assertEquals(DiscoveryRuleRecommendedSignalsBehavior.DISABLED,
             response.iterator().next().properties().addRecommendedSignals());
+        Assertions.assertEquals(ResourceHealthAvailabilityStateSignalBehavior.DISABLED,
+            response.iterator().next().properties().addResourceHealthSignal());
     }
 }

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.trafficmanager.generated;
  */
 public final class ProfilesDeleteSamples {
     /*
-     * x-ms-original-file: 2022-04-01/Profile-DELETE.json
+     * x-ms-original-file: 2026-09-01/Profile-DELETE.json
      */
     /**
      * Sample code: Profile-DELETE.

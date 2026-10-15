@@ -123,7 +123,7 @@ public interface DataCollectionRuleAssociationsClient extends InnerSupportsDelet
     /**
      * Creates or updates an association.
      * 
-     * @param resourceUri The identifier of the resource.
+     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
      * @param associationName The name of the association. The name is case insensitive.
      * @param body The payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -139,7 +139,7 @@ public interface DataCollectionRuleAssociationsClient extends InnerSupportsDelet
     /**
      * Creates or updates an association.
      * 
-     * @param resourceUri The identifier of the resource.
+     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
      * @param associationName The name of the association. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -152,7 +152,7 @@ public interface DataCollectionRuleAssociationsClient extends InnerSupportsDelet
     /**
      * Creates or updates an association.
      * 
-     * @param resourceUri The identifier of the resource.
+     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
      * @param associationName The name of the association. The name is case insensitive.
      * @param body The payload.
      * @param context The context to associate with this operation.
@@ -168,7 +168,7 @@ public interface DataCollectionRuleAssociationsClient extends InnerSupportsDelet
     /**
      * Creates or updates an association.
      * 
-     * @param resourceUri The identifier of the resource.
+     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
      * @param associationName The name of the association. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

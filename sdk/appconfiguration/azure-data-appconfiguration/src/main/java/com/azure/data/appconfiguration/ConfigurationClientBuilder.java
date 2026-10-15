@@ -49,7 +49,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.core.util.tracing.TracerProvider;
 import com.azure.data.appconfiguration.implementation.AudiencePolicy;
-import com.azure.data.appconfiguration.implementation.AzureAppConfigurationImpl;
+import com.azure.data.appconfiguration.implementation.ConfigurationClientImpl;
 import static com.azure.data.appconfiguration.implementation.ClientConstants.APP_CONFIG_TRACING_NAMESPACE_VALUE;
 import com.azure.data.appconfiguration.implementation.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.implementation.ConfigurationCredentialsPolicy;
@@ -208,7 +208,7 @@ public final class ConfigurationClientBuilder implements TokenCredentialTrait<Co
      * @throws IllegalArgumentException if {@code tokenCredential} is not null. App Configuration builder support single
      * authentication per builder instance.
      */
-    private AzureAppConfigurationImpl buildInnerClient(SyncTokenPolicy syncTokenPolicy) {
+    private ConfigurationClientImpl buildInnerClient(SyncTokenPolicy syncTokenPolicy) {
         String endpointLocal = endpoint;
         ConfigurationClientCredentials credentialsLocal = null;
         TokenCredential tokenCredentialLocal = null;
@@ -238,7 +238,7 @@ public final class ConfigurationClientBuilder implements TokenCredentialTrait<Co
             ? createDefaultHttpPipeline(syncTokenPolicy, credentialsLocal, tokenCredentialLocal)
             : pipeline;
 
-        return new AzureAppConfigurationImpl(buildPipeline, null, endpointLocal, serviceVersion.getVersion());
+        return new ConfigurationClientImpl(buildPipeline, endpointLocal, serviceVersion);
     }
 
     private HttpPipeline createDefaultHttpPipeline(SyncTokenPolicy syncTokenPolicy,

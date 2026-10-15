@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class NetworkSecurityPerimeterConfigurationsListSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/NetworkSecurityPerimeterConfigurationList.json
+     * x-ms-original-file: 2026-04-01-preview/NetworkSecurityPerimeterConfigurationList.json
      */
     /**
      * Sample code: NamspaceNetworkSecurityPerimeterConfigurationList.

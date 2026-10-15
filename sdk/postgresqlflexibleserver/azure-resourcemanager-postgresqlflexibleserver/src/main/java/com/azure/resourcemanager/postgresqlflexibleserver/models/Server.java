@@ -238,6 +238,14 @@ public interface Server {
     Cluster cluster();
 
     /**
+     * Gets the fipsMode property: Indicates if FIPS (Federal Information Processing Standards) mode is enabled on the
+     * server. If not specified on create, it defaults to Disabled.
+     * 
+     * @return the fipsMode value.
+     */
+    FipsMode fipsMode();
+
+    /**
      * Gets the region of the resource.
      * 
      * @return the region of the resource.
@@ -326,7 +334,8 @@ public interface Server {
             DefinitionStages.WithDataEncryption, DefinitionStages.WithBackup, DefinitionStages.WithNetwork,
             DefinitionStages.WithHighAvailability, DefinitionStages.WithSourceServerResourceId,
             DefinitionStages.WithPointInTimeUtc, DefinitionStages.WithAvailabilityZone,
-            DefinitionStages.WithReplicationRole, DefinitionStages.WithCreateMode, DefinitionStages.WithCluster {
+            DefinitionStages.WithReplicationRole, DefinitionStages.WithCreateMode, DefinitionStages.WithCluster,
+            DefinitionStages.WithFipsMode {
             /**
              * Executes the create request.
              * 
@@ -595,6 +604,21 @@ public interface Server {
              */
             WithCreate withCluster(Cluster cluster);
         }
+
+        /**
+         * The stage of the Server definition allowing to specify fipsMode.
+         */
+        interface WithFipsMode {
+            /**
+             * Specifies the fipsMode property: Indicates if FIPS (Federal Information Processing Standards) mode is
+             * enabled on the server. If not specified on create, it defaults to Disabled..
+             * 
+             * @param fipsMode Indicates if FIPS (Federal Information Processing Standards) mode is enabled on the
+             * server. If not specified on create, it defaults to Disabled.
+             * @return the next definition stage.
+             */
+            WithCreate withFipsMode(FipsMode fipsMode);
+        }
     }
 
     /**
@@ -611,8 +635,8 @@ public interface Server {
         UpdateStages.WithAdministratorLoginPassword, UpdateStages.WithVersion, UpdateStages.WithStorage,
         UpdateStages.WithBackup, UpdateStages.WithHighAvailability, UpdateStages.WithMaintenanceWindow,
         UpdateStages.WithAuthConfig, UpdateStages.WithDataEncryption, UpdateStages.WithAvailabilityZone,
-        UpdateStages.WithCreateMode, UpdateStages.WithReplicationRole, UpdateStages.WithReplica,
-        UpdateStages.WithNetwork, UpdateStages.WithCluster {
+        UpdateStages.WithCreateMode, UpdateStages.WithSourceServerResourceId, UpdateStages.WithReplicationRole,
+        UpdateStages.WithReplica, UpdateStages.WithNetwork, UpdateStages.WithCluster, UpdateStages.WithFipsMode {
         /**
          * Executes the update request.
          * 
@@ -805,6 +829,20 @@ public interface Server {
         }
 
         /**
+         * The stage of the Server update allowing to specify sourceServerResourceId.
+         */
+        interface WithSourceServerResourceId {
+            /**
+             * Specifies the sourceServerResourceId property: Identifier of the server to be used as the source of the
+             * new server..
+             * 
+             * @param sourceServerResourceId Identifier of the server to be used as the source of the new server.
+             * @return the next definition stage.
+             */
+            Update withSourceServerResourceId(String sourceServerResourceId);
+        }
+
+        /**
          * The stage of the Server update allowing to specify replicationRole.
          */
         interface WithReplicationRole {
@@ -858,6 +896,21 @@ public interface Server {
              * @return the next definition stage.
              */
             Update withCluster(Cluster cluster);
+        }
+
+        /**
+         * The stage of the Server update allowing to specify fipsMode.
+         */
+        interface WithFipsMode {
+            /**
+             * Specifies the fipsMode property: Indicates if FIPS (Federal Information Processing Standards) mode is
+             * enabled on the server. If not specified, the current value is preserved..
+             * 
+             * @param fipsMode Indicates if FIPS (Federal Information Processing Standards) mode is enabled on the
+             * server. If not specified, the current value is preserved.
+             * @return the next definition stage.
+             */
+            Update withFipsMode(FipsMode fipsMode);
         }
     }
 
@@ -932,26 +985,47 @@ public interface Server {
     void stop(Context context);
 
     /**
-     * Migrates the network configuration of a PostgreSQL flexible server from customer owned VNET to Microsoft owned
-     * VNET with support for private endpoints, or from Microsoft owned VNET with no support for private endpoints to
-     * Microsoft owned VNET with support for private endpoints.
+     * Migrates an Azure Database for PostgreSQL server from VNet integration to a Private Link network model.
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of a network migration operation.
+     * @return status of a network migration operation.
      */
     MigrateNetworkStatus migrateNetworkMode();
 
     /**
-     * Migrates the network configuration of a PostgreSQL flexible server from customer owned VNET to Microsoft owned
-     * VNET with support for private endpoints, or from Microsoft owned VNET with no support for private endpoints to
-     * Microsoft owned VNET with support for private endpoints.
+     * Migrates an Azure Database for PostgreSQL server from VNet integration to a Private Link network model.
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of a network migration operation.
+     * @return status of a network migration operation.
      */
     MigrateNetworkStatus migrateNetworkMode(Context context);
+
+    /**
+     * Start Major Version Upgrade Prechecks.
+     * 
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response model for starting a major version upgrade precheck.
+     */
+    StartMajorVersionUpgradePrecheckResponse
+        startMajorVersionUpgradePrecheck(StartMajorVersionUpgradePrecheckRequest body);
+
+    /**
+     * Start Major Version Upgrade Prechecks.
+     * 
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response model for starting a major version upgrade precheck.
+     */
+    StartMajorVersionUpgradePrecheckResponse
+        startMajorVersionUpgradePrecheck(StartMajorVersionUpgradePrecheckRequest body, Context context);
 }

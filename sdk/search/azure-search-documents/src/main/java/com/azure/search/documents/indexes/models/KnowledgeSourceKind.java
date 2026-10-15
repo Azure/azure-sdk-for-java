@@ -66,4 +66,53 @@ public final class KnowledgeSourceKind extends ExpandableStringEnum<KnowledgeSou
     public static Collection<KnowledgeSourceKind> values() {
         return values(KnowledgeSourceKind.class);
     }
+
+    /**
+     * A knowledge source that reads data from indexed SharePoint.
+     */
+    @Generated
+    public static final KnowledgeSourceKind INDEXED_SHARE_POINT = fromString("indexedSharePoint");
+
+    /**
+     * A knowledge source that retrieves and ingests data from Azure SQL Database or SQL Managed Instance to a Search
+     * Index.
+     */
+    @Generated
+    public static final KnowledgeSourceKind INDEXED_SQL = fromString("indexedSql");
+
+    /**
+     * A knowledge source that reads data from remote SharePoint.
+     */
+    @Generated
+    public static final KnowledgeSourceKind REMOTE_SHARE_POINT = fromString("remoteSharePoint");
+
+    /**
+     * A knowledge source that reads data from work IQ.
+     */
+    @Generated
+    public static final KnowledgeSourceKind WORK_IQ = fromString("workIQ");
+
+    /**
+     * A knowledge source that supports direct file upload and indexing.
+     */
+    @Generated
+    public static final KnowledgeSourceKind FILE = fromString("file");
+
+    /**
+     * A knowledge source backed by an MCP (Model Context Protocol) server.
+     */
+    @Generated
+    public static final KnowledgeSourceKind MCP_SERVER = fromString("mcpServer");
+
+    /**
+     * A knowledge source that retrieves data from a Fabric Data Agent.
+     */
+    @Generated
+    public static final KnowledgeSourceKind FABRIC_DATA_AGENT = fromString("fabricDataAgent");
+
+    /**
+     * A knowledge source that retrieves data from Microsoft Fabric Ontology ontologies.
+     */
+    @Generated
+    public static final KnowledgeSourceKind FABRIC_ONTOLOGY = fromString("fabricOntology");
 }

@@ -13,6 +13,8 @@ import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.implementation.ImplUtils;
 import com.azure.core.implementation.TypeUtil;
 import com.azure.core.implementation.serializer.HttpResponseDecoder;
+import com.azure.core.implementation.util.BinaryDataHelper;
+import com.azure.core.implementation.util.FluxByteBufferContent;
 import com.azure.core.util.Base64Url;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
@@ -145,7 +147,9 @@ public class SyncRestProxy extends RestProxyBase {
                 response.getSourceResponse().close();
                 return createResponse(response, entityType, null);
             } else {
-                Object bodyAsObject = handleBodyReturnType(response, methodParser, bodyType);
+                Object bodyAsObject = TypeUtil.isTypeOrSubTypeOf(bodyType, BinaryData.class)
+                    ? getOwnedResponseBody(response.getSourceResponse())
+                    : handleBodyReturnType(response, methodParser, bodyType);
                 Response<?> httpResponse = createResponse(response, entityType, bodyAsObject);
                 if (httpResponse == null) {
                     return createResponse(response, entityType, null);
@@ -193,6 +197,17 @@ public class SyncRestProxy extends RestProxyBase {
             result = response.getDecodedBody(null);
         }
         return result;
+    }
+
+    private static BinaryData getOwnedResponseBody(HttpResponse response) {
+        BinaryData responseBody = response.getBodyAsBinaryData();
+        if (responseBody == null || responseBody.isReplayable()) {
+            return responseBody;
+        }
+
+        ResponseBodyOwner responseBodyOwner = new ResponseBodyOwner(response);
+        return BinaryDataHelper.createBinaryData(new FluxByteBufferContent(
+            responseBodyOwner.getBody(responseBody.toFluxByteBuffer()), responseBody.getLength(), false));
     }
 
     /**

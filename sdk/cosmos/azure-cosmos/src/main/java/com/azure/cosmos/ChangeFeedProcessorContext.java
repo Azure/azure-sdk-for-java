@@ -4,7 +4,6 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.apachecommons.lang.NotImplementedException;
-import com.azure.cosmos.util.Beta;
 
 import java.util.function.BiConsumer;
 
@@ -16,7 +15,6 @@ import java.util.function.BiConsumer;
  * <br>
  * NOTE: This interface is not designed to be implemented by end users.
  * */
-@Beta(value = Beta.SinceVersion.V4_51_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public interface ChangeFeedProcessorContext {
     /**
      * Gets the lease token corresponding to the source of
@@ -24,7 +22,6 @@ public interface ChangeFeedProcessorContext {
      *
      * @return the lease token
      * */
-    @Beta(value = Beta.SinceVersion.V4_51_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     String getLeaseToken();
 
     /**
@@ -32,7 +29,6 @@ public interface ChangeFeedProcessorContext {
      *
      * @return The diagnostics object.
      */
-    @Beta(value = Beta.SinceVersion.V4_64_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     default CosmosDiagnosticsContext getDiagnostics() {
         throw new NotImplementedException("Method has not been implemented. NOTE: This method is not designed to be implemented by end users.");
     }

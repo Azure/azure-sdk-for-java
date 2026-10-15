@@ -84,4 +84,16 @@ public final class ItemType extends ExpandableStringEnum<ItemType> {
      */
     @Generated
     public static final ItemType MCP_APPROVAL_RESPONSE = fromString("mcp_approval_response");
+
+    /**
+     * Web search call item.
+     */
+    @Generated
+    public static final ItemType WEB_SEARCH_CALL = fromString("web_search_call");
+
+    /**
+     * File search call item.
+     */
+    @Generated
+    public static final ItemType FILE_SEARCH_CALL = fromString("file_search_call");
 }

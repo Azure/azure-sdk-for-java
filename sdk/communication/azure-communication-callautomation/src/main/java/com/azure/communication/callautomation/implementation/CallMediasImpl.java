@@ -73,8 +73,8 @@ public final class CallMediasImpl {
         @Post("/calling/callConnections/{callConnectionId}:play")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<Void>> play(@HostParam("endpoint") String endpoint,
-            @PathParam("callConnectionId") String callConnectionId, @QueryParam("api-version") String apiVersion,
+        Mono<Response<Void>> play(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("callConnectionId") String callConnectionId,
             @BodyParam("application/json") PlayRequest playRequest, @HeaderParam("Accept") String accept,
             Context context);
 
@@ -82,7 +82,7 @@ public final class CallMediasImpl {
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<Void>> startTranscription(@HostParam("endpoint") String endpoint,
-            @PathParam("callConnectionId") String callConnectionId, @QueryParam("api-version") String apiVersion,
+            @QueryParam("api-version") String apiVersion, @PathParam("callConnectionId") String callConnectionId,
             @BodyParam("application/json") StartTranscriptionRequestInternal startTranscriptionRequest,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -90,7 +90,7 @@ public final class CallMediasImpl {
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<Void>> stopTranscription(@HostParam("endpoint") String endpoint,
-            @PathParam("callConnectionId") String callConnectionId, @QueryParam("api-version") String apiVersion,
+            @QueryParam("api-version") String apiVersion, @PathParam("callConnectionId") String callConnectionId,
             @BodyParam("application/json") StopTranscriptionRequestInternal stopTranscriptionRequest,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -98,7 +98,7 @@ public final class CallMediasImpl {
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<Void>> updateTranscription(@HostParam("endpoint") String endpoint,
-            @PathParam("callConnectionId") String callConnectionId, @QueryParam("api-version") String apiVersion,
+            @QueryParam("api-version") String apiVersion, @PathParam("callConnectionId") String callConnectionId,
             @BodyParam("application/json") UpdateTranscriptionRequestInternal updateTranscriptionRequest,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -106,14 +106,14 @@ public final class CallMediasImpl {
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<Void>> cancelAllMediaOperations(@HostParam("endpoint") String endpoint,
-            @PathParam("callConnectionId") String callConnectionId, @QueryParam("api-version") String apiVersion,
+            @QueryParam("api-version") String apiVersion, @PathParam("callConnectionId") String callConnectionId,
             @HeaderParam("Accept") String accept, Context context);
 
         @Post("/calling/callConnections/{callConnectionId}:recognize")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<Void>> recognize(@HostParam("endpoint") String endpoint,
-            @PathParam("callConnectionId") String callConnectionId, @QueryParam("api-version") String apiVersion,
+            @QueryParam("api-version") String apiVersion, @PathParam("callConnectionId") String callConnectionId,
             @BodyParam("application/json") RecognizeRequest recognizeRequest, @HeaderParam("Accept") String accept,
             Context context);
 
@@ -121,7 +121,7 @@ public final class CallMediasImpl {
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<Void>> startContinuousDtmfRecognition(@HostParam("endpoint") String endpoint,
-            @PathParam("callConnectionId") String callConnectionId, @QueryParam("api-version") String apiVersion,
+            @QueryParam("api-version") String apiVersion, @PathParam("callConnectionId") String callConnectionId,
             @BodyParam("application/json") ContinuousDtmfRecognitionRequestInternal continuousDtmfRecognitionRequest,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -129,7 +129,7 @@ public final class CallMediasImpl {
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<Void>> stopContinuousDtmfRecognition(@HostParam("endpoint") String endpoint,
-            @PathParam("callConnectionId") String callConnectionId, @QueryParam("api-version") String apiVersion,
+            @QueryParam("api-version") String apiVersion, @PathParam("callConnectionId") String callConnectionId,
             @BodyParam("application/json") ContinuousDtmfRecognitionRequestInternal continuousDtmfRecognitionRequest,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -137,7 +137,7 @@ public final class CallMediasImpl {
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<SendDtmfTonesResultInternal>> sendDtmfTones(@HostParam("endpoint") String endpoint,
-            @PathParam("callConnectionId") String callConnectionId, @QueryParam("api-version") String apiVersion,
+            @QueryParam("api-version") String apiVersion, @PathParam("callConnectionId") String callConnectionId,
             @BodyParam("application/json") SendDtmfTonesRequestInternal sendDtmfTonesRequest,
             @HeaderParam("Accept") String accept,
             @HeaderParam("repeatability-request-id") String repeatabilityRequestId,
@@ -146,8 +146,8 @@ public final class CallMediasImpl {
         @Post("/calling/callConnections/{callConnectionId}:hold")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<Void>> hold(@HostParam("endpoint") String endpoint,
-            @PathParam("callConnectionId") String callConnectionId, @QueryParam("api-version") String apiVersion,
+        Mono<Response<Void>> hold(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("callConnectionId") String callConnectionId,
             @BodyParam("application/json") HoldRequest holdRequest, @HeaderParam("Accept") String accept,
             Context context);
 
@@ -155,7 +155,7 @@ public final class CallMediasImpl {
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<Void>> unhold(@HostParam("endpoint") String endpoint,
-            @PathParam("callConnectionId") String callConnectionId, @QueryParam("api-version") String apiVersion,
+            @QueryParam("api-version") String apiVersion, @PathParam("callConnectionId") String callConnectionId,
             @BodyParam("application/json") UnholdRequest unholdRequest, @HeaderParam("Accept") String accept,
             Context context);
 
@@ -163,7 +163,7 @@ public final class CallMediasImpl {
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<Void>> startMediaStreaming(@HostParam("endpoint") String endpoint,
-            @PathParam("callConnectionId") String callConnectionId, @QueryParam("api-version") String apiVersion,
+            @QueryParam("api-version") String apiVersion, @PathParam("callConnectionId") String callConnectionId,
             @BodyParam("application/json") StartMediaStreamingRequest startMediaStreamingRequest,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -171,7 +171,7 @@ public final class CallMediasImpl {
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<Void>> stopMediaStreaming(@HostParam("endpoint") String endpoint,
-            @PathParam("callConnectionId") String callConnectionId, @QueryParam("api-version") String apiVersion,
+            @QueryParam("api-version") String apiVersion, @PathParam("callConnectionId") String callConnectionId,
             @BodyParam("application/json") StopMediaStreamingRequest stopMediaStreamingRequest,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -206,7 +206,7 @@ public final class CallMediasImpl {
     public Mono<Response<Void>> playWithResponseAsync(String callConnectionId, PlayRequest playRequest,
         Context context) {
         final String accept = "application/json";
-        return service.play(this.client.getEndpoint(), callConnectionId, this.client.getApiVersion(), playRequest,
+        return service.play(this.client.getEndpoint(), this.client.getApiVersion(), callConnectionId, playRequest,
             accept, context);
     }
 
@@ -303,7 +303,7 @@ public final class CallMediasImpl {
     public Mono<Response<Void>> startTranscriptionWithResponseAsync(String callConnectionId,
         StartTranscriptionRequestInternal startTranscriptionRequest, Context context) {
         final String accept = "application/json";
-        return service.startTranscription(this.client.getEndpoint(), callConnectionId, this.client.getApiVersion(),
+        return service.startTranscription(this.client.getEndpoint(), this.client.getApiVersion(), callConnectionId,
             startTranscriptionRequest, accept, context);
     }
 
@@ -406,7 +406,7 @@ public final class CallMediasImpl {
     public Mono<Response<Void>> stopTranscriptionWithResponseAsync(String callConnectionId,
         StopTranscriptionRequestInternal stopTranscriptionRequest, Context context) {
         final String accept = "application/json";
-        return service.stopTranscription(this.client.getEndpoint(), callConnectionId, this.client.getApiVersion(),
+        return service.stopTranscription(this.client.getEndpoint(), this.client.getApiVersion(), callConnectionId,
             stopTranscriptionRequest, accept, context);
     }
 
@@ -512,7 +512,7 @@ public final class CallMediasImpl {
     public Mono<Response<Void>> updateTranscriptionWithResponseAsync(String callConnectionId,
         UpdateTranscriptionRequestInternal updateTranscriptionRequest, Context context) {
         final String accept = "application/json";
-        return service.updateTranscription(this.client.getEndpoint(), callConnectionId, this.client.getApiVersion(),
+        return service.updateTranscription(this.client.getEndpoint(), this.client.getApiVersion(), callConnectionId,
             updateTranscriptionRequest, accept, context);
     }
 
@@ -618,8 +618,8 @@ public final class CallMediasImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> cancelAllMediaOperationsWithResponseAsync(String callConnectionId, Context context) {
         final String accept = "application/json";
-        return service.cancelAllMediaOperations(this.client.getEndpoint(), callConnectionId,
-            this.client.getApiVersion(), accept, context);
+        return service.cancelAllMediaOperations(this.client.getEndpoint(), this.client.getApiVersion(),
+            callConnectionId, accept, context);
     }
 
     /**
@@ -709,7 +709,7 @@ public final class CallMediasImpl {
     public Mono<Response<Void>> recognizeWithResponseAsync(String callConnectionId, RecognizeRequest recognizeRequest,
         Context context) {
         final String accept = "application/json";
-        return service.recognize(this.client.getEndpoint(), callConnectionId, this.client.getApiVersion(),
+        return service.recognize(this.client.getEndpoint(), this.client.getApiVersion(), callConnectionId,
             recognizeRequest, accept, context);
     }
 
@@ -807,8 +807,8 @@ public final class CallMediasImpl {
     public Mono<Response<Void>> startContinuousDtmfRecognitionWithResponseAsync(String callConnectionId,
         ContinuousDtmfRecognitionRequestInternal continuousDtmfRecognitionRequest, Context context) {
         final String accept = "application/json";
-        return service.startContinuousDtmfRecognition(this.client.getEndpoint(), callConnectionId,
-            this.client.getApiVersion(), continuousDtmfRecognitionRequest, accept, context);
+        return service.startContinuousDtmfRecognition(this.client.getEndpoint(), this.client.getApiVersion(),
+            callConnectionId, continuousDtmfRecognitionRequest, accept, context);
     }
 
     /**
@@ -911,8 +911,8 @@ public final class CallMediasImpl {
     public Mono<Response<Void>> stopContinuousDtmfRecognitionWithResponseAsync(String callConnectionId,
         ContinuousDtmfRecognitionRequestInternal continuousDtmfRecognitionRequest, Context context) {
         final String accept = "application/json";
-        return service.stopContinuousDtmfRecognition(this.client.getEndpoint(), callConnectionId,
-            this.client.getApiVersion(), continuousDtmfRecognitionRequest, accept, context);
+        return service.stopContinuousDtmfRecognition(this.client.getEndpoint(), this.client.getApiVersion(),
+            callConnectionId, continuousDtmfRecognitionRequest, accept, context);
     }
 
     /**
@@ -1015,7 +1015,7 @@ public final class CallMediasImpl {
     public Mono<Response<SendDtmfTonesResultInternal>> sendDtmfTonesWithResponseAsync(String callConnectionId,
         SendDtmfTonesRequestInternal sendDtmfTonesRequest, Context context) {
         final String accept = "application/json";
-        return service.sendDtmfTones(this.client.getEndpoint(), callConnectionId, this.client.getApiVersion(),
+        return service.sendDtmfTones(this.client.getEndpoint(), this.client.getApiVersion(), callConnectionId,
             sendDtmfTonesRequest, accept, CoreUtils.randomUuid().toString(),
             DateTimeRfc1123.toRfc1123String(OffsetDateTime.now()), context);
     }
@@ -1118,7 +1118,7 @@ public final class CallMediasImpl {
     public Mono<Response<Void>> holdWithResponseAsync(String callConnectionId, HoldRequest holdRequest,
         Context context) {
         final String accept = "application/json";
-        return service.hold(this.client.getEndpoint(), callConnectionId, this.client.getApiVersion(), holdRequest,
+        return service.hold(this.client.getEndpoint(), this.client.getApiVersion(), callConnectionId, holdRequest,
             accept, context);
     }
 
@@ -1213,7 +1213,7 @@ public final class CallMediasImpl {
     public Mono<Response<Void>> unholdWithResponseAsync(String callConnectionId, UnholdRequest unholdRequest,
         Context context) {
         final String accept = "application/json";
-        return service.unhold(this.client.getEndpoint(), callConnectionId, this.client.getApiVersion(), unholdRequest,
+        return service.unhold(this.client.getEndpoint(), this.client.getApiVersion(), callConnectionId, unholdRequest,
             accept, context);
     }
 
@@ -1314,7 +1314,7 @@ public final class CallMediasImpl {
     public Mono<Response<Void>> startMediaStreamingWithResponseAsync(String callConnectionId,
         StartMediaStreamingRequest startMediaStreamingRequest, Context context) {
         final String accept = "application/json";
-        return service.startMediaStreaming(this.client.getEndpoint(), callConnectionId, this.client.getApiVersion(),
+        return service.startMediaStreaming(this.client.getEndpoint(), this.client.getApiVersion(), callConnectionId,
             startMediaStreamingRequest, accept, context);
     }
 
@@ -1428,7 +1428,7 @@ public final class CallMediasImpl {
     public Mono<Response<Void>> stopMediaStreamingWithResponseAsync(String callConnectionId,
         StopMediaStreamingRequest stopMediaStreamingRequest, Context context) {
         final String accept = "application/json";
-        return service.stopMediaStreaming(this.client.getEndpoint(), callConnectionId, this.client.getApiVersion(),
+        return service.stopMediaStreaming(this.client.getEndpoint(), this.client.getApiVersion(), callConnectionId,
             stopMediaStreamingRequest, accept, context);
     }
 

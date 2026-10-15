@@ -10,6 +10,8 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.authorization.AuthorizationManager;
+import com.azure.resourcemanager.msi.MsiManager;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.resources.ResourceManager;
@@ -26,6 +28,8 @@ public abstract class SqlServerTest extends ResourceManagerTestProxyTestBase {
     protected ResourceManager resourceManager;
     protected SqlServerManager sqlServerManager;
     protected StorageManager storageManager;
+    protected MsiManager msiManager;
+    protected AuthorizationManager authorizationManager;
     protected String rgName = "";
     protected String sqlServerName = "";
 
@@ -45,6 +49,8 @@ public abstract class SqlServerTest extends ResourceManagerTestProxyTestBase {
         internalContext.setIdentifierFunction(name -> new TestIdentifierProvider(testResourceNamer));
         sqlServerManager = buildManager(SqlServerManager.class, httpPipeline, profile);
         storageManager = buildManager(StorageManager.class, httpPipeline, profile);
+        msiManager = buildManager(MsiManager.class, httpPipeline, profile);
+        authorizationManager = buildManager(AuthorizationManager.class, httpPipeline, profile);
         resourceManager = sqlServerManager.resourceManager();
         setInternalContext(internalContext, sqlServerManager);
     }

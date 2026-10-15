@@ -21,6 +21,7 @@ public class ProcessorProperties extends ConsumerProperties implements ServiceBu
     private Integer maxConcurrentCalls;
     private Integer maxConcurrentSessions;
     private Duration sessionIdleTimeout;
+    private Duration drainTimeout;
 
     @Override
     public Integer getMaxConcurrentCalls() {
@@ -59,5 +60,18 @@ public class ProcessorProperties extends ConsumerProperties implements ServiceBu
      */
     public void setSessionIdleTimeout(Duration sessionIdleTimeout) {
         this.sessionIdleTimeout = sessionIdleTimeout;
+    }
+
+    @Override
+    public Duration getDrainTimeout() {
+        return drainTimeout;
+    }
+
+    /**
+     * Set the maximum time to wait for in-flight message handlers to complete during processor shutdown.
+     * @param drainTimeout the drain timeout duration.
+     */
+    public void setDrainTimeout(Duration drainTimeout) {
+        this.drainTimeout = drainTimeout;
     }
 }

@@ -13,7 +13,7 @@ import java.util.concurrent.atomic.{AtomicLong, AtomicReference}
 import scala.util.Random
 import scala.util.control.Breaks
 import scala.concurrent.{Await, ExecutionContext, Future}
-import com.azure.cosmos.implementation.{ChangeFeedSparkRowItem, OperationCancelledException, SparkBridgeImplementationInternal}
+import com.azure.cosmos.implementation.{ChangeFeedSparkRowItem, OperationCancelledException, SparkBridgeImplementationInternal, Strings}
 
 
 // scalastyle:off underscore.import
@@ -177,8 +177,47 @@ private class TransientIOErrorsRetryingIterator[TSparkRow]
           None
         }
       } else {
+        validateEndLsnReachedOrFail()
         Some(false)
       }
+    }
+  }
+
+  /**
+   * Defensive guard for bounded change feed reads (endLsn defined). When the underlying
+   * paginator signals no more pages, validate that the latest continuation token has actually
+   * advanced to endLsn for every sub-feed-range. If it has not, the SDK terminated the change
+   * feed read prematurely (see issue #49380) and silently completing would surface as missing
+   * rows downstream. Fail the task with IllegalStateException so Spark can retry/abort instead
+   * of returning a truncated result.
+   */
+  private[this] def validateEndLsnReachedOrFail(): Unit = {
+    this.endLsn match {
+      case None => // no bound configured (e.g. batch mode draining to 304s) - nothing to validate
+      case Some(boundLsn) =>
+        val continuation = lastContinuationToken.get()
+        if (Strings.isNullOrWhiteSpace(continuation)) {
+          throw new IllegalStateException(
+            s"Bounded change feed read terminated before any page was returned. " +
+              s"Expected to reach endLsn=$boundLsn but no continuation was produced. " +
+              s"Context: $operationContextString")
+        }
+
+        val tokens = SparkBridgeImplementationInternal
+          .extractContinuationTokensFromChangeFeedStateJson(continuation)
+        if (tokens.isEmpty) {
+          throw new IllegalStateException(
+            s"Bounded change feed read terminated with a continuation that has no sub-range tokens. " +
+              s"Expected to reach endLsn=$boundLsn. Continuation=$continuation. " +
+              s"Context: $operationContextString")
+        }
+        val minLsn = tokens.minBy(_._2)._2
+        if (minLsn < boundLsn) {
+          throw new IllegalStateException(
+            s"Bounded change feed read terminated before reaching endLsn=$boundLsn. " +
+              s"Lowest sub-range LSN in latest continuation=$minLsn. " +
+              s"Continuation=$continuation. Context: $operationContextString")
+        }
     }
   }
 

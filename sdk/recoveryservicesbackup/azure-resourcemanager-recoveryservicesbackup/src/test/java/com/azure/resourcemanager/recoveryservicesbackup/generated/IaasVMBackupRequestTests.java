@@ -14,16 +14,16 @@ public final class IaasVMBackupRequestTests {
     public void testDeserialize() throws Exception {
         IaasVMBackupRequest model = BinaryData
             .fromString(
-                "{\"objectType\":\"IaasVMBackupRequest\",\"recoveryPointExpiryTimeInUTC\":\"2021-10-20T05:52:01Z\"}")
+                "{\"objectType\":\"IaasVMBackupRequest\",\"recoveryPointExpiryTimeInUTC\":\"2021-01-14T11:11:18Z\"}")
             .toObject(IaasVMBackupRequest.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-20T05:52:01Z"), model.recoveryPointExpiryTimeInUtc());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-14T11:11:18Z"), model.recoveryPointExpiryTimeInUtc());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         IaasVMBackupRequest model
-            = new IaasVMBackupRequest().withRecoveryPointExpiryTimeInUtc(OffsetDateTime.parse("2021-10-20T05:52:01Z"));
+            = new IaasVMBackupRequest().withRecoveryPointExpiryTimeInUtc(OffsetDateTime.parse("2021-01-14T11:11:18Z"));
         model = BinaryData.fromObject(model).toObject(IaasVMBackupRequest.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-20T05:52:01Z"), model.recoveryPointExpiryTimeInUtc());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-14T11:11:18Z"), model.recoveryPointExpiryTimeInUtc());
     }
 }

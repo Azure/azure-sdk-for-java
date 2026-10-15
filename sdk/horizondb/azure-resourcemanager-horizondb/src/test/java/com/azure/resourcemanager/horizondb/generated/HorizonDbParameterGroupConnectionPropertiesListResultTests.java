@@ -12,8 +12,8 @@ public final class HorizonDbParameterGroupConnectionPropertiesListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HorizonDbParameterGroupConnectionPropertiesListResult model = BinaryData.fromString(
-            "{\"value\":[{\"name\":\"uwaboekqvke\",\"id\":\"smv\",\"type\":\"wyjsflhhcaalnjix\"},{\"name\":\"xyawj\",\"id\":\"aq\",\"type\":\"lyjpk\"},{\"name\":\"dzyexznelixh\",\"id\":\"ztfolhbnxk\",\"type\":\"laulppg\"}],\"nextLink\":\"tpnapnyiropuhpig\"}")
+            "{\"value\":[{\"name\":\"o\",\"id\":\"bnxknalaulppg\",\"type\":\"tpnapnyiropuhpig\"},{\"name\":\"gylgqgitxmedjvcs\",\"id\":\"n\",\"type\":\"wncwzzhxgktrmg\"}],\"nextLink\":\"napkteoellw\"}")
             .toObject(HorizonDbParameterGroupConnectionPropertiesListResult.class);
-        Assertions.assertEquals("tpnapnyiropuhpig", model.nextLink());
+        Assertions.assertEquals("napkteoellw", model.nextLink());
     }
 }

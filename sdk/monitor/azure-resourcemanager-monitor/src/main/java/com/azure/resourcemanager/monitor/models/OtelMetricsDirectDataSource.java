@@ -35,6 +35,7 @@ public final class OtelMetricsDirectDataSource implements JsonSerializable<OtelM
     private String enrichWithReference;
 
     /*
+     * 
      * A friendly name for the data source.
      * This name should be unique across all data sources (regardless of type) within the data collection rule.
      */
@@ -109,7 +110,8 @@ public final class OtelMetricsDirectDataSource implements JsonSerializable<OtelM
     }
 
     /**
-     * Get the name property: A friendly name for the data source.
+     * Get the name property:
+     * A friendly name for the data source.
      * This name should be unique across all data sources (regardless of type) within the data collection rule.
      * 
      * @return the name value.
@@ -119,7 +121,8 @@ public final class OtelMetricsDirectDataSource implements JsonSerializable<OtelM
     }
 
     /**
-     * Set the name property: A friendly name for the data source.
+     * Set the name property:
+     * A friendly name for the data source.
      * This name should be unique across all data sources (regardless of type) within the data collection rule.
      * 
      * @param name the name value to set.

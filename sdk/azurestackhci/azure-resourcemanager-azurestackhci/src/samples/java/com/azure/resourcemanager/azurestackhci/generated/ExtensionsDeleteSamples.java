@@ -9,7 +9,7 @@ package com.azure.resourcemanager.azurestackhci.generated;
  */
 public final class ExtensionsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-04-01-preview/DeleteExtension.json
+     * x-ms-original-file: 2026-04-30/DeleteExtension.json
      */
     /**
      * Sample code: Delete Arc Extension.

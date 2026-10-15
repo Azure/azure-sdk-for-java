@@ -13,36 +13,36 @@ import com.azure.core.util.Context;
  */
 public interface HorizonDbParameterGroups {
     /**
-     * Gets information about a HorizonDb parameter group.
+     * Gets information about a HorizonDB parameter group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDb parameter group.
+     * @param parameterGroupName The name of the HorizonDB parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a HorizonDb parameter group along with {@link Response}.
+     * @return information about a HorizonDB parameter group along with {@link Response}.
      */
     Response<HorizonDbParameterGroup> getByResourceGroupWithResponse(String resourceGroupName,
         String parameterGroupName, Context context);
 
     /**
-     * Gets information about a HorizonDb parameter group.
+     * Gets information about a HorizonDB parameter group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDb parameter group.
+     * @param parameterGroupName The name of the HorizonDB parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a HorizonDb parameter group.
+     * @return information about a HorizonDB parameter group.
      */
     HorizonDbParameterGroup getByResourceGroup(String resourceGroupName, String parameterGroupName);
 
     /**
-     * Deletes a HorizonDb parameter group.
+     * Deletes a HorizonDB parameter group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDb parameter group.
+     * @param parameterGroupName The name of the HorizonDB parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -50,10 +50,10 @@ public interface HorizonDbParameterGroups {
     void deleteByResourceGroup(String resourceGroupName, String parameterGroupName);
 
     /**
-     * Deletes a HorizonDb parameter group.
+     * Deletes a HorizonDB parameter group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDb parameter group.
+     * @param parameterGroupName The name of the HorizonDB parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -62,7 +62,7 @@ public interface HorizonDbParameterGroups {
     void delete(String resourceGroupName, String parameterGroupName, Context context);
 
     /**
-     * Lists all HorizonDb parameter groups in a resource group.
+     * Lists all HorizonDB parameter groups in a resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -74,7 +74,7 @@ public interface HorizonDbParameterGroups {
     PagedIterable<HorizonDbParameterGroup> listByResourceGroup(String resourceGroupName);
 
     /**
-     * Lists all HorizonDb parameter groups in a resource group.
+     * Lists all HorizonDB parameter groups in a resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
@@ -87,7 +87,7 @@ public interface HorizonDbParameterGroups {
     PagedIterable<HorizonDbParameterGroup> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
-     * Lists all HorizonDb parameter groups in a subscription.
+     * Lists all HorizonDB parameter groups in a subscription.
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -97,7 +97,7 @@ public interface HorizonDbParameterGroups {
     PagedIterable<HorizonDbParameterGroup> list();
 
     /**
-     * Lists all HorizonDb parameter groups in a subscription.
+     * Lists all HorizonDB parameter groups in a subscription.
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -112,7 +112,7 @@ public interface HorizonDbParameterGroups {
      * Gets all connections to a parameter group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDb parameter group.
+     * @param parameterGroupName The name of the HorizonDB parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -125,7 +125,7 @@ public interface HorizonDbParameterGroups {
      * Gets all connections to a parameter group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDb parameter group.
+     * @param parameterGroupName The name of the HorizonDB parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -139,7 +139,7 @@ public interface HorizonDbParameterGroups {
      * Lists parameter groups filtered by version number.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDb parameter group.
+     * @param parameterGroupName The name of the HorizonDB parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -152,7 +152,7 @@ public interface HorizonDbParameterGroups {
      * Lists parameter groups filtered by version number.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameterGroupName The name of the HorizonDb parameter group.
+     * @param parameterGroupName The name of the HorizonDB parameter group.
      * @param version The version number to filter by.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -165,30 +165,30 @@ public interface HorizonDbParameterGroups {
         Integer version, Context context);
 
     /**
-     * Gets information about a HorizonDb parameter group.
+     * Gets information about a HorizonDB parameter group.
      * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a HorizonDb parameter group along with {@link Response}.
+     * @return information about a HorizonDB parameter group along with {@link Response}.
      */
     HorizonDbParameterGroup getById(String id);
 
     /**
-     * Gets information about a HorizonDb parameter group.
+     * Gets information about a HorizonDB parameter group.
      * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a HorizonDb parameter group along with {@link Response}.
+     * @return information about a HorizonDB parameter group along with {@link Response}.
      */
     Response<HorizonDbParameterGroup> getByIdWithResponse(String id, Context context);
 
     /**
-     * Deletes a HorizonDb parameter group.
+     * Deletes a HorizonDB parameter group.
      * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -198,7 +198,7 @@ public interface HorizonDbParameterGroups {
     void deleteById(String id);
 
     /**
-     * Deletes a HorizonDb parameter group.
+     * Deletes a HorizonDB parameter group.
      * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.

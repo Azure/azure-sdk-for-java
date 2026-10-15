@@ -4,7 +4,10 @@
 package com.azure.messaging.servicebus.implementation;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
+
+import java.time.Duration;
 
 /**
  * Additional options to configure {@link ServiceBusProcessorClient}.
@@ -12,9 +15,13 @@ import com.azure.messaging.servicebus.ServiceBusProcessorClient;
 @Fluent
 public final class ServiceBusProcessorClientOptions {
 
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceBusProcessorClientOptions.class);
+    private static final Duration DEFAULT_DRAIN_TIMEOUT = Duration.ofSeconds(30);
+
     private int maxConcurrentCalls = 1;
     private boolean disableAutoComplete;
     private boolean isV2;
+    private Duration drainTimeout = DEFAULT_DRAIN_TIMEOUT;
 
     /**
      * Returns true if the auto-complete and auto-abandon feature is disabled.
@@ -59,5 +66,33 @@ public final class ServiceBusProcessorClientOptions {
 
     public boolean isV2() {
         return isV2;
+    }
+
+    /**
+     * Returns the maximum time to wait for in-flight message handlers to complete during processor shutdown.
+     * @return the drain timeout duration.
+     */
+    public Duration getDrainTimeout() {
+        return drainTimeout;
+    }
+
+    /**
+     * Sets the maximum time to wait for in-flight message handlers to complete during processor shutdown.
+     * Defaults to 30 seconds.
+     *
+     * @param drainTimeout the maximum time to wait for in-flight handlers. Must be positive.
+     * @return The updated instance of {@link ServiceBusProcessorClientOptions}.
+     * @throws NullPointerException if {@code drainTimeout} is null.
+     * @throws IllegalArgumentException if {@code drainTimeout} is zero or negative.
+     */
+    public ServiceBusProcessorClientOptions setDrainTimeout(Duration drainTimeout) {
+        if (drainTimeout == null) {
+            throw LOGGER.logExceptionAsError(new NullPointerException("'drainTimeout' cannot be null."));
+        }
+        if (drainTimeout.isZero() || drainTimeout.isNegative()) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'drainTimeout' must be positive."));
+        }
+        this.drainTimeout = drainTimeout;
+        return this;
     }
 }

@@ -21,7 +21,7 @@ public final class SignalSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SignalSource model = BinaryData.fromString(
-            "{\"signalSourceId\":\"bxu\",\"sourceAmwAccountManagedIdentity\":\"wbhqwal\",\"sourceAmwAccountResourceId\":\"uzyoxaep\",\"metricNamespace\":\"kzjancuxrhdwbav\",\"metricName\":\"bniwdj\",\"filters\":[{\"dimensionName\":\"tsdbpgn\",\"scalarFunction\":\"max\",\"samplingType\":\"avg\",\"operator\":\"!in\",\"value\":\"zxbzpfzabglc\"}],\"spatialAggregation\":{\"type\":\"Average\",\"dimensions\":[\"wtctyqi\",\"lbbovplw\",\"bhvgy\",\"gu\"]},\"temporalAggregation\":{\"type\":\"Delta\",\"windowSizeMinutes\":1732351990}}")
+            "{\"signalSourceId\":\"bxu\",\"sourceAmwAccountManagedIdentity\":\"wbhqwal\",\"sourceAmwAccountResourceId\":\"uzyoxaep\",\"metricNamespace\":\"kzjancuxrhdwbav\",\"metricName\":\"bniwdj\",\"filters\":[{\"dimensionName\":\"tsdbpgn\",\"scalarFunction\":\"max\",\"samplingType\":\"Average\",\"operator\":\"notin\",\"value\":\"zxbzpfzabglc\"}],\"spatialAggregation\":{\"type\":\"Average\",\"dimensions\":[\"wtctyqi\",\"lbbovplw\",\"bhvgy\",\"gu\"]},\"temporalAggregation\":{\"type\":\"Delta\",\"windowSizeMinutes\":1732351990}}")
             .toObject(SignalSource.class);
         Assertions.assertEquals("bxu", model.signalSourceId());
         Assertions.assertEquals("wbhqwal", model.sourceAmwAccountManagedIdentity());
@@ -30,7 +30,7 @@ public final class SignalSourceTests {
         Assertions.assertEquals("bniwdj", model.metricName());
         Assertions.assertEquals("tsdbpgn", model.filters().get(0).dimensionName());
         Assertions.assertEquals(ScalarFunction.MAX, model.filters().get(0).scalarFunction());
-        Assertions.assertEquals(SamplingType.AVG, model.filters().get(0).samplingType());
+        Assertions.assertEquals(SamplingType.AVERAGE, model.filters().get(0).samplingType());
         Assertions.assertEquals(ConditionOperator.NOT_IN, model.filters().get(0).operator());
         Assertions.assertEquals("zxbzpfzabglc", model.filters().get(0).value());
         Assertions.assertEquals(SpatialAggregationType.AVERAGE, model.spatialAggregation().type());
@@ -48,7 +48,7 @@ public final class SignalSourceTests {
             .withMetricName("bniwdj")
             .withFilters(Arrays.asList(new Condition().withDimensionName("tsdbpgn")
                 .withScalarFunction(ScalarFunction.MAX)
-                .withSamplingType(SamplingType.AVG)
+                .withSamplingType(SamplingType.AVERAGE)
                 .withOperator(ConditionOperator.NOT_IN)
                 .withValue("zxbzpfzabglc")))
             .withSpatialAggregation(new SpatialAggregation().withType(SpatialAggregationType.AVERAGE)
@@ -63,7 +63,7 @@ public final class SignalSourceTests {
         Assertions.assertEquals("bniwdj", model.metricName());
         Assertions.assertEquals("tsdbpgn", model.filters().get(0).dimensionName());
         Assertions.assertEquals(ScalarFunction.MAX, model.filters().get(0).scalarFunction());
-        Assertions.assertEquals(SamplingType.AVG, model.filters().get(0).samplingType());
+        Assertions.assertEquals(SamplingType.AVERAGE, model.filters().get(0).samplingType());
         Assertions.assertEquals(ConditionOperator.NOT_IN, model.filters().get(0).operator());
         Assertions.assertEquals("zxbzpfzabglc", model.filters().get(0).value());
         Assertions.assertEquals(SpatialAggregationType.AVERAGE, model.spatialAggregation().type());

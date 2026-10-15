@@ -63,18 +63,15 @@ public final class AuthenticationSettingImpl
     public AuthenticationSetting create() {
         this.innerObject = serviceManager.serviceClient()
             .getAuthenticationSettings()
-            .createOrUpdateWithResponse(resourceGroupName, healthModelName, authenticationSettingName,
-                this.innerModel(), Context.NONE)
-            .getValue();
+            .createOrUpdate(resourceGroupName, healthModelName, authenticationSettingName, this.innerModel(),
+                Context.NONE);
         return this;
     }
 
     public AuthenticationSetting create(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getAuthenticationSettings()
-            .createOrUpdateWithResponse(resourceGroupName, healthModelName, authenticationSettingName,
-                this.innerModel(), context)
-            .getValue();
+            .createOrUpdate(resourceGroupName, healthModelName, authenticationSettingName, this.innerModel(), context);
         return this;
     }
 
@@ -91,18 +88,15 @@ public final class AuthenticationSettingImpl
     public AuthenticationSetting apply() {
         this.innerObject = serviceManager.serviceClient()
             .getAuthenticationSettings()
-            .createOrUpdateWithResponse(resourceGroupName, healthModelName, authenticationSettingName,
-                this.innerModel(), Context.NONE)
-            .getValue();
+            .createOrUpdate(resourceGroupName, healthModelName, authenticationSettingName, this.innerModel(),
+                Context.NONE);
         return this;
     }
 
     public AuthenticationSetting apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getAuthenticationSettings()
-            .createOrUpdateWithResponse(resourceGroupName, healthModelName, authenticationSettingName,
-                this.innerModel(), context)
-            .getValue();
+            .createOrUpdate(resourceGroupName, healthModelName, authenticationSettingName, this.innerModel(), context);
         return this;
     }
 

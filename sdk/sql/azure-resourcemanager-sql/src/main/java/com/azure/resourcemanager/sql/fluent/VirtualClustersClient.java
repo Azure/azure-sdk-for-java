@@ -465,7 +465,7 @@ public interface VirtualClustersClient extends InnerSupportsGet<VirtualClusterIn
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return a refresh DNS servers operation along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> updateDnsServersWithResponseAsync(String resourceGroupName,
@@ -479,7 +479,7 @@ public interface VirtualClustersClient extends InnerSupportsGet<VirtualClusterIn
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of a refresh DNS servers operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<UpdateVirtualClusterDnsServersOperationInner>, UpdateVirtualClusterDnsServersOperationInner>
@@ -493,7 +493,7 @@ public interface VirtualClustersClient extends InnerSupportsGet<VirtualClusterIn
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of a refresh DNS servers operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<UpdateVirtualClusterDnsServersOperationInner>, UpdateVirtualClusterDnsServersOperationInner>
@@ -508,7 +508,7 @@ public interface VirtualClustersClient extends InnerSupportsGet<VirtualClusterIn
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of a refresh DNS servers operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<UpdateVirtualClusterDnsServersOperationInner>, UpdateVirtualClusterDnsServersOperationInner>
@@ -522,7 +522,7 @@ public interface VirtualClustersClient extends InnerSupportsGet<VirtualClusterIn
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return a refresh DNS servers operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<UpdateVirtualClusterDnsServersOperationInner> updateDnsServersAsync(String resourceGroupName,
@@ -536,7 +536,7 @@ public interface VirtualClustersClient extends InnerSupportsGet<VirtualClusterIn
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return a refresh DNS servers operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     UpdateVirtualClusterDnsServersOperationInner updateDnsServers(String resourceGroupName, String virtualClusterName);
@@ -550,7 +550,7 @@ public interface VirtualClustersClient extends InnerSupportsGet<VirtualClusterIn
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return a refresh DNS servers operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     UpdateVirtualClusterDnsServersOperationInner updateDnsServers(String resourceGroupName, String virtualClusterName,

@@ -8,6 +8,7 @@ import com.azure.security.keyvault.keys.implementation.DeletedKeyHelper;
 import com.azure.security.keyvault.keys.implementation.KeyPropertiesHelper;
 import com.azure.security.keyvault.keys.implementation.KeyRotationPolicyHelper;
 import com.azure.security.keyvault.keys.implementation.KeyVaultKeyHelper;
+import com.azure.security.keyvault.keys.models.CreateExternalKeyOptions;
 import com.azure.security.keyvault.keys.models.CreateKeyOptions;
 import com.azure.security.keyvault.keys.models.DeletedKey;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
@@ -170,6 +171,23 @@ public final class KeyVaultKeysModelsUtils {
             .setNotBefore(properties.getNotBefore());
     }
 
+    public static KeyAttributes createKeyAttributes(CreateExternalKeyOptions options) {
+        if (options == null) {
+            return null;
+        }
+
+        KeyAttributes attributes = new KeyAttributes().setEnabled(options.isEnabled())
+            .setExportable(options.isExportable())
+            .setExpires(options.getExpiresOn())
+            .setNotBefore(options.getNotBefore());
+
+        if (options.getExternalKey() != null) {
+            attributes.setExternalKey(options.getExternalKey());
+        }
+
+        return attributes;
+    }
+
     private static void populateKeyProperties(KeyBundle bundle, KeyProperties properties) {
         if (bundle != null) {
             populateKeyProperties(mapKeyReleasePolicyImpl(bundle.getReleasePolicy()), bundle.getTags(),
@@ -207,6 +225,7 @@ public final class KeyVaultKeysModelsUtils {
             KeyPropertiesHelper.setRecoverableDays(properties, attributes.getRecoverableDays());
             KeyPropertiesHelper.setHsmPlatform(properties, attributes.getHsmPlatform());
             KeyPropertiesHelper.setKeyAttestation(properties, attributes.getAttestation());
+            KeyPropertiesHelper.setExternalKey(properties, attributes.getExternalKey());
         }
     }
 

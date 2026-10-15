@@ -28,7 +28,7 @@ public final class ArcSettingsInitializeDisableProcessMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.arcSettings()
-            .initializeDisableProcess("kovohwvpr", "fdvtdurmdt", "cntjna", com.azure.core.util.Context.NONE);
+            .initializeDisableProcess("pxouvmr", "iflikyypzkgxfx", "myrqsdbpokszan", com.azure.core.util.Context.NONE);
 
     }
 }

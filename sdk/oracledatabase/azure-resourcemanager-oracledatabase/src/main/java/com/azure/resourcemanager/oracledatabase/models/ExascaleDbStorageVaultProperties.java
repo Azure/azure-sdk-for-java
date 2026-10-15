@@ -87,6 +87,16 @@ public final class ExascaleDbStorageVaultProperties implements JsonSerializable<
      */
     private List<ShapeAttribute> attachedShapeAttributes;
 
+    /*
+     * Indicates if autoscale feature is enabled for the Storage Vault. The default value is: false.
+     */
+    private Boolean isAutoscaleEnabled;
+
+    /*
+     * Maximum limit storage size in gigabytes, that is applicable for the Database Storage Vault.
+     */
+    private Integer autoscaleLimitInGbs;
+
     /**
      * Creates an instance of ExascaleDbStorageVaultProperties class.
      */
@@ -292,6 +302,50 @@ public final class ExascaleDbStorageVaultProperties implements JsonSerializable<
     }
 
     /**
+     * Get the isAutoscaleEnabled property: Indicates if autoscale feature is enabled for the Storage Vault. The default
+     * value is: false.
+     * 
+     * @return the isAutoscaleEnabled value.
+     */
+    public Boolean isAutoscaleEnabled() {
+        return this.isAutoscaleEnabled;
+    }
+
+    /**
+     * Set the isAutoscaleEnabled property: Indicates if autoscale feature is enabled for the Storage Vault. The default
+     * value is: false.
+     * 
+     * @param isAutoscaleEnabled the isAutoscaleEnabled value to set.
+     * @return the ExascaleDbStorageVaultProperties object itself.
+     */
+    public ExascaleDbStorageVaultProperties withIsAutoscaleEnabled(Boolean isAutoscaleEnabled) {
+        this.isAutoscaleEnabled = isAutoscaleEnabled;
+        return this;
+    }
+
+    /**
+     * Get the autoscaleLimitInGbs property: Maximum limit storage size in gigabytes, that is applicable for the
+     * Database Storage Vault.
+     * 
+     * @return the autoscaleLimitInGbs value.
+     */
+    public Integer autoscaleLimitInGbs() {
+        return this.autoscaleLimitInGbs;
+    }
+
+    /**
+     * Set the autoscaleLimitInGbs property: Maximum limit storage size in gigabytes, that is applicable for the
+     * Database Storage Vault.
+     * 
+     * @param autoscaleLimitInGbs the autoscaleLimitInGbs value to set.
+     * @return the ExascaleDbStorageVaultProperties object itself.
+     */
+    public ExascaleDbStorageVaultProperties withAutoscaleLimitInGbs(Integer autoscaleLimitInGbs) {
+        this.autoscaleLimitInGbs = autoscaleLimitInGbs;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -303,6 +357,8 @@ public final class ExascaleDbStorageVaultProperties implements JsonSerializable<
         jsonWriter.writeStringField("description", this.description);
         jsonWriter.writeStringField("timeZone", this.timeZone);
         jsonWriter.writeStringField("exadataInfrastructureId", this.exadataInfrastructureId);
+        jsonWriter.writeBooleanField("isAutoscaleEnabled", this.isAutoscaleEnabled);
+        jsonWriter.writeNumberField("autoscaleLimitInGbs", this.autoscaleLimitInGbs);
         return jsonWriter.writeEndObject();
     }
 
@@ -359,6 +415,12 @@ public final class ExascaleDbStorageVaultProperties implements JsonSerializable<
                     List<ShapeAttribute> attachedShapeAttributes
                         = reader.readArray(reader1 -> ShapeAttribute.fromString(reader1.getString()));
                     deserializedExascaleDbStorageVaultProperties.attachedShapeAttributes = attachedShapeAttributes;
+                } else if ("isAutoscaleEnabled".equals(fieldName)) {
+                    deserializedExascaleDbStorageVaultProperties.isAutoscaleEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("autoscaleLimitInGbs".equals(fieldName)) {
+                    deserializedExascaleDbStorageVaultProperties.autoscaleLimitInGbs
+                        = reader.getNullable(JsonReader::getInt);
                 } else {
                     reader.skipChildren();
                 }

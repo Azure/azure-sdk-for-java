@@ -9,7 +9,7 @@ package com.azure.resourcemanager.horizondb.generated;
  */
 public final class HorizonDbParameterGroupsListVersionsSamples {
     /*
-     * x-ms-original-file: 2026-01-20-preview/ParameterGroups_ListVersions.json
+     * x-ms-original-file: 2026-05-01-preview/ParameterGroups_ListVersions.json
      */
     /**
      * Sample code: List parameter groups filtered by version.

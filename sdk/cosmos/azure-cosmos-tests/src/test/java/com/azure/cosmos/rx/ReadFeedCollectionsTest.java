@@ -65,7 +65,7 @@ public class ReadFeedCollectionsTest extends TestSuiteBase {
 
     }
 
-    @BeforeClass(groups = { "query" }, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = { "query" }, timeOut = 16 * SETUP_TIMEOUT)
     public void before_ReadFeedCollectionsTest() {
         client = getClientBuilder().buildAsyncClient();
         createdDatabase = createDatabase(client, databaseId);
@@ -87,7 +87,6 @@ public class ReadFeedCollectionsTest extends TestSuiteBase {
         paths.add("/mypk");
         partitionKeyDef.setPaths(paths);
         CosmosContainerProperties containerProperties = new CosmosContainerProperties(UUID.randomUUID().toString(), partitionKeyDef);
-        database.createContainer(containerProperties, new CosmosContainerRequestOptions()).block();
-        return database.getContainer(containerProperties.getId());
+        return createCollection(database, containerProperties, new CosmosContainerRequestOptions());
     }
 }

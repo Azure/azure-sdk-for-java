@@ -11,7 +11,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.containerservice.models.AgentPoolRecentlyUsedVersion;
 import com.azure.resourcemanager.containerservice.models.AgentPoolUpgradeProfilePropertiesUpgradesItem;
+import com.azure.resourcemanager.containerservice.models.ComponentsByRelease;
 import com.azure.resourcemanager.containerservice.models.OSType;
 import java.io.IOException;
 import java.util.List;
@@ -125,6 +127,24 @@ public final class AgentPoolUpgradeProfileInner extends ProxyResource {
      */
     public List<AgentPoolUpgradeProfilePropertiesUpgradesItem> upgrades() {
         return this.innerProperties() == null ? null : this.innerProperties().upgrades();
+    }
+
+    /**
+     * Get the componentsByReleases property: List of components grouped by kubernetes major.minor version.
+     * 
+     * @return the componentsByReleases value.
+     */
+    public List<ComponentsByRelease> componentsByReleases() {
+        return this.innerProperties() == null ? null : this.innerProperties().componentsByReleases();
+    }
+
+    /**
+     * Get the recentlyUsedVersions property: List of historical good versions for rollback operations.
+     * 
+     * @return the recentlyUsedVersions value.
+     */
+    public List<AgentPoolRecentlyUsedVersion> recentlyUsedVersions() {
+        return this.innerProperties() == null ? null : this.innerProperties().recentlyUsedVersions();
     }
 
     /**

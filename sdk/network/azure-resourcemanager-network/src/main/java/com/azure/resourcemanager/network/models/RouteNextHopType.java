@@ -32,7 +32,13 @@ public final class RouteNextHopType extends ExpandableStringEnum<RouteNextHopTyp
     public static final RouteNextHopType VIRTUAL_APPLIANCE = fromString("VirtualAppliance");
 
     /**
-     * None.
+     * Routes traffic to virtual appliances using Equal-Cost Multi-Path (ECMP) routing with multiple next hop IP
+     * addresses.
+     */
+    public static final RouteNextHopType VIRTUAL_APPLIANCE_ECMP = fromString("VirtualApplianceEcmp");
+
+    /**
+     * No next hop type.
      */
     public static final RouteNextHopType NONE = fromString("None");
 

@@ -31,8 +31,8 @@ public final class AppConfigurationSecretClientManager {
     private final SecretClientBuilderFactory secretClientFactory;
 
     private final boolean credentialConfigured;
-    
-    private final int timeout = 30;
+
+    private static final int TIMEOUT = 30;
 
     /**
      * Creates a Client for connecting to Key Vault
@@ -74,7 +74,6 @@ public final class AppConfigurationSecretClientManager {
      * Gets the specified secret using the Secret Identifier
      *
      * @param secretIdentifier The Secret Identifier to Secret
-     * @param timeout How long it waits for a response from Key Vault
      * @return Secret values that matches the secretIdentifier
      */
     public KeyVaultSecret getSecret(URI secretIdentifier) {
@@ -94,7 +93,7 @@ public final class AppConfigurationSecretClientManager {
             }
         }
 
-        return secretClient.getSecret(name, version).block(Duration.ofSeconds(timeout));
+        return secretClient.getSecret(name, version).block(Duration.ofSeconds(TIMEOUT));
     }
 
 }

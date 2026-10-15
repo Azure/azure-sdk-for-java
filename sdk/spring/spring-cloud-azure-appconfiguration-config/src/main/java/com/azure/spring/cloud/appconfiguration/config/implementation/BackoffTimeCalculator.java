@@ -83,7 +83,7 @@ final class BackoffTimeCalculator {
             maxNanoSeconds = maxBackoffNano;
         }
 
-        return (long) (minBackoffNano + ((RANDOM.nextDouble() * (maxNanoSeconds - minBackoffNano)) + minBackoffNano));
+        return (long) (minBackoffNano + ((RANDOM.nextDouble() * (maxNanoSeconds - minBackoffNano))));
     }
 
 }

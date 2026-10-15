@@ -270,7 +270,8 @@ public interface LedgerDigestUploadsOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return azure SQL Database ledger digest upload settings along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> disableWithResponseAsync(String resourceGroupName, String serverName,
@@ -286,7 +287,7 @@ public interface LedgerDigestUploadsOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of azure SQL Database ledger digest upload settings.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<LedgerDigestUploadsInner>, LedgerDigestUploadsInner> beginDisableAsync(
@@ -302,7 +303,7 @@ public interface LedgerDigestUploadsOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of azure SQL Database ledger digest upload settings.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<LedgerDigestUploadsInner>, LedgerDigestUploadsInner> beginDisable(String resourceGroupName,
@@ -319,7 +320,7 @@ public interface LedgerDigestUploadsOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of azure SQL Database ledger digest upload settings.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<LedgerDigestUploadsInner>, LedgerDigestUploadsInner> beginDisable(String resourceGroupName,
@@ -335,7 +336,7 @@ public interface LedgerDigestUploadsOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return azure SQL Database ledger digest upload settings on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<LedgerDigestUploadsInner> disableAsync(String resourceGroupName, String serverName, String databaseName,
@@ -351,7 +352,7 @@ public interface LedgerDigestUploadsOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return azure SQL Database ledger digest upload settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     LedgerDigestUploadsInner disable(String resourceGroupName, String serverName, String databaseName,
@@ -368,7 +369,7 @@ public interface LedgerDigestUploadsOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return azure SQL Database ledger digest upload settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     LedgerDigestUploadsInner disable(String resourceGroupName, String serverName, String databaseName,

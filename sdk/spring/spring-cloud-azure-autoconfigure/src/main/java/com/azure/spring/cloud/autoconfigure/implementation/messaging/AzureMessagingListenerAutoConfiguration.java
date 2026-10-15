@@ -49,8 +49,10 @@ public class AzureMessagingListenerAutoConfiguration {
     @Configuration
     @ConditionalOnBean(EventHubsProcessorFactory.class)
     static class EventHubsConfiguration {
-        @Bean(name = "azureEventHubsListenerContainerFactory")
-        @ConditionalOnMissingBean(name = "azureEventHubsListenerContainerFactory")
+        @Bean(
+            name = EventHubsListenerAnnotationBeanPostProcessor.DEFAULT_EVENT_HUBS_LISTENER_CONTAINER_FACTORY_BEAN_NAME)
+        @ConditionalOnMissingBean(
+            name = EventHubsListenerAnnotationBeanPostProcessor.DEFAULT_EVENT_HUBS_LISTENER_CONTAINER_FACTORY_BEAN_NAME)
         public MessageListenerContainerFactory<? extends MessageListenerContainer> azureEventHubsListenerContainerFactory(
             EventHubsProcessorFactory eventHubsProcessorFactory,
             ObjectProvider<AzureMessageConverter<EventData, EventData>> messageConverterProvider) {
@@ -73,8 +75,10 @@ public class AzureMessagingListenerAutoConfiguration {
     @Configuration
     @ConditionalOnBean(ServiceBusProcessorFactory.class)
     static class ServiceBusConfiguration {
-        @Bean(name = "azureServiceBusListenerContainerFactory")
-        @ConditionalOnMissingBean(name = "azureServiceBusListenerContainerFactory")
+        @Bean(
+            name = ServiceBusListenerAnnotationBeanPostProcessor.DEFAULT_SERVICE_BUS_LISTENER_CONTAINER_FACTORY_BEAN_NAME)
+        @ConditionalOnMissingBean(
+            name = ServiceBusListenerAnnotationBeanPostProcessor.DEFAULT_SERVICE_BUS_LISTENER_CONTAINER_FACTORY_BEAN_NAME)
         public MessageListenerContainerFactory<? extends MessageListenerContainer> azureServiceBusListenerContainerFactory(
             ServiceBusProcessorFactory serviceBusProcessorFactory,
             ObjectProvider<AzureMessageConverter<ServiceBusReceivedMessage, ServiceBusMessage>> messageConverterProvider) {

@@ -35,19 +35,14 @@ public final class NetworkManagerRoutingConfigurationInner extends ChildResource
     private String etag;
 
     /*
-     * Resource type.
+     * The type of the resource.
      */
     private String type;
 
     /*
-     * Resource name.
+     * The name of the resource.
      */
     private String name;
-
-    /*
-     * Resource ID.
-     */
-    private String id;
 
     /**
      * Creates an instance of NetworkManagerRoutingConfigurationInner class.
@@ -84,7 +79,7 @@ public final class NetworkManagerRoutingConfigurationInner extends ChildResource
     }
 
     /**
-     * Get the type property: Resource type.
+     * Get the type property: The type of the resource.
      * 
      * @return the type value.
      */
@@ -94,7 +89,7 @@ public final class NetworkManagerRoutingConfigurationInner extends ChildResource
     }
 
     /**
-     * Get the name property: Resource name.
+     * Get the name property: The name of the resource.
      * 
      * @return the name value.
      */
@@ -104,13 +99,12 @@ public final class NetworkManagerRoutingConfigurationInner extends ChildResource
     }
 
     /**
-     * Get the id property: Resource ID.
-     * 
-     * @return the id value.
+     * {@inheritDoc}
      */
     @Override
-    public String id() {
-        return this.id;
+    public NetworkManagerRoutingConfigurationInner withId(String id) {
+        super.withId(id);
+        return this;
     }
 
     /**
@@ -197,6 +191,7 @@ public final class NetworkManagerRoutingConfigurationInner extends ChildResource
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
         jsonWriter.writeJsonField("properties", this.innerProperties);
         return jsonWriter.writeEndObject();
     }
@@ -218,14 +213,14 @@ public final class NetworkManagerRoutingConfigurationInner extends ChildResource
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("id".equals(fieldName)) {
-                    deserializedNetworkManagerRoutingConfigurationInner.id = reader.getString();
-                } else if ("name".equals(fieldName)) {
+                if ("name".equals(fieldName)) {
                     deserializedNetworkManagerRoutingConfigurationInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedNetworkManagerRoutingConfigurationInner.type = reader.getString();
                 } else if ("etag".equals(fieldName)) {
                     deserializedNetworkManagerRoutingConfigurationInner.etag = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    deserializedNetworkManagerRoutingConfigurationInner.withId(reader.getString());
                 } else if ("properties".equals(fieldName)) {
                     deserializedNetworkManagerRoutingConfigurationInner.innerProperties
                         = NetworkManagerRoutingConfigurationPropertiesFormat.fromJson(reader);

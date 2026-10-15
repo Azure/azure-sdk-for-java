@@ -42,16 +42,6 @@ import java.util.Map;
 @Fluent
 public final class ContainerGroupInner extends Resource {
     /*
-     * The resource location.
-     */
-    private String location;
-
-    /*
-     * The resource tags.
-     */
-    private Map<String, String> tags;
-
-    /*
      * The availability zones.
      */
     private List<String> zones;
@@ -90,46 +80,6 @@ public final class ContainerGroupInner extends Resource {
      * Creates an instance of ContainerGroupInner class.
      */
     public ContainerGroupInner() {
-    }
-
-    /**
-     * Get the location property: The resource location.
-     * 
-     * @return the location value.
-     */
-    public String location() {
-        return this.location;
-    }
-
-    /**
-     * Set the location property: The resource location.
-     * 
-     * @param location the location value to set.
-     * @return the ContainerGroupInner object itself.
-     */
-    public ContainerGroupInner withLocation(String location) {
-        this.location = location;
-        return this;
-    }
-
-    /**
-     * Get the tags property: The resource tags.
-     * 
-     * @return the tags value.
-     */
-    public Map<String, String> tags() {
-        return this.tags;
-    }
-
-    /**
-     * Set the tags property: The resource tags.
-     * 
-     * @param tags the tags value to set.
-     * @return the ContainerGroupInner object itself.
-     */
-    public ContainerGroupInner withTags(Map<String, String> tags) {
-        this.tags = tags;
-        return this;
     }
 
     /**
@@ -218,6 +168,24 @@ public final class ContainerGroupInner extends Resource {
     @Override
     public String id() {
         return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ContainerGroupInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ContainerGroupInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
     }
 
     /**
@@ -722,9 +690,9 @@ public final class ContainerGroupInner extends Resource {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("properties", this.innerProperties);
-        jsonWriter.writeStringField("location", this.location);
-        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("zones", this.zones, (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("identity", this.identity);
         return jsonWriter.writeEndObject();
@@ -752,13 +720,13 @@ public final class ContainerGroupInner extends Resource {
                     deserializedContainerGroupInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedContainerGroupInner.type = reader.getString();
-                } else if ("properties".equals(fieldName)) {
-                    deserializedContainerGroupInner.innerProperties = ContainerGroupProperties.fromJson(reader);
                 } else if ("location".equals(fieldName)) {
-                    deserializedContainerGroupInner.location = reader.getString();
+                    deserializedContainerGroupInner.withLocation(reader.getString());
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
-                    deserializedContainerGroupInner.tags = tags;
+                    deserializedContainerGroupInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedContainerGroupInner.innerProperties = ContainerGroupProperties.fromJson(reader);
                 } else if ("zones".equals(fieldName)) {
                     List<String> zones = reader.readArray(reader1 -> reader1.getString());
                     deserializedContainerGroupInner.zones = zones;

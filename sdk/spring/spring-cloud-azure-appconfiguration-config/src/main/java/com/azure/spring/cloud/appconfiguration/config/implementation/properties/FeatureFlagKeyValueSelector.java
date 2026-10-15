@@ -4,7 +4,7 @@ package com.azure.spring.cloud.appconfiguration.config.implementation.properties
 
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.EMPTY_LABEL;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.LABEL_SEPARATOR;
-
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -87,9 +87,10 @@ public final class FeatureFlagKeyValueSelector {
      * @return an array of resolved labels, ordered from lowest to highest priority
      */
     public String[] getLabelFilter(List<String> profiles) {
-        if (labelFilter == null && profiles.size() > 0) {
-            Collections.reverse(profiles);
-            return profiles.toArray(new String[profiles.size()]);
+        if (labelFilter == null && !profiles.isEmpty()) {
+            List<String> mutableProfiles = new ArrayList<>(profiles);
+            Collections.reverse(mutableProfiles);
+            return mutableProfiles.toArray(String[]::new);
         } else if (!StringUtils.hasText(labelFilter)) {
             return EMPTY_LABEL_ARRAY;
         }
@@ -105,8 +106,7 @@ public final class FeatureFlagKeyValueSelector {
         }
 
         Collections.reverse(labels);
-        String[] t = new String[labels.size()];
-        return labels.toArray(t);
+        return labels.toArray(String[]::new);
     }
 
     /**

@@ -11,6 +11,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.DdosDetectionRule;
+import com.azure.resourcemanager.network.models.DdosMitigationRule;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import java.io.IOException;
 import java.util.List;
@@ -172,6 +173,29 @@ public final class DdosCustomPolicyInner extends Resource {
     }
 
     /**
+     * Get the mitigationRules property: The list of DDoS mitigation rules associated with the custom policy.
+     * 
+     * @return the mitigationRules value.
+     */
+    public List<DdosMitigationRule> mitigationRules() {
+        return this.innerProperties() == null ? null : this.innerProperties().mitigationRules();
+    }
+
+    /**
+     * Set the mitigationRules property: The list of DDoS mitigation rules associated with the custom policy.
+     * 
+     * @param mitigationRules the mitigationRules value to set.
+     * @return the DdosCustomPolicyInner object itself.
+     */
+    public DdosCustomPolicyInner withMitigationRules(List<DdosMitigationRule> mitigationRules) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DdosCustomPolicyPropertiesFormat();
+        }
+        this.innerProperties().withMitigationRules(mitigationRules);
+        return this;
+    }
+
+    /**
      * Get the frontEndIpConfiguration property: The list of frontend IP configurations associated with the custom
      * policy.
      * 
@@ -194,6 +218,16 @@ public final class DdosCustomPolicyInner extends Resource {
         }
         this.innerProperties().withFrontEndIpConfiguration(frontEndIpConfiguration);
         return this;
+    }
+
+    /**
+     * Get the publicIPAddresses property: The list of public IP addresses associated with the custom policy. This list
+     * is read-only.
+     * 
+     * @return the publicIPAddresses value.
+     */
+    public List<SubResource> publicIPAddresses() {
+        return this.innerProperties() == null ? null : this.innerProperties().publicIPAddresses();
     }
 
     /**

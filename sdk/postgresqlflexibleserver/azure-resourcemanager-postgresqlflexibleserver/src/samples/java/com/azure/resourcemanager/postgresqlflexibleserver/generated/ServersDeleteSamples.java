@@ -9,7 +9,7 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
  */
 public final class ServersDeleteSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/ServersDelete.json
+     * x-ms-original-file: 2026-07-01-preview/ServersDelete.json
      */
     /**
      * Sample code: Delete or drop an existing server.

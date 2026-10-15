@@ -4,6 +4,7 @@
 
 package com.azure.ai.contentunderstanding.implementation;
 
+import com.azure.ai.contentunderstanding.models.ChunkingStrategy;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzer;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzerConfig;
 import com.azure.ai.contentunderstanding.models.ContentCategoryDefinition;
@@ -63,6 +64,23 @@ public class JsonMergePatchHelper {
 
     public static ContentCategoryDefinitionAccessor getContentCategoryDefinitionAccessor() {
         return contentCategoryDefinitionAccessor;
+    }
+
+    private static ChunkingStrategyAccessor chunkingStrategyAccessor;
+
+    public interface ChunkingStrategyAccessor {
+        ChunkingStrategy prepareModelForJsonMergePatch(ChunkingStrategy chunkingStrategy,
+            boolean jsonMergePatchEnabled);
+
+        boolean isJsonMergePatch(ChunkingStrategy chunkingStrategy);
+    }
+
+    public static void setChunkingStrategyAccessor(ChunkingStrategyAccessor accessor) {
+        chunkingStrategyAccessor = accessor;
+    }
+
+    public static ChunkingStrategyAccessor getChunkingStrategyAccessor() {
+        return chunkingStrategyAccessor;
     }
 
     private static ContentFieldSchemaAccessor contentFieldSchemaAccessor;

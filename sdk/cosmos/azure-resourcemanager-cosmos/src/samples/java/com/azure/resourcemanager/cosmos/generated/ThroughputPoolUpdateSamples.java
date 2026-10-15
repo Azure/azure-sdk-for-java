@@ -11,7 +11,7 @@ import com.azure.resourcemanager.cosmos.models.ThroughputPoolUpdate;
  */
 public final class ThroughputPoolUpdateSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/throughputPool/CosmosDBThroughputPoolUpdate.json
+     * x-ms-original-file: 2026-04-01-preview/throughputPool/CosmosDBThroughputPoolUpdate.json
      */
     /**
      * Sample code: CosmosDB ThroughputPool Update.

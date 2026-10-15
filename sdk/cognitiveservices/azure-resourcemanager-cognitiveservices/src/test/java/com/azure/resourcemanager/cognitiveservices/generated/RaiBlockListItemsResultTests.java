@@ -12,11 +12,11 @@ public final class RaiBlockListItemsResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RaiBlockListItemsResult model = BinaryData.fromString(
-            "{\"nextLink\":\"vtvudutncormr\",\"value\":[{\"properties\":{\"pattern\":\"cofudflvkgjub\",\"isRegex\":true},\"etag\":\"nqvsaznqnto\",\"tags\":{\"uwjuetaeburuvdmo\":\"sgsahmkycgr\"},\"id\":\"mz\",\"name\":\"xwabmqoe\",\"type\":\"kif\"},{\"properties\":{\"pattern\":\"puqujmqlgkfbtn\",\"isRegex\":false},\"etag\":\"n\",\"tags\":{\"ujitcjedftww\":\"cn\",\"foqouicybx\":\"ezkojvdcp\"},\"id\":\"zg\",\"name\":\"zuf\",\"type\":\"x\"},{\"properties\":{\"pattern\":\"opidoamciodh\",\"isRegex\":true},\"etag\":\"xkhnzbonlwnto\",\"tags\":{\"mrv\":\"kdwbwhkszz\",\"owtlmnguxawqald\":\"xztvbtqgsfraoyzk\"},\"id\":\"uuximerq\",\"name\":\"obwyznkb\",\"type\":\"kutwpf\"},{\"properties\":{\"pattern\":\"gmhrskdsnfdsdoak\",\"isRegex\":true},\"etag\":\"mkkzevdlhe\",\"tags\":{\"bbejdcngqqm\":\"sdsttwvog\",\"wr\":\"akufgmjz\"},\"id\":\"rtwaenuuzko\",\"name\":\"bminrfdwoyuhhzi\",\"type\":\"iefozbhdmsml\"}]}")
+            "{\"nextLink\":\"vekqvgqo\",\"value\":[{\"properties\":{\"pattern\":\"mpjw\",\"isRegex\":true},\"etag\":\"ikf\",\"tags\":{\"teusqczkvyklxu\":\"hrfsphuagrtti\",\"fmmfblcqcu\":\"yja\",\"brta\":\"bgq\"},\"id\":\"etttwgdslqxihhr\",\"name\":\"ooizqseyp\",\"type\":\"iut\"},{\"properties\":{\"pattern\":\"pzhyr\",\"isRegex\":true},\"etag\":\"g\",\"tags\":{\"nhl\":\"oxslh\",\"rgaehvvibrxjj\":\"brqnkkzjcjb\",\"lftidgfcwqmpim\":\"toqbeitpkxztmoob\"},\"id\":\"xzhemjyh\",\"name\":\"hujswtwkozzwcul\",\"type\":\"bawpfajnjwltlwt\"},{\"properties\":{\"pattern\":\"uktalhsnvkcdmxz\",\"isRegex\":false},\"etag\":\"imlnwiaaomylw\",\"tags\":{\"l\":\"ulcsethwwnpj\"},\"id\":\"swpchwahfbousn\",\"name\":\"epgfew\",\"type\":\"twly\"}]}")
             .toObject(RaiBlockListItemsResult.class);
-        Assertions.assertEquals("vtvudutncormr", model.nextLink());
-        Assertions.assertEquals("cofudflvkgjub", model.value().get(0).properties().pattern());
+        Assertions.assertEquals("vekqvgqo", model.nextLink());
+        Assertions.assertEquals("mpjw", model.value().get(0).properties().pattern());
         Assertions.assertTrue(model.value().get(0).properties().isRegex());
-        Assertions.assertEquals("sgsahmkycgr", model.value().get(0).tags().get("uwjuetaeburuvdmo"));
+        Assertions.assertEquals("hrfsphuagrtti", model.value().get(0).tags().get("teusqczkvyklxu"));
     }
 }

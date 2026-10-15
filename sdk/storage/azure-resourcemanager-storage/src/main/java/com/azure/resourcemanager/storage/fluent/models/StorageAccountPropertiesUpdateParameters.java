@@ -118,7 +118,7 @@ public final class StorageAccountPropertiesUpdateParameters
 
     /*
      * Set the minimum TLS version to be permitted on requests to storage. The default interpretation is TLS 1.0 for
-     * this property.
+     * this property. Minimum TLS version 1.3 version is not supported.
      */
     private MinimumTlsVersion minimumTlsVersion;
 
@@ -180,6 +180,12 @@ public final class StorageAccountPropertiesUpdateParameters
      * Data Collaboration policy for the storage account.
      */
     private StorageDataCollaborationPolicyProperties dataCollaborationPolicyProperties;
+
+    /*
+     * Allow or disallow cross AAD tenant user delegation SAS (shared access signature). The default interpretation is
+     * false for this property.
+     */
+    private Boolean allowCrossTenantDelegationSas;
 
     /**
      * Creates an instance of StorageAccountPropertiesUpdateParameters class.
@@ -512,7 +518,7 @@ public final class StorageAccountPropertiesUpdateParameters
 
     /**
      * Get the minimumTlsVersion property: Set the minimum TLS version to be permitted on requests to storage. The
-     * default interpretation is TLS 1.0 for this property.
+     * default interpretation is TLS 1.0 for this property. Minimum TLS version 1.3 version is not supported.
      * 
      * @return the minimumTlsVersion value.
      */
@@ -522,7 +528,7 @@ public final class StorageAccountPropertiesUpdateParameters
 
     /**
      * Set the minimumTlsVersion property: Set the minimum TLS version to be permitted on requests to storage. The
-     * default interpretation is TLS 1.0 for this property.
+     * default interpretation is TLS 1.0 for this property. Minimum TLS version 1.3 version is not supported.
      * 
      * @param minimumTlsVersion the minimumTlsVersion value to set.
      * @return the StorageAccountPropertiesUpdateParameters object itself.
@@ -767,6 +773,29 @@ public final class StorageAccountPropertiesUpdateParameters
     }
 
     /**
+     * Get the allowCrossTenantDelegationSas property: Allow or disallow cross AAD tenant user delegation SAS (shared
+     * access signature). The default interpretation is false for this property.
+     * 
+     * @return the allowCrossTenantDelegationSas value.
+     */
+    public Boolean allowCrossTenantDelegationSas() {
+        return this.allowCrossTenantDelegationSas;
+    }
+
+    /**
+     * Set the allowCrossTenantDelegationSas property: Allow or disallow cross AAD tenant user delegation SAS (shared
+     * access signature). The default interpretation is false for this property.
+     * 
+     * @param allowCrossTenantDelegationSas the allowCrossTenantDelegationSas value to set.
+     * @return the StorageAccountPropertiesUpdateParameters object itself.
+     */
+    public StorageAccountPropertiesUpdateParameters
+        withAllowCrossTenantDelegationSas(Boolean allowCrossTenantDelegationSas) {
+        this.allowCrossTenantDelegationSas = allowCrossTenantDelegationSas;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -847,6 +876,7 @@ public final class StorageAccountPropertiesUpdateParameters
         jsonWriter.writeJsonField("geoPriorityReplicationStatus", this.geoPriorityReplicationStatus);
         jsonWriter.writeJsonField("allowSharedKeyAccessForServices", this.allowSharedKeyAccessForServices);
         jsonWriter.writeJsonField("dataCollaborationPolicyProperties", this.dataCollaborationPolicyProperties);
+        jsonWriter.writeBooleanField("allowCrossTenantDelegationSas", this.allowCrossTenantDelegationSas);
         return jsonWriter.writeEndObject();
     }
 
@@ -940,6 +970,9 @@ public final class StorageAccountPropertiesUpdateParameters
                 } else if ("dataCollaborationPolicyProperties".equals(fieldName)) {
                     deserializedStorageAccountPropertiesUpdateParameters.dataCollaborationPolicyProperties
                         = StorageDataCollaborationPolicyProperties.fromJson(reader);
+                } else if ("allowCrossTenantDelegationSas".equals(fieldName)) {
+                    deserializedStorageAccountPropertiesUpdateParameters.allowCrossTenantDelegationSas
+                        = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.msi.generated;
  */
 public final class UserAssignedIdentitiesDeleteSamples {
     /*
-     * x-ms-original-file: 2025-05-31-preview/IdentityDelete.json
+     * x-ms-original-file: 2024-11-30/IdentityDelete.json
      */
     /**
      * Sample code: IdentityDelete.

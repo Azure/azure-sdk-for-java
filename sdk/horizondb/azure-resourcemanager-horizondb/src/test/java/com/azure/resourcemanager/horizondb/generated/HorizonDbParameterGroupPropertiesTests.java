@@ -14,28 +14,30 @@ public final class HorizonDbParameterGroupPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HorizonDbParameterGroupProperties model = BinaryData.fromString(
-            "{\"parameters\":[{\"name\":\"hwlrsf\",\"description\":\"zpwv\",\"value\":\"dqgbiqylihkaetc\",\"dataType\":\"vfcivfsnkymuc\",\"allowedValues\":\"hjfbebrjcxe\",\"isDynamic\":true,\"isReadOnly\":true,\"documentationLink\":\"ttxfvjr\",\"unit\":\"rp\"},{\"name\":\"epcyvahfnlj\",\"description\":\"qxj\",\"value\":\"ujqgidok\",\"dataType\":\"ljyoxgvcltb\",\"allowedValues\":\"ncghkje\",\"isDynamic\":true,\"isReadOnly\":true,\"documentationLink\":\"jhtxfvgxbfsmxne\",\"unit\":\"pvecxgodeb\"}],\"description\":\"kk\",\"pgVersion\":1961052031,\"version\":1171229778,\"applyImmediately\":false,\"provisioningState\":\"InProgress\"}")
+            "{\"parameters\":[{\"name\":\"qn\",\"description\":\"oczvy\",\"value\":\"qrvkdv\",\"dataType\":\"llr\",\"allowedValues\":\"vdfwatkpn\",\"isDynamic\":true,\"isReadOnly\":false,\"documentationLink\":\"bczw\",\"unit\":\"uwiqzb\"},{\"name\":\"vsovmyokac\",\"description\":\"kwlhzdo\",\"value\":\"xjmflbvv\",\"dataType\":\"hrk\",\"allowedValues\":\"iwwzjuqk\",\"isDynamic\":false,\"isReadOnly\":true,\"documentationLink\":\"wkuofoskghsauu\",\"unit\":\"jmvxie\"},{\"name\":\"ugidyjrr\",\"description\":\"y\",\"value\":\"svexcsonpclhoco\",\"dataType\":\"lkevle\",\"allowedValues\":\"zfbuhf\",\"isDynamic\":true,\"isReadOnly\":false,\"documentationLink\":\"ffeii\",\"unit\":\"lvmezyvshxmzsbbz\"},{\"name\":\"gigr\",\"description\":\"burvjxxjnspy\",\"value\":\"tko\",\"dataType\":\"kouknvudwtiu\",\"allowedValues\":\"ldngkpoci\",\"isDynamic\":false,\"isReadOnly\":true,\"documentationLink\":\"egukgjnpiucg\",\"unit\":\"evqzntypmrbp\"}],\"description\":\"c\",\"pgVersion\":1616487247,\"version\":1971484471,\"applyImmediately\":false,\"provisioningState\":\"Failed\"}")
             .toObject(HorizonDbParameterGroupProperties.class);
-        Assertions.assertEquals("hwlrsf", model.parameters().get(0).name());
-        Assertions.assertEquals("dqgbiqylihkaetc", model.parameters().get(0).value());
-        Assertions.assertEquals("kk", model.description());
-        Assertions.assertEquals(1961052031, model.pgVersion());
+        Assertions.assertEquals("qn", model.parameters().get(0).name());
+        Assertions.assertEquals("qrvkdv", model.parameters().get(0).value());
+        Assertions.assertEquals("c", model.description());
+        Assertions.assertEquals(1616487247, model.pgVersion());
         Assertions.assertFalse(model.applyImmediately());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         HorizonDbParameterGroupProperties model = new HorizonDbParameterGroupProperties()
-            .withParameters(Arrays.asList(new ParameterProperties().withName("hwlrsf").withValue("dqgbiqylihkaetc"),
-                new ParameterProperties().withName("epcyvahfnlj").withValue("ujqgidok")))
-            .withDescription("kk")
-            .withPgVersion(1961052031)
+            .withParameters(Arrays.asList(new ParameterProperties().withName("qn").withValue("qrvkdv"),
+                new ParameterProperties().withName("vsovmyokac").withValue("xjmflbvv"),
+                new ParameterProperties().withName("ugidyjrr").withValue("svexcsonpclhoco"),
+                new ParameterProperties().withName("gigr").withValue("tko")))
+            .withDescription("c")
+            .withPgVersion(1616487247)
             .withApplyImmediately(false);
         model = BinaryData.fromObject(model).toObject(HorizonDbParameterGroupProperties.class);
-        Assertions.assertEquals("hwlrsf", model.parameters().get(0).name());
-        Assertions.assertEquals("dqgbiqylihkaetc", model.parameters().get(0).value());
-        Assertions.assertEquals("kk", model.description());
-        Assertions.assertEquals(1961052031, model.pgVersion());
+        Assertions.assertEquals("qn", model.parameters().get(0).name());
+        Assertions.assertEquals("qrvkdv", model.parameters().get(0).value());
+        Assertions.assertEquals("c", model.description());
+        Assertions.assertEquals(1616487247, model.pgVersion());
         Assertions.assertFalse(model.applyImmediately());
     }
 }

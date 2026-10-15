@@ -228,6 +228,11 @@ public final class IndexerExecutionResult implements JsonSerializable<IndexerExe
                     deserializedIndexerExecutionResult.itemCount = reader.getInt();
                 } else if ("itemsFailed".equals(fieldName)) {
                     deserializedIndexerExecutionResult.failedItemCount = reader.getInt();
+                } else if ("statusDetail".equals(fieldName)) {
+                    deserializedIndexerExecutionResult.statusDetail
+                        = IndexerExecutionStatusDetail.fromString(reader.getString());
+                } else if ("mode".equals(fieldName)) {
+                    deserializedIndexerExecutionResult.mode = IndexingMode.fromString(reader.getString());
                 } else if ("errorMessage".equals(fieldName)) {
                     deserializedIndexerExecutionResult.errorMessage = reader.getString();
                 } else if ("startTime".equals(fieldName)) {
@@ -246,5 +251,37 @@ public final class IndexerExecutionResult implements JsonSerializable<IndexerExe
             }
             return deserializedIndexerExecutionResult;
         });
+    }
+
+    /*
+     * The outcome of this indexer execution.
+     */
+    @Generated
+    private IndexerExecutionStatusDetail statusDetail;
+
+    /*
+     * The mode the indexer is running in.
+     */
+    @Generated
+    private IndexingMode mode;
+
+    /**
+     * Get the statusDetail property: The outcome of this indexer execution.
+     *
+     * @return the statusDetail value.
+     */
+    @Generated
+    public IndexerExecutionStatusDetail getStatusDetail() {
+        return this.statusDetail;
+    }
+
+    /**
+     * Get the mode property: The mode the indexer is running in.
+     *
+     * @return the mode value.
+     */
+    @Generated
+    public IndexingMode getMode() {
+        return this.mode;
     }
 }

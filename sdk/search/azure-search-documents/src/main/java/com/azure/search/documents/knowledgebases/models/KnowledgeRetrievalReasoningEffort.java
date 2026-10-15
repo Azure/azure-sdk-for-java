@@ -28,7 +28,7 @@ public class KnowledgeRetrievalReasoningEffort implements JsonSerializable<Knowl
      * Creates an instance of KnowledgeRetrievalReasoningEffort class.
      */
     @Generated
-    protected KnowledgeRetrievalReasoningEffort() {
+    public KnowledgeRetrievalReasoningEffort() {
     }
 
     /**
@@ -80,6 +80,12 @@ public class KnowledgeRetrievalReasoningEffort implements JsonSerializable<Knowl
                 // Use the discriminator value to determine which subtype should be deserialized.
                 if ("minimal".equals(discriminatorValue)) {
                     return KnowledgeRetrievalMinimalReasoningEffort.fromJson(readerToUse.reset());
+                } else if ("low".equals(discriminatorValue)) {
+                    return KnowledgeRetrievalLowReasoningEffort.fromJson(readerToUse.reset());
+                } else if ("medium".equals(discriminatorValue)) {
+                    return KnowledgeRetrievalMediumReasoningEffort.fromJson(readerToUse.reset());
+                } else if ("auto".equals(discriminatorValue)) {
+                    return KnowledgeRetrievalAutoReasoningEffort.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

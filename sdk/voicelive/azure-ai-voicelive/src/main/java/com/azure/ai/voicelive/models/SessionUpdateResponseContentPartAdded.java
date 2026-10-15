@@ -15,7 +15,7 @@ import java.io.IOException;
  * response generation.
  */
 @Immutable
-public final class SessionUpdateResponseContentPartAdded extends SessionUpdate {
+public final class SessionUpdateResponseContentPartAdded extends SessionServerEvent {
 
     /*
      * The type of event.

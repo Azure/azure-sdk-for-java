@@ -2,7 +2,7 @@
 
 Azure Resource Manager RecoveryServices client library for Java.
 
-This package contains Microsoft Azure SDK for RecoveryServices Management SDK.  Package api-version 2025-08-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+This package contains Microsoft Azure SDK for RecoveryServices Management SDK.  Package api-version 2026-07-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ## We'd love to hear your feedback
 
@@ -32,7 +32,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure.resourcemanager</groupId>
     <artifactId>azure-resourcemanager-recoveryservices</artifactId>
-    <version>1.6.0</version>
+    <version>1.8.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -71,19 +71,25 @@ See [API design][design] for general introduction on design and key concepts on 
 ## Examples
 
 ```java
-vault = recoveryServicesManager.vaults()
-    .define(vaultName)
-    .withRegion(REGION)
-    .withExistingResourceGroup(resourceGroupName)
-    .withSku(new Sku().withName(SkuName.RS0).withTier("Standard"))
-    .withProperties(new VaultProperties()
-        .withSecuritySettings(new SecuritySettings()
-            .withImmutabilitySettings(new ImmutabilitySettings().withState(ImmutabilityState.UNLOCKED)))
-        .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
-        .withRestoreSettings(new RestoreSettings()
-            .withCrossSubscriptionRestoreSettings(new CrossSubscriptionRestoreSettings()
-                .withCrossSubscriptionRestoreState(CrossSubscriptionRestoreState.ENABLED))))
-    .create();
+vault
+    = recoveryServicesManager.vaults()
+        .define(vaultName)
+        .withRegion(REGION)
+        .withExistingResourceGroup(resourceGroupName)
+        .withSku(new Sku().withName(SkuName.RS0).withTier("Standard"))
+        .withProperties(
+            new VaultProperties()
+                .withSecuritySettings(
+                    new SecuritySettings()
+                        .withImmutabilitySettings(
+                            new ImmutabilitySettings().withState(ImmutabilityState.UNLOCKED)
+                                .withConfiguration(new ImmutabilityConfiguration()
+                                    .withType(ImmutabilityType.AS_PER_POLICY))))
+                .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
+                .withRestoreSettings(new RestoreSettings()
+                    .withCrossSubscriptionRestoreSettings(new CrossSubscriptionRestoreSettings()
+                        .withCrossSubscriptionRestoreState(CrossSubscriptionRestoreState.ENABLED))))
+        .create();
 ```
 [Code snippets and samples](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/recoveryservices/azure-resourcemanager-recoveryservices/SAMPLE.md)
 

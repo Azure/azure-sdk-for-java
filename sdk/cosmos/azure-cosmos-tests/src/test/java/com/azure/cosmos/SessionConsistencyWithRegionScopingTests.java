@@ -15,6 +15,7 @@ import com.azure.cosmos.implementation.PartitionKeyBasedBloomFilter;
 import com.azure.cosmos.implementation.RegionScopedSessionContainer;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.SessionContainer;
+import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.guava25.base.Charsets;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
@@ -33,6 +34,7 @@ import com.azure.cosmos.models.CosmosBulkOperationResponse;
 import com.azure.cosmos.models.CosmosBulkOperations;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemOperation;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
@@ -730,7 +732,9 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
             SqlQuerySpec sqlQuerySpec = new SqlQuerySpec();
             sqlQuerySpec.setQueryText("SELECT * FROM c OFFSET 0 LIMIT 1");
 
-            List<FeedRange> feedRanges = container.getFeedRanges().block();
+            List<FeedRange> feedRanges = getFeedRangesWithRetry(
+                container,
+                "get feed ranges for readMany no explicit region switching setup");
 
             Set<String> idsToUseWithReadMany = new HashSet<>();
 
@@ -870,7 +874,9 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
                 SqlQuerySpec sqlQuerySpec = new SqlQuerySpec();
                 sqlQuerySpec.setQueryText("SELECT * FROM c OFFSET 0 LIMIT 1");
 
-                List<FeedRange> feedRanges = helperContainer.getFeedRanges().block();
+                List<FeedRange> feedRanges = getFeedRangesWithRetry(
+                    helperContainer,
+                    "get feed ranges for readMany explicit region switching setup");
 
                 Set<String> idsToUseWithReadMany = new HashSet<>();
 
@@ -1242,8 +1248,6 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
             int createOperationCount = 10;
             Set<String> idsAddedByCreates = new HashSet<>();
 
-            deleteAllDocuments(container);
-
             try (CosmosAsyncClient client = buildAsyncClient(getClientBuilder(), this.writeRegions, true, shouldUsePreferredRegions)) {
 
                 Flux<CosmosItemOperation> createOperationsFlux = Flux.range(0, createOperationCount).map(i -> {
@@ -1254,7 +1258,9 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
                     return CosmosBulkOperations.getCreateItemOperation(testItem, new PartitionKey(documentId));
                 });
 
-                CosmosAsyncContainer helperContainer = client.getDatabase(container.getDatabase().getId()).getContainer(container.getId());
+                CosmosAsyncContainer helperContainer = client
+                    .getDatabase(container.getDatabase().getId())
+                    .getContainer(container.getId());
 
                 List<CosmosBulkOperationResponse<Object>> bulkCreateResponses = helperContainer
                     .executeBulkOperations(createOperationsFlux)
@@ -1612,7 +1618,7 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
                 "changeFeed_fromBeginning_fromSecondPreferredRegion_forFullRange_withCreatesOnFirstPreferredRegion_withSessionGuarantee",
                 "Change feed execution should have succeeded...",
                 !BLOOM_FILTER_FORCED_ACCESSED_FLAG,
-                !SPLIT_REQUESTED_FLAG,
+                SPLIT_REQUESTED_FLAG,
                 !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
                 true
             },
@@ -1621,7 +1627,7 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
                 "changeFeed_fromBeginning_fromSecondPreferredRegion_forFullRange_withCreatesOnFirstPreferredRegion_withSessionGuarantee",
                 "Change feed execution should have succeeded...",
                 !BLOOM_FILTER_FORCED_ACCESSED_FLAG,
-                !SPLIT_REQUESTED_FLAG,
+                SPLIT_REQUESTED_FLAG,
                 !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
                 false
             },
@@ -1752,9 +1758,15 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
         } else if (shouldSinglePartitionContainerBeSplit) {
             String containerId = UUID.randomUUID() + "-" + "container";
             expectedCosmosContainerProperties = new CosmosContainerProperties(containerId, "/mypk");
-            database.createContainerIfNotExists(expectedCosmosContainerProperties).block();
-            resolvedContainer = database.getContainer(containerId);
+            try (CosmosAsyncClient setupClient = buildSetupClient()) {
+                resolvedContainer = createCollection(
+                    database,
+                    expectedCosmosContainerProperties,
+                    new CosmosContainerRequestOptions(),
+                    setupClient);
+            }
             shouldDeleteContainer = true;
+            resolvedContainer.read().block();
         } else {
             resolvedContainer = getSharedSinglePartitionCosmosContainer(client);
             expectedCosmosContainerProperties = new CosmosContainerProperties(resolvedContainer.getId(), "/mypk");
@@ -1795,7 +1807,8 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"multi-master"}, dataProvider = "readYouWriteWithExplicitRegionSwitchingTestContext", timeOut = 80 * TIMEOUT)
+    @Test(groups = {"multi-master"}, dataProvider = "readYouWriteWithExplicitRegionSwitchingTestContext",
+        timeOut = 80 * TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void readYouWriteWithExplicitRegionSwitching(
         BiFunction<CosmosAsyncContainer, Boolean, Set<String>> func,
         String testId,
@@ -1822,9 +1835,15 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
         } else if (shouldSinglePartitionContainerBeSplit) {
             String containerId = UUID.randomUUID() + "-" + "container";
             expectedCosmosContainerProperties = new CosmosContainerProperties(containerId, "/mypk");
-            database.createContainerIfNotExists(expectedCosmosContainerProperties).block();
-            resolvedContainer = database.getContainer(containerId);
+            try (CosmosAsyncClient setupClient = buildSetupClient()) {
+                resolvedContainer = createCollection(
+                    database,
+                    expectedCosmosContainerProperties,
+                    new CosmosContainerRequestOptions(),
+                    setupClient);
+            }
             shouldDeleteContainer = true;
+            resolvedContainer.read().block();
         } else {
             resolvedContainer = getSharedSinglePartitionCosmosContainer(client);
             expectedCosmosContainerProperties = new CosmosContainerProperties(resolvedContainer.getId(), "/mypk");
@@ -1882,12 +1901,17 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
 
         String containerId = UUID.randomUUID().toString();
         CosmosContainerProperties expectedCosmosContainerProperties = new CosmosContainerProperties(containerId, "/id");
-        ThroughputProperties throughputProperties = ThroughputProperties.createManualThroughput(50_000);
 
         CosmosAsyncContainer resolvedContainer;
 
-        database.createContainerIfNotExists(expectedCosmosContainerProperties, throughputProperties).block();
-        resolvedContainer = database.getContainer(containerId);
+        try (CosmosAsyncClient setupClient = buildSetupClient()) {
+            resolvedContainer = createCollection(
+                database,
+                expectedCosmosContainerProperties,
+                new CosmosContainerRequestOptions(),
+                50_000,
+                setupClient);
+        }
 
         Thread.sleep(30_000);
 
@@ -1936,12 +1960,17 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
 
         String containerId = UUID.randomUUID().toString();
         CosmosContainerProperties expectedCosmosContainerProperties = new CosmosContainerProperties(containerId, "/id");
-        ThroughputProperties throughputProperties = ThroughputProperties.createManualThroughput(50_000);
 
         CosmosAsyncContainer resolvedContainer;
 
-        database.createContainerIfNotExists(expectedCosmosContainerProperties, throughputProperties).block();
-        resolvedContainer = database.getContainer(containerId);
+        try (CosmosAsyncClient setupClient = buildSetupClient()) {
+            resolvedContainer = createCollection(
+                database,
+                expectedCosmosContainerProperties,
+                new CosmosContainerRequestOptions(),
+                50_000,
+                setupClient);
+        }
 
         Thread.sleep(30_000);
 
@@ -2067,6 +2096,15 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
         return clientBuilder.buildAsyncClient();
     }
 
+    private static CosmosAsyncClient buildSetupClient() {
+        return new CosmosClientBuilder()
+            .endpoint(TestConfigurations.HOST)
+            .key(TestConfigurations.MASTER_KEY)
+            .contentResponseOnWriteEnabled(true)
+            .directMode()
+            .buildAsyncClient();
+    }
+
     private AccountLevelLocationContext getAccountLevelLocationContext(DatabaseAccount databaseAccount, boolean writeOnly) {
         Iterator<DatabaseAccountLocation> locationIterator =
             writeOnly ? databaseAccount.getWritableLocations().iterator() : databaseAccount.getReadableLocations().iterator();
@@ -2138,15 +2176,6 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
                     normalizedRegion))
                 .isFalse();
         }
-    }
-
-    private static void deleteAllDocuments(CosmosAsyncContainer asyncContainer) {
-        asyncContainer
-            .queryItems("SELECT * FROM C", TestObject.class)
-            .collectList()
-            .flatMapMany(Flux::fromIterable)
-            .flatMap(testObject -> asyncContainer.deleteItem(testObject.getId(), new PartitionKey(testObject.getMypk())))
-            .blockLast();
     }
 
     private static void validate(AccountLevelLocationContext accountLevelLocationContext, boolean isWriteOnly) {

@@ -109,9 +109,6 @@ class AzureAppConfigurationBootstrapRegistrar {
                 }
                 return factory;
             });
-        if (customizer != null) {
-            clientFactory.addBuilderCustomizer(customizer.get(context.getBootstrapContext()));
-        }
 
         InstanceSupplier<ConfigurationClientCustomizer> configurationClientCustomizer = context
             .getBootstrapContext()

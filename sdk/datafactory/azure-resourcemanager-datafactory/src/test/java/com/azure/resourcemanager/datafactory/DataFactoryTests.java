@@ -60,6 +60,8 @@ public class DataFactoryTests extends TestProxyTestBase {
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile)
             .withDefaultSubscription();
+        // AzurePipelinesCredential performs a synchronous OIDC token request on first use, so initialize it before asynchronous resource creation.
+        resourceManager.serviceClient().getResourceGroups().list().stream().findFirst();
 
         StorageManager storageManager = StorageManager.configure()
             .withPolicy(new ProviderRegistrationPolicy(resourceManager))

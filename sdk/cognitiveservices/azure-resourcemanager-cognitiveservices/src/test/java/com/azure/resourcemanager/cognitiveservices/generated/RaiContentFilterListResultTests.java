@@ -13,11 +13,11 @@ public final class RaiContentFilterListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RaiContentFilterListResult model = BinaryData.fromString(
-            "{\"nextLink\":\"ebjvewzcjzn\",\"value\":[{\"properties\":{\"name\":\"guaadraufactkahz\",\"isMultiLevelFilter\":true,\"source\":\"PostToolCall\"},\"id\":\"iuxxpshneekulfg\",\"name\":\"lqubkwdlen\",\"type\":\"d\"},{\"properties\":{\"name\":\"ujbazpjuohminyfl\",\"isMultiLevelFilter\":false,\"source\":\"PreRun\"},\"id\":\"uvwpklvxwmyg\",\"name\":\"xpgpq\",\"type\":\"hiszepnnbjcrxgib\"},{\"properties\":{\"name\":\"xconfozauors\",\"isMultiLevelFilter\":false,\"source\":\"Prompt\"},\"id\":\"qplhlvnu\",\"name\":\"epzl\",\"type\":\"phwzsoldweyuqdu\"},{\"properties\":{\"name\":\"nnrwrbiork\",\"isMultiLevelFilter\":false,\"source\":\"PreRun\"},\"id\":\"hhg\",\"name\":\"nhxmsi\",\"type\":\"fomiloxgg\"}]}")
+            "{\"nextLink\":\"glcfhmlrqryxyn\",\"value\":[{\"properties\":{\"name\":\"p\",\"isMultiLevelFilter\":false,\"source\":\"PreToolCall\"},\"id\":\"nptgoeiybba\",\"name\":\"pfhvfslk\",\"type\":\"ntjlr\"},{\"properties\":{\"name\":\"kskyrioovzid\",\"isMultiLevelFilter\":true,\"source\":\"PreRun\"},\"id\":\"zm\",\"name\":\"frygznmmax\",\"type\":\"izkzobgo\"},{\"properties\":{\"name\":\"hsln\",\"isMultiLevelFilter\":true,\"source\":\"PreToolCall\"},\"id\":\"xynl\",\"name\":\"xecwcro\",\"type\":\"phslhcawjutifdw\"},{\"properties\":{\"name\":\"igorqjbttzhragl\",\"isMultiLevelFilter\":true,\"source\":\"PostRun\"},\"id\":\"qjujeickpzvcp\",\"name\":\"pmxelnwcltyje\",\"type\":\"ex\"}]}")
             .toObject(RaiContentFilterListResult.class);
-        Assertions.assertEquals("ebjvewzcjzn", model.nextLink());
-        Assertions.assertEquals("guaadraufactkahz", model.value().get(0).properties().name());
-        Assertions.assertTrue(model.value().get(0).properties().isMultiLevelFilter());
-        Assertions.assertEquals(RaiPolicyContentSource.POST_TOOL_CALL, model.value().get(0).properties().source());
+        Assertions.assertEquals("glcfhmlrqryxyn", model.nextLink());
+        Assertions.assertEquals("p", model.value().get(0).properties().name());
+        Assertions.assertFalse(model.value().get(0).properties().isMultiLevelFilter());
+        Assertions.assertEquals(RaiPolicyContentSource.PRE_TOOL_CALL, model.value().get(0).properties().source());
     }
 }

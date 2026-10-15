@@ -12,12 +12,14 @@ import java.util.Collection;
  */
 public final class BackupType extends ExpandableStringEnum<BackupType> {
     /**
-     * Static value Full for BackupType.
+     * A full backup taken automatically by the service. These backups are retained for a period of time as defined by
+     * the backup retention policy, and they cannot be deleted by the customer.
      */
     public static final BackupType FULL = fromString("Full");
 
     /**
-     * Static value Customer On-Demand for BackupType.
+     * A full backup triggered by the customer. These backups are retained for a period of time as defined by the backup
+     * retention policy, and they can also be deleted by the customer.
      */
     public static final BackupType CUSTOMER_ON_DEMAND = fromString("Customer On-Demand");
 

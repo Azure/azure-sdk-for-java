@@ -14,7 +14,7 @@ import java.io.IOException;
  * Indicates the MCP call has failed.
  */
 @Immutable
-public final class ServerEventResponseMcpCallFailed extends SessionUpdate {
+public final class ServerEventResponseMcpCallFailed extends SessionServerEvent {
 
     /*
      * The type of event.

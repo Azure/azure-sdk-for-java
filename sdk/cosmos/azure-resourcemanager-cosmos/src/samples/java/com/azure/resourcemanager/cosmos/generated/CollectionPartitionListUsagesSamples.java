@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class CollectionPartitionListUsagesSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/CosmosDBCollectionPartitionGetUsages.json
+     * x-ms-original-file: 2026-04-01-preview/CosmosDBCollectionPartitionGetUsages.json
      */
     /**
      * Sample code: CosmosDBCollectionGetUsages.
@@ -19,7 +19,7 @@ public final class CollectionPartitionListUsagesSamples {
     public static void cosmosDBCollectionGetUsages(com.azure.resourcemanager.cosmos.CosmosManager manager) {
         manager.serviceClient()
             .getCollectionPartitions()
-            .listUsages("rg1", "ddb1", "databaseRid", "collectionRid", "$filter=name.value eq 'Partition Storage'",
+            .listUsages("rg1", "ddb1", "databaseRid", "collectionRid", "name.value eq 'Partition Storage'",
                 com.azure.core.util.Context.NONE);
     }
 }

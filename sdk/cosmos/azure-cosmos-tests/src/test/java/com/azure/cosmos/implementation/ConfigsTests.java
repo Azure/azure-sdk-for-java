@@ -12,7 +12,6 @@ import java.net.URI;
 import java.time.Duration;
 import java.util.EnumSet;
 
-import static com.azure.cosmos.implementation.Configs.isThinClientEnabled;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ConfigsTests {
@@ -169,13 +168,123 @@ public class ConfigsTests {
         }
     }
 
-    @Test(groups = { "emulator" })
-    public void thinClientEnabledTest() {
-        assertThat(isThinClientEnabled()).isFalse();
+    @Test(groups = { "unit" })
+    public void http2MaxFrameSizeInBytes() {
+        final String propName = "COSMOS.HTTP2_MAX_FRAME_SIZE_IN_KB";
+        final int defaultBytes = 64 * 1024;
+        final int minBytes = 64 * 1024;
+        final int maxBytes = 16_383 * 1024;
+
+        System.clearProperty(propName);
+
+        // Default (64 KB)
+        assertThat(Configs.getHttp2MaxFrameSizeInBytes()).isEqualTo(defaultBytes);
+
+        // Valid value at lower bound
+        System.setProperty(propName, "64");
+        try {
+            assertThat(Configs.getHttp2MaxFrameSizeInBytes()).isEqualTo(minBytes);
+        } finally {
+            System.clearProperty(propName);
+        }
+
+        // Valid value at upper bound (16383 KB)
+        System.setProperty(propName, "16383");
+        try {
+            assertThat(Configs.getHttp2MaxFrameSizeInBytes()).isEqualTo(maxBytes);
+        } finally {
+            System.clearProperty(propName);
+        }
+
+        // Valid value within range (1 MB)
+        System.setProperty(propName, "1024");
+        try {
+            assertThat(Configs.getHttp2MaxFrameSizeInBytes()).isEqualTo(1024 * 1024);
+        } finally {
+            System.clearProperty(propName);
+        }
+
+        // Below lower bound -> clamped up to 64 KB
+        System.setProperty(propName, "32");
+        try {
+            assertThat(Configs.getHttp2MaxFrameSizeInBytes()).isEqualTo(minBytes);
+        } finally {
+            System.clearProperty(propName);
+        }
+
+        // Above upper bound -> clamped down to 16383 KB
+        System.setProperty(propName, String.valueOf(32 * 1024));
+        try {
+            assertThat(Configs.getHttp2MaxFrameSizeInBytes()).isEqualTo(maxBytes);
+        } finally {
+            System.clearProperty(propName);
+        }
+
+        // Unparseable -> falls back to default
+        System.setProperty(propName, "not-a-number");
+        try {
+            assertThat(Configs.getHttp2MaxFrameSizeInBytes()).isEqualTo(defaultBytes);
+        } finally {
+            System.clearProperty(propName);
+        }
+    }
+
+    @Test(groups = { "unit" })
+    public void thinClientEnabledExplicitlyDefaultTest() {
         System.clearProperty("COSMOS.THINCLIENT_ENABLED");
+        try {
+            // Not set -> null, so the probe may run and gates routing.
+            assertThat(Configs.isThinClientEnabled()).isNull();
+        } finally {
+            System.clearProperty("COSMOS.THINCLIENT_ENABLED");
+        }
+    }
+
+    @Test(groups = { "unit" })
+    public void thinClientEnabledExplicitlyOverrideTest() {
+        // Explicitly enabled (true) -> hard opt-in, probe not required.
         System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
         try {
-            assertThat(isThinClientEnabled()).isTrue();
+            assertThat(Configs.isThinClientEnabled()).isTrue();
+        } finally {
+            System.clearProperty("COSMOS.THINCLIENT_ENABLED");
+        }
+        // Explicitly disabled (false) -> hard opt-out, thin-client off and no probe.
+        System.setProperty("COSMOS.THINCLIENT_ENABLED", "false");
+        try {
+            assertThat(Configs.isThinClientEnabled()).isFalse();
+        } finally {
+            System.clearProperty("COSMOS.THINCLIENT_ENABLED");
+        }
+    }
+
+    @Test(groups = { "unit" })
+    public void thinClientEnabledInvalidValueTreatedAsUnset() {
+        // Only "true"/"false" (case-insensitive) are honored. Any other value must NOT silently
+        // collapse to a hard opt-out (which Boolean.parseBoolean would do); it is treated as unset
+        // (null -> probe-gated) so a typo/legacy truthy string does not disable thin-client for the
+        // client lifetime.
+        for (String invalid : new String[] {"yes", "1", "on", "TRUEISH", "enabled", "  "}) {
+            System.setProperty("COSMOS.THINCLIENT_ENABLED", invalid);
+            try {
+                assertThat(Configs.isThinClientEnabled())
+                    .as("value '%s' should be treated as unset (null)", invalid)
+                    .isNull();
+            } finally {
+                System.clearProperty("COSMOS.THINCLIENT_ENABLED");
+            }
+        }
+
+        // Case-insensitivity of the honored tokens.
+        System.setProperty("COSMOS.THINCLIENT_ENABLED", "TrUe");
+        try {
+            assertThat(Configs.isThinClientEnabled()).isTrue();
+        } finally {
+            System.clearProperty("COSMOS.THINCLIENT_ENABLED");
+        }
+        System.setProperty("COSMOS.THINCLIENT_ENABLED", "FALSE");
+        try {
+            assertThat(Configs.isThinClientEnabled()).isFalse();
         } finally {
             System.clearProperty("COSMOS.THINCLIENT_ENABLED");
         }

@@ -31,11 +31,6 @@ public final class AzureWorkloadSqlRecoveryPointExtendedInfo
      */
     private List<SqlDataDirectory> dataDirectoryPaths;
 
-    /*
-     * List of databases included in recovery point.
-     */
-    private List<DatabaseInRP> includedDatabases;
-
     /**
      * Creates an instance of AzureWorkloadSqlRecoveryPointExtendedInfo class.
      */
@@ -61,15 +56,6 @@ public final class AzureWorkloadSqlRecoveryPointExtendedInfo
     }
 
     /**
-     * Get the includedDatabases property: List of databases included in recovery point.
-     * 
-     * @return the includedDatabases value.
-     */
-    public List<DatabaseInRP> includedDatabases() {
-        return this.includedDatabases;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -80,8 +66,6 @@ public final class AzureWorkloadSqlRecoveryPointExtendedInfo
                 ? null
                 : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.dataDirectoryTimeInUtc));
         jsonWriter.writeArrayField("dataDirectoryPaths", this.dataDirectoryPaths,
-            (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField("includedDatabases", this.includedDatabases,
             (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
@@ -109,9 +93,6 @@ public final class AzureWorkloadSqlRecoveryPointExtendedInfo
                     List<SqlDataDirectory> dataDirectoryPaths
                         = reader.readArray(reader1 -> SqlDataDirectory.fromJson(reader1));
                     deserializedAzureWorkloadSqlRecoveryPointExtendedInfo.dataDirectoryPaths = dataDirectoryPaths;
-                } else if ("includedDatabases".equals(fieldName)) {
-                    List<DatabaseInRP> includedDatabases = reader.readArray(reader1 -> DatabaseInRP.fromJson(reader1));
-                    deserializedAzureWorkloadSqlRecoveryPointExtendedInfo.includedDatabases = includedDatabases;
                 } else {
                     reader.skipChildren();
                 }

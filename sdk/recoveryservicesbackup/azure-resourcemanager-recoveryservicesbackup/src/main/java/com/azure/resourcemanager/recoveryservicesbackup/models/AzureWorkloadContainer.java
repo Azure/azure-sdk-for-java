@@ -292,6 +292,8 @@ public class AzureWorkloadContainer extends ProtectionContainer {
                     deserializedAzureWorkloadContainer.withHealthStatus(reader.getString());
                 } else if ("protectableObjectType".equals(fieldName)) {
                     deserializedAzureWorkloadContainer.withProtectableObjectType(reader.getString());
+                } else if ("sourceLocation".equals(fieldName)) {
+                    deserializedAzureWorkloadContainer.withSourceLocation(reader.getString());
                 } else if ("containerType".equals(fieldName)) {
                     deserializedAzureWorkloadContainer.containerType
                         = ProtectableContainerType.fromString(reader.getString());

@@ -9,15 +9,15 @@ package com.azure.resourcemanager.horizondb.generated;
  */
 public final class HorizonDbClustersListSamples {
     /*
-     * x-ms-original-file: 2026-01-20-preview/Clusters_ListBySubscription.json
+     * x-ms-original-file: 2026-05-01-preview/Clusters_ListBySubscription.json
      */
     /**
-     * Sample code: List HorizonDb clusters by subscription.
+     * Sample code: List HorizonDB clusters by subscription.
      * 
      * @param manager Entry point to HorizonDbManager.
      */
     public static void
-        listHorizonDbClustersBySubscription(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
+        listHorizonDBClustersBySubscription(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
         manager.horizonDbClusters().list(com.azure.core.util.Context.NONE);
     }
 }

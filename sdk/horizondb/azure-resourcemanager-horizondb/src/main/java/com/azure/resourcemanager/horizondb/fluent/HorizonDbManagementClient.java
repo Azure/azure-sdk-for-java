@@ -101,4 +101,11 @@ public interface HorizonDbManagementClient {
      * @return the HorizonDbParameterGroupsClient object.
      */
     HorizonDbParameterGroupsClient getHorizonDbParameterGroups();
+
+    /**
+     * Gets the HorizonDbAdministratorsClient object to access its operations.
+     * 
+     * @return the HorizonDbAdministratorsClient object.
+     */
+    HorizonDbAdministratorsClient getHorizonDbAdministrators();
 }

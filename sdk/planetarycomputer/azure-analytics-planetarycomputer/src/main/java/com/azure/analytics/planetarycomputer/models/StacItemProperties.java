@@ -7,6 +7,7 @@ package com.azure.analytics.planetarycomputer.models;
 import com.azure.analytics.planetarycomputer.implementation.JsonMergePatchHelper;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -112,7 +113,7 @@ public final class StacItemProperties implements JsonSerializable<StacItemProper
      * https://github.com/radiantearth/stac-spec/blob/v1.0.0/item-spec/item-spec.md#properties-object
      */
     @Generated
-    private Map<String, Object> additionalProperties;
+    private Map<String, BinaryData> additionalProperties;
 
     /**
      * Stores updated model property, the value is property name, not serialized name.
@@ -459,7 +460,7 @@ public final class StacItemProperties implements JsonSerializable<StacItemProper
      * @return the additionalProperties value.
      */
     @Generated
-    public Map<String, Object> getAdditionalProperties() {
+    public Map<String, BinaryData> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
@@ -472,7 +473,7 @@ public final class StacItemProperties implements JsonSerializable<StacItemProper
      * @return the StacItemProperties object itself.
      */
     @Generated
-    public StacItemProperties setAdditionalProperties(Map<String, Object> additionalProperties) {
+    public StacItemProperties setAdditionalProperties(Map<String, BinaryData> additionalProperties) {
         this.additionalProperties = additionalProperties;
         this.updatedProperties.add("additionalProperties");
         return this;
@@ -507,8 +508,13 @@ public final class StacItemProperties implements JsonSerializable<StacItemProper
             jsonWriter.writeStringField("end_datetime",
                 this.endDatetime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endDatetime));
             if (additionalProperties != null) {
-                for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
-                    jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+                for (Map.Entry<String, BinaryData> additionalProperty : additionalProperties.entrySet()) {
+                    jsonWriter.writeFieldName(additionalProperty.getKey());
+                    if (additionalProperty.getValue() == null) {
+                        jsonWriter.writeNull();
+                    } else {
+                        additionalProperty.getValue().writeTo(jsonWriter);
+                    }
                 }
             }
             return jsonWriter.writeEndObject();
@@ -617,8 +623,13 @@ public final class StacItemProperties implements JsonSerializable<StacItemProper
             }
         }
         if (additionalProperties != null) {
-            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
-                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            for (Map.Entry<String, BinaryData> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeFieldName(additionalProperty.getKey());
+                if (additionalProperty.getValue() == null) {
+                    jsonWriter.writeNull();
+                } else {
+                    additionalProperty.getValue().writeTo(jsonWriter);
+                }
             }
         }
         return jsonWriter.writeEndObject();
@@ -636,7 +647,7 @@ public final class StacItemProperties implements JsonSerializable<StacItemProper
     public static StacItemProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             StacItemProperties deserializedStacItemProperties = new StacItemProperties();
-            Map<String, Object> additionalProperties = null;
+            Map<String, BinaryData> additionalProperties = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -678,7 +689,8 @@ public final class StacItemProperties implements JsonSerializable<StacItemProper
                         additionalProperties = new LinkedHashMap<>();
                     }
 
-                    additionalProperties.put(fieldName, reader.readUntyped());
+                    additionalProperties.put(fieldName,
+                        reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
                 }
             }
             deserializedStacItemProperties.additionalProperties = additionalProperties;

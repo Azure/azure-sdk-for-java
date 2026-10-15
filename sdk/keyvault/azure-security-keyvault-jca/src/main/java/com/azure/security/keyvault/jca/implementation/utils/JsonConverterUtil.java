@@ -6,10 +6,8 @@ package com.azure.security.keyvault.jca.implementation.utils;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
-import com.azure.json.JsonWriter;
 import com.azure.json.ReadValueCallback;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.logging.Logger;
 
@@ -39,7 +37,8 @@ public final class JsonConverterUtil {
     public static <T extends JsonSerializable<T>> T fromJson(ReadValueCallback<JsonReader, T> deserializationFunction,
         String json) throws IOException {
 
-        LOGGER.entering("JsonConverterUtil", "fromJson", new Object[] { deserializationFunction, json });
+        // Only the callback is logged. The payload carries access tokens and PKCS12 key bundles.
+        LOGGER.entering("JsonConverterUtil", "fromJson", deserializationFunction);
 
         try (JsonReader jsonReader = JsonProviders.createReader(json)) {
             T deserialized = deserializationFunction.read(jsonReader);
@@ -55,27 +54,19 @@ public final class JsonConverterUtil {
      *
      * @param jsonSerializable The object to serialize.
      */
-    @SuppressWarnings("CharsetObjectCanBeUsed")
     public static String toJson(JsonSerializable<?> jsonSerializable) {
         LOGGER.entering("JsonConverterUtil", "toJson", jsonSerializable);
+        String value = null;
 
-        if (jsonSerializable == null) {
-            return null;
-        }
-
-        try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            JsonWriter jsonWriter = JsonProviders.createWriter(byteArrayOutputStream)) {
-
-            jsonWriter.writeUntyped(jsonSerializable);
-            jsonWriter.flush();
-
-            return byteArrayOutputStream.toString("UTF-8");
-        } catch (IOException e) {
-            LOGGER.log(WARNING, "Unable to convert to JSON", e);
+        if (jsonSerializable != null) {
+            try {
+                value = jsonSerializable.toJsonString();
+            } catch (IOException e) {
+                LOGGER.log(WARNING, "Unable to convert to JSON", e);
+            }
         }
 
         LOGGER.exiting("JsonConverterUtil", "toJson");
-
-        return null;
+        return value;
     }
 }

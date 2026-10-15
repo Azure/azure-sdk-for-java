@@ -15,7 +15,7 @@ public final class AvsVmVolumeUpdateTests {
     public void testDeserialize() throws Exception {
         AvsVmVolumeUpdate model = BinaryData
             .fromString(
-                "{\"properties\":{\"softDeletion\":{\"destroyed\":true,\"eradicationTimestamp\":\"xnfaazpxdtnk\"}}}")
+                "{\"properties\":{\"softDeletion\":{\"destroyed\":true,\"eradicationTimestamp\":\"phvwauyqncygu\"}}}")
             .toObject(AvsVmVolumeUpdate.class);
         Assertions.assertTrue(model.properties().softDeletion().destroyed());
     }

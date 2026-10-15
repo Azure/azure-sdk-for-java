@@ -9,12 +9,13 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Web search preview
  *
  * This tool searches the web for relevant results to use in a response. Learn more about the [web search
- * tool](https://platform.openai.com/docs/guides/tools-web-search).
+ * tool](https://developers.openai.com/api/docs/guides/tools-web-search).
  */
 @Fluent
 public final class WebSearchPreviewTool extends Tool {
@@ -88,6 +89,8 @@ public final class WebSearchPreviewTool extends Tool {
         jsonWriter.writeJsonField("user_location", this.userLocation);
         jsonWriter.writeStringField("search_context_size",
             this.searchContextSize == null ? null : this.searchContextSize.toString());
+        jsonWriter.writeArrayField("search_content_types", this.searchContentTypes,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
         return jsonWriter.writeEndObject();
     }
 
@@ -113,6 +116,10 @@ public final class WebSearchPreviewTool extends Tool {
                 } else if ("search_context_size".equals(fieldName)) {
                     deserializedWebSearchPreviewTool.searchContextSize
                         = SearchContextSize.fromString(reader.getString());
+                } else if ("search_content_types".equals(fieldName)) {
+                    List<SearchContentType> searchContentTypes
+                        = reader.readArray(reader1 -> SearchContentType.fromString(reader1.getString()));
+                    deserializedWebSearchPreviewTool.searchContentTypes = searchContentTypes;
                 } else {
                     reader.skipChildren();
                 }
@@ -143,6 +150,34 @@ public final class WebSearchPreviewTool extends Tool {
     @Generated
     public WebSearchPreviewTool setSearchContextSize(SearchContextSize searchContextSize) {
         this.searchContextSize = searchContextSize;
+        return this;
+    }
+
+    /*
+     * The search_content_types property.
+     */
+    @Generated
+    private List<SearchContentType> searchContentTypes;
+
+    /**
+     * Get the searchContentTypes property: The search_content_types property.
+     *
+     * @return the searchContentTypes value.
+     */
+    @Generated
+    public List<SearchContentType> getSearchContentTypes() {
+        return this.searchContentTypes;
+    }
+
+    /**
+     * Set the searchContentTypes property: The search_content_types property.
+     *
+     * @param searchContentTypes the searchContentTypes value to set.
+     * @return the WebSearchPreviewTool object itself.
+     */
+    @Generated
+    public WebSearchPreviewTool setSearchContentTypes(List<SearchContentType> searchContentTypes) {
+        this.searchContentTypes = searchContentTypes;
         return this;
     }
 }

@@ -13,7 +13,7 @@ import com.azure.resourcemanager.cosmos.models.FleetspaceUpdate;
  */
 public final class FleetspaceUpdateSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/fleet/CosmosDBFleetspaceUpdate.json
+     * x-ms-original-file: 2026-04-01-preview/fleet/CosmosDBFleetspaceUpdate.json
      */
     /**
      * Sample code: CosmosDB Fleetspace Update.
