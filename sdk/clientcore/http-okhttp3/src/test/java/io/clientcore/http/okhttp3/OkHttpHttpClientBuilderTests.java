@@ -551,6 +551,7 @@ public class OkHttpHttpClientBuilderTests {
 
         Configuration simpleEnvProxy
             = Configuration.from(new TestConfigurationSource().put(Configuration.HTTP_PROXY, "http://localhost:12345")
+                .put(Configuration.HTTPS_PROXY, "")
                 .put(JAVA_SYSTEM_PROXY_PREREQUISITE, "true"));
 
         arguments.add(Arguments.of(true, simpleEnvProxy, defaultUri));
@@ -566,6 +567,7 @@ public class OkHttpHttpClientBuilderTests {
 
         Configuration envProxyWithAuthentication = Configuration.from(EMPTY_SOURCE, EMPTY_SOURCE,
             new TestConfigurationSource().put(Configuration.HTTP_PROXY, "http://1:1@localhost:12345")
+                .put(Configuration.HTTPS_PROXY, "")
                 .put(JAVA_SYSTEM_PROXY_PREREQUISITE, "true"));
 
         arguments.add(Arguments.of(true, envProxyWithAuthentication, defaultUri));
@@ -590,6 +592,7 @@ public class OkHttpHttpClientBuilderTests {
             = () -> baseJavaProxyConfigurationSupplier.get().put(JAVA_NON_PROXY_HOSTS, rawJavaNonProxyHosts);
         Supplier<TestConfigurationSource> envNonProxyHostsSupplier
             = () -> new TestConfigurationSource().put(Configuration.HTTP_PROXY, "http://localhost:12345")
+                .put(Configuration.HTTPS_PROXY, "")
                 .put(Configuration.NO_PROXY, rawEnvNonProxyHosts)
                 .put(JAVA_SYSTEM_PROXY_PREREQUISITE, "true");
         List<Supplier<TestConfigurationSource>> nonProxyHostsSuppliers
@@ -614,6 +617,7 @@ public class OkHttpHttpClientBuilderTests {
             = () -> javaNonProxyHostsSupplier.get().put(JAVA_HTTP_PROXY_USER, "1").put(JAVA_HTTP_PROXY_PASSWORD, "1");
         Supplier<TestConfigurationSource> authenticatedEnvNonProxyHostsSupplier
             = () -> new TestConfigurationSource().put(Configuration.HTTP_PROXY, "http://1:1@localhost:12345")
+                .put(Configuration.HTTPS_PROXY, "")
                 .put(Configuration.NO_PROXY, rawEnvNonProxyHosts)
                 .put(JAVA_SYSTEM_PROXY_PREREQUISITE, "true");
         List<Supplier<TestConfigurationSource>> authenticatedNonProxyHostsSuppliers
