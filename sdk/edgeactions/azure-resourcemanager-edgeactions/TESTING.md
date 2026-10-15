@@ -7,7 +7,7 @@ The handwritten integration tests exercise **API version `2026-10-01` only**, as
 | --- | --- |
 | `EdgeActionsIntegrationTests` | Create, get, list, tag replacement/preservation/clearing, rejection of SKU changes through PATCH, and delete |
 | `EdgeActionVersionsIntegrationTests` | File and ZIP deployment, downloaded source verification, automatic first default, version updates, default switching, listing, and deletion |
-| `EdgeActionExecutionFiltersIntegrationTests` | Filter creation, retrieval, listing, version/header updates, omitted-field preservation, and deletion |
+| `EdgeActionExecutionFiltersIntegrationTests` | Filter creation, retrieval, listing, version/header updates, omitted-field preservation, deletion, and a separate undeployed-version filter probe |
 | `EdgeActionsTestCodeTests` | Offline fixture encoding, deterministic ZIP creation, and rejection of missing downloaded code |
 | `EdgeActionsSanitizerTests` | Offline sanitizer rules: polling query boundaries, embedded JSON URLs, resource identity, token fields, and trace/cookie headers |
 | `EdgeActionsSanitizerProxyTests` | Local-only proxy record/replay against a synthetic HTTP server; verifies saved redaction and matching changed or already-sanitized polling values |
@@ -16,6 +16,22 @@ The integration tests use the Java management test-proxy infrastructure. **PLAYB
 recordings fail the tests.** There are no live-only annotations, skip conditions, or fallback calls to Azure.
 Initial recordings are deliberately not included: run RECORD against your authorized test environment first.
 Switching to PLAYBACK afterwards does not require a code change.
+
+The seven service test methods include `createsExecutionFilterWithoutCodeDeployment`, which creates an
+Edge Action and a FILE version without deploying or uploading code, then creates an execution filter referencing
+that version. It checks the returned and retrieved version linkage and synthetic header values, deletes the filter,
+and verifies it is absent. Shared cleanup removes the test-owned version and parent. This is an unverified
+service probe: it does not assert successful code validation, mock service acceptance, or bypass the existing
+deployed-version test. A service rejection remains a test failure.
+
+After configuring the intended test mode and its prerequisites below, run only this probe from the module directory:
+
+```powershell
+mvn test '-Dtest=EdgeActionExecutionFiltersIntegrationTests#createsExecutionFilterWithoutCodeDeployment'
+```
+
+Without a recording, default PLAYBACK fails rather than calling Azure. Local compilation and offline tests do
+not establish whether the service accepts an execution filter referencing a version with no code.
 
 ## Prerequisites
 
@@ -102,7 +118,7 @@ Playback uses recorded resource names/configuration, a dummy credential, and the
 Azure resource configuration, and Azure connectivity are not required. Verify this in a separate shell without
 Azure credentials. A first-time Maven/proxy download or assets restore can still require network access.
 
-Check `target\surefire-reports` under the package: all six integration test methods must execute with zero failures,
+Check `target\surefire-reports` under the package: all seven integration test methods must execute with zero failures,
 errors, or skips once recordings are present. Before the initial capture, missing-recording errors are expected;
 they must not be treated as successful validation. Configuration/authentication errors are not the expected playback failure.
 
@@ -119,7 +135,7 @@ mvn --% -B -f sdk\edgeactions\azure-resourcemanager-edgeactions\pom.xml -Dtest=*
 ```
 
 The sanitizer proxy test uses the same local proxy prerequisites, requires no Azure configuration, and writes only
-temporary synthetic recordings. It does not create or replace the six service integration recordings.
+temporary synthetic recordings. It does not create or replace the seven service integration recordings.
 
 ## Review and publish the first recordings
 
