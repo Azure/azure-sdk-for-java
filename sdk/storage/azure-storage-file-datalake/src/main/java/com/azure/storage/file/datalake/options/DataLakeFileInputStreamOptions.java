@@ -4,10 +4,10 @@
 package com.azure.storage.file.datalake.options;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.storage.common.LayoutAwareRouting;
 import com.azure.storage.file.datalake.models.ConsistentReadControl;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.FileRange;
-import com.azure.storage.file.datalake.models.LayoutAwareRouting;
 
 /**
  * Extended options that may be passed when opening a blob input stream.

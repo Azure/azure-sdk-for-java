@@ -6,8 +6,8 @@ package com.azure.storage.blob.options;
 import com.azure.core.annotation.Fluent;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.ConsistentReadControl;
-import com.azure.storage.blob.models.LayoutAwareRouting;
 import com.azure.storage.common.ContentValidationAlgorithm;
+import com.azure.storage.common.LayoutAwareRouting;
 import com.azure.storage.common.ValidatableContent;
 
 import java.nio.channels.SeekableByteChannel;

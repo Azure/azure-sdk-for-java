@@ -12,7 +12,7 @@ import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.options.BlobDownloadStreamOptions;
 import com.azure.storage.blob.options.BlobInputStreamOptions;
-import com.azure.storage.blob.models.LayoutAwareRouting;
+import com.azure.storage.common.LayoutAwareRouting;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DownloadRetryOptions;
 import com.azure.storage.file.datalake.models.FileRange;
@@ -74,24 +74,13 @@ public class DataLakeDataLocalityOptionsTests {
 
     @Test
     public void fileInputStreamOptionsTransformToBlobInputStreamOptions() {
-        DataLakeFileInputStreamOptions options = new DataLakeFileInputStreamOptions()
-            .setLayoutAwareRouting(com.azure.storage.file.datalake.models.LayoutAwareRouting.ENABLED);
+        DataLakeFileInputStreamOptions options
+            = new DataLakeFileInputStreamOptions().setLayoutAwareRouting(LayoutAwareRouting.ENABLED);
 
         BlobInputStreamOptions blobOptions = Transforms.toBlobInputStreamOptions(options);
 
         assertEquals(LayoutAwareRouting.ENABLED, blobOptions.getLayoutAwareRouting());
         assertNull(Transforms.toBlobInputStreamOptions(null));
-    }
-
-    @Test
-    public void toBlobLayoutAwareRouting() {
-        assertNull(Transforms.toBlobLayoutAwareRouting(null));
-        assertEquals(LayoutAwareRouting.AUTO,
-            Transforms.toBlobLayoutAwareRouting(com.azure.storage.file.datalake.models.LayoutAwareRouting.AUTO));
-        assertEquals(LayoutAwareRouting.DISABLED,
-            Transforms.toBlobLayoutAwareRouting(com.azure.storage.file.datalake.models.LayoutAwareRouting.DISABLED));
-        assertEquals(LayoutAwareRouting.ENABLED,
-            Transforms.toBlobLayoutAwareRouting(com.azure.storage.file.datalake.models.LayoutAwareRouting.ENABLED));
     }
 
     @Test
@@ -174,7 +163,7 @@ public class DataLakeDataLocalityOptionsTests {
 
         DataLakeFileInputStreamOptions options = new DataLakeFileInputStreamOptions().setBlockSize(1)
             .setRange(new FileRange(0, (long) DOWNLOAD_BODY.length))
-            .setLayoutAwareRouting(com.azure.storage.file.datalake.models.LayoutAwareRouting.DISABLED);
+            .setLayoutAwareRouting(LayoutAwareRouting.DISABLED);
 
         byte[] bytes;
         try (InputStream stream = client.openInputStream(options, Context.NONE).getInputStream()) {
@@ -286,7 +275,7 @@ public class DataLakeDataLocalityOptionsTests {
         try {
             assertDoesNotThrow(() -> client.readToFileWithResponse(new ReadToFileOptions(tempFile.toString())
                 .setParallelTransferOptions(new com.azure.storage.common.ParallelTransferOptions().setBlockSizeLong(1L))
-                .setLayoutAwareRouting(com.azure.storage.file.datalake.models.LayoutAwareRouting.DISABLED)
+                .setLayoutAwareRouting(LayoutAwareRouting.DISABLED)
                 .setRangeGetContentMd5(false)
                 .setRange(new FileRange(0, (long) DOWNLOAD_BODY.length))).block());
 

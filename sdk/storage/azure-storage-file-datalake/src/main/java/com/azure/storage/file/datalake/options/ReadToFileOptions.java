@@ -3,13 +3,13 @@
 
 package com.azure.storage.file.datalake.options;
 
+import com.azure.storage.common.LayoutAwareRouting;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.datalake.DataLakeFileClient;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DownloadRetryOptions;
 import com.azure.storage.file.datalake.models.FileRange;
-import com.azure.storage.file.datalake.models.LayoutAwareRouting;
 
 import java.io.UncheckedIOException;
 import java.nio.file.OpenOption;

@@ -1689,7 +1689,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
                 .setRequestConditions(Transforms.toBlobRequestConditions(options.getDataLakeRequestConditions()))
                 .setRetrieveContentRangeMd5(options.isRangeGetContentMd5())
                 .setOpenOptions(options.getOpenOptions())
-                .setLayoutAwareRouting(Transforms.toBlobLayoutAwareRouting(options.getLayoutAwareRouting())))
+                .setLayoutAwareRouting(options.getLayoutAwareRouting()))
             .contextWrite(FluxUtil.toReactorContext(context))
             .onErrorMap(DataLakeImplUtils::transformBlobStorageException)
             .map(

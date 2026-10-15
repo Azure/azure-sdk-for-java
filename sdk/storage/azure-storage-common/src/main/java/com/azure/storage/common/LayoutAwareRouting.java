@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob.models;
+package com.azure.storage.common;
 
 /**
  * Defines the routing behavior the SDK should use when download hint metadata indicates blob layout is available.

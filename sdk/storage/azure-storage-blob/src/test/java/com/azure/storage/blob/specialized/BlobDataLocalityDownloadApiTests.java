@@ -306,7 +306,7 @@ public class BlobDataLocalityDownloadApiTests extends BlobTestBase {
         assertDoesNotThrow(
             () -> downloadClient.downloadToFileWithResponse(new BlobDownloadToFileOptions(testFile.toString())
                 .setParallelTransferOptions(new ParallelTransferOptions().setBlockSizeLong(8L))
-                .setLayoutAwareRouting(com.azure.storage.blob.models.LayoutAwareRouting.DISABLED), null, null));
+                .setLayoutAwareRouting(com.azure.storage.common.LayoutAwareRouting.DISABLED), null, null));
 
         assertArrayEquals(testContent, Files.readAllBytes(testFile));
         assertEquals(0, httpClient.getLayoutRequestCount());
