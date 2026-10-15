@@ -20,11 +20,9 @@ import com.openai.core.JsonValue;
 import com.openai.core.RequestOptions;
 import com.openai.core.http.HttpResponseFor;
 import com.openai.core.http.StreamResponse;
-import com.openai.models.conversations.Conversation;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
 import com.openai.models.responses.ResponseStreamEvent;
-import com.openai.services.blocking.ConversationService;
 import com.openai.services.blocking.ResponseService;
 
 import java.util.Map;
@@ -36,7 +34,6 @@ import java.util.Objects;
 @ServiceClient(builder = AgentsClientBuilder.class)
 public final class ResponsesClient {
     private final ResponseService responseService;
-    private final ConversationService conversationService;
     private final GenAiResponseTracing tracer;
 
     /**
@@ -47,29 +44,7 @@ public final class ResponsesClient {
      */
     ResponsesClient(OpenAIClient openAIClient, GenAiResponseTracing tracer) {
         this.responseService = openAIClient.responses();
-        this.conversationService = openAIClient.conversations();
         this.tracer = tracer;
-    }
-
-    /**
-     * Creates a conversation, emitting a {@code create_conversation} span when tracing is enabled.
-     *
-     * @return the created Conversation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Conversation createConversation() {
-        return tracer.traceCreateConversation(conversationService::create);
-    }
-
-    /**
-     * Deletes a conversation.
-     *
-     * @param conversationId the ID of the conversation to delete.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteConversation(String conversationId) {
-        Objects.requireNonNull(conversationId, "conversationId cannot be null");
-        conversationService.delete(conversationId);
     }
 
     /**

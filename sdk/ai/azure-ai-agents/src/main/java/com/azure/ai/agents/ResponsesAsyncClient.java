@@ -17,11 +17,9 @@ import com.openai.core.JsonValue;
 import com.openai.core.RequestOptions;
 import com.openai.core.http.HttpResponseFor;
 import com.openai.core.http.StreamResponse;
-import com.openai.models.conversations.Conversation;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
 import com.openai.models.responses.ResponseStreamEvent;
-import com.openai.services.async.ConversationServiceAsync;
 import com.openai.services.async.ResponseServiceAsync;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -35,7 +33,6 @@ import java.util.Objects;
 @ServiceClient(builder = AgentsClientBuilder.class, isAsync = true)
 public final class ResponsesAsyncClient {
     private final ResponseServiceAsync responseServiceAsync;
-    private final ConversationServiceAsync conversationServiceAsync;
     private final GenAiResponseTracing tracer;
 
     /**
@@ -46,30 +43,7 @@ public final class ResponsesAsyncClient {
      */
     ResponsesAsyncClient(OpenAIClientAsync openAIClientAsync, GenAiResponseTracing tracer) {
         this.responseServiceAsync = openAIClientAsync.responses();
-        this.conversationServiceAsync = openAIClientAsync.conversations();
         this.tracer = tracer;
-    }
-
-    /**
-     * Creates a conversation, emitting a {@code create_conversation} span when tracing is enabled.
-     *
-     * @return a {@link Mono} emitting the created Conversation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Conversation> createConversation() {
-        return tracer.traceCreateConversationAsync(params -> Mono.fromFuture(conversationServiceAsync.create(params)));
-    }
-
-    /**
-     * Deletes a conversation.
-     *
-     * @param conversationId the ID of the conversation to delete.
-     * @return a {@link Mono} that completes when the conversation is deleted.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteConversation(String conversationId) {
-        Objects.requireNonNull(conversationId, "conversationId cannot be null");
-        return Mono.fromFuture(conversationServiceAsync.delete(conversationId)).then();
     }
 
     /**
