@@ -1,14 +1,27 @@
 # Release History
 
-## 2.62.0-beta.1 (Unreleased)
+## 2.62.0 (2026-10-15)
+
+- Package api-version Compute: 2026-04-01, ComputeDisk: 2026-03-02, ComputeGallery: 2026-03-03, ComputeSku: 2021-07-01.
 
 ### Features Added
 
-### Breaking Changes
+* `models.FlexProfile` was added
 
-### Bugs Fixed
+#### `models.VirtualMachineScaleSetIpConfiguration` was modified
 
-### Other Changes
+* `privateIPAddressPrefixLength()` was added
+* `withPrivateIPAddressPrefixLength(java.lang.Integer)` was added
+
+#### `models.VirtualMachineScaleSetUpdateIpConfiguration` was modified
+
+* `privateIPAddressPrefixLength()` was added
+* `withPrivateIPAddressPrefixLength(java.lang.Integer)` was added
+
+#### `models.VirtualMachineNetworkInterfaceIpConfiguration` was modified
+
+* `privateIPAddressPrefixLength()` was added
+* `withPrivateIPAddressPrefixLength(java.lang.Integer)` was added
 
 ## 2.61.2 (2026-10-09)
 
