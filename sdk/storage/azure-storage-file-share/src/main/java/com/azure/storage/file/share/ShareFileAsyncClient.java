@@ -278,7 +278,7 @@ public class ShareFileAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ShareFileLinks> getFileLinks() {
-        return getFileLinksWithResponse(null, null).flatMap(FluxUtil::toMono);
+        return getFileLinksWithResponse(null).flatMap(FluxUtil::toMono);
     }
 
     /**
