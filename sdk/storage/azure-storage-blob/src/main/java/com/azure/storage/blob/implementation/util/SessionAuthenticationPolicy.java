@@ -41,6 +41,12 @@ import java.util.Objects;
  * authentication. Cooldown state is held by the provider and shared by all clients using that provider.
  * Acquisition failures that do not carry one of those status codes fall back to bearer for that request only
  * and do not start a cooldown.
+ * <p>
+ * Session credentials are cached by a provider that may be shared across clients, but CreateSession requests are
+ * sent by this policy's {@link SessionAcquirer} through the pipeline that contains this policy. CreateSession
+ * requests are never session-eligible, so they reach this policy again and are authenticated with the bearer policy,
+ * or with the acquirer's credential override when one is configured. Because CreateSession uses the client's own
+ * pipeline, the client's retry policy runs before an acquisition failure falls back to bearer authentication.
  */
 final class SessionAuthenticationPolicy implements HttpPipelinePolicy {
     private static final ClientLogger LOGGER = new ClientLogger(SessionAuthenticationPolicy.class);
@@ -51,6 +57,7 @@ final class SessionAuthenticationPolicy implements HttpPipelinePolicy {
 
     private final StorageBearerTokenChallengeAuthorizationPolicy bearerPolicy;
     private final SessionProvider sessionProvider;
+    private final SessionAcquirer sessionAcquirer;
     private final SessionMode sessionMode;
     private final String accountName;
     private final Clock clock;
@@ -60,11 +67,12 @@ final class SessionAuthenticationPolicy implements HttpPipelinePolicy {
      *
      * @param bearerPolicy the bearer token policy used for non-session requests and fallback.
      * @param sessionProvider the provider used to acquire and manage session credentials.
+     * @param sessionAcquirer the acquirer bound to the pipeline that contains this policy.
      * @param sessionOptions the options that configure session authentication. Values are captured at construction.
      */
     SessionAuthenticationPolicy(StorageBearerTokenChallengeAuthorizationPolicy bearerPolicy,
-        SessionProvider sessionProvider, SessionOptions sessionOptions) {
-        this(bearerPolicy, sessionProvider, sessionOptions, Clock.systemUTC());
+        SessionProvider sessionProvider, SessionAcquirer sessionAcquirer, SessionOptions sessionOptions) {
+        this(bearerPolicy, sessionProvider, sessionAcquirer, sessionOptions, Clock.systemUTC());
     }
 
     /**
@@ -72,13 +80,15 @@ final class SessionAuthenticationPolicy implements HttpPipelinePolicy {
      *
      * @param bearerPolicy the bearer token policy used for non-session requests and fallback.
      * @param sessionProvider the provider used to acquire and manage session credentials.
+     * @param sessionAcquirer the acquirer bound to the pipeline that contains this policy.
      * @param sessionOptions the options that configure session authentication. Values are captured at construction.
      * @param clock the clock used for signing.
      */
     SessionAuthenticationPolicy(StorageBearerTokenChallengeAuthorizationPolicy bearerPolicy,
-        SessionProvider sessionProvider, SessionOptions sessionOptions, Clock clock) {
+        SessionProvider sessionProvider, SessionAcquirer sessionAcquirer, SessionOptions sessionOptions, Clock clock) {
         this.bearerPolicy = Objects.requireNonNull(bearerPolicy, "'bearerPolicy' cannot be null.");
         this.sessionProvider = Objects.requireNonNull(sessionProvider, "'sessionProvider' cannot be null.");
+        this.sessionAcquirer = Objects.requireNonNull(sessionAcquirer, "'sessionAcquirer' cannot be null.");
         Objects.requireNonNull(sessionOptions, "'sessionOptions' cannot be null.");
         this.sessionMode = ModelHelper.resolveSessionMode(sessionOptions.getSessionMode());
         this.accountName = sessionOptions.getAccountName();
@@ -89,7 +99,7 @@ final class SessionAuthenticationPolicy implements HttpPipelinePolicy {
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         SessionRequestContext requestContext = resolveSessionRequest(context);
         if (requestContext == null) {
-            return bearerPolicy.process(context, next);
+            return getBearerPolicy(context).process(context, next);
         }
 
         HttpPipelineNextPolicy retryNext = next.clone();
@@ -115,7 +125,7 @@ final class SessionAuthenticationPolicy implements HttpPipelinePolicy {
     public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
         SessionRequestContext requestContext = resolveSessionRequest(context);
         if (requestContext == null) {
-            return bearerPolicy.processSync(context, next);
+            return getBearerPolicy(context).processSync(context, next);
         }
 
         HttpPipelineNextSyncPolicy retryNext = next.clone();
@@ -140,7 +150,8 @@ final class SessionAuthenticationPolicy implements HttpPipelinePolicy {
             return null;
         }
 
-        if (!sessionProvider.isRequestEligible(context.getHttpRequest())) {
+        if (!sessionProvider.isRequestEligible(context.getHttpRequest())
+            || !sessionAcquirer.isRequestForEndpoint(context.getHttpRequest())) {
             return null;
         }
 
@@ -160,7 +171,21 @@ final class SessionAuthenticationPolicy implements HttpPipelinePolicy {
             return null;
         }
 
-        return new SessionRequestContext().setContainerName(containerName).setAccountName(accountName);
+        return new SessionRequestContext().setContainerName(containerName)
+            .setAccountName(accountName)
+            .setAcquirer(sessionAcquirer);
+    }
+
+    /**
+     * Selects the bearer policy for a request that isn't session-authenticated. CreateSession requests use the
+     * acquirer's credential override when one is configured.
+     */
+    private StorageBearerTokenChallengeAuthorizationPolicy getBearerPolicy(HttpPipelineCallContext context) {
+        StorageBearerTokenChallengeAuthorizationPolicy acquisitionBearerPolicy
+            = sessionAcquirer.getAcquisitionBearerPolicy();
+        return acquisitionBearerPolicy != null && SessionAcquirer.isAcquisitionRequest(context)
+            ? acquisitionBearerPolicy
+            : bearerPolicy;
     }
 
     private static String getOverrideOrDefault(String override, String defaultValue) {

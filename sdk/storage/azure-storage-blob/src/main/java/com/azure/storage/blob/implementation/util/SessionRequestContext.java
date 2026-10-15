@@ -11,8 +11,8 @@ import com.azure.storage.blob.options.SessionOptions;
  * <p>
  * The session authentication policy populates the container name from the request URL and the account name
  * from {@link SessionOptions#getAccountName()} or the request URL. This object does not resolve missing
- * values itself. When calling the built-in provider directly, a nonempty container name is required, and
- * an account name must be supplied either by the provider's configuration or by this context.
+ * values itself. When calling the built-in provider directly, a nonempty container name and an acquirer are
+ * required, and an account name must be supplied either by this context or by the acquirer.
  * <p>
  * This exists so a single provider instance can be asked for a session that is scoped to a
  * specific container at call time, rather than being permanently bound to one container at construction
@@ -24,6 +24,7 @@ public final class SessionRequestContext {
 
     private String containerName;
     private String accountName;
+    private SessionAcquirer acquirer;
 
     /**
      * Creates a new {@link SessionRequestContext}.
@@ -68,6 +69,26 @@ public final class SessionRequestContext {
      */
     public SessionRequestContext setAccountName(String accountName) {
         this.accountName = accountName;
+        return this;
+    }
+
+    /**
+     * Gets the acquirer that sends CreateSession requests through the requesting client's pipeline.
+     *
+     * @return the acquirer, or {@code null} if not set.
+     */
+    SessionAcquirer getAcquirer() {
+        return acquirer;
+    }
+
+    /**
+     * Sets the acquirer that sends CreateSession requests through the requesting client's pipeline.
+     *
+     * @param acquirer the acquirer.
+     * @return the updated {@link SessionRequestContext} object.
+     */
+    SessionRequestContext setAcquirer(SessionAcquirer acquirer) {
+        this.acquirer = acquirer;
         return this;
     }
 }

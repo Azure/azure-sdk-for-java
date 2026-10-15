@@ -608,8 +608,8 @@ public final class BlobServiceClientBuilder implements TokenCredentialTrait<Blob
      * {@link BlobServiceClient#getBlobContainerClient(String)} share the service client's pipeline.
      * Sessions are disabled by default and apply only to eligible GET blob requests; others use bearer
      * authentication. Clients using the same
-     * {@link SessionOptions} instance share a provider and cache; the first enabled, token-authenticated client
-     * supplies the acquisition pipeline. Share options only across compatible network contexts, or use
+     * {@link SessionOptions} instance share a session cache; each client acquires sessions through its own
+     * pipeline. Share options only across clients with compatible identity and network contexts, or use
      * separate instances for independent caches.
      *
      * @param sessionOptions The session options for the HTTP pipeline.

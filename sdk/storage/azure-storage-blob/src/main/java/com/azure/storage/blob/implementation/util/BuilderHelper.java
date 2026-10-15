@@ -25,7 +25,6 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.TracingOptions;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
@@ -107,6 +106,10 @@ public final class BuilderHelper {
         CredentialValidator.validateCredentialsNotAmbiguous(storageSharedKeyCredential, tokenCredential,
             azureSasCredential, sasToken, logger);
 
+        boolean sessionsEnabled = tokenCredential != null
+            && sessionOptions != null
+            && ModelHelper.resolveSessionMode(sessionOptions.getSessionMode()) == SessionMode.ENABLED;
+
         // Closest to API goes first, closest to wire goes last.
         List<HttpPipelinePolicy> policies = new ArrayList<>();
 
@@ -136,25 +139,10 @@ public final class BuilderHelper {
             policies.add(new StorageSharedKeyCredentialPolicy(storageSharedKeyCredential));
         }
 
-        // Session credentials are bound to the client's network context. When the caller doesn't provide an
-        // HttpClient, create one default instance and share it between CreateSession and data requests instead of
-        // letting each pipeline create its own transport.
-        HttpClient effectiveHttpClient
-            = tokenCredential == null ? httpClient : getOrCreateHttpClient(httpClient, clientOptions);
-
-        // Tail of every pipeline: the policies between the auth policy and the transport. Also reused by the
-        // session creation pipeline so CreateSession takes the same network path as the data requests its
-        // credential signs.
-        List<HttpPipelinePolicy> postAuthenticationPolicies = new ArrayList<>(perRetryPolicies);
-        HttpPolicyProviders.addAfterRetryPolicies(postAuthenticationPolicies);
-        postAuthenticationPolicies.add(getResponseValidationPolicy());
-        postAuthenticationPolicies.add(new HttpLoggingPolicy(logOptions));
-        postAuthenticationPolicies.add(new ScrubEtagPolicy());
-
-        // When the resolved session mode is enabled and a tokenCredential is
-        // present, a single SessionAuthenticationPolicy is added as the auth policy. The session policy wraps the bearer
-        // token policy internally and delegates to it for non-session-eligible requests. When sessions are not active,
-        // the bearer token policy is added directly.
+        // When sessions are enabled, a single SessionAuthenticationPolicy is added as the auth policy. It wraps the
+        // bearer token policy and delegates to it for requests that aren't session-eligible. CreateSession requests
+        // are sent through this same pipeline by the session acquirer, which is bound once the pipeline is built.
+        SessionAcquirer sessionAcquirer = null;
         if (tokenCredential != null) {
             httpsValidation(tokenCredential, "bearer token", endpoint, logger);
             String scope = audience != null
@@ -163,24 +151,15 @@ public final class BuilderHelper {
             StorageBearerTokenChallengeAuthorizationPolicy bearerPolicy
                 = new StorageBearerTokenChallengeAuthorizationPolicy(tokenCredential, scope);
 
-            if (sessionOptions == null
-                || ModelHelper.resolveSessionMode(sessionOptions.getSessionMode()) != SessionMode.ENABLED) {
+            if (!sessionsEnabled) {
                 policies.add(bearerPolicy);
             } else {
-                BlobServiceVersion effectiveServiceVersion
-                    = serviceVersion != null ? serviceVersion : BlobServiceVersion.getLatest();
-                SessionProvider sessionProvider
-                    = SessionOptionsAccessor.getOrCreateSessionClient(sessionOptions, SessionProvider.class, () -> {
-                        if (SessionOptionsAccessor.getEndpoint(sessionOptions) == null) {
-                            String accountName = resolveSessionAccountName(endpoint, sessionOptions.getAccountName());
-                            return createDefaultSessionProvider(policies, bearerPolicy, postAuthenticationPolicies,
-                                logOptions, effectiveHttpClient, clientOptions, endpoint, effectiveServiceVersion,
-                                accountName);
-                        }
-                        return createCustomSessionProvider(sessionOptions, policies, postAuthenticationPolicies,
-                            logOptions, effectiveHttpClient, clientOptions, effectiveServiceVersion, scope, logger);
-                    });
-                policies.add(new SessionAuthenticationPolicy(bearerPolicy, sessionProvider, sessionOptions));
+                sessionAcquirer = createSessionAcquirer(sessionOptions, endpoint, serviceVersion, scope, logger);
+                // The provider owns only the session cache, so every client sharing these options shares sessions.
+                SessionProvider sessionProvider = SessionOptionsAccessor.getOrCreateSessionClient(sessionOptions,
+                    SessionProvider.class, () -> new ContainerSessionProvider(Clock.systemUTC()));
+                policies.add(
+                    new SessionAuthenticationPolicy(bearerPolicy, sessionProvider, sessionAcquirer, sessionOptions));
             }
         }
 
@@ -190,9 +169,31 @@ public final class BuilderHelper {
             policies.add(new AzureSasCredentialPolicy(new AzureSasCredential(sasToken), false));
         }
 
-        policies.addAll(postAuthenticationPolicies);
+        policies.addAll(perRetryPolicies);
 
-        return createPipeline(policies, effectiveHttpClient, clientOptions);
+        HttpPolicyProviders.addAfterRetryPolicies(policies);
+
+        policies.add(getResponseValidationPolicy());
+
+        HttpLoggingPolicy loggingPolicy = new HttpLoggingPolicy(logOptions);
+        if (sessionsEnabled) {
+            // CreateSession responses contain the session key. Logging policies added by the customer or by SPI
+            // providers skip CreateSession, and the builder's logging policy logs it without the body or custom
+            // loggers. All other requests are logged exactly as configured.
+            policies.replaceAll(
+                policy -> policy instanceof HttpLoggingPolicy ? new SessionAwareLoggingPolicy(policy, null) : policy);
+            policies.add(new SessionAwareLoggingPolicy(loggingPolicy, createSessionLoggingPolicy(logOptions)));
+        } else {
+            policies.add(loggingPolicy);
+        }
+
+        policies.add(new ScrubEtagPolicy());
+
+        HttpPipeline pipeline = createPipeline(policies, httpClient, clientOptions);
+        if (sessionAcquirer != null) {
+            sessionAcquirer.bind(pipeline);
+        }
+        return pipeline;
     }
 
     private static String resolveSessionAccountName(String endpoint, String accountName) {
@@ -212,38 +213,24 @@ public final class BuilderHelper {
     }
 
     /**
-     * Creates the default {@link SessionProvider}, backed by a bearer-only {@link HttpPipeline} used for
-     * CreateSession calls. That pipeline mirrors the data pipeline - the same pre-auth policies, bearer token policy,
-     * post-auth policies and transport - but has no session policy, because session credentials are bound to the
-     * network context of the CreateSession call. HTTP logging policies are replaced with body-disabled logging so the
-     * session token and key in the CreateSession response cannot be logged.
+     * Creates the {@link SessionAcquirer} for a client. CreateSession is sent to the client's endpoint with the
+     * client's credential, unless the {@link SessionOptions} override the acquisition endpoint and credential.
      */
-    private static SessionProvider createDefaultSessionProvider(List<HttpPipelinePolicy> preAuthPolicies,
-        StorageBearerTokenChallengeAuthorizationPolicy bearerPolicy,
-        List<HttpPipelinePolicy> postAuthenticationPolicies, HttpLogOptions logOptions, HttpClient httpClient,
-        ClientOptions clientOptions, String endpoint, BlobServiceVersion serviceVersion, String accountName) {
-        List<HttpPipelinePolicy> bearerPolicies = new ArrayList<>(preAuthPolicies);
-        bearerPolicies.add(bearerPolicy);
-        bearerPolicies.addAll(postAuthenticationPolicies);
-
-        HttpLoggingPolicy sessionLoggingPolicy = createSessionLoggingPolicy(logOptions);
-        bearerPolicies.replaceAll(policy -> policy instanceof HttpLoggingPolicy ? sessionLoggingPolicy : policy);
-
-        return new ContainerSessionProvider(createPipeline(bearerPolicies, httpClient, clientOptions), endpoint,
-            serviceVersion, accountName, Clock.systemUTC());
-    }
-
-    private static SessionProvider createCustomSessionProvider(SessionOptions sessionOptions,
-        List<HttpPipelinePolicy> preAuthPolicies, List<HttpPipelinePolicy> postAuthenticationPolicies,
-        HttpLogOptions logOptions, HttpClient httpClient, ClientOptions clientOptions,
+    private static SessionAcquirer createSessionAcquirer(SessionOptions sessionOptions, String endpoint,
         BlobServiceVersion serviceVersion, String scope, ClientLogger logger) {
-        String endpoint = getSessionEndpoint(SessionOptionsAccessor.getEndpoint(sessionOptions));
-        TokenCredential credential = SessionOptionsAccessor.getCredential(sessionOptions);
-        httpsValidation(credential, "bearer token", endpoint, logger);
-        String accountName = resolveSessionAccountName(endpoint, sessionOptions.getAccountName());
-        return createDefaultSessionProvider(preAuthPolicies,
-            new StorageBearerTokenChallengeAuthorizationPolicy(credential, scope), postAuthenticationPolicies,
-            logOptions, httpClient, clientOptions, endpoint, serviceVersion, accountName);
+        String acquisitionEndpoint = SessionOptionsAccessor.getEndpoint(sessionOptions);
+        StorageBearerTokenChallengeAuthorizationPolicy acquisitionBearerPolicy = null;
+        if (acquisitionEndpoint == null) {
+            acquisitionEndpoint = endpoint;
+        } else {
+            TokenCredential credential = SessionOptionsAccessor.getCredential(sessionOptions);
+            httpsValidation(credential, "bearer token", acquisitionEndpoint, logger);
+            acquisitionBearerPolicy = new StorageBearerTokenChallengeAuthorizationPolicy(credential, scope);
+        }
+
+        String sessionEndpoint = getSessionEndpoint(acquisitionEndpoint);
+        String accountName = resolveSessionAccountName(sessionEndpoint, sessionOptions.getAccountName());
+        return new SessionAcquirer(sessionEndpoint, serviceVersion, accountName, acquisitionBearerPolicy);
     }
 
     /**
@@ -284,16 +271,6 @@ public final class BuilderHelper {
             .setAllowedQueryParamNames(new HashSet<>(sourceOptions.getAllowedQueryParamNames()))
             .disableRedactedHeaderLogging(sourceOptions.isRedactedHeaderLoggingDisabled());
         return new HttpLoggingPolicy(sessionLogOptions);
-    }
-
-    private static HttpClient getOrCreateHttpClient(HttpClient httpClient, ClientOptions clientOptions) {
-        if (httpClient != null) {
-            return httpClient;
-        }
-
-        return clientOptions instanceof HttpClientOptions
-            ? HttpClient.createDefault((HttpClientOptions) clientOptions)
-            : HttpClient.createDefault();
     }
 
     /**

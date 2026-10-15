@@ -14,6 +14,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.FixedDelayOptions;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.test.http.MockHttpResponse;
@@ -52,6 +53,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -812,18 +814,25 @@ public class BuilderHelperTests {
     }
 
     /**
-     * Session credentials are bound to the network context of the CreateSession call, so the session creation
-     * pipeline must run the same post-authentication policies as the data pipeline.
+     * CreateSession is sent through the client's own pipeline, so the customer's per-call and per-retry policies and
+     * the client's HttpClient handle it exactly like data requests.
      */
     @Test
-    public void perRetryPoliciesAreAppliedToCreateSessionRequests() {
+    public void customerPoliciesAndTransportAreAppliedToCreateSessionRequests() {
         List<HttpMethod> observedMethods = Collections.synchronizedList(new ArrayList<>());
+        List<HttpMethod> perCallMethods = Collections.synchronizedList(new ArrayList<>());
         HttpPipelinePolicy perRetryPolicy = (context, next) -> {
             observedMethods.add(context.getHttpRequest().getHttpMethod());
             return next.process();
         };
+        HttpPipelinePolicy perCallPolicy = (context, next) -> {
+            perCallMethods.add(context.getHttpRequest().getHttpMethod());
+            return next.process();
+        };
+        List<HttpMethod> transportMethods = Collections.synchronizedList(new ArrayList<>());
 
         HttpClient sessionClient = request -> {
+            transportMethods.add(request.getHttpMethod());
             if (request.getHttpMethod() == HttpMethod.POST) {
                 HttpHeaders headers = new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/xml");
                 return Mono.just(new MockHttpResponse(request, 201, headers,
@@ -833,20 +842,46 @@ public class BuilderHelperTests {
             return Mono.just(new MockHttpResponse(request, 200));
         };
 
-        HttpPipeline pipeline
-            = BuilderHelper.buildPipeline(null, new MockTokenCredential(), null, null, ENDPOINT, REQUEST_RETRY_OPTIONS,
-                null, BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(), sessionClient, new ArrayList<>(),
-                Collections.singletonList(perRetryPolicy), null, null, new ClientLogger(BuilderHelperTests.class),
-                new SessionOptions().setSessionMode(SessionMode.ENABLED), BlobServiceVersion.getLatest());
+        HttpPipeline pipeline = BuilderHelper.buildPipeline(null, new MockTokenCredential(), null, null, ENDPOINT,
+            REQUEST_RETRY_OPTIONS, null, BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(), sessionClient,
+            Collections.singletonList(perCallPolicy), Collections.singletonList(perRetryPolicy), null, null,
+            new ClientLogger(BuilderHelperTests.class), new SessionOptions().setSessionMode(SessionMode.ENABLED),
+            BlobServiceVersion.getLatest());
 
         StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.GET, ENDPOINT + "container/blob")))
             .assertNext(response -> assertEquals(200, response.getStatusCode()))
             .verifyComplete();
 
+        assertEquals(Arrays.asList(HttpMethod.GET, HttpMethod.POST), perCallMethods,
+            "Per-call policies must run once for the data request and once for CreateSession");
         assertTrue(observedMethods.contains(HttpMethod.POST),
             "Per-retry policies must run for CreateSession requests, saw " + observedMethods);
         assertTrue(observedMethods.contains(HttpMethod.GET),
             "Per-retry policies must run for data requests, saw " + observedMethods);
+        assertEquals(Arrays.asList(HttpMethod.POST, HttpMethod.GET), transportMethods,
+            "CreateSession and the data request must share the client's HttpClient");
+    }
+
+    @Test
+    public void pipelinesWithoutSessionsKeepPlainLoggingPolicy() {
+        HttpPipeline pipeline = buildTokenPipeline(new SessionOptions());
+
+        assertTrue(hasPolicyOfType(pipeline, "HttpLoggingPolicy"));
+        assertFalse(hasPolicyOfType(pipeline, "SessionAwareLoggingPolicy"));
+    }
+
+    @Test
+    public void sessionPipelinesWrapAllLoggingPolicies() {
+        HttpPipeline pipeline = BuilderHelper.buildPipeline(null, new MockTokenCredential(), null, null, ENDPOINT,
+            new RequestRetryOptions(), null, BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(),
+            new NoOpHttpClient(), new ArrayList<>(),
+            Collections.singletonList(new HttpLoggingPolicy(new HttpLogOptions())), null, null,
+            new ClientLogger(BuilderHelperTests.class), new SessionOptions().setSessionMode(SessionMode.ENABLED),
+            BlobServiceVersion.getLatest());
+
+        assertFalse(hasPolicyOfType(pipeline, "HttpLoggingPolicy"),
+            "Logging policies must be wrapped so CreateSession responses aren't logged with their body");
+        assertEquals(2, countPoliciesOfType(pipeline, "SessionAwareLoggingPolicy"));
     }
 
     @ParameterizedTest
@@ -1028,12 +1063,17 @@ public class BuilderHelperTests {
      * Checks whether the pipeline contains a policy whose simple class name matches the given name.
      */
     private static boolean hasPolicyOfType(HttpPipeline pipeline, String simpleClassName) {
+        return countPoliciesOfType(pipeline, simpleClassName) > 0;
+    }
+
+    private static int countPoliciesOfType(HttpPipeline pipeline, String simpleClassName) {
+        int count = 0;
         for (int i = 0; i < pipeline.getPolicyCount(); i++) {
             if (pipeline.getPolicy(i).getClass().getSimpleName().equals(simpleClassName)) {
-                return true;
+                count++;
             }
         }
-        return false;
+        return count;
     }
     // endregion
 }

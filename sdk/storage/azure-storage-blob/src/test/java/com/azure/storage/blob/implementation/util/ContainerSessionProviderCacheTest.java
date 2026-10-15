@@ -18,6 +18,8 @@ import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.storage.blob.implementation.accesshelpers.SessionOptionsAccessor;
 import com.azure.storage.blob.options.SessionOptions;
+import com.azure.storage.common.policy.RequestRetryOptions;
+import com.azure.storage.common.policy.RetryPolicyType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -33,6 +35,10 @@ import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
@@ -71,6 +77,7 @@ public class ContainerSessionProviderCacheTest {
     private static final String CONTAINER_B = "container-b";
     private static final String FIRST_TOKEN = "first-session-token";
     private static final String SECOND_TOKEN = "second-session-token";
+    private static final HttpHeaderName CLIENT_HEADER = HttpHeaderName.fromString("x-test-client");
 
     // A session's usable lifetime in these tests.
     private static final Duration SESSION_LIFETIME = Duration.ofMinutes(5);
@@ -79,6 +86,7 @@ public class ContainerSessionProviderCacheTest {
     private MutableClock clock;
     private CreateSessionTransport httpClient;
     private ContainerSessionProvider provider;
+    private SessionAcquirer acquirer;
     private SessionOptions sessionOptions;
 
     @BeforeEach
@@ -86,9 +94,14 @@ public class ContainerSessionProviderCacheTest {
         clock = new MutableClock(TEST_START);
         httpClient = new CreateSessionTransport();
 
+        configureProvider();
+    }
+
+    private void configureProvider() {
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(httpClient).build();
-        provider = new ContainerSessionProvider(pipeline, "https://" + ACCOUNT_NAME + ".blob.core.windows.net",
-            BlobServiceVersion.getLatest(), ACCOUNT_NAME, clock);
+        provider = new ContainerSessionProvider(clock);
+        acquirer = new SessionAcquirer("https://" + ACCOUNT_NAME + ".blob.core.windows.net",
+            BlobServiceVersion.getLatest(), ACCOUNT_NAME, null).bind(pipeline);
         initializeSessionOptions();
     }
 
@@ -159,10 +172,36 @@ public class ContainerSessionProviderCacheTest {
 
     private void configureTestProvider() {
         clock = new MutableClock(Instant.now());
-        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(httpClient).build();
-        provider = new ContainerSessionProvider(pipeline, "https://" + ACCOUNT_NAME + ".blob.core.windows.net",
-            BlobServiceVersion.getLatest(), ACCOUNT_NAME, clock);
-        initializeSessionOptions();
+        configureProvider();
+    }
+
+    /**
+     * Each client acquires sessions through its own pipeline, and a forced refresh goes through the pipeline of the
+     * client that used the session most recently.
+     */
+    @Test
+    public void acquisitionAndRefreshUseTheCallingClientsPipeline() {
+        configureTestProvider();
+        enqueueSessionResponse(CONTAINER_A, FIRST_TOKEN, now().plusMinutes(20));
+        enqueueSessionResponse(CONTAINER_A, SECOND_TOKEN, now().plusMinutes(20));
+        HttpPipeline first = namedClientPipeline("first");
+        HttpPipeline second = namedClientPipeline("second");
+
+        assertSyncToken(first, CONTAINER_A, FIRST_TOKEN);
+        assertAsyncToken(second, CONTAINER_A, FIRST_TOKEN);
+        assertEquals(Collections.singletonList("first"), httpClient.getAcquiringClients());
+
+        provider.refreshSession(contextFor(CONTAINER_A));
+        waitForRequestCount(CONTAINER_A, 2);
+
+        assertEquals(Arrays.asList("first", "second"), httpClient.getAcquiringClients());
+    }
+
+    private HttpPipeline namedClientPipeline(String name) {
+        return independentClientBuilder().addPolicy((context, next) -> {
+            context.getHttpRequest().setHeader(CLIENT_HEADER, name);
+            return next.process();
+        }).buildClient().getHttpPipeline();
     }
 
     @ParameterizedTest
@@ -266,9 +305,11 @@ public class ContainerSessionProviderCacheTest {
     }
 
     private BlobServiceClientBuilder independentClientBuilder() {
+        // Retries are disabled so each CreateSession response is consumed by exactly one acquisition attempt.
         return new BlobServiceClientBuilder().endpoint("https://" + ACCOUNT_NAME + ".blob.core.windows.net")
             .credential(new MockTokenCredential())
             .httpClient(httpClient)
+            .retryOptions(new RequestRetryOptions(RetryPolicyType.FIXED, 1, 30, 1L, 1L, null))
             .sessionOptions(sessionOptions);
     }
 
@@ -719,8 +760,10 @@ public class ContainerSessionProviderCacheTest {
         }
     }
 
-    private static SessionRequestContext contextFor(String containerName) {
-        return new SessionRequestContext().setContainerName(containerName).setAccountName(ACCOUNT_NAME);
+    private SessionRequestContext contextFor(String containerName) {
+        return new SessionRequestContext().setContainerName(containerName)
+            .setAccountName(ACCOUNT_NAME)
+            .setAcquirer(acquirer);
     }
 
     private OffsetDateTime now() {
@@ -762,6 +805,7 @@ public class ContainerSessionProviderCacheTest {
         private final ConcurrentHashMap<String, ConcurrentLinkedQueue<Function<HttpRequest, Mono<HttpResponse>>>> responsesByContainer
             = new ConcurrentHashMap<>();
         private final ConcurrentHashMap<String, AtomicInteger> requestCountsByContainer = new ConcurrentHashMap<>();
+        private final List<String> acquiringClients = Collections.synchronizedList(new ArrayList<>());
 
         void enqueueResponse(String container, Function<HttpRequest, Mono<HttpResponse>> response) {
             responsesByContainer.computeIfAbsent(container, ignored -> new ConcurrentLinkedQueue<>()).add(response);
@@ -772,6 +816,12 @@ public class ContainerSessionProviderCacheTest {
             return count == null ? 0 : count.get();
         }
 
+        List<String> getAcquiringClients() {
+            synchronized (acquiringClients) {
+                return new ArrayList<>(acquiringClients);
+            }
+        }
+
         @Override
         public Mono<HttpResponse> send(HttpRequest request) {
             if (request.getHttpMethod() == HttpMethod.GET) {
@@ -779,6 +829,10 @@ public class ContainerSessionProviderCacheTest {
                     && request.getHeaders().getValue(HttpHeaderName.AUTHORIZATION).startsWith("Session ");
                 rejectNextSession = false;
                 return Mono.just(new MockHttpResponse(request, rejected ? 401 : 200));
+            }
+            String clientName = request.getHeaders().getValue(CLIENT_HEADER);
+            if (clientName != null) {
+                acquiringClients.add(clientName);
             }
             String container = containerFromPath(request);
             requestCountsByContainer.computeIfAbsent(container, ignored -> new AtomicInteger()).incrementAndGet();

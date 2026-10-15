@@ -107,7 +107,7 @@ public class SessionAuthenticationPolicyTest {
     @EnumSource(SessionMode.class)
     public void policyRespectsSessionModeAsync(SessionMode mode) {
         SessionOptions options = new SessionOptions().setSessionMode(mode);
-        policy = new SessionAuthenticationPolicy(bearerPolicy, sessionProvider, options);
+        policy = new SessionAuthenticationPolicy(bearerPolicy, sessionProvider, testAcquirer(), options);
         boolean sessionsEnabled = ModelHelper.resolveSessionMode(mode) == SessionMode.ENABLED;
         options.setSessionMode(sessionsEnabled ? SessionMode.DISABLED : SessionMode.ENABLED);
         if (sessionsEnabled) {
@@ -127,7 +127,7 @@ public class SessionAuthenticationPolicyTest {
     @EnumSource(SessionMode.class)
     public void policyRespectsSessionModeSync(SessionMode mode) {
         SessionOptions options = new SessionOptions().setSessionMode(mode);
-        policy = new SessionAuthenticationPolicy(bearerPolicy, sessionProvider, options);
+        policy = new SessionAuthenticationPolicy(bearerPolicy, sessionProvider, testAcquirer(), options);
         boolean sessionsEnabled = ModelHelper.resolveSessionMode(mode) == SessionMode.ENABLED;
         options.setSessionMode(sessionsEnabled ? SessionMode.DISABLED : SessionMode.ENABLED);
         if (sessionsEnabled) {
@@ -150,7 +150,7 @@ public class SessionAuthenticationPolicyTest {
     @CsvSource({ "original, original", ", testaccount", "'', testaccount" })
     public void policyCapturesAccountNameAsync(String accountName, String expectedAccountName) {
         SessionOptions options = new SessionOptions().setSessionMode(SessionMode.ENABLED).setAccountName(accountName);
-        policy = new SessionAuthenticationPolicy(bearerPolicy, sessionProvider, options);
+        policy = new SessionAuthenticationPolicy(bearerPolicy, sessionProvider, testAcquirer(), options);
         options.setAccountName("changed");
         when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.just(credentialWithToken()));
 
@@ -168,7 +168,7 @@ public class SessionAuthenticationPolicyTest {
     @CsvSource({ "original, original", ", testaccount", "'', testaccount" })
     public void policyCapturesAccountNameSync(String accountName, String expectedAccountName) {
         SessionOptions options = new SessionOptions().setSessionMode(SessionMode.ENABLED).setAccountName(accountName);
-        policy = new SessionAuthenticationPolicy(bearerPolicy, sessionProvider, options);
+        policy = new SessionAuthenticationPolicy(bearerPolicy, sessionProvider, testAcquirer(), options);
         options.setAccountName("changed");
         when(sessionProvider.getSession(any())).thenReturn(credentialWithToken());
         HttpPipelineNextSyncPolicy next = mock(HttpPipelineNextSyncPolicy.class);
@@ -656,6 +656,8 @@ public class SessionAuthenticationPolicyTest {
 
     @Test
     public void asyncPolicyGetsContainerNameFromCustomEndpoint() {
+        policy = new SessionAuthenticationPolicy(bearerPolicy, sessionProvider,
+            testAcquirer("https://custom.endpoint.example"), new SessionOptions().setSessionMode(SessionMode.ENABLED));
         when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.just(credentialWithToken()));
         HttpRequest request = new HttpRequest(HttpMethod.GET, "https://custom.endpoint.example/mycontainer/myblob");
 
@@ -665,6 +667,81 @@ public class SessionAuthenticationPolicyTest {
         }).verifyComplete();
 
         verify(sessionProvider).getSessionAsync(argThat(context -> "mycontainer".equals(context.getContainerName())));
+    }
+
+    @Test
+    public void requestsForAnotherEndpointUseBearer() {
+        HttpRequest request = blobGetRequest("otheraccount", "mycontainer");
+
+        StepVerifier.create(buildPipeline(successTransport()).send(request)).assertNext(response -> {
+            assertEquals(200, response.getStatusCode());
+            response.close();
+        }).verifyComplete();
+
+        assertFalse(isSessionAuthenticated(request));
+        verify(sessionProvider, never()).getSessionAsync(any());
+        verify(bearerPolicy).process(any(), any());
+    }
+
+    @Test
+    public void sessionRequestContextCarriesPolicyAcquirer() {
+        SessionAcquirer acquirer = testAcquirer();
+        policy = new SessionAuthenticationPolicy(bearerPolicy, sessionProvider, acquirer,
+            new SessionOptions().setSessionMode(SessionMode.ENABLED));
+        when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.just(credentialWithToken()));
+
+        StepVerifier.create(buildPipeline(successTransport()).send(blobGetRequest())).assertNext(response -> {
+            assertEquals(200, response.getStatusCode());
+            response.close();
+        }).verifyComplete();
+
+        verify(sessionProvider).getSessionAsync(argThat(context -> context.getAcquirer() == acquirer));
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { true, false })
+    public void acquisitionRequestsUseAcquisitionCredentialOverride(boolean sync) {
+        StorageBearerTokenChallengeAuthorizationPolicy acquisitionBearerPolicy
+            = mock(StorageBearerTokenChallengeAuthorizationPolicy.class);
+        when(acquisitionBearerPolicy.process(any(), any())).thenAnswer(invocation -> {
+            HttpPipelineNextPolicy nextPolicy = invocation.getArgument(1);
+            return nextPolicy.process();
+        });
+        when(acquisitionBearerPolicy.processSync(any(), any())).thenAnswer(invocation -> {
+            HttpPipelineNextSyncPolicy nextPolicy = invocation.getArgument(1);
+            return nextPolicy.processSync();
+        });
+        policy = new SessionAuthenticationPolicy(bearerPolicy, sessionProvider,
+            new SessionAcquirer("https://testaccount.blob.core.windows.net", null, null, acquisitionBearerPolicy),
+            new SessionOptions().setSessionMode(SessionMode.ENABLED));
+        HttpPipeline pipeline = buildPipeline(successTransport());
+        Context acquisition = new Context(SessionAcquirer.SESSION_ACQUISITION_CONTEXT_KEY, true);
+
+        for (Context context : new Context[] { acquisition, Context.NONE }) {
+            HttpRequest request = new HttpRequest(HttpMethod.POST,
+                "https://testaccount.blob.core.windows.net/mycontainer?restype=container&comp=session");
+            when(sessionProvider.isRequestEligible(any())).thenReturn(false);
+            if (sync) {
+                try (HttpResponse response = pipeline.sendSync(request, context)) {
+                    assertEquals(200, response.getStatusCode());
+                }
+            } else {
+                StepVerifier.create(pipeline.send(request, context)).assertNext(response -> {
+                    assertEquals(200, response.getStatusCode());
+                    response.close();
+                }).verifyComplete();
+            }
+        }
+
+        if (sync) {
+            verify(acquisitionBearerPolicy, times(1)).processSync(any(), any());
+            verify(bearerPolicy, times(1)).processSync(any(), any());
+        } else {
+            verify(acquisitionBearerPolicy, times(1)).process(any(), any());
+            verify(bearerPolicy, times(1)).process(any(), any());
+        }
+        verify(sessionProvider, never()).getSessionAsync(any());
+        verify(sessionProvider, never()).getSession(any());
     }
 
     @ParameterizedTest
@@ -768,7 +845,15 @@ public class SessionAuthenticationPolicyTest {
 
     private SessionAuthenticationPolicy createPolicy(Clock clock) {
         SessionOptions options = new SessionOptions().setSessionMode(SessionMode.ENABLED);
-        return new SessionAuthenticationPolicy(bearerPolicy, sessionProvider, options, clock);
+        return new SessionAuthenticationPolicy(bearerPolicy, sessionProvider, testAcquirer(), options, clock);
+    }
+
+    private static SessionAcquirer testAcquirer() {
+        return testAcquirer("https://testaccount.blob.core.windows.net");
+    }
+
+    private static SessionAcquirer testAcquirer(String endpoint) {
+        return new SessionAcquirer(endpoint, null, null, null);
     }
 
     private static SessionCredential credentialWithToken() {

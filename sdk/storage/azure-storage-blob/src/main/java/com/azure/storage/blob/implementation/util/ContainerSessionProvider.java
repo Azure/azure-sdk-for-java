@@ -6,18 +6,12 @@ package com.azure.storage.blob.implementation.util;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpMethod;
-import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobUrlParts;
-import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
-import com.azure.storage.blob.implementation.AzureBlobStorageImplBuilder;
-import com.azure.storage.blob.implementation.models.AuthenticationType;
-import com.azure.storage.blob.implementation.models.CreateSessionConfiguration;
 import com.azure.storage.blob.implementation.models.CreateSessionResponse;
 import com.azure.storage.blob.implementation.models.SessionCredentials;
 import com.azure.storage.common.implementation.util.AutoRefreshingCache;
@@ -34,6 +28,11 @@ import static com.azure.storage.common.implementation.Constants.HeaderConstants.
 
 /**
  * An SDK-managed, thread-safe session provider that caches credentials per container.
+ * <p>
+ * The provider owns only the shared session cache. It never owns a pipeline: CreateSession requests are sent by the
+ * {@link SessionAcquirer} carried in each {@link SessionRequestContext}, which is bound to the pipeline of the client
+ * that made the request. Background and forced refreshes use the acquirer of the most recent caller for that
+ * container.
  */
 final class ContainerSessionProvider extends SessionProvider {
 
@@ -44,20 +43,10 @@ final class ContainerSessionProvider extends SessionProvider {
     private static final Duration DEFAULT_EXPIRATION_OFFSET = Duration.ofMinutes(5L);
     private static final String FEATURE_NOT_ENABLED = "FeatureNotEnabled";
 
-    private final AzureBlobStorageImpl azureBlobStorage;
-    private final String accountName;
-    private final String endpoint;
     private final Clock clock;
     private final ConcurrentHashMap<String, ContainerSessionCache> containerSessionCaches = new ConcurrentHashMap<>();
 
-    ContainerSessionProvider(HttpPipeline bearerPipeline, String url, BlobServiceVersion serviceVersion,
-        String accountName, Clock clock) {
-        this.endpoint = BuilderHelper.getSessionEndpoint(url);
-        this.azureBlobStorage = new AzureBlobStorageImplBuilder().pipeline(bearerPipeline)
-            .url(endpoint)
-            .version(serviceVersion.getVersion())
-            .buildClient();
-        this.accountName = accountName;
+    ContainerSessionProvider(Clock clock) {
         this.clock = Objects.requireNonNull(clock, "'clock' cannot be null.");
     }
 
@@ -70,9 +59,6 @@ final class ContainerSessionProvider extends SessionProvider {
         BlobUrlParts parts;
         try {
             parts = BlobUrlParts.parse(request.getUrl());
-            if (!endpoint.equalsIgnoreCase(BuilderHelper.getSessionEndpoint(request.getUrl().toString()))) {
-                return false;
-            }
         } catch (RuntimeException ex) {
             return false;
         }
@@ -91,8 +77,9 @@ final class ContainerSessionProvider extends SessionProvider {
     Mono<SessionCredential> getSessionAsync(SessionRequestContext context) {
         return Mono.defer(() -> {
             String container = requireContainerName(context);
+            SessionAcquirer acquirer = requireAcquirer(context);
             String resolvedAccount = resolveAccountName(context);
-            return updateCache(container, resolvedAccount).getSessionAsync();
+            return updateCache(container, resolvedAccount, acquirer).getSessionAsync();
         });
     }
 
@@ -126,9 +113,19 @@ final class ContainerSessionProvider extends SessionProvider {
         return containerName;
     }
 
+    private SessionAcquirer requireAcquirer(SessionRequestContext context) {
+        SessionAcquirer acquirer = context == null ? null : context.getAcquirer();
+        if (acquirer == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'context.getAcquirer()' cannot be null."));
+        }
+        return acquirer;
+    }
+
     private String resolveAccountName(SessionRequestContext context) {
-        String contextAccountName = context == null ? null : context.getAccountName();
-        String resolvedAccountName = CoreUtils.isNullOrEmpty(contextAccountName) ? accountName : contextAccountName;
+        String resolvedAccountName = context == null ? null : context.getAccountName();
+        if (CoreUtils.isNullOrEmpty(resolvedAccountName) && context != null && context.getAcquirer() != null) {
+            resolvedAccountName = context.getAcquirer().getAccountName();
+        }
         if (CoreUtils.isNullOrEmpty(resolvedAccountName)) {
             throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("The account name could not be resolved from the request URL."));
@@ -136,14 +133,16 @@ final class ContainerSessionProvider extends SessionProvider {
         return resolvedAccountName;
     }
 
-    private ContainerSessionCache updateCache(String containerName, String resolvedAccountName) {
+    private ContainerSessionCache updateCache(String containerName, String resolvedAccountName,
+        SessionAcquirer acquirer) {
         String key = normalize(resolvedAccountName) + "/" + normalize(containerName);
         ContainerSessionCache containerSessionCache = containerSessionCaches.compute(key, (k, existing) -> {
             OffsetDateTime now = OffsetDateTime.now(clock);
             if (existing == null) {
-                return new ContainerSessionCache(this, clock, containerName, resolvedAccountName, now);
+                return new ContainerSessionCache(this, clock, containerName, resolvedAccountName, acquirer, now);
             }
             existing.lastAccess = now;
+            existing.latestAcquirer = acquirer;
             return existing;
         });
         evictStaleCaches();
@@ -167,12 +166,9 @@ final class ContainerSessionProvider extends SessionProvider {
         return cache;
     }
 
-    private Mono<SessionCredential> createSessionAsync(String container, String resolvedAccountName) {
-        CreateSessionConfiguration config
-            = new CreateSessionConfiguration().setAuthenticationType(AuthenticationType.HMAC);
-        return azureBlobStorage.getContainers()
-            .createSessionWithResponseAsync(container, config, null, null)
-            .map(response -> toCredential(response, resolvedAccountName));
+    private Mono<SessionCredential> createSessionAsync(SessionAcquirer acquirer, String container,
+        String resolvedAccountName) {
+        return acquirer.createSessionAsync(container).map(response -> toCredential(response, resolvedAccountName));
     }
 
     private static boolean shouldFallback(Throwable error) {
@@ -222,19 +218,23 @@ final class ContainerSessionProvider extends SessionProvider {
     private static final class ContainerSessionCache {
         final AutoRefreshingCache<SessionCredential> cache;
         volatile OffsetDateTime lastAccess;
+        // The acquirer of the most recent caller. Refreshes go through that client's pipeline. An idle entry keeps
+        // this pipeline reachable until the entry is evicted.
+        volatile SessionAcquirer latestAcquirer;
         private final Clock clock;
         private volatile SessionCredential fallback;
 
         private ContainerSessionCache(ContainerSessionProvider provider, Clock clock, String containerName,
-            String resolvedAccountName, OffsetDateTime lastAccess) {
+            String resolvedAccountName, SessionAcquirer acquirer, OffsetDateTime lastAccess) {
             this.clock = clock;
+            this.latestAcquirer = acquirer;
             this.cache = new AutoRefreshingCache<>(() -> {
                 SessionCredential currentFallback = fallback;
                 if (currentFallback != null && OffsetDateTime.now(clock).isBefore(currentFallback.getExpiresAt())) {
                     // Proactive refresh and service hints must not shorten a cached fallback's cooldown.
                     return Mono.just(currentFallback);
                 }
-                return provider.createSessionAsync(containerName, resolvedAccountName)
+                return provider.createSessionAsync(latestAcquirer, containerName, resolvedAccountName)
                     .doOnNext(ignored -> fallback = null)
                     .onErrorResume(error -> {
                         if (!shouldFallback(error)) {
