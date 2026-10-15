@@ -1,6 +1,5 @@
 name: Validate documentation
 
-# Keep check-spelling.yml until the required-check migration is complete.
 on:
   pull_request:
     # Keep this list aligned with eng/pipelines/pullrequest.yml.

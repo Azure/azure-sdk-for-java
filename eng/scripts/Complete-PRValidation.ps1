@@ -80,7 +80,11 @@ foreach ($check in @('Spelling', 'Changelogs')) {
     }
 }
 $summary.Add('')
-$summary.Add('Azure Build still repeats changelog verification during parity burn-in. Verify Links is unchanged.')
+$summary.Add('Verify Links is unchanged.')
+$summary.Add('')
+$summary.Add('The unified public PR pipeline opts in to Validate documentation coverage. ' +
+    'Only covered public unified main PRs can omit duplicate Build changelog verification. ' +
+    'Other scopes and ForceFullValidation retain their existing Azure checks. Release validation is unchanged.')
 if ($SummaryPath) {
     $summary -join "`n" | Add-Content -LiteralPath $SummaryPath
 }

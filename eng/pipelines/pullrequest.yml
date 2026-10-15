@@ -44,6 +44,7 @@ extends:
   parameters:
     oneESTemplateTag: ${{ parameters.oneESTemplateTag }}
     SkipPrValidation: ${{ parameters.SkipPrValidation }}
+    UseCombinedPRValidation: true
     IsLatestNonLtsJdk: ${{ parameters.IsLatestNonLtsJdk }}
     # Short term hack to get 1es canary validation working until we can fix manual runs with 'auto'
     ${{ if and(eq(parameters.oneESTemplateTag, 'canary'), eq(parameters.Service, 'auto')) }}:

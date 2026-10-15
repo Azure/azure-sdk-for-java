@@ -17,12 +17,12 @@ these repository-root documents: `AGENTS.md`, `CODE_OF_CONDUCT.md`, `CONTRIBUTIN
 `README.md`, `SECURITY.md`, and `SUPPORT.md`. The `docs/` and root-document entries are also listed in
 `ExcludePaths` in [pullrequest.yml](pipelines/pullrequest.yml), so they do not select Java packages in mixed PRs.
 SDK-package documents, CHANGELOGs, source/resources, and unknown paths gain no trigger exclusions.
-Build/Analyze orchestration and the existing test-matrix classifier are unchanged.
+The changelog-only route below uses the existing preflight, not broader path exclusions.
 
-The existing required **Check Spelling** workflow remains unchanged and checks spelling only.
+The existing **Check Spelling** workflow remains unchanged and checks spelling only.
 The new [Validate documentation workflow](../.github/workflows/validate-documentation.yml) runs combined spelling,
 changelog, and reporting steps in one `validate-documentation` job on one `ubuntu-slim` runner. Its distinct
-**Validate documentation** check starts alongside the existing required check; this change does not update rulesets.
+**Validate documentation** check runs alongside the existing spelling check.
 Both workflows cover the same supported PR branches without path filters.
 
 Newer **Validate documentation** runs cancel older runs for the same PR. The concurrency group includes the workflow
@@ -57,17 +57,87 @@ Spelling failures do not skip changelog validation. The final reporting step inc
 step outcome, package/version/path, and validation errors in the job summary; failed, missing, or unexpectedly
 skipped required steps fail the combined check. Setup failures stay failures, and cancellation is not converted to
 success. File content is printed with runner-command processing suspended and escaped when added to annotations
-or the summary. Azure Build's existing PR changelog verification remains temporarily enabled for parity burn-in;
-non-PR and release validation are unchanged.
+or the summary.
 
 **Verify Links** remains a separate, unchanged workflow.
 Package selection retains the existing `ExcludePaths` prefix-matching behavior.
 
 During migration, both workflows run, temporarily duplicating spelling work and using two runners.
-After **Validate documentation** has successful runs and its failure behavior is verified, make that check required
-while **Check Spelling** is still required. Then remove the old requirement before deleting `check-spelling.yml`
-in a separate cleanup. Existing PRs may need an update/new run to report the new check. Until that ruleset transition,
-the combined check is not a replacement for existing required validation.
+Retiring the legacy spelling-only workflow is separate cleanup. Existing PRs may need an update/new run to report
+**Validate documentation**.
+
+### Changelog-only Azure routing
+
+The production entry point [pullrequest.yml](pipelines/pullrequest.yml) sets `UseCombinedPRValidation: true`.
+Once this configuration is deployed, it enables the strict changelog-only worker shortcut, the public unified
+Build/Analyze preflight dependency, and removal of covered duplicate Build changelog verification described below.
+Reusable templates still default to `false`; setting the entry point back to `false` disables these optimizations
+without changing the pre-existing test-only classifier.
+
+The stage restricts routing to public `azure-sdk` builds of `Azure/azure-sdk-for-java`,
+`ServiceDirectory=auto`, `SDKType=client`, PR builds, and non-test-pipeline runs. At runtime, the classifier also
+requires the canonical GitHub repository, a PR merge ref, and target `main` (or `refs/heads/main`).
+Private/mirrored/internal repositories, service-specific pipelines (including Cosmos and Spring), other SDK types,
+manual/scheduled/CI builds, and release stages do not opt in. Feature, release, and hotfix PR targets retain their
+existing validation and Build changelog check.
+
+The existing `generate_job_matrix` job discovers packages first.
+[Classify-PRChanges.ps1](scripts/Classify-PRChanges.ps1) then uses the shared complete merge-parent snapshot helper,
+verifies the checked-out SHA against `Build.SourceVersion`, and calls the Java-owned
+[eligibility helper](scripts/helpers/PR-ChangeLog-Routing.ps1) **before** clearing any job-local `PackageInfo`.
+The matrix checkout already retains full commit history and checks out `Build.SourceVersion`; no extra checkout,
+preflight job, or agent is introduced. An unavailable/mismatched snapshot retains all Java jobs and the Build
+changelog check.
+
+Azure routing reuses exactly `powershell-yaml` 0.4.7 from a loaded or installed/discoverable module left by the
+existing metadata preparation. It does not create another module cache or restore from PSGallery. The shared
+bootstrap accepts newer versions, but that is not evidence of this exact pin: an absent pin, incompatible loaded
+version, or import failure retains Java workers with an explicit diagnostic. The GitHub runner keeps its separate,
+public, run-owned cold bootstrap described above.
+
+Skipping Build, Analyze, and tests requires at least one actual, applicable package changelog edit. Every path
+must be either its exact `sdk/<service>/<package>/CHANGELOG.md` or an already-reviewed root document / `docs/`
+text file (`.md` or `.txt`) outside protected input directories. Packages must be track 2 with metadata SDK type
+`client` or `mgmt`, have one directly selected owner, and match their real Java POM and service- or package-level
+CI artifact metadata. Changelogs and POMs must be existing regular files in both Git revisions. Companion documents
+must be regular files in their applicable revision. `skipVerifyChangeLog` remains an opt-out from content checking,
+not permission to bypass Java workers.
+
+New packages/POM changes, added/deleted/renamed package changelogs, package READMEs (which still need snippet and
+Analyze validation), source/test/resources, Swagger/codegen/TypeSpec, engineering inputs, unsupported layouts/types,
+and unknown paths do not qualify. Empty diffs and missing, corrupt, indirect-only, or unmapped package metadata
+also cannot authorize the route. In the covered scope, an unproven non-companion `CHANGELOG.md` change retains
+all Java workers, even if the older basename classifier would have suppressed tests. Other existing
+documentation-only test suppression is unchanged. **Validate documentation** reports invalid changelog content
+using the real validator, even when Java workers are skipped.
+
+For a proven change set in the opted-in scope, the classifier emits `RunBuild=false`, `RunAnalyze=false`, and
+`RunTests=false`, preserves the original metadata under `$(Build.ArtifactStagingDirectory)/pr-validation/PackageInfo`,
+and clears only the matrix job's original package files. The same directory keeps `diff.json` and `routing.json`
+with the reason and elapsed time. The existing `JavaTestsSuppressed` tag remains. The preflight stays allocated; two Build/Analyze
+workers are avoided in addition to the test workers already suppressed by the earlier classifier.
+
+`SkipBuildChangeLogValidation` is a separate coverage output. Covered, nonempty main PRs use
+**Validate documentation** instead of repeating the Build changelog step, including functional PRs that still
+run Java. The output remains false for pipelines without opt-in.
+`ForceFullValidation=true` disables both routing shortcuts and the earlier test suppression, restoring the Build
+changelog check too. Missing/unknown job outputs default to running workers, and missing coverage output retains
+the Build changelog step. Success guards prevent cancellation or failed preflight from becoming a successful Azure
+check. All non-covered Build invocations, SDK-type behavior, artifact opt-outs, and explicit `ForRelease=true`
+checks in batch, automatic, and patch releases remain unchanged. Automatic dated-entry checks also remain intact.
+
+**Scheduling tradeoff:** The opted-in configuration adds a Build/Analyze dependency on the existing matrix job
+for public unified PRs. Pipelines without opt-in retain their independent scheduling.
+Azure does [not expose `System.PullRequest.TargetBranch` in templates](https://learn.microsoft.com/azure/devops/pipelines/build/variables#system-variables-devops-services),
+so non-main public unified PRs wait too, although they do not use the new bypass. Service/private/non-PR/release jobs
+are not serialized by this change. Ordinary public unified PRs must wait for the preflight's checkout,
+metadata discovery, and matrix generation before Build/Analyze can be scheduled; this is not a claim of lower
+latency for every PR.
+Historical local Windows measurements, before the latest main merge, were 0.23-0.37 seconds for a complete
+non-changelog snapshot/routing probe (five runs, no optional modules loaded), and 1.6-2.3 seconds for eligibility
+against copied real core, communication, and management metadata (excluding dependency restore and prior package
+selection). Hosted queue time and end-to-end Azure scheduling were not measured locally. The focused tests
+verify YAML wiring/conditions, not server-side template expansion.
 
 Run the trigger and classifier regression tests with PowerShell 7, Git, and the CI-declared Pester 5.7.1
 (no YAML module required):
@@ -81,7 +151,9 @@ Invoke-Pester -Path @(
 ```
 
 The combined validation tests use synthetic repositories outside `sdk/` and the existing `UnitTest` discovery
-under `eng/scripts/`. Their YAML bootstrap uses the same public pinned requirement. On Windows, the loaded YAML
+under `eng/scripts/`, including changelog eligibility, scope, output/dependency contracts, and metadata-before-clearing
+regressions. Integration tests also make real Git edits against copied repository CI/POM/changelog metadata.
+Their YAML bootstrap uses the same public pinned requirement. On Windows, the loaded YAML
 assembly must stay outside Pester's disposable `TestDrive`; set `PR_VALIDATION_TEST_MODULES` to a task-owned cache,
 or use the default `azure-java-pr-validation-test-modules` directory below the system temporary directory.
 
@@ -101,6 +173,15 @@ Remove-Item Env:PR_VALIDATION_TEST_COLD_NPM
 ./eng/scripts/Invoke-PRValidation.ps1 -Check Spelling -OutputDirectory "$env:TEMP/pr-validation-local"
 ./eng/scripts/Invoke-PRValidation.ps1 -Check Changelogs -OutputDirectory "$env:TEMP/pr-validation-local"
 ```
+
+The normal locked-CSpell integration case is mandatory; the optional true-empty npm download-cache probe adds
+another cache condition, not a replacement for that case. With the current CSpell 10.2.2 lock, normal local setup
+failed while fetching uncached `fast-equals` 6.0.3 from `registry.npmjs.org` with
+`ERR_SSL_SSL/TLS_ALERT_HANDSHAKE_FAILURE`. CSpell 10.2.2 did not execute, so its behavioral integration cases,
+changed-file spelling, and successful end-to-end spelling/changelog completion remain unverified. This is broader
+than the earlier true-cold-only limitation; cached CSpell 10.1.1 results do not validate the updated lock.
+Do not downgrade, use global CSpell, skip the normal case, make it opt-in, or relax TLS/change feeds to bypass
+this failure. The separate Azure Build YAML/module failure is unrelated and is not fixed by these local checks.
 
 The snapshot, package-selection diff, exported `PackageInfo` JSON, and per-check results stay in that output
 directory. On a failure, inspect the named step log and summary, then correct the reported file, POM version,

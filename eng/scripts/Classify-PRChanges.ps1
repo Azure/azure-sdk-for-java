@@ -3,7 +3,7 @@
 
 <#
 .SYNOPSIS
-Classifies pull request paths to determine whether Java test matrix jobs are required.
+Classifies pull request paths to determine which Java validation jobs are required.
 
 .DESCRIPTION
 Classifies changes for the unified Java pull request pipeline. It is deny-first and
@@ -11,8 +11,10 @@ defaults unknown paths to full Java test validation. When every changed path has
 specialized non-Java validation route, it clears the job-local PackageInfo directory
 so Create-PrJobMatrix produces an empty matrix.
 
-Build and Analyze remain enabled in this phase so their unique validation is preserved.
-Successful test suppression adds the JavaTestsSuppressed build tag for reporting.
+Opted-in pipelines can suppress Build and Analyze for proven package-root
+changelog-only public unified main PRs. Pipelines without opt-in keep Build and
+Analyze enabled. Existing test-only suppression is unchanged and adds the
+JavaTestsSuppressed build tag for reporting.
 
 .PARAMETER DiffPath
 Path to the diff.json file produced by Generate-PR-Diff.ps1. ChangedFiles and
@@ -39,6 +41,17 @@ variable.
 .PARAMETER PassThru
 Writes the classification object to the output pipeline for local diagnostics
 and tests. Azure Pipelines normally consumes the emitted task variables instead.
+
+.PARAMETER UseCombinedPRValidation
+Enables main-target changelog coverage through Validate documentation. Runtime
+repository, pipeline, and path scope still constrain the route.
+
+.PARAMETER ValidationDirectory
+Directory for the complete merge-parent snapshot, routing report, and original
+PackageInfo copy when the new route suppresses workers. Defaults beside DiffPath.
+
+.PARAMETER RepositoryRoot
+Checkout to inspect for complete Git changes and real Java package metadata.
 #>
 
 [CmdletBinding(DefaultParameterSetName = 'Diff')]
@@ -57,7 +70,22 @@ param(
     [switch]$ForceFullValidation,
 
     [Parameter()]
-    [switch]$PassThru
+    [switch]$PassThru,
+
+    [Parameter()]
+    [switch]$UseCombinedPRValidation,
+
+    [Parameter()]
+    [string]$ServiceDirectory,
+
+    [Parameter()]
+    [string]$SdkType = 'client',
+
+    [Parameter()]
+    [string]$ValidationDirectory,
+
+    [Parameter()]
+    [string]$RepositoryRoot = (Join-Path $PSScriptRoot '..' '..')
 )
 
 Set-StrictMode -Version 3
@@ -216,9 +244,10 @@ function Get-PRChangeClassification {
     return [PSCustomObject]@{
         DocumentationOnly = $documentationOnly
         ForceFullValidation = $ForceValidation
-        # These outputs are reserved diagnostics until later phases wire their owning jobs.
         RunBuild = $true
         RunAnalyze = $true
+        ChangeLogOnly = $false
+        SkipBuildChangeLogValidation = $false
         RunTests = $runTests
         RunDocs = @($classifications | Where-Object {
                 $_.Category -in @('consumer-documentation', 'legal-documentation')
@@ -241,6 +270,71 @@ $pathsToClassify = @(
 
 $result = Get-PRChangeClassification -Paths $pathsToClassify -ForceValidation $forceValidation
 
+if ($UseCombinedPRValidation) {
+    . (Join-Path $PSScriptRoot 'helpers' 'PR-ChangeLog-Routing.ps1')
+    $coverage = Get-PRChangeLogCoverage -Enabled $true -ServiceDirectory $ServiceDirectory -SdkType $SdkType -Context @{
+        TeamProject = $env:SYSTEM_TEAMPROJECT
+        CollectionUri = $env:SYSTEM_COLLECTIONURI
+        RepositoryName = $env:BUILD_REPOSITORY_NAME
+        RepositoryProvider = $env:BUILD_REPOSITORY_PROVIDER
+        RepositoryUri = $env:BUILD_REPOSITORY_URI
+        Reason = $env:BUILD_REASON
+        SourceBranch = $env:BUILD_SOURCEBRANCH
+        TargetBranch = $env:SYSTEM_PULLREQUEST_TARGETBRANCH
+    }
+    Write-Host "Combined PR changelog coverage: $($coverage.Reason)"
+    if ($coverage.Covered -and -not $forceValidation) {
+        $timer = [System.Diagnostics.Stopwatch]::StartNew()
+        try {
+            if ($PSCmdlet.ParameterSetName -ne 'Diff' -or -not (Test-Path -LiteralPath $DiffPath -PathType Leaf)) {
+                throw 'Changelog routing requires the original PR diff and PackageInfo, not a diagnostic path list.'
+            }
+            $RepositoryRoot = (Resolve-Path -LiteralPath $RepositoryRoot).Path
+            $snapshot = Get-PRValidationSnapshot -RepositoryRoot $RepositoryRoot
+            if ($snapshot.SourceCommit -cne $env:BUILD_SOURCEVERSION) {
+                throw 'The checked-out merge commit does not match Build.SourceVersion.'
+            }
+            if (-not $ValidationDirectory) {
+                $ValidationDirectory = Join-Path (Split-Path $DiffPath -Parent) 'pr-validation'
+            }
+            New-Item -ItemType Directory -Path $ValidationDirectory -Force | Out-Null
+            $snapshot | ConvertTo-Json -Depth 30 | Set-Content -LiteralPath (Join-Path $ValidationDirectory 'diff.json')
+            $pathsToClassify = @($snapshot.ChangedFiles) + @($snapshot.DeletedFiles)
+            $result = Get-PRChangeClassification -Paths $pathsToClassify -ForceValidation $forceValidation
+            $result.SkipBuildChangeLogValidation = $pathsToClassify.Count -gt 0
+
+            # Inspect original metadata before the existing test-suppression code clears it below.
+            $eligibility = Get-PRChangeLogOnlyEligibility -Snapshot $snapshot -RepositoryRoot $RepositoryRoot `
+                -PackageInfoDirectory $PackageInfoDirectory
+            if ($eligibility.Eligible) {
+                $originalMetadata = Join-Path $ValidationDirectory 'PackageInfo'
+                New-Item -ItemType Directory -Path $originalMetadata -Force | Out-Null
+                Get-ChildItem -LiteralPath $PackageInfoDirectory -File -Filter '*.json' -Recurse |
+                    Copy-Item -Destination $originalMetadata
+                $result.ChangeLogOnly = $true
+                $result.RunBuild = $false
+                $result.RunAnalyze = $false
+                $result.RunTests = $false
+            }
+            elseif ($eligibility.RequiresFullValidation) {
+                $result.RunTests = $true
+            }
+            $timer.Stop()
+            $eligibility | Add-Member -NotePropertyName DurationSeconds -NotePropertyValue $timer.Elapsed.TotalSeconds
+            $eligibility | ConvertTo-Json -Depth 10 | Set-Content -LiteralPath (Join-Path $ValidationDirectory 'routing.json')
+            Write-Host "PR changelog-only routing ($($timer.Elapsed.TotalSeconds.ToString('F3'))s): $($eligibility.Reason)"
+        }
+        catch {
+            $result = Get-PRChangeClassification -Paths $pathsToClassify -ForceValidation $forceValidation
+            $result.RunTests = $true
+            Write-Warning "PR changelog-only routing unavailable; retaining all Java validation and the Build changelog check: $($_.Exception.Message)"
+        }
+    }
+    elseif ($forceValidation) {
+        Write-Host 'ForceFullValidation retains Build, Analyze, tests, and the Build changelog check.'
+    }
+}
+
 if (-not $result.RunTests -and $PackageInfoDirectory -and
     -not (Test-Path -LiteralPath $PackageInfoDirectory -PathType Container)) {
     Write-Warning "PackageInfo directory does not exist. Falling back to full Java validation: $PackageInfoDirectory"
@@ -251,14 +345,16 @@ foreach ($pathResult in $result.Paths) {
     Write-Host "PR change '$($pathResult.Path)' => $($pathResult.Category): $($pathResult.Reason)"
 }
 
-Write-Host "PR change classification: RunBuild=$($result.RunBuild), RunAnalyze=$($result.RunAnalyze), RunTests=$($result.RunTests), RunDocs=$($result.RunDocs), RunCodegen=$($result.RunCodegen), RunEngTests=$($result.RunEngTests), ForceFullValidation=$($result.ForceFullValidation)"
+Write-Host "PR change classification: RunBuild=$($result.RunBuild), RunAnalyze=$($result.RunAnalyze), RunTests=$($result.RunTests), RunDocs=$($result.RunDocs), RunCodegen=$($result.RunCodegen), RunEngTests=$($result.RunEngTests), ChangeLogOnly=$($result.ChangeLogOnly), SkipBuildChangeLogValidation=$($result.SkipBuildChangeLogValidation), ForceFullValidation=$($result.ForceFullValidation)"
 
-# RunTests controls PackageInfo removal below. The remaining output variables are
-# diagnostic/reserved signals for subsequent rollout phases.
+# Build/Analyze consume the routing outputs only in the opted-in pipeline scope.
+# RunTests continues to control this job's PackageInfo removal and test matrices.
 foreach ($variableName in @(
         'DocumentationOnly',
         'RunBuild',
         'RunAnalyze',
+        'ChangeLogOnly',
+        'SkipBuildChangeLogValidation',
         'RunTests',
         'RunDocs',
         'RunCodegen',
