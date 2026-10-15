@@ -293,17 +293,6 @@ public class ShareFileClient {
     }
 
     /**
-     * SMB only. Gets the file links. This operation is available only for a file-ID-addressed client.
-     *
-     * @param requestConditions Conditions to apply to the request.
-     * @return The file properties and hard links.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ShareFileLinks getFileLinks(ShareRequestConditions requestConditions) {
-        return getFileLinksWithResponse(requestConditions, null, Context.NONE).getValue();
-    }
-
-    /**
      * Opens a file input stream to download the file.
      *
      * @return An <code>InputStream</code> object that represents the stream to use for reading from the file.

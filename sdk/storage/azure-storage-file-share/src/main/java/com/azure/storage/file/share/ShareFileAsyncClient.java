@@ -250,16 +250,6 @@ public class ShareFileAsyncClient {
     /**
      * SMB only. Gets the hard links to this file. This operation is available only for a file-ID-addressed client.
      *
-     * @return A response containing the file properties and hard links.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ShareFileLinks>> getFileLinksWithResponse() {
-        return getFileLinksWithResponse(null);
-    }
-
-    /**
-     * SMB only. Gets the hard links to this file. This operation is available only for a file-ID-addressed client.
-     *
      * @param requestConditions Conditions to apply to the request.
      * @return A response containing the file properties and hard links.
      */
@@ -288,18 +278,7 @@ public class ShareFileAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ShareFileLinks> getFileLinks() {
-        return getFileLinks(null);
-    }
-
-    /**
-     * SMB only. Gets the file links. This operation is available only for a file-ID-addressed client.
-     *
-     * @param requestConditions Conditions to apply to the request.
-     * @return The file properties and hard links.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ShareFileLinks> getFileLinks(ShareRequestConditions requestConditions) {
-        return getFileLinksWithResponse(requestConditions).flatMap(FluxUtil::toMono);
+        return getFileLinksWithResponse(null, null).flatMap(FluxUtil::toMono);
     }
 
     /**
