@@ -155,11 +155,14 @@ class JdkHttpClient implements HttpClient {
         CompletableFuture<HttpResponse> result = new CompletableFuture<>();
         ResponseTimeout watcher = new ResponseTimeout(timeout, result);
         java.net.http.HttpRequest jdkRequest = new AzureJdkHttpRequest(request, context, restrictedHeaders, LOGGER,
-            writeTimeout, responseTimeout, watcher::start);
+            writeTimeout, responseTimeout, watcher::uploadStarted, watcher::start);
         CompletableFuture<java.net.http.HttpResponse<T>> exchange = jdkHttpClient.sendAsync(jdkRequest, info -> {
             watcher.responseReceived();
             return bodyHandler.apply(info);
         });
+        if (jdkRequest.expectContinue()) {
+            watcher.waitForContinue();
+        }
 
         result.whenComplete((ignored, error) -> {
             watcher.close();
@@ -189,6 +192,8 @@ class JdkHttpClient implements HttpClient {
         private final Duration timeout;
         private final CompletableFuture<?> result;
         private ScheduledFuture<?> task;
+        private long generation;
+        private boolean uploadStarted;
         private boolean responseReceived;
         private boolean closed;
 
@@ -198,6 +203,22 @@ class JdkHttpClient implements HttpClient {
         }
 
         private synchronized void start() {
+            schedule("Response");
+        }
+
+        private synchronized void waitForContinue() {
+            // Subscription or an early final response can race with sendAsync returning its future.
+            if (!uploadStarted) {
+                schedule("Continue handshake");
+            }
+        }
+
+        private synchronized void uploadStarted() {
+            uploadStarted = true;
+            cancelTask();
+        }
+
+        private void schedule(String phase) {
             if (closed
                 || responseReceived
                 || result.isDone()
@@ -207,8 +228,9 @@ class JdkHttpClient implements HttpClient {
                 return;
             }
             cancelTask();
+            long current = generation;
             task = SharedExecutorService.getInstance()
-                .schedule(this::timedOut, Math.max(1, timeout.toMillis()), TimeUnit.MILLISECONDS);
+                .schedule(() -> timedOut(current, phase), Math.max(1, timeout.toMillis()), TimeUnit.MILLISECONDS);
         }
 
         private synchronized void responseReceived() {
@@ -216,16 +238,16 @@ class JdkHttpClient implements HttpClient {
             cancelTask();
         }
 
-        private void timedOut() {
+        private void timedOut(long current, String phase) {
             synchronized (this) {
-                if (closed || responseReceived) {
+                if (closed || responseReceived || current != generation) {
                     return;
                 }
                 closed = true;
                 cancelTask();
             }
             // Completing the future can cancel the native exchange. Do not hold the timer lock across callbacks.
-            result.completeExceptionally(new HttpTimeoutException("Response timed out after " + timeout + "."));
+            result.completeExceptionally(new HttpTimeoutException(phase + " timed out after " + timeout + "."));
         }
 
         private synchronized void close() {
@@ -234,6 +256,7 @@ class JdkHttpClient implements HttpClient {
         }
 
         private void cancelTask() {
+            ++generation;
             if (task != null) {
                 task.cancel(false);
                 task = null;

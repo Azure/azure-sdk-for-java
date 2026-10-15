@@ -28,6 +28,7 @@ import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -183,6 +184,41 @@ public class VertxHttpClientTimeoutTests {
                 .expectNext("ok")
                 .expectComplete()
                 .verify(TEST_TIMEOUT);
+        }
+    }
+
+    @Test
+    public void smallBufferUploadKeepsTimerQueueBounded() throws Exception {
+        ScheduledThreadPoolExecutor scheduler = new ScheduledThreadPoolExecutor(1);
+        CompletableFuture<HttpResponse> pending = null;
+        try (TimeoutTestServer server = new TimeoutTestServer()) {
+            VertxHttpClient base = (VertxHttpClient) new VertxHttpClientBuilder().vertx(server.vertx)
+                .configuration(Configuration.NONE)
+                .readTimeout(Duration.ZERO)
+                .writeTimeout(Duration.ZERO)
+                .responseTimeout(Duration.ZERO)
+                .build();
+            HttpClient client = new VertxHttpClient(base.client, base.buildOptions, Duration.ZERO,
+                Duration.ofMinutes(1), scheduler);
+            CompletableFuture<Void> emitted = new CompletableFuture<>();
+            HttpRequest request = server.request("/upload").setHttpMethod(HttpMethod.POST)
+                .setBody(Flux.range(0, 1024)
+                    .map(ignored -> ByteBuffer.wrap(new byte[] { 1 }))
+                    .doOnComplete(() -> emitted.complete(null))
+                    .concatWith(Flux.never()));
+            pending = client.send(request).toFuture();
+            emitted.get(TEST_TIMEOUT.toMillis(), TimeUnit.MILLISECONDS);
+
+            // Deliberately retain canceled tasks, matching the default shared scheduler's policy.
+            assertFalse(scheduler.getRemoveOnCancelPolicy());
+            assertEquals(1, scheduler.getQueue().size(), "buffer progress must not enqueue another timeout task");
+            assertFalse(pending.isDone(), "the request should still be waiting for its final body chunk");
+        } finally {
+            if (pending != null) {
+                pending.cancel(true);
+            }
+            scheduler.shutdownNow();
+            assertTrue(scheduler.awaitTermination(TEST_TIMEOUT.toMillis(), TimeUnit.MILLISECONDS));
         }
     }
 

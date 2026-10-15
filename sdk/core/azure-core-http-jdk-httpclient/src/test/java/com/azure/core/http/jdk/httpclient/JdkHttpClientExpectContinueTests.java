@@ -8,31 +8,48 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.implementation.util.HttpUtils;
+import com.azure.core.util.Configuration;
+import com.azure.core.util.Context;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledForJreRange;
 import org.junit.jupiter.api.condition.JRE;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UncheckedIOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.net.URI;
 import java.net.URL;
+import java.net.http.HttpTimeoutException;
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.util.Locale;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
+import reactor.core.publisher.Flux;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Tests that the client honours {@code Expect: 100-continue} on the wire: the headers are sent, the body is withheld
@@ -103,6 +120,94 @@ public class JdkHttpClientExpectContinueTests {
         }
     }
 
+    @ParameterizedTest
+    @CsvSource({ "false, false", "false, true", "true, false", "true, true" })
+    public void continueWaitHasResponseDeadline(boolean synchronous, boolean perCallOverride) throws Exception {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Future<HttpResponse> pending = null;
+        AtomicBoolean subscribed = new AtomicBoolean();
+        try (ExpectContinueServer server = new ExpectContinueServer(false, 0)) {
+            server.start();
+            HttpClient client = new JdkHttpClientBuilder().configuration(Configuration.NONE)
+                .responseTimeout(perCallOverride ? Duration.ofSeconds(5) : Duration.ofMillis(250))
+                .writeTimeout(Duration.ofSeconds(2))
+                .build();
+            HttpRequest request = new HttpRequest(HttpMethod.PUT, server.url())
+                .setHeader(HttpHeaderName.EXPECT, "100-continue")
+                .setHeader(HttpHeaderName.CONTENT_LENGTH, Integer.toString(BODY.length))
+                .setBody(Flux.defer(() -> {
+                    subscribed.set(true);
+                    return Flux.just(ByteBuffer.wrap(BODY));
+                }));
+            Context context = perCallOverride
+                ? new Context(HttpUtils.AZURE_RESPONSE_TIMEOUT, Duration.ofMillis(250)) : Context.NONE;
+            pending = synchronous ? executor.submit(() -> client.sendSync(request, context))
+                : client.send(request, context).toFuture();
+            Future<HttpResponse> result = pending;
+            ExecutionException error = assertThrows(ExecutionException.class,
+                () -> result.get(5, TimeUnit.SECONDS).close());
+            Throwable cause = error.getCause();
+            if (synchronous) {
+                cause = assertInstanceOf(UncheckedIOException.class, cause).getCause();
+            }
+            assertInstanceOf(HttpTimeoutException.class, cause);
+            assertTrue(server.headersReceived.await(5, TimeUnit.SECONDS), "request headers never reached the server");
+            assertFalse(subscribed.get(), "a withheld continue must not subscribe to the request body");
+            assertEquals(0, server.bodyBytesBeforeContinue);
+        } finally {
+            if (pending != null) {
+                pending.cancel(true);
+            }
+            executor.shutdownNow();
+            assertTrue(executor.awaitTermination(5, TimeUnit.SECONDS));
+        }
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    public void continueDeadlineStopsWhenUploadBegins(boolean synchronous) throws Exception {
+        try (ExpectContinueServer server = new ExpectContinueServer(true, 0)) {
+            server.start();
+            HttpClient client = new JdkHttpClientBuilder().configuration(Configuration.NONE)
+                .responseTimeout(Duration.ofMillis(250))
+                .writeTimeout(Duration.ofSeconds(2))
+                .build();
+            HttpRequest request = new HttpRequest(HttpMethod.PUT, server.url())
+                .setHeader(HttpHeaderName.EXPECT, "100-continue")
+                .setHeader(HttpHeaderName.CONTENT_LENGTH, Integer.toString(BODY.length))
+                .setBody(Flux.just(ByteBuffer.wrap(BODY)).delayElements(Duration.ofMillis(600)));
+            try (HttpResponse response = synchronous ? client.sendSync(request, Context.NONE)
+                : client.send(request).block(Duration.ofSeconds(5))) {
+                assertNotNull(response);
+                assertEquals(201, response.getStatusCode());
+            }
+        }
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    public void finalResponseStopsContinueDeadline(boolean synchronous) throws Exception {
+        AtomicBoolean subscribed = new AtomicBoolean();
+        try (ExpectContinueServer server = new ExpectContinueServer(false, 0, 417)) {
+            server.start();
+            HttpClient client = new JdkHttpClientBuilder().configuration(Configuration.NONE)
+                .responseTimeout(Duration.ofMillis(250)).build();
+            HttpRequest request = new HttpRequest(HttpMethod.PUT, server.url())
+                .setHeader(HttpHeaderName.EXPECT, "100-continue")
+                .setHeader(HttpHeaderName.CONTENT_LENGTH, Integer.toString(BODY.length))
+                .setBody(Flux.defer(() -> {
+                    subscribed.set(true);
+                    return Flux.just(ByteBuffer.wrap(BODY));
+                }));
+            try (HttpResponse response = synchronous ? client.sendSync(request, Context.NONE)
+                : client.send(request).block(Duration.ofSeconds(5))) {
+                assertNotNull(response);
+                assertEquals(417, response.getStatusCode());
+                assertFalse(subscribed.get(), "an early final response must not upload the body");
+            }
+        }
+    }
+
     /**
      * A minimal HTTP/1.1 server that answers the 100-continue handshake by hand, recording how many body bytes had
      * arrived before it responded.
@@ -116,14 +221,30 @@ public class JdkHttpClientExpectContinueTests {
 
         private final ServerSocket serverSocket;
         private final CountDownLatch requestHandled = new CountDownLatch(1);
+        private final CountDownLatch headersReceived = new CountDownLatch(1);
+        private final boolean sendContinue;
+        private final long settleMillis;
+        private final int finalStatus;
         private volatile Thread thread;
+        private volatile Socket activeSocket;
 
         private volatile String expectHeader;
         private volatile int bodyBytesBeforeContinue = -1;
         private volatile int bodyBytesAfterContinue = -1;
 
         ExpectContinueServer() throws IOException {
+            this(true, BODY_SETTLE_MILLIS);
+        }
+
+        ExpectContinueServer(boolean sendContinue, long settleMillis) throws IOException {
+            this(sendContinue, settleMillis, 0);
+        }
+
+        ExpectContinueServer(boolean sendContinue, long settleMillis, int finalStatus) throws IOException {
             this.serverSocket = new ServerSocket(0);
+            this.sendContinue = sendContinue;
+            this.settleMillis = settleMillis;
+            this.finalStatus = finalStatus;
         }
 
         URL url() throws IOException {
@@ -142,16 +263,34 @@ public class JdkHttpClientExpectContinueTests {
 
         private void serve() {
             try (Socket socket = serverSocket.accept()) {
+                activeSocket = socket;
                 socket.setTcpNoDelay(true);
                 InputStream in = socket.getInputStream();
                 OutputStream out = socket.getOutputStream();
 
                 int contentLength = readHeaders(in);
+                if (!sendContinue) {
+                    bodyBytesBeforeContinue = 0;
+                }
+                headersReceived.countDown();
+                if (finalStatus != 0) {
+                    out.write(("HTTP/1.1 " + finalStatus + " Expectation Failed\r\nContent-Length: 0\r\n\r\n")
+                        .getBytes(StandardCharsets.UTF_8));
+                    out.flush();
+                    return;
+                }
+                if (!sendContinue) {
+                    // Wait for cancellation without sending either interim or final headers.
+                    while (in.read() != -1) {
+                        bodyBytesBeforeContinue++;
+                    }
+                    return;
+                }
 
                 // Actively read for the whole settle window rather than sampling available(), so a body that is on
                 // its way is counted rather than missed.
                 socket.setSoTimeout(POLL_TIMEOUT_MILLIS);
-                bodyBytesBeforeContinue = readFor(in, contentLength, BODY_SETTLE_MILLIS);
+                bodyBytesBeforeContinue = readFor(in, contentLength, settleMillis);
 
                 if (expectHeader != null) {
                     out.write("HTTP/1.1 100 Continue\r\n\r\n".getBytes(StandardCharsets.UTF_8));
@@ -244,6 +383,10 @@ public class JdkHttpClientExpectContinueTests {
         @Override
         public void close() throws IOException {
             serverSocket.close();
+            Socket socket = activeSocket;
+            if (socket != null) {
+                socket.close();
+            }
             if (thread != null) {
                 thread.interrupt();
             }

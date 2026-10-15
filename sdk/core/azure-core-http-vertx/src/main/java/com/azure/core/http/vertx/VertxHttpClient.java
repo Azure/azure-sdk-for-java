@@ -44,6 +44,7 @@ import java.util.Objects;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -63,6 +64,7 @@ class VertxHttpClient implements HttpClient {
     final HttpClientOptions buildOptions;
     private final Duration responseTimeout;
     private final Duration writeTimeout;
+    private final ScheduledExecutorService writeTimeoutExecutor;
 
     /**
      * Constructs a {@link VertxHttpClient}.
@@ -75,10 +77,16 @@ class VertxHttpClient implements HttpClient {
 
     VertxHttpClient(io.vertx.core.http.HttpClient client, HttpClientOptions buildOptions, Duration responseTimeout,
         Duration writeTimeout) {
+        this(client, buildOptions, responseTimeout, writeTimeout, SharedExecutorService.getInstance());
+    }
+
+    VertxHttpClient(io.vertx.core.http.HttpClient client, HttpClientOptions buildOptions, Duration responseTimeout,
+        Duration writeTimeout, ScheduledExecutorService writeTimeoutExecutor) {
         this.client = Objects.requireNonNull(client, "client cannot be null");
         this.buildOptions = buildOptions;
         this.responseTimeout = responseTimeout;
         this.writeTimeout = writeTimeout;
+        this.writeTimeoutExecutor = Objects.requireNonNull(writeTimeoutExecutor, "writeTimeoutExecutor cannot be null");
     }
 
     @Override
@@ -164,7 +172,7 @@ class VertxHttpClient implements HttpClient {
             if (promise.future().failed()) {
                 return;
             }
-            WriteTimeout writeWatcher = new WriteTimeout(writeTimeout, promise);
+            WriteTimeout writeWatcher = new WriteTimeout(writeTimeout, promise, writeTimeoutExecutor);
             promise.future().onComplete(ignored -> writeWatcher.close());
 
             for (HttpHeader header : request.getHeaders()) {
@@ -324,25 +332,32 @@ class VertxHttpClient implements HttpClient {
     private static final class WriteTimeout {
         private final Duration timeout;
         private final Promise<HttpResponse> promise;
+        private final ScheduledExecutorService executor;
+        private final long timeoutNanos;
         private ScheduledFuture<?> task;
         private long generation;
+        private long watchdogGeneration;
+        private long lastProgressNanos;
         private boolean closed;
 
-        private WriteTimeout(Duration timeout, Promise<HttpResponse> promise) {
+        private WriteTimeout(Duration timeout, Promise<HttpResponse> promise, ScheduledExecutorService executor) {
             this.timeout = timeout;
             this.promise = promise;
+            this.executor = executor;
+            this.timeoutNanos = timeout == null || timeout.isZero() || timeout.isNegative() ? 0
+                : TimeUnit.MILLISECONDS.toNanos(Math.max(1, timeout.toMillis()));
         }
 
         private synchronized long start() {
             long current = ++generation;
             if (!closed
                 && !promise.future().isComplete()
-                && timeout != null
-                && !timeout.isZero()
-                && !timeout.isNegative()) {
-                cancelTask();
-                task = SharedExecutorService.getInstance()
-                    .schedule(() -> timedOut(current), Math.max(1, timeout.toMillis()), TimeUnit.MILLISECONDS);
+                && timeoutNanos > 0) {
+                lastProgressNanos = System.nanoTime();
+                if (task == null) {
+                    long watchdog = ++watchdogGeneration;
+                    task = executor.schedule(() -> timedOut(watchdog), timeoutNanos, TimeUnit.NANOSECONDS);
+                }
             }
             return current;
         }
@@ -357,7 +372,14 @@ class VertxHttpClient implements HttpClient {
 
         private void timedOut(long current) {
             synchronized (this) {
-                if (closed || current != generation) {
+                if (closed || current != watchdogGeneration) {
+                    return;
+                }
+                long remaining = timeoutNanos - (System.nanoTime() - lastProgressNanos);
+                if (remaining > 0) {
+                    // Progress updates only the timestamp. Schedule again after this watchdog has left the queue,
+                    // rather than retaining a canceled timer for every streamed buffer.
+                    task = executor.schedule(() -> timedOut(current), remaining, TimeUnit.NANOSECONDS);
                     return;
                 }
                 closed = true;
@@ -373,6 +395,7 @@ class VertxHttpClient implements HttpClient {
         }
 
         private void cancelTask() {
+            ++watchdogGeneration;
             if (task != null) {
                 task.cancel(false);
                 task = null;
