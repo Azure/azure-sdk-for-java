@@ -105,8 +105,8 @@
 
 #### `models.StorageDataCollaborationPolicyProperties` was modified
 
-* `allowBlobAccessPoints()` was added
 * `withAllowBlobAccessPoints(java.lang.Boolean)` was added
+* `allowBlobAccessPoints()` was added
 
 #### `models.StorageAccountCreateParameters` was modified
 
