@@ -94,7 +94,7 @@ public final class NetAppAccountPatch implements JsonSerializable<NetAppAccountP
      * 
      * @return the activeDirectories value.
      */
-    public List<ActiveDirectory> activeDirectories() {
+    public List<ActiveDirectoryPatch> activeDirectories() {
         return this.innerProperties() == null ? null : this.innerProperties().activeDirectories();
     }
 
@@ -104,7 +104,7 @@ public final class NetAppAccountPatch implements JsonSerializable<NetAppAccountP
      * @param activeDirectories the activeDirectories value to set.
      * @return the NetAppAccountPatch object itself.
      */
-    public NetAppAccountPatch withActiveDirectories(List<ActiveDirectory> activeDirectories) {
+    public NetAppAccountPatch withActiveDirectories(List<ActiveDirectoryPatch> activeDirectories) {
         if (this.innerProperties() == null) {
             this.innerProperties = new AccountPropertiesPatch();
         }
@@ -117,7 +117,7 @@ public final class NetAppAccountPatch implements JsonSerializable<NetAppAccountP
      * 
      * @return the encryption value.
      */
-    public AccountEncryption encryption() {
+    public AccountEncryptionPatch encryption() {
         return this.innerProperties() == null ? null : this.innerProperties().encryption();
     }
 
@@ -127,7 +127,7 @@ public final class NetAppAccountPatch implements JsonSerializable<NetAppAccountP
      * @param encryption the encryption value to set.
      * @return the NetAppAccountPatch object itself.
      */
-    public NetAppAccountPatch withEncryption(AccountEncryption encryption) {
+    public NetAppAccountPatch withEncryption(AccountEncryptionPatch encryption) {
         if (this.innerProperties() == null) {
             this.innerProperties = new AccountPropertiesPatch();
         }
@@ -136,50 +136,27 @@ public final class NetAppAccountPatch implements JsonSerializable<NetAppAccountP
     }
 
     /**
-     * Get the nfsV4IdDomain property: Domain for NFSv4 user ID mapping. This property will be set for all NetApp
+     * Get the nfsV4IDDomain property: Domain for NFSv4 user ID mapping. This property will be set for all NetApp
      * accounts in the subscription and region and only affect non ldap NFSv4 volumes.
      * 
-     * @return the nfsV4IdDomain value.
+     * @return the nfsV4IDDomain value.
      */
-    public String nfsV4IdDomain() {
-        return this.innerProperties() == null ? null : this.innerProperties().nfsV4IdDomain();
+    public String nfsV4IDDomain() {
+        return this.innerProperties() == null ? null : this.innerProperties().nfsV4IDDomain();
     }
 
     /**
-     * Set the nfsV4IdDomain property: Domain for NFSv4 user ID mapping. This property will be set for all NetApp
+     * Set the nfsV4IDDomain property: Domain for NFSv4 user ID mapping. This property will be set for all NetApp
      * accounts in the subscription and region and only affect non ldap NFSv4 volumes.
      * 
-     * @param nfsV4IdDomain the nfsV4IdDomain value to set.
+     * @param nfsV4IDDomain the nfsV4IDDomain value to set.
      * @return the NetAppAccountPatch object itself.
      */
-    public NetAppAccountPatch withNfsV4IdDomain(String nfsV4IdDomain) {
+    public NetAppAccountPatch withNfsV4IDDomain(String nfsV4IDDomain) {
         if (this.innerProperties() == null) {
             this.innerProperties = new AccountPropertiesPatch();
         }
-        this.innerProperties().withNfsV4IdDomain(nfsV4IdDomain);
-        return this;
-    }
-
-    /**
-     * Get the entraIdConfig property: Entra ID configuration for the account.
-     * 
-     * @return the entraIdConfig value.
-     */
-    public EntraIdConfigPatch entraIdConfig() {
-        return this.innerProperties() == null ? null : this.innerProperties().entraIdConfig();
-    }
-
-    /**
-     * Set the entraIdConfig property: Entra ID configuration for the account.
-     * 
-     * @param entraIdConfig the entraIdConfig value to set.
-     * @return the NetAppAccountPatch object itself.
-     */
-    public NetAppAccountPatch withEntraIdConfig(EntraIdConfigPatch entraIdConfig) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new AccountPropertiesPatch();
-        }
-        this.innerProperties().withEntraIdConfig(entraIdConfig);
+        this.innerProperties().withNfsV4IDDomain(nfsV4IDDomain);
         return this;
     }
 
