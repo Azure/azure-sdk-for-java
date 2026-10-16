@@ -9,7 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.networkcloud.models.ImageRepositoryCredentials;
+import com.azure.resourcemanager.networkcloud.models.ImageRepositoryCredentialsPatch;
 import java.io.IOException;
 
 /**
@@ -20,7 +20,7 @@ public final class VirtualMachinePatchProperties implements JsonSerializable<Vir
     /*
      * The credentials used to login to the image repository that has access to the specified image.
      */
-    private ImageRepositoryCredentials vmImageRepositoryCredentials;
+    private ImageRepositoryCredentialsPatch vmImageRepositoryCredentials;
 
     /**
      * Creates an instance of VirtualMachinePatchProperties class.
@@ -34,7 +34,7 @@ public final class VirtualMachinePatchProperties implements JsonSerializable<Vir
      * 
      * @return the vmImageRepositoryCredentials value.
      */
-    public ImageRepositoryCredentials vmImageRepositoryCredentials() {
+    public ImageRepositoryCredentialsPatch vmImageRepositoryCredentials() {
         return this.vmImageRepositoryCredentials;
     }
 
@@ -46,7 +46,7 @@ public final class VirtualMachinePatchProperties implements JsonSerializable<Vir
      * @return the VirtualMachinePatchProperties object itself.
      */
     public VirtualMachinePatchProperties
-        withVmImageRepositoryCredentials(ImageRepositoryCredentials vmImageRepositoryCredentials) {
+        withVmImageRepositoryCredentials(ImageRepositoryCredentialsPatch vmImageRepositoryCredentials) {
         this.vmImageRepositoryCredentials = vmImageRepositoryCredentials;
         return this;
     }
@@ -79,7 +79,7 @@ public final class VirtualMachinePatchProperties implements JsonSerializable<Vir
 
                 if ("vmImageRepositoryCredentials".equals(fieldName)) {
                     deserializedVirtualMachinePatchProperties.vmImageRepositoryCredentials
-                        = ImageRepositoryCredentials.fromJson(reader);
+                        = ImageRepositoryCredentialsPatch.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

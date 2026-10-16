@@ -28,6 +28,11 @@ public final class ScheduleOperationConstraintKind extends ExpandableStringEnum<
     public static final ScheduleOperationConstraintKind BLOCKED_WHILE_SCHEDULE_OPERATION = fromString("Blocked");
 
     /**
+     * Defines weekend scheduling restriction.
+     */
+    public static final ScheduleOperationConstraintKind WEEKEND_SCHEDULING = fromString("WeekendScheduling");
+
+    /**
      * Creates a new instance of ScheduleOperationConstraintKind value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

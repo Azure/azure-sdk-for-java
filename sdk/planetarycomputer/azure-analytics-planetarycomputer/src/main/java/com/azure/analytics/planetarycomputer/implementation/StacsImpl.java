@@ -1043,8 +1043,8 @@ public final class StacsImpl {
      * Represents a STAC collection along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createCollectionAssetWithResponseAsync(String collectionId, BinaryData body,
-        RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> createCollectionAssetWithResponseInternalAsync(String collectionId,
+        BinaryData body, RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.createCollectionAsset(this.client.getEndpoint(),
@@ -1195,7 +1195,7 @@ public final class StacsImpl {
      * Represents a STAC collection along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createCollectionAssetWithResponse(String collectionId, BinaryData body,
+    public Response<BinaryData> createCollectionAssetWithResponseInternal(String collectionId, BinaryData body,
         RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
         final String accept = "application/json";
@@ -1347,8 +1347,8 @@ public final class StacsImpl {
      * Represents a STAC collection along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> replaceCollectionAssetWithResponseAsync(String collectionId, String assetId,
-        BinaryData body, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> replaceCollectionAssetWithResponseInternalAsync(String collectionId,
+        String assetId, BinaryData body, RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.replaceCollectionAsset(this.client.getEndpoint(),
@@ -1499,8 +1499,8 @@ public final class StacsImpl {
      * Represents a STAC collection along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> replaceCollectionAssetWithResponse(String collectionId, String assetId, BinaryData body,
-        RequestOptions requestOptions) {
+    public Response<BinaryData> replaceCollectionAssetWithResponseInternal(String collectionId, String assetId,
+        BinaryData body, RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
         final String accept = "application/json";
         return service.replaceCollectionAssetSync(this.client.getEndpoint(),

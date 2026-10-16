@@ -12,14 +12,14 @@ public final class UserSubscriptionQuotaTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UserSubscriptionQuota model = BinaryData.fromString(
-            "{\"id\":\"vfdnwnwmewzsyyce\",\"type\":\"soibjudpfrx\",\"unit\":\"thzvaytdwkqbrqu\",\"currentValue\":749295202,\"limit\":31333478,\"name\":{\"value\":\"iilivpdtiirqtd\",\"localizedValue\":\"axoruzfgsquy\"}}")
+            "{\"id\":\"nlwntoe\",\"type\":\"kdwbwhkszz\",\"unit\":\"rvexztvb\",\"currentValue\":991988200,\"limit\":1033592181,\"name\":{\"value\":\"oyzko\",\"localizedValue\":\"tlmngu\"}}")
             .toObject(UserSubscriptionQuota.class);
-        Assertions.assertEquals("vfdnwnwmewzsyyce", model.id());
-        Assertions.assertEquals("soibjudpfrx", model.type());
-        Assertions.assertEquals("thzvaytdwkqbrqu", model.unit());
-        Assertions.assertEquals(749295202, model.currentValue());
-        Assertions.assertEquals(31333478, model.limit());
-        Assertions.assertEquals("iilivpdtiirqtd", model.name().value());
-        Assertions.assertEquals("axoruzfgsquy", model.name().localizedValue());
+        Assertions.assertEquals("nlwntoe", model.id());
+        Assertions.assertEquals("kdwbwhkszz", model.type());
+        Assertions.assertEquals("rvexztvb", model.unit());
+        Assertions.assertEquals(991988200, model.currentValue());
+        Assertions.assertEquals(1033592181, model.limit());
+        Assertions.assertEquals("oyzko", model.name().value());
+        Assertions.assertEquals("tlmngu", model.name().localizedValue());
     }
 }

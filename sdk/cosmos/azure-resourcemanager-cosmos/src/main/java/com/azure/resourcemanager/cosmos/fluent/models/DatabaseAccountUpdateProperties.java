@@ -14,16 +14,19 @@ import com.azure.resourcemanager.cosmos.models.ApiProperties;
 import com.azure.resourcemanager.cosmos.models.BackupPolicy;
 import com.azure.resourcemanager.cosmos.models.Capability;
 import com.azure.resourcemanager.cosmos.models.Capacity;
+import com.azure.resourcemanager.cosmos.models.CapacityMode;
 import com.azure.resourcemanager.cosmos.models.ConnectorOffer;
 import com.azure.resourcemanager.cosmos.models.ConsistencyPolicy;
 import com.azure.resourcemanager.cosmos.models.CorsPolicy;
 import com.azure.resourcemanager.cosmos.models.DatabaseAccountKeysMetadata;
 import com.azure.resourcemanager.cosmos.models.DefaultPriorityLevel;
+import com.azure.resourcemanager.cosmos.models.DiagnosticLogSettings;
 import com.azure.resourcemanager.cosmos.models.IpAddressOrRange;
 import com.azure.resourcemanager.cosmos.models.Location;
 import com.azure.resourcemanager.cosmos.models.MinimalTlsVersion;
 import com.azure.resourcemanager.cosmos.models.NetworkAclBypass;
 import com.azure.resourcemanager.cosmos.models.PublicNetworkAccess;
+import com.azure.resourcemanager.cosmos.models.SoftDeleteConfiguration;
 import com.azure.resourcemanager.cosmos.models.VirtualNetworkRule;
 import java.io.IOException;
 import java.util.List;
@@ -147,6 +150,11 @@ public final class DatabaseAccountUpdateProperties implements JsonSerializable<D
     private List<String> networkAclBypassResourceIds;
 
     /*
+     * The Object representing the different Diagnostic log settings for the Cosmos DB Account.
+     */
+    private DiagnosticLogSettings diagnosticLogSettings;
+
+    /*
      * Opt-out of local authentication and ensure only MSI and AAD can be used exclusively for authentication.
      */
     private Boolean disableLocalAuth;
@@ -155,6 +163,16 @@ public final class DatabaseAccountUpdateProperties implements JsonSerializable<D
      * The object that represents all properties related to capacity enforcement on an account.
      */
     private Capacity capacity;
+
+    /*
+     * Indicates the capacityMode of the Cosmos DB account.
+     */
+    private CapacityMode capacityMode;
+
+    /*
+     * Flag to indicate whether to enable MaterializedViews on the Cosmos DB account
+     */
+    private Boolean enableMaterializedViews;
 
     /*
      * This property is ignored during the update operation, as the metadata is read-only. The object represents the
@@ -198,6 +216,16 @@ public final class DatabaseAccountUpdateProperties implements JsonSerializable<D
      * Flag to indicate enabling/disabling of Per-Region Per-partition autoscale Preview feature on the account
      */
     private Boolean enablePerRegionPerPartitionAutoscale;
+
+    /*
+     * Flag to indicate if All Versions and Deletes Change feed feature is enabled on the account
+     */
+    private Boolean enableAllVersionsAndDeletesChangeFeed;
+
+    /*
+     * The configuration for soft delete on the Cosmos DB account.
+     */
+    private SoftDeleteConfiguration softDeleteConfiguration;
 
     /*
      * Flag to indicate enabling/disabling of hierarchical partition key ID last level enforcement on the account.
@@ -669,6 +697,28 @@ public final class DatabaseAccountUpdateProperties implements JsonSerializable<D
     }
 
     /**
+     * Get the diagnosticLogSettings property: The Object representing the different Diagnostic log settings for the
+     * Cosmos DB Account.
+     * 
+     * @return the diagnosticLogSettings value.
+     */
+    public DiagnosticLogSettings diagnosticLogSettings() {
+        return this.diagnosticLogSettings;
+    }
+
+    /**
+     * Set the diagnosticLogSettings property: The Object representing the different Diagnostic log settings for the
+     * Cosmos DB Account.
+     * 
+     * @param diagnosticLogSettings the diagnosticLogSettings value to set.
+     * @return the DatabaseAccountUpdateProperties object itself.
+     */
+    public DatabaseAccountUpdateProperties withDiagnosticLogSettings(DiagnosticLogSettings diagnosticLogSettings) {
+        this.diagnosticLogSettings = diagnosticLogSettings;
+        return this;
+    }
+
+    /**
      * Get the disableLocalAuth property: Opt-out of local authentication and ensure only MSI and AAD can be used
      * exclusively for authentication.
      * 
@@ -709,6 +759,48 @@ public final class DatabaseAccountUpdateProperties implements JsonSerializable<D
      */
     public DatabaseAccountUpdateProperties withCapacity(Capacity capacity) {
         this.capacity = capacity;
+        return this;
+    }
+
+    /**
+     * Get the capacityMode property: Indicates the capacityMode of the Cosmos DB account.
+     * 
+     * @return the capacityMode value.
+     */
+    public CapacityMode capacityMode() {
+        return this.capacityMode;
+    }
+
+    /**
+     * Set the capacityMode property: Indicates the capacityMode of the Cosmos DB account.
+     * 
+     * @param capacityMode the capacityMode value to set.
+     * @return the DatabaseAccountUpdateProperties object itself.
+     */
+    public DatabaseAccountUpdateProperties withCapacityMode(CapacityMode capacityMode) {
+        this.capacityMode = capacityMode;
+        return this;
+    }
+
+    /**
+     * Get the enableMaterializedViews property: Flag to indicate whether to enable MaterializedViews on the Cosmos DB
+     * account.
+     * 
+     * @return the enableMaterializedViews value.
+     */
+    public Boolean enableMaterializedViews() {
+        return this.enableMaterializedViews;
+    }
+
+    /**
+     * Set the enableMaterializedViews property: Flag to indicate whether to enable MaterializedViews on the Cosmos DB
+     * account.
+     * 
+     * @param enableMaterializedViews the enableMaterializedViews value to set.
+     * @return the DatabaseAccountUpdateProperties object itself.
+     */
+    public DatabaseAccountUpdateProperties withEnableMaterializedViews(Boolean enableMaterializedViews) {
+        this.enableMaterializedViews = enableMaterializedViews;
         return this;
     }
 
@@ -878,6 +970,50 @@ public final class DatabaseAccountUpdateProperties implements JsonSerializable<D
     }
 
     /**
+     * Get the enableAllVersionsAndDeletesChangeFeed property: Flag to indicate if All Versions and Deletes Change feed
+     * feature is enabled on the account.
+     * 
+     * @return the enableAllVersionsAndDeletesChangeFeed value.
+     */
+    public Boolean enableAllVersionsAndDeletesChangeFeed() {
+        return this.enableAllVersionsAndDeletesChangeFeed;
+    }
+
+    /**
+     * Set the enableAllVersionsAndDeletesChangeFeed property: Flag to indicate if All Versions and Deletes Change feed
+     * feature is enabled on the account.
+     * 
+     * @param enableAllVersionsAndDeletesChangeFeed the enableAllVersionsAndDeletesChangeFeed value to set.
+     * @return the DatabaseAccountUpdateProperties object itself.
+     */
+    public DatabaseAccountUpdateProperties
+        withEnableAllVersionsAndDeletesChangeFeed(Boolean enableAllVersionsAndDeletesChangeFeed) {
+        this.enableAllVersionsAndDeletesChangeFeed = enableAllVersionsAndDeletesChangeFeed;
+        return this;
+    }
+
+    /**
+     * Get the softDeleteConfiguration property: The configuration for soft delete on the Cosmos DB account.
+     * 
+     * @return the softDeleteConfiguration value.
+     */
+    public SoftDeleteConfiguration softDeleteConfiguration() {
+        return this.softDeleteConfiguration;
+    }
+
+    /**
+     * Set the softDeleteConfiguration property: The configuration for soft delete on the Cosmos DB account.
+     * 
+     * @param softDeleteConfiguration the softDeleteConfiguration value to set.
+     * @return the DatabaseAccountUpdateProperties object itself.
+     */
+    public DatabaseAccountUpdateProperties
+        withSoftDeleteConfiguration(SoftDeleteConfiguration softDeleteConfiguration) {
+        this.softDeleteConfiguration = softDeleteConfiguration;
+        return this;
+    }
+
+    /**
      * Get the enforceHierarchicalPartitionKeyIdLastLevel property: Flag to indicate enabling/disabling of hierarchical
      * partition key ID last level enforcement on the account.
      * 
@@ -933,11 +1069,17 @@ public final class DatabaseAccountUpdateProperties implements JsonSerializable<D
         if (cors() != null) {
             cors().forEach(e -> e.validate());
         }
+        if (diagnosticLogSettings() != null) {
+            diagnosticLogSettings().validate();
+        }
         if (capacity() != null) {
             capacity().validate();
         }
         if (keysMetadata() != null) {
             keysMetadata().validate();
+        }
+        if (softDeleteConfiguration() != null) {
+            softDeleteConfiguration().validate();
         }
     }
 
@@ -974,8 +1116,11 @@ public final class DatabaseAccountUpdateProperties implements JsonSerializable<D
             this.networkAclBypass == null ? null : this.networkAclBypass.toString());
         jsonWriter.writeArrayField("networkAclBypassResourceIds", this.networkAclBypassResourceIds,
             (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("diagnosticLogSettings", this.diagnosticLogSettings);
         jsonWriter.writeBooleanField("disableLocalAuth", this.disableLocalAuth);
         jsonWriter.writeJsonField("capacity", this.capacity);
+        jsonWriter.writeStringField("capacityMode", this.capacityMode == null ? null : this.capacityMode.toString());
+        jsonWriter.writeBooleanField("enableMaterializedViews", this.enableMaterializedViews);
         jsonWriter.writeBooleanField("enablePartitionMerge", this.enablePartitionMerge);
         jsonWriter.writeBooleanField("enableBurstCapacity", this.enableBurstCapacity);
         jsonWriter.writeStringField("minimalTlsVersion",
@@ -985,6 +1130,9 @@ public final class DatabaseAccountUpdateProperties implements JsonSerializable<D
         jsonWriter.writeStringField("defaultPriorityLevel",
             this.defaultPriorityLevel == null ? null : this.defaultPriorityLevel.toString());
         jsonWriter.writeBooleanField("enablePerRegionPerPartitionAutoscale", this.enablePerRegionPerPartitionAutoscale);
+        jsonWriter.writeBooleanField("enableAllVersionsAndDeletesChangeFeed",
+            this.enableAllVersionsAndDeletesChangeFeed);
+        jsonWriter.writeJsonField("softDeleteConfiguration", this.softDeleteConfiguration);
         jsonWriter.writeBooleanField("enforceHierarchicalPartitionKeyIdLastLevel",
             this.enforceHierarchicalPartitionKeyIdLastLevel);
         return jsonWriter.writeEndObject();
@@ -1069,11 +1217,20 @@ public final class DatabaseAccountUpdateProperties implements JsonSerializable<D
                     List<String> networkAclBypassResourceIds = reader.readArray(reader1 -> reader1.getString());
                     deserializedDatabaseAccountUpdateProperties.networkAclBypassResourceIds
                         = networkAclBypassResourceIds;
+                } else if ("diagnosticLogSettings".equals(fieldName)) {
+                    deserializedDatabaseAccountUpdateProperties.diagnosticLogSettings
+                        = DiagnosticLogSettings.fromJson(reader);
                 } else if ("disableLocalAuth".equals(fieldName)) {
                     deserializedDatabaseAccountUpdateProperties.disableLocalAuth
                         = reader.getNullable(JsonReader::getBoolean);
                 } else if ("capacity".equals(fieldName)) {
                     deserializedDatabaseAccountUpdateProperties.capacity = Capacity.fromJson(reader);
+                } else if ("capacityMode".equals(fieldName)) {
+                    deserializedDatabaseAccountUpdateProperties.capacityMode
+                        = CapacityMode.fromString(reader.getString());
+                } else if ("enableMaterializedViews".equals(fieldName)) {
+                    deserializedDatabaseAccountUpdateProperties.enableMaterializedViews
+                        = reader.getNullable(JsonReader::getBoolean);
                 } else if ("keysMetadata".equals(fieldName)) {
                     deserializedDatabaseAccountUpdateProperties.keysMetadata
                         = DatabaseAccountKeysMetadata.fromJson(reader);
@@ -1097,6 +1254,12 @@ public final class DatabaseAccountUpdateProperties implements JsonSerializable<D
                 } else if ("enablePerRegionPerPartitionAutoscale".equals(fieldName)) {
                     deserializedDatabaseAccountUpdateProperties.enablePerRegionPerPartitionAutoscale
                         = reader.getNullable(JsonReader::getBoolean);
+                } else if ("enableAllVersionsAndDeletesChangeFeed".equals(fieldName)) {
+                    deserializedDatabaseAccountUpdateProperties.enableAllVersionsAndDeletesChangeFeed
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("softDeleteConfiguration".equals(fieldName)) {
+                    deserializedDatabaseAccountUpdateProperties.softDeleteConfiguration
+                        = SoftDeleteConfiguration.fromJson(reader);
                 } else if ("enforceHierarchicalPartitionKeyIdLastLevel".equals(fieldName)) {
                     deserializedDatabaseAccountUpdateProperties.enforceHierarchicalPartitionKeyIdLastLevel
                         = reader.getNullable(JsonReader::getBoolean);

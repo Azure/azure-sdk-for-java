@@ -21,7 +21,7 @@ import java.util.Arrays;
  */
 public final class SkuMixPlacementScoresPostSamples {
     /*
-     * x-ms-original-file: 2026-05-05-preview/GenerateSkuMixPlacementScores.json
+     * x-ms-original-file: 2026-09-05-preview/GenerateSkuMixPlacementScores.json
      */
     /**
      * Sample code: Generates SkuMixPlacement scores for VM SKU mix placement with explicit VM sizes.

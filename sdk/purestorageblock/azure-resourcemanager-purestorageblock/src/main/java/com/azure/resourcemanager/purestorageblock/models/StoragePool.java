@@ -435,4 +435,48 @@ public interface StoragePool {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void repairAvsConnection(Context context);
+
+    /**
+     * Returns a one-time activation code for platform console access to the storage pool.
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return one-time activation code for platform console access along with {@link Response}.
+     */
+    Response<PlatformConsoleActivationCode> listPlatformConsoleActivationCodeWithResponse(Context context);
+
+    /**
+     * Returns a one-time activation code for platform console access to the storage pool.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return one-time activation code for platform console access.
+     */
+    PlatformConsoleActivationCode listPlatformConsoleActivationCode();
+
+    /**
+     * Configure authentication settings for platform console access to the storage pool.
+     * 
+     * @param config Platform console authentication configuration.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return base model for platform console authentication result along with {@link Response}.
+     */
+    Response<PlatformConsoleAuthResult> configurePlatformConsoleAuthWithResponse(PlatformConsoleAuthConfig config,
+        Context context);
+
+    /**
+     * Configure authentication settings for platform console access to the storage pool.
+     * 
+     * @param config Platform console authentication configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return base model for platform console authentication result.
+     */
+    PlatformConsoleAuthResult configurePlatformConsoleAuth(PlatformConsoleAuthConfig config);
 }

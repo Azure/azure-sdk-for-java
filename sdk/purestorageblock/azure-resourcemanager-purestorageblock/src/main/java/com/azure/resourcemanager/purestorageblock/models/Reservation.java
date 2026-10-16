@@ -324,4 +324,51 @@ public interface Reservation {
      * @return represents a billing usage report, including overall status and detailed properties.
      */
     ReservationBillingUsageReport getBillingReport();
+
+    /**
+     * Links a new SaaS to the reservation.
+     * 
+     * A long-running resource action.
+     * 
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    Reservation linkSaaS(LinkSaaSRequest body);
+
+    /**
+     * Links a new SaaS to the reservation.
+     * 
+     * A long-running resource action.
+     * 
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    Reservation linkSaaS(LinkSaaSRequest body, Context context);
+
+    /**
+     * Returns the latest SaaS linked to the reservation.
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response of get latest linked SaaS resource operation along with {@link Response}.
+     */
+    Response<LatestLinkedSaaSResponse> latestLinkedSaaSWithResponse(Context context);
+
+    /**
+     * Returns the latest SaaS linked to the reservation.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response of get latest linked SaaS resource operation.
+     */
+    LatestLinkedSaaSResponse latestLinkedSaaS();
 }

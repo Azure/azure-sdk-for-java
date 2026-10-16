@@ -11,7 +11,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.networkcloud.models.ConsoleEnabled;
-import com.azure.resourcemanager.networkcloud.models.SshPublicKey;
+import com.azure.resourcemanager.networkcloud.models.SshPublicKeyPatch;
 import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
@@ -35,7 +35,7 @@ public final class ConsolePatchProperties implements JsonSerializable<ConsolePat
      * The SSH public key that will be provisioned for user access. The user is expected to have the corresponding SSH
      * private key for logging in.
      */
-    private SshPublicKey sshPublicKey;
+    private SshPublicKeyPatch sshPublicKey;
 
     /**
      * Creates an instance of ConsolePatchProperties class.
@@ -89,7 +89,7 @@ public final class ConsolePatchProperties implements JsonSerializable<ConsolePat
      * 
      * @return the sshPublicKey value.
      */
-    public SshPublicKey sshPublicKey() {
+    public SshPublicKeyPatch sshPublicKey() {
         return this.sshPublicKey;
     }
 
@@ -100,7 +100,7 @@ public final class ConsolePatchProperties implements JsonSerializable<ConsolePat
      * @param sshPublicKey the sshPublicKey value to set.
      * @return the ConsolePatchProperties object itself.
      */
-    public ConsolePatchProperties withSshPublicKey(SshPublicKey sshPublicKey) {
+    public ConsolePatchProperties withSshPublicKey(SshPublicKeyPatch sshPublicKey) {
         this.sshPublicKey = sshPublicKey;
         return this;
     }
@@ -139,7 +139,7 @@ public final class ConsolePatchProperties implements JsonSerializable<ConsolePat
                     deserializedConsolePatchProperties.expiration = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("sshPublicKey".equals(fieldName)) {
-                    deserializedConsolePatchProperties.sshPublicKey = SshPublicKey.fromJson(reader);
+                    deserializedConsolePatchProperties.sshPublicKey = SshPublicKeyPatch.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

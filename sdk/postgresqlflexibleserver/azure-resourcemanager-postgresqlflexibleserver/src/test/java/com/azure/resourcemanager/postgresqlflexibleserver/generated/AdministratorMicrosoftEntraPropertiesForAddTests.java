@@ -13,22 +13,22 @@ public final class AdministratorMicrosoftEntraPropertiesForAddTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AdministratorMicrosoftEntraPropertiesForAdd model = BinaryData
-            .fromString("{\"principalType\":\"User\",\"principalName\":\"qnyhgb\",\"tenantId\":\"tjivfxzsjabib\"}")
+            .fromString("{\"principalType\":\"Unknown\",\"principalName\":\"zcjaesgvvsccy\",\"tenantId\":\"g\"}")
             .toObject(AdministratorMicrosoftEntraPropertiesForAdd.class);
-        Assertions.assertEquals(PrincipalType.USER, model.principalType());
-        Assertions.assertEquals("qnyhgb", model.principalName());
-        Assertions.assertEquals("tjivfxzsjabib", model.tenantId());
+        Assertions.assertEquals(PrincipalType.UNKNOWN, model.principalType());
+        Assertions.assertEquals("zcjaesgvvsccy", model.principalName());
+        Assertions.assertEquals("g", model.tenantId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AdministratorMicrosoftEntraPropertiesForAdd model
-            = new AdministratorMicrosoftEntraPropertiesForAdd().withPrincipalType(PrincipalType.USER)
-                .withPrincipalName("qnyhgb")
-                .withTenantId("tjivfxzsjabib");
+            = new AdministratorMicrosoftEntraPropertiesForAdd().withPrincipalType(PrincipalType.UNKNOWN)
+                .withPrincipalName("zcjaesgvvsccy")
+                .withTenantId("g");
         model = BinaryData.fromObject(model).toObject(AdministratorMicrosoftEntraPropertiesForAdd.class);
-        Assertions.assertEquals(PrincipalType.USER, model.principalType());
-        Assertions.assertEquals("qnyhgb", model.principalName());
-        Assertions.assertEquals("tjivfxzsjabib", model.tenantId());
+        Assertions.assertEquals(PrincipalType.UNKNOWN, model.principalType());
+        Assertions.assertEquals("zcjaesgvvsccy", model.principalName());
+        Assertions.assertEquals("g", model.tenantId());
     }
 }

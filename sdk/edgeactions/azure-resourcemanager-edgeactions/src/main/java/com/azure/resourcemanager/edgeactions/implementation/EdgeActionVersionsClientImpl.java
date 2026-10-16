@@ -518,7 +518,10 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
     }
 
     /**
-     * Update a EdgeActionVersion.
+     * Updates the tags of an Edge Action version. Omitted tags are preserved, an empty tags object clears all tags, and
+     * supplied tags replace the entire tag collection. Null tags are rejected. Version properties are not changed. If
+     * deploymentType or isDefaultVersion is supplied, it must match the existing value; use swapDefault to change the
+     * default version.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.
@@ -543,7 +546,10 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
     }
 
     /**
-     * Update a EdgeActionVersion.
+     * Updates the tags of an Edge Action version. Omitted tags are preserved, an empty tags object clears all tags, and
+     * supplied tags replace the entire tag collection. Null tags are rejected. Version properties are not changed. If
+     * deploymentType or isDefaultVersion is supplied, it must match the existing value; use swapDefault to change the
+     * default version.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.
@@ -566,7 +572,10 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
     }
 
     /**
-     * Update a EdgeActionVersion.
+     * Updates the tags of an Edge Action version. Omitted tags are preserved, an empty tags object clears all tags, and
+     * supplied tags replace the entire tag collection. Null tags are rejected. Version properties are not changed. If
+     * deploymentType or isDefaultVersion is supplied, it must match the existing value; use swapDefault to change the
+     * default version.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.
@@ -590,7 +599,10 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
     }
 
     /**
-     * Update a EdgeActionVersion.
+     * Updates the tags of an Edge Action version. Omitted tags are preserved, an empty tags object clears all tags, and
+     * supplied tags replace the entire tag collection. Null tags are rejected. Version properties are not changed. If
+     * deploymentType or isDefaultVersion is supplied, it must match the existing value; use swapDefault to change the
+     * default version.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.
@@ -613,7 +625,10 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
     }
 
     /**
-     * Update a EdgeActionVersion.
+     * Updates the tags of an Edge Action version. Omitted tags are preserved, an empty tags object clears all tags, and
+     * supplied tags replace the entire tag collection. Null tags are rejected. Version properties are not changed. If
+     * deploymentType or isDefaultVersion is supplied, it must match the existing value; use swapDefault to change the
+     * default version.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.
@@ -634,7 +649,10 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
     }
 
     /**
-     * Update a EdgeActionVersion.
+     * Updates the tags of an Edge Action version. Omitted tags are preserved, an empty tags object clears all tags, and
+     * supplied tags replace the entire tag collection. Null tags are rejected. Version properties are not changed. If
+     * deploymentType or isDefaultVersion is supplied, it must match the existing value; use swapDefault to change the
+     * default version.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.
@@ -657,7 +675,10 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
     }
 
     /**
-     * Update a EdgeActionVersion.
+     * Updates the tags of an Edge Action version. Omitted tags are preserved, an empty tags object clears all tags, and
+     * supplied tags replace the entire tag collection. Null tags are rejected. Version properties are not changed. If
+     * deploymentType or isDefaultVersion is supplied, it must match the existing value; use swapDefault to change the
+     * default version.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.
@@ -677,7 +698,10 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
     }
 
     /**
-     * Update a EdgeActionVersion.
+     * Updates the tags of an Edge Action version. Omitted tags are preserved, an empty tags object clears all tags, and
+     * supplied tags replace the entire tag collection. Null tags are rejected. Version properties are not changed. If
+     * deploymentType or isDefaultVersion is supplied, it must match the existing value; use swapDefault to change the
+     * default version.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.
@@ -695,7 +719,10 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
     }
 
     /**
-     * Update a EdgeActionVersion.
+     * Updates the tags of an Edge Action version. Omitted tags are preserved, an empty tags object clears all tags, and
+     * supplied tags replace the entire tag collection. Null tags are rejected. Version properties are not changed. If
+     * deploymentType or isDefaultVersion is supplied, it must match the existing value; use swapDefault to change the
+     * default version.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.
@@ -990,7 +1017,7 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
     }
 
     /**
-     * The deployVersionCode operation.
+     * A long-running resource action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.
@@ -1014,7 +1041,7 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
     }
 
     /**
-     * The deployVersionCode operation.
+     * A long-running resource action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.
@@ -1036,7 +1063,7 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
     }
 
     /**
-     * The deployVersionCode operation.
+     * A long-running resource action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.
@@ -1059,7 +1086,7 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
     }
 
     /**
-     * The deployVersionCode operation.
+     * A long-running resource action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.
@@ -1082,7 +1109,7 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
     }
 
     /**
-     * The deployVersionCode operation.
+     * A long-running resource action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.
@@ -1102,7 +1129,7 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
     }
 
     /**
-     * The deployVersionCode operation.
+     * A long-running resource action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.
@@ -1125,7 +1152,7 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
     }
 
     /**
-     * The deployVersionCode operation.
+     * A long-running resource action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.
@@ -1144,7 +1171,7 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
     }
 
     /**
-     * The deployVersionCode operation.
+     * A long-running resource action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.
@@ -1162,7 +1189,7 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
     }
 
     /**
-     * The deployVersionCode operation.
+     * A long-running resource action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.

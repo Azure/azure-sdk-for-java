@@ -13,7 +13,7 @@ import com.azure.resourcemanager.storagecache.models.ImportJobAdminStatus;
 import java.io.IOException;
 
 /**
- * The ImportJobUpdateProperties model.
+ * Properties for updating an import job.
  */
 @Fluent
 public final class ImportJobUpdateProperties implements JsonSerializable<ImportJobUpdateProperties> {

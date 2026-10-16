@@ -3,36 +3,22 @@
 
 package com.azure.security.keyvault.jca;
 
-import org.apache.hc.client5.http.classic.methods.HttpGet;
-import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
-import org.apache.hc.client5.http.impl.classic.HttpClients;
-import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManager;
-import org.apache.hc.client5.http.socket.ConnectionSocketFactory;
-import org.apache.hc.client5.http.ssl.SSLConnectionSocketFactory;
-import org.apache.hc.client5.http.ssl.TrustSelfSignedStrategy;
-import org.apache.hc.core5.http.ClassicHttpResponse;
-import org.apache.hc.core5.http.config.RegistryBuilder;
-import org.apache.hc.core5.http.io.HttpClientResponseHandler;
-import org.apache.hc.core5.ssl.PrivateKeyDetails;
-import org.apache.hc.core5.ssl.PrivateKeyStrategy;
-import org.apache.hc.core5.ssl.SSLContexts;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 
+import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLParameters;
 import javax.net.ssl.SSLServerSocket;
 import javax.net.ssl.SSLServerSocketFactory;
 import javax.net.ssl.TrustManagerFactory;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.net.URI;
 import java.security.KeyStore;
 import java.security.Security;
-import java.security.cert.X509Certificate;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -57,7 +43,7 @@ public class ServerSocketTest {
         KeyVaultJcaProvider provider = new KeyVaultJcaProvider();
         Security.addProvider(provider);
 
-        /**
+        /*
          *  - Create an Azure Key Vault specific instance of a KeyStore.
          *  - Set the KeyManagerFactory to use that KeyStore.
          */
@@ -86,16 +72,16 @@ public class ServerSocketTest {
 
     @Test
     public void testHttpsConnectionWithoutClientTrust() throws Exception {
-        SSLContext sslContext = SSLContexts.custom()
-            .loadTrustMaterial((final X509Certificate[] chain, final String authType) -> true)
-            .build();
+        SSLContext sslContext = SSLContext.getInstance("TLS");
+        sslContext.init(null, JcaTestUtils.loadTrustMaterial(null, (ignoredChain, ignoredAuthType) -> true), null);
         testHttpsConnection(8765, sslContext);
 
     }
 
     @Test
     public void testHttpsConnectionWithSelfSignedClientTrust() throws Exception {
-        SSLContext sslContext = SSLContexts.custom().loadTrustMaterial(ks, new TrustSelfSignedStrategy()).build();
+        SSLContext sslContext = SSLContext.getInstance("TLS");
+        sslContext.init(null, JcaTestUtils.loadTrustMaterial(ks, (chain, ignored) -> chain.length == 1), null);
         testHttpsConnection(8766, sslContext);
 
     }
@@ -144,7 +130,7 @@ public class ServerSocketTest {
         assertEquals("Success", result);
     }
 
-    private void serverSocketWithTrustManager(Integer port) throws Exception {
+    private void serverSocketWithTrustManager(int port) throws Exception {
         /*
          * Setup server side.
          *
@@ -169,11 +155,10 @@ public class ServerSocketTest {
          * - Create an SSL context.
          * - Set SSL context to trust any certificate.
          */
-
-        SSLContext sslContext = SSLContexts.custom()
-            .loadTrustMaterial(ks, new TrustSelfSignedStrategy())
-            .loadKeyMaterial(ks, "".toCharArray(), new ClientPrivateKeyStrategy())
-            .build();
+        SSLContext sslContext = SSLContext.getInstance("TLS");
+        sslContext.init(
+            JcaTestUtils.loadKeyMaterial(ks, "".toCharArray(), (ignoredKeyTypes, ignoredIssuers) -> certificateName),
+            JcaTestUtils.loadTrustMaterial(ks, (chain, ignored) -> chain.length == 1), null);
 
         /*
          * And now execute the test.
@@ -186,41 +171,29 @@ public class ServerSocketTest {
         assertEquals("Success", result);
     }
 
-    private String sendRequest(SSLContext sslContext, Integer port) {
+    private String sendRequest(SSLContext sslContext, int port) {
 
-        /**
+        /*
          * - Create SSL connection factory.
          * - Set hostname verifier to trust any hostname.
          */
-        SSLConnectionSocketFactory sslConnectionSocketFactory
-            = new SSLConnectionSocketFactory(sslContext, (hostname, session) -> true);
-
-        PoolingHttpClientConnectionManager manager = new PoolingHttpClientConnectionManager(
-            RegistryBuilder.<ConnectionSocketFactory>create().register("https", sslConnectionSocketFactory).build());
-
         String result = null;
-
-        try (CloseableHttpClient client = HttpClients.custom().setConnectionManager(manager).build()) {
-            HttpGet httpGet = new HttpGet("https://localhost:" + port);
-            HttpClientResponseHandler<String> responseHandler = (ClassicHttpResponse response) -> {
-                int status = response.getCode();
-                String result1 = null;
-                if (status == 204) {
-                    result1 = "Success";
-                }
-                return result1;
-            };
-            result = client.execute(httpGet, responseHandler);
+        HttpsURLConnection connection = null;
+        try {
+            connection = (HttpsURLConnection) URI.create("https://localhost:" + port).toURL().openConnection();
+            connection.setSSLSocketFactory(sslContext.getSocketFactory());
+            connection.setHostnameVerifier((hostname, session) -> true);
+            connection.setRequestMethod("GET");
+            if (connection.getResponseCode() == 204) {
+                result = "Success";
+            }
         } catch (IOException ioe) {
             ioe.printStackTrace();
+        } finally {
+            if (connection != null) {
+                connection.disconnect();
+            }
         }
         return result;
-    }
-
-    private static class ClientPrivateKeyStrategy implements PrivateKeyStrategy {
-        @Override
-        public String chooseAlias(Map<String, PrivateKeyDetails> aliases, SSLParameters sslParameters) {
-            return certificateName; // It should be your certificate alias used in client-side
-        }
     }
 }

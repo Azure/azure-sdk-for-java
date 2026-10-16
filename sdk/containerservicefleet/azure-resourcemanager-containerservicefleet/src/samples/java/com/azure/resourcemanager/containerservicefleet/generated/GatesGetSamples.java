@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerservicefleet.generated;
  */
 public final class GatesGetSamples {
     /*
-     * x-ms-original-file: 2026-06-01/Gates_Get.json
+     * x-ms-original-file: 2026-06-02-preview/Gates_Get.json
      */
     /**
      * Sample code: Gets a Gate resource.
@@ -20,5 +20,19 @@ public final class GatesGetSamples {
         getsAGateResource(com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager manager) {
         manager.gates()
             .getWithResponse("rg1", "fleet1", "12345678-910a-bcde-f000-000000000000", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-06-02-preview/Gates_Get_ScheduledStart.json
+     */
+    /**
+     * Sample code: Gets a ScheduledStart Gate resource.
+     * 
+     * @param manager Entry point to ContainerServiceFleetManager.
+     */
+    public static void getsAScheduledStartGateResource(
+        com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager manager) {
+        manager.gates()
+            .getWithResponse("rg1", "fleet1", "12345678-910a-bcde-f000-000000000001", com.azure.core.util.Context.NONE);
     }
 }

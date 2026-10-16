@@ -116,7 +116,9 @@ public interface Volume {
     VolumePropertiesExportPolicy exportPolicy();
 
     /**
-     * Gets the protocolTypes property: Set of protocol types, default NFSv3, CIFS for SMB protocol.
+     * Gets the protocolTypes property: Specify the protocol types for the volume. Supported values are NFSv3, NFSv4.1,
+     * and CIFS. For SMB volumes, specify CIFS.
+     * The value SMB isn't supported in the protocolTypes property. Default: NFSv3.
      * 
      * @return the protocolTypes value.
      */
@@ -796,9 +798,13 @@ public interface Volume {
          */
         interface WithProtocolTypes {
             /**
-             * Specifies the protocolTypes property: Set of protocol types, default NFSv3, CIFS for SMB protocol.
+             * Specifies the protocolTypes property: Specify the protocol types for the volume. Supported values are
+             * NFSv3, NFSv4.1, and CIFS. For SMB volumes, specify CIFS.
+             * The value SMB isn't supported in the protocolTypes property. Default: NFSv3.
              * 
-             * @param protocolTypes Set of protocol types, default NFSv3, CIFS for SMB protocol.
+             * @param protocolTypes Specify the protocol types for the volume. Supported values are NFSv3, NFSv4.1, and
+             * CIFS. For SMB volumes, specify CIFS.
+             * The value SMB isn't supported in the protocolTypes property. Default: NFSv3.
              * @return the next definition stage.
              */
             WithCreate withProtocolTypes(List<String> protocolTypes);
@@ -1481,9 +1487,13 @@ public interface Volume {
          */
         interface WithProtocolTypes {
             /**
-             * Specifies the protocolTypes property: Set of protocol types, default NFSv3, CIFS for SMB protocol.
+             * Specifies the protocolTypes property: Specify the protocol types for the volume. Supported values are
+             * NFSv3, NFSv4.1, and CIFS. For SMB volumes, specify CIFS.
+             * The value SMB isn't supported in the protocolTypes property. Default: NFSv3.
              * 
-             * @param protocolTypes Set of protocol types, default NFSv3, CIFS for SMB protocol.
+             * @param protocolTypes Specify the protocol types for the volume. Supported values are NFSv3, NFSv4.1, and
+             * CIFS. For SMB volumes, specify CIFS.
+             * The value SMB isn't supported in the protocolTypes property. Default: NFSv3.
              * @return the next definition stage.
              */
             Update withProtocolTypes(List<String> protocolTypes);

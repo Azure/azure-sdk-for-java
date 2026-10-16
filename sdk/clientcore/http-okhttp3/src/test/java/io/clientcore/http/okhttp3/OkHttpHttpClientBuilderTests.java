@@ -13,7 +13,6 @@ import io.clientcore.core.models.CoreException;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.shared.LocalTestServer;
 import io.clientcore.core.shared.TestConfigurationSource;
-import io.clientcore.core.utils.SharedExecutorService;
 import io.clientcore.core.utils.configuration.Configuration;
 import io.clientcore.core.utils.configuration.ConfigurationSource;
 import okhttp3.Call;
@@ -41,6 +40,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
@@ -359,15 +359,20 @@ public class OkHttpHttpClientBuilderTests {
          * result in the request we are about to send to be cancelled since the server will wait 5 seconds before
          * returning a response.
          */
-        SharedExecutorService.getInstance().schedule(() -> {
-            assertEquals(1, dispatcher.runningCallsCount());
-            dispatcher.cancelAll();
-        }, 1000, TimeUnit.MILLISECONDS);
+        ScheduledExecutorService cancellationExecutor = Executors.newSingleThreadScheduledExecutor();
+        try {
+            cancellationExecutor.schedule(() -> {
+                assertEquals(1, dispatcher.runningCallsCount());
+                dispatcher.cancelAll();
+            }, 1000, TimeUnit.MILLISECONDS);
 
-        CoreException ex = assertThrows(CoreException.class,
-            () -> client.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(dispatcherUri)).close());
+            CoreException ex = assertThrows(CoreException.class,
+                () -> client.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(dispatcherUri)).close());
 
-        assertInstanceOf(IOException.class, ex.getCause());
+            assertInstanceOf(IOException.class, ex.getCause());
+        } finally {
+            cancellationExecutor.shutdownNow();
+        }
     }
 
     /**
@@ -500,6 +505,7 @@ public class OkHttpHttpClientBuilderTests {
 
         Configuration simpleEnvProxy
             = Configuration.from(new TestConfigurationSource().put(Configuration.HTTP_PROXY, "http://localhost:12345")
+                .put(Configuration.HTTPS_PROXY, "")
                 .put(JAVA_SYSTEM_PROXY_PREREQUISITE, "true"));
 
         arguments.add(Arguments.of(true, simpleEnvProxy, defaultUri));
@@ -515,6 +521,7 @@ public class OkHttpHttpClientBuilderTests {
 
         Configuration envProxyWithAuthentication = Configuration.from(EMPTY_SOURCE, EMPTY_SOURCE,
             new TestConfigurationSource().put(Configuration.HTTP_PROXY, "http://1:1@localhost:12345")
+                .put(Configuration.HTTPS_PROXY, "")
                 .put(JAVA_SYSTEM_PROXY_PREREQUISITE, "true"));
 
         arguments.add(Arguments.of(true, envProxyWithAuthentication, defaultUri));
@@ -539,6 +546,7 @@ public class OkHttpHttpClientBuilderTests {
             = () -> baseJavaProxyConfigurationSupplier.get().put(JAVA_NON_PROXY_HOSTS, rawJavaNonProxyHosts);
         Supplier<TestConfigurationSource> envNonProxyHostsSupplier
             = () -> new TestConfigurationSource().put(Configuration.HTTP_PROXY, "http://localhost:12345")
+                .put(Configuration.HTTPS_PROXY, "")
                 .put(Configuration.NO_PROXY, rawEnvNonProxyHosts)
                 .put(JAVA_SYSTEM_PROXY_PREREQUISITE, "true");
         List<Supplier<TestConfigurationSource>> nonProxyHostsSuppliers
@@ -563,6 +571,7 @@ public class OkHttpHttpClientBuilderTests {
             = () -> javaNonProxyHostsSupplier.get().put(JAVA_HTTP_PROXY_USER, "1").put(JAVA_HTTP_PROXY_PASSWORD, "1");
         Supplier<TestConfigurationSource> authenticatedEnvNonProxyHostsSupplier
             = () -> new TestConfigurationSource().put(Configuration.HTTP_PROXY, "http://1:1@localhost:12345")
+                .put(Configuration.HTTPS_PROXY, "")
                 .put(Configuration.NO_PROXY, rawEnvNonProxyHosts)
                 .put(JAVA_SYSTEM_PROXY_PREREQUISITE, "true");
         List<Supplier<TestConfigurationSource>> authenticatedNonProxyHostsSuppliers

@@ -2312,6 +2312,8 @@ public interface LongTermRetentionBackupsClient {
      * @param locationName The location of the database.
      * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
      * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
+     * @param skiptoken An opaque token that identifies a starting point in the collection.
+     * @param top The number of elements to return from the collection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2319,7 +2321,7 @@ public interface LongTermRetentionBackupsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<LongTermRetentionBackupInner> listByLocationAsync(String locationName, Boolean onlyLatestPerDatabase,
-        DatabaseState databaseState);
+        DatabaseState databaseState, String skiptoken, Long top);
 
     /**
      * Lists the long term retention backups for a given location.
@@ -2351,6 +2353,8 @@ public interface LongTermRetentionBackupsClient {
      * @param locationName The location of the database.
      * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
      * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
+     * @param skiptoken An opaque token that identifies a starting point in the collection.
+     * @param top The number of elements to return from the collection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -2359,7 +2363,7 @@ public interface LongTermRetentionBackupsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<LongTermRetentionBackupInner> listByLocation(String locationName, Boolean onlyLatestPerDatabase,
-        DatabaseState databaseState, Context context);
+        DatabaseState databaseState, String skiptoken, Long top, Context context);
 
     /**
      * Lists the long term retention backups for a given server.
@@ -2368,6 +2372,8 @@ public interface LongTermRetentionBackupsClient {
      * @param longTermRetentionServerName The name of the server.
      * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
      * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
+     * @param skiptoken An opaque token that identifies a starting point in the collection.
+     * @param top The number of elements to return from the collection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2375,7 +2381,7 @@ public interface LongTermRetentionBackupsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<LongTermRetentionBackupInner> listByServerAsync(String locationName, String longTermRetentionServerName,
-        Boolean onlyLatestPerDatabase, DatabaseState databaseState);
+        Boolean onlyLatestPerDatabase, DatabaseState databaseState, String skiptoken, Long top);
 
     /**
      * Lists the long term retention backups for a given server.
@@ -2410,6 +2416,8 @@ public interface LongTermRetentionBackupsClient {
      * @param longTermRetentionServerName The name of the server.
      * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
      * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
+     * @param skiptoken An opaque token that identifies a starting point in the collection.
+     * @param top The number of elements to return from the collection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -2418,7 +2426,7 @@ public interface LongTermRetentionBackupsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<LongTermRetentionBackupInner> listByServer(String locationName, String longTermRetentionServerName,
-        Boolean onlyLatestPerDatabase, DatabaseState databaseState, Context context);
+        Boolean onlyLatestPerDatabase, DatabaseState databaseState, String skiptoken, Long top, Context context);
 
     /**
      * Lists the long term retention backups for a given location based on resource group.
@@ -2427,6 +2435,8 @@ public interface LongTermRetentionBackupsClient {
      * @param locationName The location of the database.
      * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
      * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
+     * @param skiptoken An opaque token that identifies a starting point in the collection.
+     * @param top The number of elements to return from the collection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2434,7 +2444,7 @@ public interface LongTermRetentionBackupsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<LongTermRetentionBackupInner> listByResourceGroupLocationAsync(String resourceGroupName,
-        String locationName, Boolean onlyLatestPerDatabase, DatabaseState databaseState);
+        String locationName, Boolean onlyLatestPerDatabase, DatabaseState databaseState, String skiptoken, Long top);
 
     /**
      * Lists the long term retention backups for a given location based on resource group.
@@ -2471,6 +2481,8 @@ public interface LongTermRetentionBackupsClient {
      * @param locationName The location of the database.
      * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
      * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
+     * @param skiptoken An opaque token that identifies a starting point in the collection.
+     * @param top The number of elements to return from the collection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -2479,7 +2491,8 @@ public interface LongTermRetentionBackupsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<LongTermRetentionBackupInner> listByResourceGroupLocation(String resourceGroupName,
-        String locationName, Boolean onlyLatestPerDatabase, DatabaseState databaseState, Context context);
+        String locationName, Boolean onlyLatestPerDatabase, DatabaseState databaseState, String skiptoken, Long top,
+        Context context);
 
     /**
      * Lists the long term retention backups for a given server based on resource groups.
@@ -2489,6 +2502,8 @@ public interface LongTermRetentionBackupsClient {
      * @param longTermRetentionServerName The name of the server.
      * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
      * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
+     * @param skiptoken An opaque token that identifies a starting point in the collection.
+     * @param top The number of elements to return from the collection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2497,7 +2512,7 @@ public interface LongTermRetentionBackupsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<LongTermRetentionBackupInner> listByResourceGroupServerAsync(String resourceGroupName,
         String locationName, String longTermRetentionServerName, Boolean onlyLatestPerDatabase,
-        DatabaseState databaseState);
+        DatabaseState databaseState, String skiptoken, Long top);
 
     /**
      * Lists the long term retention backups for a given server based on resource groups.
@@ -2537,6 +2552,8 @@ public interface LongTermRetentionBackupsClient {
      * @param longTermRetentionServerName The name of the server.
      * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
      * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
+     * @param skiptoken An opaque token that identifies a starting point in the collection.
+     * @param top The number of elements to return from the collection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -2546,5 +2563,5 @@ public interface LongTermRetentionBackupsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<LongTermRetentionBackupInner> listByResourceGroupServer(String resourceGroupName, String locationName,
         String longTermRetentionServerName, Boolean onlyLatestPerDatabase, DatabaseState databaseState,
-        Context context);
+        String skiptoken, Long top, Context context);
 }

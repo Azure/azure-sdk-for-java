@@ -17,43 +17,38 @@ public final class MongoRoleDefinitionCreateUpdateParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MongoRoleDefinitionCreateUpdateParameters model = BinaryData.fromString(
-            "{\"properties\":{\"roleName\":\"igeleohd\",\"type\":\"CustomRole\",\"databaseName\":\"wzkjopwbeonrlkw\",\"privileges\":[{\"resource\":{\"db\":\"x\",\"collection\":\"akxcptsoqfyiaseq\"},\"actions\":[\"rttzrazisgykiu\"]},{\"resource\":{\"db\":\"anbwzohmnrxxbso\",\"collection\":\"linhmdptysprqs\"},\"actions\":[\"xojpslsvjgp\",\"iufiqwo\",\"xqvapcohh\"]},{\"resource\":{\"db\":\"qpqojxcxzrzd\",\"collection\":\"dzbenri\"},\"actions\":[\"wetzqddtjwfljh\",\"namtuatmzw\"]}],\"roles\":[{\"db\":\"cqtjzmi\",\"role\":\"gbgatzuuvbxn\"},{\"db\":\"ebwgga\",\"role\":\"tzlswvaj\"},{\"db\":\"utlxjoqzasunwqrj\",\"role\":\"rg\"}]}}")
+            "{\"properties\":{\"roleName\":\"rsxaptefh\",\"type\":\"CustomRole\",\"databaseName\":\"jokjl\",\"privileges\":[{\"resource\":{\"db\":\"qjbek\",\"collection\":\"eksnbksdqhjvyk\"},\"actions\":[\"sl\"]}],\"roles\":[{\"db\":\"stcpoqmavnwqjw\",\"role\":\"knlejjjkxybwfd\"},{\"db\":\"jbzten\",\"role\":\"kzykjtjk\"},{\"db\":\"xfwush\",\"role\":\"pkupnq\"},{\"db\":\"gjfbpkuwxeoi\",\"role\":\"fiz\"}]}}")
             .toObject(MongoRoleDefinitionCreateUpdateParameters.class);
-        Assertions.assertEquals("igeleohd", model.roleName());
+        Assertions.assertEquals("rsxaptefh", model.roleName());
         Assertions.assertEquals(MongoRoleDefinitionType.CUSTOM_ROLE, model.type());
-        Assertions.assertEquals("wzkjopwbeonrlkw", model.databaseName());
-        Assertions.assertEquals("x", model.privileges().get(0).resource().db());
-        Assertions.assertEquals("akxcptsoqfyiaseq", model.privileges().get(0).resource().collection());
-        Assertions.assertEquals("rttzrazisgykiu", model.privileges().get(0).actions().get(0));
-        Assertions.assertEquals("cqtjzmi", model.roles().get(0).db());
-        Assertions.assertEquals("gbgatzuuvbxn", model.roles().get(0).role());
+        Assertions.assertEquals("jokjl", model.databaseName());
+        Assertions.assertEquals("qjbek", model.privileges().get(0).resource().db());
+        Assertions.assertEquals("eksnbksdqhjvyk", model.privileges().get(0).resource().collection());
+        Assertions.assertEquals("sl", model.privileges().get(0).actions().get(0));
+        Assertions.assertEquals("stcpoqmavnwqjw", model.roles().get(0).db());
+        Assertions.assertEquals("knlejjjkxybwfd", model.roles().get(0).role());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MongoRoleDefinitionCreateUpdateParameters model = new MongoRoleDefinitionCreateUpdateParameters()
-            .withRoleName("igeleohd")
-            .withType(MongoRoleDefinitionType.CUSTOM_ROLE)
-            .withDatabaseName("wzkjopwbeonrlkw")
-            .withPrivileges(Arrays.asList(
-                new Privilege().withResource(new PrivilegeResource().withDb("x").withCollection("akxcptsoqfyiaseq"))
-                    .withActions(Arrays.asList("rttzrazisgykiu")),
-                new Privilege()
-                    .withResource(new PrivilegeResource().withDb("anbwzohmnrxxbso").withCollection("linhmdptysprqs"))
-                    .withActions(Arrays.asList("xojpslsvjgp", "iufiqwo", "xqvapcohh")),
-                new Privilege().withResource(new PrivilegeResource().withDb("qpqojxcxzrzd").withCollection("dzbenri"))
-                    .withActions(Arrays.asList("wetzqddtjwfljh", "namtuatmzw"))))
-            .withRoles(Arrays.asList(new Role().withDb("cqtjzmi").withRole("gbgatzuuvbxn"),
-                new Role().withDb("ebwgga").withRole("tzlswvaj"),
-                new Role().withDb("utlxjoqzasunwqrj").withRole("rg")));
+        MongoRoleDefinitionCreateUpdateParameters model
+            = new MongoRoleDefinitionCreateUpdateParameters().withRoleName("rsxaptefh")
+                .withType(MongoRoleDefinitionType.CUSTOM_ROLE)
+                .withDatabaseName("jokjl")
+                .withPrivileges(Arrays.asList(new Privilege()
+                    .withResource(new PrivilegeResource().withDb("qjbek").withCollection("eksnbksdqhjvyk"))
+                    .withActions(Arrays.asList("sl"))))
+                .withRoles(Arrays.asList(new Role().withDb("stcpoqmavnwqjw").withRole("knlejjjkxybwfd"),
+                    new Role().withDb("jbzten").withRole("kzykjtjk"), new Role().withDb("xfwush").withRole("pkupnq"),
+                    new Role().withDb("gjfbpkuwxeoi").withRole("fiz")));
         model = BinaryData.fromObject(model).toObject(MongoRoleDefinitionCreateUpdateParameters.class);
-        Assertions.assertEquals("igeleohd", model.roleName());
+        Assertions.assertEquals("rsxaptefh", model.roleName());
         Assertions.assertEquals(MongoRoleDefinitionType.CUSTOM_ROLE, model.type());
-        Assertions.assertEquals("wzkjopwbeonrlkw", model.databaseName());
-        Assertions.assertEquals("x", model.privileges().get(0).resource().db());
-        Assertions.assertEquals("akxcptsoqfyiaseq", model.privileges().get(0).resource().collection());
-        Assertions.assertEquals("rttzrazisgykiu", model.privileges().get(0).actions().get(0));
-        Assertions.assertEquals("cqtjzmi", model.roles().get(0).db());
-        Assertions.assertEquals("gbgatzuuvbxn", model.roles().get(0).role());
+        Assertions.assertEquals("jokjl", model.databaseName());
+        Assertions.assertEquals("qjbek", model.privileges().get(0).resource().db());
+        Assertions.assertEquals("eksnbksdqhjvyk", model.privileges().get(0).resource().collection());
+        Assertions.assertEquals("sl", model.privileges().get(0).actions().get(0));
+        Assertions.assertEquals("stcpoqmavnwqjw", model.roles().get(0).db());
+        Assertions.assertEquals("knlejjjkxybwfd", model.roles().get(0).role());
     }
 }

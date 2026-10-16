@@ -509,7 +509,7 @@ public class ChangeFeedTest extends TestSuiteBase {
         originalDocument.set("prop", uuid);
 
         return client
-            .replaceDocument(originalDocument.getSelfLink(), originalDocument, null)
+            .replaceDocument(originalDocument.getSelfLink(), null, originalDocument, null)
             .block()
             .getResource();
     }

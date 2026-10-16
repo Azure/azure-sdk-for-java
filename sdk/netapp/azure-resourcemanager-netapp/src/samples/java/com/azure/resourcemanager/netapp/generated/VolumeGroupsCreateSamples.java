@@ -20,7 +20,7 @@ import java.util.Arrays;
  */
 public final class VolumeGroupsCreateSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/VolumeGroups_Create_SapHana.json
+     * x-ms-original-file: 2026-06-15-preview/VolumeGroups_Create_SapHana.json
      */
     /**
      * Sample code: VolumeGroups_Create_SapHana.
@@ -180,7 +180,7 @@ public final class VolumeGroupsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-05-15-preview/VolumeGroups_Create_Oracle.json
+     * x-ms-original-file: 2026-06-15-preview/VolumeGroups_Create_Oracle.json
      */
     /**
      * Sample code: VolumeGroups_Create_Oracle.
@@ -524,7 +524,7 @@ public final class VolumeGroupsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-05-15-preview/VolumeGroups_Create_Custom.json
+     * x-ms-original-file: 2026-06-15-preview/VolumeGroups_Create_Custom.json
      */
     /**
      * Sample code: VolumeGroups_Create_Custom.
@@ -868,7 +868,7 @@ public final class VolumeGroupsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-05-15-preview/VolumeGroups_Create_Custom_SMB.json
+     * x-ms-original-file: 2026-06-15-preview/VolumeGroups_Create_Custom_SMB.json
      */
     /**
      * Sample code: VolumeGroups_Create_Custom_SMB.

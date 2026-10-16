@@ -38,7 +38,7 @@ import com.azure.resourcemanager.edgeactions.models.EdgeActionExecutionFilterPro
  */
 public final class EdgeActionExecutionFiltersCreateSamples {
     /*
-     * x-ms-original-file: 2025-12-01-preview/EdgeActionExecutionFilters_Create.json
+     * x-ms-original-file: 2026-10-01/EdgeActionExecutionFilters_Create.json
      */
     /**
      * Sample code: CreateEdgeActionExecutionFilters.
@@ -52,7 +52,7 @@ public final class EdgeActionExecutionFiltersCreateSamples {
             .withRegion("global")
             .withExistingEdgeAction("testrg", "edgeAction1")
             .withProperties(new EdgeActionExecutionFilterProperties().withVersionId(
-                "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/testrg/providers/Microsoft.Cdn/EdgeActions/edgeAction1/versions/version1")
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testrg/providers/Microsoft.Cdn/edgeActions/edgeAction1/versions/version1")
                 .withExecutionFilterIdentifierHeaderName("header-key")
                 .withExecutionFilterIdentifierHeaderValue("header-value"))
             .create();
@@ -68,7 +68,7 @@ public final class EdgeActionExecutionFiltersCreateSamples {
  */
 public final class EdgeActionExecutionFiltersDeleteSamples {
     /*
-     * x-ms-original-file: 2025-12-01-preview/EdgeActionExecutionFilters_Delete.json
+     * x-ms-original-file: 2026-10-01/EdgeActionExecutionFilters_Delete.json
      */
     /**
      * Sample code: DeleteEdgeActionExecutionFilters.
@@ -91,7 +91,7 @@ public final class EdgeActionExecutionFiltersDeleteSamples {
  */
 public final class EdgeActionExecutionFiltersGetSamples {
     /*
-     * x-ms-original-file: 2025-12-01-preview/EdgeActionExecutionFilters_Get.json
+     * x-ms-original-file: 2026-10-01/EdgeActionExecutionFilters_Get.json
      */
     /**
      * Sample code: GetEdgeActionExecutionFilters.
@@ -113,7 +113,7 @@ public final class EdgeActionExecutionFiltersGetSamples {
  */
 public final class EdgeActionExecutionFiltersListByEdgeActionSamples {
     /*
-     * x-ms-original-file: 2025-12-01-preview/EdgeActionExecutionFilters_ListByEdgeAction.json
+     * x-ms-original-file: 2026-10-01/EdgeActionExecutionFilters_ListByEdgeAction.json
      */
     /**
      * Sample code: ListEdgeActionsExecutionFiltersByEdgeAction.
@@ -139,7 +139,7 @@ import com.azure.resourcemanager.edgeactions.models.EdgeActionExecutionFilterUpd
  */
 public final class EdgeActionExecutionFiltersUpdateSamples {
     /*
-     * x-ms-original-file: 2025-12-01-preview/EdgeActionExecutionFilters_Update.json
+     * x-ms-original-file: 2026-10-01/EdgeActionExecutionFilters_Update.json
      */
     /**
      * Sample code: UpdateEdgeActionExecutionFilters.
@@ -171,7 +171,7 @@ import com.azure.resourcemanager.edgeactions.models.EdgeActionVersionDeploymentT
  */
 public final class EdgeActionVersionsCreateSamples {
     /*
-     * x-ms-original-file: 2025-12-01-preview/EdgeActionVersions_Create.json
+     * x-ms-original-file: 2026-10-01/EdgeActionVersions_Create.json
      */
     /**
      * Sample code: CreateEdgeActionVersion.
@@ -199,7 +199,7 @@ public final class EdgeActionVersionsCreateSamples {
  */
 public final class EdgeActionVersionsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-12-01-preview/EdgeActionVersions_Delete.json
+     * x-ms-original-file: 2026-10-01/EdgeActionVersions_Delete.json
      */
     /**
      * Sample code: DeleteEdgeActionVersion.
@@ -222,7 +222,7 @@ import com.azure.resourcemanager.edgeactions.fluent.models.VersionCodeInner;
  */
 public final class EdgeActionVersionsDeployVersionCodeSamples {
     /*
-     * x-ms-original-file: 2025-12-01-preview/EdgeActionVersions_DeployVersionCode.json
+     * x-ms-original-file: 2026-10-01/EdgeActionVersions_DeployVersionCode.json
      */
     /**
      * Sample code: DeployVersionCode.
@@ -231,9 +231,9 @@ public final class EdgeActionVersionsDeployVersionCodeSamples {
      */
     public static void deployVersionCode(com.azure.resourcemanager.edgeactions.EdgeActionsManager manager) {
         manager.edgeActionVersions()
-            .deployVersionCode("testrg", "edgeAction1", "version2",
-                new VersionCodeInner().withContent("UEsDBBQAAAAIAI1NzkQAAAAABQAAAA==").withName("zippedFile"),
-                com.azure.core.util.Context.NONE);
+            .deployVersionCode("testrg", "edgeAction1", "version2", new VersionCodeInner().withContent(
+                "UEsDBBQAAAAIAAAAIQAqlc+OKAAAACoAAAAOAAAAZWRnZV9hY3Rpb24uanNLK81LLsnMz1PISMxLyUkt0kgtS80r0VSoVihKLSktylMA860VarkAUEsBAhQAFAAAAAgAAAAhACqVz44oAAAAKgAAAA4AAAAAAAAAAAAAAKSBAAAAAGVkZ2VfYWN0aW9uLmpzUEsFBgAAAAABAAEAPAAAAFQAAAAAAA==")
+                .withName("edge_action.js"), com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -246,7 +246,7 @@ public final class EdgeActionVersionsDeployVersionCodeSamples {
  */
 public final class EdgeActionVersionsGetSamples {
     /*
-     * x-ms-original-file: 2025-12-01-preview/EdgeActionVersions_Get.json
+     * x-ms-original-file: 2026-10-01/EdgeActionVersions_Get.json
      */
     /**
      * Sample code: GetEdgeActionVersion.
@@ -268,7 +268,7 @@ public final class EdgeActionVersionsGetSamples {
  */
 public final class EdgeActionVersionsGetVersionCodeSamples {
     /*
-     * x-ms-original-file: 2025-12-01-preview/EdgeActionVersions_GetVersionCode.json
+     * x-ms-original-file: 2026-10-01/EdgeActionVersions_GetVersionCode.json
      */
     /**
      * Sample code: GetVersionCode.
@@ -290,15 +290,15 @@ public final class EdgeActionVersionsGetVersionCodeSamples {
  */
 public final class EdgeActionVersionsListByEdgeActionSamples {
     /*
-     * x-ms-original-file: 2025-12-01-preview/EdgeActionVersions_ListByEdgeAction.json
+     * x-ms-original-file: 2026-10-01/EdgeActionVersions_ListByEdgeAction.json
      */
     /**
-     * Sample code: GetEdgeActionVersionsByEdgeAction.
+     * Sample code: ListEdgeActionVersionsByEdgeAction.
      * 
      * @param manager Entry point to EdgeActionsManager.
      */
     public static void
-        getEdgeActionVersionsByEdgeAction(com.azure.resourcemanager.edgeactions.EdgeActionsManager manager) {
+        listEdgeActionVersionsByEdgeAction(com.azure.resourcemanager.edgeactions.EdgeActionsManager manager) {
         manager.edgeActionVersions().listByEdgeAction("testrg", "edgeAction1", com.azure.core.util.Context.NONE);
     }
 }
@@ -312,7 +312,7 @@ public final class EdgeActionVersionsListByEdgeActionSamples {
  */
 public final class EdgeActionVersionsSwapDefaultSamples {
     /*
-     * x-ms-original-file: 2025-12-01-preview/EdgeActionVersions_SwapDefault.json
+     * x-ms-original-file: 2026-10-01/EdgeActionVersions_SwapDefault.json
      */
     /**
      * Sample code: Swap Default Version.
@@ -320,7 +320,7 @@ public final class EdgeActionVersionsSwapDefaultSamples {
      * @param manager Entry point to EdgeActionsManager.
      */
     public static void swapDefaultVersion(com.azure.resourcemanager.edgeactions.EdgeActionsManager manager) {
-        manager.edgeActionVersions().swapDefault("testrg", "edgeAction1", "1.0", com.azure.core.util.Context.NONE);
+        manager.edgeActionVersions().swapDefault("testrg", "edgeAction1", "version1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -328,30 +328,47 @@ public final class EdgeActionVersionsSwapDefaultSamples {
 ### EdgeActionVersions_Update
 
 ```java
+import com.azure.resourcemanager.edgeactions.models.EdgeActionIsDefaultVersion;
 import com.azure.resourcemanager.edgeactions.models.EdgeActionVersion;
 import com.azure.resourcemanager.edgeactions.models.EdgeActionVersionDeploymentType;
 import com.azure.resourcemanager.edgeactions.models.EdgeActionVersionUpdateProperties;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Samples for EdgeActionVersions Update.
  */
 public final class EdgeActionVersionsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-12-01-preview/EdgeActionVersions_Update.json
+     * x-ms-original-file: 2026-10-01/EdgeActionVersions_Update.json
      */
     /**
-     * Sample code: UpdateEdgeActionVersion.
+     * Sample code: UpdateEdgeActionVersionTags.
      * 
      * @param manager Entry point to EdgeActionsManager.
      */
-    public static void updateEdgeActionVersion(com.azure.resourcemanager.edgeactions.EdgeActionsManager manager) {
+    public static void updateEdgeActionVersionTags(com.azure.resourcemanager.edgeactions.EdgeActionsManager manager) {
         EdgeActionVersion resource = manager.edgeActionVersions()
             .getWithResponse("testrg", "edgeAction1", "version1", com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
+            .withTags(mapOf("environment", "production"))
             .withProperties(
-                new EdgeActionVersionUpdateProperties().withDeploymentType(EdgeActionVersionDeploymentType.OTHERS))
+                new EdgeActionVersionUpdateProperties().withDeploymentType(EdgeActionVersionDeploymentType.ZIP)
+                    .withIsDefaultVersion(EdgeActionIsDefaultVersion.TRUE))
             .apply();
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }
 ```
@@ -366,7 +383,7 @@ import com.azure.resourcemanager.edgeactions.models.SkuType;
  */
 public final class EdgeActionsCreateSamples {
     /*
-     * x-ms-original-file: 2025-12-01-preview/EdgeActions_Create.json
+     * x-ms-original-file: 2026-10-01/EdgeActions_Create.json
      */
     /**
      * Sample code: CreateEdgeAction.
@@ -392,7 +409,7 @@ public final class EdgeActionsCreateSamples {
  */
 public final class EdgeActionsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-12-01-preview/EdgeActions_Delete.json
+     * x-ms-original-file: 2026-10-01/EdgeActions_Delete.json
      */
     /**
      * Sample code: DeleteEdgeAction.
@@ -413,7 +430,7 @@ public final class EdgeActionsDeleteSamples {
  */
 public final class EdgeActionsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-12-01-preview/EdgeActions_Get.json
+     * x-ms-original-file: 2026-10-01/EdgeActions_Get.json
      */
     /**
      * Sample code: GetEdgeAction.
@@ -434,7 +451,7 @@ public final class EdgeActionsGetByResourceGroupSamples {
  */
 public final class EdgeActionsListSamples {
     /*
-     * x-ms-original-file: 2025-12-01-preview/EdgeActions_ListBySubscription.json
+     * x-ms-original-file: 2026-10-01/EdgeActions_ListBySubscription.json
      */
     /**
      * Sample code: ListEdgeActions_bySubscription.
@@ -455,7 +472,7 @@ public final class EdgeActionsListSamples {
  */
 public final class EdgeActionsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-12-01-preview/EdgeActions_ListByResourceGroup.json
+     * x-ms-original-file: 2026-10-01/EdgeActions_ListByResourceGroup.json
      */
     /**
      * Sample code: ListEdgeActions_byResourceGroup.
@@ -473,14 +490,15 @@ public final class EdgeActionsListByResourceGroupSamples {
 
 ```java
 import com.azure.resourcemanager.edgeactions.models.EdgeAction;
-import com.azure.resourcemanager.edgeactions.models.SkuTypeUpdate;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Samples for EdgeActions Update.
  */
 public final class EdgeActionsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-12-01-preview/EdgeActions_Update.json
+     * x-ms-original-file: 2026-10-01/EdgeActions_Update.json
      */
     /**
      * Sample code: UpdateEdgeAction.
@@ -491,7 +509,19 @@ public final class EdgeActionsUpdateSamples {
         EdgeAction resource = manager.edgeActions()
             .getByResourceGroupWithResponse("testrg", "edgeAction1", com.azure.core.util.Context.NONE)
             .getValue();
-        resource.update().withSku(new SkuTypeUpdate().withName("Standard").withTier("Standard")).apply();
+        resource.update().withTags(mapOf("environment", "production")).apply();
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }
 ```

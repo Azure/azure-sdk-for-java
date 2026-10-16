@@ -13,6 +13,7 @@ import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.elasticsan.ElasticSanManager;
 import com.azure.resourcemanager.elasticsan.models.Volume;
 import com.azure.resourcemanager.elasticsan.models.VolumeCreateOption;
+import com.azure.resourcemanager.elasticsan.models.XMsAccessSoftDeletedResources;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
@@ -23,7 +24,7 @@ public final class VolumesListByVolumeGroupMockTests {
     @Test
     public void testListByVolumeGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"volumeId\":\"ncwsob\",\"creationData\":{\"createSource\":\"DiskSnapshot\",\"sourceId\":\"bnwdcfh\"},\"sizeGiB\":7976075497308020496,\"storageTarget\":{\"targetIqn\":\"fuvglsbjjca\",\"targetPortalHostname\":\"xbvtvudu\",\"targetPortalPort\":1320056895,\"provisioningState\":\"Updating\",\"status\":\"Invalid\"},\"managedBy\":{\"resourceId\":\"qtvcofudflvkgj\"},\"provisioningState\":\"Canceled\"},\"id\":\"knnqvsaznq\",\"name\":\"tor\",\"type\":\"dsg\"}]}";
+            = "{\"value\":[{\"properties\":{\"volumeId\":\"rghxjb\",\"creationData\":{\"createSource\":\"DiskSnapshot\",\"sourceId\":\"cx\"},\"sizeGiB\":5368621628613666594,\"storageTarget\":{\"targetIqn\":\"sofbshrn\",\"targetPortalHostname\":\"buswdvzyy\",\"targetPortalPort\":2106961788,\"provisioningState\":\"Failed\",\"status\":\"Invalid\"},\"managedBy\":[{\"clientId\":\"tkfa\",\"version\":1955812770,\"resourceIds\":[\"gikyzirtx\"]},{\"clientId\":\"uxzejntpsew\",\"version\":354517921,\"resourceIds\":[\"qukrydxt\"]}],\"provisioningState\":\"Creating\"},\"id\":\"ox\",\"name\":\"rgguf\",\"type\":\"yaomtb\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,12 +34,15 @@ public final class VolumesListByVolumeGroupMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Volume> response = manager.volumes()
-            .listByVolumeGroup("xxbuyq", "xzfe", "ztppriolxorjalto", com.azure.core.util.Context.NONE);
+            .listByVolumeGroup("sgogczhonnxk", "lgnyhmo", "sxkkg", XMsAccessSoftDeletedResources.TRUE,
+                com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(VolumeCreateOption.DISK_SNAPSHOT,
             response.iterator().next().creationData().createSource());
-        Assertions.assertEquals("bnwdcfh", response.iterator().next().creationData().sourceId());
-        Assertions.assertEquals(7976075497308020496L, response.iterator().next().sizeGiB());
-        Assertions.assertEquals("qtvcofudflvkgj", response.iterator().next().managedBy().resourceId());
+        Assertions.assertEquals("cx", response.iterator().next().creationData().sourceId());
+        Assertions.assertEquals(5368621628613666594L, response.iterator().next().sizeGiB());
+        Assertions.assertEquals("tkfa", response.iterator().next().managedBy().get(0).clientId());
+        Assertions.assertEquals(1955812770, response.iterator().next().managedBy().get(0).version());
+        Assertions.assertEquals("gikyzirtx", response.iterator().next().managedBy().get(0).resourceIds().get(0));
     }
 }

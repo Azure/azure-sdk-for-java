@@ -61,6 +61,11 @@ public final class StoragePoolProperties implements JsonSerializable<StoragePool
      */
     private String reservationResourceId;
 
+    /*
+     * Platform console access settings for the storage pool
+     */
+    private PlatformConsoleSettings platformConsoleSettings;
+
     /**
      * Creates an instance of StoragePoolProperties class.
      */
@@ -195,6 +200,26 @@ public final class StoragePoolProperties implements JsonSerializable<StoragePool
     }
 
     /**
+     * Get the platformConsoleSettings property: Platform console access settings for the storage pool.
+     * 
+     * @return the platformConsoleSettings value.
+     */
+    public PlatformConsoleSettings platformConsoleSettings() {
+        return this.platformConsoleSettings;
+    }
+
+    /**
+     * Set the platformConsoleSettings property: Platform console access settings for the storage pool.
+     * 
+     * @param platformConsoleSettings the platformConsoleSettings value to set.
+     * @return the StoragePoolProperties object itself.
+     */
+    public StoragePoolProperties withPlatformConsoleSettings(PlatformConsoleSettings platformConsoleSettings) {
+        this.platformConsoleSettings = platformConsoleSettings;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -204,6 +229,7 @@ public final class StoragePoolProperties implements JsonSerializable<StoragePool
         jsonWriter.writeJsonField("vnetInjection", this.vnetInjection);
         jsonWriter.writeLongField("provisionedBandwidthMbPerSec", this.provisionedBandwidthMbPerSec);
         jsonWriter.writeStringField("reservationResourceId", this.reservationResourceId);
+        jsonWriter.writeJsonField("platformConsoleSettings", this.platformConsoleSettings);
         return jsonWriter.writeEndObject();
     }
 
@@ -242,6 +268,9 @@ public final class StoragePoolProperties implements JsonSerializable<StoragePool
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedStoragePoolProperties.provisioningState
                         = ProvisioningState.fromString(reader.getString());
+                } else if ("platformConsoleSettings".equals(fieldName)) {
+                    deserializedStoragePoolProperties.platformConsoleSettings
+                        = PlatformConsoleSettings.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

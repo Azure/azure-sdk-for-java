@@ -12,16 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class ResourceConcurrencyControlOptionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceConcurrencyControlOption model = BinaryData.fromString("{\"policy\":\"SynchronizeBeginExtension\"}")
-            .toObject(ResourceConcurrencyControlOption.class);
-        Assertions.assertEquals(Policy.SYNCHRONIZE_BEGIN_EXTENSION, model.policy());
+        ResourceConcurrencyControlOption model
+            = BinaryData.fromString("{\"policy\":\"NotSpecified\"}").toObject(ResourceConcurrencyControlOption.class);
+        Assertions.assertEquals(Policy.NOT_SPECIFIED, model.policy());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ResourceConcurrencyControlOption model
-            = new ResourceConcurrencyControlOption().withPolicy(Policy.SYNCHRONIZE_BEGIN_EXTENSION);
+            = new ResourceConcurrencyControlOption().withPolicy(Policy.NOT_SPECIFIED);
         model = BinaryData.fromObject(model).toObject(ResourceConcurrencyControlOption.class);
-        Assertions.assertEquals(Policy.SYNCHRONIZE_BEGIN_EXTENSION, model.policy());
+        Assertions.assertEquals(Policy.NOT_SPECIFIED, model.policy());
     }
 }

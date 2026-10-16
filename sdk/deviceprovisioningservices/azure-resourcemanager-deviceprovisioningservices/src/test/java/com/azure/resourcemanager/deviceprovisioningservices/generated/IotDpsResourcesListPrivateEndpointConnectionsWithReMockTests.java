@@ -23,7 +23,7 @@ public final class IotDpsResourcesListPrivateEndpointConnectionsWithReMockTests 
     @Test
     public void testListPrivateEndpointConnectionsWithResponse() throws Exception {
         String responseStr
-            = "[{\"properties\":{\"privateEndpoint\":{\"id\":\"wsuwsyr\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"dsytgadgvr\",\"actionsRequired\":\"aeneqnzarrwl\"}},\"id\":\"uijfqk\",\"name\":\"cewiipfpub\",\"type\":\"ibwwiftohqkv\"},{\"properties\":{\"privateEndpoint\":{\"id\":\"ksgplsa\"},\"privateLinkServiceConnectionState\":{\"status\":\"Disconnected\",\"description\":\"ynfs\",\"actionsRequired\":\"ljphuopxodl\"}},\"id\":\"ynt\",\"name\":\"rz\",\"type\":\"hleosjsw\"}]";
+            = "[{\"properties\":{\"privateEndpoint\":{\"id\":\"thnzd\"},\"privateLinkServiceConnectionState\":{\"status\":\"Disconnected\",\"description\":\"sl\",\"actionsRequired\":\"ayqigynduhav\"}},\"id\":\"lkthu\",\"name\":\"aqolbgycduiertg\",\"type\":\"cym\"},{\"properties\":{\"privateEndpoint\":{\"id\":\"l\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"slqlfmmdn\",\"actionsRequired\":\"glzpswiydm\"}},\"id\":\"yhz\",\"name\":\"xssadbzmnvdf\",\"type\":\"n\"},{\"properties\":{\"privateEndpoint\":{\"id\":\"od\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"zbn\",\"actionsRequired\":\"lylpstdb\"}},\"id\":\"xsrz\",\"name\":\"zucerscdntnev\",\"type\":\"iwjmygtdssls\"}]";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,14 +33,13 @@ public final class IotDpsResourcesListPrivateEndpointConnectionsWithReMockTests 
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         List<PrivateEndpointConnection> response = manager.iotDpsResources()
-            .listPrivateEndpointConnectionsWithResponse("kpw", "reqnovvqfov", com.azure.core.util.Context.NONE)
+            .listPrivateEndpointConnectionsWithResponse("ervnaenqpehi", "doy", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(PrivateLinkServiceConnectionStatus.REJECTED,
+        Assertions.assertEquals(PrivateLinkServiceConnectionStatus.DISCONNECTED,
             response.get(0).properties().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("dsytgadgvr",
-            response.get(0).properties().privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("aeneqnzarrwl",
+        Assertions.assertEquals("sl", response.get(0).properties().privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("ayqigynduhav",
             response.get(0).properties().privateLinkServiceConnectionState().actionsRequired());
     }
 }

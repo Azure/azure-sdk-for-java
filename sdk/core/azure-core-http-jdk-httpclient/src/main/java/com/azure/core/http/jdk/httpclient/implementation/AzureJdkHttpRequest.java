@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.core.http.jdk.httpclient.implementation;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.implementation.util.HttpHeadersAccessHelper;
 import com.azure.core.implementation.util.HttpUtils;
@@ -32,6 +33,7 @@ import static java.net.http.HttpRequest.BodyPublishers.noBody;
  * String comparisons performed.
  */
 public final class AzureJdkHttpRequest extends HttpRequest {
+    private final boolean expectContinue;
     private final BodyPublisher bodyPublisher;
     private final String method;
     private final URI uri;
@@ -61,6 +63,11 @@ public final class AzureJdkHttpRequest extends HttpRequest {
             ? noBody()
             : BodyPublisherUtils.toBodyPublisher(azureCoreRequest, writeTimeout, progressReporter);
 
+        // The JDK enters its wait path on this flag alone, so only opt in when there is content to withhold. A
+        // zero length publisher has nothing to send; a negative length means the length is not known ahead of time,
+        // which is the streaming case the handshake exists for, so it stays eligible.
+        this.expectContinue = bodyPublisher.contentLength() != 0 && expectsContinue(azureCoreRequest);
+
         try {
             uri = azureCoreRequest.getUrl().toURI();
         } catch (URISyntaxException e) {
@@ -88,9 +95,28 @@ public final class AzureJdkHttpRequest extends HttpRequest {
         return responseTimeout;
     }
 
+    /*
+     * Expect is a comma separated list of expectations and values may carry surrounding whitespace, so the
+     * header cannot be compared as a whole.
+     */
+    private static boolean expectsContinue(com.azure.core.http.HttpRequest azureCoreRequest) {
+        String expectHeader = azureCoreRequest.getHeaders().getValue(HttpHeaderName.EXPECT);
+        if (expectHeader == null) {
+            return false;
+        }
+
+        for (String expectation : expectHeader.split(",")) {
+            if ("100-continue".equalsIgnoreCase(expectation.trim())) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     @Override
     public boolean expectContinue() {
-        return false;
+        return expectContinue;
     }
 
     @Override

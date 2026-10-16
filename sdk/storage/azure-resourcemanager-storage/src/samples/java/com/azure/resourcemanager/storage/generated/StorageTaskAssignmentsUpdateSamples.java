@@ -20,7 +20,7 @@ import java.util.Arrays;
  */
 public final class StorageTaskAssignmentsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-04-01/storageTaskAssignmentsCrud/PatchStorageTaskAssignment.json
+     * x-ms-original-file: 2026-06-01/storageTaskAssignmentsCrud/PatchStorageTaskAssignment.json
      */
     /**
      * Sample code: PatchStorageTaskAssignment.
