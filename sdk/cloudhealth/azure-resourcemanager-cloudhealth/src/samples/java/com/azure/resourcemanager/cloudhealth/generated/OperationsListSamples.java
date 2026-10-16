@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cloudhealth.generated;
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2026-10-01-preview/Operations_List.json
+     * x-ms-original-file: 2026-11-01/Operations_List.json
      */
     /**
      * Sample code: Operations_List.
