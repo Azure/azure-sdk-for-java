@@ -67,7 +67,7 @@ public class AgentDraftAsyncSample {
             .then(agentsAsyncClient.listAgentVersions(agentName)
                 .doOnNext(version -> printVersion("Released", version))
                 .then())
-            .then(agentsAsyncClient.listAgentVersions(agentName, null, null, null, null, true)
+            .then(agentsAsyncClient.listAgentVersions(agentName, null, null, null, true)
                 .doOnNext(version -> printVersion("All", version))
                 .then());
 

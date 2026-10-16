@@ -57,7 +57,7 @@ public class VoiceAgentVersionsSample {
                 System.out.printf("  %s (draft=%s)%n", version.getVersion(), version.isDraft());
             }
             System.out.println("All versions including drafts:");
-            for (AgentVersionDetails version : client.listAgentVersions(agentName, null, null, null, null, true)) {
+            for (AgentVersionDetails version : client.listAgentVersions(agentName, null, null, null, true)) {
                 System.out.printf("  %s (draft=%s)%n", version.getVersion(), version.isDraft());
             }
             AgentVersionDetails fetched = client.getAgentVersionDetails(agentName, released.getVersion());

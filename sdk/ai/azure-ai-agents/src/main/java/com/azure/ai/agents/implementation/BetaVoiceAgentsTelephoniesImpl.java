@@ -38,6 +38,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.UrlBuilder;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
@@ -624,7 +625,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
             .withContext(context -> service.listTelephonyBindings(this.client.getEndpoint(), agentName,
                 this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                getValues(res.getValue(), "data"), null, null));
+                getValues(res.getValue(), "data"), getNextLink(res.getValue(), "last_id"), null));
     }
 
     /**
@@ -645,10 +646,6 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
      * for ascending order and`desc`
      * for descending order. Allowed values: "asc", "desc".</td></tr>
-     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. `after` is an object ID that
-     * defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
      * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. `before` is an object ID that
      * defines your place in the list.
      * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
@@ -681,7 +678,24 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listTelephonyBindingsAsync(String agentName, RequestOptions requestOptions) {
-        return new PagedFlux<>(() -> listTelephonyBindingsSinglePageAsync(agentName, requestOptions));
+        return new PagedFlux<>(() -> {
+            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
+            requestOptionsLocal.addRequestCallback(requestLocal -> {
+                UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
+                urlBuilder.setQueryParameter("after", null);
+                requestLocal.setUrl(urlBuilder.toString());
+            });
+            return listTelephonyBindingsSinglePageAsync(agentName, requestOptionsLocal);
+        }, (after) -> {
+            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
+            requestOptionsLocal.addRequestCallback(requestLocal -> {
+                UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
+                urlBuilder.setQueryParameter("after", null);
+                requestLocal.setUrl(urlBuilder.toString());
+            });
+            requestOptionsLocal.addQueryParam("after", after, false);
+            return listTelephonyBindingsSinglePageAsync(agentName, requestOptionsLocal);
+        });
     }
 
     /**
@@ -742,7 +756,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
         Response<BinaryData> res = service.listTelephonyBindingsSync(this.client.getEndpoint(), agentName,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-            getValues(res.getValue(), "data"), null, null);
+            getValues(res.getValue(), "data"), getNextLink(res.getValue(), "last_id"), null);
     }
 
     /**
@@ -763,10 +777,6 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
      * for ascending order and`desc`
      * for descending order. Allowed values: "asc", "desc".</td></tr>
-     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. `after` is an object ID that
-     * defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
      * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. `before` is an object ID that
      * defines your place in the list.
      * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
@@ -799,7 +809,24 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listTelephonyBindings(String agentName, RequestOptions requestOptions) {
-        return new PagedIterable<>(() -> listTelephonyBindingsSinglePage(agentName, requestOptions));
+        return new PagedIterable<>(() -> {
+            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
+            requestOptionsLocal.addRequestCallback(requestLocal -> {
+                UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
+                urlBuilder.setQueryParameter("after", null);
+                requestLocal.setUrl(urlBuilder.toString());
+            });
+            return listTelephonyBindingsSinglePage(agentName, requestOptionsLocal);
+        }, (after) -> {
+            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
+            requestOptionsLocal.addRequestCallback(requestLocal -> {
+                UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
+                urlBuilder.setQueryParameter("after", null);
+                requestLocal.setUrl(urlBuilder.toString());
+            });
+            requestOptionsLocal.addQueryParam("after", after, false);
+            return listTelephonyBindingsSinglePage(agentName, requestOptionsLocal);
+        });
     }
 
     /**
@@ -1140,7 +1167,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
             .withContext(context -> service.listTelephonyCalls(this.client.getEndpoint(), agentName,
                 this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                getValues(res.getValue(), "data"), null, null));
+                getValues(res.getValue(), "data"), getNextLink(res.getValue(), "last_id"), null));
     }
 
     /**
@@ -1165,10 +1192,6 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
      * for ascending order and`desc`
      * for descending order. Allowed values: "asc", "desc".</td></tr>
-     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. `after` is an object ID that
-     * defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
      * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. `before` is an object ID that
      * defines your place in the list.
      * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
@@ -1211,7 +1234,24 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listTelephonyCallsAsync(String agentName, RequestOptions requestOptions) {
-        return new PagedFlux<>(() -> listTelephonyCallsSinglePageAsync(agentName, requestOptions));
+        return new PagedFlux<>(() -> {
+            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
+            requestOptionsLocal.addRequestCallback(requestLocal -> {
+                UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
+                urlBuilder.setQueryParameter("after", null);
+                requestLocal.setUrl(urlBuilder.toString());
+            });
+            return listTelephonyCallsSinglePageAsync(agentName, requestOptionsLocal);
+        }, (after) -> {
+            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
+            requestOptionsLocal.addRequestCallback(requestLocal -> {
+                UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
+                urlBuilder.setQueryParameter("after", null);
+                requestLocal.setUrl(urlBuilder.toString());
+            });
+            requestOptionsLocal.addQueryParam("after", after, false);
+            return listTelephonyCallsSinglePageAsync(agentName, requestOptionsLocal);
+        });
     }
 
     /**
@@ -1286,7 +1326,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
         Response<BinaryData> res = service.listTelephonyCallsSync(this.client.getEndpoint(), agentName,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-            getValues(res.getValue(), "data"), null, null);
+            getValues(res.getValue(), "data"), getNextLink(res.getValue(), "last_id"), null);
     }
 
     /**
@@ -1311,10 +1351,6 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
      * for ascending order and`desc`
      * for descending order. Allowed values: "asc", "desc".</td></tr>
-     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. `after` is an object ID that
-     * defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
      * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. `before` is an object ID that
      * defines your place in the list.
      * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
@@ -1357,7 +1393,24 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listTelephonyCalls(String agentName, RequestOptions requestOptions) {
-        return new PagedIterable<>(() -> listTelephonyCallsSinglePage(agentName, requestOptions));
+        return new PagedIterable<>(() -> {
+            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
+            requestOptionsLocal.addRequestCallback(requestLocal -> {
+                UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
+                urlBuilder.setQueryParameter("after", null);
+                requestLocal.setUrl(urlBuilder.toString());
+            });
+            return listTelephonyCallsSinglePage(agentName, requestOptionsLocal);
+        }, (after) -> {
+            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
+            requestOptionsLocal.addRequestCallback(requestLocal -> {
+                UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
+                urlBuilder.setQueryParameter("after", null);
+                requestLocal.setUrl(urlBuilder.toString());
+            });
+            requestOptionsLocal.addQueryParam("after", after, false);
+            return listTelephonyCallsSinglePage(agentName, requestOptionsLocal);
+        });
     }
 
     /**

@@ -46,7 +46,7 @@ public class VoiceAgentBasicSample {
 
             AgentDetails agent = client.getAgent(agentName);
             System.out.printf("Retrieved voice agent %s, state %s%n", agent.getName(), agent.getState());
-            for (AgentDetails item : client.listAgents(AgentKind.VOICE, null, null, null, null)) {
+            for (AgentDetails item : client.listAgents(AgentKind.VOICE, null, null, null)) {
                 System.out.println("Voice agent: " + item.getName());
             }
 

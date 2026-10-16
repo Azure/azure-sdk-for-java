@@ -72,7 +72,7 @@ public class ExternalAgentAsyncSample {
                     .then();
 
                 Mono<Void> listExternal = agentsAsyncClient
-                    .listAgents(AgentKind.EXTERNAL, null, null, null, null)
+                    .listAgents(AgentKind.EXTERNAL, null, null, null)
                     .doOnNext(externalAgent -> System.out.printf("    - Agent id: %s, name: %s%n",
                         externalAgent.getId(), externalAgent.getName()))
                     .then();

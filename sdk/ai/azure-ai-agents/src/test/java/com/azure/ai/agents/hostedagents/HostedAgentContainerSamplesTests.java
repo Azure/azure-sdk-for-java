@@ -88,7 +88,7 @@ public class HostedAgentContainerSamplesTests extends ClientTestBase {
             Assertions.assertNotNull(fetched);
             Assertions.assertEquals(session.getAgentSessionId(), fetched.getAgentSessionId());
 
-            PagedIterable<AgentSessionResource> sessions = agentsClient.listSessions(agentName, null, null, null, null);
+            PagedIterable<AgentSessionResource> sessions = agentsClient.listSessions(agentName, null, null, null);
             Assertions.assertTrue(
                 sessions.stream().anyMatch(item -> session.getAgentSessionId().equals(item.getAgentSessionId())));
 
@@ -121,7 +121,7 @@ public class HostedAgentContainerSamplesTests extends ClientTestBase {
                 BinaryData.fromString("Sample session file 2."));
 
             PagedIterable<SessionDirectoryEntry> files
-                = agentsClient.listSessionFiles(agentName, sessionId, "/remote", null, null, null, null);
+                = agentsClient.listSessionFiles(agentName, sessionId, "/remote", null, null, null);
             Assertions
                 .assertTrue(files.stream().map(SessionDirectoryEntry::getName).anyMatch("data_file1.txt"::equals));
 

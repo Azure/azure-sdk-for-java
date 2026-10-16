@@ -48,7 +48,7 @@ public class RubricEvaluatorGenerationAsyncSample {
             generated -> evaluators.getEvaluatorGenerationJob(
                 RubricEvaluatorGenerationSample.generationJobId(generated))
                 .doOnNext(RubricEvaluatorGenerationSample::printJob)
-                .thenMany(evaluators.listEvaluatorGenerationJobs(5, PageOrder.DESC, null, null))
+                .thenMany(evaluators.listEvaluatorGenerationJobs(5, PageOrder.DESC, null))
                 .take(5).doOnNext(RubricEvaluatorGenerationSample::printJob)
                 .then(Mono.usingWhen(Mono.defer(() ->
                     evaluators.createEvaluatorVersion(name, RubricEvaluatorGenerationSample.reviewRubric(generated))),

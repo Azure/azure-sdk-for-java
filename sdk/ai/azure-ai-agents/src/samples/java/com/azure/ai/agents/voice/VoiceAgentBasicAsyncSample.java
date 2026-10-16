@@ -46,7 +46,7 @@ public class VoiceAgentBasicAsyncSample {
             .then(client.getAgent(agentName))
             .doOnNext(agent -> System.out.printf("Retrieved voice agent %s, state %s%n",
                 agent.getName(), agent.getState()))
-            .thenMany(client.listAgents(AgentKind.VOICE, null, null, null, null))
+            .thenMany(client.listAgents(AgentKind.VOICE, null, null, null))
             .doOnNext(agent -> System.out.println("Voice agent: " + agent.getName()))
             .then(client.createAgentVersion(agentName,
                 new CreateAgentVersionInput(VoiceAgentSampleUtils.createDefinition(modelType, model,

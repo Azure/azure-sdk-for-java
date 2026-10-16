@@ -57,7 +57,7 @@ public class SessionFilesAsyncSample {
                     .doOnNext(response -> System.out.printf("Uploaded session file: %s%n", response.getPath()))
                     .then(Mono.defer(() -> {
                         System.out.println("Listing session files for the session at path '/remote'...");
-                        return agentsAsyncClient.listSessionFiles(agentName, sessionId, "/remote", null, null, null, null)
+                        return agentsAsyncClient.listSessionFiles(agentName, sessionId, "/remote", null, null, null)
                             .doOnNext(entry -> System.out.printf("  - name=%s, size=%d, isDirectory=%s%n",
                                 entry.getName(), entry.getSize(), entry.isDirectory()))
                             .then();

@@ -71,7 +71,7 @@ public class AgentDraftSample {
 
             System.out.printf("All versions for agent %s:%n", agentName);
             for (AgentVersionDetails version
-                : agentsClient.listAgentVersions(agentName, null, null, null, null, true)) {
+                : agentsClient.listAgentVersions(agentName, null, null, null, true)) {
                 System.out.printf("    %s (is draft: %s)%n", version.getVersion(), isDraft(version));
             }
         } finally {

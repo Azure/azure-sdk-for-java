@@ -55,15 +55,14 @@ public class AgentOptimizationTests extends AgentOptimizationTestBase {
 
             AgentOptimizationJob retrieved = client.getOptimizationJob(jobId);
             assertEquals(jobId, retrieved.getId());
-            assertTrue(
-                client.listOptimizationJobs(10, PageOrder.DESC, null, null, JobStatus.SUCCEEDED, SUCCESS_AGENT_NAME)
-                    .stream()
-                    .anyMatch(job -> completedJobId.equals(job.getId())));
+            assertTrue(client.listOptimizationJobs(10, PageOrder.DESC, null, JobStatus.SUCCEEDED, SUCCESS_AGENT_NAME)
+                .stream()
+                .anyMatch(job -> completedJobId.equals(job.getId())));
 
             AgentOptimizationCandidate candidate = null;
             boolean foundCandidate = false;
             for (AgentOptimizationCandidate item : client.listOptimizationCandidates(jobId,
-                Collections.singletonList(AgentOptimizationCandidateExpand.MUTATIONS), 10, PageOrder.ASC, null, null)) {
+                Collections.singletonList(AgentOptimizationCandidateExpand.MUTATIONS), 10, PageOrder.ASC, null)) {
                 foundCandidate = true;
                 if (AgentOptimizationCandidateStatus.COMPLETED.equals(item.getStatus()) && item.getOutput() != null) {
                     candidate = item;

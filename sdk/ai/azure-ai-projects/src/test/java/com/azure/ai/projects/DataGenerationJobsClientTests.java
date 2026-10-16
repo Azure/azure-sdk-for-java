@@ -39,7 +39,7 @@ public class DataGenerationJobsClientTests extends ClientTestBase {
     public void dataGenerationJobsListSample(HttpClient httpClient, AIProjectsServiceVersion serviceVersion) {
         DatasetsClient datasetsClient = getClientBuilder(httpClient, serviceVersion).buildDatasetsClient();
 
-        Iterable<DataGenerationJob> jobs = datasetsClient.listGenerationJobs(5, PageOrder.DESC, null, null);
+        Iterable<DataGenerationJob> jobs = datasetsClient.listGenerationJobs(5, PageOrder.DESC, null);
         Assertions.assertNotNull(jobs);
 
         int count = 0;

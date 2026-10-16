@@ -21,7 +21,7 @@ public class ListMemoryStores {
                 .beta().buildBetaMemoryStoresClient();
 
         System.out.println("Listing all memory stores:");
-        for (MemoryStoreDetails store : memoryStoresClient.listMemoryStores(10, PageOrder.DESC, null, null)) {
+        for (MemoryStoreDetails store : memoryStoresClient.listMemoryStores(10, PageOrder.DESC, null)) {
             System.out.println("Memory Store ID: " + store.getId());
             System.out.println("Memory Store Name: " + store.getName());
             System.out.println("Memory Store Description: " + store.getDescription());

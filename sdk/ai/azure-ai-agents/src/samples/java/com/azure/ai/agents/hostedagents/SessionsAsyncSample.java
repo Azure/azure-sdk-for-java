@@ -47,7 +47,7 @@ public class SessionsAsyncSample {
                 return agentsAsyncClient.getSession(agentName, session.getAgentSessionId())
                     .doOnNext(fetched -> System.out.printf("Retrieved session (id: %s, status: %s)%n",
                         fetched.getAgentSessionId(), fetched.getStatus()))
-                    .thenMany(agentsAsyncClient.listSessions(agentName, null, null, null, null)
+                    .thenMany(agentsAsyncClient.listSessions(agentName, null, null, null)
                         .doOnSubscribe(unused -> System.out.println("Listing sessions for the agent..."))
                         .doOnNext(item -> System.out.printf("  - %s (status: %s)%n", item.getAgentSessionId(),
                             item.getStatus())))
