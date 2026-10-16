@@ -176,9 +176,8 @@ public class NettyAsyncHttpClientBuilderTests {
     @EnumSource(HttpProtocolVersion.class)
     public void maximumHttpVersionPreservesPreconfiguredAllocator(HttpProtocolVersion version) {
         HttpClient baseClient = HttpClient.create().option(ChannelOption.ALLOCATOR, UnpooledByteBufAllocator.DEFAULT);
-        NettyAsyncHttpClient client = (NettyAsyncHttpClient) new NettyAsyncHttpClientBuilder(baseClient)
-            .maximumHttpVersion(version)
-            .build();
+        NettyAsyncHttpClient client
+            = (NettyAsyncHttpClient) new NettyAsyncHttpClientBuilder(baseClient).maximumHttpVersion(version).build();
         assertSame(UnpooledByteBufAllocator.DEFAULT,
             client.nettyClient.configuration().options().get(ChannelOption.ALLOCATOR));
     }
