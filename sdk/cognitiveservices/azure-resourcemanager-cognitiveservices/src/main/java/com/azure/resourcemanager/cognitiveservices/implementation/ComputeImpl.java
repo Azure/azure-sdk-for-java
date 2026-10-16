@@ -10,8 +10,6 @@ import com.azure.resourcemanager.cognitiveservices.fluent.models.ComputeInner;
 import com.azure.resourcemanager.cognitiveservices.models.Compute;
 import com.azure.resourcemanager.cognitiveservices.models.ComputeProperties;
 import com.azure.resourcemanager.cognitiveservices.models.Identity;
-import java.util.Collections;
-import java.util.Map;
 
 public final class ComputeImpl implements Compute, Compute.Definition, Compute.Update {
     private ComputeInner innerObject;
@@ -36,15 +34,6 @@ public final class ComputeImpl implements Compute, Compute.Definition, Compute.U
 
     public String etag() {
         return this.innerModel().etag();
-    }
-
-    public Map<String, String> tags() {
-        Map<String, String> inner = this.innerModel().tags();
-        if (inner != null) {
-            return Collections.unmodifiableMap(inner);
-        } else {
-            return Collections.emptyMap();
-        }
     }
 
     public String kind() {
@@ -172,11 +161,6 @@ public final class ComputeImpl implements Compute, Compute.Definition, Compute.U
 
     public ComputeImpl withProperties(ComputeProperties properties) {
         this.innerModel().withProperties(properties);
-        return this;
-    }
-
-    public ComputeImpl withTags(Map<String, String> tags) {
-        this.innerModel().withTags(tags);
         return this;
     }
 

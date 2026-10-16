@@ -13,7 +13,6 @@
     <module>sdk/advisor</module>
     <module>sdk/ai</module>
     <module>sdk/alertsmanagement</module>
-    <module>sdk/anomalydetector</module>
     <module>sdk/apicenter</module>
     <module>sdk/apimanagement</module>
     <module>sdk/appcomplianceautomation</module>
@@ -110,7 +109,6 @@
     <module>sdk/documentintelligence</module>
     <module>sdk/durabletask</module>
     <module>sdk/dynatrace</module>
-    <module>sdk/easm</module>
     <module>sdk/edgeactions</module>
     <module>sdk/edgeorder</module>
     <module>sdk/edgezones</module>
@@ -174,7 +172,6 @@
     <module>sdk/migration</module>
     <module>sdk/migrationdiscoverysap</module>
     <module>sdk/mobilenetwork</module>
-    <module>sdk/modelsrepository</module>
     <module>sdk/mongocluster</module>
     <module>sdk/mongodbatlas</module>
     <module>sdk/monitor</module>
