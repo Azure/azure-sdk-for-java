@@ -27,7 +27,9 @@ public final class DataflowEndpointDataExplorer implements JsonSerializable<Data
     private String database;
 
     /*
-     * Host of the Azure Data Explorer in the form of <cluster>.<region>.kusto.windows.net .
+     * Host of the Azure Data Explorer in the form of <cluster>.<region>.kusto.windows.net (Azure Public) or
+     * <cluster>.<region>.kusto.usgovcloudapi.net (Azure US Government). This will be validated by the regex
+     * `.*\.*\.kusto\.(windows\.net|usgovcloudapi\.net)`.
      */
     private String host;
 
@@ -86,7 +88,9 @@ public final class DataflowEndpointDataExplorer implements JsonSerializable<Data
 
     /**
      * Get the host property: Host of the Azure Data Explorer in the form of
-     * &lt;cluster&gt;.&lt;region&gt;.kusto.windows.net .
+     * &lt;cluster&gt;.&lt;region&gt;.kusto.windows.net (Azure Public) or
+     * &lt;cluster&gt;.&lt;region&gt;.kusto.usgovcloudapi.net (Azure US Government). This will be validated by the regex
+     * `.*\.*\.kusto\.(windows\.net|usgovcloudapi\.net)`.
      * 
      * @return the host value.
      */
@@ -96,7 +100,9 @@ public final class DataflowEndpointDataExplorer implements JsonSerializable<Data
 
     /**
      * Set the host property: Host of the Azure Data Explorer in the form of
-     * &lt;cluster&gt;.&lt;region&gt;.kusto.windows.net .
+     * &lt;cluster&gt;.&lt;region&gt;.kusto.windows.net (Azure Public) or
+     * &lt;cluster&gt;.&lt;region&gt;.kusto.usgovcloudapi.net (Azure US Government). This will be validated by the regex
+     * `.*\.*\.kusto\.(windows\.net|usgovcloudapi\.net)`.
      * 
      * @param host the host value to set.
      * @return the DataflowEndpointDataExplorer object itself.

@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class DiagnosticsLogsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DiagnosticsLogs model = BinaryData.fromString("{\"level\":\"adgakeqsrxybz\"}").toObject(DiagnosticsLogs.class);
-        Assertions.assertEquals("adgakeqsrxybz", model.level());
+        DiagnosticsLogs model = BinaryData.fromString("{\"level\":\"ibmadgakeqsrxy\"}").toObject(DiagnosticsLogs.class);
+        Assertions.assertEquals("ibmadgakeqsrxy", model.level());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DiagnosticsLogs model = new DiagnosticsLogs().withLevel("adgakeqsrxybz");
+        DiagnosticsLogs model = new DiagnosticsLogs().withLevel("ibmadgakeqsrxy");
         model = BinaryData.fromObject(model).toObject(DiagnosticsLogs.class);
-        Assertions.assertEquals("adgakeqsrxybz", model.level());
+        Assertions.assertEquals("ibmadgakeqsrxy", model.level());
     }
 }

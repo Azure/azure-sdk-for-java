@@ -14,20 +14,21 @@ import org.junit.jupiter.api.Assertions;
 public final class BrokerSubscriberQueueCustomPolicySettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BrokerSubscriberQueueCustomPolicySettings model = BinaryData.fromString(
-            "{\"subscriberClientIds\":[\"ggd\",\"jixhbk\",\"ofqweykhmenevfye\"],\"dynamic\":{\"mode\":\"Enabled\"}}")
+        BrokerSubscriberQueueCustomPolicySettings model = BinaryData
+            .fromString(
+                "{\"subscriberClientIds\":[\"dgwdslfhot\",\"mcy\",\"pwlbjnpg\"],\"dynamic\":{\"mode\":\"Disabled\"}}")
             .toObject(BrokerSubscriberQueueCustomPolicySettings.class);
-        Assertions.assertEquals("ggd", model.subscriberClientIds().get(0));
-        Assertions.assertEquals(OperationalMode.ENABLED, model.dynamic().mode());
+        Assertions.assertEquals("dgwdslfhot", model.subscriberClientIds().get(0));
+        Assertions.assertEquals(OperationalMode.DISABLED, model.dynamic().mode());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         BrokerSubscriberQueueCustomPolicySettings model = new BrokerSubscriberQueueCustomPolicySettings()
-            .withSubscriberClientIds(Arrays.asList("ggd", "jixhbk", "ofqweykhmenevfye"))
-            .withDynamic(new BrokerSubscriberQueueDynamic().withMode(OperationalMode.ENABLED));
+            .withSubscriberClientIds(Arrays.asList("dgwdslfhot", "mcy", "pwlbjnpg"))
+            .withDynamic(new BrokerSubscriberQueueDynamic().withMode(OperationalMode.DISABLED));
         model = BinaryData.fromObject(model).toObject(BrokerSubscriberQueueCustomPolicySettings.class);
-        Assertions.assertEquals("ggd", model.subscriberClientIds().get(0));
-        Assertions.assertEquals(OperationalMode.ENABLED, model.dynamic().mode());
+        Assertions.assertEquals("dgwdslfhot", model.subscriberClientIds().get(0));
+        Assertions.assertEquals(OperationalMode.DISABLED, model.dynamic().mode());
     }
 }
