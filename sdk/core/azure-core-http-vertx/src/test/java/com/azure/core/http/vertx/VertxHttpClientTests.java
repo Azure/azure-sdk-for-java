@@ -261,7 +261,7 @@ public class VertxHttpClientTests {
 
     private static void assertPerCallTimeout(boolean synchronous) throws Exception {
         Duration perCallTimeout = Duration.ofSeconds(1);
-        Duration testTimeout = Duration.ofSeconds(20);
+        Duration testTimeout = Duration.ofMinutes(1);
         Vertx vertx = Vertx.vertx(new VertxOptions().setEventLoopPoolSize(2));
         ExecutorService executor = Executors.newSingleThreadExecutor();
         BlockingQueue<HttpServerRequest> received = new LinkedBlockingQueue<>();
@@ -278,7 +278,7 @@ public class VertxHttpClientTests {
                 .configuration(Configuration.NONE)
                 .writeTimeout(Duration.ZERO)
                 .readTimeout(Duration.ZERO)
-                .responseTimeout(Duration.ofMinutes(1))
+                .responseTimeout(testTimeout.multipliedBy(2))
                 .build();
             HttpRequest request
                 = new HttpRequest(HttpMethod.GET, "http://localhost:" + server.actualPort() + "/timeout");

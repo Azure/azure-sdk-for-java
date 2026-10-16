@@ -27,8 +27,7 @@ public final class ManagedComputeDeploymentsDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.managedComputeDeployments()
-            .delete("dsnjzpchiypb", "hmihikt", "ozewbr", com.azure.core.util.Context.NONE);
+        manager.managedComputeDeployments().delete("abhvxjuaivxzn", "rnygti", "kg", com.azure.core.util.Context.NONE);
 
     }
 }

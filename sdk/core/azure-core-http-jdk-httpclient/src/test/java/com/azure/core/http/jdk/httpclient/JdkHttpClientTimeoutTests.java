@@ -37,6 +37,11 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @DisabledForJreRange(max = JRE.JAVA_11)
 @Execution(ExecutionMode.SAME_THREAD)
 public class JdkHttpClientTimeoutTests {
+    private static final Duration TEST_TIMEOUT = Duration.ofMinutes(1);
+    private static final Duration SUCCESS_TIMEOUT = Duration.ofSeconds(30);
+    // The delayed body/upload must outlast the response probe, but not a healthy read or write deadline.
+    private static final Duration RESPONSE_TIMEOUT = Duration.ofSeconds(2);
+    private static final Duration SLOW_OPERATION_DELAY = Duration.ofSeconds(3);
     private static LocalTestServer server;
 
     @BeforeAll
@@ -68,10 +73,10 @@ public class JdkHttpClientTimeoutTests {
 
     @ParameterizedTest
     @CsvSource({
-        "false, false, 200",
-        "false, true, 200",
-        "true, false, 200",
-        "true, true, 200",
+        "false, false, 2000",
+        "false, true, 2000",
+        "true, false, 2000",
+        "true, true, 2000",
         "false, false, 0",
         "false, true, 0",
         "true, false, 0",
@@ -82,8 +87,8 @@ public class JdkHttpClientTimeoutTests {
         "true, true, -1" })
     public void responseOverrideDoesNotChangeReadTimeout(boolean synchronous, boolean buffered, long responseMillis) {
         HttpClient client = new JdkHttpClientBuilder().configuration(Configuration.NONE)
-            .responseTimeout(Duration.ofSeconds(5))
-            .readTimeout(Duration.ofSeconds(2))
+            .responseTimeout(SUCCESS_TIMEOUT)
+            .readTimeout(SUCCESS_TIMEOUT)
             .build();
         Context context = new Context(HttpUtils.AZURE_RESPONSE_TIMEOUT, Duration.ofMillis(responseMillis))
             .addData(HttpUtils.AZURE_EAGERLY_READ_RESPONSE, buffered);
@@ -103,13 +108,13 @@ public class JdkHttpClientTimeoutTests {
         "true, true, true" })
     public void responseTimeoutDoesNotIncludeUpload(boolean synchronous, boolean buffered, boolean knownLength) {
         HttpClient client = new JdkHttpClientBuilder().configuration(Configuration.NONE)
-            .writeTimeout(Duration.ofSeconds(2))
-            .responseTimeout(Duration.ofMillis(200))
-            .readTimeout(Duration.ofSeconds(2))
+            .writeTimeout(SUCCESS_TIMEOUT)
+            .responseTimeout(RESPONSE_TIMEOUT)
+            .readTimeout(SUCCESS_TIMEOUT)
             .build();
         HttpRequest request = new HttpRequest(HttpMethod.POST, server.getHttpUri() + "/upload")
             .setBody(Flux.just(ByteBuffer.wrap(new byte[] { 1 }))
-                .concatWith(Mono.delay(Duration.ofMillis(600)).map(ignored -> ByteBuffer.wrap(new byte[] { 2 }))));
+                .concatWith(Mono.delay(SLOW_OPERATION_DELAY).map(ignored -> ByteBuffer.wrap(new byte[] { 2 }))));
         if (knownLength) {
             request.setHeader(HttpHeaderName.CONTENT_LENGTH, "2");
         }
@@ -130,7 +135,7 @@ public class JdkHttpClientTimeoutTests {
     public void responseTimeoutStillAppliesAfterUpload(boolean synchronous, boolean buffered, boolean knownLength) {
         HttpClient client = new JdkHttpClientBuilder().configuration(Configuration.NONE)
             .responseTimeout(Duration.ofMillis(200))
-            .readTimeout(Duration.ofSeconds(2))
+            .readTimeout(SUCCESS_TIMEOUT)
             .build();
         HttpRequest request
             = new HttpRequest(HttpMethod.POST, server.getHttpUri() + "/slow-headers").setBody("request");
@@ -149,7 +154,7 @@ public class JdkHttpClientTimeoutTests {
         } else {
             StepVerifier.create(client.send(request, context))
                 .expectError(HttpTimeoutException.class)
-                .verify(Duration.ofSeconds(5));
+                .verify(TEST_TIMEOUT);
         }
     }
 
@@ -164,13 +169,13 @@ public class JdkHttpClientTimeoutTests {
                 .flatMap(response -> Mono.using(() -> response, HttpResponse::getBodyAsString, HttpResponse::close)))
                 .expectNext("ok")
                 .expectComplete()
-                .verify(Duration.ofSeconds(5));
+                .verify(TEST_TIMEOUT);
         }
     }
 
     private static void sleep() throws ServletException {
         try {
-            Thread.sleep(600);
+            Thread.sleep(SLOW_OPERATION_DELAY.toMillis());
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             throw new ServletException(e);

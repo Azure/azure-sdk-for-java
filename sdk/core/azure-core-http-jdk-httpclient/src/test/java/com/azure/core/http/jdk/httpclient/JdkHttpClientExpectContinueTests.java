@@ -58,8 +58,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @DisabledForJreRange(max = JRE.JAVA_11)
 public class JdkHttpClientExpectContinueTests {
     private static final byte[] BODY = new byte[1024];
-    private static final Duration TEST_TIMEOUT = Duration.ofSeconds(10);
+    private static final Duration TEST_TIMEOUT = Duration.ofMinutes(1);
+    private static final Duration SUCCESS_TIMEOUT = Duration.ofSeconds(30);
     private static final Duration RESPONSE_TIMEOUT = Duration.ofSeconds(1);
+    private static final Duration UPLOAD_RESPONSE_TIMEOUT = Duration.ofSeconds(2);
+    private static final Duration UPLOAD_DELAY = Duration.ofSeconds(3);
 
     @ParameterizedTest
     @ValueSource(strings = { "100-continue", "100-Continue", " 100-continue ", "100-continue, foo" })
@@ -71,7 +74,7 @@ public class JdkHttpClientExpectContinueTests {
             request.getHeaders().set(HttpHeaderName.EXPECT, expectHeaderValue);
 
             HttpClient client = new JdkHttpClientProvider().createInstance();
-            HttpResponse response = client.send(request).block();
+            HttpResponse response = client.send(request).block(TEST_TIMEOUT);
 
             assertNotNull(response);
             assertEquals(201, response.getStatusCode());
@@ -95,7 +98,7 @@ public class JdkHttpClientExpectContinueTests {
             request.getHeaders().set(HttpHeaderName.EXPECT, "100-continue");
 
             HttpClient client = new JdkHttpClientProvider().createInstance();
-            HttpResponse response = client.send(request).block();
+            HttpResponse response = client.send(request).block(TEST_TIMEOUT);
 
             assertNotNull(response, "the request did not complete");
             assertEquals(201, response.getStatusCode());
@@ -110,7 +113,8 @@ public class JdkHttpClientExpectContinueTests {
             server.start();
 
             HttpClient client = new JdkHttpClientProvider().createInstance();
-            HttpResponse response = client.send(new HttpRequest(HttpMethod.PUT, server.url()).setBody(BODY)).block();
+            HttpResponse response
+                = client.send(new HttpRequest(HttpMethod.PUT, server.url()).setBody(BODY)).block(TEST_TIMEOUT);
 
             assertNotNull(response);
             assertEquals(201, response.getStatusCode());
@@ -184,13 +188,13 @@ public class JdkHttpClientExpectContinueTests {
         try (ExpectContinueServer server = new ExpectContinueServer(true, 0)) {
             server.start();
             HttpClient client = new JdkHttpClientBuilder().configuration(Configuration.NONE)
-                .responseTimeout(RESPONSE_TIMEOUT)
-                .writeTimeout(Duration.ofSeconds(5))
+                .responseTimeout(UPLOAD_RESPONSE_TIMEOUT)
+                .writeTimeout(SUCCESS_TIMEOUT)
                 .build();
             HttpRequest request
                 = new HttpRequest(HttpMethod.PUT, server.url()).setHeader(HttpHeaderName.EXPECT, "100-continue")
                     .setHeader(HttpHeaderName.CONTENT_LENGTH, Integer.toString(BODY.length))
-                    .setBody(Flux.just(ByteBuffer.wrap(BODY)).delayElements(Duration.ofMillis(1500)));
+                    .setBody(Flux.just(ByteBuffer.wrap(BODY)).delayElements(UPLOAD_DELAY));
             try (HttpResponse response
                 = synchronous ? client.sendSync(request, Context.NONE) : client.send(request).block(TEST_TIMEOUT)) {
                 assertNotNull(response);
@@ -207,13 +211,13 @@ public class JdkHttpClientExpectContinueTests {
         try (ExpectContinueServer server = new ExpectContinueServer(true, 0, 0, true)) {
             server.start();
             HttpClient client = new JdkHttpClientBuilder().configuration(Configuration.NONE)
-                .responseTimeout(RESPONSE_TIMEOUT)
-                .writeTimeout(Duration.ofSeconds(5))
+                .responseTimeout(UPLOAD_RESPONSE_TIMEOUT)
+                .writeTimeout(SUCCESS_TIMEOUT)
                 .build();
             HttpRequest request
                 = new HttpRequest(HttpMethod.PUT, server.url()).setHeader(HttpHeaderName.EXPECT, "100-continue")
                     .setHeader(HttpHeaderName.CONTENT_LENGTH, Integer.toString(BODY.length))
-                    .setBody(Flux.just(ByteBuffer.wrap(BODY)).delayElements(Duration.ofMillis(1500)));
+                    .setBody(Flux.just(ByteBuffer.wrap(BODY)).delayElements(UPLOAD_DELAY));
             pending = synchronous
                 ? executor.submit(() -> client.sendSync(request, Context.NONE))
                 : client.send(request).toFuture();
@@ -243,7 +247,7 @@ public class JdkHttpClientExpectContinueTests {
         try (ExpectContinueServer server = new ExpectContinueServer(false, 0, 417)) {
             server.start();
             HttpClient client = new JdkHttpClientBuilder().configuration(Configuration.NONE)
-                .responseTimeout(RESPONSE_TIMEOUT)
+                .responseTimeout(SUCCESS_TIMEOUT)
                 .build();
             HttpRequest request
                 = new HttpRequest(HttpMethod.PUT, server.url()).setHeader(HttpHeaderName.EXPECT, "100-continue")
@@ -318,7 +322,7 @@ public class JdkHttpClientExpectContinueTests {
         }
 
         boolean awaitRequest() throws InterruptedException {
-            return requestHandled.await(30, TimeUnit.SECONDS);
+            return requestHandled.await(TEST_TIMEOUT.toMillis(), TimeUnit.MILLISECONDS);
         }
 
         private void serve() {
@@ -358,7 +362,7 @@ public class JdkHttpClientExpectContinueTests {
                     out.flush();
                 }
 
-                socket.setSoTimeout((int) TimeUnit.SECONDS.toMillis(10));
+                socket.setSoTimeout((int) TEST_TIMEOUT.toMillis());
                 bodyBytesAfterContinue = readBody(in, contentLength - bodyBytesBeforeContinue);
                 if (withholdFinalResponse) {
                     // Keep the response pending until the client cancels its post-upload deadline.

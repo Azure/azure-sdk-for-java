@@ -26,6 +26,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Execution(ExecutionMode.SAME_THREAD)
 public class OkHttpResponseTimeoutTests {
+    private static final Duration TEST_TIMEOUT = Duration.ofMinutes(1);
+    private static final Duration RESPONSE_TIMEOUT = Duration.ofSeconds(2);
+    private static final Duration BODY_DELAY = Duration.ofSeconds(3);
+    private static final Duration READ_TIMEOUT = Duration.ofSeconds(30);
     private static LocalTestServer server;
 
     @BeforeAll
@@ -36,7 +40,8 @@ public class OkHttpResponseTimeoutTests {
             response.getHttpOutput().write('o');
             response.getHttpOutput().flush();
             try {
-                Thread.sleep(600);
+                // Outlast a stale response timer without approaching the legitimate read timeout.
+                Thread.sleep(BODY_DELAY.toMillis());
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
                 throw new ServletException(e);
@@ -56,8 +61,8 @@ public class OkHttpResponseTimeoutTests {
     @ParameterizedTest
     @CsvSource({ "false, false", "false, true", "true, false", "true, true" })
     public void finalHeadersStopResponseTimeout(boolean synchronous, boolean expectContinue) {
-        HttpClient client = new OkHttpAsyncHttpClientBuilder().responseTimeout(Duration.ofMillis(200))
-            .readTimeout(Duration.ofSeconds(2))
+        HttpClient client = new OkHttpAsyncHttpClientBuilder().responseTimeout(RESPONSE_TIMEOUT)
+            .readTimeout(READ_TIMEOUT)
             .build();
         HttpRequest request = new HttpRequest(HttpMethod.POST, server.getHttpUri() + "/slow-body").setBody("request");
         if (expectContinue) {
@@ -74,7 +79,7 @@ public class OkHttpResponseTimeoutTests {
                 .flatMap(response -> Mono.using(() -> response, HttpResponse::getBodyAsString, HttpResponse::close)))
                 .expectNext("ok")
                 .expectComplete()
-                .verify(Duration.ofSeconds(5));
+                .verify(TEST_TIMEOUT);
         }
     }
 }

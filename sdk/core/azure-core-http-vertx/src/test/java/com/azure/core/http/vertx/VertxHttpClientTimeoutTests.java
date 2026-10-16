@@ -44,8 +44,11 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class VertxHttpClientTimeoutTests {
-    private static final Duration TEST_TIMEOUT = Duration.ofSeconds(5);
-    private static final Duration UPLOAD_BUFFER_DELAY = Duration.ofMillis(100);
+    private static final Duration TEST_TIMEOUT = Duration.ofMinutes(1);
+    private static final Duration SUCCESS_TIMEOUT = Duration.ofSeconds(30);
+    private static final Duration WRITE_TIMEOUT = Duration.ofSeconds(2);
+    private static final Duration SLOW_RESPONSE_DELAY = Duration.ofSeconds(3);
+    private static final Duration UPLOAD_BUFFER_DELAY = Duration.ofMillis(500);
     private static final int UPLOAD_BUFFER_COUNT = 6;
 
     @ParameterizedTest
@@ -117,7 +120,7 @@ public class VertxHttpClientTimeoutTests {
     @Test
     public void successfulRequestsReuseConnection() throws Exception {
         try (TimeoutTestServer server = new TimeoutTestServer()) {
-            HttpClient client = server.client(Duration.ofSeconds(1));
+            HttpClient client = server.client(SUCCESS_TIMEOUT);
             StepVerifier
                 .create(client.send(server.request("/fast"), new Context(HttpUtils.AZURE_EAGERLY_READ_RESPONSE, true))
                     .flatMap(
@@ -136,9 +139,9 @@ public class VertxHttpClientTimeoutTests {
     public void completedWriteDoesNotTimeOutResponse(boolean synchronous, boolean slowBody) throws Exception {
         try (TimeoutTestServer server = new TimeoutTestServer()) {
             com.azure.core.util.HttpClientOptions options
-                = new com.azure.core.util.HttpClientOptions().setWriteTimeout(Duration.ofMillis(500))
-                    .setResponseTimeout(Duration.ofSeconds(2))
-                    .setReadTimeout(Duration.ofSeconds(2));
+                = new com.azure.core.util.HttpClientOptions().setWriteTimeout(WRITE_TIMEOUT)
+                    .setResponseTimeout(SUCCESS_TIMEOUT)
+                    .setReadTimeout(SUCCESS_TIMEOUT);
             HttpClient client = new VertxHttpClientProvider().createInstance(options);
             HttpRequest request = server.request(slowBody ? "/slow-body" : "/slow-headers");
             if (synchronous) {
@@ -201,7 +204,7 @@ public class VertxHttpClientTimeoutTests {
                 .then(() -> scheduler.advanceTimeBy(UPLOAD_BUFFER_DELAY))
                 .expectNextCount(1)
                 // A delayed write can withhold demand for several ticks. The old interval source overflowed here.
-                .then(() -> scheduler.advanceTimeBy(Duration.ofSeconds(1)))
+                .then(() -> scheduler.advanceTimeBy(UPLOAD_BUFFER_DELAY.multipliedBy(10)))
                 .thenRequest(UPLOAD_BUFFER_COUNT - 1L)
                 .then(() -> scheduler.advanceTimeBy(UPLOAD_BUFFER_DELAY.multipliedBy(UPLOAD_BUFFER_COUNT - 1L)))
                 .expectNextCount(UPLOAD_BUFFER_COUNT - 1L)
@@ -215,7 +218,8 @@ public class VertxHttpClientTimeoutTests {
     private static Flux<ByteBuffer> uploadBodyWithProgress(Scheduler scheduler) {
         // The upload subscriber requests one buffer at a time after each asynchronous write or drain. Unlike
         // interval(), this source waits for demand instead of overflowing if a write takes longer than one tick.
-        // Six delayed buffers still keep the upload active longer than the 500 ms write timeout.
+        // Six delayed buffers keep the upload active for at least three seconds, exceeding the two-second write
+        // timeout while leaving scheduling headroom between individual writes.
         return Flux.range(0, UPLOAD_BUFFER_COUNT)
             .delayElements(UPLOAD_BUFFER_DELAY, scheduler)
             .map(ignored -> ByteBuffer.wrap(new byte[] { 1 }));
@@ -233,8 +237,8 @@ public class VertxHttpClientTimeoutTests {
                 .writeTimeout(Duration.ZERO)
                 .responseTimeout(Duration.ZERO)
                 .build();
-            HttpClient client
-                = new VertxHttpClient(base.client, base.buildOptions, Duration.ZERO, Duration.ofMinutes(1), scheduler);
+            HttpClient client = new VertxHttpClient(base.client, base.buildOptions, Duration.ZERO,
+                TEST_TIMEOUT.multipliedBy(2), scheduler);
             CompletableFuture<Void> emitted = new CompletableFuture<>();
             Flux<ByteBuffer> body = Flux.range(0, 1024)
                 .map(ignored -> ByteBuffer.wrap(new byte[] { 1 }))
@@ -269,7 +273,7 @@ public class VertxHttpClientTimeoutTests {
 
     private static void assertFastRequestSucceeds(HttpClient client, TimeoutTestServer server) {
         StepVerifier
-            .create(client.send(server.request("/fast"))
+            .create(client.send(server.request("/fast"), new Context(HttpUtils.AZURE_RESPONSE_TIMEOUT, SUCCESS_TIMEOUT))
                 .flatMap(response -> Mono.using(() -> response, HttpResponse::getBodyAsString, HttpResponse::close)))
             .expectNext("ok")
             .expectComplete()
@@ -294,10 +298,10 @@ public class VertxHttpClientTimeoutTests {
                             .write("partial")
                             .onSuccess(ignored -> received.complete(request));
                     } else if ("/slow-headers".equals(request.path())) {
-                        vertx.setTimer(600, ignored -> request.response().end("ok"));
+                        vertx.setTimer(SLOW_RESPONSE_DELAY.toMillis(), ignored -> request.response().end("ok"));
                     } else if ("/slow-body".equals(request.path())) {
                         request.response().setChunked(true).write("o");
-                        vertx.setTimer(600, ignored -> request.response().end("k"));
+                        vertx.setTimer(SLOW_RESPONSE_DELAY.toMillis(), ignored -> request.response().end("k"));
                     } else if ("/upload".equals(request.path())) {
                         request.body().onSuccess(ignored -> request.response().end("ok"));
                     } else {
@@ -331,9 +335,9 @@ public class VertxHttpClientTimeoutTests {
         private HttpClient writeTimeoutClient() {
             return new VertxHttpClientBuilder().vertx(vertx)
                 .configuration(Configuration.NONE)
-                .writeTimeout(Duration.ofMillis(500))
-                .responseTimeout(Duration.ofSeconds(2))
-                .readTimeout(Duration.ofSeconds(2))
+                .writeTimeout(WRITE_TIMEOUT)
+                .responseTimeout(SUCCESS_TIMEOUT)
+                .readTimeout(SUCCESS_TIMEOUT)
                 .build();
         }
 

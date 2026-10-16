@@ -323,7 +323,7 @@ public class OkHttpHttpClientBuilderTests {
 
     @ParameterizedTest
     @CsvSource({
-        "123, 234, 345, 123, 234, 345",
+        "123000, 234000, 345000, 123000, 234000, 345000",
         "0, 0, 0, 0, 0, 0",
         "-1, -2, -3, 0, 0, 0",
         "invalid, invalid, invalid, 10000, 60000, 60000" })
@@ -341,14 +341,14 @@ public class OkHttpHttpClientBuilderTests {
     @Test
     public void explicitTimeoutsOverrideConfiguration() {
         Configuration configuration
-            = Configuration.from(new TestConfigurationSource().put(Configuration.REQUEST_CONNECT_TIMEOUT_IN_MS, "123")
-                .put(Configuration.REQUEST_READ_TIMEOUT_IN_MS, "234")
-                .put(Configuration.REQUEST_WRITE_TIMEOUT_IN_MS, "345"));
+            = Configuration.from(new TestConfigurationSource().put(Configuration.REQUEST_CONNECT_TIMEOUT_IN_MS, "123000")
+                .put(Configuration.REQUEST_READ_TIMEOUT_IN_MS, "234000")
+                .put(Configuration.REQUEST_WRITE_TIMEOUT_IN_MS, "345000"));
 
         validateTimeouts(new OkHttpHttpClientBuilder().configuration(configuration)
-            .connectionTimeout(Duration.ofMillis(1001))
-            .readTimeout(Duration.ofMillis(1002))
-            .writeTimeout(Duration.ofMillis(1003)), 1001, 1002, 1003);
+            .connectionTimeout(Duration.ofMillis(60001))
+            .readTimeout(Duration.ofMillis(60002))
+            .writeTimeout(Duration.ofMillis(60003)), 60001, 60002, 60003);
     }
 
     private static void validateTimeouts(OkHttpHttpClientBuilder builder, int connect, int read, int write) {
