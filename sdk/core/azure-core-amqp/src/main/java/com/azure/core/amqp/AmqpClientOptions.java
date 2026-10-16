@@ -25,7 +25,13 @@ public final class AmqpClientOptions extends ClientOptions {
         return this;
     }
 
-    /** {@inheritDoc} **/
+    /**
+     * {@inheritDoc}
+     * <p>
+     * These headers are applied only to the WebSocket upgrade request when using
+     * {@link AmqpTransportType#AMQP_WEB_SOCKETS}. They have no effect when using plain AMQP over TCP.
+     * </p>
+     */
     @Override
     public AmqpClientOptions setHeaders(Iterable<Header> headers) {
         super.setHeaders(headers);
