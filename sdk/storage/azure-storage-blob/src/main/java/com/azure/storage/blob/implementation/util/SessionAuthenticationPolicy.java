@@ -171,9 +171,7 @@ final class SessionAuthenticationPolicy implements HttpPipelinePolicy {
             return null;
         }
 
-        return new SessionRequestContext().setContainerName(containerName)
-            .setAccountName(accountName)
-            .setAcquirer(sessionAcquirer);
+        return new SessionRequestContext(containerName, accountName, sessionAcquirer);
     }
 
     /**

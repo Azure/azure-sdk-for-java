@@ -3,7 +3,11 @@
 
 package com.azure.storage.blob.implementation.util;
 
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.options.SessionOptions;
+
+import java.util.Objects;
 
 /**
  * Carries the request-scoped parameters needed to obtain a {@link SessionCredential}, such as the target
@@ -20,36 +24,38 @@ import com.azure.storage.blob.options.SessionOptions;
  *
  * RESERVED FOR INTERNAL USE.
  */
-public final class SessionRequestContext {
+final class SessionRequestContext {
+    private static final ClientLogger LOGGER = new ClientLogger(SessionRequestContext.class);
 
-    private String containerName;
-    private String accountName;
-    private SessionAcquirer acquirer;
+    private final String containerName;
+    private final String accountName;
+    private final SessionAcquirer acquirer;
 
     /**
      * Creates a new {@link SessionRequestContext}.
-     */
-    public SessionRequestContext() {
-    }
-
-    /**
-     * Gets the name of the container the session should be scoped to, if known.
      *
-     * @return the container name, or {@code null} if not resolved/known for this request.
+     * @param containerName The container name. Must not be null or empty.
+     * @param accountName The account name, or {@code null} if it should be resolved from the acquirer.
+     * @param acquirer The session acquirer.
      */
-    public String getContainerName() {
-        return containerName;
-    }
+    SessionRequestContext(String containerName, String accountName, SessionAcquirer acquirer) {
+        if (CoreUtils.isNullOrEmpty(containerName)) {
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("'containerName' cannot be null or empty."));
+        }
 
-    /**
-     * Sets the name of the container the session should be scoped to.
-     *
-     * @param containerName the container name.
-     * @return the updated {@link SessionRequestContext} object.
-     */
-    public SessionRequestContext setContainerName(String containerName) {
         this.containerName = containerName;
-        return this;
+        this.accountName = accountName;
+        this.acquirer = Objects.requireNonNull(acquirer, "'acquirer' cannot be null.");
+    }
+
+    /**
+     * Gets the name of the container the session should be scoped to.
+     *
+     * @return the container name.
+     */
+    String getContainerName() {
+        return containerName;
     }
 
     /**
@@ -57,38 +63,16 @@ public final class SessionRequestContext {
      *
      * @return the account name, or {@code null} if not resolved/known for this request.
      */
-    public String getAccountName() {
+    String getAccountName() {
         return accountName;
-    }
-
-    /**
-     * Sets the name of the storage account the session should be scoped to.
-     *
-     * @param accountName the account name.
-     * @return the updated {@link SessionRequestContext} object.
-     */
-    public SessionRequestContext setAccountName(String accountName) {
-        this.accountName = accountName;
-        return this;
     }
 
     /**
      * Gets the acquirer that sends CreateSession requests through the requesting client's pipeline.
      *
-     * @return the acquirer, or {@code null} if not set.
+     * @return the acquirer.
      */
     SessionAcquirer getAcquirer() {
         return acquirer;
-    }
-
-    /**
-     * Sets the acquirer that sends CreateSession requests through the requesting client's pipeline.
-     *
-     * @param acquirer the acquirer.
-     * @return the updated {@link SessionRequestContext} object.
-     */
-    SessionRequestContext setAcquirer(SessionAcquirer acquirer) {
-        this.acquirer = acquirer;
-        return this;
     }
 }

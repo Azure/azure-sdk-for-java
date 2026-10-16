@@ -277,7 +277,7 @@ public class ContainerSessionProviderCacheTest {
         assertSyncToken(overrideAccountBuilder().buildClient().getHttpPipeline(), CONTAINER_A, FIRST_TOKEN);
         sessionOptions.setAccountName(null);
         assertEquals("override-account",
-            provider.getSession(contextFor(CONTAINER_A).setAccountName("override-account")).getAccountName());
+            provider.getSession(contextFor(CONTAINER_A, "override-account")).getAccountName());
         assertSyncToken(independentClientPipeline(), CONTAINER_A, SECOND_TOKEN);
         assertEquals(ACCOUNT_NAME, provider.getSession(contextFor(CONTAINER_A)).getAccountName());
         assertEquals(2, httpClient.getRequestCount(CONTAINER_A));
@@ -289,7 +289,7 @@ public class ContainerSessionProviderCacheTest {
         enqueueSessionResponse(CONTAINER_A, SECOND_TOKEN, now().plusMinutes(20));
         assertAsyncToken(overrideAccountBuilder().buildAsyncClient().getHttpPipeline(), CONTAINER_A, FIRST_TOKEN);
         sessionOptions.setAccountName(null);
-        StepVerifier.create(provider.getSessionAsync(contextFor(CONTAINER_A).setAccountName("override-account")))
+        StepVerifier.create(provider.getSessionAsync(contextFor(CONTAINER_A, "override-account")))
             .assertNext(credential -> assertEquals("override-account", credential.getAccountName()))
             .verifyComplete();
         assertAsyncToken(independentAsyncClientPipeline(), CONTAINER_A, SECOND_TOKEN);
@@ -761,9 +761,11 @@ public class ContainerSessionProviderCacheTest {
     }
 
     private SessionRequestContext contextFor(String containerName) {
-        return new SessionRequestContext().setContainerName(containerName)
-            .setAccountName(ACCOUNT_NAME)
-            .setAcquirer(acquirer);
+        return contextFor(containerName, ACCOUNT_NAME);
+    }
+
+    private SessionRequestContext contextFor(String containerName, String accountName) {
+        return new SessionRequestContext(containerName, accountName, acquirer);
     }
 
     private OffsetDateTime now() {
