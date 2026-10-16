@@ -12,8 +12,8 @@ public final class PlaywrightQuotaListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PlaywrightQuotaListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"freeTrial\":{\"workspaceId\":\"lcuiywgqywgndr\",\"state\":\"Expired\"},\"provisioningState\":\"Creating\"},\"id\":\"gpphrcgyn\",\"name\":\"ocpecfvmmco\",\"type\":\"fsxlzevgbmqjqa\"},{\"properties\":{\"freeTrial\":{\"workspaceId\":\"pmivkwlzu\",\"state\":\"NotApplicable\"},\"provisioningState\":\"Canceled\"},\"id\":\"nfnbacfionlebxe\",\"name\":\"qgtz\",\"type\":\"dpnqbq\"},{\"properties\":{\"freeTrial\":{\"workspaceId\":\"rjfeallnwsubisnj\",\"state\":\"Expired\"},\"provisioningState\":\"Creating\"},\"id\":\"gnzscxaqwo\",\"name\":\"chcbonqvpkvlrxnj\",\"type\":\"ase\"}],\"nextLink\":\"heoflokeyyienjbd\"}")
+            "{\"value\":[{\"properties\":{\"freeTrial\":{\"workspaceId\":\"f\",\"state\":\"NotApplicable\"},\"provisioningState\":\"Deleting\"},\"id\":\"y\",\"name\":\"enjbdlwtgrhp\",\"type\":\"jp\"},{\"properties\":{\"freeTrial\":{\"workspaceId\":\"asxazjpqyegualhb\",\"state\":\"NotApplicable\"},\"provisioningState\":\"Accepted\"},\"id\":\"jzzvdud\",\"name\":\"wdslfhotwmcy\",\"type\":\"pwlbjnpg\"},{\"properties\":{\"freeTrial\":{\"workspaceId\":\"tadehxnltyfsopp\",\"state\":\"NotApplicable\"},\"provisioningState\":\"Succeeded\"},\"id\":\"nzwdejba\",\"name\":\"orxzdmohctbqvud\",\"type\":\"xdn\"},{\"properties\":{\"freeTrial\":{\"workspaceId\":\"owgujjugwdkcglhs\",\"state\":\"NotApplicable\"},\"provisioningState\":\"Failed\"},\"id\":\"yggdtjixh\",\"name\":\"kuofqweykhme\",\"type\":\"evfyexfwhybcib\"}],\"nextLink\":\"vdcsitynn\"}")
             .toObject(PlaywrightQuotaListResult.class);
-        Assertions.assertEquals("heoflokeyyienjbd", model.nextLink());
+        Assertions.assertEquals("vdcsitynn", model.nextLink());
     }
 }
