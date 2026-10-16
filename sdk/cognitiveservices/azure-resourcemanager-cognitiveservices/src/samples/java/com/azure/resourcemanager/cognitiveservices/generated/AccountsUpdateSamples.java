@@ -5,6 +5,8 @@
 package com.azure.resourcemanager.cognitiveservices.generated;
 
 import com.azure.resourcemanager.cognitiveservices.models.Account;
+import com.azure.resourcemanager.cognitiveservices.models.AccountProperties;
+import com.azure.resourcemanager.cognitiveservices.models.CostControlConnections;
 import com.azure.resourcemanager.cognitiveservices.models.Sku;
 
 /**
@@ -12,7 +14,7 @@ import com.azure.resourcemanager.cognitiveservices.models.Sku;
  */
 public final class AccountsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/UpdateAccount.json
+     * x-ms-original-file: 2026-09-15-preview/UpdateAccount.json
      */
     /**
      * Sample code: Update Account.
@@ -23,6 +25,13 @@ public final class AccountsUpdateSamples {
         Account resource = manager.accounts()
             .getByResourceGroupWithResponse("bvttest", "bingSearch", com.azure.core.util.Context.NONE)
             .getValue();
-        resource.update().withSku(new Sku().withName("S2")).apply();
+        resource.update()
+            .withProperties(new AccountProperties().withCostControlConnections(new CostControlConnections()
+                .withAppInsightsConnectionId(
+                    "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/bvttest/providers/Microsoft.CognitiveServices/accounts/bingSearch/connections/myAppInsightsConnection")
+                .withEventGridConnectionId(
+                    "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/bvttest/providers/Microsoft.CognitiveServices/accounts/bingSearch/connections/myEventGridConnection")))
+            .withSku(new Sku().withName("S2"))
+            .apply();
     }
 }
