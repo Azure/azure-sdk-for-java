@@ -7,6 +7,7 @@ import com.azure.core.annotation.Immutable;
 
 /**
  * Represents the {@code activity.completed} knowledge base retrieval stream event.
+ * Instances are created by the SDK, not by applications.
  * Access the typed payload with {@link #getValue()}.
  *
  * @see KnowledgeBaseRetrievalStreamEvent
@@ -23,7 +24,7 @@ public final class KnowledgeBaseActivityCompletedStreamEvent extends KnowledgeBa
      * @param value The event payload.
      */
     @Generated
-    public KnowledgeBaseActivityCompletedStreamEvent(KnowledgeBaseActivityRecord value) {
+    KnowledgeBaseActivityCompletedStreamEvent(KnowledgeBaseActivityRecord value) {
         super("activity.completed");
         this.value = value;
     }

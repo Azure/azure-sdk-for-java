@@ -8,6 +8,7 @@ import java.util.List;
 
 /**
  * Represents the {@code references.completed} knowledge base retrieval stream event.
+ * Instances are created by the SDK, not by applications.
  * Access the typed payload with {@link #getValue()}.
  *
  * @see KnowledgeBaseRetrievalStreamEvent
@@ -24,7 +25,7 @@ public final class KnowledgeBaseReferencesCompletedStreamEvent extends Knowledge
      * @param value The event payload.
      */
     @Generated
-    public KnowledgeBaseReferencesCompletedStreamEvent(List<KnowledgeBaseReference> value) {
+    KnowledgeBaseReferencesCompletedStreamEvent(List<KnowledgeBaseReference> value) {
         super("references.completed");
         this.value = value;
     }

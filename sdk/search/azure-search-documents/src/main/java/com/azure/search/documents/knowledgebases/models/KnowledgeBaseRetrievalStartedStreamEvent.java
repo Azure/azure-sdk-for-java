@@ -7,6 +7,7 @@ import com.azure.core.annotation.Immutable;
 
 /**
  * Represents the {@code retrieval.started} knowledge base retrieval stream event.
+ * Instances are created by the SDK, not by applications.
  * Access the typed payload with {@link #getValue()}.
  *
  * @see KnowledgeBaseRetrievalStreamEvent
@@ -23,7 +24,7 @@ public final class KnowledgeBaseRetrievalStartedStreamEvent extends KnowledgeBas
      * @param value The event payload.
      */
     @Generated
-    public KnowledgeBaseRetrievalStartedStreamEvent(KnowledgeBaseRetrievalStartedEvent value) {
+    KnowledgeBaseRetrievalStartedStreamEvent(KnowledgeBaseRetrievalStartedEvent value) {
         super("retrieval.started");
         this.value = value;
     }

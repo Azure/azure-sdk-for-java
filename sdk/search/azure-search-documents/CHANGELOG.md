@@ -34,6 +34,8 @@ The following changes apply when upgrading from the preceding `12.1.0` beta rele
   `KnowledgeBaseRetrievalStreamEvent.getEventName()`. Their payloads are not available.
 - Removed JSON serialization and deserialization APIs from retrieval stream event wrappers. Their typed payload
   models retain these APIs.
+- Made retrieval stream event wrapper constructors package-private so only the SDK creates these envelopes.
+  `KnowledgeBaseRetrievalStreamEvent` is now concrete and represents unrecognized, nonterminal events by name only.
 - Removed preview-only image vector queries, `VectorFilterMode.STRICT_POST_FILTER`, Azure Machine Learning vectorizers,
   and `AIFoundryModelCatalogName`.
 - Moved `KnowledgeSourceFileCapacity` to `com.azure.search.documents.indexes.models`.
