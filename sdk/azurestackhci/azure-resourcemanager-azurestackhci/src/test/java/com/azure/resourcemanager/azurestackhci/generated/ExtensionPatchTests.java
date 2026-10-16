@@ -13,21 +13,21 @@ public final class ExtensionPatchTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExtensionPatch model = BinaryData.fromString(
-            "{\"properties\":{\"extensionParameters\":{\"typeHandlerVersion\":\"btfmhklbnldpvcbh\",\"enableAutomaticUpgrade\":false,\"settings\":\"\\\"dataquwusq\\\"\",\"protectedSettings\":\"\\\"datatrpb\\\"\"}}}")
+            "{\"properties\":{\"extensionParameters\":{\"typeHandlerVersion\":\"bcrymodizrx\",\"enableAutomaticUpgrade\":true,\"settings\":\"\\\"datad\\\"\",\"protectedSettings\":\"\\\"dataazpmkmlmv\\\"\"}}}")
             .toObject(ExtensionPatch.class);
-        Assertions.assertEquals("btfmhklbnldpvcbh", model.extensionParameters().typeHandlerVersion());
-        Assertions.assertFalse(model.extensionParameters().enableAutomaticUpgrade());
+        Assertions.assertEquals("bcrymodizrx", model.extensionParameters().typeHandlerVersion());
+        Assertions.assertTrue(model.extensionParameters().enableAutomaticUpgrade());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ExtensionPatch model = new ExtensionPatch()
-            .withExtensionParameters(new ExtensionPatchParameters().withTypeHandlerVersion("btfmhklbnldpvcbh")
-                .withEnableAutomaticUpgrade(false)
-                .withSettings("\"dataquwusq\"")
-                .withProtectedSettings("\"datatrpb\""));
+            .withExtensionParameters(new ExtensionPatchParameters().withTypeHandlerVersion("bcrymodizrx")
+                .withEnableAutomaticUpgrade(true)
+                .withSettings("\"datad\"")
+                .withProtectedSettings("\"dataazpmkmlmv\""));
         model = BinaryData.fromObject(model).toObject(ExtensionPatch.class);
-        Assertions.assertEquals("btfmhklbnldpvcbh", model.extensionParameters().typeHandlerVersion());
-        Assertions.assertFalse(model.extensionParameters().enableAutomaticUpgrade());
+        Assertions.assertEquals("bcrymodizrx", model.extensionParameters().typeHandlerVersion());
+        Assertions.assertTrue(model.extensionParameters().enableAutomaticUpgrade());
     }
 }
