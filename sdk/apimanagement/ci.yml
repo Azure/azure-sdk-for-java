@@ -10,9 +10,11 @@ trigger:
     include:
       - sdk/apimanagement/ci.yml
       - sdk/apimanagement/azure-resourcemanager-apimanagement/
+      - sdk/apimanagement/azure-resourcemanager-aigateway/
     exclude:
       - sdk/apimanagement/pom.xml
       - sdk/apimanagement/azure-resourcemanager-apimanagement/pom.xml
+      - sdk/apimanagement/azure-resourcemanager-aigateway/pom.xml
 
 pr:
   branches:
@@ -25,9 +27,11 @@ pr:
     include:
       - sdk/apimanagement/ci.yml
       - sdk/apimanagement/azure-resourcemanager-apimanagement/
+      - sdk/apimanagement/azure-resourcemanager-aigateway/
     exclude:
       - sdk/apimanagement/pom.xml
       - sdk/apimanagement/azure-resourcemanager-apimanagement/pom.xml
+      - sdk/apimanagement/azure-resourcemanager-aigateway/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
@@ -37,3 +41,6 @@ extends:
       - name: azure-resourcemanager-apimanagement
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerapimanagement
+      - name: azure-resourcemanager-aigateway
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanageraigateway
