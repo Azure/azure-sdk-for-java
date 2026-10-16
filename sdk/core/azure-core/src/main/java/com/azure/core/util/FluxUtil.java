@@ -323,25 +323,33 @@ public final class FluxUtil {
             byte[] buffer = new byte[chunkSize];
 
             try {
-                int offset = 0;
+                int readCount;
+                do {
+                    readCount = stream.read(buffer, 0, chunkSize);
+                } while (readCount == 0);
 
+                if (readCount == -1) {
+                    sink.complete();
+                    return stream;
+                }
+
+                int offset = readCount;
                 while (offset < chunkSize) {
-                    int readCount = inputStream.read(buffer, offset, chunkSize - offset);
+                    // Coalesce only bytes that can be read without blocking for more data.
+                    int available = stream.available();
+                    if (available <= 0) {
+                        break;
+                    }
 
-                    // We have finished reading the stream, trigger onComplete.
-                    if (readCount == -1) {
-                        // If there were bytes read before reaching the end emit the buffer before completing.
-                        if (offset > 0) {
-                            sink.next(ByteBuffer.wrap(buffer, 0, offset));
-                        }
-                        sink.complete();
-                        return stream;
+                    readCount = stream.read(buffer, offset, Math.min(available, chunkSize - offset));
+                    if (readCount <= 0) {
+                        break;
                     }
 
                     offset += readCount;
                 }
 
-                sink.next(ByteBuffer.wrap(buffer));
+                sink.next(ByteBuffer.wrap(buffer, 0, offset));
             } catch (IOException ex) {
                 sink.error(ex);
             }
