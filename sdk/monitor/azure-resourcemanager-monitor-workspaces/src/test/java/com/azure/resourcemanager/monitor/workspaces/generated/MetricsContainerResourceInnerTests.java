@@ -7,22 +7,31 @@ package com.azure.resourcemanager.monitor.workspaces.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.monitor.workspaces.fluent.models.MetricsContainerResourceInner;
 import com.azure.resourcemanager.monitor.workspaces.models.MetricsContainer;
+import com.azure.resourcemanager.monitor.workspaces.models.MetricsLimits;
 import org.junit.jupiter.api.Assertions;
 
 public final class MetricsContainerResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MetricsContainerResourceInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"version\":\"obyu\"},\"id\":\"rpqlp\",\"name\":\"wcciuqgbdbu\",\"type\":\"auvfbtkuwhhmhyk\"}")
+            "{\"properties\":{\"provisioningState\":\"Canceled\",\"limits\":{\"enableAutoScale\":true,\"maxActiveTimeSeries\":8140015037965720640,\"maxEventsPerMinute\":5337955337920205659},\"version\":\"wvxysl\"},\"id\":\"hsfxoblytkb\",\"name\":\"mpew\",\"type\":\"wfbkrvrns\"}")
             .toObject(MetricsContainerResourceInner.class);
-        Assertions.assertEquals("obyu", model.properties().version());
+        Assertions.assertTrue(model.properties().limits().enableAutoScale());
+        Assertions.assertEquals(8140015037965720640L, model.properties().limits().maxActiveTimeSeries());
+        Assertions.assertEquals(5337955337920205659L, model.properties().limits().maxEventsPerMinute());
+        Assertions.assertEquals("wvxysl", model.properties().version());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MetricsContainerResourceInner model
-            = new MetricsContainerResourceInner().withProperties(new MetricsContainer().withVersion("obyu"));
+        MetricsContainerResourceInner model = new MetricsContainerResourceInner()
+            .withProperties(new MetricsContainer().withLimits(new MetricsLimits().withEnableAutoScale(true)
+                .withMaxActiveTimeSeries(8140015037965720640L)
+                .withMaxEventsPerMinute(5337955337920205659L)).withVersion("wvxysl"));
         model = BinaryData.fromObject(model).toObject(MetricsContainerResourceInner.class);
-        Assertions.assertEquals("obyu", model.properties().version());
+        Assertions.assertTrue(model.properties().limits().enableAutoScale());
+        Assertions.assertEquals(8140015037965720640L, model.properties().limits().maxActiveTimeSeries());
+        Assertions.assertEquals(5337955337920205659L, model.properties().limits().maxEventsPerMinute());
+        Assertions.assertEquals("wvxysl", model.properties().version());
     }
 }

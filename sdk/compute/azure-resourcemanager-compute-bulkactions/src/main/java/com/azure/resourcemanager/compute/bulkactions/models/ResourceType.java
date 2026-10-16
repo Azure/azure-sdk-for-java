@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * The type of compute resource targeted by the scheduled action.
+ * The type of compute resource targeted by the recurring bulk action.
  */
 public final class ResourceType extends ExpandableStringEnum<ResourceType> {
     /**
