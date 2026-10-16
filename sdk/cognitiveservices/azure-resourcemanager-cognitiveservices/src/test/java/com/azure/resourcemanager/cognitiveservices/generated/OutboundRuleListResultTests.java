@@ -14,10 +14,10 @@ public final class OutboundRuleListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OutboundRuleListResult model = BinaryData.fromString(
-            "{\"nextLink\":\"umljcirvpef\",\"value\":[{\"properties\":{\"type\":\"OutboundRule\",\"category\":\"Required\",\"status\":\"Provisioning\",\"errorInformation\":\"tjnsx\",\"parentRuleNames\":[\"lnsjhw\",\"uyx\"]},\"id\":\"xqvmvuay\",\"name\":\"uadx\",\"type\":\"xeqbwp\"}]}")
+            "{\"nextLink\":\"nbpvzlq\",\"value\":[{\"properties\":{\"type\":\"OutboundRule\",\"category\":\"Required\",\"status\":\"Failed\",\"errorInformation\":\"ckhmocgjshgouarh\",\"parentRuleNames\":[\"xqqggljky\"]},\"id\":\"jrclrvtzq\",\"name\":\"rbctbhpjhxpcvrd\",\"type\":\"y\"},{\"properties\":{\"type\":\"OutboundRule\",\"category\":\"UserDefined\",\"status\":\"Provisioning\",\"errorInformation\":\"qady\",\"parentRuleNames\":[\"ahwriuomzczfk\",\"ceevsa\",\"xwspcaxikhfjq\",\"bglcxkxgzzromvy\"]},\"id\":\"sem\",\"name\":\"mesrfsvpi\",\"type\":\"kzpatqtdi\"}]}")
             .toObject(OutboundRuleListResult.class);
-        Assertions.assertEquals("umljcirvpef", model.nextLink());
+        Assertions.assertEquals("nbpvzlq", model.nextLink());
         Assertions.assertEquals(RuleCategory.REQUIRED, model.value().get(0).properties().category());
-        Assertions.assertEquals(RuleStatus.PROVISIONING, model.value().get(0).properties().status());
+        Assertions.assertEquals(RuleStatus.FAILED, model.value().get(0).properties().status());
     }
 }
