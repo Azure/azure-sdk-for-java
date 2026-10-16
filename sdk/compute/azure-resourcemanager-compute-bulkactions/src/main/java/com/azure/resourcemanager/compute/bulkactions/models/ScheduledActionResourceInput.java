@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * A compute resource to add to or update in a scheduled action.
+ * A compute resource to add to or update in a recurring bulk action.
  */
 @Fluent
 public final class ScheduledActionResourceInput implements JsonSerializable<ScheduledActionResourceInput> {

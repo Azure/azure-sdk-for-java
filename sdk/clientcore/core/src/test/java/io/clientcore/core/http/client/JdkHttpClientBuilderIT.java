@@ -88,6 +88,7 @@ public class JdkHttpClientBuilderIT {
         Configuration configuration = Configuration.from(new TestConfigurationSource()
             .put(Configuration.HTTP_PROXY,
                 "http://" + PROXY_USER_INFO + proxyEndpoint.getHost() + ":" + proxyEndpoint.getPort())
+            .put(Configuration.HTTPS_PROXY, "")
             .put("java.net.useSystemProxies", "true"));
 
         HttpClient httpClient = new JdkHttpClientBuilder().configuration(configuration).build();

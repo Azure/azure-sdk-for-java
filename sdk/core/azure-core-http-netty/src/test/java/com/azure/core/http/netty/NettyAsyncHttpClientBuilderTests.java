@@ -11,17 +11,23 @@ import com.azure.core.validation.http.models.TestConfigurationSource;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.ConfigurationBuilder;
 import com.azure.core.util.ConfigurationSource;
+import io.netty.buffer.ByteBufAllocator;
+import io.netty.buffer.PooledByteBufAllocator;
+import io.netty.buffer.UnpooledByteBufAllocator;
 import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelOption;
 import io.netty.channel.ChannelPromise;
-import io.netty.channel.nio.NioEventLoop;
-import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.MultiThreadIoEventLoopGroup;
+import io.netty.channel.SingleThreadIoEventLoop;
+import io.netty.channel.nio.NioIoHandler;
 import io.netty.handler.codec.http.cookie.DefaultCookie;
 import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.proxy.HttpProxyHandler;
 import io.netty.handler.proxy.ProxyHandler;
 import io.netty.handler.proxy.Socks4ProxyHandler;
 import io.netty.handler.proxy.Socks5ProxyHandler;
+import io.netty.util.internal.SystemPropertyUtil;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
@@ -52,6 +58,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -102,6 +109,24 @@ public class NettyAsyncHttpClientBuilderTests {
     @Test
     public void startingWithNullClientThrows() {
         assertThrows(NullPointerException.class, () -> new NettyAsyncHttpClientBuilder(null));
+    }
+
+    @Test
+    public void defaultAllocatorRespectsSystemProperty() {
+        NettyAsyncHttpClient client = (NettyAsyncHttpClient) new NettyAsyncHttpClientBuilder().build();
+        ByteBufAllocator expectedAllocator = SystemPropertyUtil.contains("io.netty.allocator.type")
+            ? ByteBufAllocator.DEFAULT
+            : PooledByteBufAllocator.DEFAULT;
+        Object configuredAllocator = client.nettyClient.configuration().options().get(ChannelOption.ALLOCATOR);
+        assertSame(expectedAllocator, configuredAllocator == null ? ByteBufAllocator.DEFAULT : configuredAllocator);
+    }
+
+    @Test
+    public void preconfiguredAllocatorIsMaintained() {
+        HttpClient baseClient = HttpClient.create().option(ChannelOption.ALLOCATOR, UnpooledByteBufAllocator.DEFAULT);
+        NettyAsyncHttpClient client = (NettyAsyncHttpClient) new NettyAsyncHttpClientBuilder(baseClient).build();
+        assertSame(UnpooledByteBufAllocator.DEFAULT,
+            client.nettyClient.configuration().options().get(ChannelOption.ALLOCATOR));
     }
 
     /**
@@ -265,6 +290,8 @@ public class NettyAsyncHttpClientBuilderTests {
 
         Configuration simpleEnvProxy = new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE,
             new TestConfigurationSource().put(Configuration.PROPERTY_HTTP_PROXY, "http://localhost:12345")
+                .put(Configuration.PROPERTY_HTTPS_PROXY, "")
+                .put(Configuration.PROPERTY_NO_PROXY, "")
                 .put(JAVA_SYSTEM_PROXY_PREREQUISITE, "true")).build();
         arguments.add(Arguments.of(true, false, simpleEnvProxy, DEFAULT_URL));
 
@@ -279,6 +306,8 @@ public class NettyAsyncHttpClientBuilderTests {
 
         Configuration envProxyWithAuthentication = new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE,
             new TestConfigurationSource().put(Configuration.PROPERTY_HTTP_PROXY, "http://1:1@localhost:12345")
+                .put(Configuration.PROPERTY_HTTPS_PROXY, "")
+                .put(Configuration.PROPERTY_NO_PROXY, "")
                 .put(JAVA_SYSTEM_PROXY_PREREQUISITE, "true")).build();
         arguments.add(Arguments.of(true, true, envProxyWithAuthentication, DEFAULT_URL));
 
@@ -304,6 +333,7 @@ public class NettyAsyncHttpClientBuilderTests {
             = () -> baseJavaProxyConfigurationSupplier.get().put(JAVA_NON_PROXY_HOSTS, rawJavaNonProxyHosts);
         Supplier<TestConfigurationSource> envNonProxyHostsSupplier
             = () -> new TestConfigurationSource().put(Configuration.PROPERTY_HTTP_PROXY, "http://localhost:12345")
+                .put(Configuration.PROPERTY_HTTPS_PROXY, "")
                 .put(Configuration.PROPERTY_NO_PROXY, rawEnvNonProxyHosts)
                 .put(JAVA_SYSTEM_PROXY_PREREQUISITE, "true");
 
@@ -331,6 +361,7 @@ public class NettyAsyncHttpClientBuilderTests {
             = () -> javaNonProxyHostsSupplier.get().put(JAVA_HTTP_PROXY_USER, "1").put(JAVA_HTTP_PROXY_PASSWORD, "1");
         Supplier<TestConfigurationSource> authenticatedEnvNonProxyHostsSupplier
             = () -> new TestConfigurationSource().put(Configuration.PROPERTY_HTTP_PROXY, "http://1:1@localhost:12345")
+                .put(Configuration.PROPERTY_HTTPS_PROXY, "")
                 .put(Configuration.PROPERTY_NO_PROXY, rawEnvNonProxyHosts)
                 .put(JAVA_SYSTEM_PROXY_PREREQUISITE, "true");
 
@@ -524,22 +555,26 @@ public class NettyAsyncHttpClientBuilderTests {
     public void buildEventLoopClient() {
         String expectedThreadName = "testEventLoop";
         HttpClient validatorClient = HttpClient.create().doAfterResponseSuccess((response, connection) -> {
-            // Validate that the EventLoop being used is a NioEventLoop.
-            NioEventLoop eventLoop = (NioEventLoop) connection.channel().eventLoop();
+            SingleThreadIoEventLoop eventLoop = (SingleThreadIoEventLoop) connection.channel().eventLoop();
             assertNotNull(eventLoop);
 
             assertEquals(expectedThreadName, eventLoop.threadProperties().name());
         });
 
-        NioEventLoopGroup eventLoopGroup = new NioEventLoopGroup(1, (Runnable r) -> new Thread(r, expectedThreadName));
+        MultiThreadIoEventLoopGroup eventLoopGroup = new MultiThreadIoEventLoopGroup(1,
+            (Runnable r) -> new Thread(r, expectedThreadName), NioIoHandler.newFactory());
 
-        NettyAsyncHttpClient nettyClient
-            = (NettyAsyncHttpClient) new NettyAsyncHttpClientBuilder(validatorClient).eventLoopGroup(eventLoopGroup)
-                .build();
+        try {
+            NettyAsyncHttpClient nettyClient
+                = (NettyAsyncHttpClient) new NettyAsyncHttpClientBuilder(validatorClient).eventLoopGroup(eventLoopGroup)
+                    .build();
 
-        StepVerifier.create(nettyClient.send(new HttpRequest(HttpMethod.GET, DEFAULT_URL)))
-            .assertNext(response -> assertEquals(200, response.getStatusCode()))
-            .verifyComplete();
+            StepVerifier.create(nettyClient.send(new HttpRequest(HttpMethod.GET, DEFAULT_URL)))
+                .assertNext(response -> assertEquals(200, response.getStatusCode()))
+                .verifyComplete();
+        } finally {
+            eventLoopGroup.shutdownGracefully().syncUninterruptibly();
+        }
     }
 
     @ParameterizedTest

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class WebApplicationFirewallPoliciesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-01-01/WafPolicyGet.json
+     * x-ms-original-file: 2026-03-01/WafPolicyGet.json
      */
     /**
      * Sample code: Gets a WAF policy within a resource group.
@@ -23,7 +23,7 @@ public final class WebApplicationFirewallPoliciesGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01/WafPolicyGetBasic.json
+     * x-ms-original-file: 2026-03-01/WafPolicyGetBasic.json
      */
     /**
      * Sample code: Gets a Basic tier WAF policy within a resource group.
