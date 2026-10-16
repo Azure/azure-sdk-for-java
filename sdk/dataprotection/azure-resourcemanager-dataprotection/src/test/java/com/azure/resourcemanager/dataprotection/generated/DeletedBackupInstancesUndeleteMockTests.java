@@ -28,7 +28,7 @@ public final class DeletedBackupInstancesUndeleteMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.deletedBackupInstances()
-            .undelete("qwtehtuevr", "rljyoogwxhnsdu", "gwbsreurf", com.azure.core.util.Context.NONE);
+            .undelete("mmzrrscub", "wsdrnpxqwodif", "jxcjrmmuabwib", com.azure.core.util.Context.NONE);
 
     }
 }

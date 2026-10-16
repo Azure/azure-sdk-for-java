@@ -12,11 +12,11 @@ public final class AzureBackupFindRestorableTimeRangesResponseResourceInnerTests
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureBackupFindRestorableTimeRangesResponseResourceInner model = BinaryData.fromString(
-            "{\"properties\":{\"restorableTimeRanges\":[{\"startTime\":\"dgmfpgvmpipasl\",\"endTime\":\"haq\",\"objectType\":\"ss\"},{\"startTime\":\"wutwbdsre\",\"endTime\":\"pdrhne\",\"objectType\":\"owqkdwytisi\"},{\"startTime\":\"ircgpikpz\",\"endTime\":\"mejzanlfzxia\",\"objectType\":\"mbzonokix\"}],\"objectType\":\"q\"},\"id\":\"rgz\",\"name\":\"rlazszrnw\",\"type\":\"indfpwpjyl\"}")
+            "{\"properties\":{\"restorableTimeRanges\":[{\"startTime\":\"aehtwd\",\"endTime\":\"r\",\"objectType\":\"swibyr\"},{\"startTime\":\"dl\",\"endTime\":\"h\",\"objectType\":\"fwpracstwi\"},{\"startTime\":\"ykhevxccedcpnmdy\",\"endTime\":\"dnwzxltjcvnhltiu\",\"objectType\":\"xnavvwxq\"}],\"objectType\":\"y\"},\"id\":\"nyowxwlmdjrkvfg\",\"name\":\"fvpdbo\",\"type\":\"cizsjqlhkrribdei\"}")
             .toObject(AzureBackupFindRestorableTimeRangesResponseResourceInner.class);
-        Assertions.assertEquals("dgmfpgvmpipasl", model.properties().restorableTimeRanges().get(0).startTime());
-        Assertions.assertEquals("haq", model.properties().restorableTimeRanges().get(0).endTime());
-        Assertions.assertEquals("ss", model.properties().restorableTimeRanges().get(0).objectType());
-        Assertions.assertEquals("q", model.properties().objectType());
+        Assertions.assertEquals("aehtwd", model.properties().restorableTimeRanges().get(0).startTime());
+        Assertions.assertEquals("r", model.properties().restorableTimeRanges().get(0).endTime());
+        Assertions.assertEquals("swibyr", model.properties().restorableTimeRanges().get(0).objectType());
+        Assertions.assertEquals("y", model.properties().objectType());
     }
 }

@@ -20,7 +20,7 @@ import reactor.core.publisher.Mono;
 public final class ResourceGuardsGetDisableSoftDeleteRequestsObjectsMockTests {
     @Test
     public void testGetDisableSoftDeleteRequestsObjects() throws Exception {
-        String responseStr = "{\"value\":[{\"id\":\"olewjwi\",\"name\":\"ubwefqs\",\"type\":\"ap\"}]}";
+        String responseStr = "{\"value\":[{\"id\":\"z\",\"name\":\"yn\",\"type\":\"nlqwzdvpiwhx\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class ResourceGuardsGetDisableSoftDeleteRequestsObjectsMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<DppBaseResource> response = manager.resourceGuards()
-            .getDisableSoftDeleteRequestsObjects("pcpil", "hahzvechndbnwi", com.azure.core.util.Context.NONE);
+            .getDisableSoftDeleteRequestsObjects("tlxs", "rpddouifamo", com.azure.core.util.Context.NONE);
 
     }
 }

@@ -25,8 +25,13 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.dataprotection.fluent.DataProtectionManagementClient;
+import com.azure.resourcemanager.dataprotection.implementation.BackupInstanceFromDppCrossTenantVaultsImpl;
+import com.azure.resourcemanager.dataprotection.implementation.BackupInstanceOperationResultFromDppCrossTenantVaultsImpl;
+import com.azure.resourcemanager.dataprotection.implementation.BackupInstanceOperationStatusFromDppCrossTenantVaultsImpl;
 import com.azure.resourcemanager.dataprotection.implementation.BackupInstancesExtensionRoutingsImpl;
+import com.azure.resourcemanager.dataprotection.implementation.BackupInstancesFromDppCrossTenantVaultsImpl;
 import com.azure.resourcemanager.dataprotection.implementation.BackupInstancesImpl;
+import com.azure.resourcemanager.dataprotection.implementation.BackupJobsFromDppCrossTenantVaultsImpl;
 import com.azure.resourcemanager.dataprotection.implementation.BackupPoliciesImpl;
 import com.azure.resourcemanager.dataprotection.implementation.BackupVaultOperationResultsImpl;
 import com.azure.resourcemanager.dataprotection.implementation.BackupVaultsImpl;
@@ -35,22 +40,35 @@ import com.azure.resourcemanager.dataprotection.implementation.DataProtectionOpe
 import com.azure.resourcemanager.dataprotection.implementation.DataProtectionsImpl;
 import com.azure.resourcemanager.dataprotection.implementation.DeletedBackupInstancesImpl;
 import com.azure.resourcemanager.dataprotection.implementation.DeletedBackupVaultsImpl;
+import com.azure.resourcemanager.dataprotection.implementation.DppCrossTenantVaultMappingStatusImpl;
+import com.azure.resourcemanager.dataprotection.implementation.DppCrossTenantVaultMappingsImpl;
 import com.azure.resourcemanager.dataprotection.implementation.DppResourceGuardProxiesImpl;
 import com.azure.resourcemanager.dataprotection.implementation.ExportJobsImpl;
 import com.azure.resourcemanager.dataprotection.implementation.ExportJobsOperationResultsImpl;
 import com.azure.resourcemanager.dataprotection.implementation.FetchCrossRegionRestoreJobsImpl;
 import com.azure.resourcemanager.dataprotection.implementation.FetchCrossRegionRestoreJobsOperationsImpl;
 import com.azure.resourcemanager.dataprotection.implementation.FetchSecondaryRecoveryPointsImpl;
+import com.azure.resourcemanager.dataprotection.implementation.JobFromDppCrossTenantVaultsImpl;
 import com.azure.resourcemanager.dataprotection.implementation.JobsImpl;
 import com.azure.resourcemanager.dataprotection.implementation.OperationResultsImpl;
 import com.azure.resourcemanager.dataprotection.implementation.OperationStatusBackupVaultContextsImpl;
 import com.azure.resourcemanager.dataprotection.implementation.OperationStatusImpl;
 import com.azure.resourcemanager.dataprotection.implementation.OperationStatusResourceGroupContextsImpl;
+import com.azure.resourcemanager.dataprotection.implementation.RecoveryPointFromDppCrossTenantVaultsImpl;
+import com.azure.resourcemanager.dataprotection.implementation.RecoveryPointsFromDppCrossTenantVaultsImpl;
 import com.azure.resourcemanager.dataprotection.implementation.RecoveryPointsImpl;
 import com.azure.resourcemanager.dataprotection.implementation.ResourceGuardsImpl;
+import com.azure.resourcemanager.dataprotection.implementation.RestorableTimeRangesFromDppCrossTenantVaultsImpl;
 import com.azure.resourcemanager.dataprotection.implementation.RestorableTimeRangesImpl;
+import com.azure.resourcemanager.dataprotection.implementation.RestoresFromDppCrossTenantVaultsImpl;
+import com.azure.resourcemanager.dataprotection.implementation.ValidateRestoreFromDppCrossTenantVaultsImpl;
+import com.azure.resourcemanager.dataprotection.models.BackupInstanceFromDppCrossTenantVaults;
+import com.azure.resourcemanager.dataprotection.models.BackupInstanceOperationResultFromDppCrossTenantVaults;
+import com.azure.resourcemanager.dataprotection.models.BackupInstanceOperationStatusFromDppCrossTenantVaults;
 import com.azure.resourcemanager.dataprotection.models.BackupInstances;
 import com.azure.resourcemanager.dataprotection.models.BackupInstancesExtensionRoutings;
+import com.azure.resourcemanager.dataprotection.models.BackupInstancesFromDppCrossTenantVaults;
+import com.azure.resourcemanager.dataprotection.models.BackupJobsFromDppCrossTenantVaults;
 import com.azure.resourcemanager.dataprotection.models.BackupPolicies;
 import com.azure.resourcemanager.dataprotection.models.BackupVaultOperationResults;
 import com.azure.resourcemanager.dataprotection.models.BackupVaults;
@@ -58,20 +76,28 @@ import com.azure.resourcemanager.dataprotection.models.DataProtectionOperations;
 import com.azure.resourcemanager.dataprotection.models.DataProtections;
 import com.azure.resourcemanager.dataprotection.models.DeletedBackupInstances;
 import com.azure.resourcemanager.dataprotection.models.DeletedBackupVaults;
+import com.azure.resourcemanager.dataprotection.models.DppCrossTenantVaultMappingStatus;
+import com.azure.resourcemanager.dataprotection.models.DppCrossTenantVaultMappings;
 import com.azure.resourcemanager.dataprotection.models.DppResourceGuardProxies;
 import com.azure.resourcemanager.dataprotection.models.ExportJobs;
 import com.azure.resourcemanager.dataprotection.models.ExportJobsOperationResults;
 import com.azure.resourcemanager.dataprotection.models.FetchCrossRegionRestoreJobs;
 import com.azure.resourcemanager.dataprotection.models.FetchCrossRegionRestoreJobsOperations;
 import com.azure.resourcemanager.dataprotection.models.FetchSecondaryRecoveryPoints;
+import com.azure.resourcemanager.dataprotection.models.JobFromDppCrossTenantVaults;
 import com.azure.resourcemanager.dataprotection.models.Jobs;
 import com.azure.resourcemanager.dataprotection.models.OperationResults;
 import com.azure.resourcemanager.dataprotection.models.OperationStatus;
 import com.azure.resourcemanager.dataprotection.models.OperationStatusBackupVaultContexts;
 import com.azure.resourcemanager.dataprotection.models.OperationStatusResourceGroupContexts;
+import com.azure.resourcemanager.dataprotection.models.RecoveryPointFromDppCrossTenantVaults;
 import com.azure.resourcemanager.dataprotection.models.RecoveryPoints;
+import com.azure.resourcemanager.dataprotection.models.RecoveryPointsFromDppCrossTenantVaults;
 import com.azure.resourcemanager.dataprotection.models.ResourceGuards;
 import com.azure.resourcemanager.dataprotection.models.RestorableTimeRanges;
+import com.azure.resourcemanager.dataprotection.models.RestorableTimeRangesFromDppCrossTenantVaults;
+import com.azure.resourcemanager.dataprotection.models.RestoresFromDppCrossTenantVaults;
+import com.azure.resourcemanager.dataprotection.models.ValidateRestoreFromDppCrossTenantVaults;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -94,6 +120,32 @@ public final class DataProtectionManager {
     private DeletedBackupVaults deletedBackupVaults;
 
     private ResourceGuards resourceGuards;
+
+    private DppCrossTenantVaultMappings dppCrossTenantVaultMappings;
+
+    private DppCrossTenantVaultMappingStatus dppCrossTenantVaultMappingStatus;
+
+    private BackupInstancesFromDppCrossTenantVaults backupInstancesFromDppCrossTenantVaults;
+
+    private BackupInstanceFromDppCrossTenantVaults backupInstanceFromDppCrossTenantVaults;
+
+    private RestoresFromDppCrossTenantVaults restoresFromDppCrossTenantVaults;
+
+    private ValidateRestoreFromDppCrossTenantVaults validateRestoreFromDppCrossTenantVaults;
+
+    private RestorableTimeRangesFromDppCrossTenantVaults restorableTimeRangesFromDppCrossTenantVaults;
+
+    private RecoveryPointsFromDppCrossTenantVaults recoveryPointsFromDppCrossTenantVaults;
+
+    private RecoveryPointFromDppCrossTenantVaults recoveryPointFromDppCrossTenantVaults;
+
+    private BackupJobsFromDppCrossTenantVaults backupJobsFromDppCrossTenantVaults;
+
+    private JobFromDppCrossTenantVaults jobFromDppCrossTenantVaults;
+
+    private BackupInstanceOperationStatusFromDppCrossTenantVaults backupInstanceOperationStatusFromDppCrossTenantVaults;
+
+    private BackupInstanceOperationResultFromDppCrossTenantVaults backupInstanceOperationResultFromDppCrossTenantVaults;
 
     private BackupVaults backupVaults;
 
@@ -406,6 +458,179 @@ public final class DataProtectionManager {
             this.resourceGuards = new ResourceGuardsImpl(clientObject.getResourceGuards(), this);
         }
         return resourceGuards;
+    }
+
+    /**
+     * Gets the resource collection API of DppCrossTenantVaultMappings. It manages CrossTenantVaultMapping.
+     * 
+     * @return Resource collection API of DppCrossTenantVaultMappings.
+     */
+    public DppCrossTenantVaultMappings dppCrossTenantVaultMappings() {
+        if (this.dppCrossTenantVaultMappings == null) {
+            this.dppCrossTenantVaultMappings
+                = new DppCrossTenantVaultMappingsImpl(clientObject.getDppCrossTenantVaultMappings(), this);
+        }
+        return dppCrossTenantVaultMappings;
+    }
+
+    /**
+     * Gets the resource collection API of DppCrossTenantVaultMappingStatus.
+     * 
+     * @return Resource collection API of DppCrossTenantVaultMappingStatus.
+     */
+    public DppCrossTenantVaultMappingStatus dppCrossTenantVaultMappingStatus() {
+        if (this.dppCrossTenantVaultMappingStatus == null) {
+            this.dppCrossTenantVaultMappingStatus
+                = new DppCrossTenantVaultMappingStatusImpl(clientObject.getDppCrossTenantVaultMappingStatus(), this);
+        }
+        return dppCrossTenantVaultMappingStatus;
+    }
+
+    /**
+     * Gets the resource collection API of BackupInstancesFromDppCrossTenantVaults.
+     * 
+     * @return Resource collection API of BackupInstancesFromDppCrossTenantVaults.
+     */
+    public BackupInstancesFromDppCrossTenantVaults backupInstancesFromDppCrossTenantVaults() {
+        if (this.backupInstancesFromDppCrossTenantVaults == null) {
+            this.backupInstancesFromDppCrossTenantVaults = new BackupInstancesFromDppCrossTenantVaultsImpl(
+                clientObject.getBackupInstancesFromDppCrossTenantVaults(), this);
+        }
+        return backupInstancesFromDppCrossTenantVaults;
+    }
+
+    /**
+     * Gets the resource collection API of BackupInstanceFromDppCrossTenantVaults.
+     * 
+     * @return Resource collection API of BackupInstanceFromDppCrossTenantVaults.
+     */
+    public BackupInstanceFromDppCrossTenantVaults backupInstanceFromDppCrossTenantVaults() {
+        if (this.backupInstanceFromDppCrossTenantVaults == null) {
+            this.backupInstanceFromDppCrossTenantVaults = new BackupInstanceFromDppCrossTenantVaultsImpl(
+                clientObject.getBackupInstanceFromDppCrossTenantVaults(), this);
+        }
+        return backupInstanceFromDppCrossTenantVaults;
+    }
+
+    /**
+     * Gets the resource collection API of RestoresFromDppCrossTenantVaults.
+     * 
+     * @return Resource collection API of RestoresFromDppCrossTenantVaults.
+     */
+    public RestoresFromDppCrossTenantVaults restoresFromDppCrossTenantVaults() {
+        if (this.restoresFromDppCrossTenantVaults == null) {
+            this.restoresFromDppCrossTenantVaults
+                = new RestoresFromDppCrossTenantVaultsImpl(clientObject.getRestoresFromDppCrossTenantVaults(), this);
+        }
+        return restoresFromDppCrossTenantVaults;
+    }
+
+    /**
+     * Gets the resource collection API of ValidateRestoreFromDppCrossTenantVaults.
+     * 
+     * @return Resource collection API of ValidateRestoreFromDppCrossTenantVaults.
+     */
+    public ValidateRestoreFromDppCrossTenantVaults validateRestoreFromDppCrossTenantVaults() {
+        if (this.validateRestoreFromDppCrossTenantVaults == null) {
+            this.validateRestoreFromDppCrossTenantVaults = new ValidateRestoreFromDppCrossTenantVaultsImpl(
+                clientObject.getValidateRestoreFromDppCrossTenantVaults(), this);
+        }
+        return validateRestoreFromDppCrossTenantVaults;
+    }
+
+    /**
+     * Gets the resource collection API of RestorableTimeRangesFromDppCrossTenantVaults.
+     * 
+     * @return Resource collection API of RestorableTimeRangesFromDppCrossTenantVaults.
+     */
+    public RestorableTimeRangesFromDppCrossTenantVaults restorableTimeRangesFromDppCrossTenantVaults() {
+        if (this.restorableTimeRangesFromDppCrossTenantVaults == null) {
+            this.restorableTimeRangesFromDppCrossTenantVaults = new RestorableTimeRangesFromDppCrossTenantVaultsImpl(
+                clientObject.getRestorableTimeRangesFromDppCrossTenantVaults(), this);
+        }
+        return restorableTimeRangesFromDppCrossTenantVaults;
+    }
+
+    /**
+     * Gets the resource collection API of RecoveryPointsFromDppCrossTenantVaults.
+     * 
+     * @return Resource collection API of RecoveryPointsFromDppCrossTenantVaults.
+     */
+    public RecoveryPointsFromDppCrossTenantVaults recoveryPointsFromDppCrossTenantVaults() {
+        if (this.recoveryPointsFromDppCrossTenantVaults == null) {
+            this.recoveryPointsFromDppCrossTenantVaults = new RecoveryPointsFromDppCrossTenantVaultsImpl(
+                clientObject.getRecoveryPointsFromDppCrossTenantVaults(), this);
+        }
+        return recoveryPointsFromDppCrossTenantVaults;
+    }
+
+    /**
+     * Gets the resource collection API of RecoveryPointFromDppCrossTenantVaults.
+     * 
+     * @return Resource collection API of RecoveryPointFromDppCrossTenantVaults.
+     */
+    public RecoveryPointFromDppCrossTenantVaults recoveryPointFromDppCrossTenantVaults() {
+        if (this.recoveryPointFromDppCrossTenantVaults == null) {
+            this.recoveryPointFromDppCrossTenantVaults = new RecoveryPointFromDppCrossTenantVaultsImpl(
+                clientObject.getRecoveryPointFromDppCrossTenantVaults(), this);
+        }
+        return recoveryPointFromDppCrossTenantVaults;
+    }
+
+    /**
+     * Gets the resource collection API of BackupJobsFromDppCrossTenantVaults.
+     * 
+     * @return Resource collection API of BackupJobsFromDppCrossTenantVaults.
+     */
+    public BackupJobsFromDppCrossTenantVaults backupJobsFromDppCrossTenantVaults() {
+        if (this.backupJobsFromDppCrossTenantVaults == null) {
+            this.backupJobsFromDppCrossTenantVaults = new BackupJobsFromDppCrossTenantVaultsImpl(
+                clientObject.getBackupJobsFromDppCrossTenantVaults(), this);
+        }
+        return backupJobsFromDppCrossTenantVaults;
+    }
+
+    /**
+     * Gets the resource collection API of JobFromDppCrossTenantVaults.
+     * 
+     * @return Resource collection API of JobFromDppCrossTenantVaults.
+     */
+    public JobFromDppCrossTenantVaults jobFromDppCrossTenantVaults() {
+        if (this.jobFromDppCrossTenantVaults == null) {
+            this.jobFromDppCrossTenantVaults
+                = new JobFromDppCrossTenantVaultsImpl(clientObject.getJobFromDppCrossTenantVaults(), this);
+        }
+        return jobFromDppCrossTenantVaults;
+    }
+
+    /**
+     * Gets the resource collection API of BackupInstanceOperationStatusFromDppCrossTenantVaults.
+     * 
+     * @return Resource collection API of BackupInstanceOperationStatusFromDppCrossTenantVaults.
+     */
+    public BackupInstanceOperationStatusFromDppCrossTenantVaults
+        backupInstanceOperationStatusFromDppCrossTenantVaults() {
+        if (this.backupInstanceOperationStatusFromDppCrossTenantVaults == null) {
+            this.backupInstanceOperationStatusFromDppCrossTenantVaults
+                = new BackupInstanceOperationStatusFromDppCrossTenantVaultsImpl(
+                    clientObject.getBackupInstanceOperationStatusFromDppCrossTenantVaults(), this);
+        }
+        return backupInstanceOperationStatusFromDppCrossTenantVaults;
+    }
+
+    /**
+     * Gets the resource collection API of BackupInstanceOperationResultFromDppCrossTenantVaults.
+     * 
+     * @return Resource collection API of BackupInstanceOperationResultFromDppCrossTenantVaults.
+     */
+    public BackupInstanceOperationResultFromDppCrossTenantVaults
+        backupInstanceOperationResultFromDppCrossTenantVaults() {
+        if (this.backupInstanceOperationResultFromDppCrossTenantVaults == null) {
+            this.backupInstanceOperationResultFromDppCrossTenantVaults
+                = new BackupInstanceOperationResultFromDppCrossTenantVaultsImpl(
+                    clientObject.getBackupInstanceOperationResultFromDppCrossTenantVaults(), this);
+        }
+        return backupInstanceOperationResultFromDppCrossTenantVaults;
     }
 
     /**
