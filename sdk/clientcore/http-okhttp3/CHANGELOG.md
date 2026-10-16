@@ -8,7 +8,7 @@
 
 ### Bugs Fixed
 
-- Fixed proxy authentication retrying non-CONNECT requests after a 407 response.
+- Prevented proxy authentication retries for HTTPS endpoint 407 responses while preserving CONNECT and cleartext HTTP proxy authentication.
 
 ### Other Changes
 
