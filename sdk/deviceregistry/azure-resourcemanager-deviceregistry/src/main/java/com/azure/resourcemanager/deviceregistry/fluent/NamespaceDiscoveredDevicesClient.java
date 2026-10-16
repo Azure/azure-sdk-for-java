@@ -254,7 +254,7 @@ public interface NamespaceDiscoveredDevicesClient {
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<NamespaceDiscoveredDeviceInner> listByResourceGroup(String resourceGroupName, String namespaceName);
+    PagedIterable<NamespaceDiscoveredDeviceInner> listByNamespace(String resourceGroupName, String namespaceName);
 
     /**
      * List NamespaceDiscoveredDevice resources by Namespace.
@@ -269,6 +269,6 @@ public interface NamespaceDiscoveredDevicesClient {
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<NamespaceDiscoveredDeviceInner> listByResourceGroup(String resourceGroupName, String namespaceName,
+    PagedIterable<NamespaceDiscoveredDeviceInner> listByNamespace(String resourceGroupName, String namespaceName,
         Context context);
 }

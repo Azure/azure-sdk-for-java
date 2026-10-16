@@ -10,10 +10,13 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.deviceregistry.DeviceRegistryManager;
+import com.azure.resourcemanager.deviceregistry.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.deviceregistry.models.ManagedServiceIdentityType;
+import com.azure.resourcemanager.deviceregistry.models.OutboundIdentity;
+import com.azure.resourcemanager.deviceregistry.models.OutboundIdentityType;
 import com.azure.resourcemanager.deviceregistry.models.SchemaRegistry;
 import com.azure.resourcemanager.deviceregistry.models.SchemaRegistryProperties;
-import com.azure.resourcemanager.deviceregistry.models.SystemAssignedServiceIdentity;
-import com.azure.resourcemanager.deviceregistry.models.SystemAssignedServiceIdentityType;
+import com.azure.resourcemanager.deviceregistry.models.UserAssignedIdentity;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
@@ -26,7 +29,7 @@ public final class SchemaRegistriesCreateOrReplaceMockTests {
     @Test
     public void testCreateOrReplace() throws Exception {
         String responseStr
-            = "{\"properties\":{\"uuid\":\"ru\",\"namespace\":\"wigsyeipqdsm\",\"displayName\":\"grq\",\"description\":\"gkkileplkcsmkn\",\"storageAccountContainerUrl\":\"wtbbaedorvvmqf\",\"provisioningState\":\"Succeeded\"},\"identity\":{\"principalId\":\"dgwumgxdgdhp\",\"tenantId\":\"gdexjd\",\"type\":\"SystemAssigned\"},\"location\":\"saq\",\"tags\":{\"lsrs\":\"mmwllc\"},\"id\":\"apte\",\"name\":\"hexcgjokj\",\"type\":\"jnhvlqjbekpeeks\"}";
+            = "{\"properties\":{\"uuid\":\"rp\",\"namespace\":\"rruyuu\",\"displayName\":\"vlm\",\"description\":\"wcolbmxl\",\"storageAccountContainerUrl\":\"nwtpcpahprz\",\"outboundIdentity\":{\"type\":\"UserAssigned\",\"userAssignedIdentity\":\"mt\"},\"provisioningState\":\"Succeeded\"},\"identity\":{\"principalId\":\"xzcmjhngxno\",\"tenantId\":\"xtdisnjevhd\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"oikxkxhnegk\":{\"principalId\":\"dwhepfwwtjfdoes\",\"clientId\":\"hmwcdbck\"}}},\"location\":\"z\",\"tags\":{\"e\":\"t\"},\"id\":\"lvukaobrlb\",\"name\":\"gsnbagnchjh\",\"type\":\"emuowakyw\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,24 +39,30 @@ public final class SchemaRegistriesCreateOrReplaceMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SchemaRegistry response = manager.schemaRegistries()
-            .define("dwckygroe")
-            .withRegion("sxkdnwqapfgsdpc")
-            .withExistingResourceGroup("qm")
-            .withTags(mapOf("kva", "smzhhkuuipldqqct", "qyv", "blhtjq", "a", "eh"))
-            .withProperties(new SchemaRegistryProperties().withNamespace("req")
-                .withDisplayName("kceysfaqegplw")
-                .withDescription("shwddkvbxgk")
-                .withStorageAccountContainerUrl("usybwptdaca"))
-            .withIdentity(new SystemAssignedServiceIdentity().withType(SystemAssignedServiceIdentityType.NONE))
+            .define("fnjyix")
+            .withRegion("blnsntrpcaqk")
+            .withExistingResourceGroup("zd")
+            .withTags(mapOf("fmhklbnld", "kb"))
+            .withProperties(new SchemaRegistryProperties().withNamespace("mzznvalqjrhuzgfx")
+                .withDisplayName("jtpusllywpvtiotz")
+                .withDescription("d")
+                .withStorageAccountContainerUrl("ollgry")
+                .withOutboundIdentity(new OutboundIdentity().withType(OutboundIdentityType.SYSTEM_ASSIGNED)
+                    .withUserAssignedIdentity("asigrowsocne")))
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
+                .withUserAssignedIdentities(mapOf("oiisbamnppcce", new UserAssignedIdentity(), "kzxuiz",
+                    new UserAssignedIdentity(), "azvdhctmmkosz", new UserAssignedIdentity())))
             .create();
 
-        Assertions.assertEquals("saq", response.location());
-        Assertions.assertEquals("mmwllc", response.tags().get("lsrs"));
-        Assertions.assertEquals("wigsyeipqdsm", response.properties().namespace());
-        Assertions.assertEquals("grq", response.properties().displayName());
-        Assertions.assertEquals("gkkileplkcsmkn", response.properties().description());
-        Assertions.assertEquals("wtbbaedorvvmqf", response.properties().storageAccountContainerUrl());
-        Assertions.assertEquals(SystemAssignedServiceIdentityType.SYSTEM_ASSIGNED, response.identity().type());
+        Assertions.assertEquals("z", response.location());
+        Assertions.assertEquals("t", response.tags().get("e"));
+        Assertions.assertEquals("rruyuu", response.properties().namespace());
+        Assertions.assertEquals("vlm", response.properties().displayName());
+        Assertions.assertEquals("wcolbmxl", response.properties().description());
+        Assertions.assertEquals("nwtpcpahprz", response.properties().storageAccountContainerUrl());
+        Assertions.assertEquals(OutboundIdentityType.USER_ASSIGNED, response.properties().outboundIdentity().type());
+        Assertions.assertEquals("mt", response.properties().outboundIdentity().userAssignedIdentity());
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, response.identity().type());
     }
 
     // Use "Map.of" if available

@@ -75,7 +75,7 @@ public interface NamespaceAssets {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a NamespaceAsset list operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<NamespaceAsset> listByResourceGroup(String resourceGroupName, String namespaceName);
+    PagedIterable<NamespaceAsset> listByNamespace(String resourceGroupName, String namespaceName);
 
     /**
      * List NamespaceAsset resources by Namespace.
@@ -88,7 +88,36 @@ public interface NamespaceAssets {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a NamespaceAsset list operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<NamespaceAsset> listByResourceGroup(String resourceGroupName, String namespaceName, Context context);
+    PagedIterable<NamespaceAsset> listByNamespace(String resourceGroupName, String namespaceName, Context context);
+
+    /**
+     * A long-running resource action.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param namespaceName The name of the namespace.
+     * @param assetName The name of the asset.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void executeAction(String resourceGroupName, String namespaceName, String assetName,
+        NamespaceAssetExecuteActionRequest body);
+
+    /**
+     * A long-running resource action.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param namespaceName The name of the namespace.
+     * @param assetName The name of the asset.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void executeAction(String resourceGroupName, String namespaceName, String assetName,
+        NamespaceAssetExecuteActionRequest body, Context context);
 
     /**
      * Get a NamespaceAsset.

@@ -9,15 +9,15 @@ package com.azure.resourcemanager.deviceregistry.generated;
  */
 public final class NamespacesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/List_Namespace_ByResourceGroup.json
+     * x-ms-original-file: 2026-11-01/List_Namespace_ByResourceGroup.json
      */
     /**
-     * Sample code: List_Namespaces_ByResourceGroup.
+     * Sample code: List the Namespaces in a Resource Group.
      * 
      * @param manager Entry point to DeviceRegistryManager.
      */
     public static void
-        listNamespacesByResourceGroup(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+        listTheNamespacesInAResourceGroup(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
         manager.namespaces().listByResourceGroup("myResourceGroup", com.azure.core.util.Context.NONE);
     }
 }

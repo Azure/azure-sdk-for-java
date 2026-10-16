@@ -6,20 +6,45 @@ package com.azure.resourcemanager.deviceregistry.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.deviceregistry.implementation.models.NamespaceListResult;
-import com.azure.resourcemanager.deviceregistry.models.SystemAssignedServiceIdentityType;
+import com.azure.resourcemanager.deviceregistry.models.InboundCallerIdentityType;
+import com.azure.resourcemanager.deviceregistry.models.ManagedServiceIdentityType;
+import com.azure.resourcemanager.deviceregistry.models.OutboundIdentityType;
+import com.azure.resourcemanager.deviceregistry.models.ProvisioningEndpointType;
 import org.junit.jupiter.api.Assertions;
 
 public final class NamespaceListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NamespaceListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"uuid\":\"zoggigrxwburvjxx\",\"messaging\":{\"endpoints\":{\"ou\":{\"address\":\"ydptkoen\"},\"dng\":{\"address\":\"nvudwtiukb\"}}},\"provisioningState\":\"Succeeded\"},\"identity\":{\"principalId\":\"pazyxoegukg\",\"tenantId\":\"piu\",\"type\":\"None\"},\"location\":\"gevqznty\",\"tags\":{\"yhxdeoejzicwi\":\"bpizcdrqjsdpydn\",\"bkh\":\"sjttgzfbish\"},\"id\":\"jdeyeamdpha\",\"name\":\"alpbuxwgipwhon\",\"type\":\"wkgshwa\"},{\"properties\":{\"uuid\":\"xzbinjeputt\",\"messaging\":{\"endpoints\":{\"ftiyqzrnkcq\":{\"address\":\"nuzo\"},\"whzlsicohoq\":{\"address\":\"yx\"},\"hgyxzkonoc\":{\"address\":\"nwvlryavwhheunmm\"},\"uconuqszfkbey\":{\"address\":\"koklya\"}}},\"provisioningState\":\"Deleting\"},\"identity\":{\"principalId\":\"jmwvvj\",\"tenantId\":\"tcxsenhwlrs\",\"type\":\"SystemAssigned\"},\"location\":\"zpwv\",\"tags\":{\"biqylihkaet\":\"q\",\"fcivfsnkym\":\"kt\",\"jf\":\"ctq\",\"fuwutttxf\":\"ebrjcxe\"},\"id\":\"jrbirphxepcyv\",\"name\":\"hfnljkyq\",\"type\":\"j\"}],\"nextLink\":\"ujqgidok\"}")
+            "{\"value\":[{\"properties\":{\"uuid\":\"tmryw\",\"messaging\":{\"endpoints\":{\"qftiy\":{},\"zrnkcqvyxlwh\":{},\"lsicohoqqnwv\":{},\"ryavwhheunmmqh\":{}}},\"management\":{\"endpoints\":{\"vjektcxsenh\":{\"endpointType\":\"konocu\",\"address\":\"oklyaxuconuq\",\"scopeId\":\"zf\",\"resourceId\":\"beypewrmjmw\"}}},\"provisioning\":{\"endpoints\":{\"ylihkaetckt\":{\"endpointType\":\"Microsoft.Devices/provisioningServices\",\"resourceId\":\"frzpwvlqdqgb\",\"inboundCallerIdentity\":{\"type\":\"UserAssigned\"}}}},\"outboundIdentity\":{\"type\":\"UserAssigned\",\"userAssignedIdentity\":\"vf\"},\"provisioningState\":\"Deleting\"},\"identity\":{\"principalId\":\"uctqhjfbe\",\"tenantId\":\"jcxerfuwu\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"gidokgjljyoxgvcl\":{\"principalId\":\"vjrbirphxepcyvah\",\"clientId\":\"ljkyqxjvuuj\"},\"gx\":{\"principalId\":\"gsncghkjeszz\",\"clientId\":\"ijhtxf\"},\"odebfqkkrbmpu\":{\"principalId\":\"smx\",\"clientId\":\"hmpvecx\"}}},\"location\":\"riwflzlfb\",\"tags\":{\"mgkbrpyydhibn\":\"uzycispnqza\"},\"id\":\"qqkpikadrg\",\"name\":\"tqagnbuynh\",\"type\":\"jggmebfsiarbu\"}],\"nextLink\":\"cvpnazzmhjrunmpx\"}")
             .toObject(NamespaceListResult.class);
-        Assertions.assertEquals("gevqznty", model.value().get(0).location());
-        Assertions.assertEquals("bpizcdrqjsdpydn", model.value().get(0).tags().get("yhxdeoejzicwi"));
-        Assertions.assertEquals("ydptkoen",
-            model.value().get(0).properties().messaging().endpoints().get("ou").address());
-        Assertions.assertEquals(SystemAssignedServiceIdentityType.NONE, model.value().get(0).identity().type());
-        Assertions.assertEquals("ujqgidok", model.nextLink());
+        Assertions.assertEquals("riwflzlfb", model.value().get(0).location());
+        Assertions.assertEquals("uzycispnqza", model.value().get(0).tags().get("mgkbrpyydhibn"));
+        Assertions.assertEquals("konocu",
+            model.value().get(0).properties().management().endpoints().get("vjektcxsenh").endpointType());
+        Assertions.assertEquals("oklyaxuconuq",
+            model.value().get(0).properties().management().endpoints().get("vjektcxsenh").address());
+        Assertions.assertEquals("zf",
+            model.value().get(0).properties().management().endpoints().get("vjektcxsenh").scopeId());
+        Assertions.assertEquals("beypewrmjmw",
+            model.value().get(0).properties().management().endpoints().get("vjektcxsenh").resourceId());
+        Assertions.assertEquals(ProvisioningEndpointType.DPS,
+            model.value().get(0).properties().provisioning().endpoints().get("ylihkaetckt").endpointType());
+        Assertions.assertEquals("frzpwvlqdqgb",
+            model.value().get(0).properties().provisioning().endpoints().get("ylihkaetckt").resourceId());
+        Assertions.assertEquals(InboundCallerIdentityType.USER_ASSIGNED,
+            model.value()
+                .get(0)
+                .properties()
+                .provisioning()
+                .endpoints()
+                .get("ylihkaetckt")
+                .inboundCallerIdentity()
+                .type());
+        Assertions.assertEquals(OutboundIdentityType.USER_ASSIGNED,
+            model.value().get(0).properties().outboundIdentity().type());
+        Assertions.assertEquals("vf", model.value().get(0).properties().outboundIdentity().userAssignedIdentity());
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.value().get(0).identity().type());
+        Assertions.assertEquals("cvpnazzmhjrunmpx", model.nextLink());
     }
 }

@@ -10,12 +10,23 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.deviceregistry.DeviceRegistryManager;
+import com.azure.resourcemanager.deviceregistry.models.InboundCallerIdentity;
+import com.azure.resourcemanager.deviceregistry.models.InboundCallerIdentityType;
+import com.azure.resourcemanager.deviceregistry.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.deviceregistry.models.ManagedServiceIdentityType;
+import com.azure.resourcemanager.deviceregistry.models.Management;
+import com.azure.resourcemanager.deviceregistry.models.ManagementEndpoint;
 import com.azure.resourcemanager.deviceregistry.models.Messaging;
 import com.azure.resourcemanager.deviceregistry.models.MessagingEndpoint;
+import com.azure.resourcemanager.deviceregistry.models.MessagingEndpointProvisioning;
 import com.azure.resourcemanager.deviceregistry.models.Namespace;
 import com.azure.resourcemanager.deviceregistry.models.NamespaceProperties;
-import com.azure.resourcemanager.deviceregistry.models.SystemAssignedServiceIdentity;
-import com.azure.resourcemanager.deviceregistry.models.SystemAssignedServiceIdentityType;
+import com.azure.resourcemanager.deviceregistry.models.NamespaceProvisioning;
+import com.azure.resourcemanager.deviceregistry.models.OutboundIdentity;
+import com.azure.resourcemanager.deviceregistry.models.OutboundIdentityType;
+import com.azure.resourcemanager.deviceregistry.models.ProvisioningEndpoint;
+import com.azure.resourcemanager.deviceregistry.models.ProvisioningEndpointType;
+import com.azure.resourcemanager.deviceregistry.models.UserAssignedIdentity;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
@@ -28,7 +39,7 @@ public final class NamespacesCreateOrReplaceMockTests {
     @Test
     public void testCreateOrReplace() throws Exception {
         String responseStr
-            = "{\"properties\":{\"uuid\":\"d\",\"messaging\":{\"endpoints\":{\"qmp\":{\"endpointType\":\"nnawtqabpxuckpgg\",\"address\":\"oweyirdhlis\",\"resourceId\":\"wfl\"},\"gfgrwsdp\":{\"endpointType\":\"ruwnpqxpx\",\"address\":\"wfcngjsaas\",\"resourceId\":\"xtmkzjvkviir\"}}},\"provisioningState\":\"Succeeded\"},\"identity\":{\"principalId\":\"vzbglbyvi\",\"tenantId\":\"ctbrxkjzwrgxffm\",\"type\":\"SystemAssigned\"},\"location\":\"wfbkgozxwo\",\"tags\":{\"izqaclnapxbiyg\":\"yd\",\"mfcttux\":\"ugjknf\",\"njhvsujztc\":\"uyilflqoiquvrehm\",\"w\":\"ytqj\"},\"id\":\"auunfprnjletlx\",\"name\":\"mr\",\"type\":\"ddoui\"}";
+            = "{\"properties\":{\"uuid\":\"hdroznnh\",\"messaging\":{\"endpoints\":{\"lsmdesqplpvmjc\":{\"endpointType\":\"gjc\",\"address\":\"guxhem\",\"resourceId\":\"ywaeeczgf\",\"deviceAddress\":\"kklelssxblycs\",\"inboundCallerIdentity\":{\"type\":\"UserAssigned\"},\"linkingState\":\"Succeeded\",\"linkingError\":{},\"provisioning\":{}}}},\"management\":{\"endpoints\":{\"xepmrut\":{\"endpointType\":\"bidyv\",\"address\":\"eowxvgpi\",\"scopeId\":\"deugf\",\"resourceId\":\"xzecpaxwkufykhvu\"}}},\"provisioning\":{\"endpoints\":{\"ltymkmvguihywart\":{\"endpointType\":\"Microsoft.Devices/provisioningServices\",\"resourceId\":\"obns\",\"inboundCallerIdentity\":{\"type\":\"UserAssigned\"},\"linkingState\":\"Succeeded\",\"linkingError\":{}},\"xhikkflrmymyin\":{\"endpointType\":\"Microsoft.Devices/provisioningServices\",\"resourceId\":\"phkixkykxdssjpe\",\"inboundCallerIdentity\":{\"type\":\"UserAssigned\"},\"linkingState\":\"InProgress\",\"linkingError\":{}}}},\"outboundIdentity\":{\"type\":\"SystemAssigned\",\"userAssignedIdentity\":\"riswslmiiio\"},\"provisioningState\":\"Succeeded\"},\"identity\":{\"principalId\":\"xuugqkc\",\"tenantId\":\"tiowlx\",\"type\":\"None\",\"userAssignedIdentities\":{\"zgygqwahoiulwgni\":{\"principalId\":\"tjgwdtguk\",\"clientId\":\"nblwphqlkcc\"},\"ufypiv\":{\"principalId\":\"rglvaw\",\"clientId\":\"z\"},\"vgovpbbttefjokn\":{\"principalId\":\"bbjpmcubkmif\",\"clientId\":\"xkubvphavpmhbrbq\"},\"zcxmjpbyep\":{\"principalId\":\"qyzqedikdfrdb\",\"clientId\":\"mrjgeihfqlggwfi\"}}},\"location\":\"gt\",\"tags\":{\"yqwcabvnuil\":\"vrcmyfqipgxhnpo\"},\"id\":\"ey\",\"name\":\"swlpaugmrmfj\",\"type\":\"rxwtoaukhfkvc\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -38,31 +49,85 @@ public final class NamespacesCreateOrReplaceMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Namespace response = manager.namespaces()
-            .define("vefloccsrmozihmi")
-            .withRegion("lmjjyuo")
-            .withExistingResourceGroup("npbs")
-            .withTags(mapOf("lbfjkwr", "obaxkjeytu"))
-            .withProperties(new NamespaceProperties().withMessaging(new Messaging().withEndpoints(mapOf("rksxwpndfc",
-                new MessagingEndpoint().withEndpointType("ytfmpc").withAddress("cil").withResourceId("caykggnoxuz"),
-                "gxq",
-                new MessagingEndpoint().withEndpointType("nznthjtw")
-                    .withAddress("jaosrxuzv")
-                    .withResourceId("mktcqiosmgbza"),
-                "agunbtgfebw",
-                new MessagingEndpoint().withEndpointType("yrtltlaprltzkat")
-                    .withAddress("hjm")
-                    .withResourceId("nbsoqeqalarv")))))
-            .withIdentity(
-                new SystemAssignedServiceIdentity().withType(SystemAssignedServiceIdentityType.SYSTEM_ASSIGNED))
+            .define("tikyj")
+            .withRegion("y")
+            .withExistingResourceGroup("kl")
+            .withTags(mapOf("awzovgkk", "pwpgddei", "sqowxwc", "muikjcjcaztbws", "czcswka", "mlikytw",
+                "yfdvlvhbwrnfxtgd", "ve"))
+            .withProperties(new NamespaceProperties()
+                .withMessaging(new Messaging().withEndpoints(mapOf("ltxdwhmozu",
+                    new MessagingEndpoint().withEndpointType("vgzpcrrkolawj")
+                        .withAddress("smwr")
+                        .withResourceId("cdxfzzzwyjafitl")
+                        .withInboundCallerIdentity(
+                            new InboundCallerIdentity().withType(InboundCallerIdentityType.SYSTEM_ASSIGNED))
+                        .withProvisioning(new MessagingEndpointProvisioning()),
+                    "rlzk",
+                    new MessagingEndpoint().withEndpointType("zvlnsnnjz")
+                        .withAddress("afolpymwamxqzrag")
+                        .withResourceId("dphtv")
+                        .withInboundCallerIdentity(
+                            new InboundCallerIdentity().withType(InboundCallerIdentityType.USER_ASSIGNED))
+                        .withProvisioning(new MessagingEndpointProvisioning()))))
+                .withManagement(new Management().withEndpoints(mapOf("xetlgydlhqv",
+                    new ManagementEndpoint().withEndpointType("anrupdwvnphcn")
+                        .withAddress("q")
+                        .withScopeId("pjhmqrhvthl")
+                        .withResourceId("iwdcxsmlzzhzd"),
+                    "mzegjon",
+                    new ManagementEndpoint().withEndpointType("n")
+                        .withAddress("pxy")
+                        .withScopeId("afiqgeaarbgjekg")
+                        .withResourceId("klbyulidwcw"),
+                    "plkeuachtomflryt",
+                    new ManagementEndpoint().withEndpointType("hj")
+                        .withAddress("rwgdnqzbrfks")
+                        .withScopeId("zhzmtksjci")
+                        .withResourceId("digsxcdgl"))))
+                .withProvisioning(
+                    new NamespaceProvisioning()
+                        .withEndpoints(
+                            mapOf("qjjyslurl",
+                                new ProvisioningEndpoint().withEndpointType(ProvisioningEndpointType.DPS)
+                                    .withResourceId("mdgycxn")
+                                    .withInboundCallerIdentity(new InboundCallerIdentity()
+                                        .withType(InboundCallerIdentityType.SYSTEM_ASSIGNED)),
+                                "pq",
+                                new ProvisioningEndpoint().withEndpointType(ProvisioningEndpointType.DPS)
+                                    .withResourceId("hhkvpedwqs")
+                                    .withInboundCallerIdentity(new InboundCallerIdentity()
+                                        .withType(InboundCallerIdentityType.USER_ASSIGNED)))))
+                .withOutboundIdentity(new OutboundIdentity().withType(OutboundIdentityType.USER_ASSIGNED)
+                    .withUserAssignedIdentity("kondcb")))
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf("ybmrqbrjbbmp", new UserAssignedIdentity(), "qwjksghudgz",
+                    new UserAssignedIdentity(), "xfbvfb", new UserAssignedIdentity())))
             .create();
 
-        Assertions.assertEquals("wfbkgozxwo", response.location());
-        Assertions.assertEquals("yd", response.tags().get("izqaclnapxbiyg"));
-        Assertions.assertEquals("nnawtqabpxuckpgg",
-            response.properties().messaging().endpoints().get("qmp").endpointType());
-        Assertions.assertEquals("oweyirdhlis", response.properties().messaging().endpoints().get("qmp").address());
-        Assertions.assertEquals("wfl", response.properties().messaging().endpoints().get("qmp").resourceId());
-        Assertions.assertEquals(SystemAssignedServiceIdentityType.SYSTEM_ASSIGNED, response.identity().type());
+        Assertions.assertEquals("gt", response.location());
+        Assertions.assertEquals("vrcmyfqipgxhnpo", response.tags().get("yqwcabvnuil"));
+        Assertions.assertEquals("gjc",
+            response.properties().messaging().endpoints().get("lsmdesqplpvmjc").endpointType());
+        Assertions.assertEquals("guxhem",
+            response.properties().messaging().endpoints().get("lsmdesqplpvmjc").address());
+        Assertions.assertEquals("ywaeeczgf",
+            response.properties().messaging().endpoints().get("lsmdesqplpvmjc").resourceId());
+        Assertions.assertEquals(InboundCallerIdentityType.USER_ASSIGNED,
+            response.properties().messaging().endpoints().get("lsmdesqplpvmjc").inboundCallerIdentity().type());
+        Assertions.assertEquals("bidyv", response.properties().management().endpoints().get("xepmrut").endpointType());
+        Assertions.assertEquals("eowxvgpi", response.properties().management().endpoints().get("xepmrut").address());
+        Assertions.assertEquals("deugf", response.properties().management().endpoints().get("xepmrut").scopeId());
+        Assertions.assertEquals("xzecpaxwkufykhvu",
+            response.properties().management().endpoints().get("xepmrut").resourceId());
+        Assertions.assertEquals(ProvisioningEndpointType.DPS,
+            response.properties().provisioning().endpoints().get("ltymkmvguihywart").endpointType());
+        Assertions.assertEquals("obns",
+            response.properties().provisioning().endpoints().get("ltymkmvguihywart").resourceId());
+        Assertions.assertEquals(InboundCallerIdentityType.USER_ASSIGNED,
+            response.properties().provisioning().endpoints().get("ltymkmvguihywart").inboundCallerIdentity().type());
+        Assertions.assertEquals(OutboundIdentityType.SYSTEM_ASSIGNED, response.properties().outboundIdentity().type());
+        Assertions.assertEquals("riswslmiiio", response.properties().outboundIdentity().userAssignedIdentity());
+        Assertions.assertEquals(ManagedServiceIdentityType.NONE, response.identity().type());
     }
 
     // Use "Map.of" if available

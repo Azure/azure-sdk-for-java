@@ -4,9 +4,18 @@
 
 package com.azure.resourcemanager.deviceregistry.generated;
 
+import com.azure.resourcemanager.deviceregistry.models.InboundCallerIdentity;
+import com.azure.resourcemanager.deviceregistry.models.InboundCallerIdentityType;
+import com.azure.resourcemanager.deviceregistry.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.deviceregistry.models.ManagedServiceIdentityType;
+import com.azure.resourcemanager.deviceregistry.models.Management;
+import com.azure.resourcemanager.deviceregistry.models.ManagementEndpoint;
 import com.azure.resourcemanager.deviceregistry.models.Messaging;
 import com.azure.resourcemanager.deviceregistry.models.MessagingEndpoint;
 import com.azure.resourcemanager.deviceregistry.models.NamespaceProperties;
+import com.azure.resourcemanager.deviceregistry.models.NamespaceProvisioning;
+import com.azure.resourcemanager.deviceregistry.models.ProvisioningEndpoint;
+import com.azure.resourcemanager.deviceregistry.models.ProvisioningEndpointType;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,30 +24,71 @@ import java.util.Map;
  */
 public final class NamespacesCreateOrReplaceSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/CreateOrReplace_Namespace_With_Endpoints.json
+     * x-ms-original-file: 2026-11-01/CreateOrReplace_Namespace_With_MessagingAndProvisioningEndpoints.json
      */
     /**
-     * Sample code: CreateOrReplace_Namespace_With_Endpoints.
+     * Sample code: Create or Replace a Namespace with linked Messaging and Provisioning Endpoints.
      * 
      * @param manager Entry point to DeviceRegistryManager.
      */
-    public static void
-        createOrReplaceNamespaceWithEndpoints(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+    public static void createOrReplaceANamespaceWithLinkedMessagingAndProvisioningEndpoints(
+        com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+        manager.namespaces()
+            .define("mynamespace")
+            .withRegion("northeurope")
+            .withExistingResourceGroup("myResourceGroup")
+            .withProperties(new NamespaceProperties()
+                .withMessaging(new Messaging().withEndpoints(mapOf("myPrimaryIotHubEndpoint", new MessagingEndpoint()
+                    .withEndpointType("Microsoft.Devices/IotHubs")
+                    .withResourceId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Devices/IotHubs/myIotHub1")
+                    .withInboundCallerIdentity(
+                        new InboundCallerIdentity().withType(InboundCallerIdentityType.SYSTEM_ASSIGNED)),
+                    "mySecondaryIotHubEndpoint",
+                    new MessagingEndpoint().withEndpointType("Microsoft.Devices/IotHubs")
+                        .withResourceId(
+                            "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Devices/IotHubs/myIotHub2")
+                        .withInboundCallerIdentity(new InboundCallerIdentity()
+                            .withType(InboundCallerIdentityType.USER_ASSIGNED)
+                            .withUserAssignedIdentity(
+                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myAdrCallerUami")))))
+                .withProvisioning(new NamespaceProvisioning().withEndpoints(mapOf("myDpsEndpoint",
+                    new ProvisioningEndpoint().withEndpointType(ProvisioningEndpointType.DPS)
+                        .withResourceId(
+                            "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Devices/provisioningServices/myDps")
+                        .withInboundCallerIdentity(
+                            new InboundCallerIdentity().withType(InboundCallerIdentityType.SYSTEM_ASSIGNED))))))
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2026-11-01/CreateOrReplace_Namespace_With_ManagementEndpoints.json
+     */
+    /**
+     * Sample code: Create or Replace a Namespace with Management Endpoints.
+     * 
+     * @param manager Entry point to DeviceRegistryManager.
+     */
+    public static void createOrReplaceANamespaceWithManagementEndpoints(
+        com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
         manager.namespaces()
             .define("adr-namespace-gbk0925-n01")
             .withRegion("North Europe")
             .withExistingResourceGroup("myResourceGroup")
-            .withProperties(
-                new NamespaceProperties()
-                    .withMessaging(
-                        new Messaging()
-                            .withEndpoints(
-                                mapOf("iothubEndpoint",
-                                    new MessagingEndpoint().withEndpointType("Microsoft.Devices/IotHubs")
-                                        .withAddress("https://iothub-for-dps.azure-devices.net"),
-                                    "anotherIothubEndpoint",
-                                    new MessagingEndpoint().withEndpointType("Microsoft.Devices/IotHubs")
-                                        .withAddress("https://iothub-for-dps-2.azure-devices.net")))))
+            .withProperties(new NamespaceProperties().withManagement(new Management().withEndpoints(mapOf(
+                "customLocation1",
+                new ManagementEndpoint().withEndpointType("Microsoft.EventGrid/Namespaces")
+                    .withAddress("eg-for-adr.eastus2-1.ts.eventgrid.azure.net")
+                    .withScopeId("scope-id-for-management-endpoint-1")
+                    .withResourceId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.EventGrid/Namespaces/eg-for-adr"),
+                "customLocation2",
+                new ManagementEndpoint().withEndpointType("Microsoft.EventGrid/Namespaces")
+                    .withAddress("eg-for-adr1.eastus2-1.ts.eventgrid.azure.net")
+                    .withScopeId("scope-id-for-management-endpoint-2")
+                    .withResourceId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.EventGrid/Namespaces/eg-for-adr1")))))
             .create();
     }
 

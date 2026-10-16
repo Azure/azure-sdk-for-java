@@ -11,7 +11,6 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.deviceregistry.fluent.NamespaceDevicesClient;
 import com.azure.resourcemanager.deviceregistry.fluent.models.NamespaceDeviceInner;
-import com.azure.resourcemanager.deviceregistry.models.DeviceCredentialsRevokeRequest;
 import com.azure.resourcemanager.deviceregistry.models.NamespaceDevice;
 import com.azure.resourcemanager.deviceregistry.models.NamespaceDevices;
 
@@ -53,27 +52,17 @@ public final class NamespaceDevicesImpl implements NamespaceDevices {
         this.serviceClient().delete(resourceGroupName, namespaceName, deviceName, context);
     }
 
-    public PagedIterable<NamespaceDevice> listByResourceGroup(String resourceGroupName, String namespaceName) {
+    public PagedIterable<NamespaceDevice> listByNamespace(String resourceGroupName, String namespaceName) {
         PagedIterable<NamespaceDeviceInner> inner
-            = this.serviceClient().listByResourceGroup(resourceGroupName, namespaceName);
+            = this.serviceClient().listByNamespace(resourceGroupName, namespaceName);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new NamespaceDeviceImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<NamespaceDevice> listByResourceGroup(String resourceGroupName, String namespaceName,
+    public PagedIterable<NamespaceDevice> listByNamespace(String resourceGroupName, String namespaceName,
         Context context) {
         PagedIterable<NamespaceDeviceInner> inner
-            = this.serviceClient().listByResourceGroup(resourceGroupName, namespaceName, context);
+            = this.serviceClient().listByNamespace(resourceGroupName, namespaceName, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new NamespaceDeviceImpl(inner1, this.manager()));
-    }
-
-    public void revoke(String resourceGroupName, String namespaceName, String deviceName,
-        DeviceCredentialsRevokeRequest body) {
-        this.serviceClient().revoke(resourceGroupName, namespaceName, deviceName, body);
-    }
-
-    public void revoke(String resourceGroupName, String namespaceName, String deviceName,
-        DeviceCredentialsRevokeRequest body, Context context) {
-        this.serviceClient().revoke(resourceGroupName, namespaceName, deviceName, body, context);
     }
 
     public NamespaceDevice getById(String id) {
