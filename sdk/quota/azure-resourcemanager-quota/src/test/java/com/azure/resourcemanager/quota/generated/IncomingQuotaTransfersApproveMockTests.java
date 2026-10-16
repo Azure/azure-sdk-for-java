@@ -21,7 +21,7 @@ public final class IncomingQuotaTransfersApproveMockTests {
     @Test
     public void testApprove() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"transferStatus\":\"Completed\",\"transferId\":\"qfhwyg\",\"transferRef\":\"vdnkfxusem\",\"sourceSubscriptionId\":\"zrmuhapfcqdps\",\"sourceTenantId\":\"qvpsvuoymg\",\"billingAccountId\":\"elvezrypq\",\"resourceName\":\"feo\",\"amount\":5192491540746882951,\"sourceEtag\":\"kyhkobopg\",\"approval\":{\"comment\":\"k\",\"actor\":\"wep\",\"occurredAt\":\"2021-03-03T13:40:47Z\"},\"rejection\":{\"reason\":\"rfkbwccsnjvcdwxl\",\"actor\":\"qek\",\"occurredAt\":\"2021-11-18T15:26:35Z\"}},\"etag\":\"khtj\",\"id\":\"i\",\"name\":\"gwfqatmt\",\"type\":\"htmdvy\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"transferStatus\":\"Completed\",\"transferId\":\"qipqkghvxndz\",\"transferRef\":\"krefajpjo\",\"sourceSubscriptionId\":\"kqnyh\",\"sourceTenantId\":\"ij\",\"billingAccountId\":\"ivfxzsjabibsyst\",\"resourceName\":\"fsdjpvkvp\",\"amount\":3914249572568751795,\"sourceEtag\":\"zbzkdvncjabudurg\",\"approval\":{\"comment\":\"mokzhjjklf\",\"actor\":\"hmouwqlgzrfze\",\"occurredAt\":\"2021-11-15T02:46:20Z\"},\"rejection\":{\"reason\":\"izikayuhq\",\"actor\":\"bjbsybb\",\"occurredAt\":\"2021-11-19T09:02:54Z\"}},\"etag\":\"vtldgmfpgvmpip\",\"id\":\"ltha\",\"name\":\"fxssm\",\"type\":\"u\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,8 +31,8 @@ public final class IncomingQuotaTransfersApproveMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         IncomingQuotaTransfer response = manager.incomingQuotaTransfers()
-            .approve("zqzudph", "amvdkfwynwcvtbv", "ayhmtnvyqiatkz", "pcnp",
-                new IncomingQuotaTransferApproveRequest().withComment("cjaesgvvs"), com.azure.core.util.Context.NONE);
+            .approve("wlmdjrkv", "g", "vfvpdbodaciz", "j", new IncomingQuotaTransferApproveRequest().withComment("hkr"),
+                com.azure.core.util.Context.NONE);
 
     }
 }

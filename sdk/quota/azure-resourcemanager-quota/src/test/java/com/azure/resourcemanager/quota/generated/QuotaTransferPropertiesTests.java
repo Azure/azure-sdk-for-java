@@ -12,33 +12,30 @@ public final class QuotaTransferPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         QuotaTransferProperties model = BinaryData.fromString(
-            "{\"provisioningState\":\"Succeeded\",\"transferStatus\":\"Completed\",\"transferId\":\"j\",\"displayName\":\"felluwfzitonpe\",\"comment\":\"pjkjlxofpdv\",\"destinationSubscriptionId\":\"pfxxy\",\"destinationTenantId\":\"ninmayhuyb\",\"billingAccountId\":\"kpode\",\"resourceName\":\"ooginuvamih\",\"amount\":7828545349855824504,\"autoApprove\":true,\"createdAt\":\"2021-11-25T13:34:59Z\",\"expiresAt\":\"2021-11-26T09:10:23Z\",\"createdBy\":\"heotusiv\",\"approval\":{\"comment\":\"cciqihnhungbwjz\",\"actor\":\"nfygxgispemvtz\",\"occurredAt\":\"2021-03-05T22:34:29Z\"},\"cancellation\":{\"reason\":\"ubljofxqe\",\"actor\":\"fjaeq\",\"occurredAt\":\"2021-01-23T13:20:17Z\"}}")
+            "{\"provisioningState\":\"Canceled\",\"transferStatus\":\"Failed\",\"transferId\":\"dvhpfxxypininm\",\"displayName\":\"yhuybbkpod\",\"comment\":\"ooginuvamih\",\"destinationSubscriptionId\":\"ognarxzxtheotus\",\"destinationTenantId\":\"yevc\",\"billingAccountId\":\"qi\",\"resourceName\":\"nhungbw\",\"amount\":3639417150615550339,\"autoApprove\":true,\"createdAt\":\"2021-11-04T09:44:48Z\",\"expiresAt\":\"2021-05-21T15:18:02Z\",\"createdBy\":\"pemvtzfkufubljof\",\"approval\":{\"comment\":\"ofjaeqjhqjb\",\"actor\":\"s\",\"occurredAt\":\"2021-08-17T04:19:07Z\"},\"cancellation\":{\"reason\":\"jqul\",\"actor\":\"gsntnbybkzgcwr\",\"occurredAt\":\"2021-10-31T07:08:50Z\"}}")
             .toObject(QuotaTransferProperties.class);
-        Assertions.assertEquals("felluwfzitonpe", model.displayName());
-        Assertions.assertEquals("pjkjlxofpdv", model.comment());
-        Assertions.assertEquals("pfxxy", model.destinationSubscriptionId());
-        Assertions.assertEquals("kpode", model.billingAccountId());
-        Assertions.assertEquals("ooginuvamih", model.resourceName());
-        Assertions.assertEquals(7828545349855824504L, model.amount());
+        Assertions.assertEquals("yhuybbkpod", model.displayName());
+        Assertions.assertEquals("ooginuvamih", model.comment());
+        Assertions.assertEquals("ognarxzxtheotus", model.destinationSubscriptionId());
+        Assertions.assertEquals("nhungbw", model.resourceName());
+        Assertions.assertEquals(3639417150615550339L, model.amount());
         Assertions.assertTrue(model.autoApprove());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        QuotaTransferProperties model = new QuotaTransferProperties().withDisplayName("felluwfzitonpe")
-            .withComment("pjkjlxofpdv")
-            .withDestinationSubscriptionId("pfxxy")
-            .withBillingAccountId("kpode")
-            .withResourceName("ooginuvamih")
-            .withAmount(7828545349855824504L)
+        QuotaTransferProperties model = new QuotaTransferProperties().withDisplayName("yhuybbkpod")
+            .withComment("ooginuvamih")
+            .withDestinationSubscriptionId("ognarxzxtheotus")
+            .withResourceName("nhungbw")
+            .withAmount(3639417150615550339L)
             .withAutoApprove(true);
         model = BinaryData.fromObject(model).toObject(QuotaTransferProperties.class);
-        Assertions.assertEquals("felluwfzitonpe", model.displayName());
-        Assertions.assertEquals("pjkjlxofpdv", model.comment());
-        Assertions.assertEquals("pfxxy", model.destinationSubscriptionId());
-        Assertions.assertEquals("kpode", model.billingAccountId());
-        Assertions.assertEquals("ooginuvamih", model.resourceName());
-        Assertions.assertEquals(7828545349855824504L, model.amount());
+        Assertions.assertEquals("yhuybbkpod", model.displayName());
+        Assertions.assertEquals("ooginuvamih", model.comment());
+        Assertions.assertEquals("ognarxzxtheotus", model.destinationSubscriptionId());
+        Assertions.assertEquals("nhungbw", model.resourceName());
+        Assertions.assertEquals(3639417150615550339L, model.amount());
         Assertions.assertTrue(model.autoApprove());
     }
 }
