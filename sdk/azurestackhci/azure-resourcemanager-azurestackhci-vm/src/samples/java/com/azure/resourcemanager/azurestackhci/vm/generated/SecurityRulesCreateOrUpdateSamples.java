@@ -17,7 +17,7 @@ import java.util.Arrays;
  */
 public final class SecurityRulesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/SecurityRules_CreateOrUpdate.json
+     * x-ms-original-file: 2026-07-01-preview/SecurityRules_CreateOrUpdate.json
      */
     /**
      * Sample code: SecurityRulesCreateOrUpdate.

@@ -13,9 +13,9 @@ public final class NetworkInterfaceStatusProvisioningStatusTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkInterfaceStatusProvisioningStatus model
-            = BinaryData.fromString("{\"operationId\":\"auu\",\"status\":\"InProgress\"}")
+            = BinaryData.fromString("{\"operationId\":\"xmyskp\",\"status\":\"Succeeded\"}")
                 .toObject(NetworkInterfaceStatusProvisioningStatus.class);
-        Assertions.assertEquals("auu", model.operationId());
-        Assertions.assertEquals(Status.IN_PROGRESS, model.status());
+        Assertions.assertEquals("xmyskp", model.operationId());
+        Assertions.assertEquals(Status.SUCCEEDED, model.status());
     }
 }

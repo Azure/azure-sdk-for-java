@@ -14,23 +14,21 @@ public final class RouteTablePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RouteTableProperties model = BinaryData.fromString(
-            "{\"routes\":[{\"properties\":{\"addressPrefix\":\"qcjm\",\"nextHopIpAddress\":\"javbqidtqajz\"},\"name\":\"l\"},{\"properties\":{\"addressPrefix\":\"dj\",\"nextHopIpAddress\":\"lkhbz\"},\"name\":\"epgzgqexz\"},{\"properties\":{\"addressPrefix\":\"xscpaierhhbc\",\"nextHopIpAddress\":\"l\"},\"name\":\"majtjaod\"},{\"properties\":{\"addressPrefix\":\"nbdxk\",\"nextHopIpAddress\":\"xo\"},\"name\":\"jionpimexgstxgc\"}]}")
+            "{\"routes\":[{\"properties\":{\"addressPrefix\":\"vqdra\",\"nextHopIpAddress\":\"jybige\"},\"name\":\"qfbow\"},{\"properties\":{\"addressPrefix\":\"nyktzlcuiy\",\"nextHopIpAddress\":\"qyw\"},\"name\":\"drvyn\"}]}")
             .toObject(RouteTableProperties.class);
-        Assertions.assertEquals("l", model.routes().get(0).name());
-        Assertions.assertEquals("qcjm", model.routes().get(0).addressPrefix());
-        Assertions.assertEquals("javbqidtqajz", model.routes().get(0).nextHopIpAddress());
+        Assertions.assertEquals("qfbow", model.routes().get(0).name());
+        Assertions.assertEquals("vqdra", model.routes().get(0).addressPrefix());
+        Assertions.assertEquals("jybige", model.routes().get(0).nextHopIpAddress());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RouteTableProperties model = new RouteTableProperties().withRoutes(
-            Arrays.asList(new Route().withName("l").withAddressPrefix("qcjm").withNextHopIpAddress("javbqidtqajz"),
-                new Route().withName("epgzgqexz").withAddressPrefix("dj").withNextHopIpAddress("lkhbz"),
-                new Route().withName("majtjaod").withAddressPrefix("xscpaierhhbc").withNextHopIpAddress("l"),
-                new Route().withName("jionpimexgstxgc").withAddressPrefix("nbdxk").withNextHopIpAddress("xo")));
+            Arrays.asList(new Route().withName("qfbow").withAddressPrefix("vqdra").withNextHopIpAddress("jybige"),
+                new Route().withName("drvyn").withAddressPrefix("nyktzlcuiy").withNextHopIpAddress("qyw")));
         model = BinaryData.fromObject(model).toObject(RouteTableProperties.class);
-        Assertions.assertEquals("l", model.routes().get(0).name());
-        Assertions.assertEquals("qcjm", model.routes().get(0).addressPrefix());
-        Assertions.assertEquals("javbqidtqajz", model.routes().get(0).nextHopIpAddress());
+        Assertions.assertEquals("qfbow", model.routes().get(0).name());
+        Assertions.assertEquals("vqdra", model.routes().get(0).addressPrefix());
+        Assertions.assertEquals("jybige", model.routes().get(0).nextHopIpAddress());
     }
 }

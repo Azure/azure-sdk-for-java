@@ -14,27 +14,27 @@ public final class OsProfileUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OsProfileUpdate model = BinaryData.fromString(
-            "{\"computerName\":\"tdum\",\"linuxConfiguration\":{\"provisionVMAgent\":true,\"provisionVMConfigAgent\":true},\"windowsConfiguration\":{\"provisionVMAgent\":false,\"provisionVMConfigAgent\":true}}")
+            "{\"computerName\":\"brqubp\",\"linuxConfiguration\":{\"provisionVMAgent\":false,\"provisionVMConfigAgent\":true},\"windowsConfiguration\":{\"provisionVMAgent\":false,\"provisionVMConfigAgent\":false}}")
             .toObject(OsProfileUpdate.class);
-        Assertions.assertEquals("tdum", model.computerName());
-        Assertions.assertTrue(model.linuxConfiguration().provisionVMAgent());
+        Assertions.assertEquals("brqubp", model.computerName());
+        Assertions.assertFalse(model.linuxConfiguration().provisionVMAgent());
         Assertions.assertTrue(model.linuxConfiguration().provisionVMConfigAgent());
         Assertions.assertFalse(model.windowsConfiguration().provisionVMAgent());
-        Assertions.assertTrue(model.windowsConfiguration().provisionVMConfigAgent());
+        Assertions.assertFalse(model.windowsConfiguration().provisionVMConfigAgent());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OsProfileUpdate model = new OsProfileUpdate().withComputerName("tdum")
+        OsProfileUpdate model = new OsProfileUpdate().withComputerName("brqubp")
             .withLinuxConfiguration(
-                new OsProfileUpdateLinuxConfiguration().withProvisionVMAgent(true).withProvisionVMConfigAgent(true))
-            .withWindowsConfiguration(
-                new OsProfileUpdateWindowsConfiguration().withProvisionVMAgent(false).withProvisionVMConfigAgent(true));
+                new OsProfileUpdateLinuxConfiguration().withProvisionVMAgent(false).withProvisionVMConfigAgent(true))
+            .withWindowsConfiguration(new OsProfileUpdateWindowsConfiguration().withProvisionVMAgent(false)
+                .withProvisionVMConfigAgent(false));
         model = BinaryData.fromObject(model).toObject(OsProfileUpdate.class);
-        Assertions.assertEquals("tdum", model.computerName());
-        Assertions.assertTrue(model.linuxConfiguration().provisionVMAgent());
+        Assertions.assertEquals("brqubp", model.computerName());
+        Assertions.assertFalse(model.linuxConfiguration().provisionVMAgent());
         Assertions.assertTrue(model.linuxConfiguration().provisionVMConfigAgent());
         Assertions.assertFalse(model.windowsConfiguration().provisionVMAgent());
-        Assertions.assertTrue(model.windowsConfiguration().provisionVMConfigAgent());
+        Assertions.assertFalse(model.windowsConfiguration().provisionVMConfigAgent());
     }
 }

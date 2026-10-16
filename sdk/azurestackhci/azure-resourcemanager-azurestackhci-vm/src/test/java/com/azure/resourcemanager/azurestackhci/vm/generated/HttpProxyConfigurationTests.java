@@ -13,24 +13,24 @@ public final class HttpProxyConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HttpProxyConfiguration model = BinaryData.fromString(
-            "{\"httpProxy\":\"gpfqbuace\",\"httpsProxy\":\"zfq\",\"noProxy\":[\"uaopppcqeq\",\"ol\"],\"trustedCa\":\"ahzxctobgbk\"}")
+            "{\"httpProxy\":\"aeaeneqnzarrw\",\"httpsProxy\":\"uu\",\"noProxy\":[\"qkacewii\"],\"trustedCa\":\"pubjibw\"}")
             .toObject(HttpProxyConfiguration.class);
-        Assertions.assertEquals("gpfqbuace", model.httpProxy());
-        Assertions.assertEquals("zfq", model.httpsProxy());
-        Assertions.assertEquals("uaopppcqeq", model.noProxy().get(0));
-        Assertions.assertEquals("ahzxctobgbk", model.trustedCa());
+        Assertions.assertEquals("aeaeneqnzarrw", model.httpProxy());
+        Assertions.assertEquals("uu", model.httpsProxy());
+        Assertions.assertEquals("qkacewii", model.noProxy().get(0));
+        Assertions.assertEquals("pubjibw", model.trustedCa());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HttpProxyConfiguration model = new HttpProxyConfiguration().withHttpProxy("gpfqbuace")
-            .withHttpsProxy("zfq")
-            .withNoProxy(Arrays.asList("uaopppcqeq", "ol"))
-            .withTrustedCa("ahzxctobgbk");
+        HttpProxyConfiguration model = new HttpProxyConfiguration().withHttpProxy("aeaeneqnzarrw")
+            .withHttpsProxy("uu")
+            .withNoProxy(Arrays.asList("qkacewii"))
+            .withTrustedCa("pubjibw");
         model = BinaryData.fromObject(model).toObject(HttpProxyConfiguration.class);
-        Assertions.assertEquals("gpfqbuace", model.httpProxy());
-        Assertions.assertEquals("zfq", model.httpsProxy());
-        Assertions.assertEquals("uaopppcqeq", model.noProxy().get(0));
-        Assertions.assertEquals("ahzxctobgbk", model.trustedCa());
+        Assertions.assertEquals("aeaeneqnzarrw", model.httpProxy());
+        Assertions.assertEquals("uu", model.httpsProxy());
+        Assertions.assertEquals("qkacewii", model.noProxy().get(0));
+        Assertions.assertEquals("pubjibw", model.trustedCa());
     }
 }

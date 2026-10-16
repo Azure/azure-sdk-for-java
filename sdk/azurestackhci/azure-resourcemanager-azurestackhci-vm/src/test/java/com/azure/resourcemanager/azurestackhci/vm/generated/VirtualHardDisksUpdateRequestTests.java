@@ -14,21 +14,22 @@ import org.junit.jupiter.api.Assertions;
 public final class VirtualHardDisksUpdateRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VirtualHardDisksUpdateRequest model = BinaryData.fromString(
-            "{\"tags\":{\"hvljuahaquh\":\"krh\",\"aex\":\"dhmdua\",\"vxpvgomz\":\"pvfadmwsrcr\"},\"properties\":{\"diskSizeGB\":6983403361765190016}}")
+        VirtualHardDisksUpdateRequest model = BinaryData
+            .fromString(
+                "{\"tags\":{\"aokonzmnsik\":\"sldnkwwtppjflcxo\"},\"properties\":{\"diskSizeGB\":5133856705294312052}}")
             .toObject(VirtualHardDisksUpdateRequest.class);
-        Assertions.assertEquals("krh", model.tags().get("hvljuahaquh"));
-        Assertions.assertEquals(6983403361765190016L, model.properties().diskSizeGB());
+        Assertions.assertEquals("sldnkwwtppjflcxo", model.tags().get("aokonzmnsik"));
+        Assertions.assertEquals(5133856705294312052L, model.properties().diskSizeGB());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VirtualHardDisksUpdateRequest model = new VirtualHardDisksUpdateRequest()
-            .withTags(mapOf("hvljuahaquh", "krh", "aex", "dhmdua", "vxpvgomz", "pvfadmwsrcr"))
-            .withProperties(new VirtualHardDisksUpdateProperties().withDiskSizeGB(6983403361765190016L));
+        VirtualHardDisksUpdateRequest model
+            = new VirtualHardDisksUpdateRequest().withTags(mapOf("aokonzmnsik", "sldnkwwtppjflcxo"))
+                .withProperties(new VirtualHardDisksUpdateProperties().withDiskSizeGB(5133856705294312052L));
         model = BinaryData.fromObject(model).toObject(VirtualHardDisksUpdateRequest.class);
-        Assertions.assertEquals("krh", model.tags().get("hvljuahaquh"));
-        Assertions.assertEquals(6983403361765190016L, model.properties().diskSizeGB());
+        Assertions.assertEquals("sldnkwwtppjflcxo", model.tags().get("aokonzmnsik"));
+        Assertions.assertEquals(5133856705294312052L, model.properties().diskSizeGB());
     }
 
     // Use "Map.of" if available

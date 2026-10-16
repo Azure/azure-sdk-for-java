@@ -35,8 +35,10 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.azurestackhci.vm.fluent.VirtualMachineInstancesClient;
+import com.azure.resourcemanager.azurestackhci.vm.fluent.models.OperationStatusResultInner;
 import com.azure.resourcemanager.azurestackhci.vm.fluent.models.VirtualMachineInstanceInner;
 import com.azure.resourcemanager.azurestackhci.vm.implementation.models.VirtualMachineInstanceListResult;
+import com.azure.resourcemanager.azurestackhci.vm.models.PowerOffVirtualMachineOptions;
 import com.azure.resourcemanager.azurestackhci.vm.models.VirtualMachineInstanceUpdateRequest;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -241,6 +243,24 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
         Response<BinaryData> saveSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam(value = "resourceUri", encoded = true) String resourceUri, Context context);
+
+        @Post("/{resourceUri}/providers/Microsoft.AzureStackHCI/virtualMachineInstances/default/powerOff")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> powerOff(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam(value = "resourceUri", encoded = true) String resourceUri,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") PowerOffVirtualMachineOptions body, Context context);
+
+        @Post("/{resourceUri}/providers/Microsoft.AzureStackHCI/virtualMachineInstances/default/powerOff")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> powerOffSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam(value = "resourceUri", encoded = true) String resourceUri,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") PowerOffVirtualMachineOptions body, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -1562,6 +1582,169 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void save(String resourceUri, Context context) {
         beginSave(resourceUri, context).getFinalResult();
+    }
+
+    /**
+     * The operation to power off a virtual machine instance.
+     * 
+     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> powerOffWithResponseAsync(String resourceUri,
+        PowerOffVirtualMachineOptions body) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.powerOff(this.client.getEndpoint(), this.client.getApiVersion(),
+                resourceUri, contentType, accept, body, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * The operation to power off a virtual machine instance.
+     * 
+     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> powerOffWithResponse(String resourceUri, PowerOffVirtualMachineOptions body) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.powerOffSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri, contentType,
+            accept, body, Context.NONE);
+    }
+
+    /**
+     * The operation to power off a virtual machine instance.
+     * 
+     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> powerOffWithResponse(String resourceUri, PowerOffVirtualMachineOptions body,
+        Context context) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.powerOffSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri, contentType,
+            accept, body, context);
+    }
+
+    /**
+     * The operation to power off a virtual machine instance.
+     * 
+     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginPowerOffAsync(String resourceUri, PowerOffVirtualMachineOptions body) {
+        Mono<Response<Flux<ByteBuffer>>> mono = powerOffWithResponseAsync(resourceUri, body);
+        return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(mono,
+            this.client.getHttpPipeline(), OperationStatusResultInner.class, OperationStatusResultInner.class,
+            this.client.getContext());
+    }
+
+    /**
+     * The operation to power off a virtual machine instance.
+     * 
+     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginPowerOff(String resourceUri, PowerOffVirtualMachineOptions body) {
+        Response<BinaryData> response = powerOffWithResponse(resourceUri, body);
+        return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(response,
+            OperationStatusResultInner.class, OperationStatusResultInner.class, Context.NONE);
+    }
+
+    /**
+     * The operation to power off a virtual machine instance.
+     * 
+     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginPowerOff(String resourceUri, PowerOffVirtualMachineOptions body, Context context) {
+        Response<BinaryData> response = powerOffWithResponse(resourceUri, body, context);
+        return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(response,
+            OperationStatusResultInner.class, OperationStatusResultInner.class, context);
+    }
+
+    /**
+     * The operation to power off a virtual machine instance.
+     * 
+     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<OperationStatusResultInner> powerOffAsync(String resourceUri, PowerOffVirtualMachineOptions body) {
+        return beginPowerOffAsync(resourceUri, body).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * The operation to power off a virtual machine instance.
+     * 
+     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public OperationStatusResultInner powerOff(String resourceUri, PowerOffVirtualMachineOptions body) {
+        return beginPowerOff(resourceUri, body).getFinalResult();
+    }
+
+    /**
+     * The operation to power off a virtual machine instance.
+     * 
+     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public OperationStatusResultInner powerOff(String resourceUri, PowerOffVirtualMachineOptions body,
+        Context context) {
+        return beginPowerOff(resourceUri, body, context).getFinalResult();
     }
 
     /**

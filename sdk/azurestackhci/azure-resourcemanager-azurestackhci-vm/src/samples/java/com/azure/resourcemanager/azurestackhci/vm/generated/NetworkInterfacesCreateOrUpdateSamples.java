@@ -17,7 +17,7 @@ import java.util.Arrays;
  */
 public final class NetworkInterfacesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/NetworkInterfaces__CreateOrUpdate_CreateFromLocal.json
+     * x-ms-original-file: 2026-07-01-preview/NetworkInterfaces__CreateOrUpdate_CreateFromLocal.json
      */
     /**
      * Sample code: CreateNetworkInterfaceFromLocal.
@@ -42,7 +42,7 @@ public final class NetworkInterfacesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-06-01-preview/NetworkInterfaces_CreateOrUpdate.json
+     * x-ms-original-file: 2026-07-01-preview/NetworkInterfaces_CreateOrUpdate.json
      */
     /**
      * Sample code: PutNetworkInterface.

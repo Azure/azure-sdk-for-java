@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class VirtualHardDiskUploadRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VirtualHardDiskUploadRequest model = BinaryData.fromString("{\"azureManagedDiskUploadUrl\":\"ucww\"}")
+        VirtualHardDiskUploadRequest model = BinaryData.fromString("{\"azureManagedDiskUploadUrl\":\"lrb\"}")
             .toObject(VirtualHardDiskUploadRequest.class);
-        Assertions.assertEquals("ucww", model.azureManagedDiskUploadUrl());
+        Assertions.assertEquals("lrb", model.azureManagedDiskUploadUrl());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VirtualHardDiskUploadRequest model = new VirtualHardDiskUploadRequest().withAzureManagedDiskUploadUrl("ucww");
+        VirtualHardDiskUploadRequest model = new VirtualHardDiskUploadRequest().withAzureManagedDiskUploadUrl("lrb");
         model = BinaryData.fromObject(model).toObject(VirtualHardDiskUploadRequest.class);
-        Assertions.assertEquals("ucww", model.azureManagedDiskUploadUrl());
+        Assertions.assertEquals("lrb", model.azureManagedDiskUploadUrl());
     }
 }

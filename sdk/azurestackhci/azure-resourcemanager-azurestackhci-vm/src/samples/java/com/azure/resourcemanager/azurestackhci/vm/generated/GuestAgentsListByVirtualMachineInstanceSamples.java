@@ -9,7 +9,7 @@ package com.azure.resourcemanager.azurestackhci.vm.generated;
  */
 public final class GuestAgentsListByVirtualMachineInstanceSamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/GuestAgents_ListByVirtualMachineInstance.json
+     * x-ms-original-file: 2026-07-01-preview/GuestAgents_ListByVirtualMachineInstance.json
      */
     /**
      * Sample code: GuestAgentListByVirtualMachineInstances.
