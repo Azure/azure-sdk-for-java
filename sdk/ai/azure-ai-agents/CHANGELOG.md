@@ -4,7 +4,14 @@
 
 ### Features Added
 
+- Added GPT Live voice-agent configuration and protocol models, including Live delegation and persisted conversation
+  item types.
+- Added `BetaVoiceAgentsLiveConversationsClient` and `BetaVoiceAgentsLiveConversationsAsyncClient` for retrieving and
+  deleting persisted Live conversations and accessing their items and recorded audio.
+
 ### Breaking Changes
+
+- `VoiceAgentDefinition.getSubProtocol()` and `setSubProtocol(...)` now use the shared `VoiceAgentSubProtocol` type.
 
 ### Bugs Fixed
 

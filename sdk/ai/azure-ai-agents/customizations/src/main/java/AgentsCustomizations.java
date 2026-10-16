@@ -11,10 +11,12 @@ import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.expr.AnnotationExpr;
 import com.github.javaparser.ast.expr.AssignExpr;
+import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.expr.NormalAnnotationExpr;
 import com.github.javaparser.ast.expr.ObjectCreationExpr;
 import com.github.javaparser.ast.expr.StringLiteralExpr;
 import com.github.javaparser.ast.stmt.ExpressionStmt;
+import com.github.javaparser.ast.stmt.IfStmt;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
@@ -37,8 +39,10 @@ public class AgentsCustomizations extends Customization {
         renameImageGenToolSize(libraryCustomization, logger);
         modifyPollingStrategies(libraryCustomization, logger);
         customizeOptimizationPollingStrategies(libraryCustomization, logger);
-        internalizeUnusedVoiceAgentFunctionToolType(libraryCustomization);
-        protectPolymorphicBaseConstructors(libraryCustomization);
+        internalizeUnusedVoiceAgentFunctionToolType(libraryCustomization, logger);
+        protectPolymorphicBaseConstructors(libraryCustomization, logger);
+        exposeVoiceAgentBaseDiscriminatorToSubtypes(libraryCustomization);
+        customizeVoiceAgentSubtypeDispatch(libraryCustomization);
         makeRealtimeMessageDiscriminatorsFinal(libraryCustomization);
         applyUnionTypeWrappers(libraryCustomization, logger);
         annotateBetaClients(libraryCustomization, logger);
@@ -93,11 +97,18 @@ public class AgentsCustomizations extends Customization {
 
     private static final int V_SIZE = 18;
 
-    private void internalizeUnusedVoiceAgentFunctionToolType(LibraryCustomization customization) {
-        customization.getClass(MODELS_PACKAGE, "VoiceAgentFunctionToolType1")
-            .customizeAst(ast -> ast.getEnumByName("VoiceAgentFunctionToolType1")
-                .orElseThrow(() -> new IllegalStateException("VoiceAgentFunctionToolType1 was not generated"))
-                .removeModifier(Modifier.Keyword.PUBLIC));
+    private void internalizeUnusedVoiceAgentFunctionToolType(LibraryCustomization customization, Logger logger) {
+        ClassCustomization classCustomization;
+        try {
+            classCustomization = customization.getClass(MODELS_PACKAGE, "VoiceAgentFunctionToolType1");
+        } catch (IllegalArgumentException ex) {
+            logger.info("VoiceAgentFunctionToolType1 does not exist; skipping internalization.");
+            return;
+        }
+
+        classCustomization.customizeAst(ast -> ast.getEnumByName("VoiceAgentFunctionToolType1")
+            .orElseThrow(() -> new IllegalStateException("VoiceAgentFunctionToolType1 was not generated"))
+            .removeModifier(Modifier.Keyword.PUBLIC));
     }
 
     /**
@@ -107,7 +118,7 @@ public class AgentsCustomizations extends Customization {
      *
      * @param customization the library customization
      */
-    private void protectPolymorphicBaseConstructors(LibraryCustomization customization) {
+    private void protectPolymorphicBaseConstructors(LibraryCustomization customization, Logger logger) {
         List<String> classNames = Arrays.asList("AgentHarness", "AgentOptimizationConfigurationBase",
             "AgentOptimizationEvaluationSet", "AgentOptimizationTargetCompletionDataSource",
             "AgentOptimizationTargetConfiguration", "AgentOptimizationUserConversationSimulationDataSource",
@@ -121,13 +132,69 @@ public class AgentsCustomizations extends Customization {
             "VoiceAgentTurnDetectionConfiguration", "VoiceConversationEngine");
 
         for (String className : classNames) {
-            ClassCustomization classCustomization = customization.getClass(MODELS_PACKAGE, className);
+            ClassCustomization classCustomization;
+            try {
+                classCustomization = customization.getClass(MODELS_PACKAGE, className);
+            } catch (IllegalArgumentException ex) {
+                logger.info("{} does not exist; skipping constructor protection.", className);
+                continue;
+            }
+
             classCustomization.customizeAst(ast -> ast.getClassByName(className).ifPresent(clazz -> clazz
                 .getConstructors()
                 .stream()
                 .filter(constructor -> constructor.isPublic())
                 .forEach(constructor -> constructor.setModifiers(Modifier.Keyword.PROTECTED))));
         }
+    }
+
+    private void exposeVoiceAgentBaseDiscriminatorToSubtypes(LibraryCustomization customization) {
+        customization.getClass(MODELS_PACKAGE, "VoiceAgentBaseDefinition").customizeAst(ast -> ast
+            .getClassByName("VoiceAgentBaseDefinition")
+            .flatMap(clazz -> clazz.getFieldByName("kind"))
+            .orElseThrow(() -> new IllegalStateException("VoiceAgentBaseDefinition.kind was not generated"))
+            .removeModifier(Modifier.Keyword.PRIVATE));
+    }
+
+    private void customizeVoiceAgentSubtypeDispatch(LibraryCustomization customization) {
+        customization.getClass(MODELS_PACKAGE, "AgentDefinition").customizeAst(ast -> {
+            MethodDeclaration fromJson = ast.getClassByName("AgentDefinition")
+                .orElseThrow(() -> new IllegalStateException("AgentDefinition was not generated"))
+                .getMethodsByName("fromJson")
+                .stream()
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException("AgentDefinition.fromJson was not generated"));
+
+            fromJson.findFirst(MethodCallExpr.class,
+                call -> "fromJsonKnownDiscriminator".equals(call.getNameAsString())
+                    && call.getScope().map(Node::toString).filter("VoiceAgentBaseDefinition"::equals).isPresent())
+                .orElseThrow(() -> new IllegalStateException("AgentDefinition voice dispatch was not generated"))
+                .setName("fromJson");
+        });
+
+        customization.getClass(MODELS_PACKAGE, "VoiceAgentBaseDefinition").customizeAst(ast -> {
+            MethodDeclaration fromJson = ast.getClassByName("VoiceAgentBaseDefinition")
+                .orElseThrow(() -> new IllegalStateException("VoiceAgentBaseDefinition was not generated"))
+                .getMethodsByName("fromJson")
+                .stream()
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException("VoiceAgentBaseDefinition.fromJson was not generated"));
+
+            fromJson.findFirst(StringLiteralExpr.class, literal -> "kind".equals(literal.asString()))
+                .orElseThrow(() -> new IllegalStateException("Voice-agent discriminator field was not generated"))
+                .setString("sub_protocol");
+            fromJson.findFirst(IfStmt.class,
+                statement -> "\"VoiceAgentDefinition\".equals(discriminatorValue)"
+                    .equals(statement.getCondition().toString()))
+                .orElseThrow(() -> new IllegalStateException("Realtime voice-agent dispatch was not generated"))
+                .setCondition(StaticJavaParser.parseExpression(
+                    "discriminatorValue == null || \"realtime\".equals(discriminatorValue)"));
+            fromJson.findFirst(IfStmt.class,
+                statement -> "\"VoiceAgentLiveDefinition\".equals(discriminatorValue)"
+                    .equals(statement.getCondition().toString()))
+                .orElseThrow(() -> new IllegalStateException("Live voice-agent dispatch was not generated"))
+                .setCondition(StaticJavaParser.parseExpression("\"live\".equals(discriminatorValue)"));
+        });
     }
 
     /**
