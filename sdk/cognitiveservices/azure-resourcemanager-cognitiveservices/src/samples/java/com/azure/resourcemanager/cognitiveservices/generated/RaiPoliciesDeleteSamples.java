@@ -9,7 +9,21 @@ package com.azure.resourcemanager.cognitiveservices.generated;
  */
 public final class RaiPoliciesDeleteSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/DeleteRaiPolicy.json
+     * x-ms-original-file: 2026-09-15-preview/DeleteRaiPolicyAcs.json
+     */
+    /**
+     * Sample code: Delete an ACS policy.
+     * 
+     * @param manager Entry point to CognitiveServicesManager.
+     */
+    public static void deleteAnACSPolicy(com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager manager) {
+        manager.raiPolicies()
+            .delete("resource-group", "safety-account", "agent-guard", "\"00000000-0000-0000-0000-000000000003\"",
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-09-15-preview/DeleteRaiPolicy.json
      */
     /**
      * Sample code: DeleteRaiPolicy.
@@ -18,6 +32,6 @@ public final class RaiPoliciesDeleteSamples {
      */
     public static void deleteRaiPolicy(com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager manager) {
         manager.raiPolicies()
-            .delete("resourceGroupName", "accountName", "raiPolicyName", com.azure.core.util.Context.NONE);
+            .delete("resourceGroupName", "accountName", "raiPolicyName", null, com.azure.core.util.Context.NONE);
     }
 }

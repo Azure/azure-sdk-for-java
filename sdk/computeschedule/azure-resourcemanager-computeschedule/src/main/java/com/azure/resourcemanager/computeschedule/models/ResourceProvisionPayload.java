@@ -5,14 +5,12 @@
 package com.azure.resourcemanager.computeschedule.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Resource creation data model.
@@ -20,17 +18,18 @@ import java.util.Map;
 @Fluent
 public final class ResourceProvisionPayload implements JsonSerializable<ResourceProvisionPayload> {
     /*
-     * JSON object that contains VM properties that are common across all VMs in this batch (if you want to create 100
-     * VMs in this request, and they all have same vmSize, then include vmSize in baseProfile)
+     * Virtual machine profile object that contains VM properties that are common across all VMs in this batch (if you
+     * want to create 100 VMs in this request, and they all have same vmSize, then include vmSize in baseProfile)
      */
-    private Map<String, BinaryData> baseProfile;
+    private BulkVMConfiguration virtualMachineBaseProfile;
 
     /*
-     * JSON array, that contains VM properties that should to be overridden for each VM in the batch (if you want to
-     * create 100 VMs, they all need a distinct computerName property, you pass computerNames for each VM in batch in
-     * this array), service will merge baseProfile with VM specific overrides and create a merged VMProfile.
+     * Virtual machine profile array that contains VM properties that needs to be overridden for each VM in the batch
+     * (if you want to create 100 VMs, they all need a distinct computerName property, you pass computerNames for each
+     * VM in batch in this array), service will merge baseProfile with VM specific overrides and create a merged
+     * VMProfile.
      */
-    private List<Map<String, BinaryData>> resourceOverrides;
+    private List<BulkVMConfiguration> virtualMachineOverrides;
 
     /*
      * Number of VMs to be created
@@ -50,52 +49,52 @@ public final class ResourceProvisionPayload implements JsonSerializable<Resource
     }
 
     /**
-     * Get the baseProfile property: JSON object that contains VM properties that are common across all VMs in this
-     * batch (if you want to create 100 VMs in this request, and they all have same vmSize, then include vmSize in
-     * baseProfile).
+     * Get the virtualMachineBaseProfile property: Virtual machine profile object that contains VM properties that are
+     * common across all VMs in this batch (if you want to create 100 VMs in this request, and they all have same
+     * vmSize, then include vmSize in baseProfile).
      * 
-     * @return the baseProfile value.
+     * @return the virtualMachineBaseProfile value.
      */
-    public Map<String, BinaryData> baseProfile() {
-        return this.baseProfile;
+    public BulkVMConfiguration virtualMachineBaseProfile() {
+        return this.virtualMachineBaseProfile;
     }
 
     /**
-     * Set the baseProfile property: JSON object that contains VM properties that are common across all VMs in this
-     * batch (if you want to create 100 VMs in this request, and they all have same vmSize, then include vmSize in
-     * baseProfile).
+     * Set the virtualMachineBaseProfile property: Virtual machine profile object that contains VM properties that are
+     * common across all VMs in this batch (if you want to create 100 VMs in this request, and they all have same
+     * vmSize, then include vmSize in baseProfile).
      * 
-     * @param baseProfile the baseProfile value to set.
+     * @param virtualMachineBaseProfile the virtualMachineBaseProfile value to set.
      * @return the ResourceProvisionPayload object itself.
      */
-    public ResourceProvisionPayload withBaseProfile(Map<String, BinaryData> baseProfile) {
-        this.baseProfile = baseProfile;
+    public ResourceProvisionPayload withVirtualMachineBaseProfile(BulkVMConfiguration virtualMachineBaseProfile) {
+        this.virtualMachineBaseProfile = virtualMachineBaseProfile;
         return this;
     }
 
     /**
-     * Get the resourceOverrides property: JSON array, that contains VM properties that should to be overridden for each
-     * VM in the batch (if you want to create 100 VMs, they all need a distinct computerName property, you pass
-     * computerNames for each VM in batch in this array), service will merge baseProfile with VM specific overrides and
-     * create a merged VMProfile.
+     * Get the virtualMachineOverrides property: Virtual machine profile array that contains VM properties that needs to
+     * be overridden for each VM in the batch (if you want to create 100 VMs, they all need a distinct computerName
+     * property, you pass computerNames for each VM in batch in this array), service will merge baseProfile with VM
+     * specific overrides and create a merged VMProfile.
      * 
-     * @return the resourceOverrides value.
+     * @return the virtualMachineOverrides value.
      */
-    public List<Map<String, BinaryData>> resourceOverrides() {
-        return this.resourceOverrides;
+    public List<BulkVMConfiguration> virtualMachineOverrides() {
+        return this.virtualMachineOverrides;
     }
 
     /**
-     * Set the resourceOverrides property: JSON array, that contains VM properties that should to be overridden for each
-     * VM in the batch (if you want to create 100 VMs, they all need a distinct computerName property, you pass
-     * computerNames for each VM in batch in this array), service will merge baseProfile with VM specific overrides and
-     * create a merged VMProfile.
+     * Set the virtualMachineOverrides property: Virtual machine profile array that contains VM properties that needs to
+     * be overridden for each VM in the batch (if you want to create 100 VMs, they all need a distinct computerName
+     * property, you pass computerNames for each VM in batch in this array), service will merge baseProfile with VM
+     * specific overrides and create a merged VMProfile.
      * 
-     * @param resourceOverrides the resourceOverrides value to set.
+     * @param virtualMachineOverrides the virtualMachineOverrides value to set.
      * @return the ResourceProvisionPayload object itself.
      */
-    public ResourceProvisionPayload withResourceOverrides(List<Map<String, BinaryData>> resourceOverrides) {
-        this.resourceOverrides = resourceOverrides;
+    public ResourceProvisionPayload withVirtualMachineOverrides(List<BulkVMConfiguration> virtualMachineOverrides) {
+        this.virtualMachineOverrides = virtualMachineOverrides;
         return this;
     }
 
@@ -148,21 +147,9 @@ public final class ResourceProvisionPayload implements JsonSerializable<Resource
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeIntField("resourceCount", this.resourceCount);
-        jsonWriter.writeMapField("baseProfile", this.baseProfile, (writer, element) -> {
-            if (element == null) {
-                writer.writeNull();
-            } else {
-                element.writeTo(writer);
-            }
-        });
-        jsonWriter.writeArrayField("resourceOverrides", this.resourceOverrides,
-            (writer, element) -> writer.writeMap(element, (writer1, element1) -> {
-                if (element1 == null) {
-                    writer1.writeNull();
-                } else {
-                    element1.writeTo(writer1);
-                }
-            }));
+        jsonWriter.writeJsonField("virtualMachineBaseProfile", this.virtualMachineBaseProfile);
+        jsonWriter.writeArrayField("virtualMachineOverrides", this.virtualMachineOverrides,
+            (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("resourcePrefix", this.resourcePrefix);
         return jsonWriter.writeEndObject();
     }
@@ -185,15 +172,13 @@ public final class ResourceProvisionPayload implements JsonSerializable<Resource
 
                 if ("resourceCount".equals(fieldName)) {
                     deserializedResourceProvisionPayload.resourceCount = reader.getInt();
-                } else if ("baseProfile".equals(fieldName)) {
-                    Map<String, BinaryData> baseProfile = reader.readMap(reader1 -> reader1
-                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
-                    deserializedResourceProvisionPayload.baseProfile = baseProfile;
-                } else if ("resourceOverrides".equals(fieldName)) {
-                    List<Map<String, BinaryData>> resourceOverrides
-                        = reader.readArray(reader1 -> reader1.readMap(reader2 -> reader2
-                            .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()))));
-                    deserializedResourceProvisionPayload.resourceOverrides = resourceOverrides;
+                } else if ("virtualMachineBaseProfile".equals(fieldName)) {
+                    deserializedResourceProvisionPayload.virtualMachineBaseProfile
+                        = BulkVMConfiguration.fromJson(reader);
+                } else if ("virtualMachineOverrides".equals(fieldName)) {
+                    List<BulkVMConfiguration> virtualMachineOverrides
+                        = reader.readArray(reader1 -> BulkVMConfiguration.fromJson(reader1));
+                    deserializedResourceProvisionPayload.virtualMachineOverrides = virtualMachineOverrides;
                 } else if ("resourcePrefix".equals(fieldName)) {
                     deserializedResourceProvisionPayload.resourcePrefix = reader.getString();
                 } else {
