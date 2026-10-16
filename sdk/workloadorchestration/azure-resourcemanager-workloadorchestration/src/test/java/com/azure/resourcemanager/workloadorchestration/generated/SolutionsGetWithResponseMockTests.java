@@ -22,7 +22,7 @@ public final class SolutionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"solutionTemplateId\":\"fqz\",\"availableSolutionTemplateVersions\":[{\"solutionTemplateVersion\":\"njyixh\",\"latestConfigRevision\":\"fratqxmbjroumzz\",\"isConfigured\":true},{\"solutionTemplateVersion\":\"al\",\"latestConfigRevision\":\"jrhuzgf\",\"isConfigured\":false}],\"provisioningState\":\"Deleting\"},\"extendedLocation\":{\"name\":\"pusllywpv\",\"type\":\"CustomLocation\"},\"eTag\":\"tzbpdbollgry\",\"id\":\"iuas\",\"name\":\"growsoc\",\"type\":\"equygdjboqgrmtq\"}";
+            = "{\"properties\":{\"solutionTemplateId\":\"re\",\"displayName\":\"zlp\",\"availableSolutionTemplateVersions\":[{\"solutionTemplateVersion\":\"mxmdutzfkgilnou\",\"latestConfigRevision\":\"ccgndjgdprig\",\"isConfigured\":false}],\"provisioningState\":\"Succeeded\"},\"extendedLocation\":{\"name\":\"qfcbuul\",\"type\":\"EdgeZone\"},\"eTag\":\"flqjfshtu\",\"id\":\"yohi\",\"name\":\"imwdcsklkqnqvki\",\"type\":\"nmbzmecuy\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,10 +32,10 @@ public final class SolutionsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Solution response = manager.solutions()
-            .getWithResponse("blgmokzkltrfowtd", "rfmvlihcvjdrqcrj", "dhftukvhdxlwy", com.azure.core.util.Context.NONE)
+            .getWithResponse("vfiybxqichgyb", "zdqekivycpzcvd", "zulrqt", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("pusllywpv", response.extendedLocation().name());
-        Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION, response.extendedLocation().type());
+        Assertions.assertEquals("qfcbuul", response.extendedLocation().name());
+        Assertions.assertEquals(ExtendedLocationType.EDGE_ZONE, response.extendedLocation().type());
     }
 }

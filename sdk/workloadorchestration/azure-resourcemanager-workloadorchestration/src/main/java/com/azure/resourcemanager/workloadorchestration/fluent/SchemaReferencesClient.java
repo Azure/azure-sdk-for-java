@@ -8,7 +8,9 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
+import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.workloadorchestration.fluent.models.SchemaReferenceInner;
 
 /**
@@ -41,6 +43,149 @@ public interface SchemaReferencesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     SchemaReferenceInner get(String resourceUri, String schemaReferenceName);
+
+    /**
+     * Create or update a Schema Reference Resource.
+     * 
+     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
+     * @param schemaReferenceName The name of the SchemaReference.
+     * @param resource Resource create parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of schema Reference Resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<SchemaReferenceInner>, SchemaReferenceInner> beginCreateOrUpdate(String resourceUri,
+        String schemaReferenceName, SchemaReferenceInner resource);
+
+    /**
+     * Create or update a Schema Reference Resource.
+     * 
+     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
+     * @param schemaReferenceName The name of the SchemaReference.
+     * @param resource Resource create parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of schema Reference Resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<SchemaReferenceInner>, SchemaReferenceInner> beginCreateOrUpdate(String resourceUri,
+        String schemaReferenceName, SchemaReferenceInner resource, Context context);
+
+    /**
+     * Create or update a Schema Reference Resource.
+     * 
+     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
+     * @param schemaReferenceName The name of the SchemaReference.
+     * @param resource Resource create parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return schema Reference Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SchemaReferenceInner createOrUpdate(String resourceUri, String schemaReferenceName, SchemaReferenceInner resource);
+
+    /**
+     * Create or update a Schema Reference Resource.
+     * 
+     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
+     * @param schemaReferenceName The name of the SchemaReference.
+     * @param resource Resource create parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return schema Reference Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SchemaReferenceInner createOrUpdate(String resourceUri, String schemaReferenceName, SchemaReferenceInner resource,
+        Context context);
+
+    /**
+     * update a Schema Reference Resource.
+     * 
+     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
+     * @param schemaReferenceName The name of the SchemaReference.
+     * @param properties The resource properties to be updated.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return schema Reference Resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<SchemaReferenceInner> updateWithResponse(String resourceUri, String schemaReferenceName,
+        SchemaReferenceInner properties, Context context);
+
+    /**
+     * update a Schema Reference Resource.
+     * 
+     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
+     * @param schemaReferenceName The name of the SchemaReference.
+     * @param properties The resource properties to be updated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return schema Reference Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SchemaReferenceInner update(String resourceUri, String schemaReferenceName, SchemaReferenceInner properties);
+
+    /**
+     * Delete a Schema Reference Resource.
+     * 
+     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
+     * @param schemaReferenceName The name of the SchemaReference.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceUri, String schemaReferenceName);
+
+    /**
+     * Delete a Schema Reference Resource.
+     * 
+     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
+     * @param schemaReferenceName The name of the SchemaReference.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceUri, String schemaReferenceName, Context context);
+
+    /**
+     * Delete a Schema Reference Resource.
+     * 
+     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
+     * @param schemaReferenceName The name of the SchemaReference.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String resourceUri, String schemaReferenceName);
+
+    /**
+     * Delete a Schema Reference Resource.
+     * 
+     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
+     * @param schemaReferenceName The name of the SchemaReference.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String resourceUri, String schemaReferenceName, Context context);
 
     /**
      * List by specified resource group.

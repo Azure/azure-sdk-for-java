@@ -7,6 +7,7 @@ package com.azure.resourcemanager.workloadorchestration.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.workloadorchestration.models.ResourceState;
 import com.azure.resourcemanager.workloadorchestration.models.TargetUpdateProperties;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,34 +17,36 @@ public final class TargetUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TargetUpdateProperties model = BinaryData.fromString(
-            "{\"description\":\"pbttdum\",\"displayName\":\"p\",\"contextId\":\"ebmnzbtbhjpglk\",\"targetSpecification\":{},\"capabilities\":[\"neuelfphsdyhtoz\"],\"hierarchyLevel\":\"kd\",\"solutionScope\":\"wq\",\"state\":\"active\"}")
+            "{\"description\":\"rydxtqm\",\"displayName\":\"ox\",\"contextId\":\"ggufhyaomtb\",\"targetSpecification\":{\"pjbi\":\"\\\"dataavgrvkffovjz\\\"\",\"yo\":\"\\\"datagjmfxumvfcl\\\"\"},\"capabilities\":[\"nbkfezzxscy\",\"wzdgirujbzbo\",\"vzzbtdcq\",\"pniyujviyl\"],\"hierarchyLevel\":\"shfssnrbgyef\",\"solutionScope\":\"msgaoj\",\"state\":\"active\"}")
             .toObject(TargetUpdateProperties.class);
-        Assertions.assertEquals("pbttdum", model.description());
-        Assertions.assertEquals("p", model.displayName());
-        Assertions.assertEquals("ebmnzbtbhjpglk", model.contextId());
-        Assertions.assertEquals("neuelfphsdyhtoz", model.capabilities().get(0));
-        Assertions.assertEquals("kd", model.hierarchyLevel());
-        Assertions.assertEquals("wq", model.solutionScope());
+        Assertions.assertEquals("rydxtqm", model.description());
+        Assertions.assertEquals("ox", model.displayName());
+        Assertions.assertEquals("ggufhyaomtb", model.contextId());
+        Assertions.assertEquals("nbkfezzxscy", model.capabilities().get(0));
+        Assertions.assertEquals("shfssnrbgyef", model.hierarchyLevel());
+        Assertions.assertEquals("msgaoj", model.solutionScope());
         Assertions.assertEquals(ResourceState.ACTIVE, model.state());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TargetUpdateProperties model = new TargetUpdateProperties().withDescription("pbttdum")
-            .withDisplayName("p")
-            .withContextId("ebmnzbtbhjpglk")
-            .withTargetSpecification(mapOf())
-            .withCapabilities(Arrays.asList("neuelfphsdyhtoz"))
-            .withHierarchyLevel("kd")
-            .withSolutionScope("wq")
+        TargetUpdateProperties model = new TargetUpdateProperties().withDescription("rydxtqm")
+            .withDisplayName("ox")
+            .withContextId("ggufhyaomtb")
+            .withTargetSpecification(
+                mapOf("pjbi", BinaryData.fromBytes("\"dataavgrvkffovjz\"".getBytes(StandardCharsets.UTF_8)), "yo",
+                    BinaryData.fromBytes("\"datagjmfxumvfcl\"".getBytes(StandardCharsets.UTF_8))))
+            .withCapabilities(Arrays.asList("nbkfezzxscy", "wzdgirujbzbo", "vzzbtdcq", "pniyujviyl"))
+            .withHierarchyLevel("shfssnrbgyef")
+            .withSolutionScope("msgaoj")
             .withState(ResourceState.ACTIVE);
         model = BinaryData.fromObject(model).toObject(TargetUpdateProperties.class);
-        Assertions.assertEquals("pbttdum", model.description());
-        Assertions.assertEquals("p", model.displayName());
-        Assertions.assertEquals("ebmnzbtbhjpglk", model.contextId());
-        Assertions.assertEquals("neuelfphsdyhtoz", model.capabilities().get(0));
-        Assertions.assertEquals("kd", model.hierarchyLevel());
-        Assertions.assertEquals("wq", model.solutionScope());
+        Assertions.assertEquals("rydxtqm", model.description());
+        Assertions.assertEquals("ox", model.displayName());
+        Assertions.assertEquals("ggufhyaomtb", model.contextId());
+        Assertions.assertEquals("nbkfezzxscy", model.capabilities().get(0));
+        Assertions.assertEquals("shfssnrbgyef", model.hierarchyLevel());
+        Assertions.assertEquals("msgaoj", model.solutionScope());
         Assertions.assertEquals(ResourceState.ACTIVE, model.state());
     }
 

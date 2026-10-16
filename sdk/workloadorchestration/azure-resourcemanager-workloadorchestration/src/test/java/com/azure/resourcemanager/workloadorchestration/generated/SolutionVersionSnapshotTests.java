@@ -11,9 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class SolutionVersionSnapshotTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SolutionVersionSnapshot model
-            = BinaryData.fromString("{\"solutionVersionId\":\"ambtrnegvm\",\"specification\":{}}")
-                .toObject(SolutionVersionSnapshot.class);
-        Assertions.assertEquals("ambtrnegvm", model.solutionVersionId());
+        SolutionVersionSnapshot model = BinaryData.fromString(
+            "{\"solutionVersionId\":\"hcsrlzknmzl\",\"specification\":{\"phcnzqtpj\":\"\\\"dataupdwv\\\"\",\"iwdcxsmlzzhzd\":\"\\\"datamqrhvthl\\\"\",\"n\":\"\\\"dataxetlgydlhqv\\\"\",\"afiqgeaarbgjekg\":\"\\\"datapxy\\\"\"}}")
+            .toObject(SolutionVersionSnapshot.class);
+        Assertions.assertEquals("hcsrlzknmzl", model.solutionVersionId());
     }
 }

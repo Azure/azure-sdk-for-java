@@ -12,9 +12,8 @@ public final class ConfigTemplateVersionListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConfigTemplateVersionListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"configurations\":\"ypoh\",\"provisioningState\":\"InProgress\"},\"eTag\":\"slynsqyrpfoo\",\"id\":\"lttymsjn\",\"name\":\"gqdnfwqzd\",\"type\":\"gtilax\"},{\"properties\":{\"configurations\":\"fhqlyvi\",\"provisioningState\":\"Succeeded\"},\"eTag\":\"iv\",\"id\":\"oyzunbixxr\",\"name\":\"ikvcpwp\",\"type\":\"clrcivtsox\"},{\"properties\":{\"configurations\":\"kenx\",\"provisioningState\":\"Canceled\"},\"eTag\":\"efrp\",\"id\":\"dnqqskawaoqvmmb\",\"name\":\"pqfrtqlkz\",\"type\":\"egnitg\"}],\"nextLink\":\"xlzyqd\"}")
+            "{\"value\":[{\"properties\":{\"configurations\":\"\\\"datawwgzwxjlmecvog\\\"\",\"provisioningState\":\"Succeeded\"},\"eTag\":\"vne\",\"id\":\"aifghtmoqqt\",\"name\":\"ffhzbkrkjjjavfq\",\"type\":\"vhnqo\"},{\"properties\":{\"configurations\":\"\\\"datadogiyetesyp\\\"\",\"provisioningState\":\"Succeeded\"},\"eTag\":\"ztjhqtfbovnynkbw\",\"id\":\"njuhpsprkzya\",\"name\":\"piaccxnafb\",\"type\":\"qroohtu\"}],\"nextLink\":\"maonurj\"}")
             .toObject(ConfigTemplateVersionListResult.class);
-        Assertions.assertEquals("ypoh", model.value().get(0).properties().configurations());
-        Assertions.assertEquals("xlzyqd", model.nextLink());
+        Assertions.assertEquals("maonurj", model.nextLink());
     }
 }

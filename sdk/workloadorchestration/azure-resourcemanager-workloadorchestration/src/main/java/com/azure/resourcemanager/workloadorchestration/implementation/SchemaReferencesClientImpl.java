@@ -4,13 +4,17 @@
 
 package com.azure.resourcemanager.workloadorchestration.implementation;
 
+import com.azure.core.annotation.BodyParam;
+import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
 import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
+import com.azure.core.annotation.Patch;
 import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
@@ -23,11 +27,17 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
+import com.azure.core.management.polling.PollResult;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.workloadorchestration.fluent.SchemaReferencesClient;
 import com.azure.resourcemanager.workloadorchestration.fluent.models.SchemaReferenceInner;
 import com.azure.resourcemanager.workloadorchestration.implementation.models.SchemaReferenceListResult;
+import java.nio.ByteBuffer;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
@@ -81,6 +91,64 @@ public final class SchemaReferencesClientImpl implements SchemaReferencesClient 
             @PathParam(value = "resourceUri", encoded = true) String resourceUri,
             @PathParam("schemaReferenceName") String schemaReferenceName, @HeaderParam("Accept") String accept,
             Context context);
+
+        @Put("/{resourceUri}/providers/Microsoft.Edge/schemaReferences/{schemaReferenceName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam(value = "resourceUri", encoded = true) String resourceUri,
+            @PathParam("schemaReferenceName") String schemaReferenceName,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") SchemaReferenceInner resource, Context context);
+
+        @Put("/{resourceUri}/providers/Microsoft.Edge/schemaReferences/{schemaReferenceName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> createOrUpdateSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam(value = "resourceUri", encoded = true) String resourceUri,
+            @PathParam("schemaReferenceName") String schemaReferenceName,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") SchemaReferenceInner resource, Context context);
+
+        @Patch("/{resourceUri}/providers/Microsoft.Edge/schemaReferences/{schemaReferenceName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<SchemaReferenceInner>> update(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam(value = "resourceUri", encoded = true) String resourceUri,
+            @PathParam("schemaReferenceName") String schemaReferenceName,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") SchemaReferenceInner properties, Context context);
+
+        @Patch("/{resourceUri}/providers/Microsoft.Edge/schemaReferences/{schemaReferenceName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<SchemaReferenceInner> updateSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam(value = "resourceUri", encoded = true) String resourceUri,
+            @PathParam("schemaReferenceName") String schemaReferenceName,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") SchemaReferenceInner properties, Context context);
+
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Delete("/{resourceUri}/providers/Microsoft.Edge/schemaReferences/{schemaReferenceName}")
+        @ExpectedResponses({ 202, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam(value = "resourceUri", encoded = true) String resourceUri,
+            @PathParam("schemaReferenceName") String schemaReferenceName, Context context);
+
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Delete("/{resourceUri}/providers/Microsoft.Edge/schemaReferences/{schemaReferenceName}")
+        @ExpectedResponses({ 202, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> deleteSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam(value = "resourceUri", encoded = true) String resourceUri,
+            @PathParam("schemaReferenceName") String schemaReferenceName, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/{resourceUri}/providers/Microsoft.Edge/schemaReferences")
@@ -183,6 +251,405 @@ public final class SchemaReferencesClientImpl implements SchemaReferencesClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SchemaReferenceInner get(String resourceUri, String schemaReferenceName) {
         return getWithResponse(resourceUri, schemaReferenceName, Context.NONE).getValue();
+    }
+
+    /**
+     * Create or update a Schema Reference Resource.
+     * 
+     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
+     * @param schemaReferenceName The name of the SchemaReference.
+     * @param resource Resource create parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return schema Reference Resource along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceUri,
+        String schemaReferenceName, SchemaReferenceInner resource) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+                resourceUri, schemaReferenceName, contentType, accept, resource, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Create or update a Schema Reference Resource.
+     * 
+     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
+     * @param schemaReferenceName The name of the SchemaReference.
+     * @param resource Resource create parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return schema Reference Resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> createOrUpdateWithResponse(String resourceUri, String schemaReferenceName,
+        SchemaReferenceInner resource) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri,
+            schemaReferenceName, contentType, accept, resource, Context.NONE);
+    }
+
+    /**
+     * Create or update a Schema Reference Resource.
+     * 
+     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
+     * @param schemaReferenceName The name of the SchemaReference.
+     * @param resource Resource create parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return schema Reference Resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> createOrUpdateWithResponse(String resourceUri, String schemaReferenceName,
+        SchemaReferenceInner resource, Context context) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri,
+            schemaReferenceName, contentType, accept, resource, context);
+    }
+
+    /**
+     * Create or update a Schema Reference Resource.
+     * 
+     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
+     * @param schemaReferenceName The name of the SchemaReference.
+     * @param resource Resource create parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of schema Reference Resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<SchemaReferenceInner>, SchemaReferenceInner>
+        beginCreateOrUpdateAsync(String resourceUri, String schemaReferenceName, SchemaReferenceInner resource) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceUri, schemaReferenceName, resource);
+        return this.client.<SchemaReferenceInner, SchemaReferenceInner>getLroResult(mono, this.client.getHttpPipeline(),
+            SchemaReferenceInner.class, SchemaReferenceInner.class, this.client.getContext());
+    }
+
+    /**
+     * Create or update a Schema Reference Resource.
+     * 
+     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
+     * @param schemaReferenceName The name of the SchemaReference.
+     * @param resource Resource create parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of schema Reference Resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<SchemaReferenceInner>, SchemaReferenceInner> beginCreateOrUpdate(String resourceUri,
+        String schemaReferenceName, SchemaReferenceInner resource) {
+        Response<BinaryData> response = createOrUpdateWithResponse(resourceUri, schemaReferenceName, resource);
+        return this.client.<SchemaReferenceInner, SchemaReferenceInner>getLroResult(response,
+            SchemaReferenceInner.class, SchemaReferenceInner.class, Context.NONE);
+    }
+
+    /**
+     * Create or update a Schema Reference Resource.
+     * 
+     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
+     * @param schemaReferenceName The name of the SchemaReference.
+     * @param resource Resource create parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of schema Reference Resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<SchemaReferenceInner>, SchemaReferenceInner> beginCreateOrUpdate(String resourceUri,
+        String schemaReferenceName, SchemaReferenceInner resource, Context context) {
+        Response<BinaryData> response = createOrUpdateWithResponse(resourceUri, schemaReferenceName, resource, context);
+        return this.client.<SchemaReferenceInner, SchemaReferenceInner>getLroResult(response,
+            SchemaReferenceInner.class, SchemaReferenceInner.class, context);
+    }
+
+    /**
+     * Create or update a Schema Reference Resource.
+     * 
+     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
+     * @param schemaReferenceName The name of the SchemaReference.
+     * @param resource Resource create parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return schema Reference Resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<SchemaReferenceInner> createOrUpdateAsync(String resourceUri, String schemaReferenceName,
+        SchemaReferenceInner resource) {
+        return beginCreateOrUpdateAsync(resourceUri, schemaReferenceName, resource).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Create or update a Schema Reference Resource.
+     * 
+     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
+     * @param schemaReferenceName The name of the SchemaReference.
+     * @param resource Resource create parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return schema Reference Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SchemaReferenceInner createOrUpdate(String resourceUri, String schemaReferenceName,
+        SchemaReferenceInner resource) {
+        return beginCreateOrUpdate(resourceUri, schemaReferenceName, resource).getFinalResult();
+    }
+
+    /**
+     * Create or update a Schema Reference Resource.
+     * 
+     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
+     * @param schemaReferenceName The name of the SchemaReference.
+     * @param resource Resource create parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return schema Reference Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SchemaReferenceInner createOrUpdate(String resourceUri, String schemaReferenceName,
+        SchemaReferenceInner resource, Context context) {
+        return beginCreateOrUpdate(resourceUri, schemaReferenceName, resource, context).getFinalResult();
+    }
+
+    /**
+     * update a Schema Reference Resource.
+     * 
+     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
+     * @param schemaReferenceName The name of the SchemaReference.
+     * @param properties The resource properties to be updated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return schema Reference Resource along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<SchemaReferenceInner>> updateWithResponseAsync(String resourceUri, String schemaReferenceName,
+        SchemaReferenceInner properties) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri,
+                schemaReferenceName, contentType, accept, properties, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * update a Schema Reference Resource.
+     * 
+     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
+     * @param schemaReferenceName The name of the SchemaReference.
+     * @param properties The resource properties to be updated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return schema Reference Resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<SchemaReferenceInner> updateAsync(String resourceUri, String schemaReferenceName,
+        SchemaReferenceInner properties) {
+        return updateWithResponseAsync(resourceUri, schemaReferenceName, properties)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * update a Schema Reference Resource.
+     * 
+     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
+     * @param schemaReferenceName The name of the SchemaReference.
+     * @param properties The resource properties to be updated.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return schema Reference Resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SchemaReferenceInner> updateWithResponse(String resourceUri, String schemaReferenceName,
+        SchemaReferenceInner properties, Context context) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri,
+            schemaReferenceName, contentType, accept, properties, context);
+    }
+
+    /**
+     * update a Schema Reference Resource.
+     * 
+     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
+     * @param schemaReferenceName The name of the SchemaReference.
+     * @param properties The resource properties to be updated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return schema Reference Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SchemaReferenceInner update(String resourceUri, String schemaReferenceName,
+        SchemaReferenceInner properties) {
+        return updateWithResponse(resourceUri, schemaReferenceName, properties, Context.NONE).getValue();
+    }
+
+    /**
+     * Delete a Schema Reference Resource.
+     * 
+     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
+     * @param schemaReferenceName The name of the SchemaReference.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceUri, String schemaReferenceName) {
+        return FluxUtil
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri,
+                schemaReferenceName, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Delete a Schema Reference Resource.
+     * 
+     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
+     * @param schemaReferenceName The name of the SchemaReference.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> deleteWithResponse(String resourceUri, String schemaReferenceName) {
+        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri,
+            schemaReferenceName, Context.NONE);
+    }
+
+    /**
+     * Delete a Schema Reference Resource.
+     * 
+     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
+     * @param schemaReferenceName The name of the SchemaReference.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> deleteWithResponse(String resourceUri, String schemaReferenceName, Context context) {
+        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri,
+            schemaReferenceName, context);
+    }
+
+    /**
+     * Delete a Schema Reference Resource.
+     * 
+     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
+     * @param schemaReferenceName The name of the SchemaReference.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceUri, String schemaReferenceName) {
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceUri, schemaReferenceName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Delete a Schema Reference Resource.
+     * 
+     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
+     * @param schemaReferenceName The name of the SchemaReference.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceUri, String schemaReferenceName) {
+        Response<BinaryData> response = deleteWithResponse(resourceUri, schemaReferenceName);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+    }
+
+    /**
+     * Delete a Schema Reference Resource.
+     * 
+     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
+     * @param schemaReferenceName The name of the SchemaReference.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceUri, String schemaReferenceName,
+        Context context) {
+        Response<BinaryData> response = deleteWithResponse(resourceUri, schemaReferenceName, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
+    }
+
+    /**
+     * Delete a Schema Reference Resource.
+     * 
+     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
+     * @param schemaReferenceName The name of the SchemaReference.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> deleteAsync(String resourceUri, String schemaReferenceName) {
+        return beginDeleteAsync(resourceUri, schemaReferenceName).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Delete a Schema Reference Resource.
+     * 
+     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
+     * @param schemaReferenceName The name of the SchemaReference.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceUri, String schemaReferenceName) {
+        beginDelete(resourceUri, schemaReferenceName).getFinalResult();
+    }
+
+    /**
+     * Delete a Schema Reference Resource.
+     * 
+     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
+     * @param schemaReferenceName The name of the SchemaReference.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceUri, String schemaReferenceName, Context context) {
+        beginDelete(resourceUri, schemaReferenceName, context).getFinalResult();
     }
 
     /**

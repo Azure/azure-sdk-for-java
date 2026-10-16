@@ -9,6 +9,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
+import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.workloadorchestration.WorkloadOrchestrationManager;
 import com.azure.resourcemanager.workloadorchestration.models.Execution;
 import com.azure.resourcemanager.workloadorchestration.models.ExecutionProperties;
@@ -26,7 +27,7 @@ public final class ExecutionsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"workflowVersionId\":\"hskxx\",\"specification\":{},\"status\":{\"updateTime\":\"2021-12-04T06:38:55Z\",\"status\":435024183,\"statusMessage\":\"qgvtojrulfu\",\"stageHistory\":[{\"status\":1905255839,\"statusMessage\":\"hcfjzhxlyubqjro\",\"stage\":\"vrjeqmtzzbeqrztr\",\"nextstage\":\"lxrdhabsrwrsn\",\"errorMessage\":\"pqatiwkkvyanxkv\",\"isActive\":\"active\",\"inputs\":{},\"outputs\":{}},{\"status\":84399472,\"statusMessage\":\"jkqxetqmmli\",\"stage\":\"jjxnwxdchpoj\",\"nextstage\":\"ehzl\",\"errorMessage\":\"gfquwz\",\"isActive\":\"inactive\",\"inputs\":{},\"outputs\":{}},{\"status\":1998740765,\"statusMessage\":\"rwkwbpjxljtxbus\",\"stage\":\"bxxn\",\"nextstage\":\"i\",\"errorMessage\":\"zhgbdgzpagsecn\",\"isActive\":\"active\",\"inputs\":{},\"outputs\":{}},{\"status\":159804724,\"statusMessage\":\"llmqiyne\",\"stage\":\"ellnkkii\",\"nextstage\":\"mtum\",\"errorMessage\":\"ymdjfua\",\"isActive\":\"active\",\"inputs\":{},\"outputs\":{}}]},\"provisioningState\":\"Succeeded\"},\"extendedLocation\":{\"name\":\"guncan\",\"type\":\"CustomLocation\"},\"eTag\":\"wzor\",\"id\":\"bm\",\"name\":\"aqklxy\",\"type\":\"x\"}";
+            = "{\"properties\":{\"workflowVersionId\":\"oiyygkts\",\"specification\":{\"cnxfxphs\":\"\\\"dataxxoxwfzbkv\\\"\"},\"status\":{\"updateTime\":\"2021-11-24T22:43:45Z\",\"status\":659291131,\"statusMessage\":\"bw\",\"stageHistory\":[{\"status\":1167734194,\"statusMessage\":\"msumustihtgrafj\",\"stage\":\"vkyxmmjc\",\"nextstage\":\"ogtder\",\"errorMessage\":\"nnmkvae\",\"isActive\":\"inactive\",\"inputs\":{\"nrpdhewoky\":\"\\\"dataxhhlbmyphf\\\"\",\"xfsyw\":\"\\\"datasf\\\"\",\"fyxbvkvwzdmvd\":\"\\\"dataihqbtod\\\"\"},\"outputs\":{\"g\":\"\\\"datacr\\\"\",\"lrhocr\":\"\\\"dataozzzawnjdv\\\"\",\"ndqzbvbpsuv\":\"\\\"datakvx\\\"\"}},{\"status\":77149606,\"statusMessage\":\"ozf\",\"stage\":\"kwb\",\"nextstage\":\"rklpiigfuzk\",\"errorMessage\":\"tuipjclzjwaqdzq\",\"isActive\":\"inactive\",\"inputs\":{\"lzzzevtz\":\"\\\"datawxy\\\"\",\"ekmuynfpkyvnhiy\":\"\\\"datawczochw\\\"\",\"kslhr\":\"\\\"datadho\\\"\",\"lwkffl\":\"\\\"dataqki\\\"\"},\"outputs\":{\"zjxnjtqbgysibt\":\"\\\"datamwqoguflteatnege\\\"\",\"kxunsaujqgbb\":\"\\\"datanvxwtdqtcbjdbtqy\\\"\",\"hgjsmbcsloy\":\"\\\"datavovoa\\\"\"}},{\"status\":985080577,\"statusMessage\":\"d\",\"stage\":\"he\",\"nextstage\":\"nsdunrkzvzua\",\"errorMessage\":\"hgzuyxtrvf\",\"isActive\":\"active\",\"inputs\":{\"vitp\":\"\\\"datagqj\\\"\",\"wkgjwb\":\"\\\"datapvsffavdhpiwrm\\\"\",\"dqtmggcpdrmeg\":\"\\\"datafdwfbwxy\\\"\",\"kwqkkgeseiph\":\"\\\"datajrzctwymz\\\"\"},\"outputs\":{\"qcomjiqiince\":\"\\\"dataupqscoobkjlcax\\\"\",\"iizm\":\"\\\"dataxxkdevpxim\\\"\",\"p\":\"\\\"dataqmduvtvodqx\\\"\"}}]},\"provisioningState\":\"Succeeded\"},\"extendedLocation\":{\"name\":\"qibtblmc\",\"type\":\"CustomLocation\"},\"eTag\":\"azn\",\"id\":\"d\",\"name\":\"fqvpbqsdqkpsbqsb\",\"type\":\"m\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,15 +37,19 @@ public final class ExecutionsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Execution response = manager.executions()
-            .define("chgjtnhtukfacih")
-            .withExistingVersion("hthdklmvetatlakf", "oixwgiksb", "vtooxrpo", "wp")
-            .withProperties(new ExecutionProperties().withWorkflowVersionId("fntumeezbxvqx").withSpecification(mapOf()))
+            .define("hgcydijnmcvj")
+            .withExistingVersion("ixepbntqqwwg", "gsqxilefej", "ewrznequqynttw", "nhajksbsyogjmq")
+            .withProperties(new ExecutionProperties().withWorkflowVersionId("sfcriqxzix")
+                .withSpecification(mapOf("frwrgorogeuvmkr",
+                    BinaryData.fromBytes("\"dataxwmvcdkucpxpy\"".getBytes(StandardCharsets.UTF_8)), "jseml",
+                    BinaryData.fromBytes("\"datapnr\"".getBytes(StandardCharsets.UTF_8)), "ljpetexutikelpmw",
+                    BinaryData.fromBytes("\"dataofrsnq\"".getBytes(StandardCharsets.UTF_8)))))
             .withExtendedLocation(
-                new ExtendedLocation().withName("srqorcgenmvceb").withType(ExtendedLocationType.CUSTOM_LOCATION))
+                new ExtendedLocation().withName("tjlxsgcemegdzdvy").withType(ExtendedLocationType.CUSTOM_LOCATION))
             .create();
 
-        Assertions.assertEquals("hskxx", response.properties().workflowVersionId());
-        Assertions.assertEquals("guncan", response.extendedLocation().name());
+        Assertions.assertEquals("oiyygkts", response.properties().workflowVersionId());
+        Assertions.assertEquals("qibtblmc", response.extendedLocation().name());
         Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION, response.extendedLocation().type());
     }
 

@@ -5,20 +5,19 @@
 package com.azure.resourcemanager.workloadorchestration.implementation;
 
 import com.azure.core.management.SystemData;
+import com.azure.core.util.Context;
 import com.azure.resourcemanager.workloadorchestration.fluent.models.SolutionTemplateVersionInner;
+import com.azure.resourcemanager.workloadorchestration.models.BulkDeploySolutionParameter;
+import com.azure.resourcemanager.workloadorchestration.models.BulkPublishSolutionParameter;
+import com.azure.resourcemanager.workloadorchestration.models.BulkReviewSolutionParameter;
 import com.azure.resourcemanager.workloadorchestration.models.SolutionTemplateVersion;
 import com.azure.resourcemanager.workloadorchestration.models.SolutionTemplateVersionProperties;
 
-public final class SolutionTemplateVersionImpl implements SolutionTemplateVersion {
+public final class SolutionTemplateVersionImpl
+    implements SolutionTemplateVersion, SolutionTemplateVersion.Definition, SolutionTemplateVersion.Update {
     private SolutionTemplateVersionInner innerObject;
 
     private final com.azure.resourcemanager.workloadorchestration.WorkloadOrchestrationManager serviceManager;
-
-    SolutionTemplateVersionImpl(SolutionTemplateVersionInner innerObject,
-        com.azure.resourcemanager.workloadorchestration.WorkloadOrchestrationManager serviceManager) {
-        this.innerObject = innerObject;
-        this.serviceManager = serviceManager;
-    }
 
     public String id() {
         return this.innerModel().id();
@@ -44,11 +43,133 @@ public final class SolutionTemplateVersionImpl implements SolutionTemplateVersio
         return this.innerModel().systemData();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public SolutionTemplateVersionInner innerModel() {
         return this.innerObject;
     }
 
     private com.azure.resourcemanager.workloadorchestration.WorkloadOrchestrationManager manager() {
         return this.serviceManager;
+    }
+
+    private String resourceGroupName;
+
+    private String solutionTemplateName;
+
+    private String solutionTemplateVersionName;
+
+    public SolutionTemplateVersionImpl withExistingSolutionTemplate(String resourceGroupName,
+        String solutionTemplateName) {
+        this.resourceGroupName = resourceGroupName;
+        this.solutionTemplateName = solutionTemplateName;
+        return this;
+    }
+
+    public SolutionTemplateVersion create() {
+        this.innerObject = serviceManager.serviceClient()
+            .getSolutionTemplateVersions()
+            .createOrUpdate(resourceGroupName, solutionTemplateName, solutionTemplateVersionName, this.innerModel(),
+                Context.NONE);
+        return this;
+    }
+
+    public SolutionTemplateVersion create(Context context) {
+        this.innerObject = serviceManager.serviceClient()
+            .getSolutionTemplateVersions()
+            .createOrUpdate(resourceGroupName, solutionTemplateName, solutionTemplateVersionName, this.innerModel(),
+                context);
+        return this;
+    }
+
+    SolutionTemplateVersionImpl(String name,
+        com.azure.resourcemanager.workloadorchestration.WorkloadOrchestrationManager serviceManager) {
+        this.innerObject = new SolutionTemplateVersionInner();
+        this.serviceManager = serviceManager;
+        this.solutionTemplateVersionName = name;
+    }
+
+    public SolutionTemplateVersionImpl update() {
+        return this;
+    }
+
+    public SolutionTemplateVersion apply() {
+        this.innerObject = serviceManager.serviceClient()
+            .getSolutionTemplateVersions()
+            .updateWithResponse(resourceGroupName, solutionTemplateName, solutionTemplateVersionName, this.innerModel(),
+                Context.NONE)
+            .getValue();
+        return this;
+    }
+
+    public SolutionTemplateVersion apply(Context context) {
+        this.innerObject = serviceManager.serviceClient()
+            .getSolutionTemplateVersions()
+            .updateWithResponse(resourceGroupName, solutionTemplateName, solutionTemplateVersionName, this.innerModel(),
+                context)
+            .getValue();
+        return this;
+    }
+
+    SolutionTemplateVersionImpl(SolutionTemplateVersionInner innerObject,
+        com.azure.resourcemanager.workloadorchestration.WorkloadOrchestrationManager serviceManager) {
+        this.innerObject = innerObject;
+        this.serviceManager = serviceManager;
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.solutionTemplateName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "solutionTemplates");
+        this.solutionTemplateVersionName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "versions");
+    }
+
+    public SolutionTemplateVersion refresh() {
+        this.innerObject = serviceManager.serviceClient()
+            .getSolutionTemplateVersions()
+            .getWithResponse(resourceGroupName, solutionTemplateName, solutionTemplateVersionName, Context.NONE)
+            .getValue();
+        return this;
+    }
+
+    public SolutionTemplateVersion refresh(Context context) {
+        this.innerObject = serviceManager.serviceClient()
+            .getSolutionTemplateVersions()
+            .getWithResponse(resourceGroupName, solutionTemplateName, solutionTemplateVersionName, context)
+            .getValue();
+        return this;
+    }
+
+    public void bulkDeploySolution(BulkDeploySolutionParameter body) {
+        serviceManager.solutionTemplateVersions()
+            .bulkDeploySolution(resourceGroupName, solutionTemplateName, solutionTemplateVersionName, body);
+    }
+
+    public void bulkDeploySolution(BulkDeploySolutionParameter body, Context context) {
+        serviceManager.solutionTemplateVersions()
+            .bulkDeploySolution(resourceGroupName, solutionTemplateName, solutionTemplateVersionName, body, context);
+    }
+
+    public void bulkPublishSolution(BulkPublishSolutionParameter body) {
+        serviceManager.solutionTemplateVersions()
+            .bulkPublishSolution(resourceGroupName, solutionTemplateName, solutionTemplateVersionName, body);
+    }
+
+    public void bulkPublishSolution(BulkPublishSolutionParameter body, Context context) {
+        serviceManager.solutionTemplateVersions()
+            .bulkPublishSolution(resourceGroupName, solutionTemplateName, solutionTemplateVersionName, body, context);
+    }
+
+    public void bulkReviewSolution(BulkReviewSolutionParameter body) {
+        serviceManager.solutionTemplateVersions()
+            .bulkReviewSolution(resourceGroupName, solutionTemplateName, solutionTemplateVersionName, body);
+    }
+
+    public void bulkReviewSolution(BulkReviewSolutionParameter body, Context context) {
+        serviceManager.solutionTemplateVersions()
+            .bulkReviewSolution(resourceGroupName, solutionTemplateName, solutionTemplateVersionName, body, context);
+    }
+
+    public SolutionTemplateVersionImpl withProperties(SolutionTemplateVersionProperties properties) {
+        this.innerModel().withProperties(properties);
+        return this;
     }
 }
