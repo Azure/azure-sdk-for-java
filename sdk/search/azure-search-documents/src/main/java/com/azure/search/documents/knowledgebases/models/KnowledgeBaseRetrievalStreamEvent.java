@@ -8,7 +8,6 @@ import java.util.List;
 
 /**
  * Base for polymorphic events emitted by a streaming knowledge base retrieval.
- * Instances are created by the SDK, not by applications.
  * Known events expose typed payloads through their subtype's {@code getValue()} method.
  * Unrecognized events use this concrete base class and expose only their names through
  * {@link #getEventName()}; their payloads are not available and they are not terminal.

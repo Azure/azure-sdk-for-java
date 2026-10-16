@@ -303,7 +303,6 @@ public class SearchCustomizations extends Customization {
             + "import com.azure.search.documents.knowledgebases.implementation."
             + "KnowledgeBaseRetrievalStreamEventConverter;\n" + "import java.util.List;\n\n" + "/**\n"
             + " * Base for polymorphic events emitted by a streaming knowledge base retrieval.\n"
-            + " * Instances are created by the SDK, not by applications.\n"
             + " * Known events expose typed payloads through their subtype's {@code getValue()} method.\n"
             + " * Unrecognized events use this concrete base class and expose only their names through\n"
             + " * {@link #getEventName()}; their payloads are not available and they are not terminal.\n"
@@ -371,10 +370,8 @@ public class SearchCustomizations extends Customization {
         return header("com.azure.search.documents.knowledgebases.models")
             + "import com.azure.core.annotation.Generated;\n" + "import com.azure.core.annotation.Immutable;\n"
             + listImports + "\n" + "/**\n" + " * Represents the {@code " + eventName
-            + "} knowledge base retrieval stream event.\n"
-            + " * Instances are created by the SDK, not by applications.\n"
-            + " * Access the typed payload with {@link #getValue()}.\n" + " *\n"
-            + " * @see KnowledgeBaseRetrievalStreamEvent\n" + " */\n" + "@Immutable\n" + "public final class "
+            + "} knowledge base retrieval stream event.\n" + " * Access the typed payload with {@link #getValue()}.\n"
+            + " *\n" + " * @see KnowledgeBaseRetrievalStreamEvent\n" + " */\n" + "@Immutable\n" + "public final class "
             + className + " extends KnowledgeBaseRetrievalStreamEvent {\n" + "    @Generated\n" + "    private final "
             + valueType + " value;\n\n" + "    /**\n" + "     * Creates an event wrapper.\n" + "     *\n"
             + "     * @param value The event payload.\n" + "     */\n" + "    @Generated\n" + "    " + className + "("

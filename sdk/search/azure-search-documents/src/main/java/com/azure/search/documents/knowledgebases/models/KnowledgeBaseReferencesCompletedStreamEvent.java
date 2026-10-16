@@ -8,7 +8,6 @@ import java.util.List;
 
 /**
  * Represents the {@code references.completed} knowledge base retrieval stream event.
- * Instances are created by the SDK, not by applications.
  * Access the typed payload with {@link #getValue()}.
  *
  * @see KnowledgeBaseRetrievalStreamEvent
