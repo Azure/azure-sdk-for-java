@@ -9,7 +9,7 @@ package com.azure.resourcemanager.elastic.generated;
  */
 public final class MonitorsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-06-01/Monitors_Delete.json
+     * x-ms-original-file: 2026-03-15-preview/Monitors_Delete.json
      */
     /**
      * Sample code: Monitors_Delete.
@@ -17,6 +17,18 @@ public final class MonitorsDeleteSamples {
      * @param manager Entry point to ElasticManager.
      */
     public static void monitorsDelete(com.azure.resourcemanager.elastic.ElasticManager manager) {
-        manager.monitors().delete("myResourceGroup", "myMonitor", com.azure.core.util.Context.NONE);
+        manager.monitors().delete("myResourceGroup", "myMonitor", false, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-03-15-preview/Monitors_Delete_SoftDelete.json
+     */
+    /**
+     * Sample code: Monitors_Delete_SoftDelete.
+     * 
+     * @param manager Entry point to ElasticManager.
+     */
+    public static void monitorsDeleteSoftDelete(com.azure.resourcemanager.elastic.ElasticManager manager) {
+        manager.monitors().delete("myResourceGroup", "myMonitor", true, com.azure.core.util.Context.NONE);
     }
 }
