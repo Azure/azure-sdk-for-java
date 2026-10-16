@@ -67,6 +67,7 @@ import static com.azure.messaging.servicebus.implementation.ManagementConstants.
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.MANAGEMENT_OPERATION_KEY;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.OPERATION_GET_SESSION_STATE;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.OPERATION_GET_MESSAGE_SESSIONS;
+import static com.azure.messaging.servicebus.implementation.ManagementConstants.OPERATION_BATCH_DELETE_MESSAGES;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.OPERATION_RENEW_SESSION_LOCK;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.OPERATION_SET_SESSION_STATE;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.OPERATION_UPDATE_DISPOSITION;
@@ -1484,5 +1485,139 @@ class ManagementChannelTests {
             })
             .expectComplete()
             .verify(TIMEOUT);
+    }
+
+    @Test
+    void deleteMessagesReturnsActualCountAndSetsWireFields() {
+        final OffsetDateTime cutoff = OffsetDateTime.of(2026, 8, 27, 12, 30, 0, 0, ZoneOffset.UTC);
+        final Map<String, Object> responseBody = new HashMap<>();
+        responseBody.put(ManagementConstants.MESSAGE_COUNT_KEY, 7);
+        responseMessage.setBody(new AmqpValue(responseBody));
+
+        StepVerifier.create(managementChannel.deleteMessages(10, cutoff, "session-id", LINK_NAME))
+            .assertNext(result -> assertEquals(7, result.getDeletedCount()))
+            .expectComplete()
+            .verify(TIMEOUT);
+
+        verify(requestResponseChannel).sendWithAck(messageCaptor.capture(), isNull());
+        final Message sentMessage = messageCaptor.getValue();
+        final Map<String, Object> appProperties = sentMessage.getApplicationProperties().getValue();
+        assertEquals(OPERATION_BATCH_DELETE_MESSAGES, appProperties.get(MANAGEMENT_OPERATION_KEY));
+        assertTrue(appProperties.get(ManagementConstants.SERVER_TIMEOUT) instanceof Long);
+        assertEquals(LINK_NAME, appProperties.get(ASSOCIATED_LINK_NAME_KEY));
+
+        @SuppressWarnings("unchecked")
+        final Map<String, Object> body = (Map<String, Object>) ((AmqpValue) sentMessage.getBody()).getValue();
+        assertEquals(10, body.get(ManagementConstants.MESSAGE_COUNT_KEY));
+        assertEquals(Date.from(cutoff.toInstant()), body.get(ManagementConstants.ENQUEUED_TIME_UTC));
+        assertEquals("session-id", body.get(ManagementConstants.SESSION_ID));
+    }
+
+    @Test
+    void deleteMessagesSupportsPremiumCount() {
+        final Map<String, Object> responseBody = new HashMap<>();
+        responseBody.put(ManagementConstants.MESSAGE_COUNT_KEY, 4000);
+        responseMessage.setBody(new AmqpValue(responseBody));
+
+        StepVerifier.create(managementChannel.deleteMessages(4000, OffsetDateTime.now(), null, null))
+            .assertNext(result -> assertEquals(4000, result.getDeletedCount()))
+            .expectComplete()
+            .verify(TIMEOUT);
+    }
+
+    @Test
+    void deleteMessagesReturnsZeroForNoContent() {
+        final Map<String, Object> responseApplicationProperties = new HashMap<>(applicationProperties);
+        responseApplicationProperties.put(STATUS_CODE_KEY, AmqpResponseCode.NO_CONTENT.getValue());
+        responseMessage.setApplicationProperties(new ApplicationProperties(responseApplicationProperties));
+        responseMessage.setBody(null);
+
+        StepVerifier.create(managementChannel.deleteMessages(500, OffsetDateTime.now(), null, null))
+            .assertNext(result -> assertEquals(0, result.getDeletedCount()))
+            .expectComplete()
+            .verify(TIMEOUT);
+    }
+
+    @ParameterizedTest
+    @MethodSource("unexpectedBatchDeleteResponses")
+    void deleteMessagesRejectsUnexpectedSuccessfulResponses(AmqpResponseCode statusCode,
+        AmqpErrorCondition errorCondition) {
+        final Map<String, Object> responseApplicationProperties = new HashMap<>(applicationProperties);
+        responseApplicationProperties.put(STATUS_CODE_KEY, statusCode.getValue());
+        if (errorCondition != null) {
+            responseApplicationProperties.put("error-condition", errorCondition.getErrorCondition());
+        }
+        responseMessage.setApplicationProperties(new ApplicationProperties(responseApplicationProperties));
+        responseMessage.setBody(null);
+
+        StepVerifier.create(managementChannel.deleteMessages(500, OffsetDateTime.now(), null, null))
+            .expectErrorMatches(error -> error instanceof IllegalStateException
+                && error.getMessage().contains("unexpected status code"))
+            .verify(TIMEOUT);
+    }
+
+    private static Stream<Arguments> unexpectedBatchDeleteResponses() {
+        return Stream.of(Arguments.of(AmqpResponseCode.ACCEPTED, null),
+            Arguments.of(AmqpResponseCode.NOT_FOUND, AmqpErrorCondition.SESSION_NOT_FOUND));
+    }
+
+    @Test
+    void deleteMessagesMapsMessageNotFoundToAggregateCount() {
+        final Map<String, Object> responseApplicationProperties = new HashMap<>(applicationProperties);
+        responseApplicationProperties.put(STATUS_CODE_KEY, AmqpResponseCode.NOT_FOUND.getValue());
+        responseApplicationProperties.put("error-condition", AmqpErrorCondition.MESSAGE_NOT_FOUND.getErrorCondition());
+        responseMessage.setApplicationProperties(new ApplicationProperties(responseApplicationProperties));
+        final Map<String, Object> responseBody = new HashMap<>();
+        responseBody.put(ManagementConstants.MESSAGE_COUNT_KEY, 2);
+        responseMessage.setBody(new AmqpValue(responseBody));
+
+        StepVerifier.create(managementChannel.deleteMessages(10, OffsetDateTime.now(), null, null))
+            .assertNext(result -> assertEquals(2, result.getDeletedCount()))
+            .expectComplete()
+            .verify(TIMEOUT);
+    }
+
+    @Test
+    void deleteMessagesRejectsMessageNotFoundWithoutCount() {
+        final Map<String, Object> responseApplicationProperties = new HashMap<>(applicationProperties);
+        responseApplicationProperties.put(STATUS_CODE_KEY, AmqpResponseCode.NOT_FOUND.getValue());
+        responseApplicationProperties.put("error-condition", AmqpErrorCondition.MESSAGE_NOT_FOUND.getErrorCondition());
+        responseMessage.setApplicationProperties(new ApplicationProperties(responseApplicationProperties));
+        responseMessage.setBody(null);
+
+        StepVerifier.create(managementChannel.deleteMessages(10, OffsetDateTime.now(), null, null))
+            .expectErrorMatches(
+                error -> error instanceof IllegalStateException && error.getMessage().contains("invalid body"))
+            .verify(TIMEOUT);
+    }
+
+    @ParameterizedTest
+    @MethodSource("invalidBatchDeleteCounts")
+    void deleteMessagesRejectsInvalidResponseCounts(Object deletedCount) {
+        final Map<String, Object> responseBody = new HashMap<>();
+        responseBody.put(ManagementConstants.MESSAGE_COUNT_KEY, deletedCount);
+        responseMessage.setBody(new AmqpValue(responseBody));
+
+        StepVerifier.create(managementChannel.deleteMessages(10, OffsetDateTime.now(), null, null))
+            .expectErrorMatches(
+                error -> error instanceof IllegalStateException && error.getMessage().contains("valid message-count"))
+            .verify(TIMEOUT);
+    }
+
+    private static Stream<Arguments> invalidBatchDeleteCounts() {
+        return Stream.of(Arguments.of(-1), Arguments.of(11), Arguments.of(1L), Arguments.of(1.5));
+    }
+
+    @Test
+    void deleteMessagesDispatchesOnceWhenRequestFails() {
+        when(requestResponseChannel.sendWithAck(any(Message.class), isNull()))
+            .thenReturn(Mono.error(new IllegalStateException("request failed")));
+
+        StepVerifier.create(managementChannel.deleteMessages(500, OffsetDateTime.now(), null, null))
+            .expectErrorMatches(
+                error -> error instanceof IllegalStateException && "request failed".equals(error.getMessage()))
+            .verify(TIMEOUT);
+
+        verify(requestResponseChannel).sendWithAck(any(Message.class), isNull());
     }
 }
