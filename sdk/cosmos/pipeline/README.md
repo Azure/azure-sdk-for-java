@@ -79,10 +79,33 @@ The main `Cosmos_live_test` stage spans many consistency/topology configs, so ea
 - `Cosmos_live_test` (main) — per-leg selector.
 - `Cosmos_Live_Test_Http2` — `multimaster-session-http2`.
 
-NOT yet wired (need follow-up): the thin-client stages and GSI (their accounts need
+NOT yet wired to the JSON selector (need follow-up): the thin-client stages and GSI (their accounts need
 thin-client / GSI-preview enablement that plain account creation doesn't do), Kafka
 (entangled with AAD — belongs in the separate AAD pipeline), and Spring (uses its own
 test-resources with `AZURE_SPRING_TENANT_ID`).
+
+### Fixed thin-client and GSI accounts
+
+These stages do not use the JSON selector. They pass fixed credentials to Maven as
+`ACCOUNT_HOST`/`ACCOUNT_KEY` and to the post-job database cleanup:
+
+| Stage (`Cosmos_Live_Test_` prefix) | Endpoint variable | Key variable |
+| --- | --- | --- |
+| `Http2NetworkFault`, `ThinClient`, `ThinClient_EndpointProbe` | `thinclient-test-endpoint` | `thinclient-test-key` |
+| `ThinClient_MultiRegion` | `thin-client-canary-multi-region-session-endpoint` | `thin-client-canary-multi-region-session-key` |
+| `ThinClient_MultiMaster` | `thin-client-canary-multi-writer-session-endpoint` | `thin-client-canary-multi-writer-session-key` |
+| `GSI` | `gsi-pipeline-uri` | `gsi-pipeline-key` |
+
+Their selected profiles use these accounts for setup and tests; they do not require
+ARM-generated `NEW_ACCOUNT_*` or secondary-key outputs. This includes the query and
+consistency-override legs of `ThinClient` and both transport legs of `Http2NetworkFault`.
+
+All six stages set `DisableAzureResourceCreation: true` to skip per-run ARM resource
+configuration, deployment, and removal. Maven feed authentication and the federated
+test runner remain enabled. The legacy `ArmTemplateParameters` in their matrices are
+unused while provisioning is disabled; consistency and other test inputs still apply.
+The endpoint-probe stage still leaves `COSMOS.THINCLIENT_ENABLED` unset, and the
+network-fault stage retains its iptables setup and per-profile transport selection.
 
 ### Secret upkeep
 
@@ -102,4 +125,12 @@ regenerated JSON from `New-CosmosLiveTestAccounts.ps1`.
 
 ```bash
 bash sdk/cosmos/pipeline/resolve-cosmos-test-account.tests.sh
+```
+
+Check all six stages' provisioning opt-outs, fixed test/cleanup credentials,
+profile selection, transport settings, and authentication configuration offline (Python 3 with PyYAML,
+also used by `eng/automation/requirement.txt`):
+
+```bash
+python3 sdk/cosmos/pipeline/test_fixed_account_pipeline.py
 ```
