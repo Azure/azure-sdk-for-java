@@ -28,9 +28,11 @@ public class JdkHttpClientProviderTests extends HttpClientOptionsProviderTests {
     protected void assertMaximumHttpVersion(HttpClient client, HttpProtocolVersion version)
         throws ReflectiveOperationException {
         assertInstanceOf(JdkHttpClient.class, client);
-        assertEquals(version == HttpProtocolVersion.HTTP_2
-            ? java.net.http.HttpClient.Version.HTTP_2
-            : java.net.http.HttpClient.Version.HTTP_1_1, JdkHttpClientHttp2Tests.getInternalClient(client).version());
+        assertEquals(
+            version == HttpProtocolVersion.HTTP_2
+                ? java.net.http.HttpClient.Version.HTTP_2
+                : java.net.http.HttpClient.Version.HTTP_1_1,
+            JdkHttpClientHttp2Tests.getInternalClient(client).version());
     }
 
     @Override
