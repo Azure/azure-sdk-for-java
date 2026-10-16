@@ -12,8 +12,8 @@ public final class EndpointListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EndpointList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"endpointType\":\"EndpointBaseProperties\",\"description\":\"hzgpphrcgyncocpe\",\"endpointKind\":\"Source\",\"provisioningState\":\"Succeeded\"},\"identity\":{\"principalId\":\"ofsx\",\"tenantId\":\"evgbmqjq\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"qgtz\":{\"principalId\":\"mivkwlzuvcc\",\"clientId\":\"nfnbacfionlebxe\"}}},\"id\":\"pnqbqqwxrjfe\",\"name\":\"llnwsubi\",\"type\":\"njampm\"}],\"nextLink\":\"nzscxa\"}")
+            "{\"value\":[{\"properties\":{\"endpointType\":\"EndpointBaseProperties\",\"description\":\"ej\",\"endpointKind\":\"Target\",\"provisioningState\":\"Deleting\"},\"identity\":{\"principalId\":\"dmoh\",\"tenantId\":\"bqvudwxdndn\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"kuofqweykhme\":{\"principalId\":\"jjugwdkcglhslaz\",\"clientId\":\"yggdtjixh\"},\"amdecte\":{\"principalId\":\"vfyexfw\",\"clientId\":\"bcibvyvdcsitynn\"},\"kqsleyyvxy\":{\"principalId\":\"iqscjeypv\",\"clientId\":\"zrkgqhcjrefovg\"},\"mdajv\":{\"principalId\":\"pkc\",\"clientId\":\"tpngjcrcczsqpjh\"}}},\"id\":\"sounqecanoaeu\",\"name\":\"fhyhltrpmopjmcma\",\"type\":\"u\"}],\"nextLink\":\"thfuiuaodsfcpkvx\"}")
             .toObject(EndpointList.class);
-        Assertions.assertEquals("nzscxa", model.nextLink());
+        Assertions.assertEquals("thfuiuaodsfcpkvx", model.nextLink());
     }
 }
