@@ -11,18 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class IpAddressSpaceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IpAddressSpace model
-            = BinaryData.fromString("{\"resourceId\":\"mrfhirctymox\",\"addressSpace\":\"tpipiwyczuhx\"}")
-                .toObject(IpAddressSpace.class);
-        Assertions.assertEquals("mrfhirctymox", model.resourceId());
-        Assertions.assertEquals("tpipiwyczuhx", model.addressSpace());
+        IpAddressSpace model = BinaryData.fromString("{\"resourceId\":\"pjpqqmtedltmmji\",\"addressSpace\":\"eozphv\"}")
+            .toObject(IpAddressSpace.class);
+        Assertions.assertEquals("pjpqqmtedltmmji", model.resourceId());
+        Assertions.assertEquals("eozphv", model.addressSpace());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IpAddressSpace model = new IpAddressSpace().withResourceId("mrfhirctymox").withAddressSpace("tpipiwyczuhx");
+        IpAddressSpace model = new IpAddressSpace().withResourceId("pjpqqmtedltmmji").withAddressSpace("eozphv");
         model = BinaryData.fromObject(model).toObject(IpAddressSpace.class);
-        Assertions.assertEquals("mrfhirctymox", model.resourceId());
-        Assertions.assertEquals("tpipiwyczuhx", model.addressSpace());
+        Assertions.assertEquals("pjpqqmtedltmmji", model.resourceId());
+        Assertions.assertEquals("eozphv", model.addressSpace());
     }
 }

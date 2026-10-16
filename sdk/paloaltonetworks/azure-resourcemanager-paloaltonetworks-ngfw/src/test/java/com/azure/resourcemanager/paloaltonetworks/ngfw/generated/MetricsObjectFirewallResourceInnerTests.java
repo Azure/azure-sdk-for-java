@@ -12,22 +12,22 @@ public final class MetricsObjectFirewallResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MetricsObjectFirewallResourceInner model = BinaryData.fromString(
-            "{\"properties\":{\"applicationInsightsResourceId\":\"ynenlsvxeizz\",\"applicationInsightsConnectionString\":\"wklnsrmffeyc\",\"panEtag\":\"ktp\",\"provisioningState\":\"Deleted\"},\"id\":\"rteeamm\",\"name\":\"qiekkkzddrt\",\"type\":\"g\"}")
+            "{\"properties\":{\"applicationInsightsResourceId\":\"izakak\",\"applicationInsightsConnectionString\":\"nkjpdnjzha\",\"panEtag\":\"ylhjlm\",\"provisioningState\":\"Succeeded\"},\"id\":\"primr\",\"name\":\"opteecj\",\"type\":\"eislstvasylwx\"}")
             .toObject(MetricsObjectFirewallResourceInner.class);
-        Assertions.assertEquals("ynenlsvxeizz", model.applicationInsightsResourceId());
-        Assertions.assertEquals("wklnsrmffeyc", model.applicationInsightsConnectionString());
-        Assertions.assertEquals("ktp", model.panEtag());
+        Assertions.assertEquals("izakak", model.applicationInsightsResourceId());
+        Assertions.assertEquals("nkjpdnjzha", model.applicationInsightsConnectionString());
+        Assertions.assertEquals("ylhjlm", model.panEtag());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MetricsObjectFirewallResourceInner model
-            = new MetricsObjectFirewallResourceInner().withApplicationInsightsResourceId("ynenlsvxeizz")
-                .withApplicationInsightsConnectionString("wklnsrmffeyc")
-                .withPanEtag("ktp");
+            = new MetricsObjectFirewallResourceInner().withApplicationInsightsResourceId("izakak")
+                .withApplicationInsightsConnectionString("nkjpdnjzha")
+                .withPanEtag("ylhjlm");
         model = BinaryData.fromObject(model).toObject(MetricsObjectFirewallResourceInner.class);
-        Assertions.assertEquals("ynenlsvxeizz", model.applicationInsightsResourceId());
-        Assertions.assertEquals("wklnsrmffeyc", model.applicationInsightsConnectionString());
-        Assertions.assertEquals("ktp", model.panEtag());
+        Assertions.assertEquals("izakak", model.applicationInsightsResourceId());
+        Assertions.assertEquals("nkjpdnjzha", model.applicationInsightsConnectionString());
+        Assertions.assertEquals("ylhjlm", model.panEtag());
     }
 }

@@ -12,15 +12,15 @@ public final class AppSeenDataTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AppSeenData model = BinaryData.fromString(
-            "{\"count\":498356163,\"appSeenList\":[{\"title\":\"n\",\"category\":\"a\",\"subCategory\":\"vxwc\",\"risk\":\"elpcirelsfeaenwa\",\"tag\":\"fatkld\",\"technology\":\"xbjhwuaanozjosph\",\"standardPorts\":\"oulpjrv\"},{\"title\":\"ag\",\"category\":\"rvimjwosytxitcsk\",\"subCategory\":\"cktqumiekkezzi\",\"risk\":\"hlyfjhdgqgg\",\"tag\":\"bdunygaeqid\",\"technology\":\"qfatpxllrxcyjm\",\"standardPorts\":\"a\"}]}")
+            "{\"count\":2093049369,\"appSeenList\":[{\"title\":\"okulpiujwa\",\"category\":\"sipqii\",\"subCategory\":\"byuqerpqlp\",\"risk\":\"wcciuqgbdbu\",\"tag\":\"auvfbtkuwhhmhyk\",\"technology\":\"joxafnndlpi\",\"standardPorts\":\"hkoymkcdyhbp\"}]}")
             .toObject(AppSeenData.class);
-        Assertions.assertEquals(498356163, model.count());
-        Assertions.assertEquals("n", model.appSeenList().get(0).title());
-        Assertions.assertEquals("a", model.appSeenList().get(0).category());
-        Assertions.assertEquals("vxwc", model.appSeenList().get(0).subCategory());
-        Assertions.assertEquals("elpcirelsfeaenwa", model.appSeenList().get(0).risk());
-        Assertions.assertEquals("fatkld", model.appSeenList().get(0).tag());
-        Assertions.assertEquals("xbjhwuaanozjosph", model.appSeenList().get(0).technology());
-        Assertions.assertEquals("oulpjrv", model.appSeenList().get(0).standardPorts());
+        Assertions.assertEquals(2093049369, model.count());
+        Assertions.assertEquals("okulpiujwa", model.appSeenList().get(0).title());
+        Assertions.assertEquals("sipqii", model.appSeenList().get(0).category());
+        Assertions.assertEquals("byuqerpqlp", model.appSeenList().get(0).subCategory());
+        Assertions.assertEquals("wcciuqgbdbu", model.appSeenList().get(0).risk());
+        Assertions.assertEquals("auvfbtkuwhhmhyk", model.appSeenList().get(0).tag());
+        Assertions.assertEquals("joxafnndlpi", model.appSeenList().get(0).technology());
+        Assertions.assertEquals("hkoymkcdyhbp", model.appSeenList().get(0).standardPorts());
     }
 }

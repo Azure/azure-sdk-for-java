@@ -22,7 +22,7 @@ public final class GlobalRulestacksListSecurityServicesWithResponseMockTests {
     @Test
     public void testListSecurityServicesWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":{\"type\":\"hjnhgwydyynfsvk\",\"entry\":[{\"name\":\"bvqt\",\"description\":\"arfdlpukhpyrnei\"}]},\"nextLink\":\"cpeogkhnmgbrou\"}";
+            = "{\"value\":{\"type\":\"ranblwphqlkccu\",\"entry\":[{\"name\":\"ygqwahoiu\",\"description\":\"gniiprglvaw\"},{\"name\":\"wzdufypivlsbb\",\"description\":\"mcub\"}]},\"nextLink\":\"ifoxxkubvphav\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,13 +32,13 @@ public final class GlobalRulestacksListSecurityServicesWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SecurityServicesResponse response = manager.globalRulestacks()
-            .listSecurityServicesWithResponse("ckzmkwklsnox", SecurityServicesTypeEnum.FILE_BLOCKING, "mqeq",
-                1409659836, com.azure.core.util.Context.NONE)
+            .listSecurityServicesWithResponse("gqkctotiowlxte", SecurityServicesTypeEnum.FILE_BLOCKING, "ptjgwdt",
+                1879687901, com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("hjnhgwydyynfsvk", response.value().type());
-        Assertions.assertEquals("bvqt", response.value().entry().get(0).name());
-        Assertions.assertEquals("arfdlpukhpyrnei", response.value().entry().get(0).description());
-        Assertions.assertEquals("cpeogkhnmgbrou", response.nextLink());
+        Assertions.assertEquals("ranblwphqlkccu", response.value().type());
+        Assertions.assertEquals("ygqwahoiu", response.value().entry().get(0).name());
+        Assertions.assertEquals("gniiprglvaw", response.value().entry().get(0).description());
+        Assertions.assertEquals("ifoxxkubvphav", response.nextLink());
     }
 }

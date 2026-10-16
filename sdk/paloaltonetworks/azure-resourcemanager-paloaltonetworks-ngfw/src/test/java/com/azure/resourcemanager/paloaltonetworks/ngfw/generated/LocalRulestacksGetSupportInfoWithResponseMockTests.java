@@ -22,7 +22,7 @@ public final class LocalRulestacksGetSupportInfoWithResponseMockTests {
     @Test
     public void testGetSupportInfoWithResponse() throws Exception {
         String responseStr
-            = "{\"productSku\":\"ijjj\",\"productSerial\":\"va\",\"accountRegistered\":\"TRUE\",\"accountId\":\"zknxkv\",\"userDomainSupported\":\"TRUE\",\"userRegistered\":\"FALSE\",\"freeTrial\":\"TRUE\",\"freeTrialDaysLeft\":570636581,\"freeTrialCreditLeft\":335381854,\"helpURL\":\"gno\",\"supportURL\":\"k\",\"registerURL\":\"qo\"}";
+            = "{\"productSku\":\"ahxm\",\"productSerial\":\"ryarvsxzqb\",\"accountRegistered\":\"TRUE\",\"accountId\":\"kayspthz\",\"userDomainSupported\":\"TRUE\",\"userRegistered\":\"TRUE\",\"freeTrial\":\"FALSE\",\"freeTrialDaysLeft\":838217479,\"freeTrialCreditLeft\":891755269,\"helpURL\":\"ioskkfmkmfdjxyxg\",\"supportURL\":\"kqvjcteoedlr\",\"registerURL\":\"skkzpxvjnzdpvo\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,20 +32,20 @@ public final class LocalRulestacksGetSupportInfoWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SupportInfo response = manager.localRulestacks()
-            .getSupportInfoWithResponse("tygxhqfgq", "ayejsxtlgflwfgz", "iucijjcea", com.azure.core.util.Context.NONE)
+            .getSupportInfoWithResponse("gjgvr", "uvp", "gglpmcrdcuelj", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("ijjj", response.productSku());
-        Assertions.assertEquals("va", response.productSerial());
+        Assertions.assertEquals("ahxm", response.productSku());
+        Assertions.assertEquals("ryarvsxzqb", response.productSerial());
         Assertions.assertEquals(BooleanEnum.TRUE, response.accountRegistered());
-        Assertions.assertEquals("zknxkv", response.accountId());
+        Assertions.assertEquals("kayspthz", response.accountId());
         Assertions.assertEquals(BooleanEnum.TRUE, response.userDomainSupported());
-        Assertions.assertEquals(BooleanEnum.FALSE, response.userRegistered());
-        Assertions.assertEquals(BooleanEnum.TRUE, response.freeTrial());
-        Assertions.assertEquals(570636581, response.freeTrialDaysLeft());
-        Assertions.assertEquals(335381854, response.freeTrialCreditLeft());
-        Assertions.assertEquals("gno", response.helpUrl());
-        Assertions.assertEquals("k", response.supportUrl());
-        Assertions.assertEquals("qo", response.registerUrl());
+        Assertions.assertEquals(BooleanEnum.TRUE, response.userRegistered());
+        Assertions.assertEquals(BooleanEnum.FALSE, response.freeTrial());
+        Assertions.assertEquals(838217479, response.freeTrialDaysLeft());
+        Assertions.assertEquals(891755269, response.freeTrialCreditLeft());
+        Assertions.assertEquals("ioskkfmkmfdjxyxg", response.helpUrl());
+        Assertions.assertEquals("kqvjcteoedlr", response.supportUrl());
+        Assertions.assertEquals("skkzpxvjnzdpvo", response.registerUrl());
     }
 }

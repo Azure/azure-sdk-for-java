@@ -22,7 +22,7 @@ public final class PrefixListGlobalRulestacksListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"description\":\"wex\",\"prefixList\":[\"zvlazipbhpwvqsgn\",\"yuuzivens\",\"pmeyyvpkpatlbijp\"],\"etag\":\"sksrfhfvolmknbn\",\"auditComment\":\"cdommpvfqaw\",\"provisioningState\":\"Deleting\"},\"id\":\"rttuiaclkiexha\",\"name\":\"lfnthiqfyut\",\"type\":\"diygbpvnwswmtxky\"}]}";
+            = "{\"value\":[{\"properties\":{\"description\":\"jselpkpbafvafh\",\"prefixList\":[\"ylcc\"],\"etag\":\"vxrh\",\"auditComment\":\"d\",\"provisioningState\":\"Succeeded\"},\"id\":\"ofpltdbm\",\"name\":\"irrhv\",\"type\":\"fnrac\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,11 +32,11 @@ public final class PrefixListGlobalRulestacksListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<PrefixListGlobalRulestackResource> response
-            = manager.prefixListGlobalRulestacks().list("mlghktuidvrmazlp", com.azure.core.util.Context.NONE);
+            = manager.prefixListGlobalRulestacks().list("uwfbzkkdtnhqsy", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("wex", response.iterator().next().description());
-        Assertions.assertEquals("zvlazipbhpwvqsgn", response.iterator().next().prefixList().get(0));
-        Assertions.assertEquals("sksrfhfvolmknbn", response.iterator().next().etag());
-        Assertions.assertEquals("cdommpvfqaw", response.iterator().next().auditComment());
+        Assertions.assertEquals("jselpkpbafvafh", response.iterator().next().description());
+        Assertions.assertEquals("ylcc", response.iterator().next().prefixList().get(0));
+        Assertions.assertEquals("vxrh", response.iterator().next().etag());
+        Assertions.assertEquals("d", response.iterator().next().auditComment());
     }
 }

@@ -12,12 +12,12 @@ public final class FqdnListLocalRulestackResourceListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FqdnListLocalRulestackResourceListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"description\":\"fcdis\",\"fqdnList\":[\"rnxzh\",\"zexrxzbujrt\"],\"etag\":\"qvwre\",\"auditComment\":\"h\",\"provisioningState\":\"Deleting\"},\"id\":\"zonzlrpiqywnc\",\"name\":\"jtszcof\",\"type\":\"zehtdhgb\"},{\"properties\":{\"description\":\"vreljea\",\"fqdnList\":[\"rvzmlovuana\",\"hcxlpm\",\"erbdk\",\"lvidizozs\"],\"etag\":\"ccxjm\",\"auditComment\":\"fdgnwncypuuwwlt\",\"provisioningState\":\"Accepted\"},\"id\":\"ctzenkeifzzhmkd\",\"name\":\"svflyhbxcudch\",\"type\":\"gsrboldforobw\"},{\"properties\":{\"description\":\"vizbfhfo\",\"fqdnList\":[\"acqpbtuodxesza\",\"belawumuaslzkwr\",\"woycqucwyha\",\"nomdrkywuhpsv\"],\"etag\":\"urut\",\"auditComment\":\"exxwlalniexzsrz\",\"provisioningState\":\"Updating\"},\"id\":\"q\",\"name\":\"yb\",\"type\":\"wwpgdakchzyvlixq\"}],\"nextLink\":\"kcxk\"}")
+            "{\"value\":[{\"properties\":{\"description\":\"qzinkfkbg\",\"fqdnList\":[\"bowxe\"],\"etag\":\"clj\",\"auditComment\":\"gvkzqkjjeokbze\",\"provisioningState\":\"Deleted\"},\"id\":\"xcczurtl\",\"name\":\"ipqxbkwvzgnzv\",\"type\":\"fbzdixzmqpnoda\"},{\"properties\":{\"description\":\"pqhe\",\"fqdnList\":[\"ptmcgsbostzelnd\",\"atutmzlbiojlvfhr\",\"bpneqvcwwyyurm\"],\"etag\":\"hppr\",\"auditComment\":\"snmokayzej\",\"provisioningState\":\"Accepted\"},\"id\":\"kpbz\",\"name\":\"cpilj\",\"type\":\"a\"},{\"properties\":{\"description\":\"vechndbnwiehole\",\"fqdnList\":[\"wiuub\",\"efqsfapaqtferrqw\",\"x\",\"kmfx\"],\"etag\":\"jwogqqnobpudc\",\"auditComment\":\"btqwpwyawbzas\",\"provisioningState\":\"NotSpecified\"},\"id\":\"ljgkyex\",\"name\":\"oguyaip\",\"type\":\"dsdaultxijjumf\"},{\"properties\":{\"description\":\"azlnqnmcjngzqdqx\",\"fqdnList\":[\"jw\",\"nyfusfzsvtuikzh\",\"jqg\"],\"etag\":\"fh\",\"auditComment\":\"rqryxynqn\",\"provisioningState\":\"Succeeded\"},\"id\":\"sovwxznptgoeiyb\",\"name\":\"abpfhvfs\",\"type\":\"kvntjlrigjkskyri\"}],\"nextLink\":\"vzidsxwaab\"}")
             .toObject(FqdnListLocalRulestackResourceListResult.class);
-        Assertions.assertEquals("fcdis", model.value().get(0).description());
-        Assertions.assertEquals("rnxzh", model.value().get(0).fqdnList().get(0));
-        Assertions.assertEquals("qvwre", model.value().get(0).etag());
-        Assertions.assertEquals("h", model.value().get(0).auditComment());
-        Assertions.assertEquals("kcxk", model.nextLink());
+        Assertions.assertEquals("qzinkfkbg", model.value().get(0).description());
+        Assertions.assertEquals("bowxe", model.value().get(0).fqdnList().get(0));
+        Assertions.assertEquals("clj", model.value().get(0).etag());
+        Assertions.assertEquals("gvkzqkjjeokbze", model.value().get(0).auditComment());
+        Assertions.assertEquals("vzidsxwaab", model.nextLink());
     }
 }

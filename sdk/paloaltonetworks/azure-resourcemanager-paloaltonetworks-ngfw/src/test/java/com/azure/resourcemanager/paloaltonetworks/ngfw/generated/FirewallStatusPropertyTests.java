@@ -12,9 +12,9 @@ public final class FirewallStatusPropertyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FirewallStatusProperty model = BinaryData.fromString(
-            "{\"isPanoramaManaged\":\"TRUE\",\"healthStatus\":\"YELLOW\",\"healthReason\":\"izvy\",\"panoramaStatus\":{\"panoramaServerStatus\":\"UP\",\"panoramaServer2Status\":\"UP\"},\"provisioningState\":\"Deleted\",\"isStrataCloudManaged\":\"FALSE\",\"strataCloudManagerInfo\":{\"folderName\":\"rano\",\"hubUrl\":\"gukkjqnvbroy\"}}")
+            "{\"isPanoramaManaged\":\"FALSE\",\"healthStatus\":\"GREEN\",\"healthReason\":\"hvseufuqyrx\",\"panoramaStatus\":{\"panoramaServerStatus\":\"UP\",\"panoramaServer2Status\":\"DOWN\"},\"provisioningState\":\"Deleted\",\"isStrataCloudManaged\":\"FALSE\",\"strataCloudManagerInfo\":{\"folderName\":\"qfrddgam\",\"hubUrl\":\"hiosrsjuiv\"}}")
             .toObject(FirewallStatusProperty.class);
-        Assertions.assertEquals("rano", model.strataCloudManagerInfo().folderName());
-        Assertions.assertEquals("gukkjqnvbroy", model.strataCloudManagerInfo().hubUrl());
+        Assertions.assertEquals("qfrddgam", model.strataCloudManagerInfo().folderName());
+        Assertions.assertEquals("hiosrsjuiv", model.strataCloudManagerInfo().hubUrl());
     }
 }

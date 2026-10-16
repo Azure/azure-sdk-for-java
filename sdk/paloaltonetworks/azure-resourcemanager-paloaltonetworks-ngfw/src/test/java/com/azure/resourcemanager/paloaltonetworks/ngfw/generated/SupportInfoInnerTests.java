@@ -13,19 +13,19 @@ public final class SupportInfoInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SupportInfoInner model = BinaryData.fromString(
-            "{\"productSku\":\"ynhdwdigum\",\"productSerial\":\"raauzzpt\",\"accountRegistered\":\"TRUE\",\"accountId\":\"sdzhezww\",\"userDomainSupported\":\"TRUE\",\"userRegistered\":\"FALSE\",\"freeTrial\":\"TRUE\",\"freeTrialDaysLeft\":1770480211,\"freeTrialCreditLeft\":496304877,\"helpURL\":\"p\",\"supportURL\":\"qyikvy\",\"registerURL\":\"uyav\"}")
+            "{\"productSku\":\"id\",\"productSerial\":\"qfkuvscxkdmli\",\"accountRegistered\":\"FALSE\",\"accountId\":\"brxk\",\"userDomainSupported\":\"FALSE\",\"userRegistered\":\"TRUE\",\"freeTrial\":\"TRUE\",\"freeTrialDaysLeft\":181073134,\"freeTrialCreditLeft\":1388266960,\"helpURL\":\"goorbteo\",\"supportURL\":\"fhjxakvvjgs\",\"registerURL\":\"r\"}")
             .toObject(SupportInfoInner.class);
-        Assertions.assertEquals("ynhdwdigum", model.productSku());
-        Assertions.assertEquals("raauzzpt", model.productSerial());
-        Assertions.assertEquals(BooleanEnum.TRUE, model.accountRegistered());
-        Assertions.assertEquals("sdzhezww", model.accountId());
-        Assertions.assertEquals(BooleanEnum.TRUE, model.userDomainSupported());
-        Assertions.assertEquals(BooleanEnum.FALSE, model.userRegistered());
+        Assertions.assertEquals("id", model.productSku());
+        Assertions.assertEquals("qfkuvscxkdmli", model.productSerial());
+        Assertions.assertEquals(BooleanEnum.FALSE, model.accountRegistered());
+        Assertions.assertEquals("brxk", model.accountId());
+        Assertions.assertEquals(BooleanEnum.FALSE, model.userDomainSupported());
+        Assertions.assertEquals(BooleanEnum.TRUE, model.userRegistered());
         Assertions.assertEquals(BooleanEnum.TRUE, model.freeTrial());
-        Assertions.assertEquals(1770480211, model.freeTrialDaysLeft());
-        Assertions.assertEquals(496304877, model.freeTrialCreditLeft());
-        Assertions.assertEquals("p", model.helpUrl());
-        Assertions.assertEquals("qyikvy", model.supportUrl());
-        Assertions.assertEquals("uyav", model.registerUrl());
+        Assertions.assertEquals(181073134, model.freeTrialDaysLeft());
+        Assertions.assertEquals(1388266960, model.freeTrialCreditLeft());
+        Assertions.assertEquals("goorbteo", model.helpUrl());
+        Assertions.assertEquals("fhjxakvvjgs", model.supportUrl());
+        Assertions.assertEquals("r", model.registerUrl());
     }
 }

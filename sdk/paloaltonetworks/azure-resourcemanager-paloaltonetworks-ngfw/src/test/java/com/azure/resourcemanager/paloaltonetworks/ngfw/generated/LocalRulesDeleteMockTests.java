@@ -27,7 +27,7 @@ public final class LocalRulesDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.localRules().delete("vrbnyrukoil", "ciduwjle", "pjlh", com.azure.core.util.Context.NONE);
+        manager.localRules().delete("giudjpxpq", "ttqhnmhkrezsds", "xheq", com.azure.core.util.Context.NONE);
 
     }
 }

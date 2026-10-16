@@ -13,13 +13,13 @@ public final class CertificateObjectGlobalRulestackResourceListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CertificateObjectGlobalRulestackResourceListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"certificateSignerResourceId\":\"qidybyx\",\"certificateSelfSigned\":\"TRUE\",\"auditComment\":\"clha\",\"description\":\"dbabp\",\"etag\":\"wrqlfktsthsuco\",\"provisioningState\":\"Creating\"},\"id\":\"yazttbtwwrqpue\",\"name\":\"ckzywbiexzfeyue\",\"type\":\"xibxujwbhqwalm\"},{\"properties\":{\"certificateSignerResourceId\":\"yoxa\",\"certificateSelfSigned\":\"FALSE\",\"auditComment\":\"kzjancuxrhdwbav\",\"description\":\"niwdjsw\",\"etag\":\"s\",\"provisioningState\":\"Updating\"},\"id\":\"nxytxh\",\"name\":\"zxbzpfzabglc\",\"type\":\"hxw\"},{\"properties\":{\"certificateSignerResourceId\":\"tyq\",\"certificateSelfSigned\":\"TRUE\",\"auditComment\":\"bbovplwzbhvgyugu\",\"description\":\"vmkfssxqu\",\"etag\":\"fpl\",\"provisioningState\":\"Updating\"},\"id\":\"xnkjzkdesl\",\"name\":\"vlopwiyighx\",\"type\":\"kdwzbaiuebbaumny\"}],\"nextLink\":\"ped\"}")
+            "{\"value\":[{\"properties\":{\"certificateSignerResourceId\":\"wpn\",\"certificateSelfSigned\":\"TRUE\",\"auditComment\":\"oqnermclfpl\",\"description\":\"oxuscrpabgyepsbj\",\"etag\":\"zq\",\"provisioningState\":\"Deleted\"},\"id\":\"wpmueefj\",\"name\":\"wfqkquj\",\"type\":\"dsuyonobgla\"}],\"nextLink\":\"qxtccmgyudx\"}")
             .toObject(CertificateObjectGlobalRulestackResourceListResult.class);
-        Assertions.assertEquals("qidybyx", model.value().get(0).certificateSignerResourceId());
+        Assertions.assertEquals("wpn", model.value().get(0).certificateSignerResourceId());
         Assertions.assertEquals(BooleanEnum.TRUE, model.value().get(0).certificateSelfSigned());
-        Assertions.assertEquals("clha", model.value().get(0).auditComment());
-        Assertions.assertEquals("dbabp", model.value().get(0).description());
-        Assertions.assertEquals("wrqlfktsthsuco", model.value().get(0).etag());
-        Assertions.assertEquals("ped", model.nextLink());
+        Assertions.assertEquals("oqnermclfpl", model.value().get(0).auditComment());
+        Assertions.assertEquals("oxuscrpabgyepsbj", model.value().get(0).description());
+        Assertions.assertEquals("zq", model.value().get(0).etag());
+        Assertions.assertEquals("qxtccmgyudx", model.nextLink());
     }
 }

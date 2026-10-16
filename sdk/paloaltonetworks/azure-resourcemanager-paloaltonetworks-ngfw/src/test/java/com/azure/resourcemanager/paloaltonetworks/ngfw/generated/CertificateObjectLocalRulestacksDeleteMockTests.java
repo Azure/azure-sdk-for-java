@@ -28,7 +28,7 @@ public final class CertificateObjectLocalRulestacksDeleteMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.certificateObjectLocalRulestacks()
-            .delete("vzilmhiv", "kwwwnckn", "zdajlskzptjxu", com.azure.core.util.Context.NONE);
+            .delete("fepxyihpqadag", "hrdicxdwyjfo", "xwyovcxjsgbip", com.azure.core.util.Context.NONE);
 
     }
 }

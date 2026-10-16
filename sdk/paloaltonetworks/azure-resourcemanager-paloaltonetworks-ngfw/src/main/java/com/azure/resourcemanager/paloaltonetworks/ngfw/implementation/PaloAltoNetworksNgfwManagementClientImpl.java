@@ -28,6 +28,7 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.CertificateObjectGlobalRulestacksClient;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.CertificateObjectLocalRulestacksClient;
+import com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.CustomCaptureConfigurationsFirewallResourcesClient;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.FirewallStatusClient;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.FirewallsClient;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.FqdnListGlobalRulestacksClient;
@@ -35,6 +36,7 @@ import com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.FqdnListLocalRules
 import com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.GlobalRulestacksClient;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.LocalRulesClient;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.LocalRulestacksClient;
+import com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.LogIngestionSettingsResourcesClient;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.MetricsObjectFirewallsClient;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.OperationsClient;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.PaloAltoNetworksCloudngfwOperationsClient;
@@ -153,6 +155,34 @@ public final class PaloAltoNetworksNgfwManagementClientImpl implements PaloAltoN
      */
     public OperationsClient getOperations() {
         return this.operations;
+    }
+
+    /**
+     * The CustomCaptureConfigurationsFirewallResourcesClient object to access its operations.
+     */
+    private final CustomCaptureConfigurationsFirewallResourcesClient customCaptureConfigurationsFirewallResources;
+
+    /**
+     * Gets the CustomCaptureConfigurationsFirewallResourcesClient object to access its operations.
+     * 
+     * @return the CustomCaptureConfigurationsFirewallResourcesClient object.
+     */
+    public CustomCaptureConfigurationsFirewallResourcesClient getCustomCaptureConfigurationsFirewallResources() {
+        return this.customCaptureConfigurationsFirewallResources;
+    }
+
+    /**
+     * The LogIngestionSettingsResourcesClient object to access its operations.
+     */
+    private final LogIngestionSettingsResourcesClient logIngestionSettingsResources;
+
+    /**
+     * Gets the LogIngestionSettingsResourcesClient object to access its operations.
+     * 
+     * @return the LogIngestionSettingsResourcesClient object.
+     */
+    public LogIngestionSettingsResourcesClient getLogIngestionSettingsResources() {
+        return this.logIngestionSettingsResources;
     }
 
     /**
@@ -382,8 +412,11 @@ public final class PaloAltoNetworksNgfwManagementClientImpl implements PaloAltoN
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2025-10-08";
+        this.apiVersion = "2026-07-29-preview";
         this.operations = new OperationsClientImpl(this);
+        this.customCaptureConfigurationsFirewallResources
+            = new CustomCaptureConfigurationsFirewallResourcesClientImpl(this);
+        this.logIngestionSettingsResources = new LogIngestionSettingsResourcesClientImpl(this);
         this.globalRulestacks = new GlobalRulestacksClientImpl(this);
         this.certificateObjectGlobalRulestacks = new CertificateObjectGlobalRulestacksClientImpl(this);
         this.fqdnListGlobalRulestacks = new FqdnListGlobalRulestacksClientImpl(this);

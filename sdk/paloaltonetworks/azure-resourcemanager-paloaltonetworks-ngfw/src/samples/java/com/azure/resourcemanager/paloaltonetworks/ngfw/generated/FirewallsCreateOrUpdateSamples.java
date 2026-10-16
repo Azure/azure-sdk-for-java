@@ -37,7 +37,7 @@ import java.util.Map;
  */
 public final class FirewallsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-10-08/Firewalls_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/Firewalls_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: Firewalls_CreateOrUpdate_MaximumSet_Gen.
@@ -104,6 +104,7 @@ public final class FirewallsCreateOrUpdateSamples {
                     new AzureResourceManagerUserAssignedIdentity().withClientId("aaaa")
                         .withPrincipalId("aaaaaaaaaaaaaaa"))))
             .withPanEtag("2bf4a339-294d-4c25-b0b2-ef649e9f5c12")
+            .withFirewallSku("PREMIUM")
             .withIsPanoramaManaged(BooleanEnum.TRUE)
             .withPanoramaConfig(new PanoramaConfig().withConfigString("bas64EncodedString"))
             .withAssociatedRulestack(
@@ -122,7 +123,7 @@ public final class FirewallsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/Firewalls_CreateOrUpdate_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/Firewalls_CreateOrUpdate_MinimumSet_Gen.json
      */
     /**
      * Sample code: Firewalls_CreateOrUpdate_MinimumSet_Gen.

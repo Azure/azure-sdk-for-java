@@ -11,9 +11,10 @@ import org.junit.jupiter.api.Assertions;
 public final class ListAppIdResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ListAppIdResponseInner model = BinaryData.fromString("{\"value\":[\"injep\"],\"nextLink\":\"tmryw\"}")
-            .toObject(ListAppIdResponseInner.class);
-        Assertions.assertEquals("injep", model.value().get(0));
-        Assertions.assertEquals("tmryw", model.nextLink());
+        ListAppIdResponseInner model
+            = BinaryData.fromString("{\"value\":[\"runmp\",\"ttdbhrbnl\",\"nkxmyskpbhenbtk\"],\"nextLink\":\"ywn\"}")
+                .toObject(ListAppIdResponseInner.class);
+        Assertions.assertEquals("runmp", model.value().get(0));
+        Assertions.assertEquals("ywn", model.nextLink());
     }
 }

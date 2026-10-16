@@ -27,7 +27,7 @@ public final class GlobalRulestacksRevertWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.globalRulestacks().revertWithResponse("ddbhf", com.azure.core.util.Context.NONE);
+        manager.globalRulestacks().revertWithResponse("mhbrbqgvg", com.azure.core.util.Context.NONE);
 
     }
 }

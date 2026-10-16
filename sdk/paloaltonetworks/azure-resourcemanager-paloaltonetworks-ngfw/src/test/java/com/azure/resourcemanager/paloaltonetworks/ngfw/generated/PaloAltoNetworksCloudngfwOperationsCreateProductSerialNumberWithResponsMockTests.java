@@ -20,7 +20,7 @@ import reactor.core.publisher.Mono;
 public final class PaloAltoNetworksCloudngfwOperationsCreateProductSerialNumberWithResponsMockTests {
     @Test
     public void testCreateProductSerialNumberWithResponse() throws Exception {
-        String responseStr = "{\"status\":\"wffcvvye\"}";
+        String responseStr = "{\"status\":\"gwcd\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,6 +33,6 @@ public final class PaloAltoNetworksCloudngfwOperationsCreateProductSerialNumberW
             .createProductSerialNumberWithResponse(com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("wffcvvye", response.status());
+        Assertions.assertEquals("gwcd", response.status());
     }
 }
