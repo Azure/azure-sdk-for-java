@@ -13,21 +13,21 @@ public final class LinkedServicePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LinkedServiceProperties model = BinaryData.fromString(
-            "{\"resourceId\":\"knpirgnepttwq\",\"writeAccessResourceId\":\"niffcdmqnroj\",\"provisioningState\":\"ProvisioningAccount\"}")
+            "{\"resourceId\":\"wlwnwxuqlcv\",\"writeAccessResourceId\":\"ypatdooaojkniod\",\"provisioningState\":\"ProvisioningAccount\"}")
             .toObject(LinkedServiceProperties.class);
-        Assertions.assertEquals("knpirgnepttwq", model.resourceId());
-        Assertions.assertEquals("niffcdmqnroj", model.writeAccessResourceId());
+        Assertions.assertEquals("wlwnwxuqlcv", model.resourceId());
+        Assertions.assertEquals("ypatdooaojkniod", model.writeAccessResourceId());
         Assertions.assertEquals(LinkedServiceEntityStatus.PROVISIONING_ACCOUNT, model.provisioningState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LinkedServiceProperties model = new LinkedServiceProperties().withResourceId("knpirgnepttwq")
-            .withWriteAccessResourceId("niffcdmqnroj")
+        LinkedServiceProperties model = new LinkedServiceProperties().withResourceId("wlwnwxuqlcv")
+            .withWriteAccessResourceId("ypatdooaojkniod")
             .withProvisioningState(LinkedServiceEntityStatus.PROVISIONING_ACCOUNT);
         model = BinaryData.fromObject(model).toObject(LinkedServiceProperties.class);
-        Assertions.assertEquals("knpirgnepttwq", model.resourceId());
-        Assertions.assertEquals("niffcdmqnroj", model.writeAccessResourceId());
+        Assertions.assertEquals("wlwnwxuqlcv", model.resourceId());
+        Assertions.assertEquals("ypatdooaojkniod", model.writeAccessResourceId());
         Assertions.assertEquals(LinkedServiceEntityStatus.PROVISIONING_ACCOUNT, model.provisioningState());
     }
 }

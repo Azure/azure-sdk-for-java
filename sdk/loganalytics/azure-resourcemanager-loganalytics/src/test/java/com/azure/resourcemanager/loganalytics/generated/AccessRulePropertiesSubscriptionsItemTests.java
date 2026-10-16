@@ -12,7 +12,7 @@ public final class AccessRulePropertiesSubscriptionsItemTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AccessRulePropertiesSubscriptionsItem model
-            = BinaryData.fromString("{\"id\":\"kjj\"}").toObject(AccessRulePropertiesSubscriptionsItem.class);
-        Assertions.assertEquals("kjj", model.id());
+            = BinaryData.fromString("{\"id\":\"p\"}").toObject(AccessRulePropertiesSubscriptionsItem.class);
+        Assertions.assertEquals("p", model.id());
     }
 }

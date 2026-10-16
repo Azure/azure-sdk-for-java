@@ -14,16 +14,16 @@ public final class SummaryLogsRetryBinTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SummaryLogsRetryBin model
-            = BinaryData.fromString("{\"properties\":{\"retryBinStartTime\":\"2021-08-29T13:07:03Z\"}}")
+            = BinaryData.fromString("{\"properties\":{\"retryBinStartTime\":\"2021-12-10T12:39:01Z\"}}")
                 .toObject(SummaryLogsRetryBin.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-29T13:07:03Z"), model.properties().retryBinStartTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-12-10T12:39:01Z"), model.properties().retryBinStartTime());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SummaryLogsRetryBin model = new SummaryLogsRetryBin().withProperties(
-            new SummaryLogsRetryBinProperties().withRetryBinStartTime(OffsetDateTime.parse("2021-08-29T13:07:03Z")));
+            new SummaryLogsRetryBinProperties().withRetryBinStartTime(OffsetDateTime.parse("2021-12-10T12:39:01Z")));
         model = BinaryData.fromObject(model).toObject(SummaryLogsRetryBin.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-29T13:07:03Z"), model.properties().retryBinStartTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-12-10T12:39:01Z"), model.properties().retryBinStartTime());
     }
 }

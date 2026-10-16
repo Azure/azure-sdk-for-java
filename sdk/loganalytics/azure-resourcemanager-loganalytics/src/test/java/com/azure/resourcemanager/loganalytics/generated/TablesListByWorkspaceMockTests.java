@@ -15,6 +15,7 @@ import com.azure.resourcemanager.loganalytics.models.ColumnDataTypeHintEnum;
 import com.azure.resourcemanager.loganalytics.models.ColumnTypeEnum;
 import com.azure.resourcemanager.loganalytics.models.Table;
 import com.azure.resourcemanager.loganalytics.models.TablePlanEnum;
+import com.azure.resourcemanager.loganalytics.models.TableProtectionLevelEnum;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
@@ -25,7 +26,7 @@ public final class TablesListByWorkspaceMockTests {
     @Test
     public void testListByWorkspace() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"retentionInDays\":1067831194,\"totalRetentionInDays\":1338234971,\"archiveRetentionInDays\":81807021,\"searchResults\":{\"query\":\"jdnrqjbt\",\"description\":\"eaoqaqbzgyhf\",\"limit\":122929865,\"startSearchTime\":\"2021-09-21T19:14:48Z\",\"endSearchTime\":\"2021-03-20T20:58:19Z\",\"sourceTable\":\"bqamteuliyslpk\",\"azureAsyncOperationId\":\"mw\"},\"restoredLogs\":{\"startRestoreTime\":\"2021-09-25T12:04:18Z\",\"endRestoreTime\":\"2021-01-21T00:53:39Z\",\"sourceTable\":\"myw\",\"azureAsyncOperationId\":\"rmcqmiciijqpkz\"},\"resultStatistics\":{\"progress\":58.73400554711503,\"ingestedRecords\":1008531310,\"scannedGb\":96.94226082279155},\"plan\":\"Auxiliary\",\"lastPlanModifiedDate\":\"ixvcpwnkwywzwo\",\"schema\":{\"name\":\"ickduoiqta\",\"displayName\":\"yvsk\",\"description\":\"rwzawnvs\",\"columns\":[{\"name\":\"zagxnvhycvdi\",\"type\":\"int\",\"dataTypeHint\":\"ip\",\"displayName\":\"gzgy\",\"description\":\"utrwpweryekz\",\"isDefaultDisplay\":false,\"isHidden\":false},{\"name\":\"tta\",\"type\":\"int\",\"dataTypeHint\":\"armPath\",\"displayName\":\"wwhnhjtfvpn\",\"description\":\"miljpnwynud\",\"isDefaultDisplay\":false,\"isHidden\":false}],\"standardColumns\":[{\"name\":\"pjlxeehuxiqhzl\",\"type\":\"int\",\"dataTypeHint\":\"armPath\",\"displayName\":\"xls\",\"description\":\"hmx\",\"isDefaultDisplay\":true,\"isHidden\":true},{\"name\":\"rednw\",\"type\":\"real\",\"dataTypeHint\":\"uri\",\"displayName\":\"w\",\"description\":\"evuafpwzyifrk\",\"isDefaultDisplay\":false,\"isHidden\":false},{\"name\":\"qipxgzdyimsf\",\"type\":\"dateTime\",\"dataTypeHint\":\"uri\",\"displayName\":\"avkjog\",\"description\":\"labnsmjkwynq\",\"isDefaultDisplay\":true,\"isHidden\":false}],\"categories\":[\"kvwjtqpkevmy\",\"tjcrspxklurccl\",\"gxannnoytzposewx\",\"gpxvkqmaupxvpi\"],\"labels\":[\"aifyzyzeyuubeids\"],\"source\":\"microsoft\",\"tableType\":\"Microsoft\",\"tableSubType\":\"Any\",\"solutions\":[\"gygvfltgvdiho\",\"nkrxwetwkdrcy\",\"ucpcunnuzdqumoen\"]},\"provisioningState\":\"Updating\",\"retentionInDaysAsDefault\":true,\"totalRetentionInDaysAsDefault\":false},\"id\":\"qh\",\"name\":\"knd\",\"type\":\"elqkaadlkn\"}]}";
+            = "{\"value\":[{\"properties\":{\"retentionInDays\":1558008032,\"totalRetentionInDays\":949820102,\"archiveRetentionInDays\":22595840,\"searchResults\":{\"query\":\"hxepmrutzna\",\"description\":\"obns\",\"limit\":1169624057,\"startSearchTime\":\"2021-05-03T18:13:03Z\",\"endSearchTime\":\"2021-05-25T22:31:59Z\",\"sourceTable\":\"mkmvguihywartspp\",\"azureAsyncOperationId\":\"ixkykxd\"},\"restoredLogs\":{\"startRestoreTime\":\"2021-08-13T22:15:03Z\",\"endRestoreTime\":\"2021-07-11T12:44:34Z\",\"sourceTable\":\"ucfx\",\"azureAsyncOperationId\":\"kkflrmymyincqlhr\"},\"resultStatistics\":{\"progress\":6.914765322731309,\"ingestedRecords\":1553660421,\"scannedGb\":15.44142810639525},\"plan\":\"Analytics\",\"protectionLevel\":\"Protected\",\"lastPlanModifiedDate\":\"xuugqkc\",\"schema\":{\"name\":\"iowlxteqdptj\",\"displayName\":\"dtguk\",\"description\":\"nblwphqlkcc\",\"columns\":[{\"name\":\"gqwa\",\"type\":\"int\",\"dataTypeHint\":\"guid\",\"displayName\":\"gniiprglvaw\",\"description\":\"z\",\"isDefaultDisplay\":false,\"isHidden\":true},{\"name\":\"vlsbbjpmcubkmifo\",\"type\":\"string\",\"dataTypeHint\":\"guid\",\"displayName\":\"phavpmhbrb\",\"description\":\"vgovpbbttefjokn\",\"isDefaultDisplay\":true,\"isHidden\":true}],\"standardColumns\":[{\"name\":\"ik\",\"type\":\"boolean\",\"dataTypeHint\":\"vector16\",\"displayName\":\"qmrjg\",\"description\":\"hfqlgg\",\"isDefaultDisplay\":true,\"isHidden\":true},{\"name\":\"xmjpbyep\",\"type\":\"string\",\"dataTypeHint\":\"vector16\",\"displayName\":\"j\",\"description\":\"cmyfqipgxhnpo\",\"isDefaultDisplay\":true,\"isHidden\":false},{\"name\":\"bvnuile\",\"type\":\"long\",\"dataTypeHint\":\"armPath\",\"displayName\":\"paugmrmfjlrxwt\",\"description\":\"ukhfkvc\",\"isDefaultDisplay\":false,\"isHidden\":false}],\"categories\":[\"eds\"],\"labels\":[\"uivedwcgyeewxeiq\",\"psmgo\"],\"source\":\"microsoft\",\"tableType\":\"SearchResults\",\"tableSubType\":\"Any\",\"solutions\":[\"rgmsplzga\"]},\"provisioningState\":\"InProgress\",\"retentionInDaysAsDefault\":true,\"totalRetentionInDaysAsDefault\":true},\"id\":\"ewgnxkympqanxrj\",\"name\":\"ixt\",\"type\":\"bta\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,31 +36,32 @@ public final class TablesListByWorkspaceMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Table> response
-            = manager.tables().listByWorkspace("kyeclcdigpta", "brzmqxucycijoclx", com.azure.core.util.Context.NONE);
+            = manager.tables().listByWorkspace("ewbidyvteowxv", "piudeugfsxzecpa", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(1067831194, response.iterator().next().retentionInDays());
-        Assertions.assertEquals(1338234971, response.iterator().next().totalRetentionInDays());
-        Assertions.assertEquals("jdnrqjbt", response.iterator().next().searchResults().query());
-        Assertions.assertEquals("eaoqaqbzgyhf", response.iterator().next().searchResults().description());
-        Assertions.assertEquals(122929865, response.iterator().next().searchResults().limit());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-21T19:14:48Z"),
+        Assertions.assertEquals(1558008032, response.iterator().next().retentionInDays());
+        Assertions.assertEquals(949820102, response.iterator().next().totalRetentionInDays());
+        Assertions.assertEquals("hxepmrutzna", response.iterator().next().searchResults().query());
+        Assertions.assertEquals("obns", response.iterator().next().searchResults().description());
+        Assertions.assertEquals(1169624057, response.iterator().next().searchResults().limit());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-03T18:13:03Z"),
             response.iterator().next().searchResults().startSearchTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-20T20:58:19Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-25T22:31:59Z"),
             response.iterator().next().searchResults().endSearchTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-25T12:04:18Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-13T22:15:03Z"),
             response.iterator().next().restoredLogs().startRestoreTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-21T00:53:39Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-11T12:44:34Z"),
             response.iterator().next().restoredLogs().endRestoreTime());
-        Assertions.assertEquals("myw", response.iterator().next().restoredLogs().sourceTable());
-        Assertions.assertEquals(TablePlanEnum.AUXILIARY, response.iterator().next().plan());
-        Assertions.assertEquals("ickduoiqta", response.iterator().next().schema().name());
-        Assertions.assertEquals("yvsk", response.iterator().next().schema().displayName());
-        Assertions.assertEquals("rwzawnvs", response.iterator().next().schema().description());
-        Assertions.assertEquals("zagxnvhycvdi", response.iterator().next().schema().columns().get(0).name());
+        Assertions.assertEquals("ucfx", response.iterator().next().restoredLogs().sourceTable());
+        Assertions.assertEquals(TablePlanEnum.ANALYTICS, response.iterator().next().plan());
+        Assertions.assertEquals(TableProtectionLevelEnum.PROTECTED, response.iterator().next().protectionLevel());
+        Assertions.assertEquals("iowlxteqdptj", response.iterator().next().schema().name());
+        Assertions.assertEquals("dtguk", response.iterator().next().schema().displayName());
+        Assertions.assertEquals("nblwphqlkcc", response.iterator().next().schema().description());
+        Assertions.assertEquals("gqwa", response.iterator().next().schema().columns().get(0).name());
         Assertions.assertEquals(ColumnTypeEnum.INT, response.iterator().next().schema().columns().get(0).type());
-        Assertions.assertEquals(ColumnDataTypeHintEnum.IP,
+        Assertions.assertEquals(ColumnDataTypeHintEnum.GUID,
             response.iterator().next().schema().columns().get(0).dataTypeHint());
-        Assertions.assertEquals("gzgy", response.iterator().next().schema().columns().get(0).displayName());
-        Assertions.assertEquals("utrwpweryekz", response.iterator().next().schema().columns().get(0).description());
+        Assertions.assertEquals("gniiprglvaw", response.iterator().next().schema().columns().get(0).displayName());
+        Assertions.assertEquals("z", response.iterator().next().schema().columns().get(0).description());
     }
 }

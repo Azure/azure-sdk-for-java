@@ -13,6 +13,7 @@ import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.loganalytics.models.RuleDefinition;
 import com.azure.resourcemanager.loganalytics.models.RuleTypeEnum;
 import com.azure.resourcemanager.loganalytics.models.StatusCodeEnum;
+import com.azure.resourcemanager.loganalytics.models.SummaryLogsIdentity;
 import com.azure.resourcemanager.loganalytics.models.SummaryLogsProvisioningState;
 import java.io.IOException;
 
@@ -25,6 +26,11 @@ public final class SummaryLogsInner extends ProxyResource {
      * Summary rule properties.
      */
     private SummaryLogsProperties innerProperties;
+
+    /*
+     * The managed identity of the summary logs resource. Only user-assigned identity is supported.
+     */
+    private SummaryLogsIdentity identity;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
@@ -59,6 +65,28 @@ public final class SummaryLogsInner extends ProxyResource {
      */
     private SummaryLogsProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the identity property: The managed identity of the summary logs resource. Only user-assigned identity is
+     * supported.
+     * 
+     * @return the identity value.
+     */
+    public SummaryLogsIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: The managed identity of the summary logs resource. Only user-assigned identity is
+     * supported.
+     * 
+     * @param identity the identity value to set.
+     * @return the SummaryLogsInner object itself.
+     */
+    public SummaryLogsInner withIdentity(SummaryLogsIdentity identity) {
+        this.identity = identity;
+        return this;
     }
 
     /**
@@ -228,6 +256,7 @@ public final class SummaryLogsInner extends ProxyResource {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("identity", this.identity);
         return jsonWriter.writeEndObject();
     }
 
@@ -255,6 +284,8 @@ public final class SummaryLogsInner extends ProxyResource {
                     deserializedSummaryLogsInner.type = reader.getString();
                 } else if ("properties".equals(fieldName)) {
                     deserializedSummaryLogsInner.innerProperties = SummaryLogsProperties.fromJson(reader);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedSummaryLogsInner.identity = SummaryLogsIdentity.fromJson(reader);
                 } else if ("systemData".equals(fieldName)) {
                     deserializedSummaryLogsInner.systemData = SystemData.fromJson(reader);
                 } else {

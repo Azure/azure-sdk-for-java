@@ -12,14 +12,14 @@ public final class SearchSchemaValueTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SearchSchemaValue model = BinaryData.fromString(
-            "{\"name\":\"bccxjmonfdgn\",\"displayName\":\"cypuuwwlt\",\"type\":\"qjctzenkeif\",\"indexed\":true,\"stored\":true,\"facet\":false,\"ownerType\":[\"as\",\"flyh\"]}")
+            "{\"name\":\"ppnvdxz\",\"displayName\":\"ihfrbbcevqa\",\"type\":\"ltd\",\"indexed\":false,\"stored\":false,\"facet\":false,\"ownerType\":[\"jpykvgtrdcnifmzz\",\"dymbrny\",\"u\"]}")
             .toObject(SearchSchemaValue.class);
-        Assertions.assertEquals("bccxjmonfdgn", model.name());
-        Assertions.assertEquals("cypuuwwlt", model.displayName());
-        Assertions.assertEquals("qjctzenkeif", model.type());
-        Assertions.assertTrue(model.indexed());
-        Assertions.assertTrue(model.stored());
+        Assertions.assertEquals("ppnvdxz", model.name());
+        Assertions.assertEquals("ihfrbbcevqa", model.displayName());
+        Assertions.assertEquals("ltd", model.type());
+        Assertions.assertFalse(model.indexed());
+        Assertions.assertFalse(model.stored());
         Assertions.assertFalse(model.facet());
-        Assertions.assertEquals("as", model.ownerType().get(0));
+        Assertions.assertEquals("jpykvgtrdcnifmzz", model.ownerType().get(0));
     }
 }

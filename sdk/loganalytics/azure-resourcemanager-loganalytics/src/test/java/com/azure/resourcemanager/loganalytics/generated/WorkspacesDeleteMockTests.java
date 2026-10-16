@@ -27,7 +27,7 @@ public final class WorkspacesDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.workspaces().delete("siowlkjxnqpv", "gf", false, com.azure.core.util.Context.NONE);
+        manager.workspaces().delete("ilrmcaykggnox", "ztrksxwpndf", true, com.azure.core.util.Context.NONE);
 
     }
 }

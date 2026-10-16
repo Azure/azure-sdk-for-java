@@ -11,7 +11,7 @@ import java.util.Arrays;
  */
 public final class DataExportsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-07-01/DataExportCreateOrUpdate.json
+     * x-ms-original-file: 2026-03-01/DataExportCreateOrUpdate.json
      */
     /**
      * Sample code: DataExportCreate.

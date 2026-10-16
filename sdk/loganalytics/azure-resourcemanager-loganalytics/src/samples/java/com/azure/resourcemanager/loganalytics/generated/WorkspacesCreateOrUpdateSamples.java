@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public final class WorkspacesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-07-01/WorkspacesCreate.json
+     * x-ms-original-file: 2026-03-01/WorkspacesCreate.json
      */
     /**
      * Sample code: WorkspacesCreate.
