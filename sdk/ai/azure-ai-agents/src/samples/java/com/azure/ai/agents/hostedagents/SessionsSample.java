@@ -44,7 +44,7 @@ public class SessionsSample {
                 fetched.getStatus());
 
             System.out.println("Listing sessions for the agent...");
-            PagedIterable<AgentSessionResource> sessions = agentsClient.listSessions(agentName, null, null, null, null);
+            PagedIterable<AgentSessionResource> sessions = agentsClient.listSessions(agentName, null, null, null);
             for (AgentSessionResource item : sessions) {
                 System.out.printf("  - %s (status: %s)%n", item.getAgentSessionId(), item.getStatus());
             }

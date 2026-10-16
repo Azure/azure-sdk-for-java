@@ -24,7 +24,7 @@ public class AgentOptimizationJobsSample {
 
         System.out.println("Recent optimization jobs:");
         for (AgentOptimizationJob job
-            : agentsClient.listOptimizationJobs(10, PageOrder.DESC, null, null, null, null)) {
+            : agentsClient.listOptimizationJobs(10, PageOrder.DESC, null, null, null)) {
             System.out.printf("  %s: status=%s%n", job.getId(), job.getStatus());
         }
 
@@ -32,14 +32,14 @@ public class AgentOptimizationJobsSample {
         if (agentName != null) {
             System.out.printf("Recent optimization jobs for agent %s:%n", agentName);
             for (AgentOptimizationJob job
-                : agentsClient.listOptimizationJobs(10, PageOrder.DESC, null, null, null, agentName)) {
+                : agentsClient.listOptimizationJobs(10, PageOrder.DESC, null, null, agentName)) {
                 System.out.printf("  %s: status=%s%n", job.getId(), job.getStatus());
             }
         }
 
         System.out.println("Recent succeeded optimization jobs:");
         for (AgentOptimizationJob job
-            : agentsClient.listOptimizationJobs(5, PageOrder.DESC, null, null, JobStatus.SUCCEEDED, null)) {
+            : agentsClient.listOptimizationJobs(5, PageOrder.DESC, null, JobStatus.SUCCEEDED, null)) {
             System.out.println("  " + job.getId());
         }
 

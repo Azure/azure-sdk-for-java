@@ -53,16 +53,14 @@ public class AgentOptimizationAsyncTests extends AgentOptimizationTestBase {
                 .flatMap(retrieved -> {
                     assertEquals(jobId.get(), retrieved.getId());
                     return client
-                        .listOptimizationJobs(10, PageOrder.DESC, null, null, JobStatus.SUCCEEDED, SUCCESS_AGENT_NAME)
+                        .listOptimizationJobs(10, PageOrder.DESC, null, JobStatus.SUCCEEDED, SUCCESS_AGENT_NAME)
                         .filter(job -> jobId.get().equals(job.getId()))
                         .hasElements();
                 })
                 .flatMap(found -> {
                     assertTrue(found);
-                    return client
-                        .listOptimizationCandidates(jobId.get(),
-                            Collections.singletonList(AgentOptimizationCandidateExpand.MUTATIONS), 10, PageOrder.ASC,
-                            null, null)
+                    return client.listOptimizationCandidates(jobId.get(),
+                        Collections.singletonList(AgentOptimizationCandidateExpand.MUTATIONS), 10, PageOrder.ASC, null)
                         .filter(candidate -> AgentOptimizationCandidateStatus.COMPLETED.equals(candidate.getStatus()))
                         .reduce((first, second) -> second.getOutput() == null ? first : second)
                         .switchIfEmpty(

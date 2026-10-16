@@ -56,7 +56,7 @@ public class RubricEvaluatorGenerationSample {
         try {
             String jobId = generationJobId(generated);
             printJob(evaluators.getEvaluatorGenerationJob(jobId));
-            evaluators.listEvaluatorGenerationJobs(5, PageOrder.DESC, null, null).stream().limit(5)
+            evaluators.listEvaluatorGenerationJobs(5, PageOrder.DESC, null).stream().limit(5)
                 .forEach(RubricEvaluatorGenerationSample::printJob);
             EvaluatorVersion reviewed = evaluators.createEvaluatorVersion(name, reviewRubric(generated));
             try {

@@ -81,7 +81,7 @@ public class ExternalAgentSample {
 
             // List all external agents.
             System.out.println("Found the following external agents:");
-            for (AgentDetails externalAgent : agentsClient.listAgents(AgentKind.EXTERNAL, null, null, null, null)) {
+            for (AgentDetails externalAgent : agentsClient.listAgents(AgentKind.EXTERNAL, null, null, null)) {
                 System.out.printf("    - Agent id: %s, name: %s%n", externalAgent.getId(), externalAgent.getName());
             }
         } finally {

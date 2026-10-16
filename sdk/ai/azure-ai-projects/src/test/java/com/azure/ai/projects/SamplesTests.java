@@ -100,7 +100,7 @@ public class SamplesTests extends ClientTestBase {
     public void dataGenerationJobsListSample(HttpClient httpClient, AIProjectsServiceVersion serviceVersion) {
         DatasetsClient datasetsClient = getClientBuilder(httpClient, serviceVersion).buildDatasetsClient();
 
-        Iterable<DataGenerationJob> jobs = datasetsClient.listGenerationJobs(5, PageOrder.DESC, null, null);
+        Iterable<DataGenerationJob> jobs = datasetsClient.listGenerationJobs(5, PageOrder.DESC, null);
         Assertions.assertNotNull(jobs);
 
         int count = 0;
@@ -121,12 +121,10 @@ public class SamplesTests extends ClientTestBase {
         DatasetsAsyncClient datasetsAsyncClient
             = getClientBuilder(httpClient, serviceVersion).buildDatasetsAsyncClient();
 
-        StepVerifier
-            .create(datasetsAsyncClient.listGenerationJobs(5, PageOrder.DESC, null, null).take(5).doOnNext(job -> {
-                Assertions.assertNotNull(job);
-                Assertions.assertNotNull(job.getId());
-            }).then())
-            .verifyComplete();
+        StepVerifier.create(datasetsAsyncClient.listGenerationJobs(5, PageOrder.DESC, null).take(5).doOnNext(job -> {
+            Assertions.assertNotNull(job);
+            Assertions.assertNotNull(job.getId());
+        }).then()).verifyComplete();
     }
 
     @LiveOnly

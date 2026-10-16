@@ -69,7 +69,7 @@ public class MemoryStoresTests extends ClientTestBase {
 
         // List Memory Stores and ensure the updated one is present
         boolean found = false;
-        for (MemoryStoreDetails store : memoryStoreClient.listMemoryStores(10, PageOrder.DESC, null, null)) {
+        for (MemoryStoreDetails store : memoryStoreClient.listMemoryStores(10, PageOrder.DESC, null)) {
             assertNotNull(store.getId());
             assertNotNull(store.getName());
             if (store.getName().equals(updatedStore.getName())) {

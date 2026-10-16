@@ -44,12 +44,10 @@ public class DataGenerationJobsAsyncClientTests extends ClientTestBase {
         DatasetsAsyncClient datasetsAsyncClient
             = getClientBuilder(httpClient, serviceVersion).buildDatasetsAsyncClient();
 
-        StepVerifier
-            .create(datasetsAsyncClient.listGenerationJobs(5, PageOrder.DESC, null, null).take(5).doOnNext(job -> {
-                Assertions.assertNotNull(job);
-                Assertions.assertNotNull(job.getId());
-            }).then())
-            .verifyComplete();
+        StepVerifier.create(datasetsAsyncClient.listGenerationJobs(5, PageOrder.DESC, null).take(5).doOnNext(job -> {
+            Assertions.assertNotNull(job);
+            Assertions.assertNotNull(job.getId());
+        }).then()).verifyComplete();
     }
 
     @Timeout(value = 20, unit = TimeUnit.MINUTES)

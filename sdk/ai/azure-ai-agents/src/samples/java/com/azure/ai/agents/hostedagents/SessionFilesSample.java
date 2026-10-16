@@ -54,7 +54,7 @@ public class SessionFilesSample {
             System.out.printf("Uploaded session file: %s%n", REMOTE_FILE_PATH_2);
 
             System.out.println("Listing session files for the session at path '/remote'...");
-            for (SessionDirectoryEntry entry : agentsClient.listSessionFiles(agentName, sessionId, "/remote", null, null, null, null)) {
+            for (SessionDirectoryEntry entry : agentsClient.listSessionFiles(agentName, sessionId, "/remote", null, null, null)) {
                 System.out.printf("  - name=%s, size=%d, isDirectory=%s%n", entry.getName(), entry.getSize(),
                     entry.isDirectory());
             }
