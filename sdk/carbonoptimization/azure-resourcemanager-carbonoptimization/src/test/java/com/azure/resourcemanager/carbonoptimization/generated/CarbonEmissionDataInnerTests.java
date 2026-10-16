@@ -5,15 +5,15 @@
 package com.azure.resourcemanager.carbonoptimization.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.carbonoptimization.models.CarbonEmissionData;
+import com.azure.resourcemanager.carbonoptimization.fluent.models.CarbonEmissionDataInner;
 import org.junit.jupiter.api.Assertions;
 
-public final class CarbonEmissionDataTests {
+public final class CarbonEmissionDataInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CarbonEmissionData model = BinaryData.fromString(
+        CarbonEmissionDataInner model = BinaryData.fromString(
             "{\"dataType\":\"CarbonEmissionData\",\"latestMonthEmissions\":66.31782921196866,\"previousMonthEmissions\":33.6984093273467,\"monthOverMonthEmissionsChangeRatio\":97.70980700102018,\"monthlyEmissionsChangeValue\":30.187615152865177}")
-            .toObject(CarbonEmissionData.class);
+            .toObject(CarbonEmissionDataInner.class);
         Assertions.assertEquals(66.31782921196866, model.latestMonthEmissions());
         Assertions.assertEquals(33.6984093273467, model.previousMonthEmissions());
         Assertions.assertEquals(97.70980700102018D, model.monthOverMonthEmissionsChangeRatio());

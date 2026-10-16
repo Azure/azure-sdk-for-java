@@ -9,7 +9,7 @@ package com.azure.resourcemanager.carbonoptimization.generated;
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2025-04-01/listOperations.json
+     * x-ms-original-file: 2026-05-01-preview/listOperations.json
      */
     /**
      * Sample code: Operations_List.

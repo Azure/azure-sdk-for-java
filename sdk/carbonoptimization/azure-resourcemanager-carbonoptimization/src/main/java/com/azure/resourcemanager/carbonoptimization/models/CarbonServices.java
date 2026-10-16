@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.carbonoptimization.models;
 
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
@@ -15,25 +16,24 @@ public interface CarbonServices {
      * API for Carbon Emissions Reports.
      * 
      * @param queryParameters Query parameters.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of carbon emission results along with {@link Response}.
+     * @return list of carbon emission results as paginated response with {@link PagedIterable}.
      */
-    Response<CarbonEmissionDataListResult> queryCarbonEmissionReportsWithResponse(QueryFilter queryParameters,
-        Context context);
+    PagedIterable<CarbonEmissionData> queryCarbonEmissionReports(QueryFilter queryParameters);
 
     /**
      * API for Carbon Emissions Reports.
      * 
      * @param queryParameters Query parameters.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of carbon emission results.
+     * @return list of carbon emission results as paginated response with {@link PagedIterable}.
      */
-    CarbonEmissionDataListResult queryCarbonEmissionReports(QueryFilter queryParameters);
+    PagedIterable<CarbonEmissionData> queryCarbonEmissionReports(QueryFilter queryParameters, Context context);
 
     /**
      * API for query carbon emission data available date range.
@@ -55,4 +55,33 @@ public interface CarbonServices {
      * @return response for available date range of carbon emission data.
      */
     CarbonEmissionDataAvailableDateRange queryCarbonEmissionDataAvailableDateRange();
+
+    /**
+     * API for Carbon Emissions Reports scoped to a billing account.
+     * 
+     * @param scope The scope associated with carbon emission report operations. This includes
+     * '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope.
+     * @param queryParameters Query parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of carbon emission results as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<CarbonEmissionData> queryCarbonEmissionReportsByBillingAccount(String scope,
+        BillingAccountQueryFilter queryParameters);
+
+    /**
+     * API for Carbon Emissions Reports scoped to a billing account.
+     * 
+     * @param scope The scope associated with carbon emission report operations. This includes
+     * '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope.
+     * @param queryParameters Query parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of carbon emission results as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<CarbonEmissionData> queryCarbonEmissionReportsByBillingAccount(String scope,
+        BillingAccountQueryFilter queryParameters, Context context);
 }

@@ -8,13 +8,14 @@ import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.carbonoptimization.fluent.models.CarbonEmissionDataInner;
 import java.io.IOException;
 
 /**
  * Response for Resource Group detailed carbon emissions.
  */
 @Immutable
-public final class ResourceGroupCarbonEmissionItemDetailData extends CarbonEmissionData {
+public final class ResourceGroupCarbonEmissionItemDetailData extends CarbonEmissionDataInner {
     /*
      * The data type of the query result, indicating the format of the returned response.
      */
@@ -39,6 +40,31 @@ public final class ResourceGroupCarbonEmissionItemDetailData extends CarbonEmiss
      * Resource Group url, value format is '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroup}'
      */
     private String resourceGroupUrl;
+
+    /*
+     * The change in carbon emissions between the current and previous period, calculated as: latestMonthEmissions -
+     * previousMonthEmissions.
+     */
+    private Double monthlyEmissionsChangeValue;
+
+    /*
+     * The percentage change in carbon emissions between the current and previous DateRange. This is calculated as:
+     * (latestMonthEmissions - previousMonthEmissions) / previousMonthEmissions.
+     */
+    private Double monthOverMonthEmissionsChangeRatio;
+
+    /*
+     * Total carbon emissions for the previous month’s date range, which is the same period as the specified date range
+     * but shifted left by one month (e.g., if the specified range is March - June, the previous month’s range will be
+     * Feb - May). The value is measured in kgCO2E.
+     */
+    private double previousMonthEmissions;
+
+    /*
+     * Total carbon emissions for the specified query parameters, measured in kgCO2E. This value represents total
+     * emissions over the specified date range (e.g., March-June).
+     */
+    private double latestMonthEmissions;
 
     /**
      * Creates an instance of ResourceGroupCarbonEmissionItemDetailData class.
@@ -94,6 +120,52 @@ public final class ResourceGroupCarbonEmissionItemDetailData extends CarbonEmiss
     }
 
     /**
+     * Get the monthlyEmissionsChangeValue property: The change in carbon emissions between the current and previous
+     * period, calculated as: latestMonthEmissions - previousMonthEmissions.
+     * 
+     * @return the monthlyEmissionsChangeValue value.
+     */
+    @Override
+    public Double monthlyEmissionsChangeValue() {
+        return this.monthlyEmissionsChangeValue;
+    }
+
+    /**
+     * Get the monthOverMonthEmissionsChangeRatio property: The percentage change in carbon emissions between the
+     * current and previous DateRange. This is calculated as: (latestMonthEmissions - previousMonthEmissions) /
+     * previousMonthEmissions.
+     * 
+     * @return the monthOverMonthEmissionsChangeRatio value.
+     */
+    @Override
+    public Double monthOverMonthEmissionsChangeRatio() {
+        return this.monthOverMonthEmissionsChangeRatio;
+    }
+
+    /**
+     * Get the previousMonthEmissions property: Total carbon emissions for the previous month’s date range, which is the
+     * same period as the specified date range but shifted left by one month (e.g., if the specified range is March -
+     * June, the previous month’s range will be Feb - May). The value is measured in kgCO2E.
+     * 
+     * @return the previousMonthEmissions value.
+     */
+    @Override
+    public double previousMonthEmissions() {
+        return this.previousMonthEmissions;
+    }
+
+    /**
+     * Get the latestMonthEmissions property: Total carbon emissions for the specified query parameters, measured in
+     * kgCO2E. This value represents total emissions over the specified date range (e.g., March-June).
+     * 
+     * @return the latestMonthEmissions value.
+     */
+    @Override
+    public double latestMonthEmissions() {
+        return this.latestMonthEmissions;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -129,16 +201,15 @@ public final class ResourceGroupCarbonEmissionItemDetailData extends CarbonEmiss
                 reader.nextToken();
 
                 if ("latestMonthEmissions".equals(fieldName)) {
-                    deserializedResourceGroupCarbonEmissionItemDetailData.withLatestMonthEmissions(reader.getDouble());
+                    deserializedResourceGroupCarbonEmissionItemDetailData.latestMonthEmissions = reader.getDouble();
                 } else if ("previousMonthEmissions".equals(fieldName)) {
-                    deserializedResourceGroupCarbonEmissionItemDetailData
-                        .withPreviousMonthEmissions(reader.getDouble());
+                    deserializedResourceGroupCarbonEmissionItemDetailData.previousMonthEmissions = reader.getDouble();
                 } else if ("monthOverMonthEmissionsChangeRatio".equals(fieldName)) {
-                    deserializedResourceGroupCarbonEmissionItemDetailData
-                        .withMonthOverMonthEmissionsChangeRatio(reader.getNullable(JsonReader::getDouble));
+                    deserializedResourceGroupCarbonEmissionItemDetailData.monthOverMonthEmissionsChangeRatio
+                        = reader.getNullable(JsonReader::getDouble);
                 } else if ("monthlyEmissionsChangeValue".equals(fieldName)) {
-                    deserializedResourceGroupCarbonEmissionItemDetailData
-                        .withMonthlyEmissionsChangeValue(reader.getNullable(JsonReader::getDouble));
+                    deserializedResourceGroupCarbonEmissionItemDetailData.monthlyEmissionsChangeValue
+                        = reader.getNullable(JsonReader::getDouble);
                 } else if ("itemName".equals(fieldName)) {
                     deserializedResourceGroupCarbonEmissionItemDetailData.itemName = reader.getString();
                 } else if ("categoryType".equals(fieldName)) {
