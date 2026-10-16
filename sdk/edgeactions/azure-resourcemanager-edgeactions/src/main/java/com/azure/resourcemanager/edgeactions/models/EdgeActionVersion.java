@@ -267,7 +267,7 @@ public interface EdgeActionVersion {
     EdgeActionVersion refresh(Context context);
 
     /**
-     * The deployVersionCode operation.
+     * A long-running resource action.
      * 
      * @param body The content of the action request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -278,7 +278,7 @@ public interface EdgeActionVersion {
     EdgeActionVersionProperties deployVersionCode(VersionCodeInner body);
 
     /**
-     * The deployVersionCode operation.
+     * A long-running resource action.
      * 
      * @param body The content of the action request.
      * @param context The context to associate with this operation.

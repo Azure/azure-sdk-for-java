@@ -1,10 +1,18 @@
 # Release History
 
-## 2.55.0-beta.1 (Unreleased)
-
-- Package api-version 2026-07-01.
+## 2.56.0-beta.1 (Unreleased)
 
 ### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 2.55.0 (2026-10-08)
+
+- Package api-version 2026-07-01.
 
 ### Breaking Changes
 
@@ -12,9 +20,9 @@
   `policyDefinitionGroupNames`, `policyExemptionIds`, `policySetDefinitionCategory`, `policySetDefinitionDisplayName`, and
   `resourceLocation` from `PolicyLogInfo`, as they are not supported by the Policy service.
 
-### Bugs Fixed
-
 ### Other Changes
+
+- Updated `api-version` of management locks to `2020-05-01`.
 
 ## 2.54.4 (2026-10-06)
 

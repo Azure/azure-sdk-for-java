@@ -5,9 +5,23 @@
 package com.azure.resourcemanager.network.generated;
 
 import com.azure.resourcemanager.network.fluent.models.DdosCustomPolicyInner;
+import com.azure.resourcemanager.network.models.DdosContinent;
 import com.azure.resourcemanager.network.models.DdosDetectionMode;
 import com.azure.resourcemanager.network.models.DdosDetectionRule;
+import com.azure.resourcemanager.network.models.DdosGeoMatch;
+import com.azure.resourcemanager.network.models.DdosMitigationRule;
+import com.azure.resourcemanager.network.models.DdosMitigationRulePropertiesFormat;
+import com.azure.resourcemanager.network.models.DdosMitigationTrafficScope;
+import com.azure.resourcemanager.network.models.DdosSourceMatchConditions;
+import com.azure.resourcemanager.network.models.DdosSourcePolicyAction;
+import com.azure.resourcemanager.network.models.DdosSourcePolicyActionType;
+import com.azure.resourcemanager.network.models.DdosSourcePolicyOverride;
+import com.azure.resourcemanager.network.models.DdosTcpDefaultMitigations;
+import com.azure.resourcemanager.network.models.DdosTcpPerSourceConnectionRateLimitPolicy;
+import com.azure.resourcemanager.network.models.DdosTcpPerSourceRateLimitPolicy;
 import com.azure.resourcemanager.network.models.DdosTrafficType;
+import com.azure.resourcemanager.network.models.DdosUdpDefaultMitigations;
+import com.azure.resourcemanager.network.models.DdosUdpPerSourceRateLimitPolicy;
 import com.azure.resourcemanager.network.models.TrafficDetectionRule;
 import java.util.Arrays;
 
@@ -16,7 +30,7 @@ import java.util.Arrays;
  */
 public final class DdosCustomPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-01-01/DdosCustomPolicyCreate.json
+     * x-ms-original-file: 2026-03-01/DdosCustomPolicyCreate.json
      */
     /**
      * Sample code: Create DDoS custom policy.
@@ -31,7 +45,41 @@ public final class DdosCustomPoliciesCreateOrUpdateSamples {
                     .withDetectionRules(Arrays.asList(new DdosDetectionRule().withName("detectionRuleTcp")
                         .withDetectionMode(DdosDetectionMode.TRAFFIC_THRESHOLD)
                         .withTrafficDetectionRule(new TrafficDetectionRule().withTrafficType(DdosTrafficType.TCP)
-                            .withPacketsPerSecond(1000000)))),
+                            .withPacketsPerSecond(1000000))))
+                    .withMitigationRules(
+                        Arrays
+                            .asList(
+                                new DdosMitigationRule().withName("mitigationRuleTcp")
+                                    .withProperties(
+                                        new DdosMitigationRulePropertiesFormat()
+                                            .withTrafficScope(DdosMitigationTrafficScope.TCP)
+                                            .withTcpDefaultMitigations(new DdosTcpDefaultMitigations()
+                                                .withPerSourceRateLimiting(
+                                                    new DdosTcpPerSourceRateLimitPolicy().withPacketsPerSecond(100000))
+                                                .withPerSourceConnectionRateLimiting(
+                                                    new DdosTcpPerSourceConnectionRateLimitPolicy()
+                                                        .withConnectionsPerSecond(1000)))
+                                            .withSourcePolicyOverrides(Arrays.asList(
+                                                new DdosSourcePolicyOverride()
+                                                    .withPolicyAction(new DdosSourcePolicyAction()
+                                                        .withActionType(DdosSourcePolicyActionType.DENY))
+                                                    .withConditions(new DdosSourceMatchConditions()
+                                                        .withIpPrefixes(Arrays.asList("198.51.100.0/24"))
+                                                        .withGeoMatches(Arrays.asList(new DdosGeoMatch()
+                                                            .withCountryCode("fakeTokenPlaceholder")))),
+                                                new DdosSourcePolicyOverride()
+                                                    .withPolicyAction(new DdosSourcePolicyAction()
+                                                        .withActionType(DdosSourcePolicyActionType.PERMIT))
+                                                    .withConditions(new DdosSourceMatchConditions()
+                                                        .withIpPrefixes(Arrays.asList("203.0.113.0/24"))
+                                                        .withGeoMatches(Arrays.asList(new DdosGeoMatch()
+                                                            .withContinent(DdosContinent.NORTH_AMERICA))))))),
+                                new DdosMitigationRule().withName("mitigationRuleUdp")
+                                    .withProperties(new DdosMitigationRulePropertiesFormat()
+                                        .withTrafficScope(DdosMitigationTrafficScope.UDP)
+                                        .withUdpDefaultMitigations(
+                                            new DdosUdpDefaultMitigations().withPerSourceRateLimiting(
+                                                new DdosUdpPerSourceRateLimitPolicy().withPacketsPerSecond(50000)))))),
                 com.azure.core.util.Context.NONE);
     }
 }

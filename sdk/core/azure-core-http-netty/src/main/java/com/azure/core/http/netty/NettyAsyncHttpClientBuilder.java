@@ -17,12 +17,13 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
-import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.handler.logging.LoggingHandler;
 import io.netty.resolver.DefaultAddressResolverGroup;
 import io.netty.resolver.NoopAddressResolverGroup;
+import io.netty.util.internal.SystemPropertyUtil;
 import reactor.netty.Connection;
 import reactor.netty.NettyPipeline;
 import reactor.netty.http.HttpDecoderSpec;
@@ -154,7 +155,7 @@ public class NettyAsyncHttpClientBuilder {
      *     .wiretap&#40;TcpClient.class.getName&#40;&#41;, LogLevel.INFO&#41;;
      * &#47;&#47; Create an HttpClient based on above reactor-netty client and configure EventLoop count.
      * HttpClient client = new NettyAsyncHttpClientBuilder&#40;baseHttpClient&#41;
-     *     .eventLoopGroup&#40;new NioEventLoopGroup&#40;5&#41;&#41;
+     *     .eventLoopGroup&#40;new MultiThreadIoEventLoopGroup&#40;5, NioIoHandler.newFactory&#40;&#41;&#41;&#41;
      *     .build&#40;&#41;;
      * </pre>
      * <!-- end com.azure.core.http.netty.from-existing-http-client -->
@@ -240,6 +241,16 @@ public class NettyAsyncHttpClientBuilder {
             nettyHttpClient = nettyHttpClient.protocol(HttpProtocol.HTTP11);
         } else if (maximumHttpVersion == HttpProtocolVersion.HTTP_2) {
             nettyHttpClient = nettyHttpClient.protocol(HttpProtocol.HTTP11, HttpProtocol.H2);
+        }
+
+        // Keep the pooled default while respecting allocator choices made by the application.
+        if (!nettyHttpClient.configuration().options().containsKey(ChannelOption.ALLOCATOR)
+            && !SystemPropertyUtil.contains("io.netty.allocator.type")) {
+            // If ChannelOptions and io.netty.allocator.type wasn't configured with an allocator fallback to the default
+            // setting from Netty 4.1 which was the pooled allocator. Otherwise, respect the configuration, be it
+            // ChannelOptions or io.netty.allocator.type. In the future, this should be validated for if this should use
+            // the new Netty 4.2 default which is an adaptive allocator.
+            nettyHttpClient = nettyHttpClient.option(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT);
         }
 
         // If a resolver hasn't been set, set the default one.
@@ -425,12 +436,12 @@ public class NettyAsyncHttpClientBuilder {
     /**
      * Sets the NIO event loop group that will be used to run IO loops.
      *
-     * @param nioEventLoopGroup The {@link NioEventLoopGroup} that will run IO loops.
+     * @param nioEventLoopGroup The {@link io.netty.channel.nio.NioEventLoopGroup} that will run IO loops.
      * @return the updated NettyAsyncHttpClientBuilder object.
      * @deprecated deprecated in favor of {@link #eventLoopGroup(EventLoopGroup)}.
      */
     @Deprecated
-    public NettyAsyncHttpClientBuilder nioEventLoopGroup(NioEventLoopGroup nioEventLoopGroup) {
+    public NettyAsyncHttpClientBuilder nioEventLoopGroup(io.netty.channel.nio.NioEventLoopGroup nioEventLoopGroup) {
         this.eventLoopGroup = nioEventLoopGroup;
         return this;
     }
@@ -444,7 +455,7 @@ public class NettyAsyncHttpClientBuilder {
      * <pre>
      * int threadCount = 5;
      * HttpClient client = new NettyAsyncHttpClientBuilder&#40;&#41;
-     *     .eventLoopGroup&#40;new NioEventLoopGroup&#40;threadCount&#41;&#41;
+     *     .eventLoopGroup&#40;new MultiThreadIoEventLoopGroup&#40;threadCount, NioIoHandler.newFactory&#40;&#41;&#41;&#41;
      *     .build&#40;&#41;;
      * </pre>
      * <!-- end com.azure.core.http.netty.NettyAsyncHttpClientBuilder#eventLoopGroup -->

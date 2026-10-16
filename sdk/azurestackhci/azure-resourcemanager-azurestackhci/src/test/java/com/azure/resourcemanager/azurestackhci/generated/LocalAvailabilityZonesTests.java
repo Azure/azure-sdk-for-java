@@ -12,19 +12,20 @@ import org.junit.jupiter.api.Assertions;
 public final class LocalAvailabilityZonesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LocalAvailabilityZones model
-            = BinaryData.fromString("{\"localAvailabilityZoneName\":\"fadmws\",\"nodes\":[\"gvxp\"]}")
-                .toObject(LocalAvailabilityZones.class);
-        Assertions.assertEquals("fadmws", model.localAvailabilityZoneName());
-        Assertions.assertEquals("gvxp", model.nodes().get(0));
+        LocalAvailabilityZones model = BinaryData
+            .fromString(
+                "{\"localAvailabilityZoneName\":\"lwptfdy\",\"nodes\":[\"qbuaceopzfqr\",\"huaoppp\",\"qeqxo\"]}")
+            .toObject(LocalAvailabilityZones.class);
+        Assertions.assertEquals("lwptfdy", model.localAvailabilityZoneName());
+        Assertions.assertEquals("qbuaceopzfqr", model.nodes().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LocalAvailabilityZones model
-            = new LocalAvailabilityZones().withLocalAvailabilityZoneName("fadmws").withNodes(Arrays.asList("gvxp"));
+        LocalAvailabilityZones model = new LocalAvailabilityZones().withLocalAvailabilityZoneName("lwptfdy")
+            .withNodes(Arrays.asList("qbuaceopzfqr", "huaoppp", "qeqxo"));
         model = BinaryData.fromObject(model).toObject(LocalAvailabilityZones.class);
-        Assertions.assertEquals("fadmws", model.localAvailabilityZoneName());
-        Assertions.assertEquals("gvxp", model.nodes().get(0));
+        Assertions.assertEquals("lwptfdy", model.localAvailabilityZoneName());
+        Assertions.assertEquals("qbuaceopzfqr", model.nodes().get(0));
     }
 }

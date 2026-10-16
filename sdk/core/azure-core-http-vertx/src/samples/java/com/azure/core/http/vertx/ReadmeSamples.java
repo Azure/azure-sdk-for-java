@@ -144,7 +144,7 @@ public class ReadmeSamples {
      */
     public void configureHttp2PriorKnowledge() {
         // BEGIN: readme-sample-configureHttp2PriorKnowledge
-        HttpClientOptions clientOptions = new HttpClientOptions()
+        io.vertx.core.http.HttpClientOptions clientOptions = new io.vertx.core.http.HttpClientOptions()
             .setHttp2ClearTextUpgrade(false);
         HttpClient client = new VertxHttpClientBuilder()
             .httpClientOptions(clientOptions)

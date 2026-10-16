@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Resources to remove from a scheduled action.
+ * Resources to remove from a recurring bulk action.
  */
 @Fluent
 public final class ResourceDetachRequest implements JsonSerializable<ResourceDetachRequest> {

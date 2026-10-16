@@ -12,10 +12,10 @@ public final class SkuMappingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SkuMappings model = BinaryData.fromString(
-            "{\"catalogPlanId\":\"majtjaod\",\"marketplaceSkuId\":\"bnbdxkqpxokajion\",\"marketplaceSkuVersions\":[\"ex\",\"stxgc\",\"odgmaajrmvdjwz\"]}")
+            "{\"catalogPlanId\":\"czvyifq\",\"marketplaceSkuId\":\"kdvjsll\",\"marketplaceSkuVersions\":[\"vdfwatkpn\",\"ulexxbczwtr\",\"wiqzbqjvsovmyo\",\"acspkwl\"]}")
             .toObject(SkuMappings.class);
-        Assertions.assertEquals("majtjaod", model.catalogPlanId());
-        Assertions.assertEquals("bnbdxkqpxokajion", model.marketplaceSkuId());
-        Assertions.assertEquals("ex", model.marketplaceSkuVersions().get(0));
+        Assertions.assertEquals("czvyifq", model.catalogPlanId());
+        Assertions.assertEquals("kdvjsll", model.marketplaceSkuId());
+        Assertions.assertEquals("vdfwatkpn", model.marketplaceSkuVersions().get(0));
     }
 }
