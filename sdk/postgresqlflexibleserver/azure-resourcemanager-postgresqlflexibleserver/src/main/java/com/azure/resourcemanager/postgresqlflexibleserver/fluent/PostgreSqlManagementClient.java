@@ -124,13 +124,6 @@ public interface PostgreSqlManagementClient {
     MajorVersionUpgradePrechecksClient getMajorVersionUpgradePrechecks();
 
     /**
-     * Gets the DbAgentsClient object to access its operations.
-     * 
-     * @return the DbAgentsClient object.
-     */
-    DbAgentsClient getDbAgents();
-
-    /**
      * Gets the AdministratorsMicrosoftEntrasClient object to access its operations.
      * 
      * @return the AdministratorsMicrosoftEntrasClient object.
