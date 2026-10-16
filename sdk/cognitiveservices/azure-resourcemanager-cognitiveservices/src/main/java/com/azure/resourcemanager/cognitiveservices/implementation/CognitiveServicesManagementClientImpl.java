@@ -29,6 +29,7 @@ import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.cognitiveservices.fluent.AccountCapabilityHostsClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.AccountConnectionsClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.AccountsClient;
+import com.azure.resourcemanager.cognitiveservices.fluent.AdapterDeploymentsClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.AgentApplicationsClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.AgentDeploymentsClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.ArcDeploymentsClient;
@@ -37,6 +38,7 @@ import com.azure.resourcemanager.cognitiveservices.fluent.CommitmentPlansClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.CommitmentTiersClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.ComputeOperationsClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.ComputesClient;
+import com.azure.resourcemanager.cognitiveservices.fluent.CostControlsClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.DefenderForAISettingsClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.DeletedAccountsClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.DeploymentsClient;
@@ -59,12 +61,14 @@ import com.azure.resourcemanager.cognitiveservices.fluent.ProjectCapabilityHosts
 import com.azure.resourcemanager.cognitiveservices.fluent.ProjectConnectionsClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.ProjectsClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.QuotaTiersClient;
+import com.azure.resourcemanager.cognitiveservices.fluent.RaiBindingsClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.RaiBlocklistItemsClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.RaiBlocklistsClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.RaiContentFiltersClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.RaiExternalSafetyProvidersClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.RaiExternalSafetyProvidersOperationsClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.RaiPoliciesClient;
+import com.azure.resourcemanager.cognitiveservices.fluent.RaiRegosClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.RaiToolLabelsClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.RaiTopicsClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.ResourceProvidersClient;
@@ -312,6 +316,34 @@ public final class CognitiveServicesManagementClientImpl implements CognitiveSer
     }
 
     /**
+     * The RaiRegosClient object to access its operations.
+     */
+    private final RaiRegosClient raiRegos;
+
+    /**
+     * Gets the RaiRegosClient object to access its operations.
+     * 
+     * @return the RaiRegosClient object.
+     */
+    public RaiRegosClient getRaiRegos() {
+        return this.raiRegos;
+    }
+
+    /**
+     * The RaiBindingsClient object to access its operations.
+     */
+    private final RaiBindingsClient raiBindings;
+
+    /**
+     * Gets the RaiBindingsClient object to access its operations.
+     * 
+     * @return the RaiBindingsClient object.
+     */
+    public RaiBindingsClient getRaiBindings() {
+        return this.raiBindings;
+    }
+
+    /**
      * The RaiBlocklistItemsClient object to access its operations.
      */
     private final RaiBlocklistItemsClient raiBlocklistItems;
@@ -508,6 +540,20 @@ public final class CognitiveServicesManagementClientImpl implements CognitiveSer
     }
 
     /**
+     * The AdapterDeploymentsClient object to access its operations.
+     */
+    private final AdapterDeploymentsClient adapterDeployments;
+
+    /**
+     * Gets the AdapterDeploymentsClient object to access its operations.
+     * 
+     * @return the AdapterDeploymentsClient object.
+     */
+    public AdapterDeploymentsClient getAdapterDeployments() {
+        return this.adapterDeployments;
+    }
+
+    /**
      * The ComputeOperationsClient object to access its operations.
      */
     private final ComputeOperationsClient computeOperations;
@@ -575,6 +621,20 @@ public final class CognitiveServicesManagementClientImpl implements CognitiveSer
      */
     public ManagedComputeCapacitiesClient getManagedComputeCapacities() {
         return this.managedComputeCapacities;
+    }
+
+    /**
+     * The CostControlsClient object to access its operations.
+     */
+    private final CostControlsClient costControls;
+
+    /**
+     * Gets the CostControlsClient object to access its operations.
+     * 
+     * @return the CostControlsClient object.
+     */
+    public CostControlsClient getCostControls() {
+        return this.costControls;
     }
 
     /**
@@ -832,7 +892,7 @@ public final class CognitiveServicesManagementClientImpl implements CognitiveSer
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2026-07-15-preview";
+        this.apiVersion = "2026-09-15-preview";
         this.resourceProviders = new ResourceProvidersClientImpl(this);
         this.operations = new OperationsClientImpl(this);
         this.accounts = new AccountsClientImpl(this);
@@ -843,6 +903,8 @@ public final class CognitiveServicesManagementClientImpl implements CognitiveSer
         this.encryptionScopes = new EncryptionScopesClientImpl(this);
         this.raiPolicies = new RaiPoliciesClientImpl(this);
         this.subscriptionRaiPolicies = new SubscriptionRaiPoliciesClientImpl(this);
+        this.raiRegos = new RaiRegosClientImpl(this);
+        this.raiBindings = new RaiBindingsClientImpl(this);
         this.raiBlocklistItems = new RaiBlocklistItemsClientImpl(this);
         this.raiBlocklists = new RaiBlocklistsClientImpl(this);
         this.raiTopics = new RaiTopicsClientImpl(this);
@@ -857,11 +919,13 @@ public final class CognitiveServicesManagementClientImpl implements CognitiveSer
         this.arcDeployments = new ArcDeploymentsClientImpl(this);
         this.agentApplications = new AgentApplicationsClientImpl(this);
         this.managedComputeDeployments = new ManagedComputeDeploymentsClientImpl(this);
+        this.adapterDeployments = new AdapterDeploymentsClientImpl(this);
         this.computeOperations = new ComputeOperationsClientImpl(this);
         this.managedComputeUsagesOperationGroups = new ManagedComputeUsagesOperationGroupsClientImpl(this);
         this.computes = new ComputesClientImpl(this);
         this.workbenches = new WorkbenchesClientImpl(this);
         this.managedComputeCapacities = new ManagedComputeCapacitiesClientImpl(this);
+        this.costControls = new CostControlsClientImpl(this);
         this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);
         this.testRaiExternalSafetyProviders = new TestRaiExternalSafetyProvidersClientImpl(this);
         this.raiExternalSafetyProviders = new RaiExternalSafetyProvidersClientImpl(this);
