@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Base for polymorphic events emitted by a streaming knowledge base retrieval.
  * Known events expose typed payloads through their subtype's {@code getValue()} method.
- * Unrecognized events use this concrete base class and expose only their names through
+ * Unrecognized events expose only their names through
  * {@link #getEventName()}; their payloads are not available and they are not terminal.
  * Stream events are envelopes, not JSON payload models; serialize the typed payload instead.
  *
@@ -21,7 +21,7 @@ import java.util.List;
  * @see KnowledgeBaseErrorStreamEvent
  * @see KnowledgeBaseResponseCompletedStreamEvent
  */
-public class KnowledgeBaseRetrievalStreamEvent {
+public abstract class KnowledgeBaseRetrievalStreamEvent {
 
     @Generated
     private final String eventName;
@@ -62,7 +62,8 @@ public class KnowledgeBaseRetrievalStreamEvent {
 
                 @Override
                 public KnowledgeBaseRetrievalStreamEvent createEvent(String eventName) {
-                    return new KnowledgeBaseRetrievalStreamEvent(eventName);
+                    return new KnowledgeBaseRetrievalStreamEvent(eventName) {
+                    };
                 }
 
                 @Override
