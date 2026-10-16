@@ -328,6 +328,29 @@ public final class StorageAccountUpdateParameters implements JsonSerializable<St
     }
 
     /**
+     * Get the turboTier property: Configures Turbo Tier for the storage account.
+     * 
+     * @return the turboTier value.
+     */
+    public TurboTier turboTier() {
+        return this.innerProperties() == null ? null : this.innerProperties().turboTier();
+    }
+
+    /**
+     * Set the turboTier property: Configures Turbo Tier for the storage account.
+     * 
+     * @param turboTier the turboTier value to set.
+     * @return the StorageAccountUpdateParameters object itself.
+     */
+    public StorageAccountUpdateParameters withTurboTier(TurboTier turboTier) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageAccountPropertiesUpdateParameters();
+        }
+        this.innerProperties().withTurboTier(turboTier);
+        return this;
+    }
+
+    /**
      * Get the azureFilesIdentityBasedAuthentication property: Provides the identity based authentication settings for
      * Azure Files.
      * 
