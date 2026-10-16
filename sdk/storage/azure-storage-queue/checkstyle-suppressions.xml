@@ -4,8 +4,8 @@
 
 <suppressions>
   <suppress files="com.azure.storage.queue.implementation.util.QueueSasImplUtil.java" checks="io.clientcore.linting.extensions.checkstyle.checks.EnforceFinalFieldsCheck" />
-  <suppress files="com.azure.storage.queue.implementation.MessageIdsImpl.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ThrowFromClientLoggerCheck" />
-  <suppress files="com.azure.storage.queue.implementation.MessagesImpl.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ThrowFromClientLoggerCheck" />
-  <suppress files="com.azure.storage.queue.implementation.QueuesImpl.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ThrowFromClientLoggerCheck" />
-  <suppress files="com.azure.storage.queue.implementation.ServicesImpl.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ThrowFromClientLoggerCheck" />
+  <suppress files="com.azure.storage.queue.implementation.MessageIdsImpl.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExceptionHandlingCheck" />
+  <suppress files="com.azure.storage.queue.implementation.MessagesImpl.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExceptionHandlingCheck" />
+  <suppress files="com.azure.storage.queue.implementation.QueuesImpl.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExceptionHandlingCheck" />
+  <suppress files="com.azure.storage.queue.implementation.ServicesImpl.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExceptionHandlingCheck" />
 </suppressions>

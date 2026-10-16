@@ -3,7 +3,6 @@
 
 package io.clientcore.linting.extensions.checkstyle.checks;
 
-import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.Scope;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
@@ -19,7 +18,7 @@ import java.util.Stack;
  *   <li>No public or protected setter methods</li>
  * </ol>
  */
-public class ImmutableClassCheck extends AbstractCheck {
+public class ImmutableClassCheck extends SdkCheck {
     private static final String IMMUTABLE_NOTATION = "Immutable";
 
     static final String PUBLIC_FIELD_ERROR_TEMPLATE
@@ -52,11 +51,15 @@ public class ImmutableClassCheck extends AbstractCheck {
 
     @Override
     public void beginTree(DetailAST root) {
-        hasImmutableAnnotationStack = new Stack<>();
+        super.beginTree(root);
+        hasImmutableAnnotationStack = isIgnoredSource() ? null : new Stack<>();
     }
 
     @Override
     public void visitToken(DetailAST token) {
+        if (isIgnoredSource()) {
+            return;
+        }
         if (token.getType() == TokenTypes.CLASS_DEF) {
             hasImmutableAnnotationStack.add(hasImmutableAnnotation(token));
         } else if (token.getType() == TokenTypes.VARIABLE_DEF && isInImmutableClass()) {
@@ -72,6 +75,9 @@ public class ImmutableClassCheck extends AbstractCheck {
 
     @Override
     public void leaveToken(DetailAST ast) {
+        if (isIgnoredSource()) {
+            return;
+        }
         if (ast.getType() == TokenTypes.CLASS_DEF && !hasImmutableAnnotationStack.isEmpty()) {
             hasImmutableAnnotationStack.pop();
         }

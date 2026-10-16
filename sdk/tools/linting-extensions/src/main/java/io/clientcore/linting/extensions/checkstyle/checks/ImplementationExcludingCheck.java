@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package io.clientcore.linting.extensions.checkstyle.checks;
 
-import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.FullIdent;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
@@ -10,7 +9,7 @@ import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 /**
  * Checkstyle check that skips running validation on {@code *.implementation.*} classes.
  */
-public abstract class ImplementationExcludingCheck extends AbstractCheck {
+public abstract class ImplementationExcludingCheck extends SdkCheck {
     private boolean addedPackageDef = false;
     private boolean implementationPackage = false;
 
@@ -59,6 +58,7 @@ public abstract class ImplementationExcludingCheck extends AbstractCheck {
 
     @Override
     public final void beginTree(DetailAST rootAST) {
+        super.beginTree(rootAST);
         // Before starting the tree reset the flag for implementation package.
         // This is done both before and after the tree just to make sure.
         implementationPackage = false;
@@ -93,7 +93,7 @@ public abstract class ImplementationExcludingCheck extends AbstractCheck {
 
     @Override
     public final void visitToken(DetailAST token) {
-        if (implementationPackage) {
+        if (isIgnoredSource() || implementationPackage) {
             return;
         }
 

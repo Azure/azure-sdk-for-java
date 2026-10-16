@@ -3,7 +3,6 @@
 
 package io.clientcore.linting.extensions.checkstyle.checks;
 
-import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 import com.puppycrawl.tools.checkstyle.utils.AnnotationUtil;
@@ -18,7 +17,7 @@ import java.util.Stack;
  * <li>No other method have prefix 'build' other than 'build*Client' or 'build*AsyncClient'.</li>
  * </ol>
  */
-public class ServiceClientBuilderCheck extends AbstractCheck {
+public class ServiceClientBuilderCheck extends SdkCheck {
     private final Stack<Boolean> hasServiceClientBuilderAnnotationStack = new Stack<>();
     private final Stack<Boolean> hasBuildMethodStack = new Stack<>();
     private boolean hasServiceClientBuilderAnnotation;
@@ -46,7 +45,19 @@ public class ServiceClientBuilderCheck extends AbstractCheck {
     }
 
     @Override
+    public void beginTree(DetailAST rootAST) {
+        super.beginTree(rootAST);
+        hasServiceClientBuilderAnnotationStack.clear();
+        hasBuildMethodStack.clear();
+        hasServiceClientBuilderAnnotation = false;
+        hasBuildMethod = false;
+    }
+
+    @Override
     public void leaveToken(DetailAST token) {
+        if (isIgnoredSource()) {
+            return;
+        }
         if (token.getType() == TokenTypes.CLASS_DEF) {
             hasServiceClientBuilderAnnotation = hasServiceClientBuilderAnnotationStack.pop();
             hasBuildMethod = hasBuildMethodStack.pop();
@@ -59,6 +70,9 @@ public class ServiceClientBuilderCheck extends AbstractCheck {
 
     @Override
     public void visitToken(DetailAST token) {
+        if (isIgnoredSource()) {
+            return;
+        }
         if (token.getType() == TokenTypes.CLASS_DEF) {
             // Save the state of variable 'hasServiceClientBuilderAnnotation' to limit the scope of accessibility
             hasServiceClientBuilderAnnotationStack.push(hasServiceClientBuilderAnnotation);
