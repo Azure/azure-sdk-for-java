@@ -85,7 +85,10 @@ Describe 'Native sparse checkout expansion' -Tag 'UnitTest' {
             'eng/build.ps1'
             '.config/settings.yml'
             '.config/data.bin'
+            'sdk/parents/azure-client-sdk-parent/pom.xml'
+            'sdk/selected/pom.xml'
             'sdk/selected/src/Main.java'
+            'sdk/unselected/pom.xml'
             'sdk/unselected/src/Other.java'
             'sdk/space directory/src/Space.java'
             "sdk/quoted'service/src/Quoted.java"
@@ -106,6 +109,35 @@ Describe 'Native sparse checkout expansion' -Tag 'UnitTest' {
             'commit', '--quiet', '--message', 'Sparse checkout fixture'
         ) | Out-Null
         $script:SourceVersion = Invoke-TestGit $repositoryPath @('rev-parse', 'HEAD')
+    }
+
+    It 'checks out signing sources and Maven parents without unrelated services' {
+        Import-Module powershell-yaml -ErrorAction Stop
+        $release = Get-Content (
+            Join-Path $PSScriptRoot '../../pipelines/templates/stages/archetype-java-release-batch.yml'
+        ) -Raw | ConvertFrom-Yaml -Ordered
+        $signing = $release.stages | Where-Object { $_.stage -eq 'Signing' }
+        $signJob = $signing.jobs | Where-Object { $_.job -eq 'SignPackage' }
+        $checkouts = @($signJob.steps | Where-Object { $_.checkout -eq 'self' })
+        $checkouts.Count | Should -Be 1
+        $patterns = $checkouts[0].sparseCheckoutPatterns.Replace(
+            '${{ parameters.ServiceDirectory }}', 'selected'
+        ) -split '\s+'
+
+        Invoke-TestGit $repositoryPath @('sparse-checkout', 'init', '--no-cone') | Out-Null
+        Invoke-TestGit $repositoryPath (@('sparse-checkout', 'set') + $patterns) | Out-Null
+
+        foreach ($file in @(
+            'pom.xml'
+            'eng/build.ps1'
+            '.config/settings.yml'
+            'sdk/parents/azure-client-sdk-parent/pom.xml'
+            'sdk/selected/pom.xml'
+            'sdk/selected/src/Main.java'
+        )) {
+            Test-Path (Join-Path $repositoryPath $file) | Should -BeTrue -Because "$file is needed for signing and SBOM generation"
+        }
+        Test-Path (Join-Path $repositoryPath 'sdk/unselected') | Should -BeFalse
     }
 
     It 'restores POM edits and retains generated files after a forced native checkout' {
@@ -318,7 +350,7 @@ Describe 'Native sparse checkout settings' -Tag 'UnitTest' {
         @{ File = 'pipelines/templates/jobs/ci.yml'; Count = 2; TagJobs = @('Build', 'Analyze') }
         @{ File = 'pipelines/templates/jobs/build-validate-pom.yml'; Count = 1; TagJobs = @() }
         @{ File = 'pipelines/templates/stages/archetype-sdk-client-patch.yml'; Count = 2; TagJobs = @('Build', 'AnalyzeAndVerify') }
-        @{ File = 'pipelines/templates/stages/archetype-java-release-batch.yml'; Count = 7; TagJobs = @('VerifyReleaseVersion') }
+        @{ File = 'pipelines/templates/stages/archetype-java-release-batch.yml'; Count = 8; TagJobs = @('SignPackage', 'VerifyReleaseVersion') }
         @{ File = 'pipelines/templates/stages/archetype-java-auto-release-batch.yml'; Count = 6; TagJobs = @('VerifyReleaseVersion') }
         @{ File = 'pipelines/templates/stages/archetype-java-release-patch.yml'; Count = 5; TagJobs = @() }
         @{ File = 'pipelines/templates/stages/archetype-java-release-pom-only.yml'; Count = 2; TagJobs = @() }
