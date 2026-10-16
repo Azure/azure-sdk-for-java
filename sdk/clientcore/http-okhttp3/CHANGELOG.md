@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Fixed configured default connection, read, and write timeouts being ignored when no explicit builder timeout is set.
+
 ### Other Changes
 
 ## 1.0.0-beta.2 (2025-03-12)

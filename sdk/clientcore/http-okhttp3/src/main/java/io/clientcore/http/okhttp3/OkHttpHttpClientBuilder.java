@@ -28,6 +28,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
+import static io.clientcore.core.implementation.utils.ImplUtils.getDefaultTimeoutFromEnvironment;
+
 /**
  * Builder class responsible for creating instances of {@link HttpClient} backed by OkHttp.
  */
@@ -329,6 +331,8 @@ public class OkHttpHttpClientBuilder {
     public HttpClient build() {
         OkHttpClient.Builder httpClientBuilder
             = this.okHttpClient == null ? new OkHttpClient.Builder() : this.okHttpClient.newBuilder();
+        Configuration buildConfiguration
+            = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
 
         // Add each interceptor that has been added.
         for (Interceptor interceptor : this.networkInterceptors) {
@@ -336,9 +340,15 @@ public class OkHttpHttpClientBuilder {
         }
 
         // Configure operation timeouts.
-        httpClientBuilder.connectTimeout(getTimeout(connectionTimeout, DEFAULT_CONNECT_TIMEOUT))
-            .writeTimeout(getTimeout(writeTimeout, DEFAULT_WRITE_TIMEOUT))
-            .readTimeout(getTimeout(readTimeout, DEFAULT_READ_TIMEOUT));
+        httpClientBuilder
+            .connectTimeout(getTimeout(connectionTimeout,
+                getDefaultTimeoutFromEnvironment(buildConfiguration, Configuration.REQUEST_CONNECT_TIMEOUT_IN_MS,
+                    DEFAULT_CONNECT_TIMEOUT, LOGGER)))
+            .writeTimeout(getTimeout(writeTimeout,
+                getDefaultTimeoutFromEnvironment(buildConfiguration, Configuration.REQUEST_WRITE_TIMEOUT_IN_MS,
+                    DEFAULT_WRITE_TIMEOUT, LOGGER)))
+            .readTimeout(getTimeout(readTimeout, getDefaultTimeoutFromEnvironment(buildConfiguration,
+                Configuration.REQUEST_READ_TIMEOUT_IN_MS, DEFAULT_READ_TIMEOUT, LOGGER)));
 
         if (callTimeout != null) {
             // Call timeout is disabled by default.
@@ -368,9 +378,6 @@ public class OkHttpHttpClientBuilder {
         } else if (this.maximumHttpVersion == HttpProtocolVersion.HTTP_2) {
             httpClientBuilder.protocols(Arrays.asList(Protocol.HTTP_2, Protocol.HTTP_1_1));
         }
-
-        Configuration buildConfiguration
-            = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
 
         ProxyOptions buildProxyOptions
             = (proxyOptions == null) ? ProxyOptions.fromConfiguration(buildConfiguration, true) : proxyOptions;
