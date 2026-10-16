@@ -27,7 +27,7 @@ public final class AmlFilesystemsCancelArchiveWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.amlFilesystems().cancelArchiveWithResponse("bvpa", "akkud", com.azure.core.util.Context.NONE);
+        manager.amlFilesystems().cancelArchiveWithResponse("esmi", "knlrariaawiuagy", com.azure.core.util.Context.NONE);
 
     }
 }

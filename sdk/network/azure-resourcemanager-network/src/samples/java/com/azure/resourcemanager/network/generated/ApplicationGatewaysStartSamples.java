@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class ApplicationGatewaysStartSamples {
     /*
-     * x-ms-original-file: 2026-01-01/ApplicationGatewayStart.json
+     * x-ms-original-file: 2026-03-01/ApplicationGatewayStart.json
      */
     /**
      * Sample code: Start Application Gateway.

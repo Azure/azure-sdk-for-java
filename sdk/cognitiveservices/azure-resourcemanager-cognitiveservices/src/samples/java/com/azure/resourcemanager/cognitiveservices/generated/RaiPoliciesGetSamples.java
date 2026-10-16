@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cognitiveservices.generated;
  */
 public final class RaiPoliciesGetSamples {
     /*
-     * x-ms-original-file: 2026-07-15-preview/GetRaiPolicy.json
+     * x-ms-original-file: 2026-09-15-preview/GetRaiPolicy.json
      */
     /**
      * Sample code: GetRaiPolicy.
@@ -19,5 +19,18 @@ public final class RaiPoliciesGetSamples {
     public static void getRaiPolicy(com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager manager) {
         manager.raiPolicies()
             .getWithResponse("resourceGroupName", "accountName", "raiPolicyName", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-09-15-preview/GetRaiPolicyAcs.json
+     */
+    /**
+     * Sample code: Get an ACS policy.
+     * 
+     * @param manager Entry point to CognitiveServicesManager.
+     */
+    public static void getAnACSPolicy(com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager manager) {
+        manager.raiPolicies()
+            .getWithResponse("resource-group", "safety-account", "agent-guard", com.azure.core.util.Context.NONE);
     }
 }

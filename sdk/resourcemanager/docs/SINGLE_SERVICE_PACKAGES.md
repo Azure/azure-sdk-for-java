@@ -28,15 +28,6 @@ service
 
 <br/>
 <details>
-<summary> agrifood </summary>
-
-* [package-preview-2021-09](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/agrifood/resource-manager#tag-package-preview-2021-09)
-    * [1.0.0-beta.2](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-agrifood/1.0.0-beta.2)
-    * [1.0.0-beta.1](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-agrifood/1.0.0-beta.1)
-</details>
-
-<br/>
-<details>
 <summary> alertsmanagement </summary>
 
 * [package-2021-08](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/alertsmanagement/resource-manager#tag-package-2021-08)
@@ -811,16 +802,6 @@ service
 
 <br/>
 <details>
-<summary> devspaces </summary>
-
-* [package-2019-04-01](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devspaces/resource-manager#tag-package-2019-04-01)
-    * [1.0.0-beta.3](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-devspaces/1.0.0-beta.3)
-    * [1.0.0-beta.2](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-devspaces/1.0.0-beta.2)
-    * [1.0.0-beta.1](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-devspaces/1.0.0-beta.1)
-</details>
-
-<br/>
-<details>
 <summary> devtestlabs </summary>
 
 * [package-2018-09](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devtestlabs/resource-manager#tag-package-2018-09)
@@ -1024,16 +1005,6 @@ service
     * [1.0.0](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-graphservices/1.0.0)
 * [package-2022-09-22-preview](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/graphservicesprod/resource-manager#tag-package-2022-09-22-preview)
     * [1.0.0-beta.1](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-graphservices/1.0.0-beta.1)
-</details>
-
-<br/>
-<details>
-<summary> hanaonazure </summary>
-
-* [package-2017-11](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/hanaonazure/resource-manager#tag-package-2017-11)
-    * [1.0.0-beta.3](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-hanaonazure/1.0.0-beta.3)
-    * [1.0.0-beta.2](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-hanaonazure/1.0.0-beta.2)
-    * [1.0.0-beta.1](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-hanaonazure/1.0.0-beta.1)
 </details>
 
 <br/>

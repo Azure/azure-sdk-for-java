@@ -15,24 +15,24 @@ public final class StoragePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StorageProperties model = BinaryData.fromString(
-            "{\"location\":\"nhzgpphrcgyn\",\"storageType\":\"Air_Gap_Protect\",\"vendor\":\"Azure_Blob_Storage\",\"class\":\"COLD\",\"provisioningState\":\"Succeeded\"}")
+            "{\"location\":\"rvynhzgpph\",\"storageType\":\"Air_Gap_Protect\",\"vendor\":\"Azure_Blob_Storage\",\"class\":\"HOT\",\"provisioningState\":\"Canceled\",\"complianceLockStatus\":\"DisablementPending\"}")
             .toObject(StorageProperties.class);
-        Assertions.assertEquals("nhzgpphrcgyn", model.location());
+        Assertions.assertEquals("rvynhzgpph", model.location());
         Assertions.assertEquals(StorageType.AIR_GAP_PROTECT, model.storageType());
         Assertions.assertEquals(Vendor.AZURE_BLOB_STORAGE, model.vendor());
-        Assertions.assertEquals(StorageClassType.COOL, model.classProperty());
+        Assertions.assertEquals(StorageClassType.HOT, model.classProperty());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        StorageProperties model = new StorageProperties().withLocation("nhzgpphrcgyn")
+        StorageProperties model = new StorageProperties().withLocation("rvynhzgpph")
             .withStorageType(StorageType.AIR_GAP_PROTECT)
             .withVendor(Vendor.AZURE_BLOB_STORAGE)
-            .withClassProperty(StorageClassType.COOL);
+            .withClassProperty(StorageClassType.HOT);
         model = BinaryData.fromObject(model).toObject(StorageProperties.class);
-        Assertions.assertEquals("nhzgpphrcgyn", model.location());
+        Assertions.assertEquals("rvynhzgpph", model.location());
         Assertions.assertEquals(StorageType.AIR_GAP_PROTECT, model.storageType());
         Assertions.assertEquals(Vendor.AZURE_BLOB_STORAGE, model.vendor());
-        Assertions.assertEquals(StorageClassType.COOL, model.classProperty());
+        Assertions.assertEquals(StorageClassType.HOT, model.classProperty());
     }
 }

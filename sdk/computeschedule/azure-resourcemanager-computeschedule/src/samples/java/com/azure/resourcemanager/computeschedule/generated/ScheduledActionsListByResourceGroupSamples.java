@@ -9,7 +9,7 @@ package com.azure.resourcemanager.computeschedule.generated;
  */
 public final class ScheduledActionsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-04-15-preview/ScheduledActions_ListByResourceGroup_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-04-15-preview/ScheduledActions_ListByResourceGroup_MaximumSet_Gen.json
      */
     /**
      * Sample code: ScheduledActions_ListByResourceGroup_MaximumSet.
@@ -22,7 +22,7 @@ public final class ScheduledActionsListByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-04-15-preview/ScheduledActions_ListByResourceGroup_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-04-15-preview/ScheduledActions_ListByResourceGroup_MinimumSet_Gen.json
      */
     /**
      * Sample code: ScheduledActions_ListByResourceGroup_MinimumSet.
