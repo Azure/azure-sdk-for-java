@@ -25,8 +25,8 @@ public final class SessionOptionsAccessor {
 
         TokenCredential getCredential(SessionOptions options);
 
-        <T> T getOrCreateSessionClient(SessionOptions options, Class<T> clientType,
-            Supplier<? extends T> clientFactory);
+        <T> T getOrCreateSessionProvider(SessionOptions options, Class<T> providerType,
+            Supplier<? extends T> providerFactory);
     }
 
     /**
@@ -62,14 +62,14 @@ public final class SessionOptionsAccessor {
      * Gets or creates the session provider owned by the options instance.
      *
      * @param options Session options.
-     * @param clientType Type of the internal session provider.
-     * @param clientFactory Factory used to create the provider once.
+     * @param providerType Type of the internal session provider.
+     * @param providerFactory Factory used to create the provider once.
      * @param <T> Internal session provider type.
      * @return The existing or newly created provider.
      */
-    public static <T> T getOrCreateSessionClient(SessionOptions options, Class<T> clientType,
-        Supplier<? extends T> clientFactory) {
-        return getAccessor().getOrCreateSessionClient(options, clientType, clientFactory);
+    public static <T> T getOrCreateSessionProvider(SessionOptions options, Class<T> providerType,
+        Supplier<? extends T> providerFactory) {
+        return getAccessor().getOrCreateSessionProvider(options, providerType, providerFactory);
     }
 
     private static SessionOptionsAccessorImpl getAccessor() {

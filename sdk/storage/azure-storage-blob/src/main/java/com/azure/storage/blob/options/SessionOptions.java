@@ -25,8 +25,8 @@ public final class SessionOptions {
     private String accountName;
     private final String endpoint;
     private final TokenCredential credential;
-    private final Lock sessionClientLock = new ReentrantLock();
-    private Object sessionClient;
+    private final Lock sessionProviderLock = new ReentrantLock();
+    private Object sessionProvider;
 
     static {
         SessionOptionsAccessor.setAccessor(new SessionOptionsAccessor.SessionOptionsAccessorImpl() {
@@ -41,9 +41,9 @@ public final class SessionOptions {
             }
 
             @Override
-            public <T> T getOrCreateSessionClient(SessionOptions options, Class<T> clientType,
-                Supplier<? extends T> clientFactory) {
-                return options.getOrCreateSessionClient(clientType, clientFactory);
+            public <T> T getOrCreateSessionProvider(SessionOptions options, Class<T> providerType,
+                Supplier<? extends T> providerFactory) {
+                return options.getOrCreateSessionProvider(providerType, providerFactory);
             }
         });
     }
@@ -117,19 +117,19 @@ public final class SessionOptions {
         return this;
     }
 
-    <T> T getOrCreateSessionClient(Class<T> clientType, Supplier<? extends T> clientFactory) {
-        sessionClientLock.lock();
+    <T> T getOrCreateSessionProvider(Class<T> providerType, Supplier<? extends T> providerFactory) {
+        sessionProviderLock.lock();
         try {
-            if (sessionClient == null) {
-                sessionClient = Objects.requireNonNull(clientFactory.get(), "'clientFactory' returned null.");
+            if (sessionProvider == null) {
+                sessionProvider = Objects.requireNonNull(providerFactory.get(), "'providerFactory' returned null.");
             }
-            if (!clientType.isInstance(sessionClient)) {
+            if (!providerType.isInstance(sessionProvider)) {
                 throw LOGGER.logExceptionAsError(
-                    new IllegalStateException("Session client was initialized with an incompatible type."));
+                    new IllegalStateException("Session provider was initialized with an incompatible type."));
             }
-            return clientType.cast(sessionClient);
+            return providerType.cast(sessionProvider);
         } finally {
-            sessionClientLock.unlock();
+            sessionProviderLock.unlock();
         }
     }
 

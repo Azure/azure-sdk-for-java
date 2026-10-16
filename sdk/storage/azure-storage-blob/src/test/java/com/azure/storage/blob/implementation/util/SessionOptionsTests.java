@@ -132,7 +132,7 @@ public class SessionOptionsTests {
     }
 
     private static SessionProvider existingProvider(SessionOptions options) {
-        return SessionOptionsAccessor.getOrCreateSessionClient(options, SessionProvider.class, () -> {
+        return SessionOptionsAccessor.getOrCreateSessionProvider(options, SessionProvider.class, () -> {
             throw new AssertionError("The builder must initialize the provider.");
         });
     }

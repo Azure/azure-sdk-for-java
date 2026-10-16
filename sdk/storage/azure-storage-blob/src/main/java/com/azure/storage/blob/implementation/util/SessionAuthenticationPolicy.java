@@ -151,7 +151,7 @@ final class SessionAuthenticationPolicy implements HttpPipelinePolicy {
         }
 
         if (!sessionProvider.isRequestEligible(context.getHttpRequest())
-            || !sessionAcquirer.isRequestForEndpoint(context.getHttpRequest())) {
+            || !sessionAcquirer.isRequestForSessionEndpoint(context.getHttpRequest())) {
             return null;
         }
 

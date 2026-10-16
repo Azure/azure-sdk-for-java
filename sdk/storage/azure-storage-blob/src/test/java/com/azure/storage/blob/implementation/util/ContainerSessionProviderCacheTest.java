@@ -317,7 +317,7 @@ public class ContainerSessionProviderCacheTest {
         sessionOptions
             = new SessionOptions("https://" + ACCOUNT_NAME + ".blob.core.windows.net", new MockTokenCredential())
                 .setSessionMode(SessionOptions.SessionMode.ENABLED);
-        SessionOptionsAccessor.getOrCreateSessionClient(sessionOptions, SessionProvider.class, () -> provider);
+        SessionOptionsAccessor.getOrCreateSessionProvider(sessionOptions, SessionProvider.class, () -> provider);
     }
 
     private HttpPipeline independentClientPipeline() {

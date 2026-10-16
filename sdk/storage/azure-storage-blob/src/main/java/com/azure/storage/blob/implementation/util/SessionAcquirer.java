@@ -84,7 +84,7 @@ final class SessionAcquirer {
      * @param request The request.
      * @return Whether the request targets the acquirer's endpoint.
      */
-    boolean isRequestForEndpoint(HttpRequest request) {
+    boolean isRequestForSessionEndpoint(HttpRequest request) {
         try {
             return endpoint.equalsIgnoreCase(BuilderHelper.getSessionEndpoint(request.getUrl().toString()));
         } catch (RuntimeException ex) {

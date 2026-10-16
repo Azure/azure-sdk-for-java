@@ -156,7 +156,7 @@ public final class BuilderHelper {
             } else {
                 sessionAcquirer = createSessionAcquirer(sessionOptions, endpoint, serviceVersion, scope, logger);
                 // The provider owns only the session cache, so every client sharing these options shares sessions.
-                SessionProvider sessionProvider = SessionOptionsAccessor.getOrCreateSessionClient(sessionOptions,
+                SessionProvider sessionProvider = SessionOptionsAccessor.getOrCreateSessionProvider(sessionOptions,
                     SessionProvider.class, () -> new ContainerSessionProvider(Clock.systemUTC()));
                 policies.add(
                     new SessionAuthenticationPolicy(bearerPolicy, sessionProvider, sessionAcquirer, sessionOptions));
@@ -177,11 +177,10 @@ public final class BuilderHelper {
 
         HttpLoggingPolicy loggingPolicy = new HttpLoggingPolicy(logOptions);
         if (sessionsEnabled) {
-            // CreateSession responses contain the session key. Logging policies added by the customer or by SPI
-            // providers skip CreateSession, and the builder's logging policy logs it without the body or custom
-            // loggers. All other requests are logged exactly as configured.
+            // Wrap existing HttpLoggingPolicies so they skip CreateSession requests, which contain session credentials.
             policies.replaceAll(
                 policy -> policy instanceof HttpLoggingPolicy ? new SessionAwareLoggingPolicy(policy, null) : policy);
+            // Add the SDK logger: use its configured options for normal requests and a redacted logger for CreateSession.
             policies.add(new SessionAwareLoggingPolicy(loggingPolicy, createSessionLoggingPolicy(logOptions)));
         } else {
             policies.add(loggingPolicy);
