@@ -24,6 +24,7 @@ import java.util.Map;
 public final class VoiceAgentInputTranscription implements JsonSerializable<VoiceAgentInputTranscription> {
 
     /*
+     * 
      * The language of the input audio. Supplying the input language in
      * [ISO-639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) (e.g. `en`) format
      * will improve accuracy and latency.
@@ -46,6 +47,7 @@ public final class VoiceAgentInputTranscription implements JsonSerializable<Voic
     private List<String> keywords;
 
     /*
+     * 
      * An optional text to guide the model's style or continue a previous audio
      * segment.
      * For `whisper-1`, the [prompt is a list of
@@ -89,7 +91,8 @@ public final class VoiceAgentInputTranscription implements JsonSerializable<Voic
     }
 
     /**
-     * Get the language property: The language of the input audio. Supplying the input language in
+     * Get the language property:
+     * The language of the input audio. Supplying the input language in
      * [ISO-639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) (e.g. `en`) format
      * will improve accuracy and latency.
      *
@@ -101,7 +104,8 @@ public final class VoiceAgentInputTranscription implements JsonSerializable<Voic
     }
 
     /**
-     * Set the language property: The language of the input audio. Supplying the input language in
+     * Set the language property:
+     * The language of the input audio. Supplying the input language in
      * [ISO-639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) (e.g. `en`) format
      * will improve accuracy and latency.
      *
@@ -165,7 +169,8 @@ public final class VoiceAgentInputTranscription implements JsonSerializable<Voic
     }
 
     /**
-     * Get the prompt property: An optional text to guide the model's style or continue a previous audio
+     * Get the prompt property:
+     * An optional text to guide the model's style or continue a previous audio
      * segment.
      * For `whisper-1`, the [prompt is a list of
      * keywords](https://developers.openai.com/api/docs/guides/speech-to-text#prompting).
@@ -181,7 +186,8 @@ public final class VoiceAgentInputTranscription implements JsonSerializable<Voic
     }
 
     /**
-     * Set the prompt property: An optional text to guide the model's style or continue a previous audio
+     * Set the prompt property:
+     * An optional text to guide the model's style or continue a previous audio
      * segment.
      * For `whisper-1`, the [prompt is a list of
      * keywords](https://developers.openai.com/api/docs/guides/speech-to-text#prompting).

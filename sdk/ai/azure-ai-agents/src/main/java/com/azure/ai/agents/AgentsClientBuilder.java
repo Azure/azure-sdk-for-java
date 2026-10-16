@@ -63,12 +63,14 @@ import java.util.stream.Collectors;
 @ServiceClientBuilder(
     serviceClients = {
         BetaVoiceAgentsConversationsClient.class,
+        BetaVoiceAgentsLiveConversationsClient.class,
         BetaVoiceAgentsTelephonyClient.class,
         BetaMemoryStoresClient.class,
         BetaAgentsClient.class,
         AgentsClient.class,
         ToolboxesClient.class,
         BetaVoiceAgentsConversationsAsyncClient.class,
+        BetaVoiceAgentsLiveConversationsAsyncClient.class,
         BetaVoiceAgentsTelephonyAsyncClient.class,
         BetaMemoryStoresAsyncClient.class,
         BetaAgentsAsyncClient.class,
@@ -903,5 +905,26 @@ public final class AgentsClientBuilder
      */
     private BetaVoiceAgentWebSocketClient buildBetaVoiceAgentWebSocketClient() {
         return new BetaVoiceAgentWebSocketClient(createVoiceAgentWebSocketConfiguration());
+    }
+
+    /**
+     * Builds an instance of BetaVoiceAgentsLiveConversationsAsyncClient class.
+     *
+     * @return an instance of BetaVoiceAgentsLiveConversationsAsyncClient.
+     */
+    @Generated
+    public BetaVoiceAgentsLiveConversationsAsyncClient buildBetaVoiceAgentsLiveConversationsAsyncClient() {
+        return new BetaVoiceAgentsLiveConversationsAsyncClient(
+            buildInnerClient().getBetaVoiceAgentsLiveConversations());
+    }
+
+    /**
+     * Builds an instance of BetaVoiceAgentsLiveConversationsClient class.
+     *
+     * @return an instance of BetaVoiceAgentsLiveConversationsClient.
+     */
+    @Generated
+    public BetaVoiceAgentsLiveConversationsClient buildBetaVoiceAgentsLiveConversationsClient() {
+        return new BetaVoiceAgentsLiveConversationsClient(buildInnerClient().getBetaVoiceAgentsLiveConversations());
     }
 }
