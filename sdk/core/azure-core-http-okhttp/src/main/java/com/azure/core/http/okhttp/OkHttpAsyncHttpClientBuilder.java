@@ -4,6 +4,7 @@
 package com.azure.core.http.okhttp;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpProtocolVersion;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.okhttp.implementation.OkHttpProxySelector;
@@ -15,9 +16,12 @@ import okhttp3.ConnectionPool;
 import okhttp3.Dispatcher;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
+import okhttp3.Protocol;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -95,12 +99,13 @@ import static com.azure.core.implementation.util.HttpUtils.getTimeout;
  * <!-- end com.azure.core.http.okhttp.instantiation-simple -->
  *
  * <p>
- * It is also possible to create a OkHttp HttpClient that only supports HTTP/2.
+ * It is also possible to create an OkHttp HttpClient that only supports cleartext HTTP/2. This prior-knowledge mode
+ * requires a server already known to support cleartext HTTP/2; HTTPS and HTTP/1.1 fallback are not supported.
  * </p>
  *
  * <!-- src_embed readme-sample-useHttp2OnlyWithConfiguredOkHttpClient -->
  * <pre>
- * &#47;&#47; Constructs an HttpClient that only supports HTTP&#47;2.
+ * &#47;&#47; Constructs a cleartext HTTP&#47;2-only client. HTTPS and HTTP&#47;1.1 fallback are not supported.
  * HttpClient client = new OkHttpAsyncHttpClientBuilder&#40;new OkHttpClient.Builder&#40;&#41;
  *     .protocols&#40;Collections.singletonList&#40;Protocol.H2_PRIOR_KNOWLEDGE&#41;&#41;
  *     .build&#40;&#41;&#41;
@@ -128,6 +133,7 @@ public class OkHttpAsyncHttpClientBuilder {
     private ProxyOptions proxyOptions;
     private Configuration configuration;
     private boolean followRedirects;
+    private HttpProtocolVersion maximumHttpVersion;
 
     /**
      * Creates OkHttpAsyncHttpClientBuilder.
@@ -143,6 +149,34 @@ public class OkHttpAsyncHttpClientBuilder {
      */
     public OkHttpAsyncHttpClientBuilder(OkHttpClient okHttpClient) {
         this.okHttpClient = Objects.requireNonNull(okHttpClient, "'okHttpClient' cannot be null.");
+    }
+
+    /**
+     * Sets the maximum HTTP protocol version the client supports.
+     * <p>
+     * {@link HttpProtocolVersion#HTTP_2} enables HTTP/2 with HTTP/1.1 fallback. HTTP/2 is negotiated over TLS; plain HTTP
+     * requests continue to use HTTP/1.1.
+     * <p>
+     * By default, the client retains OkHttp's protocols, or those configured on the OkHttp client passed to
+     * {@link #OkHttpAsyncHttpClientBuilder(OkHttpClient)}. An explicit maximum overrides those protocols. Passing null
+     * clears the maximum and restores that default behavior.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <!-- src_embed readme-sample-configureHttpVersion -->
+     * <pre>
+     * HttpClient client = new OkHttpAsyncHttpClientBuilder&#40;&#41;
+     *     .maximumHttpVersion&#40;HttpProtocolVersion.HTTP_2&#41;
+     *     .build&#40;&#41;;
+     * </pre>
+     * <!-- end readme-sample-configureHttpVersion -->
+     *
+     * @param httpVersion The maximum HTTP protocol version, or null to clear the setting.
+     * @return The updated OkHttpAsyncHttpClientBuilder object.
+     */
+    public OkHttpAsyncHttpClientBuilder maximumHttpVersion(HttpProtocolVersion httpVersion) {
+        this.maximumHttpVersion = httpVersion;
+        return this;
     }
 
     /**
@@ -356,6 +390,12 @@ public class OkHttpAsyncHttpClientBuilder {
     public HttpClient build() {
         OkHttpClient.Builder httpClientBuilder
             = this.okHttpClient == null ? new OkHttpClient.Builder() : this.okHttpClient.newBuilder();
+
+        if (maximumHttpVersion == HttpProtocolVersion.HTTP_1_1) {
+            httpClientBuilder.protocols(Collections.singletonList(Protocol.HTTP_1_1));
+        } else if (maximumHttpVersion == HttpProtocolVersion.HTTP_2) {
+            httpClientBuilder.protocols(Arrays.asList(Protocol.HTTP_2, Protocol.HTTP_1_1));
+        }
 
         // Add each interceptor that has been added.
         for (Interceptor interceptor : this.networkInterceptors) {

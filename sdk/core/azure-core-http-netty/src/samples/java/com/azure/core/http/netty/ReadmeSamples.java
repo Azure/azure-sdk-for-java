@@ -4,12 +4,14 @@
 package com.azure.core.http.netty;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpProtocolVersion;
 import com.azure.core.http.ProxyOptions;
 import io.netty.resolver.AddressResolverGroup;
 import io.netty.resolver.DefaultAddressResolverGroup;
 import reactor.netty.http.HttpProtocol;
 
 import java.net.InetSocketAddress;
+import java.time.Duration;
 
 /**
  * Class containing code snippets that will be injected to README.md.
@@ -55,7 +57,6 @@ public class ReadmeSamples {
         // BEGIN: readme-sample-createProxyWithNonProxyHostsClient
         HttpClient client = new NettyAsyncHttpClientBuilder()
             .proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("<proxy-host>", 8888))
-                .setCredentials("<username>", "<password>")
                 .setNonProxyHosts("<nonProxyHostRegex>"))
             .build();
         // END: readme-sample-createProxyWithNonProxyHostsClient
@@ -150,5 +151,52 @@ public class ReadmeSamples {
             .httpResponseDecoder(httpResponseDecoderSpec -> httpResponseDecoderSpec.maxHeaderSize(256 * 1024)))
             .build();
         // END: readme-sample-customMaxHeaderSize
+    }
+
+    /**
+     * Configures HTTP/2 with HTTP/1.1 fallback.
+     */
+    public void configureHttpVersion() {
+        // BEGIN: readme-sample-configureHttpVersion
+        HttpClient client = new NettyAsyncHttpClientBuilder()
+            .maximumHttpVersion(HttpProtocolVersion.HTTP_2)
+            .build();
+        // END: readme-sample-configureHttpVersion
+    }
+
+    /**
+     * Configures connection, write, response and read timeouts.
+     */
+    public void configureTimeouts() {
+        // BEGIN: readme-sample-configureTimeouts
+        HttpClient client = new NettyAsyncHttpClientBuilder()
+            .connectTimeout(Duration.ofSeconds(60))
+            .writeTimeout(Duration.ofSeconds(120))
+            .responseTimeout(Duration.ofSeconds(60))
+            .readTimeout(Duration.ofSeconds(120))
+            .build();
+        // END: readme-sample-configureTimeouts
+    }
+
+    /**
+     * Restricts the client to HTTP/1.1.
+     */
+    public void useHttp1() {
+        // BEGIN: readme-sample-useHttp1
+        HttpClient client = new NettyAsyncHttpClientBuilder()
+            .maximumHttpVersion(HttpProtocolVersion.HTTP_1_1)
+            .build();
+        // END: readme-sample-useHttp1
+    }
+
+    /**
+     * Wraps an internal Reactor Netty client with response compression configured.
+     */
+    public void customizeInternalClient() {
+        // BEGIN: readme-sample-customizeInternalClient
+        reactor.netty.http.client.HttpClient internalClient = reactor.netty.http.client.HttpClient.create()
+            .compress(true);
+        HttpClient client = new NettyAsyncHttpClientBuilder(internalClient).build();
+        // END: readme-sample-customizeInternalClient
     }
 }
