@@ -36,6 +36,7 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.PollingStrategyOptions;
 import com.azure.core.util.polling.SyncPoller;
@@ -425,7 +426,7 @@ public final class BetaAgentInsightMonitorsImpl {
             .withContext(context -> service.listAgentInsightMonitors(this.client.getEndpoint(),
                 this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                getValues(res.getValue(), "data"), null, null));
+                getValues(res.getValue(), "data"), getNextLink(res.getValue(), "last_id"), null));
     }
 
     /**
@@ -434,8 +435,6 @@ public final class BetaAgentInsightMonitorsImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor that identifies the last item in the previous
-     * page.</td></tr>
      * <tr><td>before</td><td>String</td><td>No</td><td>A cursor that identifies the first item in the next
      * page.</td></tr>
      * <tr><td>limit</td><td>Integer</td><td>No</td><td>The maximum number of items to return. Defaults to 20.</td></tr>
@@ -481,7 +480,24 @@ public final class BetaAgentInsightMonitorsImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listAgentInsightMonitorsAsync(RequestOptions requestOptions) {
-        return new PagedFlux<>(() -> listAgentInsightMonitorsSinglePageAsync(requestOptions));
+        return new PagedFlux<>(() -> {
+            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
+            requestOptionsLocal.addRequestCallback(requestLocal -> {
+                UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
+                urlBuilder.setQueryParameter("after", null);
+                requestLocal.setUrl(urlBuilder.toString());
+            });
+            return listAgentInsightMonitorsSinglePageAsync(requestOptionsLocal);
+        }, (after) -> {
+            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
+            requestOptionsLocal.addRequestCallback(requestLocal -> {
+                UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
+                urlBuilder.setQueryParameter("after", null);
+                requestLocal.setUrl(urlBuilder.toString());
+            });
+            requestOptionsLocal.addQueryParam("after", after, false);
+            return listAgentInsightMonitorsSinglePageAsync(requestOptionsLocal);
+        });
     }
 
     /**
@@ -541,7 +557,7 @@ public final class BetaAgentInsightMonitorsImpl {
         Response<BinaryData> res = service.listAgentInsightMonitorsSync(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-            getValues(res.getValue(), "data"), null, null);
+            getValues(res.getValue(), "data"), getNextLink(res.getValue(), "last_id"), null);
     }
 
     /**
@@ -550,8 +566,6 @@ public final class BetaAgentInsightMonitorsImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor that identifies the last item in the previous
-     * page.</td></tr>
      * <tr><td>before</td><td>String</td><td>No</td><td>A cursor that identifies the first item in the next
      * page.</td></tr>
      * <tr><td>limit</td><td>Integer</td><td>No</td><td>The maximum number of items to return. Defaults to 20.</td></tr>
@@ -597,7 +611,24 @@ public final class BetaAgentInsightMonitorsImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listAgentInsightMonitors(RequestOptions requestOptions) {
-        return new PagedIterable<>(() -> listAgentInsightMonitorsSinglePage(requestOptions));
+        return new PagedIterable<>(() -> {
+            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
+            requestOptionsLocal.addRequestCallback(requestLocal -> {
+                UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
+                urlBuilder.setQueryParameter("after", null);
+                requestLocal.setUrl(urlBuilder.toString());
+            });
+            return listAgentInsightMonitorsSinglePage(requestOptionsLocal);
+        }, (after) -> {
+            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
+            requestOptionsLocal.addRequestCallback(requestLocal -> {
+                UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
+                urlBuilder.setQueryParameter("after", null);
+                requestLocal.setUrl(urlBuilder.toString());
+            });
+            requestOptionsLocal.addQueryParam("after", after, false);
+            return listAgentInsightMonitorsSinglePage(requestOptionsLocal);
+        });
     }
 
     /**
@@ -1768,7 +1799,7 @@ public final class BetaAgentInsightMonitorsImpl {
             .withContext(context -> service.listAgentInsightRuns(this.client.getEndpoint(), monitorId,
                 this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                getValues(res.getValue(), "data"), null, null));
+                getValues(res.getValue(), "data"), getNextLink(res.getValue(), "last_id"), null));
     }
 
     /**
@@ -1777,8 +1808,6 @@ public final class BetaAgentInsightMonitorsImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor that identifies the last item in the previous
-     * page.</td></tr>
      * <tr><td>before</td><td>String</td><td>No</td><td>A cursor that identifies the first item in the next
      * page.</td></tr>
      * <tr><td>limit</td><td>Integer</td><td>No</td><td>The maximum number of items to return. Defaults to 20.</td></tr>
@@ -1859,7 +1888,24 @@ public final class BetaAgentInsightMonitorsImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listAgentInsightRunsAsync(String monitorId, RequestOptions requestOptions) {
-        return new PagedFlux<>(() -> listAgentInsightRunsSinglePageAsync(monitorId, requestOptions));
+        return new PagedFlux<>(() -> {
+            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
+            requestOptionsLocal.addRequestCallback(requestLocal -> {
+                UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
+                urlBuilder.setQueryParameter("after", null);
+                requestLocal.setUrl(urlBuilder.toString());
+            });
+            return listAgentInsightRunsSinglePageAsync(monitorId, requestOptionsLocal);
+        }, (after) -> {
+            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
+            requestOptionsLocal.addRequestCallback(requestLocal -> {
+                UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
+                urlBuilder.setQueryParameter("after", null);
+                requestLocal.setUrl(urlBuilder.toString());
+            });
+            requestOptionsLocal.addQueryParam("after", after, false);
+            return listAgentInsightRunsSinglePageAsync(monitorId, requestOptionsLocal);
+        });
     }
 
     /**
@@ -1954,7 +2000,7 @@ public final class BetaAgentInsightMonitorsImpl {
         Response<BinaryData> res = service.listAgentInsightRunsSync(this.client.getEndpoint(), monitorId,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-            getValues(res.getValue(), "data"), null, null);
+            getValues(res.getValue(), "data"), getNextLink(res.getValue(), "last_id"), null);
     }
 
     /**
@@ -1963,8 +2009,6 @@ public final class BetaAgentInsightMonitorsImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor that identifies the last item in the previous
-     * page.</td></tr>
      * <tr><td>before</td><td>String</td><td>No</td><td>A cursor that identifies the first item in the next
      * page.</td></tr>
      * <tr><td>limit</td><td>Integer</td><td>No</td><td>The maximum number of items to return. Defaults to 20.</td></tr>
@@ -2045,7 +2089,24 @@ public final class BetaAgentInsightMonitorsImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listAgentInsightRuns(String monitorId, RequestOptions requestOptions) {
-        return new PagedIterable<>(() -> listAgentInsightRunsSinglePage(monitorId, requestOptions));
+        return new PagedIterable<>(() -> {
+            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
+            requestOptionsLocal.addRequestCallback(requestLocal -> {
+                UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
+                urlBuilder.setQueryParameter("after", null);
+                requestLocal.setUrl(urlBuilder.toString());
+            });
+            return listAgentInsightRunsSinglePage(monitorId, requestOptionsLocal);
+        }, (after) -> {
+            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
+            requestOptionsLocal.addRequestCallback(requestLocal -> {
+                UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
+                urlBuilder.setQueryParameter("after", null);
+                requestLocal.setUrl(urlBuilder.toString());
+            });
+            requestOptionsLocal.addQueryParam("after", after, false);
+            return listAgentInsightRunsSinglePage(monitorId, requestOptionsLocal);
+        });
     }
 
     /**
@@ -2456,7 +2517,7 @@ public final class BetaAgentInsightMonitorsImpl {
             .withContext(context -> service.listAgentInsights(this.client.getEndpoint(), monitorId,
                 this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                getValues(res.getValue(), "data"), null, null));
+                getValues(res.getValue(), "data"), getNextLink(res.getValue(), "last_id"), null));
     }
 
     /**
@@ -2465,8 +2526,6 @@ public final class BetaAgentInsightMonitorsImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor that identifies the last item in the previous
-     * page.</td></tr>
      * <tr><td>before</td><td>String</td><td>No</td><td>A cursor that identifies the first item in the next
      * page.</td></tr>
      * <tr><td>limit</td><td>Integer</td><td>No</td><td>The maximum number of items to return. Defaults to 20.</td></tr>
@@ -2546,7 +2605,24 @@ public final class BetaAgentInsightMonitorsImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listAgentInsightsAsync(String monitorId, RequestOptions requestOptions) {
-        return new PagedFlux<>(() -> listAgentInsightsSinglePageAsync(monitorId, requestOptions));
+        return new PagedFlux<>(() -> {
+            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
+            requestOptionsLocal.addRequestCallback(requestLocal -> {
+                UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
+                urlBuilder.setQueryParameter("after", null);
+                requestLocal.setUrl(urlBuilder.toString());
+            });
+            return listAgentInsightsSinglePageAsync(monitorId, requestOptionsLocal);
+        }, (after) -> {
+            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
+            requestOptionsLocal.addRequestCallback(requestLocal -> {
+                UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
+                urlBuilder.setQueryParameter("after", null);
+                requestLocal.setUrl(urlBuilder.toString());
+            });
+            requestOptionsLocal.addQueryParam("after", after, false);
+            return listAgentInsightsSinglePageAsync(monitorId, requestOptionsLocal);
+        });
     }
 
     /**
@@ -2640,7 +2716,7 @@ public final class BetaAgentInsightMonitorsImpl {
         Response<BinaryData> res = service.listAgentInsightsSync(this.client.getEndpoint(), monitorId,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-            getValues(res.getValue(), "data"), null, null);
+            getValues(res.getValue(), "data"), getNextLink(res.getValue(), "last_id"), null);
     }
 
     /**
@@ -2649,8 +2725,6 @@ public final class BetaAgentInsightMonitorsImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor that identifies the last item in the previous
-     * page.</td></tr>
      * <tr><td>before</td><td>String</td><td>No</td><td>A cursor that identifies the first item in the next
      * page.</td></tr>
      * <tr><td>limit</td><td>Integer</td><td>No</td><td>The maximum number of items to return. Defaults to 20.</td></tr>
@@ -2730,7 +2804,24 @@ public final class BetaAgentInsightMonitorsImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listAgentInsights(String monitorId, RequestOptions requestOptions) {
-        return new PagedIterable<>(() -> listAgentInsightsSinglePage(monitorId, requestOptions));
+        return new PagedIterable<>(() -> {
+            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
+            requestOptionsLocal.addRequestCallback(requestLocal -> {
+                UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
+                urlBuilder.setQueryParameter("after", null);
+                requestLocal.setUrl(urlBuilder.toString());
+            });
+            return listAgentInsightsSinglePage(monitorId, requestOptionsLocal);
+        }, (after) -> {
+            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
+            requestOptionsLocal.addRequestCallback(requestLocal -> {
+                UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
+                urlBuilder.setQueryParameter("after", null);
+                requestLocal.setUrl(urlBuilder.toString());
+            });
+            requestOptionsLocal.addQueryParam("after", after, false);
+            return listAgentInsightsSinglePage(monitorId, requestOptionsLocal);
+        });
     }
 
     /**
