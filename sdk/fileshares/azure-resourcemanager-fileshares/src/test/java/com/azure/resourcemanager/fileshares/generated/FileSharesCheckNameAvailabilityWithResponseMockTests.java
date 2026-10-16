@@ -22,7 +22,7 @@ import reactor.core.publisher.Mono;
 public final class FileSharesCheckNameAvailabilityWithResponseMockTests {
     @Test
     public void testCheckNameAvailabilityWithResponse() throws Exception {
-        String responseStr = "{\"nameAvailable\":true,\"reason\":\"AlreadyExists\",\"message\":\"lhbnxkna\"}";
+        String responseStr = "{\"nameAvailable\":false,\"reason\":\"AlreadyExists\",\"message\":\"cwzzhxgktr\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,13 +32,13 @@ public final class FileSharesCheckNameAvailabilityWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         CheckNameAvailabilityResponse response = manager.fileShares()
-            .checkNameAvailabilityWithResponse("ixisxyawjoy",
-                new CheckNameAvailabilityRequest().withName("cslyjpk").withType("dzyexznelixh"),
+            .checkNameAvailabilityWithResponse("alaulppggdtpnapn",
+                new CheckNameAvailabilityRequest().withName("ropuhpigv").withType("ylgqgitxmedjvcsl"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertTrue(response.nameAvailable());
+        Assertions.assertFalse(response.nameAvailable());
         Assertions.assertEquals(CheckNameAvailabilityReason.ALREADY_EXISTS, response.reason());
-        Assertions.assertEquals("lhbnxkna", response.message());
+        Assertions.assertEquals("cwzzhxgktr", response.message());
     }
 }
