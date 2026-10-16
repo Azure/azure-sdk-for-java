@@ -96,6 +96,8 @@ jobs:
             binaryLanguages: java
             compiled:
               enabled: true
+          sbom:
+            buildComponentPath: $(Pipeline.Workspace)/azure-sdk-for-java/sdk/${{ parameters.ServiceDirectory }}
 
     pool:
       name: $(LINUXPOOL)
