@@ -23,7 +23,7 @@ public final class ClusterUpdateStrategy implements JsonSerializable<ClusterUpda
     private Long maxUnavailable;
 
     /*
-     * The mode of operation for runtime protection.
+     * The strategy for updating the cluster.
      */
     private ClusterUpdateStrategyType strategyType;
 
@@ -73,7 +73,7 @@ public final class ClusterUpdateStrategy implements JsonSerializable<ClusterUpda
     }
 
     /**
-     * Get the strategyType property: The mode of operation for runtime protection.
+     * Get the strategyType property: The strategy for updating the cluster.
      * 
      * @return the strategyType value.
      */
@@ -82,7 +82,7 @@ public final class ClusterUpdateStrategy implements JsonSerializable<ClusterUpda
     }
 
     /**
-     * Set the strategyType property: The mode of operation for runtime protection.
+     * Set the strategyType property: The strategy for updating the cluster.
      * 
      * @param strategyType the strategyType value to set.
      * @return the ClusterUpdateStrategy object itself.
