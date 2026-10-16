@@ -46,8 +46,8 @@ public class JdkHttpClientHttp2Tests extends HttpProtocolVersionTests {
 
     @ParameterizedTest
     @MethodSource("internalVersionArguments")
-    public void explicitMaximumOverridesInternalVersionWithoutChangingIt(HttpProtocolVersion internalVersion, boolean async)
-        throws Exception {
+    public void explicitMaximumOverridesInternalVersionWithoutChangingIt(HttpProtocolVersion internalVersion,
+        boolean async) throws Exception {
         LocalTestServer server = new LocalTestServer((request, response, body) -> {
             response.setHeader(PROTOCOL_HEADER.getCaseSensitiveName(), request.getProtocol());
             response.getOutputStream().write(1);
@@ -64,9 +64,9 @@ public class JdkHttpClientHttp2Tests extends HttpProtocolVersionTests {
                 java.net.http.HttpClient.newBuilder().sslContext(getSslContext()).version(version))
                     .configuration(Configuration.NONE);
             original = builder.build();
-            overridden = builder.maximumHttpVersion(
-                internalVersion == HttpProtocolVersion.HTTP_2 ? HttpProtocolVersion.HTTP_1_1 : HttpProtocolVersion.HTTP_2)
-                .build();
+            overridden = builder.maximumHttpVersion(internalVersion == HttpProtocolVersion.HTTP_2
+                ? HttpProtocolVersion.HTTP_1_1
+                : HttpProtocolVersion.HTTP_2).build();
             cleared = builder.maximumHttpVersion(null).build();
 
             String internalProtocol = internalVersion == HttpProtocolVersion.HTTP_2 ? "HTTP/2.0" : "HTTP/1.1";
