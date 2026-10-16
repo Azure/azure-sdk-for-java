@@ -5,23 +5,26 @@ package io.clientcore.linting.extensions.checkstyle.checks;
 
 import com.puppycrawl.tools.checkstyle.AbstractModuleTestSupport;
 import com.puppycrawl.tools.checkstyle.Checker;
+import com.puppycrawl.tools.checkstyle.DefaultConfiguration;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
 
-import static io.clientcore.linting.extensions.checkstyle.checks.NoImplInPublicAPI.EXTENDS_TYPE_ERROR;
-import static io.clientcore.linting.extensions.checkstyle.checks.NoImplInPublicAPI.IMPLEMENTS_TYPE_ERROR;
-import static io.clientcore.linting.extensions.checkstyle.checks.NoImplInPublicAPI.RETURN_TYPE_ERROR;
-import static io.clientcore.linting.extensions.checkstyle.checks.NoImplInPublicAPI.TYPE_PARAM_TYPE_ERROR;
+import static io.clientcore.linting.extensions.checkstyle.checks.PublicApiTypeCheck.EXTENDS_TYPE_ERROR;
+import static io.clientcore.linting.extensions.checkstyle.checks.PublicApiTypeCheck.IMPLEMENTS_TYPE_ERROR;
+import static io.clientcore.linting.extensions.checkstyle.checks.PublicApiTypeCheck.RETURN_TYPE_ERROR;
+import static io.clientcore.linting.extensions.checkstyle.checks.PublicApiTypeCheck.TYPE_PARAM_TYPE_ERROR;
 
-public class NoImplInPublicApiTest extends AbstractModuleTestSupport {
+public class ImplementationTypePolicyTest extends AbstractModuleTestSupport {
     private Checker checker;
 
     @BeforeEach
     public void prepare() throws Exception {
-        checker = createChecker(createModuleConfig(NoImplInPublicAPI.class));
+        DefaultConfiguration check = createModuleConfig(PublicApiTypeCheck.class);
+        check.addProperty("checkExternalDependencies", "false");
+        checker = createChecker(check);
     }
 
     @AfterEach
