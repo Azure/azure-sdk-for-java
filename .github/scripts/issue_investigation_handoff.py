@@ -23,6 +23,9 @@ MAX_ARCHIVE_BYTES = 16 * 1024 * 1024
 MAX_JSON_BYTES = 4 * 1024 * 1024
 MAX_ENTRY_BYTES = 128 * 1024
 BLOCKERS = {"needs-triage", "needs-team-triage", "issue-addressed", "needs-author-feedback"}
+# Match JavaScript String.trim in the pinned producer, not Python's different Unicode whitespace set.
+JS_WHITESPACE = "\u0009\u000a\u000b\u000c\u000d\u0020\u00a0\u1680\u2000\u2001\u2002\u2003\u2004\u2005" \
+                "\u2006\u2007\u2008\u2009\u200a\u2028\u2029\u202f\u205f\u3000\ufeff"
 
 
 class SkipHandoff(Exception):
@@ -58,7 +61,9 @@ def unique_object(pairs):
 
 
 def parse_json(data):
-    return json.loads(data, object_pairs_hook=unique_object)
+    def invalid_constant(value):
+        raise EvidenceError("Non-finite JSON value.")
+    return json.loads(data, object_pairs_hook=unique_object, parse_constant=invalid_constant)
 
 
 def read_entry(archive, name):
@@ -298,7 +303,8 @@ def eligible_issue(issue, labels, issue_number, snapshot, repository):
         raise SkipHandoff("Fresh issue labels do not pass the investigation handoff.")
     body = issue.get("body") or ""
     require(isinstance(body, str), "Invalid issue body.")
-    normalized = "\n".join(re.sub(r"[ \t]+$", "", line) for line in body.replace("\r\n", "\n").split("\n")).strip()
+    normalized = "\n".join(re.sub(r"[ \t]+$", "", line)
+                           for line in body.replace("\r\n", "\n").split("\n")).strip(JS_WHITESPACE)
     body_hash = hashlib.sha256(normalized.encode("utf-8")).hexdigest()
     if (issue.get("title") != snapshot.get("title") or body_hash != snapshot.get("body_hash")
             or not set(snapshot["labels"]).issubset(names)):

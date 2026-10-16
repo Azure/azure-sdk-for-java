@@ -6,6 +6,7 @@ import copy
 import hashlib
 import io
 import json
+import subprocess
 import unittest
 import urllib.error
 import warnings
@@ -282,6 +283,18 @@ class HandoffTests(unittest.TestCase):
         api.issue["body"] = " \r\nReport \t\r\n"
         self.assertEqual(17, run(api))
 
+    def test_unicode_body_hash_matches_javascript_not_python_trimming(self):
+        for body, normalized in (
+            ("\ufeff\u00a0Report\u3000\ufeff", "Report"),
+            ("\u0085Report\u0085", "\u0085Report\u0085"),
+            ("\u180eReport\u180e", "\u180eReport\u180e"),
+        ):
+            with self.subTest(body=repr(body)):
+                api = FakeAPI()
+                api.issue["body"] = body
+                api.records[0]["after_state"]["body_hash"] = hashlib.sha256(normalized.encode("utf-8")).hexdigest()
+                self.assertEqual(17, run(api))
+
 
 class ArtifactTests(unittest.TestCase):
     def test_only_selected_json_is_read_without_extracting_neighbor_files(self):
@@ -314,6 +327,12 @@ class ArtifactTests(unittest.TestCase):
             module.parse_json('{"run_id":300,"run_id":301}')
         with self.assertRaises(module.EvidenceError):
             module.parse_json('{"nested":{"id":1,"id":2}}')
+
+    def test_nonfinite_json_values_rejected(self):
+        for constant in ("NaN", "Infinity", "-Infinity"):
+            with self.subTest(constant=constant):
+                with self.assertRaises(module.EvidenceError):
+                    module.parse_json('{"number":' + constant + '}')
 
     def test_byte_limit_and_utf8_handling(self):
         content = "a" * module.MAX_ENTRY_BYTES
@@ -373,6 +392,23 @@ class TransportTests(unittest.TestCase):
 
 
 class PinnedDetectionTests(unittest.TestCase):
+    def test_body_hashes_match_the_actual_pinned_producer(self):
+        bodies = ["Report", " \r\nReport \t\r\n", "\ufeffReport\ufeff", "\u0085Report\u0085",
+                  "\u180eReport\u180e", "\u00a0Report\u3000", "Report \t\u2028", "a \t\u2028b"]
+        script = """
+const fs = require('node:fs'), path = require('node:path');
+const { hashNormalizedBody } = require(path.join(process.env.GH_AW_ACTIONS_DIR, 'safe_output_execution_metadata.cjs'));
+process.stdout.write(JSON.stringify(JSON.parse(fs.readFileSync(0, 'utf8')).map(hashNormalizedBody)));
+"""
+        hashes = json.loads(subprocess.run(["node", "-e", script], input=json.dumps(bodies), text=True,
+                                           capture_output=True, check=True, timeout=15).stdout)
+        for body, expected in zip(bodies, hashes):
+            with self.subTest(body=repr(body)):
+                api = FakeAPI()
+                api.issue["body"] = body
+                api.records[0]["after_state"]["body_hash"] = expected
+                self.assertEqual(17, run(api))
+
     def test_handoff_uses_native_clear_verdict_end_to_end(self):
         api = FakeAPI()
         self.assertEqual(17, module.handoff(api, api.event, REPOSITORY, 100, "1"))
