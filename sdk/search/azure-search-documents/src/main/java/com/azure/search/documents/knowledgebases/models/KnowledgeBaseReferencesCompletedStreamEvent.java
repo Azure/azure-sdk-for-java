@@ -24,7 +24,7 @@ public final class KnowledgeBaseReferencesCompletedStreamEvent extends Knowledge
      * @param value The event payload.
      */
     @Generated
-    public KnowledgeBaseReferencesCompletedStreamEvent(List<KnowledgeBaseReference> value) {
+    KnowledgeBaseReferencesCompletedStreamEvent(List<KnowledgeBaseReference> value) {
         super("references.completed");
         this.value = value;
     }
