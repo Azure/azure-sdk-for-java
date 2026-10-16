@@ -17,7 +17,8 @@ public final class SummaryType extends ExpandableStringEnum<SummaryType> {
     public static final SummaryType FIRMWARE = fromString("Firmware");
 
     /**
-     * The summary contains information about the Common Vulnerabilities and Exposures analysis results.
+     * The summary contains information about the CVE (Common Vulnerabilities and Exposures) analysis results
+     * (deprecated).
      */
     public static final SummaryType COMMON_VULNERABILITIES_AND_EXPOSURES
         = fromString("CommonVulnerabilitiesAndExposures");
@@ -36,6 +37,26 @@ public final class SummaryType extends ExpandableStringEnum<SummaryType> {
      * The summary contains information about the cryptographic key analysis results.
      */
     public static final SummaryType CRYPTO_KEY = fromString("CryptoKey");
+
+    /**
+     * The summary contains information about the CVE analysis results.
+     */
+    public static final SummaryType CVE = fromString("CVE");
+
+    /**
+     * The summary contains information about the SBOM (Software Bill of Materials) analysis results.
+     */
+    public static final SummaryType SBOM = fromString("SBOM");
+
+    /**
+     * The summary contains information about the password hash analysis results.
+     */
+    public static final SummaryType PASSWORD_HASH = fromString("PasswordHash");
+
+    /**
+     * The summary contains information about the unsafe function call analysis results.
+     */
+    public static final SummaryType UNSAFE_FUNCTION_CALLS = fromString("UnsafeFunctionCalls");
 
     /**
      * Creates a new instance of SummaryType value.

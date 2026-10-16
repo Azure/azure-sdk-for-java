@@ -20,7 +20,7 @@ public final class UsageMetricsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"monthlyFirmwareUploadCount\":1349349327808665603,\"totalFirmwareCount\":2758860525004415394,\"provisioningState\":\"Extracting\"},\"id\":\"ofwq\",\"name\":\"zqalkrmnjijpx\",\"type\":\"cqqudf\"}";
+            = "{\"properties\":{\"monthlyFirmwareUploadCount\":7791829863251083462,\"totalFirmwareCount\":5424244248696838673,\"provisioningState\":\"Failed\"},\"id\":\"mhrixkwmyijejve\",\"name\":\"rh\",\"type\":\"pna\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -29,9 +29,8 @@ public final class UsageMetricsGetWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        UsageMetric response = manager.usageMetrics()
-            .getWithResponse("duhpk", "kgymareqnajxqug", "hky", com.azure.core.util.Context.NONE)
-            .getValue();
+        UsageMetric response
+            = manager.usageMetrics().getWithResponse("wz", "bnhlmc", "l", com.azure.core.util.Context.NONE).getValue();
 
     }
 }
