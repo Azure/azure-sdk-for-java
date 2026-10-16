@@ -655,36 +655,6 @@ public final class BetaSkillsClient {
     }
 
     /**
-     * Create a skill version from uploaded files
-     *
-     * Creates a new version of a skill from uploaded files via multipart form data.
-     *
-     * @param name The name of the skill.
-     * @param content The multipart request content.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific version of a skill.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SkillVersion createSkillVersionFromFiles(String name, CreateSkillVersionFromFilesBody content) {
-        RequestOptions requestOptions = new RequestOptions();
-        return createSkillVersionFromFilesWithResponseInternal(name,
-            new MultipartFormDataHelper(requestOptions)
-                .serializeFileFields("files",
-                    content.getFiles().stream().map(SkillFileDetails::getContent).collect(Collectors.toList()),
-                    content.getFiles().stream().map(SkillFileDetails::getContentType).collect(Collectors.toList()),
-                    content.getFiles().stream().map(SkillFileDetails::getFilename).collect(Collectors.toList()))
-                .serializeTextField("default", Objects.toString(content.isDefaultProperty(), null))
-                .end()
-                .getRequestBody(),
-            requestOptions).getValue().toObject(SkillVersion.class);
-    }
-
-    /**
      * List skill versions
      *
      * Returns the available versions for the specified skill.
@@ -856,5 +826,37 @@ public final class BetaSkillsClient {
         // Operation 'createSkillVersionFromFiles' is of content-type 'multipart/form-data'. Protocol API is not usable
         // and hence not generated.
         return this.serviceClient.createSkillVersionFromFilesWithResponseInternal(name, content, requestOptions);
+    }
+
+    /**
+     * Create a skill version from uploaded files
+     *
+     * Creates a new version of a skill from uploaded files via multipart form data.
+     *
+     * @param name The name of the skill.
+     * @param content The multipart request content.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a specific version of a skill.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SkillVersion createSkillVersionFromFiles(String name, CreateSkillVersionFromFilesBody content) {
+        // Generated convenience method for createSkillVersionFromFilesWithResponseInternal
+        RequestOptions requestOptions = new RequestOptions();
+        return createSkillVersionFromFilesWithResponseInternal(name,
+            new MultipartFormDataHelper(requestOptions)
+                .serializeFileFields("files",
+                    content.getFiles().stream().map(SkillFileDetails::getContent).collect(Collectors.toList()),
+                    content.getFiles().stream().map(SkillFileDetails::getContentType).collect(Collectors.toList()),
+                    content.getFiles().stream().map(SkillFileDetails::getFilename).collect(Collectors.toList()))
+                .serializeTextField("default", Objects.toString(content.isDefaultProperty(), null))
+                .end()
+                .getRequestBody(),
+            requestOptions).getValue().toObject(SkillVersion.class);
     }
 }
