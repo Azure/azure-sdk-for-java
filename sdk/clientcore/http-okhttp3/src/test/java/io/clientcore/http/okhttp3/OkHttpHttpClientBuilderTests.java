@@ -340,8 +340,8 @@ public class OkHttpHttpClientBuilderTests {
 
     @Test
     public void explicitTimeoutsOverrideConfiguration() {
-        Configuration configuration
-            = Configuration.from(new TestConfigurationSource().put(Configuration.REQUEST_CONNECT_TIMEOUT_IN_MS, "123000")
+        Configuration configuration = Configuration
+            .from(new TestConfigurationSource().put(Configuration.REQUEST_CONNECT_TIMEOUT_IN_MS, "123000")
                 .put(Configuration.REQUEST_READ_TIMEOUT_IN_MS, "234000")
                 .put(Configuration.REQUEST_WRITE_TIMEOUT_IN_MS, "345000"));
 

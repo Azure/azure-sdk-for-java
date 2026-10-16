@@ -61,9 +61,8 @@ public class OkHttpResponseTimeoutTests {
     @ParameterizedTest
     @CsvSource({ "false, false", "false, true", "true, false", "true, true" })
     public void finalHeadersStopResponseTimeout(boolean synchronous, boolean expectContinue) {
-        HttpClient client = new OkHttpAsyncHttpClientBuilder().responseTimeout(RESPONSE_TIMEOUT)
-            .readTimeout(READ_TIMEOUT)
-            .build();
+        HttpClient client
+            = new OkHttpAsyncHttpClientBuilder().responseTimeout(RESPONSE_TIMEOUT).readTimeout(READ_TIMEOUT).build();
         HttpRequest request = new HttpRequest(HttpMethod.POST, server.getHttpUri() + "/slow-body").setBody("request");
         if (expectContinue) {
             request.setHeader(HttpHeaderName.EXPECT, "100-continue");

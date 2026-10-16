@@ -52,9 +52,8 @@ public class VertxHttpClientExpectContinueTests {
             HttpRequest request = new HttpRequest(HttpMethod.PUT, server.url()).setBody(BODY);
             request.getHeaders().set(HttpHeaderName.EXPECT, expectHeaderValue);
 
-            HttpClient client = new VertxHttpClientBuilder().writeTimeout(WRITE_TIMEOUT)
-                .responseTimeout(RESPONSE_TIMEOUT)
-                .build();
+            HttpClient client
+                = new VertxHttpClientBuilder().writeTimeout(WRITE_TIMEOUT).responseTimeout(RESPONSE_TIMEOUT).build();
             HttpResponse response = client.send(request).block(TEST_TIMEOUT);
 
             assertNotNull(response);
@@ -77,9 +76,8 @@ public class VertxHttpClientExpectContinueTests {
             HttpRequest request = new HttpRequest(HttpMethod.PUT, server.url()).setBody(BODY);
             request.getHeaders().set(HttpHeaderName.EXPECT, "100-continue");
 
-            HttpClient client = new VertxHttpClientBuilder().writeTimeout(WRITE_TIMEOUT)
-                .responseTimeout(RESPONSE_TIMEOUT)
-                .build();
+            HttpClient client
+                = new VertxHttpClientBuilder().writeTimeout(WRITE_TIMEOUT).responseTimeout(RESPONSE_TIMEOUT).build();
             HttpResponse response = client.send(request).block(TEST_TIMEOUT);
 
             assertNotNull(response, "the request did not complete");

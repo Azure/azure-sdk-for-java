@@ -246,9 +246,8 @@ public class JdkHttpClientExpectContinueTests {
         AtomicBoolean subscribed = new AtomicBoolean();
         try (ExpectContinueServer server = new ExpectContinueServer(false, 0, 417)) {
             server.start();
-            HttpClient client = new JdkHttpClientBuilder().configuration(Configuration.NONE)
-                .responseTimeout(SUCCESS_TIMEOUT)
-                .build();
+            HttpClient client
+                = new JdkHttpClientBuilder().configuration(Configuration.NONE).responseTimeout(SUCCESS_TIMEOUT).build();
             HttpRequest request
                 = new HttpRequest(HttpMethod.PUT, server.url()).setHeader(HttpHeaderName.EXPECT, "100-continue")
                     .setHeader(HttpHeaderName.CONTENT_LENGTH, Integer.toString(BODY.length))
