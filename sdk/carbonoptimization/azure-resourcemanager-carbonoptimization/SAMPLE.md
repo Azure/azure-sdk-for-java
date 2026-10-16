@@ -578,8 +578,7 @@ public final class CarbonServiceQueryCarbonEmissionReportsByBillingAccountSample
     public static void queryCarbonEmissionByBillingAccountTopNSubscriptionsMonthlyReport(
         com.azure.resourcemanager.carbonoptimization.CarbonOptimizationManager manager) {
         manager.carbonServices()
-            .queryCarbonEmissionReportsByBillingAccountWithResponse(
-                "providers/Microsoft.Billing/billingAccounts/12345678",
+            .queryCarbonEmissionReportsByBillingAccount("providers/Microsoft.Billing/billingAccounts/12345678",
                 new BillingAccountTopItemsMonthlySummaryReportQueryFilter()
                     .withDateRange(
                         new DateRange().withStart(LocalDate.parse("2024-03-01")).withEnd(LocalDate.parse("2024-05-01")))
@@ -600,8 +599,7 @@ public final class CarbonServiceQueryCarbonEmissionReportsByBillingAccountSample
     public static void queryCarbonEmissionByBillingAccountOverallSummaryReport(
         com.azure.resourcemanager.carbonoptimization.CarbonOptimizationManager manager) {
         manager.carbonServices()
-            .queryCarbonEmissionReportsByBillingAccountWithResponse(
-                "providers/Microsoft.Billing/billingAccounts/12345678",
+            .queryCarbonEmissionReportsByBillingAccount("providers/Microsoft.Billing/billingAccounts/12345678",
                 new BillingAccountOverallSummaryReportQueryFilter()
                     .withDateRange(
                         new DateRange().withStart(LocalDate.parse("2024-01-01")).withEnd(LocalDate.parse("2024-06-01")))
@@ -621,8 +619,7 @@ public final class CarbonServiceQueryCarbonEmissionReportsByBillingAccountSample
     public static void queryCarbonEmissionByBillingAccountSubscriptionItemDetailsReport(
         com.azure.resourcemanager.carbonoptimization.CarbonOptimizationManager manager) {
         manager.carbonServices()
-            .queryCarbonEmissionReportsByBillingAccountWithResponse(
-                "providers/Microsoft.Billing/billingAccounts/12345678",
+            .queryCarbonEmissionReportsByBillingAccount("providers/Microsoft.Billing/billingAccounts/12345678",
                 new BillingAccountItemDetailsReportQueryFilter()
                     .withDateRange(
                         new DateRange().withStart(LocalDate.parse("2024-05-01")).withEnd(LocalDate.parse("2024-05-01")))
@@ -645,8 +642,7 @@ public final class CarbonServiceQueryCarbonEmissionReportsByBillingAccountSample
     public static void queryCarbonEmissionByBillingAccountTopNSubscriptionsReport(
         com.azure.resourcemanager.carbonoptimization.CarbonOptimizationManager manager) {
         manager.carbonServices()
-            .queryCarbonEmissionReportsByBillingAccountWithResponse(
-                "providers/Microsoft.Billing/billingAccounts/12345678",
+            .queryCarbonEmissionReportsByBillingAccount("providers/Microsoft.Billing/billingAccounts/12345678",
                 new BillingAccountTopItemsSummaryReportQueryFilter()
                     .withDateRange(
                         new DateRange().withStart(LocalDate.parse("2024-05-01")).withEnd(LocalDate.parse("2024-05-01")))
@@ -667,8 +663,7 @@ public final class CarbonServiceQueryCarbonEmissionReportsByBillingAccountSample
     public static void queryCarbonEmissionByBillingAccountMonthlySummaryReport(
         com.azure.resourcemanager.carbonoptimization.CarbonOptimizationManager manager) {
         manager.carbonServices()
-            .queryCarbonEmissionReportsByBillingAccountWithResponse(
-                "providers/Microsoft.Billing/billingAccounts/12345678",
+            .queryCarbonEmissionReportsByBillingAccount("providers/Microsoft.Billing/billingAccounts/12345678",
                 new BillingAccountMonthlySummaryReportQueryFilter()
                     .withDateRange(
                         new DateRange().withStart(LocalDate.parse("2024-03-01")).withEnd(LocalDate.parse("2024-05-01")))

@@ -28,7 +28,7 @@ public final class BillingAccountItemDetailsReportQueryFilter extends BillingAcc
     private BillingAccountCategoryTypeEnum categoryType;
 
     /*
-     * Page size for server paging. Optional. Default value is 1000 items per page.
+     * Number of items to return in one request, max value is 5000.
      */
     private int pageSize;
 
@@ -85,7 +85,7 @@ public final class BillingAccountItemDetailsReportQueryFilter extends BillingAcc
     }
 
     /**
-     * Get the pageSize property: Page size for server paging. Optional. Default value is 1000 items per page.
+     * Get the pageSize property: Number of items to return in one request, max value is 5000.
      * 
      * @return the pageSize value.
      */
@@ -94,7 +94,7 @@ public final class BillingAccountItemDetailsReportQueryFilter extends BillingAcc
     }
 
     /**
-     * Set the pageSize property: Page size for server paging. Optional. Default value is 1000 items per page.
+     * Set the pageSize property: Number of items to return in one request, max value is 5000.
      * 
      * @param pageSize the pageSize value to set.
      * @return the BillingAccountItemDetailsReportQueryFilter object itself.
