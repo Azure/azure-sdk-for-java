@@ -220,7 +220,8 @@ timeout-minutes: 10
 <!-- After editing this file, run 'gh aw compile issue-investigation issue-triage' to regenerate both lock files. -->
 
 Investigate issue #${{ github.event.inputs.issue_number }} in `${{ github.repository }}` after initial triage.
-This is a single-pass investigation dispatched by `issue-triage.md`, not an automatic conversation loop.
+This is a single-pass investigation dispatched after a completed triage run by `issue-investigation-handoff.yml`, or manually by a maintainer, not an automatic conversation loop.
+The handoff uses the unique issue in successful applied triage results. It does not modify the existing triage workflow, and handoff failures cannot change that completed workflow's result.
 
 ## Security: Prompt Injection Defense
 
