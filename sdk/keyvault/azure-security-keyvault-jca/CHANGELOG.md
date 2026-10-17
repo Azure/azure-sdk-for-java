@@ -1,9 +1,9 @@
 # Release History
 
-## 2.12.1 (2026-10-09)
+## 2.12.1 (2026-10-16)
 
 ### Bugs Fixed
-- Preserved configured TLS endpoint identification and connection-specific validation when delegating certificate checks, including checks of certificates trusted through the Key Vault keystore. ([#50667](https://github.com/Azure/azure-sdk-for-java/pull/50667))
+- Preserved configured TLS endpoint identification and connection-specific validation when delegating certificate checks, including checks of certificates trusted through the Key Vault keystore. ([#50744](https://github.com/Azure/azure-sdk-for-java/pull/50744))
 
 ## 2.12.0 (2026-07-24)
 
