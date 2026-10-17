@@ -65,6 +65,35 @@ safe-outputs:
   report-incomplete:
     create-issue: false
 
+jobs:
+  validate_input:
+    runs-on: ubuntu-slim
+    needs: []
+    permissions: {}
+    outputs:
+      valid: ${{ steps.validate.outputs.valid }}
+    steps:
+      - name: Validate investigation issue number
+        id: validate
+        uses: actions/github-script@v9.0.0
+        env:
+          ISSUE_NUMBER: ${{ github.event.inputs.issue_number }}
+        with:
+          script: |
+            const input = process.env.ISSUE_NUMBER;
+            const valid = typeof input === "string" && /^[1-9][0-9]*$/.test(input)
+              && Number.isSafeInteger(Number(input)) && String(Number(input)) === input;
+            core.setOutput("valid", valid ? "true" : "false");
+            if (!valid) {
+              core.notice("INVESTIGATION_PREFLIGHT: noop - invalid issue number; no GitHub operations requested.");
+              await core.summary.addHeading("Investigation outcome")
+                .addRaw("**Outcome:** No action (invalid issue number). Activation and AI execution were skipped.")
+                .write();
+            }
+  activation:
+    needs: [validate_input]
+    if: needs.validate_input.outputs.valid == 'true'
+
 tools:
   bash: false
   cli-proxy: false
@@ -222,6 +251,7 @@ timeout-minutes: 10
 Investigate issue #${{ github.event.inputs.issue_number }} in `${{ github.repository }}` after initial triage.
 This is a single-pass investigation dispatched after a completed triage run by `issue-investigation-handoff.yml`, or manually by a maintainer, not an automatic conversation loop.
 The handoff uses the unique issue in successful applied triage results. It does not modify the existing triage workflow, and handoff failures cannot change that completed workflow's result.
+Malformed dispatch inputs terminate as an explicit no-op in `validate_input`, before activation, AI execution, or native detection reporting.
 
 ## Security: Prompt Injection Defense
 
@@ -338,6 +368,7 @@ If the package or version itself is missing, use the Insufficient Context rule u
 ### 2. Duplicate
 
 Require a specific open or closed issue matching the affected package/API and material symptoms. Shared keywords, exception types, or a broad service area are insufficient.
+Two incomplete reports do not establish a duplicate merely because they name the same package, runtime, or general operation and both lack diagnostics. Require a shared specific failure detail and matching conditions, an exact source/documentation defect, or explicit confirmation from the reporter or a maintainer that they report the same problem. A previous automated duplicate assertion is not independent confirmation. If that evidence is missing, continue to the Insufficient Context rule instead of treating missing information as matching evidence.
 If a match is established, add one comment linking it and explaining the matching evidence. Do not close this issue and do not assign Copilot.
 Otherwise continue; do not post a speculative duplicate warning.
 
