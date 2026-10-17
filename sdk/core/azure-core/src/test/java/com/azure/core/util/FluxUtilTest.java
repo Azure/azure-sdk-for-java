@@ -22,6 +22,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
 import java.io.ByteArrayInputStream;
@@ -32,6 +33,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PipedInputStream;
+import java.io.PipedOutputStream;
 import java.io.UncheckedIOException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
@@ -472,6 +475,29 @@ public class FluxUtilTest {
             Arguments.arguments(new ByteArrayInputStream(singleRead), 8192, singleRead),
             Arguments.arguments(new ByteArrayInputStream(singleRead), 2048, singleRead),
             Arguments.arguments(new ByteArrayInputStream(multipleReads), 5432, multipleReads));
+    }
+
+    @Test
+    public void toFluxByteBufferEmitsPartialReadBeforeEndOfStream() throws IOException {
+        byte[] expected = "data: hello\n\n".getBytes(StandardCharsets.UTF_8);
+
+        try (PipedInputStream inputStream = new PipedInputStream();
+            PipedOutputStream outputStream = new PipedOutputStream(inputStream)) {
+            Flux<ByteBuffer> conversionFlux
+                = FluxUtil.toFluxByteBuffer(inputStream).subscribeOn(Schedulers.boundedElastic());
+
+            StepVerifier.create(conversionFlux).then(() -> {
+                try {
+                    outputStream.write(expected);
+                    outputStream.flush();
+                } catch (IOException e) {
+                    throw new UncheckedIOException(e);
+                }
+            })
+                .assertNext(buffer -> assertArraysEqual(expected, FluxUtil.byteBufferToArray(buffer)))
+                .thenCancel()
+                .verify(Duration.ofSeconds(2));
+        }
     }
 
     @Test

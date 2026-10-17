@@ -8,6 +8,9 @@
 
 ### Bugs Fixed
 
+- Fixed streaming of `InputStream`-backed response bodies to emit partial reads without waiting for the response to
+  complete.
+
 ### Other Changes
 
 #### Dependency Updates
