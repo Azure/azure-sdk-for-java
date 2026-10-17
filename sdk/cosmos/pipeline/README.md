@@ -1,23 +1,21 @@
 # Cosmos live-test fixed accounts
 
-This directory holds the **single-secret JSON configuration** used to point the Cosmos
-Java live tests at fixed, self-owned Cosmos DB accounts (no central EngSys
-provisioner). It is the Track A mechanism from the retargeting plan.
+This directory holds the CI runtime resolver used to point the Cosmos Java live tests
+at fixed, self-owned Cosmos DB accounts. Account provisioning and local-only tooling
+are not part of this directory.
 
 ## Files
 
 | File | Purpose |
 | --- | --- |
-| `live-test-accounts.schema.json` | JSON schema (draft-07) for the single secret. |
-| `live-test-accounts.sample.json` | Example with all logical accounts (placeholder values). |
 | `resolve-cosmos-test-account.sh` | Pre-step parser: reads the JSON secret + a selector, exports `ACCOUNT_HOST`/`ACCOUNT_KEY`. |
-| `resolve-cosmos-test-account.tests.sh` | Local tests for the parser (no ADO required). |
 | `resolve-test-account-steps.yml` | Reusable `PreTestRunSteps` template that runs the parser for a selector. |
+| `cspell.json` | Spelling configuration for this directory's CI files and documentation. |
 
 ## How it works
 
 1. A **single ADO variable-group secret** (`sub-config-cosmos-azure-cloud-test-resources`)
-   holds a JSON document (see schema) mapping a **logical account name** to its
+   holds a version 1 JSON document mapping a **logical account name** to its
    `{ endpoint, key, secondaryKey, ... }`.
 2. Each pipeline stage passes a **selector** (the logical name it needs).
 3. A **pre-step** runs `resolve-cosmos-test-account.sh`, which validates the JSON,
@@ -25,13 +23,34 @@ provisioner). It is the Track A mechanism from the retargeting plan.
    `SECONDARY_ACCOUNT_KEY` when present) for the tests to read via `TestConfigurations`.
    It does NOT set `ACCOUNT_CONSISTENCY`/`PREFERRED_LOCATIONS` — those are matrix-controlled
    per leg.
-4. The account provisioning script (in [`account-provisioning/`](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/cosmos/pipeline/account-provisioning))
-   regenerates the accounts + JSON on every ephemeral-tenant rotation
-   (`New-CosmosLiveTestAccounts.ps1` creates the accounts and outputs the JSON). The
-   secret is then updated manually with that JSON, so pipelines pick up refreshed
-   endpoints/keys automatically.
+4. Account provisioning is managed separately. After account or tenant rotation, update
+   the secret with the current endpoints and keys so pipelines pick up refreshed
+   credentials automatically.
 
 All Cosmos live-test matrix legs run on **linux** agents, so the parser is bash + jq.
+
+## Secret format
+
+The resolver requires `version: 1`, an `accounts` object containing the selected
+logical name, a nonempty HTTPS `endpoint`, and a nonempty `key`. Supply `secondaryKey`
+for profiles that exercise key rotation. Other account metadata is ignored by the
+resolver; consistency and preferred locations remain matrix-controlled.
+
+```json
+{
+  "version": 1,
+  "accounts": {
+    "single-session": {
+      "endpoint": "https://REPLACE.documents.azure.com:443/",
+      "key": "REPLACE_PRIMARY_KEY",
+      "secondaryKey": "REPLACE_SECONDARY_KEY"
+    }
+  }
+}
+```
+
+This example contains placeholders only. Store real account keys in the secret, not
+in source files or logs.
 
 ## Selectors (from the test matrices)
 
@@ -118,19 +137,6 @@ would fall back to the emulator key and fail against a live account.
 The JSON lives in the ADO variable-group secret
 `sub-config-cosmos-azure-cloud-test-resources` (Cosmos "user administered" variable
 group). The resolve steps template reads it by default. Refresh it manually whenever the
-accounts are re-provisioned (e.g. after an ephemeral-tenant rotation) by pasting the
-regenerated JSON from `New-CosmosLiveTestAccounts.ps1`.
-
-## Local test
-
-```bash
-bash sdk/cosmos/pipeline/resolve-cosmos-test-account.tests.sh
-```
-
-Check all six stages' provisioning opt-outs, fixed test/cleanup credentials,
-profile selection, transport settings, and authentication configuration offline (Python 3 with PyYAML,
-also used by `eng/automation/requirement.txt`):
-
-```bash
-python3 sdk/cosmos/pipeline/test_fixed_account_pipeline.py
-```
+accounts are re-provisioned (e.g. after an ephemeral-tenant rotation), using the format
+above and including every selector used by the test matrices. Do not print or commit
+the secret's contents.
