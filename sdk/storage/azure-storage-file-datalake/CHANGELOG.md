@@ -19,6 +19,11 @@
 - Corrected documentation on `DataLakeFileSystemClient`/`DataLakeFileSystemAsyncClient` path client getters and on
   `DataLakePathClientBuilder.pathName(String)`, which incorrectly instructed callers to pass a URL-encoded path name.
   Path names have been used verbatim since 12.22.0 and are percent-encoded by the client when the request URL is built.
+- Updated the documentation of `DataLakeFileSystemClient`/`DataLakeFileSystemAsyncClient` `delete`,
+  `deleteWithResponse`, `deleteIfExists`, and `deleteIfExistsWithResponse`, and
+  `DataLakeServiceClient`/`DataLakeServiceAsyncClient` `deleteFileSystem` and `deleteFileSystemWithResponse` to note
+  that operations on paths within a deleted file system, including reads and writes, may continue to succeed for up to
+  30 seconds after the delete request is accepted.
 
 ## 12.28.2 (2026-10-06)
 
