@@ -6,6 +6,7 @@ package com.azure.ai.agents;
 import com.azure.ai.agents.implementation.realtime.VoiceAgentWebSocketClientConfiguration;
 import com.azure.ai.agents.implementation.realtime.VoiceAgentWebSocketHttpResponse;
 import com.azure.ai.agents.implementation.realtime.VoiceAgentWebSocketUtils;
+import com.azure.ai.agents.implementation.realtime.VoiceAgentTracer;
 import com.azure.ai.agents.implementation.utils.Beta;
 import com.azure.ai.agents.models.RealtimeClientEvent;
 import com.azure.ai.agents.models.RealtimeConversationItemCreateEvent;
@@ -67,6 +68,7 @@ import okio.ByteString;
 public final class BetaVoiceAgentWebSocketSessionClient implements AutoCloseable {
     private static final ClientLogger LOGGER = new ClientLogger(BetaVoiceAgentWebSocketSessionClient.class);
     private final URI websocketUri;
+    private final VoiceAgentTracer tracer;
     private final VoiceAgentWebSocketConnectionOptions options;
     private final OkHttpClient httpClient;
     private final BlockingQueue<EventSignal> events;
@@ -90,16 +92,23 @@ public final class BetaVoiceAgentWebSocketSessionClient implements AutoCloseable
         this.receiveBufferCapacity = options.getReceiveBufferCapacity();
         this.events = new ArrayBlockingQueue<>(receiveBufferCapacity + 1);
         this.websocketUri = VoiceAgentWebSocketUtils.buildWebSocketUri(configuration, agentName, options);
-        String token = configuration.getCredential()
-            .getTokenSync(VoiceAgentWebSocketUtils.createTokenRequestContext())
-            .getToken();
-        this.httpClient = createHttpClient(configuration, options);
-        Request.Builder request = new Request.Builder().url(websocketUri.toString())
-            .header("Sec-WebSocket-Protocol", VoiceAgentWebSocketUtils.SUBPROTOCOL);
-        for (HttpHeader header : VoiceAgentWebSocketUtils.buildHeaders(configuration, options, token)) {
-            request.header(header.getName(), header.getValue());
+        this.tracer = VoiceAgentTracer.create(websocketUri, agentName);
+        this.tracer.startConnectSpan();
+        try {
+            String token = configuration.getCredential()
+                .getTokenSync(VoiceAgentWebSocketUtils.createTokenRequestContext())
+                .getToken();
+            this.httpClient = createHttpClient(configuration, options);
+            Request.Builder request = new Request.Builder().url(websocketUri.toString())
+                .header("Sec-WebSocket-Protocol", VoiceAgentWebSocketUtils.SUBPROTOCOL);
+            for (HttpHeader header : VoiceAgentWebSocketUtils.buildHeaders(configuration, options, token)) {
+                request.header(header.getName(), header.getValue());
+            }
+            this.webSocket = httpClient.newWebSocket(request.build(), new Listener());
+        } catch (RuntimeException error) {
+            this.tracer.endConnectSpan(error);
+            throw error;
         }
-        this.webSocket = httpClient.newWebSocket(request.build(), new Listener());
     }
 
     static BetaVoiceAgentWebSocketSessionClient connect(VoiceAgentWebSocketClientConfiguration configuration,
@@ -112,6 +121,7 @@ public final class BetaVoiceAgentWebSocketSessionClient implements AutoCloseable
         } catch (RuntimeException error) {
             session.webSocket.cancel();
             session.shutdownHttpClient();
+            session.tracer.endConnectSpan(error);
             throw error;
         }
     }
@@ -208,6 +218,7 @@ public final class BetaVoiceAgentWebSocketSessionClient implements AutoCloseable
             throw LOGGER.logExceptionAsError(
                 new IllegalStateException("The voice-agent WebSocket send queue is full or closed."));
         }
+        tracer.traceSend(event, json);
     }
 
     /**
@@ -223,6 +234,7 @@ public final class BetaVoiceAgentWebSocketSessionClient implements AutoCloseable
             throw LOGGER.logExceptionAsError(
                 new IllegalStateException("The voice-agent WebSocket send queue is full or closed."));
         }
+        tracer.traceSendRaw(json);
     }
 
     /**
@@ -336,6 +348,7 @@ public final class BetaVoiceAgentWebSocketSessionClient implements AutoCloseable
             return;
         }
         open.set(false);
+        tracer.traceClose();
         if (!webSocket.close(code, reason)) {
             webSocket.cancel();
             closeCompleted.countDown();
@@ -350,6 +363,7 @@ public final class BetaVoiceAgentWebSocketSessionClient implements AutoCloseable
         } finally {
             signal(EventSignal.complete());
             shutdownHttpClient();
+            tracer.endConnectSpan(null);
         }
     }
 
@@ -402,6 +416,7 @@ public final class BetaVoiceAgentWebSocketSessionClient implements AutoCloseable
         signal(EventSignal.error(mapped));
         closeCompleted.countDown();
         shutdownHttpClient();
+        tracer.endConnectSpan(mapped);
     }
 
     private Throwable mapHandshakeError(Throwable error, Response response) {
@@ -437,8 +452,9 @@ public final class BetaVoiceAgentWebSocketSessionClient implements AutoCloseable
             }
         }
         if ((signal.event != null && events.size() >= receiveBufferCapacity) || !events.offer(signal)) {
+            IllegalStateException overflow = new IllegalStateException("Voice-agent receive buffer overflow.");
             events.clear();
-            events.add(EventSignal.error(new IllegalStateException("Voice-agent receive buffer overflow.")));
+            events.add(EventSignal.error(overflow));
             WebSocket current = webSocket;
             if (current != null) {
                 current.cancel();
@@ -446,6 +462,7 @@ public final class BetaVoiceAgentWebSocketSessionClient implements AutoCloseable
             open.set(false);
             closed.set(true);
             shutdownHttpClient();
+            tracer.endConnectSpan(overflow);
         }
     }
 
@@ -516,8 +533,11 @@ public final class BetaVoiceAgentWebSocketSessionClient implements AutoCloseable
                 return;
             }
             try {
-                signal(EventSignal.event(VoiceAgentWebSocketUtils.deserializeEvent(text)));
+                RealtimeServerEvent event = VoiceAgentWebSocketUtils.deserializeEvent(text);
+                tracer.traceReceive(event, text);
+                signal(EventSignal.event(event));
             } catch (IOException | RuntimeException error) {
+                tracer.traceReceiveRaw(text);
                 malformedEvent(webSocket, error);
             }
         }
@@ -566,6 +586,8 @@ public final class BetaVoiceAgentWebSocketSessionClient implements AutoCloseable
             handshakeCompleted.countDown();
             closeCompleted.countDown();
             shutdownHttpClient();
+            tracer.traceClose();
+            tracer.endConnectSpan(null);
         }
 
         @Override
