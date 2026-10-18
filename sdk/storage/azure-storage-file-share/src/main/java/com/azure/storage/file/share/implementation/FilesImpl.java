@@ -1613,7 +1613,7 @@ public final class FilesImpl {
 
     /**
      * Returns the hard links of a file, along with all user-defined metadata, content properties, and system properties
-     * for the file. NFS only.
+     * for the file. SMB only.
      *
      * @param shareName The name of the target share.
      * @param fileId The file ID of the file whose hard links are returned.
@@ -1642,7 +1642,7 @@ public final class FilesImpl {
 
     /**
      * Returns the hard links of a file, along with all user-defined metadata, content properties, and system properties
-     * for the file. NFS only.
+     * for the file. SMB only.
      *
      * @param shareName The name of the target share.
      * @param fileId The file ID of the file whose hard links are returned.
@@ -1675,7 +1675,7 @@ public final class FilesImpl {
 
     /**
      * Returns the hard links of a file, along with all user-defined metadata, content properties, and system properties
-     * for the file. NFS only.
+     * for the file. SMB only.
      *
      * @param shareName The name of the target share.
      * @param fileId The file ID of the file whose hard links are returned.
@@ -1702,7 +1702,7 @@ public final class FilesImpl {
 
     /**
      * Returns the hard links of a file, along with all user-defined metadata, content properties, and system properties
-     * for the file. NFS only.
+     * for the file. SMB only.
      *
      * @param shareName The name of the target share.
      * @param fileId The file ID of the file whose hard links are returned.
@@ -1730,7 +1730,7 @@ public final class FilesImpl {
 
     /**
      * Returns the hard links of a file, along with all user-defined metadata, content properties, and system properties
-     * for the file. NFS only.
+     * for the file. SMB only.
      *
      * @param shareName The name of the target share.
      * @param fileId The file ID of the file whose hard links are returned.
@@ -1758,7 +1758,7 @@ public final class FilesImpl {
 
     /**
      * Returns the hard links of a file, along with all user-defined metadata, content properties, and system properties
-     * for the file. NFS only.
+     * for the file. SMB only.
      *
      * @param shareName The name of the target share.
      * @param fileId The file ID of the file whose hard links are returned.
@@ -1790,7 +1790,7 @@ public final class FilesImpl {
 
     /**
      * Returns the hard links of a file, along with all user-defined metadata, content properties, and system properties
-     * for the file. NFS only.
+     * for the file. SMB only.
      *
      * @param shareName The name of the target share.
      * @param fileId The file ID of the file whose hard links are returned.
@@ -1824,7 +1824,7 @@ public final class FilesImpl {
 
     /**
      * Returns the hard links of a file, along with all user-defined metadata, content properties, and system properties
-     * for the file. NFS only.
+     * for the file. SMB only.
      *
      * @param shareName The name of the target share.
      * @param fileId The file ID of the file whose hard links are returned.
@@ -1854,7 +1854,7 @@ public final class FilesImpl {
 
     /**
      * Returns the hard links of a file, along with all user-defined metadata, content properties, and system properties
-     * for the file. NFS only.
+     * for the file. SMB only.
      *
      * @param shareName The name of the target share.
      * @param fileId The file ID of the file whose hard links are returned.
