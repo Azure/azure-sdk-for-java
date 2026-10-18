@@ -1676,7 +1676,9 @@ public class EncryptedBlockBlobAsyncApiTests extends BlobCryptographyTestBase {
                 .buildEncryptedBlobAsyncClient());
 
         StepVerifier
-            .create(bec.uploadWithResponse(new BlobParallelUploadOptions(BinaryData.fromByteBuffer(data.duplicate())))
+            .create(bec
+                .uploadWithResponse(new BlobParallelUploadOptions(BinaryData.fromByteBuffer(data.duplicate()))
+                    .setParallelTransferOptions(singleUploadOptions()))
                 .then(FluxUtil.collectBytesInByteBufferStream(bec.downloadStream())))
             .assertNext(r -> assertArrayEquals(data.array(), r))
             .verifyComplete();
@@ -1696,11 +1698,10 @@ public class EncryptedBlockBlobAsyncApiTests extends BlobCryptographyTestBase {
         File outFile = new File(testResourceNamer.randomName(prefix, 60) + ".txt");
         Files.deleteIfExists(outFile.toPath());
 
-        StepVerifier
-            .create(bec.uploadFromFile(file.toPath().toString())
-                .then(bec.downloadToFile(outFile.toPath().toString(), true)))
-            .expectNextCount(1)
-            .verifyComplete();
+        StepVerifier.create(bec.exists().flatMap(exists -> {
+            assertFalse(exists);
+            return bec.uploadFromFile(file.toPath().toString(), singleUploadOptions(), null, null, null, null);
+        }).then(bec.downloadToFile(outFile.toPath().toString(), true))).expectNextCount(1).verifyComplete();
 
         compareFiles(file, outFile, 0, fileSize);
 
@@ -1727,7 +1728,9 @@ public class EncryptedBlockBlobAsyncApiTests extends BlobCryptographyTestBase {
                 cc.getBlobContainerUrl(), EncryptionVersion.V2_1).blobName(blobName).buildEncryptedBlobAsyncClient());
 
         StepVerifier
-            .create(bec.uploadWithResponse(new BlobParallelUploadOptions(BinaryData.fromByteBuffer(data.duplicate())))
+            .create(bec
+                .uploadWithResponse(new BlobParallelUploadOptions(BinaryData.fromByteBuffer(data.duplicate()))
+                    .setParallelTransferOptions(singleUploadOptions()))
                 .then(FluxUtil.collectBytesInByteBufferStream(bec2.downloadStream())))
             .assertNext(r -> assertArrayEquals(data.array(), r))
             .verifyComplete();
@@ -1753,7 +1756,9 @@ public class EncryptedBlockBlobAsyncApiTests extends BlobCryptographyTestBase {
                 cc.getBlobContainerUrl(), version).blobName(blobName).buildEncryptedBlobAsyncClient());
 
         StepVerifier
-            .create(bec.uploadWithResponse(new BlobParallelUploadOptions(BinaryData.fromByteBuffer(data.duplicate())))
+            .create(bec
+                .uploadWithResponse(new BlobParallelUploadOptions(BinaryData.fromByteBuffer(data.duplicate()))
+                    .setParallelTransferOptions(singleUploadOptions()))
                 .then(FluxUtil.collectBytesInByteBufferStream(bec2.downloadStream())))
             .assertNext(r -> assertArrayEquals(data.array(), r))
             .verifyComplete();

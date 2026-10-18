@@ -30,7 +30,9 @@ import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.test.utils.MockTokenCredential;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
@@ -46,13 +48,17 @@ import com.azure.json.JsonWriter;
 import com.azure.storage.blob.models.BlobContainerItem;
 import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobProperties;
+import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobServiceProperties;
 import com.azure.storage.blob.models.BlobSignedIdentifier;
 import com.azure.storage.blob.models.BlobStorageException;
+import com.azure.storage.blob.models.BlockBlobItem;
 import com.azure.storage.blob.models.LeaseStateType;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
+import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.options.BlobBreakLeaseOptions;
+import com.azure.storage.blob.options.BlobParallelUploadOptions;
 import com.azure.storage.blob.sas.BlobSasPermission;
 import com.azure.storage.blob.specialized.BlobAsyncClientBase;
 import com.azure.storage.blob.specialized.BlobClientBase;
@@ -164,6 +170,12 @@ public class BlobTestBase extends TestProxyTestBase {
 
     protected static final String GARBAGE_LEASE_ID = CoreUtils.randomUuid().toString();
 
+    /*
+    The single upload threshold used before it defaulted to the block size. Tests which upload data only as setup for
+    the behavior under test use this to keep uploads of up to this size in a single Put Blob request.
+     */
+    private static final long LEGACY_MAX_SINGLE_UPLOAD_SIZE = 256L * Constants.MB;
+
     protected BlobServiceClient primaryBlobServiceClient;
     protected BlobServiceAsyncClient primaryBlobServiceAsyncClient;
     protected BlobServiceClient alternateBlobServiceClient;
@@ -264,6 +276,41 @@ public class BlobTestBase extends TestProxyTestBase {
 
     protected static Mono<ByteBuffer> collectBytesInBuffer(Flux<ByteBuffer> content) {
         return FluxUtil.collectBytesInByteBufferStream(content).map(ByteBuffer::wrap);
+    }
+
+    /**
+     * Gets {@link ParallelTransferOptions} which upload data of up to 256 MB in a single Put Blob request. Use this in
+     * tests which upload data only as setup for the behavior under test.
+     *
+     * @return The {@link ParallelTransferOptions}.
+     */
+    protected static ParallelTransferOptions singleUploadOptions() {
+        return new ParallelTransferOptions().setMaxSingleUploadSizeLong(LEGACY_MAX_SINGLE_UPLOAD_SIZE);
+    }
+
+    /**
+     * Equivalent of {@link BlobClient#upload(BinaryData)} which uploads data of up to 256 MB in a single Put Blob
+     * request.
+     *
+     * @param client The client to upload with.
+     * @param data The data to upload.
+     */
+    protected static void uploadInSingleRequest(BlobClient client, BinaryData data) {
+        client.uploadWithResponse(new BlobParallelUploadOptions(data).setParallelTransferOptions(singleUploadOptions())
+            .setRequestConditions(new BlobRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD)),
+            null, Context.NONE);
+    }
+
+    /**
+     * Equivalent of {@link BlobAsyncClient#upload(BinaryData)} which uploads data of up to 256 MB in a single Put Blob
+     * request.
+     *
+     * @param client The client to upload with.
+     * @param data The data to upload.
+     * @return A reactive response containing the information of the uploaded block blob.
+     */
+    protected static Mono<BlockBlobItem> uploadInSingleRequest(BlobAsyncClient client, BinaryData data) {
+        return client.upload(data.toFluxByteBuffer(), singleUploadOptions(), false);
     }
 
     protected String getAuthToken() {

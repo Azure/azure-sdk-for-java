@@ -113,7 +113,7 @@ public class BlobContentValidationDownloadTests extends BlobTestBase {
         byte[] data = getRandomByteArray(FIVE_MB);
         List<HttpHeaders> recordedRequestHeaders = new CopyOnWriteArrayList<>();
         BlobClient blobClient = createBlobClientWithRequestSniffer(recordedRequestHeaders);
-        blobClient.upload(BinaryData.fromBytes(data));
+        uploadInSingleRequest(blobClient, BinaryData.fromBytes(data));
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         BlobDownloadResponse response = blobClient.downloadStreamWithResponse(outputStream,
@@ -133,7 +133,7 @@ public class BlobContentValidationDownloadTests extends BlobTestBase {
         byte[] data = getRandomByteArray(FIVE_MB);
         List<HttpHeaders> recordedRequestHeaders = new CopyOnWriteArrayList<>();
         BlobClient blobClient = createBlobClientWithRequestSniffer(recordedRequestHeaders);
-        blobClient.upload(BinaryData.fromBytes(data));
+        uploadInSingleRequest(blobClient, BinaryData.fromBytes(data));
 
         BlobDownloadContentResponse response = blobClient.downloadContentWithResponse(
             new BlobDownloadContentOptions().setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64), null,
@@ -161,7 +161,7 @@ public class BlobContentValidationDownloadTests extends BlobTestBase {
         File outFile = tempDir.resolve(generateResourceName(entityNo++) + ".bin").toFile();
         List<HttpHeaders> recordedRequestHeaders = new CopyOnWriteArrayList<>();
         BlobClient blobClient = createBlobClientWithRequestSniffer(recordedRequestHeaders);
-        blobClient.uploadFromFile(file.toPath().toString(), true);
+        blobClient.uploadFromFile(file.toPath().toString(), singleUploadOptions(), null, null, null, null, null);
 
         Files.deleteIfExists(outFile.toPath());
 
@@ -217,7 +217,7 @@ public class BlobContentValidationDownloadTests extends BlobTestBase {
         byte[] data = getRandomByteArray(FIVE_MB);
         List<HttpHeaders> recordedRequestHeaders = new CopyOnWriteArrayList<>();
         BlobClient blobClient = createBlobClientWithRequestSniffer(recordedRequestHeaders);
-        blobClient.upload(BinaryData.fromBytes(data));
+        uploadInSingleRequest(blobClient, BinaryData.fromBytes(data));
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         blobClient.downloadStreamWithResponse(outputStream, new BlobDownloadStreamOptions(), null, Context.NONE);
@@ -234,7 +234,7 @@ public class BlobContentValidationDownloadTests extends BlobTestBase {
         byte[] data = getRandomByteArray(FIVE_MB);
         List<HttpHeaders> recordedRequestHeaders = new CopyOnWriteArrayList<>();
         BlobClient blobClient = createBlobClientWithRequestSniffer(recordedRequestHeaders);
-        blobClient.upload(BinaryData.fromBytes(data));
+        uploadInSingleRequest(blobClient, BinaryData.fromBytes(data));
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         BlobDownloadStreamOptions options
@@ -255,7 +255,7 @@ public class BlobContentValidationDownloadTests extends BlobTestBase {
         byte[] data = getRandomByteArray(FIVE_MB);
         List<HttpHeaders> recordedRequestHeaders = new CopyOnWriteArrayList<>();
         BlobClient blobClient = createBlobClientWithRequestSniffer(recordedRequestHeaders);
-        blobClient.upload(BinaryData.fromBytes(data));
+        uploadInSingleRequest(blobClient, BinaryData.fromBytes(data));
 
         byte[] result
             = blobClient
@@ -277,7 +277,7 @@ public class BlobContentValidationDownloadTests extends BlobTestBase {
         byte[] data = getRandomByteArray(FIVE_MB);
         List<HttpHeaders> recordedRequestHeaders = new CopyOnWriteArrayList<>();
         BlobClient blobClient = createBlobClientWithRequestSniffer(recordedRequestHeaders);
-        blobClient.upload(BinaryData.fromBytes(data));
+        uploadInSingleRequest(blobClient, BinaryData.fromBytes(data));
 
         BlobDownloadContentResponse response = blobClient.downloadContentWithResponse(
             new BlobDownloadContentOptions().setContentValidationAlgorithm(ContentValidationAlgorithm.AUTO), null,
@@ -417,7 +417,7 @@ public class BlobContentValidationDownloadTests extends BlobTestBase {
         List<HttpHeaders> recordedRequestHeaders = new CopyOnWriteArrayList<>();
         BlobClient blobClient = createBlobClientWithRequestSniffer(recordedRequestHeaders);
 
-        blobClient.upload(BinaryData.fromBytes(data));
+        uploadInSingleRequest(blobClient, BinaryData.fromBytes(data));
 
         // when: "Channel initialized"
         BlobSeekableByteChannelReadOptions options
@@ -449,7 +449,7 @@ public class BlobContentValidationDownloadTests extends BlobTestBase {
         byte[] data = getRandomByteArray(FIVE_MB);
 
         BlobClient client = cc.getBlobClient(generateBlobName());
-        client.upload(BinaryData.fromBytes(data));
+        uploadInSingleRequest(client, BinaryData.fromBytes(data));
 
         MockProgressListener mockListenerWithContentVal = new MockProgressListener();
         MockProgressListener mockListenerWithoutContentVal = new MockProgressListener();

@@ -6,6 +6,12 @@
 
 ### Breaking Changes
 
+- Changed the default value of `ParallelTransferOptions.maxSingleUploadSize` used by `EncryptedBlobAsyncClient` and
+  `EncryptedBlobClient` uploads when it is not set by the caller. It now matches the default block size (4 MB) instead
+  of 256 MB, so content larger than 4 MB is now staged in blocks and committed rather than uploaded in a single request.
+  Explicitly set values are still respected. To restore the previous behavior, set
+  `ParallelTransferOptions.setMaxSingleUploadSizeLong` to 256 MB.
+
 ### Bugs Fixed
 
 - Fixed encrypted downloads to apply the initial blob version lock when request conditions are omitted and to send the

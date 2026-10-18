@@ -69,9 +69,10 @@ public final class ParallelTransferOptions {
      * single put rather than broken up into chunks. If the data is uploaded in a single shot, the block size will be
      * ignored. Some constraints to consider are that more requests cost more, but several small or mid-sized requests
      * may sometimes perform better. In the case of buffered upload, up to this amount of data may be buffered before
-     * any data is sent. Must be greater than 0. May be null to accept default behavior, which is the maximum value the
-     * service accepts for uploading in a single requests and is represented by
-     * {@link BlockBlobAsyncClient#MAX_UPLOAD_BLOB_BYTES}.
+     * any data is sent. Must be greater than 0. May be null to accept default behavior, which is the default block size
+     * ({@link com.azure.storage.blob.BlobAsyncClient#BLOB_DEFAULT_UPLOAD_BLOCK_SIZE}), so that the initial transfer is
+     * the same size as subsequent transfers. To upload larger data in a single request, set this value explicitly, up
+     * to {@link BlockBlobAsyncClient#MAX_UPLOAD_BLOB_BYTES_LONG}.
      * @deprecated Use fluent interface to set properties instead.
      */
     @Deprecated
@@ -195,9 +196,10 @@ public final class ParallelTransferOptions {
      * single put rather than broken up into chunks. If the data is uploaded in a single shot, the block size will be
      * ignored. Some constraints to consider are that more requests cost more, but several small or mid-sized requests
      * may sometimes perform better. In the case of buffered upload, up to this amount of data may be buffered before
-     * any data is sent. Must be greater than 0. May be null to accept default behavior, which is the maximum value the
-     * service accepts for uploading in a single requests and is represented by
-     * {@link BlockBlobAsyncClient#MAX_UPLOAD_BLOB_BYTES_LONG}.
+     * any data is sent. Must be greater than 0. May be null to accept default behavior, which is the default block size
+     * ({@link com.azure.storage.blob.BlobAsyncClient#BLOB_DEFAULT_UPLOAD_BLOCK_SIZE}), so that the initial transfer is
+     * the same size as subsequent transfers. To upload larger data in a single request, set this value explicitly, up
+     * to {@link BlockBlobAsyncClient#MAX_UPLOAD_BLOB_BYTES_LONG}.
      *
      * @param maxSingleUploadSize The threshold value.
      * @return The ParallelTransferOptions object itself.

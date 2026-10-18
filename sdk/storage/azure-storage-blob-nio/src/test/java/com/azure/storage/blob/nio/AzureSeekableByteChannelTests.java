@@ -6,7 +6,9 @@ package com.azure.storage.blob.nio;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.BinaryData;
 import com.azure.storage.blob.BlobClient;
+import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.specialized.BlobOutputStream;
+import com.azure.storage.common.implementation.Constants;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -87,9 +89,13 @@ public class AzureSeekableByteChannelTests extends BlobNioTestBase {
         AzurePath writePath = ((AzurePath) fs.getPath(writeBc.getContainerName() + ":", writeBc.getBlobName()));
 
         readByteChannel = new AzureSeekableByteChannel(new NioBlobInputStream(bc.openInputStream(), path), path);
-        // For writing, we don't want a blob to exist there yet
-        writeByteChannel = new AzureSeekableByteChannel(
-            new NioBlobOutputStream(writeBc.getBlockBlobClient().getBlobOutputStream(true), writePath), writePath);
+        // For writing, we don't want a blob to exist there yet. Data of up to 256 MB is written in a single Put Blob
+        // request, as these tests do not exercise how the upload is partitioned.
+        ParallelTransferOptions singleUploadOptions
+            = new ParallelTransferOptions().setMaxSingleUploadSizeLong(256L * Constants.MB);
+        writeByteChannel = new AzureSeekableByteChannel(new NioBlobOutputStream(
+            writeBc.getBlockBlobClient().getBlobOutputStream(singleUploadOptions, null, null, null, null), writePath),
+            writePath);
     }
 
     @Test

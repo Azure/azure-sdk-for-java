@@ -6,6 +6,16 @@
 
 ### Breaking Changes
 
+- Changed the default value of `ParallelTransferOptions.maxSingleUploadSize` used by partitioned uploads when it is
+  not set by the caller. It now matches the default block size (4 MB) instead of 256 MB, so the initial transfer is the
+  same size as subsequent transfers. This affects `BlobAsyncClient.upload`/`uploadWithResponse`,
+  `BlobAsyncClient.uploadFromFile`/`uploadFromFileWithResponse`, their `BlobClient` equivalents, and
+  `BlockBlobClient.getBlobOutputStream`: content larger than 4 MB is now staged in blocks and committed, rather than
+  uploaded in a single Put Blob request when smaller than 256 MB. This means uploads may be partitioned more often,
+  leading to more requests. Explicitly set `maxSingleUploadSize` and `blockSize` values are still respected. To restore
+  the previous behavior, set `ParallelTransferOptions.setMaxSingleUploadSizeLong` to 256 MB. Partitioned downloads
+  (`downloadToFile`) already used the block size for the initial range request and are unchanged.
+
 ### Bugs Fixed
 
 - Fixed account name parsing for DFS endpoints when the account name contains "blob".
