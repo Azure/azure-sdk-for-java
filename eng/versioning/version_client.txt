@@ -265,7 +265,7 @@ com.azure.resourcemanager:azure-resourcemanager-appplatform;2.51.0;2.52.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-appservice;2.56.3;2.57.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-authorization;2.53.14;2.54.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-cdn;2.53.12;2.54.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-compute;2.61.2;2.62.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-compute;2.61.2;2.62.0
 com.azure.resourcemanager:azure-resourcemanager-containerinstance;2.53.15;2.54.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-containerregistry;2.55.6;2.56.0-beta.4
 com.azure.resourcemanager:azure-resourcemanager-containerservice;2.64.2;2.65.0-beta.2
@@ -284,7 +284,7 @@ com.azure.resourcemanager:azure-resourcemanager-samples;2.0.0-beta.1;2.0.0-beta.
 com.azure.resourcemanager:azure-resourcemanager-search;2.54.11;2.55.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-servicebus;2.53.12;2.54.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-sql;2.54.3;2.55.0-beta.2
-com.azure.resourcemanager:azure-resourcemanager-storage;2.58.2;2.59.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-storage;2.58.2;2.59.0
 com.azure.resourcemanager:azure-resourcemanager-trafficmanager;2.54.0;2.55.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-test;2.0.0-beta.4;2.0.0-beta.5
 com.azure.resourcemanager:azure-resourcemanager-mediaservices;2.4.0;2.5.0-beta.1
@@ -326,13 +326,13 @@ com.azure.resourcemanager:azure-resourcemanager-advisor;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-appconfiguration;1.1.0;1.2.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-attestation;1.0.0-beta.3;1.0.0-beta.4
 com.azure.resourcemanager:azure-resourcemanager-azurestack;1.0.0;1.1.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-azurestackhci;1.1.0;1.2.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-azurestackhci;1.2.0;1.3.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-avs;1.5.0;1.6.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-consumption;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-commerce;1.0.0-beta.3;1.0.0-beta.4
 com.azure.resourcemanager:azure-resourcemanager-billing;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-signalr;1.0.0;1.1.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-cognitiveservices;1.4.0;1.5.0-beta.5
+com.azure.resourcemanager:azure-resourcemanager-cognitiveservices;1.4.0;1.5.0-beta.6
 com.azure.resourcemanager:azure-resourcemanager-customerinsights;1.0.0-beta.3;1.0.0-beta.4
 com.azure.resourcemanager:azure-resourcemanager-databox;1.1.0;1.2.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-datamigration;1.2.0;1.3.0-beta.1
@@ -462,7 +462,7 @@ com.azure.resourcemanager:azure-resourcemanager-computeschedule;1.1.0;1.2.0-beta
 com.azure.resourcemanager:azure-resourcemanager-trustedsigning;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-iotoperations;1.2.0;1.3.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-containerorchestratorruntime;1.0.0-beta.1;1.0.0-beta.2
-com.azure.resourcemanager:azure-resourcemanager-terraform;1.0.0-beta.1;1.0.0-beta.2
+com.azure.resourcemanager:azure-resourcemanager-terraform;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-connectedcache;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-neonpostgres;1.0.1;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-pineconevectordb;1.0.0-beta.2;1.0.0-beta.3
@@ -487,7 +487,7 @@ com.azure.resourcemanager:azure-resourcemanager-planetarycomputer;1.0.0;1.1.0-be
 com.azure.resourcemanager:azure-resourcemanager-kubernetesconfiguration-fluxconfigurations;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-kubernetesconfiguration-extensions;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-kubernetesconfiguration-extensiontypes;1.0.0-beta.1;1.0.0-beta.2
-com.azure.resourcemanager:azure-resourcemanager-cloudhealth;1.0.0-beta.5;1.0.0-beta.6
+com.azure.resourcemanager:azure-resourcemanager-cloudhealth;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-resources-deploymentstacks;1.1.0;1.2.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-kubernetesconfiguration-privatelinkscopes;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-resources-bicep;1.0.0-beta.1;1.0.0-beta.2
