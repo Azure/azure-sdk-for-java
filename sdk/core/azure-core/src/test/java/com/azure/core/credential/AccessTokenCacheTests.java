@@ -4,6 +4,7 @@
 package com.azure.core.credential;
 
 import org.junit.jupiter.api.Test;
+import reactor.core.Disposable;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
@@ -286,6 +287,30 @@ public class AccessTokenCacheTests {
         StepVerifier.create(cache.getToken(contextEmpty, false))
             .assertNext(token -> assertEquals("token-2", token.getToken()))
             .verifyComplete();
+
+        assertEquals(2, refreshCount.get());
+    }
+
+    @Test
+    public void waitingCallerGetsTokenWhenRefreshingCallerIsCancelled() {
+        // The first token request never completes, any later one succeeds.
+        AtomicInteger refreshCount = new AtomicInteger(0);
+        TokenCredential credential = request -> refreshCount.incrementAndGet() == 1
+            ? Mono.never()
+            : Mono.just(new AccessToken("token-" + refreshCount.get(), OffsetDateTime.now().plusHours(1)));
+        AccessTokenCache cache = new AccessTokenCache(credential);
+        TokenRequestContext context = new TokenRequestContext().addScopes(SCOPE);
+
+        // The first caller starts the token refresh, the second caller waits on that refresh.
+        Disposable refreshingCaller = cache.getToken(context, false).subscribe();
+        assertEquals(1, refreshCount.get());
+        Mono<AccessToken> waitingCaller = cache.getToken(context, false);
+
+        StepVerifier.create(waitingCaller)
+            .then(refreshingCaller::dispose)
+            .assertNext(token -> assertEquals("token-2", token.getToken()))
+            .expectComplete()
+            .verify(Duration.ofSeconds(10));
 
         assertEquals(2, refreshCount.get());
     }

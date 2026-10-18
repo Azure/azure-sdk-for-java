@@ -8,6 +8,9 @@
 
 ### Bugs Fixed
 
+- Fixed `AccessTokenCache` and `SimpleTokenCache` leaving concurrent callers waiting forever when the caller that was
+  refreshing the token was cancelled, for example by a timeout. Waiting callers now retry the token acquisition.
+
 ### Other Changes
 
 ## 1.60.0 (2026-09-29)

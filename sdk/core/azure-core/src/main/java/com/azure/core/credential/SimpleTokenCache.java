@@ -159,7 +159,12 @@ public class SimpleTokenCache {
                             sinksOne.tryEmitEmpty();
                             return fallback;
                         }
-                    }).doOnError(sinksOne::tryEmitError), w -> w.set(null));
+                    }).doOnError(sinksOne::tryEmitError), w -> {
+                        w.set(null);
+                        // If the refresh was cancelled before it completed, release the callers waiting on it so they
+                        // retry instead of waiting forever. No-op if the refresh already completed the sink.
+                        sinksOne.tryEmitEmpty();
+                    });
                 } else if (cache != null && !cache.isExpired()) {
                     // another thread might be refreshing the token proactively, but the current token is still valid
                     return Mono.just(cache);
@@ -168,15 +173,26 @@ public class SimpleTokenCache {
                     Sinks.One<AccessToken> sinksOne = wip.get();
                     if (sinksOne == null) {
                         // the refreshing thread has finished
-                        return Mono.just(cache);
+                        return validCachedTokenOrRefresh();
                     } else {
                         // wait for refreshing thread to finish but defer to updated cache in case just missed onNext()
-                        return sinksOne.asMono().switchIfEmpty(Mono.fromSupplier(() -> cache));
+                        return sinksOne.asMono().switchIfEmpty(validCachedTokenOrRefresh());
                     }
                 }
             } catch (Exception t) {
                 return Mono.error(t);
             }
+        });
+    }
+
+    /**
+     * Emits the currently cached token if it hasn't expired, otherwise starts a new token acquisition. This covers
+     * waiting callers whose refresh ended without a token, for example because the refreshing caller was cancelled.
+     */
+    private Mono<AccessToken> validCachedTokenOrRefresh() {
+        return Mono.defer(() -> {
+            AccessToken latest = cache;
+            return (latest != null && !latest.isExpired()) ? Mono.just(latest) : getToken();
         });
     }
 
