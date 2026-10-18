@@ -5,7 +5,7 @@ package com.azure.storage.blob.implementation.util;
 
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.blob.options.SessionOptions;
+import com.azure.storage.blob.options.SessionContext;
 
 import java.util.Objects;
 
@@ -14,7 +14,7 @@ import java.util.Objects;
  * container and account.
  * <p>
  * The session authentication policy populates the container name from the request URL and the account name
- * from {@link SessionOptions#getAccountName()} or the request URL. This object does not resolve missing
+ * from {@link SessionContext#getAccountName()} or the request URL. This object does not resolve missing
  * values itself. When calling the built-in provider directly, a nonempty container name and an acquirer are
  * required, and an account name must be supplied either by this context or by the acquirer.
  * <p>

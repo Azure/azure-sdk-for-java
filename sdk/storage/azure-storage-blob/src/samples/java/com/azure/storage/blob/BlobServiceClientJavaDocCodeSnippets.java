@@ -14,7 +14,7 @@ import com.azure.storage.blob.models.BlobServiceProperties;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.StorageAccountInfo;
-import com.azure.storage.blob.options.SessionOptions;
+import com.azure.storage.blob.options.SessionContext;
 import com.azure.core.credential.TokenCredential;
 import com.azure.storage.blob.options.BlobContainerCreateOptions;
 import com.azure.storage.blob.options.FindBlobsOptions;
@@ -38,19 +38,19 @@ public class BlobServiceClientJavaDocCodeSnippets {
     private final Duration timeout = Duration.ofSeconds(30);
 
     /**
-     * Configures session authentication using session options.
+     * Configures session authentication using a session context.
      * @param credential The OAuth credential.
      * @param httpClient The HTTP transport configured for session acquisition and blob requests.
      */
-    public void configureSessionOptions(TokenCredential credential, HttpClient httpClient) {
-        // BEGIN: com.azure.storage.blob.options.SessionOptions.create
+    public void configureSessionContext(TokenCredential credential, HttpClient httpClient) {
+        // BEGIN: com.azure.storage.blob.options.SessionContext.create
         String endpoint = "https://account.blob.core.windows.net";
-        SessionOptions sessions = new SessionOptions(endpoint, credential)
-            .setSessionMode(SessionOptions.SessionMode.ENABLED);
+        SessionContext sessions = new SessionContext(endpoint, credential)
+            .setSessionMode(SessionContext.SessionMode.ENABLED);
 
         BlobServiceClient client = new BlobServiceClientBuilder().endpoint(endpoint).credential(credential)
-            .httpClient(httpClient).sessionOptions(sessions).buildClient();
-        // END: com.azure.storage.blob.options.SessionOptions.create
+            .httpClient(httpClient).sessionContext(sessions).buildClient();
+        // END: com.azure.storage.blob.options.SessionContext.create
     }
 
     /**

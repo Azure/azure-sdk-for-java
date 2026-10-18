@@ -13,8 +13,8 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobUrlParts;
-import com.azure.storage.blob.options.SessionOptions;
-import com.azure.storage.blob.options.SessionOptions.SessionMode;
+import com.azure.storage.blob.options.SessionContext;
+import com.azure.storage.blob.options.SessionContext.SessionMode;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.policy.StorageBearerTokenChallengeAuthorizationPolicy;
 import reactor.core.publisher.Mono;
@@ -68,11 +68,11 @@ final class SessionAuthenticationPolicy implements HttpPipelinePolicy {
      * @param bearerPolicy the bearer token policy used for non-session requests and fallback.
      * @param sessionProvider the provider used to acquire and manage session credentials.
      * @param sessionAcquirer the acquirer bound to the pipeline that contains this policy.
-     * @param sessionOptions the options that configure session authentication. Values are captured at construction.
+     * @param sessionContext the context that configures session authentication. Values are captured at construction.
      */
     SessionAuthenticationPolicy(StorageBearerTokenChallengeAuthorizationPolicy bearerPolicy,
-        SessionProvider sessionProvider, SessionAcquirer sessionAcquirer, SessionOptions sessionOptions) {
-        this(bearerPolicy, sessionProvider, sessionAcquirer, sessionOptions, Clock.systemUTC());
+        SessionProvider sessionProvider, SessionAcquirer sessionAcquirer, SessionContext sessionContext) {
+        this(bearerPolicy, sessionProvider, sessionAcquirer, sessionContext, Clock.systemUTC());
     }
 
     /**
@@ -81,17 +81,17 @@ final class SessionAuthenticationPolicy implements HttpPipelinePolicy {
      * @param bearerPolicy the bearer token policy used for non-session requests and fallback.
      * @param sessionProvider the provider used to acquire and manage session credentials.
      * @param sessionAcquirer the acquirer bound to the pipeline that contains this policy.
-     * @param sessionOptions the options that configure session authentication. Values are captured at construction.
+     * @param sessionContext the context that configures session authentication. Values are captured at construction.
      * @param clock the clock used for signing.
      */
     SessionAuthenticationPolicy(StorageBearerTokenChallengeAuthorizationPolicy bearerPolicy,
-        SessionProvider sessionProvider, SessionAcquirer sessionAcquirer, SessionOptions sessionOptions, Clock clock) {
+        SessionProvider sessionProvider, SessionAcquirer sessionAcquirer, SessionContext sessionContext, Clock clock) {
         this.bearerPolicy = Objects.requireNonNull(bearerPolicy, "'bearerPolicy' cannot be null.");
         this.sessionProvider = Objects.requireNonNull(sessionProvider, "'sessionProvider' cannot be null.");
         this.sessionAcquirer = Objects.requireNonNull(sessionAcquirer, "'sessionAcquirer' cannot be null.");
-        Objects.requireNonNull(sessionOptions, "'sessionOptions' cannot be null.");
-        this.sessionMode = ModelHelper.resolveSessionMode(sessionOptions.getSessionMode());
-        this.accountName = sessionOptions.getAccountName();
+        Objects.requireNonNull(sessionContext, "'sessionContext' cannot be null.");
+        this.sessionMode = ModelHelper.resolveSessionMode(sessionContext.getSessionMode());
+        this.accountName = sessionContext.getAccountName();
         this.clock = Objects.requireNonNull(clock, "'clock' cannot be null.");
     }
 

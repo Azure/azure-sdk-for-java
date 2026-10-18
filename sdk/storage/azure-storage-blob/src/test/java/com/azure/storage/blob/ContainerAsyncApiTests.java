@@ -23,8 +23,8 @@ import com.azure.storage.blob.implementation.models.BlobItemInternal;
 import com.azure.storage.blob.implementation.util.ArrowBlobListDeserializer;
 import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.*;
-import com.azure.storage.blob.options.SessionOptions;
-import com.azure.storage.blob.options.SessionOptions.SessionMode;
+import com.azure.storage.blob.options.SessionContext;
+import com.azure.storage.blob.options.SessionContext.SessionMode;
 import com.azure.storage.blob.options.BlobContainerCreateOptions;
 import com.azure.storage.blob.options.BlobParallelUploadOptions;
 import com.azure.storage.blob.options.BlobSetAccessTierOptions;
@@ -2655,8 +2655,8 @@ public class ContainerAsyncApiTests extends BlobTestBase {
             .getBlobContainerAsyncClient(ccAsync.getBlobContainerName());
     }
 
-    private SessionOptions sessionEnabledOptions() {
-        return new SessionOptions().setSessionMode(SessionMode.ENABLED).setAccountName(ccAsync.getAccountName());
+    private SessionContext sessionEnabledOptions() {
+        return new SessionContext().setSessionMode(SessionMode.ENABLED).setAccountName(ccAsync.getAccountName());
     }
 
 }

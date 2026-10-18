@@ -27,8 +27,8 @@ import com.azure.storage.blob.BlobServiceAsyncClient;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.storage.blob.BlobServiceVersion;
-import com.azure.storage.blob.implementation.accesshelpers.SessionOptionsAccessor;
-import com.azure.storage.blob.options.SessionOptions;
+import com.azure.storage.blob.implementation.accesshelpers.SessionContextAccessor;
+import com.azure.storage.blob.options.SessionContext;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.RetryPolicyType;
 import org.junit.jupiter.api.Test;
@@ -59,39 +59,39 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class SessionOptionsTests {
+public class SessionContextTests {
     private static final String ENDPOINT = "https://account.blob.core.windows.net";
     private static final HttpHeaderName CONSUMER_HEADER = HttpHeaderName.fromString("x-test-consumer");
 
     @Test
     public void defaultOptionsUseAutomaticModeAndPipelineConfiguration() {
-        SessionOptions options = new SessionOptions();
+        SessionContext options = new SessionContext();
 
-        assertEquals(SessionOptions.SessionMode.AUTO, options.getSessionMode());
-        assertNull(SessionOptionsAccessor.getEndpoint(options));
-        assertNull(SessionOptionsAccessor.getCredential(options));
+        assertEquals(SessionContext.SessionMode.AUTO, options.getSessionMode());
+        assertNull(SessionContextAccessor.getEndpoint(options));
+        assertNull(SessionContextAccessor.getCredential(options));
     }
 
     @Test
     public void constructorStoresSessionAcquisitionConfiguration() {
         MockTokenCredential credential = new MockTokenCredential();
-        SessionOptions options = new SessionOptions(ENDPOINT, credential);
+        SessionContext options = new SessionContext(ENDPOINT, credential);
 
-        assertEquals(SessionOptions.SessionMode.AUTO, options.getSessionMode());
-        assertEquals(ENDPOINT, SessionOptionsAccessor.getEndpoint(options));
-        assertSame(credential, SessionOptionsAccessor.getCredential(options));
+        assertEquals(SessionContext.SessionMode.AUTO, options.getSessionMode());
+        assertEquals(ENDPOINT, SessionContextAccessor.getEndpoint(options));
+        assertSame(credential, SessionContextAccessor.getCredential(options));
     }
 
     @ParameterizedTest
     @ValueSource(booleans = { true, false })
     public void sharedOptionsReuseProviderAcrossIndependentClients(boolean customOptions) {
-        SessionOptions options
-            = (customOptions ? new SessionOptions(ENDPOINT, new MockTokenCredential()) : new SessionOptions())
-                .setSessionMode(SessionOptions.SessionMode.ENABLED);
-        BlobServiceClient first = serviceClientBuilder().sessionOptions(options).buildClient();
+        SessionContext options
+            = (customOptions ? new SessionContext(ENDPOINT, new MockTokenCredential()) : new SessionContext())
+                .setSessionMode(SessionContext.SessionMode.ENABLED);
+        BlobServiceClient first = serviceClientBuilder().sessionContext(options).buildClient();
         SessionProvider provider = existingProvider(options);
-        BlobServiceClient second = serviceClientBuilder().sessionOptions(options).buildClient();
-        serviceClientBuilder().sessionOptions(options).buildAsyncClient();
+        BlobServiceClient second = serviceClientBuilder().sessionContext(options).buildClient();
+        serviceClientBuilder().sessionContext(options).buildAsyncClient();
 
         assertSame(first.getHttpPipeline(), first.getBlobContainerClient("container").getHttpPipeline());
         assertSame(first.getHttpPipeline(),
@@ -99,16 +99,16 @@ public class SessionOptionsTests {
         assertNotSame(first.getHttpPipeline(), second.getHttpPipeline());
         assertSame(provider, existingProvider(options));
 
-        SessionOptions separate
-            = (customOptions ? new SessionOptions(ENDPOINT, new MockTokenCredential()) : new SessionOptions())
-                .setSessionMode(SessionOptions.SessionMode.ENABLED);
-        serviceClientBuilder().sessionOptions(separate).buildClient();
+        SessionContext separate
+            = (customOptions ? new SessionContext(ENDPOINT, new MockTokenCredential()) : new SessionContext())
+                .setSessionMode(SessionContext.SessionMode.ENABLED);
+        serviceClientBuilder().sessionContext(separate).buildClient();
         assertNotSame(provider, existingProvider(separate));
     }
 
     @Test
     public void concurrentBuildersInitializeOnlyOneProvider() throws Exception {
-        SessionOptions options = new SessionOptions().setSessionMode(SessionOptions.SessionMode.ENABLED);
+        SessionContext options = new SessionContext().setSessionMode(SessionContext.SessionMode.ENABLED);
         ExecutorService executor = Executors.newFixedThreadPool(4);
         CountDownLatch start = new CountDownLatch(1);
         List<Future<SessionProvider>> results = new ArrayList<>();
@@ -116,7 +116,7 @@ public class SessionOptionsTests {
             for (int i = 0; i < 4; i++) {
                 results.add(executor.submit(() -> {
                     assertTrue(start.await(10, TimeUnit.SECONDS));
-                    serviceClientBuilder().sessionOptions(options).buildClient();
+                    serviceClientBuilder().sessionContext(options).buildClient();
                     return existingProvider(options);
                 }));
             }
@@ -131,16 +131,16 @@ public class SessionOptionsTests {
         }
     }
 
-    private static SessionProvider existingProvider(SessionOptions options) {
-        return SessionOptionsAccessor.getOrCreateSessionProvider(options, SessionProvider.class, () -> {
+    private static SessionProvider existingProvider(SessionContext options) {
+        return SessionContextAccessor.getOrCreateSessionProvider(options, SessionProvider.class, () -> {
             throw new AssertionError("The builder must initialize the provider.");
         });
     }
 
     @Test
     public void constructorRequiresEndpointAndCredential() {
-        assertThrows(NullPointerException.class, () -> new SessionOptions(null, new MockTokenCredential()));
-        assertThrows(NullPointerException.class, () -> new SessionOptions(ENDPOINT, null));
+        assertThrows(NullPointerException.class, () -> new SessionContext(null, new MockTokenCredential()));
+        assertThrows(NullPointerException.class, () -> new SessionContext(ENDPOINT, null));
     }
 
     @Test
@@ -170,9 +170,9 @@ public class SessionOptionsTests {
         AtomicInteger loggedAcquisitions = new AtomicInteger();
         TokenCredential acquisitionCredential
             = context -> Mono.just(new AccessToken("acquisition-token", OffsetDateTime.now().plusHours(1)));
-        SessionOptions options
-            = (customOptions ? new SessionOptions(ENDPOINT, acquisitionCredential) : new SessionOptions())
-                .setSessionMode(SessionOptions.SessionMode.ENABLED);
+        SessionContext options
+            = (customOptions ? new SessionContext(ENDPOINT, acquisitionCredential) : new SessionContext())
+                .setSessionMode(SessionContext.SessionMode.ENABLED);
         HttpClient firstTransport = consumerTransport(sameTransport ? null : "first", customOptions, acquisitions,
             downloads, currentToken, rejectNextSession);
         HttpClient secondTransport = sameTransport
@@ -209,14 +209,14 @@ public class SessionOptionsTests {
     @Test
     public void sessionModeIsCapturedAtBuildAndAcquisitionUsesRequestingClient() {
         AtomicInteger acquisitions = new AtomicInteger();
-        SessionOptions options = new SessionOptions();
+        SessionContext options = new SessionContext();
         BlobServiceClient disabledClient = serviceClientBuilder().httpClient(request -> {
             assertEquals(HttpMethod.GET, request.getHttpMethod(),
                 "A client built with sessions disabled must not acquire sessions.");
             assertTrue(request.getHeaders().getValue(HttpHeaderName.AUTHORIZATION).startsWith("Bearer "));
             return downloadResponse(request);
-        }).sessionOptions(options).buildClient();
-        options.setSessionMode(SessionOptions.SessionMode.ENABLED);
+        }).sessionContext(options).buildClient();
+        options.setSessionMode(SessionContext.SessionMode.ENABLED);
         downloadFromDerivedClients(disabledClient);
 
         BlobServiceClientBuilder enabled = serviceClientBuilder().httpClient(request -> {
@@ -226,7 +226,7 @@ public class SessionOptionsTests {
             }
             assertTrue(request.getHeaders().getValue(HttpHeaderName.AUTHORIZATION).startsWith("Session enabled:"));
             return downloadResponse(request);
-        }).sessionOptions(options);
+        }).sessionContext(options);
 
         downloadFromDerivedClients(enabled, true);
         assertEquals(1, acquisitions.get());
@@ -247,7 +247,7 @@ public class SessionOptionsTests {
             return downloadResponse(request);
         };
         BlobServiceClientBuilder builder = serviceClientBuilder().httpClient(transport)
-            .sessionOptions(new SessionOptions().setSessionMode(SessionOptions.SessionMode.ENABLED))
+            .sessionContext(new SessionContext().setSessionMode(SessionContext.SessionMode.ENABLED))
             .retryOptions(new RequestRetryOptions(RetryPolicyType.FIXED, 3, 10, 1L, 1L, null));
 
         downloadFromDerivedClients(builder, async);
@@ -273,8 +273,8 @@ public class SessionOptionsTests {
             return downloadResponse(request);
         };
         BlobServiceClientBuilder builder = serviceClientBuilder().httpClient(transport)
-            .sessionOptions(new SessionOptions(ENDPOINT, new MockTokenCredential())
-                .setSessionMode(SessionOptions.SessionMode.ENABLED))
+            .sessionContext(new SessionContext(ENDPOINT, new MockTokenCredential())
+                .setSessionMode(SessionContext.SessionMode.ENABLED))
             .retryOptions(new RequestRetryOptions(RetryPolicyType.FIXED, 2, 10, 1L, 1L, null))
             .addPolicy((context, next) -> {
                 if (context.getHttpRequest().getHttpMethod() == HttpMethod.POST) {
@@ -306,16 +306,16 @@ public class SessionOptionsTests {
 
     @Test
     public void customAcquisitionRequiresHttps() {
-        SessionOptions options = new SessionOptions("http://account.blob.core.windows.net", new MockTokenCredential())
-            .setSessionMode(SessionOptions.SessionMode.ENABLED);
+        SessionContext options = new SessionContext("http://account.blob.core.windows.net", new MockTokenCredential())
+            .setSessionMode(SessionContext.SessionMode.ENABLED);
         assertThrows(IllegalArgumentException.class,
-            () -> serviceClientBuilder().sessionOptions(options).buildClient());
+            () -> serviceClientBuilder().sessionContext(options).buildClient());
     }
 
-    private static BlobServiceClientBuilder consumerBuilder(SessionOptions options, HttpClient transport, String name,
+    private static BlobServiceClientBuilder consumerBuilder(SessionContext options, HttpClient transport, String name,
         HttpLogOptions logOptions) {
         return serviceClientBuilder().httpClient(transport)
-            .sessionOptions(options)
+            .sessionContext(options)
             .serviceVersion(BlobServiceVersion.V2026_10_06)
             .httpLogOptions(logOptions)
             .addPolicy(new HttpLoggingPolicy(logOptions))

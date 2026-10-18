@@ -21,7 +21,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobUrlParts;
-import com.azure.storage.blob.options.SessionOptions;
+import com.azure.storage.blob.options.SessionContext;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.RetryPolicyType;
@@ -116,8 +116,8 @@ public class BuilderHelperTests {
                 .credential(new MockTokenCredential())
                 .httpClient(transport)
                 .addPolicy(new AddHeadersPolicy(new HttpHeaders().set(marker, "configured")))
-                .sessionOptions(new SessionOptions(ENDPOINT, new MockTokenCredential())
-                    .setSessionMode(SessionOptions.SessionMode.ENABLED));
+                .sessionContext(new SessionContext(ENDPOINT, new MockTokenCredential())
+                    .setSessionMode(SessionContext.SessionMode.ENABLED));
         if (async) {
             for (int i = 0; i < 2; i++) {
                 DataLakeServiceAsyncClient client = builder.buildAsyncClient();

@@ -19,7 +19,7 @@ import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.CoreUtils;
 import com.azure.storage.blob.models.BlobErrorCode;
-import com.azure.storage.blob.options.SessionOptions;
+import com.azure.storage.blob.options.SessionContext;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
@@ -212,20 +212,20 @@ public class DataLakeTestBase extends TestProxyTestBase {
         return getOAuthServiceClientBuilder().buildAsyncClient();
     }
 
-    protected DataLakeServiceClient getOAuthServiceClient(SessionOptions sessionOptions) {
-        return getOAuthServiceClient(sessionOptions, (HttpPipelinePolicy[]) null);
+    protected DataLakeServiceClient getOAuthServiceClient(SessionContext sessionContext) {
+        return getOAuthServiceClient(sessionContext, (HttpPipelinePolicy[]) null);
     }
 
-    protected DataLakeServiceClient getOAuthServiceClient(SessionOptions sessionOptions,
+    protected DataLakeServiceClient getOAuthServiceClient(SessionContext sessionContext,
         HttpPipelinePolicy... policies) {
-        return getOAuthServiceClientBuilder(sessionOptions, policies).buildClient();
+        return getOAuthServiceClientBuilder(sessionContext, policies).buildClient();
     }
 
-    protected DataLakeServiceClientBuilder getOAuthServiceClientBuilder(SessionOptions sessionOptions,
+    protected DataLakeServiceClientBuilder getOAuthServiceClientBuilder(SessionContext sessionContext,
         HttpPipelinePolicy... policies) {
         DataLakeServiceClientBuilder builder
             = new DataLakeServiceClientBuilder().endpoint(ENVIRONMENT.getDataLakeAccount().getDataLakeEndpoint())
-                .sessionOptions(sessionOptions);
+                .sessionContext(sessionContext);
 
         instrument(builder);
 
@@ -240,13 +240,13 @@ public class DataLakeTestBase extends TestProxyTestBase {
         return builder.credential(StorageCommonTestUtils.getTokenCredential(interceptorManager));
     }
 
-    protected DataLakeServiceAsyncClient getOAuthServiceAsyncClient(SessionOptions sessionOptions) {
-        return getOAuthServiceAsyncClient(sessionOptions, (HttpPipelinePolicy[]) null);
+    protected DataLakeServiceAsyncClient getOAuthServiceAsyncClient(SessionContext sessionContext) {
+        return getOAuthServiceAsyncClient(sessionContext, (HttpPipelinePolicy[]) null);
     }
 
-    protected DataLakeServiceAsyncClient getOAuthServiceAsyncClient(SessionOptions sessionOptions,
+    protected DataLakeServiceAsyncClient getOAuthServiceAsyncClient(SessionContext sessionContext,
         HttpPipelinePolicy... policies) {
-        return getOAuthServiceClientBuilder(sessionOptions, policies).buildAsyncClient();
+        return getOAuthServiceClientBuilder(sessionContext, policies).buildAsyncClient();
     }
 
     protected DataLakeServiceClient getServiceClient(TestAccount account) {

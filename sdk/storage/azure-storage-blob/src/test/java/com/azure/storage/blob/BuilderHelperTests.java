@@ -28,8 +28,8 @@ import com.azure.core.util.Header;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.util.BuilderHelper;
 import com.azure.storage.blob.implementation.util.ModelHelper;
-import com.azure.storage.blob.options.SessionOptions;
-import com.azure.storage.blob.options.SessionOptions.SessionMode;
+import com.azure.storage.blob.options.SessionContext;
+import com.azure.storage.blob.options.SessionContext.SessionMode;
 import com.azure.storage.blob.specialized.AppendBlobClient;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.blob.specialized.PageBlobClient;
@@ -729,13 +729,13 @@ public class BuilderHelperTests {
     // region buildPipeline session tests
 
     @Test
-    public void sessionOptionsUseAutoByDefault() {
-        assertEquals(SessionMode.AUTO, new SessionOptions().getSessionMode());
+    public void sessionContextUseAutoByDefault() {
+        assertEquals(SessionMode.AUTO, new SessionContext().getSessionMode());
     }
 
     @Test
     public void nullSessionModeResetsToAuto() {
-        SessionOptions options = new SessionOptions().setSessionMode(SessionMode.ENABLED);
+        SessionContext options = new SessionContext().setSessionMode(SessionMode.ENABLED);
 
         assertEquals(SessionMode.ENABLED, options.getSessionMode());
         assertSame(options, options.setSessionMode(null));
@@ -759,7 +759,7 @@ public class BuilderHelperTests {
         HttpPipeline pipeline = new BlobServiceClientBuilder().endpoint(ENDPOINT)
             .credential(new MockTokenCredential())
             .httpClient(new NoOpHttpClient())
-            .sessionOptions(new SessionOptions().setSessionMode(mode))
+            .sessionContext(new SessionContext().setSessionMode(mode))
             .buildClient()
             .getHttpPipeline();
 
@@ -774,7 +774,7 @@ public class BuilderHelperTests {
         HttpPipeline pipeline = new BlobServiceClientBuilder().endpoint(ENDPOINT)
             .credential(new MockTokenCredential())
             .httpClient(new NoOpHttpClient())
-            .sessionOptions(new SessionOptions().setSessionMode(mode))
+            .sessionContext(new SessionContext().setSessionMode(mode))
             .buildAsyncClient()
             .getHttpPipeline();
 
@@ -845,7 +845,7 @@ public class BuilderHelperTests {
         HttpPipeline pipeline = BuilderHelper.buildPipeline(null, new MockTokenCredential(), null, null, ENDPOINT,
             REQUEST_RETRY_OPTIONS, null, BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(), sessionClient,
             Collections.singletonList(perCallPolicy), Collections.singletonList(perRetryPolicy), null, null,
-            new ClientLogger(BuilderHelperTests.class), new SessionOptions().setSessionMode(SessionMode.ENABLED),
+            new ClientLogger(BuilderHelperTests.class), new SessionContext().setSessionMode(SessionMode.ENABLED),
             BlobServiceVersion.getLatest());
 
         StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.GET, ENDPOINT + "container/blob")))
@@ -864,7 +864,7 @@ public class BuilderHelperTests {
 
     @Test
     public void pipelinesWithoutSessionsKeepPlainLoggingPolicy() {
-        HttpPipeline pipeline = buildTokenPipeline(new SessionOptions());
+        HttpPipeline pipeline = buildTokenPipeline(new SessionContext());
 
         assertTrue(hasPolicyOfType(pipeline, "HttpLoggingPolicy"));
         assertFalse(hasPolicyOfType(pipeline, "SessionAwareLoggingPolicy"));
@@ -876,7 +876,7 @@ public class BuilderHelperTests {
             new RequestRetryOptions(), null, BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(),
             new NoOpHttpClient(), new ArrayList<>(),
             Collections.singletonList(new HttpLoggingPolicy(new HttpLogOptions())), null, null,
-            new ClientLogger(BuilderHelperTests.class), new SessionOptions().setSessionMode(SessionMode.ENABLED),
+            new ClientLogger(BuilderHelperTests.class), new SessionContext().setSessionMode(SessionMode.ENABLED),
             BlobServiceVersion.getLatest());
 
         assertFalse(hasPolicyOfType(pipeline, "HttpLoggingPolicy"),
@@ -915,7 +915,7 @@ public class BuilderHelperTests {
                 "https://custom.endpoint.example/", REQUEST_RETRY_OPTIONS, null,
                 BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(), new NoOpHttpClient(), new ArrayList<>(),
                 new ArrayList<>(), null, null, new ClientLogger(BuilderHelperTests.class),
-                new SessionOptions().setSessionMode(SessionMode.ENABLED), BlobServiceVersion.getLatest()));
+                new SessionContext().setSessionMode(SessionMode.ENABLED), BlobServiceVersion.getLatest()));
     }
 
     private static SessionLoggingTestContext createSessionLoggingTestContext(HttpLogDetailLevel logLevel) {
@@ -942,11 +942,11 @@ public class BuilderHelperTests {
                 return response.getBodyAsString().defaultIfEmpty("").doOnNext(loggedBodies::add).thenReturn(response);
             });
 
-        SessionOptions sessionOptions = new SessionOptions().setSessionMode(SessionMode.ENABLED);
+        SessionContext sessionContext = new SessionContext().setSessionMode(SessionMode.ENABLED);
         HttpPipeline pipeline
             = BuilderHelper.buildPipeline(null, new MockTokenCredential(), null, null, ENDPOINT, REQUEST_RETRY_OPTIONS,
                 null, logOptions, new ClientOptions(), httpClient, new ArrayList<>(), new ArrayList<>(), null, null,
-                new ClientLogger(BuilderHelperTests.class), sessionOptions, BlobServiceVersion.getLatest());
+                new ClientLogger(BuilderHelperTests.class), sessionContext, BlobServiceVersion.getLatest());
         return new SessionLoggingTestContext(pipeline, loggedBodies, sessionResponse, dataResponse);
     }
 
@@ -996,18 +996,18 @@ public class BuilderHelperTests {
         return Stream.of(
             Arguments.of("null session options", (Supplier<HttpPipeline>) () -> buildTokenPipeline(null), true),
             Arguments.of("default session options",
-                (Supplier<HttpPipeline>) () -> buildTokenPipeline(new SessionOptions()), true),
+                (Supplier<HttpPipeline>) () -> buildTokenPipeline(new SessionContext()), true),
             Arguments.of("automatic session mode",
                 (Supplier<HttpPipeline>) () -> buildTokenPipeline(
-                    new SessionOptions().setSessionMode(SessionMode.AUTO)),
+                    new SessionContext().setSessionMode(SessionMode.AUTO)),
                 true),
             Arguments.of("session mode reset to null",
                 (Supplier<HttpPipeline>) () -> buildTokenPipeline(
-                    new SessionOptions().setSessionMode(SessionMode.ENABLED).setSessionMode(null)),
+                    new SessionContext().setSessionMode(SessionMode.ENABLED).setSessionMode(null)),
                 true),
             Arguments.of("sessions disabled",
                 (Supplier<HttpPipeline>) () -> buildTokenPipeline(
-                    new SessionOptions().setSessionMode(SessionMode.DISABLED)),
+                    new SessionContext().setSessionMode(SessionMode.DISABLED)),
                 true),
             Arguments.of("shared key credential", (Supplier<HttpPipeline>) BuilderHelperTests::buildSharedKeyPipeline,
                 false));
@@ -1043,11 +1043,11 @@ public class BuilderHelperTests {
     /**
      * Helper to build a pipeline with bearer token auth and the given session options.
      */
-    private static HttpPipeline buildTokenPipeline(SessionOptions sessionOptions) {
+    private static HttpPipeline buildTokenPipeline(SessionContext sessionContext) {
         return BuilderHelper.buildPipeline(null, new MockTokenCredential(), null, null, ENDPOINT,
             new RequestRetryOptions(), null, BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(),
             new NoOpHttpClient(), new ArrayList<>(), new ArrayList<>(), null, null,
-            new ClientLogger(BuilderHelperTests.class), sessionOptions, BlobServiceVersion.getLatest());
+            new ClientLogger(BuilderHelperTests.class), sessionContext, BlobServiceVersion.getLatest());
     }
 
     /**

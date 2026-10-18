@@ -18,8 +18,8 @@ import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.BlobTestBase;
 import com.azure.storage.blob.models.BlobStorageException;
-import com.azure.storage.blob.options.SessionOptions;
-import com.azure.storage.blob.options.SessionOptions.SessionMode;
+import com.azure.storage.blob.options.SessionContext;
+import com.azure.storage.blob.options.SessionContext.SessionMode;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.policy.StorageBearerTokenChallengeAuthorizationPolicy;
 import com.azure.storage.common.policy.RequestRetryOptions;
@@ -106,7 +106,7 @@ public class SessionAuthenticationPolicyTest {
     @ParameterizedTest
     @EnumSource(SessionMode.class)
     public void policyRespectsSessionModeAsync(SessionMode mode) {
-        SessionOptions options = new SessionOptions().setSessionMode(mode);
+        SessionContext options = new SessionContext().setSessionMode(mode);
         policy = new SessionAuthenticationPolicy(bearerPolicy, sessionProvider, testAcquirer(), options);
         boolean sessionsEnabled = ModelHelper.resolveSessionMode(mode) == SessionMode.ENABLED;
         options.setSessionMode(sessionsEnabled ? SessionMode.DISABLED : SessionMode.ENABLED);
@@ -126,7 +126,7 @@ public class SessionAuthenticationPolicyTest {
     @ParameterizedTest
     @EnumSource(SessionMode.class)
     public void policyRespectsSessionModeSync(SessionMode mode) {
-        SessionOptions options = new SessionOptions().setSessionMode(mode);
+        SessionContext options = new SessionContext().setSessionMode(mode);
         policy = new SessionAuthenticationPolicy(bearerPolicy, sessionProvider, testAcquirer(), options);
         boolean sessionsEnabled = ModelHelper.resolveSessionMode(mode) == SessionMode.ENABLED;
         options.setSessionMode(sessionsEnabled ? SessionMode.DISABLED : SessionMode.ENABLED);
@@ -149,7 +149,7 @@ public class SessionAuthenticationPolicyTest {
     @ParameterizedTest
     @CsvSource({ "original, original", ", testaccount", "'', testaccount" })
     public void policyCapturesAccountNameAsync(String accountName, String expectedAccountName) {
-        SessionOptions options = new SessionOptions().setSessionMode(SessionMode.ENABLED).setAccountName(accountName);
+        SessionContext options = new SessionContext().setSessionMode(SessionMode.ENABLED).setAccountName(accountName);
         policy = new SessionAuthenticationPolicy(bearerPolicy, sessionProvider, testAcquirer(), options);
         options.setAccountName("changed");
         when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.just(credentialWithToken()));
@@ -167,7 +167,7 @@ public class SessionAuthenticationPolicyTest {
     @ParameterizedTest
     @CsvSource({ "original, original", ", testaccount", "'', testaccount" })
     public void policyCapturesAccountNameSync(String accountName, String expectedAccountName) {
-        SessionOptions options = new SessionOptions().setSessionMode(SessionMode.ENABLED).setAccountName(accountName);
+        SessionContext options = new SessionContext().setSessionMode(SessionMode.ENABLED).setAccountName(accountName);
         policy = new SessionAuthenticationPolicy(bearerPolicy, sessionProvider, testAcquirer(), options);
         options.setAccountName("changed");
         when(sessionProvider.getSession(any())).thenReturn(credentialWithToken());
@@ -657,7 +657,7 @@ public class SessionAuthenticationPolicyTest {
     @Test
     public void asyncPolicyGetsContainerNameFromCustomEndpoint() {
         policy = new SessionAuthenticationPolicy(bearerPolicy, sessionProvider,
-            testAcquirer("https://custom.endpoint.example"), new SessionOptions().setSessionMode(SessionMode.ENABLED));
+            testAcquirer("https://custom.endpoint.example"), new SessionContext().setSessionMode(SessionMode.ENABLED));
         when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.just(credentialWithToken()));
         HttpRequest request = new HttpRequest(HttpMethod.GET, "https://custom.endpoint.example/mycontainer/myblob");
 
@@ -687,7 +687,7 @@ public class SessionAuthenticationPolicyTest {
     public void sessionRequestContextCarriesPolicyAcquirer() {
         SessionAcquirer acquirer = testAcquirer();
         policy = new SessionAuthenticationPolicy(bearerPolicy, sessionProvider, acquirer,
-            new SessionOptions().setSessionMode(SessionMode.ENABLED));
+            new SessionContext().setSessionMode(SessionMode.ENABLED));
         when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.just(credentialWithToken()));
 
         StepVerifier.create(buildPipeline(successTransport()).send(blobGetRequest())).assertNext(response -> {
@@ -713,7 +713,7 @@ public class SessionAuthenticationPolicyTest {
         });
         policy = new SessionAuthenticationPolicy(bearerPolicy, sessionProvider,
             new SessionAcquirer("https://testaccount.blob.core.windows.net", null, null, acquisitionBearerPolicy),
-            new SessionOptions().setSessionMode(SessionMode.ENABLED));
+            new SessionContext().setSessionMode(SessionMode.ENABLED));
         HttpPipeline pipeline = buildPipeline(successTransport());
         Context acquisition = new Context(SessionAcquirer.SESSION_ACQUISITION_CONTEXT_KEY, true);
 
@@ -844,7 +844,7 @@ public class SessionAuthenticationPolicyTest {
     }
 
     private SessionAuthenticationPolicy createPolicy(Clock clock) {
-        SessionOptions options = new SessionOptions().setSessionMode(SessionMode.ENABLED);
+        SessionContext options = new SessionContext().setSessionMode(SessionMode.ENABLED);
         return new SessionAuthenticationPolicy(bearerPolicy, sessionProvider, testAcquirer(), options, clock);
     }
 

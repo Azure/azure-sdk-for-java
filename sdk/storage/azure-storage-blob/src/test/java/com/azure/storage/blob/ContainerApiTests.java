@@ -44,8 +44,8 @@ import com.azure.storage.blob.models.ObjectReplicationStatus;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.RehydratePriority;
-import com.azure.storage.blob.options.SessionOptions;
-import com.azure.storage.blob.options.SessionOptions.SessionMode;
+import com.azure.storage.blob.options.SessionContext;
+import com.azure.storage.blob.options.SessionContext.SessionMode;
 import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.StorageResponseSerializationFormat;
 import com.azure.storage.blob.models.TaggedBlobItem;
@@ -2801,8 +2801,8 @@ public class ContainerApiTests extends BlobTestBase {
             .getBlobContainerClient(cc.getBlobContainerName());
     }
 
-    private SessionOptions sessionEnabledOptions() {
-        return new SessionOptions().setSessionMode(SessionMode.ENABLED).setAccountName(cc.getAccountName());
+    private SessionContext sessionEnabledOptions() {
+        return new SessionContext().setSessionMode(SessionMode.ENABLED).setAccountName(cc.getAccountName());
     }
 
 }

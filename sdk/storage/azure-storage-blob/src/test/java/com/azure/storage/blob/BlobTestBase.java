@@ -52,7 +52,7 @@ import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.LeaseStateType;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.models.PublicAccessType;
-import com.azure.storage.blob.options.SessionOptions;
+import com.azure.storage.blob.options.SessionContext;
 import com.azure.storage.blob.options.BlobBreakLeaseOptions;
 import com.azure.storage.blob.sas.BlobSasPermission;
 import com.azure.storage.blob.specialized.BlobAsyncClientBase;
@@ -429,50 +429,50 @@ public class BlobTestBase extends TestProxyTestBase {
     }
 
     protected BlobServiceClient getOAuthServiceClient() {
-        return getOAuthServiceClient(new SessionOptions());
+        return getOAuthServiceClient(new SessionContext());
     }
 
-    protected BlobServiceClient getOAuthServiceClient(SessionOptions sessionOptions) {
-        return getOAuthServiceClient(sessionOptions, (HttpPipelinePolicy[]) null);
+    protected BlobServiceClient getOAuthServiceClient(SessionContext sessionContext) {
+        return getOAuthServiceClient(sessionContext, (HttpPipelinePolicy[]) null);
     }
 
-    protected BlobServiceClient getOAuthServiceClient(SessionOptions sessionOptions, HttpPipelinePolicy... policies) {
-        return getOAuthServiceClientBuilder(sessionOptions, null, policies).buildClient();
+    protected BlobServiceClient getOAuthServiceClient(SessionContext sessionContext, HttpPipelinePolicy... policies) {
+        return getOAuthServiceClientBuilder(sessionContext, null, policies).buildClient();
     }
 
-    protected BlobServiceClient getOAuthServiceClient(SessionOptions sessionOptions, HttpClient httpClient) {
-        return getOAuthServiceClientBuilder(sessionOptions, httpClient).buildClient();
+    protected BlobServiceClient getOAuthServiceClient(SessionContext sessionContext, HttpClient httpClient) {
+        return getOAuthServiceClientBuilder(sessionContext, httpClient).buildClient();
     }
 
     protected BlobServiceAsyncClient getOAuthServiceAsyncClient() {
-        return getOAuthServiceAsyncClient(new SessionOptions());
+        return getOAuthServiceAsyncClient(new SessionContext());
     }
 
-    protected BlobServiceAsyncClient getOAuthServiceAsyncClient(SessionOptions sessionOptions) {
-        return getOAuthServiceAsyncClient(sessionOptions, (HttpPipelinePolicy[]) null);
+    protected BlobServiceAsyncClient getOAuthServiceAsyncClient(SessionContext sessionContext) {
+        return getOAuthServiceAsyncClient(sessionContext, (HttpPipelinePolicy[]) null);
     }
 
-    protected BlobServiceAsyncClient getOAuthServiceAsyncClient(SessionOptions sessionOptions,
+    protected BlobServiceAsyncClient getOAuthServiceAsyncClient(SessionContext sessionContext,
         HttpPipelinePolicy... policies) {
-        return getOAuthServiceClientBuilder(sessionOptions, null, policies).buildAsyncClient();
+        return getOAuthServiceClientBuilder(sessionContext, null, policies).buildAsyncClient();
     }
 
-    protected BlobServiceAsyncClient getOAuthServiceAsyncClient(SessionOptions sessionOptions, HttpClient httpClient) {
-        return getOAuthServiceClientBuilder(sessionOptions, httpClient).buildAsyncClient();
+    protected BlobServiceAsyncClient getOAuthServiceAsyncClient(SessionContext sessionContext, HttpClient httpClient) {
+        return getOAuthServiceClientBuilder(sessionContext, httpClient).buildAsyncClient();
     }
 
     /**
      * Builds an OAuth service client builder. When {@code httpClient} is supplied it replaces the transport that
      * {@code instrument} installed, which lets a test observe requests as they go on the wire.
      *
-     * @param sessionOptions The session options to configure.
+     * @param sessionContext The session options to configure.
      * @param httpClient The transport to send requests with, or null to keep the instrumented one.
      * @param policies Additional policies to add to the pipeline.
      * @return The configured builder.
      */
-    private BlobServiceClientBuilder getOAuthServiceClientBuilder(SessionOptions sessionOptions, HttpClient httpClient,
+    private BlobServiceClientBuilder getOAuthServiceClientBuilder(SessionContext sessionContext, HttpClient httpClient,
         HttpPipelinePolicy... policies) {
-        BlobServiceClientBuilder builder = new BlobServiceClientBuilder().sessionOptions(sessionOptions)
+        BlobServiceClientBuilder builder = new BlobServiceClientBuilder().sessionContext(sessionContext)
             .endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint());
 
         instrument(builder);

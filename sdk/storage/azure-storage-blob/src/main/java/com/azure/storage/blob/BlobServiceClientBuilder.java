@@ -30,7 +30,7 @@ import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.implementation.util.BuilderHelper;
-import com.azure.storage.blob.options.SessionOptions;
+import com.azure.storage.blob.options.SessionContext;
 import com.azure.storage.blob.models.BlobAudience;
 import com.azure.storage.blob.models.BlobContainerEncryptionScope;
 import com.azure.storage.blob.models.CpkInfo;
@@ -94,7 +94,7 @@ public final class BlobServiceClientBuilder implements TokenCredentialTrait<Blob
     private BlobServiceVersion version;
     private BlobAudience audience;
     private boolean anonymousAccess;
-    private SessionOptions sessionOptions = new SessionOptions();
+    private SessionContext sessionContext = new SessionContext();
 
     /**
      * Creates a builder instance that is able to configure and construct {@link BlobServiceClient BlobServiceClients}
@@ -158,7 +158,7 @@ public final class BlobServiceClientBuilder implements TokenCredentialTrait<Blob
         }
         return BuilderHelper.buildPipeline(storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,
             endpoint, retryOptions, coreRetryOptions, logOptions, clientOptions, httpClient, perCallPolicies,
-            perRetryPolicies, configuration, audience, LOGGER, sessionOptions, serviceVersion);
+            perRetryPolicies, configuration, audience, LOGGER, sessionContext, serviceVersion);
     }
 
     /**
@@ -600,7 +600,7 @@ public final class BlobServiceClientBuilder implements TokenCredentialTrait<Blob
     }
 
     /**
-     * Sets the {@link SessionOptions} that controls how the SDK manages session-based authentication
+     * Sets the {@link SessionContext} that controls how the SDK manages session-based authentication
      * for container clients created from this service client.
      * <p>
      * Sessions amortize authentication and authorization cost across many requests by signing them
@@ -608,15 +608,15 @@ public final class BlobServiceClientBuilder implements TokenCredentialTrait<Blob
      * {@link BlobServiceClient#getBlobContainerClient(String)} share the service client's pipeline.
      * Sessions are disabled by default and apply only to eligible GET blob requests; others use bearer
      * authentication. Clients using the same
-     * {@link SessionOptions} instance share a session cache; each client acquires sessions through its own
-     * pipeline. Share options only across clients with compatible identity and network contexts, or use
+     * {@link SessionContext} instance share a session cache; each client acquires sessions through its own
+     * pipeline. Share the context only across clients with compatible identity and network contexts, or use
      * separate instances for independent caches.
      *
-     * @param sessionOptions The session options for the HTTP pipeline.
+     * @param sessionContext The session context for the HTTP pipeline.
      * @return the updated BlobServiceClientBuilder object.
      */
-    public BlobServiceClientBuilder sessionOptions(SessionOptions sessionOptions) {
-        this.sessionOptions = sessionOptions != null ? sessionOptions : new SessionOptions();
+    public BlobServiceClientBuilder sessionContext(SessionContext sessionContext) {
+        this.sessionContext = sessionContext != null ? sessionContext : new SessionContext();
         return this;
     }
 }

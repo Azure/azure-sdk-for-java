@@ -31,7 +31,7 @@ import com.azure.storage.blob.implementation.util.BuilderHelper;
 import com.azure.storage.blob.models.BlobAudience;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.CustomerProvidedKey;
-import com.azure.storage.blob.options.SessionOptions;
+import com.azure.storage.blob.options.SessionContext;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.connectionstring.StorageAuthenticationSettings;
 import com.azure.storage.common.implementation.connectionstring.StorageConnectionString;
@@ -93,7 +93,7 @@ public final class BlobClientBuilder
     private Configuration configuration;
     private BlobServiceVersion version;
     private BlobAudience audience;
-    private SessionOptions sessionOptions = new SessionOptions();
+    private SessionContext sessionContext = new SessionContext();
 
     /**
      * Creates a builder instance that is able to configure and construct {@link BlobClient BlobClients} and {@link
@@ -108,11 +108,11 @@ public final class BlobClientBuilder
      * Applies when this builder constructs a pipeline with a {@link TokenCredential}; requests that are not
      * eligible continue to use bearer token authentication. Sessions are disabled by default.
      *
-     * @param sessionOptions The session options for the HTTP pipeline.
+     * @param sessionContext The session context for the HTTP pipeline.
      * @return the updated BlobClientBuilder object.
      */
-    public BlobClientBuilder sessionOptions(SessionOptions sessionOptions) {
-        this.sessionOptions = sessionOptions != null ? sessionOptions : new SessionOptions();
+    public BlobClientBuilder sessionContext(SessionContext sessionContext) {
+        this.sessionContext = sessionContext != null ? sessionContext : new SessionContext();
         return this;
     }
 
@@ -217,7 +217,7 @@ public final class BlobClientBuilder
 
         return BuilderHelper.buildPipeline(storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,
             endpoint, retryOptions, coreRetryOptions, logOptions, clientOptions, httpClient, perCallPolicies,
-            perRetryPolicies, configuration, audience, LOGGER, sessionOptions, serviceVersion);
+            perRetryPolicies, configuration, audience, LOGGER, sessionContext, serviceVersion);
     }
 
     /**

@@ -16,8 +16,8 @@ import com.azure.core.util.Context;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobServiceClientBuilder;
-import com.azure.storage.blob.implementation.accesshelpers.SessionOptionsAccessor;
-import com.azure.storage.blob.options.SessionOptions;
+import com.azure.storage.blob.implementation.accesshelpers.SessionContextAccessor;
+import com.azure.storage.blob.options.SessionContext;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.RetryPolicyType;
 import org.junit.jupiter.api.BeforeEach;
@@ -68,7 +68,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * {@link ContainerSessionProviderTests} covers session acquisition through the service client; these tests
  * focus on cache timing, returned credentials, and CreateSession call counts. Per-container acquisition
  * cooldown is shared across clients using the same options. Tests inject a clock-controlled provider into options;
- * {@link SessionOptionsTests} covers provider creation and sharing through the public builders.
+ * {@link SessionContextTests} covers provider creation and sharing through the public builders.
  */
 public class ContainerSessionProviderCacheTest {
 
@@ -87,7 +87,7 @@ public class ContainerSessionProviderCacheTest {
     private CreateSessionTransport httpClient;
     private ContainerSessionProvider provider;
     private SessionAcquirer acquirer;
-    private SessionOptions sessionOptions;
+    private SessionContext sessionContext;
 
     @BeforeEach
     public void setup() {
@@ -102,7 +102,7 @@ public class ContainerSessionProviderCacheTest {
         provider = new ContainerSessionProvider(clock);
         acquirer = new SessionAcquirer("https://" + ACCOUNT_NAME + ".blob.core.windows.net",
             BlobServiceVersion.getLatest(), ACCOUNT_NAME, null).bind(pipeline);
-        initializeSessionOptions();
+        initializeSessionContext();
     }
 
     @Test
@@ -275,7 +275,7 @@ public class ContainerSessionProviderCacheTest {
         enqueueSessionResponse(CONTAINER_A, FIRST_TOKEN, now().plusMinutes(20));
         enqueueSessionResponse(CONTAINER_A, SECOND_TOKEN, now().plusMinutes(20));
         assertSyncToken(overrideAccountBuilder().buildClient().getHttpPipeline(), CONTAINER_A, FIRST_TOKEN);
-        sessionOptions.setAccountName(null);
+        sessionContext.setAccountName(null);
         assertEquals("override-account",
             provider.getSession(contextFor(CONTAINER_A, "override-account")).getAccountName());
         assertSyncToken(independentClientPipeline(), CONTAINER_A, SECOND_TOKEN);
@@ -288,7 +288,7 @@ public class ContainerSessionProviderCacheTest {
         enqueueSessionResponse(CONTAINER_A, FIRST_TOKEN, now().plusMinutes(20));
         enqueueSessionResponse(CONTAINER_A, SECOND_TOKEN, now().plusMinutes(20));
         assertAsyncToken(overrideAccountBuilder().buildAsyncClient().getHttpPipeline(), CONTAINER_A, FIRST_TOKEN);
-        sessionOptions.setAccountName(null);
+        sessionContext.setAccountName(null);
         StepVerifier.create(provider.getSessionAsync(contextFor(CONTAINER_A, "override-account")))
             .assertNext(credential -> assertEquals("override-account", credential.getAccountName()))
             .verifyComplete();
@@ -300,7 +300,7 @@ public class ContainerSessionProviderCacheTest {
     }
 
     private BlobServiceClientBuilder overrideAccountBuilder() {
-        sessionOptions.setAccountName("override-account");
+        sessionContext.setAccountName("override-account");
         return independentClientBuilder();
     }
 
@@ -310,14 +310,14 @@ public class ContainerSessionProviderCacheTest {
             .credential(new MockTokenCredential())
             .httpClient(httpClient)
             .retryOptions(new RequestRetryOptions(RetryPolicyType.FIXED, 1, 30, 1L, 1L, null))
-            .sessionOptions(sessionOptions);
+            .sessionContext(sessionContext);
     }
 
-    private void initializeSessionOptions() {
-        sessionOptions
-            = new SessionOptions("https://" + ACCOUNT_NAME + ".blob.core.windows.net", new MockTokenCredential())
-                .setSessionMode(SessionOptions.SessionMode.ENABLED);
-        SessionOptionsAccessor.getOrCreateSessionProvider(sessionOptions, SessionProvider.class, () -> provider);
+    private void initializeSessionContext() {
+        sessionContext
+            = new SessionContext("https://" + ACCOUNT_NAME + ".blob.core.windows.net", new MockTokenCredential())
+                .setSessionMode(SessionContext.SessionMode.ENABLED);
+        SessionContextAccessor.getOrCreateSessionProvider(sessionContext, SessionProvider.class, () -> provider);
     }
 
     private HttpPipeline independentClientPipeline() {

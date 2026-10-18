@@ -51,8 +51,8 @@ import com.azure.storage.blob.models.ObjectReplicationPolicy;
 import com.azure.storage.blob.models.ObjectReplicationStatus;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.models.RehydratePriority;
-import com.azure.storage.blob.options.SessionOptions;
-import com.azure.storage.blob.options.SessionOptions.SessionMode;
+import com.azure.storage.blob.options.SessionContext;
+import com.azure.storage.blob.options.SessionContext.SessionMode;
 import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.SyncCopyStatusType;
 import com.azure.storage.blob.options.BlobBeginCopyOptions;
@@ -3241,7 +3241,7 @@ public class BlobApiTests extends BlobTestBase {
         });
 
         BlobClient sessionBlob
-            = getOAuthServiceClient(new SessionOptions().setSessionMode(SessionMode.ENABLED), inspect)
+            = getOAuthServiceClient(new SessionContext().setSessionMode(SessionMode.ENABLED), inspect)
                 .getBlobContainerClient(cc.getBlobContainerName())
                 .getBlobClient(blobName);
 

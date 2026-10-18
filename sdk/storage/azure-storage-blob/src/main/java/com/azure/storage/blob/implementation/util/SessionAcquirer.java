@@ -23,7 +23,7 @@ import java.util.Objects;
 /**
  * Issues CreateSession requests on behalf of a single client, through that client's own {@link HttpPipeline}.
  * <p>
- * The session cache is shared by every client using the same {@code SessionOptions}, but session acquisition is
+ * The session cache is shared by every client using the same {@code SessionContext}, but session acquisition is
  * not: each client's {@link SessionAuthenticationPolicy} owns an acquirer bound to the pipeline that contains it, so
  * CreateSession runs through the customer's configured policies, retry, tracing, logging, and transport.
  * <p>

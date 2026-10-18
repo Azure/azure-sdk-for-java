@@ -32,7 +32,7 @@ import com.azure.storage.blob.models.BlobAudience;
 import com.azure.storage.blob.models.BlobContainerEncryptionScope;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.CustomerProvidedKey;
-import com.azure.storage.blob.options.SessionOptions;
+import com.azure.storage.blob.options.SessionContext;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.connectionstring.StorageAuthenticationSettings;
 import com.azure.storage.common.implementation.connectionstring.StorageConnectionString;
@@ -92,7 +92,7 @@ public final class BlobContainerClientBuilder implements TokenCredentialTrait<Bl
     private Configuration configuration;
     private BlobServiceVersion version;
     private BlobAudience audience;
-    private SessionOptions sessionOptions = new SessionOptions();
+    private SessionContext sessionContext = new SessionContext();
 
     /**
      * Creates a builder instance that is able to configure and construct {@link BlobContainerClient ContainerClients}
@@ -107,11 +107,11 @@ public final class BlobContainerClientBuilder implements TokenCredentialTrait<Bl
      * Applies when this builder constructs a pipeline with a {@link TokenCredential}; requests that are not
      * eligible continue to use bearer token authentication. Sessions are disabled by default.
      *
-     * @param sessionOptions The session options for the HTTP pipeline.
+     * @param sessionContext The session context for the HTTP pipeline.
      * @return the updated BlobContainerClientBuilder object.
      */
-    public BlobContainerClientBuilder sessionOptions(SessionOptions sessionOptions) {
-        this.sessionOptions = sessionOptions != null ? sessionOptions : new SessionOptions();
+    public BlobContainerClientBuilder sessionContext(SessionContext sessionContext) {
+        this.sessionContext = sessionContext != null ? sessionContext : new SessionContext();
         return this;
     }
 
@@ -201,7 +201,7 @@ public final class BlobContainerClientBuilder implements TokenCredentialTrait<Bl
         }
         return BuilderHelper.buildPipeline(storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,
             endpoint, retryOptions, coreRetryOptions, logOptions, clientOptions, httpClient, perCallPolicies,
-            perRetryPolicies, configuration, audience, LOGGER, sessionOptions, serviceVersion);
+            perRetryPolicies, configuration, audience, LOGGER, sessionContext, serviceVersion);
     }
 
     /**

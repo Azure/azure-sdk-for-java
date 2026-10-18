@@ -28,7 +28,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerClientBuilder;
 import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.models.BlobAudience;
-import com.azure.storage.blob.options.SessionOptions;
+import com.azure.storage.blob.options.SessionContext;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.file.datalake.implementation.util.BuilderHelper;
@@ -107,11 +107,11 @@ public class DataLakeFileSystemClientBuilder implements TokenCredentialTrait<Dat
      * {@link TokenCredential}; requests that are not eligible continue to use bearer token authentication.
      * Sessions are disabled by default and are not used by the DFS pipeline.
      *
-     * @param sessionOptions The session options for the HTTP pipeline.
+     * @param sessionContext The session context for the HTTP pipeline.
      * @return the updated DataLakeFileSystemClientBuilder object.
      */
-    public DataLakeFileSystemClientBuilder sessionOptions(SessionOptions sessionOptions) {
-        blobContainerClientBuilder.sessionOptions(sessionOptions);
+    public DataLakeFileSystemClientBuilder sessionContext(SessionContext sessionContext) {
+        blobContainerClientBuilder.sessionContext(sessionContext);
         return this;
     }
 

@@ -14,8 +14,8 @@ import com.azure.core.util.CoreUtils;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.models.BlobErrorCode;
-import com.azure.storage.blob.options.SessionOptions;
-import com.azure.storage.blob.options.SessionOptions.SessionMode;
+import com.azure.storage.blob.options.SessionContext;
+import com.azure.storage.blob.options.SessionContext.SessionMode;
 import com.azure.storage.common.test.shared.TestHttpClientType;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly;
@@ -2588,7 +2588,7 @@ public class FileSystemApiTests extends DataLakeTestBase {
     }
 
     private DataLakeFileSystemClient sessionEnabledFileSystemClient(HttpPipelinePolicy... policies) {
-        return getOAuthServiceClient(new SessionOptions().setSessionMode(SessionMode.ENABLED), policies)
+        return getOAuthServiceClient(new SessionContext().setSessionMode(SessionMode.ENABLED), policies)
             .getFileSystemClient(dataLakeFileSystemClient.getFileSystemName());
     }
 

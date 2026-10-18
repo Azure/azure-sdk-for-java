@@ -6,8 +6,8 @@ package com.azure.storage.file.datalake;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.test.http.NoOpHttpClient;
 import com.azure.core.test.utils.MockTokenCredential;
-import com.azure.storage.blob.options.SessionOptions;
-import com.azure.storage.blob.options.SessionOptions.SessionMode;
+import com.azure.storage.blob.options.SessionContext;
+import com.azure.storage.blob.options.SessionContext.SessionMode;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import org.junit.jupiter.api.Test;
 
@@ -37,7 +37,7 @@ public class DataLakeServiceClientBuilderTests {
         DataLakeServiceClient client = new DataLakeServiceClientBuilder().endpoint(ENDPOINT)
             .credential(new MockTokenCredential())
             .httpClient(new NoOpHttpClient())
-            .sessionOptions(new SessionOptions().setSessionMode(SessionMode.DISABLED))
+            .sessionContext(new SessionContext().setSessionMode(SessionMode.DISABLED))
             .buildClient();
 
         HttpPipeline pipeline = client.blobServiceClient.getHttpPipeline();
@@ -50,7 +50,7 @@ public class DataLakeServiceClientBuilderTests {
         DataLakeServiceClient client = new DataLakeServiceClientBuilder().endpoint(ENDPOINT)
             .credential(new MockTokenCredential())
             .httpClient(new NoOpHttpClient())
-            .sessionOptions(new SessionOptions().setSessionMode(SessionMode.ENABLED))
+            .sessionContext(new SessionContext().setSessionMode(SessionMode.ENABLED))
             .buildClient();
 
         DataLakeFileSystemClient fileSystemClient = client.getFileSystemClient("filesystem");
@@ -73,11 +73,11 @@ public class DataLakeServiceClientBuilderTests {
     }
 
     @Test
-    public void nullSessionOptionsUseBearerPolicyWithoutSessions() {
+    public void nullSessionContextUseBearerPolicyWithoutSessions() {
         DataLakeServiceClient client = assertDoesNotThrow(() -> new DataLakeServiceClientBuilder().endpoint(ENDPOINT)
             .credential(new MockTokenCredential())
             .httpClient(new NoOpHttpClient())
-            .sessionOptions(null)
+            .sessionContext(null)
             .buildClient());
 
         HttpPipeline pipeline = client.blobServiceClient.getHttpPipeline();
@@ -86,11 +86,11 @@ public class DataLakeServiceClientBuilderTests {
     }
 
     @Test
-    public void defaultSessionOptionsUseBearerPolicyWithoutSessions() {
+    public void defaultSessionContextUseBearerPolicyWithoutSessions() {
         DataLakeServiceClient client = new DataLakeServiceClientBuilder().endpoint(ENDPOINT)
             .credential(new MockTokenCredential())
             .httpClient(new NoOpHttpClient())
-            .sessionOptions(new SessionOptions())
+            .sessionContext(new SessionContext())
             .buildClient();
 
         HttpPipeline pipeline = client.blobServiceClient.getHttpPipeline();
@@ -99,11 +99,11 @@ public class DataLakeServiceClientBuilderTests {
     }
 
     @Test
-    public void sessionOptionsOnlyEnableSessionsOnTheBlobPipeline() {
+    public void sessionContextOnlyEnableSessionsOnTheBlobPipeline() {
         DataLakeServiceClient client = new DataLakeServiceClientBuilder().endpoint(ENDPOINT)
             .credential(new MockTokenCredential())
             .httpClient(new NoOpHttpClient())
-            .sessionOptions(new SessionOptions().setSessionMode(SessionMode.ENABLED))
+            .sessionContext(new SessionContext().setSessionMode(SessionMode.ENABLED))
             .buildClient();
 
         assertFalse(hasPolicyOfType(client.getHttpPipeline(), "SessionAuthenticationPolicy"));
@@ -116,7 +116,7 @@ public class DataLakeServiceClientBuilderTests {
         DataLakeServiceClient client = new DataLakeServiceClientBuilder().endpoint(ENDPOINT)
             .credential(new MockTokenCredential())
             .httpClient(new NoOpHttpClient())
-            .sessionOptions(new SessionOptions().setSessionMode(SessionMode.ENABLED).setSessionMode(null))
+            .sessionContext(new SessionContext().setSessionMode(SessionMode.ENABLED).setSessionMode(null))
             .buildClient();
 
         HttpPipeline pipeline = client.blobServiceClient.getHttpPipeline();
@@ -129,7 +129,7 @@ public class DataLakeServiceClientBuilderTests {
         DataLakeServiceAsyncClient client = new DataLakeServiceClientBuilder().endpoint(ENDPOINT)
             .credential(new MockTokenCredential())
             .httpClient(new NoOpHttpClient())
-            .sessionOptions(new SessionOptions().setSessionMode(SessionMode.ENABLED).setSessionMode(null))
+            .sessionContext(new SessionContext().setSessionMode(SessionMode.ENABLED).setSessionMode(null))
             .buildAsyncClient();
 
         HttpPipeline pipeline

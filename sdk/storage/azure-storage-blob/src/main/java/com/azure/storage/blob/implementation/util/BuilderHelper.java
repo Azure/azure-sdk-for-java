@@ -31,10 +31,10 @@ import com.azure.core.util.tracing.Tracer;
 import com.azure.core.util.tracing.TracerProvider;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobUrlParts;
-import com.azure.storage.blob.implementation.accesshelpers.SessionOptionsAccessor;
+import com.azure.storage.blob.implementation.accesshelpers.SessionContextAccessor;
 import com.azure.storage.blob.models.BlobAudience;
-import com.azure.storage.blob.options.SessionOptions;
-import com.azure.storage.blob.options.SessionOptions.SessionMode;
+import com.azure.storage.blob.options.SessionContext;
+import com.azure.storage.blob.options.SessionContext.SessionMode;
 import java.time.Clock;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.BuilderUtils;
@@ -92,7 +92,7 @@ public final class BuilderHelper {
      * @param configuration Configuration store contain environment settings.
      * @param logger {@link ClientLogger} used to log any exception.
      * @param audience {@link BlobAudience} used to determine the audience of the blob.
-     * @param sessionOptions {@link SessionOptions} containing the session mode and optional acquisition configuration.
+     * @param sessionContext {@link SessionContext} containing the session mode and optional acquisition configuration.
      * @param serviceVersion The service version for session creation; defaults to the latest version when null.
      * @return A new {@link HttpPipeline} from the passed values.
      */
@@ -101,14 +101,14 @@ public final class BuilderHelper {
         RequestRetryOptions retryOptions, RetryOptions coreRetryOptions, HttpLogOptions logOptions,
         ClientOptions clientOptions, HttpClient httpClient, List<HttpPipelinePolicy> perCallPolicies,
         List<HttpPipelinePolicy> perRetryPolicies, Configuration configuration, BlobAudience audience,
-        ClientLogger logger, SessionOptions sessionOptions, BlobServiceVersion serviceVersion) {
+        ClientLogger logger, SessionContext sessionContext, BlobServiceVersion serviceVersion) {
 
         CredentialValidator.validateCredentialsNotAmbiguous(storageSharedKeyCredential, tokenCredential,
             azureSasCredential, sasToken, logger);
 
         boolean sessionsEnabled = tokenCredential != null
-            && sessionOptions != null
-            && ModelHelper.resolveSessionMode(sessionOptions.getSessionMode()) == SessionMode.ENABLED;
+            && sessionContext != null
+            && ModelHelper.resolveSessionMode(sessionContext.getSessionMode()) == SessionMode.ENABLED;
 
         // Closest to API goes first, closest to wire goes last.
         List<HttpPipelinePolicy> policies = new ArrayList<>();
@@ -154,12 +154,12 @@ public final class BuilderHelper {
             if (!sessionsEnabled) {
                 policies.add(bearerPolicy);
             } else {
-                sessionAcquirer = createSessionAcquirer(sessionOptions, endpoint, serviceVersion, scope, logger);
+                sessionAcquirer = createSessionAcquirer(sessionContext, endpoint, serviceVersion, scope, logger);
                 // The provider owns only the session cache, so every client sharing these options shares sessions.
-                SessionProvider sessionProvider = SessionOptionsAccessor.getOrCreateSessionProvider(sessionOptions,
+                SessionProvider sessionProvider = SessionContextAccessor.getOrCreateSessionProvider(sessionContext,
                     SessionProvider.class, () -> new ContainerSessionProvider(Clock.systemUTC()));
                 policies.add(
-                    new SessionAuthenticationPolicy(bearerPolicy, sessionProvider, sessionAcquirer, sessionOptions));
+                    new SessionAuthenticationPolicy(bearerPolicy, sessionProvider, sessionAcquirer, sessionContext));
             }
         }
 
@@ -213,22 +213,22 @@ public final class BuilderHelper {
 
     /**
      * Creates the {@link SessionAcquirer} for a client. CreateSession is sent to the client's endpoint with the
-     * client's credential, unless the {@link SessionOptions} override the acquisition endpoint and credential.
+     * client's credential, unless the {@link SessionContext} override the acquisition endpoint and credential.
      */
-    private static SessionAcquirer createSessionAcquirer(SessionOptions sessionOptions, String endpoint,
+    private static SessionAcquirer createSessionAcquirer(SessionContext sessionContext, String endpoint,
         BlobServiceVersion serviceVersion, String scope, ClientLogger logger) {
-        String acquisitionEndpoint = SessionOptionsAccessor.getEndpoint(sessionOptions);
+        String acquisitionEndpoint = SessionContextAccessor.getEndpoint(sessionContext);
         StorageBearerTokenChallengeAuthorizationPolicy acquisitionBearerPolicy = null;
         if (acquisitionEndpoint == null) {
             acquisitionEndpoint = endpoint;
         } else {
-            TokenCredential credential = SessionOptionsAccessor.getCredential(sessionOptions);
+            TokenCredential credential = SessionContextAccessor.getCredential(sessionContext);
             httpsValidation(credential, "bearer token", acquisitionEndpoint, logger);
             acquisitionBearerPolicy = new StorageBearerTokenChallengeAuthorizationPolicy(credential, scope);
         }
 
         String sessionEndpoint = getSessionEndpoint(acquisitionEndpoint);
-        String accountName = resolveSessionAccountName(sessionEndpoint, sessionOptions.getAccountName());
+        String accountName = resolveSessionAccountName(sessionEndpoint, sessionContext.getAccountName());
         return new SessionAcquirer(sessionEndpoint, serviceVersion, accountName, acquisitionBearerPolicy);
     }
 
