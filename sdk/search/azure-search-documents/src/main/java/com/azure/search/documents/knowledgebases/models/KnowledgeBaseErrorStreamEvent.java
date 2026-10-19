@@ -23,7 +23,7 @@ public final class KnowledgeBaseErrorStreamEvent extends KnowledgeBaseRetrievalS
      * @param value The event payload.
      */
     @Generated
-    public KnowledgeBaseErrorStreamEvent(KnowledgeBaseStreamErrorEvent value) {
+    KnowledgeBaseErrorStreamEvent(KnowledgeBaseStreamErrorEvent value) {
         super("error");
         this.value = value;
     }
