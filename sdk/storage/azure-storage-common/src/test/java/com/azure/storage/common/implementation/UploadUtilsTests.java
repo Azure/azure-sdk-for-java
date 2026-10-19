@@ -6,12 +6,16 @@ import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.ParallelTransferOptions;
+import com.azure.storage.common.test.shared.ShapedByteBuffer;
+import com.azure.storage.common.test.shared.TestBufferShape;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
+import java.io.ByteArrayOutputStream;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -19,9 +23,11 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -105,5 +111,44 @@ public class UploadUtilsTests {
         StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(chunks))
             .assertNext(bytes -> TestUtils.assertArraysEqual(expected, bytes))
             .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("chunkSourceBufferShapesSupplier")
+    public void chunkSourceHandlesEveryBufferShape(TestBufferShape shape, int length, int chunkSize) {
+        byte[] content = new byte[length];
+        new Random(length).nextBytes(content);
+        ShapedByteBuffer source = shape.wrap(content);
+
+        List<ByteBuffer> chunks
+            = UploadUtils
+                .chunkSource(Flux.just(source.getBuffer()),
+                    new ParallelTransferOptions().setBlockSizeLong((long) chunkSize))
+                .collectList()
+                .block();
+
+        assertNotNull(chunks);
+        assertEquals((length + chunkSize - 1) / chunkSize, chunks.size());
+        ByteArrayOutputStream combined = new ByteArrayOutputStream();
+        for (ByteBuffer chunk : chunks) {
+            assertTrue(chunk.remaining() <= chunkSize);
+            byte[] bytes = new byte[chunk.remaining()];
+            chunk.duplicate().get(bytes);
+            combined.write(bytes, 0, bytes.length);
+        }
+        TestUtils.assertArraysEqual(content, combined.toByteArray());
+        // Splitting the source buffer neither modifies its data nor moves it.
+        source.assertNoBytesChanged();
+        source.assertPositionAndLimit(source.getOriginalPosition(), source.getOriginalLimit());
+    }
+
+    private static Stream<Arguments> chunkSourceBufferShapesSupplier() {
+        return Stream.of(TestBufferShape.values())
+            .flatMap(shape -> Stream.of(
+                // length | chunk size
+                Arguments.of(shape, 10, 4), // Split, with a partial last chunk.
+                Arguments.of(shape, 12, 4), // Split, an exact multiple of the chunk size.
+                Arguments.of(shape, 4, 4), // Fits in a single chunk exactly.
+                Arguments.of(shape, 3, 10))); // Smaller than a chunk.
     }
 }
