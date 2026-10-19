@@ -1,10 +1,19 @@
 BeforeAll {
+    $script:EngineeringRoot = (Resolve-Path (Join-Path $PSScriptRoot '../..')).Path
+    . "$script:EngineeringRoot/common/scripts/Helpers/PSModule-Helpers.ps1"
+    Install-ModuleIfNotInstalled 'powershell-yaml' '0.4.7' | Import-Module
+
     $script:CheckoutScript = Join-Path $PSScriptRoot '../../pipelines/scripts/Invoke-Sparse-Checkout.ps1'
 
     function Invoke-TestGit {
-        param([string]$RepositoryPath, [string[]]$Arguments)
+        param([string]$RepositoryPath, [string[]]$Arguments, [string[]]$InputLines)
 
-        $output = git -C $RepositoryPath @Arguments 2>&1
+        $output = if ($PSBoundParameters.ContainsKey('InputLines')) {
+            $InputLines | git -C $RepositoryPath @Arguments 2>&1
+        }
+        else {
+            git -C $RepositoryPath @Arguments 2>&1
+        }
         if ($LASTEXITCODE -ne 0) {
             throw "Git command failed ($Arguments): $output"
         }
@@ -15,7 +24,10 @@ BeforeAll {
         param([string]$RepositoryPath)
 
         Invoke-TestGit $RepositoryPath @('sparse-checkout', 'init', '--no-cone') | Out-Null
-        Invoke-TestGit $RepositoryPath @('sparse-checkout', 'set', '/*', '!/*/', '/eng', '/.config', '**/*.xml') | Out-Null
+        # Keep Git's wildcard patterns out of Unix native argument expansion.
+        Invoke-TestGit $RepositoryPath @('sparse-checkout', 'set', '--stdin') -InputLines @(
+            '/*', '!/*/', '/eng', '/.config', '**/*.xml'
+        ) | Out-Null
     }
 
     function Invoke-CheckoutPreparation {
@@ -112,7 +124,6 @@ Describe 'Native sparse checkout expansion' -Tag 'UnitTest' {
     }
 
     It 'checks out signing sources and Maven parents without unrelated services' {
-        Import-Module powershell-yaml -ErrorAction Stop
         $release = Get-Content (
             Join-Path $PSScriptRoot '../../pipelines/templates/stages/archetype-java-release-batch.yml'
         ) -Raw | ConvertFrom-Yaml -Ordered
@@ -125,7 +136,7 @@ Describe 'Native sparse checkout expansion' -Tag 'UnitTest' {
         ) -split '\s+'
 
         Invoke-TestGit $repositoryPath @('sparse-checkout', 'init', '--no-cone') | Out-Null
-        Invoke-TestGit $repositoryPath (@('sparse-checkout', 'set') + $patterns) | Out-Null
+        Invoke-TestGit $repositoryPath @('sparse-checkout', 'set', '--stdin') -InputLines $patterns | Out-Null
 
         foreach ($file in @(
             'pom.xml'
@@ -320,9 +331,6 @@ Describe 'Native sparse checkout expansion' -Tag 'UnitTest' {
 
 Describe 'Native sparse checkout settings' -Tag 'UnitTest' {
     BeforeAll {
-        $script:EngineeringRoot = (Resolve-Path (Join-Path $PSScriptRoot '../..')).Path
-        . "$script:EngineeringRoot/common/scripts/Helpers/PSModule-Helpers.ps1"
-        Install-ModuleIfNotInstalled 'powershell-yaml' '0.4.7' | Import-Module
 
         function Get-SparseCheckout {
             param($Node, [string]$JobName)
