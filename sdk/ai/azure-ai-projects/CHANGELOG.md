@@ -2,10 +2,6 @@
 
 ## 2.8.0 (2026-10-19)
 
-### Features Added
-
-### Breaking Changes
-
 ### Bugs Fixed
 
 - Fixed typed asynchronous list operations to forward the page-size hint supplied through `PagedFlux.byPage(...)`,
