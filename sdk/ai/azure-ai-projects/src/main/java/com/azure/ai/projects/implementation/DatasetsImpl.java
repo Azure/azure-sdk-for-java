@@ -36,6 +36,7 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.PollingStrategyOptions;
 import com.azure.core.util.polling.SyncPoller;
@@ -1447,7 +1448,7 @@ public final class DatasetsImpl {
             .withContext(context -> service.listGenerationJobs(this.client.getEndpoint(),
                 this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                getValues(res.getValue(), "data"), null, null));
+                getValues(res.getValue(), "data"), getNextLink(res.getValue(), "last_id"), null));
     }
 
     /**
@@ -1464,10 +1465,6 @@ public final class DatasetsImpl {
      * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
      * for ascending order and`desc`
      * for descending order. Allowed values: "asc", "desc".</td></tr>
-     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. `after` is an object ID that
-     * defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
      * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. `before` is an object ID that
      * defines your place in the list.
      * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
@@ -1546,7 +1543,35 @@ public final class DatasetsImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listGenerationJobsAsync(RequestOptions requestOptions) {
-        return new PagedFlux<>(() -> listGenerationJobsSinglePageAsync(requestOptions));
+        return listGenerationJobsAsync(null, requestOptions);
+    }
+
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listGenerationJobsAsync(String initialContinuationToken,
+        RequestOptions requestOptions) {
+        return new PagedFlux<>(() -> {
+            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
+            requestOptionsLocal.addRequestCallback(requestLocal -> {
+                UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
+                urlBuilder.setQueryParameter("after", null);
+                requestLocal.setUrl(urlBuilder.toString());
+            });
+            if (initialContinuationToken != null) {
+                requestOptionsLocal.addQueryParam("after", initialContinuationToken, false);
+            }
+            return listGenerationJobsSinglePageAsync(requestOptionsLocal);
+        }, (after) -> {
+            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
+            requestOptionsLocal.addRequestCallback(requestLocal -> {
+                UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
+                urlBuilder.setQueryParameter("after", null);
+                requestLocal.setUrl(urlBuilder.toString());
+            });
+            if (after != null) {
+                requestOptionsLocal.addQueryParam("after", after, false);
+            }
+            return listGenerationJobsSinglePageAsync(requestOptionsLocal);
+        });
     }
 
     /**
@@ -1649,7 +1674,7 @@ public final class DatasetsImpl {
         Response<BinaryData> res = service.listGenerationJobsSync(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-            getValues(res.getValue(), "data"), null, null);
+            getValues(res.getValue(), "data"), getNextLink(res.getValue(), "last_id"), null);
     }
 
     /**
@@ -1666,10 +1691,6 @@ public final class DatasetsImpl {
      * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
      * for ascending order and`desc`
      * for descending order. Allowed values: "asc", "desc".</td></tr>
-     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. `after` is an object ID that
-     * defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
      * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. `before` is an object ID that
      * defines your place in the list.
      * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
@@ -1748,7 +1769,35 @@ public final class DatasetsImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listGenerationJobs(RequestOptions requestOptions) {
-        return new PagedIterable<>(() -> listGenerationJobsSinglePage(requestOptions));
+        return listGenerationJobs(null, requestOptions);
+    }
+
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listGenerationJobs(String initialContinuationToken,
+        RequestOptions requestOptions) {
+        return new PagedIterable<>(() -> {
+            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
+            requestOptionsLocal.addRequestCallback(requestLocal -> {
+                UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
+                urlBuilder.setQueryParameter("after", null);
+                requestLocal.setUrl(urlBuilder.toString());
+            });
+            if (initialContinuationToken != null) {
+                requestOptionsLocal.addQueryParam("after", initialContinuationToken, false);
+            }
+            return listGenerationJobsSinglePage(requestOptionsLocal);
+        }, (after) -> {
+            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
+            requestOptionsLocal.addRequestCallback(requestLocal -> {
+                UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
+                urlBuilder.setQueryParameter("after", null);
+                requestLocal.setUrl(urlBuilder.toString());
+            });
+            if (after != null) {
+                requestOptionsLocal.addQueryParam("after", after, false);
+            }
+            return listGenerationJobsSinglePage(requestOptionsLocal);
+        });
     }
 
     /**

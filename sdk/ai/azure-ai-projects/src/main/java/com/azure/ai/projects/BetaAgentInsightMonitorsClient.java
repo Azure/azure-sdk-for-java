@@ -61,8 +61,6 @@ public final class BetaAgentInsightMonitorsClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor that identifies the last item in the previous
-     * page.</td></tr>
      * <tr><td>before</td><td>String</td><td>No</td><td>A cursor that identifies the first item in the next
      * page.</td></tr>
      * <tr><td>limit</td><td>Integer</td><td>No</td><td>The maximum number of items to return. Defaults to 20.</td></tr>
@@ -435,8 +433,6 @@ public final class BetaAgentInsightMonitorsClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor that identifies the last item in the previous
-     * page.</td></tr>
      * <tr><td>before</td><td>String</td><td>No</td><td>A cursor that identifies the first item in the next
      * page.</td></tr>
      * <tr><td>limit</td><td>Integer</td><td>No</td><td>The maximum number of items to return. Defaults to 20.</td></tr>
@@ -682,8 +678,6 @@ public final class BetaAgentInsightMonitorsClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor that identifies the last item in the previous
-     * page.</td></tr>
      * <tr><td>before</td><td>String</td><td>No</td><td>A cursor that identifies the first item in the next
      * page.</td></tr>
      * <tr><td>limit</td><td>Integer</td><td>No</td><td>The maximum number of items to return. Defaults to 20.</td></tr>
@@ -952,11 +946,8 @@ public final class BetaAgentInsightMonitorsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AgentInsightMonitorListItem> listAgentInsightMonitors(String after, String before,
         Integer limit, PageOrder order, String agentName) {
-        // Generated convenience method for listAgentInsightMonitors
+        // Generated convenience method for serviceClient.listAgentInsightMonitors
         RequestOptions requestOptions = new RequestOptions();
-        if (after != null) {
-            requestOptions.addQueryParam("after", after, false);
-        }
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
@@ -969,7 +960,7 @@ public final class BetaAgentInsightMonitorsClient {
         if (agentName != null) {
             requestOptions.addQueryParam("agent_name", agentName, false);
         }
-        return serviceClient.listAgentInsightMonitors(requestOptions)
+        return serviceClient.listAgentInsightMonitors(after, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(AgentInsightMonitorListItem.class));
     }
 
@@ -986,9 +977,9 @@ public final class BetaAgentInsightMonitorsClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AgentInsightMonitorListItem> listAgentInsightMonitors() {
-        // Generated convenience method for listAgentInsightMonitors
+        // Generated convenience method for serviceClient.listAgentInsightMonitors
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listAgentInsightMonitors(requestOptions)
+        return serviceClient.listAgentInsightMonitors(null, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(AgentInsightMonitorListItem.class));
     }
 
@@ -1172,11 +1163,8 @@ public final class BetaAgentInsightMonitorsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AgentInsightRun> listAgentInsightRuns(String monitorId, String after, String before,
         Integer limit, PageOrder order, JobStatus status, AgentInsightRunTrigger trigger) {
-        // Generated convenience method for listAgentInsightRuns
+        // Generated convenience method for serviceClient.listAgentInsightRuns
         RequestOptions requestOptions = new RequestOptions();
-        if (after != null) {
-            requestOptions.addQueryParam("after", after, false);
-        }
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
@@ -1192,7 +1180,7 @@ public final class BetaAgentInsightMonitorsClient {
         if (trigger != null) {
             requestOptions.addQueryParam("trigger", trigger.toString(), false);
         }
-        return serviceClient.listAgentInsightRuns(monitorId, requestOptions)
+        return serviceClient.listAgentInsightRuns(after, monitorId, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(AgentInsightRun.class));
     }
 
@@ -1211,9 +1199,9 @@ public final class BetaAgentInsightMonitorsClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AgentInsightRun> listAgentInsightRuns(String monitorId) {
-        // Generated convenience method for listAgentInsightRuns
+        // Generated convenience method for serviceClient.listAgentInsightRuns
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listAgentInsightRuns(monitorId, requestOptions)
+        return serviceClient.listAgentInsightRuns(null, monitorId, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(AgentInsightRun.class));
     }
 
@@ -1287,11 +1275,8 @@ public final class BetaAgentInsightMonitorsClient {
     public PagedIterable<AgentInsight> listAgentInsights(String monitorId, String after, String before, Integer limit,
         PageOrder order, String category, AgentInsightSeverity severity, AgentInsightStatus status,
         Boolean includeDetails) {
-        // Generated convenience method for listAgentInsights
+        // Generated convenience method for serviceClient.listAgentInsights
         RequestOptions requestOptions = new RequestOptions();
-        if (after != null) {
-            requestOptions.addQueryParam("after", after, false);
-        }
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
@@ -1313,7 +1298,7 @@ public final class BetaAgentInsightMonitorsClient {
         if (includeDetails != null) {
             requestOptions.addQueryParam("include_details", String.valueOf(includeDetails), false);
         }
-        return serviceClient.listAgentInsights(monitorId, requestOptions)
+        return serviceClient.listAgentInsights(after, monitorId, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(AgentInsight.class));
     }
 
@@ -1332,9 +1317,9 @@ public final class BetaAgentInsightMonitorsClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AgentInsight> listAgentInsights(String monitorId) {
-        // Generated convenience method for listAgentInsights
+        // Generated convenience method for serviceClient.listAgentInsights
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listAgentInsights(monitorId, requestOptions)
+        return serviceClient.listAgentInsights(null, monitorId, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(AgentInsight.class));
     }
 

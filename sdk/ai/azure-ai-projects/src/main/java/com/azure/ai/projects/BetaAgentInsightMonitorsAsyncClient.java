@@ -67,8 +67,6 @@ public final class BetaAgentInsightMonitorsAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor that identifies the last item in the previous
-     * page.</td></tr>
      * <tr><td>before</td><td>String</td><td>No</td><td>A cursor that identifies the first item in the next
      * page.</td></tr>
      * <tr><td>limit</td><td>Integer</td><td>No</td><td>The maximum number of items to return. Defaults to 20.</td></tr>
@@ -442,8 +440,6 @@ public final class BetaAgentInsightMonitorsAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor that identifies the last item in the previous
-     * page.</td></tr>
      * <tr><td>before</td><td>String</td><td>No</td><td>A cursor that identifies the first item in the next
      * page.</td></tr>
      * <tr><td>limit</td><td>Integer</td><td>No</td><td>The maximum number of items to return. Defaults to 20.</td></tr>
@@ -689,8 +685,6 @@ public final class BetaAgentInsightMonitorsAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor that identifies the last item in the previous
-     * page.</td></tr>
      * <tr><td>before</td><td>String</td><td>No</td><td>A cursor that identifies the first item in the next
      * page.</td></tr>
      * <tr><td>limit</td><td>Integer</td><td>No</td><td>The maximum number of items to return. Defaults to 20.</td></tr>
@@ -961,11 +955,8 @@ public final class BetaAgentInsightMonitorsAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AgentInsightMonitorListItem> listAgentInsightMonitors(String after, String before, Integer limit,
         PageOrder order, String agentName) {
-        // Generated convenience method for listAgentInsightMonitors
+        // Generated convenience method for serviceClient.listAgentInsightMonitorsAsync
         RequestOptions requestOptions = new RequestOptions();
-        if (after != null) {
-            requestOptions.addQueryParam("after", after, false);
-        }
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
@@ -978,7 +969,7 @@ public final class BetaAgentInsightMonitorsAsyncClient {
         if (agentName != null) {
             requestOptions.addQueryParam("agent_name", agentName, false);
         }
-        PagedFlux<BinaryData> pagedFluxResponse = listAgentInsightMonitors(requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = serviceClient.listAgentInsightMonitorsAsync(after, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux;
             if (pageSizeParam == null) {
@@ -1013,9 +1004,9 @@ public final class BetaAgentInsightMonitorsAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AgentInsightMonitorListItem> listAgentInsightMonitors() {
-        // Generated convenience method for listAgentInsightMonitors
+        // Generated convenience method for serviceClient.listAgentInsightMonitorsAsync
         RequestOptions requestOptions = new RequestOptions();
-        PagedFlux<BinaryData> pagedFluxResponse = listAgentInsightMonitors(requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = serviceClient.listAgentInsightMonitorsAsync(null, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux;
             if (pageSizeParam == null) {
@@ -1225,11 +1216,8 @@ public final class BetaAgentInsightMonitorsAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AgentInsightRun> listAgentInsightRuns(String monitorId, String after, String before, Integer limit,
         PageOrder order, JobStatus status, AgentInsightRunTrigger trigger) {
-        // Generated convenience method for listAgentInsightRuns
+        // Generated convenience method for serviceClient.listAgentInsightRunsAsync
         RequestOptions requestOptions = new RequestOptions();
-        if (after != null) {
-            requestOptions.addQueryParam("after", after, false);
-        }
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
@@ -1245,7 +1233,8 @@ public final class BetaAgentInsightMonitorsAsyncClient {
         if (trigger != null) {
             requestOptions.addQueryParam("trigger", trigger.toString(), false);
         }
-        PagedFlux<BinaryData> pagedFluxResponse = listAgentInsightRuns(monitorId, requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse
+            = serviceClient.listAgentInsightRunsAsync(after, monitorId, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux;
             if (pageSizeParam == null) {
@@ -1282,9 +1271,10 @@ public final class BetaAgentInsightMonitorsAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AgentInsightRun> listAgentInsightRuns(String monitorId) {
-        // Generated convenience method for listAgentInsightRuns
+        // Generated convenience method for serviceClient.listAgentInsightRunsAsync
         RequestOptions requestOptions = new RequestOptions();
-        PagedFlux<BinaryData> pagedFluxResponse = listAgentInsightRuns(monitorId, requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse
+            = serviceClient.listAgentInsightRunsAsync(null, monitorId, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux;
             if (pageSizeParam == null) {
@@ -1377,11 +1367,8 @@ public final class BetaAgentInsightMonitorsAsyncClient {
     public PagedFlux<AgentInsight> listAgentInsights(String monitorId, String after, String before, Integer limit,
         PageOrder order, String category, AgentInsightSeverity severity, AgentInsightStatus status,
         Boolean includeDetails) {
-        // Generated convenience method for listAgentInsights
+        // Generated convenience method for serviceClient.listAgentInsightsAsync
         RequestOptions requestOptions = new RequestOptions();
-        if (after != null) {
-            requestOptions.addQueryParam("after", after, false);
-        }
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
@@ -1403,7 +1390,8 @@ public final class BetaAgentInsightMonitorsAsyncClient {
         if (includeDetails != null) {
             requestOptions.addQueryParam("include_details", String.valueOf(includeDetails), false);
         }
-        PagedFlux<BinaryData> pagedFluxResponse = listAgentInsights(monitorId, requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse
+            = serviceClient.listAgentInsightsAsync(after, monitorId, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux;
             if (pageSizeParam == null) {
@@ -1440,9 +1428,9 @@ public final class BetaAgentInsightMonitorsAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AgentInsight> listAgentInsights(String monitorId) {
-        // Generated convenience method for listAgentInsights
+        // Generated convenience method for serviceClient.listAgentInsightsAsync
         RequestOptions requestOptions = new RequestOptions();
-        PagedFlux<BinaryData> pagedFluxResponse = listAgentInsights(monitorId, requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = serviceClient.listAgentInsightsAsync(null, monitorId, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux;
             if (pageSizeParam == null) {

@@ -831,10 +831,6 @@ public final class DatasetsClient {
      * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
      * for ascending order and`desc`
      * for descending order. Allowed values: "asc", "desc".</td></tr>
-     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. `after` is an object ID that
-     * defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
      * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. `before` is an object ID that
      * defines your place in the list.
      * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
@@ -1181,7 +1177,7 @@ public final class DatasetsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataGenerationJob> listGenerationJobs(Integer limit, PageOrder order, String after,
         String before) {
-        // Generated convenience method for listGenerationJobs
+        // Generated convenience method for serviceClient.listGenerationJobs
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
             requestOptions.addQueryParam("limit", String.valueOf(limit), false);
@@ -1189,13 +1185,10 @@ public final class DatasetsClient {
         if (order != null) {
             requestOptions.addQueryParam("order", order.toString(), false);
         }
-        if (after != null) {
-            requestOptions.addQueryParam("after", after, false);
-        }
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        return serviceClient.listGenerationJobs(requestOptions)
+        return serviceClient.listGenerationJobs(after, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(DataGenerationJob.class));
     }
 
@@ -1214,9 +1207,9 @@ public final class DatasetsClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataGenerationJob> listGenerationJobs() {
-        // Generated convenience method for listGenerationJobs
+        // Generated convenience method for serviceClient.listGenerationJobs
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listGenerationJobs(requestOptions)
+        return serviceClient.listGenerationJobs(null, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(DataGenerationJob.class));
     }
 

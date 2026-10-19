@@ -933,10 +933,6 @@ public final class EvaluatorsClient {
      * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
      * for ascending order and`desc`
      * for descending order. Allowed values: "asc", "desc".</td></tr>
-     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. `after` is an object ID that
-     * defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
      * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. `before` is an object ID that
      * defines your place in the list.
      * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
@@ -1482,7 +1478,7 @@ public final class EvaluatorsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EvaluatorGenerationJob> listEvaluatorGenerationJobs(Integer limit, PageOrder order,
         String after, String before) {
-        // Generated convenience method for listEvaluatorGenerationJobs
+        // Generated convenience method for serviceClient.listEvaluatorGenerationJobs
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
             requestOptions.addQueryParam("limit", String.valueOf(limit), false);
@@ -1490,13 +1486,10 @@ public final class EvaluatorsClient {
         if (order != null) {
             requestOptions.addQueryParam("order", order.toString(), false);
         }
-        if (after != null) {
-            requestOptions.addQueryParam("after", after, false);
-        }
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        return serviceClient.listEvaluatorGenerationJobs(requestOptions)
+        return serviceClient.listEvaluatorGenerationJobs(after, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(EvaluatorGenerationJob.class));
     }
 
@@ -1518,9 +1511,9 @@ public final class EvaluatorsClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EvaluatorGenerationJob> listEvaluatorGenerationJobs() {
-        // Generated convenience method for listEvaluatorGenerationJobs
+        // Generated convenience method for serviceClient.listEvaluatorGenerationJobs
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listEvaluatorGenerationJobs(requestOptions)
+        return serviceClient.listEvaluatorGenerationJobs(null, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(EvaluatorGenerationJob.class));
     }
 

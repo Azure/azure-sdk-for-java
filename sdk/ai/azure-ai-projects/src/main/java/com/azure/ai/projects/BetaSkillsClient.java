@@ -97,10 +97,6 @@ public final class BetaSkillsClient {
      * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
      * for ascending order and`desc`
      * for descending order. Allowed values: "asc", "desc".</td></tr>
-     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. `after` is an object ID that
-     * defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
      * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. `before` is an object ID that
      * defines your place in the list.
      * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
@@ -326,10 +322,6 @@ public final class BetaSkillsClient {
      * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
      * for ascending order and`desc`
      * for descending order. Allowed values: "asc", "desc".</td></tr>
-     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. `after` is an object ID that
-     * defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
      * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. `before` is an object ID that
      * defines your place in the list.
      * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
@@ -535,7 +527,7 @@ public final class BetaSkillsClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SkillDetails> listSkills(Integer limit, PageOrder order, String after, String before) {
-        // Generated convenience method for listSkills
+        // Generated convenience method for serviceClient.listSkills
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
             requestOptions.addQueryParam("limit", String.valueOf(limit), false);
@@ -543,13 +535,10 @@ public final class BetaSkillsClient {
         if (order != null) {
             requestOptions.addQueryParam("order", order.toString(), false);
         }
-        if (after != null) {
-            requestOptions.addQueryParam("after", after, false);
-        }
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        return serviceClient.listSkills(requestOptions)
+        return serviceClient.listSkills(after, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(SkillDetails.class));
     }
 
@@ -568,9 +557,9 @@ public final class BetaSkillsClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SkillDetails> listSkills() {
-        // Generated convenience method for listSkills
+        // Generated convenience method for serviceClient.listSkills
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listSkills(requestOptions)
+        return serviceClient.listSkills(null, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(SkillDetails.class));
     }
 
@@ -712,7 +701,7 @@ public final class BetaSkillsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SkillVersion> listSkillVersions(String name, Integer limit, PageOrder order, String after,
         String before) {
-        // Generated convenience method for listSkillVersions
+        // Generated convenience method for serviceClient.listSkillVersions
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
             requestOptions.addQueryParam("limit", String.valueOf(limit), false);
@@ -720,13 +709,10 @@ public final class BetaSkillsClient {
         if (order != null) {
             requestOptions.addQueryParam("order", order.toString(), false);
         }
-        if (after != null) {
-            requestOptions.addQueryParam("after", after, false);
-        }
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        return serviceClient.listSkillVersions(name, requestOptions)
+        return serviceClient.listSkillVersions(after, name, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(SkillVersion.class));
     }
 
@@ -747,9 +733,9 @@ public final class BetaSkillsClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SkillVersion> listSkillVersions(String name) {
-        // Generated convenience method for listSkillVersions
+        // Generated convenience method for serviceClient.listSkillVersions
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listSkillVersions(name, requestOptions)
+        return serviceClient.listSkillVersions(null, name, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(SkillVersion.class));
     }
 
