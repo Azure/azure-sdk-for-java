@@ -451,8 +451,6 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      * are 0-511, 512-1023, etc.
      * @param body The data to upload. Note that this {@code Flux} must be replayable if retries are enabled (the
      * default). In other words, the Flowable must produce the same data each time it is subscribed to.
-     * Only the bytes between each buffer's position and limit are uploaded, and the buffers are not modified, so the
-     * same buffers can be uploaded again.
      *
      * @return A reactive response containing the information of the uploaded pages.
      */
@@ -490,8 +488,6 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      * are 0-511, 512-1023, etc.
      * @param body The data to upload. Note that this {@code Flux} must be replayable if retries are enabled (the
      * default). In other words, the Flowable must produce the same data each time it is subscribed to.
-     * Only the bytes between each buffer's position and limit are uploaded, and the buffers are not modified, so the
-     * same buffers can be uploaded again.
      * @param contentMd5 An MD5 hash of the page content. This hash is used to verify the integrity of the page during
      * transport. When this header is specified, the storage service compares the hash of the content that has arrived
      * with this header value. Note that this MD5 hash is not stored with the blob. If the two hashes do not match, the

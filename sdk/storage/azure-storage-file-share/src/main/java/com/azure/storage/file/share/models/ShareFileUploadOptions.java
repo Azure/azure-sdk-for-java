@@ -28,8 +28,6 @@ public final class ShareFileUploadOptions {
      * the {@code Flux} be replayable. In other words, it does not have to support multiple subscribers and is not
      * expected to produce the same values across subscriptions.
      * data provided in the {@link InputStream}.
-     * Only the bytes between each buffer's position and limit are uploaded, and the buffers are not modified, so the
-     * same buffers can be uploaded again.
      * @throws NullPointerException If {@code dataFlux} is null.
      */
     public ShareFileUploadOptions(Flux<ByteBuffer> dataFlux) {

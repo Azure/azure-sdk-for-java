@@ -327,8 +327,6 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      * @param data The data to write to the file. Unlike other upload methods, this method does not require that the
      * {@code Flux} be replayable. In other words, it does not have to support multiple subscribers and is not expected
      * to produce the same values across subscriptions.
-     * Only the bytes between each buffer's position and limit are uploaded, and the buffers are not modified, so the
-     * same buffers can be uploaded again.
      * @param parallelTransferOptions {@link ParallelTransferOptions} used to configure buffered uploading.
      * @return A reactive response containing the information of the uploaded file.
      */
@@ -384,8 +382,6 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      * @param data The data to write to the file. Unlike other upload methods, this method does not require that the
      * {@code Flux} be replayable. In other words, it does not have to support multiple subscribers and is not expected
      * to produce the same values across subscriptions.
-     * Only the bytes between each buffer's position and limit are uploaded, and the buffers are not modified, so the
-     * same buffers can be uploaded again.
      * @param parallelTransferOptions {@link ParallelTransferOptions} used to configure buffered uploading.
      * @param overwrite Whether to overwrite, should the file already exist.
      * @return A reactive response containing the information of the uploaded file.
@@ -508,8 +504,6 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      * @param data The data to write to the file. Unlike other upload methods, this method does not require that the
      * {@code Flux} be replayable. In other words, it does not have to support multiple subscribers and is not expected
      * to produce the same values across subscriptions.
-     * Only the bytes between each buffer's position and limit are uploaded, and the buffers are not modified, so the
-     * same buffers can be uploaded again.
      * @param parallelTransferOptions {@link ParallelTransferOptions} used to configure buffered uploading.
      * @param headers {@link PathHttpHeaders}
      * @param metadata Metadata to associate with the resource. If there is leading or trailing whitespace in any
@@ -955,8 +949,6 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      * Docs</a></p>
      *
      * @param data The data to write to the file.
-     * Only the bytes between each buffer's position and limit are uploaded, and the buffers are not modified, so the
-     * same buffers can be uploaded again.
      * @param fileOffset The position where the data is to be appended.
      * @param length The exact length of the data. It is important that this value match precisely the length of the
      * data emitted by the {@code Flux}.
@@ -1018,8 +1010,6 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      * Docs</a></p>
      *
      * @param data The data to write to the file.
-     * Only the bytes between each buffer's position and limit are uploaded, and the buffers are not modified, so the
-     * same buffers can be uploaded again.
      * @param fileOffset The position where the data is to be appended.
      * @param length The exact length of the data. It is important that this value match precisely the length of the
      * data emitted by the {@code Flux}.
@@ -1066,8 +1056,6 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      * Docs</a></p>
      *
      * @param data The data to write to the file.
-     * Only the bytes between each buffer's position and limit are uploaded, and the buffers are not modified, so the
-     * same buffers can be uploaded again.
      * @param fileOffset The position where the data is to be appended.
      * @param length The exact length of the data. It is important that this value match precisely the length of the
      * data emitted by the {@code Flux}.

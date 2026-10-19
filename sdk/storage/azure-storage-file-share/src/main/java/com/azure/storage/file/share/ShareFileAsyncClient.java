@@ -1957,8 +1957,6 @@ public class ShareFileAsyncClient {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-range">Azure Docs</a>.</p>
      *
      * @param data The data which will upload to the storage file.
-     * Only the bytes between each buffer's position and limit are uploaded, and the buffers are not modified, so the
-     * same buffers can be uploaded again.
      * @param length Specifies the number of bytes being transmitted in the request body.
      * @return A response that only contains headers and response status code
      *
@@ -1995,8 +1993,6 @@ public class ShareFileAsyncClient {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-range">Azure Docs</a>.</p>
      *
      * @param data The data which will upload to the storage file.
-     * Only the bytes between each buffer's position and limit are uploaded, and the buffers are not modified, so the
-     * same buffers can be uploaded again.
      * @param length Specifies the number of bytes being transmitted in the request body. When the
      * ShareFileRangeWriteType is set to clear, the value of this header must be set to zero.
      * @param offset Optional starting point of the upload range. It will start from the beginning if it is
@@ -2041,8 +2037,6 @@ public class ShareFileAsyncClient {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-range">Azure Docs</a>.</p>
      *
      * @param data The data which will upload to the storage file.
-     * Only the bytes between each buffer's position and limit are uploaded, and the buffers are not modified, so the
-     * same buffers can be uploaded again.
      * @param length Specifies the number of bytes being transmitted in the request body. When the
      * ShareFileRangeWriteType is set to clear, the value of this header must be set to zero.
      * @param offset Optional starting point of the upload range. It will start from the beginning if it is
@@ -2091,8 +2085,6 @@ public class ShareFileAsyncClient {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-range">Azure Docs</a>.</p>
      *
      * @param data The data which will upload to the storage file.
-     * Only the bytes between each buffer's position and limit are uploaded, and the buffers are not modified, so the
-     * same buffers can be uploaded again.
      * @param transferOptions {@link ParallelTransferOptions} to use to upload data.
      * @return The {@link ShareFileUploadInfo file upload info}
      */
@@ -2257,8 +2249,6 @@ public class ShareFileAsyncClient {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-range">Azure Docs</a>.</p>
      *
      * @param data The data which will upload to the storage file.
-     * Only the bytes between each buffer's position and limit are uploaded, and the buffers are not modified, so the
-     * same buffers can be uploaded again.
      * @param length Specifies the number of bytes being transmitted in the request body.
      * @return The {@link ShareFileUploadInfo file upload info}
      * @throws ShareStorageException If you attempt to upload a range that is larger than 4 MB, the service returns

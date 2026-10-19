@@ -250,8 +250,6 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
      * @param data The data to write to the blob. Unlike other upload methods, this method does not require that the
      * {@code Flux} be replayable. In other words, it does not have to support multiple subscribers and is not expected
      * to produce the same values across subscriptions.
-     * Only the bytes between each buffer's position and limit are uploaded, and the buffers are not modified, so the
-     * same buffers can be uploaded again.
      * @param parallelTransferOptions {@link ParallelTransferOptions} used to configure buffered uploading.
      * @return A reactive response containing the information of the uploaded block blob.
      */
@@ -300,8 +298,6 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
      * @param data The data to write to the blob. Unlike other upload methods, this method does not require that the
      * {@code Flux} be replayable. In other words, it does not have to support multiple subscribers and is not expected
      * to produce the same values across subscriptions.
-     * Only the bytes between each buffer's position and limit are uploaded, and the buffers are not modified, so the
-     * same buffers can be uploaded again.
      * @param parallelTransferOptions {@link ParallelTransferOptions} used to configure buffered uploading.
      * @param overwrite Whether to overwrite if the blob exists.
      * @return A reactive response containing the information of the uploaded block blob.
@@ -369,8 +365,6 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
      * @param data The data to write to the blob. Unlike other upload methods, this method does not require that the
      * {@code Flux} be replayable. In other words, it does not have to support multiple subscribers and is not expected
      * to produce the same values across subscriptions.
-     * Only the bytes between each buffer's position and limit are uploaded, and the buffers are not modified, so the
-     * same buffers can be uploaded again.
      * @param parallelTransferOptions {@link ParallelTransferOptions} used to configure buffered uploading.
      * @param headers {@link BlobHttpHeaders}
      * @param metadata Metadata to associate with the blob. If there is leading or trailing whitespace in any metadata

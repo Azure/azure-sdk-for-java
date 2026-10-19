@@ -188,8 +188,6 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      *
      * @param data The data to write to the blob. Note that this {@code Flux} must be replayable if retries are enabled
      * (the default). In other words, the Flux must produce the same data each time it is subscribed to.
-     * Only the bytes between each buffer's position and limit are uploaded, and the buffers are not modified, so the
-     * same buffers can be uploaded again.
      * @param length The exact length of the data. It is important that this value match precisely the length of the
      * data emitted by the {@code Flux}.
      * @return A reactive response containing the information of the uploaded block blob.
@@ -253,8 +251,6 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      *
      * @param data The data to write to the blob. Note that this {@code Flux} must be replayable if retries are enabled
      * (the default). In other words, the Flux must produce the same data each time it is subscribed to.
-     * Only the bytes between each buffer's position and limit are uploaded, and the buffers are not modified, so the
-     * same buffers can be uploaded again.
      * @param length The exact length of the data. It is important that this value match precisely the length of the
      * data emitted by the {@code Flux}.
      * @param overwrite Whether to overwrite, should data exist on the blob.
@@ -344,8 +340,6 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      *
      * @param data The data to write to the blob. Note that this {@code Flux} must be replayable if retries are enabled
      * (the default). In other words, the Flux must produce the same data each time it is subscribed to.
-     * Only the bytes between each buffer's position and limit are uploaded, and the buffers are not modified, so the
-     * same buffers can be uploaded again.
      * @param length The exact length of the data. It is important that this value match precisely the length of the
      * data emitted by the {@code Flux}.
      * @param headers {@link BlobHttpHeaders}
@@ -636,8 +630,6 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      * ids for a given blob must be the same length.
      * @param data The data to write to the block. Note that this {@code Flux} must be replayable if retries are enabled
      * (the default). In other words, the {@code Flux} must produce the same data each time it is subscribed to.
-     * Only the bytes between each buffer's position and limit are uploaded, and the buffers are not modified, so the
-     * same buffers can be uploaded again.
      * @param length The exact length of the data. It is important that this value match precisely the length of the
      * data emitted by the {@code Flux}.
      *
@@ -712,8 +704,6 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      * ids for a given blob must be the same length.
      * @param data The data to write to the block. Note that this {@code Flux} must be replayable if retries are enabled
      * (the default). In other words, the Flux must produce the same data each time it is subscribed to.
-     * Only the bytes between each buffer's position and limit are uploaded, and the buffers are not modified, so the
-     * same buffers can be uploaded again.
      * @param length The exact length of the data. It is important that this value match precisely the length of the
      * data emitted by the {@code Flux}.
      * @param contentMd5 An MD5 hash of the block content. This hash is used to verify the integrity of the block during
