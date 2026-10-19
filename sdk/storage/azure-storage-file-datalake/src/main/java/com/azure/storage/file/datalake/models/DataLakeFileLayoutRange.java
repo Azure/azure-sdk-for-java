@@ -6,13 +6,15 @@ package com.azure.storage.file.datalake.models;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.http.HttpRange;
 
+import java.net.URI;
+
 /**
  * Represents a range in a file's layout.
  */
 @Immutable
 public final class DataLakeFileLayoutRange {
     private final HttpRange range;
-    private final String endpoint;
+    private final URI endpoint;
 
     /**
      * Creates a new {@code DataLakeFileLayoutRange}.
@@ -20,7 +22,7 @@ public final class DataLakeFileLayoutRange {
      * @param range The {@link HttpRange}.
      * @param endpoint The endpoint that contains the range.
      */
-    public DataLakeFileLayoutRange(HttpRange range, String endpoint) {
+    public DataLakeFileLayoutRange(HttpRange range, URI endpoint) {
         this.range = range;
         this.endpoint = endpoint;
     }
@@ -37,12 +39,13 @@ public final class DataLakeFileLayoutRange {
     /**
      * Gets the endpoint that contains this range.
      *
-     * <p>The endpoint is represented as either a DNS hostname and port, such as {@code blob.example.net:443}, or an
-     * absolute URL containing that authority, such as {@code https://blob.example.net:443/}.</p>
+     * <p>The endpoint is represented as either an absolute URI, such as {@code https://blob.example.net:443/}, or a
+     * URI reference containing only an authority, such as {@code //blob.example.net:443}. For an authority-only URI
+     * reference, the request's scheme is used.</p>
      *
      * @return The endpoint that contains this range.
      */
-    public String getEndpoint() {
+    public URI getEndpoint() {
         return endpoint;
     }
 }

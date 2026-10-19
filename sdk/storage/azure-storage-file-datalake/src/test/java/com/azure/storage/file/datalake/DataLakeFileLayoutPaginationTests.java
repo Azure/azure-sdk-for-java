@@ -15,6 +15,7 @@ import com.azure.storage.file.datalake.models.DataLakeFileLayoutRange;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
+import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
@@ -82,7 +83,7 @@ public class DataLakeFileLayoutPaginationTests {
     private static void assertFirstPageMetadataPreserved(List<PagedResponse<DataLakeFileLayoutRange>> pages) {
         PagedResponse<DataLakeFileLayoutRange> firstPage = pages.get(0);
         assertEquals(1, firstPage.getValue().size());
-        assertEquals("https://host-a:443", firstPage.getValue().get(0).getEndpoint());
+        assertEquals(URI.create("https://host-a:443"), firstPage.getValue().get(0).getEndpoint());
         assertNotNull(firstPage.getHeaders().getValue(HttpHeaderName.ETAG));
         assertEquals(String.valueOf(FILE_SIZE), firstPage.getHeaders().getValue(X_MS_BLOB_CONTENT_LENGTH));
         assertEquals(FILE_CONTENT_TYPE, firstPage.getHeaders().getValue(X_MS_BLOB_CONTENT_TYPE));
