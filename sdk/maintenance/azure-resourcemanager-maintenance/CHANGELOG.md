@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.4 (2026-09-23)
+## 1.1.0-beta.4 (2026-10-19)
 
 - Azure Resource Manager Maintenance client library for Java. This package contains Microsoft Azure SDK for Maintenance Management SDK. Azure Maintenance Management Client. Package api-version 2025-10-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
