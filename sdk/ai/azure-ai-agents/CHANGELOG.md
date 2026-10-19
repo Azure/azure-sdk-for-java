@@ -42,8 +42,6 @@
 - Regenerated from the updated Foundry TypeSpec specification.
 - Updated `SessionConfiguration` documentation to reflect the service-supported maximum idle timeout of 14,400 seconds
   (four hours); the default remains 900 seconds.
-- Updated `azure-core` to `1.61.0-beta.1` and `azure-core-http-netty` to `1.17.0-beta.1`.
-- Updated shaded Reactor Netty to `1.3.7` and Netty to `4.2.19.Final`.
 
 ## 2.7.0 (2026-10-06)
 
