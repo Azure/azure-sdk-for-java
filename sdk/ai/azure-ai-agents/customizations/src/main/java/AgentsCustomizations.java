@@ -37,7 +37,7 @@ public class AgentsCustomizations extends Customization {
         renameImageGenToolSize(libraryCustomization, logger);
         modifyPollingStrategies(libraryCustomization, logger);
         customizeOptimizationPollingStrategies(libraryCustomization, logger);
-        internalizeUnusedVoiceAgentFunctionToolType(libraryCustomization);
+        internalizeUnusedVoiceAgentFunctionToolType(libraryCustomization, logger);
         protectPolymorphicBaseConstructors(libraryCustomization);
         makeRealtimeMessageDiscriminatorsFinal(libraryCustomization);
         applyUnionTypeWrappers(libraryCustomization, logger);
@@ -93,11 +93,18 @@ public class AgentsCustomizations extends Customization {
 
     private static final int V_SIZE = 18;
 
-    private void internalizeUnusedVoiceAgentFunctionToolType(LibraryCustomization customization) {
-        customization.getClass(MODELS_PACKAGE, "VoiceAgentFunctionToolType1")
-            .customizeAst(ast -> ast.getEnumByName("VoiceAgentFunctionToolType1")
-                .orElseThrow(() -> new IllegalStateException("VoiceAgentFunctionToolType1 was not generated"))
-                .removeModifier(Modifier.Keyword.PUBLIC));
+    private void internalizeUnusedVoiceAgentFunctionToolType(LibraryCustomization customization, Logger logger) {
+        ClassCustomization classCustomization;
+        try {
+            classCustomization = customization.getClass(MODELS_PACKAGE, "VoiceAgentFunctionToolType1");
+        } catch (IllegalArgumentException ex) {
+            logger.info("VoiceAgentFunctionToolType1 does not exist; skipping internalization.");
+            return;
+        }
+
+        classCustomization.customizeAst(ast -> ast.getEnumByName("VoiceAgentFunctionToolType1")
+            .orElseThrow(() -> new IllegalStateException("VoiceAgentFunctionToolType1 was not generated"))
+            .removeModifier(Modifier.Keyword.PUBLIC));
     }
 
     /**
