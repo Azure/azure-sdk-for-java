@@ -10,19 +10,23 @@ import com.azure.resourcemanager.edgeactions.models.EdgeActionVersionUpdatePrope
 import com.azure.resourcemanager.edgeactions.models.VersionCode;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
 
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 public class EdgeActionVersionsIntegrationTests extends EdgeActionsTestBase {
     @Test
+    @Timeout(value = 50, unit = TimeUnit.MINUTES)
     public void deploysAndRetrievesFileCode() throws IOException {
         verifyCodeDeployment(EdgeActionVersionDeploymentType.FILE);
     }
 
     @Test
+    @Timeout(value = 50, unit = TimeUnit.MINUTES)
     public void deploysAndRetrievesZipCode() throws IOException {
         verifyCodeDeployment(EdgeActionVersionDeploymentType.ZIP);
     }
@@ -43,6 +47,7 @@ public class EdgeActionVersionsIntegrationTests extends EdgeActionsTestBase {
     }
 
     @Test
+    @Timeout(value = 90, unit = TimeUnit.MINUTES)
     public void updatesVersionsAndSwapsDefault() throws IOException {
         createEdgeAction();
         EdgeActionVersion first = deployVersion("v1", EdgeActionVersionDeploymentType.FILE);

@@ -12,6 +12,7 @@ import com.azure.core.test.utils.TestProxyManager;
 import com.azure.core.test.utils.TestProxyUtils;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
+import com.azure.resourcemanager.edgeactions.implementation.models.EdgeActionListResult;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -58,7 +59,16 @@ public class EdgeActionsSanitizerProxyTests {
                 + "\"access_token\":\"fake-access\",\"refresh_token\":\"fake-refresh\",\"id_token\":\"fake-id\","
                 + "\"client_secret\":\"fake-secret\",\"tenantId\":\"fake-tenant\",\"clientId\":\"fake-client\","
                 + "\"principalId\":\"fake-principal\","
-                + "\"systemData\":{\"createdBy\":\"fake-creator\",\"lastModifiedBy\":\"fake-modifier\"}}";
+                + "\"systemData\":{\"createdBy\":\"fake-creator\",\"lastModifiedBy\":\"fake-modifier\"},"
+                + "\"value\":[{\"type\":\"Microsoft.Cdn/EdgeActions\",\"name\":\"javaea012345\","
+                + "\"id\":\"/subscriptions/11111111-2222-3333-4444-555555555555/resourceGroups/test-rg/"
+                + "providers/Microsoft.Cdn/edgeActions/javaea012345\"},"
+                + "{\"type\":\"Microsoft.Cdn/edgeActions\",\"name\":\"fake-unrelated-action\","
+                + "\"id\":\"/subscriptions/11111111-2222-3333-4444-555555555555/resourceGroups/"
+                + "fake-unrelated-group/providers/Microsoft.Cdn/edgeActions/fake-unrelated-action\","
+                + "\"properties\":{\"attachments\":[{\"id\":\"fake-attachment\","
+                + "\"attachedResourceId\":\"fake-unrelated-profile\"}]}},"
+                + "{\"type\":\"Microsoft.Cdn/edgeActions/versions\",\"name\":\"v1\",\"id\":\"version-id\"}]}";
             return response.addHeader("Content-Type", "application/json").sendString(Mono.just(body));
         }).bindNow();
         try {
@@ -89,6 +99,16 @@ public class EdgeActionsSanitizerProxyTests {
                         Assertions.assertTrue(body.contains("/edgeActions/test-action"));
                         Assertions.assertTrue(body.contains(SANITIZED_QUERY));
                         Assertions.assertFalse(body.contains("fake-"));
+                        Assertions.assertTrue(body.contains("\"javaea012345\""));
+                        Assertions.assertTrue(body.contains("/edgeActions/javaea012345"));
+                        Assertions.assertTrue(body.contains("\"v1\""));
+                        Assertions.assertTrue(body.contains("\"version-id\""));
+                        EdgeActionListResult list = BinaryData.fromString(body).toObject(EdgeActionListResult.class);
+                        Assertions.assertEquals(3, list.value().size(), "Sanitization must retain every list item");
+                        Assertions.assertEquals("REDACTED", list.value().get(1).name());
+                        Assertions
+                            .assertEquals("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/REDACTED"
+                                + "/providers/Microsoft.Cdn/edgeActions/REDACTED", list.value().get(1).id());
                         for (String header : new String[] {
                             "Location",
                             "Azure-AsyncOperation",

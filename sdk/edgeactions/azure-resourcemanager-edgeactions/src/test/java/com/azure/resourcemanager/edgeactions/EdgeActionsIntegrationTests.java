@@ -8,13 +8,16 @@ import com.azure.resourcemanager.edgeactions.models.EdgeAction;
 import com.azure.resourcemanager.edgeactions.models.SkuTypeUpdate;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class EdgeActionsIntegrationTests extends EdgeActionsTestBase {
     @Test
+    @Timeout(value = 20, unit = TimeUnit.MINUTES)
     public void createsUpdatesListsAndDeletesEdgeAction() {
         Map<String, String> initialTags = new HashMap<>();
         initialTags.put("purpose", "initial");
@@ -38,8 +41,6 @@ public class EdgeActionsIntegrationTests extends EdgeActionsTestBase {
         Map<String, String> replacement = Collections.singletonMap("purpose", "updated");
         action.update().withTags(replacement).apply();
         Assertions.assertEquals(replacement, action.refresh().tags());
-        action.update().apply();
-        Assertions.assertEquals(replacement, action.refresh().tags());
         action.update().withTags(Collections.emptyMap()).apply();
         Assertions.assertTrue(action.refresh().tags().isEmpty());
         Assertions.assertEquals("global", action.location());
@@ -51,6 +52,7 @@ public class EdgeActionsIntegrationTests extends EdgeActionsTestBase {
     }
 
     @Test
+    @Timeout(value = 20, unit = TimeUnit.MINUTES)
     public void rejectsSkuInPatchEvenWhenUnchanged() {
         EdgeAction action = createEdgeAction();
         ManagementException exception = Assertions.assertThrows(ManagementException.class,

@@ -11,12 +11,15 @@ import com.azure.resourcemanager.edgeactions.models.EdgeActionVersionDeploymentT
 import com.azure.resourcemanager.edgeactions.models.ProvisioningState;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.concurrent.TimeUnit;
 
 public class EdgeActionExecutionFiltersIntegrationTests extends EdgeActionsTestBase {
     @Test
+    @Timeout(value = 20, unit = TimeUnit.MINUTES)
     public void createsExecutionFilterWithoutCodeDeployment() {
         createEdgeAction();
         EdgeActionVersion version = createVersion("v1", EdgeActionVersionDeploymentType.FILE);
@@ -46,6 +49,7 @@ public class EdgeActionExecutionFiltersIntegrationTests extends EdgeActionsTestB
     }
 
     @Test
+    @Timeout(value = 90, unit = TimeUnit.MINUTES)
     public void createsUpdatesListsAndDeletesExecutionFilter() throws IOException {
         createEdgeAction();
         EdgeActionVersion first = deployVersion("v1", EdgeActionVersionDeploymentType.FILE);

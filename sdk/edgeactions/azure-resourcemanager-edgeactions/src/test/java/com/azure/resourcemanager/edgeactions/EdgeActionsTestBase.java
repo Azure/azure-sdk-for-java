@@ -13,14 +13,12 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.Configuration;
-import com.azure.resourcemanager.edgeactions.fluent.models.EdgeActionVersionPropertiesInner;
 import com.azure.resourcemanager.edgeactions.fluent.models.VersionCodeInner;
 import com.azure.resourcemanager.edgeactions.models.EdgeAction;
 import com.azure.resourcemanager.edgeactions.models.EdgeActionIsDefaultVersion;
 import com.azure.resourcemanager.edgeactions.models.EdgeActionVersion;
 import com.azure.resourcemanager.edgeactions.models.EdgeActionVersionDeploymentType;
 import com.azure.resourcemanager.edgeactions.models.EdgeActionVersionProperties;
-import com.azure.resourcemanager.edgeactions.models.EdgeActionVersionValidationStatus;
 import com.azure.resourcemanager.edgeactions.models.ProvisioningState;
 import com.azure.resourcemanager.edgeactions.models.SkuType;
 import com.azure.resourcemanager.test.ResourceManagerTestProxyTestBase;
@@ -81,14 +79,27 @@ abstract class EdgeActionsTestBase extends ResourceManagerTestProxyTestBase {
             sanitizers
                 .add(new TestProxySanitizer(header, pollingSecret, REDACTED_VALUE, TestProxySanitizerType.HEADER));
         }
+        String listedEdgeActions
+            = "$.value[?(@.type == 'Microsoft.Cdn/EdgeActions' || @.type == 'Microsoft.Cdn/edgeActions')]";
+        sanitizers.add(new TestProxySanitizer(listedEdgeActions + ".name", "(?i)^(?!javaea[0-9a-f]+$).+$",
+            REDACTED_VALUE, TestProxySanitizerType.BODY_KEY));
+        sanitizers.add(new TestProxySanitizer(listedEdgeActions + ".id", "(?i)^(?!.*?/edgeactions/javaea[0-9a-f]+$).+$",
+            "/subscriptions/" + zeroUuid + "/resourceGroups/REDACTED/providers/Microsoft.Cdn/edgeActions/REDACTED",
+            TestProxySanitizerType.BODY_KEY));
+        for (String field : new String[] { "id", "attachedResourceId" }) {
+            sanitizers.add(new TestProxySanitizer(listedEdgeActions + ".properties.attachments[*]." + field, null,
+                REDACTED_VALUE, TestProxySanitizerType.BODY_KEY));
+        }
         return sanitizers;
     }
 
     @Override
     protected HttpPipeline buildHttpPipeline(TokenCredential credential, AzureProfile profile,
         HttpLogOptions httpLogOptions, List<HttpPipelinePolicy> policies, HttpClient httpClient) {
-        EdgeActionsManager.Configurable configurable
-            = EdgeActionsManager.configure().withHttpClient(httpClient).withLogOptions(httpLogOptions);
+        EdgeActionsManager.Configurable configurable = EdgeActionsManager.configure()
+            .withHttpClient(httpClient)
+            .withLogOptions(httpLogOptions)
+            .withPolicy(new EdgeActionsLroResponsePolicy());
         policies.forEach(configurable::withPolicy);
         return configurable.authenticate(credential, profile).serviceClient().getHttpPipeline();
     }
@@ -131,7 +142,7 @@ abstract class EdgeActionsTestBase extends ResourceManagerTestProxyTestBase {
             .define(version)
             .withRegion("global")
             .withExistingEdgeAction(resourceGroupName, edgeActionName)
-            .withProperties(new EdgeActionVersionPropertiesInner().withDeploymentType(deploymentType)
+            .withProperties(new EdgeActionVersionProperties().withDeploymentType(deploymentType)
                 .withIsDefaultVersion(EdgeActionIsDefaultVersion.FALSE))
             .create();
     }
@@ -141,12 +152,14 @@ abstract class EdgeActionsTestBase extends ResourceManagerTestProxyTestBase {
         EdgeActionVersion created = createVersion(version, deploymentType);
         VersionCodeInner code = new VersionCodeInner().withName("testdeployment")
             .withContent(EdgeActionsTestCode.deploymentContent(deploymentType));
-        EdgeActionVersionProperties deployed = created.deployVersionCode(code);
-        Assertions.assertEquals(ProvisioningState.SUCCEEDED, deployed.provisioningState());
-        Assertions.assertEquals(EdgeActionVersionValidationStatus.SUCCEEDED, deployed.validationStatus());
+        EdgeActionVersion deployed = created.deployVersionCode(code);
+        Assertions.assertNotNull(deployed);
+        Assertions.assertEquals(created.id(), deployed.id());
+        Assertions.assertEquals(version, deployed.name());
+        Assertions.assertNotNull(deployed.properties());
+        Assertions.assertEquals(ProvisioningState.SUCCEEDED, deployed.properties().provisioningState());
         created.refresh();
         Assertions.assertEquals(ProvisioningState.SUCCEEDED, created.properties().provisioningState());
-        Assertions.assertEquals(EdgeActionVersionValidationStatus.SUCCEEDED, created.properties().validationStatus());
         return created;
     }
 
