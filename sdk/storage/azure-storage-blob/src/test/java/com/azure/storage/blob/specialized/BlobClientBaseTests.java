@@ -524,14 +524,15 @@ public class BlobClientBaseTests extends BlobTestBase {
 
     @DoNotRecord
     @Test
-    public void openInputStreamWithDefaultDataLocalityUsesAsyncLayoutProvider() throws IOException {
+    public void openInputStreamWithEnabledDataLocalityUsesAsyncLayoutProvider() throws IOException {
         byte[] contentBytes = createTestContent();
         List<LayoutRequestRecord> records = new ArrayList<>();
         SeekableReadHttpClient httpClient = new SeekableReadHttpClient(contentBytes, true, 200, SEEKABLE_LAYOUT_XML);
         BlobClient downloadClient = seekableClient(httpClient, records);
 
-        BlobInputStreamOptions options
-            = new BlobInputStreamOptions().setBlockSize(8).setRange(new BlobRange(0, (long) contentBytes.length));
+        BlobInputStreamOptions options = new BlobInputStreamOptions().setBlockSize(8)
+            .setRange(new BlobRange(0, (long) contentBytes.length))
+            .setLayoutAwareRouting(LayoutAwareRouting.ENABLED);
 
         byte[] readBytes;
         try (InputStream is
@@ -550,15 +551,16 @@ public class BlobClientBaseTests extends BlobTestBase {
 
     @DoNotRecord
     @Test
-    public void openSeekableByteChannelReadWithDefaultDataLocalityCachesLayoutForRepeatedReads() throws IOException {
+    public void openSeekableByteChannelReadWithEnabledDataLocalityCachesLayoutForRepeatedReads() throws IOException {
         byte[] contentBytes = createTestContent();
         List<LayoutRequestRecord> records = new ArrayList<>();
         SeekableReadHttpClient httpClient = new SeekableReadHttpClient(contentBytes, true, 200, SEEKABLE_LAYOUT_XML);
         BlobClient client = seekableClient(httpClient, records);
 
-        BlobSeekableByteChannelReadResult result
-            = client.openSeekableByteChannelRead(new BlobSeekableByteChannelReadOptions().setReadSizeInBytes(8),
-                new Context(CALLER_CONTEXT_KEY, CALLER_CONTEXT_VALUE));
+        BlobSeekableByteChannelReadResult result = client.openSeekableByteChannelRead(
+            new BlobSeekableByteChannelReadOptions().setReadSizeInBytes(8)
+                .setLayoutAwareRouting(LayoutAwareRouting.ENABLED),
+            new Context(CALLER_CONTEXT_KEY, CALLER_CONTEXT_VALUE));
 
         try (SeekableByteChannel channel = result.getChannel()) {
             ByteBuffer buffer = ByteBuffer.allocate(1);
@@ -584,16 +586,17 @@ public class BlobClientBaseTests extends BlobTestBase {
 
     @DoNotRecord
     @Test
-    public void openSeekableByteChannelReadWithDefaultDataLocalityRoutesDifferentRangesToDifferentEndpoints()
+    public void openSeekableByteChannelReadWithEnabledDataLocalityRoutesDifferentRangesToDifferentEndpoints()
         throws IOException {
         byte[] contentBytes = createTestContent();
         List<LayoutRequestRecord> records = new ArrayList<>();
         SeekableReadHttpClient httpClient = new SeekableReadHttpClient(contentBytes, true, 200, SEEKABLE_LAYOUT_XML);
         BlobClient client = seekableClient(httpClient, records);
 
-        BlobSeekableByteChannelReadResult result
-            = client.openSeekableByteChannelRead(new BlobSeekableByteChannelReadOptions().setReadSizeInBytes(8),
-                new Context(CALLER_CONTEXT_KEY, CALLER_CONTEXT_VALUE));
+        BlobSeekableByteChannelReadResult result = client.openSeekableByteChannelRead(
+            new BlobSeekableByteChannelReadOptions().setReadSizeInBytes(8)
+                .setLayoutAwareRouting(LayoutAwareRouting.ENABLED),
+            new Context(CALLER_CONTEXT_KEY, CALLER_CONTEXT_VALUE));
 
         try (SeekableByteChannel channel = result.getChannel()) {
             ByteBuffer buffer = ByteBuffer.allocate(1);
@@ -619,15 +622,16 @@ public class BlobClientBaseTests extends BlobTestBase {
 
     @DoNotRecord
     @Test
-    public void openSeekableByteChannelReadWithDefaultDataLocalityRoutesBackwardSeekCorrectly() throws IOException {
+    public void openSeekableByteChannelReadWithEnabledDataLocalityRoutesBackwardSeekCorrectly() throws IOException {
         byte[] contentBytes = createTestContent();
         List<LayoutRequestRecord> records = new ArrayList<>();
         SeekableReadHttpClient httpClient = new SeekableReadHttpClient(contentBytes, true, 200, SEEKABLE_LAYOUT_XML);
         BlobClient client = seekableClient(httpClient, records);
 
-        BlobSeekableByteChannelReadResult result
-            = client.openSeekableByteChannelRead(new BlobSeekableByteChannelReadOptions().setReadSizeInBytes(8),
-                new Context(CALLER_CONTEXT_KEY, CALLER_CONTEXT_VALUE));
+        BlobSeekableByteChannelReadResult result = client.openSeekableByteChannelRead(
+            new BlobSeekableByteChannelReadOptions().setReadSizeInBytes(8)
+                .setLayoutAwareRouting(LayoutAwareRouting.ENABLED),
+            new Context(CALLER_CONTEXT_KEY, CALLER_CONTEXT_VALUE));
 
         try (SeekableByteChannel channel = result.getChannel()) {
             ByteBuffer buffer = ByteBuffer.allocate(1);
@@ -659,9 +663,10 @@ public class BlobClientBaseTests extends BlobTestBase {
         SeekableReadHttpClient httpClient = new SeekableReadHttpClient(contentBytes, false, 200, SEEKABLE_LAYOUT_XML);
         BlobClient client = seekableClient(httpClient, records);
 
-        BlobSeekableByteChannelReadResult result
-            = client.openSeekableByteChannelRead(new BlobSeekableByteChannelReadOptions().setReadSizeInBytes(8),
-                new Context(CALLER_CONTEXT_KEY, CALLER_CONTEXT_VALUE));
+        BlobSeekableByteChannelReadResult result = client.openSeekableByteChannelRead(
+            new BlobSeekableByteChannelReadOptions().setReadSizeInBytes(8)
+                .setLayoutAwareRouting(LayoutAwareRouting.ENABLED),
+            new Context(CALLER_CONTEXT_KEY, CALLER_CONTEXT_VALUE));
 
         try (SeekableByteChannel channel = result.getChannel()) {
             ByteBuffer buffer = ByteBuffer.allocate(1);
@@ -693,9 +698,10 @@ public class BlobClientBaseTests extends BlobTestBase {
         SeekableReadHttpClient httpClient = new SeekableReadHttpClient(contentBytes, true, 500, SEEKABLE_LAYOUT_XML);
         BlobClient client = seekableClient(httpClient, records);
 
-        BlobSeekableByteChannelReadResult result
-            = client.openSeekableByteChannelRead(new BlobSeekableByteChannelReadOptions().setReadSizeInBytes(8),
-                new Context(CALLER_CONTEXT_KEY, CALLER_CONTEXT_VALUE));
+        BlobSeekableByteChannelReadResult result = client.openSeekableByteChannelRead(
+            new BlobSeekableByteChannelReadOptions().setReadSizeInBytes(8)
+                .setLayoutAwareRouting(LayoutAwareRouting.ENABLED),
+            new Context(CALLER_CONTEXT_KEY, CALLER_CONTEXT_VALUE));
 
         try (SeekableByteChannel channel = result.getChannel()) {
             ByteBuffer buffer = ByteBuffer.allocate(1);
@@ -712,15 +718,17 @@ public class BlobClientBaseTests extends BlobTestBase {
     }
 
     @DoNotRecord
-    @Test
-    public void openInputStreamWithLayoutAwareRoutingDisabledDoesNotFetchLayout() throws IOException {
+    @ParameterizedTest
+    @MethodSource("disabledLayoutAwareRoutingSupplier")
+    public void openInputStreamWithoutEnabledLayoutAwareRoutingDoesNotFetchLayout(LayoutAwareRouting layoutAwareRouting)
+        throws IOException {
         byte[] contentBytes = createTestContent();
         SeekableReadHttpClient httpClient = new SeekableReadHttpClient(contentBytes, true, 200, SEEKABLE_LAYOUT_XML);
         BlobClient client = seekableClient(httpClient, new ArrayList<>());
 
         BlobInputStreamOptions options = new BlobInputStreamOptions().setBlockSize(8)
             .setRange(new BlobRange(0, (long) contentBytes.length))
-            .setLayoutAwareRouting(LayoutAwareRouting.DISABLED);
+            .setLayoutAwareRouting(layoutAwareRouting);
 
         byte[] readBytes;
         try (InputStream is = client.openInputStream(options, new Context(CALLER_CONTEXT_KEY, CALLER_CONTEXT_VALUE))) {
@@ -736,20 +744,24 @@ public class BlobClientBaseTests extends BlobTestBase {
     }
 
     @DoNotRecord
-    @Test
-    public void openSeekableByteChannelReadWithLayoutAwareRoutingDisabledDoesNotFetchLayout() throws IOException {
+    @ParameterizedTest
+    @MethodSource("disabledLayoutAwareRoutingSupplier")
+    public void openSeekableByteChannelReadWithoutEnabledLayoutAwareRoutingDoesNotFetchLayout(
+        LayoutAwareRouting layoutAwareRouting) throws IOException {
         byte[] contentBytes = createTestContent();
         SeekableReadHttpClient httpClient = new SeekableReadHttpClient(contentBytes, true, 200, SEEKABLE_LAYOUT_XML);
         BlobClient client = seekableClient(httpClient, new ArrayList<>());
 
         BlobSeekableByteChannelReadResult result = client.openSeekableByteChannelRead(
-            new BlobSeekableByteChannelReadOptions().setReadSizeInBytes(8)
-                .setLayoutAwareRouting(LayoutAwareRouting.DISABLED),
+            new BlobSeekableByteChannelReadOptions().setReadSizeInBytes(8).setLayoutAwareRouting(layoutAwareRouting),
             new Context(CALLER_CONTEXT_KEY, CALLER_CONTEXT_VALUE));
 
         try (SeekableByteChannel channel = result.getChannel()) {
             ByteBuffer buffer = ByteBuffer.allocate(1);
+            channel.position(10);
             assertEquals(1, channel.read(buffer));
+            buffer.flip();
+            assertEquals(contentBytes[10], buffer.get());
         }
 
         assertEquals(0, httpClient.getLayoutRequestCount());
@@ -760,17 +772,15 @@ public class BlobClientBaseTests extends BlobTestBase {
     }
 
     @DoNotRecord
-    @ParameterizedTest
-    @MethodSource("layoutAwareRoutingSupplier")
-    public void openInputStreamWithLayoutAwareRoutingStillFetchesLayout(LayoutAwareRouting layoutAwareRouting)
-        throws IOException {
+    @Test
+    public void openInputStreamWithEnabledLayoutAwareRoutingStillFetchesLayout() throws IOException {
         byte[] contentBytes = createTestContent();
         SeekableReadHttpClient httpClient = new SeekableReadHttpClient(contentBytes, true, 200, SEEKABLE_LAYOUT_XML);
         BlobClient client = seekableClient(httpClient, new ArrayList<>());
 
         BlobInputStreamOptions options = new BlobInputStreamOptions().setBlockSize(8)
             .setRange(new BlobRange(0, (long) contentBytes.length))
-            .setLayoutAwareRouting(layoutAwareRouting);
+            .setLayoutAwareRouting(LayoutAwareRouting.ENABLED);
 
         try (InputStream is = client.openInputStream(options, new Context(CALLER_CONTEXT_KEY, CALLER_CONTEXT_VALUE))) {
             assertArrayEquals(contentBytes, readAll(is));
@@ -787,9 +797,10 @@ public class BlobClientBaseTests extends BlobTestBase {
         SeekableReadHttpClient httpClient = new SeekableReadHttpClient(contentBytes, true, 200, SEEKABLE_LAYOUT_XML);
         BlobClient client = seekableClient(httpClient, records);
 
-        BlobSeekableByteChannelReadResult result
-            = client.openSeekableByteChannelRead(new BlobSeekableByteChannelReadOptions().setReadSizeInBytes(8),
-                new Context(CALLER_CONTEXT_KEY, CALLER_CONTEXT_VALUE));
+        BlobSeekableByteChannelReadResult result = client.openSeekableByteChannelRead(
+            new BlobSeekableByteChannelReadOptions().setReadSizeInBytes(8)
+                .setLayoutAwareRouting(LayoutAwareRouting.ENABLED),
+            new Context(CALLER_CONTEXT_KEY, CALLER_CONTEXT_VALUE));
 
         try (SeekableByteChannel channel = result.getChannel()) {
             ByteBuffer buffer = ByteBuffer.allocate(1);
@@ -814,9 +825,10 @@ public class BlobClientBaseTests extends BlobTestBase {
         SeekableReadHttpClient httpClient = new SeekableReadHttpClient(contentBytes, true, 403, SEEKABLE_LAYOUT_XML);
         BlobClient client = seekableClient(httpClient, records);
 
-        BlobSeekableByteChannelReadResult result
-            = client.openSeekableByteChannelRead(new BlobSeekableByteChannelReadOptions().setReadSizeInBytes(8),
-                new Context(CALLER_CONTEXT_KEY, CALLER_CONTEXT_VALUE));
+        BlobSeekableByteChannelReadResult result = client.openSeekableByteChannelRead(
+            new BlobSeekableByteChannelReadOptions().setReadSizeInBytes(8)
+                .setLayoutAwareRouting(LayoutAwareRouting.ENABLED),
+            new Context(CALLER_CONTEXT_KEY, CALLER_CONTEXT_VALUE));
 
         try (SeekableByteChannel channel = result.getChannel()) {
             ByteBuffer buffer = ByteBuffer.allocate(1);
@@ -875,9 +887,9 @@ public class BlobClientBaseTests extends BlobTestBase {
         return Stream.of(Arguments.of(500), Arguments.of(429));
     }
 
-    private static Stream<Arguments> layoutAwareRoutingSupplier() {
+    private static Stream<Arguments> disabledLayoutAwareRoutingSupplier() {
         return Stream.of(Arguments.of((LayoutAwareRouting) null), Arguments.of(LayoutAwareRouting.AUTO),
-            Arguments.of(LayoutAwareRouting.ENABLED));
+            Arguments.of(LayoutAwareRouting.DISABLED));
     }
 
     private static HttpPipelinePolicy recordLayoutRequestThreadsPolicy(List<LayoutRequestRecord> records) {

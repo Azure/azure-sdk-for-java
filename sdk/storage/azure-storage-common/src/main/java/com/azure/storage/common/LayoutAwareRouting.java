@@ -10,8 +10,10 @@ package com.azure.storage.common;
  */
 public enum LayoutAwareRouting {
     /**
-     * The default routing behavior. This currently behaves the same as {@link #ENABLED}, but the client library may
-     * change this behavior in a future release.
+     * Let the SDK choose the routing behavior most appropriate for the request.
+     * <p>
+     * The behavior selected by {@code AUTO} is an implementation detail and may change between SDK releases.
+     * Choose {@link #DISABLED} or {@link #ENABLED} explicitly if you require a specific behavior.
      */
     AUTO,
 

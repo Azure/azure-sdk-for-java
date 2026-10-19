@@ -9,6 +9,7 @@ import com.azure.storage.blob.implementation.models.BlobLayoutInternal;
 import com.azure.storage.blob.implementation.models.BlobLayoutRanges;
 import com.azure.storage.blob.implementation.models.BlobLayoutRangesRangeItem;
 import com.azure.storage.blob.models.BlobLayoutRange;
+import com.azure.storage.common.LayoutAwareRouting;
 import org.junit.jupiter.api.Test;
 
 import java.net.URI;
@@ -19,6 +20,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class ModelHelperTests {
+    @Test
+    public void resolveLayoutAwareRoutingUsesDefaultAndPreservesExplicitModes() {
+        assertEquals(LayoutAwareRouting.DISABLED, ModelHelper.resolveLayoutAwareRouting(null));
+        assertEquals(LayoutAwareRouting.DISABLED, ModelHelper.resolveLayoutAwareRouting(LayoutAwareRouting.AUTO));
+        assertEquals(LayoutAwareRouting.DISABLED, ModelHelper.resolveLayoutAwareRouting(LayoutAwareRouting.DISABLED));
+        assertEquals(LayoutAwareRouting.ENABLED, ModelHelper.resolveLayoutAwareRouting(LayoutAwareRouting.ENABLED));
+    }
+
     @Test
     public void transformBlobLayoutRangesConvertsEndpointValuesToUris() {
         BlobLayoutInternal layout = new BlobLayoutInternal()

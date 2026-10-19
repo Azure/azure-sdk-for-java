@@ -30,6 +30,7 @@ import com.azure.storage.blob.options.BlobDownloadContentOptions;
 import com.azure.storage.blob.options.BlobDownloadStreamOptions;
 import com.azure.storage.blob.options.BlobDownloadToFileOptions;
 import com.azure.storage.blob.options.BlobInputStreamOptions;
+import com.azure.storage.common.LayoutAwareRouting;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.StorageSharedKeyCredential;
@@ -39,6 +40,9 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
+import org.junit.jupiter.params.provider.NullSource;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -70,7 +74,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * Tests that the default locality-aware chunk-download wiring works end-to-end (layout cache construction,
+ * Tests that the opt-in locality-aware chunk-download wiring works end-to-end (layout cache construction,
  * per-chunk endpoint resolution, and {@code Context} propagation to {@code DataLocalityPolicy}) without altering the
  * bytes returned.
  * <p>
@@ -168,7 +172,7 @@ public class BlobDataLocalityDownloadApiTests extends BlobTestBase {
     @LiveOnly
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
     @Test
-    public void downloadToFileWithDefaultDataLocalityRoutesChunksToLayoutEndpoint() throws IOException {
+    public void downloadToFileWithEnabledDataLocalityRoutesChunksToLayoutEndpoint() throws IOException {
         List<RequestHostRecord> records = new CopyOnWriteArrayList<>();
         BlobClient downloadClient = getBlobClient(ENVIRONMENT.getPrimaryAccount().getCredential(), bc.getBlobUrl(),
             recordRequestHostsPolicy(records));
@@ -176,9 +180,13 @@ public class BlobDataLocalityDownloadApiTests extends BlobTestBase {
         testFile = Files.createTempFile(generateBlobName(), ".dat");
         Files.deleteIfExists(testFile);
 
-        assertDoesNotThrow(() -> downloadClient
-            .downloadToFileWithResponse(new BlobDownloadToFileOptions(testFile.toString()).setParallelTransferOptions(
-                new ParallelTransferOptions().setBlockSizeLong((long) LIVE_DOWNLOAD_BLOCK_SIZE)), null, null));
+        assertDoesNotThrow(
+            () -> downloadClient
+                .downloadToFileWithResponse(
+                    new BlobDownloadToFileOptions(testFile.toString()).setLayoutAwareRouting(LayoutAwareRouting.ENABLED)
+                        .setParallelTransferOptions(
+                            new ParallelTransferOptions().setBlockSizeLong((long) LIVE_DOWNLOAD_BLOCK_SIZE)),
+                    null, null));
 
         URI accountUri = URI.create(bc.getBlobUrl());
         String accountHost = accountUri.getHost();
@@ -235,11 +243,11 @@ public class BlobDataLocalityDownloadApiTests extends BlobTestBase {
         testFile = Files.createTempFile(generateBlobName(), ".dat");
         Files.deleteIfExists(testFile);
 
-        assertDoesNotThrow(
-            () -> downloadClient.downloadToFileWithResponse(
-                new BlobDownloadToFileOptions(testFile.toString()).setParallelTransferOptions(
+        assertDoesNotThrow(() -> downloadClient.downloadToFileWithResponse(
+            new BlobDownloadToFileOptions(testFile.toString()).setLayoutAwareRouting(LayoutAwareRouting.ENABLED)
+                .setParallelTransferOptions(
                     new ParallelTransferOptions().setBlockSizeLong((long) NO_HINT_LIVE_DOWNLOAD_BLOCK_SIZE)),
-                null, null));
+            null, null));
 
         URI accountUri = URI.create(smallBlobClient.getBlobUrl());
         String accountHost = accountUri.getHost();
@@ -285,8 +293,11 @@ public class BlobDataLocalityDownloadApiTests extends BlobTestBase {
     }
 
     @DoNotRecord
-    @Test
-    public void downloadToFileWithLayoutAwareRoutingDisabledDoesNotFetchLayout() throws IOException {
+    @ParameterizedTest
+    @NullSource
+    @EnumSource(value = LayoutAwareRouting.class, names = { "AUTO", "DISABLED" })
+    public void downloadToFileWithoutEnabledLayoutAwareRoutingDoesNotFetchLayout(LayoutAwareRouting layoutAwareRouting)
+        throws IOException {
         byte[] testContent = new byte[64];
         for (int i = 0; i < testContent.length; i++) {
             testContent[i] = (byte) i;
@@ -305,7 +316,7 @@ public class BlobDataLocalityDownloadApiTests extends BlobTestBase {
         assertDoesNotThrow(
             () -> downloadClient.downloadToFileWithResponse(new BlobDownloadToFileOptions(testFile.toString())
                 .setParallelTransferOptions(new ParallelTransferOptions().setBlockSizeLong(8L))
-                .setLayoutAwareRouting(com.azure.storage.common.LayoutAwareRouting.DISABLED), null, null));
+                .setLayoutAwareRouting(layoutAwareRouting), null, null));
 
         assertArrayEquals(testContent, Files.readAllBytes(testFile));
         assertEquals(0, httpClient.getLayoutRequestCount());
@@ -327,8 +338,9 @@ public class BlobDataLocalityDownloadApiTests extends BlobTestBase {
         StepVerifier
             .create(client
                 .downloadToFileWithResponse(
-                    new BlobDownloadToFileOptions(testFile.toString()).setParallelTransferOptions(
-                        new ParallelTransferOptions().setBlockSizeLong(8L).setMaxConcurrency(1)))
+                    new BlobDownloadToFileOptions(testFile.toString()).setLayoutAwareRouting(LayoutAwareRouting.ENABLED)
+                        .setParallelTransferOptions(
+                            new ParallelTransferOptions().setBlockSizeLong(8L).setMaxConcurrency(1)))
                 .subscribeOn(Schedulers.parallel()))
             .assertNext(response -> assertEquals(MOCK_BODY.length, response.getValue().getBlobSize()))
             .verifyComplete();
@@ -341,6 +353,32 @@ public class BlobDataLocalityDownloadApiTests extends BlobTestBase {
         for (RequestRecord request : requests.subList(1, requests.size())) {
             assertEquals(DATA_LOCALITY_HOST, request.urlHost);
             assertEquals(ORIGINAL_HOST, request.hostHeader);
+        }
+    }
+
+    @DoNotRecord
+    @ParameterizedTest
+    @NullSource
+    @EnumSource(value = LayoutAwareRouting.class, names = { "AUTO", "DISABLED" })
+    public void asyncDownloadToFileWithoutEnabledLayoutAwareRoutingDoesNotFetchLayout(
+        LayoutAwareRouting layoutAwareRouting) throws IOException {
+        LayoutRoutingHttpClient httpClient = new LayoutRoutingHttpClient(MOCK_BODY);
+        BlobAsyncClient client = mockAsyncClient(httpClient);
+        testFile = Files.createTempFile(generateBlobName(), ".dat");
+        Files.deleteIfExists(testFile);
+
+        StepVerifier
+            .create(client.downloadToFileWithResponse(new BlobDownloadToFileOptions(testFile.toString())
+                .setLayoutAwareRouting(layoutAwareRouting)
+                .setParallelTransferOptions(new ParallelTransferOptions().setBlockSizeLong(8L).setMaxConcurrency(1))))
+            .assertNext(response -> assertEquals(MOCK_BODY.length, response.getValue().getBlobSize()))
+            .verifyComplete();
+
+        assertArrayEquals(MOCK_BODY, Files.readAllBytes(testFile));
+        assertEquals(0, httpClient.getLayoutRequestCount());
+        for (RequestRecord request : httpClient.getDataRequestRecords()) {
+            assertEquals(ORIGINAL_HOST, request.urlHost);
+            assertNull(request.hostHeader);
         }
     }
 

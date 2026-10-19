@@ -20,6 +20,9 @@ import com.azure.storage.file.datalake.options.DataLakeFileInputStreamOptions;
 import com.azure.storage.file.datalake.options.FileReadOptions;
 import com.azure.storage.file.datalake.options.ReadToFileOptions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
+import org.junit.jupiter.params.provider.NullSource;
 import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayOutputStream;
@@ -156,14 +159,17 @@ public class DataLakeDataLocalityOptionsTests {
         assertNull(unmodified.hostHeader);
     }
 
-    @Test
-    public void fileOpenInputStreamWithDisabledLayoutAwareRoutingDoesNotFetchLayout() throws IOException {
+    @ParameterizedTest
+    @NullSource
+    @EnumSource(value = LayoutAwareRouting.class, names = { "AUTO", "DISABLED" })
+    public void fileOpenInputStreamWithoutEnabledLayoutAwareRoutingDoesNotFetchLayout(
+        LayoutAwareRouting layoutAwareRouting) throws IOException {
         LayoutRoutingHttpClient httpClient = new LayoutRoutingHttpClient();
         DataLakeFileClient client = client(httpClient);
 
         DataLakeFileInputStreamOptions options = new DataLakeFileInputStreamOptions().setBlockSize(1)
             .setRange(new FileRange(0, (long) DOWNLOAD_BODY.length))
-            .setLayoutAwareRouting(LayoutAwareRouting.DISABLED);
+            .setLayoutAwareRouting(layoutAwareRouting);
 
         byte[] bytes;
         try (InputStream stream = client.openInputStream(options, Context.NONE).getInputStream()) {
@@ -179,12 +185,13 @@ public class DataLakeDataLocalityOptionsTests {
     }
 
     @Test
-    public void fileOpenInputStreamWithDefaultLayoutAwareRoutingRoutesChunks() throws IOException {
+    public void fileOpenInputStreamWithEnabledLayoutAwareRoutingRoutesChunks() throws IOException {
         LayoutRoutingHttpClient httpClient = new LayoutRoutingHttpClient();
         DataLakeFileClient client = client(httpClient);
 
         DataLakeFileInputStreamOptions options = new DataLakeFileInputStreamOptions().setBlockSize(1)
-            .setRange(new FileRange(0, (long) DOWNLOAD_BODY.length));
+            .setRange(new FileRange(0, (long) DOWNLOAD_BODY.length))
+            .setLayoutAwareRouting(LayoutAwareRouting.ENABLED);
 
         byte[] bytes;
         try (InputStream stream = client.openInputStream(options, Context.NONE).getInputStream()) {
@@ -206,17 +213,22 @@ public class DataLakeDataLocalityOptionsTests {
     }
 
     @Test
-    public void fileAsyncReadToFileWithDefaultLayoutAwareRoutingRoutesChunks() throws IOException {
+    public void fileAsyncReadToFileWithEnabledLayoutAwareRoutingRoutesChunks() throws IOException {
         LayoutRoutingHttpClient httpClient = new LayoutRoutingHttpClient();
         DataLakeFileAsyncClient client = asyncClient(httpClient);
         Path tempFile = Files.createTempFile("layout-routing", ".dat");
         Files.deleteIfExists(tempFile);
 
         try {
-            assertDoesNotThrow(() -> client.readToFileWithResponse(new ReadToFileOptions(tempFile.toString())
-                .setParallelTransferOptions(new com.azure.storage.common.ParallelTransferOptions().setBlockSizeLong(1L))
-                .setRangeGetContentMd5(false)
-                .setRange(new FileRange(0, (long) DOWNLOAD_BODY.length))).block());
+            assertDoesNotThrow(
+                () -> client
+                    .readToFileWithResponse(
+                        new ReadToFileOptions(tempFile.toString()).setLayoutAwareRouting(LayoutAwareRouting.ENABLED)
+                            .setParallelTransferOptions(
+                                new com.azure.storage.common.ParallelTransferOptions().setBlockSizeLong(1L))
+                            .setRangeGetContentMd5(false)
+                            .setRange(new FileRange(0, (long) DOWNLOAD_BODY.length)))
+                    .block());
 
             assertArrayEquals(DOWNLOAD_BODY, Files.readAllBytes(tempFile));
             assertEquals(1, httpClient.getLayoutRequestCount());
@@ -236,7 +248,7 @@ public class DataLakeDataLocalityOptionsTests {
     }
 
     @Test
-    public void fileReadToFileWithDefaultLayoutAwareRoutingRoutesChunks() throws IOException {
+    public void fileReadToFileWithEnabledLayoutAwareRoutingRoutesChunks() throws IOException {
         LayoutRoutingHttpClient httpClient = new LayoutRoutingHttpClient();
         DataLakeFileClient client = client(httpClient);
         Path tempFile = Files.createTempFile("layout-routing", ".dat");
@@ -244,6 +256,7 @@ public class DataLakeDataLocalityOptionsTests {
 
         try {
             assertDoesNotThrow(() -> client.readToFileWithResponse(new ReadToFileOptions(tempFile.toString())
+                .setLayoutAwareRouting(LayoutAwareRouting.ENABLED)
                 .setParallelTransferOptions(new com.azure.storage.common.ParallelTransferOptions().setBlockSizeLong(1L))
                 .setRangeGetContentMd5(false)
                 .setRange(new FileRange(0, (long) DOWNLOAD_BODY.length)), null, Context.NONE));
@@ -265,8 +278,11 @@ public class DataLakeDataLocalityOptionsTests {
         }
     }
 
-    @Test
-    public void fileAsyncReadToFileWithDisabledLayoutAwareRoutingDoesNotFetchLayout() throws IOException {
+    @ParameterizedTest
+    @NullSource
+    @EnumSource(value = LayoutAwareRouting.class, names = { "AUTO", "DISABLED" })
+    public void fileAsyncReadToFileWithoutEnabledLayoutAwareRoutingDoesNotFetchLayout(
+        LayoutAwareRouting layoutAwareRouting) throws IOException {
         LayoutRoutingHttpClient httpClient = new LayoutRoutingHttpClient();
         DataLakeFileAsyncClient client = asyncClient(httpClient);
         Path tempFile = Files.createTempFile("layout-routing", ".dat");
@@ -275,7 +291,7 @@ public class DataLakeDataLocalityOptionsTests {
         try {
             assertDoesNotThrow(() -> client.readToFileWithResponse(new ReadToFileOptions(tempFile.toString())
                 .setParallelTransferOptions(new com.azure.storage.common.ParallelTransferOptions().setBlockSizeLong(1L))
-                .setLayoutAwareRouting(LayoutAwareRouting.DISABLED)
+                .setLayoutAwareRouting(layoutAwareRouting)
                 .setRangeGetContentMd5(false)
                 .setRange(new FileRange(0, (long) DOWNLOAD_BODY.length))).block());
 

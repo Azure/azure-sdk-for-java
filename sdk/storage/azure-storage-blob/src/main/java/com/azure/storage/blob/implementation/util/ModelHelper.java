@@ -105,6 +105,12 @@ public final class ModelHelper {
         = StorageResponseSerializationFormat.XML;
 
     /**
+     * The routing mode that {@link LayoutAwareRouting#AUTO} currently resolves to. Changing this constant
+     * is a behavioral change, but it is not a public API change.
+     */
+    private static final LayoutAwareRouting DEFAULT_LAYOUT_AWARE_ROUTING = LayoutAwareRouting.DISABLED;
+
+    /**
      * Determines whether the passed authority is IP style, that is, it is of the format {@code <host>:<port>}.
      *
      * @param authority The authority of a URL.
@@ -208,16 +214,28 @@ public final class ModelHelper {
     }
 
     /**
-     * Gets whether layout-aware routing should be used.
-     * <p>
-     * AUTO currently resolves to enabled. A {@code null} value is treated the same as AUTO.
+     * Gets whether layout-aware routing should be used after resolving the default routing mode.
      *
      * @param layoutAwareRouting The layout-aware routing option.
      * @return Whether layout-aware routing should be used.
      */
     public static boolean isLayoutRoutingEnabled(LayoutAwareRouting layoutAwareRouting) {
-        // Null and AUTO both resolve to enabled today; AUTO's behavior may change in a future release.
-        return layoutAwareRouting != LayoutAwareRouting.DISABLED;
+        return resolveLayoutAwareRouting(layoutAwareRouting) == LayoutAwareRouting.ENABLED;
+    }
+
+    /**
+     * Resolves a user-supplied {@link LayoutAwareRouting} to a concrete routing mode.
+     * Treats {@code null} and {@link LayoutAwareRouting#AUTO} identically:
+     * both yield {@link #DEFAULT_LAYOUT_AWARE_ROUTING}.
+     *
+     * @param layoutAwareRouting The routing mode requested by the caller, or {@code null} if unset.
+     * @return The concrete routing mode to use.
+     */
+    public static LayoutAwareRouting resolveLayoutAwareRouting(LayoutAwareRouting layoutAwareRouting) {
+        if (layoutAwareRouting == null || layoutAwareRouting == LayoutAwareRouting.AUTO) {
+            return DEFAULT_LAYOUT_AWARE_ROUTING;
+        }
+        return layoutAwareRouting;
     }
 
     /**
