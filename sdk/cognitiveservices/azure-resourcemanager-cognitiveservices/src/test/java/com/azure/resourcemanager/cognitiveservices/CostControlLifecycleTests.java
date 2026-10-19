@@ -93,8 +93,11 @@ public final class CostControlLifecycleTests extends TestProxyTestBase {
                 .create();
             created = true;
             Assertions.assertEquals(COST_CONTROL_NAME, createdCostControl.name());
-            Assertions.assertEquals(CostControlThresholdAction.AUDIT,
+            Assertions.assertEquals(CostControlThresholdAction.ALERT,
                 createdCostControl.properties().rules().get(0).thresholds().get(0).action());
+            Assertions.assertEquals(80.0, createdCostControl.properties().rules().get(0).thresholds().get(0).value());
+            Assertions.assertEquals(CostControlDimensionType.ACCOUNT,
+                createdCostControl.properties().rules().get(0).counterKey().type());
 
             CostControl fetched = manager.costControls().get(resourceGroupName, accountName, COST_CONTROL_NAME);
             Assertions.assertNotNull(fetched.etag());
@@ -168,16 +171,15 @@ public final class CostControlLifecycleTests extends TestProxyTestBase {
 
     private static CostControlRule createRule(double amount) {
         return new CostControlRule().withName("account-budget")
-            .withCounterKey(
-                Collections.singletonList(new CostControlDimension().withType(CostControlDimensionType.ACCOUNT)))
+            .withCounterKey(new CostControlDimension().withType(CostControlDimensionType.ACCOUNT))
             .withUnit(CostControlUnit.USD)
             .withAmount(amount)
             .withPeriod(CostControlPeriod.MONTH)
             .withRecurring(true)
             .withThresholds(
                 Collections.singletonList(new CostControlThreshold().withType(CostControlThresholdType.PERCENTAGE)
-                    .withValue(0)
-                    .withAction(CostControlThresholdAction.AUDIT)));
+                    .withValue(80)
+                    .withAction(CostControlThresholdAction.ALERT)));
     }
 
     private static boolean isNotFound(ManagementException exception) {
