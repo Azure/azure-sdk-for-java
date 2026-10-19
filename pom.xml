@@ -181,7 +181,6 @@
     <module>sdk/neonpostgres</module>
     <module>sdk/netapp</module>
     <module>sdk/network</module>
-    <module>sdk/networkanalytics</module>
     <module>sdk/networkcloud</module>
     <module>sdk/networkfunction</module>
     <module>sdk/newrelicobservability</module>
