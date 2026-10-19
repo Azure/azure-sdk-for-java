@@ -1,11 +1,10 @@
 # Copyright (c) Microsoft Corporation. All rights reserved.
 # Licensed under the MIT License.
 
-# This script is used to set up SIP Configuration domains for Azure Communication Services SIP Routing SDK GA tests
+# This script uploads test data to the storage container used by the Health Deidentification live tests.
 
-# It is invoked by the https://github.com/Azure/azure-sdk-for-net/blob/main/eng/New-TestResources.ps1
-# script after the ARM template, defined in https://github.com/Azure/azure-sdk-for-net/blob/main/sdk/storage/test-resources.json,
-# is finished being deployed. The ARM template is responsible for creating the Storage accounts needed for live tests.
+# It is invoked by eng/common/TestResources/New-TestResources.ps1 after test-resources.bicep is deployed.
+# The template creates the storage account, container, DeID service, and role assignments needed for live tests.
 
 param (
     [hashtable] $DeploymentOutputs,
@@ -21,13 +20,50 @@ $storageAccountName = $DeploymentOutputs['HEALTHDATAAISERVICES_STORAGE_ACCOUNT_N
 $containerName = $DeploymentOutputs['HEALTHDATAAISERVICES_STORAGE_CONTAINER_NAME']
 $testMode = "live"
 
-# Set the local folder path to upload
-$localFolderPath = "src\test\resources\data"
+# Resolve the test data folder relative to this script so it works from any working directory
+$localFolderPath = Join-Path $PSScriptRoot "azure-health-deidentification\src\test\resources\data"
+
+# Upper bound on how long to wait for storage RBAC / network ACL changes to propagate
+$storageReadinessTimeoutSeconds = 300
 
 # Check if the connection string is present
 if ([string]::IsNullOrWhiteSpace($storageAccountName)) {
     Write-Host "Error: Azure Storage Name string not found in environment variables."
     exit 1
+}
+
+# Retries $Action with exponential backoff until it succeeds or $TimeoutSeconds elapses.
+# Role assignments and network rule changes made during deployment can take minutes to
+# propagate, so early data-plane calls may fail with 403 AuthorizationFailure.
+function Invoke-WithRetry {
+    param (
+        [Parameter(Mandatory)] [scriptblock] $Action,
+        [Parameter(Mandatory)] [string] $Description,
+        [int] $TimeoutSeconds = $storageReadinessTimeoutSeconds,
+        [int] $InitialDelaySeconds = 5,
+        [int] $MaxDelaySeconds = 30
+    )
+
+    $stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
+    $delay = $InitialDelaySeconds
+    $attempt = 0
+    while ($true) {
+        $attempt++
+        try {
+            return & $Action
+        } catch {
+            $elapsed = [int]$stopwatch.Elapsed.TotalSeconds
+            if ($elapsed + $delay -gt $TimeoutSeconds) {
+                $message = "Timed out after $elapsed seconds and $attempt attempt(s) waiting to $Description. " +
+                    "Storage role assignments or network rules may not have propagated. Last error: $($_.Exception.Message)"
+                throw $message
+            }
+            Write-Host "Attempt $attempt to $Description failed: $($_.Exception.Message)"
+            Write-Host "Retrying in $delay seconds (elapsed: $elapsed of $TimeoutSeconds seconds)."
+            Start-Sleep -Seconds $delay
+            $delay = [Math]::Min($delay * 2, $MaxDelaySeconds)
+        }
+    }
 }
 
 # Load the Azure Storage module
@@ -41,23 +77,29 @@ $networkRuleSet = New-Object -TypeName Microsoft.Azure.Commands.Management.Stora
 $networkRuleSet.DefaultAction = "Allow"
 Set-AzStorageAccount -ResourceGroupName $resourceGroup -Name $storageAccountName -NetworkRuleSet $networkRuleSet
 
-# Sleep for 15 seconds to allow the network rule to take effect
-Write-Host "[Fix] Temporary sleep to allow network rule to take effect."
-Start-Sleep -Seconds 30
+# Wait until the container is reachable with the connected account instead of sleeping a fixed time
+Invoke-WithRetry -Description "access container '$containerName' in storage account '$storageAccountName'" -Action {
+    Get-AzStorageContainer -Name $containerName -Context $storageContext -ErrorAction Stop
+}
 
-Get-AzStorageContainer -Name $containerName -Context $storageContext
+$files = @(Get-ChildItem -Path $localFolderPath -Recurse -File -ErrorAction Stop)
+if ($files.Count -eq 0) {
+    Write-Host "Error: No test data files found in '$localFolderPath'."
+    exit 1
+}
 
 # Upload the folder and its contents to the container
 # Gets last folder name + filename. example_patient_1/doctor_dictation.txt
-Get-ChildItem -Path $localFolderPath -Recurse | ForEach-Object {
-    $relativePath = $_.FullName
-    $folderName = Split-Path -Path (Split-Path -Path $relativePath -Parent) -Leaf
-    $blobName = Split-Path -Path $relativePath -Leaf
-    $destinationBlob = $blobName -replace ":", ""
+foreach ($file in $files) {
+    $folderName = Split-Path -Path $file.DirectoryName -Leaf
+    $destinationBlob = "$folderName/$($file.Name -replace ':', '')"
 
-    $destinationBlob = "$folderName/$destinationBlob"
     Write-Host "Uploading file '$destinationBlob'"
-    Set-AzStorageBlobContent -File $_.FullName -Container $containerName -Blob $destinationBlob -Context $storageContext -Force
+    # Container read access does not guarantee write access has propagated, so retry uploads too
+    Invoke-WithRetry -Description "upload blob '$destinationBlob'" -Action {
+        Set-AzStorageBlobContent -File $file.FullName -Container $containerName -Blob $destinationBlob `
+            -Context $storageContext -Force -ErrorAction Stop
+    } | Out-Null
 }
 
 Write-Host "Folder '$localFolderPath' uploaded to container '$containerName' successfully."
