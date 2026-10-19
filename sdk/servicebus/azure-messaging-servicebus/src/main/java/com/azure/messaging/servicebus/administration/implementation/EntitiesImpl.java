@@ -53,7 +53,7 @@ public final class EntitiesImpl {
      * The interface defining all the services for ServiceBusManagementClientEntities to be used by the proxy service to
      * perform REST calls.
      */
-    @Host("https://{endpoint}")
+    @Host("{endpoint}")
     @ServiceInterface(name = "ServiceBusManagementClientEntities")
     public interface EntitiesService {
         @Get("/{entityName}")

@@ -40,12 +40,12 @@ public final class ServiceBusManagementClientImpl {
     private final ServiceBusManagementClientService service;
 
     /**
-     * The Service Bus fully qualified domain name.
+     * The Service Bus namespace endpoint, including its scheme and optional port.
      */
     private final String endpoint;
 
     /**
-     * Gets The Service Bus fully qualified domain name.
+     * Gets The Service Bus namespace endpoint, including its scheme and optional port.
      * 
      * @return the endpoint value.
      */
@@ -154,7 +154,7 @@ public final class ServiceBusManagementClientImpl {
     /**
      * Initializes an instance of ServiceBusManagementClient client.
      * 
-     * @param endpoint The Service Bus fully qualified domain name.
+     * @param endpoint The Service Bus namespace endpoint, including its scheme and optional port.
      * @param apiVersion Api Version.
      */
     public ServiceBusManagementClientImpl(String endpoint, String apiVersion) {
@@ -166,7 +166,7 @@ public final class ServiceBusManagementClientImpl {
      * Initializes an instance of ServiceBusManagementClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
-     * @param endpoint The Service Bus fully qualified domain name.
+     * @param endpoint The Service Bus namespace endpoint, including its scheme and optional port.
      * @param apiVersion Api Version.
      */
     public ServiceBusManagementClientImpl(HttpPipeline httpPipeline, String endpoint, String apiVersion) {
@@ -178,7 +178,7 @@ public final class ServiceBusManagementClientImpl {
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
-     * @param endpoint The Service Bus fully qualified domain name.
+     * @param endpoint The Service Bus namespace endpoint, including its scheme and optional port.
      * @param apiVersion Api Version.
      */
     public ServiceBusManagementClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
@@ -199,7 +199,7 @@ public final class ServiceBusManagementClientImpl {
      * The interface defining all the services for ServiceBusManagementClient to be used by the proxy service to perform
      * REST calls.
      */
-    @Host("https://{endpoint}")
+    @Host("{endpoint}")
     @ServiceInterface(name = "ServiceBusManagementClient")
     public interface ServiceBusManagementClientService {
         @Get("/{topicName}/subscriptions")
