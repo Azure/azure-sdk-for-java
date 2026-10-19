@@ -116,7 +116,8 @@ public final class SessionContext {
 
     /**
      * Sets the storage account name used for session signing. This overrides the name parsed from the endpoint and is
-     * useful with custom domains.
+     * required with custom domains. If unset, the name is inferred from a recognized Blob or Data Lake service endpoint
+     * when the client is built.
      * Changes affect clients built afterward, not existing clients.
      *
      * @param accountName the storage account name.

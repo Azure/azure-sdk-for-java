@@ -5,7 +5,6 @@ package com.azure.storage.blob.implementation.util;
 
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.blob.options.SessionContext;
 
 import java.util.Objects;
 
@@ -13,10 +12,9 @@ import java.util.Objects;
  * Carries the request-scoped parameters needed to obtain a {@link SessionCredential}, such as the target
  * container and account.
  * <p>
- * The session authentication policy populates the container name from the request URL and the account name
- * from {@link SessionContext#getAccountName()} or the request URL. This object does not resolve missing
- * values itself. When calling the built-in provider directly, a nonempty container name and an acquirer are
- * required, and an account name must be supplied either by this context or by the acquirer.
+ * The session authentication policy populates the container name from the request URL. The account name is
+ * resolved at client construction and carried by the acquirer. A nonempty container name and an acquirer are
+ * required.
  * <p>
  * This exists so a single provider instance can be asked for a session that is scoped to a
  * specific container at call time, rather than being permanently bound to one container at construction
@@ -28,24 +26,20 @@ final class SessionRequestContext {
     private static final ClientLogger LOGGER = new ClientLogger(SessionRequestContext.class);
 
     private final String containerName;
-    private final String accountName;
     private final SessionAcquirer acquirer;
 
     /**
      * Creates a new {@link SessionRequestContext}.
      *
      * @param containerName The container name. Must not be null or empty.
-     * @param accountName The account name, or {@code null} if it should be resolved from the acquirer.
      * @param acquirer The session acquirer.
      */
-    SessionRequestContext(String containerName, String accountName, SessionAcquirer acquirer) {
+    SessionRequestContext(String containerName, SessionAcquirer acquirer) {
         if (CoreUtils.isNullOrEmpty(containerName)) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("'containerName' cannot be null or empty."));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'containerName' cannot be null or empty."));
         }
 
         this.containerName = containerName;
-        this.accountName = accountName;
         this.acquirer = Objects.requireNonNull(acquirer, "'acquirer' cannot be null.");
     }
 
@@ -56,15 +50,6 @@ final class SessionRequestContext {
      */
     String getContainerName() {
         return containerName;
-    }
-
-    /**
-     * Gets the name of the storage account the session should be scoped to, if known.
-     *
-     * @return the account name, or {@code null} if not resolved/known for this request.
-     */
-    String getAccountName() {
-        return accountName;
     }
 
     /**

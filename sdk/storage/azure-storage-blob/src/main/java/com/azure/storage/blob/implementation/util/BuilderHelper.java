@@ -214,6 +214,7 @@ public final class BuilderHelper {
     /**
      * Creates the {@link SessionAcquirer} for a client. CreateSession is sent to the client's endpoint with the
      * client's credential, unless the {@link SessionContext} override the acquisition endpoint and credential.
+     * Resolves the signing account once, preferring the configured account name over endpoint inference.
      */
     private static SessionAcquirer createSessionAcquirer(SessionContext sessionContext, String endpoint,
         BlobServiceVersion serviceVersion, String scope, ClientLogger logger) {

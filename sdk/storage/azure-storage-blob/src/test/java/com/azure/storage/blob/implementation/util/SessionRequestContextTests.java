@@ -6,23 +6,29 @@ package com.azure.storage.blob.implementation.util;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class SessionRequestContextTests {
     @Test
-    public void requiresContainerAndAcquirerButAllowsUnresolvedAccount() {
+    public void requiresContainerAndAcquirer() {
         SessionAcquirer acquirer
             = new SessionAcquirer("https://testaccount.blob.core.windows.net", null, "testaccount", null);
 
-        assertThrows(IllegalArgumentException.class, () -> new SessionRequestContext(null, null, acquirer));
-        assertThrows(IllegalArgumentException.class, () -> new SessionRequestContext("", null, acquirer));
-        assertThrows(NullPointerException.class, () -> new SessionRequestContext("container", null, null));
+        assertThrows(IllegalArgumentException.class, () -> new SessionRequestContext(null, acquirer));
+        assertThrows(IllegalArgumentException.class, () -> new SessionRequestContext("", acquirer));
+        assertThrows(NullPointerException.class, () -> new SessionRequestContext("container", null));
 
-        SessionRequestContext context = new SessionRequestContext("container", null, acquirer);
+        SessionRequestContext context = new SessionRequestContext("container", acquirer);
         assertEquals("container", context.getContainerName());
-        assertNull(context.getAccountName());
         assertSame(acquirer, context.getAcquirer());
+    }
+
+    @Test
+    public void acquirerRequiresResolvedAccountName() {
+        assertThrows(IllegalArgumentException.class,
+            () -> new SessionAcquirer("https://testaccount.blob.core.windows.net", null, null, null));
+        assertThrows(IllegalArgumentException.class,
+            () -> new SessionAcquirer("https://testaccount.blob.core.windows.net", null, "", null));
     }
 }

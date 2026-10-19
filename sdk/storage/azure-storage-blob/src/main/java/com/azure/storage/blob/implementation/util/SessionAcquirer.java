@@ -8,6 +8,7 @@ import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
@@ -50,11 +51,14 @@ final class SessionAcquirer {
      *
      * @param endpoint The account endpoint used for CreateSession and to decide which requests may use sessions.
      * @param serviceVersion The service version used for CreateSession.
-     * @param accountName The account name used for signing when a request doesn't specify one.
+     * @param accountName The account name resolved at client construction, used for signing and cache identity.
      * @param acquisitionBearerPolicy Optional bearer policy that overrides the client's credential for CreateSession.
      */
     SessionAcquirer(String endpoint, BlobServiceVersion serviceVersion, String accountName,
         StorageBearerTokenChallengeAuthorizationPolicy acquisitionBearerPolicy) {
+        if (CoreUtils.isNullOrEmpty(accountName)) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'accountName' cannot be null or empty."));
+        }
         this.endpoint
             = BuilderHelper.getSessionEndpoint(Objects.requireNonNull(endpoint, "'endpoint' cannot be null."));
         this.serviceVersion = serviceVersion != null ? serviceVersion : BlobServiceVersion.getLatest();

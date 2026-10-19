@@ -172,7 +172,7 @@ public class ContainerSessionProviderTests extends BlobTestBase {
     private static SessionRequestContext contextFor(String containerName, HttpPipeline pipeline) {
         SessionAcquirer acquirer = new SessionAcquirer(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint(),
             BlobServiceVersion.getLatest(), ENVIRONMENT.getPrimaryAccount().getName(), null).bind(pipeline);
-        return new SessionRequestContext(containerName, null, acquirer);
+        return new SessionRequestContext(containerName, acquirer);
     }
 
     private String generateUserDelegationContainerSas(BlobContainerClient containerClient) {

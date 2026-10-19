@@ -274,12 +274,14 @@ public class ContainerSessionProviderCacheTest {
     public void suppliedProviderHonorsAccountOverrideAndSeparatesSigningAccountsSync() {
         enqueueSessionResponse(CONTAINER_A, FIRST_TOKEN, now().plusMinutes(20));
         enqueueSessionResponse(CONTAINER_A, SECOND_TOKEN, now().plusMinutes(20));
-        assertSyncToken(overrideAccountBuilder().buildClient().getHttpPipeline(), CONTAINER_A, FIRST_TOKEN);
+        HttpPipeline original = overrideAccountBuilder().buildClient().getHttpPipeline();
+        assertSyncToken(original, CONTAINER_A, FIRST_TOKEN);
         sessionContext.setAccountName(null);
         assertEquals("override-account",
             provider.getSession(contextFor(CONTAINER_A, "override-account")).getAccountName());
         assertSyncToken(independentClientPipeline(), CONTAINER_A, SECOND_TOKEN);
         assertEquals(ACCOUNT_NAME, provider.getSession(contextFor(CONTAINER_A)).getAccountName());
+        assertSyncToken(original, CONTAINER_A, FIRST_TOKEN);
         assertEquals(2, httpClient.getRequestCount(CONTAINER_A));
     }
 
@@ -287,7 +289,8 @@ public class ContainerSessionProviderCacheTest {
     public void suppliedProviderHonorsAccountOverrideAndSeparatesSigningAccountsAsync() {
         enqueueSessionResponse(CONTAINER_A, FIRST_TOKEN, now().plusMinutes(20));
         enqueueSessionResponse(CONTAINER_A, SECOND_TOKEN, now().plusMinutes(20));
-        assertAsyncToken(overrideAccountBuilder().buildAsyncClient().getHttpPipeline(), CONTAINER_A, FIRST_TOKEN);
+        HttpPipeline original = overrideAccountBuilder().buildAsyncClient().getHttpPipeline();
+        assertAsyncToken(original, CONTAINER_A, FIRST_TOKEN);
         sessionContext.setAccountName(null);
         StepVerifier.create(provider.getSessionAsync(contextFor(CONTAINER_A, "override-account")))
             .assertNext(credential -> assertEquals("override-account", credential.getAccountName()))
@@ -296,7 +299,67 @@ public class ContainerSessionProviderCacheTest {
         StepVerifier.create(provider.getSessionAsync(contextFor(CONTAINER_A)))
             .assertNext(credential -> assertEquals(ACCOUNT_NAME, credential.getAccountName()))
             .verifyComplete();
+        assertAsyncToken(original, CONTAINER_A, FIRST_TOKEN);
         assertEquals(2, httpClient.getRequestCount(CONTAINER_A));
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+        "https://testaccount.blob.core.windows.net, , testaccount",
+        "https://testaccount.blob.core.windows.net, '', testaccount",
+        "https://testaccount.blob.core.windows.net, override-account, override-account",
+        "https://testaccount.dfs.core.windows.net, , testaccount",
+        "https://custom.endpoint.example, custom-account, custom-account" })
+    public void builderResolvesAndCapturesSigningAccountSync(String endpoint, String accountName,
+        String expectedAccountName) {
+        HttpPipeline pipeline = accountResolutionBuilder(endpoint, accountName).buildClient().getHttpPipeline();
+        sessionContext.setAccountName("changed");
+        enqueueSessionResponse(CONTAINER_A, FIRST_TOKEN, now().plusMinutes(20));
+
+        HttpRequest request = new HttpRequest(HttpMethod.GET, endpoint + "/" + CONTAINER_A + "/blob");
+        try (HttpResponse response = pipeline.sendSync(request, Context.NONE)) {
+            assertEquals(200, response.getStatusCode());
+            assertAuthorization(response.getRequest(), FIRST_TOKEN);
+        }
+        SessionCredential credential = provider.getSession(contextFor(CONTAINER_A, expectedAccountName));
+        assertEquals(expectedAccountName, credential.getAccountName());
+        assertEquals(FIRST_TOKEN, credential.getSessionToken());
+        assertEquals(1, httpClient.getRequestCount(CONTAINER_A));
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+        "https://testaccount.blob.core.windows.net, , testaccount",
+        "https://testaccount.blob.core.windows.net, '', testaccount",
+        "https://testaccount.blob.core.windows.net, override-account, override-account",
+        "https://testaccount.dfs.core.windows.net, , testaccount",
+        "https://custom.endpoint.example, custom-account, custom-account" })
+    public void builderResolvesAndCapturesSigningAccountAsync(String endpoint, String accountName,
+        String expectedAccountName) {
+        HttpPipeline pipeline = accountResolutionBuilder(endpoint, accountName).buildAsyncClient().getHttpPipeline();
+        sessionContext.setAccountName("changed");
+        enqueueSessionResponse(CONTAINER_A, FIRST_TOKEN, now().plusMinutes(20));
+
+        HttpRequest request = new HttpRequest(HttpMethod.GET, endpoint + "/" + CONTAINER_A + "/blob");
+        StepVerifier.create(pipeline.send(request)).assertNext(response -> {
+            assertEquals(200, response.getStatusCode());
+            assertAuthorization(response.getRequest(), FIRST_TOKEN);
+            response.close();
+        }).verifyComplete();
+        StepVerifier.create(provider.getSessionAsync(contextFor(CONTAINER_A, expectedAccountName)))
+            .assertNext(credential -> {
+                assertEquals(expectedAccountName, credential.getAccountName());
+                assertEquals(FIRST_TOKEN, credential.getSessionToken());
+            })
+            .verifyComplete();
+        assertEquals(1, httpClient.getRequestCount(CONTAINER_A));
+    }
+
+    private BlobServiceClientBuilder accountResolutionBuilder(String endpoint, String accountName) {
+        sessionContext
+            = new SessionContext().setSessionMode(SessionContext.SessionMode.ENABLED).setAccountName(accountName);
+        SessionContextAccessor.getOrCreateSessionProvider(sessionContext, SessionProvider.class, () -> provider);
+        return independentClientBuilder().endpoint(endpoint);
     }
 
     private BlobServiceClientBuilder overrideAccountBuilder() {
@@ -761,11 +824,14 @@ public class ContainerSessionProviderCacheTest {
     }
 
     private SessionRequestContext contextFor(String containerName) {
-        return contextFor(containerName, ACCOUNT_NAME);
+        return new SessionRequestContext(containerName, acquirer);
     }
 
     private SessionRequestContext contextFor(String containerName, String accountName) {
-        return new SessionRequestContext(containerName, accountName, acquirer);
+        SessionAcquirer accountAcquirer
+            = new SessionAcquirer("https://" + ACCOUNT_NAME + ".blob.core.windows.net", BlobServiceVersion.getLatest(),
+                accountName, null).bind(new HttpPipelineBuilder().httpClient(httpClient).build());
+        return new SessionRequestContext(containerName, accountAcquirer);
     }
 
     private OffsetDateTime now() {

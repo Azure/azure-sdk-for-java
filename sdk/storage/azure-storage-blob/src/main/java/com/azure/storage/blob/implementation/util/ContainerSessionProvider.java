@@ -81,8 +81,7 @@ final class ContainerSessionProvider extends SessionProvider {
         return Mono.defer(() -> {
             String container = requireContainerName(context);
             SessionAcquirer acquirer = requireAcquirer(context);
-            String resolvedAccount = resolveAccountName(context);
-            return updateCache(container, resolvedAccount, acquirer).getSessionAsync();
+            return updateCache(container, acquirer.getAccountName(), acquirer).getSessionAsync();
         });
     }
 
@@ -122,18 +121,6 @@ final class ContainerSessionProvider extends SessionProvider {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'context.getAcquirer()' cannot be null."));
         }
         return acquirer;
-    }
-
-    private String resolveAccountName(SessionRequestContext context) {
-        String resolvedAccountName = context == null ? null : context.getAccountName();
-        if (CoreUtils.isNullOrEmpty(resolvedAccountName) && context != null && context.getAcquirer() != null) {
-            resolvedAccountName = context.getAcquirer().getAccountName();
-        }
-        if (CoreUtils.isNullOrEmpty(resolvedAccountName)) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("The account name could not be resolved from the request URL."));
-        }
-        return resolvedAccountName;
     }
 
     private ContainerSessionCache updateCache(String containerName, String resolvedAccountName,
@@ -215,7 +202,7 @@ final class ContainerSessionProvider extends SessionProvider {
     }
 
     private String cacheKey(SessionRequestContext context) {
-        return normalize(resolveAccountName(context)) + "/" + normalize(context.getContainerName());
+        return normalize(context.getAcquirer().getAccountName()) + "/" + normalize(context.getContainerName());
     }
 
     private static final class ContainerSessionCache {

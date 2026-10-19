@@ -9,7 +9,6 @@ import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobUrlParts;
@@ -59,7 +58,6 @@ final class SessionAuthenticationPolicy implements HttpPipelinePolicy {
     private final SessionProvider sessionProvider;
     private final SessionAcquirer sessionAcquirer;
     private final SessionMode sessionMode;
-    private final String accountName;
     private final Clock clock;
 
     /**
@@ -91,7 +89,6 @@ final class SessionAuthenticationPolicy implements HttpPipelinePolicy {
         this.sessionAcquirer = Objects.requireNonNull(sessionAcquirer, "'sessionAcquirer' cannot be null.");
         Objects.requireNonNull(sessionContext, "'sessionContext' cannot be null.");
         this.sessionMode = ModelHelper.resolveSessionMode(sessionContext.getSessionMode());
-        this.accountName = sessionContext.getAccountName();
         this.clock = Objects.requireNonNull(clock, "'clock' cannot be null.");
     }
 
@@ -155,10 +152,7 @@ final class SessionAuthenticationPolicy implements HttpPipelinePolicy {
             return null;
         }
 
-        String containerName = parts.getBlobContainerName();
-        String accountName = getOverrideOrDefault(this.accountName, parts.getAccountName());
-
-        return new SessionRequestContext(containerName, accountName, sessionAcquirer);
+        return new SessionRequestContext(parts.getBlobContainerName(), sessionAcquirer);
     }
 
     /**
@@ -171,10 +165,6 @@ final class SessionAuthenticationPolicy implements HttpPipelinePolicy {
         return acquisitionBearerPolicy != null && SessionAcquirer.isAcquisitionRequest(context)
             ? acquisitionBearerPolicy
             : bearerPolicy;
-    }
-
-    private static String getOverrideOrDefault(String override, String defaultValue) {
-        return CoreUtils.isNullOrEmpty(override) ? defaultValue : override;
     }
 
     /**

@@ -148,11 +148,11 @@ public class SessionAuthenticationPolicyTest {
         verify(bearerPolicy, times(sessionsEnabled ? 0 : 1)).processSync(any(), any());
     }
 
-    @ParameterizedTest
-    @CsvSource({ "original, original", ", testaccount", "'', testaccount" })
-    public void policyCapturesAccountNameAsync(String accountName, String expectedAccountName) {
-        SessionContext options = new SessionContext().setSessionMode(SessionMode.ENABLED).setAccountName(accountName);
-        policy = new SessionAuthenticationPolicy(bearerPolicy, sessionProvider, testAcquirer(), options);
+    @Test
+    public void policyPassesAcquirerWithoutResolvingAccountNameAsync() {
+        SessionAcquirer acquirer = testAcquirer();
+        SessionContext options = new SessionContext().setSessionMode(SessionMode.ENABLED).setAccountName("different");
+        policy = new SessionAuthenticationPolicy(bearerPolicy, sessionProvider, acquirer, options);
         options.setAccountName("changed");
         when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.just(credentialWithToken()));
 
@@ -161,16 +161,15 @@ public class SessionAuthenticationPolicyTest {
             response.close();
         }).verifyComplete();
 
-        verify(sessionProvider)
-            .getSessionAsync(argThat(context -> expectedAccountName.equals(context.getAccountName())));
+        verify(sessionProvider).getSessionAsync(argThat(context -> context.getAcquirer() == acquirer));
         verify(bearerPolicy, never()).process(any(), any());
     }
 
-    @ParameterizedTest
-    @CsvSource({ "original, original", ", testaccount", "'', testaccount" })
-    public void policyCapturesAccountNameSync(String accountName, String expectedAccountName) {
-        SessionContext options = new SessionContext().setSessionMode(SessionMode.ENABLED).setAccountName(accountName);
-        policy = new SessionAuthenticationPolicy(bearerPolicy, sessionProvider, testAcquirer(), options);
+    @Test
+    public void policyPassesAcquirerWithoutResolvingAccountNameSync() {
+        SessionAcquirer acquirer = testAcquirer();
+        SessionContext options = new SessionContext().setSessionMode(SessionMode.ENABLED).setAccountName("different");
+        policy = new SessionAuthenticationPolicy(bearerPolicy, sessionProvider, acquirer, options);
         options.setAccountName("changed");
         when(sessionProvider.getSession(any())).thenReturn(credentialWithToken());
         HttpPipelineNextSyncPolicy next = mock(HttpPipelineNextSyncPolicy.class);
@@ -181,7 +180,7 @@ public class SessionAuthenticationPolicyTest {
             assertEquals(200, response.getStatusCode());
         }
 
-        verify(sessionProvider).getSession(argThat(context -> expectedAccountName.equals(context.getAccountName())));
+        verify(sessionProvider).getSession(argThat(context -> context.getAcquirer() == acquirer));
         verify(bearerPolicy, never()).processSync(any(), any());
     }
 
@@ -606,8 +605,9 @@ public class SessionAuthenticationPolicyTest {
         sendSessionResponseSync(request, 200);
 
         assertTrue(isSessionAuthenticated(request));
-        verify(sessionProvider).getSession(argThat(context -> "testaccount".equals(context.getAccountName())
-            && "mycontainer".equals(context.getContainerName())));
+        verify(sessionProvider)
+            .getSession(argThat(context -> "testaccount".equals(context.getAcquirer().getAccountName())
+                && "mycontainer".equals(context.getContainerName())));
         verify(sessionProvider, never()).getSessionAsync(any());
         verify(bearerPolicy, never()).processSync(any(), any());
     }
@@ -650,8 +650,9 @@ public class SessionAuthenticationPolicyTest {
         }).verifyComplete();
 
         assertTrue(isSessionAuthenticated(request));
-        verify(sessionProvider).getSessionAsync(argThat(context -> "testaccount".equals(context.getAccountName())
-            && "mycontainer".equals(context.getContainerName())));
+        verify(sessionProvider)
+            .getSessionAsync(argThat(context -> "testaccount".equals(context.getAcquirer().getAccountName())
+                && "mycontainer".equals(context.getContainerName())));
         verify(sessionProvider, never()).getSession(any());
         verify(bearerPolicy, never()).process(any(), any());
     }
@@ -714,7 +715,8 @@ public class SessionAuthenticationPolicyTest {
             return nextPolicy.processSync();
         });
         policy = new SessionAuthenticationPolicy(bearerPolicy, sessionProvider,
-            new SessionAcquirer("https://testaccount.blob.core.windows.net", null, null, acquisitionBearerPolicy),
+            new SessionAcquirer("https://testaccount.blob.core.windows.net", null, "testaccount",
+                acquisitionBearerPolicy),
             new SessionContext().setSessionMode(SessionMode.ENABLED));
         HttpPipeline pipeline = buildPipeline(successTransport());
         Context acquisition = new Context(SessionAcquirer.SESSION_ACQUISITION_CONTEXT_KEY, true);
@@ -855,7 +857,7 @@ public class SessionAuthenticationPolicyTest {
     }
 
     private static SessionAcquirer testAcquirer(String endpoint) {
-        return new SessionAcquirer(endpoint, null, null, null);
+        return new SessionAcquirer(endpoint, null, "testaccount", null);
     }
 
     private static SessionCredential credentialWithToken() {
