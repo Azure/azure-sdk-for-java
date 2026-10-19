@@ -17,8 +17,8 @@ import java.io.IOException;
  */
 @Fluent
 @Beta(warningText = "Preview API. MicrosoftCopilot=V1Preview")
-public final class MicrosoftCopilotToolsetDefaultConfig
-    implements JsonSerializable<MicrosoftCopilotToolsetDefaultConfig> {
+public final class MicrosoftCopilotToolsetDefaultConfiguration
+    implements JsonSerializable<MicrosoftCopilotToolsetDefaultConfiguration> {
 
     /*
      * Whether built-in tools are enabled by default. Defaults to true.
@@ -27,10 +27,10 @@ public final class MicrosoftCopilotToolsetDefaultConfig
     private Boolean enabled;
 
     /**
-     * Creates an instance of MicrosoftCopilotToolsetDefaultConfig class.
+     * Creates an instance of MicrosoftCopilotToolsetDefaultConfiguration class.
      */
     @Generated
-    public MicrosoftCopilotToolsetDefaultConfig() {
+    public MicrosoftCopilotToolsetDefaultConfiguration() {
     }
 
     /**
@@ -47,10 +47,10 @@ public final class MicrosoftCopilotToolsetDefaultConfig
      * Set the enabled property: Whether built-in tools are enabled by default. Defaults to true.
      *
      * @param enabled the enabled value to set.
-     * @return the MicrosoftCopilotToolsetDefaultConfig object itself.
+     * @return the MicrosoftCopilotToolsetDefaultConfiguration object itself.
      */
     @Generated
-    public MicrosoftCopilotToolsetDefaultConfig setEnabled(Boolean enabled) {
+    public MicrosoftCopilotToolsetDefaultConfiguration setEnabled(Boolean enabled) {
         this.enabled = enabled;
         return this;
     }
@@ -67,29 +67,29 @@ public final class MicrosoftCopilotToolsetDefaultConfig
     }
 
     /**
-     * Reads an instance of MicrosoftCopilotToolsetDefaultConfig from the JsonReader.
+     * Reads an instance of MicrosoftCopilotToolsetDefaultConfiguration from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of MicrosoftCopilotToolsetDefaultConfig if the JsonReader was pointing to an instance of it,
-     * or null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the MicrosoftCopilotToolsetDefaultConfig.
+     * @return An instance of MicrosoftCopilotToolsetDefaultConfiguration if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftCopilotToolsetDefaultConfiguration.
      */
     @Generated
-    public static MicrosoftCopilotToolsetDefaultConfig fromJson(JsonReader jsonReader) throws IOException {
+    public static MicrosoftCopilotToolsetDefaultConfiguration fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            MicrosoftCopilotToolsetDefaultConfig deserializedMicrosoftCopilotToolsetDefaultConfig
-                = new MicrosoftCopilotToolsetDefaultConfig();
+            MicrosoftCopilotToolsetDefaultConfiguration deserializedMicrosoftCopilotToolsetDefaultConfiguration
+                = new MicrosoftCopilotToolsetDefaultConfiguration();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("enabled".equals(fieldName)) {
-                    deserializedMicrosoftCopilotToolsetDefaultConfig.enabled
+                    deserializedMicrosoftCopilotToolsetDefaultConfiguration.enabled
                         = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }
             }
-            return deserializedMicrosoftCopilotToolsetDefaultConfig;
+            return deserializedMicrosoftCopilotToolsetDefaultConfiguration;
         });
     }
 }

@@ -63,8 +63,8 @@ class;com.azure.ai.agents.models.MemoryStoreUpdateResponse;Preview API. MemorySt
 class;com.azure.ai.agents.models.MemoryStoreUpdateStatus;Preview API. MemoryStores=V1Preview;
 class;com.azure.ai.agents.models.MicrosoftCopilotBuiltInTool;Preview API. MicrosoftCopilot=V1Preview;
 class;com.azure.ai.agents.models.MicrosoftCopilotHarness;Preview API. MicrosoftCopilot=V1Preview;
-class;com.azure.ai.agents.models.MicrosoftCopilotToolsetConfig;Preview API. MicrosoftCopilot=V1Preview;
-class;com.azure.ai.agents.models.MicrosoftCopilotToolsetDefaultConfig;Preview API. MicrosoftCopilot=V1Preview;
+class;com.azure.ai.agents.models.MicrosoftCopilotToolsetConfiguration;Preview API. MicrosoftCopilot=V1Preview;
+class;com.azure.ai.agents.models.MicrosoftCopilotToolsetDefaultConfiguration;Preview API. MicrosoftCopilot=V1Preview;
 class;com.azure.ai.agents.models.MicrosoftCopilotToolsetPreview;Preview API. MicrosoftCopilot=V1Preview;
 class;com.azure.ai.agents.models.MicrosoftFabricPreviewTool;Preview API. preview_tool;
 class;com.azure.ai.agents.models.ModelRouterAttempt;Preview API. ModelRouterControls=V1Preview;

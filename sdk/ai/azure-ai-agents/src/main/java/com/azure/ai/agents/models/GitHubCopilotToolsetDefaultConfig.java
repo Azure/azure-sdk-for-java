@@ -12,8 +12,8 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The legacy default enablement setting retained for compatibility. Use `MicrosoftCopilotToolsetDefaultConfig` for new
- * integrations.
+ * The legacy default enablement setting retained for compatibility. Use `MicrosoftCopilotToolsetDefaultConfiguration`
+ * for new integrations.
  */
 @Fluent
 public final class GitHubCopilotToolsetDefaultConfig implements JsonSerializable<GitHubCopilotToolsetDefaultConfig> {

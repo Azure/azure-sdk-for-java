@@ -17,7 +17,8 @@ import java.io.IOException;
  */
 @Fluent
 @Beta(warningText = "Preview API. MicrosoftCopilot=V1Preview")
-public final class MicrosoftCopilotToolsetConfig implements JsonSerializable<MicrosoftCopilotToolsetConfig> {
+public final class MicrosoftCopilotToolsetConfiguration
+    implements JsonSerializable<MicrosoftCopilotToolsetConfiguration> {
 
     /*
      * The built-in tool to configure.
@@ -32,12 +33,12 @@ public final class MicrosoftCopilotToolsetConfig implements JsonSerializable<Mic
     private Boolean enabled;
 
     /**
-     * Creates an instance of MicrosoftCopilotToolsetConfig class.
+     * Creates an instance of MicrosoftCopilotToolsetConfiguration class.
      *
      * @param toolName the toolName value to set.
      */
     @Generated
-    public MicrosoftCopilotToolsetConfig(MicrosoftCopilotBuiltInTool toolName) {
+    public MicrosoftCopilotToolsetConfiguration(MicrosoftCopilotBuiltInTool toolName) {
         this.toolName = toolName;
     }
 
@@ -65,10 +66,10 @@ public final class MicrosoftCopilotToolsetConfig implements JsonSerializable<Mic
      * Set the enabled property: Whether the built-in tool is enabled. If omitted, the toolset default applies.
      *
      * @param enabled the enabled value to set.
-     * @return the MicrosoftCopilotToolsetConfig object itself.
+     * @return the MicrosoftCopilotToolsetConfiguration object itself.
      */
     @Generated
-    public MicrosoftCopilotToolsetConfig setEnabled(Boolean enabled) {
+    public MicrosoftCopilotToolsetConfiguration setEnabled(Boolean enabled) {
         this.enabled = enabled;
         return this;
     }
@@ -86,16 +87,16 @@ public final class MicrosoftCopilotToolsetConfig implements JsonSerializable<Mic
     }
 
     /**
-     * Reads an instance of MicrosoftCopilotToolsetConfig from the JsonReader.
+     * Reads an instance of MicrosoftCopilotToolsetConfiguration from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of MicrosoftCopilotToolsetConfig if the JsonReader was pointing to an instance of it, or null
-     * if it was pointing to JSON null.
+     * @return An instance of MicrosoftCopilotToolsetConfiguration if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the MicrosoftCopilotToolsetConfig.
+     * @throws IOException If an error occurs while reading the MicrosoftCopilotToolsetConfiguration.
      */
     @Generated
-    public static MicrosoftCopilotToolsetConfig fromJson(JsonReader jsonReader) throws IOException {
+    public static MicrosoftCopilotToolsetConfiguration fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             MicrosoftCopilotBuiltInTool toolName = null;
             Boolean enabled = null;
@@ -110,10 +111,10 @@ public final class MicrosoftCopilotToolsetConfig implements JsonSerializable<Mic
                     reader.skipChildren();
                 }
             }
-            MicrosoftCopilotToolsetConfig deserializedMicrosoftCopilotToolsetConfig
-                = new MicrosoftCopilotToolsetConfig(toolName);
-            deserializedMicrosoftCopilotToolsetConfig.enabled = enabled;
-            return deserializedMicrosoftCopilotToolsetConfig;
+            MicrosoftCopilotToolsetConfiguration deserializedMicrosoftCopilotToolsetConfiguration
+                = new MicrosoftCopilotToolsetConfiguration(toolName);
+            deserializedMicrosoftCopilotToolsetConfiguration.enabled = enabled;
+            return deserializedMicrosoftCopilotToolsetConfiguration;
         });
     }
 }

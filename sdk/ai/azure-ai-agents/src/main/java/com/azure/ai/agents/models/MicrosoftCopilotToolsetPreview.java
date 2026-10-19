@@ -29,13 +29,13 @@ public final class MicrosoftCopilotToolsetPreview extends Tool {
      * The default configuration for built-in tools. If omitted, built-in tools are enabled by default.
      */
     @Generated
-    private MicrosoftCopilotToolsetDefaultConfig defaultConfiguration;
+    private MicrosoftCopilotToolsetDefaultConfiguration defaultConfiguration;
 
     /*
      * Per-tool configuration overrides. Duplicate built-in tool names are not allowed.
      */
     @Generated
-    private List<MicrosoftCopilotToolsetConfig> toolConfigurations;
+    private List<MicrosoftCopilotToolsetConfiguration> toolConfigurations;
 
     /**
      * Creates an instance of MicrosoftCopilotToolsetPreview class.
@@ -62,22 +62,8 @@ public final class MicrosoftCopilotToolsetPreview extends Tool {
      * @return the defaultConfiguration value.
      */
     @Generated
-    public MicrosoftCopilotToolsetDefaultConfig getDefaultConfiguration() {
+    public MicrosoftCopilotToolsetDefaultConfiguration getDefaultConfiguration() {
         return this.defaultConfiguration;
-    }
-
-    /**
-     * Set the defaultConfiguration property: The default configuration for built-in tools. If omitted, built-in tools
-     * are enabled by default.
-     *
-     * @param defaultConfiguration the defaultConfiguration value to set.
-     * @return the MicrosoftCopilotToolsetPreview object itself.
-     */
-    @Generated
-    public MicrosoftCopilotToolsetPreview
-        setDefaultConfiguration(MicrosoftCopilotToolsetDefaultConfig defaultConfiguration) {
-        this.defaultConfiguration = defaultConfiguration;
-        return this;
     }
 
     /**
@@ -87,7 +73,7 @@ public final class MicrosoftCopilotToolsetPreview extends Tool {
      * @return the toolConfigurations value.
      */
     @Generated
-    public List<MicrosoftCopilotToolsetConfig> getToolConfigurations() {
+    public List<MicrosoftCopilotToolsetConfiguration> getToolConfigurations() {
         return this.toolConfigurations;
     }
 
@@ -100,7 +86,7 @@ public final class MicrosoftCopilotToolsetPreview extends Tool {
      */
     @Generated
     public MicrosoftCopilotToolsetPreview
-        setToolConfigurations(List<MicrosoftCopilotToolsetConfig> toolConfigurations) {
+        setToolConfigurations(List<MicrosoftCopilotToolsetConfiguration> toolConfigurations) {
         this.toolConfigurations = toolConfigurations;
         return this;
     }
@@ -138,10 +124,10 @@ public final class MicrosoftCopilotToolsetPreview extends Tool {
                     deserializedMicrosoftCopilotToolsetPreview.type = ToolType.fromString(reader.getString());
                 } else if ("default_config".equals(fieldName)) {
                     deserializedMicrosoftCopilotToolsetPreview.defaultConfiguration
-                        = MicrosoftCopilotToolsetDefaultConfig.fromJson(reader);
+                        = MicrosoftCopilotToolsetDefaultConfiguration.fromJson(reader);
                 } else if ("configs".equals(fieldName)) {
-                    List<MicrosoftCopilotToolsetConfig> toolConfigurations
-                        = reader.readArray(reader1 -> MicrosoftCopilotToolsetConfig.fromJson(reader1));
+                    List<MicrosoftCopilotToolsetConfiguration> toolConfigurations
+                        = reader.readArray(reader1 -> MicrosoftCopilotToolsetConfiguration.fromJson(reader1));
                     deserializedMicrosoftCopilotToolsetPreview.toolConfigurations = toolConfigurations;
                 } else {
                     reader.skipChildren();
@@ -149,5 +135,19 @@ public final class MicrosoftCopilotToolsetPreview extends Tool {
             }
             return deserializedMicrosoftCopilotToolsetPreview;
         });
+    }
+
+    /**
+     * Set the defaultConfiguration property: The default configuration for built-in tools. If omitted, built-in tools
+     * are enabled by default.
+     *
+     * @param defaultConfiguration the defaultConfiguration value to set.
+     * @return the MicrosoftCopilotToolsetPreview object itself.
+     */
+    @Generated
+    public MicrosoftCopilotToolsetPreview
+        setDefaultConfiguration(MicrosoftCopilotToolsetDefaultConfiguration defaultConfiguration) {
+        this.defaultConfiguration = defaultConfiguration;
+        return this;
     }
 }
