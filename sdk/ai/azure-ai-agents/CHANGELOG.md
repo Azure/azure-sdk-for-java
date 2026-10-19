@@ -1,21 +1,49 @@
 # Release History
 
-## 2.8.0-beta.1 (Unreleased)
-
-- Added experimental OpenTelemetry GenAI tracing for agent and response operations, following the OpenTelemetry GenAI semantic conventions. Set `AZURE_EXPERIMENTAL_ENABLE_GENAI_TRACING=true` to enable the experimental instrumentation; there is no programmatic opt-in call or process-global mutable state. Tracing/metrics are configured per client through `AgentsClientBuilder.clientOptions(...)` (`TracingOptions` / `MetricsOptions`), and message/agent content is only captured when `OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT=true` (off by default). The former `AZURE_TRACING_GEN_AI_CONTENT_RECORDING_ENABLED` setting remains a compatibility fallback. Coverage:
-    - All current `AgentsClient.createAgentVersion` / `AgentsAsyncClient.createAgentVersion` convenience overloads — `create_agent` spans with prompt/hosted agent attributes and the created agent id/version. Retiring workflow-agent telemetry is intentionally excluded.
-    - `ResponsesClient.createAzureResponse` and `createStreamingAzureResponse`, including their asynchronous equivalents — `chat` / `invoke_agent` spans with request/response model, token usage, input/output messages, finish reasons, and conversation id (streaming spans stay open until completion, error, cancellation, or explicit close).
-    - Raw-response create and streaming protocol methods, including synchronous and asynchronous lifecycle handling and direct HTTP parenting.
-    - `ResponsesClient.createConversation` and `ResponsesAsyncClient.createConversation` — `create_conversation` spans that surround the service call and record its result or failure.
-    - Metrics: `gen_ai.client.operation.duration` and `gen_ai.client.token.usage`.
+## 2.8.0 (2026-10-19)
 
 ### Features Added
 
+- Added experimental OpenTelemetry GenAI tracing and metrics for agent-version creation and Azure response operations,
+  including synchronous, asynchronous, streaming, and raw-response methods. Instrumentation emits `create_agent`,
+  `chat`, and `invoke_agent` spans, plus `gen_ai.client.operation.duration` and `gen_ai.client.token.usage` metrics.
+  Set `AZURE_EXPERIMENTAL_ENABLE_GENAI_TRACING=true` to enable it and configure tracing and metrics per client through
+  `AgentsClientBuilder.clientOptions(...)` using `TracingOptions` and `MetricsOptions`. Message content capture is
+  disabled by default; enable it with `OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT=true`.
+  `AZURE_TRACING_GEN_AI_CONTENT_RECORDING_ENABLED` remains supported as a fallback when the newer setting is unset.
+- Added tracing samples for custom OpenTelemetry configuration, console export, and Azure Monitor export.
+- Added preview Microsoft Copilot harness and built-in toolset support for prompt agents through
+  `MicrosoftCopilotHarness`, `MicrosoftCopilotToolsetPreview`, and related configuration types.
+  `AgentsClientBuilder.allowPreview(true)` and beta agent clients include the `MicrosoftCopilot=V1Preview` feature
+  opt-in. The legacy GitHub Copilot types remain available for compatibility.
+
 ### Breaking Changes
+
+- Flattened the preview voice response models. Removed `VoiceResponseBase` and `VoiceAgentRealtimeResponseBase`;
+  use `VoiceResponse` and `VoiceAgentRealtimeResponse` directly. Response properties and typed token-limit accessors
+  are now declared on those concrete models.
+- Renamed `VoiceResponseBaseObject` to `VoiceResponseObjectType` and replaced `getObject()` with `getObjectType()`
+  on `VoiceResponse` and `VoiceAgentRealtimeResponse`. The JSON property remains `object`.
+- Renamed the preview Teams Phone binding models from `CreateTeamsPhoneExtensionTelephonyBindingInput`,
+  `TeamsPhoneExtensionTelephonyBinding`, and `TeamsPhoneExtensionTelephonyBindingListItem` to
+  `CreateTeamsPhoneExtensibilityTelephonyBindingInput`, `TeamsPhoneExtensibilityTelephonyBinding`, and
+  `TeamsPhoneExtensibilityTelephonyBindingListItem`, respectively.
+- Renamed `TelephonyProvider.TEAMS_PHONE_EXTENSION` and
+  `TelephonyCallLifecycleEventSource.TEAMS_PHONE_EXTENSION` to `TEAMS_PHONE_EXTENSIBILITY`.
+  Their serialized value changed from `teams_phone_extension` to `teams_phone_extensibility`.
 
 ### Bugs Fixed
 
+- Fixed typed asynchronous list operations to forward the page-size hint supplied through `PagedFlux.byPage(...)`,
+  including when resuming from a continuation token, instead of ignoring it.
+
 ### Other Changes
+
+- Regenerated from the updated Foundry TypeSpec specification.
+- Updated `SessionConfiguration` documentation to reflect the service-supported maximum idle timeout of 14,400 seconds
+  (four hours); the default remains 900 seconds.
+- Updated `azure-core` to `1.61.0-beta.1` and `azure-core-http-netty` to `1.17.0-beta.1`.
+- Updated shaded Reactor Netty to `1.3.7` and Netty to `4.2.19.Final`.
 
 ## 2.7.0 (2026-10-06)
 
