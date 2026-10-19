@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.2 (2026-10-15)
+## 1.0.0-beta.2 (2026-10-19)
 
 - Azure Resource Manager Azure Stack Hci Vm client library for Java. This package contains Microsoft Azure SDK for Azure Stack Hci Vm Management SDK. Azure Stack HCI management service. Package api-version 2026-07-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
@@ -635,14 +635,14 @@
 
 #### `AzureStackHciVmManager` was modified
 
-* `loadBalancers()` was added
-* `publicIPAddresses()` was added
-* `virtualNetworks()` was added
-* `inboundRules()` was added
-* `snapshots()` was added
+* `operations()` was added
 * `virtualNetworkSubnets()` was added
 * `natGateways()` was added
-* `operations()` was added
+* `snapshots()` was added
+* `loadBalancers()` was added
+* `virtualNetworks()` was added
+* `publicIPAddresses()` was added
+* `inboundRules()` was added
 
 #### `models.NetworkInterfaceProperties` was modified
 
@@ -655,15 +655,15 @@
 
 #### `models.VirtualHardDiskProperties` was modified
 
-* `creationData()` was added
-* `withCreationData(models.CreationData)` was added
-* `localVhdPath()` was added
 * `withLocalVhdPath(java.lang.String)` was added
+* `withCreationData(models.CreationData)` was added
+* `creationData()` was added
+* `localVhdPath()` was added
 
 #### `models.LogicalNetworkProperties` was modified
 
-* `withFabricNetworkConfiguration(models.ManagedNetworkFabricArmReference)` was added
 * `fabricNetworkConfiguration()` was added
+* `withFabricNetworkConfiguration(models.ManagedNetworkFabricArmReference)` was added
 
 #### `models.LogicalNetworkStatus` was modified
 
@@ -671,8 +671,8 @@
 
 #### `models.VirtualMachineInstanceProperties` was modified
 
-* `localVmName()` was added
 * `withLocalVmName(java.lang.String)` was added
+* `localVmName()` was added
 
 #### `models.VirtualMachineInstanceStatus` was modified
 
@@ -680,8 +680,8 @@
 
 #### `models.HardwareProfileUpdate` was modified
 
-* `dynamicMemoryConfig()` was added
 * `withDynamicMemoryConfig(models.VirtualMachineInstancePropertiesHardwareProfileDynamicMemoryConfig)` was added
+* `dynamicMemoryConfig()` was added
 
 ## 1.0.0-beta.1 (2025-08-11)
 
