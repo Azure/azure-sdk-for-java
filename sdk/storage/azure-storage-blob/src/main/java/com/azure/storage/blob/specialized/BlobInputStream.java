@@ -15,6 +15,7 @@ import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.implementation.util.AutoRefreshingCache;
 
 import java.io.IOException;
+import java.net.URI;
 import java.nio.ByteBuffer;
 
 /**
@@ -90,8 +91,9 @@ public final class BlobInputStream extends StorageInputStream {
             Context callContext = this.context;
             if (layoutCache != null) {
                 BlobLayoutCacheValue cached = layoutCache.getValidValueSync();
-                String endpoint = BlobLayoutRangeResolver.resolveEndpoint(offset, cached.getRanges());
-                callContext = StorageImplUtils.addDataLocalityEndpoint(this.context, endpoint);
+                URI endpoint = BlobLayoutRangeResolver.resolveEndpoint(offset, cached.getRanges());
+                callContext = StorageImplUtils.addDataLocalityEndpoint(this.context,
+                    endpoint == null ? null : endpoint.getRawAuthority());
             }
 
             ByteBuffer currentBuffer = this.blobClient

@@ -17,7 +17,6 @@ import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.UrlBuilder;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobClientBuilder;
@@ -203,7 +202,7 @@ public class BlobDataLocalityDownloadApiTests extends BlobTestBase {
         // Use bc (plain client, no recording policy) so this call does not pollute records.
         Set<String> layoutEndpointHosts = new HashSet<>();
         for (BlobLayoutRange range : bc.getLayout(null, Context.NONE)) {
-            String host = UrlBuilder.parse(range.getEndpoint()).getHost();
+            String host = range.getEndpoint().getHost();
             if (host != null) {
                 layoutEndpointHosts.add(host.toLowerCase(Locale.ROOT));
             }

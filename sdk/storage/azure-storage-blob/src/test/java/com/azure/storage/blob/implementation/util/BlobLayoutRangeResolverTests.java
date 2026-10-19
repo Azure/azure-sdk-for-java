@@ -10,6 +10,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -35,15 +36,16 @@ public class BlobLayoutRangeResolverTests {
     public void singleRangeCoversWholeBlob() {
         List<BlobLayoutRange> ranges = Collections.singletonList(range(0, 999, "https://host-a:443"));
 
-        assertEquals("https://host-a:443", BlobLayoutRangeResolver.resolveEndpoint(0, ranges));
-        assertEquals("https://host-a:443", BlobLayoutRangeResolver.resolveEndpoint(500, ranges));
-        assertEquals("https://host-a:443", BlobLayoutRangeResolver.resolveEndpoint(999, ranges));
+        assertEquals(endpoint("https://host-a:443"), BlobLayoutRangeResolver.resolveEndpoint(0, ranges));
+        assertEquals(endpoint("https://host-a:443"), BlobLayoutRangeResolver.resolveEndpoint(500, ranges));
+        assertEquals(endpoint("https://host-a:443"), BlobLayoutRangeResolver.resolveEndpoint(999, ranges));
     }
 
     @ParameterizedTest
     @MethodSource("unusableEndpointCases")
-    public void unusableResolvedEndpointReturnsNull(String endpoint) {
-        List<BlobLayoutRange> ranges = Collections.singletonList(range(0, 999, endpoint));
+    public void unusableResolvedEndpointReturnsNull(URI endpoint) {
+        List<BlobLayoutRange> ranges
+            = Collections.singletonList(new BlobLayoutRange(new HttpRange(0, 1000L), endpoint));
 
         assertNull(BlobLayoutRangeResolver.resolveEndpoint(0, ranges));
     }
@@ -53,14 +55,14 @@ public class BlobLayoutRangeResolverTests {
     public void validResolvedEndpointReturnsUnchanged(String endpoint) {
         List<BlobLayoutRange> ranges = Collections.singletonList(range(0, 999, endpoint));
 
-        assertEquals(endpoint, BlobLayoutRangeResolver.resolveEndpoint(0, ranges));
+        assertEquals(toEndpointUri(endpoint), BlobLayoutRangeResolver.resolveEndpoint(0, ranges));
     }
 
     @ParameterizedTest
     @MethodSource("validOffsetCases")
     public void resolvesCorrectEndpointForValidOffsets(long offset, List<BlobLayoutRange> ranges,
         String expectedEndpoint) {
-        assertEquals(expectedEndpoint, BlobLayoutRangeResolver.resolveEndpoint(offset, ranges));
+        assertEquals(toEndpointUri(expectedEndpoint), BlobLayoutRangeResolver.resolveEndpoint(offset, ranges));
     }
 
     @Test
@@ -81,31 +83,34 @@ public class BlobLayoutRangeResolverTests {
     @Test
     public void unboundedFinalRangeResolvesForAnyOffsetAtOrPastItsStart() {
         List<BlobLayoutRange> ranges = Arrays.asList(range(0, 999, "https://host-a:443"),
-            new BlobLayoutRange(new HttpRange(1000), "https://host-b:443"));
+            new BlobLayoutRange(new HttpRange(1000), endpoint("https://host-b:443")));
 
-        assertEquals("https://host-a:443", BlobLayoutRangeResolver.resolveEndpoint(999, ranges));
-        assertEquals("https://host-b:443", BlobLayoutRangeResolver.resolveEndpoint(1000, ranges));
-        assertEquals("https://host-b:443", BlobLayoutRangeResolver.resolveEndpoint(Long.MAX_VALUE, ranges));
+        assertEquals(endpoint("https://host-a:443"), BlobLayoutRangeResolver.resolveEndpoint(999, ranges));
+        assertEquals(endpoint("https://host-b:443"), BlobLayoutRangeResolver.resolveEndpoint(1000, ranges));
+        assertEquals(endpoint("https://host-b:443"), BlobLayoutRangeResolver.resolveEndpoint(Long.MAX_VALUE, ranges));
     }
 
     @Test
     public void rangeEndingAtMaxValueBoundaryResolves() {
-        List<BlobLayoutRange> ranges = Collections
-            .singletonList(new BlobLayoutRange(new HttpRange(Long.MAX_VALUE - 10, 10L), "https://host-a:443"));
+        List<BlobLayoutRange> ranges = Collections.singletonList(
+            new BlobLayoutRange(new HttpRange(Long.MAX_VALUE - 10, 10L), endpoint("https://host-a:443")));
 
-        assertEquals("https://host-a:443", BlobLayoutRangeResolver.resolveEndpoint(Long.MAX_VALUE - 10, ranges));
-        assertEquals("https://host-a:443", BlobLayoutRangeResolver.resolveEndpoint(Long.MAX_VALUE - 1, ranges));
+        assertEquals(endpoint("https://host-a:443"),
+            BlobLayoutRangeResolver.resolveEndpoint(Long.MAX_VALUE - 10, ranges));
+        assertEquals(endpoint("https://host-a:443"),
+            BlobLayoutRangeResolver.resolveEndpoint(Long.MAX_VALUE - 1, ranges));
         assertNull(BlobLayoutRangeResolver.resolveEndpoint(Long.MAX_VALUE, ranges));
     }
 
     @Test
     public void rangeWhoseEndOverflowsLongStillResolves() {
         // offset + length exceeds Long.MAX_VALUE, so computing the inclusive end directly would wrap negative.
-        List<BlobLayoutRange> ranges = Collections
-            .singletonList(new BlobLayoutRange(new HttpRange(Long.MAX_VALUE - 10, 100L), "https://host-a:443"));
+        List<BlobLayoutRange> ranges = Collections.singletonList(
+            new BlobLayoutRange(new HttpRange(Long.MAX_VALUE - 10, 100L), endpoint("https://host-a:443")));
 
-        assertEquals("https://host-a:443", BlobLayoutRangeResolver.resolveEndpoint(Long.MAX_VALUE - 10, ranges));
-        assertEquals("https://host-a:443", BlobLayoutRangeResolver.resolveEndpoint(Long.MAX_VALUE, ranges));
+        assertEquals(endpoint("https://host-a:443"),
+            BlobLayoutRangeResolver.resolveEndpoint(Long.MAX_VALUE - 10, ranges));
+        assertEquals(endpoint("https://host-a:443"), BlobLayoutRangeResolver.resolveEndpoint(Long.MAX_VALUE, ranges));
         assertNull(BlobLayoutRangeResolver.resolveEndpoint(Long.MAX_VALUE - 11, ranges));
     }
 
@@ -140,7 +145,8 @@ public class BlobLayoutRangeResolverTests {
     }
 
     private static Stream<Arguments> unusableEndpointCases() {
-        return Stream.of(Arguments.of((Object) null), Arguments.of(""), Arguments.of("   "), Arguments.of(":443"));
+        return Stream.of(Arguments.of((Object) null), Arguments.of(URI.create("")),
+            Arguments.of(URI.create("relative/path")), Arguments.of(URI.create("//:443")));
     }
 
     private static Stream<Arguments> validEndpointCases() {
@@ -174,7 +180,15 @@ public class BlobLayoutRangeResolverTests {
     }
 
     private static BlobLayoutRange range(long start, long end, String endpoint) {
-        return new BlobLayoutRange(new HttpRange(start, end - start + 1), endpoint);
+        return new BlobLayoutRange(new HttpRange(start, end - start + 1), toEndpointUri(endpoint));
+    }
+
+    private static URI endpoint(String endpoint) {
+        return toEndpointUri(endpoint);
+    }
+
+    private static URI toEndpointUri(String endpoint) {
+        return endpoint.contains("://") ? URI.create(endpoint) : URI.create("//" + endpoint);
     }
 
 }

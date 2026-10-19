@@ -34,6 +34,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -271,7 +272,7 @@ class BlobAsyncClientBaseLayoutPaginationTests {
         StepVerifier.create(client.getLayout(null).byPage(REQUESTED_PAGE_SIZE).next()).assertNext(firstPage -> {
             assertTrue(httpClient.captured.get(0).url.contains("maxresults=" + REQUESTED_PAGE_SIZE));
             assertEquals(1, firstPage.getValue().size());
-            assertEquals("https://host-a:443", firstPage.getValue().get(0).getEndpoint());
+            assertEquals(URI.create("https://host-a:443"), firstPage.getValue().get(0).getEndpoint());
             assertEquals(NEXT_MARKER, firstPage.getContinuationToken());
             assertNotNull(firstPage.getHeaders().getValue(HttpHeaderName.ETAG));
             assertEquals(String.valueOf(LAYOUT_BLOB_SIZE), firstPage.getHeaders().getValue(X_MS_BLOB_CONTENT_LENGTH));
@@ -358,8 +359,8 @@ class BlobAsyncClientBaseLayoutPaginationTests {
         assertNotNull(value);
         List<BlobLayoutRange> ranges = Objects.requireNonNull(value.getRanges());
         assertEquals(2, ranges.size());
-        assertEquals("https://host-a:443", ranges.get(0).getEndpoint());
-        assertEquals("https://host-b:443", ranges.get(1).getEndpoint());
+        assertEquals(URI.create("https://host-a:443"), ranges.get(0).getEndpoint());
+        assertEquals(URI.create("https://host-b:443"), ranges.get(1).getEndpoint());
 
         assertEquals(2, httpClient.captured.size());
         CapturedRequest first = httpClient.captured.get(0);

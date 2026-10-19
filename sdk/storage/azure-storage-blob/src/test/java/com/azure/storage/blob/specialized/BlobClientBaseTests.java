@@ -20,7 +20,6 @@ import com.azure.core.http.policy.FixedDelayOptions;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.util.Context;
 import com.azure.core.util.DateTimeRfc1123;
-import com.azure.core.util.UrlBuilder;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.BlobServiceVersion;
@@ -376,7 +375,7 @@ public class BlobClientBaseTests extends BlobTestBase {
 
         assertTrue(httpClient.captured.get(0).url.contains("maxresults=" + REQUESTED_PAGE_SIZE));
         assertEquals(1, firstPage.getValue().size());
-        assertEquals("https://host-a:443", firstPage.getValue().get(0).getEndpoint());
+        assertEquals(URI.create("https://host-a:443"), firstPage.getValue().get(0).getEndpoint());
         assertEquals(NEXT_MARKER, firstPage.getContinuationToken());
         assertNotNull(firstPage.getHeaders().getValue(HttpHeaderName.ETAG));
         assertEquals(String.valueOf(LAYOUT_BLOB_SIZE), firstPage.getHeaders().getValue(X_MS_BLOB_CONTENT_LENGTH));
@@ -480,7 +479,7 @@ public class BlobClientBaseTests extends BlobTestBase {
 
         assertNotNull(value.getRanges());
         assertEquals(1, value.getRanges().size());
-        assertEquals("https://host-a:443", value.getRanges().get(0).getEndpoint());
+        assertEquals(URI.create("https://host-a:443"), value.getRanges().get(0).getEndpoint());
     }
 
     @DoNotRecord
@@ -491,8 +490,8 @@ public class BlobClientBaseTests extends BlobTestBase {
 
         assertNotNull(value.getRanges());
         assertEquals(2, value.getRanges().size());
-        assertEquals("https://host-a:443", value.getRanges().get(0).getEndpoint());
-        assertEquals("https://host-b:443", value.getRanges().get(1).getEndpoint());
+        assertEquals(URI.create("https://host-a:443"), value.getRanges().get(0).getEndpoint());
+        assertEquals(URI.create("https://host-b:443"), value.getRanges().get(1).getEndpoint());
     }
 
     @DoNotRecord
@@ -804,7 +803,7 @@ public class BlobClientBaseTests extends BlobTestBase {
             .findFirst()
             .orElseThrow(() -> new AssertionError("Expected a data request after layout lookup."));
         assertEquals(CALLER_CONTEXT_VALUE, dataRequest.callerContextValue);
-        assertEquals("https://host-a:443", dataRequest.layoutEndpointValue);
+        assertEquals("host-a:443", dataRequest.layoutEndpointValue);
     }
 
     @DoNotRecord
@@ -959,11 +958,9 @@ public class BlobClientBaseTests extends BlobTestBase {
             assertEquals(nextOffset, offset,
                 "Range " + i + " must start at " + nextOffset + " but offset was " + offset + "; " + desc);
 
-            String endpoint = r.getEndpoint();
+            URI endpoint = r.getEndpoint();
             assertNotNull(endpoint, "endpoint at range " + i + " must not be null; " + desc);
-            assertFalse(endpoint.trim().isEmpty(), "endpoint at range " + i + " must not be blank; " + desc);
-
-            String host = UrlBuilder.parse(endpoint).getHost();
+            String host = endpoint.getHost();
             assertNotNull(host, "host parsed from endpoint '" + endpoint + "' must not be null; " + desc);
             assertFalse(host.isEmpty(), "host parsed from endpoint '" + endpoint + "' must not be empty; " + desc);
             assertFalse(accountHost.equalsIgnoreCase(host),

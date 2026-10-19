@@ -20,6 +20,7 @@ import com.azure.storage.common.implementation.StorageSeekableByteChannel;
 import com.azure.storage.common.implementation.util.AutoRefreshingCache;
 
 import java.io.IOException;
+import java.net.URI;
 import java.nio.ByteBuffer;
 import java.util.Objects;
 
@@ -98,8 +99,9 @@ class StorageSeekableByteChannelBlobReadBehavior implements StorageSeekableByteC
         Context callContext = context;
         if (layoutCache != null) {
             BlobLayoutCacheValue cached = layoutCache.getValidValueSync();
-            String endpoint = BlobLayoutRangeResolver.resolveEndpoint(sourceOffset, cached.getRanges());
-            callContext = StorageImplUtils.addDataLocalityEndpoint(context, endpoint);
+            URI endpoint = BlobLayoutRangeResolver.resolveEndpoint(sourceOffset, cached.getRanges());
+            callContext = StorageImplUtils.addDataLocalityEndpoint(context,
+                endpoint == null ? null : endpoint.getRawAuthority());
         }
 
         int initialPosition = dst.position();

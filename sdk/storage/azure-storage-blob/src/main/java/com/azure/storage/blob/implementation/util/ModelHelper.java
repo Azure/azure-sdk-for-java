@@ -63,6 +63,8 @@ import com.azure.storage.common.implementation.StorageImplUtils;
 
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -512,11 +514,11 @@ public final class ModelHelper {
             return layoutRanges;
         }
 
-        Map<Integer, String> endpointsByIndex = new HashMap<>();
+        Map<Integer, URI> endpointsByIndex = new HashMap<>();
         if (layout.getEndpoints() != null && layout.getEndpoints().getEndpoint() != null) {
             for (BlobLayoutEndpointsEndpointItem endpointItem : layout.getEndpoints().getEndpoint()) {
                 if (endpointItem != null) {
-                    endpointsByIndex.put(endpointItem.getIndex(), endpointItem.getValue());
+                    endpointsByIndex.put(endpointItem.getIndex(), toEndpointUri(endpointItem.getValue()));
                 }
             }
         }
@@ -530,6 +532,24 @@ public final class ModelHelper {
         }
 
         return layoutRanges;
+    }
+
+    private static URI toEndpointUri(String endpoint) {
+        if (CoreUtils.isNullOrEmpty(endpoint)) {
+            return null;
+        }
+
+        try {
+            URI endpointUri = new URI(endpoint);
+            if (endpointUri.getHost() != null) {
+                return endpointUri;
+            }
+
+            endpointUri = new URI("//" + endpoint);
+            return endpointUri.getHost() == null ? null : endpointUri;
+        } catch (URISyntaxException e) {
+            return null;
+        }
     }
 
     public static BlobQueryHeaders transformQueryHeaders(BlobsQueryHeaders headers, HttpHeaders rawHeaders) {

@@ -5,9 +5,9 @@ package com.azure.storage.blob.implementation.util;
 
 import com.azure.core.http.HttpRange;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.UrlBuilder;
 import com.azure.storage.blob.models.BlobLayoutRange;
 
+import java.net.URI;
 import java.util.List;
 
 /**
@@ -35,7 +35,7 @@ public final class BlobLayoutRangeResolver {
      * @return The endpoint to use for the chunk starting at {@code chunkRangeStart}, or {@code null} if
      * {@code layoutRanges} is {@code null}, empty, or (unexpectedly) does not cover {@code chunkRangeStart}.
      */
-    public static String resolveEndpoint(long chunkRangeStart, List<BlobLayoutRange> layoutRanges) {
+    public static URI resolveEndpoint(long chunkRangeStart, List<BlobLayoutRange> layoutRanges) {
         if (layoutRanges == null || layoutRanges.isEmpty()) {
             return null;
         }
@@ -52,7 +52,7 @@ public final class BlobLayoutRangeResolver {
             return null;
         }
 
-        String endpoint = candidate.getEndpoint();
+        URI endpoint = candidate.getEndpoint();
         if (!isUsableDataLocalityEndpoint(endpoint)) {
             // Layout data is an optimization for SDK-managed downloads; ETag conditions still guarantee correctness,
             // so ignore an unusable service-supplied endpoint instead of failing like caller-supplied policy input.
@@ -62,19 +62,8 @@ public final class BlobLayoutRangeResolver {
         return endpoint;
     }
 
-    private static boolean isUsableDataLocalityEndpoint(String endpoint) {
-        if (CoreUtils.isNullOrEmpty(endpoint) || endpoint.trim().isEmpty()) {
-            return false;
-        }
-
-        UrlBuilder endpointUrlBuilder;
-        try {
-            endpointUrlBuilder = UrlBuilder.parse(endpoint);
-        } catch (RuntimeException ex) {
-            return false;
-        }
-
-        return endpointUrlBuilder != null && !CoreUtils.isNullOrEmpty(endpointUrlBuilder.getHost());
+    private static boolean isUsableDataLocalityEndpoint(URI endpoint) {
+        return endpoint != null && !CoreUtils.isNullOrEmpty(endpoint.getHost());
     }
 
     /**
