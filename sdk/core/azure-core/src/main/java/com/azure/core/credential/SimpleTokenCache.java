@@ -105,6 +105,10 @@ public class SimpleTokenCache {
      * @return a Publisher that emits an AccessToken
      */
     public Mono<AccessToken> getToken() {
+        return acquireToken();
+    }
+
+    private Mono<AccessToken> acquireToken() {
         return Mono.defer(() -> {
             try {
                 if (wip.compareAndSet(null, Sinks.one())) {
@@ -156,13 +160,14 @@ public class SimpleTokenCache {
                             nextTokenRefresh = OffsetDateTime.now().plus(refreshDelay);
                             return fallback.switchIfEmpty(Mono.error(() -> error));
                         } else { // NO REFRESH
-                            sinksOne.tryEmitEmpty();
+                            // Waiting callers are released by the cleanup below, once wip has been cleared.
                             return fallback;
                         }
                     }).doOnError(sinksOne::tryEmitError), w -> {
                         w.set(null);
-                        // If the refresh was cancelled before it completed, release the callers waiting on it so they
-                        // retry instead of waiting forever. No-op if the refresh already completed the sink.
+                        // If the refresh ended without a token, because it was cancelled or completed empty, release the
+                        // callers waiting on it. This happens after wip is cleared so that they can start a new
+                        // acquisition. No-op if the refresh already completed the sink with a token or an error.
                         sinksOne.tryEmitEmpty();
                     });
                 } else if (cache != null && !cache.isExpired()) {
@@ -192,7 +197,7 @@ public class SimpleTokenCache {
     private Mono<AccessToken> validCachedTokenOrRefresh() {
         return Mono.defer(() -> {
             AccessToken latest = cache;
-            return (latest != null && !latest.isExpired()) ? Mono.just(latest) : getToken();
+            return (latest != null && !latest.isExpired()) ? Mono.just(latest) : acquireToken();
         });
     }
 

@@ -210,8 +210,9 @@ public final class AccessTokenCache {
                             .doOnError(sinksOne::tryEmitError),
                         w -> {
                             w.set(null);
-                            // If the refresh was cancelled before it completed, release the callers waiting on it so
-                            // they retry instead of waiting forever. No-op if the refresh already completed the sink.
+                            // If the refresh ended without a token, because it was cancelled or completed empty,
+                            // release the callers waiting on it. This happens after wip is cleared so that they can
+                            // start a new acquisition. No-op if the refresh already completed the sink.
                             sinksOne.tryEmitEmpty();
                         });
                 } else if (cachedToken != null && !cachedToken.isExpired() && !refreshOnContextChange) {
@@ -318,9 +319,9 @@ public final class AccessTokenCache {
      * {@link #getToken(TokenRequestContext, boolean)} retries the acquisition.
      */
     private Mono<AccessToken> validCachedToken() {
-        return Mono.fromSupplier(() -> {
+        return Mono.defer(() -> {
             AccessToken latest = cacheInfo.get().getCachedAccessToken();
-            return (latest == null || latest.isExpired()) ? null : latest;
+            return (latest == null || latest.isExpired()) ? Mono.empty() : Mono.just(latest);
         });
     }
 
@@ -355,7 +356,7 @@ public final class AccessTokenCache {
                 cacheInfo.set(new AccessTokenCacheInfo(cache, nextTokenRefresh));
                 return fallback.switchIfEmpty(Mono.error(error));
             } else { // NO REFRESH
-                sinksOne.tryEmitEmpty();
+                // Waiting callers are released by the Mono.using cleanup, once wip has been cleared.
                 return fallback;
             }
         };
