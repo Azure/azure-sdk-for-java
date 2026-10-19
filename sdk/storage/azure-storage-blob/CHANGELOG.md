@@ -4,8 +4,8 @@
 
 ### Features Added
 
-- Added opt-in session-based authentication for eligible Blob GET requests, configured through `SessionOptions` and
-  `ContainerSessionProvider`.
+- Added opt-in session-based authentication for eligible Blob GET requests when using a `TokenCredential`. Configure
+  it with `SessionContext.setSessionMode(SessionMode.ENABLED)`; the default `AUTO` mode currently resolves to `SessionMode.DISABLED`.
 
 ### Breaking Changes
 
