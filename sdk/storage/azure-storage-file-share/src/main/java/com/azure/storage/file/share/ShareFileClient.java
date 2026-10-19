@@ -191,19 +191,17 @@ public class ShareFileClient {
         this.serviceVersion = serviceVersion;
         this.sasToken = sasToken;
 
-        StringBuilder fileUrlstring = new StringBuilder(azureFileStorageClient.getUrl()).append("/").append(shareName);
+        String fileUrlstring = azureFileStorageClient.getUrl() + "/" + shareName;
         if (fileId.isEmpty()) {
-            fileUrlstring.append("/").append(filePath);
+            fileUrlstring += "/" + filePath;
         }
         if (snapshot != null) {
-            fileUrlstring.append("?sharesnapshot=").append(snapshot);
-            if (!fileId.isEmpty()) {
-                fileUrlstring.append("&fileid=").append(fileId);
-            }
-        } else if (!fileId.isEmpty()) {
-            fileUrlstring.append("?fileid=").append(fileId);
+            fileUrlstring = Utility.appendQueryParameter(fileUrlstring, "sharesnapshot", snapshot);
         }
-        this.fileUrlString = fileUrlstring.toString();
+        if (!fileId.isEmpty()) {
+            fileUrlstring = Utility.appendQueryParameter(fileUrlstring, "fileid", Utility.urlEncode(fileId));
+        }
+        this.fileUrlString = fileUrlstring;
     }
 
     /**

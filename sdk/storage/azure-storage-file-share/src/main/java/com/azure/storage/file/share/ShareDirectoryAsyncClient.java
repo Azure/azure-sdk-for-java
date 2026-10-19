@@ -147,20 +147,17 @@ public class ShareDirectoryAsyncClient {
      * @return the URL of the storage directory client
      */
     public String getDirectoryUrl() {
-        StringBuilder directoryUrlString
-            = new StringBuilder(azureFileStorageClient.getUrl()).append("/").append(shareName);
+        String directoryUrlString = azureFileStorageClient.getUrl() + "/" + shareName;
         if (fileId.isEmpty()) {
-            directoryUrlString.append("/").append(directoryPath);
+            directoryUrlString += "/" + directoryPath;
         }
         if (snapshot != null) {
-            directoryUrlString.append("?sharesnapshot=").append(snapshot);
-            if (!fileId.isEmpty()) {
-                directoryUrlString.append("&fileid=").append(fileId);
-            }
-        } else if (!fileId.isEmpty()) {
-            directoryUrlString.append("?fileid=").append(fileId);
+            directoryUrlString = Utility.appendQueryParameter(directoryUrlString, "sharesnapshot", snapshot);
         }
-        return directoryUrlString.toString();
+        if (!fileId.isEmpty()) {
+            directoryUrlString = Utility.appendQueryParameter(directoryUrlString, "fileid", Utility.urlEncode(fileId));
+        }
+        return directoryUrlString;
     }
 
     /**

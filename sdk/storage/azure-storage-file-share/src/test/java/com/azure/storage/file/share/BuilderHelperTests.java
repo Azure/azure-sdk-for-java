@@ -56,6 +56,60 @@ public class BuilderHelperTests {
     private static final RetryOptions CORE_RETRY_OPTIONS
         = new RetryOptions(new FixedDelayOptions(1, Duration.ofSeconds(2)));
 
+    @ParameterizedTest
+    @MethodSource("fileIdUrls")
+    void syncFileIdUrls(String fileId, String snapshot, String expectedUrl) {
+        ShareClient shareClient = new ShareServiceClientBuilder().endpoint(FileIdTestHelper.ENDPOINT)
+            .buildClient()
+            .getShareClient(FileIdTestHelper.SHARE_NAME)
+            .getSnapshotClient(snapshot);
+        ShareFileClient fileClient = shareClient.getFileClientByFileId(fileId);
+        ShareDirectoryClient directoryClient = shareClient.getDirectoryClientByFileId(fileId);
+
+        assertEquals(fileId, fileClient.getFileId());
+        assertEquals(expectedUrl, fileClient.getFileUrl());
+        assertEquals(fileId, directoryClient.getFileId());
+        assertEquals(expectedUrl, directoryClient.getDirectoryUrl());
+
+        ShareFileClient rebuiltClient
+            = new ShareFileClientBuilder().endpoint(fileClient.getFileUrl()).buildFileClient();
+        assertEquals(fileId, rebuiltClient.getFileId());
+        assertEquals(expectedUrl, rebuiltClient.getFileUrl());
+    }
+
+    @ParameterizedTest
+    @MethodSource("fileIdUrls")
+    void asyncFileIdUrls(String fileId, String snapshot, String expectedUrl) {
+        ShareAsyncClient shareClient = new ShareServiceClientBuilder().endpoint(FileIdTestHelper.ENDPOINT)
+            .buildAsyncClient()
+            .getShareAsyncClient(FileIdTestHelper.SHARE_NAME)
+            .getSnapshotClient(snapshot);
+        ShareFileAsyncClient fileClient = shareClient.getFileClientByFileId(fileId);
+        ShareDirectoryAsyncClient directoryClient = shareClient.getDirectoryClientByFileId(fileId);
+
+        assertEquals(fileId, fileClient.getFileId());
+        assertEquals(expectedUrl, fileClient.getFileUrl());
+        assertEquals(fileId, directoryClient.getFileId());
+        assertEquals(expectedUrl, directoryClient.getDirectoryUrl());
+
+        ShareFileAsyncClient rebuiltClient
+            = new ShareFileClientBuilder().endpoint(fileClient.getFileUrl()).buildFileAsyncClient();
+        assertEquals(fileId, rebuiltClient.getFileId());
+        assertEquals(expectedUrl, rebuiltClient.getFileUrl());
+    }
+
+    // These are not realistic file IDs, but are here for defensive testing
+    private static Stream<Arguments> fileIdUrls() {
+        return Stream
+            .of(new String[] { FileIdTestHelper.FILE_ID, FileIdTestHelper.FILE_ID }, new String[] { "a&b", "a%26b" },
+                new String[] { "a%26b", "a%2526b" }, new String[] { "a +/=?#%", "a%20%2B%2F%3D%3F%23%25" },
+                new String[] { "caf\u00e9", "caf%C3%A9" })
+            .flatMap(pair -> Stream.of(null, "2026-09-29T12:34:56.1234567Z")
+                .map(snapshot -> Arguments.of(pair[0], snapshot,
+                    FileIdTestHelper.ENDPOINT + "/" + FileIdTestHelper.SHARE_NAME
+                        + (snapshot == null ? "?" : "?sharesnapshot=" + snapshot + "&") + "fileid=" + pair[1])));
+    }
+
     private static HttpRequest request(String url) {
         return new HttpRequest(HttpMethod.HEAD, url)
             .setHeaders(new HttpHeaders().set(HttpHeaderName.CONTENT_LENGTH, "0"))
