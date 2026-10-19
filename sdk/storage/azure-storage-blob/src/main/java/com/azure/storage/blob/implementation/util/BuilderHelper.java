@@ -106,9 +106,10 @@ public final class BuilderHelper {
         CredentialValidator.validateCredentialsNotAmbiguous(storageSharedKeyCredential, tokenCredential,
             azureSasCredential, sasToken, logger);
 
-        SessionMode sessionMode = tokenCredential != null && sessionContext != null
-            ? ModelHelper.resolveSessionMode(sessionContext.getSessionMode())
-            : SessionMode.DISABLED;
+        SessionMode sessionMode = SessionMode.DISABLED;
+        if (tokenCredential != null && sessionContext != null) {
+            sessionMode = ModelHelper.resolveSessionMode(sessionContext.getSessionMode());
+        }
         boolean sessionsEnabled = sessionMode == SessionMode.ENABLED;
 
         // Closest to API goes first, closest to wire goes last.
