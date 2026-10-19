@@ -4,7 +4,7 @@
 package com.azure.storage.blob.implementation.accesshelpers;
 
 import com.azure.core.credential.TokenCredential;
-import com.azure.storage.blob.options.SessionContext;
+import com.azure.storage.blob.SessionContext;
 
 import java.util.function.Supplier;
 

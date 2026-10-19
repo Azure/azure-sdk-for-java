@@ -28,7 +28,7 @@ import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.implementation.accesshelpers.SessionContextAccessor;
-import com.azure.storage.blob.options.SessionContext;
+import com.azure.storage.blob.SessionContext;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.RetryPolicyType;
 import org.junit.jupiter.api.Test;

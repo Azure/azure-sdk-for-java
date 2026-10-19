@@ -14,7 +14,6 @@ import com.azure.storage.blob.models.BlobServiceProperties;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.StorageAccountInfo;
-import com.azure.storage.blob.options.SessionContext;
 import com.azure.core.credential.TokenCredential;
 import com.azure.storage.blob.options.BlobContainerCreateOptions;
 import com.azure.storage.blob.options.FindBlobsOptions;
@@ -43,14 +42,14 @@ public class BlobServiceClientJavaDocCodeSnippets {
      * @param httpClient The HTTP transport configured for session acquisition and blob requests.
      */
     public void configureSessionContext(TokenCredential credential, HttpClient httpClient) {
-        // BEGIN: com.azure.storage.blob.options.SessionContext.create
+        // BEGIN: com.azure.storage.blob.SessionContext.create
         String endpoint = "https://account.blob.core.windows.net";
         SessionContext sessions = new SessionContext(endpoint, credential)
             .setSessionMode(SessionContext.SessionMode.ENABLED);
 
         BlobServiceClient client = new BlobServiceClientBuilder().endpoint(endpoint).credential(credential)
             .httpClient(httpClient).sessionContext(sessions).buildClient();
-        // END: com.azure.storage.blob.options.SessionContext.create
+        // END: com.azure.storage.blob.SessionContext.create
     }
 
     /**
