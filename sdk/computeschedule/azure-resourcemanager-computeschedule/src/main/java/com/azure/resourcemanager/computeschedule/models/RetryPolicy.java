@@ -26,11 +26,6 @@ public final class RetryPolicy implements JsonSerializable<RetryPolicy> {
      */
     private Integer retryWindowInMinutes;
 
-    /*
-     * Action to take on failure
-     */
-    private ResourceOperationType onFailureAction;
-
     /**
      * Creates an instance of RetryPolicy class.
      */
@@ -78,26 +73,6 @@ public final class RetryPolicy implements JsonSerializable<RetryPolicy> {
     }
 
     /**
-     * Get the onFailureAction property: Action to take on failure.
-     * 
-     * @return the onFailureAction value.
-     */
-    public ResourceOperationType onFailureAction() {
-        return this.onFailureAction;
-    }
-
-    /**
-     * Set the onFailureAction property: Action to take on failure.
-     * 
-     * @param onFailureAction the onFailureAction value to set.
-     * @return the RetryPolicy object itself.
-     */
-    public RetryPolicy withOnFailureAction(ResourceOperationType onFailureAction) {
-        this.onFailureAction = onFailureAction;
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -105,8 +80,6 @@ public final class RetryPolicy implements JsonSerializable<RetryPolicy> {
         jsonWriter.writeStartObject();
         jsonWriter.writeNumberField("retryCount", this.retryCount);
         jsonWriter.writeNumberField("retryWindowInMinutes", this.retryWindowInMinutes);
-        jsonWriter.writeStringField("onFailureAction",
-            this.onFailureAction == null ? null : this.onFailureAction.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -129,8 +102,6 @@ public final class RetryPolicy implements JsonSerializable<RetryPolicy> {
                     deserializedRetryPolicy.retryCount = reader.getNullable(JsonReader::getInt);
                 } else if ("retryWindowInMinutes".equals(fieldName)) {
                     deserializedRetryPolicy.retryWindowInMinutes = reader.getNullable(JsonReader::getInt);
-                } else if ("onFailureAction".equals(fieldName)) {
-                    deserializedRetryPolicy.onFailureAction = ResourceOperationType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

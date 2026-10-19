@@ -4,8 +4,7 @@
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
 import io.netty.channel.EventLoopGroup;
-import io.netty.channel.MultiThreadIoEventLoopGroup;
-import io.netty.channel.nio.NioIoHandler;
+import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 
@@ -20,7 +19,7 @@ public class RntbdLoopNIO implements RntbdLoop {
 
     @Override
     public EventLoopGroup newEventLoopGroup(int threads, ThreadFactory threadFactory) {
-        return new MultiThreadIoEventLoopGroup(threads, threadFactory, NioIoHandler.newFactory());
+        return new NioEventLoopGroup(threads, threadFactory);
     }
 
     @Override

@@ -13,23 +13,15 @@ import io.clientcore.core.shared.TestConfigurationSource;
 import io.clientcore.core.utils.configuration.Configuration;
 import io.clientcore.http.netty4.implementation.NettyHttpClientLocalTestServer;
 import io.netty.bootstrap.BootstrapConfig;
-import io.netty.buffer.ByteBufAllocator;
-import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.channel.Channel;
-import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
-import io.netty.channel.IoEventLoopGroup;
-import io.netty.channel.IoHandler;
-import io.netty.channel.IoHandlerFactory;
-import io.netty.channel.MultiThreadIoEventLoopGroup;
-import io.netty.channel.epoll.EpollIoHandler;
+import io.netty.channel.epoll.EpollEventLoopGroup;
 import io.netty.channel.epoll.EpollSocketChannel;
-import io.netty.channel.kqueue.KQueueIoHandler;
+import io.netty.channel.kqueue.KQueueEventLoopGroup;
 import io.netty.channel.kqueue.KQueueSocketChannel;
-import io.netty.channel.nio.NioIoHandler;
+import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.resolver.DefaultAddressResolverGroup;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.api.condition.EnabledOnOs;
@@ -46,6 +38,7 @@ import java.net.InetSocketAddress;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
@@ -57,13 +50,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.atLeastOnce;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoInteractions;
-import static org.mockito.Mockito.when;
 
 /**
  * Tests {@link NettyHttpClientBuilder}.
@@ -210,7 +196,6 @@ public class NettyHttpClientBuilderTests {
 
         arguments.add(
             Configuration.from(new TestConfigurationSource().put(Configuration.HTTP_PROXY, "http://localhost:12345")
-                .put(Configuration.HTTPS_PROXY, "")
                 .put(JAVA_SYSTEM_PROXY_PREREQUISITE, "true")));
 
         /*
@@ -222,7 +207,6 @@ public class NettyHttpClientBuilderTests {
 
         arguments.add(
             Configuration.from(new TestConfigurationSource().put(Configuration.HTTP_PROXY, "http://1:1@localhost:12345")
-                .put(Configuration.HTTPS_PROXY, "")
                 .put(JAVA_SYSTEM_PROXY_PREREQUISITE, "true")));
 
         /*
@@ -238,7 +222,6 @@ public class NettyHttpClientBuilderTests {
             .from(baseJavaProxyConfigurationSupplier.get().put(JAVA_NON_PROXY_HOSTS, rawJavaNonProxyHosts)));
         arguments.add(
             Configuration.from(new TestConfigurationSource().put(Configuration.HTTP_PROXY, "http://localhost:12345")
-                .put(Configuration.HTTPS_PROXY, "")
                 .put(Configuration.NO_PROXY, rawEnvNonProxyHosts)
                 .put(JAVA_SYSTEM_PROXY_PREREQUISITE, "true")));
 
@@ -251,7 +234,6 @@ public class NettyHttpClientBuilderTests {
             .put(JAVA_HTTP_PROXY_PASSWORD, "1")));
         arguments.add(
             Configuration.from(new TestConfigurationSource().put(Configuration.HTTP_PROXY, "http://1:1@localhost:12345")
-                .put(Configuration.HTTPS_PROXY, "")
                 .put(Configuration.NO_PROXY, rawEnvNonProxyHosts)
                 .put(JAVA_SYSTEM_PROXY_PREREQUISITE, "true")));
 
@@ -304,16 +286,12 @@ public class NettyHttpClientBuilderTests {
     @Test
     public void buildEventLoopClient() {
         String expectedThreadName = "testEventLoop";
-        EventLoopGroup eventLoopGroup = new MultiThreadIoEventLoopGroup(1,
-            (Runnable r) -> new Thread(r, expectedThreadName), NioIoHandler.newFactory());
+        NioEventLoopGroup eventLoopGroup = new NioEventLoopGroup(1, (Runnable r) -> new Thread(r, expectedThreadName));
 
-        try {
-            NettyHttpClient nettyClient
-                = (NettyHttpClient) new NettyHttpClientBuilder().eventLoopGroup(eventLoopGroup).build();
-            assertSame(eventLoopGroup, nettyClient.getBootstrap().config().group());
-        } finally {
-            eventLoopGroup.shutdownGracefully(0, 5, TimeUnit.SECONDS).syncUninterruptibly();
-        }
+        NettyHttpClient nettyClient
+            = (NettyHttpClient) new NettyHttpClientBuilder().eventLoopGroup(eventLoopGroup).build();
+
+        assertSame(eventLoopGroup, nettyClient.getBootstrap().config().group());
     }
 
     @ParameterizedTest
@@ -330,26 +308,12 @@ public class NettyHttpClientBuilderTests {
     }
 
     @Test
-    public void preservesAllocatorAndResolverDefaults() {
-        NettyHttpClient client = (NettyHttpClient) new NettyHttpClientBuilder().build();
-        try {
-            ByteBufAllocator expectedAllocator = System.getProperty("io.netty.allocator.type") == null
-                ? PooledByteBufAllocator.DEFAULT
-                : ByteBufAllocator.DEFAULT;
-            assertSame(expectedAllocator, client.getBootstrap().config().options().get(ChannelOption.ALLOCATOR));
-            assertSame(DefaultAddressResolverGroup.INSTANCE, client.getBootstrap().config().resolver());
-        } finally {
-            client.getBootstrap().config().group().shutdownGracefully(0, 5, TimeUnit.SECONDS).syncUninterruptibly();
-        }
-    }
-
-    @Test
     @EnabledOnOs(OS.WINDOWS)
     public void windowsUseNioByDefault() {
         NettyHttpClient nettyHttpClient = (NettyHttpClient) new NettyHttpClientBuilder().build();
 
         BootstrapConfig config = nettyHttpClient.getBootstrap().config();
-        assertTrue(assertInstanceOf(IoEventLoopGroup.class, config.group()).isIoType(NioIoHandler.class));
+        assertInstanceOf(NioEventLoopGroup.class, config.group());
         assertInstanceOf(NioSocketChannel.class, config.channelFactory().newChannel());
     }
 
@@ -359,7 +323,7 @@ public class NettyHttpClientBuilderTests {
         NettyHttpClient nettyHttpClient = (NettyHttpClient) new NettyHttpClientBuilder().build();
 
         BootstrapConfig config = nettyHttpClient.getBootstrap().config();
-        assertTrue(assertInstanceOf(IoEventLoopGroup.class, config.group()).isIoType(KQueueIoHandler.class));
+        assertInstanceOf(KQueueEventLoopGroup.class, config.group());
         assertInstanceOf(KQueueSocketChannel.class, config.channelFactory().newChannel());
     }
 
@@ -368,11 +332,11 @@ public class NettyHttpClientBuilderTests {
     public void macUsesNioIfConfigured() {
         NettyHttpClient nettyHttpClient
             = (NettyHttpClient) new NettyHttpClientBuilder().channelClass(NioSocketChannel.class)
-                .eventLoopGroup(new MultiThreadIoEventLoopGroup(NioIoHandler.newFactory()))
+                .eventLoopGroup(new NioEventLoopGroup())
                 .build();
 
         BootstrapConfig config = nettyHttpClient.getBootstrap().config();
-        assertTrue(assertInstanceOf(IoEventLoopGroup.class, config.group()).isIoType(NioIoHandler.class));
+        assertInstanceOf(NioEventLoopGroup.class, config.group());
         assertInstanceOf(NioSocketChannel.class, config.channelFactory().newChannel());
     }
 
@@ -382,7 +346,7 @@ public class NettyHttpClientBuilderTests {
         NettyHttpClient nettyHttpClient = (NettyHttpClient) new NettyHttpClientBuilder().build();
 
         BootstrapConfig config = nettyHttpClient.getBootstrap().config();
-        assertTrue(assertInstanceOf(IoEventLoopGroup.class, config.group()).isIoType(EpollIoHandler.class));
+        assertInstanceOf(EpollEventLoopGroup.class, config.group());
         assertInstanceOf(EpollSocketChannel.class, config.channelFactory().newChannel());
     }
 
@@ -391,61 +355,24 @@ public class NettyHttpClientBuilderTests {
     public void linuxUsesNioIfConfigured() {
         NettyHttpClient nettyHttpClient
             = (NettyHttpClient) new NettyHttpClientBuilder().channelClass(NioSocketChannel.class)
-                .eventLoopGroup(new MultiThreadIoEventLoopGroup(NioIoHandler.newFactory()))
+                .eventLoopGroup(new NioEventLoopGroup())
                 .build();
 
         BootstrapConfig config = nettyHttpClient.getBootstrap().config();
-        assertTrue(assertInstanceOf(IoEventLoopGroup.class, config.group()).isIoType(NioIoHandler.class));
+        assertInstanceOf(NioEventLoopGroup.class, config.group());
         assertInstanceOf(NioSocketChannel.class, config.channelFactory().newChannel());
     }
 
     @ParameterizedTest
     @MethodSource("getEventLoopGroupToUseSupplier")
-    public void getEventLoopGroupToUse(String expectedTransport, boolean configureGroup,
-        Class<? extends SocketChannel> configuredChannelClass, boolean isEpollAvailable, boolean epollFails,
-        boolean isKqueueAvailable, boolean kqueueFails) {
-        IoHandlerFactory epollFactory = mockIoHandlerFactory();
-        IoHandlerFactory kqueueFactory = mockIoHandlerFactory();
-        MethodHandle exceptionCreator
-            = MethodHandles.throwException(IoHandlerFactory.class, IllegalStateException.class)
-                .bindTo(new IllegalStateException("Native transport unavailable"));
-        MethodHandle epollCreator
-            = epollFails ? exceptionCreator : MethodHandles.constant(IoHandlerFactory.class, epollFactory);
-        MethodHandle kqueueCreator
-            = kqueueFails ? exceptionCreator : MethodHandles.constant(IoHandlerFactory.class, kqueueFactory);
-        EventLoopGroup configuredGroup
-            = configureGroup ? new MultiThreadIoEventLoopGroup(1, NioIoHandler.newFactory()) : null;
-        EventLoopGroup eventLoopGroup = NettyHttpClientBuilder.getEventLoopGroupToUse(configuredGroup,
-            configuredChannelClass, isEpollAvailable, epollCreator, isKqueueAvailable, kqueueCreator);
+    public void getEventLoopGroupToUse(Class<?> expected, EventLoopGroup configuredGroup,
+        Class<? extends SocketChannel> configuredChannelClass, boolean isEpollAvailable,
+        MethodHandle epollEventLoopGroupCreator, boolean isKqueueAvailable, MethodHandle kqueueEventLoopGroupCreator) {
+        EventLoopGroup eventLoopGroup
+            = NettyHttpClientBuilder.getEventLoopGroupToUse(configuredGroup, configuredChannelClass, isEpollAvailable,
+                epollEventLoopGroupCreator, isKqueueAvailable, kqueueEventLoopGroupCreator);
 
-        try {
-            assertInstanceOf(MultiThreadIoEventLoopGroup.class, eventLoopGroup);
-            if (configuredGroup != null) {
-                assertSame(configuredGroup, eventLoopGroup);
-            }
-            if ("epoll".equals(expectedTransport)) {
-                verify(epollFactory, atLeastOnce()).newHandler(any());
-                verifyNoInteractions(kqueueFactory);
-            } else if ("kqueue".equals(expectedTransport)) {
-                verify(kqueueFactory, atLeastOnce()).newHandler(any());
-                verifyNoInteractions(epollFactory);
-            } else {
-                verifyNoInteractions(epollFactory, kqueueFactory);
-            }
-            assertTrue(assertInstanceOf(IoEventLoopGroup.class, eventLoopGroup).isIoType(NioIoHandler.class));
-            if (configuredGroup == null) {
-                assertTrue(eventLoopGroup.next()
-                    .submit(() -> Thread.currentThread().isDaemon())
-                    .syncUninterruptibly()
-                    .getNow());
-                assertTrue(eventLoopGroup.next()
-                    .submit(() -> Thread.currentThread().getName().startsWith("clientcore-netty-client"))
-                    .syncUninterruptibly()
-                    .getNow());
-            }
-        } finally {
-            eventLoopGroup.shutdownGracefully(0, 5, TimeUnit.SECONDS).syncUninterruptibly();
-        }
+        assertInstanceOf(expected, eventLoopGroup);
     }
 
     @Test
@@ -477,60 +404,128 @@ public class NettyHttpClientBuilderTests {
         assertEquals(HttpProtocolVersion.HTTP_2, httpVersionField.get(clientv2));
     }
 
-    private static Stream<Arguments> getEventLoopGroupToUseSupplier() {
-        return Stream.of(Arguments.of("nio", true, null, true, true, true, true),
-            Arguments.of("epoll", false, null, true, false, false, false),
-            Arguments.of("epoll", false, EpollSocketChannel.class, true, false, false, false),
-            Arguments.of("nio", false, null, true, true, false, false),
-            Arguments.of("kqueue", false, null, false, false, true, false),
-            Arguments.of("kqueue", false, KQueueSocketChannel.class, false, false, true, false),
-            Arguments.of("nio", false, null, false, false, true, true),
-            Arguments.of("epoll", false, null, true, false, true, false),
-            Arguments.of("kqueue", false, KQueueSocketChannel.class, true, false, true, false),
-            Arguments.of("kqueue", false, null, true, true, true, false),
-            Arguments.of("nio", false, null, true, true, true, true),
-            Arguments.of("epoll", false, EpollSocketChannel.class, true, false, true, false),
-            Arguments.of("nio", false, NioSocketChannel.class, true, true, true, true),
-            Arguments.of("nio", false, null, false, false, false, false));
+    private static Stream<Arguments> getEventLoopGroupToUseSupplier() throws ReflectiveOperationException {
+        // Doesn't matter what this is calling, just needs to throw an exception.
+        // This will as it doesn't accept the arguments that it will be called with.
+        MethodHandle exceptionCreator
+            = MethodHandles.publicLookup().unreflectConstructor(NioEventLoopGroup.class.getDeclaredConstructor());
+
+        // NOTE: This test doesn't use EpollEventLoopGroup or KQueueEventLoopGroup directly, but rather uses different
+        // EventLoopGroup classes as the creation of those requires native libraries to be loaded.
+        // This is a workaround to avoid loading the native libraries in the test, as not all OSes can support the
+        // native transports.
+        MethodHandle epollCreator = MethodHandles.publicLookup()
+            .unreflectConstructor(MockEpollEventLoopGroup.class.getDeclaredConstructor(ThreadFactory.class));
+        MethodHandle kqueueCreator = MethodHandles.publicLookup()
+            .unreflectConstructor(MockKQueueEventLoopGroup.class.getDeclaredConstructor(ThreadFactory.class));
+
+        // EventLoopGroup is configured, use it.
+        Arguments configuredGroup
+            = Arguments.of(NioEventLoopGroup.class, new NioEventLoopGroup(), null, false, null, false, null);
+
+        // Epoll is available and nothing is configured, use EpollEventLoopGroup.
+        Arguments epollGroup = Arguments.of(MockEpollEventLoopGroup.class, null, null, true, epollCreator, false, null);
+
+        // Epoll is available and EpollSocketChannel is configured, use EpollEventLoopGroup.
+        Arguments epollChannelGroup = Arguments.of(MockEpollEventLoopGroup.class, null, EpollSocketChannel.class, true,
+            epollCreator, false, null);
+
+        // Epoll is available but throws an exception, use NioEventLoopGroup.
+        Arguments epollExceptionGroup
+            = Arguments.of(NioEventLoopGroup.class, null, null, true, exceptionCreator, false, null);
+
+        // KQueue is available and nothing is configured, use KQueueEventLoopGroup.
+        Arguments kqueueGroup
+            = Arguments.of(MockKQueueEventLoopGroup.class, null, null, false, null, true, kqueueCreator);
+
+        // KQueue is available and KQueueSocketChannel is configured, use KQueueEventLoopGroup.
+        Arguments kqueueChannelGroup = Arguments.of(MockKQueueEventLoopGroup.class, null, KQueueSocketChannel.class,
+            false, null, true, kqueueCreator);
+
+        // KQueue is available but throws an exception, use NioEventLoopGroup.
+        Arguments kqueueExceptionGroup
+            = Arguments.of(NioEventLoopGroup.class, null, null, false, null, true, exceptionCreator);
+
+        // Both Epoll and KQueue are available, use EpollEventLoopGroup.
+        Arguments epollAndKqueueGroup
+            = Arguments.of(MockEpollEventLoopGroup.class, null, null, true, epollCreator, true, kqueueCreator);
+
+        // Both Epoll and KQueue are available but channel class is set to KQueueSocketChannel, use
+        // KQueueEventLoopGroup.
+        Arguments epollAndKqueueChannelGroup = Arguments.of(MockKQueueEventLoopGroup.class, null,
+            KQueueSocketChannel.class, true, epollCreator, true, kqueueCreator);
+
+        // Both Epoll and KQueue are available but throws an exception, use NioEventLoopGroup.
+        Arguments epollAndKqueueExceptionGroup
+            = Arguments.of(NioEventLoopGroup.class, null, null, true, exceptionCreator, true, exceptionCreator);
+
+        // Both Epoll and KQueue are available but channel class is set to EpollSocketChannel, use
+        // EpollEventLoopGroup.
+        Arguments epollAndKqueueChannelExceptionGroup = Arguments.of(MockEpollEventLoopGroup.class, null,
+            EpollSocketChannel.class, true, epollCreator, true, kqueueCreator);
+
+        // Both Epoll and KQueue are available but channel class is set to NioSocketChannel, use
+        // NioEventLoopGroup.
+        Arguments epollAndKqueueChannelNioGroup = Arguments.of(NioEventLoopGroup.class, null, NioSocketChannel.class,
+            true, epollCreator, true, kqueueCreator);
+
+        return Stream.of(configuredGroup, epollGroup, epollChannelGroup, epollExceptionGroup, kqueueGroup,
+            kqueueChannelGroup, kqueueExceptionGroup, epollAndKqueueGroup, epollAndKqueueChannelGroup,
+            epollAndKqueueExceptionGroup, epollAndKqueueChannelExceptionGroup, epollAndKqueueChannelNioGroup);
     }
 
-    private static IoHandlerFactory mockIoHandlerFactory() {
-        // Delegate to NIO so factory selection can be tested without loading native libraries.
-        IoHandlerFactory delegate = NioIoHandler.newFactory();
-        IoHandlerFactory factory = mock(IoHandlerFactory.class);
-        when(factory.newHandler(any())).thenAnswer(invocation -> delegate.newHandler(invocation.getArgument(0)));
-        return factory;
+    public static final class MockEpollEventLoopGroup extends NioEventLoopGroup {
+        public MockEpollEventLoopGroup(ThreadFactory threadFactory) {
+            super(threadFactory);
+        }
+    }
+
+    public static final class MockKQueueEventLoopGroup extends NioEventLoopGroup {
+        public MockKQueueEventLoopGroup(ThreadFactory threadFactory) {
+            super(threadFactory);
+        }
     }
 
     @ParameterizedTest
     @MethodSource("getChannelClassSupplier")
     public void getChannelClass(Class<?> expected, Class<? extends SocketChannel> configuredChannelClass,
-        EventLoopGroup configuredGroup, boolean isEpollAvailable, boolean isKqueueAvailable) {
+        Class<? extends EventLoopGroup> congiguredGroupClass, boolean isEpollAvailable, boolean isKqueueAvailable) {
         Class<? extends Channel> channelClass = NettyHttpClientBuilder.getChannelClass(configuredChannelClass,
-            configuredGroup, isEpollAvailable, isKqueueAvailable);
+            congiguredGroupClass, isEpollAvailable, isKqueueAvailable);
 
         assertEquals(expected, channelClass);
     }
 
     private static Stream<Arguments> getChannelClassSupplier() {
-        IoEventLoopGroup nioGroup = mockIoEventLoopGroup(NioIoHandler.class);
-        IoEventLoopGroup epollGroup = mockIoEventLoopGroup(EpollIoHandler.class);
-        IoEventLoopGroup kqueueGroup = mockIoEventLoopGroup(KQueueIoHandler.class);
+        // Channel class is configured, use it.
+        Arguments configuredChannel = Arguments.of(NioSocketChannel.class, NioSocketChannel.class, null, false, false);
 
-        return Stream.of(Arguments.of(NioSocketChannel.class, NioSocketChannel.class, epollGroup, true, true),
-            Arguments.of(EpollSocketChannel.class, null, epollGroup, true, false),
-            Arguments.of(KQueueSocketChannel.class, null, kqueueGroup, false, true),
-            Arguments.of(NioSocketChannel.class, null, nioGroup, true, false),
-            Arguments.of(NioSocketChannel.class, null, nioGroup, false, true),
-            Arguments.of(NioSocketChannel.class, null, nioGroup, true, true),
-            Arguments.of(EpollSocketChannel.class, null, epollGroup, true, true),
-            Arguments.of(KQueueSocketChannel.class, null, kqueueGroup, true, true),
-            Arguments.of(NioSocketChannel.class, null, mock(EventLoopGroup.class), true, true));
-    }
+        // Epoll is available and EventLoopGroup is EpollEventLoopGroup, use EpollSocketChannel.
+        Arguments epollChannel = Arguments.of(EpollSocketChannel.class, null, EpollEventLoopGroup.class, true, false);
 
-    private static IoEventLoopGroup mockIoEventLoopGroup(Class<? extends IoHandler> ioHandlerClass) {
-        IoEventLoopGroup group = mock(IoEventLoopGroup.class);
-        when(group.isIoType(ioHandlerClass)).thenReturn(true);
-        return group;
+        // KQueue is available and EventLoopGroup is KQueueEventLoopGroup, use KQueueSocketChannel.
+        Arguments kqueueChannel
+            = Arguments.of(KQueueSocketChannel.class, null, KQueueEventLoopGroup.class, false, true);
+
+        // Epoll is available and EventLoopGroup is NioEventLoopGroup, use NioSocketChannel.
+        Arguments epollNioChannel = Arguments.of(NioSocketChannel.class, null, NioEventLoopGroup.class, true, false);
+
+        // KQueue is available and EventLoopGroup is NioEventLoopGroup, use NioSocketChannel.
+        Arguments kqueueNioChannel = Arguments.of(NioSocketChannel.class, null, NioEventLoopGroup.class, false, true);
+
+        // Both Epoll and KQueue are available and EventLoopGroup is NioEventLoopGroup, use NioSocketChannel.
+        Arguments epollAndKqueueNioChannel
+            = Arguments.of(NioSocketChannel.class, null, NioEventLoopGroup.class, true, true);
+
+        // Both Epoll and KQueue are available and EventLoopGroup is EpollEventLoopGroup, use EpollSocketChannel.
+        Arguments epollAndKqueueEpollChannel
+            = Arguments.of(EpollSocketChannel.class, null, EpollEventLoopGroup.class, true, true);
+
+        // Both Epoll and KQueue are available and EventLoopGroup is KQueueEventLoopGroup, use KQueueSocketChannel.
+        Arguments epollAndKqueueKqueueChannel
+            = Arguments.of(KQueueSocketChannel.class, null, KQueueEventLoopGroup.class, true, true);
+
+        return Stream.of(configuredChannel, epollChannel, kqueueChannel, epollNioChannel, kqueueNioChannel,
+            epollAndKqueueNioChannel, epollAndKqueueEpollChannel, epollAndKqueueKqueueChannel);
     }
 }

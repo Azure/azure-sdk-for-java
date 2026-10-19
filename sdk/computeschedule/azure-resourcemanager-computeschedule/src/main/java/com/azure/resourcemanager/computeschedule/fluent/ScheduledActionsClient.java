@@ -12,7 +12,6 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.computeschedule.fluent.models.CancelOperationsResponseInner;
-import com.azure.resourcemanager.computeschedule.fluent.models.CreateFlexResourceOperationResponseInner;
 import com.azure.resourcemanager.computeschedule.fluent.models.CreateResourceOperationResponseInner;
 import com.azure.resourcemanager.computeschedule.fluent.models.DeallocateResourceOperationResponseInner;
 import com.azure.resourcemanager.computeschedule.fluent.models.DeleteResourceOperationResponseInner;
@@ -26,7 +25,6 @@ import com.azure.resourcemanager.computeschedule.fluent.models.ScheduledActionRe
 import com.azure.resourcemanager.computeschedule.fluent.models.StartResourceOperationResponseInner;
 import com.azure.resourcemanager.computeschedule.models.CancelOccurrenceRequest;
 import com.azure.resourcemanager.computeschedule.models.CancelOperationsRequest;
-import com.azure.resourcemanager.computeschedule.models.ExecuteCreateFlexRequest;
 import com.azure.resourcemanager.computeschedule.models.ExecuteCreateRequest;
 import com.azure.resourcemanager.computeschedule.models.ExecuteDeallocateRequest;
 import com.azure.resourcemanager.computeschedule.models.ExecuteDeleteRequest;
@@ -231,39 +229,8 @@ public interface ScheduledActionsClient {
         ExecuteStartRequest requestBody);
 
     /**
-     * VirtualMachinesExecuteCreateFlex: Execute create operation for a batch of virtual machines with flex properties,
-     * this operation is triggered as soon as Computeschedule receives it.
-     * 
-     * @param locationparameter The location name.
-     * @param body The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from a create flex request along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CreateFlexResourceOperationResponseInner> virtualMachinesExecuteCreateFlexWithResponse(
-        String locationparameter, ExecuteCreateFlexRequest body, Context context);
-
-    /**
-     * VirtualMachinesExecuteCreateFlex: Execute create operation for a batch of virtual machines with flex properties,
-     * this operation is triggered as soon as Computeschedule receives it.
-     * 
-     * @param locationparameter The location name.
-     * @param body The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from a create flex request.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    CreateFlexResourceOperationResponseInner virtualMachinesExecuteCreateFlex(String locationparameter,
-        ExecuteCreateFlexRequest body);
-
-    /**
-     * [PRIVATE PREVIEW]: VirtualMachinesExecuteCreate: Execute create operation for a batch of virtual machines, this
-     * operation is triggered as soon as Computeschedule receives it.
+     * VirtualMachinesExecuteCreate: Execute create operation for a batch of virtual machines, this operation is
+     * triggered as soon as Computeschedule receives it.
      * 
      * @param locationparameter The location name.
      * @param requestBody The request body.
@@ -278,8 +245,8 @@ public interface ScheduledActionsClient {
         ExecuteCreateRequest requestBody, Context context);
 
     /**
-     * [PRIVATE PREVIEW]: VirtualMachinesExecuteCreate: Execute create operation for a batch of virtual machines, this
-     * operation is triggered as soon as Computeschedule receives it.
+     * VirtualMachinesExecuteCreate: Execute create operation for a batch of virtual machines, this operation is
+     * triggered as soon as Computeschedule receives it.
      * 
      * @param locationparameter The location name.
      * @param requestBody The request body.
@@ -293,8 +260,8 @@ public interface ScheduledActionsClient {
         ExecuteCreateRequest requestBody);
 
     /**
-     * [PRIVATE PREVIEW]: VirtualMachinesExecuteDelete: Execute delete operation for a batch of virtual machines, this
-     * operation is triggered as soon as Computeschedule receives it.
+     * VirtualMachinesExecuteDelete: Execute delete operation for a batch of virtual machines, this operation is
+     * triggered as soon as Computeschedule receives it.
      * 
      * @param locationparameter The location name.
      * @param requestBody The request body.
@@ -309,8 +276,8 @@ public interface ScheduledActionsClient {
         ExecuteDeleteRequest requestBody, Context context);
 
     /**
-     * [PRIVATE PREVIEW]: VirtualMachinesExecuteDelete: Execute delete operation for a batch of virtual machines, this
-     * operation is triggered as soon as Computeschedule receives it.
+     * VirtualMachinesExecuteDelete: Execute delete operation for a batch of virtual machines, this operation is
+     * triggered as soon as Computeschedule receives it.
      * 
      * @param locationparameter The location name.
      * @param requestBody The request body.

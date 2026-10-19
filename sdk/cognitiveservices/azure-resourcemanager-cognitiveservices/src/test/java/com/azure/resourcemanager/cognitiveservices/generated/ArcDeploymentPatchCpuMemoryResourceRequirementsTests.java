@@ -12,18 +12,18 @@ public final class ArcDeploymentPatchCpuMemoryResourceRequirementsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ArcDeploymentPatchCpuMemoryResourceRequirements model
-            = BinaryData.fromString("{\"cpu\":\"lwfgziiu\",\"memory\":\"jjceatlijjjr\"}")
+            = BinaryData.fromString("{\"cpu\":\"jascowvfdjkpd\",\"memory\":\"hlkks\"}")
                 .toObject(ArcDeploymentPatchCpuMemoryResourceRequirements.class);
-        Assertions.assertEquals("lwfgziiu", model.cpu());
-        Assertions.assertEquals("jjceatlijjjr", model.memory());
+        Assertions.assertEquals("jascowvfdjkpd", model.cpu());
+        Assertions.assertEquals("hlkks", model.memory());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ArcDeploymentPatchCpuMemoryResourceRequirements model
-            = new ArcDeploymentPatchCpuMemoryResourceRequirements().withCpu("lwfgziiu").withMemory("jjceatlijjjr");
+            = new ArcDeploymentPatchCpuMemoryResourceRequirements().withCpu("jascowvfdjkpd").withMemory("hlkks");
         model = BinaryData.fromObject(model).toObject(ArcDeploymentPatchCpuMemoryResourceRequirements.class);
-        Assertions.assertEquals("lwfgziiu", model.cpu());
-        Assertions.assertEquals("jjceatlijjjr", model.memory());
+        Assertions.assertEquals("jascowvfdjkpd", model.cpu());
+        Assertions.assertEquals("hlkks", model.memory());
     }
 }

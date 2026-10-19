@@ -23,7 +23,7 @@ public final class ArcSettingsListByClusterMockTests {
     @Test
     public void testListByCluster() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Creating\",\"arcInstanceResourceGroup\":\"zq\",\"arcApplicationClientId\":\"zochwbekmuyn\",\"arcApplicationTenantId\":\"kyvnhiysdhork\",\"arcServicePrincipalObjectId\":\"hr\",\"arcApplicationObjectId\":\"kiwlwkfflaqwmwq\",\"aggregateState\":\"Deleting\",\"perNodeDetails\":[{\"name\":\"eatne\",\"arcInstance\":\"fzjxnjt\",\"arcNodeServicePrincipalObjectId\":\"gysibthnvxw\",\"state\":\"Error\"},{\"name\":\"cbjdbtqy\",\"arcInstance\":\"xu\",\"arcNodeServicePrincipalObjectId\":\"aujqgbbjv\",\"state\":\"PartiallyConnected\"}],\"connectivityProperties\":{\"enabled\":true,\"serviceConfigurations\":[{\"serviceName\":\"WAC\",\"port\":6826563652171532437}]},\"defaultExtensions\":[{\"category\":\"oygsabdgdheronsd\",\"consentTime\":\"2021-01-13T11:49:05Z\"},{\"category\":\"zvzuat\",\"consentTime\":\"2021-07-13T15:05:25Z\"}]},\"id\":\"uyxtrvfdbqs\",\"name\":\"gqj\",\"type\":\"vitp\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\",\"arcInstanceResourceGroup\":\"lirh\",\"arcApplicationClientId\":\"ojusuzgfjzcva\",\"arcApplicationTenantId\":\"oialahfxwccokdx\",\"arcServicePrincipalObjectId\":\"kmkcz\",\"arcApplicationObjectId\":\"uhhoqeqshavlj\",\"aggregateState\":\"Failed\",\"perNodeDetails\":[{\"name\":\"olnthb\",\"arcInstance\":\"kgzukwdrnzkjth\",\"arcNodeServicePrincipalObjectId\":\"eyjncjmlfuy\",\"state\":\"PartiallyConnected\"},{\"name\":\"fiddhlrufzcq\",\"arcInstance\":\"mq\",\"arcNodeServicePrincipalObjectId\":\"uiocuselqkrsazr\",\"state\":\"Error\"},{\"name\":\"dqmdtffis\",\"arcInstance\":\"rkkhmwdmdlgy\",\"arcNodeServicePrincipalObjectId\":\"xokwtjawhvagnqfq\",\"state\":\"Updating\"}],\"connectivityProperties\":{\"enabled\":true,\"serviceConfigurations\":[{\"serviceName\":\"WAC\",\"port\":7714848345048051757},{\"serviceName\":\"WAC\",\"port\":6314427193417595192},{\"serviceName\":\"WAC\",\"port\":8045601227210071511},{\"serviceName\":\"WAC\",\"port\":7649933024732507884}]},\"defaultExtensions\":[{\"category\":\"qdnzyza\",\"consentTime\":\"2021-02-02T09:23:34Z\"}]},\"id\":\"wqkokbczothymg\",\"name\":\"bllmsnwgwimaanea\",\"type\":\"htmhobcyanrf\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,17 +33,17 @@ public final class ArcSettingsListByClusterMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ArcSetting> response
-            = manager.arcSettings().listByCluster("uipjclzjwaqd", "qydewuwxyllz", com.azure.core.util.Context.NONE);
+            = manager.arcSettings().listByCluster("h", "jjsbcmlzaahzbhur", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("zq", response.iterator().next().arcInstanceResourceGroup());
-        Assertions.assertEquals("zochwbekmuyn", response.iterator().next().arcApplicationClientId());
-        Assertions.assertEquals("kyvnhiysdhork", response.iterator().next().arcApplicationTenantId());
-        Assertions.assertEquals("hr", response.iterator().next().arcServicePrincipalObjectId());
-        Assertions.assertEquals("kiwlwkfflaqwmwq", response.iterator().next().arcApplicationObjectId());
+        Assertions.assertEquals("lirh", response.iterator().next().arcInstanceResourceGroup());
+        Assertions.assertEquals("ojusuzgfjzcva", response.iterator().next().arcApplicationClientId());
+        Assertions.assertEquals("oialahfxwccokdx", response.iterator().next().arcApplicationTenantId());
+        Assertions.assertEquals("kmkcz", response.iterator().next().arcServicePrincipalObjectId());
+        Assertions.assertEquals("uhhoqeqshavlj", response.iterator().next().arcApplicationObjectId());
         Assertions.assertTrue(response.iterator().next().connectivityProperties().enabled());
         Assertions.assertEquals(ServiceName.WAC,
             response.iterator().next().connectivityProperties().serviceConfigurations().get(0).serviceName());
-        Assertions.assertEquals(6826563652171532437L,
+        Assertions.assertEquals(7714848345048051757L,
             response.iterator().next().connectivityProperties().serviceConfigurations().get(0).port());
     }
 }

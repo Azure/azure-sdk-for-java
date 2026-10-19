@@ -11,7 +11,6 @@ import com.azure.resourcemanager.computeschedule.models.Month;
 import com.azure.resourcemanager.computeschedule.models.NotificationProperties;
 import com.azure.resourcemanager.computeschedule.models.NotificationType;
 import com.azure.resourcemanager.computeschedule.models.OptimizationPreference;
-import com.azure.resourcemanager.computeschedule.models.ResourceOperationType;
 import com.azure.resourcemanager.computeschedule.models.ResourceType;
 import com.azure.resourcemanager.computeschedule.models.RetryPolicy;
 import com.azure.resourcemanager.computeschedule.models.ScheduledActionProperties;
@@ -28,7 +27,7 @@ import java.util.Map;
  */
 public final class ScheduledActionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-04-15-preview/ScheduledActions_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-04-15-preview/ScheduledActions_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: ScheduledActions_CreateOrUpdate_MaximumSet.
@@ -38,27 +37,25 @@ public final class ScheduledActionsCreateOrUpdateSamples {
     public static void scheduledActionsCreateOrUpdateMaximumSet(
         com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.scheduledActions()
-            .define("scheduled-action-01")
-            .withRegion("eastus2")
+            .define("myScheduledAction")
+            .withRegion("vmuhgdgipeypkcv")
             .withExistingResourceGroup("rgcomputeschedule")
-            .withTags(mapOf("environment", "production"))
+            .withTags(mapOf("key2102", "fakeTokenPlaceholder"))
             .withProperties(new ScheduledActionProperties().withResourceType(ResourceType.VIRTUAL_MACHINE)
                 .withActionType(ScheduledActionType.START)
-                .withStartTime(OffsetDateTime.parse("2026-03-12T02:39:45.061Z"))
-                .withEndTime(OffsetDateTime.parse("2026-03-12T02:39:45.062Z"))
-                .withSchedule(new ScheduledActionsSchedule().withScheduledTime("12:00:00")
-                    .withTimeZone("America/Los_Angeles")
+                .withStartTime(OffsetDateTime.parse("2025-04-17T00:23:55.281Z"))
+                .withEndTime(OffsetDateTime.parse("2025-04-17T00:23:55.286Z"))
+                .withSchedule(new ScheduledActionsSchedule().withScheduledTime("19:00:00")
+                    .withTimeZone("g")
                     .withRequestedWeekDays(Arrays.asList(WeekDay.MONDAY))
                     .withRequestedMonths(Arrays.asList(Month.JANUARY))
-                    .withRequestedDaysOfTheMonth(Arrays.asList(1))
+                    .withRequestedDaysOfTheMonth(Arrays.asList(15))
                     .withExecutionParameters(
                         new ExecutionParameters().withOptimizationPreference(OptimizationPreference.COST)
-                            .withRetryPolicy(new RetryPolicy().withRetryCount(3)
-                                .withRetryWindowInMinutes(30)
-                                .withOnFailureAction(ResourceOperationType.UNKNOWN)))
+                            .withRetryPolicy(new RetryPolicy().withRetryCount(17).withRetryWindowInMinutes(29)))
                     .withDeadlineType(DeadlineType.UNKNOWN))
                 .withNotificationSettings(
-                    Arrays.asList(new NotificationProperties().withDestination("admin@contoso.com")
+                    Arrays.asList(new NotificationProperties().withDestination("wbhryycyolvnypjxzlawwvb")
                         .withType(NotificationType.EMAIL)
                         .withLanguage(Language.EN_US)
                         .withDisabled(true)))

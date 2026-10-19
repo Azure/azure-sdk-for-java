@@ -8,7 +8,6 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.computeschedule.models.DeadlineType;
 import com.azure.resourcemanager.computeschedule.models.ExecutionParameters;
 import com.azure.resourcemanager.computeschedule.models.OptimizationPreference;
-import com.azure.resourcemanager.computeschedule.models.ResourceOperationType;
 import com.azure.resourcemanager.computeschedule.models.Resources;
 import com.azure.resourcemanager.computeschedule.models.RetryPolicy;
 import com.azure.resourcemanager.computeschedule.models.Schedule;
@@ -21,7 +20,7 @@ public final class SubmitDeallocateRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SubmitDeallocateRequest model = BinaryData.fromString(
-            "{\"schedule\":{\"deadline\":\"2021-09-06T02:12:49Z\",\"deadLine\":\"2021-12-03T06:58:55Z\",\"timezone\":\"zvgnwzs\",\"timeZone\":\"glzufc\",\"deadlineType\":\"CompleteBy\"},\"executionParameters\":{\"optimizationPreference\":\"CostAvailabilityBalanced\",\"retryPolicy\":{\"retryCount\":1757371466,\"retryWindowInMinutes\":1730607260,\"onFailureAction\":\"Create\"}},\"resources\":{\"ids\":[\"fhfcb\",\"y\",\"a\"]},\"correlationid\":\"ithxqhabifpi\"}")
+            "{\"schedule\":{\"deadline\":\"2021-09-06T02:12:49Z\",\"deadLine\":\"2021-12-03T06:58:55Z\",\"timezone\":\"zvgnwzs\",\"timeZone\":\"glzufc\",\"deadlineType\":\"CompleteBy\"},\"executionParameters\":{\"optimizationPreference\":\"CostAvailabilityBalanced\",\"retryPolicy\":{\"retryCount\":1757371466,\"retryWindowInMinutes\":1730607260}},\"resources\":{\"ids\":[\"nufhf\",\"bj\",\"s\",\"git\"]},\"correlationid\":\"xqhabi\"}")
             .toObject(SubmitDeallocateRequest.class);
         Assertions.assertEquals(OffsetDateTime.parse("2021-09-06T02:12:49Z"), model.schedule().deadline());
         Assertions.assertEquals(OffsetDateTime.parse("2021-12-03T06:58:55Z"), model.schedule().deadLine());
@@ -32,10 +31,8 @@ public final class SubmitDeallocateRequestTests {
             model.executionParameters().optimizationPreference());
         Assertions.assertEquals(1757371466, model.executionParameters().retryPolicy().retryCount());
         Assertions.assertEquals(1730607260, model.executionParameters().retryPolicy().retryWindowInMinutes());
-        Assertions.assertEquals(ResourceOperationType.CREATE,
-            model.executionParameters().retryPolicy().onFailureAction());
-        Assertions.assertEquals("fhfcb", model.resources().ids().get(0));
-        Assertions.assertEquals("ithxqhabifpi", model.correlationid());
+        Assertions.assertEquals("nufhf", model.resources().ids().get(0));
+        Assertions.assertEquals("xqhabi", model.correlationid());
     }
 
     @org.junit.jupiter.api.Test
@@ -48,11 +45,9 @@ public final class SubmitDeallocateRequestTests {
                 .withDeadlineType(DeadlineType.COMPLETE_BY))
             .withExecutionParameters(
                 new ExecutionParameters().withOptimizationPreference(OptimizationPreference.COST_AVAILABILITY_BALANCED)
-                    .withRetryPolicy(new RetryPolicy().withRetryCount(1757371466)
-                        .withRetryWindowInMinutes(1730607260)
-                        .withOnFailureAction(ResourceOperationType.CREATE)))
-            .withResources(new Resources().withIds(Arrays.asList("fhfcb", "y", "a")))
-            .withCorrelationid("ithxqhabifpi");
+                    .withRetryPolicy(new RetryPolicy().withRetryCount(1757371466).withRetryWindowInMinutes(1730607260)))
+            .withResources(new Resources().withIds(Arrays.asList("nufhf", "bj", "s", "git")))
+            .withCorrelationid("xqhabi");
         model = BinaryData.fromObject(model).toObject(SubmitDeallocateRequest.class);
         Assertions.assertEquals(OffsetDateTime.parse("2021-09-06T02:12:49Z"), model.schedule().deadline());
         Assertions.assertEquals(OffsetDateTime.parse("2021-12-03T06:58:55Z"), model.schedule().deadLine());
@@ -63,9 +58,7 @@ public final class SubmitDeallocateRequestTests {
             model.executionParameters().optimizationPreference());
         Assertions.assertEquals(1757371466, model.executionParameters().retryPolicy().retryCount());
         Assertions.assertEquals(1730607260, model.executionParameters().retryPolicy().retryWindowInMinutes());
-        Assertions.assertEquals(ResourceOperationType.CREATE,
-            model.executionParameters().retryPolicy().onFailureAction());
-        Assertions.assertEquals("fhfcb", model.resources().ids().get(0));
-        Assertions.assertEquals("ithxqhabifpi", model.correlationid());
+        Assertions.assertEquals("nufhf", model.resources().ids().get(0));
+        Assertions.assertEquals("xqhabi", model.correlationid());
     }
 }

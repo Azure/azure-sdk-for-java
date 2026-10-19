@@ -12,14 +12,14 @@ public final class CheckUpdatesRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CheckUpdatesRequest model
-            = BinaryData.fromString("{\"updateName\":\"rhunlp\"}").toObject(CheckUpdatesRequest.class);
-        Assertions.assertEquals("rhunlp", model.updateName());
+            = BinaryData.fromString("{\"updateName\":\"fmkk\"}").toObject(CheckUpdatesRequest.class);
+        Assertions.assertEquals("fmkk", model.updateName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CheckUpdatesRequest model = new CheckUpdatesRequest().withUpdateName("rhunlp");
+        CheckUpdatesRequest model = new CheckUpdatesRequest().withUpdateName("fmkk");
         model = BinaryData.fromObject(model).toObject(CheckUpdatesRequest.class);
-        Assertions.assertEquals("rhunlp", model.updateName());
+        Assertions.assertEquals("fmkk", model.updateName());
     }
 }

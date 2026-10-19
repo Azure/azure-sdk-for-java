@@ -43,12 +43,6 @@ public final class VirtualMachineNetworkInterfaceIPConfigurationProperties
     private IpVersions privateIpAddressVersion;
 
     /*
-     * The private IP address prefix length. If specified and the allocation method is dynamic, the service will
-     * allocate a CIDR block instead of a single IP address.
-     */
-    private Integer privateIPAddressPrefixLength;
-
-    /*
      * Specifies an array of references to application security group.
      */
     private List<SubResource> applicationSecurityGroups;
@@ -160,29 +154,6 @@ public final class VirtualMachineNetworkInterfaceIPConfigurationProperties
     }
 
     /**
-     * Get the privateIPAddressPrefixLength property: The private IP address prefix length. If specified and the
-     * allocation method is dynamic, the service will allocate a CIDR block instead of a single IP address.
-     * 
-     * @return the privateIPAddressPrefixLength value.
-     */
-    public Integer privateIPAddressPrefixLength() {
-        return this.privateIPAddressPrefixLength;
-    }
-
-    /**
-     * Set the privateIPAddressPrefixLength property: The private IP address prefix length. If specified and the
-     * allocation method is dynamic, the service will allocate a CIDR block instead of a single IP address.
-     * 
-     * @param privateIPAddressPrefixLength the privateIPAddressPrefixLength value to set.
-     * @return the VirtualMachineNetworkInterfaceIPConfigurationProperties object itself.
-     */
-    public VirtualMachineNetworkInterfaceIPConfigurationProperties
-        withPrivateIPAddressPrefixLength(Integer privateIPAddressPrefixLength) {
-        this.privateIPAddressPrefixLength = privateIPAddressPrefixLength;
-        return this;
-    }
-
-    /**
      * Get the applicationSecurityGroups property: Specifies an array of references to application security group.
      * 
      * @return the applicationSecurityGroups value.
@@ -275,7 +246,6 @@ public final class VirtualMachineNetworkInterfaceIPConfigurationProperties
         jsonWriter.writeJsonField("publicIPAddressConfiguration", this.publicIpAddressConfiguration);
         jsonWriter.writeStringField("privateIPAddressVersion",
             this.privateIpAddressVersion == null ? null : this.privateIpAddressVersion.toString());
-        jsonWriter.writeNumberField("privateIPAddressPrefixLength", this.privateIPAddressPrefixLength);
         jsonWriter.writeArrayField("applicationSecurityGroups", this.applicationSecurityGroups,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("applicationGatewayBackendAddressPools", this.applicationGatewayBackendAddressPools,
@@ -314,9 +284,6 @@ public final class VirtualMachineNetworkInterfaceIPConfigurationProperties
                 } else if ("privateIPAddressVersion".equals(fieldName)) {
                     deserializedVirtualMachineNetworkInterfaceIPConfigurationProperties.privateIpAddressVersion
                         = IpVersions.fromString(reader.getString());
-                } else if ("privateIPAddressPrefixLength".equals(fieldName)) {
-                    deserializedVirtualMachineNetworkInterfaceIPConfigurationProperties.privateIPAddressPrefixLength
-                        = reader.getNullable(JsonReader::getInt);
                 } else if ("applicationSecurityGroups".equals(fieldName)) {
                     List<SubResource> applicationSecurityGroups
                         = reader.readArray(reader1 -> SubResource.fromJson(reader1));

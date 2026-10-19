@@ -12,6 +12,7 @@ To get started with a specific library, see the **README.md** file located in th
 - [Azure Maps Route](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/maps/azure-maps-route/README.md) contains Route APIs for calculating matrix of route summaries, returning routes between destinations, etc.
 - [Azure Maps Search](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/maps/azure-maps-search/README.md) contains Search APIs for querying addresses, nearby locations, geopolygons, etc.
 - [Azure Maps Timezone](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/maps/azure-maps-timezone/README.md) contains Timezone APIs for converting between UTC and local times based on geographic locations, etc.
+- [Azure Maps Traffic](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/maps/azure-maps-traffic/README.md)  contains Traffic APIs for providing traffic flow and incident information to enhance navigation and routing applications, etc.
 - [Azure Maps Weather](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/maps/azure-maps-weather/README.md) contains Weather APIs for retrieving current weather conditions, forecasts, and weather alerts, etc.
 
 ## Key concepts
@@ -28,6 +29,7 @@ For examples of each module please see:
 - [Azure Maps Route Samples](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/maps/azure-maps-route/src/samples)
 - [Azure Maps Search Samples](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/maps/azure-maps-search/src/samples)
 - [Azure Maps Timezone Samples](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/maps/azure-maps-timezone/src/samples)
+- [Azure Maps Traffic Samples](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/maps/azure-maps-traffic/src/samples)
 - [Azure Maps Weather Samples](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/maps/azure-maps-weather/src/samples)
 
 ## Troubleshooting
@@ -43,6 +45,7 @@ Several Azure Maps Java SDK samples are available to you in the SDK's GitHub rep
 - [Azure Maps Route Samples](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/maps/azure-maps-route/src/samples)
 - [Azure Maps Search Samples](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/maps/azure-maps-search/src/samples)
 - [Azure Maps Timezone Samples](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/maps/azure-maps-timezone/src/samples)
+- [Azure Maps Traffic Samples](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/maps/azure-maps-traffic/src/samples)
 - [Azure Maps Weather Samples](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/maps/azure-maps-weather/src/samples)
 
 ## Contributing

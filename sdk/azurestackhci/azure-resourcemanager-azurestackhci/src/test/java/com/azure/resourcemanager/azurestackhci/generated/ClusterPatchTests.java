@@ -19,39 +19,39 @@ public final class ClusterPatchTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClusterPatch model = BinaryData.fromString(
-            "{\"tags\":{\"q\":\"fbkrvrnsvs\",\"rruvwbhsq\":\"ohxcrsbfova\",\"gjb\":\"sub\"},\"identity\":{\"principalId\":\"bpybsrfbjf\",\"tenantId\":\"w\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"ruoujmk\":{\"principalId\":\"tpvjzbexilzznfqq\",\"clientId\":\"wpmqt\"}}},\"properties\":{\"cloudManagementEndpoint\":\"wqytjrybnwjewgdr\",\"aadClientId\":\"rvnaenqpeh\",\"aadTenantId\":\"doy\",\"desiredProperties\":{\"windowsServerSubscription\":\"Disabled\",\"diagnosticLevel\":\"Basic\"}}}")
+            "{\"tags\":{\"bkpyc\":\"x\",\"l\":\"klwndnhjdauwhv\",\"xujznbmpowu\":\"zbtd\",\"lupj\":\"przqlveu\"},\"identity\":{\"principalId\":\"fxobbcsws\",\"tenantId\":\"jriplrbpbewtghf\",\"type\":\"None\",\"userAssignedIdentities\":{\"cgwrtzjuz\":{\"principalId\":\"wxzvlvqhjkb\",\"clientId\":\"ibtnmxiebwwaloay\"}}},\"properties\":{\"cloudManagementEndpoint\":\"zmh\",\"aadClientId\":\"ongmtsa\",\"aadTenantId\":\"cbpwxqpsrknft\",\"desiredProperties\":{\"windowsServerSubscription\":\"Disabled\",\"diagnosticLevel\":\"Off\"}}}")
             .toObject(ClusterPatch.class);
-        Assertions.assertEquals("fbkrvrnsvs", model.tags().get("q"));
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.type());
-        Assertions.assertEquals("wqytjrybnwjewgdr", model.cloudManagementEndpoint());
-        Assertions.assertEquals("rvnaenqpeh", model.aadClientId());
-        Assertions.assertEquals("doy", model.aadTenantId());
+        Assertions.assertEquals("x", model.tags().get("bkpyc"));
+        Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.type());
+        Assertions.assertEquals("zmh", model.cloudManagementEndpoint());
+        Assertions.assertEquals("ongmtsa", model.aadClientId());
+        Assertions.assertEquals("cbpwxqpsrknft", model.aadTenantId());
         Assertions.assertEquals(WindowsServerSubscription.DISABLED,
             model.desiredProperties().windowsServerSubscription());
-        Assertions.assertEquals(DiagnosticLevel.BASIC, model.desiredProperties().diagnosticLevel());
+        Assertions.assertEquals(DiagnosticLevel.OFF, model.desiredProperties().diagnosticLevel());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClusterPatch model
-            = new ClusterPatch().withTags(mapOf("q", "fbkrvrnsvs", "rruvwbhsq", "ohxcrsbfova", "gjb", "sub"))
-                .withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
-                .withUserAssignedIdentities(mapOf("ruoujmk", new UserAssignedIdentity()))
-                .withCloudManagementEndpoint("wqytjrybnwjewgdr")
-                .withAadClientId("rvnaenqpeh")
-                .withAadTenantId("doy")
-                .withDesiredProperties(
-                    new ClusterDesiredProperties().withWindowsServerSubscription(WindowsServerSubscription.DISABLED)
-                        .withDiagnosticLevel(DiagnosticLevel.BASIC));
+        ClusterPatch model = new ClusterPatch()
+            .withTags(mapOf("bkpyc", "x", "l", "klwndnhjdauwhv", "xujznbmpowu", "zbtd", "lupj", "przqlveu"))
+            .withType(ManagedServiceIdentityType.NONE)
+            .withUserAssignedIdentities(mapOf("cgwrtzjuz", new UserAssignedIdentity()))
+            .withCloudManagementEndpoint("zmh")
+            .withAadClientId("ongmtsa")
+            .withAadTenantId("cbpwxqpsrknft")
+            .withDesiredProperties(
+                new ClusterDesiredProperties().withWindowsServerSubscription(WindowsServerSubscription.DISABLED)
+                    .withDiagnosticLevel(DiagnosticLevel.OFF));
         model = BinaryData.fromObject(model).toObject(ClusterPatch.class);
-        Assertions.assertEquals("fbkrvrnsvs", model.tags().get("q"));
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.type());
-        Assertions.assertEquals("wqytjrybnwjewgdr", model.cloudManagementEndpoint());
-        Assertions.assertEquals("rvnaenqpeh", model.aadClientId());
-        Assertions.assertEquals("doy", model.aadTenantId());
+        Assertions.assertEquals("x", model.tags().get("bkpyc"));
+        Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.type());
+        Assertions.assertEquals("zmh", model.cloudManagementEndpoint());
+        Assertions.assertEquals("ongmtsa", model.aadClientId());
+        Assertions.assertEquals("cbpwxqpsrknft", model.aadTenantId());
         Assertions.assertEquals(WindowsServerSubscription.DISABLED,
             model.desiredProperties().windowsServerSubscription());
-        Assertions.assertEquals(DiagnosticLevel.BASIC, model.desiredProperties().diagnosticLevel());
+        Assertions.assertEquals(DiagnosticLevel.OFF, model.desiredProperties().diagnosticLevel());
     }
 
     // Use "Map.of" if available

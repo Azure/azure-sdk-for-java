@@ -165,32 +165,6 @@ public final class VirtualMachineScaleSetIpConfiguration
     }
 
     /**
-     * Get the privateIPAddressPrefixLength property: The private IP address prefix length. If specified and the
-     * allocation method is dynamic, the service will allocate a CIDR block instead of a single IP address.
-     * 
-     * @return the privateIPAddressPrefixLength value.
-     */
-    public Integer privateIPAddressPrefixLength() {
-        return this.innerProperties() == null ? null : this.innerProperties().privateIPAddressPrefixLength();
-    }
-
-    /**
-     * Set the privateIPAddressPrefixLength property: The private IP address prefix length. If specified and the
-     * allocation method is dynamic, the service will allocate a CIDR block instead of a single IP address.
-     * 
-     * @param privateIPAddressPrefixLength the privateIPAddressPrefixLength value to set.
-     * @return the VirtualMachineScaleSetIpConfiguration object itself.
-     */
-    public VirtualMachineScaleSetIpConfiguration
-        withPrivateIPAddressPrefixLength(Integer privateIPAddressPrefixLength) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new VirtualMachineScaleSetIPConfigurationProperties();
-        }
-        this.innerProperties().withPrivateIPAddressPrefixLength(privateIPAddressPrefixLength);
-        return this;
-    }
-
-    /**
      * Get the applicationGatewayBackendAddressPools property: Specifies an array of references to backend address pools
      * of application gateways. A scale set can reference backend address pools of multiple application gateways.
      * Multiple scale sets cannot use the same application gateway.

@@ -14,7 +14,6 @@ import com.azure.resourcemanager.azurestackhci.models.ClusterBillingProperties;
 import com.azure.resourcemanager.azurestackhci.models.ClusterDesiredProperties;
 import com.azure.resourcemanager.azurestackhci.models.ClusterPattern;
 import com.azure.resourcemanager.azurestackhci.models.ClusterReportedProperties;
-import com.azure.resourcemanager.azurestackhci.models.ClusterSdnProperties;
 import com.azure.resourcemanager.azurestackhci.models.ConnectivityStatus;
 import com.azure.resourcemanager.azurestackhci.models.IdentityProvider;
 import com.azure.resourcemanager.azurestackhci.models.IsolatedVmAttestationConfiguration;
@@ -553,15 +552,6 @@ public final class ClusterInner extends Resource {
      */
     public ClusterPattern clusterPattern() {
         return this.innerProperties() == null ? null : this.innerProperties().clusterPattern();
-    }
-
-    /**
-     * Get the sdnProperties property: Software Defined Networking Properties of the cluster.
-     * 
-     * @return the sdnProperties value.
-     */
-    public ClusterSdnProperties sdnProperties() {
-        return this.innerProperties() == null ? null : this.innerProperties().sdnProperties();
     }
 
     /**

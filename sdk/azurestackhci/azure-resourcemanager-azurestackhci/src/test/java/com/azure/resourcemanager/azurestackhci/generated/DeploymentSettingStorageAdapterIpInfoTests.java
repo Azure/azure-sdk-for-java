@@ -12,22 +12,23 @@ public final class DeploymentSettingStorageAdapterIpInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DeploymentSettingStorageAdapterIpInfo model = BinaryData
-            .fromString("{\"physicalNode\":\"hewpusdsttwv\",\"ipv4Address\":\"vbbejdcng\",\"subnetMask\":\"m\"}")
+            .fromString(
+                "{\"physicalNode\":\"xcyjmoadsuvarmy\",\"ipv4Address\":\"mjsjqb\",\"subnetMask\":\"hyxxrwlycoduhpk\"}")
             .toObject(DeploymentSettingStorageAdapterIpInfo.class);
-        Assertions.assertEquals("hewpusdsttwv", model.physicalNode());
-        Assertions.assertEquals("vbbejdcng", model.ipv4Address());
-        Assertions.assertEquals("m", model.subnetMask());
+        Assertions.assertEquals("xcyjmoadsuvarmy", model.physicalNode());
+        Assertions.assertEquals("mjsjqb", model.ipv4Address());
+        Assertions.assertEquals("hyxxrwlycoduhpk", model.subnetMask());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DeploymentSettingStorageAdapterIpInfo model
-            = new DeploymentSettingStorageAdapterIpInfo().withPhysicalNode("hewpusdsttwv")
-                .withIpv4Address("vbbejdcng")
-                .withSubnetMask("m");
+            = new DeploymentSettingStorageAdapterIpInfo().withPhysicalNode("xcyjmoadsuvarmy")
+                .withIpv4Address("mjsjqb")
+                .withSubnetMask("hyxxrwlycoduhpk");
         model = BinaryData.fromObject(model).toObject(DeploymentSettingStorageAdapterIpInfo.class);
-        Assertions.assertEquals("hewpusdsttwv", model.physicalNode());
-        Assertions.assertEquals("vbbejdcng", model.ipv4Address());
-        Assertions.assertEquals("m", model.subnetMask());
+        Assertions.assertEquals("xcyjmoadsuvarmy", model.physicalNode());
+        Assertions.assertEquals("mjsjqb", model.ipv4Address());
+        Assertions.assertEquals("hyxxrwlycoduhpk", model.subnetMask());
     }
 }

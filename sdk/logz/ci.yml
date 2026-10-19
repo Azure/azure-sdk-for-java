@@ -1,0 +1,39 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/logz/ci.yml
+      - sdk/logz/azure-resourcemanager-logz/
+    exclude:
+      - sdk/logz/pom.xml
+      - sdk/logz/azure-resourcemanager-logz/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/logz/ci.yml
+      - sdk/logz/azure-resourcemanager-logz/
+    exclude:
+      - sdk/logz/pom.xml
+      - sdk/logz/azure-resourcemanager-logz/pom.xml
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: logz
+    Artifacts:
+      - name: azure-resourcemanager-logz
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerlogz

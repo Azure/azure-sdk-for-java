@@ -15,7 +15,6 @@ import com.azure.resourcemanager.azurestackhci.models.ClusterIdentityResponse;
 import com.azure.resourcemanager.azurestackhci.models.ClusterPatch;
 import com.azure.resourcemanager.azurestackhci.models.ClusterPattern;
 import com.azure.resourcemanager.azurestackhci.models.ClusterReportedProperties;
-import com.azure.resourcemanager.azurestackhci.models.ClusterSdnProperties;
 import com.azure.resourcemanager.azurestackhci.models.ConnectivityStatus;
 import com.azure.resourcemanager.azurestackhci.models.IdentityProvider;
 import com.azure.resourcemanager.azurestackhci.models.IsolatedVmAttestationConfiguration;
@@ -184,10 +183,6 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
 
     public ClusterPattern clusterPattern() {
         return this.innerModel().clusterPattern();
-    }
-
-    public ClusterSdnProperties sdnProperties() {
-        return this.innerModel().sdnProperties();
     }
 
     public List<LocalAvailabilityZones> localAvailabilityZones() {

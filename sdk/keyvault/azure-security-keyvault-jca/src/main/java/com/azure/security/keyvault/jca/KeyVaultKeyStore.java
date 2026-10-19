@@ -53,9 +53,6 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
      */
     private static final Logger LOGGER = Logger.getLogger(KeyVaultKeyStore.class.getName());
 
-    private static final String REMOVED_CERTIFICATES_REFRESH_INTERVAL_IN_MS
-        = "azure.keyvault.jca.certificates-refresh-interval-in-ms";
-
     /**
      * Stores the Jre key store certificates.
      */
@@ -124,17 +121,6 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
         LOGGER.log(FINE, String.format("Loaded classpath certificates: %s.", classpathCertificates.getAliases()));
 
         updateKeyStoreConfiguration(parameter);
-    }
-
-    static void warnIfRemovedCertificatesRefreshIntervalIsConfigured() {
-        if (System.getProperty(REMOVED_CERTIFICATES_REFRESH_INTERVAL_IN_MS) != null) {
-            LOGGER.log(WARNING,
-                "System property {0} has been removed and is ignored. Use {1} instead with an ISO-8601 duration"
-                    + " (for example, PT30S). Millisecond values (for example, 30000) are also supported.",
-                new Object[] {
-                    REMOVED_CERTIFICATES_REFRESH_INTERVAL_IN_MS,
-                    KeyVaultJcaPropertyNames.KEYVAULT_JCA_CERTIFICATES_REFRESH_INTERVAL });
-        }
     }
 
     private void updateKeyStoreConfiguration(KeyVaultLoadStoreParameter parameter) {

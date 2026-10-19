@@ -27,26 +27,13 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.azurestackhci.fluent.AzureStackHciManagementClient;
 import com.azure.resourcemanager.azurestackhci.implementation.ArcSettingsImpl;
 import com.azure.resourcemanager.azurestackhci.implementation.AzureStackHciManagementClientBuilder;
-import com.azure.resourcemanager.azurestackhci.implementation.ClusterJobsImpl;
 import com.azure.resourcemanager.azurestackhci.implementation.ClustersImpl;
 import com.azure.resourcemanager.azurestackhci.implementation.DeploymentSettingsImpl;
 import com.azure.resourcemanager.azurestackhci.implementation.EdgeDeviceJobsImpl;
 import com.azure.resourcemanager.azurestackhci.implementation.EdgeDevicesImpl;
-import com.azure.resourcemanager.azurestackhci.implementation.EdgeMachineDeploymentSettingsImpl;
-import com.azure.resourcemanager.azurestackhci.implementation.EdgeMachineDiskJobsImpl;
-import com.azure.resourcemanager.azurestackhci.implementation.EdgeMachineDiskPrivilegedJobsImpl;
-import com.azure.resourcemanager.azurestackhci.implementation.EdgeMachineDisksImpl;
-import com.azure.resourcemanager.azurestackhci.implementation.EdgeMachineJobsImpl;
-import com.azure.resourcemanager.azurestackhci.implementation.EdgeMachineNetworkAdapterJobsImpl;
-import com.azure.resourcemanager.azurestackhci.implementation.EdgeMachineNetworkAdaptersImpl;
-import com.azure.resourcemanager.azurestackhci.implementation.EdgeMachineSecuritySettingsOperationsImpl;
-import com.azure.resourcemanager.azurestackhci.implementation.EdgeMachineVolumesImpl;
-import com.azure.resourcemanager.azurestackhci.implementation.EdgeMachinesImpl;
 import com.azure.resourcemanager.azurestackhci.implementation.ExtensionsImpl;
 import com.azure.resourcemanager.azurestackhci.implementation.OffersImpl;
 import com.azure.resourcemanager.azurestackhci.implementation.OperationsImpl;
-import com.azure.resourcemanager.azurestackhci.implementation.OsImagesImpl;
-import com.azure.resourcemanager.azurestackhci.implementation.OwnershipVouchersImpl;
 import com.azure.resourcemanager.azurestackhci.implementation.SecuritySettingsImpl;
 import com.azure.resourcemanager.azurestackhci.implementation.SkusImpl;
 import com.azure.resourcemanager.azurestackhci.implementation.UpdateRunsImpl;
@@ -55,26 +42,13 @@ import com.azure.resourcemanager.azurestackhci.implementation.UpdateSummariesOpe
 import com.azure.resourcemanager.azurestackhci.implementation.UpdatesImpl;
 import com.azure.resourcemanager.azurestackhci.implementation.ValidatedSolutionRecipesImpl;
 import com.azure.resourcemanager.azurestackhci.models.ArcSettings;
-import com.azure.resourcemanager.azurestackhci.models.ClusterJobs;
 import com.azure.resourcemanager.azurestackhci.models.Clusters;
 import com.azure.resourcemanager.azurestackhci.models.DeploymentSettings;
 import com.azure.resourcemanager.azurestackhci.models.EdgeDeviceJobs;
 import com.azure.resourcemanager.azurestackhci.models.EdgeDevices;
-import com.azure.resourcemanager.azurestackhci.models.EdgeMachineDeploymentSettings;
-import com.azure.resourcemanager.azurestackhci.models.EdgeMachineDiskJobs;
-import com.azure.resourcemanager.azurestackhci.models.EdgeMachineDiskPrivilegedJobs;
-import com.azure.resourcemanager.azurestackhci.models.EdgeMachineDisks;
-import com.azure.resourcemanager.azurestackhci.models.EdgeMachineJobs;
-import com.azure.resourcemanager.azurestackhci.models.EdgeMachineNetworkAdapterJobs;
-import com.azure.resourcemanager.azurestackhci.models.EdgeMachineNetworkAdapters;
-import com.azure.resourcemanager.azurestackhci.models.EdgeMachineSecuritySettingsOperations;
-import com.azure.resourcemanager.azurestackhci.models.EdgeMachineVolumes;
-import com.azure.resourcemanager.azurestackhci.models.EdgeMachines;
 import com.azure.resourcemanager.azurestackhci.models.Extensions;
 import com.azure.resourcemanager.azurestackhci.models.Offers;
 import com.azure.resourcemanager.azurestackhci.models.Operations;
-import com.azure.resourcemanager.azurestackhci.models.OsImages;
-import com.azure.resourcemanager.azurestackhci.models.OwnershipVouchers;
 import com.azure.resourcemanager.azurestackhci.models.SecuritySettings;
 import com.azure.resourcemanager.azurestackhci.models.Skus;
 import com.azure.resourcemanager.azurestackhci.models.UpdateRuns;
@@ -95,8 +69,6 @@ import java.util.stream.Collectors;
  * Azure Stack HCI service.
  */
 public final class AzureStackHciManager {
-    private OsImages osImages;
-
     private Operations operations;
 
     private ArcSettings arcSettings;
@@ -124,30 +96,6 @@ public final class AzureStackHciManager {
     private UpdateSummariesOperationGroups updateSummariesOperationGroups;
 
     private ValidatedSolutionRecipes validatedSolutionRecipes;
-
-    private EdgeMachines edgeMachines;
-
-    private EdgeMachineJobs edgeMachineJobs;
-
-    private OwnershipVouchers ownershipVouchers;
-
-    private ClusterJobs clusterJobs;
-
-    private EdgeMachineNetworkAdapters edgeMachineNetworkAdapters;
-
-    private EdgeMachineNetworkAdapterJobs edgeMachineNetworkAdapterJobs;
-
-    private EdgeMachineDisks edgeMachineDisks;
-
-    private EdgeMachineVolumes edgeMachineVolumes;
-
-    private EdgeMachineDiskJobs edgeMachineDiskJobs;
-
-    private EdgeMachineDiskPrivilegedJobs edgeMachineDiskPrivilegedJobs;
-
-    private EdgeMachineSecuritySettingsOperations edgeMachineSecuritySettingsOperations;
-
-    private EdgeMachineDeploymentSettings edgeMachineDeploymentSettings;
 
     private UpdateSummariesOperations updateSummariesOperations;
 
@@ -367,18 +315,6 @@ public final class AzureStackHciManager {
     }
 
     /**
-     * Gets the resource collection API of OsImages.
-     * 
-     * @return Resource collection API of OsImages.
-     */
-    public OsImages osImages() {
-        if (this.osImages == null) {
-            this.osImages = new OsImagesImpl(clientObject.getOsImages(), this);
-        }
-        return osImages;
-    }
-
-    /**
      * Gets the resource collection API of Operations.
      * 
      * @return Resource collection API of Operations.
@@ -546,156 +482,6 @@ public final class AzureStackHciManager {
                 = new ValidatedSolutionRecipesImpl(clientObject.getValidatedSolutionRecipes(), this);
         }
         return validatedSolutionRecipes;
-    }
-
-    /**
-     * Gets the resource collection API of EdgeMachines. It manages EdgeMachine.
-     * 
-     * @return Resource collection API of EdgeMachines.
-     */
-    public EdgeMachines edgeMachines() {
-        if (this.edgeMachines == null) {
-            this.edgeMachines = new EdgeMachinesImpl(clientObject.getEdgeMachines(), this);
-        }
-        return edgeMachines;
-    }
-
-    /**
-     * Gets the resource collection API of EdgeMachineJobs. It manages EdgeMachineJob.
-     * 
-     * @return Resource collection API of EdgeMachineJobs.
-     */
-    public EdgeMachineJobs edgeMachineJobs() {
-        if (this.edgeMachineJobs == null) {
-            this.edgeMachineJobs = new EdgeMachineJobsImpl(clientObject.getEdgeMachineJobs(), this);
-        }
-        return edgeMachineJobs;
-    }
-
-    /**
-     * Gets the resource collection API of OwnershipVouchers.
-     * 
-     * @return Resource collection API of OwnershipVouchers.
-     */
-    public OwnershipVouchers ownershipVouchers() {
-        if (this.ownershipVouchers == null) {
-            this.ownershipVouchers = new OwnershipVouchersImpl(clientObject.getOwnershipVouchers(), this);
-        }
-        return ownershipVouchers;
-    }
-
-    /**
-     * Gets the resource collection API of ClusterJobs. It manages ClusterJob.
-     * 
-     * @return Resource collection API of ClusterJobs.
-     */
-    public ClusterJobs clusterJobs() {
-        if (this.clusterJobs == null) {
-            this.clusterJobs = new ClusterJobsImpl(clientObject.getClusterJobs(), this);
-        }
-        return clusterJobs;
-    }
-
-    /**
-     * Gets the resource collection API of EdgeMachineNetworkAdapters.
-     * 
-     * @return Resource collection API of EdgeMachineNetworkAdapters.
-     */
-    public EdgeMachineNetworkAdapters edgeMachineNetworkAdapters() {
-        if (this.edgeMachineNetworkAdapters == null) {
-            this.edgeMachineNetworkAdapters
-                = new EdgeMachineNetworkAdaptersImpl(clientObject.getEdgeMachineNetworkAdapters(), this);
-        }
-        return edgeMachineNetworkAdapters;
-    }
-
-    /**
-     * Gets the resource collection API of EdgeMachineNetworkAdapterJobs. It manages EdgeMachineNetworkAdapterJob.
-     * 
-     * @return Resource collection API of EdgeMachineNetworkAdapterJobs.
-     */
-    public EdgeMachineNetworkAdapterJobs edgeMachineNetworkAdapterJobs() {
-        if (this.edgeMachineNetworkAdapterJobs == null) {
-            this.edgeMachineNetworkAdapterJobs
-                = new EdgeMachineNetworkAdapterJobsImpl(clientObject.getEdgeMachineNetworkAdapterJobs(), this);
-        }
-        return edgeMachineNetworkAdapterJobs;
-    }
-
-    /**
-     * Gets the resource collection API of EdgeMachineDisks. It manages EdgeMachineDisk.
-     * 
-     * @return Resource collection API of EdgeMachineDisks.
-     */
-    public EdgeMachineDisks edgeMachineDisks() {
-        if (this.edgeMachineDisks == null) {
-            this.edgeMachineDisks = new EdgeMachineDisksImpl(clientObject.getEdgeMachineDisks(), this);
-        }
-        return edgeMachineDisks;
-    }
-
-    /**
-     * Gets the resource collection API of EdgeMachineVolumes. It manages EdgeMachineVolume.
-     * 
-     * @return Resource collection API of EdgeMachineVolumes.
-     */
-    public EdgeMachineVolumes edgeMachineVolumes() {
-        if (this.edgeMachineVolumes == null) {
-            this.edgeMachineVolumes = new EdgeMachineVolumesImpl(clientObject.getEdgeMachineVolumes(), this);
-        }
-        return edgeMachineVolumes;
-    }
-
-    /**
-     * Gets the resource collection API of EdgeMachineDiskJobs. It manages EdgeMachineDiskJob.
-     * 
-     * @return Resource collection API of EdgeMachineDiskJobs.
-     */
-    public EdgeMachineDiskJobs edgeMachineDiskJobs() {
-        if (this.edgeMachineDiskJobs == null) {
-            this.edgeMachineDiskJobs = new EdgeMachineDiskJobsImpl(clientObject.getEdgeMachineDiskJobs(), this);
-        }
-        return edgeMachineDiskJobs;
-    }
-
-    /**
-     * Gets the resource collection API of EdgeMachineDiskPrivilegedJobs. It manages EdgeMachineDiskPrivilegedJob.
-     * 
-     * @return Resource collection API of EdgeMachineDiskPrivilegedJobs.
-     */
-    public EdgeMachineDiskPrivilegedJobs edgeMachineDiskPrivilegedJobs() {
-        if (this.edgeMachineDiskPrivilegedJobs == null) {
-            this.edgeMachineDiskPrivilegedJobs
-                = new EdgeMachineDiskPrivilegedJobsImpl(clientObject.getEdgeMachineDiskPrivilegedJobs(), this);
-        }
-        return edgeMachineDiskPrivilegedJobs;
-    }
-
-    /**
-     * Gets the resource collection API of EdgeMachineSecuritySettingsOperations. It manages
-     * EdgeMachineSecuritySettings.
-     * 
-     * @return Resource collection API of EdgeMachineSecuritySettingsOperations.
-     */
-    public EdgeMachineSecuritySettingsOperations edgeMachineSecuritySettingsOperations() {
-        if (this.edgeMachineSecuritySettingsOperations == null) {
-            this.edgeMachineSecuritySettingsOperations = new EdgeMachineSecuritySettingsOperationsImpl(
-                clientObject.getEdgeMachineSecuritySettingsOperations(), this);
-        }
-        return edgeMachineSecuritySettingsOperations;
-    }
-
-    /**
-     * Gets the resource collection API of EdgeMachineDeploymentSettings. It manages EdgeMachineDeploymentSetting.
-     * 
-     * @return Resource collection API of EdgeMachineDeploymentSettings.
-     */
-    public EdgeMachineDeploymentSettings edgeMachineDeploymentSettings() {
-        if (this.edgeMachineDeploymentSettings == null) {
-            this.edgeMachineDeploymentSettings
-                = new EdgeMachineDeploymentSettingsImpl(clientObject.getEdgeMachineDeploymentSettings(), this);
-        }
-        return edgeMachineDeploymentSettings;
     }
 
     /**

@@ -52,7 +52,7 @@ import java.util.Arrays;
  */
 public final class DeploymentSettingsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-10-01/PutDeploymentSettings_StorageS2D.json
+     * x-ms-original-file: 2026-04-30/PutDeploymentSettings_StorageS2D.json
      */
     /**
      * Sample code: Create Deployment Settings with S2D Storage.
@@ -164,7 +164,7 @@ public final class DeploymentSettingsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-10-01/PutDeploymentSettingsWithADLess.json
+     * x-ms-original-file: 2026-04-30/PutDeploymentSettingsWithADLess.json
      */
     /**
      * Sample code: Create Deployment Settings Without Active Directory Integration.
@@ -293,7 +293,7 @@ public final class DeploymentSettingsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-10-01/PutDeploymentSettings.json
+     * x-ms-original-file: 2026-04-30/PutDeploymentSettings.json
      */
     /**
      * Sample code: Create Deployment Settings.
@@ -421,7 +421,7 @@ public final class DeploymentSettingsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-10-01/PutDeploymentSettings_StorageSAN.json
+     * x-ms-original-file: 2026-04-30/PutDeploymentSettings_StorageSAN.json
      */
     /**
      * Sample code: Create Deployment Settings with SAN Storage.

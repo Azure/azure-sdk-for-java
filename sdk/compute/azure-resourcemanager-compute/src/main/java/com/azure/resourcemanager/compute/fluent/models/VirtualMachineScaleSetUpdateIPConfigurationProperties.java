@@ -44,12 +44,6 @@ public final class VirtualMachineScaleSetUpdateIPConfigurationProperties
     private IpVersion privateIpAddressVersion;
 
     /*
-     * The private IP address prefix length. If specified and the allocation method is dynamic, the service will
-     * allocate a CIDR block instead of a single IP address.
-     */
-    private Integer privateIPAddressPrefixLength;
-
-    /*
      * The application gateway backend address pools.
      */
     private List<SubResource> applicationGatewayBackendAddressPools;
@@ -162,29 +156,6 @@ public final class VirtualMachineScaleSetUpdateIPConfigurationProperties
     }
 
     /**
-     * Get the privateIPAddressPrefixLength property: The private IP address prefix length. If specified and the
-     * allocation method is dynamic, the service will allocate a CIDR block instead of a single IP address.
-     * 
-     * @return the privateIPAddressPrefixLength value.
-     */
-    public Integer privateIPAddressPrefixLength() {
-        return this.privateIPAddressPrefixLength;
-    }
-
-    /**
-     * Set the privateIPAddressPrefixLength property: The private IP address prefix length. If specified and the
-     * allocation method is dynamic, the service will allocate a CIDR block instead of a single IP address.
-     * 
-     * @param privateIPAddressPrefixLength the privateIPAddressPrefixLength value to set.
-     * @return the VirtualMachineScaleSetUpdateIPConfigurationProperties object itself.
-     */
-    public VirtualMachineScaleSetUpdateIPConfigurationProperties
-        withPrivateIPAddressPrefixLength(Integer privateIPAddressPrefixLength) {
-        this.privateIPAddressPrefixLength = privateIPAddressPrefixLength;
-        return this;
-    }
-
-    /**
      * Get the applicationGatewayBackendAddressPools property: The application gateway backend address pools.
      * 
      * @return the applicationGatewayBackendAddressPools value.
@@ -293,7 +264,6 @@ public final class VirtualMachineScaleSetUpdateIPConfigurationProperties
         jsonWriter.writeJsonField("publicIPAddressConfiguration", this.publicIpAddressConfiguration);
         jsonWriter.writeStringField("privateIPAddressVersion",
             this.privateIpAddressVersion == null ? null : this.privateIpAddressVersion.toString());
-        jsonWriter.writeNumberField("privateIPAddressPrefixLength", this.privateIPAddressPrefixLength);
         jsonWriter.writeArrayField("applicationGatewayBackendAddressPools", this.applicationGatewayBackendAddressPools,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("applicationSecurityGroups", this.applicationSecurityGroups,
@@ -334,9 +304,6 @@ public final class VirtualMachineScaleSetUpdateIPConfigurationProperties
                 } else if ("privateIPAddressVersion".equals(fieldName)) {
                     deserializedVirtualMachineScaleSetUpdateIPConfigurationProperties.privateIpAddressVersion
                         = IpVersion.fromString(reader.getString());
-                } else if ("privateIPAddressPrefixLength".equals(fieldName)) {
-                    deserializedVirtualMachineScaleSetUpdateIPConfigurationProperties.privateIPAddressPrefixLength
-                        = reader.getNullable(JsonReader::getInt);
                 } else if ("applicationGatewayBackendAddressPools".equals(fieldName)) {
                     List<SubResource> applicationGatewayBackendAddressPools
                         = reader.readArray(reader1 -> SubResource.fromJson(reader1));

@@ -64,7 +64,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-security-keyvault-jca</artifactId>
-    <version>2.13.0</version>
+    <version>2.12.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -139,7 +139,8 @@ The JCA library supports configuring the following options:
 * `azure.cert-path.well-known`: The path where the well-known certificate is stored.
 * `azure.cert-path.custom`: The path where the custom certificate is stored.
 * `azure.keyvault.jca.refresh-certificates-when-have-un-trust-certificate`: Indicates whether to refresh certificates when have untrusted certificate.
-* `azure.keyvault.jca.certificates-refresh-interval`: The certificate refresh interval as an ISO-8601 duration, for example `-Dazure.keyvault.jca.certificates-refresh-interval=PT30S` for 30 seconds. Millisecond values such as `-Dazure.keyvault.jca.certificates-refresh-interval=30000` remain supported for backward compatibility. Defaults to zero; zero or negative values disable periodic refresh.
+* `azure.keyvault.jca.certificates-refresh-interval`: The refresh interval time.
+* `azure.keyvault.jca.certificates-refresh-interval-in-ms`: The refresh interval time.
 * `azure.keyvault.jca.certificate-alias-filter-pattern`: A regex that filters which Key Vault certificate aliases are eligible for lazy loading. Append a suffix to the property name to configure more than one filter, for example `azure.keyvault.jca.certificate-alias-filter-pattern.1` or `azure.keyvault.jca.certificate-alias-filter-pattern.prod`. If no such property is configured, all discovered Key Vault aliases are eligible for lazy loading. See "Filtering Key Vault certificate aliases" below.
 * `azure.keyvault.disable-challenge-resource-verification`: Indicates whether to disable verification that the authentication challenge resource matches the Key Vault or Managed HSM domain.
 * `azure.keyvault.jca.disable-aia-download`: Set to `true` to disable automatic AIA (Authority Information Access) certificate chain completion. Chain completion is only attempted when the chain returned by Azure Key Vault is incomplete, meaning it holds a single certificate or is missing an intermediate CA. When disabled, the provider will return certificate chains as provided by Azure Key Vault without downloading missing intermediate CA certificates. Use this in locked-down environments or when processing untrusted certificates to prevent outbound HTTP(S) requests to URLs embedded in certificate extensions. Defaults to `false` for backward compatibility. The value is captured when a Key Vault keystore and its client are initialized.
@@ -153,10 +154,6 @@ or as a JVM argument:
 -Dazure.keyvault.uri=<your-azure-keyvault-uri>
 ```
 
-The system property `azure.keyvault.jca.certificates-refresh-interval-in-ms` has been removed and is ignored. If it is
-configured, the provider logs a warning. Use `azure.keyvault.jca.certificates-refresh-interval` instead, with an ISO-8601
-duration such as `PT30S` or the existing millisecond value.
-
 #### Programmatic configuration
 
 Use `KeyVaultLoadStoreParameter` when each key store needs an explicit configuration instead of global system
@@ -168,7 +165,7 @@ KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
     "<your-tenant-id>",
     "<your-client-id>",
     "<your-client-secret>")
-    .setCertificatesRefreshInterval(Duration.ofSeconds(60))
+    .setCertificatesRefreshIntervalInMs(60_000)
     .setCertificateAliasFilterPatterns(Collections.singleton("^prod-.*"));
 parameter.disableAiaDownload();
 

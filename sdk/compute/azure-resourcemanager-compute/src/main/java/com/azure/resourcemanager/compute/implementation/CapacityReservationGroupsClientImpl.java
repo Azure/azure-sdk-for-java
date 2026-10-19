@@ -26,11 +26,8 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.polling.PollerFlux;
-import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.compute.fluent.CapacityReservationGroupsClient;
 import com.azure.resourcemanager.compute.fluent.models.CapacityReservationGroupInner;
 import com.azure.resourcemanager.compute.implementation.models.CapacityReservationGroupListResult;
@@ -42,8 +39,6 @@ import com.azure.resourcemanager.compute.models.ResourceIdOptionsForGetCapacityR
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
-import java.nio.ByteBuffer;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
@@ -112,9 +107,9 @@ public final class CapacityReservationGroupsClientImpl implements InnerSupportsG
 
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/capacityReservationGroups/{capacityReservationGroupName}")
-        @ExpectedResponses({ 200, 202, 204 })
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ApiErrorException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("endpoint") String endpoint,
+        Mono<Response<Void>> delete(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("capacityReservationGroupName") String capacityReservationGroupName, Context context);
@@ -619,8 +614,7 @@ public final class CapacityReservationGroupsClientImpl implements InnerSupportsG
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
-        String capacityReservationGroupName) {
+    public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String capacityReservationGroupName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -658,8 +652,8 @@ public final class CapacityReservationGroupsClientImpl implements InnerSupportsG
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
-        String capacityReservationGroupName, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String capacityReservationGroupName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -692,93 +686,12 @@ public final class CapacityReservationGroupsClientImpl implements InnerSupportsG
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName,
-        String capacityReservationGroupName) {
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = deleteWithResponseAsync(resourceGroupName, capacityReservationGroupName);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            this.client.getContext());
-    }
-
-    /**
-     * The operation to delete a capacity reservation group. This operation is allowed only if all the associated
-     * resources are disassociated from the reservation group and all capacity reservations under the reservation group
-     * have also been deleted. Please refer to https://aka.ms/CapacityReservation for more details.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param capacityReservationGroupName The name of the capacity reservation group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName,
-        String capacityReservationGroupName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = deleteWithResponseAsync(resourceGroupName, capacityReservationGroupName, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
-    }
-
-    /**
-     * The operation to delete a capacity reservation group. This operation is allowed only if all the associated
-     * resources are disassociated from the reservation group and all capacity reservations under the reservation group
-     * have also been deleted. Please refer to https://aka.ms/CapacityReservation for more details.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param capacityReservationGroupName The name of the capacity reservation group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName,
-        String capacityReservationGroupName) {
-        return this.beginDeleteAsync(resourceGroupName, capacityReservationGroupName).getSyncPoller();
-    }
-
-    /**
-     * The operation to delete a capacity reservation group. This operation is allowed only if all the associated
-     * resources are disassociated from the reservation group and all capacity reservations under the reservation group
-     * have also been deleted. Please refer to https://aka.ms/CapacityReservation for more details.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param capacityReservationGroupName The name of the capacity reservation group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String capacityReservationGroupName,
-        Context context) {
-        return this.beginDeleteAsync(resourceGroupName, capacityReservationGroupName, context).getSyncPoller();
-    }
-
-    /**
-     * The operation to delete a capacity reservation group. This operation is allowed only if all the associated
-     * resources are disassociated from the reservation group and all capacity reservations under the reservation group
-     * have also been deleted. Please refer to https://aka.ms/CapacityReservation for more details.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param capacityReservationGroupName The name of the capacity reservation group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String capacityReservationGroupName) {
-        return beginDeleteAsync(resourceGroupName, capacityReservationGroupName).last()
-            .flatMap(this.client::getLroFinalResultOrError);
+        return deleteWithResponseAsync(resourceGroupName, capacityReservationGroupName)
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -792,12 +705,12 @@ public final class CapacityReservationGroupsClientImpl implements InnerSupportsG
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String capacityReservationGroupName, Context context) {
-        return beginDeleteAsync(resourceGroupName, capacityReservationGroupName, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    public Response<Void> deleteWithResponse(String resourceGroupName, String capacityReservationGroupName,
+        Context context) {
+        return deleteWithResponseAsync(resourceGroupName, capacityReservationGroupName, context).block();
     }
 
     /**
@@ -813,24 +726,7 @@ public final class CapacityReservationGroupsClientImpl implements InnerSupportsG
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String capacityReservationGroupName) {
-        deleteAsync(resourceGroupName, capacityReservationGroupName).block();
-    }
-
-    /**
-     * The operation to delete a capacity reservation group. This operation is allowed only if all the associated
-     * resources are disassociated from the reservation group and all capacity reservations under the reservation group
-     * have also been deleted. Please refer to https://aka.ms/CapacityReservation for more details.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param capacityReservationGroupName The name of the capacity reservation group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String capacityReservationGroupName, Context context) {
-        deleteAsync(resourceGroupName, capacityReservationGroupName, context).block();
+        deleteWithResponse(resourceGroupName, capacityReservationGroupName, Context.NONE);
     }
 
     /**

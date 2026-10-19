@@ -14,19 +14,19 @@ public final class ClusterDesiredPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClusterDesiredProperties model
-            = BinaryData.fromString("{\"windowsServerSubscription\":\"Enabled\",\"diagnosticLevel\":\"Off\"}")
+            = BinaryData.fromString("{\"windowsServerSubscription\":\"Disabled\",\"diagnosticLevel\":\"Off\"}")
                 .toObject(ClusterDesiredProperties.class);
-        Assertions.assertEquals(WindowsServerSubscription.ENABLED, model.windowsServerSubscription());
+        Assertions.assertEquals(WindowsServerSubscription.DISABLED, model.windowsServerSubscription());
         Assertions.assertEquals(DiagnosticLevel.OFF, model.diagnosticLevel());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ClusterDesiredProperties model
-            = new ClusterDesiredProperties().withWindowsServerSubscription(WindowsServerSubscription.ENABLED)
+            = new ClusterDesiredProperties().withWindowsServerSubscription(WindowsServerSubscription.DISABLED)
                 .withDiagnosticLevel(DiagnosticLevel.OFF);
         model = BinaryData.fromObject(model).toObject(ClusterDesiredProperties.class);
-        Assertions.assertEquals(WindowsServerSubscription.ENABLED, model.windowsServerSubscription());
+        Assertions.assertEquals(WindowsServerSubscription.DISABLED, model.windowsServerSubscription());
         Assertions.assertEquals(DiagnosticLevel.OFF, model.diagnosticLevel());
     }
 }

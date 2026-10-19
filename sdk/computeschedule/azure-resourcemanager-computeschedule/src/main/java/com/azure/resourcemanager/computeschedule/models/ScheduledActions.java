@@ -184,37 +184,8 @@ public interface ScheduledActions {
         ExecuteStartRequest requestBody);
 
     /**
-     * VirtualMachinesExecuteCreateFlex: Execute create operation for a batch of virtual machines with flex properties,
-     * this operation is triggered as soon as Computeschedule receives it.
-     * 
-     * @param locationparameter The location name.
-     * @param body The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from a create flex request along with {@link Response}.
-     */
-    Response<CreateFlexResourceOperationResponse> virtualMachinesExecuteCreateFlexWithResponse(String locationparameter,
-        ExecuteCreateFlexRequest body, Context context);
-
-    /**
-     * VirtualMachinesExecuteCreateFlex: Execute create operation for a batch of virtual machines with flex properties,
-     * this operation is triggered as soon as Computeschedule receives it.
-     * 
-     * @param locationparameter The location name.
-     * @param body The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from a create flex request.
-     */
-    CreateFlexResourceOperationResponse virtualMachinesExecuteCreateFlex(String locationparameter,
-        ExecuteCreateFlexRequest body);
-
-    /**
-     * [PRIVATE PREVIEW]: VirtualMachinesExecuteCreate: Execute create operation for a batch of virtual machines, this
-     * operation is triggered as soon as Computeschedule receives it.
+     * VirtualMachinesExecuteCreate: Execute create operation for a batch of virtual machines, this operation is
+     * triggered as soon as Computeschedule receives it.
      * 
      * @param locationparameter The location name.
      * @param requestBody The request body.
@@ -228,8 +199,8 @@ public interface ScheduledActions {
         ExecuteCreateRequest requestBody, Context context);
 
     /**
-     * [PRIVATE PREVIEW]: VirtualMachinesExecuteCreate: Execute create operation for a batch of virtual machines, this
-     * operation is triggered as soon as Computeschedule receives it.
+     * VirtualMachinesExecuteCreate: Execute create operation for a batch of virtual machines, this operation is
+     * triggered as soon as Computeschedule receives it.
      * 
      * @param locationparameter The location name.
      * @param requestBody The request body.
@@ -242,8 +213,8 @@ public interface ScheduledActions {
         ExecuteCreateRequest requestBody);
 
     /**
-     * [PRIVATE PREVIEW]: VirtualMachinesExecuteDelete: Execute delete operation for a batch of virtual machines, this
-     * operation is triggered as soon as Computeschedule receives it.
+     * VirtualMachinesExecuteDelete: Execute delete operation for a batch of virtual machines, this operation is
+     * triggered as soon as Computeschedule receives it.
      * 
      * @param locationparameter The location name.
      * @param requestBody The request body.
@@ -257,8 +228,8 @@ public interface ScheduledActions {
         ExecuteDeleteRequest requestBody, Context context);
 
     /**
-     * [PRIVATE PREVIEW]: VirtualMachinesExecuteDelete: Execute delete operation for a batch of virtual machines, this
-     * operation is triggered as soon as Computeschedule receives it.
+     * VirtualMachinesExecuteDelete: Execute delete operation for a batch of virtual machines, this operation is
+     * triggered as soon as Computeschedule receives it.
      * 
      * @param locationparameter The location name.
      * @param requestBody The request body.

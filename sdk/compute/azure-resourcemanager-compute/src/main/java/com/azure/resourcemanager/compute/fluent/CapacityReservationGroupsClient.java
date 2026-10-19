@@ -9,10 +9,7 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
-import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
-import com.azure.core.util.polling.PollerFlux;
-import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.compute.fluent.models.CapacityReservationGroupInner;
 import com.azure.resourcemanager.compute.models.CapacityReservationGroupInstanceViewTypes;
 import com.azure.resourcemanager.compute.models.CapacityReservationGroupUpdate;
@@ -21,8 +18,6 @@ import com.azure.resourcemanager.compute.models.ResourceIdOptionsForGetCapacityR
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
-import java.nio.ByteBuffer;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
@@ -249,55 +244,7 @@ public interface CapacityReservationGroupsClient extends InnerSupportsGet<Capaci
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
-        String capacityReservationGroupName);
-
-    /**
-     * The operation to delete a capacity reservation group. This operation is allowed only if all the associated
-     * resources are disassociated from the reservation group and all capacity reservations under the reservation group
-     * have also been deleted. Please refer to https://aka.ms/CapacityReservation for more details.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param capacityReservationGroupName The name of the capacity reservation group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String capacityReservationGroupName);
-
-    /**
-     * The operation to delete a capacity reservation group. This operation is allowed only if all the associated
-     * resources are disassociated from the reservation group and all capacity reservations under the reservation group
-     * have also been deleted. Please refer to https://aka.ms/CapacityReservation for more details.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param capacityReservationGroupName The name of the capacity reservation group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String capacityReservationGroupName);
-
-    /**
-     * The operation to delete a capacity reservation group. This operation is allowed only if all the associated
-     * resources are disassociated from the reservation group and all capacity reservations under the reservation group
-     * have also been deleted. Please refer to https://aka.ms/CapacityReservation for more details.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param capacityReservationGroupName The name of the capacity reservation group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String capacityReservationGroupName,
-        Context context);
+    Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String capacityReservationGroupName);
 
     /**
      * The operation to delete a capacity reservation group. This operation is allowed only if all the associated
@@ -321,12 +268,14 @@ public interface CapacityReservationGroupsClient extends InnerSupportsGet<Capaci
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param capacityReservationGroupName The name of the capacity reservation group.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String capacityReservationGroupName);
+    Response<Void> deleteWithResponse(String resourceGroupName, String capacityReservationGroupName, Context context);
 
     /**
      * The operation to delete a capacity reservation group. This operation is allowed only if all the associated
@@ -335,13 +284,12 @@ public interface CapacityReservationGroupsClient extends InnerSupportsGet<Capaci
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param capacityReservationGroupName The name of the capacity reservation group.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String capacityReservationGroupName, Context context);
+    void delete(String resourceGroupName, String capacityReservationGroupName);
 
     /**
      * Lists all of the capacity reservation groups in the specified resource group. Use the nextLink property in the

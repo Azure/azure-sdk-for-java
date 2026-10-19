@@ -32,17 +32,6 @@ public final class EceSecrets extends ExpandableStringEnum<EceSecrets> {
     public static final EceSecrets WITNESS_STORAGE_KEY = fromString("WitnessStorageKey");
 
     /**
-     * chapCredential used for iSCSI CHAP authentication during edge machine node preparation.
-     */
-    public static final EceSecrets CHAP_CREDENTIAL = fromString("chapCredential");
-
-    /**
-     * mutualChapCredential used for iSCSI mutual (bidirectional) CHAP authentication during edge machine node
-     * preparation.
-     */
-    public static final EceSecrets MUTUAL_CHAP_CREDENTIAL = fromString("mutualChapCredential");
-
-    /**
      * Creates a new instance of EceSecrets value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

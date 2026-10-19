@@ -15,9 +15,8 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
-import io.netty.channel.MultiThreadIoEventLoopGroup;
 import io.netty.channel.SimpleChannelInboundHandler;
-import io.netty.channel.nio.NioIoHandler;
+import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.http.DefaultFullHttpResponse;
@@ -77,8 +76,8 @@ public class WorkloadIdentityCredentialIdentityBindingTest {
     @TempDir
     Path tempDir;
 
-    private MultiThreadIoEventLoopGroup bossGroup;
-    private MultiThreadIoEventLoopGroup workerGroup;
+    private NioEventLoopGroup bossGroup;
+    private NioEventLoopGroup workerGroup;
     private Channel serverChannel;
     private String serverBaseUrl;
     private Path tokenFilePath;
@@ -544,8 +543,8 @@ public class WorkloadIdentityCredentialIdentityBindingTest {
         SslContext sslContext
             = SslContextBuilder.forServer(privateKey, certificate).sslProvider(SslProvider.OPENSSL).build();
 
-        bossGroup = new MultiThreadIoEventLoopGroup(1, NioIoHandler.newFactory());
-        workerGroup = new MultiThreadIoEventLoopGroup(NioIoHandler.newFactory());
+        bossGroup = new NioEventLoopGroup(1);
+        workerGroup = new NioEventLoopGroup();
 
         ServerBootstrap bootstrap = new ServerBootstrap();
         bootstrap.group(bossGroup, workerGroup)

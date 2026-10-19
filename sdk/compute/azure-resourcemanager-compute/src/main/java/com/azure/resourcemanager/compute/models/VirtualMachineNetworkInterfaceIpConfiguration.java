@@ -165,32 +165,6 @@ public final class VirtualMachineNetworkInterfaceIpConfiguration
     }
 
     /**
-     * Get the privateIPAddressPrefixLength property: The private IP address prefix length. If specified and the
-     * allocation method is dynamic, the service will allocate a CIDR block instead of a single IP address.
-     * 
-     * @return the privateIPAddressPrefixLength value.
-     */
-    public Integer privateIPAddressPrefixLength() {
-        return this.innerProperties() == null ? null : this.innerProperties().privateIPAddressPrefixLength();
-    }
-
-    /**
-     * Set the privateIPAddressPrefixLength property: The private IP address prefix length. If specified and the
-     * allocation method is dynamic, the service will allocate a CIDR block instead of a single IP address.
-     * 
-     * @param privateIPAddressPrefixLength the privateIPAddressPrefixLength value to set.
-     * @return the VirtualMachineNetworkInterfaceIpConfiguration object itself.
-     */
-    public VirtualMachineNetworkInterfaceIpConfiguration
-        withPrivateIPAddressPrefixLength(Integer privateIPAddressPrefixLength) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new VirtualMachineNetworkInterfaceIPConfigurationProperties();
-        }
-        this.innerProperties().withPrivateIPAddressPrefixLength(privateIPAddressPrefixLength);
-        return this;
-    }
-
-    /**
      * Get the applicationSecurityGroups property: Specifies an array of references to application security group.
      * 
      * @return the applicationSecurityGroups value.

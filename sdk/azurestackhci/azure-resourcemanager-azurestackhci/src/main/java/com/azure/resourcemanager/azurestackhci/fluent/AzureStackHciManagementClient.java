@@ -47,13 +47,6 @@ public interface AzureStackHciManagementClient {
     Duration getDefaultPollInterval();
 
     /**
-     * Gets the OsImagesClient object to access its operations.
-     * 
-     * @return the OsImagesClient object.
-     */
-    OsImagesClient getOsImages();
-
-    /**
      * Gets the OperationsClient object to access its operations.
      * 
      * @return the OperationsClient object.
@@ -150,90 +143,6 @@ public interface AzureStackHciManagementClient {
      * @return the ValidatedSolutionRecipesClient object.
      */
     ValidatedSolutionRecipesClient getValidatedSolutionRecipes();
-
-    /**
-     * Gets the EdgeMachinesClient object to access its operations.
-     * 
-     * @return the EdgeMachinesClient object.
-     */
-    EdgeMachinesClient getEdgeMachines();
-
-    /**
-     * Gets the EdgeMachineJobsClient object to access its operations.
-     * 
-     * @return the EdgeMachineJobsClient object.
-     */
-    EdgeMachineJobsClient getEdgeMachineJobs();
-
-    /**
-     * Gets the OwnershipVouchersClient object to access its operations.
-     * 
-     * @return the OwnershipVouchersClient object.
-     */
-    OwnershipVouchersClient getOwnershipVouchers();
-
-    /**
-     * Gets the ClusterJobsClient object to access its operations.
-     * 
-     * @return the ClusterJobsClient object.
-     */
-    ClusterJobsClient getClusterJobs();
-
-    /**
-     * Gets the EdgeMachineNetworkAdaptersClient object to access its operations.
-     * 
-     * @return the EdgeMachineNetworkAdaptersClient object.
-     */
-    EdgeMachineNetworkAdaptersClient getEdgeMachineNetworkAdapters();
-
-    /**
-     * Gets the EdgeMachineNetworkAdapterJobsClient object to access its operations.
-     * 
-     * @return the EdgeMachineNetworkAdapterJobsClient object.
-     */
-    EdgeMachineNetworkAdapterJobsClient getEdgeMachineNetworkAdapterJobs();
-
-    /**
-     * Gets the EdgeMachineDisksClient object to access its operations.
-     * 
-     * @return the EdgeMachineDisksClient object.
-     */
-    EdgeMachineDisksClient getEdgeMachineDisks();
-
-    /**
-     * Gets the EdgeMachineVolumesClient object to access its operations.
-     * 
-     * @return the EdgeMachineVolumesClient object.
-     */
-    EdgeMachineVolumesClient getEdgeMachineVolumes();
-
-    /**
-     * Gets the EdgeMachineDiskJobsClient object to access its operations.
-     * 
-     * @return the EdgeMachineDiskJobsClient object.
-     */
-    EdgeMachineDiskJobsClient getEdgeMachineDiskJobs();
-
-    /**
-     * Gets the EdgeMachineDiskPrivilegedJobsClient object to access its operations.
-     * 
-     * @return the EdgeMachineDiskPrivilegedJobsClient object.
-     */
-    EdgeMachineDiskPrivilegedJobsClient getEdgeMachineDiskPrivilegedJobs();
-
-    /**
-     * Gets the EdgeMachineSecuritySettingsOperationsClient object to access its operations.
-     * 
-     * @return the EdgeMachineSecuritySettingsOperationsClient object.
-     */
-    EdgeMachineSecuritySettingsOperationsClient getEdgeMachineSecuritySettingsOperations();
-
-    /**
-     * Gets the EdgeMachineDeploymentSettingsClient object to access its operations.
-     * 
-     * @return the EdgeMachineDeploymentSettingsClient object.
-     */
-    EdgeMachineDeploymentSettingsClient getEdgeMachineDeploymentSettings();
 
     /**
      * Gets the UpdateSummariesOperationsClient object to access its operations.

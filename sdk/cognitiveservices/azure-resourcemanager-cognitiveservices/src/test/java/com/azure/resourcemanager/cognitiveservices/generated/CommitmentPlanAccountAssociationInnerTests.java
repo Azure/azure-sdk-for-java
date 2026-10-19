@@ -14,20 +14,20 @@ public final class CommitmentPlanAccountAssociationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CommitmentPlanAccountAssociationInner model = BinaryData.fromString(
-            "{\"properties\":{\"accountId\":\"qvpsvuoymg\"},\"etag\":\"elvezrypq\",\"tags\":{\"edkowepbqpcrfk\":\"eokerqwkyhkobopg\"},\"id\":\"ccsnjvcdwxlpq\",\"name\":\"kftnkhtjsyin\",\"type\":\"wfqatmtd\"}")
+            "{\"properties\":{\"accountId\":\"ronzmyhgfip\"},\"etag\":\"xkmcwaekrrjre\",\"tags\":{\"lik\":\"tsgumhj\"},\"id\":\"wslolbqp\",\"name\":\"uzlm\",\"type\":\"felfktg\"}")
             .toObject(CommitmentPlanAccountAssociationInner.class);
-        Assertions.assertEquals("eokerqwkyhkobopg", model.tags().get("edkowepbqpcrfk"));
-        Assertions.assertEquals("qvpsvuoymg", model.accountId());
+        Assertions.assertEquals("tsgumhj", model.tags().get("lik"));
+        Assertions.assertEquals("ronzmyhgfip", model.accountId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CommitmentPlanAccountAssociationInner model
-            = new CommitmentPlanAccountAssociationInner().withTags(mapOf("edkowepbqpcrfk", "eokerqwkyhkobopg"))
-                .withAccountId("qvpsvuoymg");
+            = new CommitmentPlanAccountAssociationInner().withTags(mapOf("lik", "tsgumhj"))
+                .withAccountId("ronzmyhgfip");
         model = BinaryData.fromObject(model).toObject(CommitmentPlanAccountAssociationInner.class);
-        Assertions.assertEquals("eokerqwkyhkobopg", model.tags().get("edkowepbqpcrfk"));
-        Assertions.assertEquals("qvpsvuoymg", model.accountId());
+        Assertions.assertEquals("tsgumhj", model.tags().get("lik"));
+        Assertions.assertEquals("ronzmyhgfip", model.accountId());
     }
 
     // Use "Map.of" if available

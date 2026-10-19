@@ -38,6 +38,7 @@ import com.azure.messaging.servicebus.administration.models.QueueProperties;
 import com.azure.messaging.servicebus.administration.models.QueueRuntimeProperties;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlWriter;
+import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -527,7 +528,7 @@ class ServiceBusAdministrationAsyncClientTest {
 
         // Act & Assert
         StepVerifier.create(client.deleteRuleWithResponse(topicName, subscriptionName, ruleName))
-            .assertNext(actual -> assertEquals(204, actual.getStatusCode()))
+            .assertNext(actual -> assertEquals(actual.getStatusCode(), HttpResponseStatus.NO_CONTENT.code()))
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
     }
@@ -554,7 +555,7 @@ class ServiceBusAdministrationAsyncClientTest {
 
         // Act & Assert
         StepVerifier.create(client.deleteSubscriptionWithResponse(topicName, subscriptionName))
-            .assertNext(actual -> assertEquals(204, actual.getStatusCode()))
+            .assertNext(actual -> assertEquals(actual.getStatusCode(), HttpResponseStatus.NO_CONTENT.code()))
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
     }
@@ -580,7 +581,7 @@ class ServiceBusAdministrationAsyncClientTest {
 
         // Act & Assert
         StepVerifier.create(client.deleteTopicWithResponse(topicName))
-            .assertNext(actual -> assertEquals(204, actual.getStatusCode()))
+            .assertNext(actual -> assertEquals(actual.getStatusCode(), HttpResponseStatus.NO_CONTENT.code()))
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
     }

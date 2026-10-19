@@ -43,11 +43,6 @@ public final class ManagedComputeDeploymentProperties implements JsonSerializabl
     private DeploymentModelVersionUpgradeOption versionUpgradeOption;
 
     /*
-     * Configuration used to authorize access to a gated model during deployment creation.
-     */
-    private GatedModelAccessProperties gatedModelAccess;
-
-    /*
      * Deployment capabilities represented as key-value pairs.
      * Example: { assetsV2: "true" }.
      */
@@ -189,28 +184,6 @@ public final class ManagedComputeDeploymentProperties implements JsonSerializabl
     }
 
     /**
-     * Get the gatedModelAccess property: Configuration used to authorize access to a gated model during deployment
-     * creation.
-     * 
-     * @return the gatedModelAccess value.
-     */
-    public GatedModelAccessProperties gatedModelAccess() {
-        return this.gatedModelAccess;
-    }
-
-    /**
-     * Set the gatedModelAccess property: Configuration used to authorize access to a gated model during deployment
-     * creation.
-     * 
-     * @param gatedModelAccess the gatedModelAccess value to set.
-     * @return the ManagedComputeDeploymentProperties object itself.
-     */
-    public ManagedComputeDeploymentProperties withGatedModelAccess(GatedModelAccessProperties gatedModelAccess) {
-        this.gatedModelAccess = gatedModelAccess;
-        return this;
-    }
-
-    /**
      * Get the capabilities property: Deployment capabilities represented as key-value pairs.
      * Example: { assetsV2: "true" }.
      * 
@@ -324,7 +297,6 @@ public final class ManagedComputeDeploymentProperties implements JsonSerializabl
         jsonWriter.writeStringField("acceleratorType", this.acceleratorType);
         jsonWriter.writeStringField("versionUpgradeOption",
             this.versionUpgradeOption == null ? null : this.versionUpgradeOption.toString());
-        jsonWriter.writeJsonField("gatedModelAccess", this.gatedModelAccess);
         jsonWriter.writeStringField("computeId", this.computeId);
         jsonWriter.writeStringField("priority", this.priority);
         return jsonWriter.writeEndObject();
@@ -356,9 +328,6 @@ public final class ManagedComputeDeploymentProperties implements JsonSerializabl
                 } else if ("versionUpgradeOption".equals(fieldName)) {
                     deserializedManagedComputeDeploymentProperties.versionUpgradeOption
                         = DeploymentModelVersionUpgradeOption.fromString(reader.getString());
-                } else if ("gatedModelAccess".equals(fieldName)) {
-                    deserializedManagedComputeDeploymentProperties.gatedModelAccess
-                        = GatedModelAccessProperties.fromJson(reader);
                 } else if ("capabilities".equals(fieldName)) {
                     Map<String, String> capabilities = reader.readMap(reader1 -> reader1.getString());
                     deserializedManagedComputeDeploymentProperties.capabilities = capabilities;

@@ -1,15 +1,5 @@
 # Release History
 
-## 1.1.0-beta.2 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
 ## 1.1.0-beta.1 (2026-10-13)
 
 - Azure Resource Manager Monitor Workspaces client library for Java. This package contains Microsoft Azure SDK for Monitor Workspaces Management SDK.  Package api-version 2026-09-03-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).

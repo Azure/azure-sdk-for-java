@@ -22,7 +22,7 @@ public final class ExtensionsListByArcSettingMockTests {
     @Test
     public void testListByArcSetting() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"extensionParameters\":{\"forceUpdateTag\":\"fytkhhkemrv\",\"publisher\":\"eoj\",\"type\":\"yulglh\",\"typeHandlerVersion\":\"wrukl\",\"autoUpgradeMinorVersion\":false,\"settings\":\"\\\"datasp\\\"\",\"protectedSettings\":\"\\\"dataogypbztgaexj\\\"\",\"enableAutomaticUpgrade\":false},\"aggregateState\":\"UpgradeFailedRollbackSucceeded\",\"perNodeExtensionDetails\":[{\"name\":\"zimbwttmhl\",\"extension\":\"ycyxrnwukfa\",\"typeHandlerVersion\":\"pdwzjggkwdep\",\"state\":\"PartiallySucceeded\",\"instanceView\":{\"name\":\"yfiqiidxcorjvudy\",\"type\":\"trttcuayiqy\",\"typeHandlerVersion\":\"kmmxzifbqgqexo\",\"status\":{}}},{\"name\":\"rtgqrqkk\",\"extension\":\"ygkuo\",\"typeHandlerVersion\":\"wainp\",\"state\":\"Failed\",\"instanceView\":{\"name\":\"hxiewh\",\"type\":\"yjt\",\"typeHandlerVersion\":\"gzyvext\",\"status\":{}}},{\"name\":\"lroldowuwhdlrif\",\"extension\":\"zttcbiich\",\"typeHandlerVersion\":\"udsozodwjcfqoy\",\"state\":\"Failed\",\"instanceView\":{\"name\":\"cymzrlcfgdwzau\",\"type\":\"dheadnyciwz\",\"typeHandlerVersion\":\"lykqadfge\",\"status\":{}}},{\"name\":\"oha\",\"extension\":\"rizmadjrsbgail\",\"typeHandlerVersion\":\"ovqmxqsxofx\",\"state\":\"Accepted\",\"instanceView\":{\"name\":\"okgltsx\",\"type\":\"iob\",\"typeHandlerVersion\":\"ebruptlsrvqz\",\"status\":{}}}],\"managedBy\":\"Azure\"},\"id\":\"srnjlvgrghnh\",\"name\":\"oxrqhjninpeswv\",\"type\":\"hq\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"extensionParameters\":{\"forceUpdateTag\":\"zkjp\",\"publisher\":\"gzxvbczw\",\"type\":\"egbthm\",\"typeHandlerVersion\":\"i\",\"autoUpgradeMinorVersion\":true,\"settings\":\"\\\"dataiggrunoz\\\"\",\"protectedSettings\":\"\\\"datau\\\"\",\"enableAutomaticUpgrade\":true},\"aggregateState\":\"Canceled\",\"perNodeExtensionDetails\":[{\"name\":\"sdwsngkrfi\",\"extension\":\"cjvakmh\",\"typeHandlerVersion\":\"hwahfbw\",\"state\":\"PartiallyConnected\",\"instanceView\":{\"name\":\"x\",\"type\":\"vynuqqkotauratn\",\"typeHandlerVersion\":\"ppfzsclef\",\"status\":{}}},{\"name\":\"etndqlmfdggnbbu\",\"extension\":\"wovvv\",\"typeHandlerVersion\":\"leev\",\"state\":\"Succeeded\",\"instanceView\":{\"name\":\"rehjuqwvapx\",\"type\":\"zhpzihacenqqzlx\",\"typeHandlerVersion\":\"zubfo\",\"status\":{}}}],\"managedBy\":\"User\"},\"id\":\"mkfw\",\"name\":\"jcw\",\"type\":\"ewfhxwyrkbre\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,14 +31,14 @@ public final class ExtensionsListByArcSettingMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<Extension> response = manager.extensions()
-            .listByArcSetting("ozcgoeozlib", "bnunzuysajvvqlho", "yonelivgtibtkqjq", com.azure.core.util.Context.NONE);
+        PagedIterable<Extension> response
+            = manager.extensions().listByArcSetting("abm", "vsexduetb", "pfczewxtrl", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("fytkhhkemrv", response.iterator().next().forceUpdateTag());
-        Assertions.assertEquals("eoj", response.iterator().next().publisher());
-        Assertions.assertEquals("yulglh", response.iterator().next().typePropertiesType());
-        Assertions.assertEquals("wrukl", response.iterator().next().typeHandlerVersion());
-        Assertions.assertFalse(response.iterator().next().autoUpgradeMinorVersion());
-        Assertions.assertFalse(response.iterator().next().enableAutomaticUpgrade());
+        Assertions.assertEquals("zkjp", response.iterator().next().forceUpdateTag());
+        Assertions.assertEquals("gzxvbczw", response.iterator().next().publisher());
+        Assertions.assertEquals("egbthm", response.iterator().next().typePropertiesType());
+        Assertions.assertEquals("i", response.iterator().next().typeHandlerVersion());
+        Assertions.assertTrue(response.iterator().next().autoUpgradeMinorVersion());
+        Assertions.assertTrue(response.iterator().next().enableAutomaticUpgrade());
     }
 }

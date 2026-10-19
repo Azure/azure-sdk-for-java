@@ -14,12 +14,12 @@ public final class DeploymentSettingListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DeploymentSettingListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Moving\",\"arcNodeResourceIds\":[\"fffiak\"],\"deploymentMode\":\"Validate\",\"operationType\":\"ClusterUpgrade\",\"deploymentConfiguration\":{\"version\":\"m\",\"scaleUnits\":[{\"deploymentData\":{}},{\"deploymentData\":{}},{\"deploymentData\":{}},{\"deploymentData\":{}}]},\"reportedProperties\":{\"validationStatus\":{\"status\":\"mmji\",\"steps\":[{},{}]},\"deploymentStatus\":{\"status\":\"phvwauyqncygu\",\"steps\":[{},{},{},{}]}}},\"id\":\"p\",\"name\":\"dscwxqupevzhf\",\"type\":\"totxhojujb\"},{\"properties\":{\"provisioningState\":\"Deleting\",\"arcNodeResourceIds\":[\"c\"],\"deploymentMode\":\"Validate\",\"operationType\":\"ClusterProvisioning\",\"deploymentConfiguration\":{\"version\":\"bjx\",\"scaleUnits\":[{\"deploymentData\":{}}]},\"reportedProperties\":{\"validationStatus\":{\"status\":\"lrcoolsttpki\",\"steps\":[{},{}]},\"deploymentStatus\":{\"status\":\"ujrywvtyl\",\"steps\":[{},{}]}}},\"id\":\"curdoiwiitht\",\"name\":\"wubxc\",\"type\":\"ihwqknfdntwjchr\"}],\"nextLink\":\"oihxumwctondzjlu\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Error\",\"arcNodeResourceIds\":[\"vzvfvaawzqadfl\"],\"deploymentMode\":\"Validate\",\"operationType\":\"ClusterProvisioning\",\"deploymentConfiguration\":{\"version\":\"glae\",\"scaleUnits\":[{\"deploymentData\":{}},{\"deploymentData\":{}},{\"deploymentData\":{}},{\"deploymentData\":{}}]},\"reportedProperties\":{\"validationStatus\":{\"status\":\"icokpv\",\"steps\":[{},{},{}]},\"deploymentStatus\":{\"status\":\"mldgxobfirc\",\"steps\":[{}]}}},\"id\":\"ciayzriykhya\",\"name\":\"fvjlboxqvkjlmx\",\"type\":\"omdynhdwdigum\"}],\"nextLink\":\"raauzzpt\"}")
             .toObject(DeploymentSettingListResult.class);
-        Assertions.assertEquals("fffiak", model.value().get(0).arcNodeResourceIds().get(0));
+        Assertions.assertEquals("vzvfvaawzqadfl", model.value().get(0).arcNodeResourceIds().get(0));
         Assertions.assertEquals(DeploymentMode.VALIDATE, model.value().get(0).deploymentMode());
-        Assertions.assertEquals(OperationType.CLUSTER_UPGRADE, model.value().get(0).operationType());
-        Assertions.assertEquals("m", model.value().get(0).deploymentConfiguration().version());
-        Assertions.assertEquals("oihxumwctondzjlu", model.nextLink());
+        Assertions.assertEquals(OperationType.CLUSTER_PROVISIONING, model.value().get(0).operationType());
+        Assertions.assertEquals("glae", model.value().get(0).deploymentConfiguration().version());
+        Assertions.assertEquals("raauzzpt", model.nextLink());
     }
 }

@@ -21,29 +21,14 @@ import java.util.List;
 @Fluent
 public final class WorkbenchProperties implements JsonSerializable<WorkbenchProperties> {
     /*
-     * Resource ID of the Foundry Compute or virtual cluster that hosts this workbench. Changing the cluster requires
-     * the workbench to be stopped.
+     * ARM resource ID of the parent cluster that hosts this workbench.
      */
     private String targetClusterId;
 
     /*
-     * Container image URI (e.g., MCR or ACR image path) for the workbench. Immutable after creation.
+     * Container image URI (e.g., MCR or ACR image path) for the workbench.
      */
     private String imageLink;
-
-    /*
-     * For virtual clusters, an exact Singularity instance type or a full-node Azure VM size. If omitted on creation,
-     * defaults to Singularity.D4_v3. Foundry Compute ignores this override and uses the pool configuration. Changing
-     * the instance type requires the workbench to be stopped.
-     */
-    private String instanceType;
-
-    /*
-     * GPU count for GPU pools or vCPU count for CPU pools. Must be 1, 2, 4, 8, or a positive multiple of 8. A full-node
-     * Azure VM size permits partition selection; omission uses the full node. For an exact Singularity instance type, a
-     * supplied count must match that type; the Singularity.D4_v3 fallback accepts 4.
-     */
-    private Integer gpuCount;
 
     /*
      * ISO 8601 duration before the idle workbench is automatically shut down (e.g., 'PT30M').
@@ -51,12 +36,12 @@ public final class WorkbenchProperties implements JsonSerializable<WorkbenchProp
     private String idleTimeBeforeShutdown;
 
     /*
-     * The dataset ID to mount for the workbench. Set only during creation.
+     * The dataset ID to mount for the workbench.
      */
     private String datasetId;
 
     /*
-     * SSH configuration for remote access to the workbench. Set only during creation.
+     * SSH configuration for remote access to the workbench.
      */
     private SshSettings sshSettings;
 
@@ -71,15 +56,9 @@ public final class WorkbenchProperties implements JsonSerializable<WorkbenchProp
     private String webEndpoint;
 
     /*
-     * Provisioning state of the workbench resource, independent of runtime lifecycle status.
+     * Provisioning state of the workbench resource.
      */
-    private WorkbenchProvisioningState provisioningState;
-
-    /*
-     * Runtime lifecycle status of the workbench. Independent of resource provisioning; start, stop, restart, and
-     * runtime health changes do not change provisioningState.
-     */
-    private WorkbenchStatus status;
+    private ComputeProvisioningState provisioningState;
 
     /*
      * Error details for the workbench resource.
@@ -98,8 +77,7 @@ public final class WorkbenchProperties implements JsonSerializable<WorkbenchProp
     }
 
     /**
-     * Get the targetClusterId property: Resource ID of the Foundry Compute or virtual cluster that hosts this
-     * workbench. Changing the cluster requires the workbench to be stopped.
+     * Get the targetClusterId property: ARM resource ID of the parent cluster that hosts this workbench.
      * 
      * @return the targetClusterId value.
      */
@@ -108,8 +86,7 @@ public final class WorkbenchProperties implements JsonSerializable<WorkbenchProp
     }
 
     /**
-     * Set the targetClusterId property: Resource ID of the Foundry Compute or virtual cluster that hosts this
-     * workbench. Changing the cluster requires the workbench to be stopped.
+     * Set the targetClusterId property: ARM resource ID of the parent cluster that hosts this workbench.
      * 
      * @param targetClusterId the targetClusterId value to set.
      * @return the WorkbenchProperties object itself.
@@ -120,8 +97,7 @@ public final class WorkbenchProperties implements JsonSerializable<WorkbenchProp
     }
 
     /**
-     * Get the imageLink property: Container image URI (e.g., MCR or ACR image path) for the workbench. Immutable after
-     * creation.
+     * Get the imageLink property: Container image URI (e.g., MCR or ACR image path) for the workbench.
      * 
      * @return the imageLink value.
      */
@@ -130,62 +106,13 @@ public final class WorkbenchProperties implements JsonSerializable<WorkbenchProp
     }
 
     /**
-     * Set the imageLink property: Container image URI (e.g., MCR or ACR image path) for the workbench. Immutable after
-     * creation.
+     * Set the imageLink property: Container image URI (e.g., MCR or ACR image path) for the workbench.
      * 
      * @param imageLink the imageLink value to set.
      * @return the WorkbenchProperties object itself.
      */
     public WorkbenchProperties withImageLink(String imageLink) {
         this.imageLink = imageLink;
-        return this;
-    }
-
-    /**
-     * Get the instanceType property: For virtual clusters, an exact Singularity instance type or a full-node Azure VM
-     * size. If omitted on creation, defaults to Singularity.D4_v3. Foundry Compute ignores this override and uses the
-     * pool configuration. Changing the instance type requires the workbench to be stopped.
-     * 
-     * @return the instanceType value.
-     */
-    public String instanceType() {
-        return this.instanceType;
-    }
-
-    /**
-     * Set the instanceType property: For virtual clusters, an exact Singularity instance type or a full-node Azure VM
-     * size. If omitted on creation, defaults to Singularity.D4_v3. Foundry Compute ignores this override and uses the
-     * pool configuration. Changing the instance type requires the workbench to be stopped.
-     * 
-     * @param instanceType the instanceType value to set.
-     * @return the WorkbenchProperties object itself.
-     */
-    public WorkbenchProperties withInstanceType(String instanceType) {
-        this.instanceType = instanceType;
-        return this;
-    }
-
-    /**
-     * Get the gpuCount property: GPU count for GPU pools or vCPU count for CPU pools. Must be 1, 2, 4, 8, or a positive
-     * multiple of 8. A full-node Azure VM size permits partition selection; omission uses the full node. For an exact
-     * Singularity instance type, a supplied count must match that type; the Singularity.D4_v3 fallback accepts 4.
-     * 
-     * @return the gpuCount value.
-     */
-    public Integer gpuCount() {
-        return this.gpuCount;
-    }
-
-    /**
-     * Set the gpuCount property: GPU count for GPU pools or vCPU count for CPU pools. Must be 1, 2, 4, 8, or a positive
-     * multiple of 8. A full-node Azure VM size permits partition selection; omission uses the full node. For an exact
-     * Singularity instance type, a supplied count must match that type; the Singularity.D4_v3 fallback accepts 4.
-     * 
-     * @param gpuCount the gpuCount value to set.
-     * @return the WorkbenchProperties object itself.
-     */
-    public WorkbenchProperties withGpuCount(Integer gpuCount) {
-        this.gpuCount = gpuCount;
         return this;
     }
 
@@ -212,7 +139,7 @@ public final class WorkbenchProperties implements JsonSerializable<WorkbenchProp
     }
 
     /**
-     * Get the datasetId property: The dataset ID to mount for the workbench. Set only during creation.
+     * Get the datasetId property: The dataset ID to mount for the workbench.
      * 
      * @return the datasetId value.
      */
@@ -221,7 +148,7 @@ public final class WorkbenchProperties implements JsonSerializable<WorkbenchProp
     }
 
     /**
-     * Set the datasetId property: The dataset ID to mount for the workbench. Set only during creation.
+     * Set the datasetId property: The dataset ID to mount for the workbench.
      * 
      * @param datasetId the datasetId value to set.
      * @return the WorkbenchProperties object itself.
@@ -232,7 +159,7 @@ public final class WorkbenchProperties implements JsonSerializable<WorkbenchProp
     }
 
     /**
-     * Get the sshSettings property: SSH configuration for remote access to the workbench. Set only during creation.
+     * Get the sshSettings property: SSH configuration for remote access to the workbench.
      * 
      * @return the sshSettings value.
      */
@@ -241,7 +168,7 @@ public final class WorkbenchProperties implements JsonSerializable<WorkbenchProp
     }
 
     /**
-     * Set the sshSettings property: SSH configuration for remote access to the workbench. Set only during creation.
+     * Set the sshSettings property: SSH configuration for remote access to the workbench.
      * 
      * @param sshSettings the sshSettings value to set.
      * @return the WorkbenchProperties object itself.
@@ -270,23 +197,12 @@ public final class WorkbenchProperties implements JsonSerializable<WorkbenchProp
     }
 
     /**
-     * Get the provisioningState property: Provisioning state of the workbench resource, independent of runtime
-     * lifecycle status.
+     * Get the provisioningState property: Provisioning state of the workbench resource.
      * 
      * @return the provisioningState value.
      */
-    public WorkbenchProvisioningState provisioningState() {
+    public ComputeProvisioningState provisioningState() {
         return this.provisioningState;
-    }
-
-    /**
-     * Get the status property: Runtime lifecycle status of the workbench. Independent of resource provisioning; start,
-     * stop, restart, and runtime health changes do not change provisioningState.
-     * 
-     * @return the status value.
-     */
-    public WorkbenchStatus status() {
-        return this.status;
     }
 
     /**
@@ -315,8 +231,6 @@ public final class WorkbenchProperties implements JsonSerializable<WorkbenchProp
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("targetClusterId", this.targetClusterId);
         jsonWriter.writeStringField("imageLink", this.imageLink);
-        jsonWriter.writeStringField("instanceType", this.instanceType);
-        jsonWriter.writeNumberField("gpuCount", this.gpuCount);
         jsonWriter.writeStringField("idleTimeBeforeShutdown", this.idleTimeBeforeShutdown);
         jsonWriter.writeStringField("datasetId", this.datasetId);
         jsonWriter.writeJsonField("sshSettings", this.sshSettings);
@@ -343,10 +257,6 @@ public final class WorkbenchProperties implements JsonSerializable<WorkbenchProp
                     deserializedWorkbenchProperties.targetClusterId = reader.getString();
                 } else if ("imageLink".equals(fieldName)) {
                     deserializedWorkbenchProperties.imageLink = reader.getString();
-                } else if ("instanceType".equals(fieldName)) {
-                    deserializedWorkbenchProperties.instanceType = reader.getString();
-                } else if ("gpuCount".equals(fieldName)) {
-                    deserializedWorkbenchProperties.gpuCount = reader.getNullable(JsonReader::getInt);
                 } else if ("idleTimeBeforeShutdown".equals(fieldName)) {
                     deserializedWorkbenchProperties.idleTimeBeforeShutdown = reader.getString();
                 } else if ("datasetId".equals(fieldName)) {
@@ -359,9 +269,7 @@ public final class WorkbenchProperties implements JsonSerializable<WorkbenchProp
                     deserializedWorkbenchProperties.webEndpoint = reader.getString();
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedWorkbenchProperties.provisioningState
-                        = WorkbenchProvisioningState.fromString(reader.getString());
-                } else if ("status".equals(fieldName)) {
-                    deserializedWorkbenchProperties.status = WorkbenchStatus.fromString(reader.getString());
+                        = ComputeProvisioningState.fromString(reader.getString());
                 } else if ("errors".equals(fieldName)) {
                     List<ManagementError> errors = reader.readArray(reader1 -> ManagementError.fromJson(reader1));
                     deserializedWorkbenchProperties.errors = errors;

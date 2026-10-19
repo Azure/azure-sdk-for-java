@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class ValidatedSolutionRecipeCapabilityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ValidatedSolutionRecipeCapability model = BinaryData.fromString("{\"capabilityName\":\"qnoowsbedenrex\"}")
+        ValidatedSolutionRecipeCapability model = BinaryData.fromString("{\"capabilityName\":\"umltwjflu\"}")
             .toObject(ValidatedSolutionRecipeCapability.class);
-        Assertions.assertEquals("qnoowsbedenrex", model.capabilityName());
+        Assertions.assertEquals("umltwjflu", model.capabilityName());
     }
 }

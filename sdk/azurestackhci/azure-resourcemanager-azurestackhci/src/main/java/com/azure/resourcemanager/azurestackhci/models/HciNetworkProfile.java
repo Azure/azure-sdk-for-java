@@ -32,11 +32,6 @@ public final class HciNetworkProfile implements JsonSerializable<HciNetworkProfi
      */
     private HciEdgeDeviceHostNetwork hostNetwork;
 
-    /*
-     * Software Defined Networking Properties of the device.
-     */
-    private SdnProperties sdnProperties;
-
     /**
      * Creates an instance of HciNetworkProfile class.
      */
@@ -71,15 +66,6 @@ public final class HciNetworkProfile implements JsonSerializable<HciNetworkProfi
     }
 
     /**
-     * Get the sdnProperties property: Software Defined Networking Properties of the device.
-     * 
-     * @return the sdnProperties value.
-     */
-    public SdnProperties sdnProperties() {
-        return this.sdnProperties;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -111,8 +97,6 @@ public final class HciNetworkProfile implements JsonSerializable<HciNetworkProfi
                     deserializedHciNetworkProfile.switchDetails = switchDetails;
                 } else if ("hostNetwork".equals(fieldName)) {
                     deserializedHciNetworkProfile.hostNetwork = HciEdgeDeviceHostNetwork.fromJson(reader);
-                } else if ("sdnProperties".equals(fieldName)) {
-                    deserializedHciNetworkProfile.sdnProperties = SdnProperties.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

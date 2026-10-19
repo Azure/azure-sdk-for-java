@@ -10,8 +10,6 @@
 
 ### Other Changes
 
-- Aligned Reactor version resolution and test HTTP transport dependencies with Netty 4.2, and added offline transport compatibility tests.
-
 ## 7.4.0 (2026-07-24)
 
 Please refer to [spring/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/CHANGELOG.md#740-2026-07-24) for more details.
@@ -255,3 +253,4 @@ Please refer to [spring/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-jav
 ## 4.0.0-beta.2 (2021-11-22)
 
 Please refer to [spring/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/CHANGELOG.md#400-beta2-2021-11-22) for more details.
+

@@ -254,13 +254,6 @@ public interface Cluster {
     ClusterPattern clusterPattern();
 
     /**
-     * Gets the sdnProperties property: Software Defined Networking Properties of the cluster.
-     * 
-     * @return the sdnProperties value.
-     */
-    ClusterSdnProperties sdnProperties();
-
-    /**
      * Gets the localAvailabilityZones property: Local Availability Zone information for HCI cluster.
      * 
      * @return the localAvailabilityZones value.

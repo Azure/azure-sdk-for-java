@@ -14,18 +14,18 @@ public final class StorageS2dConfigTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StorageS2dConfig model
-            = BinaryData.fromString("{\"volumeType\":\"ThinProvisioned\",\"overprovisioningRatio\":\"2\"}")
+            = BinaryData.fromString("{\"volumeType\":\"ThinProvisioned\",\"overprovisioningRatio\":\"1\"}")
                 .toObject(StorageS2dConfig.class);
         Assertions.assertEquals(VolumeType.THIN_PROVISIONED, model.volumeType());
-        Assertions.assertEquals(OverprovisioningRatio.TWO, model.overprovisioningRatio());
+        Assertions.assertEquals(OverprovisioningRatio.ONE, model.overprovisioningRatio());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         StorageS2dConfig model = new StorageS2dConfig().withVolumeType(VolumeType.THIN_PROVISIONED)
-            .withOverprovisioningRatio(OverprovisioningRatio.TWO);
+            .withOverprovisioningRatio(OverprovisioningRatio.ONE);
         model = BinaryData.fromObject(model).toObject(StorageS2dConfig.class);
         Assertions.assertEquals(VolumeType.THIN_PROVISIONED, model.volumeType());
-        Assertions.assertEquals(OverprovisioningRatio.TWO, model.overprovisioningRatio());
+        Assertions.assertEquals(OverprovisioningRatio.ONE, model.overprovisioningRatio());
     }
 }

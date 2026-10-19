@@ -64,6 +64,11 @@ function Find-GenerationInformation {
     Write-Host "Skipping TypeSpec regeneration for v2 library: $LibraryFolder"
     return
   }
+  if ($LibraryFolder.Contains("azure-ai-anomalydetector")) {
+    # Skip azure-ai-anomalydetector for TypeSpec regeneration as it is has errors that need to be fixed.
+    Write-Host "Skipping TypeSpec regeneration for azure-ai-anomalydetector: $LibraryFolder"
+    return
+  }
   if ($LibraryFolder.Contains("azure-ai-vision-face")) {
     # Skip azure-ai-vision-face for TypeSpec regeneration as it is has errors that need to be fixed.
     Write-Host "Skipping TypeSpec regeneration for azure-ai-vision-face: $LibraryFolder"

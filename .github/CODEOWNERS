@@ -180,6 +180,9 @@
 # AzureSdkOwners:                                                  @alzimmermsft @jonathangiles @vcolin7
 # ServiceLabel: %clientcore
 
+# PRLabel: %Cognitive - Anomaly Detector
+/sdk/anomalydetector/                                              @mengaims @Azure/azure-java-sdk
+
 # ServiceLabel: %Cognitive - Anomaly Detector
 # ServiceOwners:                                                   @bowgong @yingqunpku
 
@@ -224,6 +227,9 @@
 
 # PRLabel: %Communication - Call Automation
 /sdk/communication/azure-communication-callautomation/             @fhaghbin-msft @juntuchen-msft @minwoolee-msft @v-dharmarajv @Azure/azure-java-sdk
+
+# PRLabel: %Communication - Calling Server
+/sdk/communication/azure-communication-callingserver/              @minwoolee-msft @Azure/azure-java-sdk
 
 # PRLabel: %Communication - Chat
 /sdk/communication/azure-communication-chat/                       @ankitarorabit @Azure/azure-sdk-communication-code-reviewers @minnieliu @Azure/azure-java-sdk
@@ -359,6 +365,9 @@
 
 # ServiceLabel: %Load Testing
 # AzureSdkOwners:                                                   @Harshan01 @mitsha-microsoft @ninallam @prativen
+
+# PRLabel: %Models Repository
+/sdk/modelsrepository/                                             @abhipsaMisra @andyk-ms @brycewang-microsoft @digimaun @timtay-microsoft @Azure/azure-java-sdk
 
 # PRLabel: %Monitor
 /sdk/monitor/azure-monitor-ingestion*/                             @Azure/azure-sdk-write-monitor-data-plane @jairmyree @Azure/azure-java-sdk

@@ -21,7 +21,7 @@ public final class OffersGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"cel\",\"publisherId\":\"n\",\"content\":\"dnjyhzfax\",\"contentVersion\":\"dvuelumodpegqxso\",\"skuMappings\":[{\"catalogPlanId\":\"zrqoxzyhlbeqvh\",\"marketplaceSkuId\":\"b\",\"marketplaceSkuVersions\":[\"xslajggfzgaefha\"]},{\"catalogPlanId\":\"mibuyd\",\"marketplaceSkuId\":\"urn\",\"marketplaceSkuVersions\":[\"pdyttqmiu\",\"jplosebmh\"]}]},\"id\":\"uqmtxynof\",\"name\":\"qobfixngxebihe\",\"type\":\"hnkingiqcdol\"}";
+            = "{\"properties\":{\"provisioningState\":\"qplwg\",\"publisherId\":\"m\",\"content\":\"wrjlvzkl\",\"contentVersion\":\"bgikyjtkakvlbi\",\"skuMappings\":[{\"catalogPlanId\":\"pzaptuosk\",\"marketplaceSkuId\":\"izjixwfgcd\",\"marketplaceSkuVersions\":[\"kcxwnujvqynvavi\",\"mdmuqoh\",\"ihraxqudd\",\"wjc\"]},{\"catalogPlanId\":\"brhlhpvzadb\",\"marketplaceSkuId\":\"nnin\",\"marketplaceSkuVersions\":[\"xrzfrmvztiucwvi\"]},{\"catalogPlanId\":\"lukh\",\"marketplaceSkuId\":\"cqx\",\"marketplaceSkuVersions\":[\"v\",\"a\"]},{\"catalogPlanId\":\"qcbpokstsinv\",\"marketplaceSkuId\":\"ovjyhd\",\"marketplaceSkuVersions\":[\"rdvcehqwhit\",\"nmxgnm\"]}]},\"id\":\"zbuwvorbalkjnbk\",\"name\":\"dhlltqstqkqsyg\",\"type\":\"iynecovagz\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,15 +31,14 @@ public final class OffersGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Offer response = manager.offers()
-            .getWithResponse("mwevguyflnxel", "jkfzcdetowwezh", "fkdilb", "qlqac", "fqbir",
-                com.azure.core.util.Context.NONE)
+            .getWithResponse("nzuz", "bgk", "cscpiuzvkunh", "i", "juktirzkaugpucd", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("n", response.publisherId());
-        Assertions.assertEquals("dnjyhzfax", response.content());
-        Assertions.assertEquals("dvuelumodpegqxso", response.contentVersion());
-        Assertions.assertEquals("zrqoxzyhlbeqvh", response.skuMappings().get(0).catalogPlanId());
-        Assertions.assertEquals("b", response.skuMappings().get(0).marketplaceSkuId());
-        Assertions.assertEquals("xslajggfzgaefha", response.skuMappings().get(0).marketplaceSkuVersions().get(0));
+        Assertions.assertEquals("m", response.publisherId());
+        Assertions.assertEquals("wrjlvzkl", response.content());
+        Assertions.assertEquals("bgikyjtkakvlbi", response.contentVersion());
+        Assertions.assertEquals("pzaptuosk", response.skuMappings().get(0).catalogPlanId());
+        Assertions.assertEquals("izjixwfgcd", response.skuMappings().get(0).marketplaceSkuId());
+        Assertions.assertEquals("kcxwnujvqynvavi", response.skuMappings().get(0).marketplaceSkuVersions().get(0));
     }
 }

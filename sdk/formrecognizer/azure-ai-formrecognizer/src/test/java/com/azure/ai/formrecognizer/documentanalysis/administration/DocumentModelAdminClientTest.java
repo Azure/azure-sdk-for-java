@@ -29,6 +29,7 @@ import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
+import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -109,7 +110,7 @@ public class DocumentModelAdminClientTest extends DocumentModelAdministrationCli
                 = client.getDocumentModelWithResponse(documentModelDetails.getModelId(), Context.NONE);
             client.deleteDocumentModel(documentModelDetails.getModelId());
 
-            assertEquals(200, documentModelResponse.getStatusCode());
+            assertEquals(documentModelResponse.getStatusCode(), HttpResponseStatus.OK.code());
             validateDocumentModelData(documentModelResponse.getValue());
         });
     }
@@ -133,7 +134,7 @@ public class DocumentModelAdminClientTest extends DocumentModelAdministrationCli
         DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentModelAdministrationClient(httpClient, serviceVersion);
         Response<ResourceDetails> resourceDetailsResponse = client.getResourceDetailsWithResponse(Context.NONE);
-        assertEquals(200, resourceDetailsResponse.getStatusCode());
+        assertEquals(resourceDetailsResponse.getStatusCode(), HttpResponseStatus.OK.code());
         validateResourceInfo(resourceDetailsResponse.getValue());
     }
 
@@ -165,7 +166,7 @@ public class DocumentModelAdminClientTest extends DocumentModelAdministrationCli
             final Response<Void> deleteModelWithResponse
                 = client.deleteDocumentModelWithResponse(createdModel.getModelId(), Context.NONE);
 
-            assertEquals(204, deleteModelWithResponse.getStatusCode());
+            assertEquals(deleteModelWithResponse.getStatusCode(), HttpResponseStatus.NO_CONTENT.code());
             final HttpResponseException exception = assertThrows(HttpResponseException.class,
                 () -> client.getDocumentModelWithResponse(createdModel.getModelId(), Context.NONE));
             final ResponseError responseError = (ResponseError) exception.getValue();

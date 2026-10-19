@@ -21,17 +21,6 @@ import java.io.IOException;
 @Immutable
 public final class UsageInner implements JsonSerializable<UsageInner> {
     /*
-     * Fully qualified resource ID for the usage. Ex -
-     * /subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/locations/{location}/usages/{usageName}
-     */
-    private String id;
-
-    /*
-     * The type of the usage resource. E.g. "Microsoft.CognitiveServices/locations/usages"
-     */
-    private String type;
-
-    /*
      * The unit of the metric.
      */
     private UnitType unit;
@@ -80,25 +69,6 @@ public final class UsageInner implements JsonSerializable<UsageInner> {
      * Creates an instance of UsageInner class.
      */
     private UsageInner() {
-    }
-
-    /**
-     * Get the id property: Fully qualified resource ID for the usage. Ex -
-     * /subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/locations/{location}/usages/{usageName}.
-     * 
-     * @return the id value.
-     */
-    public String id() {
-        return this.id;
-    }
-
-    /**
-     * Get the type property: The type of the usage resource. E.g. "Microsoft.CognitiveServices/locations/usages".
-     * 
-     * @return the type value.
-     */
-    public String type() {
-        return this.type;
     }
 
     /**
@@ -215,11 +185,7 @@ public final class UsageInner implements JsonSerializable<UsageInner> {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("id".equals(fieldName)) {
-                    deserializedUsageInner.id = reader.getString();
-                } else if ("type".equals(fieldName)) {
-                    deserializedUsageInner.type = reader.getString();
-                } else if ("unit".equals(fieldName)) {
+                if ("unit".equals(fieldName)) {
                     deserializedUsageInner.unit = UnitType.fromString(reader.getString());
                 } else if ("name".equals(fieldName)) {
                     deserializedUsageInner.name = MetricName.fromJson(reader);

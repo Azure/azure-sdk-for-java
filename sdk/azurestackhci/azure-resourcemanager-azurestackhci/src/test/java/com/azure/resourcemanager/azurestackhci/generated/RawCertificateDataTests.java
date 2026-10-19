@@ -13,16 +13,16 @@ public final class RawCertificateDataTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RawCertificateData model
-            = BinaryData.fromString("{\"certificates\":[\"bmnzbtbhjpgl\",\"fgohdneuelfphs\",\"yhtozfikdowwqu\",\"v\"]}")
+            = BinaryData.fromString("{\"certificates\":[\"u\",\"ivkrtsw\",\"xqzvszjfa\",\"vjfdx\"]}")
                 .toObject(RawCertificateData.class);
-        Assertions.assertEquals("bmnzbtbhjpgl", model.certificates().get(0));
+        Assertions.assertEquals("u", model.certificates().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RawCertificateData model = new RawCertificateData()
-            .withCertificates(Arrays.asList("bmnzbtbhjpgl", "fgohdneuelfphs", "yhtozfikdowwqu", "v"));
+        RawCertificateData model
+            = new RawCertificateData().withCertificates(Arrays.asList("u", "ivkrtsw", "xqzvszjfa", "vjfdx"));
         model = BinaryData.fromObject(model).toObject(RawCertificateData.class);
-        Assertions.assertEquals("bmnzbtbhjpgl", model.certificates().get(0));
+        Assertions.assertEquals("u", model.certificates().get(0));
     }
 }

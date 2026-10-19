@@ -11,12 +11,12 @@ import org.junit.jupiter.api.Assertions;
 public final class ValidatedSolutionRecipeComponentPayloadTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ValidatedSolutionRecipeComponentPayload model = BinaryData.fromString(
-            "{\"identifier\":\"sjjzyvoaqajuveh\",\"hash\":\"ptdmkrrbhmpful\",\"fileName\":\"be\",\"url\":\"gybpmfb\"}")
+        ValidatedSolutionRecipeComponentPayload model = BinaryData
+            .fromString("{\"identifier\":\"riwgybjp\",\"hash\":\"zokscvg\",\"fileName\":\"lix\",\"url\":\"gbyfgwe\"}")
             .toObject(ValidatedSolutionRecipeComponentPayload.class);
-        Assertions.assertEquals("sjjzyvoaqajuveh", model.identifier());
-        Assertions.assertEquals("ptdmkrrbhmpful", model.hash());
-        Assertions.assertEquals("be", model.fileName());
-        Assertions.assertEquals("gybpmfb", model.url());
+        Assertions.assertEquals("riwgybjp", model.identifier());
+        Assertions.assertEquals("zokscvg", model.hash());
+        Assertions.assertEquals("lix", model.fileName());
+        Assertions.assertEquals("gbyfgwe", model.url());
     }
 }

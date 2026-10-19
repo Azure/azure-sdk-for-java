@@ -12,24 +12,24 @@ public final class SanAdapterIPConfigTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SanAdapterIPConfig model = BinaryData.fromString(
-            "{\"name\":\"fvpdbo\",\"networkAdapterName\":\"cizsjqlhkrribdei\",\"vlanId\":1262026177,\"addressPrefix\":\"qkgh\"}")
+            "{\"name\":\"hemms\",\"networkAdapterName\":\"dkcrodt\",\"vlanId\":1997229408,\"addressPrefix\":\"wj\"}")
             .toObject(SanAdapterIPConfig.class);
-        Assertions.assertEquals("fvpdbo", model.name());
-        Assertions.assertEquals("cizsjqlhkrribdei", model.networkAdapterName());
-        Assertions.assertEquals(1262026177, model.vlanId());
-        Assertions.assertEquals("qkgh", model.addressPrefix());
+        Assertions.assertEquals("hemms", model.name());
+        Assertions.assertEquals("dkcrodt", model.networkAdapterName());
+        Assertions.assertEquals(1997229408, model.vlanId());
+        Assertions.assertEquals("wj", model.addressPrefix());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SanAdapterIPConfig model = new SanAdapterIPConfig().withName("fvpdbo")
-            .withNetworkAdapterName("cizsjqlhkrribdei")
-            .withVlanId(1262026177)
-            .withAddressPrefix("qkgh");
+        SanAdapterIPConfig model = new SanAdapterIPConfig().withName("hemms")
+            .withNetworkAdapterName("dkcrodt")
+            .withVlanId(1997229408)
+            .withAddressPrefix("wj");
         model = BinaryData.fromObject(model).toObject(SanAdapterIPConfig.class);
-        Assertions.assertEquals("fvpdbo", model.name());
-        Assertions.assertEquals("cizsjqlhkrribdei", model.networkAdapterName());
-        Assertions.assertEquals(1262026177, model.vlanId());
-        Assertions.assertEquals("qkgh", model.addressPrefix());
+        Assertions.assertEquals("hemms", model.name());
+        Assertions.assertEquals("dkcrodt", model.networkAdapterName());
+        Assertions.assertEquals(1997229408, model.vlanId());
+        Assertions.assertEquals("wj", model.addressPrefix());
     }
 }

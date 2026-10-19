@@ -28,26 +28,13 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.azurestackhci.fluent.ArcSettingsClient;
 import com.azure.resourcemanager.azurestackhci.fluent.AzureStackHciManagementClient;
-import com.azure.resourcemanager.azurestackhci.fluent.ClusterJobsClient;
 import com.azure.resourcemanager.azurestackhci.fluent.ClustersClient;
 import com.azure.resourcemanager.azurestackhci.fluent.DeploymentSettingsClient;
 import com.azure.resourcemanager.azurestackhci.fluent.EdgeDeviceJobsClient;
 import com.azure.resourcemanager.azurestackhci.fluent.EdgeDevicesClient;
-import com.azure.resourcemanager.azurestackhci.fluent.EdgeMachineDeploymentSettingsClient;
-import com.azure.resourcemanager.azurestackhci.fluent.EdgeMachineDiskJobsClient;
-import com.azure.resourcemanager.azurestackhci.fluent.EdgeMachineDiskPrivilegedJobsClient;
-import com.azure.resourcemanager.azurestackhci.fluent.EdgeMachineDisksClient;
-import com.azure.resourcemanager.azurestackhci.fluent.EdgeMachineJobsClient;
-import com.azure.resourcemanager.azurestackhci.fluent.EdgeMachineNetworkAdapterJobsClient;
-import com.azure.resourcemanager.azurestackhci.fluent.EdgeMachineNetworkAdaptersClient;
-import com.azure.resourcemanager.azurestackhci.fluent.EdgeMachineSecuritySettingsOperationsClient;
-import com.azure.resourcemanager.azurestackhci.fluent.EdgeMachineVolumesClient;
-import com.azure.resourcemanager.azurestackhci.fluent.EdgeMachinesClient;
 import com.azure.resourcemanager.azurestackhci.fluent.ExtensionsClient;
 import com.azure.resourcemanager.azurestackhci.fluent.OffersClient;
 import com.azure.resourcemanager.azurestackhci.fluent.OperationsClient;
-import com.azure.resourcemanager.azurestackhci.fluent.OsImagesClient;
-import com.azure.resourcemanager.azurestackhci.fluent.OwnershipVouchersClient;
 import com.azure.resourcemanager.azurestackhci.fluent.SecuritySettingsClient;
 import com.azure.resourcemanager.azurestackhci.fluent.SkusClient;
 import com.azure.resourcemanager.azurestackhci.fluent.UpdateRunsClient;
@@ -151,20 +138,6 @@ public final class AzureStackHciManagementClientImpl implements AzureStackHciMan
      */
     public Duration getDefaultPollInterval() {
         return this.defaultPollInterval;
-    }
-
-    /**
-     * The OsImagesClient object to access its operations.
-     */
-    private final OsImagesClient osImages;
-
-    /**
-     * Gets the OsImagesClient object to access its operations.
-     * 
-     * @return the OsImagesClient object.
-     */
-    public OsImagesClient getOsImages() {
-        return this.osImages;
     }
 
     /**
@@ -364,174 +337,6 @@ public final class AzureStackHciManagementClientImpl implements AzureStackHciMan
     }
 
     /**
-     * The EdgeMachinesClient object to access its operations.
-     */
-    private final EdgeMachinesClient edgeMachines;
-
-    /**
-     * Gets the EdgeMachinesClient object to access its operations.
-     * 
-     * @return the EdgeMachinesClient object.
-     */
-    public EdgeMachinesClient getEdgeMachines() {
-        return this.edgeMachines;
-    }
-
-    /**
-     * The EdgeMachineJobsClient object to access its operations.
-     */
-    private final EdgeMachineJobsClient edgeMachineJobs;
-
-    /**
-     * Gets the EdgeMachineJobsClient object to access its operations.
-     * 
-     * @return the EdgeMachineJobsClient object.
-     */
-    public EdgeMachineJobsClient getEdgeMachineJobs() {
-        return this.edgeMachineJobs;
-    }
-
-    /**
-     * The OwnershipVouchersClient object to access its operations.
-     */
-    private final OwnershipVouchersClient ownershipVouchers;
-
-    /**
-     * Gets the OwnershipVouchersClient object to access its operations.
-     * 
-     * @return the OwnershipVouchersClient object.
-     */
-    public OwnershipVouchersClient getOwnershipVouchers() {
-        return this.ownershipVouchers;
-    }
-
-    /**
-     * The ClusterJobsClient object to access its operations.
-     */
-    private final ClusterJobsClient clusterJobs;
-
-    /**
-     * Gets the ClusterJobsClient object to access its operations.
-     * 
-     * @return the ClusterJobsClient object.
-     */
-    public ClusterJobsClient getClusterJobs() {
-        return this.clusterJobs;
-    }
-
-    /**
-     * The EdgeMachineNetworkAdaptersClient object to access its operations.
-     */
-    private final EdgeMachineNetworkAdaptersClient edgeMachineNetworkAdapters;
-
-    /**
-     * Gets the EdgeMachineNetworkAdaptersClient object to access its operations.
-     * 
-     * @return the EdgeMachineNetworkAdaptersClient object.
-     */
-    public EdgeMachineNetworkAdaptersClient getEdgeMachineNetworkAdapters() {
-        return this.edgeMachineNetworkAdapters;
-    }
-
-    /**
-     * The EdgeMachineNetworkAdapterJobsClient object to access its operations.
-     */
-    private final EdgeMachineNetworkAdapterJobsClient edgeMachineNetworkAdapterJobs;
-
-    /**
-     * Gets the EdgeMachineNetworkAdapterJobsClient object to access its operations.
-     * 
-     * @return the EdgeMachineNetworkAdapterJobsClient object.
-     */
-    public EdgeMachineNetworkAdapterJobsClient getEdgeMachineNetworkAdapterJobs() {
-        return this.edgeMachineNetworkAdapterJobs;
-    }
-
-    /**
-     * The EdgeMachineDisksClient object to access its operations.
-     */
-    private final EdgeMachineDisksClient edgeMachineDisks;
-
-    /**
-     * Gets the EdgeMachineDisksClient object to access its operations.
-     * 
-     * @return the EdgeMachineDisksClient object.
-     */
-    public EdgeMachineDisksClient getEdgeMachineDisks() {
-        return this.edgeMachineDisks;
-    }
-
-    /**
-     * The EdgeMachineVolumesClient object to access its operations.
-     */
-    private final EdgeMachineVolumesClient edgeMachineVolumes;
-
-    /**
-     * Gets the EdgeMachineVolumesClient object to access its operations.
-     * 
-     * @return the EdgeMachineVolumesClient object.
-     */
-    public EdgeMachineVolumesClient getEdgeMachineVolumes() {
-        return this.edgeMachineVolumes;
-    }
-
-    /**
-     * The EdgeMachineDiskJobsClient object to access its operations.
-     */
-    private final EdgeMachineDiskJobsClient edgeMachineDiskJobs;
-
-    /**
-     * Gets the EdgeMachineDiskJobsClient object to access its operations.
-     * 
-     * @return the EdgeMachineDiskJobsClient object.
-     */
-    public EdgeMachineDiskJobsClient getEdgeMachineDiskJobs() {
-        return this.edgeMachineDiskJobs;
-    }
-
-    /**
-     * The EdgeMachineDiskPrivilegedJobsClient object to access its operations.
-     */
-    private final EdgeMachineDiskPrivilegedJobsClient edgeMachineDiskPrivilegedJobs;
-
-    /**
-     * Gets the EdgeMachineDiskPrivilegedJobsClient object to access its operations.
-     * 
-     * @return the EdgeMachineDiskPrivilegedJobsClient object.
-     */
-    public EdgeMachineDiskPrivilegedJobsClient getEdgeMachineDiskPrivilegedJobs() {
-        return this.edgeMachineDiskPrivilegedJobs;
-    }
-
-    /**
-     * The EdgeMachineSecuritySettingsOperationsClient object to access its operations.
-     */
-    private final EdgeMachineSecuritySettingsOperationsClient edgeMachineSecuritySettingsOperations;
-
-    /**
-     * Gets the EdgeMachineSecuritySettingsOperationsClient object to access its operations.
-     * 
-     * @return the EdgeMachineSecuritySettingsOperationsClient object.
-     */
-    public EdgeMachineSecuritySettingsOperationsClient getEdgeMachineSecuritySettingsOperations() {
-        return this.edgeMachineSecuritySettingsOperations;
-    }
-
-    /**
-     * The EdgeMachineDeploymentSettingsClient object to access its operations.
-     */
-    private final EdgeMachineDeploymentSettingsClient edgeMachineDeploymentSettings;
-
-    /**
-     * Gets the EdgeMachineDeploymentSettingsClient object to access its operations.
-     * 
-     * @return the EdgeMachineDeploymentSettingsClient object.
-     */
-    public EdgeMachineDeploymentSettingsClient getEdgeMachineDeploymentSettings() {
-        return this.edgeMachineDeploymentSettings;
-    }
-
-    /**
      * The UpdateSummariesOperationsClient object to access its operations.
      */
     private final UpdateSummariesOperationsClient updateSummariesOperations;
@@ -562,8 +367,7 @@ public final class AzureStackHciManagementClientImpl implements AzureStackHciMan
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2026-10-01";
-        this.osImages = new OsImagesClientImpl(this);
+        this.apiVersion = "2026-04-30";
         this.operations = new OperationsClientImpl(this);
         this.arcSettings = new ArcSettingsClientImpl(this);
         this.offers = new OffersClientImpl(this);
@@ -578,18 +382,6 @@ public final class AzureStackHciManagementClientImpl implements AzureStackHciMan
         this.updates = new UpdatesClientImpl(this);
         this.updateSummariesOperationGroups = new UpdateSummariesOperationGroupsClientImpl(this);
         this.validatedSolutionRecipes = new ValidatedSolutionRecipesClientImpl(this);
-        this.edgeMachines = new EdgeMachinesClientImpl(this);
-        this.edgeMachineJobs = new EdgeMachineJobsClientImpl(this);
-        this.ownershipVouchers = new OwnershipVouchersClientImpl(this);
-        this.clusterJobs = new ClusterJobsClientImpl(this);
-        this.edgeMachineNetworkAdapters = new EdgeMachineNetworkAdaptersClientImpl(this);
-        this.edgeMachineNetworkAdapterJobs = new EdgeMachineNetworkAdapterJobsClientImpl(this);
-        this.edgeMachineDisks = new EdgeMachineDisksClientImpl(this);
-        this.edgeMachineVolumes = new EdgeMachineVolumesClientImpl(this);
-        this.edgeMachineDiskJobs = new EdgeMachineDiskJobsClientImpl(this);
-        this.edgeMachineDiskPrivilegedJobs = new EdgeMachineDiskPrivilegedJobsClientImpl(this);
-        this.edgeMachineSecuritySettingsOperations = new EdgeMachineSecuritySettingsOperationsClientImpl(this);
-        this.edgeMachineDeploymentSettings = new EdgeMachineDeploymentSettingsClientImpl(this);
         this.updateSummariesOperations = new UpdateSummariesOperationsClientImpl(this);
     }
 

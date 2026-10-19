@@ -23,11 +23,6 @@ public final class StorageDataCollaborationPolicyProperties
     private Boolean allowStorageConnectors;
 
     /*
-     * Indicates whether Blob Access Point configurations are allowed to be created or managed on the storage account.
-     */
-    private Boolean allowBlobAccessPoints;
-
-    /*
      * Indicates whether data shares are allowed to be created or managed on the storage account.
      */
     private Boolean allowStorageDataShares;
@@ -62,28 +57,6 @@ public final class StorageDataCollaborationPolicyProperties
      */
     public StorageDataCollaborationPolicyProperties withAllowStorageConnectors(Boolean allowStorageConnectors) {
         this.allowStorageConnectors = allowStorageConnectors;
-        return this;
-    }
-
-    /**
-     * Get the allowBlobAccessPoints property: Indicates whether Blob Access Point configurations are allowed to be
-     * created or managed on the storage account.
-     * 
-     * @return the allowBlobAccessPoints value.
-     */
-    public Boolean allowBlobAccessPoints() {
-        return this.allowBlobAccessPoints;
-    }
-
-    /**
-     * Set the allowBlobAccessPoints property: Indicates whether Blob Access Point configurations are allowed to be
-     * created or managed on the storage account.
-     * 
-     * @param allowBlobAccessPoints the allowBlobAccessPoints value to set.
-     * @return the StorageDataCollaborationPolicyProperties object itself.
-     */
-    public StorageDataCollaborationPolicyProperties withAllowBlobAccessPoints(Boolean allowBlobAccessPoints) {
-        this.allowBlobAccessPoints = allowBlobAccessPoints;
         return this;
     }
 
@@ -147,7 +120,6 @@ public final class StorageDataCollaborationPolicyProperties
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeBooleanField("allowStorageConnectors", this.allowStorageConnectors);
-        jsonWriter.writeBooleanField("allowBlobAccessPoints", this.allowBlobAccessPoints);
         jsonWriter.writeBooleanField("allowStorageDataShares", this.allowStorageDataShares);
         jsonWriter.writeBooleanField("allowCrossTenantDataSharing", this.allowCrossTenantDataSharing);
         return jsonWriter.writeEndObject();
@@ -171,9 +143,6 @@ public final class StorageDataCollaborationPolicyProperties
 
                 if ("allowStorageConnectors".equals(fieldName)) {
                     deserializedStorageDataCollaborationPolicyProperties.allowStorageConnectors
-                        = reader.getNullable(JsonReader::getBoolean);
-                } else if ("allowBlobAccessPoints".equals(fieldName)) {
-                    deserializedStorageDataCollaborationPolicyProperties.allowBlobAccessPoints
                         = reader.getNullable(JsonReader::getBoolean);
                 } else if ("allowStorageDataShares".equals(fieldName)) {
                     deserializedStorageDataCollaborationPolicyProperties.allowStorageDataShares

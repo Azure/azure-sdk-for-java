@@ -68,14 +68,6 @@ public final class RaiPolicyImpl implements RaiPolicy, RaiPolicy.Definition, Rai
 
     private String raiPolicyName;
 
-    private String createIfMatch;
-
-    private String createIfNoneMatch;
-
-    private String updateIfMatch;
-
-    private String updateIfNoneMatch;
-
     public RaiPolicyImpl withExistingAccount(String resourceGroupName, String accountName) {
         this.resourceGroupName = resourceGroupName;
         this.accountName = accountName;
@@ -85,8 +77,7 @@ public final class RaiPolicyImpl implements RaiPolicy, RaiPolicy.Definition, Rai
     public RaiPolicy create() {
         this.innerObject = serviceManager.serviceClient()
             .getRaiPolicies()
-            .createOrUpdateWithResponse(resourceGroupName, accountName, raiPolicyName, this.innerModel(), createIfMatch,
-                createIfNoneMatch, Context.NONE)
+            .createOrUpdateWithResponse(resourceGroupName, accountName, raiPolicyName, this.innerModel(), Context.NONE)
             .getValue();
         return this;
     }
@@ -94,8 +85,7 @@ public final class RaiPolicyImpl implements RaiPolicy, RaiPolicy.Definition, Rai
     public RaiPolicy create(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getRaiPolicies()
-            .createOrUpdateWithResponse(resourceGroupName, accountName, raiPolicyName, this.innerModel(), createIfMatch,
-                createIfNoneMatch, context)
+            .createOrUpdateWithResponse(resourceGroupName, accountName, raiPolicyName, this.innerModel(), context)
             .getValue();
         return this;
     }
@@ -104,21 +94,16 @@ public final class RaiPolicyImpl implements RaiPolicy, RaiPolicy.Definition, Rai
         this.innerObject = new RaiPolicyInner();
         this.serviceManager = serviceManager;
         this.raiPolicyName = name;
-        this.createIfMatch = null;
-        this.createIfNoneMatch = null;
     }
 
     public RaiPolicyImpl update() {
-        this.updateIfMatch = null;
-        this.updateIfNoneMatch = null;
         return this;
     }
 
     public RaiPolicy apply() {
         this.innerObject = serviceManager.serviceClient()
             .getRaiPolicies()
-            .createOrUpdateWithResponse(resourceGroupName, accountName, raiPolicyName, this.innerModel(), updateIfMatch,
-                updateIfNoneMatch, Context.NONE)
+            .createOrUpdateWithResponse(resourceGroupName, accountName, raiPolicyName, this.innerModel(), Context.NONE)
             .getValue();
         return this;
     }
@@ -126,8 +111,7 @@ public final class RaiPolicyImpl implements RaiPolicy, RaiPolicy.Definition, Rai
     public RaiPolicy apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getRaiPolicies()
-            .createOrUpdateWithResponse(resourceGroupName, accountName, raiPolicyName, this.innerModel(), updateIfMatch,
-                updateIfNoneMatch, context)
+            .createOrUpdateWithResponse(resourceGroupName, accountName, raiPolicyName, this.innerModel(), context)
             .getValue();
         return this;
     }
@@ -165,29 +149,5 @@ public final class RaiPolicyImpl implements RaiPolicy, RaiPolicy.Definition, Rai
     public RaiPolicyImpl withProperties(RaiPolicyProperties properties) {
         this.innerModel().withProperties(properties);
         return this;
-    }
-
-    public RaiPolicyImpl withIfMatch(String ifMatch) {
-        if (isInCreateMode()) {
-            this.createIfMatch = ifMatch;
-            return this;
-        } else {
-            this.updateIfMatch = ifMatch;
-            return this;
-        }
-    }
-
-    public RaiPolicyImpl withIfNoneMatch(String ifNoneMatch) {
-        if (isInCreateMode()) {
-            this.createIfNoneMatch = ifNoneMatch;
-            return this;
-        } else {
-            this.updateIfNoneMatch = ifNoneMatch;
-            return this;
-        }
-    }
-
-    private boolean isInCreateMode() {
-        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

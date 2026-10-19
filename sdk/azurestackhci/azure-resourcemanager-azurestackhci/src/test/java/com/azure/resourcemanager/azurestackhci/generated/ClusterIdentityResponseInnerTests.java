@@ -11,7 +11,7 @@ public final class ClusterIdentityResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClusterIdentityResponseInner model = BinaryData.fromString(
-            "{\"properties\":{\"aadClientId\":\"clvit\",\"aadTenantId\":\"qzonosggbhcohf\",\"aadServicePrincipalObjectId\":\"sjnkal\",\"aadApplicationObjectId\":\"tiiswacffg\"}}")
+            "{\"properties\":{\"aadClientId\":\"e\",\"aadTenantId\":\"t\",\"aadServicePrincipalObjectId\":\"aqtdoqmcbx\",\"aadApplicationObjectId\":\"vxysl\"}}")
             .toObject(ClusterIdentityResponseInner.class);
     }
 }

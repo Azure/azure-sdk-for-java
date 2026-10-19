@@ -21,6 +21,7 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
+import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -34,6 +35,7 @@ import java.util.List;
 import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.MODEL_ID_NOT_FOUND_ERROR_CODE;
 import static com.azure.ai.formrecognizer.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static com.azure.ai.formrecognizer.implementation.Utility.toFluxByteBuffer;
+import static io.netty.handler.codec.http.HttpResponseStatus.BAD_REQUEST;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -88,7 +90,7 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
 
             StepVerifier.create(client.getCustomModelWithResponse(trainedModel.getModelId()))
                 .assertNext(customFormModelResponse -> {
-                    assertEquals(200, customFormModelResponse.getStatusCode());
+                    assertEquals(customFormModelResponse.getStatusCode(), HttpResponseStatus.OK.code());
                     validateCustomModelData(syncPoller.getFinalResult(), false, false);
                 });
         });
@@ -180,7 +182,7 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
             CustomFormModel createdModel = syncPoller.getFinalResult();
 
             StepVerifier.create(client.deleteModelWithResponse(createdModel.getModelId()))
-                .assertNext(response -> assertEquals(204, response.getStatusCode()))
+                .assertNext(response -> assertEquals(response.getStatusCode(), HttpResponseStatus.NO_CONTENT.code()))
                 .expectComplete()
                 .verify(DEFAULT_TIMEOUT);
 
@@ -210,7 +212,7 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
             CustomFormModel createdModel = syncPoller.getFinalResult();
 
             StepVerifier.create(client.deleteModelWithResponse(createdModel.getModelId()))
-                .assertNext(response -> assertEquals(204, response.getStatusCode()))
+                .assertNext(response -> assertEquals(response.getStatusCode(), HttpResponseStatus.NO_CONTENT.code()))
                 .expectComplete()
                 .verify(DEFAULT_TIMEOUT);
 
@@ -669,7 +671,7 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
             StepVerifier.create(client.beginCreateComposedModel(modelIdList, new CreateComposedModelOptions())
                 .setPollInterval(durationTestMode)).thenAwait().expectErrorSatisfies(throwable -> {
                     assertEquals(HttpResponseException.class, throwable.getClass());
-                    assertEquals(400, ((HttpResponseException) throwable).getResponse().getStatusCode());
+                    assertEquals(BAD_REQUEST.code(), ((HttpResponseException) throwable).getResponse().getStatusCode());
                 }).verify(DEFAULT_TIMEOUT);
 
             client.deleteModel(model1.getModelId()).block();
@@ -699,7 +701,7 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
                     .setPollInterval(durationTestMode)
                     .getSyncPoller()
                     .waitForCompletion());
-            assertEquals(400, httpResponseException.getResponse().getStatusCode());
+            assertEquals(BAD_REQUEST.code(), httpResponseException.getResponse().getStatusCode());
 
             client.deleteModel(model1.getModelId()).block();
         });

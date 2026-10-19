@@ -131,7 +131,7 @@ public final class KeyVaultCertificates implements AzureCertificates {
         List<Pattern> updatedIncludeAliasPatterns = getAliasPatterns(normalizedFilterPatterns, false);
         List<Pattern> updatedExcludeAliasPatterns = getAliasPatterns(normalizedFilterPatterns, true);
 
-        certificatesRefreshIntervalInMs = parameter.getCertificatesRefreshInterval().toMillis();
+        certificatesRefreshIntervalInMs = parameter.getCertificatesRefreshIntervalInMs();
         includeAliasPatterns = updatedIncludeAliasPatterns;
         excludeAliasPatterns = updatedExcludeAliasPatterns;
     }

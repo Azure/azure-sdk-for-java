@@ -12,18 +12,18 @@ public final class RaiEgressManagedIdentityRefTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RaiEgressManagedIdentityRef model
-            = BinaryData.fromString("{\"resource\":\"vdaeyyguxakjsq\",\"format\":\"zbezkgimsidxasic\"}")
+            = BinaryData.fromString("{\"resource\":\"stcyohpfkyrkdbd\",\"format\":\"ogsjkmnwqjno\"}")
                 .toObject(RaiEgressManagedIdentityRef.class);
-        Assertions.assertEquals("vdaeyyguxakjsq", model.resource());
-        Assertions.assertEquals("zbezkgimsidxasic", model.format());
+        Assertions.assertEquals("stcyohpfkyrkdbd", model.resource());
+        Assertions.assertEquals("ogsjkmnwqjno", model.format());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RaiEgressManagedIdentityRef model
-            = new RaiEgressManagedIdentityRef().withResource("vdaeyyguxakjsq").withFormat("zbezkgimsidxasic");
+            = new RaiEgressManagedIdentityRef().withResource("stcyohpfkyrkdbd").withFormat("ogsjkmnwqjno");
         model = BinaryData.fromObject(model).toObject(RaiEgressManagedIdentityRef.class);
-        Assertions.assertEquals("vdaeyyguxakjsq", model.resource());
-        Assertions.assertEquals("zbezkgimsidxasic", model.format());
+        Assertions.assertEquals("stcyohpfkyrkdbd", model.resource());
+        Assertions.assertEquals("ogsjkmnwqjno", model.format());
     }
 }

@@ -20,7 +20,8 @@ import reactor.core.publisher.Mono;
 public final class EdgeDeviceJobsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
-        String responseStr = "{\"kind\":\"EdgeDeviceJob\",\"id\":\"tnwzruzs\",\"name\":\"owxcsmxtl\",\"type\":\"a\"}";
+        String responseStr
+            = "{\"kind\":\"EdgeDeviceJob\",\"id\":\"tvktjhffecqko\",\"name\":\"youergaghp\",\"type\":\"zxkpyehhfdyld\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +31,8 @@ public final class EdgeDeviceJobsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         EdgeDeviceJob response = manager.edgeDeviceJobs()
-            .createOrUpdate("c", "s", "lzbki", new EdgeDeviceJobInner(), com.azure.core.util.Context.NONE);
+            .createOrUpdate("zjuqwqajquzxpi", "hyoipnfdbgso", "cienezfvbenn", new EdgeDeviceJobInner(),
+                com.azure.core.util.Context.NONE);
 
     }
 }

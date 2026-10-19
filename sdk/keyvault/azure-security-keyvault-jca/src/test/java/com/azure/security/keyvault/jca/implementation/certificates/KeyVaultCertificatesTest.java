@@ -17,7 +17,6 @@ import org.junit.jupiter.api.Test;
 import java.lang.reflect.Field;
 import java.security.Key;
 import java.security.cert.Certificate;
-import java.time.Duration;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -58,7 +57,7 @@ public class KeyVaultCertificatesTest {
 
     private KeyVaultCertificates createKeyVaultCertificates(KeyVaultClient client, Set<String> filterPatterns) {
         KeyVaultLoadStoreParameter parameter
-            = new KeyVaultLoadStoreParameter(null).setCertificatesRefreshInterval(Duration.ofSeconds(60))
+            = new KeyVaultLoadStoreParameter(null).setCertificatesRefreshIntervalInMs(60_000)
                 .setCertificateAliasFilterPatterns(filterPatterns);
         return new KeyVaultCertificates(parameter, client);
     }
@@ -229,7 +228,7 @@ public class KeyVaultCertificatesTest {
         });
         keyVaultClient.stubCertificateForVersion(otherVersion, otherCertificate);
         KeyVaultLoadStoreParameter parameter
-            = new KeyVaultLoadStoreParameter(null).setCertificatesRefreshInterval(Duration.ofMillis(1));
+            = new KeyVaultLoadStoreParameter(null).setCertificatesRefreshIntervalInMs(1);
         keyVaultCertificates = new KeyVaultCertificates(parameter, keyVaultClient);
 
         Assertions.assertEquals(matchingAlias, keyVaultCertificates.refreshAndGetAliasByCertificate(certificate));

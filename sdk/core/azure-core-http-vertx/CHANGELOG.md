@@ -8,9 +8,6 @@
 
 ### Bugs Fixed
 
-- Fixed a bug where requests with a streaming body, such as `Flux<ByteBuffer>` or `InputStream`, would never be sent
-  when running with Vert.x 5.x.
-
 ### Other Changes
 
 ## 1.2.0 (2026-09-29)

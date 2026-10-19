@@ -16,56 +16,56 @@ public final class SanNetworksTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SanNetworks model = BinaryData.fromString(
-            "{\"clusterNetworkConfig\":{\"adapterProperties\":{\"priorityValue8021ActionCluster\":840228808,\"priorityValue8021ActionSmb\":127978460,\"bandwidthPercentageSmb\":328261823,\"jumboPacket\":349751254},\"adapterIPConfig\":[{\"name\":\"rtwaenuuzko\",\"networkAdapterName\":\"minrfdw\",\"vlanId\":1704063633,\"addressPrefix\":\"hziuiefozbhdms\"},{\"name\":\"mzqhoftrmaequi\",\"networkAdapterName\":\"xicslfao\",\"vlanId\":1934851491,\"addressPrefix\":\"yylhalnswhccsp\"},{\"name\":\"aivwitqscywu\",\"networkAdapterName\":\"woluhczbwemhair\",\"vlanId\":538424722,\"addressPrefix\":\"z\"},{\"name\":\"msweypqwdxggicc\",\"networkAdapterName\":\"xqhuexm\",\"vlanId\":735026566,\"addressPrefix\":\"stvlzywemhzrnc\"}]}}")
+            "{\"clusterNetworkConfig\":{\"adapterProperties\":{\"priorityValue8021ActionCluster\":1081662268,\"priorityValue8021ActionSmb\":535447173,\"bandwidthPercentageSmb\":88116741,\"jumboPacket\":999279087},\"adapterIPConfig\":[{\"name\":\"ugjhky\",\"networkAdapterName\":\"beddgssofw\",\"vlanId\":1153520576,\"addressPrefix\":\"alkrmn\"},{\"name\":\"jpxac\",\"networkAdapterName\":\"udfnbyxba\",\"vlanId\":1598677133,\"addressPrefix\":\"yvayffimrzr\"},{\"name\":\"zqogse\",\"networkAdapterName\":\"evfdnwnwm\",\"vlanId\":473497877,\"addressPrefix\":\"yyceuzsoi\"},{\"name\":\"ud\",\"networkAdapterName\":\"rx\",\"vlanId\":1839855586,\"addressPrefix\":\"zvaytdwkqbr\"}]}}")
             .toObject(SanNetworks.class);
-        Assertions.assertEquals(840228808,
+        Assertions.assertEquals(1081662268,
             model.clusterNetworkConfig().adapterProperties().priorityValue8021ActionCluster());
-        Assertions.assertEquals(127978460,
+        Assertions.assertEquals(535447173,
             model.clusterNetworkConfig().adapterProperties().priorityValue8021ActionSmb());
-        Assertions.assertEquals(328261823, model.clusterNetworkConfig().adapterProperties().bandwidthPercentageSmb());
-        Assertions.assertEquals(349751254, model.clusterNetworkConfig().adapterProperties().jumboPacket());
-        Assertions.assertEquals("rtwaenuuzko", model.clusterNetworkConfig().adapterIPConfig().get(0).name());
-        Assertions.assertEquals("minrfdw", model.clusterNetworkConfig().adapterIPConfig().get(0).networkAdapterName());
-        Assertions.assertEquals(1704063633, model.clusterNetworkConfig().adapterIPConfig().get(0).vlanId());
-        Assertions.assertEquals("hziuiefozbhdms",
-            model.clusterNetworkConfig().adapterIPConfig().get(0).addressPrefix());
+        Assertions.assertEquals(88116741, model.clusterNetworkConfig().adapterProperties().bandwidthPercentageSmb());
+        Assertions.assertEquals(999279087, model.clusterNetworkConfig().adapterProperties().jumboPacket());
+        Assertions.assertEquals("ugjhky", model.clusterNetworkConfig().adapterIPConfig().get(0).name());
+        Assertions.assertEquals("beddgssofw",
+            model.clusterNetworkConfig().adapterIPConfig().get(0).networkAdapterName());
+        Assertions.assertEquals(1153520576, model.clusterNetworkConfig().adapterIPConfig().get(0).vlanId());
+        Assertions.assertEquals("alkrmn", model.clusterNetworkConfig().adapterIPConfig().get(0).addressPrefix());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SanNetworks model = new SanNetworks().withClusterNetworkConfig(new SanClusterNetworkConfig()
-            .withAdapterProperties(new SanAdapterProperties().withPriorityValue8021ActionCluster(840228808)
-                .withPriorityValue8021ActionSmb(127978460)
-                .withBandwidthPercentageSmb(328261823)
-                .withJumboPacket(349751254))
+            .withAdapterProperties(new SanAdapterProperties().withPriorityValue8021ActionCluster(1081662268)
+                .withPriorityValue8021ActionSmb(535447173)
+                .withBandwidthPercentageSmb(88116741)
+                .withJumboPacket(999279087))
             .withAdapterIPConfig(Arrays.asList(
-                new SanAdapterIPConfig().withName("rtwaenuuzko")
-                    .withNetworkAdapterName("minrfdw")
-                    .withVlanId(1704063633)
-                    .withAddressPrefix("hziuiefozbhdms"),
-                new SanAdapterIPConfig().withName("mzqhoftrmaequi")
-                    .withNetworkAdapterName("xicslfao")
-                    .withVlanId(1934851491)
-                    .withAddressPrefix("yylhalnswhccsp"),
-                new SanAdapterIPConfig().withName("aivwitqscywu")
-                    .withNetworkAdapterName("woluhczbwemhair")
-                    .withVlanId(538424722)
-                    .withAddressPrefix("z"),
-                new SanAdapterIPConfig().withName("msweypqwdxggicc")
-                    .withNetworkAdapterName("xqhuexm")
-                    .withVlanId(735026566)
-                    .withAddressPrefix("stvlzywemhzrnc"))));
+                new SanAdapterIPConfig().withName("ugjhky")
+                    .withNetworkAdapterName("beddgssofw")
+                    .withVlanId(1153520576)
+                    .withAddressPrefix("alkrmn"),
+                new SanAdapterIPConfig().withName("jpxac")
+                    .withNetworkAdapterName("udfnbyxba")
+                    .withVlanId(1598677133)
+                    .withAddressPrefix("yvayffimrzr"),
+                new SanAdapterIPConfig().withName("zqogse")
+                    .withNetworkAdapterName("evfdnwnwm")
+                    .withVlanId(473497877)
+                    .withAddressPrefix("yyceuzsoi"),
+                new SanAdapterIPConfig().withName("ud")
+                    .withNetworkAdapterName("rx")
+                    .withVlanId(1839855586)
+                    .withAddressPrefix("zvaytdwkqbr"))));
         model = BinaryData.fromObject(model).toObject(SanNetworks.class);
-        Assertions.assertEquals(840228808,
+        Assertions.assertEquals(1081662268,
             model.clusterNetworkConfig().adapterProperties().priorityValue8021ActionCluster());
-        Assertions.assertEquals(127978460,
+        Assertions.assertEquals(535447173,
             model.clusterNetworkConfig().adapterProperties().priorityValue8021ActionSmb());
-        Assertions.assertEquals(328261823, model.clusterNetworkConfig().adapterProperties().bandwidthPercentageSmb());
-        Assertions.assertEquals(349751254, model.clusterNetworkConfig().adapterProperties().jumboPacket());
-        Assertions.assertEquals("rtwaenuuzko", model.clusterNetworkConfig().adapterIPConfig().get(0).name());
-        Assertions.assertEquals("minrfdw", model.clusterNetworkConfig().adapterIPConfig().get(0).networkAdapterName());
-        Assertions.assertEquals(1704063633, model.clusterNetworkConfig().adapterIPConfig().get(0).vlanId());
-        Assertions.assertEquals("hziuiefozbhdms",
-            model.clusterNetworkConfig().adapterIPConfig().get(0).addressPrefix());
+        Assertions.assertEquals(88116741, model.clusterNetworkConfig().adapterProperties().bandwidthPercentageSmb());
+        Assertions.assertEquals(999279087, model.clusterNetworkConfig().adapterProperties().jumboPacket());
+        Assertions.assertEquals("ugjhky", model.clusterNetworkConfig().adapterIPConfig().get(0).name());
+        Assertions.assertEquals("beddgssofw",
+            model.clusterNetworkConfig().adapterIPConfig().get(0).networkAdapterName());
+        Assertions.assertEquals(1153520576, model.clusterNetworkConfig().adapterIPConfig().get(0).vlanId());
+        Assertions.assertEquals("alkrmn", model.clusterNetworkConfig().adapterIPConfig().get(0).addressPrefix());
     }
 }

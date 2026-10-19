@@ -28,7 +28,6 @@ import com.azure.resourcemanager.compute.models.DiskEncryptionSetParameters;
 import com.azure.resourcemanager.compute.models.DomainNameLabelScopeTypes;
 import com.azure.resourcemanager.compute.models.EncryptionIdentity;
 import com.azure.resourcemanager.compute.models.EventGridAndResourceGraph;
-import com.azure.resourcemanager.compute.models.FlexProfile;
 import com.azure.resourcemanager.compute.models.HardwareProfile;
 import com.azure.resourcemanager.compute.models.HostEndpointSettings;
 import com.azure.resourcemanager.compute.models.ImageReference;
@@ -182,43 +181,6 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                     .withNetworkProfile(
                         new NetworkProfile().withNetworkInterfaces(Arrays.asList(new NetworkInterfaceReference().withId(
                             "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/nsgExistingNic")
-                            .withPrimary(true)))),
-                null, null, com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2026-04-01/virtualMachineExamples/VirtualMachine_Create_WithFlexProfile.json
-     */
-    /**
-     * Sample code: Create a VM with a FlexProfile.
-     * 
-     * @param manager Entry point to ComputeManager.
-     */
-    public static void createAVMWithAFlexProfile(com.azure.resourcemanager.compute.ComputeManager manager) {
-        manager.serviceClient()
-            .getVirtualMachines()
-            .createOrUpdate("myResourceGroup", "myVM",
-                new VirtualMachineInner().withLocation("westus")
-                    .withTags(mapOf("department", "engineering", "project", "alpha"))
-                    .withFlexProfile(new FlexProfile().withPreferredVMSize("Standard_D4s_v5"))
-                    .withStorageProfile(
-                        new StorageProfile()
-                            .withImageReference(new ImageReference().withPublisher("Canonical")
-                                .withOffer("0001-com-ubuntu-server-focal")
-                                .withSku("20_04-lts-gen2")
-                                .withVersion("latest"))
-                            .withOsDisk(new OSDisk().withCreateOption(DiskCreateOptionTypes.FROM_IMAGE)
-                                .withManagedDisk(new ManagedDiskParameters()
-                                    .withStorageAccountType(StorageAccountTypes.PREMIUM_LRS))))
-                    .withOsProfile(new OSProfile().withComputerName("myVM")
-                        .withAdminUsername("azureuser")
-                        .withLinuxConfiguration(new LinuxConfiguration().withDisablePasswordAuthentication(true)
-                            .withSsh(new SshConfiguration().withPublicKeys(
-                                Arrays.asList(new SshPublicKey().withPath("/home/azureuser/.ssh/authorized_keys")
-                                    .withKeyData("fakeTokenPlaceholder"))))))
-                    .withNetworkProfile(
-                        new NetworkProfile().withNetworkInterfaces(Arrays.asList(new NetworkInterfaceReference().withId(
-                            "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/myNic")
                             .withPrimary(true)))),
                 null, null, com.azure.core.util.Context.NONE);
     }

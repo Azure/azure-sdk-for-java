@@ -7,6 +7,7 @@ package com.azure.resourcemanager.cognitiveservices.models;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.ComputeInner;
+import java.util.Map;
 
 /**
  * An immutable client-side representation of Compute.
@@ -47,6 +48,13 @@ public interface Compute {
      * @return the etag value.
      */
     String etag();
+
+    /**
+     * Gets the tags property: Resource tags.
+     * 
+     * @return the tags value.
+     */
+    Map<String, String> tags();
 
     /**
      * Gets the kind property: The kind (type) of compute resource.
@@ -133,7 +141,8 @@ public interface Compute {
          * The stage of the Compute definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithKind, DefinitionStages.WithIdentity {
+        interface WithCreate
+            extends DefinitionStages.WithTags, DefinitionStages.WithKind, DefinitionStages.WithIdentity {
             /**
              * Executes the create request.
              * 
@@ -148,6 +157,19 @@ public interface Compute {
              * @return the created resource.
              */
             Compute create(Context context);
+        }
+
+        /**
+         * The stage of the Compute definition allowing to specify tags.
+         */
+        interface WithTags {
+            /**
+             * Specifies the tags property: Resource tags..
+             * 
+             * @param tags Resource tags.
+             * @return the next definition stage.
+             */
+            WithCreate withTags(Map<String, String> tags);
         }
 
         /**
@@ -187,7 +209,8 @@ public interface Compute {
     /**
      * The template for Compute update.
      */
-    interface Update extends UpdateStages.WithProperties, UpdateStages.WithKind, UpdateStages.WithIdentity {
+    interface Update
+        extends UpdateStages.WithTags, UpdateStages.WithProperties, UpdateStages.WithKind, UpdateStages.WithIdentity {
         /**
          * Executes the update request.
          * 
@@ -208,6 +231,19 @@ public interface Compute {
      * The Compute update stages.
      */
     interface UpdateStages {
+        /**
+         * The stage of the Compute update allowing to specify tags.
+         */
+        interface WithTags {
+            /**
+             * Specifies the tags property: Resource tags..
+             * 
+             * @param tags Resource tags.
+             * @return the next definition stage.
+             */
+            Update withTags(Map<String, String> tags);
+        }
+
         /**
          * The stage of the Compute update allowing to specify properties.
          */

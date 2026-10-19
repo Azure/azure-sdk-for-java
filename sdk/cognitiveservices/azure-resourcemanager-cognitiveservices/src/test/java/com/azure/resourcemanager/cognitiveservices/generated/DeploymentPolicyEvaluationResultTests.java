@@ -13,27 +13,28 @@ public final class DeploymentPolicyEvaluationResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DeploymentPolicyEvaluationResult model = BinaryData.fromString(
-            "{\"evaluationOutcome\":\"NonCompliant\",\"errorMessage\":\"t\",\"nonCompliantAssignments\":[{\"assignmentId\":\"ebwwaloayqc\",\"policyDefinitionId\":\"rtzju\",\"policySetDefinitionId\":\"wyzmhtxon\",\"evaluationOutcome\":\"Compliant\",\"nonComplianceReason\":\"avjcbpwx\",\"effect\":\"srknftguv\",\"expressionEvaluations\":[{\"expression\":\"prwmdyvxqt\",\"expressionKind\":\"riwwroy\",\"operator\":\"exrmcqibycnojvk\",\"result\":\"e\",\"targetValue\":\"sgzvahapjyzhpv\",\"expressionValue\":\"zcjrvxdjzlmwlx\"},{\"expression\":\"ug\",\"expressionKind\":\"zovawjvz\",\"operator\":\"luthn\",\"result\":\"rnxipei\",\"targetValue\":\"jzuaejxdultskzbb\",\"expressionValue\":\"zumveekgpwo\"},{\"expression\":\"hkfpbs\",\"expressionKind\":\"ofd\",\"operator\":\"uusdttouwa\",\"result\":\"ekqvkeln\",\"targetValue\":\"vbxwyjsflhh\",\"expressionValue\":\"aln\"}]},{\"assignmentId\":\"xisxyawjoyaqcsl\",\"policyDefinitionId\":\"pkii\",\"policySetDefinitionId\":\"yexz\",\"evaluationOutcome\":\"Compliant\",\"nonComplianceReason\":\"xhnrztfolhb\",\"effect\":\"knalaulppg\",\"expressionEvaluations\":[{\"expression\":\"napnyiropuhpigv\",\"expressionKind\":\"ylgqgitxmedjvcsl\",\"operator\":\"qwwncw\",\"result\":\"hxg\",\"targetValue\":\"rmgucnap\",\"expressionValue\":\"eoellwptfdygp\"},{\"expression\":\"b\",\"expressionKind\":\"ceopzfqrhhuaopp\",\"operator\":\"qeqxo\",\"result\":\"dahzxctobg\",\"targetValue\":\"dmoizpostmg\",\"expressionValue\":\"fbunrmfqjhhk\"},{\"expression\":\"pvjymjhxxjyng\",\"expressionKind\":\"ivkrtsw\",\"operator\":\"qzvszjf\",\"result\":\"vjfdx\",\"targetValue\":\"vetvt\",\"expressionValue\":\"aqtdoqmcbx\"},{\"expression\":\"vxysl\",\"expressionKind\":\"hsfxoblytkb\",\"operator\":\"pe\",\"result\":\"wfbkrvrns\",\"targetValue\":\"hqjohxcrsbfova\",\"expressionValue\":\"ruvw\"}]},{\"assignmentId\":\"sqfsubcgjbirxb\",\"policyDefinitionId\":\"bsrfbj\",\"policySetDefinitionId\":\"twss\",\"evaluationOutcome\":\"Error\",\"nonComplianceReason\":\"pvjzbe\",\"effect\":\"l\",\"expressionEvaluations\":[{\"expression\":\"qqnvwpmq\",\"expressionKind\":\"ruoujmk\",\"operator\":\"hwqytj\",\"result\":\"bnw\",\"targetValue\":\"wgdrjervnaenqp\",\"expressionValue\":\"indoygmifthnzd\"},{\"expression\":\"sl\",\"expressionKind\":\"ayqigynduhav\",\"operator\":\"lkthu\",\"result\":\"qolbgyc\",\"targetValue\":\"iertgccymvaolp\",\"expressionValue\":\"lqlfm\"}]},{\"assignmentId\":\"n\",\"policyDefinitionId\":\"glzpswiydm\",\"policySetDefinitionId\":\"yhz\",\"evaluationOutcome\":\"Compliant\",\"nonComplianceReason\":\"adbzmnvdfznud\",\"effect\":\"dvxzbncblylpst\",\"expressionEvaluations\":[{\"expression\":\"xsrz\",\"expressionKind\":\"ucerscdntnevfi\",\"operator\":\"mygtdssls\",\"result\":\"mweriofzpy\",\"targetValue\":\"emwabnet\",\"expressionValue\":\"hszhedplvwiwu\"}]}]}")
+            "{\"evaluationOutcome\":\"Compliant\",\"errorMessage\":\"xisxyawjoyaqcsl\",\"nonCompliantAssignments\":[{\"assignmentId\":\"iidzyexzne\",\"policyDefinitionId\":\"xhnrztfolhb\",\"policySetDefinitionId\":\"knalaulppg\",\"evaluationOutcome\":\"Compliant\",\"nonComplianceReason\":\"napnyiropuhpigv\",\"effect\":\"ylgqgitxmedjvcsl\",\"expressionEvaluations\":[{\"expression\":\"wncwzzhxgktrmg\",\"expressionKind\":\"napkteoellw\",\"operator\":\"fdygpfqbuaceopz\",\"result\":\"rhhuaopppcqeqx\",\"targetValue\":\"z\",\"expressionValue\":\"hzxct\"},{\"expression\":\"gbkdmoizpos\",\"expressionKind\":\"grcfb\",\"operator\":\"rmfqjhhkxbpvj\",\"result\":\"jhxxjyn\",\"targetValue\":\"divkrt\",\"expressionValue\":\"bxqz\"}]}]}")
             .toObject(DeploymentPolicyEvaluationResult.class);
-        Assertions.assertEquals(PolicyEvaluationOutcome.NON_COMPLIANT, model.evaluationOutcome());
-        Assertions.assertEquals("t", model.errorMessage());
-        Assertions.assertEquals("ebwwaloayqc", model.nonCompliantAssignments().get(0).assignmentId());
-        Assertions.assertEquals("rtzju", model.nonCompliantAssignments().get(0).policyDefinitionId());
-        Assertions.assertEquals("wyzmhtxon", model.nonCompliantAssignments().get(0).policySetDefinitionId());
+        Assertions.assertEquals(PolicyEvaluationOutcome.COMPLIANT, model.evaluationOutcome());
+        Assertions.assertEquals("xisxyawjoyaqcsl", model.errorMessage());
+        Assertions.assertEquals("iidzyexzne", model.nonCompliantAssignments().get(0).assignmentId());
+        Assertions.assertEquals("xhnrztfolhb", model.nonCompliantAssignments().get(0).policyDefinitionId());
+        Assertions.assertEquals("knalaulppg", model.nonCompliantAssignments().get(0).policySetDefinitionId());
         Assertions.assertEquals(PolicyEvaluationOutcome.COMPLIANT,
             model.nonCompliantAssignments().get(0).evaluationOutcome());
-        Assertions.assertEquals("avjcbpwx", model.nonCompliantAssignments().get(0).nonComplianceReason());
-        Assertions.assertEquals("srknftguv", model.nonCompliantAssignments().get(0).effect());
-        Assertions.assertEquals("prwmdyvxqt",
+        Assertions.assertEquals("napnyiropuhpigv", model.nonCompliantAssignments().get(0).nonComplianceReason());
+        Assertions.assertEquals("ylgqgitxmedjvcsl", model.nonCompliantAssignments().get(0).effect());
+        Assertions.assertEquals("wncwzzhxgktrmg",
             model.nonCompliantAssignments().get(0).expressionEvaluations().get(0).expression());
-        Assertions.assertEquals("riwwroy",
+        Assertions.assertEquals("napkteoellw",
             model.nonCompliantAssignments().get(0).expressionEvaluations().get(0).expressionKind());
-        Assertions.assertEquals("exrmcqibycnojvk",
+        Assertions.assertEquals("fdygpfqbuaceopz",
             model.nonCompliantAssignments().get(0).expressionEvaluations().get(0).operator());
-        Assertions.assertEquals("e", model.nonCompliantAssignments().get(0).expressionEvaluations().get(0).result());
-        Assertions.assertEquals("sgzvahapjyzhpv",
+        Assertions.assertEquals("rhhuaopppcqeqx",
+            model.nonCompliantAssignments().get(0).expressionEvaluations().get(0).result());
+        Assertions.assertEquals("z",
             model.nonCompliantAssignments().get(0).expressionEvaluations().get(0).targetValue());
-        Assertions.assertEquals("zcjrvxdjzlmwlx",
+        Assertions.assertEquals("hzxct",
             model.nonCompliantAssignments().get(0).expressionEvaluations().get(0).expressionValue());
     }
 }

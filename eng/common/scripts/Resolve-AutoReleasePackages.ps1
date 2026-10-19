@@ -58,7 +58,6 @@ The path to the azsdk executable used for release operations. Defaults to the AZ
 Azure DevOps output variables (reference cross-stage via dependencies.<stage>.outputs['<job>.<step>.<name>']):
   - HasAutoReleaseArtifacts    : 'true' if at least one declared package is releasable
   - AutoReleaseArtifactsJson   : JSON array of the matched declared-artifact objects (or '[]')
-  - AutoReleaseSdkPullRequestUrl : the SDK PR selected for this release, for release-stage status correlation
   - ReleaseArtifact_<safeName> : 'true'/'false' per declared artifact
 HasAutoReleaseArtifacts is the single eligibility gate: it is 'true' only when a merged, auto-release-labeled
 PR changed at least one declared package, and it is emitted last so any earlier failure fails closed.
@@ -102,7 +101,6 @@ catch {
 # Fail-closed defaults: nothing releases unless we positively determine otherwise below.
 Set-PipelineVariable -Name 'HasAutoReleaseArtifacts' -Value 'false' -IsOutput
 Set-PipelineVariable -Name 'AutoReleaseArtifactsJson' -Value '[]' -IsOutput
-Set-PipelineVariable -Name 'AutoReleaseSdkPullRequestUrl' -Value '' -IsOutput
 foreach ($artifact in $declaredArtifacts) {
   if ($artifact.PSObject.Properties['safeName'] -and $artifact.safeName) {
     Set-PipelineVariable -Name "ReleaseArtifact_$($artifact.safeName)" -Value 'false' -IsOutput
@@ -240,8 +238,9 @@ function Invoke-AutoReleaseResolution {
           }
           if($AzsdkExePath)
           {
+            $sdkPullRequestUrl = $pr.html_url
             Write-Host "Updating release plan for package '$packageName' (artifact name: '$name', package name: '$packageName')"
-            $cliArgs = @("release-plan", "update-release-status", "--package-name", $packageName, "--language", $LanguageDisplayName, "--status", "Release In Progress", "--sdk-pull-request", $prLink)
+            $cliArgs = @("release-plan", "update-release-status", "--package-name", $packageName, "--language", $LanguageDisplayName, "--status", "Release In Progress", "--sdk-pull-request", $sdkPullRequestUrl)
             if ($PipelineUrl)
             {
                 $cliArgs += @("--release-pipeline", $PipelineUrl)
@@ -255,7 +254,7 @@ function Invoke-AutoReleaseResolution {
             if ($LASTEXITCODE -ne 0)
             {
                 ## Not all releases have a release plan. So we should not fail the script even if a release plan is missing.
-              LogWarning "Failed to update release in progress status for package '$packageName' using azsdk. Exit code: $LASTEXITCODE"
+                Write-Host "Failed to update release in progress status for package '$packageName' using azsdk. Exit code: $LASTEXITCODE"
             }
           }
           else
@@ -281,7 +280,6 @@ function Invoke-AutoReleaseResolution {
     # Pipe (not -InputObject) with -AsArray so a single match still serializes as a JSON array, '[{...}]'.
     $artifactsJson = $matchedArtifacts | ConvertTo-Json -Depth 100 -Compress -AsArray
     Set-PipelineVariable -Name 'AutoReleaseArtifactsJson' -Value $artifactsJson -IsOutput
-    Set-PipelineVariable -Name 'AutoReleaseSdkPullRequestUrl' -Value $prLink -IsOutput
     Write-Host "Auto-release packages from PR ${prLink}: $((@($matchedArtifacts | ForEach-Object { $_.name })) -join ', ')"
     Set-PipelineVariable -Name 'HasAutoReleaseArtifacts' -Value 'true' -IsOutput
   }
@@ -300,7 +298,6 @@ catch {
   LogWarning "Auto-release resolution failed; skipping auto-release. $($_.Exception.Message)"
   Set-PipelineVariable -Name 'HasAutoReleaseArtifacts' -Value 'false' -IsOutput
   Set-PipelineVariable -Name 'AutoReleaseArtifactsJson' -Value '[]' -IsOutput
-  Set-PipelineVariable -Name 'AutoReleaseSdkPullRequestUrl' -Value '' -IsOutput
   foreach ($artifact in $declaredArtifacts) {
     if ($artifact.PSObject.Properties['safeName'] -and $artifact.safeName) {
       Set-PipelineVariable -Name "ReleaseArtifact_$($artifact.safeName)" -Value 'false' -IsOutput

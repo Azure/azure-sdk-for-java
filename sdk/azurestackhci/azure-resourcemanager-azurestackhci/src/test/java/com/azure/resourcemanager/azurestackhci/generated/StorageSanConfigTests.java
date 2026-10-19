@@ -12,18 +12,17 @@ public final class StorageSanConfigTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StorageSanConfig model
-            = BinaryData.fromString("{\"infraVolLunId\":\"qgbdbuta\",\"infraPerfLunId\":\"fbtkuwhhmhyk\"}")
+            = BinaryData.fromString("{\"infraVolLunId\":\"aokonzmnsik\",\"infraPerfLunId\":\"kqze\"}")
                 .toObject(StorageSanConfig.class);
-        Assertions.assertEquals("qgbdbuta", model.infraVolLunId());
-        Assertions.assertEquals("fbtkuwhhmhyk", model.infraPerfLunId());
+        Assertions.assertEquals("aokonzmnsik", model.infraVolLunId());
+        Assertions.assertEquals("kqze", model.infraPerfLunId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        StorageSanConfig model
-            = new StorageSanConfig().withInfraVolLunId("qgbdbuta").withInfraPerfLunId("fbtkuwhhmhyk");
+        StorageSanConfig model = new StorageSanConfig().withInfraVolLunId("aokonzmnsik").withInfraPerfLunId("kqze");
         model = BinaryData.fromObject(model).toObject(StorageSanConfig.class);
-        Assertions.assertEquals("qgbdbuta", model.infraVolLunId());
-        Assertions.assertEquals("fbtkuwhhmhyk", model.infraPerfLunId());
+        Assertions.assertEquals("aokonzmnsik", model.infraVolLunId());
+        Assertions.assertEquals("kqze", model.infraPerfLunId());
     }
 }

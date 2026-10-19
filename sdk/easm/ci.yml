@@ -1,0 +1,39 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/easm/ci.yml
+      - sdk/easm/azure-analytics-defender-easm/
+    exclude:
+      - sdk/easm/pom.xml
+      - sdk/easm/azure-analytics-defender-easm/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/easm/ci.yml
+      - sdk/easm/azure-analytics-defender-easm/
+    exclude:
+      - sdk/easm/pom.xml
+      - sdk/easm/azure-analytics-defender-easm/pom.xml
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: easm
+    Artifacts:
+      - name: azure-analytics-defender-easm
+        groupId: com.azure
+        safeName: azureanalyticsdefendereasm

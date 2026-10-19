@@ -18,6 +18,7 @@ Group;Azure Core - Serializer - JSON - Gson;com.azure.core.serializer.json.gson*
 Group;Azure Core - Serializer - JSON - Jackson;com.azure.core.serializer.json.jackson*
 Group;Azure Core - Test;com.azure.core.test*
 Group;Azure Core - Tracing - OpenTelemetry;com.azure.core.tracing.opentelemetry*
+Group;Azure Anomaly Detector;com.azure.ai.anomalydetector*
 Group;Azure App Configuration;com.azure.data.appconfiguration*
 Group;Azure Communication;com.azure.communication*
 Group;Azure Confidential Ledger;com.azure.security.confidentialledger*
@@ -25,10 +26,12 @@ Group;Azure Container Registry;com.azure.containers.containerregistry*
 Group;Azure Cosmos;com.azure.cosmos*
 Group;Azure Device Update for IoT Hub;com.azure.iot.deviceupdate*
 Group;Azure Digital Twins;com.azure.digitaltwins.core*
+Group;Azure Document Translator;com.azure.ai.documenttranslator*
 Group;Azure Event Grid;com.azure.messaging.eventgrid*
 Group;Azure Event Hubs;com.azure.messaging.eventhubs*
 Group;Azure Form Recognizer;com.azure.ai.formrecognizer*
 Group;Azure Identity;com.azure.identity*
+Group;Azure IoT Models Repository;com.azure.iot.modelsrepository*
 Group;Azure Key Vault;com.azure.security.keyvault*
 Group;Azure Metrics Advisor;com.azure.ai.metricsadvisor*
 Group;Azure Monitor - Ingestion;com.azure.monitor.ingestion*

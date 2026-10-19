@@ -21,7 +21,7 @@ public final class ExtensionsCreateMockTests {
     @Test
     public void testCreate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"extensionParameters\":{\"forceUpdateTag\":\"ossj\",\"publisher\":\"vxpzwdqzuhfgt\",\"type\":\"czhfjdcc\",\"typeHandlerVersion\":\"yuvb\",\"autoUpgradeMinorVersion\":false,\"settings\":\"\\\"datajcgjtjkntomnl\\\"\",\"protectedSettings\":\"\\\"datahcdb\\\"\",\"enableAutomaticUpgrade\":false},\"aggregateState\":\"Canceled\",\"perNodeExtensionDetails\":[{\"name\":\"eyvidcowlrmbdct\",\"extension\":\"avej\",\"typeHandlerVersion\":\"zvwkryzgavplndm\",\"state\":\"PartiallySucceeded\",\"instanceView\":{\"name\":\"kiskyyyaeknfffy\",\"type\":\"daw\",\"typeHandlerVersion\":\"mlcufb\",\"status\":{}}},{\"name\":\"utfofhoajjyl\",\"extension\":\"qyjnu\",\"typeHandlerVersion\":\"vlqq\",\"state\":\"Moving\",\"instanceView\":{\"name\":\"eevogirrpwnq\",\"type\":\"uxeu\",\"typeHandlerVersion\":\"dssijuaxxf\",\"status\":{}}},{\"name\":\"pkcpws\",\"extension\":\"nnmjun\",\"typeHandlerVersion\":\"lxcltjhbcycg\",\"state\":\"Provisioning\",\"instanceView\":{\"name\":\"ihxv\",\"type\":\"cwwfopxp\",\"typeHandlerVersion\":\"xns\",\"status\":{}}},{\"name\":\"whzqqgugw\",\"extension\":\"xahtqmmkdhwqc\",\"typeHandlerVersion\":\"ebagmfpkephuj\",\"state\":\"PartiallySucceeded\",\"instanceView\":{\"name\":\"vkke\",\"type\":\"gvypaxpj\",\"typeHandlerVersion\":\"illgnu\",\"status\":{}}}],\"managedBy\":\"Azure\"},\"id\":\"ffbuqxknvm\",\"name\":\"g\",\"type\":\"bg\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"extensionParameters\":{\"forceUpdateTag\":\"ylslurb\",\"publisher\":\"ygpnyhgdzuqsca\",\"type\":\"yvouprsytq\",\"typeHandlerVersion\":\"slhmgw\",\"autoUpgradeMinorVersion\":true,\"settings\":\"\\\"datarxpfdui\\\"\",\"protectedSettings\":\"\\\"datahgyqvpbfj\\\"\",\"enableAutomaticUpgrade\":true},\"aggregateState\":\"PartiallyConnected\",\"perNodeExtensionDetails\":[{\"name\":\"luczdquurbo\",\"extension\":\"vhvzielbprnqu\",\"typeHandlerVersion\":\"wzcqygg\",\"state\":\"Connected\",\"instanceView\":{\"name\":\"hbngqiwyej\",\"type\":\"bdrrpnrehkunsb\",\"typeHandlerVersion\":\"hhlwtpk\",\"status\":{}}},{\"name\":\"eattbzkgtzqnw\",\"extension\":\"ttewuvcysjeu\",\"typeHandlerVersion\":\"x\",\"state\":\"Deleting\",\"instanceView\":{\"name\":\"tfnonpi\",\"type\":\"xlvrhprrvbwonleq\",\"typeHandlerVersion\":\"vtlrvbstph\",\"status\":{}}},{\"name\":\"uninttlnrjdszd\",\"extension\":\"ziciqppoqvgpn\",\"typeHandlerVersion\":\"uhwfwj\",\"state\":\"PartiallySucceeded\",\"instanceView\":{\"name\":\"xtfnress\",\"type\":\"pg\",\"typeHandlerVersion\":\"ncjmgvsnvbtq\",\"status\":{}}}],\"managedBy\":\"User\"},\"id\":\"ym\",\"name\":\"n\",\"type\":\"jluqllbsupu\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,23 +31,23 @@ public final class ExtensionsCreateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Extension response = manager.extensions()
-            .define("hdbitq")
-            .withExistingArcSetting("gebzqzmcsviujo", "zdvmsnao", "xsxoxvimdvet")
-            .withForceUpdateTag("gomrihumgrmsdbv")
-            .withPublisher("gfygfkgxbdpb")
-            .withTypePropertiesType("hwbdpsesboynpy")
-            .withTypeHandlerVersion("orrvk")
+            .define("uywevtjrieikmwl")
+            .withExistingArcSetting("zl", "ynjpchamkaepl", "ajubo")
+            .withForceUpdateTag("isyxgucbmtredsc")
+            .withPublisher("stjcyyuvtzr")
+            .withTypePropertiesType("hcle")
+            .withTypeHandlerVersion("wtzqzcloyhy")
             .withAutoUpgradeMinorVersion(false)
-            .withSettings("\"datatanetinqxdhnpjn\"")
-            .withProtectedSettings("\"datajighd\"")
+            .withSettings("\"datadhz\"")
+            .withProtectedSettings("\"datare\"")
             .withEnableAutomaticUpgrade(false)
             .create();
 
-        Assertions.assertEquals("ossj", response.forceUpdateTag());
-        Assertions.assertEquals("vxpzwdqzuhfgt", response.publisher());
-        Assertions.assertEquals("czhfjdcc", response.typePropertiesType());
-        Assertions.assertEquals("yuvb", response.typeHandlerVersion());
-        Assertions.assertFalse(response.autoUpgradeMinorVersion());
-        Assertions.assertFalse(response.enableAutomaticUpgrade());
+        Assertions.assertEquals("ylslurb", response.forceUpdateTag());
+        Assertions.assertEquals("ygpnyhgdzuqsca", response.publisher());
+        Assertions.assertEquals("yvouprsytq", response.typePropertiesType());
+        Assertions.assertEquals("slhmgw", response.typeHandlerVersion());
+        Assertions.assertTrue(response.autoUpgradeMinorVersion());
+        Assertions.assertTrue(response.enableAutomaticUpgrade());
     }
 }

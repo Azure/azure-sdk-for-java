@@ -36,6 +36,7 @@ import com.azure.messaging.servicebus.administration.models.CreateQueueOptions;
 import com.azure.messaging.servicebus.administration.models.QueueProperties;
 import com.azure.messaging.servicebus.administration.models.QueueRuntimeProperties;
 import com.azure.messaging.servicebus.administration.models.SubscriptionProperties;
+import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -507,7 +508,7 @@ class ServiceBusAdministrationClientTest {
         final Response<Void> actual = client.deleteRuleWithResponse(topicName, subscriptionName, ruleName, context);
 
         // Assert
-        assertEquals(204, actual.getStatusCode());
+        assertEquals(actual.getStatusCode(), HttpResponseStatus.NO_CONTENT.code());
     }
 
     @Test
@@ -533,7 +534,7 @@ class ServiceBusAdministrationClientTest {
         final Response<Void> actual = client.deleteSubscriptionWithResponse(topicName, subscriptionName, context);
 
         // Assert
-        assertEquals(204, actual.getStatusCode());
+        assertEquals(actual.getStatusCode(), HttpResponseStatus.NO_CONTENT.code());
     }
 
     @Test
@@ -559,7 +560,7 @@ class ServiceBusAdministrationClientTest {
         final Response<Void> actual = client.deleteTopicWithResponse(topicName, context);
 
         // Assert
-        assertEquals(204, actual.getStatusCode());
+        assertEquals(actual.getStatusCode(), HttpResponseStatus.NO_CONTENT.code());
     }
 
     /**

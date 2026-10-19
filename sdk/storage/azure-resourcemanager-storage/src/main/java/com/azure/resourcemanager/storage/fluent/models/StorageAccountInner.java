@@ -39,7 +39,6 @@ import com.azure.resourcemanager.storage.models.Sku;
 import com.azure.resourcemanager.storage.models.StorageAccountSharedKeyAccessProperties;
 import com.azure.resourcemanager.storage.models.StorageAccountSkuConversionStatus;
 import com.azure.resourcemanager.storage.models.StorageDataCollaborationPolicyProperties;
-import com.azure.resourcemanager.storage.models.TurboTier;
 import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -418,29 +417,6 @@ public final class StorageAccountInner extends Resource {
      */
     public AccessTier accessTier() {
         return this.innerProperties() == null ? null : this.innerProperties().accessTier();
-    }
-
-    /**
-     * Get the turboTier property: Configures Turbo Tier for the storage account.
-     * 
-     * @return the turboTier value.
-     */
-    public TurboTier turboTier() {
-        return this.innerProperties() == null ? null : this.innerProperties().turboTier();
-    }
-
-    /**
-     * Set the turboTier property: Configures Turbo Tier for the storage account.
-     * 
-     * @param turboTier the turboTier value to set.
-     * @return the StorageAccountInner object itself.
-     */
-    public StorageAccountInner withTurboTier(TurboTier turboTier) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new StorageAccountPropertiesInner();
-        }
-        this.innerProperties().withTurboTier(turboTier);
-        return this;
     }
 
     /**

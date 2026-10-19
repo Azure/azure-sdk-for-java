@@ -36,8 +36,7 @@ import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.EventLoopGroup;
-import io.netty.channel.MultiThreadIoEventLoopGroup;
-import io.netty.channel.nio.NioIoHandler;
+import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.logging.LogLevel;
@@ -61,8 +60,8 @@ public class TcpServer {
 
     public TcpServer(int port) {
         this.port = port;
-        this.parent = new MultiThreadIoEventLoopGroup(NioIoHandler.newFactory());
-        this.child = new MultiThreadIoEventLoopGroup(NioIoHandler.newFactory());
+        this.parent = new NioEventLoopGroup();
+        this.child = new NioEventLoopGroup();
         requestManager = new ServerRntbdRequestManager();
     }
 

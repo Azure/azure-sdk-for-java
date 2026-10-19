@@ -10,10 +10,6 @@
 
 ### Other Changes
 
-#### Dependency Updates
-
-- Upgraded Reactor from `3.7.19` to `3.8.7`.
-
 ## 1.60.0 (2026-09-29)
 
 ### Features Added
@@ -30,8 +26,6 @@
   that point could never run, so this case is now logged and the work continues.
 
 ### Other Changes
-
-#### Dependency Updates
 
 - Upgraded Jackson from `2.18.9` to `2.18.11`.
 

@@ -22,7 +22,7 @@ public final class ArcSettingsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Accepted\",\"arcInstanceResourceGroup\":\"xsgcemegd\",\"arcApplicationClientId\":\"vyljubvfjyzufldi\",\"arcApplicationTenantId\":\"ivl\",\"arcServicePrincipalObjectId\":\"ggmaac\",\"arcApplicationObjectId\":\"uhvcgzxhkls\",\"aggregateState\":\"Deleted\",\"perNodeDetails\":[{\"name\":\"y\",\"arcInstance\":\"tsrjyxxoxwfz\",\"arcNodeServicePrincipalObjectId\":\"vecnxfxphs\",\"state\":\"InProgress\"},{\"name\":\"bsnbwutlvuw\",\"arcInstance\":\"u\",\"arcNodeServicePrincipalObjectId\":\"stih\",\"state\":\"Disconnected\"},{\"name\":\"fjajvkyxmm\",\"arcInstance\":\"zvogtde\",\"arcNodeServicePrincipalObjectId\":\"ennmkvaeuwqd\",\"state\":\"PartiallyConnected\"},{\"name\":\"lbmyphfxnrp\",\"arcInstance\":\"ewokyqsfkxf\",\"arcNodeServicePrincipalObjectId\":\"wbihqbtodjfyxbvk\",\"state\":\"NotSpecified\"}],\"connectivityProperties\":{\"enabled\":false,\"serviceConfigurations\":[{\"serviceName\":\"WAC\",\"port\":1637294898497378389}]},\"defaultExtensions\":[{\"category\":\"yoz\",\"consentTime\":\"2021-07-21T17:48:45Z\"}]},\"id\":\"njdvv\",\"name\":\"rho\",\"type\":\"rkkvxundqzbv\"}";
+            = "{\"properties\":{\"provisioningState\":\"NotSpecified\",\"arcInstanceResourceGroup\":\"kajlcyizy\",\"arcApplicationClientId\":\"cvxodkrvfsxxby\",\"arcApplicationTenantId\":\"sqlv\",\"arcServicePrincipalObjectId\":\"cpwgoljtzxnmxsd\",\"arcApplicationObjectId\":\"ygoogxqapjxva\",\"aggregateState\":\"Provisioning\",\"perNodeDetails\":[{\"name\":\"saodj\",\"arcInstance\":\"sdk\",\"arcNodeServicePrincipalObjectId\":\"bfas\",\"state\":\"PartiallySucceeded\"}],\"connectivityProperties\":{\"enabled\":true,\"serviceConfigurations\":[{\"serviceName\":\"WAC\",\"port\":1287813328153685233},{\"serviceName\":\"WAC\",\"port\":8912121229311861680},{\"serviceName\":\"WAC\",\"port\":2008162710152183739}]},\"defaultExtensions\":[{\"category\":\"zboimyfpqdo\",\"consentTime\":\"2021-11-30T13:57:22Z\"}]},\"id\":\"nwyytfv\",\"name\":\"ct\",\"type\":\"jikffffgkuhznw\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,18 +32,18 @@ public final class ArcSettingsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ArcSetting response = manager.arcSettings()
-            .getWithResponse("vztnjawrhulemm", "mbwppxirxbkitzmn", "itaxju", com.azure.core.util.Context.NONE)
+            .getWithResponse("vwtiwsmosa", "nhqnampp", "ltassaekewna", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("xsgcemegd", response.arcInstanceResourceGroup());
-        Assertions.assertEquals("vyljubvfjyzufldi", response.arcApplicationClientId());
-        Assertions.assertEquals("ivl", response.arcApplicationTenantId());
-        Assertions.assertEquals("ggmaac", response.arcServicePrincipalObjectId());
-        Assertions.assertEquals("uhvcgzxhkls", response.arcApplicationObjectId());
-        Assertions.assertFalse(response.connectivityProperties().enabled());
+        Assertions.assertEquals("kajlcyizy", response.arcInstanceResourceGroup());
+        Assertions.assertEquals("cvxodkrvfsxxby", response.arcApplicationClientId());
+        Assertions.assertEquals("sqlv", response.arcApplicationTenantId());
+        Assertions.assertEquals("cpwgoljtzxnmxsd", response.arcServicePrincipalObjectId());
+        Assertions.assertEquals("ygoogxqapjxva", response.arcApplicationObjectId());
+        Assertions.assertTrue(response.connectivityProperties().enabled());
         Assertions.assertEquals(ServiceName.WAC,
             response.connectivityProperties().serviceConfigurations().get(0).serviceName());
-        Assertions.assertEquals(1637294898497378389L,
+        Assertions.assertEquals(1287813328153685233L,
             response.connectivityProperties().serviceConfigurations().get(0).port());
     }
 }

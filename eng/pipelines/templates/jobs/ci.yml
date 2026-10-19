@@ -308,7 +308,6 @@ jobs:
 
   - job: 'Analyze'
     condition: and(succeeded(), ne(variables['Skip.Analyze'], 'true'))
-    timeoutInMinutes: 120
 
     pool:
       name: $(LINUXPOOL)

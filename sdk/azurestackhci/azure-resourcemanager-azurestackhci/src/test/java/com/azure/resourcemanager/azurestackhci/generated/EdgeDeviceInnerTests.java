@@ -10,10 +10,9 @@ import com.azure.resourcemanager.azurestackhci.fluent.models.EdgeDeviceInner;
 public final class EdgeDeviceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EdgeDeviceInner model = BinaryData
-            .fromString(
-                "{\"kind\":\"EdgeDevice\",\"id\":\"cpmguaadraufact\",\"name\":\"ahzovajjziuxxp\",\"type\":\"hneekul\"}")
-            .toObject(EdgeDeviceInner.class);
+        EdgeDeviceInner model
+            = BinaryData.fromString("{\"kind\":\"EdgeDevice\",\"id\":\"np\",\"name\":\"w\",\"type\":\"ehtuevrhr\"}")
+                .toObject(EdgeDeviceInner.class);
     }
 
     @org.junit.jupiter.api.Test

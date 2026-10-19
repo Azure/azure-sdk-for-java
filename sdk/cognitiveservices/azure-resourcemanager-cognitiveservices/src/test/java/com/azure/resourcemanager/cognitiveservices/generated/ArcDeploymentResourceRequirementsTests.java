@@ -12,20 +12,21 @@ public final class ArcDeploymentResourceRequirementsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ArcDeploymentResourceRequirements model
-            = BinaryData.fromString("{\"cpu\":\"od\",\"memory\":\"vohkxdxuws\",\"gpu\":2006589225}")
+            = BinaryData.fromString("{\"cpu\":\"etpozycyqiq\",\"memory\":\"gfsetzlexbsfled\",\"gpu\":246722999}")
                 .toObject(ArcDeploymentResourceRequirements.class);
-        Assertions.assertEquals("od", model.cpu());
-        Assertions.assertEquals("vohkxdxuws", model.memory());
-        Assertions.assertEquals(2006589225, model.gpu());
+        Assertions.assertEquals("etpozycyqiq", model.cpu());
+        Assertions.assertEquals("gfsetzlexbsfled", model.memory());
+        Assertions.assertEquals(246722999, model.gpu());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ArcDeploymentResourceRequirements model
-            = new ArcDeploymentResourceRequirements().withCpu("od").withMemory("vohkxdxuws").withGpu(2006589225);
+        ArcDeploymentResourceRequirements model = new ArcDeploymentResourceRequirements().withCpu("etpozycyqiq")
+            .withMemory("gfsetzlexbsfled")
+            .withGpu(246722999);
         model = BinaryData.fromObject(model).toObject(ArcDeploymentResourceRequirements.class);
-        Assertions.assertEquals("od", model.cpu());
-        Assertions.assertEquals("vohkxdxuws", model.memory());
-        Assertions.assertEquals(2006589225, model.gpu());
+        Assertions.assertEquals("etpozycyqiq", model.cpu());
+        Assertions.assertEquals("gfsetzlexbsfled", model.memory());
+        Assertions.assertEquals(246722999, model.gpu());
     }
 }

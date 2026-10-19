@@ -15,6 +15,7 @@ import com.azure.security.keyvault.secrets.implementation.KeyVaultCredentialPoli
 import com.azure.security.keyvault.secrets.models.DeletedSecret;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import com.azure.security.keyvault.secrets.models.SecretProperties;
+import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -229,7 +230,8 @@ public class SecretClientTest extends SecretClientTestBase {
     public void deleteSecretNotFound(HttpClient httpClient, SecretServiceVersion serviceVersion) {
         createClient(httpClient, serviceVersion);
 
-        assertRestException(() -> secretClient.beginDeleteSecret("non-existing"), ResourceNotFoundException.class, 404);
+        assertRestException(() -> secretClient.beginDeleteSecret("non-existing"), ResourceNotFoundException.class,
+            HttpResponseStatus.NOT_FOUND.code());
     }
 
     /**
@@ -307,7 +309,7 @@ public class SecretClientTest extends SecretClientTestBase {
         createClient(httpClient, serviceVersion);
 
         assertRestException(() -> secretClient.beginRecoverDeletedSecret("non-existing"),
-            ResourceNotFoundException.class, 404);
+            ResourceNotFoundException.class, HttpResponseStatus.NOT_FOUND.code());
     }
 
     /**

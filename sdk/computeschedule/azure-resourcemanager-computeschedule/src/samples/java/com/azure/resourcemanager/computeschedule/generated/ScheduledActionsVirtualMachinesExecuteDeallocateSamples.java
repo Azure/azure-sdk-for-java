@@ -7,7 +7,6 @@ package com.azure.resourcemanager.computeschedule.generated;
 import com.azure.resourcemanager.computeschedule.models.ExecuteDeallocateRequest;
 import com.azure.resourcemanager.computeschedule.models.ExecutionParameters;
 import com.azure.resourcemanager.computeschedule.models.OptimizationPreference;
-import com.azure.resourcemanager.computeschedule.models.ResourceOperationType;
 import com.azure.resourcemanager.computeschedule.models.Resources;
 import com.azure.resourcemanager.computeschedule.models.RetryPolicy;
 import java.util.Arrays;
@@ -17,7 +16,7 @@ import java.util.Arrays;
  */
 public final class ScheduledActionsVirtualMachinesExecuteDeallocateSamples {
     /*
-     * x-ms-original-file: 2026-04-15-preview/ScheduledActions_VirtualMachinesExecuteDeallocate_MinimumSet_Gen.json
+     * x-ms-original-file: 2025-04-15-preview/ScheduledActions_VirtualMachinesExecuteDeallocate_MinimumSet_Gen.json
      */
     /**
      * Sample code: ScheduledActions_VirtualMachinesExecuteDeallocate_MinimumSet.
@@ -27,15 +26,15 @@ public final class ScheduledActionsVirtualMachinesExecuteDeallocateSamples {
     public static void scheduledActionsVirtualMachinesExecuteDeallocateMinimumSet(
         com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.scheduledActions()
-            .virtualMachinesExecuteDeallocateWithResponse("eastus2", new ExecuteDeallocateRequest()
+            .virtualMachinesExecuteDeallocateWithResponse("qqfrkswrovcice", new ExecuteDeallocateRequest()
                 .withExecutionParameters(new ExecutionParameters())
                 .withResources(new Resources().withIds(Arrays.asList(
-                    "/subscriptions/732116BD-AF31-4E74-9283-B387C44B4A44/resourceGroups/rgcomputeschedule/providers/Microsoft.Compute/virtualMachines/vm1")))
-                .withCorrelationid("a1b2c3d4-e5f6-7890-abcd-ef1234567890"), com.azure.core.util.Context.NONE);
+                    "/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource4")))
+                .withCorrelationid("b211f086-4b91-4686-a453-2f5c012e4d80"), com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: 2026-04-15-preview/ScheduledActions_VirtualMachinesExecuteDeallocate_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-04-15-preview/ScheduledActions_VirtualMachinesExecuteDeallocate_MaximumSet_Gen.json
      */
     /**
      * Sample code: ScheduledActions_VirtualMachinesExecuteDeallocate_MaximumSet.
@@ -45,14 +44,12 @@ public final class ScheduledActionsVirtualMachinesExecuteDeallocateSamples {
     public static void scheduledActionsVirtualMachinesExecuteDeallocateMaximumSet(
         com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.scheduledActions()
-            .virtualMachinesExecuteDeallocateWithResponse("eastus2", new ExecuteDeallocateRequest()
+            .virtualMachinesExecuteDeallocateWithResponse("ykcaptgboliddcfyaiuimj", new ExecuteDeallocateRequest()
                 .withExecutionParameters(
                     new ExecutionParameters().withOptimizationPreference(OptimizationPreference.COST)
-                        .withRetryPolicy(new RetryPolicy().withRetryCount(3)
-                            .withRetryWindowInMinutes(30)
-                            .withOnFailureAction(ResourceOperationType.UNKNOWN)))
+                        .withRetryPolicy(new RetryPolicy().withRetryCount(17).withRetryWindowInMinutes(29)))
                 .withResources(new Resources().withIds(Arrays.asList(
-                    "/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgcomputeschedule/providers/Microsoft.Compute/virtualMachines/vm1")))
-                .withCorrelationid("a1b2c3d4-e5f6-7890-abcd-ef1234567890"), com.azure.core.util.Context.NONE);
+                    "/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource4")))
+                .withCorrelationid("b211f086-4b91-4686-a453-2f5c012e4d80"), com.azure.core.util.Context.NONE);
     }
 }

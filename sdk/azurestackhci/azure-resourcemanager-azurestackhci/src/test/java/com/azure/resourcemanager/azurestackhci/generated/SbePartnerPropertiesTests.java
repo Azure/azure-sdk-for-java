@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class SbePartnerPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SbePartnerProperties model = BinaryData.fromString("{\"name\":\"ahhxvrh\",\"value\":\"kwpjgwwspughftqs\"}")
-            .toObject(SbePartnerProperties.class);
-        Assertions.assertEquals("ahhxvrh", model.name());
-        Assertions.assertEquals("kwpjgwwspughftqs", model.value());
+        SbePartnerProperties model
+            = BinaryData.fromString("{\"name\":\"ed\",\"value\":\"wwa\"}").toObject(SbePartnerProperties.class);
+        Assertions.assertEquals("ed", model.name());
+        Assertions.assertEquals("wwa", model.value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SbePartnerProperties model = new SbePartnerProperties().withName("ahhxvrh").withValue("kwpjgwwspughftqs");
+        SbePartnerProperties model = new SbePartnerProperties().withName("ed").withValue("wwa");
         model = BinaryData.fromObject(model).toObject(SbePartnerProperties.class);
-        Assertions.assertEquals("ahhxvrh", model.name());
-        Assertions.assertEquals("kwpjgwwspughftqs", model.value());
+        Assertions.assertEquals("ed", model.name());
+        Assertions.assertEquals("wwa", model.value());
     }
 }

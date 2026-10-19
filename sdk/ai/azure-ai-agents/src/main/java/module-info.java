@@ -12,7 +12,6 @@ module com.azure.ai.agents {
     requires io.netty.transport;
     requires io.netty.common;
     requires io.netty.codec;
-    requires io.netty.codec.compression;
     requires io.netty.buffer;
     requires okhttp3;
     requires okio;

@@ -1,6 +1,6 @@
 # Release History
 
-## 2.66.0-beta.1 (Unreleased)
+## 2.65.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,21 +9,6 @@
 ### Bugs Fixed
 
 ### Other Changes
-
-## 2.65.0 (2026-10-19)
-
-- Package api-version 2026-08-01.
-
-### Features Added
-
-* `models.ManagementMode` was added
-
-* `models.NvidiaGPUProfile` was added
-
-#### `models.GpuProfile` was modified
-
-* `withNvidia(models.NvidiaGPUProfile)` was added
-* `nvidia()` was added
 
 ## 2.64.2 (2026-10-09)
 

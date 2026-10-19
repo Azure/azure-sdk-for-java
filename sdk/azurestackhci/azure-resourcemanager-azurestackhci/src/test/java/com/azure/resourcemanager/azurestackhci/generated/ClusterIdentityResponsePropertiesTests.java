@@ -12,11 +12,11 @@ public final class ClusterIdentityResponsePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClusterIdentityResponseProperties model = BinaryData.fromString(
-            "{\"aadClientId\":\"zzewkfvhqcrai\",\"aadTenantId\":\"pnppfuf\",\"aadServicePrincipalObjectId\":\"wdmhdlxyjrxs\",\"aadApplicationObjectId\":\"afcnih\"}")
+            "{\"aadClientId\":\"hsfxoblytkb\",\"aadTenantId\":\"pe\",\"aadServicePrincipalObjectId\":\"wfbkrvrns\",\"aadApplicationObjectId\":\"hqjohxcrsbfova\"}")
             .toObject(ClusterIdentityResponseProperties.class);
-        Assertions.assertEquals("zzewkfvhqcrai", model.aadClientId());
-        Assertions.assertEquals("pnppfuf", model.aadTenantId());
-        Assertions.assertEquals("wdmhdlxyjrxs", model.aadServicePrincipalObjectId());
-        Assertions.assertEquals("afcnih", model.aadApplicationObjectId());
+        Assertions.assertEquals("hsfxoblytkb", model.aadClientId());
+        Assertions.assertEquals("pe", model.aadTenantId());
+        Assertions.assertEquals("wfbkrvrns", model.aadServicePrincipalObjectId());
+        Assertions.assertEquals("hqjohxcrsbfova", model.aadApplicationObjectId());
     }
 }

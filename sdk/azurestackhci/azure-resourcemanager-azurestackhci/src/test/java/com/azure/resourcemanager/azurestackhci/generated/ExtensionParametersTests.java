@@ -12,31 +12,31 @@ public final class ExtensionParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExtensionParameters model = BinaryData.fromString(
-            "{\"forceUpdateTag\":\"cnpqwteht\",\"publisher\":\"vrh\",\"type\":\"jyoogwxh\",\"typeHandlerVersion\":\"duugwbsre\",\"autoUpgradeMinorVersion\":true,\"settings\":\"\\\"datakfuarenlv\\\"\",\"protectedSettings\":\"\\\"datatklnvnafvvkyfed\\\"\",\"enableAutomaticUpgrade\":true}")
+            "{\"forceUpdateTag\":\"iuas\",\"publisher\":\"rowsocnequy\",\"type\":\"jboq\",\"typeHandlerVersion\":\"mtqjkqevadrmm\",\"autoUpgradeMinorVersion\":true,\"settings\":\"\\\"datawvcmj\\\"\",\"protectedSettings\":\"\\\"dataxiid\\\"\",\"enableAutomaticUpgrade\":true}")
             .toObject(ExtensionParameters.class);
-        Assertions.assertEquals("cnpqwteht", model.forceUpdateTag());
-        Assertions.assertEquals("vrh", model.publisher());
-        Assertions.assertEquals("jyoogwxh", model.type());
-        Assertions.assertEquals("duugwbsre", model.typeHandlerVersion());
+        Assertions.assertEquals("iuas", model.forceUpdateTag());
+        Assertions.assertEquals("rowsocnequy", model.publisher());
+        Assertions.assertEquals("jboq", model.type());
+        Assertions.assertEquals("mtqjkqevadrmm", model.typeHandlerVersion());
         Assertions.assertTrue(model.autoUpgradeMinorVersion());
         Assertions.assertTrue(model.enableAutomaticUpgrade());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExtensionParameters model = new ExtensionParameters().withForceUpdateTag("cnpqwteht")
-            .withPublisher("vrh")
-            .withType("jyoogwxh")
-            .withTypeHandlerVersion("duugwbsre")
+        ExtensionParameters model = new ExtensionParameters().withForceUpdateTag("iuas")
+            .withPublisher("rowsocnequy")
+            .withType("jboq")
+            .withTypeHandlerVersion("mtqjkqevadrmm")
             .withAutoUpgradeMinorVersion(true)
-            .withSettings("\"datakfuarenlv\"")
-            .withProtectedSettings("\"datatklnvnafvvkyfed\"")
+            .withSettings("\"datawvcmj\"")
+            .withProtectedSettings("\"dataxiid\"")
             .withEnableAutomaticUpgrade(true);
         model = BinaryData.fromObject(model).toObject(ExtensionParameters.class);
-        Assertions.assertEquals("cnpqwteht", model.forceUpdateTag());
-        Assertions.assertEquals("vrh", model.publisher());
-        Assertions.assertEquals("jyoogwxh", model.type());
-        Assertions.assertEquals("duugwbsre", model.typeHandlerVersion());
+        Assertions.assertEquals("iuas", model.forceUpdateTag());
+        Assertions.assertEquals("rowsocnequy", model.publisher());
+        Assertions.assertEquals("jboq", model.type());
+        Assertions.assertEquals("mtqjkqevadrmm", model.typeHandlerVersion());
         Assertions.assertTrue(model.autoUpgradeMinorVersion());
         Assertions.assertTrue(model.enableAutomaticUpgrade());
     }

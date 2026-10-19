@@ -15,22 +15,22 @@ public final class ArcConnectivityPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ArcConnectivityProperties model = BinaryData.fromString(
-            "{\"enabled\":false,\"serviceConfigurations\":[{\"serviceName\":\"WAC\",\"port\":3040729179005507255},{\"serviceName\":\"WAC\",\"port\":728427044151085646}]}")
+            "{\"enabled\":false,\"serviceConfigurations\":[{\"serviceName\":\"WAC\",\"port\":3740091618502324159},{\"serviceName\":\"WAC\",\"port\":4533506116683097889}]}")
             .toObject(ArcConnectivityProperties.class);
         Assertions.assertFalse(model.enabled());
         Assertions.assertEquals(ServiceName.WAC, model.serviceConfigurations().get(0).serviceName());
-        Assertions.assertEquals(3040729179005507255L, model.serviceConfigurations().get(0).port());
+        Assertions.assertEquals(3740091618502324159L, model.serviceConfigurations().get(0).port());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ArcConnectivityProperties model = new ArcConnectivityProperties().withEnabled(false)
             .withServiceConfigurations(Arrays.asList(
-                new ServiceConfiguration().withServiceName(ServiceName.WAC).withPort(3040729179005507255L),
-                new ServiceConfiguration().withServiceName(ServiceName.WAC).withPort(728427044151085646L)));
+                new ServiceConfiguration().withServiceName(ServiceName.WAC).withPort(3740091618502324159L),
+                new ServiceConfiguration().withServiceName(ServiceName.WAC).withPort(4533506116683097889L)));
         model = BinaryData.fromObject(model).toObject(ArcConnectivityProperties.class);
         Assertions.assertFalse(model.enabled());
         Assertions.assertEquals(ServiceName.WAC, model.serviceConfigurations().get(0).serviceName());
-        Assertions.assertEquals(3040729179005507255L, model.serviceConfigurations().get(0).port());
+        Assertions.assertEquals(3740091618502324159L, model.serviceConfigurations().get(0).port());
     }
 }

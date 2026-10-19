@@ -9,7 +9,7 @@ package com.azure.resourcemanager.azurestackhci.generated;
  */
 public final class SecuritySettingsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-10-01/DeleteSecuritySettings.json
+     * x-ms-original-file: 2026-04-30/DeleteSecuritySettings.json
      */
     /**
      * Sample code: Delete Security Settings.
