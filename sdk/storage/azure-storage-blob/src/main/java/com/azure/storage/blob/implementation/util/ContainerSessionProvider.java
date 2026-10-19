@@ -51,26 +51,29 @@ final class ContainerSessionProvider extends SessionProvider {
     }
 
     @Override
-    boolean isRequestEligible(HttpRequest request) {
+    BlobUrlParts getEligibleRequestParts(HttpRequest request) {
         if (request == null || request.getHttpMethod() != HttpMethod.GET) {
-            return false;
+            return null;
         }
 
         BlobUrlParts parts;
         try {
             parts = BlobUrlParts.parse(request.getUrl());
         } catch (RuntimeException ex) {
-            return false;
+            return null;
         }
 
         if (CoreUtils.isNullOrEmpty(parts.getBlobContainerName())
             || CoreUtils.isNullOrEmpty(parts.getBlobName())
             || parts.getUnparsedParameters().containsKey("comp")
             || parts.getUnparsedParameters().containsKey("restype")) {
-            return false;
+            return null;
         }
 
-        return request.getHeaders().getValue(HttpHeaderName.fromString("x-ms-structured-body")) == null;
+        if (request.getHeaders().getValue(HttpHeaderName.fromString("x-ms-structured-body")) == null) {
+            return parts;
+        }
+        return null;
     }
 
     @Override

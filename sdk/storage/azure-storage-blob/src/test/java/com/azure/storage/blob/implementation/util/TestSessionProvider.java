@@ -4,12 +4,13 @@
 package com.azure.storage.blob.implementation.util;
 
 import com.azure.core.http.HttpRequest;
+import com.azure.storage.blob.BlobUrlParts;
 import reactor.core.publisher.Mono;
 
 /** Test-only seam for mocking the SDK's package-private provider operations. */
 abstract class TestSessionProvider extends SessionProvider {
     @Override
-    public abstract boolean isRequestEligible(HttpRequest request);
+    public abstract BlobUrlParts getEligibleRequestParts(HttpRequest request);
 
     @Override
     public abstract Mono<SessionCredential> getSessionAsync(SessionRequestContext context);

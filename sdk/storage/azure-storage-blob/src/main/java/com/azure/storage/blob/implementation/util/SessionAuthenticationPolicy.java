@@ -150,26 +150,13 @@ final class SessionAuthenticationPolicy implements HttpPipelinePolicy {
             return null;
         }
 
-        if (!sessionProvider.isRequestEligible(context.getHttpRequest())
-            || !sessionAcquirer.isRequestForSessionEndpoint(context.getHttpRequest())) {
-            return null;
-        }
-
-        BlobUrlParts parts;
-        try {
-            parts = BlobUrlParts.parse(context.getHttpRequest().getUrl());
-        } catch (RuntimeException ex) {
-            LOGGER.warning("Unable to resolve session authentication context from request URL. Using bearer token.",
-                ex);
+        BlobUrlParts parts = sessionProvider.getEligibleRequestParts(context.getHttpRequest());
+        if (parts == null || !sessionAcquirer.isRequestForSessionEndpoint(context.getHttpRequest())) {
             return null;
         }
 
         String containerName = parts.getBlobContainerName();
         String accountName = getOverrideOrDefault(this.accountName, parts.getAccountName());
-
-        if (CoreUtils.isNullOrEmpty(containerName) || CoreUtils.isNullOrEmpty(parts.getBlobName())) {
-            return null;
-        }
 
         return new SessionRequestContext(containerName, accountName, sessionAcquirer);
     }

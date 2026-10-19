@@ -17,6 +17,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.BlobTestBase;
+import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.options.SessionContext;
 import com.azure.storage.blob.options.SessionContext.SessionMode;
@@ -75,7 +76,8 @@ public class SessionAuthenticationPolicyTest {
     public void beforeEach() {
         sessionProvider = mock(TestSessionProvider.class);
         bearerPolicy = mock(StorageBearerTokenChallengeAuthorizationPolicy.class);
-        when(sessionProvider.isRequestEligible(any())).thenReturn(true);
+        when(sessionProvider.getEligibleRequestParts(any()))
+            .thenReturn(BlobUrlParts.parse("https://testaccount.blob.core.windows.net/mycontainer/myblob"));
 
         // Default mock behavior: bearer policy delegates to next policy in the pipeline.
         when(bearerPolicy.process(any(), any())).thenAnswer(invocation -> {
@@ -118,7 +120,7 @@ public class SessionAuthenticationPolicyTest {
             .assertNext(response -> assertEquals(200, response.getStatusCode()))
             .verifyComplete();
 
-        verify(sessionProvider, times(sessionsEnabled ? 1 : 0)).isRequestEligible(any());
+        verify(sessionProvider, times(sessionsEnabled ? 1 : 0)).getEligibleRequestParts(any());
         verify(sessionProvider, times(sessionsEnabled ? 1 : 0)).getSessionAsync(any());
         verify(bearerPolicy, times(sessionsEnabled ? 0 : 1)).process(any(), any());
     }
@@ -141,7 +143,7 @@ public class SessionAuthenticationPolicyTest {
             assertEquals(200, response.getStatusCode());
         }
 
-        verify(sessionProvider, times(sessionsEnabled ? 1 : 0)).isRequestEligible(any());
+        verify(sessionProvider, times(sessionsEnabled ? 1 : 0)).getEligibleRequestParts(any());
         verify(sessionProvider, times(sessionsEnabled ? 1 : 0)).getSession(any());
         verify(bearerPolicy, times(sessionsEnabled ? 0 : 1)).processSync(any(), any());
     }
@@ -720,7 +722,7 @@ public class SessionAuthenticationPolicyTest {
         for (Context context : new Context[] { acquisition, Context.NONE }) {
             HttpRequest request = new HttpRequest(HttpMethod.POST,
                 "https://testaccount.blob.core.windows.net/mycontainer?restype=container&comp=session");
-            when(sessionProvider.isRequestEligible(any())).thenReturn(false);
+            when(sessionProvider.getEligibleRequestParts(any())).thenReturn(null);
             if (sync) {
                 try (HttpResponse response = pipeline.sendSync(request, context)) {
                     assertEquals(200, response.getStatusCode());

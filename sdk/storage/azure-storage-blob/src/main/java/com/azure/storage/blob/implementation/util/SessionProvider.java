@@ -4,13 +4,20 @@
 package com.azure.storage.blob.implementation.util;
 
 import com.azure.core.http.HttpRequest;
+import com.azure.storage.blob.BlobUrlParts;
 import reactor.core.publisher.Mono;
 
 /**
  * Internal contract for session credential acquisition and lifecycle management.
  */
 abstract class SessionProvider {
-    abstract boolean isRequestEligible(HttpRequest request);
+    /**
+     * Gets parsed URL parts when the request is eligible for session authentication.
+     *
+     * @param request The request to evaluate.
+     * @return The parsed URL parts if the request is eligible; otherwise, {@code null}.
+     */
+    abstract BlobUrlParts getEligibleRequestParts(HttpRequest request);
 
     abstract Mono<SessionCredential> getSessionAsync(SessionRequestContext context);
 
