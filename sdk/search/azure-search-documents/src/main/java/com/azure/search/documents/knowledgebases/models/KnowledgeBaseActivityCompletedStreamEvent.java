@@ -23,7 +23,7 @@ public final class KnowledgeBaseActivityCompletedStreamEvent extends KnowledgeBa
      * @param value The event payload.
      */
     @Generated
-    public KnowledgeBaseActivityCompletedStreamEvent(KnowledgeBaseActivityRecord value) {
+    KnowledgeBaseActivityCompletedStreamEvent(KnowledgeBaseActivityRecord value) {
         super("activity.completed");
         this.value = value;
     }

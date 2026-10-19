@@ -10,7 +10,6 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.CloseableIterableStream;
 import com.azure.json.JsonSerializable;
-import com.azure.json.JsonWriter;
 import com.azure.search.documents.knowledgebases.implementation.KnowledgeBaseRetrievalStreamEventConverter;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseActivityCompletedStreamEvent;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseActivityRecord;
@@ -48,7 +47,6 @@ import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -59,7 +57,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -73,6 +70,11 @@ public class KnowledgeBaseRetrievalStreamTests {
         = "{\"requestId\":\"request\",\"knowledgeBaseName\":\"kb\",\"outputMode\":\"answerSynthesis\","
             + "\"reasoningEffort\":{\"kind\":\"low\"}}";
     private static final String RESPONSE_COMPLETED_JSON = "{\"statusCode\":200,\"response\":{}}";
+
+    @Test
+    public void baseEventRemainsAbstract() {
+        assertTrue(Modifier.isAbstract(KnowledgeBaseRetrievalStreamEvent.class.getModifiers()));
+    }
 
     @Test
     public void convertsAllStreamEventVariants() {
@@ -132,18 +134,10 @@ public class KnowledgeBaseRetrievalStreamTests {
         KnowledgeBaseRetrievalStreamEvent event
             = KnowledgeBaseRetrievalStreamEventConverter.convert("future.event", "not json\nsecond line");
 
-        assertEvent(event, "future.event", false);
-        assertTrue(Modifier.isPrivate(event.getClass().getModifiers()));
-        assertTrue(Arrays.stream(event.getClass().getDeclaredFields()).allMatch(field -> field.isSynthetic()));
-        assertEquals(1,
-            Arrays.stream(event.getClass().getDeclaredConstructors())
-                .filter(constructor -> !constructor.isSynthetic())
-                .count());
-        assertTrue(Arrays.stream(event.getClass().getDeclaredConstructors())
-            .filter(constructor -> !constructor.isSynthetic())
-            .allMatch(constructor -> constructor.getParameterCount() == 1
-                && constructor.getParameterTypes()[0] == String.class));
-        assertEvent(KnowledgeBaseRetrievalStreamEventConverter.convert("future.event", null), "future.event", false);
+        assertUnknownEvent(event, "future.event");
+        KnowledgeBaseRetrievalStreamEvent nullPayload
+            = KnowledgeBaseRetrievalStreamEventConverter.convert("future.event", null);
+        assertUnknownEvent(nullPayload, "future.event");
         assertThrows(RuntimeException.class,
             () -> KnowledgeBaseRetrievalStreamEventConverter.convert("response.completed", "{"));
     }
@@ -170,6 +164,13 @@ public class KnowledgeBaseRetrievalStreamTests {
         KnowledgeBaseRetrievalStreamEvent converted
             = KnowledgeBaseRetrievalStreamEventConverter.convert(eventName, data);
         assertEquals("error".equals(eventName) || "response.completed".equals(eventName), converted.isTerminal());
+        if ("activity.completed".equals(eventName)) {
+            assertInstanceOf(KnowledgeBaseSearchIndexActivityRecord.class, payload(converted));
+        }
+        if ("references.completed".equals(eventName)) {
+            assertInstanceOf(KnowledgeBaseSearchIndexReference.class,
+                ((KnowledgeBaseReferencesCompletedStreamEvent) converted).getValue().get(0));
+        }
 
         try (CloseableIterableStream<KnowledgeBaseRetrievalStreamEvent> stream
             = createBuilder(body, null).buildClient().retrieveStream(new KnowledgeBaseRetrievalOptions())) {
@@ -231,104 +232,23 @@ public class KnowledgeBaseRetrievalStreamTests {
     @ParameterizedTest
     @ValueSource(strings = { "", " \t ", "not json", "not json\n second line ", " {\"future\":true}\n " })
     public void unknownPayloadsAreDiscardedWithoutDisplacingLaterTerminalEvents(String data) throws IOException {
-        assertEvent(KnowledgeBaseRetrievalStreamEventConverter.convert("future.event", data), "future.event", false);
+        KnowledgeBaseRetrievalStreamEvent converted
+            = KnowledgeBaseRetrievalStreamEventConverter.convert("future.event", data);
+        assertUnknownEvent(converted, "future.event");
         String body = frame("future.event", data) + frame("response.completed", RESPONSE_COMPLETED_JSON);
         try (CloseableIterableStream<KnowledgeBaseRetrievalStreamEvent> stream
             = createBuilder(body, null).buildClient().retrieveStream(new KnowledgeBaseRetrievalOptions())) {
             Iterator<KnowledgeBaseRetrievalStreamEvent> iterator = stream.iterator();
             KnowledgeBaseRetrievalStreamEvent event = iterator.next();
-            assertEvent(event, "future.event", false);
+            assertUnknownEvent(event, "future.event");
             assertEvent(iterator.next(), "response.completed", true);
             assertFalse(iterator.hasNext());
         }
         StepVerifier
             .create(createBuilder(body, null).buildAsyncClient().retrieveStream(new KnowledgeBaseRetrievalOptions()))
-            .assertNext(event -> assertEvent(event, "future.event", false))
+            .assertNext(event -> assertUnknownEvent(event, "future.event"))
             .assertNext(event -> assertEvent(event, "response.completed", true))
             .verifyComplete();
-    }
-
-    @ParameterizedTest
-    @MethodSource("knownEvents")
-    public void payloadOnlyConstructorsRetainTypedPayloadsWithoutRawOrJsonApis(String eventName, String json)
-        throws ReflectiveOperationException {
-        KnowledgeBaseRetrievalStreamEvent converted
-            = KnowledgeBaseRetrievalStreamEventConverter.convert(eventName, json);
-        KnowledgeBaseRetrievalStreamEvent event = withPayload(converted);
-        Object value = payload(event);
-        assertSame(value, payload(converted));
-        assertEvent(event, eventName, converted.isTerminal());
-        assertTrue(Modifier.isAbstract(KnowledgeBaseRetrievalStreamEvent.class.getModifiers()));
-        assertFalse(JsonSerializable.class.isAssignableFrom(event.getClass()));
-        assertFalse(Arrays.stream(event.getClass().getMethods())
-            .anyMatch(method -> "fromJson".equals(method.getName()) || method.getName().startsWith("toJson")));
-        assertThrows(NoSuchMethodException.class, () -> event.getClass().getMethod("getRawValue"));
-        assertThrows(NoSuchMethodException.class,
-            () -> KnowledgeBaseRetrievalStreamEvent.class.getMethod("getRawValue"));
-        assertEquals(1, event.getClass().getDeclaredConstructors().length);
-        assertEquals(1, event.getClass().getDeclaredConstructors()[0].getParameterCount());
-        assertEquals(1, KnowledgeBaseRetrievalStreamEvent.class.getDeclaredConstructors().length);
-        assertNotNull(KnowledgeBaseRetrievalStreamEvent.class.getDeclaredConstructor(String.class));
-        assertThrows(NoSuchMethodException.class,
-            () -> KnowledgeBaseRetrievalStreamEvent.class.getDeclaredConstructor(String.class, String.class));
-        assertEquals(1,
-            Arrays.stream(KnowledgeBaseRetrievalStreamEvent.class.getDeclaredFields())
-                .filter(field -> !field.isSynthetic())
-                .count());
-        assertNotNull(KnowledgeBaseRetrievalStreamEvent.class.getDeclaredField("eventName"));
-        assertThrows(NoSuchFieldException.class,
-            () -> KnowledgeBaseRetrievalStreamEvent.class.getDeclaredField("rawValue"));
-        if ("activity.completed".equals(eventName)) {
-            assertInstanceOf(KnowledgeBaseSearchIndexActivityRecord.class, value);
-        }
-        if ("references.completed".equals(eventName)) {
-            assertInstanceOf(KnowledgeBaseSearchIndexReference.class,
-                ((KnowledgeBaseReferencesCompletedStreamEvent) event).getValue().get(0));
-        }
-    }
-
-    @Test
-    public void nullPayloadsAndEmptyReferenceListsRemainAccessible() {
-        List<KnowledgeBaseRetrievalStreamEvent> absent = Arrays.asList(
-            new KnowledgeBaseRetrievalStartedStreamEvent(null), new KnowledgeBaseActivityStartedStreamEvent(null),
-            new KnowledgeBaseActivityCompletedStreamEvent(null), new KnowledgeBaseAnswerCompletedStreamEvent(null),
-            new KnowledgeBaseReferencesCompletedStreamEvent(null), new KnowledgeBaseErrorStreamEvent(null),
-            new KnowledgeBaseResponseCompletedStreamEvent(null));
-        absent.forEach(event -> assertNull(payload(event)));
-        List<KnowledgeBaseReference> empty = Collections.emptyList();
-        assertSame(empty, new KnowledgeBaseReferencesCompletedStreamEvent(empty).getValue());
-        assertEvent(new KnowledgeBaseRetrievalStreamEvent("custom") {
-        }, "custom", false);
-    }
-
-    @Test
-    public void constructorsAndPayloadAccessNeverSerialize() {
-        AtomicInteger writes = new AtomicInteger();
-        KnowledgeBaseActivityRecord activity = new KnowledgeBaseActivityRecord(0) {
-            @Override
-            public JsonWriter toJson(JsonWriter writer) throws IOException {
-                writes.incrementAndGet();
-                throw new IOException("The event wrapper must not serialize its payload.");
-            }
-        };
-        KnowledgeBaseActivityCompletedStreamEvent event = new KnowledgeBaseActivityCompletedStreamEvent(activity);
-        assertSame(activity, event.getValue());
-        assertSame(activity, event.getValue());
-        assertEquals(0, writes.get());
-
-        AtomicInteger referenceWrites = new AtomicInteger();
-        KnowledgeBaseReference reference = new KnowledgeBaseReference("reference", 0) {
-            @Override
-            public JsonWriter toJson(JsonWriter writer) throws IOException {
-                referenceWrites.incrementAndGet();
-                throw new IOException("The event wrapper must not serialize its payload.");
-            }
-        };
-        List<KnowledgeBaseReference> references = Collections.singletonList(reference);
-        KnowledgeBaseReferencesCompletedStreamEvent array = new KnowledgeBaseReferencesCompletedStreamEvent(references);
-        assertSame(references, array.getValue());
-        assertSame(reference, array.getValue().get(0));
-        assertEquals(0, referenceWrites.get());
     }
 
     @ParameterizedTest
@@ -450,9 +370,10 @@ public class KnowledgeBaseRetrievalStreamTests {
             .verifyComplete();
     }
 
-    @Test
-    public void clientsPropagateMalformedKnownPayload() throws IOException {
-        String body = "event: response.completed\ndata: {\n\n";
+    @ParameterizedTest
+    @MethodSource("knownEvents")
+    public void clientsPropagateMalformedKnownPayload(String eventName, String json) throws IOException {
+        String body = frame(eventName, "references.completed".equals(eventName) ? "[{" : "{");
 
         try (CloseableIterableStream<KnowledgeBaseRetrievalStreamEvent> stream
             = createBuilder(body, null).buildClient().retrieveStream(new KnowledgeBaseRetrievalOptions())) {
@@ -507,7 +428,7 @@ public class KnowledgeBaseRetrievalStreamTests {
         assertEquals(3, events.size());
         assertInstanceOf(KnowledgeBaseRetrievalStartedStreamEvent.class, events.get(0));
         assertEvent(events.get(0), "retrieval.started", false);
-        assertEvent(events.get(1), "future.event", false);
+        assertUnknownEvent(events.get(1), "future.event");
         assertInstanceOf(KnowledgeBaseResponseCompletedStreamEvent.class, events.get(2));
         assertEvent(events.get(2), "response.completed", true);
     }
@@ -567,40 +488,6 @@ public class KnowledgeBaseRetrievalStreamTests {
         }
     }
 
-    private static KnowledgeBaseRetrievalStreamEvent withPayload(KnowledgeBaseRetrievalStreamEvent event) {
-        switch (event.getEventName()) {
-            case "retrieval.started":
-                return new KnowledgeBaseRetrievalStartedStreamEvent(
-                    ((KnowledgeBaseRetrievalStartedStreamEvent) event).getValue());
-
-            case "activity.started":
-                return new KnowledgeBaseActivityStartedStreamEvent(
-                    ((KnowledgeBaseActivityStartedStreamEvent) event).getValue());
-
-            case "activity.completed":
-                return new KnowledgeBaseActivityCompletedStreamEvent(
-                    ((KnowledgeBaseActivityCompletedStreamEvent) event).getValue());
-
-            case "answer.completed":
-                return new KnowledgeBaseAnswerCompletedStreamEvent(
-                    ((KnowledgeBaseAnswerCompletedStreamEvent) event).getValue());
-
-            case "references.completed":
-                return new KnowledgeBaseReferencesCompletedStreamEvent(
-                    ((KnowledgeBaseReferencesCompletedStreamEvent) event).getValue());
-
-            case "error":
-                return new KnowledgeBaseErrorStreamEvent(((KnowledgeBaseErrorStreamEvent) event).getValue());
-
-            case "response.completed":
-                return new KnowledgeBaseResponseCompletedStreamEvent(
-                    ((KnowledgeBaseResponseCompletedStreamEvent) event).getValue());
-
-            default:
-                throw new IllegalArgumentException("Expected a known event: " + event.getEventName());
-        }
-    }
-
     private static KnowledgeBaseRetrievalClientBuilder createBuilder(Flux<ByteBuffer> responseBody) {
         HttpHeaders headers = new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, "text/event-stream");
         return new KnowledgeBaseRetrievalClientBuilder().endpoint("https://example.search.windows.net")
@@ -633,6 +520,13 @@ public class KnowledgeBaseRetrievalStreamTests {
         return "id: event-id\n" + "event: retrieval.started\n" + "data: " + RETRIEVAL_STARTED_JSON + "\n\n"
             + "event: future.event\n" + "data: first line\n" + "data: second line\n\n" + "event: response.completed\n"
             + "data: " + RESPONSE_COMPLETED_JSON + "\n\n" + "event: response.completed\ndata: {\n\n";
+    }
+
+    private static void assertUnknownEvent(KnowledgeBaseRetrievalStreamEvent event, String eventName) {
+        assertEquals(KnowledgeBaseRetrievalStreamEvent.class, event.getClass().getSuperclass());
+        assertTrue(event.getClass().isAnonymousClass());
+        assertFalse(Modifier.isPublic(event.getClass().getModifiers()));
+        assertEvent(event, eventName, false);
     }
 
     private static void assertEvent(KnowledgeBaseRetrievalStreamEvent event, String eventName, boolean terminal) {

@@ -23,7 +23,7 @@ public final class KnowledgeBaseRetrievalStartedStreamEvent extends KnowledgeBas
      * @param value The event payload.
      */
     @Generated
-    public KnowledgeBaseRetrievalStartedStreamEvent(KnowledgeBaseRetrievalStartedEvent value) {
+    KnowledgeBaseRetrievalStartedStreamEvent(KnowledgeBaseRetrievalStartedEvent value) {
         super("retrieval.started");
         this.value = value;
     }

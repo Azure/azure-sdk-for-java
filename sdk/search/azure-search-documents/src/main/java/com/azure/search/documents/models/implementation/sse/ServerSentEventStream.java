@@ -7,6 +7,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.CloseableIterableStream;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
@@ -30,6 +31,7 @@ import reactor.core.publisher.Flux;
  * Parses one server-sent event response.
  */
 final class ServerSentEventStream {
+    private static final ClientLogger LOGGER = new ClientLogger(ServerSentEventStream.class);
     private static final String DEFAULT_EVENT = "message";
 
     private ServerSentEventStream() {
@@ -161,7 +163,7 @@ final class ServerSentEventStream {
                 @Override
                 public ServerSentEventFrame next() {
                     if (!hasNext()) {
-                        throw new NoSuchElementException();
+                        throw LOGGER.logExceptionAsError(new NoSuchElementException());
                     }
                     ServerSentEventFrame frame = next;
                     next = null;
