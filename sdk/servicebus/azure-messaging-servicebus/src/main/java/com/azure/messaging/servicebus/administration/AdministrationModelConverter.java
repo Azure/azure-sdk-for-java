@@ -82,8 +82,8 @@ class AdministrationModelConverter {
 
     AdministrationModelConverter(ClientLogger logger, String serviceBusNamespace) {
         this.logger = logger;
-        this.serviceBusNamespace = serviceBusNamespace.contains("://")
-            ? serviceBusNamespace : "https://" + serviceBusNamespace;
+        this.serviceBusNamespace
+            = serviceBusNamespace.contains("://") ? serviceBusNamespace : "https://" + serviceBusNamespace;
     }
 
     /**

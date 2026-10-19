@@ -14,6 +14,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.ServiceBusSharedKeyCredential;
+import com.azure.messaging.servicebus.administration.models.CreateQueueOptions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -40,6 +41,8 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.SERVICE_BUS_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME;
+import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.SERVICE_BUS_DLQ_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME;
 
 class ServiceBusAdministrationClientBuilderTest {
     private static final String KEY_NAME = "test-policy";
@@ -51,8 +54,8 @@ class ServiceBusAdministrationClientBuilderTest {
     @MethodSource("endpoints")
     void preservesEndpoint(boolean synchronous, String configuration, String expectedEndpoint) throws Exception {
         AtomicReference<HttpRequest> observed = new AtomicReference<>();
-        ServiceBusAdministrationClientBuilder builder = new ServiceBusAdministrationClientBuilder()
-            .httpClient(recordingClient(observed));
+        ServiceBusAdministrationClientBuilder builder
+            = new ServiceBusAdministrationClientBuilder().httpClient(recordingClient(observed));
         if (configuration.startsWith("Endpoint=")) {
             builder.connectionString(configuration);
         } else {
@@ -73,7 +76,8 @@ class ServiceBusAdministrationClientBuilderTest {
         Mac hmac = Mac.getInstance("HmacSHA256");
         hmac.init(new SecretKeySpec(KEY.getBytes(StandardCharsets.UTF_8), "HmacSHA256"));
         String signature = URLEncoder.encode(
-            Base64.getEncoder().encodeToString(hmac.doFinal((resource + "\n" + expiry).getBytes(StandardCharsets.UTF_8))),
+            Base64.getEncoder()
+                .encodeToString(hmac.doFinal((resource + "\n" + expiry).getBytes(StandardCharsets.UTF_8))),
             StandardCharsets.UTF_8.name());
         assertTrue(authorization.contains("&sig=" + signature + "&se="));
         assertTrue(authorization.endsWith("&skn=" + KEY_NAME));
@@ -81,16 +85,17 @@ class ServiceBusAdministrationClientBuilderTest {
 
     private static Stream<Arguments> endpoints() {
         return Stream.of(true, false)
-            .flatMap(sync -> Stream.of(
-                Arguments.of(sync, CONNECTION_STRING + ";UseDevelopmentEmulator=true", "http://localhost:5300"),
-                Arguments.of(sync, CONNECTION_STRING + ";UseDevelopmentEmulator=false", "https://localhost:5300"),
-                Arguments.of(sync, CONNECTION_STRING, "https://localhost:5300"),
-                Arguments.of(sync, CONNECTION_STRING.replace("sb://", "http://"), "https://localhost:5300"),
-                Arguments.of(sync, "http://localhost:5300/", "http://localhost:5300"),
-                Arguments.of(sync, "http://localhost", "http://localhost"),
-                Arguments.of(sync, "https://localhost:5300/", "https://localhost:5300"),
-                Arguments.of(sync, "https://namespace.servicebus.windows.net",
-                    "https://namespace.servicebus.windows.net")));
+            .flatMap(
+                sync -> Stream
+                    .of(Arguments.of(sync, CONNECTION_STRING + ";UseDevelopmentEmulator=true", "http://localhost:5300"),
+                        Arguments.of(sync, CONNECTION_STRING + ";UseDevelopmentEmulator=false",
+                            "https://localhost:5300"),
+                        Arguments.of(sync, CONNECTION_STRING, "https://localhost:5300"),
+                        Arguments.of(sync, CONNECTION_STRING.replace("sb://", "http://"), "https://localhost:5300"),
+                        Arguments.of(sync, "http://localhost:5300/", "http://localhost:5300"),
+                        Arguments.of(sync, "http://localhost", "http://localhost"),
+                        Arguments.of(sync, "https://localhost:5300/", "https://localhost:5300"), Arguments.of(sync,
+                            "https://namespace.servicebus.windows.net", "https://namespace.servicebus.windows.net")));
     }
 
     @ParameterizedTest
@@ -123,9 +128,8 @@ class ServiceBusAdministrationClientBuilderTest {
             requested.set(true);
             return Mono.just(new AccessToken("test-token", OffsetDateTime.now().plusHours(1)));
         };
-        ServiceBusAdministrationClientBuilder builder = new ServiceBusAdministrationClientBuilder()
-            .endpoint("http://localhost:5300")
-            .credential(credential);
+        ServiceBusAdministrationClientBuilder builder
+            = new ServiceBusAdministrationClientBuilder().endpoint("http://localhost:5300").credential(credential);
 
         assertThrows(IllegalArgumentException.class, () -> {
             if (synchronous) {
@@ -146,9 +150,9 @@ class ServiceBusAdministrationClientBuilderTest {
             scope.set(context.getScopes().get(0));
             return Mono.just(new AccessToken("test-token", OffsetDateTime.now().plusHours(1)));
         };
-        ServiceBusAdministrationClientBuilder builder = new ServiceBusAdministrationClientBuilder()
-            .credential("namespace.servicebus.windows.net", credential)
-            .httpClient(recordingClient(observed));
+        ServiceBusAdministrationClientBuilder builder
+            = new ServiceBusAdministrationClientBuilder().credential("namespace.servicebus.windows.net", credential)
+                .httpClient(recordingClient(observed));
 
         assertQueueAbsent(builder, synchronous);
         assertEquals("https://servicebus.azure.net/.default", scope.get());
@@ -161,10 +165,10 @@ class ServiceBusAdministrationClientBuilderTest {
     void preservesExplicitSasCredential(boolean synchronous) {
         AtomicReference<HttpRequest> observed = new AtomicReference<>();
         String sas = "SharedAccessSignature sr=http%3A%2F%2Flocalhost%3A5300&sig=test&se=9999999999&skn=test-policy";
-        ServiceBusAdministrationClientBuilder builder = new ServiceBusAdministrationClientBuilder()
-            .endpoint("http://localhost:5300")
-            .credential(new AzureSasCredential(sas))
-            .httpClient(recordingClient(observed));
+        ServiceBusAdministrationClientBuilder builder
+            = new ServiceBusAdministrationClientBuilder().endpoint("http://localhost:5300")
+                .credential(new AzureSasCredential(sas))
+                .httpClient(recordingClient(observed));
 
         assertQueueAbsent(builder, synchronous);
         assertEquals(sas, observed.get().getHeaders().getValue(HttpHeaderName.AUTHORIZATION));
@@ -175,10 +179,10 @@ class ServiceBusAdministrationClientBuilderTest {
     void customPipelineRetainsPrecedence(boolean synchronous) {
         AtomicReference<HttpRequest> observed = new AtomicReference<>();
         TokenCredential ignored = context -> Mono.error(new AssertionError("Builder credential must be ignored."));
-        ServiceBusAdministrationClientBuilder builder = new ServiceBusAdministrationClientBuilder()
-            .endpoint("http://localhost:5300")
-            .credential(ignored)
-            .pipeline(new HttpPipelineBuilder().httpClient(recordingClient(observed)).build());
+        ServiceBusAdministrationClientBuilder builder
+            = new ServiceBusAdministrationClientBuilder().endpoint("http://localhost:5300")
+                .credential(ignored)
+                .pipeline(new HttpPipelineBuilder().httpClient(recordingClient(observed)).build());
 
         assertQueueAbsent(builder, synchronous);
         assertEquals("http", observed.get().getUrl().getProtocol());
@@ -204,8 +208,7 @@ class ServiceBusAdministrationClientBuilderTest {
             "/topic/subscriptions/subscription/rules/rule", "/$namespaceinfo");
         for (int i = 0; i < operations.size(); i++) {
             assertThrows(HttpResponseException.class, operations.get(i)::run);
-            assertEquals("http://localhost:5300" + paths.get(i),
-                observed.get().getUrl().toString().split("\\?")[0]);
+            assertEquals("http://localhost:5300" + paths.get(i), observed.get().getUrl().toString().split("\\?")[0]);
         }
     }
 
@@ -213,12 +216,10 @@ class ServiceBusAdministrationClientBuilderTest {
     @CsvSource({
         "namespace.servicebus.windows.net,https://namespace.servicebus.windows.net/target",
         "https://namespace.servicebus.windows.net,https://namespace.servicebus.windows.net/target",
-        "http://localhost:5300,http://localhost:5300/target"
-    })
+        "http://localhost:5300,http://localhost:5300/target" })
     void forwardingUsesEndpointAuthority(String endpoint, String expected) {
-        AdministrationModelConverter converter
-            = new AdministrationModelConverter(new ClientLogger(ServiceBusAdministrationClientBuilderTest.class),
-                endpoint);
+        AdministrationModelConverter converter = new AdministrationModelConverter(
+            new ClientLogger(ServiceBusAdministrationClientBuilderTest.class), endpoint);
         assertEquals(expected, converter.getAbsoluteUrlFromEntity("target"));
         assertEquals("https://other.servicebus.windows.net/target",
             converter.getAbsoluteUrlFromEntity("https://other.servicebus.windows.net/target"));
@@ -229,6 +230,46 @@ class ServiceBusAdministrationClientBuilderTest {
     void rejectsInvalidEndpoint(String endpoint) {
         assertThrows(IllegalArgumentException.class,
             () -> new ServiceBusAdministrationClientBuilder().endpoint(endpoint));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = { "", ";UseDevelopmentEmulator=true", ";UseDevelopmentEmulator=false" })
+    void rejectsConnectionStringWithoutHost(String emulatorFlag) {
+        String connectionString = "Endpoint=sb:///;SharedAccessKeyName=" + KEY_NAME + ";SharedAccessKey=" + KEY;
+        assertThrows(IllegalArgumentException.class,
+            () -> new ServiceBusAdministrationClientBuilder().connectionString(connectionString + emulatorFlag));
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+        "true,http://localhost:5300",
+        "false,http://localhost:5300",
+        "true,https://namespace.servicebus.windows.net:8443",
+        "false,https://namespace.servicebus.windows.net:8443",
+        "true,https://namespace.servicebus.windows.net",
+        "false,https://namespace.servicebus.windows.net" })
+    void forwardingTokensPreserveEndpointAuthority(boolean synchronous, String endpoint) throws Exception {
+        AtomicReference<HttpRequest> observed = new AtomicReference<>();
+        ServiceBusAdministrationClientBuilder builder = new ServiceBusAdministrationClientBuilder().endpoint(endpoint)
+            .credential(new ServiceBusSharedKeyCredential(KEY_NAME, KEY))
+            .httpClient(recordingClient(observed));
+        CreateQueueOptions options
+            = new CreateQueueOptions().setForwardTo("target").setForwardDeadLetteredMessagesTo("deadletters");
+        assertThrows(HttpResponseException.class, () -> {
+            if (synchronous) {
+                builder.buildClient().createQueue("queue", options);
+            } else {
+                builder.buildAsyncClient().createQueue("queue", options).block(Duration.ofSeconds(5));
+            }
+        });
+        for (HttpHeaderName header : Arrays.asList(HttpHeaderName.AUTHORIZATION,
+            SERVICE_BUS_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME,
+            SERVICE_BUS_DLQ_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME)) {
+            String authorization = observed.get().getHeaders().getValue(header);
+            assertNotNull(authorization);
+            String resource = authorization.substring(authorization.indexOf("sr=") + 3, authorization.indexOf("&sig="));
+            assertEquals(endpoint, URLDecoder.decode(resource, StandardCharsets.UTF_8.name()));
+        }
     }
 
     private static HttpClient recordingClient(AtomicReference<HttpRequest> observed) {
@@ -242,7 +283,8 @@ class ServiceBusAdministrationClientBuilderTest {
         if (synchronous) {
             assertFalse(builder.buildClient().getQueueExists("queue"));
         } else {
-            assertEquals(Boolean.FALSE, builder.buildAsyncClient().getQueueExists("queue").block(Duration.ofSeconds(5)));
+            assertEquals(Boolean.FALSE,
+                builder.buildAsyncClient().getQueueExists("queue").block(Duration.ofSeconds(5)));
         }
     }
 }

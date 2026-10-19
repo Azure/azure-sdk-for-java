@@ -329,6 +329,10 @@ public final class ServiceBusAdministrationClientBuilder
         Objects.requireNonNull(connectionString, "'connectionString' cannot be null.");
 
         final ConnectionStringProperties properties = new ConnectionStringProperties(connectionString);
+        if (CoreUtils.isNullOrEmpty(properties.getEndpoint().getHost())) {
+            throw LOGGER
+                .logExceptionAsError(new IllegalArgumentException("'connectionString' endpoint must contain a host."));
+        }
         final TokenCredential tokenCredential;
         try {
             tokenCredential = new ServiceBusSharedKeyCredential(properties.getSharedAccessKeyName(),
