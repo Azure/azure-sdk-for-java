@@ -14,27 +14,28 @@ public final class ArcDeploymentPatchKubernetesResourcesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ArcDeploymentPatchKubernetesResources model = BinaryData.fromString(
-            "{\"requests\":{\"cpu\":\"knlccrmmkyup\",\"memory\":\"ubyqj\"},\"limits\":{\"cpu\":\"kfq\",\"memory\":\"kemyil\",\"gpu\":1066286485}}")
+            "{\"requests\":{\"cpu\":\"gyngydgrpxncak\",\"memory\":\"aondjrkclamgg\"},\"limits\":{\"cpu\":\"mfejdoqeykglty\",\"memory\":\"hqfgqkayejsx\",\"gpu\":1396514650}}")
             .toObject(ArcDeploymentPatchKubernetesResources.class);
-        Assertions.assertEquals("knlccrmmkyup", model.requests().cpu());
-        Assertions.assertEquals("ubyqj", model.requests().memory());
-        Assertions.assertEquals("kfq", model.limits().cpu());
-        Assertions.assertEquals("kemyil", model.limits().memory());
-        Assertions.assertEquals(1066286485, model.limits().gpu());
+        Assertions.assertEquals("gyngydgrpxncak", model.requests().cpu());
+        Assertions.assertEquals("aondjrkclamgg", model.requests().memory());
+        Assertions.assertEquals("mfejdoqeykglty", model.limits().cpu());
+        Assertions.assertEquals("hqfgqkayejsx", model.limits().memory());
+        Assertions.assertEquals(1396514650, model.limits().gpu());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ArcDeploymentPatchKubernetesResources model = new ArcDeploymentPatchKubernetesResources()
-            .withRequests(
-                new ArcDeploymentPatchCpuMemoryResourceRequirements().withCpu("knlccrmmkyup").withMemory("ubyqj"))
-            .withLimits(
-                new ArcDeploymentResourceRequirements().withCpu("kfq").withMemory("kemyil").withGpu(1066286485));
+            .withRequests(new ArcDeploymentPatchCpuMemoryResourceRequirements().withCpu("gyngydgrpxncak")
+                .withMemory("aondjrkclamgg"))
+            .withLimits(new ArcDeploymentResourceRequirements().withCpu("mfejdoqeykglty")
+                .withMemory("hqfgqkayejsx")
+                .withGpu(1396514650));
         model = BinaryData.fromObject(model).toObject(ArcDeploymentPatchKubernetesResources.class);
-        Assertions.assertEquals("knlccrmmkyup", model.requests().cpu());
-        Assertions.assertEquals("ubyqj", model.requests().memory());
-        Assertions.assertEquals("kfq", model.limits().cpu());
-        Assertions.assertEquals("kemyil", model.limits().memory());
-        Assertions.assertEquals(1066286485, model.limits().gpu());
+        Assertions.assertEquals("gyngydgrpxncak", model.requests().cpu());
+        Assertions.assertEquals("aondjrkclamgg", model.requests().memory());
+        Assertions.assertEquals("mfejdoqeykglty", model.limits().cpu());
+        Assertions.assertEquals("hqfgqkayejsx", model.limits().memory());
+        Assertions.assertEquals(1396514650, model.limits().gpu());
     }
 }

@@ -13,7 +13,6 @@
     <module>sdk/advisor</module>
     <module>sdk/ai</module>
     <module>sdk/alertsmanagement</module>
-    <module>sdk/anomalydetector</module>
     <module>sdk/apicenter</module>
     <module>sdk/apimanagement</module>
     <module>sdk/appcomplianceautomation</module>
@@ -109,7 +108,6 @@
     <module>sdk/documentintelligence</module>
     <module>sdk/durabletask</module>
     <module>sdk/dynatrace</module>
-    <module>sdk/easm</module>
     <module>sdk/edgeactions</module>
     <module>sdk/edgeorder</module>
     <module>sdk/edgezones</module>
@@ -158,7 +156,6 @@
     <module>sdk/loadtesting</module>
     <module>sdk/loganalytics</module>
     <module>sdk/logic</module>
-    <module>sdk/logz</module>
     <module>sdk/machinelearning</module>
     <module>sdk/maintenance</module>
     <module>sdk/managedapplications</module>
@@ -172,8 +169,6 @@
     <module>sdk/metricsadvisor</module>
     <module>sdk/migration</module>
     <module>sdk/migrationdiscoverysap</module>
-    <module>sdk/mobilenetwork</module>
-    <module>sdk/modelsrepository</module>
     <module>sdk/mongocluster</module>
     <module>sdk/mongodbatlas</module>
     <module>sdk/monitor</module>
@@ -184,7 +179,6 @@
     <module>sdk/neonpostgres</module>
     <module>sdk/netapp</module>
     <module>sdk/network</module>
-    <module>sdk/networkanalytics</module>
     <module>sdk/networkcloud</module>
     <module>sdk/networkfunction</module>
     <module>sdk/newrelicobservability</module>
