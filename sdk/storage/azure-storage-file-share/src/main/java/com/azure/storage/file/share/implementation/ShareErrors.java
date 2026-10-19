@@ -3,6 +3,7 @@
 
 package com.azure.storage.file.share.implementation;
 
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 
 /**
@@ -37,7 +38,7 @@ public final class ShareErrors {
      * @throws IllegalStateException If the client is not file-ID-addressed.
      */
     public static void assertFileIdAddressed(String fileId, String operationName) {
-        if (fileId == null || fileId.isEmpty()) {
+        if (CoreUtils.isNullOrEmpty(fileId)) {
             throw LOGGER.logExceptionAsError(
                 new IllegalStateException(operationName + " requires a file-ID-addressed client."));
         }
@@ -62,7 +63,7 @@ public final class ShareErrors {
      * @throws IllegalStateException If the client is file-ID-addressed.
      */
     public static void assertNotFileIdAddressed(String fileId, String operationName) {
-        if (fileId != null && !fileId.isEmpty()) {
+        if (!CoreUtils.isNullOrEmpty(fileId)) {
             throw LOGGER.logExceptionAsError(
                 new IllegalStateException(operationName + " is not supported for a file-ID-addressed client."));
         }
