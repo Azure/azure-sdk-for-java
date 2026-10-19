@@ -8,6 +8,9 @@
 
 ### Bugs Fixed
 
+- Fixed a bug where uploads that are split into blocks, appends, or ranges included the bytes before the position of a
+  `ByteBuffer` in the source data, corrupting the uploaded content.
+
 ### Other Changes
 
 ## 12.35.0 (2026-10-07)

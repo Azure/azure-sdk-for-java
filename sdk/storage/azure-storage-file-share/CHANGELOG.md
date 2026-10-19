@@ -8,6 +8,9 @@
 
 ### Bugs Fixed
 
+- Fixed a bug where `ShareFileAsyncClient.uploadWithResponse` included the bytes before the position of a `ByteBuffer`
+  in the source data when splitting it into ranges, corrupting the uploaded content.
+
 ### Other Changes
 
 ## 12.32.0 (2026-10-07)

@@ -5,7 +5,9 @@ package com.azure.storage.common.implementation;
 import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.common.ParallelTransferOptions;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
@@ -21,6 +23,7 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class UploadUtilsTests {
     private static final ClientLogger LOGGER = new ClientLogger(UploadUtilsTests.class);
@@ -73,5 +76,34 @@ public class UploadUtilsTests {
         return Stream.of(Collections.singletonList("Hello World!"), Arrays.asList("Hello ", "World!"),
             Arrays.asList("H", "e", "l", "l", "o", " ", "W", "o", "r", "l", "d", "!"),
             Arrays.asList("Hel", "lo World!"));
+    }
+
+    @ParameterizedTest
+    @CsvSource({ "0,10,4", "1,10,4", "3,10,4", "5,8,4", "2,9,3", "1,4,4", "7,3,10", "1,8,4", "3,12,4" })
+    public void chunkSourceRespectsBufferPosition(int position, int remaining, int chunkSize) {
+        byte[] backing = new byte[position + remaining + 3];
+        for (int i = 0; i < backing.length; i++) {
+            backing[i] = (byte) i;
+        }
+        ByteBuffer buffer = ByteBuffer.wrap(backing, position, remaining);
+        byte[] expected = Arrays.copyOfRange(backing, position, position + remaining);
+
+        Flux<ByteBuffer> chunks = UploadUtils.chunkSource(Flux.just(buffer),
+            new ParallelTransferOptions().setBlockSizeLong((long) chunkSize));
+
+        StepVerifier.create(chunks.collectList()).assertNext(list -> {
+            assertEquals((remaining + chunkSize - 1) / chunkSize, list.size());
+            for (ByteBuffer chunk : list) {
+                assertTrue(chunk.remaining() <= chunkSize);
+            }
+        }).verifyComplete();
+
+        // Splitting the source buffer does not modify it.
+        assertEquals(position, buffer.position());
+        assertEquals(position + remaining, buffer.limit());
+
+        StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(chunks))
+            .assertNext(bytes -> TestUtils.assertArraysEqual(expected, bytes))
+            .verifyComplete();
     }
 }

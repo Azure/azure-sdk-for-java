@@ -8,6 +8,9 @@
 
 ### Bugs Fixed
 
+- Fixed a bug where uploads from a `Flux<ByteBuffer>` that were staged in blocks included the bytes before the position
+  of a `ByteBuffer`, corrupting the uploaded content.
+
 ### Other Changes
 
 ## 12.36.0 (2026-10-07)
