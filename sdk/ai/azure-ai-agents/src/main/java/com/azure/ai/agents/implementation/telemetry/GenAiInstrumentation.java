@@ -40,10 +40,9 @@ import static com.azure.ai.agents.implementation.telemetry.GenAiConstants.SERVER
  * histograms) that the client builder created from {@code ClientOptions} tracing/metrics options, along with the
  * resolved endpoint host/port and the content-recording flag.
  *
- * <p>This replaces the process-global static state used elsewhere: an instance is created per client by
- * {@code AgentsClientBuilder} and injected into the clients. Tracing/metrics are emitted only when an
- * OpenTelemetry implementation is configured for the process (i.e. {@link Tracer#isEnabled()} or a histogram is
- * enabled).</p>
+ * <p>An instance is created per client by {@code AgentsClientBuilder} and injected into the clients.
+ * Tracing and metrics are emitted only when experimental GenAI instrumentation is enabled and the configured
+ * {@link Tracer} or a histogram is enabled.</p>
  */
 public final class GenAiInstrumentation {
 

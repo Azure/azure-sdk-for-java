@@ -20,11 +20,10 @@ import io.opentelemetry.sdk.trace.export.SimpleSpanProcessor;
 /**
  * Sample demonstrating GenAI tracing exported to the console.
  *
- * <p>Unlike the original experimental design, there is no {@code enableGenAiTracing()} / {@code disableGenAiTracing()}
- * opt-in: tracing activates automatically once an OpenTelemetry implementation is configured (here registered
- * globally). To also capture message/agent content, set the
- * {@code AZURE_TRACING_GEN_AI_CONTENT_RECORDING_ENABLED} environment variable to {@code true} (it is off by
- * default).</p>
+ * <p>Set {@code AZURE_EXPERIMENTAL_ENABLE_GENAI_TRACING=true} to enable experimental GenAI tracing. This sample
+ * configures an OpenTelemetry implementation globally with a console span exporter. Message and agent content
+ * capture is disabled by default; set {@code OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT=true} to enable it.
+ * Review your privacy requirements before enabling content capture.</p>
  *
  * <p>To run this sample, add these dependencies to your project:</p>
  * <ul>
@@ -54,7 +53,7 @@ public final class TracingConsoleSample {
         OpenTelemetrySdk openTelemetry
             = OpenTelemetrySdk.builder().setTracerProvider(tracerProvider).buildAndRegisterGlobal();
 
-        // 2. Build the clients. No tracing opt-in call is required; the configured OpenTelemetry is picked up.
+        // 2. Build the clients using the globally configured OpenTelemetry implementation.
         String endpoint = System.getenv("FOUNDRY_PROJECT_ENDPOINT");
         String model = System.getenv("FOUNDRY_MODEL_NAME");
         AgentsClientBuilder builder
