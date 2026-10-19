@@ -21,10 +21,10 @@ import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdkBuilder;
 /**
  * Sample demonstrating GenAI tracing exported to Azure Monitor (Application Insights).
  *
- * <p>As with the console sample, there is no {@code enableGenAiTracing()} opt-in: tracing activates automatically
- * once OpenTelemetry is configured (here via Azure Monitor autoconfigure, registered globally). Set the
- * {@code AZURE_TRACING_GEN_AI_CONTENT_RECORDING_ENABLED} environment variable to {@code true} to also capture
- * message/agent content.</p>
+ * <p>Set {@code AZURE_EXPERIMENTAL_ENABLE_GENAI_TRACING=true} to enable experimental GenAI tracing. This sample
+ * configures OpenTelemetry globally through Azure Monitor autoconfigure. Message and agent content capture is
+ * disabled by default; set {@code OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT=true} to enable it.
+ * Review your privacy requirements before enabling content capture.</p>
  *
  * <p>Prerequisites:</p>
  * <ul>

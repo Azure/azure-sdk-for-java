@@ -12,10 +12,11 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
 
 /**
- * Sample showing how experimental GenAI tracing is enabled for {@link AgentsClient} by configuring an OpenTelemetry
- * implementation through the client's {@link ClientOptions}. When an OpenTelemetry SDK is configured the client emits
- * GenAI semantic-convention spans and metrics automatically; there is no explicit opt-in call. Set the
- * {@code AZURE_TRACING_GEN_AI_CONTENT_RECORDING_ENABLED} environment variable to also capture message/agent content.
+ * Sample showing how to configure OpenTelemetry tracing for {@link AgentsClient} through the client's
+ * {@link ClientOptions}. Set {@code AZURE_EXPERIMENTAL_ENABLE_GENAI_TRACING=true} to enable experimental GenAI spans.
+ * Message and agent content capture is disabled by default; set
+ * {@code OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT=true} to enable it.
+ * Review your privacy requirements before enabling content capture.
  */
 public final class TracingSample {
 
@@ -28,8 +29,8 @@ public final class TracingSample {
         String endpoint = System.getenv("FOUNDRY_PROJECT_ENDPOINT");
 
         // BEGIN: com.azure.ai.agents.tracing
-        // Configure any OpenTelemetry SDK (exporters, sampling, etc.) and pass it through ClientOptions. The client
-        // then emits GenAI spans (create_agent, chat / invoke_agent, create_conversation) and metrics automatically.
+        // Set AZURE_EXPERIMENTAL_ENABLE_GENAI_TRACING=true before running this sample.
+        // Configure OpenTelemetry exporters and sampling, then pass the SDK through ClientOptions.
         OpenTelemetrySdk openTelemetry = OpenTelemetrySdk.builder().build();
         AgentsClient agentsClient = new AgentsClientBuilder().endpoint(endpoint)
             .credential(new DefaultAzureCredentialBuilder().build())
