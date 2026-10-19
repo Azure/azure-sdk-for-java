@@ -322,12 +322,10 @@ class FileApiTests extends FileShareTestBase {
         Assertions.assertEquals("file.txt", pathClient.getFilePath());
         Assertions.assertThrows(IllegalArgumentException.class, () -> new ShareFileClientBuilder().fileId(" "));
         Assertions.assertThrows(IllegalArgumentException.class, () -> new ShareFileClientBuilder().fileId(null));
-        Assertions.assertThrows(IllegalArgumentException.class,
-            () -> new ShareFileClientBuilder().endpoint(
-                FileIdTestHelper.ENDPOINT + "/" + FileIdTestHelper.SHARE_NAME + "?fileid="));
-        Assertions.assertThrows(IllegalArgumentException.class,
-            () -> new ShareFileClientBuilder().endpoint(
-                FileIdTestHelper.ENDPOINT + "/" + FileIdTestHelper.SHARE_NAME + "?fileid=%20"));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new ShareFileClientBuilder()
+            .endpoint(FileIdTestHelper.ENDPOINT + "/" + FileIdTestHelper.SHARE_NAME + "?fileid="));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new ShareFileClientBuilder()
+            .endpoint(FileIdTestHelper.ENDPOINT + "/" + FileIdTestHelper.SHARE_NAME + "?fileid=%20"));
     }
 
     @Test
