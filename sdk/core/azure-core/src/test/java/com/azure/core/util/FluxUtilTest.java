@@ -20,6 +20,7 @@ import org.junit.jupiter.api.condition.OS;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -478,13 +479,35 @@ public class FluxUtilTest {
     }
 
     @Test
-    public void toFluxByteBufferEmitsPartialReadBeforeEndOfStream() throws IOException {
+    public void toFluxByteBufferWithDefaultAvailable() throws IOException {
+        byte[] expected = "ABCDEFGHI".getBytes(StandardCharsets.UTF_8);
+
+        try (InputStream inputStream = withDefaultAvailable(new ByteArrayInputStream(expected), 3)) {
+            assertEquals(0, inputStream.available());
+
+            StepVerifier.create(FluxUtil.toFluxByteBuffer(inputStream, 8), 0)
+                .thenRequest(1)
+                .assertNext(buffer -> assertEquals("ABC", StandardCharsets.UTF_8.decode(buffer).toString()))
+                .thenRequest(1)
+                .assertNext(buffer -> assertEquals("DEF", StandardCharsets.UTF_8.decode(buffer).toString()))
+                .thenRequest(1)
+                .assertNext(buffer -> assertEquals("GHI", StandardCharsets.UTF_8.decode(buffer).toString()))
+                .thenRequest(1)
+                .expectComplete()
+                .verify(Duration.ofSeconds(2));
+        }
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    public void toFluxByteBufferEmitsPartialReadBeforeEndOfStream(boolean defaultAvailable) throws IOException {
         byte[] expected = "data: hello\n\n".getBytes(StandardCharsets.UTF_8);
 
         try (PipedInputStream inputStream = new PipedInputStream();
             PipedOutputStream outputStream = new PipedOutputStream(inputStream)) {
+            InputStream stream = defaultAvailable ? withDefaultAvailable(inputStream, expected.length) : inputStream;
             Flux<ByteBuffer> conversionFlux
-                = FluxUtil.toFluxByteBuffer(inputStream).subscribeOn(Schedulers.boundedElastic());
+                = FluxUtil.toFluxByteBuffer(stream).subscribeOn(Schedulers.boundedElastic());
 
             StepVerifier.create(conversionFlux).then(() -> {
                 try {
@@ -498,6 +521,25 @@ public class FluxUtilTest {
                 .thenCancel()
                 .verify(Duration.ofSeconds(2));
         }
+    }
+
+    private static InputStream withDefaultAvailable(InputStream inputStream, int maxReadSize) {
+        return new InputStream() {
+            @Override
+            public int read() throws IOException {
+                return inputStream.read();
+            }
+
+            @Override
+            public int read(byte[] buffer, int offset, int length) throws IOException {
+                return inputStream.read(buffer, offset, Math.min(length, maxReadSize));
+            }
+
+            @Override
+            public void close() throws IOException {
+                inputStream.close();
+            }
+        };
     }
 
     @Test

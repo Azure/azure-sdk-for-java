@@ -243,7 +243,7 @@ public final class FluxUtil {
     }
 
     /**
-     * Converts an {@link InputStream} into a {@link Flux} of {@link ByteBuffer} using a chunk size of 4096.
+     * Converts an {@link InputStream} into a {@link Flux} of {@link ByteBuffer} using a maximum chunk size of 4096.
      * <p>
      * Given that {@link InputStream} is not guaranteed to be replayable the returned {@link Flux} should be considered
      * non-replayable as well.
@@ -266,7 +266,8 @@ public final class FluxUtil {
      * If the passed {@link InputStream} is {@code null} {@link Flux#empty()} will be returned.
      *
      * @param inputStream The {@link InputStream} to convert into a {@link Flux}.
-     * @param chunkSize The requested size for each {@link ByteBuffer}.
+     * @param chunkSize The maximum size, in bytes, of each {@link ByteBuffer}. Buffers may be smaller when a read returns
+     * fewer bytes and no additional bytes are reported as immediately available.
      * @return A {@link Flux} of {@link ByteBuffer ByteBuffers} that contains the contents of the stream.
      * @throws IllegalArgumentException If {@code chunkSize} is less than or equal to {@code 0}.
      */
@@ -335,7 +336,7 @@ public final class FluxUtil {
 
                 int offset = readCount;
                 while (offset < chunkSize) {
-                    // Coalesce only bytes that can be read without blocking for more data.
+                    // Availability is only a batching hint; zero ends coalescing, not the stream.
                     int available = stream.available();
                     if (available <= 0) {
                         break;
