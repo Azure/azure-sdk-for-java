@@ -40,6 +40,23 @@ test("citation guidance preserves the repository and ref of successful evidence 
     assert.match(guidance, /Preserve the returned source URLs for trusted release metadata and service documentation/);
 });
 
+test("comment deduplication cannot preserve an unsupported automated decision", () => {
+    const output = source.split("## Output Requirements\n")[1];
+    assert.match(output, /Reassess the report under the current Decision Rules before applying comment deduplication/);
+    assert.match(output, /only when the previous outcome is still supported and its next action remains correct/);
+    assert.match(output, /correct that decision once and request the missing diagnostics on this issue/);
+    assert.match(output, /an unchanged rerun must not repeat it/);
+});
+
+test("catalog publication evidence is not mislabeled as verified latest during a conflict", () => {
+    const versions = source.split("## Version Evidence\n")[1].split("## Decision Rules\n")[0];
+    assert.match(versions, /A catalog entry does not prove that no newer version has been published/);
+    assert.match(versions, /latest published version could not be independently reconciled/);
+    assert.match(versions, /do not describe the older entry as a verified latest version, even with a catalog qualifier/);
+    assert.match(versions, /Do not recommend a downgrade/);
+    assert.match(source, /For an older reported version without that current-source proof/);
+});
+
 for (const variable of ["GH_AW_SAFE_OUTPUTS_CONFIG", "GH_AW_SAFE_OUTPUTS_HANDLER_CONFIG"]) {
     test(`${variable} preserves bounded, issue-targeted outputs and the fixed closure reason`, () => {
         const config = outputConfig(variable);

@@ -320,7 +320,9 @@ Preserve the returned source URLs for trusted release metadata and service docum
 
 Version currency is a mandatory investigation decision, not a declaration that older supported releases have reached end-of-life.
 
-For an unambiguous coordinate, call `java_release_metadata` first. It returns only the matching coordinate's published `stableVersion` and `previewVersion` from the Azure SDK Java release catalog, with its source URL. Use `stableVersion` as the GA baseline; use `previewVersion` only when no stable release is recorded.
+For an unambiguous coordinate, call `java_release_metadata` first. It returns only the matching coordinate's published `stableVersion` and `previewVersion` from the Azure SDK Java release catalog, with its source URL. Attribute these values as catalog-reported versions; use `stableVersion` as a GA candidate and `previewVersion` only when no stable release is recorded. A catalog entry does not prove that no newer version has been published.
+
+When the reported version or publisher evidence is newer than the catalog entry, explicitly acknowledge that the catalog may lag or that the sources have not been reconciled. Use trusted Maven Central publication evidence when available. Otherwise state that the latest published version could not be independently reconciled; do not describe the older entry as a verified latest version, even with a catalog qualifier. Do not recommend a downgrade or assume the reporter is on an old release solely because of that mismatch. A targeted diagnostic request may still be appropriate; an unresolved publication question must not be hidden behind a confident version claim.
 
 Do not use GitHub code search to query release metadata or a CHANGELOG. If any tool spills a successful result to a local file, inspect the relevant part with the available `view` or `rg` tools before declaring that evidence unavailable. Do not fetch the full release CSV through GitHub tools when the compact lookup is available.
 
@@ -359,9 +361,9 @@ When facts are missing or conflicting, do not take a consequential action. Reque
 When the reported version is older than the verified latest stable release, first inspect current source or documentation for the reported problem.
 Bypass the reproduction request only if a specific current file, snippet, or CHANGELOG entry establishes that the problem still exists. Explain that evidence in any subsequent action comment.
 
-Otherwise, add one comment naming the reported coordinate/version and the verified current version, asking for reproduction on that version and the result. Include an evidence-backed mitigation if available, then stop without closing or assigning.
+For an older reported version without that current-source proof, add one comment naming the reported coordinate/version and the verified current version, asking for reproduction on that version and the result. Include an evidence-backed mitigation if available, then stop without closing or assigning.
 
-If the coordinate and reported version are known but a current published baseline cannot be verified, explicitly say so, ask for reproduction on the latest available release without guessing its number, and stop without assigning.
+If the coordinate and reported version are known but no published baseline can be verified from available trusted sources, explicitly say so, ask for reproduction on the latest available release without guessing its number, and stop without assigning. A reported version newer than a catalog entry is not evidence that the reporter is on an outdated release; handle that discrepancy using Version Evidence instead.
 For a preview-only package, use the verified published preview baseline described above, not an invented stable release.
 If the package or version itself is missing, use the Insufficient Context rule unless current source/documentation independently establishes the defect.
 
@@ -441,7 +443,7 @@ Use at most one visible comment, with this structure. For **Service-side or by-d
 
 Do not include user or team mentions, unsupported claims, or a generic acknowledgement without a decision.
 Include an evidence-backed mitigation when useful; if none is known, say so rather than inventing one.
-Do not repeat an equivalent investigation comment when no new evidence or next action has emerged; use `noop` instead.
+Reassess the report under the current Decision Rules before applying comment deduplication. Suppress an equivalent comment with `noop` only when the previous outcome is still supported and its next action remains correct. If an earlier automated duplicate decision is unsupported under the Duplicate rule, correct that decision once and request the missing diagnostics on this issue; do not use the old assertion or the absence of new customer information as a reason to noop. Once a supported information request or specific duplicate explanation exists, an unchanged rerun must not repeat it.
 Pass the validated input issue number to every safe output (`item_number` for `add_comment`, `issue_number` for `close_issue` and `assign_to_agent`). Never act on a linked duplicate or another repository.
 Do not add state labels, change owner routing, configure Azure OpenAI secrets, or use external LLM endpoints.
 Always emit an explicit terminal outcome: the appropriate action, `noop` for completed no-action, or `report_incomplete` for an infrastructure/tool failure.
