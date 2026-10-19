@@ -58,6 +58,8 @@ public class BlockBlobSimpleUploadOptions implements ValidatableContent {
      *
      * @param data The data to write to the blob. Note that this {@code Flux} must be replayable if retries are enabled
      * (the default). In other words, the Flux must produce the same data each time it is subscribed to.
+     * Only the bytes between each buffer's position and limit are uploaded, and the buffers are not modified, so the
+     * same buffers can be uploaded again.
      * @param length The exact length of the data. It is important that this value match precisely the length of the
      * data emitted by the data source.
      * @throws NullPointerException If {@code data} is null.

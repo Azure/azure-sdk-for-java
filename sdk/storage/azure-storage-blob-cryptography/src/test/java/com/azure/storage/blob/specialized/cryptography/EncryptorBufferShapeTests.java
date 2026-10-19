@@ -54,7 +54,7 @@ public class EncryptorBufferShapeTests {
         byte[] ciphertext = concat(encryptorV2(key).encrypt(Flux.just(source.getBuffer())).collectList().block());
 
         TestUtils.assertArraysEqual(content, decryptV2(key, ciphertext, expectedRegions));
-        source.assertNoBytesChanged();
+        source.assertUnchanged();
     }
 
     private static Stream<Arguments> encryptV2Supplier() {
@@ -79,7 +79,7 @@ public class EncryptorBufferShapeTests {
         byte[] ciphertext = concat(encryptorV2(key).encrypt(Flux.fromIterable(buffers)).collectList().block());
 
         TestUtils.assertArraysEqual(content, decryptV2(key, ciphertext, 6));
-        sources.forEach(ShapedByteBuffer::assertNoBytesChanged);
+        sources.forEach(ShapedByteBuffer::assertUnchanged);
     }
 
     @ParameterizedTest
@@ -95,7 +95,42 @@ public class EncryptorBufferShapeTests {
         Cipher cipher = Cipher.getInstance(AES_CBC_PKCS5PADDING);
         cipher.init(Cipher.DECRYPT_MODE, key, new IvParameterSpec(getV1Iv(encryptor)));
         TestUtils.assertArraysEqual(content, cipher.doFinal(ciphertext));
-        source.assertNoBytesChanged();
+        source.assertUnchanged();
+    }
+
+    @Test
+    public void encryptV2SameBuffersAgainEncryptsSameContent() throws Exception {
+        byte[] content = randomBytes(5 * REGION_LENGTH + 5);
+        List<ShapedByteBuffer> sources = TestBufferShape.mixed(content, 11);
+        List<ByteBuffer> buffers = new ArrayList<>();
+        sources.forEach(source -> buffers.add(source.getBuffer()));
+        SecretKey key = newKey();
+
+        for (int attempt = 1; attempt <= 2; attempt++) {
+            byte[] ciphertext = concat(encryptorV2(key).encrypt(Flux.fromIterable(buffers)).collectList().block());
+
+            TestUtils.assertArraysEqual(content, decryptV2(key, ciphertext, 6));
+        }
+        sources.forEach(ShapedByteBuffer::assertUnchanged);
+    }
+
+    @Test
+    public void encryptV1SameBuffersAgainEncryptsSameContent() throws Exception {
+        byte[] content = randomBytes(5 * REGION_LENGTH + 5);
+        List<ShapedByteBuffer> sources = TestBufferShape.mixed(content, 11);
+        List<ByteBuffer> buffers = new ArrayList<>();
+        sources.forEach(source -> buffers.add(source.getBuffer()));
+        SecretKey key = newKey();
+
+        for (int attempt = 1; attempt <= 2; attempt++) {
+            EncryptorV1 encryptor = new EncryptorV1(key);
+            byte[] ciphertext = concat(encryptor.encrypt(Flux.fromIterable(buffers)).collectList().block());
+
+            Cipher cipher = Cipher.getInstance(AES_CBC_PKCS5PADDING);
+            cipher.init(Cipher.DECRYPT_MODE, key, new IvParameterSpec(getV1Iv(encryptor)));
+            TestUtils.assertArraysEqual(content, cipher.doFinal(ciphertext));
+        }
+        sources.forEach(ShapedByteBuffer::assertUnchanged);
     }
 
     private static EncryptorV2 encryptorV2(SecretKey key) {

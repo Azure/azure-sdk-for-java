@@ -115,6 +115,16 @@ public final class ShapedByteBuffer {
     }
 
     /**
+     * Asserts that the buffer is entirely unchanged: every byte, its position, and its limit. Use this after an upload,
+     * which must not modify the caller's buffers at all, so the same buffers can be uploaded again, such as when an
+     * upload is retried by re-subscribing to its source.
+     */
+    public void assertUnchanged() {
+        assertNoBytesChanged();
+        assertPositionAndLimit(originalPosition, originalLimit);
+    }
+
+    /**
      * Asserts the buffer's position and limit, which code under test may advance as it reads or writes.
      *
      * @param expectedPosition The expected position.

@@ -68,7 +68,7 @@ public class BlobBufferShapeUploadTests {
 
         assertEquals(expectedStagedBlocks, httpClient.getStagedBlockCount());
         TestUtils.assertArraysEqual(content, httpClient.getBlobContent());
-        source.assertNoBytesChanged();
+        source.assertUnchanged();
     }
 
     private static Stream<Arguments> partitionedUploadSupplier() {
@@ -96,7 +96,45 @@ public class BlobBufferShapeUploadTests {
 
         assertEquals(6, httpClient.getStagedBlockCount());
         TestUtils.assertArraysEqual(content, httpClient.getBlobContent());
-        sources.forEach(ShapedByteBuffer::assertNoBytesChanged);
+        sources.forEach(ShapedByteBuffer::assertUnchanged);
+    }
+
+    @Test
+    public void uploadingSameBuffersAgainSendsSameContent() {
+        byte[] content = randomBytes(5 * BLOCK_SIZE + 100);
+        List<ShapedByteBuffer> sources = TestBufferShape.mixed(content, 700);
+        List<ByteBuffer> buffers = new ArrayList<>();
+        sources.forEach(source -> buffers.add(source.getBuffer()));
+
+        for (int upload = 1; upload <= 2; upload++) {
+            RequestCapturingHttpClient httpClient = new RequestCapturingHttpClient();
+
+            blobClient(httpClient).uploadWithResponse(
+                new BlobParallelUploadOptions(Flux.fromIterable(buffers)).setParallelTransferOptions(blockOptions()),
+                null, null);
+
+            TestUtils.assertArraysEqual(content, httpClient.getBlobContent());
+        }
+        sources.forEach(ShapedByteBuffer::assertUnchanged);
+    }
+
+    @Test
+    public void retryingUploadBySubscribingAgainSendsSameContent() {
+        byte[] content = randomBytes(5 * BLOCK_SIZE + 100);
+        List<ShapedByteBuffer> sources = TestBufferShape.mixed(content, 700);
+        List<ByteBuffer> buffers = new ArrayList<>();
+        sources.forEach(source -> buffers.add(source.getBuffer()));
+        // The first commit fails, so the upload is retried by subscribing to it again, which re-reads the buffers.
+        RequestCapturingHttpClient httpClient = new RequestCapturingHttpClient(1);
+
+        blobAsyncClient(httpClient)
+            .uploadWithResponse(
+                new BlobParallelUploadOptions(Flux.fromIterable(buffers)).setParallelTransferOptions(blockOptions()))
+            .retry(1)
+            .block();
+
+        TestUtils.assertArraysEqual(content, httpClient.getBlobContent());
+        sources.forEach(ShapedByteBuffer::assertUnchanged);
     }
 
     @ParameterizedTest
@@ -111,7 +149,7 @@ public class BlobBufferShapeUploadTests {
             .block();
 
         TestUtils.assertArraysEqual(content, httpClient.getBody(null));
-        source.assertNoBytesChanged();
+        source.assertUnchanged();
     }
 
     @ParameterizedTest
@@ -127,7 +165,7 @@ public class BlobBufferShapeUploadTests {
             .block();
 
         TestUtils.assertArraysEqual(content, httpClient.getBody("block"));
-        source.assertNoBytesChanged();
+        source.assertUnchanged();
     }
 
     @ParameterizedTest
@@ -142,7 +180,7 @@ public class BlobBufferShapeUploadTests {
             .block();
 
         TestUtils.assertArraysEqual(content, httpClient.getBody("appendblock"));
-        source.assertNoBytesChanged();
+        source.assertUnchanged();
     }
 
     @ParameterizedTest
@@ -157,7 +195,7 @@ public class BlobBufferShapeUploadTests {
             .block();
 
         TestUtils.assertArraysEqual(content, httpClient.getBody("page"));
-        source.assertNoBytesChanged();
+        source.assertUnchanged();
     }
 
     private static ParallelTransferOptions blockOptions() {
@@ -192,6 +230,15 @@ public class BlobBufferShapeUploadTests {
     private static final class RequestCapturingHttpClient implements HttpClient {
         private final Map<String, byte[]> bodies = new HashMap<>();
         private final Map<String, byte[]> stagedBlocks = new HashMap<>();
+        private int failedCommitsRemaining;
+
+        RequestCapturingHttpClient() {
+            this(0);
+        }
+
+        RequestCapturingHttpClient(int failedCommits) {
+            this.failedCommitsRemaining = failedCommits;
+        }
 
         @Override
         public Mono<HttpResponse> send(HttpRequest request) {
@@ -201,10 +248,15 @@ public class BlobBufferShapeUploadTests {
 
             Mono<byte[]> body = request.getBody() == null
                 ? Mono.just(new byte[0])
-                : FluxUtil.collectBytesInByteBufferStream(request.getBody());
+                : FluxUtil.collectBytesInByteBufferStream(request.getBody().map(ByteBuffer::duplicate));
             return body.map(bytes -> {
                 String comp = getQueryParameter(request, "comp");
                 synchronized (this) {
+                    if ("blocklist".equals(comp) && failedCommitsRemaining > 0) {
+                        // A failure the SDK doesn't retry itself, so the caller has to retry the whole upload.
+                        failedCommitsRemaining--;
+                        return new MockHttpResponse(request, 400);
+                    }
                     bodies.put(comp, bytes);
                     if ("block".equals(comp)) {
                         stagedBlocks.put(getQueryParameter(request, "blockid"), bytes);
