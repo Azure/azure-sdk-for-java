@@ -38,7 +38,7 @@ public class AgentsCustomizations extends Customization {
         modifyPollingStrategies(libraryCustomization, logger);
         customizeOptimizationPollingStrategies(libraryCustomization, logger);
         internalizeUnusedVoiceAgentFunctionToolType(libraryCustomization, logger);
-        protectPolymorphicBaseConstructors(libraryCustomization, logger);
+        protectPolymorphicBaseConstructors(libraryCustomization);
         makeRealtimeMessageDiscriminatorsFinal(libraryCustomization);
         applyUnionTypeWrappers(libraryCustomization, logger);
         annotateBetaClients(libraryCustomization, logger);
@@ -114,7 +114,7 @@ public class AgentsCustomizations extends Customization {
      *
      * @param customization the library customization
      */
-    private void protectPolymorphicBaseConstructors(LibraryCustomization customization, Logger logger) {
+    private void protectPolymorphicBaseConstructors(LibraryCustomization customization) {
         List<String> classNames = Arrays.asList("AgentHarness", "AgentOptimizationConfigurationBase",
             "AgentOptimizationEvaluationSet", "AgentOptimizationTargetCompletionDataSource",
             "AgentOptimizationTargetConfiguration", "AgentOptimizationUserConversationSimulationDataSource",
@@ -128,14 +128,7 @@ public class AgentsCustomizations extends Customization {
             "VoiceAgentTurnDetectionConfiguration", "VoiceConversationEngine");
 
         for (String className : classNames) {
-            ClassCustomization classCustomization;
-            try {
-                classCustomization = customization.getClass(MODELS_PACKAGE, className);
-            } catch (IllegalArgumentException ex) {
-                logger.info("{} does not exist; skipping constructor protection.", className);
-                continue;
-            }
-
+            ClassCustomization classCustomization = customization.getClass(MODELS_PACKAGE, className);
             classCustomization.customizeAst(ast -> ast.getClassByName(className).ifPresent(clazz -> clazz
                 .getConstructors()
                 .stream()
