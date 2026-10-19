@@ -25,6 +25,11 @@ import com.azure.search.documents.knowledgebases.KnowledgeBaseRetrievalAsyncClie
 import com.azure.search.documents.knowledgebases.KnowledgeBaseRetrievalClient;
 import com.azure.search.documents.knowledgebases.KnowledgeBaseRetrievalClientBuilder;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseAnswerCompletedStreamEvent;
+import com.azure.search.documents.knowledgebases.models.KnowledgeBaseMessageTextContent;
+import com.azure.search.documents.knowledgebases.models.KnowledgeBaseActivityStartedStreamEvent;
+import com.azure.search.documents.knowledgebases.models.KnowledgeBaseActivityCompletedStreamEvent;
+import com.azure.search.documents.knowledgebases.models.KnowledgeBaseReferencesCompletedStreamEvent;
+import com.azure.search.documents.knowledgebases.models.KnowledgeBaseErrorStreamEvent;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseResponseCompletedStreamEvent;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalOptions;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalStartedStreamEvent;
@@ -129,15 +134,39 @@ public class KnowledgeBaseRetrievalStreamExample {
         verifyStream(started, completed);
     }
 
-    private static void inspectEvent(KnowledgeBaseRetrievalStreamEvent event, AtomicBoolean started,
+    static void inspectEvent(KnowledgeBaseRetrievalStreamEvent event, AtomicBoolean started,
         AtomicBoolean completed) {
         System.out.println("Received event: " + event.getEventName());
         if (event instanceof KnowledgeBaseAnswerCompletedStreamEvent) {
             KnowledgeBaseAnswerCompletedStreamEvent answerEvent = (KnowledgeBaseAnswerCompletedStreamEvent) event;
-            System.out.println("Answer: " + answerEvent.getValue().getMessage());
+            answerEvent.getValue().getMessage().getContent().forEach(content -> {
+                if (content instanceof KnowledgeBaseMessageTextContent) {
+                    System.out.println("Answer: " + ((KnowledgeBaseMessageTextContent) content).getText());
+                }
+            });
         }
         if (event instanceof KnowledgeBaseRetrievalStartedStreamEvent) {
             started.set(true);
+            KnowledgeBaseRetrievalStartedStreamEvent retrieval = (KnowledgeBaseRetrievalStartedStreamEvent) event;
+            if (retrieval.getValue().getReasoningEffort() != null) {
+                System.out.println("Reasoning effort: " + retrieval.getValue().getReasoningEffort().getKind());
+            }
+        }
+        if (event instanceof KnowledgeBaseActivityStartedStreamEvent) {
+            System.out.println("Activity started: "
+                + ((KnowledgeBaseActivityStartedStreamEvent) event).getValue().getId());
+        }
+        if (event instanceof KnowledgeBaseActivityCompletedStreamEvent) {
+            System.out.println("Activity completed: "
+                + ((KnowledgeBaseActivityCompletedStreamEvent) event).getValue().getType());
+        }
+        if (event instanceof KnowledgeBaseReferencesCompletedStreamEvent) {
+            ((KnowledgeBaseReferencesCompletedStreamEvent) event).getValue().forEach(reference ->
+                System.out.println("Citation URL: " + KnowledgeRetrievalResponseExample.citationUrl(reference)));
+        }
+        if (event instanceof KnowledgeBaseErrorStreamEvent) {
+            throw new IllegalStateException("Knowledge retrieval failed: "
+                + ((KnowledgeBaseErrorStreamEvent) event).getValue().getError().getMessage());
         }
         if (event instanceof KnowledgeBaseResponseCompletedStreamEvent) {
             KnowledgeBaseResponseCompletedStreamEvent completionEvent

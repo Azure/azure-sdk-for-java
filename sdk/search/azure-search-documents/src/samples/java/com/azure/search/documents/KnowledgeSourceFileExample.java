@@ -14,6 +14,7 @@ import com.azure.search.documents.indexes.models.FileKnowledgeSource;
 import com.azure.search.documents.indexes.models.FileKnowledgeSourceExtractionMode;
 import com.azure.search.documents.indexes.models.FileKnowledgeSourceParameters;
 import com.azure.search.documents.indexes.models.FileUploadMetadata;
+import com.azure.search.documents.indexes.models.KnowledgeSourceFileCapacity;
 import com.azure.search.documents.indexes.models.KnowledgeSourceContentExtractionMode;
 import com.azure.search.documents.indexes.models.KnowledgeSourceFile;
 import com.azure.search.documents.indexes.models.ListingSearchType;
@@ -78,6 +79,14 @@ public class KnowledgeSourceFileExample {
             searchIndexClient.createKnowledgeSource(knowledgeSource);
             knowledgeSourceCreated = true;
 
+            KnowledgeSourceFileCapacity capacity
+                = searchIndexClient.getKnowledgeSourceStatus(knowledgeSourceName).getFileCapacity();
+            if (capacity == null || capacity.getRemainingFileCount() < 2) {
+                throw new IllegalStateException("The file source must report capacity for at least two uploads.");
+            }
+            System.out.printf("Files: %d remaining of %d; maximum file size: %d bytes%n",
+                capacity.getRemainingFileCount(), capacity.getMaxFileCount(), capacity.getMaxFileSizeBytes());
+
             Map<String, String> metadata = new LinkedHashMap<>();
             metadata.put("team", "search");
             metadata.put("release", "2026-10-01");
@@ -105,8 +114,8 @@ public class KnowledgeSourceFileExample {
 
             Map<String, String> updatedMetadata = new LinkedHashMap<>(metadata);
             updatedMetadata.put("status", "reviewed");
-            KnowledgeSourceFile updatedFile = searchIndexClient.updateKnowledgeSourceFile(firstFile.getFileId(),
-                knowledgeSourceName,
+            KnowledgeSourceFile updatedFile = searchIndexClient.updateKnowledgeSourceFile(knowledgeSourceName,
+                firstFile.getFileId(),
                 new UpdateKnowledgeSourceFileRequest(
                     new FileUploadMetadata().setFileName(firstFile.getFileName()).setMetadata(updatedMetadata),
                     createFileContent("# October features\n\nUpdated and reviewed.", "features.md")));
@@ -115,20 +124,20 @@ public class KnowledgeSourceFileExample {
                 throw new IllegalStateException("The file wasn't updated in place.");
             }
 
-            searchIndexClient.deleteKnowledgeSourceFile(secondFile.getFileId(), knowledgeSourceName);
+            searchIndexClient.deleteKnowledgeSourceFile(knowledgeSourceName, secondFile.getFileId());
             uploadedFileIds.remove(secondFile.getFileId());
             long remainingFiles = searchIndexClient.listKnowledgeSourceFiles(knowledgeSourceName).stream().count();
             if (remainingFiles != 1) {
                 throw new IllegalStateException("Deleting one file should leave the other file intact.");
             }
 
-            searchIndexClient.deleteKnowledgeSourceFile(firstFile.getFileId(), knowledgeSourceName);
+            searchIndexClient.deleteKnowledgeSourceFile(knowledgeSourceName, firstFile.getFileId());
             uploadedFileIds.remove(firstFile.getFileId());
             if (searchIndexClient.listKnowledgeSourceFiles(knowledgeSourceName).stream().findAny().isPresent()) {
                 throw new IllegalStateException("The File knowledge source should be empty after deleting its files.");
             }
         } finally {
-            uploadedFileIds.forEach(fileId -> searchIndexClient.deleteKnowledgeSourceFile(fileId, knowledgeSourceName));
+            uploadedFileIds.forEach(fileId -> searchIndexClient.deleteKnowledgeSourceFile(knowledgeSourceName, fileId));
             if (knowledgeSourceCreated) {
                 searchIndexClient.deleteKnowledgeSource(knowledgeSourceName);
             }

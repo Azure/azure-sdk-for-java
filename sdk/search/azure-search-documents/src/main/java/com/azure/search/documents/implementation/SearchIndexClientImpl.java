@@ -224,7 +224,7 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getSynonymMaps(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> listSynonymMaps(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
@@ -234,7 +234,7 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getSynonymMapsSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> listSynonymMapsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
@@ -894,7 +894,7 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getSynonymMapsNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+        Mono<Response<BinaryData>> listSynonymMapsNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
@@ -904,7 +904,7 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getSynonymMapsNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
+        Response<BinaryData> listSynonymMapsNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
@@ -1415,10 +1415,10 @@ public final class SearchIndexClientImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> getSynonymMapsSinglePageAsync(RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listSynonymMapsSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
         return FluxUtil
-            .withContext(context -> service.getSynonymMaps(this.getEndpoint(), this.getServiceVersion().getVersion(),
+            .withContext(context -> service.listSynonymMaps(this.getEndpoint(), this.getServiceVersion().getVersion(),
                 accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "@odata.nextLink"), null));
@@ -1476,12 +1476,12 @@ public final class SearchIndexClientImpl {
      * @return response from a List SynonymMaps request as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> getSynonymMapsAsync(RequestOptions requestOptions) {
+    public PagedFlux<BinaryData> listSynonymMapsAsync(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
             requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
-        return new PagedFlux<>(() -> getSynonymMapsSinglePageAsync(requestOptions),
-            nextLink -> getSynonymMapsNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+        return new PagedFlux<>(() -> listSynonymMapsSinglePageAsync(requestOptions),
+            nextLink -> listSynonymMapsNextSinglePageAsync(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -1536,10 +1536,10 @@ public final class SearchIndexClientImpl {
      * @return response from a List SynonymMaps request along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> getSynonymMapsSinglePage(RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> listSynonymMapsSinglePage(RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
-        Response<BinaryData> res = service.getSynonymMapsSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            accept, requestOptions, Context.NONE);
+        Response<BinaryData> res = service.listSynonymMapsSync(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "@odata.nextLink"), null);
     }
@@ -1596,12 +1596,12 @@ public final class SearchIndexClientImpl {
      * @return response from a List SynonymMaps request as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> getSynonymMaps(RequestOptions requestOptions) {
+    public PagedIterable<BinaryData> listSynonymMaps(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
             requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
-        return new PagedIterable<>(() -> getSynonymMapsSinglePage(requestOptions),
-            nextLink -> getSynonymMapsNextSinglePage(nextLink, requestOptionsForNextPage));
+        return new PagedIterable<>(() -> listSynonymMapsSinglePage(requestOptions),
+            nextLink -> listSynonymMapsNextSinglePage(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -8664,12 +8664,12 @@ public final class SearchIndexClientImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> getSynonymMapsNextSinglePageAsync(String nextLink,
+    private Mono<PagedResponse<BinaryData>> listSynonymMapsNextSinglePageAsync(String nextLink,
         RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
         return FluxUtil
             .withContext(
-                context -> service.getSynonymMapsNext(nextLink, this.getEndpoint(), accept, requestOptions, context))
+                context -> service.listSynonymMapsNext(nextLink, this.getEndpoint(), accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "@odata.nextLink"), null));
     }
@@ -8712,10 +8712,10 @@ public final class SearchIndexClientImpl {
      * @return response from a List SynonymMaps request along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> getSynonymMapsNextSinglePage(String nextLink, RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> listSynonymMapsNextSinglePage(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
         Response<BinaryData> res
-            = service.getSynonymMapsNextSync(nextLink, this.getEndpoint(), accept, requestOptions, Context.NONE);
+            = service.listSynonymMapsNextSync(nextLink, this.getEndpoint(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "@odata.nextLink"), null);
     }

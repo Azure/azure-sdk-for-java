@@ -12,6 +12,11 @@ import com.azure.search.documents.indexes.models.SearchIndexerSkill;
 import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
 import com.azure.search.documents.indexes.models.WebApiHttpHeaders;
 import com.azure.search.documents.indexes.models.WebApiSkill;
+import com.azure.search.documents.indexes.models.ContentUnderstandingSkill;
+import com.azure.search.documents.indexes.models.ContentUnderstandingSkillChunkingProperties;
+import com.azure.search.documents.indexes.models.ContentUnderstandingSkillChunkingUnit;
+import com.azure.search.documents.indexes.models.AIServicesAccountKey;
+import com.azure.search.documents.models.ContentUnderstandingSkillChunkingMethod;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -35,9 +40,49 @@ public class CreateSkillsetExample {
             .credential(new AzureKeyCredential(ADMIN_KEY))
             .buildClient();
 
+        if (args.length > 0 && "content-understanding".equals(args[0])) {
+            SearchIndexerSkillset skillset = new SearchIndexerSkillset("content-understanding-sample",
+                contentUnderstandingSkill(System.getenv("SEARCH_CONTENT_MODEL_NAME"),
+                    System.getenv("SEARCH_CONTENT_MODEL_DEPLOYMENT"), ContentUnderstandingSkillChunkingMethod.SEMANTIC))
+                .setCognitiveServicesAccount(new AIServicesAccountKey(System.getenv("SEARCH_AI_SERVICES_API_KEY"),
+                    System.getenv("SEARCH_AI_SERVICES_ENDPOINT")));
+            searchIndexerClient.createSkillset(skillset);
+            try {
+                System.out.println(searchIndexerClient.getSkillset(skillset.getName()).getSkills());
+            } finally {
+                searchIndexerClient.deleteSkillset(skillset.getName());
+            }
+            return;
+        }
+
         createOcrSkillset(searchIndexerClient);
         createCustomSkillset(searchIndexerClient);
         cleanupSkillset(searchIndexerClient);
+    }
+
+    /**
+     * Builds a content-understanding skill for file data, using token-based semantic chunks or fixed-size characters.
+     * Run the sample with {@code content-understanding} and set SEARCH_CONTENT_MODEL_NAME,
+     * SEARCH_CONTENT_MODEL_DEPLOYMENT, SEARCH_AI_SERVICES_ENDPOINT, and SEARCH_AI_SERVICES_API_KEY in addition to the Search endpoint and key.
+     * An indexer using this skill must expose /document/file_data (allowSkillsetToReadFileData).
+     *
+     * @param modelName The supported model name.
+     * @param deployment The provisioned model deployment.
+     * @param method The chunking method.
+     * @return The configured content-understanding skill.
+     */
+    public static ContentUnderstandingSkill contentUnderstandingSkill(String modelName, String deployment,
+        ContentUnderstandingSkillChunkingMethod method) {
+        boolean semantic = ContentUnderstandingSkillChunkingMethod.SEMANTIC.equals(method);
+        return new ContentUnderstandingSkill(
+            Collections.singletonList(new InputFieldMappingEntry("file_data").setSource("/document/file_data")),
+            Collections.singletonList(new OutputFieldMappingEntry("text_sections").setTargetName("sections")))
+            .setModelName(modelName)
+            .setModelDeployment(deployment)
+            .setChunkingProperties(new ContentUnderstandingSkillChunkingProperties().setMethod(method)
+                .setUnit(semantic ? ContentUnderstandingSkillChunkingUnit.TOKENS
+                    : ContentUnderstandingSkillChunkingUnit.CHARACTERS)
+                .setMaximumLength(semantic ? 500 : 2000));
     }
 
     private static void createOcrSkillset(SearchIndexerClient searchIndexerClient) {

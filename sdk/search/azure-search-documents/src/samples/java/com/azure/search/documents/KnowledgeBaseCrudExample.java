@@ -4,8 +4,10 @@
 package com.azure.search.documents;
 
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.http.rest.RequestOptions;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
+import com.azure.search.documents.indexes.SearchIndexAsyncClient;
 import com.azure.search.documents.indexes.models.KnowledgeBase;
 import com.azure.search.documents.indexes.models.KnowledgeSourceReference;
 import com.azure.search.documents.indexes.models.SearchField;
@@ -85,7 +87,8 @@ public class KnowledgeBaseCrudExample {
             }
 
             // List all knowledge bases
-            boolean listed = searchIndexClient.listKnowledgeBases()
+            boolean listed = searchIndexClient.listKnowledgeBases(new RequestOptions()
+                .addQueryParam("search", knowledgeBaseName).addQueryParam("searchType", "prefix").addQueryParam("pageSize", "1"))
                 .stream()
                 .anyMatch(kb -> knowledgeBaseName.equals(kb.getName()));
             if (!listed) {
@@ -94,7 +97,17 @@ public class KnowledgeBaseCrudExample {
 
             // Update a knowledge base
             retrieved.setDescription("Updated description for sample knowledge base");
-            KnowledgeBase updated = searchIndexClient.createOrUpdateKnowledgeBase(retrieved);
+            KnowledgeBase updated;
+            if (args.length > 0 && "async".equals(args[0])) {
+                SearchIndexAsyncClient asyncClient = new SearchIndexClientBuilder()
+                    .credential(new AzureKeyCredential(API_KEY)).endpoint(ENDPOINT).buildAsyncClient();
+                updated = asyncClient.createOrUpdateKnowledgeBase(retrieved).block();
+            } else {
+                updated = searchIndexClient.createOrUpdateKnowledgeBase(retrieved);
+            }
+            if (updated == null) {
+                throw new IllegalStateException("The knowledge base update completed without a response body.");
+            }
             System.out.println("\nUpdated knowledge base: " + updated.getName());
             System.out.println("Description: " + updated.getDescription());
             if (!retrieved.getDescription().equals(updated.getDescription())) {

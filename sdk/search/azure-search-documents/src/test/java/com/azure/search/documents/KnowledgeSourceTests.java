@@ -1366,7 +1366,7 @@ public class KnowledgeSourceTests extends SearchTestBase {
                     "# Version 1\n\nThe original File KS document content.", originalMetadata)))
             .flatMap(
                 uploaded -> searchIndexClient
-                    .updateKnowledgeSourceFile(uploaded.getFileId(), knowledgeSource.getName(),
+                    .updateKnowledgeSourceFile(knowledgeSource.getName(), uploaded.getFileId(),
                         new UpdateKnowledgeSourceFileRequest(
                             new FileUploadMetadata().setFileName(uploaded.getFileName()).setMetadata(updatedMetadata),
                             createFileContent("# Version 2\n\nThe updated File KS document content.",

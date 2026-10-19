@@ -1327,27 +1327,24 @@ public final class SearchIndexAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response from a List SynonymMaps request as paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<SynonymMap> getSynonymMaps() {
-        return getSynonymMaps(null, null, null, null);
-    }
-
-    /**
-     * Lists all synonym maps available for a search service.
-     *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all synonym maps as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SynonymMap> listSynonymMaps() {
-        return getSynonymMaps(null, null, null, null);
+        return listSynonymMaps(new RequestOptions());
+    }
+
+    /**
+     * Lists all matching synonym maps, following service-provided continuation links.
+     *
+     * @param requestOptions The options to configure the HTTP request, including listing filters.
+     * @throws HttpResponseException if the service rejects the request.
+     * @return the matching synonym maps as a paginated response.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<SynonymMap> listSynonymMaps(RequestOptions requestOptions) {
+        return this.serviceClient.listSynonymMapsAsync(requestOptions)
+            .mapPage(binaryData -> binaryData.toObject(SynonymMap.class));
     }
 
     /**
@@ -1357,7 +1354,7 @@ public final class SearchIndexAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<String> listSynonymMapNames() {
-        return getSynonymMaps(java.util.Collections.singletonList("name"), null, null, null)
+        return listSynonymMaps(new RequestOptions().addQueryParam("$select", "name", false))
             .mapPage(SynonymMap::getName);
     }
 
@@ -4530,43 +4527,23 @@ public final class SearchIndexAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SearchIndexResponse> listIndexesWithSelectedProperties(List<String> select) {
-        RequestOptions requestOptions = new RequestOptions();
-        if (select != null) {
-            requestOptions.addQueryParam("$select",
-                select.stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(",")),
-                false);
-        }
-        PagedFlux<BinaryData> pagedFluxResponse = hiddenGeneratedListIndexesWithSelectedProperties(requestOptions);
-        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
-            return flux
-                .map(pagedResponse -> new PagedResponseBase<Void, SearchIndexResponse>(pagedResponse.getRequest(),
-                    pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                    pagedResponse.getValue()
-                        .stream()
-                        .map(protocolMethodData -> protocolMethodData.toObject(SearchIndexResponse.class))
-                        .collect(Collectors.toList()),
-                    pagedResponse.getContinuationToken(), null));
-        });
+        return listIndexesWithSelectedProperties(select, new RequestOptions());
     }
 
     /**
-     * Lists all synonym maps available for a search service.
+     * Lists matching indexes with selected properties, following service-provided continuation links.
      *
-     * @param select Selects which top-level properties to retrieve.
-     * @param search A string used to narrow down the listing.
-     * @param pageSize The maximum number of items to return in a single page.
-     * @param searchType Specifies how the search parameter is interpreted.
-     * @return all matching synonym maps as paginated response with {@link PagedFlux}.
+     * @param select The top-level properties to retrieve, or {@code null} to use the service default.
+     * @param requestOptions The options to configure the HTTP request, including listing filters.
+     * @throws HttpResponseException if the service rejects the request.
+     * @return the matching indexes as a paginated response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<SynonymMap> getSynonymMaps(List<String> select, String search, Integer pageSize,
-        ListingSearchType searchType) {
-        RequestOptions requestOptions = new RequestOptions();
+    public PagedFlux<SearchIndexResponse> listIndexesWithSelectedProperties(List<String> select,
+        RequestOptions requestOptions) {
+        if (requestOptions == null) {
+            requestOptions = new RequestOptions();
+        }
         if (select != null) {
             requestOptions.addQueryParam("$select",
                 select.stream()
@@ -4574,17 +4551,8 @@ public final class SearchIndexAsyncClient {
                     .collect(Collectors.joining(",")),
                 false);
         }
-        if (search != null) {
-            requestOptions.addQueryParam("search", search, false);
-        }
-        if (pageSize != null) {
-            requestOptions.addQueryParam("pageSize", String.valueOf(pageSize), false);
-        }
-        if (searchType != null) {
-            requestOptions.addQueryParam("searchType", searchType.toString(), false);
-        }
-        return serviceClient.getSynonymMapsAsync(requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(SynonymMap.class));
+        return serviceClient.listIndexesWithSelectedPropertiesAsync(requestOptions)
+            .mapPage(binaryData -> binaryData.toObject(SearchIndexResponse.class));
     }
 
     /**
@@ -5071,5 +5039,91 @@ public final class SearchIndexAsyncClient {
         // and hence not generated.
         return this.serviceClient.updateKnowledgeSourceFileWithResponseInternalAsync(name, fileId, body,
             requestOptions);
+    }
+
+    /**
+     * Lists all synonym maps available for a search service.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>Selects which top-level properties to retrieve.
+     * Specified as a comma-separated list of JSON property names, or '*' for all properties. The default is all
+     * properties. In the form of "," separated string.</td></tr>
+     * <tr><td>search</td><td>String</td><td>No</td><td>A string used to narrow down the listing so that fewer results
+     * need to be paged through. If omitted or an empty string is passed, no narrowing is applied.</td></tr>
+     * <tr><td>pageSize</td><td>Integer</td><td>No</td><td>The maximum number of items to return in a single page. The
+     * server enforces a maximum; if omitted, the server determines a suitable default.</td></tr>
+     * <tr><td>searchType</td><td>String</td><td>No</td><td>Specifies how the search parameter is interpreted. Currently
+     * only 'prefix' is supported. Allowed values: "prefix".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Required)
+     *     format: String (Required)
+     *     synonyms (Required): [
+     *         String (Required)
+     *     ]
+     *     encryptionKey (Optional): {
+     *         keyVaultKeyName: String (Required)
+     *         keyVaultKeyVersion: String (Optional)
+     *         keyVaultUri: String (Required)
+     *         accessCredentials (Optional): {
+     *             applicationId: String (Required)
+     *             applicationSecret: String (Optional)
+     *         }
+     *         identity (Optional): {
+     *             &#64;odata.type: String (Required)
+     *         }
+     *     }
+     *     &#64;odata.etag: String (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return response from a List SynonymMaps request as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<BinaryData> hiddenGeneratedListSynonymMaps(RequestOptions requestOptions) {
+        return this.serviceClient.listSynonymMapsAsync(requestOptions);
+    }
+
+    /**
+     * Lists matching resources as typed, lazily retrieved pages.
+     *
+     * @param requestOptions The options to configure the HTTP request, including listing filters.
+     * @throws HttpResponseException if the service rejects the request.
+     * @return The matching resources as a paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<IndexStatisticsSummary> listIndexStatsSummary(RequestOptions requestOptions) {
+        return this.serviceClient.listIndexStatsSummaryAsync(requestOptions)
+            .mapPage(binaryData -> binaryData.toObject(IndexStatisticsSummary.class));
+    }
+
+    /**
+     * Lists matching resources as typed, lazily retrieved pages.
+     *
+     * @param name The name of the knowledge source.
+     * @param requestOptions The options to configure the HTTP request, including listing filters.
+     * @throws HttpResponseException if the service rejects the request.
+     * @return The matching resources as a paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<KnowledgeSourceFile> listKnowledgeSourceFiles(String name, RequestOptions requestOptions) {
+        return this.serviceClient.listKnowledgeSourceFilesAsync(name, requestOptions)
+            .mapPage(binaryData -> binaryData.toObject(KnowledgeSourceFile.class));
     }
 }

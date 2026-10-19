@@ -45,8 +45,24 @@ See the [knowledge base configuration sample](src/samples/java/com/azure/search/
 [retrieval response sample](src/samples/java/com/azure/search/documents/KnowledgeRetrievalResponseExample.java),
 [retrieval streaming sample](src/samples/java/com/azure/search/documents/KnowledgeBaseRetrievalStreamExample.java), and
 [file knowledge source sample](src/samples/java/com/azure/search/documents/KnowledgeSourceFileExample.java).
-When migrating from the previous beta, use `setMaxOutputSizeInTokens` instead of `setMaxOutputSize` and remove the
-Work IQ authorization argument from retrieval calls. Other removed preview features are listed in [the changelog](CHANGELOG.md).
+See [the changelog](CHANGELOG.md) for additions, breaking changes, and fixes relative to the previous GA release,
+`12.0.2`. The [sample feature-coverage table](src/samples/README.md#new-ga-feature-coverage) maps the new capabilities
+to runnable examples and configuration snippets, including document permissions, indexed SQL and SharePoint sources,
+and content-understanding chunking.
+
+### Listing and pagination
+
+Listing operations use `list...` names and return typed `PagedIterable<T>` results on synchronous clients and
+`PagedFlux<T>` results on asynchronous clients. Pages are fetched lazily, and service-provided continuation links
+are followed automatically. Use `iterableByPage()` or `byPage()` to inspect pages, and pass a page's continuation
+token to the corresponding overload to resume a listing.
+
+Request-options overloads accept service-supported listing filters such as `search`, `searchType`, `pageSize`,
+and `$select` where applicable. A page size limits each service response, not the total number of returned items.
+Set `pageSize` explicitly in the request options or the listing overload that accepts it; the current generated
+listing APIs do not forward page-size hints from `iterableByPage(int)` or `byPage(int)` to the service.
+Use a new `RequestOptions` instance for each independently configured listing. The `list...Names()` methods request
+only resource names and retain pagination.
 
 ### Include the package
 
@@ -395,7 +411,9 @@ To find documents similar to an existing document, supply its key with `setMoreL
 Do not combine this option with search text.
 
 ```java readme-sample-searchMoreLikeThis
-SearchOptions options = new SearchOptions().setMoreLikeThis("hotel-1").setTop(5);
+SearchOptions options = new SearchOptions().setMoreLikeThis("hotel-1")
+    .setSearchFields("HotelName", "Description")
+    .setTop(5);
 SEARCH_CLIENT.search(options).forEach(result -> System.out.println(result.getAdditionalProperties()));
 ```
 

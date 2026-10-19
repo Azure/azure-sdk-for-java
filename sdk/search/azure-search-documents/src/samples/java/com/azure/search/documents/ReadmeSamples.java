@@ -197,7 +197,9 @@ public class ReadmeSamples {
 
     public void searchMoreLikeThis() {
         // BEGIN: readme-sample-searchMoreLikeThis
-        SearchOptions options = new SearchOptions().setMoreLikeThis("hotel-1").setTop(5);
+        SearchOptions options = new SearchOptions().setMoreLikeThis("hotel-1")
+            .setSearchFields("HotelName", "Description")
+            .setTop(5);
         SEARCH_CLIENT.search(options).forEach(result -> System.out.println(result.getAdditionalProperties()));
         // END: readme-sample-searchMoreLikeThis
     }

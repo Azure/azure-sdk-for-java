@@ -24,6 +24,12 @@ import java.util.List;
  * Contains customizations for Azure AI Search code generation.
  */
 public class SearchCustomizations extends Customization {
+    /**
+     * Creates the Azure AI Search code generation customizations.
+     */
+    public SearchCustomizations() {
+    }
+
     @Override
     public void customize(LibraryCustomization libraryCustomization, Logger logger) {
         PackageCustomization documents = libraryCustomization.getPackage("com.azure.search.documents");
@@ -63,7 +69,11 @@ public class SearchCustomizations extends Customization {
         customizeKnowledgeSourceStatusDurationParsing(
             libraryCustomization.getPackage("com.azure.search.documents.knowledgebases.models")
                 .getClass("KnowledgeSourceStatus"));
-        repairAsyncSynonymMapsConvenienceMethod(indexes.getClass("SearchIndexAsyncClient"));
+        for (String className : Arrays.asList("SearchIndexClient", "SearchIndexAsyncClient")) {
+            ClassCustomization client = indexes.getClass(className);
+            addTypedListingMethod(client, "listIndexStatsSummary", "IndexStatisticsSummary", false);
+            addTypedListingMethod(client, "listKnowledgeSourceFiles", "KnowledgeSourceFile", true);
+        }
 
         // After hiding BinaryData protocol methods, add typed public convenience wrappers on the async client
         // that mirror what the sync client already has as hand-written methods.
@@ -115,32 +125,33 @@ public class SearchCustomizations extends Customization {
     }
 
     private static void addStreamModels(LibraryCustomization customization) {
-        customization.getRawEditor().addFile(MODELS_PATH + "KnowledgeBaseRetrievalStreamEvent.java", baseEventSource());
         customization.getRawEditor()
-            .addFile(MODELS_PATH + "KnowledgeBaseRetrievalStartedStreamEvent.java",
+            .replaceFile(MODELS_PATH + "KnowledgeBaseRetrievalStreamEvent.java", baseEventSource());
+        customization.getRawEditor()
+            .replaceFile(MODELS_PATH + "KnowledgeBaseRetrievalStartedStreamEvent.java",
                 wrapperSource("KnowledgeBaseRetrievalStartedStreamEvent", "KnowledgeBaseRetrievalStartedEvent",
                     "retrieval.started", false, false));
         customization.getRawEditor()
-            .addFile(MODELS_PATH + "KnowledgeBaseActivityStartedStreamEvent.java",
+            .replaceFile(MODELS_PATH + "KnowledgeBaseActivityStartedStreamEvent.java",
                 wrapperSource("KnowledgeBaseActivityStartedStreamEvent", "KnowledgeBaseActivityStartedEvent",
                     "activity.started", false, false));
         customization.getRawEditor()
-            .addFile(MODELS_PATH + "KnowledgeBaseActivityCompletedStreamEvent.java",
+            .replaceFile(MODELS_PATH + "KnowledgeBaseActivityCompletedStreamEvent.java",
                 wrapperSource("KnowledgeBaseActivityCompletedStreamEvent", "KnowledgeBaseActivityRecord",
                     "activity.completed", false, false));
         customization.getRawEditor()
-            .addFile(MODELS_PATH + "KnowledgeBaseAnswerCompletedStreamEvent.java",
+            .replaceFile(MODELS_PATH + "KnowledgeBaseAnswerCompletedStreamEvent.java",
                 wrapperSource("KnowledgeBaseAnswerCompletedStreamEvent", "KnowledgeBaseAnswerCompletedEvent",
                     "answer.completed", false, false));
         customization.getRawEditor()
-            .addFile(MODELS_PATH + "KnowledgeBaseReferencesCompletedStreamEvent.java",
+            .replaceFile(MODELS_PATH + "KnowledgeBaseReferencesCompletedStreamEvent.java",
                 wrapperSource("KnowledgeBaseReferencesCompletedStreamEvent", "KnowledgeBaseReference",
                     "references.completed", false, true));
         customization.getRawEditor()
-            .addFile(MODELS_PATH + "KnowledgeBaseErrorStreamEvent.java",
+            .replaceFile(MODELS_PATH + "KnowledgeBaseErrorStreamEvent.java",
                 wrapperSource("KnowledgeBaseErrorStreamEvent", "KnowledgeBaseStreamErrorEvent", "error", true, false));
         customization.getRawEditor()
-            .addFile(MODELS_PATH + "KnowledgeBaseResponseCompletedStreamEvent.java",
+            .replaceFile(MODELS_PATH + "KnowledgeBaseResponseCompletedStreamEvent.java",
                 wrapperSource("KnowledgeBaseResponseCompletedStreamEvent", "KnowledgeBaseResponseCompletedEvent",
                     "response.completed", true, false));
     }
@@ -293,8 +304,7 @@ public class SearchCustomizations extends Customization {
         return "Events are polymorphic: see {@link KnowledgeBaseRetrievalStreamEvent} for the known subtypes. "
             + "Use a known subtype's {@code getValue()} to access its typed payload, for example "
             + "{@link com.azure.search.documents.knowledgebases.models.KnowledgeBaseAnswerCompletedStreamEvent"
-            + "#getValue()}. "
-            + "Unrecognized events expose only their names through "
+            + "#getValue()}. " + "Unrecognized events expose only their names through "
             + "{@link KnowledgeBaseRetrievalStreamEvent#getEventName()}; their payloads are not available.\n\n";
     }
 
@@ -449,14 +459,30 @@ public class SearchCustomizations extends Customization {
         return type.toString().contains("BinaryData");
     }
 
-    private static void repairAsyncSynonymMapsConvenienceMethod(ClassCustomization customization) {
-        customization.customizeAst(ast -> ast.getClassByName(customization.getClassName())
-            .ifPresent(clazz -> clazz.getMethodsByName("getSynonymMaps")
-                .stream()
-                .filter(method -> method.getParameters().isEmpty() && method.isAnnotationPresent("Generated"))
-                .findFirst()
-                .ifPresent(method -> method
-                    .setBody(StaticJavaParser.parseBlock("{ return getSynonymMaps(null, null, null, null); }")))));
+    private static void addTypedListingMethod(ClassCustomization customization, String methodName, String itemType,
+        boolean hasKnowledgeSourceName) {
+        boolean async = customization.getClassName().endsWith("AsyncClient");
+        String pagedType = async ? "PagedFlux" : "PagedIterable";
+        String parameters
+            = hasKnowledgeSourceName ? "String name, RequestOptions requestOptions" : "RequestOptions requestOptions";
+        String arguments = hasKnowledgeSourceName ? "name, requestOptions" : "requestOptions";
+        customization.customizeAst(ast -> ast.getClassByName(customization.getClassName()).ifPresent(clazz -> {
+            String[] parameterTypes = hasKnowledgeSourceName
+                ? new String[] { "String", "RequestOptions" }
+                : new String[] { "RequestOptions" };
+            clazz.getMethodsBySignature(methodName, parameterTypes).forEach(MethodDeclaration::remove);
+            MethodDeclaration method = StaticJavaParser
+                .parseMethodDeclaration("@Generated\n@ServiceMethod(returns = ReturnType.COLLECTION)\npublic "
+                    + pagedType + "<" + itemType + "> " + methodName + "(" + parameters + ") {\n"
+                    + "    return this.serviceClient." + methodName + (async ? "Async" : "") + "(" + arguments + ")\n"
+                    + "        .mapPage(binaryData -> binaryData.toObject(" + itemType + ".class));\n}");
+            method.setJavadocComment("Lists matching resources as typed, lazily retrieved pages.\n\n"
+                + (hasKnowledgeSourceName ? "@param name The name of the knowledge source.\n" : "")
+                + "@param requestOptions The options to configure the HTTP request, including listing filters.\n"
+                + "@throws HttpResponseException if the service rejects the request.\n"
+                + "@return The matching resources as a paginated response with {@link " + pagedType + "}.");
+            clazz.addMember(method);
+        }));
     }
 
     // Removes GET equivalents of POST APIs in SearchClient and SearchAsyncClient as we never plan to expose those.

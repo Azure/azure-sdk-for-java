@@ -9,6 +9,7 @@ import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
 import com.azure.search.documents.indexes.models.AzureOpenAIModelName;
 import com.azure.search.documents.indexes.models.AzureOpenAIVectorizerParameters;
+import com.azure.search.documents.indexes.models.CorsOptions;
 import com.azure.search.documents.indexes.models.KnowledgeBase;
 import com.azure.search.documents.indexes.models.KnowledgeBaseAzureOpenAIModel;
 import com.azure.search.documents.indexes.models.KnowledgeSourceReference;
@@ -87,7 +88,10 @@ public class KnowledgeBaseConfigurationExample {
                         .setApiKey(System.getenv("SEARCH_OPENAI_API_KEY"))
                         .setDeploymentName(System.getenv("SEARCH_OPENAI_DEPLOYMENT_NAME"))
                         .setModelName(AzureOpenAIModelName.fromString(System.getenv("SEARCH_OPENAI_MODEL_NAME")))))
-                    .setOutputMode(KnowledgeRetrievalOutputMode.ANSWER_SYNTHESIS);
+                    .setOutputMode(KnowledgeRetrievalOutputMode.ANSWER_SYNTHESIS)
+                    .setRetrievalInstructions("Prioritize hotel policies relevant to the question.")
+                    .setAnswerInstructions("Give a concise answer and cite supporting documents.")
+                    .setCorsOptions(new CorsOptions("https://app.contoso.com").setMaxAgeInSeconds(300L));
             searchIndexClient.createKnowledgeBase(knowledgeBase);
             knowledgeBaseCreated = true;
 
@@ -122,6 +126,9 @@ public class KnowledgeBaseConfigurationExample {
                 instanceof KnowledgeRetrievalMediumReasoningEffort)) {
                 throw new IllegalStateException("Request overrides must not modify persisted KB configuration.");
             }
+            KnowledgeBaseRetrievalOptions extractiveRequest = createRequest()
+                .setOutputMode(KnowledgeRetrievalOutputMode.EXTRACTIVE_DATA);
+            System.out.println("Extracted messages: " + retrievalClient.retrieve(extractiveRequest).getResponse().size());
             System.out.println("Verified request > knowledge base > service-default precedence.");
         } finally {
             if (knowledgeBaseCreated) {

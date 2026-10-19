@@ -2,55 +2,70 @@
 
 ## 12.1.0 (Unreleased)
 
+These release notes compare `12.1.0` with the previous GA release, `12.0.2`. Changes that apply only when upgrading
+from a preview release are not included.
+
 ### Features Added
 
 - Added support for the `2026-10-01` GA service version, which is now the default service version.
-- Retained the knowledge base, knowledge retrieval, and file knowledge source APIs promoted to GA, including typed
-  retrieval streaming, low and medium reasoning effort, model activity, and knowledge base CORS configuration.
-- Added `KnowledgeSourceFileCapacity` for file knowledge source capacity information.
-- Added `modelName` and `modelDeployment` configuration to `ContentUnderstandingSkill`.
-- Added newly supported GPT model names to `AzureOpenAIModelName`.
+- Added `SearchOptions.moreLikeThis` to find documents similar to an existing document.
+- Added query-source authorization and elevated-read controls to `SearchOptions` and document lookup overloads, and
+  query-source authorization overloads to knowledge base retrieval.
+- Added document-level permission configuration through `SearchField.permissionFilter`, `organizationAccessExpiration`,
+  and `sharepointSiteUrl`, `SearchIndex.permissionFilterOption`, and `SharePointConnectorAppRegistration`.
+- Added `SearchIndexerDataSourceConnection.indexerPermissionOptions`,
+  `IndexingParametersConfiguration.refreshAllAcls`, and
+  `SearchIndexerDataUserAssignedIdentity.federatedIdentityClientId` for permission ingestion and federated identity.
+- Added `SearchIndexerClient.resync` and `SearchIndexerAsyncClient.resync` to resynchronize indexed permissions.
+- Added `SearchIndexerStatus.runtime` and `SearchServiceStatistics.indexersRuntime`, including used and remaining
+  runtime and the reporting period.
+- Added service-driven pagination and name-prefix filtering for resource listings, with `ListingSearchType` and
+  `search`, `searchType`, and `pageSize` query parameters. Added typed request-options overloads for synonym maps,
+  indexers, data sources, skillsets, and indexes with selected properties.
+- Added pageable index statistics through `listIndexStatsSummary` and `IndexStatisticsSummary`.
+- Added file knowledge sources and multipart file upload, update, listing, and deletion APIs on `SearchIndexClient`
+  and `SearchIndexAsyncClient`, with file metadata, directory-like prefixes, parsing and extraction modes, and
+  retrieval parameter, reference, and activity models.
+- Added `KnowledgeSourceFileCapacity` and `KnowledgeSourceStatus.fileCapacity` for maximum file size, maximum file
+  count, and remaining file count.
+- Added indexed SQL and indexed SharePoint knowledge sources, their retrieval parameter, reference, and activity
+  models, SQL content and embedding column mappings, and SharePoint container selection.
+- Added knowledge source ingestion permission options and network access mode, and
+  `SearchIndexKnowledgeSourceParameters.baseFilter`.
+- Added low and medium retrieval reasoning effort, answer-synthesis and extractive-data output modes, retrieval and
+  answer instructions, and CORS configuration on knowledge bases.
+- Added model-based `createOrUpdateKnowledgeBase` and typed knowledge base/source update response overloads on
+  `SearchIndexAsyncClient`.
+- Added conversation messages, reasoning effort, output mode, and maximum output document counts to knowledge
+  retrieval requests. Added constructors for message content and image URLs, and a writable message role.
+- Added `alwaysQuerySource`, `failOnError`, and `maxOutputDocuments` to knowledge source retrieval parameters, and
+  `language`, `market`, `count`, and `freshness` to web knowledge source configuration.
+- Added typed source, query-planning, and answer-synthesis activity records, activity timestamps and warnings, model
+  and deployment details, and citation URLs on search-index, Azure Blob, and indexed OneLake references.
+- Added typed `retrieveStream` APIs returning `CloseableIterableStream<KnowledgeBaseRetrievalStreamEvent>` on the
+  synchronous retrieval client and `Flux<KnowledgeBaseRetrievalStreamEvent>` on the asynchronous client. Events
+  include retrieval start, activity start and completion, answers, references, errors, and response completion.
+- Added `modelName` and `modelDeployment` to `ContentUnderstandingSkill`, fixed-size and semantic chunking method
+  selection, and token-based chunking units.
+- Added `GPT54`, `GPT55`, `GPT56SOL`, `GPT56TERRA`, and `GPT56LUNA` to `AzureOpenAIModelName`.
+- Added a parameterless `SearchResourceEncryptionKey` constructor.
 
 ### Breaking Changes
 
-The following changes apply when upgrading from the preceding `12.1.0` beta releases:
+The following APIs were public in GA `12.0.2` and have been removed in `12.1.0`:
 
-- Removed preview-only Fabric data agent, Fabric ontology, MCP server, remote SharePoint, and Work IQ knowledge sources.
-- Removed preview-only query hints and boosts, knowledge source freshness and image-serving configuration,
-  sensitivity-label configuration, and knowledge-resource service-statistics counters.
-- Removed knowledge base tags, `KnowledgeBaseRetrieveDefaults`, `KnowledgeRetrievalAutoReasoningEffort`,
-  `KnowledgeSourceResultsProcessing`, and the `neverQuerySource` setting.
-- Renamed `KnowledgeBaseRetrievalOptions.getMaxOutputSize` and `setMaxOutputSize` to `getMaxOutputSizeInTokens` and
-  `setMaxOutputSizeInTokens` to match the GA request property.
-- Removed the Work IQ source authorization argument from knowledge retrieval and typed streaming overloads.
-  The query source authorization argument remains supported.
-- Changed synchronous `retrieveStream` methods to return azure-core's
-  `CloseableIterableStream<KnowledgeBaseRetrievalStreamEvent>` instead of accepting listener callbacks. Changed
-  asynchronous `retrieveStream` methods to return `Flux<KnowledgeBaseRetrievalStreamEvent>` directly.
-- Removed the `ServerSentEvent` and `ServerSentEventListener` models. Retrieval event names remain available through
-  `KnowledgeBaseRetrievalStreamEvent.getEventName()`; SSE transport metadata is no longer exposed.
-- Removed the `SearchServiceVersion.V2026_08_01_PREVIEW` enum value.
-- Removed `UnknownKnowledgeBaseRetrievalStreamEvent`; unrecognized events expose only their names through
-  `KnowledgeBaseRetrievalStreamEvent.getEventName()`. Their payloads are not available.
-- Removed JSON serialization and deserialization APIs from retrieval stream event wrappers. Their typed payload
-  models retain these APIs.
-- Removed preview-only image vector queries, `VectorFilterMode.STRICT_POST_FILTER`, Azure Machine Learning vectorizers,
-  and `AIFoundryModelCatalogName`.
-- Moved `KnowledgeSourceFileCapacity` to `com.azure.search.documents.indexes.models`.
-- Removed `KnowledgeBaseAgenticReasoningActivityRecord.getRetrievalReasoningEffort()`. The effective reasoning effort
-  remains available through the `retrieval.started` streaming event's typed payload.
+- Removed `AIFoundryModelCatalogName`, `AzureMachineLearningParameters`, and `AzureMachineLearningVectorizer`.
+- Removed `VectorizableImageBinaryQuery` and `VectorizableImageUrlQuery`, along with `VectorQueryKind.IMAGE_BINARY`
+  and `VectorQueryKind.IMAGE_URL`.
+- Removed `VectorFilterMode.STRICT_POST_FILTER`.
+- Removed `KnowledgeBaseAgenticReasoningActivityRecord.getRetrievalReasoningEffort()`. For streaming retrieval,
+  the effective reasoning effort is available through
+  `KnowledgeBaseRetrievalStartedStreamEvent.getValue().getReasoningEffort()`.
 
 ### Bugs Fixed
 
-- Fixed asynchronous retrieval streaming to preserve response bytes when the HTTP transport reuses buffers during
-  demand pauses.
-- Fixed synchronous retrieval streaming to deliver terminal events before reporting response cleanup failures on the
-  next iterator access or explicit close.
-- Fixed `SearchOptions.moreLikeThis` being omitted from search requests.
-- Fixed query-source authorization and elevated-read options not being forwarded as search headers, including on
-  continuation pages.
-
-### Other Changes
+- Fixed knowledge source status deserialization for compact synchronization intervals such as `1d`, while
+  preserving the existing Java `Duration` API.
 
 ## 12.1.0-beta.2 (2026-08-28)
 

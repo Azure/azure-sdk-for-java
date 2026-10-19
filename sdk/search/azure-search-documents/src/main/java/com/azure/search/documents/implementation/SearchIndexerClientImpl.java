@@ -225,7 +225,7 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getDataSourceConnections(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> listDataSourceConnections(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
@@ -235,7 +235,7 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getDataSourceConnectionsSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> listDataSourceConnectionsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
@@ -393,7 +393,7 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getIndexers(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> listIndexers(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
@@ -403,7 +403,7 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getIndexersSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> listIndexersSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
@@ -517,7 +517,7 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getSkillsets(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> listSkillsets(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
@@ -527,7 +527,7 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getSkillsetsSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> listSkillsetsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
@@ -559,7 +559,7 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getDataSourceConnectionsNext(
+        Mono<Response<BinaryData>> listDataSourceConnectionsNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -569,7 +569,7 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getDataSourceConnectionsNextSync(
+        Response<BinaryData> listDataSourceConnectionsNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -579,7 +579,7 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getIndexersNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+        Mono<Response<BinaryData>> listIndexersNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
@@ -589,7 +589,7 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getIndexersNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
+        Response<BinaryData> listIndexersNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
@@ -599,7 +599,7 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getSkillsetsNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+        Mono<Response<BinaryData>> listSkillsetsNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
@@ -609,7 +609,7 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getSkillsetsNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
+        Response<BinaryData> listSkillsetsNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
     }
@@ -1091,10 +1091,10 @@ public final class SearchIndexerClientImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> getDataSourceConnectionsSinglePageAsync(RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listDataSourceConnectionsSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
         return FluxUtil
-            .withContext(context -> service.getDataSourceConnections(this.getEndpoint(),
+            .withContext(context -> service.listDataSourceConnections(this.getEndpoint(),
                 this.getServiceVersion().getVersion(), accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "@odata.nextLink"), null));
@@ -1167,12 +1167,12 @@ public final class SearchIndexerClientImpl {
      * @return response from a List Datasources request as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> getDataSourceConnectionsAsync(RequestOptions requestOptions) {
+    public PagedFlux<BinaryData> listDataSourceConnectionsAsync(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
             requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
-        return new PagedFlux<>(() -> getDataSourceConnectionsSinglePageAsync(requestOptions),
-            nextLink -> getDataSourceConnectionsNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+        return new PagedFlux<>(() -> listDataSourceConnectionsSinglePageAsync(requestOptions),
+            nextLink -> listDataSourceConnectionsNextSinglePageAsync(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -1242,9 +1242,9 @@ public final class SearchIndexerClientImpl {
      * @return response from a List Datasources request along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> getDataSourceConnectionsSinglePage(RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> listDataSourceConnectionsSinglePage(RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
-        Response<BinaryData> res = service.getDataSourceConnectionsSync(this.getEndpoint(),
+        Response<BinaryData> res = service.listDataSourceConnectionsSync(this.getEndpoint(),
             this.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "@odata.nextLink"), null);
@@ -1317,12 +1317,12 @@ public final class SearchIndexerClientImpl {
      * @return response from a List Datasources request as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> getDataSourceConnections(RequestOptions requestOptions) {
+    public PagedIterable<BinaryData> listDataSourceConnections(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
             requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
-        return new PagedIterable<>(() -> getDataSourceConnectionsSinglePage(requestOptions),
-            nextLink -> getDataSourceConnectionsNextSinglePage(nextLink, requestOptionsForNextPage));
+        return new PagedIterable<>(() -> listDataSourceConnectionsSinglePage(requestOptions),
+            nextLink -> listDataSourceConnectionsNextSinglePage(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -2377,10 +2377,10 @@ public final class SearchIndexerClientImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> getIndexersSinglePageAsync(RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listIndexersSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
         return FluxUtil
-            .withContext(context -> service.getIndexers(this.getEndpoint(), this.getServiceVersion().getVersion(),
+            .withContext(context -> service.listIndexers(this.getEndpoint(), this.getServiceVersion().getVersion(),
                 accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "@odata.nextLink"), null));
@@ -2487,12 +2487,12 @@ public final class SearchIndexerClientImpl {
      * @return response from a List Indexers request as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> getIndexersAsync(RequestOptions requestOptions) {
+    public PagedFlux<BinaryData> listIndexersAsync(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
             requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
-        return new PagedFlux<>(() -> getIndexersSinglePageAsync(requestOptions),
-            nextLink -> getIndexersNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+        return new PagedFlux<>(() -> listIndexersSinglePageAsync(requestOptions),
+            nextLink -> listIndexersNextSinglePageAsync(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -2596,9 +2596,9 @@ public final class SearchIndexerClientImpl {
      * @return response from a List Indexers request along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> getIndexersSinglePage(RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> listIndexersSinglePage(RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
-        Response<BinaryData> res = service.getIndexersSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
+        Response<BinaryData> res = service.listIndexersSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
             accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "@odata.nextLink"), null);
@@ -2705,12 +2705,12 @@ public final class SearchIndexerClientImpl {
      * @return response from a List Indexers request as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> getIndexers(RequestOptions requestOptions) {
+    public PagedIterable<BinaryData> listIndexers(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
             requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
-        return new PagedIterable<>(() -> getIndexersSinglePage(requestOptions),
-            nextLink -> getIndexersNextSinglePage(nextLink, requestOptionsForNextPage));
+        return new PagedIterable<>(() -> listIndexersSinglePage(requestOptions),
+            nextLink -> listIndexersNextSinglePage(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -4172,10 +4172,10 @@ public final class SearchIndexerClientImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> getSkillsetsSinglePageAsync(RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listSkillsetsSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
         return FluxUtil
-            .withContext(context -> service.getSkillsets(this.getEndpoint(), this.getServiceVersion().getVersion(),
+            .withContext(context -> service.listSkillsets(this.getEndpoint(), this.getServiceVersion().getVersion(),
                 accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "@odata.nextLink"), null));
@@ -4320,12 +4320,12 @@ public final class SearchIndexerClientImpl {
      * @return response from a list skillset request as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> getSkillsetsAsync(RequestOptions requestOptions) {
+    public PagedFlux<BinaryData> listSkillsetsAsync(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
             requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
-        return new PagedFlux<>(() -> getSkillsetsSinglePageAsync(requestOptions),
-            nextLink -> getSkillsetsNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+        return new PagedFlux<>(() -> listSkillsetsSinglePageAsync(requestOptions),
+            nextLink -> listSkillsetsNextSinglePageAsync(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -4467,9 +4467,9 @@ public final class SearchIndexerClientImpl {
      * @return response from a list skillset request along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> getSkillsetsSinglePage(RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> listSkillsetsSinglePage(RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
-        Response<BinaryData> res = service.getSkillsetsSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
+        Response<BinaryData> res = service.listSkillsetsSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
             accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "@odata.nextLink"), null);
@@ -4614,12 +4614,12 @@ public final class SearchIndexerClientImpl {
      * @return response from a list skillset request as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> getSkillsets(RequestOptions requestOptions) {
+    public PagedIterable<BinaryData> listSkillsets(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
             requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
-        return new PagedIterable<>(() -> getSkillsetsSinglePage(requestOptions),
-            nextLink -> getSkillsetsNextSinglePage(nextLink, requestOptionsForNextPage));
+        return new PagedIterable<>(() -> listSkillsetsSinglePage(requestOptions),
+            nextLink -> listSkillsetsNextSinglePage(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -5169,11 +5169,11 @@ public final class SearchIndexerClientImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> getDataSourceConnectionsNextSinglePageAsync(String nextLink,
+    private Mono<PagedResponse<BinaryData>> listDataSourceConnectionsNextSinglePageAsync(String nextLink,
         RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
         return FluxUtil
-            .withContext(context -> service.getDataSourceConnectionsNext(nextLink, this.getEndpoint(), accept,
+            .withContext(context -> service.listDataSourceConnectionsNext(nextLink, this.getEndpoint(), accept,
                 requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "@odata.nextLink"), null));
@@ -5232,10 +5232,10 @@ public final class SearchIndexerClientImpl {
      * @return response from a List Datasources request along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> getDataSourceConnectionsNextSinglePage(String nextLink,
+    private PagedResponse<BinaryData> listDataSourceConnectionsNextSinglePage(String nextLink,
         RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
-        Response<BinaryData> res = service.getDataSourceConnectionsNextSync(nextLink, this.getEndpoint(), accept,
+        Response<BinaryData> res = service.listDataSourceConnectionsNextSync(nextLink, this.getEndpoint(), accept,
             requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "@odata.nextLink"), null);
@@ -5329,12 +5329,12 @@ public final class SearchIndexerClientImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> getIndexersNextSinglePageAsync(String nextLink,
+    private Mono<PagedResponse<BinaryData>> listIndexersNextSinglePageAsync(String nextLink,
         RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
         return FluxUtil
             .withContext(
-                context -> service.getIndexersNext(nextLink, this.getEndpoint(), accept, requestOptions, context))
+                context -> service.listIndexersNext(nextLink, this.getEndpoint(), accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "@odata.nextLink"), null));
     }
@@ -5426,10 +5426,10 @@ public final class SearchIndexerClientImpl {
      * @return response from a List Indexers request along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> getIndexersNextSinglePage(String nextLink, RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> listIndexersNextSinglePage(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
         Response<BinaryData> res
-            = service.getIndexersNextSync(nextLink, this.getEndpoint(), accept, requestOptions, Context.NONE);
+            = service.listIndexersNextSync(nextLink, this.getEndpoint(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "@odata.nextLink"), null);
     }
@@ -5560,12 +5560,12 @@ public final class SearchIndexerClientImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> getSkillsetsNextSinglePageAsync(String nextLink,
+    private Mono<PagedResponse<BinaryData>> listSkillsetsNextSinglePageAsync(String nextLink,
         RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
         return FluxUtil
             .withContext(
-                context -> service.getSkillsetsNext(nextLink, this.getEndpoint(), accept, requestOptions, context))
+                context -> service.listSkillsetsNext(nextLink, this.getEndpoint(), accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "@odata.nextLink"), null));
     }
@@ -5695,10 +5695,10 @@ public final class SearchIndexerClientImpl {
      * @return response from a list skillset request along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> getSkillsetsNextSinglePage(String nextLink, RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> listSkillsetsNextSinglePage(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
         Response<BinaryData> res
-            = service.getSkillsetsNextSync(nextLink, this.getEndpoint(), accept, requestOptions, Context.NONE);
+            = service.listSkillsetsNextSync(nextLink, this.getEndpoint(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "@odata.nextLink"), null);
     }

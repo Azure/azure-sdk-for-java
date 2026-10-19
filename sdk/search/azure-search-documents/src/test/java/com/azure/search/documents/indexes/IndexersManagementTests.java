@@ -5,6 +5,7 @@ package com.azure.search.documents.indexes;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.models.TestProxySanitizer;
@@ -317,15 +318,16 @@ public class IndexersManagementTests extends SearchTestBase {
         List<String> expectedIndexerNames = createIndexersForPagination(prefix);
         List<String> expectedDataSourceNames = createDataSourcesForPagination(prefix);
         List<String> expectedSkillsetNames = createSkillsetsForPagination(prefix);
+        RequestOptions options = new RequestOptions().addQueryParam("search", prefix)
+            .addQueryParam("pageSize", "1")
+            .addQueryParam("searchType", ListingSearchType.PREFIX.toString());
 
-        assertPagedNames(expectedIndexerNames,
-            searchIndexerClient.getIndexers(null, prefix, 1, ListingSearchType.PREFIX).iterableByPage(),
+        assertPagedNames(expectedIndexerNames, searchIndexerClient.listIndexers(options).iterableByPage(),
             SearchIndexer::getName);
         assertPagedNames(expectedDataSourceNames,
-            searchIndexerClient.getDataSourceConnections(null, prefix, 1, ListingSearchType.PREFIX).iterableByPage(),
+            searchIndexerClient.listDataSourceConnections(options).iterableByPage(),
             SearchIndexerDataSourceConnection::getName);
-        assertPagedNames(expectedSkillsetNames,
-            searchIndexerClient.getSkillsets(null, prefix, 1, ListingSearchType.PREFIX).iterableByPage(),
+        assertPagedNames(expectedSkillsetNames, searchIndexerClient.listSkillsets(options).iterableByPage(),
             SearchIndexerSkillset::getName);
     }
 
@@ -336,19 +338,17 @@ public class IndexersManagementTests extends SearchTestBase {
         List<String> expectedIndexerNames = createIndexersForPagination(prefix);
         List<String> expectedDataSourceNames = createDataSourcesForPagination(prefix);
         List<String> expectedSkillsetNames = createSkillsetsForPagination(prefix);
+        RequestOptions options = new RequestOptions().addQueryParam("search", prefix)
+            .addQueryParam("pageSize", "1")
+            .addQueryParam("searchType", ListingSearchType.PREFIX.toString());
 
-        StepVerifier.create(Mono.zip(
-            searchIndexerAsyncClient.getIndexers(null, prefix, 1, ListingSearchType.PREFIX).byPage().collectList(),
-            searchIndexerAsyncClient.getDataSourceConnections(null, prefix, 1, ListingSearchType.PREFIX)
-                .byPage()
-                .collectList(),
-            searchIndexerAsyncClient.getSkillsets(null, prefix, 1, ListingSearchType.PREFIX).byPage().collectList()))
-            .assertNext(pages -> {
+        StepVerifier.create(Mono.zip(searchIndexerAsyncClient.listIndexers(options).byPage().collectList(),
+            searchIndexerAsyncClient.listDataSourceConnections(options).byPage().collectList(),
+            searchIndexerAsyncClient.listSkillsets(options).byPage().collectList())).assertNext(pages -> {
                 assertPagedNames(expectedIndexerNames, pages.getT1(), SearchIndexer::getName);
                 assertPagedNames(expectedDataSourceNames, pages.getT2(), SearchIndexerDataSourceConnection::getName);
                 assertPagedNames(expectedSkillsetNames, pages.getT3(), SearchIndexerSkillset::getName);
-            })
-            .verifyComplete();
+            }).verifyComplete();
     }
 
     @Test

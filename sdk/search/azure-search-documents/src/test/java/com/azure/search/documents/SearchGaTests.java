@@ -7,10 +7,12 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpMethod;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.BinaryData;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import com.azure.search.documents.implementation.SearchUtils;
@@ -23,18 +25,24 @@ import com.azure.search.documents.indexes.models.ContentUnderstandingSkillExtrac
 import com.azure.search.documents.indexes.models.CorsOptions;
 import com.azure.search.documents.indexes.models.FileKnowledgeSource;
 import com.azure.search.documents.indexes.models.FileKnowledgeSourceParameters;
+import com.azure.search.documents.indexes.models.FileUploadMetadata;
 import com.azure.search.documents.indexes.models.KnowledgeBase;
 import com.azure.search.documents.indexes.models.KnowledgeSource;
 import com.azure.search.documents.indexes.models.KnowledgeSourceFileCapacity;
 import com.azure.search.documents.indexes.models.KnowledgeSourceKind;
 import com.azure.search.documents.indexes.models.KnowledgeSourceReference;
 import com.azure.search.documents.indexes.models.SearchIndex;
+import com.azure.search.documents.indexes.models.KnowledgeSourceFile;
+import com.azure.search.documents.indexes.models.UpdateKnowledgeSourceFileRequest;
+import com.azure.search.documents.indexes.models.UploadKnowledgeSourceFileMultipartRequest;
 import com.azure.search.documents.knowledgebases.KnowledgeBaseRetrievalClientBuilder;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalOptions;
 import com.azure.search.documents.knowledgebases.models.KnowledgeRetrievalLowReasoningEffort;
 import com.azure.search.documents.knowledgebases.models.KnowledgeRetrievalMediumReasoningEffort;
 import com.azure.search.documents.knowledgebases.models.KnowledgeRetrievalOutputMode;
 import com.azure.search.documents.knowledgebases.models.KnowledgeRetrievalSemanticIntent;
+import com.azure.search.documents.knowledgebases.models.KnowledgeSourceStatus;
+import com.azure.search.documents.models.ContentFileDetails;
 import com.azure.search.documents.models.SearchOptions;
 import com.azure.search.documents.models.SearchRequest;
 import org.junit.jupiter.api.Test;
@@ -44,6 +52,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
@@ -60,6 +69,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Execution(ExecutionMode.CONCURRENT)
 public class SearchGaTests {
@@ -334,6 +344,78 @@ public class SearchGaTests {
             assertEquals(75, capacity.getRemainingFileCount());
             assertEquals(1048576L, capacity.getMaxFileSizeBytes());
         }
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    public void knowledgeSourceStatusExposesFileCapacity(boolean async) {
+        HttpClient httpClient = request -> {
+            assertEquals("/knowledgesources('files')/status", request.getUrl().getPath());
+            return Mono.just(new MockHttpResponse(request, 200, new HttpHeaders(),
+                ("{\"fileCapacity\":{\"maxFileCount\":100,\"remainingFileCount\":75,\"maxFileSizeBytes\":1048576}}")
+                    .getBytes(StandardCharsets.UTF_8)));
+        };
+        SearchIndexClientBuilder builder
+            = new SearchIndexClientBuilder().endpoint(ENDPOINT).credential(CREDENTIAL).httpClient(httpClient);
+        KnowledgeSourceStatus status = async
+            ? builder.buildAsyncClient().getKnowledgeSourceStatus("files").block()
+            : builder.buildClient().getKnowledgeSourceStatus("files");
+        assertNotNull(status);
+        KnowledgeSourceFileCapacity capacity = status.getFileCapacity();
+        assertNotNull(capacity);
+        assertEquals(100, capacity.getMaxFileCount());
+        assertEquals(75, capacity.getRemainingFileCount());
+        assertEquals(1048576L, capacity.getMaxFileSizeBytes());
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    public void fileOperationsUseKnowledgeSourceNameBeforeFileId(boolean async) {
+        AtomicInteger requests = new AtomicInteger();
+        HttpClient httpClient = request -> {
+            requests.incrementAndGet();
+            boolean upload = request.getHttpMethod() == HttpMethod.POST;
+            assertEquals(upload ? "/knowledgesources('files')/files" : "/knowledgesources('files')/files('file-id')",
+                request.getUrl().getPath());
+            if (request.getHttpMethod() == HttpMethod.DELETE) {
+                return Mono.just(new MockHttpResponse(request, 204, new HttpHeaders()));
+            }
+            assertEquals(upload ? HttpMethod.POST : HttpMethod.PUT, request.getHttpMethod());
+            assertTrue(request.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE).startsWith("multipart/form-data;"));
+            return FluxUtil.collectBytesInByteBufferStream(request.getBody()).map(bytes -> {
+                String multipart = new String(bytes, StandardCharsets.UTF_8);
+                assertTrue(multipart.contains("name=\"metadata\""));
+                assertTrue(multipart.contains("\"fileName\":\"notes.md\""));
+                assertTrue(multipart.contains("name=\"content\""));
+                assertTrue(multipart.contains(upload ? "original contents" : "updated contents"));
+                return new MockHttpResponse(request, upload ? 201 : 200, new HttpHeaders(),
+                    "{\"fileId\":\"file-id\",\"fileName\":\"notes.md\"}".getBytes(StandardCharsets.UTF_8));
+            });
+        };
+        SearchIndexClientBuilder builder
+            = new SearchIndexClientBuilder().endpoint(ENDPOINT).credential(CREDENTIAL).httpClient(httpClient);
+        FileUploadMetadata metadata = new FileUploadMetadata().setFileName("notes.md");
+        UploadKnowledgeSourceFileMultipartRequest upload = new UploadKnowledgeSourceFileMultipartRequest(metadata,
+            new ContentFileDetails(BinaryData.fromString("original contents")).setFilename("notes.md"));
+        UpdateKnowledgeSourceFileRequest update = new UpdateKnowledgeSourceFileRequest(metadata,
+            new ContentFileDetails(BinaryData.fromString("updated contents")).setFilename("notes.md"));
+
+        KnowledgeSourceFile uploaded = async
+            ? builder.buildAsyncClient().uploadKnowledgeSourceFileMultipart("files", upload).block()
+            : builder.buildClient().uploadKnowledgeSourceFileMultipart("files", upload);
+        assertNotNull(uploaded);
+        assertEquals("file-id", uploaded.getFileId());
+        KnowledgeSourceFile updated = async
+            ? builder.buildAsyncClient().updateKnowledgeSourceFile("files", "file-id", update).block()
+            : builder.buildClient().updateKnowledgeSourceFile("files", "file-id", update);
+        assertNotNull(updated);
+        assertEquals("file-id", updated.getFileId());
+        if (async) {
+            builder.buildAsyncClient().deleteKnowledgeSourceFile("files", "file-id").block();
+        } else {
+            builder.buildClient().deleteKnowledgeSourceFile("files", "file-id");
+        }
+        assertEquals(3, requests.get());
     }
 
     @Test
