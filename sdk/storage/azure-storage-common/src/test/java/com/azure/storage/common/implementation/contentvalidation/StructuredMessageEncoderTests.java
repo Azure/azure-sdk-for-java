@@ -4,6 +4,8 @@
 package com.azure.storage.common.implementation.contentvalidation;
 
 import com.azure.core.util.FluxUtil;
+import com.azure.storage.common.test.shared.ShapedByteBuffer;
+import com.azure.storage.common.test.shared.TestBufferShape;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -17,6 +19,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Stream;
 
@@ -28,6 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class StructuredMessageEncoderTests {
 
@@ -340,5 +344,85 @@ public class StructuredMessageEncoderTests {
         byte[] expected = buildStructuredMessage(unencodedBuffer, V1_DEFAULT_SEGMENT_CONTENT_LENGTH,
             StructuredMessageFlags.STORAGE_CRC64).array();
         assertArrayEquals(expected, actual);
+    }
+
+    /*
+     * Encoding a buffer of any kind must produce exactly the same message as encoding the same bytes from a plain array,
+     * including the CRC64s, which the encoder computes through the backing array when there is one and through a copy
+     * when there isn't.
+     */
+    @ParameterizedTest
+    @MethodSource("encodeBufferShapesSupplier")
+    public void encodeHandlesEveryBufferShape(TestBufferShape shape, int length, int segmentSize,
+        StructuredMessageFlags flags) {
+        byte[] content = getRandomData(length);
+        ShapedByteBuffer source = shape.wrap(content);
+
+        byte[] actual
+            = FluxUtil
+                .collectBytesInByteBufferStream(
+                    new StructuredMessageEncoder(length, segmentSize, flags).encode(source.getBuffer()))
+                .block();
+
+        assertArrayEquals(encodePlain(content, segmentSize, flags), actual);
+        assertArrayEquals(content, decode(actual));
+        source.assertNoBytesChanged();
+    }
+
+    private static Stream<Arguments> encodeBufferShapesSupplier() {
+        return Stream.of(TestBufferShape.values())
+            .flatMap(shape -> Stream.of(StructuredMessageFlags.NONE, StructuredMessageFlags.STORAGE_CRC64)
+                .flatMap(flags -> Stream.of(
+                    // shape | length | segment size | flags
+                    Arguments.of(shape, 10, 50, flags), // A single partial segment.
+                    Arguments.of(shape, 50, 50, flags), // Exactly one segment.
+                    Arguments.of(shape, 125, 50, flags), // Several segments, with a partial last one.
+                    Arguments.of(shape, 150, 50, flags)))); // Several segments, an exact multiple of the size.
+    }
+
+    @ParameterizedTest
+    @MethodSource("encodeMixedBufferShapesSupplier")
+    public void encodeHandlesMixedBufferShapes(int segmentSize, StructuredMessageFlags flags) {
+        byte[] content = getRandomData(300);
+        // Pieces that don't align with segments, so segments span buffers of different kinds.
+        List<ShapedByteBuffer> sources = TestBufferShape.mixed(content, 37);
+        StructuredMessageEncoder encoder = new StructuredMessageEncoder(content.length, segmentSize, flags);
+
+        byte[] actual
+            = FluxUtil
+                .collectBytesInByteBufferStream(
+                    Flux.fromIterable(sources).map(ShapedByteBuffer::getBuffer).concatMap(encoder::encode))
+                .block();
+
+        assertArrayEquals(encodePlain(content, segmentSize, flags), actual);
+        assertArrayEquals(content, decode(actual));
+        sources.forEach(ShapedByteBuffer::assertNoBytesChanged);
+    }
+
+    private static Stream<Arguments> encodeMixedBufferShapesSupplier() {
+        return Stream.of(Arguments.of(50, StructuredMessageFlags.NONE),
+            Arguments.of(50, StructuredMessageFlags.STORAGE_CRC64), Arguments.of(100, StructuredMessageFlags.NONE),
+            Arguments.of(100, StructuredMessageFlags.STORAGE_CRC64));
+    }
+
+    private static byte[] encodePlain(byte[] content, int segmentSize, StructuredMessageFlags flags) {
+        return FluxUtil.collectBytesInByteBufferStream(
+            new StructuredMessageEncoder(content.length, segmentSize, flags).encode(ByteBuffer.wrap(content.clone())))
+            .block();
+    }
+
+    /*
+     * Decodes the message, which validates its CRC64s when it has them.
+     */
+    private static byte[] decode(byte[] message) {
+        StructuredMessageDecoder decoder = new StructuredMessageDecoder(message.length);
+        ByteArrayOutputStream decoded = new ByteArrayOutputStream();
+        for (ByteBuffer segment : decoder.decodeChunk(ByteBuffer.wrap(message))) {
+            byte[] bytes = new byte[segment.remaining()];
+            segment.get(bytes);
+            decoded.write(bytes, 0, bytes.length);
+        }
+        assertTrue(decoder.isComplete());
+        return decoded.toByteArray();
     }
 }
