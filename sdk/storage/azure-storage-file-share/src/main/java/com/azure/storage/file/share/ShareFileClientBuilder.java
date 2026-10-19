@@ -347,9 +347,7 @@ public class ShareFileClientBuilder implements TokenCredentialTrait<ShareFileCli
             this.fileId = "";
             String[] fileIdArray = queryParamsMap.remove("fileid");
             if (fileIdArray != null) {
-                if (CoreUtils.isNullOrEmpty(fileIdArray[0])) {
-                    throw LOGGER.logExceptionAsError(new IllegalArgumentException("'fileId' cannot be empty."));
-                }
+                ShareErrors.validateFileId(fileIdArray[0]);
                 this.fileId = fileIdArray[0];
                 this.resourcePath = "";
             }
