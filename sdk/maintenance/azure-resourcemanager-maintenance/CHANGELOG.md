@@ -20,8 +20,8 @@
 
 #### `models.ScheduledEvents` was modified
 
-* `acknowledgeListWithResponse(java.lang.String,java.lang.String,java.lang.String,models.ScheduledEventsIdList,com.azure.core.util.Context)` was added
 * `acknowledgeList(java.lang.String,java.lang.String,java.lang.String,models.ScheduledEventsIdList)` was added
+* `acknowledgeListWithResponse(java.lang.String,java.lang.String,java.lang.String,models.ScheduledEventsIdList,com.azure.core.util.Context)` was added
 
 ## 1.1.0-beta.3 (2026-03-04)
 
