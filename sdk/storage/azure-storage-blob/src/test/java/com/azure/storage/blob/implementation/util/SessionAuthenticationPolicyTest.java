@@ -19,7 +19,6 @@ import com.azure.core.util.Context;
 import com.azure.storage.blob.BlobTestBase;
 import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.models.BlobStorageException;
-import com.azure.storage.blob.SessionContext;
 import com.azure.storage.blob.SessionContext.SessionMode;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.policy.StorageBearerTokenChallengeAuthorizationPolicy;
@@ -106,12 +105,10 @@ public class SessionAuthenticationPolicyTest {
     }
 
     @ParameterizedTest
-    @EnumSource(SessionMode.class)
+    @EnumSource(value = SessionMode.class, names = { "DISABLED", "ENABLED" })
     public void policyRespectsSessionModeAsync(SessionMode mode) {
-        SessionContext options = new SessionContext().setSessionMode(mode);
-        policy = new SessionAuthenticationPolicy(bearerPolicy, sessionProvider, testAcquirer(), options);
-        boolean sessionsEnabled = ModelHelper.resolveSessionMode(mode) == SessionMode.ENABLED;
-        options.setSessionMode(sessionsEnabled ? SessionMode.DISABLED : SessionMode.ENABLED);
+        policy = new SessionAuthenticationPolicy(bearerPolicy, sessionProvider, testAcquirer(), mode);
+        boolean sessionsEnabled = mode == SessionMode.ENABLED;
         if (sessionsEnabled) {
             when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.just(credentialWithToken()));
         }
@@ -126,12 +123,10 @@ public class SessionAuthenticationPolicyTest {
     }
 
     @ParameterizedTest
-    @EnumSource(SessionMode.class)
+    @EnumSource(value = SessionMode.class, names = { "DISABLED", "ENABLED" })
     public void policyRespectsSessionModeSync(SessionMode mode) {
-        SessionContext options = new SessionContext().setSessionMode(mode);
-        policy = new SessionAuthenticationPolicy(bearerPolicy, sessionProvider, testAcquirer(), options);
-        boolean sessionsEnabled = ModelHelper.resolveSessionMode(mode) == SessionMode.ENABLED;
-        options.setSessionMode(sessionsEnabled ? SessionMode.DISABLED : SessionMode.ENABLED);
+        policy = new SessionAuthenticationPolicy(bearerPolicy, sessionProvider, testAcquirer(), mode);
+        boolean sessionsEnabled = mode == SessionMode.ENABLED;
         if (sessionsEnabled) {
             when(sessionProvider.getSession(any())).thenReturn(credentialWithToken());
         }
@@ -151,9 +146,7 @@ public class SessionAuthenticationPolicyTest {
     @Test
     public void policyPassesAcquirerWithoutResolvingAccountNameAsync() {
         SessionAcquirer acquirer = testAcquirer();
-        SessionContext options = new SessionContext().setSessionMode(SessionMode.ENABLED).setAccountName("different");
-        policy = new SessionAuthenticationPolicy(bearerPolicy, sessionProvider, acquirer, options);
-        options.setAccountName("changed");
+        policy = new SessionAuthenticationPolicy(bearerPolicy, sessionProvider, acquirer, SessionMode.ENABLED);
         when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.just(credentialWithToken()));
 
         StepVerifier.create(buildPipeline(successTransport()).send(blobGetRequest())).assertNext(response -> {
@@ -168,9 +161,7 @@ public class SessionAuthenticationPolicyTest {
     @Test
     public void policyPassesAcquirerWithoutResolvingAccountNameSync() {
         SessionAcquirer acquirer = testAcquirer();
-        SessionContext options = new SessionContext().setSessionMode(SessionMode.ENABLED).setAccountName("different");
-        policy = new SessionAuthenticationPolicy(bearerPolicy, sessionProvider, acquirer, options);
-        options.setAccountName("changed");
+        policy = new SessionAuthenticationPolicy(bearerPolicy, sessionProvider, acquirer, SessionMode.ENABLED);
         when(sessionProvider.getSession(any())).thenReturn(credentialWithToken());
         HttpPipelineNextSyncPolicy next = mock(HttpPipelineNextSyncPolicy.class);
         when(next.processSync()).thenReturn(new MockHttpResponse(null, 200));
@@ -660,7 +651,7 @@ public class SessionAuthenticationPolicyTest {
     @Test
     public void asyncPolicyGetsContainerNameFromCustomEndpoint() {
         policy = new SessionAuthenticationPolicy(bearerPolicy, sessionProvider,
-            testAcquirer("https://custom.endpoint.example"), new SessionContext().setSessionMode(SessionMode.ENABLED));
+            testAcquirer("https://custom.endpoint.example"), SessionMode.ENABLED);
         when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.just(credentialWithToken()));
         HttpRequest request = new HttpRequest(HttpMethod.GET, "https://custom.endpoint.example/mycontainer/myblob");
 
@@ -689,8 +680,7 @@ public class SessionAuthenticationPolicyTest {
     @Test
     public void sessionRequestContextCarriesPolicyAcquirer() {
         SessionAcquirer acquirer = testAcquirer();
-        policy = new SessionAuthenticationPolicy(bearerPolicy, sessionProvider, acquirer,
-            new SessionContext().setSessionMode(SessionMode.ENABLED));
+        policy = new SessionAuthenticationPolicy(bearerPolicy, sessionProvider, acquirer, SessionMode.ENABLED);
         when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.just(credentialWithToken()));
 
         StepVerifier.create(buildPipeline(successTransport()).send(blobGetRequest())).assertNext(response -> {
@@ -717,7 +707,7 @@ public class SessionAuthenticationPolicyTest {
         policy = new SessionAuthenticationPolicy(bearerPolicy, sessionProvider,
             new SessionAcquirer("https://testaccount.blob.core.windows.net", null, "testaccount",
                 acquisitionBearerPolicy),
-            new SessionContext().setSessionMode(SessionMode.ENABLED));
+            SessionMode.ENABLED);
         HttpPipeline pipeline = buildPipeline(successTransport());
         Context acquisition = new Context(SessionAcquirer.SESSION_ACQUISITION_CONTEXT_KEY, true);
 
@@ -848,8 +838,8 @@ public class SessionAuthenticationPolicyTest {
     }
 
     private SessionAuthenticationPolicy createPolicy(Clock clock) {
-        SessionContext options = new SessionContext().setSessionMode(SessionMode.ENABLED);
-        return new SessionAuthenticationPolicy(bearerPolicy, sessionProvider, testAcquirer(), options, clock);
+        return new SessionAuthenticationPolicy(bearerPolicy, sessionProvider, testAcquirer(), SessionMode.ENABLED,
+            clock);
     }
 
     private static SessionAcquirer testAcquirer() {

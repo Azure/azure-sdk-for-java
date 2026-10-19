@@ -106,9 +106,10 @@ public final class BuilderHelper {
         CredentialValidator.validateCredentialsNotAmbiguous(storageSharedKeyCredential, tokenCredential,
             azureSasCredential, sasToken, logger);
 
-        boolean sessionsEnabled = tokenCredential != null
-            && sessionContext != null
-            && ModelHelper.resolveSessionMode(sessionContext.getSessionMode()) == SessionMode.ENABLED;
+        SessionMode sessionMode = tokenCredential != null && sessionContext != null
+            ? ModelHelper.resolveSessionMode(sessionContext.getSessionMode())
+            : SessionMode.DISABLED;
+        boolean sessionsEnabled = sessionMode == SessionMode.ENABLED;
 
         // Closest to API goes first, closest to wire goes last.
         List<HttpPipelinePolicy> policies = new ArrayList<>();
@@ -158,8 +159,8 @@ public final class BuilderHelper {
                 // The provider owns only the session cache, so every client sharing these options shares sessions.
                 SessionProvider sessionProvider = SessionContextAccessor.getOrCreateSessionProvider(sessionContext,
                     SessionProvider.class, () -> new ContainerSessionProvider(Clock.systemUTC()));
-                policies.add(
-                    new SessionAuthenticationPolicy(bearerPolicy, sessionProvider, sessionAcquirer, sessionContext));
+                policies
+                    .add(new SessionAuthenticationPolicy(bearerPolicy, sessionProvider, sessionAcquirer, sessionMode));
             }
         }
 
