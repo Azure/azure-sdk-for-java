@@ -31,7 +31,6 @@ import com.azure.search.documents.indexes.models.KnowledgeSourceReference;
 import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.SearchIndexKnowledgeSource;
 import com.azure.search.documents.indexes.models.SearchIndexKnowledgeSourceParameters;
-import com.azure.search.documents.indexes.models.SearchIndexerDataUserAssignedIdentity;
 import com.azure.search.documents.indexes.models.SemanticConfiguration;
 import com.azure.search.documents.indexes.models.SemanticField;
 import com.azure.search.documents.indexes.models.SemanticPrioritizedFields;
@@ -103,8 +102,7 @@ public class KnowledgeBaseTests extends SearchTestBase {
     private static final KnowledgeBaseAzureOpenAIModel OPEN_AI_KNOWLEDGEBASE_MODEL = new KnowledgeBaseAzureOpenAIModel(
         new AzureOpenAIVectorizerParameters().setModelName(AzureOpenAIModelName.fromString(OPENAI_MODEL_NAME))
             .setDeploymentName(KNOWLEDGEBASE_DEPLOYMENT_NAME)
-            .setResourceUrl(OPENAI_ENDPOINT)
-            .setAuthIdentity(new SearchIndexerDataUserAssignedIdentity(USER_ASSIGNED_IDENTITY)));
+            .setResourceUrl(OPENAI_ENDPOINT));
     private static final KnowledgeBaseModel KNOWLEDGE_BASE_MODEL = OPEN_AI_KNOWLEDGEBASE_MODEL;
     private static final KnowledgeSourceReference KNOWLEDGE_SOURCE_REFERENCE
         = new KnowledgeSourceReference(HOTEL_KNOWLEDGE_SOURCE_NAME);
@@ -922,9 +920,8 @@ public class KnowledgeBaseTests extends SearchTestBase {
         FileKnowledgeSourceParameters fileParams = new FileKnowledgeSourceParameters().setIngestionParameters(
             new KnowledgeSourceIngestionParameters().setEmbeddingModel(new KnowledgeSourceAzureOpenAIVectorizer()
                 .setAzureOpenAIParameters(new AzureOpenAIVectorizerParameters().setResourceUrl(OPENAI_ENDPOINT)
-                    .setDeploymentName(KNOWLEDGEBASE_DEPLOYMENT_NAME)
-                    .setModelName(AzureOpenAIModelName.fromString(OPENAI_MODEL_NAME))
-                    .setAuthIdentity(new SearchIndexerDataUserAssignedIdentity(USER_ASSIGNED_IDENTITY)))));
+                    .setDeploymentName(OPENAI_EMBEDDING_DEPLOYMENT_NAME)
+                    .setModelName(AzureOpenAIModelName.fromString(OPENAI_EMBEDDING_MODEL_NAME)))));
         FileKnowledgeSource fileKs = new FileKnowledgeSource(fileKsName, fileParams);
         searchIndexClient.createKnowledgeSource(fileKs);
 
@@ -961,9 +958,8 @@ public class KnowledgeBaseTests extends SearchTestBase {
         FileKnowledgeSourceParameters fileParams = new FileKnowledgeSourceParameters().setIngestionParameters(
             new KnowledgeSourceIngestionParameters().setEmbeddingModel(new KnowledgeSourceAzureOpenAIVectorizer()
                 .setAzureOpenAIParameters(new AzureOpenAIVectorizerParameters().setResourceUrl(OPENAI_ENDPOINT)
-                    .setDeploymentName(KNOWLEDGEBASE_DEPLOYMENT_NAME)
-                    .setModelName(AzureOpenAIModelName.fromString(OPENAI_MODEL_NAME))
-                    .setAuthIdentity(new SearchIndexerDataUserAssignedIdentity(USER_ASSIGNED_IDENTITY)))));
+                    .setDeploymentName(OPENAI_EMBEDDING_DEPLOYMENT_NAME)
+                    .setModelName(AzureOpenAIModelName.fromString(OPENAI_EMBEDDING_MODEL_NAME)))));
         FileKnowledgeSource fileKs = new FileKnowledgeSource(fileKsName, fileParams);
 
         KnowledgeBase knowledgeBase

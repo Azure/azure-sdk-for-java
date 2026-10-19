@@ -99,17 +99,12 @@ public abstract class SearchTestBase extends TestProxyTestBase {
     protected static final String AI_SERVICES_ENDPOINT = Configuration.getGlobalConfiguration()
         .get("SEARCH_AI_SERVICES_ENDPOINT",
             OPENAI_ENDPOINT.replace(".openai.azure.com", ".cognitiveservices.azure.com"));
-    protected static final String AI_SERVICES_API_KEY
-        = Configuration.getGlobalConfiguration().get("SEARCH_AI_SERVICES_API_KEY");
 
     protected static final String STORAGE_ACCOUNT_NAME
         = Configuration.getGlobalConfiguration().get("SEARCH_STORAGE_ACCOUNT_NAME", "storageaccount");
     protected static final String BLOB_CONTAINER_NAME
         = Configuration.getGlobalConfiguration().get("SEARCH_STORAGE_CONTAINER_NAME", "searchcontainer");
 
-    protected static final String USER_ASSIGNED_IDENTITY = Configuration.getGlobalConfiguration()
-        .get("SEARCH_USER_ASSIGNED_IDENTITY", "/subscriptions/subscription-id/resourceGroups/resource-group-name/"
-            + "providers/Microsoft.ManagedIdentity/userAssignedIdentities/user-assigned-managed-identity-name");
     protected static final String SUBSCRIPTION_ID
         = Configuration.getGlobalConfiguration().get("SEARCH_SUBSCRIPTION_ID", "subscription-id");
     protected static final String RESOURCE_GROUP

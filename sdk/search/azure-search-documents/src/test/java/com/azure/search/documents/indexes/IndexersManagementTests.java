@@ -32,7 +32,6 @@ import com.azure.search.documents.indexes.models.SearchIndexer;
 import com.azure.search.documents.indexes.models.SearchIndexerDataContainer;
 import com.azure.search.documents.indexes.models.SearchIndexerDataSourceConnection;
 import com.azure.search.documents.indexes.models.SearchIndexerDataSourceType;
-import com.azure.search.documents.indexes.models.SearchIndexerDataUserAssignedIdentity;
 import com.azure.search.documents.indexes.models.SearchIndexerLimits;
 import com.azure.search.documents.indexes.models.SearchIndexerSkill;
 import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
@@ -313,7 +312,7 @@ public class IndexersManagementTests extends SearchTestBase {
 
     @Test
     public void canListIndexerResourcesByPrefixAcrossPagesSync() {
-        addUserAssignedIdentitySanitizer();
+        normalizeLegacyPaginationIdentity();
         String prefix = testResourceNamer.randomName("paged-indexer-", 24);
         List<String> expectedIndexerNames = createIndexersForPagination(prefix);
         List<String> expectedDataSourceNames = createDataSourcesForPagination(prefix);
@@ -333,7 +332,7 @@ public class IndexersManagementTests extends SearchTestBase {
 
     @Test
     public void canListIndexerResourcesByPrefixAcrossPagesAsync() {
-        addUserAssignedIdentitySanitizer();
+        normalizeLegacyPaginationIdentity();
         String prefix = testResourceNamer.randomName("paged-indexer-", 24);
         List<String> expectedIndexerNames = createIndexersForPagination(prefix);
         List<String> expectedDataSourceNames = createDataSourcesForPagination(prefix);
@@ -1231,8 +1230,7 @@ public class IndexersManagementTests extends SearchTestBase {
             new DataSourceCredentials().setConnectionString(String.format(
                 "ResourceId=/subscriptions/%s/resourceGroups/%s/providers/Microsoft.Storage/storageAccounts/%s;",
                 SUBSCRIPTION_ID, RESOURCE_GROUP, STORAGE_ACCOUNT_NAME)),
-            new SearchIndexerDataContainer(BLOB_CONTAINER_NAME).setQuery("/")).setDescription("real live blob")
-                .setIdentity(new SearchIndexerDataUserAssignedIdentity(USER_ASSIGNED_IDENTITY));
+            new SearchIndexerDataContainer(BLOB_CONTAINER_NAME).setQuery("/")).setDescription("real live blob");
     }
 
     private List<String> createIndexersForPagination(String prefix) {
@@ -1245,10 +1243,12 @@ public class IndexersManagementTests extends SearchTestBase {
         return names;
     }
 
-    private void addUserAssignedIdentitySanitizer() {
-        if (!interceptorManager.isLiveMode()) {
-            interceptorManager.addSanitizers(
-                new TestProxySanitizer("$..userAssignedIdentity", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
+    private void normalizeLegacyPaginationIdentity() {
+        if (TEST_MODE == TestMode.PLAYBACK) {
+            // Pagination recordings predate the switch to system-assigned identity. Only normalize the legacy selector.
+            interceptorManager.addSanitizers(new TestProxySanitizer(
+                ",\\\\s*\\\"identity\\\"\\\\s*:\\\\s*\\\\{[^{}]*\\\"#Microsoft.Azure.Search.DataUserAssignedIdentity\\\"[^{}]*\\\\}",
+                "", TestProxySanitizerType.BODY_REGEX));
         }
     }
 

@@ -36,7 +36,6 @@ import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.SearchIndexFieldReference;
 import com.azure.search.documents.indexes.models.SearchIndexKnowledgeSource;
 import com.azure.search.documents.indexes.models.SearchIndexKnowledgeSourceParameters;
-import com.azure.search.documents.indexes.models.SearchIndexerDataUserAssignedIdentity;
 import com.azure.search.documents.indexes.models.SemanticConfiguration;
 import com.azure.search.documents.indexes.models.SemanticField;
 import com.azure.search.documents.indexes.models.SemanticPrioritizedFields;
@@ -1272,7 +1271,7 @@ public class KnowledgeSourceTests extends SearchTestBase {
         SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
         KnowledgeSourceIngestionParameters ingestionParameters = createFileKnowledgeSourceIngestionParameters()
             .setContentExtractionMode(KnowledgeSourceContentExtractionMode.STANDARD)
-            .setAiServices(new AiServices(AI_SERVICES_ENDPOINT).setApiKey(AI_SERVICES_API_KEY));
+            .setAiServices(new AiServices(AI_SERVICES_ENDPOINT));
         FileKnowledgeSource knowledgeSource = new FileKnowledgeSource(randomKnowledgeSourceName(),
             new FileKnowledgeSourceParameters().setIngestionParameters(ingestionParameters))
                 .setCorsOptions(new CorsOptions("https://app.contoso.com").setMaxAgeInSeconds(300L));
@@ -1441,8 +1440,7 @@ public class KnowledgeSourceTests extends SearchTestBase {
             .setEmbeddingModel(new KnowledgeSourceAzureOpenAIVectorizer()
                 .setAzureOpenAIParameters(new AzureOpenAIVectorizerParameters().setResourceUrl(OPENAI_ENDPOINT)
                     .setDeploymentName(OPENAI_EMBEDDING_DEPLOYMENT_NAME)
-                    .setModelName(AzureOpenAIModelName.fromString(OPENAI_EMBEDDING_MODEL_NAME))
-                    .setAuthIdentity(new SearchIndexerDataUserAssignedIdentity(USER_ASSIGNED_IDENTITY))))
+                    .setModelName(AzureOpenAIModelName.fromString(OPENAI_EMBEDDING_MODEL_NAME))))
             .setContentExtractionMode(KnowledgeSourceContentExtractionMode.MINIMAL);
     }
 
