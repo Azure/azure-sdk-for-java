@@ -143,6 +143,24 @@ public class DirectoryAsyncApiTests extends FileShareTestBase {
         }).verifyComplete();
     }
 
+    @LiveOnly
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2027-03-07")
+    @Test
+    public void asyncDirectoryPropertiesByFileIdLive() {
+        StepVerifier.create(primaryDirectoryAsyncClient.create()
+            .then(primaryDirectoryAsyncClient.getProperties())
+            .flatMap(expected -> shareBuilderHelper(shareName).buildAsyncClient()
+                .getDirectoryClientByFileId(expected.getSmbProperties().getFileId())
+                .getProperties()
+                .doOnNext(actual -> {
+                    assertEquals(directoryPath, actual.getFileName());
+                    assertEquals(expected.getSmbProperties().getFileId(), actual.getSmbProperties().getFileId());
+                    assertEquals(expected.getSmbProperties().getParentId(), actual.getSmbProperties().getParentId());
+                })))
+            .expectNextCount(1)
+            .verifyComplete();
+    }
+
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2027-03-07")
     @Test
     public void asyncDirectoryPropertiesByFileIdMapServiceErrors() {

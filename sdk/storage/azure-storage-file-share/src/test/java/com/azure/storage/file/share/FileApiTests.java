@@ -228,6 +228,30 @@ class FileApiTests extends FileShareTestBase {
         assertEquals(links.getProperties().getSmbProperties().getParentId(), links.getLinks().get(0).getParentId());
     }
 
+    @Tag("file-id-integration")
+    @LiveOnly
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2027-03-07")
+    @Test
+    public void filePropertiesByIdLive() {
+        ShareFileProperties properties = shareClient.getFileClientByFileId(fileId).getProperties();
+
+        assertEquals(filePath, properties.getFileName());
+        assertEquals(FILE_ID_TEST_CONTENT.length(), properties.getContentLength());
+        assertEquals(fileId, properties.getSmbProperties().getFileId());
+    }
+
+    @Tag("file-id-integration")
+    @LiveOnly
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2027-03-07")
+    @Test
+    public void fileLinksByIdLive() {
+        ShareFileLinks links = shareClient.getFileClientByFileId(fileId).getFileLinks();
+
+        assertEquals(fileId, links.getProperties().getSmbProperties().getFileId());
+        assertEquals(1, links.getLinks().size());
+        assertEquals(filePath, links.getLinks().get(0).getName());
+    }
+
     @DoNotRecord
     @Tag("file-id-mock")
     @Test

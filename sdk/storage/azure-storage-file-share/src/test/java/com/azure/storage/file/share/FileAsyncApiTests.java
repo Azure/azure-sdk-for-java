@@ -207,6 +207,30 @@ public class FileAsyncApiTests extends FileShareTestBase {
         assertEquals(links.getProperties().getSmbProperties().getParentId(), links.getLinks().get(0).getParentId());
     }
 
+    @Tag("file-id-integration")
+    @LiveOnly
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2027-03-07")
+    @Test
+    public void asyncFilePropertiesByIdLive() {
+        StepVerifier.create(shareAsyncClient.getFileClientByFileId(fileId).getProperties()).assertNext(properties -> {
+            assertEquals(filePath, properties.getFileName());
+            assertEquals(FILE_ID_TEST_CONTENT.length(), properties.getContentLength());
+            assertEquals(fileId, properties.getSmbProperties().getFileId());
+        }).verifyComplete();
+    }
+
+    @Tag("file-id-integration")
+    @LiveOnly
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2027-03-07")
+    @Test
+    public void asyncFileLinksByIdLive() {
+        StepVerifier.create(shareAsyncClient.getFileClientByFileId(fileId).getFileLinks()).assertNext(links -> {
+            assertEquals(fileId, links.getProperties().getSmbProperties().getFileId());
+            assertEquals(1, links.getLinks().size());
+            assertEquals(filePath, links.getLinks().get(0).getName());
+        }).verifyComplete();
+    }
+
     @DoNotRecord
     @Tag("file-id-mock")
     @Test

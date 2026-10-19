@@ -153,6 +153,21 @@ public class DirectoryApiTests extends FileShareTestBase {
             actual.getSmbProperties().getFileLastWriteTime());
     }
 
+    @LiveOnly
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2027-03-07")
+    @Test
+    public void directoryPropertiesByFileIdLive() {
+        primaryDirectoryClient.create();
+        ShareDirectoryProperties expected = primaryDirectoryClient.getProperties();
+        String fileId = expected.getSmbProperties().getFileId();
+
+        ShareDirectoryProperties actual = shareClient.getDirectoryClientByFileId(fileId).getProperties();
+
+        assertEquals(directoryPath, actual.getFileName());
+        assertEquals(fileId, actual.getSmbProperties().getFileId());
+        assertEquals(expected.getSmbProperties().getParentId(), actual.getSmbProperties().getParentId());
+    }
+
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2027-03-07")
     @Test
     public void directoryPropertiesByFileIdMapServiceErrors() {
