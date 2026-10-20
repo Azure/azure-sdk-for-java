@@ -2,8 +2,6 @@
 
 ## 1.1.0 (2026-10-20)
 
-### Features Added
-
 ### Breaking Changes
 
 - `deployVersionCode` now returns `EdgeActionVersion` instead of `EdgeActionVersionProperties`.
