@@ -96,6 +96,15 @@ The micrometer.io documentation has a list with samples on how to create a `Mete
 
 
 
+The optional `ServiceEndpoint` tag also applies to Gateway request metrics (`cosmos.client.req.gw.*`).
+Its value uses the same `hostname_port` format as Direct request metrics. Gateway requests use HTTPS:
+an omitted port is resolved to `443`, while explicit ports such as `10250` are preserved.
+Resource paths, query strings, fragments, and user
+information are excluded. If the destination is unavailable or invalid, the value is `NONE`.
+Enable it while retaining the default tags with
+`CosmosMicrometerMetricsOptions.configureDefaultTagNames(CosmosMetricTagName.DEFAULT, CosmosMetricTagName.SERVICE_ENDPOINT)`.
+The tag remains disabled by default and can be suppressed for individual meters.
+
 ## What metrics are emitted?
 
 
@@ -193,4 +202,3 @@ See the `MeterFilter.ignoreTags` documentation in the micrometer documentation h
 ## How can I filter which metrics I want to collect?
 
 See the `MeterFilter.acceptXXX/denyXXX` documentation in the micrometer documentation here - `https://micrometer.io/docs/concepts#_convenience_methods`
-

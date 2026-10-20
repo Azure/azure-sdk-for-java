@@ -39,6 +39,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.net.URI;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -1152,6 +1153,28 @@ public final class ClientTelemetryMetrics {
             }
         }
 
+        private String getGatewayServiceEndpoint(String endpoint) {
+            if (Strings.isNullOrWhiteSpace(endpoint)) {
+                return null;
+            }
+
+            URI uri;
+            try {
+                uri = URI.create(endpoint);
+            } catch (IllegalArgumentException e) {
+                logger.warn("Unable to parse Gateway endpoint for request metrics.");
+                return null;
+            }
+
+            if (uri.getHost() == null || !"https".equalsIgnoreCase(uri.getScheme())) {
+                logger.warn("Gateway endpoint for request metrics must be an HTTPS URI with a hostname.");
+                return null;
+            }
+
+            int port = uri.getPort() == -1 ? 443 : uri.getPort();
+            return uri.getHost() + "_" + port;
+        }
+
         private void recordGatewayStatistics(
             CosmosDiagnosticsContext ctx,
             CosmosAsyncClient client,
@@ -1173,7 +1196,6 @@ public final class ClientTelemetryMetrics {
             EnumSet<TagName> metricTagNamesForGateway = metricTagNames.clone();
             metricTagNamesForGateway.remove(TagName.RegionName);
             metricTagNamesForGateway.remove(TagName.ServiceAddress);
-            metricTagNamesForGateway.remove(TagName.ServiceEndpoint);
             metricTagNamesForGateway.remove(TagName.PartitionId);
             metricTagNamesForGateway.remove(TagName.ReplicaId);
 
@@ -1187,7 +1209,8 @@ public final class ClientTelemetryMetrics {
                         gatewayStats.getResourceType().toString(),
                         gatewayStats.getOperationType().toString(),
                         null,
-                        null,
+                        metricTagNamesForGateway.contains(TagName.ServiceEndpoint)
+                            ? getGatewayServiceEndpoint(gatewayStats.getEndpoint()) : null,
                         null)
                 );
 

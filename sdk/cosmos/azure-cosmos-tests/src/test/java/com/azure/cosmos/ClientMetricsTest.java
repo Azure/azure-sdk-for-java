@@ -7,11 +7,13 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.FlakyTestRetryAnalyzer;
+import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DiagnosticsProvider;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.OperationType;
+import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.clienttelemetry.MetricCategory;
 import com.azure.cosmos.implementation.clienttelemetry.TagName;
 import com.azure.cosmos.implementation.directconnectivity.AddressSelector;
@@ -46,10 +48,13 @@ import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.util.CosmosPagedIterable;
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.DistributionSummary;
 import io.micrometer.core.instrument.Measurement;
 import io.micrometer.core.instrument.Meter;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Tag;
+import io.micrometer.core.instrument.Tags;
 import io.micrometer.core.instrument.Timer;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.apache.commons.lang3.reflect.FieldUtils;
@@ -195,6 +200,39 @@ public class ClientMetricsTest extends BatchTestBase {
                         0,
                         300
                     );
+                }
+            }
+        }
+    }
+
+    @Test(groups = { "fast" }, timeOut = SETUP_TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
+    public void gatewayRequestMetricsUseRecordedServiceEndpoint() throws Exception {
+        for (boolean serviceEndpointEnabled : new boolean[] {false, true}) {
+            CosmosMicrometerMetricsOptions metricsOptions = new CosmosMicrometerMetricsOptions()
+                .setMetricCategories(CosmosMetricCategory.DEFAULT)
+                .configureDefaultTagNames(CosmosMetricTagName.DEFAULT)
+                .applyDiagnosticThresholdsForTransportLevelMeters(false);
+            if (serviceEndpointEnabled) {
+                metricsOptions.configureDefaultTagNames(
+                    CosmosMetricTagName.DEFAULT, CosmosMetricTagName.SERVICE_ENDPOINT);
+            }
+
+            try (TestState state = new TestState(getClientBuilder().gatewayMode(), null, metricsOptions)) {
+                assertThat(state.client.asyncClient().getConnectionPolicy().getConnectionMode())
+                    .isEqualTo(ConnectionMode.GATEWAY);
+
+                for (int i = 0; i < 2; i++) {
+                    InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
+                    CosmosItemResponse<InternalObjectNode> createResponse = state.container.createItem(properties);
+                    assertThat(createResponse.getStatusCode()).isEqualTo(201);
+                    validateItemResponse(properties, createResponse);
+                    state.assertGatewayServiceEndpointMetrics(createResponse, serviceEndpointEnabled);
+
+                    CosmosItemResponse<InternalObjectNode> readResponse = state.container.readItem(
+                        properties.getId(), new PartitionKey(properties.get("mypk")), InternalObjectNode.class);
+                    assertThat(readResponse.getStatusCode()).isEqualTo(200);
+                    validateItemResponse(properties, readResponse);
+                    state.assertGatewayServiceEndpointMetrics(readResponse, serviceEndpointEnabled);
                 }
             }
         }
@@ -1471,18 +1509,22 @@ public class ClientMetricsTest extends BatchTestBase {
         public TestState(CosmosClientBuilder clientBuilder,
                          CosmosDiagnosticsThresholds thresholds,
                          CosmosMetricCategory... metricCategories) {
-
-            this.clientBuilder = clientBuilder;
-            this.meterRegistry = Log4jDebugLoggingRegistryFactory.create(1);
-            this.inputMetricsOptions = new CosmosMicrometerMetricsOptions()
-                .meterRegistry(this.meterRegistry)
+            this(clientBuilder, thresholds, new CosmosMicrometerMetricsOptions()
                 .setMetricCategories(metricCategories)
                 .configureDefaultTagNames(
                     CosmosMetricTagName.DEFAULT,
                     CosmosMetricTagName.PARTITION_ID,
                     CosmosMetricTagName.REPLICA_ID,
                     CosmosMetricTagName.OPERATION_SUB_STATUS_CODE,
-                    CosmosMetricTagName.PARTITION_KEY_RANGE_ID);
+                    CosmosMetricTagName.PARTITION_KEY_RANGE_ID));
+        }
+
+        public TestState(CosmosClientBuilder clientBuilder,
+                         CosmosDiagnosticsThresholds thresholds,
+                         CosmosMicrometerMetricsOptions metricsOptions) {
+            this.clientBuilder = clientBuilder;
+            this.meterRegistry = Log4jDebugLoggingRegistryFactory.create(1);
+            this.inputMetricsOptions = metricsOptions.meterRegistry(this.meterRegistry);
 
             this.inputClientTelemetryConfig = new CosmosClientTelemetryConfig()
                 .metricsOptions(this.inputMetricsOptions);
@@ -1581,6 +1623,58 @@ public class ClientMetricsTest extends BatchTestBase {
                 .CosmosClientTelemetryConfigHelper
                 .getCosmosClientTelemetryConfigAccessor()
                 .getMetricCategories(this.inputClientTelemetryConfig);
+        }
+
+        public void assertGatewayServiceEndpointMetrics(
+            CosmosItemResponse<?> response, boolean serviceEndpointEnabled) {
+
+            List<ClientSideRequestStatistics.GatewayStatistics> gatewayStatistics = response.getDiagnostics()
+                .getClientSideRequestStatistics()
+                .stream()
+                .flatMap(statistics -> statistics.getGatewayStatisticsList().stream())
+                .filter(statistics -> statistics.getResourceType() == ResourceType.Document
+                    && statistics.getStatusCode() == response.getStatusCode())
+                .collect(Collectors.toList());
+            assertThat(gatewayStatistics).isNotEmpty();
+
+            for (ClientSideRequestStatistics.GatewayStatistics statistics : gatewayStatistics) {
+                assertThat(statistics.getEndpoint()).isNotBlank();
+                URI endpoint = URI.create(statistics.getEndpoint());
+                assertThat(endpoint.getScheme()).isEqualToIgnoringCase("https");
+                assertThat(endpoint.getHost()).isNotBlank();
+                String expectedEndpoint = endpoint.getHost() + "_" + (endpoint.getPort() == -1 ? 443 : endpoint.getPort());
+                Tags requestTags = Tags.of(
+                    this.clientCorrelationTag,
+                    Tag.of(TagName.RequestOperationType.toString(),
+                        statistics.getResourceType() + "/" + statistics.getOperationType()),
+                    Tag.of(TagName.RequestStatusCode.toString(),
+                        statistics.getStatusCode() + "/" + statistics.getSubStatusCode()));
+                if (serviceEndpointEnabled) {
+                    requestTags = requestTags.and(TagName.ServiceEndpoint.toString(), expectedEndpoint);
+                }
+
+                Counter requests = this.meterRegistry
+                    .get(CosmosMetricName.REQUEST_SUMMARY_GATEWAY_REQUESTS.toString())
+                    .tags(requestTags)
+                    .counter();
+                Timer latency = this.meterRegistry
+                    .get(CosmosMetricName.REQUEST_SUMMARY_GATEWAY_LATENCY.toString())
+                    .tags(requestTags)
+                    .timer();
+                DistributionSummary requestCharge = this.meterRegistry
+                    .get(CosmosMetricName.REQUEST_SUMMARY_GATEWAY_REQUEST_CHARGE.toString())
+                    .tags(requestTags)
+                    .summary();
+                assertThat(requests.count()).isGreaterThan(0);
+                assertThat(latency.count()).isGreaterThan(0);
+                assertThat(requestCharge.count()).isGreaterThan(0);
+                assertThat(requestCharge.totalAmount()).isGreaterThan(0);
+
+                for (Meter meter : Arrays.asList(requests, latency, requestCharge)) {
+                    assertThat(meter.getId().getTag(TagName.ServiceEndpoint.toString()))
+                        .isEqualTo(serviceEndpointEnabled ? expectedEndpoint : null);
+                }
+            }
         }
 
         public void validateItemCountMetrics(Tag expectedOperationTag) {
