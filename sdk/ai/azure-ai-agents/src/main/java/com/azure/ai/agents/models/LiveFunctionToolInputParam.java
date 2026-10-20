@@ -20,12 +20,6 @@ import java.util.Map;
 public final class LiveFunctionToolInputParam implements JsonSerializable<LiveFunctionToolInputParam> {
 
     /*
-     * The tool type. Always `function`.
-     */
-    @Generated
-    private final String type = "function";
-
-    /*
      * The name the delegated Responses model uses when calling this function.
      */
     @Generated
@@ -66,7 +60,7 @@ public final class LiveFunctionToolInputParam implements JsonSerializable<LiveFu
      */
     @Generated
     public String getType() {
-        return this.type;
+        return TYPE;
     }
 
     /**
@@ -152,7 +146,7 @@ public final class LiveFunctionToolInputParam implements JsonSerializable<LiveFu
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("type", TYPE);
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeStringField("description", this.description);
         jsonWriter.writeMapField("parameters", this.parameters, (writer, element) -> {
@@ -205,4 +199,10 @@ public final class LiveFunctionToolInputParam implements JsonSerializable<LiveFu
             return deserializedLiveFunctionToolInputParam;
         });
     }
+
+    /*
+     * The tool type. Always `function`.
+     */
+    @Generated
+    private static final String TYPE = "function";
 }

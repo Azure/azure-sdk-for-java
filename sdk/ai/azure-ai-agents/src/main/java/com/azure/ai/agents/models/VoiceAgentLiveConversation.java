@@ -29,12 +29,6 @@ public final class VoiceAgentLiveConversation implements JsonSerializable<VoiceA
     private final String id;
 
     /*
-     * The object type. Always `voice.conversation`.
-     */
-    @Generated
-    private final String objectType = "voice.conversation";
-
-    /*
      * The lifecycle status of the conversation.
      */
     @Generated
@@ -106,7 +100,7 @@ public final class VoiceAgentLiveConversation implements JsonSerializable<VoiceA
      */
     @Generated
     public String getObjectType() {
-        return this.objectType;
+        return OBJECT_TYPE;
     }
 
     /**
@@ -183,7 +177,7 @@ public final class VoiceAgentLiveConversation implements JsonSerializable<VoiceA
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("id", this.id);
-        jsonWriter.writeStringField("object", this.objectType);
+        jsonWriter.writeStringField("object", OBJECT_TYPE);
         jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
         jsonWriter.writeLongField("created_at", this.createdAt);
         jsonWriter.writeNumberField("completed_at", this.completedAt);
@@ -242,4 +236,10 @@ public final class VoiceAgentLiveConversation implements JsonSerializable<VoiceA
             return deserializedVoiceAgentLiveConversation;
         });
     }
+
+    /*
+     * The object type. Always `voice.conversation`.
+     */
+    @Generated
+    private static final String OBJECT_TYPE = "voice.conversation";
 }

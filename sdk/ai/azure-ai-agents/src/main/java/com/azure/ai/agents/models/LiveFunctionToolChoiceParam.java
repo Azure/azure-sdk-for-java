@@ -18,12 +18,6 @@ import java.io.IOException;
 public final class LiveFunctionToolChoiceParam implements JsonSerializable<LiveFunctionToolChoiceParam> {
 
     /*
-     * The type property.
-     */
-    @Generated
-    private final String type = "function";
-
-    /*
      * The name property.
      */
     @Generated
@@ -46,7 +40,7 @@ public final class LiveFunctionToolChoiceParam implements JsonSerializable<LiveF
      */
     @Generated
     public String getType() {
-        return this.type;
+        return TYPE;
     }
 
     /**
@@ -66,7 +60,7 @@ public final class LiveFunctionToolChoiceParam implements JsonSerializable<LiveF
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("type", TYPE);
         jsonWriter.writeStringField("name", this.name);
         return jsonWriter.writeEndObject();
     }
@@ -96,4 +90,10 @@ public final class LiveFunctionToolChoiceParam implements JsonSerializable<LiveF
             return new LiveFunctionToolChoiceParam(name);
         });
     }
+
+    /*
+     * The type property.
+     */
+    @Generated
+    private static final String TYPE = "function";
 }
