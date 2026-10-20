@@ -46,7 +46,7 @@ import static org.assertj.core.api.Assertions.fail;
 public class GatewayEndpointMetricsE2ETest extends TestSuiteBase {
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private static final String CONTAINER_ID = "endpointMetrics";
-    private CosmosAsyncClient managementClient;
+    private CosmosAsyncClient resourceSetupClient;
     private CosmosAsyncDatabase database;
 
     public GatewayEndpointMetricsE2ETest() {
@@ -55,12 +55,12 @@ public class GatewayEndpointMetricsE2ETest extends TestSuiteBase {
 
     @BeforeClass(groups = {"fast", "thinclient", "thinclientEndpointProbe"}, timeOut = SETUP_TIMEOUT)
     public void setUp() {
-        managementClient = gatewayBuilder(false)
+        resourceSetupClient = gatewayBuilder(false)
             .clientTelemetryConfig(new CosmosClientTelemetryConfig()
                 .metricsOptions(new CosmosMicrometerMetricsOptions().setEnabled(false)))
             .buildAsyncClient();
-        database = createTestDatabase(managementClient, "gatewayEndpointMetrics");
-        createCollection(managementClient, database.getId(), new CosmosContainerProperties(CONTAINER_ID, "/mypk"));
+        database = createTestDatabase(resourceSetupClient, "gatewayEndpointMetrics");
+        createCollection(resourceSetupClient, database.getId(), new CosmosContainerProperties(CONTAINER_ID, "/mypk"));
     }
 
     @AfterClass(groups = {"fast", "thinclient", "thinclientEndpointProbe"},
@@ -71,8 +71,8 @@ public class GatewayEndpointMetricsE2ETest extends TestSuiteBase {
                 safeDeleteDatabase(database);
             }
         } finally {
-            if (managementClient != null) {
-                managementClient.close();
+            if (resourceSetupClient != null) {
+                resourceSetupClient.close();
             }
         }
     }
