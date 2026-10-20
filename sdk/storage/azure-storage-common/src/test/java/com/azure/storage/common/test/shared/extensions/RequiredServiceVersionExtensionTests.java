@@ -7,10 +7,8 @@ import com.azure.core.util.ServiceVersion;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ConditionEvaluationResult;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static com.azure.storage.common.test.shared.extensions.RequiredServiceVersionExtension.evaluateServiceVersion;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -23,8 +21,12 @@ public class RequiredServiceVersionExtensionTests {
 
     @Test
     public void comparesRequiredWireValueToConfiguredEnumNameInServiceVersionOrder() {
-        assertTrue(
-            evaluate(TestServiceVersion.V2026_08_06.getVersion(), TestServiceVersion.V2026_06_06.name()).isDisabled());
+        ConditionEvaluationResult olderVersion
+            = evaluate(TestServiceVersion.V2026_08_06.getVersion(), TestServiceVersion.V2026_06_06.name());
+
+        assertTrue(olderVersion.isDisabled());
+        assertEquals("Test requires minimum service version '2026-08-06'.",
+            olderVersion.getReason().orElseThrow(AssertionError::new));
         assertFalse(
             evaluate(TestServiceVersion.V2026_08_06.getVersion(), TestServiceVersion.V2026_08_06.name()).isDisabled());
         assertFalse(
@@ -32,68 +34,45 @@ public class RequiredServiceVersionExtensionTests {
     }
 
     @Test
-    public void resolvesEnumNames() {
+    public void resolvesEnumNamesAndWireValues() {
         assertFalse(
             evaluate(TestServiceVersion.V2026_08_06.name(), TestServiceVersion.V2026_10_06.name()).isDisabled());
+        assertFalse(evaluate(TestServiceVersion.V2026_08_06.getVersion(), TestServiceVersion.V2026_10_06.getVersion())
+            .isDisabled());
     }
 
     @Test
     public void defaultsToLatestWireValue() {
-        List<String> warnings = new ArrayList<>();
-
-        ConditionEvaluationResult result = evaluateServiceVersion(TestServiceVersion.class,
-            TestServiceVersion.V2026_10_06.getVersion(), null, warnings::add);
+        ConditionEvaluationResult result
+            = evaluateServiceVersion(TestServiceVersion.class, TestServiceVersion.V2026_10_06.getVersion(), null);
 
         assertFalse(result.isDisabled());
-        assertTrue(warnings.isEmpty());
     }
 
     @ParameterizedTest
     @ValueSource(strings = { "V2027_03_07", "2027-03-07", "not-a-service-version" })
-    public void skipsUnknownConfiguredVersionWithWarning(String unknownServiceVersion) {
-        List<String> warnings = new ArrayList<>();
-
-        ConditionEvaluationResult result = evaluateServiceVersion(TestServiceVersion.class,
-            TestServiceVersion.V2026_08_06.getVersion(), unknownServiceVersion, warnings::add);
-
-        assertTrue(result.isDisabled());
-        assertEquals(1, warnings.size());
-        assertEquals(result.getReason().orElseThrow(AssertionError::new), warnings.get(0));
-        assertTrue(warnings.get(0).contains("AZURE_LIVE_TEST_SERVICE_VERSION '" + unknownServiceVersion + "'"));
-        assertTrue(warnings.get(0).contains(TestServiceVersion.class.getSimpleName()));
-        assertTrue(warnings.get(0).contains(TestServiceVersion.V2026_08_06.getVersion()));
-    }
-
-    @Test
-    public void rejectsUnknownMinimumVersion() {
-        List<String> warnings = new ArrayList<>();
-
+    public void rejectsUnknownConfiguredVersion(String unknownServiceVersion) {
         IllegalArgumentException exception
             = assertThrows(IllegalArgumentException.class, () -> evaluateServiceVersion(TestServiceVersion.class,
-                UNKNOWN_SERVICE_VERSION, UNKNOWN_SERVICE_VERSION, warnings::add));
+                TestServiceVersion.V2026_08_06.getVersion(), unknownServiceVersion));
+
+        assertEquals("AZURE_LIVE_TEST_SERVICE_VERSION '" + unknownServiceVersion + "' is not supported by "
+            + TestServiceVersion.class.getSimpleName() + ".", exception.getMessage());
+    }
+
+    @ParameterizedTest
+    @NullSource
+    @ValueSource(strings = { "V2026_10_06", "not-a-service-version" })
+    public void rejectsUnknownMinimumVersionBeforeConfiguredVersion(String configuredServiceVersion) {
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
+            () -> evaluateServiceVersion(TestServiceVersion.class, UNKNOWN_SERVICE_VERSION, configuredServiceVersion));
 
         assertEquals("Minimum service version '" + UNKNOWN_SERVICE_VERSION + "' is not supported.",
             exception.getMessage());
-        assertTrue(warnings.isEmpty());
-    }
-
-    @Test
-    public void knownConfiguredVersionsDoNotWarn() {
-        List<String> warnings = new ArrayList<>();
-
-        ConditionEvaluationResult result = evaluateServiceVersion(TestServiceVersion.class,
-            TestServiceVersion.V2026_08_06.getVersion(), TestServiceVersion.V2026_06_06.name(), warnings::add);
-
-        assertTrue(result.isDisabled());
-        assertTrue(warnings.isEmpty());
-        assertFalse(result.getReason().orElseThrow(AssertionError::new).contains("AZURE_LIVE_TEST_SERVICE_VERSION"));
     }
 
     private static ConditionEvaluationResult evaluate(String minimumServiceVersion, String configuredServiceVersion) {
-        return evaluateServiceVersion(TestServiceVersion.class, minimumServiceVersion, configuredServiceVersion,
-            warning -> {
-                throw new AssertionError("Known service versions must not produce warnings.");
-            });
+        return evaluateServiceVersion(TestServiceVersion.class, minimumServiceVersion, configuredServiceVersion);
     }
 
     enum TestServiceVersion implements ServiceVersion {
