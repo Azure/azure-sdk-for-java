@@ -36,7 +36,14 @@ import com.azure.search.documents.indexes.models.KnowledgeSourceFile;
 import com.azure.search.documents.indexes.models.UpdateKnowledgeSourceFileRequest;
 import com.azure.search.documents.indexes.models.UploadKnowledgeSourceFileMultipartRequest;
 import com.azure.search.documents.knowledgebases.KnowledgeBaseRetrievalClientBuilder;
+import com.azure.search.documents.knowledgebases.models.KnowledgeBaseActivityRecordModel;
+import com.azure.search.documents.knowledgebases.models.KnowledgeBaseMessage;
+import com.azure.search.documents.knowledgebases.models.KnowledgeBaseMessageTextContent;
+import com.azure.search.documents.knowledgebases.models.KnowledgeBaseModelAnswerSynthesisActivityRecord;
+import com.azure.search.documents.knowledgebases.models.KnowledgeBaseModelQueryPlanningActivityRecord;
+import com.azure.search.documents.knowledgebases.models.KnowledgeBaseModelWebSummarizationActivityRecord;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalOptions;
+import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalResult;
 import com.azure.search.documents.knowledgebases.models.KnowledgeRetrievalLowReasoningEffort;
 import com.azure.search.documents.knowledgebases.models.KnowledgeRetrievalMediumReasoningEffort;
 import com.azure.search.documents.knowledgebases.models.KnowledgeRetrievalOutputMode;
@@ -48,6 +55,8 @@ import com.azure.search.documents.models.SearchRequest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
+import org.junit.jupiter.api.parallel.ResourceAccessMode;
+import org.junit.jupiter.api.parallel.ResourceLock;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.EnumSource;
@@ -75,6 +84,17 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class SearchGaTests {
     private static final String ENDPOINT = "https://example.search.windows.net";
     private static final AzureKeyCredential CREDENTIAL = new AzureKeyCredential("key");
+
+    @Test
+    public void knowledgeResourceCleanupIsMutuallyExclusive() {
+        ResourceLock baseLock = KnowledgeBaseTests.class.getAnnotation(ResourceLock.class);
+        ResourceLock sourceLock = KnowledgeSourceTests.class.getAnnotation(ResourceLock.class);
+        assertNotNull(baseLock);
+        assertNotNull(sourceLock);
+        assertEquals(baseLock.value(), sourceLock.value());
+        assertEquals(ResourceAccessMode.READ_WRITE, baseLock.mode());
+        assertEquals(ResourceAccessMode.READ_WRITE, sourceLock.mode());
+    }
 
     @Test
     public void latestServiceVersionIsGa() {
@@ -301,6 +321,64 @@ public class SearchGaTests {
             assertEquals(5, roundTrip.getMaxOutputDocuments());
             assertInstanceOf(KnowledgeRetrievalLowReasoningEffort.class, roundTrip.getRetrievalReasoningEffort());
         }
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    public void retrievalDeserializesActivityModelMetadata(boolean async) {
+        HttpClient httpClient = request -> FluxUtil.collectBytesInByteBufferStream(request.getBody())
+            .flatMap(body -> Mono.fromCallable(() -> {
+                try (JsonReader reader = JsonProviders.createReader(body)) {
+                    KnowledgeBaseRetrievalOptions options = KnowledgeBaseRetrievalOptions.fromJson(reader);
+                    assertEquals("user", options.getMessages().get(0).getRole());
+                    assertEquals("What are the pet policies at the hotel?",
+                        assertInstanceOf(KnowledgeBaseMessageTextContent.class,
+                            options.getMessages().get(0).getContent().get(0)).getText());
+                    assertTrue(options.getIntents() == null || options.getIntents().isEmpty());
+                    assertInstanceOf(KnowledgeRetrievalMediumReasoningEffort.class,
+                        options.getRetrievalReasoningEffort());
+                    assertEquals(KnowledgeRetrievalOutputMode.ANSWER_SYNTHESIS, options.getOutputMode());
+                    assertTrue(options.isIncludeActivity());
+                }
+                String response = "{\"response\":[],\"activity\":["
+                    + "{\"id\":0,\"type\":\"modelQueryPlanning\",\"model\":{\"modelName\":\"gpt-4.1\",\"deploymentId\":\"planner\"}},"
+                    + "{\"id\":1,\"type\":\"modelAnswerSynthesis\",\"model\":{\"modelName\":\"gpt-4.1\",\"deploymentId\":\"answer\"}},"
+                    + "{\"id\":2,\"type\":\"modelWebSummarization\",\"model\":{\"modelName\":\"gpt-4.1\",\"deploymentId\":\"web\"}}]}";
+                return new MockHttpResponse(request, 200, new HttpHeaders(), response.getBytes(StandardCharsets.UTF_8));
+            }));
+        KnowledgeBaseRetrievalClientBuilder builder = new KnowledgeBaseRetrievalClientBuilder().endpoint(ENDPOINT)
+            .credential(CREDENTIAL)
+            .knowledgeBaseName("kb")
+            .httpClient(httpClient);
+        KnowledgeBaseRetrievalOptions options
+            = new KnowledgeBaseRetrievalOptions()
+                .setMessages(Collections.singletonList(new KnowledgeBaseMessage(
+                    new KnowledgeBaseMessageTextContent("What are the pet policies at the hotel?")).setRole("user")))
+                .setRetrievalReasoningEffort(new KnowledgeRetrievalMediumReasoningEffort())
+                .setOutputMode(KnowledgeRetrievalOutputMode.ANSWER_SYNTHESIS)
+                .setIncludeActivity(true);
+        KnowledgeBaseRetrievalResult result
+            = async ? builder.buildAsyncClient().retrieve(options).block() : builder.buildClient().retrieve(options);
+        assertNotNull(result);
+        assertEquals(3, result.getActivity().size());
+        KnowledgeBaseActivityRecordModel planning
+            = assertInstanceOf(KnowledgeBaseModelQueryPlanningActivityRecord.class, result.getActivity().get(0))
+                .getModel();
+        KnowledgeBaseActivityRecordModel synthesis
+            = assertInstanceOf(KnowledgeBaseModelAnswerSynthesisActivityRecord.class, result.getActivity().get(1))
+                .getModel();
+        KnowledgeBaseActivityRecordModel summarization
+            = assertInstanceOf(KnowledgeBaseModelWebSummarizationActivityRecord.class, result.getActivity().get(2))
+                .getModel();
+        assertNotNull(planning);
+        assertNotNull(synthesis);
+        assertNotNull(summarization);
+        assertEquals("gpt-4.1", planning.getModelName());
+        assertEquals("planner", planning.getDeploymentId());
+        assertEquals("gpt-4.1", synthesis.getModelName());
+        assertEquals("answer", synthesis.getDeploymentId());
+        assertEquals("gpt-4.1", summarization.getModelName());
+        assertEquals("web", summarization.getDeploymentId());
     }
 
     @Test

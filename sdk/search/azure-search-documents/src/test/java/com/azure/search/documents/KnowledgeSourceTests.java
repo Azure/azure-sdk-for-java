@@ -56,6 +56,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
+import org.junit.jupiter.api.parallel.ResourceLock;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 import reactor.util.function.Tuple2;
@@ -87,6 +88,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * Tests for Knowledge Source operations.
  */
 @Execution(ExecutionMode.SAME_THREAD)
+@ResourceLock("search-knowledge-resources")
 public class KnowledgeSourceTests extends SearchTestBase {
     private static final String HOTEL_INDEX_NAME = "shared-knowledge-source-index";
     private static final String BLOB_CONNECTION_STRING = "ResourceId=/subscriptions/" + SUBSCRIPTION_ID
@@ -1263,9 +1265,10 @@ public class KnowledgeSourceTests extends SearchTestBase {
 
     @Test
     public void createFileKnowledgeSourceWithStandardExtractionAndCorsSync() {
+        String sanitizedAiServicesEndpoint = "https://your-endpoint.cognitiveservices.azure.com";
         if (!interceptorManager.isLiveMode()) {
             interceptorManager.addSanitizers(new TestProxySanitizer("$..aiServices.uri", null,
-                "https://your-endpoint.cognitiveservices.azure.com", TestProxySanitizerType.BODY_KEY));
+                sanitizedAiServicesEndpoint, TestProxySanitizerType.BODY_KEY));
         }
 
         SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
@@ -1281,7 +1284,7 @@ public class KnowledgeSourceTests extends SearchTestBase {
 
         assertEquals(KnowledgeSourceContentExtractionMode.STANDARD,
             created.getFileParameters().getIngestionParameters().getContentExtractionMode());
-        assertEquals(AI_SERVICES_ENDPOINT,
+        assertEquals(interceptorManager.isPlaybackMode() ? sanitizedAiServicesEndpoint : AI_SERVICES_ENDPOINT,
             created.getFileParameters().getIngestionParameters().getAiServices().getUrl());
         assertEquals(Collections.singletonList("https://app.contoso.com"),
             created.getCorsOptions().getAllowedOrigins());

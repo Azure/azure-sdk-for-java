@@ -55,6 +55,29 @@ These are test variables, not necessarily the names used by runnable samples.
 Deployments and resources must already exist, and networking must allow access.
 Disabled tests remain skipped even in `RECORD` or `LIVE`.
 
+### Standard file extraction
+
+Set `SEARCH_AI_SERVICES_ENDPOINT` explicitly to the Foundry resource's AI Services endpoint
+(`https://<resource>.cognitiveservices.azure.com/`), not its `services.ai.azure.com` endpoint or a project URL.
+Use a Foundry resource of kind `AIServices` with Content Understanding configured in a supported region.
+The Search service's managed identity needs `Cognitive Services User` access to that resource.
+See the [file knowledge source prerequisites](https://learn.microsoft.com/azure/search/agentic-knowledge-source-how-to-file#prerequisites).
+
+After editing the local environment script, run it again in the same terminal as Maven; an existing process
+does not pick up changes to the script automatically. Standard extraction setup failures can return HTTP 502.
+The tests already retry transient failures, so inspect the resource configuration before increasing retries.
+
+### Model activity metadata
+
+`KnowledgeBaseTests.retrievalActivityIncludesModelNameSync` and its async counterpart require a model-backed
+retrieval: they send `messages` with medium reasoning effort and explicitly request `answerSynthesis` output.
+Supplying `intents` bypasses model query planning, so an extractive retrieval can succeed without returning any
+model activity or model name. Configuring a model on the knowledge base alone does not force it to be used.
+
+The mock-based `SearchGaTests.retrievalDeserializesActivityModelMetadata` test independently verifies that both
+clients preserve `model.modelName` and `model.deploymentId` in query-planning, answer-synthesis, and
+web-summarization activity records without calling Azure.
+
 ## Authentication and permissions
 
 [TestHelpers](java/com/azure/search/documents/TestHelpers.java) uses your `az login` identity for `RECORD` and `LIVE`.
@@ -75,6 +98,15 @@ the system-assigned workflow described here.
 
 **Use an isolated test service:** integration tests create, update, and delete resources, and some cleanup enumerates
 knowledge resources on the service. Never use production resources or commit private configuration.
+
+`KnowledgeBaseTests` and `KnowledgeSourceTests` share an exclusive JUnit resource lock because their cleanup
+enumerates knowledge resources across the service. `SAME_THREAD` alone only serializes tests within each class;
+it does not protect one class's shared knowledge source from the other class's cleanup. The lock does not
+coordinate separate Maven processes, so do not run these classes in separate processes against the same service.
+
+Analyzer tests create indexes concurrently. An HTTP 429 reporting the service's index quota is a resource-capacity
+failure, not a serialization error. Retry with available capacity and bounded test parallelism. In playback,
+such a response is replayed from the recording and is not a fresh Azure request.
 
 ## Playback and recording assets
 

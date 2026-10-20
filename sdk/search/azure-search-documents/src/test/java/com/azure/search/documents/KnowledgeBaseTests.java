@@ -43,6 +43,8 @@ import com.azure.search.documents.knowledgebases.models.KnowledgeBaseFileReferen
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseIndexedOneLakeReference;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseIndexedSharePointReference;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseIndexedSqlReference;
+import com.azure.search.documents.knowledgebases.models.KnowledgeBaseMessage;
+import com.azure.search.documents.knowledgebases.models.KnowledgeBaseMessageTextContent;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseModelAnswerSynthesisActivityRecord;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseModelQueryPlanningActivityRecord;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseResponseCompletedStreamEvent;
@@ -66,6 +68,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
+import org.junit.jupiter.api.parallel.ResourceLock;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 import reactor.util.function.Tuple2;
@@ -95,6 +98,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * Tests for Knowledge Base operations.
  */
 @Execution(ExecutionMode.SAME_THREAD)
+@ResourceLock("search-knowledge-resources")
 public class KnowledgeBaseTests extends SearchTestBase {
     private static final String HOTEL_INDEX_NAME = "shared-knowledge-knowledgebase-index";
     private static final String HOTEL_KNOWLEDGE_SOURCE_NAME = "shared-knowledge-knowledgebase-source";
@@ -1049,9 +1053,14 @@ public class KnowledgeBaseTests extends SearchTestBase {
         KnowledgeBaseRetrievalClient knowledgeBaseClient
             = getKnowledgeBaseRetrievalClientBuilder(true).knowledgeBaseName(knowledgeBase.getName()).buildClient();
 
-        KnowledgeBaseRetrievalOptions retrievalRequest = new KnowledgeBaseRetrievalOptions()
-            .setIntents(new KnowledgeRetrievalSemanticIntent("What are the pet policies at the hotel?"))
-            .setIncludeActivity(true);
+        // Explicit intents bypass query planning; request model-backed retrieval instead.
+        KnowledgeBaseRetrievalOptions retrievalRequest
+            = new KnowledgeBaseRetrievalOptions()
+                .setMessages(Collections.singletonList(new KnowledgeBaseMessage(
+                    new KnowledgeBaseMessageTextContent("What are the pet policies at the hotel?")).setRole("user")))
+                .setRetrievalReasoningEffort(new KnowledgeRetrievalMediumReasoningEffort())
+                .setOutputMode(KnowledgeRetrievalOutputMode.ANSWER_SYNTHESIS)
+                .setIncludeActivity(true);
 
         KnowledgeBaseRetrievalResult response = knowledgeBaseClient.retrieve(retrievalRequest);
         assertNotNull(response);
@@ -1069,7 +1078,12 @@ public class KnowledgeBaseTests extends SearchTestBase {
             }
             return false;
         });
-        assertTrue(foundModelName, "Expected at least one model-backed activity record with modelName set");
+        assertTrue(foundModelName,
+            () -> "Expected at least one model-backed activity record with modelName set. Actual activity types: "
+                + response.getActivity()
+                    .stream()
+                    .map(record -> record.getType().toString())
+                    .collect(Collectors.joining(", ")));
     }
 
     @Test
@@ -1085,7 +1099,11 @@ public class KnowledgeBaseTests extends SearchTestBase {
                         .buildAsyncClient();
 
                 KnowledgeBaseRetrievalOptions retrievalRequest = new KnowledgeBaseRetrievalOptions()
-                    .setIntents(new KnowledgeRetrievalSemanticIntent("What are the pet policies at the hotel?"))
+                    .setMessages(Collections.singletonList(new KnowledgeBaseMessage(
+                        new KnowledgeBaseMessageTextContent("What are the pet policies at the hotel?"))
+                            .setRole("user")))
+                    .setRetrievalReasoningEffort(new KnowledgeRetrievalMediumReasoningEffort())
+                    .setOutputMode(KnowledgeRetrievalOutputMode.ANSWER_SYNTHESIS)
                     .setIncludeActivity(true);
 
                 return knowledgeBaseClient.retrieve(retrievalRequest);
@@ -1106,7 +1124,12 @@ public class KnowledgeBaseTests extends SearchTestBase {
                 }
                 return false;
             });
-            assertTrue(foundModelName, "Expected at least one model-backed activity record with modelName set");
+            assertTrue(foundModelName,
+                () -> "Expected at least one model-backed activity record with modelName set. Actual activity types: "
+                    + response.getActivity()
+                        .stream()
+                        .map(record -> record.getType().toString())
+                        .collect(Collectors.joining(", ")));
         }).verifyComplete();
     }
 
