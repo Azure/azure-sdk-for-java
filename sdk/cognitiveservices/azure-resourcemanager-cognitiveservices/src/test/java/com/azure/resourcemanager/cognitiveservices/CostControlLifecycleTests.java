@@ -28,6 +28,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Test;
 
 public final class CostControlLifecycleTests extends TestProxyTestBase {
@@ -44,6 +45,12 @@ public final class CostControlLifecycleTests extends TestProxyTestBase {
 
     @Override
     protected void beforeTest() {
+        if (getTestMode() == TestMode.LIVE) {
+            String configuredAccount = Configuration.getGlobalConfiguration().get("AZURE_COGNITIVE_SERVICES_ACCOUNT");
+            Assumptions.assumeTrue(configuredAccount != null && !configuredAccount.trim().isEmpty(),
+                "Set AZURE_COGNITIVE_SERVICES_ACCOUNT to an existing cost-control-enabled account to run live tests.");
+        }
+
         String subscriptionId = valueForTest("AZURE_SUBSCRIPTION_ID", SUBSCRIPTION_PLACEHOLDER);
         resourceGroupName = valueForTest("AZURE_RESOURCE_GROUP", RESOURCE_GROUP_PLACEHOLDER);
         accountName = valueForTest("AZURE_COGNITIVE_SERVICES_ACCOUNT", ACCOUNT_NAME_PLACEHOLDER);
@@ -51,9 +58,9 @@ public final class CostControlLifecycleTests extends TestProxyTestBase {
         if (getTestMode() != TestMode.LIVE) {
             interceptorManager.removeSanitizers("AZSDK3493", "AZSDK3430");
             if (getTestMode() == TestMode.RECORD) {
-                addValueSanitizers(subscriptionId, SUBSCRIPTION_PLACEHOLDER);
-                addValueSanitizers(resourceGroupName, RESOURCE_GROUP_PLACEHOLDER);
-                addValueSanitizers(accountName, ACCOUNT_NAME_PLACEHOLDER);
+                interceptorManager.addSanitizers(createValueSanitizers(subscriptionId, SUBSCRIPTION_PLACEHOLDER));
+                interceptorManager.addSanitizers(createValueSanitizers(resourceGroupName, RESOURCE_GROUP_PLACEHOLDER));
+                interceptorManager.addSanitizers(createValueSanitizers(accountName, ACCOUNT_NAME_PLACEHOLDER));
             }
             interceptorManager.addSanitizers(
                 new TestProxySanitizer("api-version=[^&]+", "api-version=" + RECORDED_API_VERSION,
@@ -147,9 +154,12 @@ public final class CostControlLifecycleTests extends TestProxyTestBase {
         }
     }
 
-    private void addValueSanitizers(String value, String replacement) {
-        interceptorManager.addSanitizers(new TestProxySanitizer(value, replacement, TestProxySanitizerType.URL),
-            new TestProxySanitizer(value, replacement, TestProxySanitizerType.BODY_REGEX));
+    static TestProxySanitizer[] createValueSanitizers(String value, String replacement) {
+        // Escape identifier metacharacters using syntax supported by the .NET test proxy.
+        String regex = value.replace(".", "\\.").replace("(", "\\(").replace(")", "\\)");
+        return new TestProxySanitizer[] {
+            new TestProxySanitizer(regex, replacement, TestProxySanitizerType.URL),
+            new TestProxySanitizer(regex, replacement, TestProxySanitizerType.BODY_REGEX) };
     }
 
     private String valueForTest(String name, String playbackValue) {
