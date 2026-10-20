@@ -422,9 +422,9 @@ Connect agents to external MCP servers:
 
 ```java com.azure.ai.agents.built_in_mcp
 // Uses gitmcp.io to expose a GitHub repository as an MCP-compatible server
-McpTool tool = new McpTool("api-specs")
+ToolMcpTool tool = new ToolMcpTool("api-specs")
     .setServerUrl("https://gitmcp.io/Azure/azure-rest-api-specs")
-    .setRequireApproval("always");
+    .setRequireApproval(BinaryData.fromObject("always"));
 ```
 
 See the full sample in [McpSync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/McpSync.java).
@@ -698,10 +698,10 @@ MCP integration using project-specific connections for accessing connected MCP s
 
 ```java com.azure.ai.agents.define_mcp_with_connection
 // Create MCP tool with project connection authentication
-McpTool mcpTool = new McpTool("api-specs")
+ToolMcpTool mcpTool = new ToolMcpTool("api-specs")
     .setServerUrl("https://api.githubcopilot.com/mcp")
     .setProjectConnectionId(mcpConnectionId)
-    .setRequireApproval("always");
+    .setRequireApproval(BinaryData.fromObject("always"));
 ```
 
 See the full sample in [McpWithConnectionSync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/McpWithConnectionSync.java).

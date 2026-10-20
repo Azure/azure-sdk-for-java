@@ -11,12 +11,15 @@ import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.expr.AnnotationExpr;
 import com.github.javaparser.ast.expr.AssignExpr;
+import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.expr.NormalAnnotationExpr;
 import com.github.javaparser.ast.expr.ObjectCreationExpr;
 import com.github.javaparser.ast.expr.StringLiteralExpr;
 import com.github.javaparser.ast.nodeTypes.NodeWithAnnotations;
 import com.github.javaparser.ast.nodeTypes.NodeWithJavadoc;
 import com.github.javaparser.ast.stmt.ExpressionStmt;
+import com.github.javaparser.ast.stmt.IfStmt;
+import com.github.javaparser.ast.stmt.ReturnStmt;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
@@ -43,6 +46,8 @@ public class AgentsCustomizations extends Customization {
         internalizeUnusedFunctionToolType(libraryCustomization, logger);
         deprecateLegacyBrowserAutomationTools(libraryCustomization);
         protectPolymorphicBaseConstructors(libraryCustomization);
+        exposeVoiceAgentBaseDiscriminatorToSubtypes(libraryCustomization);
+        customizeVoiceAgentSubtypeDispatch(libraryCustomization);
         makeRealtimeMessageDiscriminatorsFinal(libraryCustomization);
         applyUnionTypeWrappers(libraryCustomization, logger);
         annotateBetaClients(libraryCustomization, logger);
@@ -51,25 +56,20 @@ public class AgentsCustomizations extends Customization {
 
     private void stopPagingWhenHasMoreIsFalse(LibraryCustomization customization, Logger logger) {
         int[] customizedMethods = new int[1];
-        customization.getPackage("com.azure.ai.agents.implementation").listClasses().forEach(classCustomization ->
-            classCustomization.customizeAst(ast -> ast.getClassByName(classCustomization.getClassName())
-                .ifPresent(clazz -> clazz.getMethodsByName("getNextLink").forEach(method -> {
-                    method.setBody(StaticJavaParser.parseBlock("{\n"
-                        + "    try {\n"
-                        + "        Object value = binaryData.toObject(Map.class);\n"
-                        + "        if (Boolean.FALSE.equals(((Map<?, ?>) value).get(\"has_more\"))) {\n"
-                        + "            return null;\n"
-                        + "        }\n"
-                        + "        for (String segment : path) {\n"
-                        + "            value = ((Map<?, ?>) value).get(segment);\n"
-                        + "        }\n"
-                        + "        return (String) value;\n"
-                        + "    } catch (RuntimeException e) {\n"
-                        + "        return null;\n"
-                        + "    }\n"
-                        + "}"));
-                    customizedMethods[0]++;
-                }))));
+        customization.getPackage("com.azure.ai.agents.implementation")
+            .listClasses()
+            .forEach(classCustomization -> classCustomization
+                .customizeAst(ast -> ast.getClassByName(classCustomization.getClassName())
+                    .ifPresent(clazz -> clazz.getMethodsByName("getNextLink").forEach(method -> {
+                        method.setBody(StaticJavaParser.parseBlock("{\n" + "    try {\n"
+                            + "        Object value = binaryData.toObject(Map.class);\n"
+                            + "        if (Boolean.FALSE.equals(((Map<?, ?>) value).get(\"has_more\"))) {\n"
+                            + "            return null;\n" + "        }\n" + "        for (String segment : path) {\n"
+                            + "            value = ((Map<?, ?>) value).get(segment);\n" + "        }\n"
+                            + "        return (String) value;\n" + "    } catch (RuntimeException e) {\n"
+                            + "        return null;\n" + "    }\n" + "}"));
+                        customizedMethods[0]++;
+                    }))));
 
         if (customizedMethods[0] == 0) {
             throw new IllegalStateException("No generated getNextLink methods were found.");
@@ -170,7 +170,9 @@ public class AgentsCustomizations extends Customization {
     private static final int V_SIZE = 18;
 
     private void internalizeUnusedFunctionToolType(LibraryCustomization customization, Logger logger) {
-        ClassCustomization enumCustomization = customization.getPackage(MODELS_PACKAGE).listClasses().stream()
+        ClassCustomization enumCustomization = customization.getPackage(MODELS_PACKAGE)
+            .listClasses()
+            .stream()
             .filter(clazz -> "ToolFunctionToolType1".equals(clazz.getClassName()))
             .findFirst()
             .orElse(null);
@@ -194,9 +196,8 @@ public class AgentsCustomizations extends Customization {
         List<String> classNames = Arrays.asList("AgentHarness", "AgentOptimizationConfigurationBase",
             "AgentOptimizationEvaluationSet", "AgentOptimizationTargetCompletionDataSource",
             "AgentOptimizationTargetConfiguration", "AgentOptimizationUserConversationSimulationDataSource",
-            "CreateTelephonyBindingInput", "EvaluationVoiceModelConfiguration", "OptimizationContext",
-            "MemoryItem", "MemoryStoreDefinition",
-            "RealtimeAudioFormat", "RealtimeClientEvent", "RealtimeConversationItem",
+            "CreateTelephonyBindingInput", "EvaluationVoiceModelConfiguration", "OptimizationContext", "MemoryItem",
+            "MemoryStoreDefinition", "RealtimeAudioFormat", "RealtimeClientEvent", "RealtimeConversationItem",
             "RealtimeConversationItemMessage", "RealtimeMcpError", "RealtimeSessionConfigurationBase",
             "RealtimeTurnDetection", "TelephonyOutboundRetryPolicy", "TelephonyTransferDestination",
             "UserConversationSimulationInterruptionConfiguration", "VoiceAgentGreetingConfiguration",
@@ -206,12 +207,65 @@ public class AgentsCustomizations extends Customization {
 
         for (String className : classNames) {
             ClassCustomization classCustomization = customization.getClass(MODELS_PACKAGE, className);
-            classCustomization.customizeAst(ast -> ast.getClassByName(className).ifPresent(clazz -> clazz
-                .getConstructors()
-                .stream()
-                .filter(constructor -> constructor.isPublic())
-                .forEach(constructor -> constructor.setModifiers(Modifier.Keyword.PROTECTED))));
+            classCustomization.customizeAst(ast -> ast.getClassByName(className)
+                .ifPresent(clazz -> clazz.getConstructors()
+                    .stream()
+                    .filter(constructor -> constructor.isPublic())
+                    .forEach(constructor -> constructor.setModifiers(Modifier.Keyword.PROTECTED))));
         }
+    }
+
+    private void exposeVoiceAgentBaseDiscriminatorToSubtypes(LibraryCustomization customization) {
+        customization.getClass(MODELS_PACKAGE, "VoiceAgentBaseDefinition")
+            .customizeAst(ast -> ast.getClassByName("VoiceAgentBaseDefinition")
+                .flatMap(clazz -> clazz.getFieldByName("kind"))
+                .orElseThrow(() -> new IllegalStateException("VoiceAgentBaseDefinition.kind was not generated"))
+                .removeModifier(Modifier.Keyword.PRIVATE));
+    }
+
+    private void customizeVoiceAgentSubtypeDispatch(LibraryCustomization customization) {
+        customization.getClass(MODELS_PACKAGE, "AgentDefinition").customizeAst(ast -> {
+            MethodDeclaration fromJson = ast.getClassByName("AgentDefinition")
+                .orElseThrow(() -> new IllegalStateException("AgentDefinition was not generated"))
+                .getMethodsByName("fromJson")
+                .stream()
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException("AgentDefinition.fromJson was not generated"));
+
+            fromJson
+                .findFirst(MethodCallExpr.class,
+                    call -> "fromJsonKnownDiscriminator".equals(call.getNameAsString())
+                        && call.getScope().map(Node::toString).filter("VoiceAgentBaseDefinition"::equals).isPresent())
+                .orElseThrow(() -> new IllegalStateException("AgentDefinition voice dispatch was not generated"))
+                .setName("fromJson");
+        });
+
+        customization.getClass(MODELS_PACKAGE, "VoiceAgentBaseDefinition").customizeAst(ast -> {
+            MethodDeclaration fromJson = ast.getClassByName("VoiceAgentBaseDefinition")
+                .orElseThrow(() -> new IllegalStateException("VoiceAgentBaseDefinition was not generated"))
+                .getMethodsByName("fromJson")
+                .stream()
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException("VoiceAgentBaseDefinition.fromJson was not generated"));
+
+            fromJson.findFirst(StringLiteralExpr.class, literal -> "kind".equals(literal.asString()))
+                .orElseThrow(() -> new IllegalStateException("Voice-agent discriminator field was not generated"))
+                .setString("sub_protocol");
+            fromJson
+                .findFirst(ReturnStmt.class,
+                    statement -> statement.getExpression()
+                        .filter(expression -> expression.isMethodCallExpr()
+                            && "fromJsonKnownDiscriminator".equals(expression.asMethodCallExpr().getNameAsString())
+                            && !expression.asMethodCallExpr().getScope().isPresent())
+                        .isPresent())
+                .orElseThrow(() -> new IllegalStateException("Voice-agent fallback dispatch was not generated"))
+                .replace(StaticJavaParser
+                    .parseStatement("if (discriminatorValue == null || \"realtime\".equals(discriminatorValue)) {"
+                        + " return VoiceAgentDefinition.fromJson(readerToUse.reset());"
+                        + " } else if (\"live\".equals(discriminatorValue)) {"
+                        + " return VoiceAgentLiveDefinition.fromJson(readerToUse.reset());"
+                        + " } else { return fromJsonKnownDiscriminator(readerToUse.reset()); }"));
+        });
     }
 
     /**
@@ -221,9 +275,9 @@ public class AgentsCustomizations extends Customization {
      * union variant.
      */
     private void applyUnionTypeWrappers(LibraryCustomization customization, Logger logger) {
-        List<String[]> requireApproval = Arrays.asList(
-            stringUnionVariant("the approval setting string to set (e.g., \"always\" or \"never\")"),
-            modelUnionVariant("McpToolRequireApproval", "the {@link McpToolRequireApproval} filter to set"));
+        List<String[]> requireApproval
+            = Arrays.asList(stringUnionVariant("the approval setting string to set (e.g., \"always\" or \"never\")"),
+                modelUnionVariant("McpToolRequireApproval", "the {@link McpToolRequireApproval} filter to set"));
         List<String[]> toolChoice = Arrays.asList(
             openAiDirectUnionVariant("com.openai.models.responses.ToolChoiceOptions", "ToolChoiceOptions",
                 "the openai-java {@link ToolChoiceOptions} mode to set ({@code NONE}, {@code AUTO} or"
@@ -235,15 +289,13 @@ public class AgentsCustomizations extends Customization {
                 "com.openai.models.responses.ResponseCreateParams", "ResponseCreateParams.ToolChoice", "isFunction",
                 "asFunction", "a specific function tool"),
             openAiUnionVariant("com.openai.models.responses.ToolChoiceMcp",
-                "com.openai.models.responses.ResponseCreateParams", "ResponseCreateParams.ToolChoice", "isMcp",
-                "asMcp", "a specific MCP tool"));
+                "com.openai.models.responses.ResponseCreateParams", "ResponseCreateParams.ToolChoice", "isMcp", "asMcp",
+                "a specific MCP tool"));
         List<String[]> longMaxOutputTokens = Arrays.asList(
             longUnionVariant("the maximum number of output tokens to set"),
-            stringUnionVariant(
-                "the token-limit string to set, for example {@code \"inf\"} for an unlimited count"));
-        List<String[]> allowedTools
-            = Arrays.asList(stringListUnionVariant("the list of tool name strings to set"),
-                modelUnionVariant("McpToolFilter", "the {@link McpToolFilter} to set"));
+            stringUnionVariant("the token-limit string to set, for example {@code \"inf\"} for an unlimited count"));
+        List<String[]> allowedTools = Arrays.asList(stringListUnionVariant("the list of tool name strings to set"),
+            modelUnionVariant("McpToolFilter", "the {@link McpToolFilter} to set"));
         List<String[]> tracing = Arrays.asList(stringUnionVariant("the tracing mode string to set"),
             modelUnionVariant("RealtimeSessionTracingConfiguration",
                 "the {@link RealtimeSessionTracingConfiguration} configuration to set"));
@@ -254,22 +306,21 @@ public class AgentsCustomizations extends Customization {
                 "an openai-java {@link RealtimeTruncationRetentionRatio}, or {@code null} when it is not set or"
                     + " holds another variant",
                 "json.startsWith(\"{\")"));
-        List<String[]> voice = Arrays.asList(
-            stringEnumUnionVariant("VoiceIds", "the {@link VoiceIds} built-in voice to set"),
-            modelUnionVariant("RealtimeSessionCreateRequestGAAudioOutputVoice",
-                "the {@link RealtimeSessionCreateRequestGAAudioOutputVoice} custom voice to set"));
+        List<String[]> voice
+            = Arrays.asList(stringEnumUnionVariant("VoiceIds", "the {@link VoiceIds} built-in voice to set"),
+                modelUnionVariant("RealtimeSessionCreateRequestGAAudioOutputVoice",
+                    "the {@link RealtimeSessionCreateRequestGAAudioOutputVoice} custom voice to set"));
         List<String[]> transcriptionUsage = Arrays.asList(
             discriminatedModelUnionVariant("TranscriptTextUsageTokens", "TranscriptTextUsage",
                 "the {@link TranscriptTextUsageTokens} usage to set"),
             discriminatedModelUnionVariant("TranscriptTextUsageDuration", "TranscriptTextUsage",
                 "the {@link TranscriptTextUsageDuration} usage to set"));
-        List<String[]> voiceAgentSessionResponse = Arrays.<String[]>asList(
-            modelUnionVariant("VoiceAgentSessionResponseConfiguration",
+        List<String[]> voiceAgentSessionResponse
+            = Arrays.<String[]>asList(modelUnionVariant("VoiceAgentSessionResponseConfiguration",
                 "the {@link VoiceAgentSessionResponseConfiguration} session to set"));
 
-        customizeImmutableUnionProperty(customization,
-            "RealtimeConversationItemInputAudioTranscriptionCompletedEvent", "usage",
-            "Usage statistics for the transcription.", transcriptionUsage, logger);
+        customizeImmutableUnionProperty(customization, "RealtimeConversationItemInputAudioTranscriptionCompletedEvent",
+            "usage", "Usage statistics for the transcription.", transcriptionUsage, logger);
         customizeImmutableUnionProperty(customization, "RealtimeSessionCreatedEvent", "session",
             "The session configuration.", voiceAgentSessionResponse, logger);
         customizeImmutableUnionProperty(customization, "RealtimeSessionUpdatedEvent", "session",
@@ -292,12 +343,11 @@ public class AgentsCustomizations extends Customization {
         customizeUnionProperty(customization, "VoiceAgentDefinition", "toolChoice",
             "How the model chooses tools for generated responses.", toolChoice, true, false, logger);
         customizeUnionProperty(customization, "VoiceAgentLlmGeneratedGreetingConfiguration", "toolChoice",
-            "The tool-selection policy for the opening response. Defaults to `none`.", toolChoice, true, false,
-            logger);
+            "The tool-selection policy for the opening response. Defaults to `none`.", toolChoice, true, false, logger);
         customizeUnionProperty(customization, "VoiceAgentMcpTool", "allowedTools", "The allowed_tools property.",
             allowedTools, true, false, logger);
-        customizeUnionProperty(customization, "VoiceAgentMcpTool", "requireApproval",
-            "The require_approval property.", requireApproval, true, false, logger);
+        customizeUnionProperty(customization, "VoiceAgentMcpTool", "requireApproval", "The require_approval property.",
+            requireApproval, true, false, logger);
         customizeUnionProperty(customization, "VoiceAgentResponseCreateOptions", "toolChoice",
             "How the model chooses tools.", toolChoice, true, false, logger);
         customizeUnionProperty(customization, "VoiceAgentResponseCreateOptions", "maxOutputTokens",
@@ -340,8 +390,7 @@ public class AgentsCustomizations extends Customization {
     }
 
     private void customizeUnionProperty(LibraryCustomization customization, String className, String property,
-                                        String description, List<String[]> variants, boolean addSetters,
-                                        boolean readThroughAccessor, Logger logger) {
+        String description, List<String[]> variants, boolean addSetters, boolean readThroughAccessor, Logger logger) {
         ClassCustomization classCustomization;
         try {
             classCustomization = customization.getClass(MODELS_PACKAGE, className);
@@ -363,8 +412,7 @@ public class AgentsCustomizations extends Customization {
                 }
             }
             for (MethodDeclaration method : clazz.getMethodsByName(setterName)) {
-                if (method.getParameters().size() == 1
-                    && isBinaryData(method.getParameter(0).getType().asString())) {
+                if (method.getParameters().size() == 1 && isBinaryData(method.getParameter(0).getType().asString())) {
                     hideAccessor(method);
                 }
             }
@@ -372,17 +420,15 @@ public class AgentsCustomizations extends Customization {
             // Partial-update generation preserves customization methods from the previous run. Remove all prior
             // typed wrappers for this property before adding the current variants. Keep the raw BinaryData accessors:
             // fromJson/toJson and package-local tests still use those.
-            new ArrayList<>(clazz.getMethods()).stream()
-                .filter(AgentsCustomizations::hasUnionMarker)
-                .filter(method -> {
-                    String name = method.getNameAsString();
-                    if (name.startsWith(getterName + "As") || name.equals("getOpenAI" + capitalized)) {
-                        return true;
-                    }
-                    return name.equals(setterName) && method.getParameters().size() == 1
-                        && !isBinaryData(method.getParameter(0).getType().asString());
-                })
-                .forEach(MethodDeclaration::remove);
+            new ArrayList<>(clazz.getMethods()).stream().filter(AgentsCustomizations::hasUnionMarker).filter(method -> {
+                String name = method.getNameAsString();
+                if (name.startsWith(getterName + "As") || name.equals("getOpenAI" + capitalized)) {
+                    return true;
+                }
+                return name.equals(setterName)
+                    && method.getParameters().size() == 1
+                    && !isBinaryData(method.getParameter(0).getType().asString());
+            }).forEach(MethodDeclaration::remove);
 
             if (!hidAccessor) {
                 logger.error("Could not find a BinaryData {}() accessor on {}", getterName, className);
@@ -401,9 +447,9 @@ public class AgentsCustomizations extends Customization {
                             + variant[V_PARAM_DOC] + ".\n@return the " + className + " object itself.",
                         "public " + className + " " + setterName + "(" + variant[V_SETTER_TYPE] + " " + property
                             + ") {\n" + "    // " + UNION_MARKER + "\n"
-                            + (variant[V_OPENAI_IMPORT] == null ? "" : "    // " + DEDUP_MARKER + "\n")
-                            + "    this." + property + " = " + binaryDataExpression(property, variant) + ";\n"
-                            + "    return this;\n" + "}");
+                            + (variant[V_OPENAI_IMPORT] == null ? "" : "    // " + DEDUP_MARKER + "\n") + "    this."
+                            + property + " = " + binaryDataExpression(property, variant) + ";\n" + "    return this;\n"
+                            + "}");
                 }
 
                 String valueExpression = readThroughAccessor ? "value" : "this." + property;
@@ -418,19 +464,19 @@ public class AgentsCustomizations extends Customization {
                         + variant[V_GETTER_TYPE] + ")) {\n" + "        return null;\n" + "    }\n" + "    return ("
                         + variant[V_GETTER_TYPE] + ") unionValue;\n";
                 } else if (variant[V_STRING_ENUM_TYPE] != null) {
-                    body = nullGuard + "    String json = " + valueExpression + ".toString().trim();\n"
-                        + "    if (!(" + variant[V_TOKEN_GUARD] + ")) {\n" + "        return null;\n" + "    }\n"
-                        + "    return " + variant[V_STRING_ENUM_TYPE] + ".fromString(" + valueExpression
+                    body = nullGuard + "    String json = " + valueExpression + ".toString().trim();\n" + "    if (!("
+                        + variant[V_TOKEN_GUARD] + ")) {\n" + "        return null;\n" + "    }\n" + "    return "
+                        + variant[V_STRING_ENUM_TYPE] + ".fromString(" + valueExpression
                         + ".toObject(String.class));\n";
                 } else if (variant[V_OPENAI_IMPORT] != null) {
-                    body = nullGuard + "    String json = " + valueExpression + ".toString().trim();\n"
-                        + "    if (!(" + variant[V_TOKEN_GUARD] + ")) {\n" + "        return null;\n" + "    }\n"
-                        + "    return " + OPENAI_JSON_HELPER + ".fromBinaryData(" + valueExpression + ", "
-                        + variant[V_TO_OBJECT_ARG] + ");\n";
+                    body = nullGuard + "    String json = " + valueExpression + ".toString().trim();\n" + "    if (!("
+                        + variant[V_TOKEN_GUARD] + ")) {\n" + "        return null;\n" + "    }\n" + "    return "
+                        + OPENAI_JSON_HELPER + ".fromBinaryData(" + valueExpression + ", " + variant[V_TO_OBJECT_ARG]
+                        + ");\n";
                 } else {
-                    body = nullGuard + "    String json = " + valueExpression + ".toString().trim();\n"
-                        + "    if (!(" + variant[V_TOKEN_GUARD] + ")) {\n" + "        return null;\n" + "    }\n"
-                        + "    return " + valueExpression + ".toObject(" + variant[V_TO_OBJECT_ARG] + ");\n";
+                    body = nullGuard + "    String json = " + valueExpression + ".toString().trim();\n" + "    if (!("
+                        + variant[V_TOKEN_GUARD] + ")) {\n" + "        return null;\n" + "    }\n" + "    return "
+                        + valueExpression + ".toObject(" + variant[V_TO_OBJECT_ARG] + ");\n";
                 }
                 if (variant[V_EXTRA_IMPORT] != null) {
                     ast.addImport(variant[V_EXTRA_IMPORT]);
@@ -441,8 +487,8 @@ public class AgentsCustomizations extends Customization {
                 addMethod(clazz,
                     "Get the " + property + " property: " + description + "\n\n@return the " + property + " value as "
                         + variant[V_RETURN_DOC] + ".",
-                    "public " + (readThroughAccessor ? "final " : "") + variant[V_GETTER_TYPE] + " " + getterName
-                        + "As" + variant[V_SUFFIX] + "() {\n" + "    // " + UNION_MARKER + "\n"
+                    "public " + (readThroughAccessor ? "final " : "") + variant[V_GETTER_TYPE] + " " + getterName + "As"
+                        + variant[V_SUFFIX] + "() {\n" + "    // " + UNION_MARKER + "\n"
                         + (variant[V_OPENAI_IMPORT] == null ? "" : "    // " + DEDUP_MARKER + "\n") + body + "}");
             }
 
@@ -456,10 +502,10 @@ public class AgentsCustomizations extends Customization {
                 ast.addImport(openAiVariant[V_OPENAI_UNION_IMPORT]);
                 addMethod(clazz, null,
                     "private " + openAiVariant[V_OPENAI_UNION_TYPE] + " getOpenAI" + capitalized + "() {\n" + "    // "
-                        + DEDUP_MARKER + "\n" + "    if (this." + property + " == null) {\n"
-                        + "        return null;\n" + "    }\n" + "    String json = this." + property
-                        + ".toString().trim();\n" + "    if (!json.startsWith(\"{\")) {\n" + "        return null;\n"
-                        + "    }\n" + "    return " + OPENAI_JSON_HELPER + ".fromBinaryData(this." + property + ", "
+                        + DEDUP_MARKER + "\n" + "    if (this." + property + " == null) {\n" + "        return null;\n"
+                        + "    }\n" + "    String json = this." + property + ".toString().trim();\n"
+                        + "    if (!json.startsWith(\"{\")) {\n" + "        return null;\n" + "    }\n" + "    return "
+                        + OPENAI_JSON_HELPER + ".fromBinaryData(this." + property + ", "
                         + openAiVariant[V_OPENAI_UNION_TYPE] + ".class);\n" + "}");
             }
         }));
@@ -469,9 +515,8 @@ public class AgentsCustomizations extends Customization {
      * Customizes a required union property on a constructor-based model. The raw {@code BinaryData} constructor is
      * retained package-private for {@code fromJson}, and one public constructor overload is added for each variant.
      */
-    private void customizeImmutableUnionProperty(LibraryCustomization customization, String className,
-                                                  String property, String description, List<String[]> variants,
-                                                  Logger logger) {
+    private void customizeImmutableUnionProperty(LibraryCustomization customization, String className, String property,
+        String description, List<String[]> variants, Logger logger) {
         customizeUnionProperty(customization, className, property, description, variants, false, false, logger);
 
         ClassCustomization classCustomization;
@@ -507,11 +552,12 @@ public class AgentsCustomizations extends Customization {
                     typedConstructor.findAll(AssignExpr.class)
                         .stream()
                         .filter(assignment -> assignment.getTarget().toString().equals("this." + property))
-                        .forEach(assignment -> assignment.setValue(
-                            StaticJavaParser.parseExpression(binaryDataExpression(property, variant))));
-                    typedConstructor.getJavadocComment().ifPresent(comment -> comment.setContent(comment.getContent()
-                        .replace("@param " + property + " the " + property + " value to set.",
-                            "@param " + property + " " + variant[V_PARAM_DOC] + ".")));
+                        .forEach(assignment -> assignment
+                            .setValue(StaticJavaParser.parseExpression(binaryDataExpression(property, variant))));
+                    typedConstructor.getJavadocComment()
+                        .ifPresent(comment -> comment.setContent(comment.getContent()
+                            .replace("@param " + property + " the " + property + " value to set.",
+                                "@param " + property + " " + variant[V_PARAM_DOC] + ".")));
                     clazz.addMember(typedConstructor);
                 }
             }
@@ -544,28 +590,25 @@ public class AgentsCustomizations extends Customization {
      * getters remain distinctly named because Java cannot overload methods by return type.
      */
     private static void addOpenAIVariant(ClassOrInterfaceDeclaration clazz, String className, String property,
-                                         String capitalized, String description, String[] variant,
-                                         boolean addSetters) {
+        String capitalized, String description, String[] variant, boolean addSetters) {
         clazz.findCompilationUnit().ifPresent(unit -> unit.addImport(variant[V_OPENAI_IMPORT]));
         if (addSetters) {
             addMethod(clazz,
                 "Set the " + property + " property to " + variant[V_OPENAI_DOC] + ": " + description + "\n\n@param "
                     + property + " " + variant[V_PARAM_DOC] + ".\n@return the " + className + " object itself.",
-                "public " + className + " set" + capitalized + "(" + variant[V_SETTER_TYPE] + " " + property
-                    + ") {\n" + "    // " + UNION_MARKER + "\n" + "    // " + DEDUP_MARKER + "\n"
-                    + "    this." + property + " = " + OPENAI_JSON_HELPER + ".toBinaryData(" + property + ");\n"
-                    + "    return this;\n" + "}");
+                "public " + className + " set" + capitalized + "(" + variant[V_SETTER_TYPE] + " " + property + ") {\n"
+                    + "    // " + UNION_MARKER + "\n" + "    // " + DEDUP_MARKER + "\n" + "    this." + property + " = "
+                    + OPENAI_JSON_HELPER + ".toBinaryData(" + property + ");\n" + "    return this;\n" + "}");
         }
         addMethod(clazz,
-            "Get the " + property + " property as an openai-java {@link " + variant[V_GETTER_TYPE] + "}: "
-                + description + "\n\n@return the " + property + " value as " + variant[V_RETURN_DOC]
+            "Get the " + property + " property as an openai-java {@link " + variant[V_GETTER_TYPE] + "}: " + description
+                + "\n\n@return the " + property + " value as " + variant[V_RETURN_DOC]
                 + ", or {@code null} if it is not set or holds another variant.",
-            "public " + variant[V_GETTER_TYPE] + " get" + capitalized + "As" + variant[V_SUFFIX] + "() {\n"
-                + "    // " + UNION_MARKER + "\n" + "    // " + DEDUP_MARKER + "\n" + "    "
-                + variant[V_OPENAI_UNION_TYPE] + " choice = getOpenAI" + capitalized
-                + "();\n" + "    if (choice == null || !choice." + variant[V_OPENAI_IS_METHOD] + "()) {\n"
-                + "        return null;\n" + "    }\n" + "    return choice." + variant[V_OPENAI_AS_METHOD]
-                + "();\n" + "}");
+            "public " + variant[V_GETTER_TYPE] + " get" + capitalized + "As" + variant[V_SUFFIX] + "() {\n" + "    // "
+                + UNION_MARKER + "\n" + "    // " + DEDUP_MARKER + "\n" + "    " + variant[V_OPENAI_UNION_TYPE]
+                + " choice = getOpenAI" + capitalized + "();\n" + "    if (choice == null || !choice."
+                + variant[V_OPENAI_IS_METHOD] + "()) {\n" + "        return null;\n" + "    }\n" + "    return choice."
+                + variant[V_OPENAI_AS_METHOD] + "();\n" + "}");
     }
 
     private static boolean isBinaryData(String type) {
@@ -611,8 +654,8 @@ public class AgentsCustomizations extends Customization {
      * @return the union variant.
      */
     private static String[] unionVariant(String setterType, String getterType, String toObjectArg, String suffix,
-                                         String factory, String paramDoc, String returnDoc, String tokenGuard,
-                                         String extraImport, boolean setterNullable) {
+        String factory, String paramDoc, String returnDoc, String tokenGuard, String extraImport,
+        boolean setterNullable) {
         String[] variant = new String[V_SIZE];
         variant[V_SETTER_TYPE] = setterType;
         variant[V_GETTER_TYPE] = getterType;
@@ -631,8 +674,8 @@ public class AgentsCustomizations extends Customization {
         // BinaryData.fromObject is used for strings as well: fromString stores raw text, which the matching
         // toObject(String.class) read back cannot parse as JSON. Both factories write the same quoted JSON token.
         return unionVariant("String", "String", "String.class", "String", "fromObject", paramDoc,
-            "a String, or {@code null} when it is not set or holds another variant", "json.startsWith(\"\\\"\")",
-            null, true);
+            "a String, or {@code null} when it is not set or holds another variant", "json.startsWith(\"\\\"\")", null,
+            true);
     }
 
     private static String[] stringEnumUnionVariant(String type, String paramDoc) {
@@ -679,7 +722,7 @@ public class AgentsCustomizations extends Customization {
      * @return the union variant.
      */
     private static String[] openAiDirectUnionVariant(String openAiImport, String suffix, String paramDoc,
-                                                     String returnDoc, String tokenGuard) {
+        String returnDoc, String tokenGuard) {
         String simpleName = openAiImport.substring(openAiImport.lastIndexOf('.') + 1);
         String[] variant = unionVariant(simpleName, simpleName, simpleName + ".class", suffix, "fromObject", paramDoc,
             returnDoc, tokenGuard, null, true);
@@ -701,7 +744,7 @@ public class AgentsCustomizations extends Customization {
      * @return the union variant.
      */
     private static String[] openAiUnionVariant(String openAiImport, String unionImport, String unionType,
-                                               String isMethod, String asMethod, String doc) {
+        String isMethod, String asMethod, String doc) {
         String simpleName = openAiImport.substring(openAiImport.lastIndexOf('.') + 1);
         String[] variant = unionVariant(simpleName, simpleName, simpleName + ".class", simpleName, "fromObject",
             "the openai-java {@link " + simpleName + "} to set, or null to clear", "a " + simpleName,
@@ -731,13 +774,13 @@ public class AgentsCustomizations extends Customization {
             "RealtimeConversationItemSystemMessage",
             "RealtimeConversationItemUserMessage",
             "RealtimeConversationItemAssistantMessage" }) {
-            customization.getClass("com.azure.ai.agents.models", className).customizeAst(ast -> ast
-                .getClassByName(className)
-                .ifPresent(clazz -> {
+            customization.getClass("com.azure.ai.agents.models", className)
+                .customizeAst(ast -> ast.getClassByName(className).ifPresent(clazz -> {
                     clazz.getFieldByName("role")
                         .ifPresent(field -> field.setModifiers(Modifier.Keyword.PRIVATE, Modifier.Keyword.FINAL));
                     clazz.getMethodsByName("fromJson")
-                        .forEach(method -> method.findAll(AssignExpr.class).stream()
+                        .forEach(method -> method.findAll(AssignExpr.class)
+                            .stream()
                             .filter(assignment -> assignment.getTarget().toString().endsWith(".role"))
                             .forEach(assignment -> assignment.stream(Node.TreeTraversal.PARENTS)
                                 .filter(ExpressionStmt.class::isInstance)
@@ -748,33 +791,41 @@ public class AgentsCustomizations extends Customization {
     }
 
     private void renameImageGenToolSize(LibraryCustomization customization, Logger logger) {
-        customization.getClass("com.azure.ai.agents.models", "ImageGenToolSize").customizeAst(ast -> ast.getEnumByName("ImageGenToolSize")
-            .ifPresent(clazz -> clazz.getEntries().stream()
-                .filter(entry -> "ONE_ZERO_TWO_FOURX_ONE_ZERO_TWO_FOUR".equals(entry.getName().getIdentifier()))
-                .forEach(entry -> entry.setName("RESOLUTION_1024_X_1024"))));
+        customization.getClass("com.azure.ai.agents.models", "ImageGenToolSize")
+            .customizeAst(ast -> ast.getEnumByName("ImageGenToolSize")
+                .ifPresent(clazz -> clazz.getEntries()
+                    .stream()
+                    .filter(entry -> "ONE_ZERO_TWO_FOURX_ONE_ZERO_TWO_FOUR".equals(entry.getName().getIdentifier()))
+                    .forEach(entry -> entry.setName("RESOLUTION_1024_X_1024"))));
 
-        customization.getClass("com.azure.ai.agents.models", "ImageGenToolSize").customizeAst(ast -> ast.getEnumByName("ImageGenToolSize")
-            .ifPresent(clazz -> clazz.getEntries().stream()
-                .filter(entry -> "ONE_ZERO_TWO_FOURX_ONE_FIVE_THREE_SIX".equals(entry.getName().getIdentifier()))
-                .forEach(entry -> entry.setName("RESOLUTION_1024_X_1536"))));
+        customization.getClass("com.azure.ai.agents.models", "ImageGenToolSize")
+            .customizeAst(ast -> ast.getEnumByName("ImageGenToolSize")
+                .ifPresent(clazz -> clazz.getEntries()
+                    .stream()
+                    .filter(entry -> "ONE_ZERO_TWO_FOURX_ONE_FIVE_THREE_SIX".equals(entry.getName().getIdentifier()))
+                    .forEach(entry -> entry.setName("RESOLUTION_1024_X_1536"))));
 
-        customization.getClass("com.azure.ai.agents.models", "ImageGenToolSize").customizeAst(ast -> ast.getEnumByName("ImageGenToolSize")
-            .ifPresent(clazz -> clazz.getEntries().stream()
-                .filter(entry -> "ONE_FIVE_THREE_SIXX_ONE_ZERO_TWO_FOUR".equals(entry.getName().getIdentifier()))
-                .forEach(entry -> entry.setName("RESOLUTION_1536_X_1024"))));
+        customization.getClass("com.azure.ai.agents.models", "ImageGenToolSize")
+            .customizeAst(ast -> ast.getEnumByName("ImageGenToolSize")
+                .ifPresent(clazz -> clazz.getEntries()
+                    .stream()
+                    .filter(entry -> "ONE_FIVE_THREE_SIXX_ONE_ZERO_TWO_FOUR".equals(entry.getName().getIdentifier()))
+                    .forEach(entry -> entry.setName("RESOLUTION_1536_X_1024"))));
     }
 
     private void modifyPollingStrategies(LibraryCustomization customization, Logger logger) {
         customization.getClass("com.azure.ai.agents.implementation", "OperationLocationPollingStrategy")
             .customizeAst(ast -> ast.getClassByName("OperationLocationPollingStrategy").ifPresent(clazz -> {
                 clazz.getModifiers().removeIf(modifier -> modifier.getKeyword() == Modifier.Keyword.FINAL);
-                clazz.addMember(StaticJavaParser.parseMethodDeclaration("@Override public Mono<PollResponse<T>> poll(PollingContext<T> pollingContext, TypeReference<T> pollResponseType) { return super.poll(pollingContext, pollResponseType).map(AgentsServicePollUtils::remapStatus); }"));
+                clazz.addMember(StaticJavaParser.parseMethodDeclaration(
+                    "@Override public Mono<PollResponse<T>> poll(PollingContext<T> pollingContext, TypeReference<T> pollResponseType) { return super.poll(pollingContext, pollResponseType).map(AgentsServicePollUtils::remapStatus); }"));
             }));
 
         customization.getClass("com.azure.ai.agents.implementation", "SyncOperationLocationPollingStrategy")
             .customizeAst(ast -> ast.getClassByName("SyncOperationLocationPollingStrategy").ifPresent(clazz -> {
                 clazz.getModifiers().removeIf(modifier -> modifier.getKeyword() == Modifier.Keyword.FINAL);
-                clazz.addMember(StaticJavaParser.parseMethodDeclaration("@Override public PollResponse<T> poll(PollingContext<T> pollingContext, TypeReference<T> pollResponseType) { return AgentsServicePollUtils.remapStatus(super.poll(pollingContext, pollResponseType)); }"));
+                clazz.addMember(StaticJavaParser.parseMethodDeclaration(
+                    "@Override public PollResponse<T> poll(PollingContext<T> pollingContext, TypeReference<T> pollResponseType) { return AgentsServicePollUtils.remapStatus(super.poll(pollingContext, pollResponseType)); }"));
             }));
     }
 
@@ -832,8 +883,7 @@ public class AgentsCustomizations extends Customization {
             });
     }
 
-    private void annotateBetaFields(LibraryCustomization customization, List<String[]> betaAnnotations,
-                                    Logger logger) {
+    private void annotateBetaFields(LibraryCustomization customization, List<String[]> betaAnnotations, Logger logger) {
         for (String[] entry : betaAnnotations) {
             String className = entry[0];
             String member = entry[1];
@@ -852,7 +902,8 @@ public class AgentsCustomizations extends Customization {
                 continue;
             }
 
-            classCustomization.customizeAst(ast -> ast.getTypes().stream()
+            classCustomization.customizeAst(ast -> ast.getTypes()
+                .stream()
                 .filter(type -> type.getNameAsString().equals(simpleName))
                 .findFirst()
                 .ifPresent(type -> {
@@ -867,7 +918,8 @@ public class AgentsCustomizations extends Customization {
     }
 
     private void annotateMember(TypeDeclaration<?> type, String member, String description, Logger logger) {
-        String fieldName = type.getFields().stream()
+        String fieldName = type.getFields()
+            .stream()
             .flatMap(field -> field.getVariables().stream())
             .anyMatch(variable -> variable.getNameAsString().equals(member)) ? member : toCamelCase(member);
         boolean found = false;
@@ -964,8 +1016,7 @@ public class AgentsCustomizations extends Customization {
                 logger.error("Line {} of {} must have ';'-separated columns"
                     + " (type;class_name;annotation_description;member_name): {}", lineNumber, CSV_FILE_NAME, line);
                 throw new IllegalStateException("Line " + lineNumber + " of " + CSV_FILE_NAME
-                    + " must have ';'-separated columns (type;class_name;annotation_description;member_name): "
-                    + line);
+                    + " must have ';'-separated columns (type;class_name;annotation_description;member_name): " + line);
             }
 
             String type = columns[0].trim();

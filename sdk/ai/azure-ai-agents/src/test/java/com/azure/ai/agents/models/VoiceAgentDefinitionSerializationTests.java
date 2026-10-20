@@ -12,6 +12,8 @@ import com.openai.models.responses.ToolChoiceMcp;
 import com.openai.models.responses.ToolChoiceOptions;
 import com.openai.models.realtime.RealtimeAudioFormats.AudioPcm.Rate;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -22,9 +24,69 @@ import java.util.Collections;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class VoiceAgentDefinitionSerializationTests {
+
+    @ParameterizedTest
+    @ValueSource(
+        strings = {
+            "{\"kind\":\"voice\",\"model\":\"gpt-realtime\",\"instructions\":\"Be concise\"}",
+            "{\"sub_protocol\":\"realtime\",\"model\":\"gpt-realtime\",\"kind\":\"voice\",\"instructions\":\"Be concise\"}" })
+    public void realtimeSubtypeDispatchesFromBothBaseTypes(String json) throws IOException {
+        for (VoiceAgentBaseDefinition definition : Arrays.asList(
+            assertInstanceOf(VoiceAgentDefinition.class,
+                UnionTypeSerializationTestUtils.deserialize(json, AgentDefinition::fromJson)),
+            assertInstanceOf(VoiceAgentDefinition.class,
+                UnionTypeSerializationTestUtils.deserialize(json, VoiceAgentBaseDefinition::fromJson)))) {
+            VoiceAgentDefinition realtime = assertInstanceOf(VoiceAgentDefinition.class, definition);
+            assertEquals(AgentKind.VOICE, realtime.getKind());
+            assertEquals("gpt-realtime", realtime.getModel());
+            assertEquals("Be concise", realtime.getInstructions());
+            assertInstanceOf(VoiceAgentDefinition.class, UnionTypeSerializationTestUtils
+                .deserialize(UnionTypeSerializationTestUtils.serialize(realtime), AgentDefinition::fromJson));
+        }
+    }
+
+    @Test
+    public void liveSubtypeDispatchesFromBothBaseTypes() throws IOException {
+        String json = "{\"sub_protocol\":\"live\",\"model\":\"gpt-live\",\"kind\":\"voice\","
+            + "\"instructions\":\"Speak naturally\",\"store\":true}";
+        for (VoiceAgentLiveDefinition live : Arrays.asList(
+            assertInstanceOf(VoiceAgentLiveDefinition.class,
+                UnionTypeSerializationTestUtils.deserialize(json, AgentDefinition::fromJson)),
+            assertInstanceOf(VoiceAgentLiveDefinition.class,
+                UnionTypeSerializationTestUtils.deserialize(json, VoiceAgentBaseDefinition::fromJson)))) {
+            assertEquals(AgentKind.VOICE, live.getKind());
+            assertEquals(VoiceAgentSubProtocol.LIVE, live.getSubProtocol());
+            assertEquals("gpt-live", live.getModel());
+            assertEquals("Speak naturally", live.getInstructions());
+            assertEquals(Boolean.TRUE, live.isStore());
+            VoiceAgentLiveDefinition roundTripped
+                = assertInstanceOf(VoiceAgentLiveDefinition.class, UnionTypeSerializationTestUtils
+                    .deserialize(UnionTypeSerializationTestUtils.serialize(live), AgentDefinition::fromJson));
+            assertEquals(live.getModel(), roundTripped.getModel());
+        }
+    }
+
+    @Test
+    public void unknownVoiceSubProtocolRetainsBaseModel() throws IOException {
+        AgentDefinition definition = UnionTypeSerializationTestUtils.deserialize(
+            "{\"kind\":\"voice\",\"sub_protocol\":\"future\",\"instructions\":\"Keep me\"}", AgentDefinition::fromJson);
+        VoiceAgentBaseDefinition voice = assertInstanceOf(VoiceAgentBaseDefinition.class, definition);
+        assertFalse(voice instanceof VoiceAgentDefinition);
+        assertFalse(voice instanceof VoiceAgentLiveDefinition);
+        assertNull(voice.getSubProtocol());
+        assertEquals("Keep me", voice.getInstructions());
+    }
+
+    @Test
+    public void promptSubtypeDispatchIsUnchanged() throws IOException {
+        AgentDefinition definition = UnionTypeSerializationTestUtils.deserialize(
+            "{\"kind\":\"prompt\",\"model\":\"gpt-test\",\"instructions\":\"Be helpful\"}", AgentDefinition::fromJson);
+        assertEquals("gpt-test", assertInstanceOf(PromptAgentDefinition.class, definition).getModel());
+    }
 
     @Test
     public void maxOutputTokensVariantsRoundTrip() throws IOException {

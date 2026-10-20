@@ -10,15 +10,16 @@ import com.azure.ai.agents.ToolboxesClient;
 import com.azure.ai.agents.models.AgentReference;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.AzureCreateResponseOptions;
-import com.azure.ai.agents.models.McpTool;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.ai.agents.models.ShellToolboxTool;
+import com.azure.ai.agents.models.ToolMcpTool;
 import com.azure.ai.agents.models.ToolboxShellContainerAutoEnvironment;
 import com.azure.ai.agents.models.ToolboxTool;
 import com.azure.ai.agents.models.ToolboxVersionDetails;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.openai.models.responses.Response;
@@ -83,10 +84,10 @@ public class ShellToolboxSample {
             String token = credential.getTokenSync(
                 new TokenRequestContext().addScopes("https://ai.azure.com/.default")).getToken();
 
-            McpTool toolboxMcpTool = new McpTool("shell-toolbox")
+            ToolMcpTool toolboxMcpTool = new ToolMcpTool("shell-toolbox")
                 .setServerUrl(toolboxMcpUrl)
                 .setAuthorization(token)
-                .setRequireApproval("never");
+                .setRequireApproval(BinaryData.fromObject("never"));
 
             PromptAgentDefinition agentDefinition = new PromptAgentDefinition(model)
                 .setInstructions("You have a shell tool that runs commands in a sandboxed container with no "

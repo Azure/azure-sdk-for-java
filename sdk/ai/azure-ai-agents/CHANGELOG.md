@@ -6,10 +6,15 @@
 
 - Added preview voice-agent post-call delivery through `VoiceAgentPostCallConfiguration` for Event Grid and routine
   destinations.
+- Added Live voice-agent definitions and preview Live conversation REST clients for persisted conversations, items,
+  and audio. Live WebSocket transport is not included.
 
 ### Breaking Changes
 
 ### Bugs Fixed
+
+- Fixed voice-agent definition deserialization through `AgentDefinition` and `VoiceAgentBaseDefinition` to select
+  Realtime for an omitted or `realtime` sub-protocol and Live for `live`.
 
 ### Other Changes
 

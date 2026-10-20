@@ -25,13 +25,13 @@ import java.util.Map;
  */
 @Fluent
 @Beta(warningText = "Preview API. VoiceAgents=V1Preview")
-public final class VoiceAgentDefinition extends AgentDefinition {
+public final class VoiceAgentDefinition extends VoiceAgentBaseDefinition {
 
     /*
-     * The kind property.
+     * Selects Realtime. May be omitted for legacy agents.
      */
     @Generated
-    private AgentKind kind = AgentKind.VOICE;
+    private VoiceAgentSubProtocol subProtocol;
 
     /*
      * How the model backing this voice agent is served. Required with `model` for a model-backed voice agent and
@@ -57,13 +57,6 @@ public final class VoiceAgentDefinition extends AgentDefinition {
      */
     @Generated
     private VoiceConversationEngine conversationEngine;
-
-    /*
-     * A system (or developer) message inserted into the model's context. Supports template substitution via
-     * `structured_inputs`, rendered per session before the live session starts.
-     */
-    @Generated
-    private String instructions;
 
     /*
      * Optional session-start greeting. Template mode speaks exact rendered text; LLM-generated mode asks the session
@@ -133,23 +126,17 @@ public final class VoiceAgentDefinition extends AgentDefinition {
     private Boolean parallelToolCalls;
 
     /*
-     * Set of structured inputs that participate in prompt template substitution, rendered per session before the live
-     * session starts.
+     * Optional configuration for sibling Foundry text agents that this voice agent may consult as background
+     * specialists.
      */
     @Generated
-    private Map<String, StructuredInputDefinition> structuredInputs;
+    private VoiceAgentSubagentConfiguration subagentConfiguration;
 
     /*
-     * Whether conversations with this agent are persisted. A single, all-or-nothing persistence switch that defaults to
-     * `false` (privacy-safe: off by default). When `true`, Foundry persists the full conversation — the
-     * transcript/event
-     * timeline and raw audio. When `false`, nothing is persisted and no conversation is surfaced. There is no separate
-     * audio-logging control; audio is persisted only as part of this switch. Latency/performance telemetry (e.g.
-     * time-to-first-audio, inter-token latency, interruption) is observability-only (customer trace / App Insights) and
-     * is not part of the persisted conversation content.
+     * The kind property.
      */
     @Generated
-    private Boolean store;
+    private AgentKind kind = AgentKind.VOICE;
 
     /**
      * Creates an instance of VoiceAgentDefinition class.
@@ -159,14 +146,25 @@ public final class VoiceAgentDefinition extends AgentDefinition {
     }
 
     /**
-     * Get the kind property: The kind property.
+     * Get the subProtocol property: Selects Realtime. May be omitted for legacy agents.
      *
-     * @return the kind value.
+     * @return the subProtocol value.
      */
     @Generated
-    @Override
-    public AgentKind getKind() {
-        return this.kind;
+    public VoiceAgentSubProtocol getSubProtocol() {
+        return this.subProtocol;
+    }
+
+    /**
+     * Set the subProtocol property: Selects Realtime. May be omitted for legacy agents.
+     *
+     * @param subProtocol the subProtocol value to set.
+     * @return the VoiceAgentDefinition object itself.
+     */
+    @Generated
+    public VoiceAgentDefinition setSubProtocol(VoiceAgentSubProtocol subProtocol) {
+        this.subProtocol = subProtocol;
+        return this;
     }
 
     /**
@@ -250,30 +248,6 @@ public final class VoiceAgentDefinition extends AgentDefinition {
     }
 
     /**
-     * Get the instructions property: A system (or developer) message inserted into the model's context. Supports
-     * template substitution via `structured_inputs`, rendered per session before the live session starts.
-     *
-     * @return the instructions value.
-     */
-    @Generated
-    public String getInstructions() {
-        return this.instructions;
-    }
-
-    /**
-     * Set the instructions property: A system (or developer) message inserted into the model's context. Supports
-     * template substitution via `structured_inputs`, rendered per session before the live session starts.
-     *
-     * @param instructions the instructions value to set.
-     * @return the VoiceAgentDefinition object itself.
-     */
-    @Generated
-    public VoiceAgentDefinition setInstructions(String instructions) {
-        this.instructions = instructions;
-        return this;
-    }
-
-    /**
      * Get the greeting property: Optional session-start greeting. Template mode speaks exact rendered text;
      * LLM-generated mode asks the session model to author the opening response and may use configured tools.
      *
@@ -282,6 +256,19 @@ public final class VoiceAgentDefinition extends AgentDefinition {
     @Generated
     public VoiceAgentGreetingConfiguration getGreeting() {
         return this.greeting;
+    }
+
+    /**
+     * Set the greeting property: Optional session-start greeting. Template mode speaks exact rendered text;
+     * LLM-generated mode asks the session model to author the opening response and may use configured tools.
+     *
+     * @param greeting the greeting value to set.
+     * @return the VoiceAgentDefinition object itself.
+     */
+    @Generated
+    public VoiceAgentDefinition setGreeting(VoiceAgentGreetingConfiguration greeting) {
+        this.greeting = greeting;
+        return this;
     }
 
     /**
@@ -294,6 +281,20 @@ public final class VoiceAgentDefinition extends AgentDefinition {
     @Generated
     public VoiceAgentAudioConfiguration getAudio() {
         return this.audio;
+    }
+
+    /**
+     * Set the audio property: The audio configuration, including input and output formats, voice, turn detection, noise
+     * reduction, and
+     * transcription. These values are session defaults; a client may override supported fields when connecting.
+     *
+     * @param audio the audio value to set.
+     * @return the VoiceAgentDefinition object itself.
+     */
+    @Generated
+    public VoiceAgentDefinition setAudio(VoiceAgentAudioConfiguration audio) {
+        this.audio = audio;
+        return this;
     }
 
     /**
@@ -377,6 +378,18 @@ public final class VoiceAgentDefinition extends AgentDefinition {
     }
 
     /**
+     * Set the interimResponse property: Interim-response settings for latency and tool execution.
+     *
+     * @param interimResponse the interimResponse value to set.
+     * @return the VoiceAgentDefinition object itself.
+     */
+    @Generated
+    public VoiceAgentDefinition setInterimResponse(VoiceAgentInterimResponseConfiguration interimResponse) {
+        this.interimResponse = interimResponse;
+        return this;
+    }
+
+    /**
      * Get the avatar property: Optional avatar configuration. These values are session defaults and may be overridden
      * when connecting.
      *
@@ -385,6 +398,19 @@ public final class VoiceAgentDefinition extends AgentDefinition {
     @Generated
     public VoiceAgentAvatarConfiguration getAvatar() {
         return this.avatar;
+    }
+
+    /**
+     * Set the avatar property: Optional avatar configuration. These values are session defaults and may be overridden
+     * when connecting.
+     *
+     * @param avatar the avatar value to set.
+     * @return the VoiceAgentDefinition object itself.
+     */
+    @Generated
+    public VoiceAgentDefinition setAvatar(VoiceAgentAvatarConfiguration avatar) {
+        this.avatar = avatar;
+        return this;
     }
 
     /**
@@ -466,62 +492,67 @@ public final class VoiceAgentDefinition extends AgentDefinition {
     }
 
     /**
-     * Get the structuredInputs property: Set of structured inputs that participate in prompt template substitution,
-     * rendered per session before the live session starts.
+     * Get the subagentConfiguration property: Optional configuration for sibling Foundry text agents that this voice
+     * agent may consult as background specialists.
      *
-     * @return the structuredInputs value.
+     * @return the subagentConfiguration value.
      */
     @Generated
-    public Map<String, StructuredInputDefinition> getStructuredInputs() {
-        return this.structuredInputs;
+    public VoiceAgentSubagentConfiguration getSubagentConfiguration() {
+        return this.subagentConfiguration;
     }
 
     /**
-     * Set the structuredInputs property: Set of structured inputs that participate in prompt template substitution,
-     * rendered per session before the live session starts.
+     * Set the subagentConfiguration property: Optional configuration for sibling Foundry text agents that this voice
+     * agent may consult as background specialists.
      *
-     * @param structuredInputs the structuredInputs value to set.
+     * @param subagentConfiguration the subagentConfiguration value to set.
      * @return the VoiceAgentDefinition object itself.
      */
     @Generated
-    public VoiceAgentDefinition setStructuredInputs(Map<String, StructuredInputDefinition> structuredInputs) {
-        this.structuredInputs = structuredInputs;
+    public VoiceAgentDefinition setSubagentConfiguration(VoiceAgentSubagentConfiguration subagentConfiguration) {
+        this.subagentConfiguration = subagentConfiguration;
         return this;
     }
 
     /**
-     * Get the store property: Whether conversations with this agent are persisted. A single, all-or-nothing persistence
-     * switch that defaults to
-     * `false` (privacy-safe: off by default). When `true`, Foundry persists the full conversation — the
-     * transcript/event
-     * timeline and raw audio. When `false`, nothing is persisted and no conversation is surfaced. There is no separate
-     * audio-logging control; audio is persisted only as part of this switch. Latency/performance telemetry (e.g.
-     * time-to-first-audio, inter-token latency, interruption) is observability-only (customer trace / App Insights) and
-     * is not part of the persisted conversation content.
+     * Get the kind property: The kind property.
      *
-     * @return the store value.
+     * @return the kind value.
      */
     @Generated
-    public Boolean isStore() {
-        return this.store;
+    @Override
+    public AgentKind getKind() {
+        return this.kind;
     }
 
     /**
-     * Set the store property: Whether conversations with this agent are persisted. A single, all-or-nothing persistence
-     * switch that defaults to
-     * `false` (privacy-safe: off by default). When `true`, Foundry persists the full conversation — the
-     * transcript/event
-     * timeline and raw audio. When `false`, nothing is persisted and no conversation is surfaced. There is no separate
-     * audio-logging control; audio is persisted only as part of this switch. Latency/performance telemetry (e.g.
-     * time-to-first-audio, inter-token latency, interruption) is observability-only (customer trace / App Insights) and
-     * is not part of the persisted conversation content.
-     *
-     * @param store the store value to set.
-     * @return the VoiceAgentDefinition object itself.
+     * {@inheritDoc}
      */
     @Generated
+    @Override
+    public VoiceAgentDefinition setInstructions(String instructions) {
+        super.setInstructions(instructions);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public VoiceAgentDefinition setStructuredInputs(Map<String, StructuredInputDefinition> structuredInputs) {
+        super.setStructuredInputs(structuredInputs);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
     public VoiceAgentDefinition setStore(Boolean store) {
-        this.store = store;
+        super.setStore(store);
         return this;
     }
 
@@ -542,12 +573,16 @@ public final class VoiceAgentDefinition extends AgentDefinition {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", getKind() == null ? null : getKind().toString());
         jsonWriter.writeJsonField("rai_config", getRaiConfig());
-        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        jsonWriter.writeStringField("instructions", getInstructions());
+        jsonWriter.writeMapField("structured_inputs", getStructuredInputs(),
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeBooleanField("store", isStore());
+        jsonWriter.writeStringField("sub_protocol", this.subProtocol == null ? null : this.subProtocol.toString());
         jsonWriter.writeStringField("model_type", this.modelType == null ? null : this.modelType.toString());
         jsonWriter.writeStringField("model", this.model);
         jsonWriter.writeJsonField("conversation_engine", this.conversationEngine);
-        jsonWriter.writeStringField("instructions", this.instructions);
         jsonWriter.writeJsonField("greeting", this.greeting);
         jsonWriter.writeJsonField("audio", this.audio);
         jsonWriter.writeJsonField("soundscape", this.soundscape);
@@ -567,8 +602,6 @@ public final class VoiceAgentDefinition extends AgentDefinition {
             this.toolChoice.writeTo(jsonWriter);
         }
         jsonWriter.writeBooleanField("parallel_tool_calls", this.parallelToolCalls);
-        jsonWriter.writeMapField("structured_inputs", this.structuredInputs,
-            (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("subagent_config", this.subagentConfiguration);
         jsonWriter.writeJsonField("post_call", this.postCall);
         jsonWriter.writeBooleanField("store", this.store);
@@ -590,18 +623,26 @@ public final class VoiceAgentDefinition extends AgentDefinition {
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("rai_config".equals(fieldName)) {
-                    deserializedVoiceAgentDefinition.setRaiConfig(RaiConfig.fromJson(reader));
-                } else if ("kind".equals(fieldName)) {
+                if ("kind".equals(fieldName)) {
                     deserializedVoiceAgentDefinition.kind = AgentKind.fromString(reader.getString());
+                } else if ("rai_config".equals(fieldName)) {
+                    deserializedVoiceAgentDefinition.setRaiConfig(RaiConfig.fromJson(reader));
+                } else if ("instructions".equals(fieldName)) {
+                    deserializedVoiceAgentDefinition.setInstructions(reader.getString());
+                } else if ("structured_inputs".equals(fieldName)) {
+                    Map<String, StructuredInputDefinition> structuredInputs
+                        = reader.readMap(reader1 -> StructuredInputDefinition.fromJson(reader1));
+                    deserializedVoiceAgentDefinition.setStructuredInputs(structuredInputs);
+                } else if ("store".equals(fieldName)) {
+                    deserializedVoiceAgentDefinition.setStore(reader.getNullable(JsonReader::getBoolean));
+                } else if ("sub_protocol".equals(fieldName)) {
+                    deserializedVoiceAgentDefinition.subProtocol = VoiceAgentSubProtocol.fromString(reader.getString());
                 } else if ("model_type".equals(fieldName)) {
                     deserializedVoiceAgentDefinition.modelType = VoiceModelType.fromString(reader.getString());
                 } else if ("model".equals(fieldName)) {
                     deserializedVoiceAgentDefinition.model = reader.getString();
                 } else if ("conversation_engine".equals(fieldName)) {
                     deserializedVoiceAgentDefinition.conversationEngine = VoiceConversationEngine.fromJson(reader);
-                } else if ("instructions".equals(fieldName)) {
-                    deserializedVoiceAgentDefinition.instructions = reader.getString();
                 } else if ("greeting".equals(fieldName)) {
                     deserializedVoiceAgentDefinition.greeting = VoiceAgentGreetingConfiguration.fromJson(reader);
                 } else if ("audio".equals(fieldName)) {
@@ -632,10 +673,6 @@ public final class VoiceAgentDefinition extends AgentDefinition {
                         = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
                 } else if ("parallel_tool_calls".equals(fieldName)) {
                     deserializedVoiceAgentDefinition.parallelToolCalls = reader.getNullable(JsonReader::getBoolean);
-                } else if ("structured_inputs".equals(fieldName)) {
-                    Map<String, StructuredInputDefinition> structuredInputs
-                        = reader.readMap(reader1 -> StructuredInputDefinition.fromJson(reader1));
-                    deserializedVoiceAgentDefinition.structuredInputs = structuredInputs;
                 } else if ("subagent_config".equals(fieldName)) {
                     deserializedVoiceAgentDefinition.subagentConfiguration
                         = VoiceAgentSubagentConfiguration.fromJson(reader);
@@ -712,7 +749,8 @@ public final class VoiceAgentDefinition extends AgentDefinition {
     /**
      * Set the toolChoice property: How the model chooses tools for generated responses.
      *
-     * @param toolChoice the {@link ToolChoiceOptions} mode to set ({@code NONE}, {@code AUTO} or {@code REQUIRED}).
+     * @param toolChoice the openai-java {@link ToolChoiceOptions} mode to set ({@code NONE}, {@code AUTO} or
+     * {@code REQUIRED}).
      * @return the VoiceAgentDefinition object itself.
      */
     public VoiceAgentDefinition setToolChoice(ToolChoiceOptions toolChoice) {
@@ -720,6 +758,26 @@ public final class VoiceAgentDefinition extends AgentDefinition {
         // AI Tooling: openai-java de-dup
         this.toolChoice = com.azure.ai.agents.implementation.OpenAIJsonHelper.toBinaryData(toolChoice);
         return this;
+    }
+
+    /**
+     * Get the toolChoice property: How the model chooses tools for generated responses.
+     *
+     * @return the toolChoice value as an openai-java {@link ToolChoiceOptions}, or {@code null} when it is not set or
+     * holds another variant.
+     */
+    public ToolChoiceOptions getToolChoiceAsToolChoiceOptions() {
+        // AI Tooling: union type
+        // AI Tooling: openai-java de-dup
+        if (this.toolChoice == null) {
+            return null;
+        }
+        String json = this.toolChoice.toString().trim();
+        if (!(json.startsWith("\""))) {
+            return null;
+        }
+        return com.azure.ai.agents.implementation.OpenAIJsonHelper.fromBinaryData(this.toolChoice,
+            ToolChoiceOptions.class);
     }
 
     /**
@@ -793,109 +851,6 @@ public final class VoiceAgentDefinition extends AgentDefinition {
             ResponseCreateParams.ToolChoice.class);
     }
 
-    /**
-     * Get the toolChoice property: How the model chooses tools for generated responses.
-     *
-     * @return the toolChoice value as a {@link ToolChoiceOptions}, or {@code null} when it is not set or holds another
-     * variant.
-     */
-    public ToolChoiceOptions getToolChoiceAsToolChoiceOptions() {
-        // AI Tooling: union type
-        // AI Tooling: openai-java de-dup
-        if (this.toolChoice == null) {
-            return null;
-        }
-        String json = this.toolChoice.toString().trim();
-        if (!(json.startsWith("\""))) {
-            return null;
-        }
-        return com.azure.ai.agents.implementation.OpenAIJsonHelper.fromBinaryData(this.toolChoice,
-            ToolChoiceOptions.class);
-    }
-
-    /*
-     * Optional configuration for sibling Foundry text agents that this voice agent may consult as background
-     * specialists.
-     */
-    @Generated
-    private VoiceAgentSubagentConfiguration subagentConfiguration;
-
-    /**
-     * Set the greeting property: Optional session-start greeting. Template mode speaks exact rendered text;
-     * LLM-generated mode asks the session model to author the opening response and may use configured tools.
-     *
-     * @param greeting the greeting value to set.
-     * @return the VoiceAgentDefinition object itself.
-     */
-    @Generated
-    public VoiceAgentDefinition setGreeting(VoiceAgentGreetingConfiguration greeting) {
-        this.greeting = greeting;
-        return this;
-    }
-
-    /**
-     * Set the audio property: The audio configuration, including input and output formats, voice, turn detection, noise
-     * reduction, and
-     * transcription. These values are session defaults; a client may override supported fields when connecting.
-     *
-     * @param audio the audio value to set.
-     * @return the VoiceAgentDefinition object itself.
-     */
-    @Generated
-    public VoiceAgentDefinition setAudio(VoiceAgentAudioConfiguration audio) {
-        this.audio = audio;
-        return this;
-    }
-
-    /**
-     * Set the interimResponse property: Interim-response settings for latency and tool execution.
-     *
-     * @param interimResponse the interimResponse value to set.
-     * @return the VoiceAgentDefinition object itself.
-     */
-    @Generated
-    public VoiceAgentDefinition setInterimResponse(VoiceAgentInterimResponseConfiguration interimResponse) {
-        this.interimResponse = interimResponse;
-        return this;
-    }
-
-    /**
-     * Set the avatar property: Optional avatar configuration. These values are session defaults and may be overridden
-     * when connecting.
-     *
-     * @param avatar the avatar value to set.
-     * @return the VoiceAgentDefinition object itself.
-     */
-    @Generated
-    public VoiceAgentDefinition setAvatar(VoiceAgentAvatarConfiguration avatar) {
-        this.avatar = avatar;
-        return this;
-    }
-
-    /**
-     * Get the subagentConfiguration property: Optional configuration for sibling Foundry text agents that this voice
-     * agent may consult as background specialists.
-     *
-     * @return the subagentConfiguration value.
-     */
-    @Generated
-    public VoiceAgentSubagentConfiguration getSubagentConfiguration() {
-        return this.subagentConfiguration;
-    }
-
-    /**
-     * Set the subagentConfiguration property: Optional configuration for sibling Foundry text agents that this voice
-     * agent may consult as background specialists.
-     *
-     * @param subagentConfiguration the subagentConfiguration value to set.
-     * @return the VoiceAgentDefinition object itself.
-     */
-    @Generated
-    public VoiceAgentDefinition setSubagentConfiguration(VoiceAgentSubagentConfiguration subagentConfiguration) {
-        this.subagentConfiguration = subagentConfiguration;
-        return this;
-    }
-
     /*
      * Optional background ambience and event cues, stored with the agent version and separate from the audio
      * configuration. Currently rendered only for telephony calls, not browser WebRTC or direct voice WebSocket
@@ -904,6 +859,13 @@ public final class VoiceAgentDefinition extends AgentDefinition {
      */
     @Generated
     private VoiceAgentSoundscapeConfiguration soundscape;
+
+    /*
+     * Optional post-call delivery configuration. After each session ends, the service notifies the configured
+     * destinations.
+     */
+    @Generated
+    private VoiceAgentPostCallConfiguration postCall;
 
     /**
      * Get the soundscape property: Optional background ambience and event cues, stored with the agent version and
@@ -932,13 +894,6 @@ public final class VoiceAgentDefinition extends AgentDefinition {
         this.soundscape = soundscape;
         return this;
     }
-
-    /*
-     * Optional post-call delivery configuration. After each session ends, the service notifies the configured
-     * destinations.
-     */
-    @Generated
-    private VoiceAgentPostCallConfiguration postCall;
 
     /**
      * Get the postCall property: Optional post-call delivery configuration. After each session ends, the service

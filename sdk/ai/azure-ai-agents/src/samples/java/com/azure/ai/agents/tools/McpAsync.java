@@ -6,8 +6,9 @@ package com.azure.ai.agents.tools;
 import com.azure.ai.agents.AgentsAsyncClient;
 import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.models.AgentVersionDetails;
-import com.azure.ai.agents.models.McpTool;
 import com.azure.ai.agents.models.PromptAgentDefinition;
+import com.azure.ai.agents.models.ToolMcpTool;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.openai.client.OpenAIClientAsync;
@@ -53,9 +54,9 @@ public class McpAsync {
 
         // Create an MCP tool that connects to a remote MCP server
         // Uses gitmcp.io to expose a GitHub repository as an MCP-compatible server
-        McpTool tool = new McpTool("api-specs")
+        ToolMcpTool tool = new ToolMcpTool("api-specs")
             .setServerUrl("https://gitmcp.io/Azure/azure-rest-api-specs")
-            .setRequireApproval("always");
+            .setRequireApproval(BinaryData.fromObject("always"));
 
         PromptAgentDefinition agentDefinition = new PromptAgentDefinition(model)
             .setInstructions("You are a helpful agent that can use MCP tools to assist users. "
