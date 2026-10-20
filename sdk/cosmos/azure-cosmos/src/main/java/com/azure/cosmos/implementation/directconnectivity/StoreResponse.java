@@ -10,6 +10,7 @@ import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelAcqu
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelStatistics;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpointStatistics;
 import com.azure.cosmos.implementation.http.HttpHeaders;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.util.IllegalReferenceCountException;
@@ -17,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.net.URI;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -51,6 +53,7 @@ public class StoreResponse {
 
     private final JsonNodeStorePayload responsePayload;
     private final String endpoint;
+    private URI requestUri;
 
     public StoreResponse(
             String endpoint,
@@ -375,14 +378,25 @@ public class StoreResponse {
             }
         }
 
-        return new StoreResponse(
+        StoreResponse remappedResponse = new StoreResponse(
             this.endpoint,
             newStatusCode,
             headers,
             this.responsePayload);
+        remappedResponse.requestUri = this.requestUri;
+        return remappedResponse;
     }
 
     public String getEndpoint() {
         return this.endpoint;
+    }
+
+    @JsonIgnore
+    public URI getRequestUri() {
+        return this.requestUri;
+    }
+
+    public void setRequestUri(URI requestUri) {
+        this.requestUri = requestUri;
     }
 }

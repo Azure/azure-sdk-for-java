@@ -1153,16 +1153,8 @@ public final class ClientTelemetryMetrics {
             }
         }
 
-        private String getGatewayServiceEndpoint(String endpoint) {
-            if (Strings.isNullOrWhiteSpace(endpoint)) {
-                return null;
-            }
-
-            URI uri;
-            try {
-                uri = URI.create(endpoint);
-            } catch (IllegalArgumentException e) {
-                logger.warn("Unable to parse Gateway endpoint for request metrics.");
+        private String getGatewayServiceEndpoint(URI uri) {
+            if (uri == null) {
                 return null;
             }
 
@@ -1210,7 +1202,7 @@ public final class ClientTelemetryMetrics {
                         gatewayStats.getOperationType().toString(),
                         null,
                         metricTagNamesForGateway.contains(TagName.ServiceEndpoint)
-                            ? getGatewayServiceEndpoint(gatewayStats.getEndpoint()) : null,
+                            ? getGatewayServiceEndpoint(gatewayStats.getRequestUri()) : null,
                         null)
                 );
 

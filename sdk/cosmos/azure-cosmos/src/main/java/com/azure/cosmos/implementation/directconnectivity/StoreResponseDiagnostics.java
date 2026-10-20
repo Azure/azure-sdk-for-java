@@ -13,9 +13,11 @@ import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelAcquisitionTimeline;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelStatistics;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpointStatistics;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -51,6 +53,7 @@ public class StoreResponseDiagnostics {
     private final String faultInjectionRuleId;
     private final List<String> faultInjectionEvaluationResults;
     private final String endpoint;
+    private final URI requestUri;
     private final String requestThroughputControlGroupName;
     private final String requestThroughputControlGroupConfig;
 
@@ -92,6 +95,7 @@ public class StoreResponseDiagnostics {
         this.faultInjectionRuleId = storeResponse.getFaultInjectionRuleId();
         this.faultInjectionEvaluationResults = storeResponse.getFaultInjectionRuleEvaluationResults();
         this.endpoint = storeResponse.getEndpoint();
+        this.requestUri = storeResponse.getRequestUri();
         this.requestThroughputControlGroupName = rxDocumentServiceRequest.throughputControlGroupName;
         this.requestThroughputControlGroupConfig =
             rxDocumentServiceRequest.requestContext.throughputControlRequestContext != null ? rxDocumentServiceRequest.requestContext.throughputControlRequestContext.getConfigString() : null;
@@ -121,6 +125,7 @@ public class StoreResponseDiagnostics {
         this.faultInjectionRuleId = cosmosExceptionAccessor().getFaultInjectionRuleId(e);
         this.faultInjectionEvaluationResults = cosmosExceptionAccessor().getFaultInjectionEvaluationResults(e);
         Uri requestUri = cosmosExceptionAccessor().getRequestUri(e);
+        this.requestUri = requestUri != null ? requestUri.getURI() : null;
         if (requestUri != null) {
             this.endpoint = requestUri.getURIAsString();
         } else {
@@ -211,6 +216,11 @@ public class StoreResponseDiagnostics {
 
     public String getEndpoint() {
         return this.endpoint;
+    }
+
+    @JsonIgnore
+    public URI getRequestUri() {
+        return this.requestUri;
     }
 
     public String getRequestThroughputControlGroupName() {

@@ -307,6 +307,7 @@ public class ClientSideRequestStatistics {
             gatewayStatistics.faultInjectionRuleId = storeResponseDiagnostics.getFaultInjectionRuleId();
             gatewayStatistics.faultInjectionEvaluationResults = storeResponseDiagnostics.getFaultInjectionEvaluationResults();
             gatewayStatistics.endpoint = storeResponseDiagnostics.getEndpoint();
+            gatewayStatistics.requestUri = storeResponseDiagnostics.getRequestUri();
             gatewayStatistics.requestThroughputControlGroupName = storeResponseDiagnostics.getRequestThroughputControlGroupName();
             gatewayStatistics.requestThroughputControlGroupConfig = storeResponseDiagnostics.getRequestThroughputControlGroupConfig();
 
@@ -976,6 +977,7 @@ public class ClientSideRequestStatistics {
         private PerPartitionAutomaticFailoverInfoHolder perPartitionAutomaticFailoverInfoHolder
             = PerPartitionAutomaticFailoverInfoHolder.EMPTY;
         private String endpoint;
+        private URI requestUri;
         private String requestThroughputControlGroupName;
         private String requestThroughputControlGroupConfig;
         private String isHubRegionProcessingOnly;
@@ -1051,6 +1053,11 @@ public class ClientSideRequestStatistics {
 
         public String getEndpoint() {
             return this.endpoint;
+        }
+
+        @JsonIgnore
+        public URI getRequestUri() {
+            return this.requestUri;
         }
 
         public String getRequestThroughputControlGroupName() {

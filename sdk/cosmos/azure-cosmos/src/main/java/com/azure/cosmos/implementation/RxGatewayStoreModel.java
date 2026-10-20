@@ -651,6 +651,8 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                         // will release the buffer — avoiding a double-release race with doOnDiscard.
                         retainedBufRef.compareAndSet(content, null);
 
+                        rsp.setRequestUri(httpRequest.uri());
+
                         if (reactorNettyRequestRecord != null) {
                             rsp.setRequestTimeline(reactorNettyRequestRecord.takeTimelineSnapshot());
 

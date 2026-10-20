@@ -5,18 +5,23 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
+import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetryMetrics;
 import com.azure.cosmos.implementation.clienttelemetry.TagName;
+import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponseDiagnostics;
 import com.azure.cosmos.implementation.directconnectivity.StoreResultDiagnostics;
+import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosMetricName;
 import com.azure.cosmos.models.CosmosMetricTagName;
 import com.azure.cosmos.models.CosmosMicrometerMeterOptions;
 import com.azure.cosmos.models.CosmosMicrometerMetricsOptions;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.micrometer.core.instrument.Meter;
 import io.micrometer.core.instrument.Tag;
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
@@ -24,8 +29,10 @@ import org.apache.commons.lang3.reflect.FieldUtils;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import java.net.URI;
 import java.time.Duration;
 import java.util.Collections;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.doReturn;
@@ -37,27 +44,25 @@ public class GatewayEndpointMetricsTest {
     @DataProvider(name = "gatewayEndpoints")
     public Object[][] gatewayEndpoints() {
         return new Object[][] {
-            {"https://account-eastus.documents.azure.com/dbs/db/colls/c/docs/id", "account-eastus.documents.azure.com_443"},
-            {"https://account-eastus.documents.azure.com:443/", "account-eastus.documents.azure.com_443"},
-            {"https://account-eastus.documents.azure.com:10250/dbs/db/colls/c/docs/id",
+            {URI.create("https://account-eastus.documents.azure.com/dbs/db/colls/c/docs/id"),
+                "account-eastus.documents.azure.com_443"},
+            {URI.create("https://account-eastus.documents.azure.com:443/"), "account-eastus.documents.azure.com_443"},
+            {URI.create("https://account-eastus.documents.azure.com:10250/dbs/db/colls/c/docs/id"),
                 "account-eastus.documents.azure.com_10250"},
-            {"https://localhost:8081/dbs/db", "localhost_8081"},
-            {"http://localhost/dbs/db", "NONE"},
-            {"http://127.0.0.1:8080/dbs/db", "NONE"},
-            {"https://user:password@account.documents.azure.com/dbs/db?key=value#fragment",
+            {URI.create("https://localhost:8081/dbs/db"), "localhost_8081"},
+            {URI.create("http://localhost/dbs/db"), "NONE"},
+            {URI.create("http://127.0.0.1:8080/dbs/db"), "NONE"},
+            {URI.create("https://user:password@account.documents.azure.com/dbs/db?key=value#fragment"),
                 "account.documents.azure.com_443"},
             {null, "NONE"},
-            {"", "NONE"},
-            {"  ", "NONE"},
-            {"not a URI", "NONE"},
-            {"https:///dbs/db", "NONE"},
-            {"https://[invalid", "NONE"},
-            {"rntbd://replica.documents.azure.com:14050/", "NONE"}
+            {URI.create(""), "NONE"},
+            {URI.create("https:///dbs/db"), "NONE"},
+            {URI.create("rntbd://replica.documents.azure.com:14050/"), "NONE"}
         };
     }
 
     @Test(groups = {"unit"}, dataProvider = "gatewayEndpoints")
-    public void gatewayMetersUseDestinationHostAndPort(String endpoint, String expectedEndpoint) throws Exception {
+    public void gatewayMetersUseDestinationHostAndPort(URI endpoint, String expectedEndpoint) throws Exception {
         try (TestState state = new TestState(CosmosMetricTagName.ALL)) {
             state.recordGateway(endpoint, 200);
 
@@ -84,8 +89,8 @@ public class GatewayEndpointMetricsTest {
     @Test(groups = {"unit"})
     public void resourcePathsDoNotCreateSeparateEndpointSeries() throws Exception {
         try (TestState state = new TestState(CosmosMetricTagName.SERVICE_ENDPOINT)) {
-            state.recordGateway("https://account.documents.azure.com/dbs/db1?query=first", 200);
-            state.recordGateway("https://account.documents.azure.com:443/dbs/db2?query=second", 200);
+            state.recordGateway(URI.create("https://account.documents.azure.com/dbs/db1?query=first"), 200);
+            state.recordGateway(URI.create("https://account.documents.azure.com:443/dbs/db2?query=second"), 200);
 
             assertThat(state.registry.get(CosmosMetricName.REQUEST_SUMMARY_GATEWAY_REQUESTS.toString())
                 .counters()).hasSize(1);
@@ -97,8 +102,8 @@ public class GatewayEndpointMetricsTest {
     @Test(groups = {"unit"})
     public void failedRequestsRetainTheirDestination() throws Exception {
         try (TestState state = new TestState(CosmosMetricTagName.SERVICE_ENDPOINT)) {
-            state.recordGateway("https://account-eastus.documents.azure.com/dbs/db", 503);
-            state.recordGateway("https://account-westus.documents.azure.com/dbs/db", 200);
+            state.recordGateway(URI.create("https://account-eastus.documents.azure.com/dbs/db"), 503);
+            state.recordGateway(URI.create("https://account-westus.documents.azure.com/dbs/db"), 200);
 
             assertThat(state.registry.get(CosmosMetricName.REQUEST_SUMMARY_GATEWAY_REQUESTS.toString())
                 .tag(SERVICE_ENDPOINT, "account-eastus.documents.azure.com_443")
@@ -112,7 +117,7 @@ public class GatewayEndpointMetricsTest {
     @Test(groups = {"unit"})
     public void endpointTagIsDisabledByDefault() throws Exception {
         try (TestState state = new TestState(CosmosMetricTagName.DEFAULT)) {
-            state.recordGateway("https://account.documents.azure.com/", 200);
+            state.recordGateway(URI.create("https://account.documents.azure.com/"), 200);
 
             assertThat(state.registry.get(CosmosMetricName.REQUEST_SUMMARY_GATEWAY_REQUESTS.toString())
                 .counter().count()).isEqualTo(1);
@@ -127,7 +132,7 @@ public class GatewayEndpointMetricsTest {
         try (TestState state = new TestState(CosmosMetricTagName.SERVICE_ENDPOINT)) {
             state.options.configureMeter(CosmosMetricName.REQUEST_SUMMARY_GATEWAY_LATENCY,
                 new CosmosMicrometerMeterOptions().suppressTagNames(CosmosMetricTagName.SERVICE_ENDPOINT));
-            state.recordGateway("https://account.documents.azure.com/", 200);
+            state.recordGateway(URI.create("https://account.documents.azure.com/"), 200);
 
             assertThat(state.registry.get(CosmosMetricName.REQUEST_SUMMARY_GATEWAY_LATENCY.toString())
                 .timer().getId().getTag(SERVICE_ENDPOINT)).isNull();
@@ -159,6 +164,75 @@ public class GatewayEndpointMetricsTest {
         }
     }
 
+    @Test(groups = {"unit"})
+    public void successfulResponseReusesCapturedUriWithoutParsingEndpointText() throws Exception {
+        URI requestUri = URI.create("https://account.documents.azure.com:10250/dbs/db/docs/id");
+        StoreResponse response = new StoreResponse("not a URI", 200,
+            Collections.singletonMap(HttpConstants.HttpHeaders.REQUEST_CHARGE, "2.5"), null, 0);
+        response.setRequestUri(requestUri);
+        StoreResponse remappedResponse = response.withRemappedStatusCode(200, 0);
+        assertThat(remappedResponse.getRequestUri()).isSameAs(requestUri);
+
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
+            mock(DiagnosticsClientContext.class), OperationType.Read, ResourceType.Document);
+        StoreResponseDiagnostics diagnostics = StoreResponseDiagnostics.createStoreResponseDiagnostics(
+            remappedResponse, request);
+        assertThat(diagnostics.getRequestUri()).isSameAs(requestUri);
+        assertThat(diagnostics.getEndpoint()).isEqualTo("not a URI");
+        assertThat(new ObjectMapper().valueToTree(diagnostics).has("requestUri")).isFalse();
+
+        try (TestState state = new TestState(CosmosMetricTagName.SERVICE_ENDPOINT)) {
+            ClientSideRequestStatistics.GatewayStatistics statistics = state.recordGateway(diagnostics);
+            assertThat(statistics.getRequestUri()).isSameAs(requestUri);
+            assertThat(new ObjectMapper().valueToTree(statistics).has("requestUri")).isFalse();
+            assertThat(state.registry.get(CosmosMetricName.REQUEST_SUMMARY_GATEWAY_REQUESTS.toString())
+                .tag(SERVICE_ENDPOINT, "account.documents.azure.com_10250").counter().count()).isEqualTo(1);
+        }
+    }
+
+    @Test(groups = {"unit"})
+    public void failedResponsesSnapshotTheExistingExceptionUri() throws Exception {
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
+            mock(DiagnosticsClientContext.class), OperationType.Read, ResourceType.Document);
+        CosmosException exception = new CosmosException(503, "test failure");
+        Uri firstUri = new Uri("https://account-eastus.documents.azure.com:10250/dbs/db/docs/id");
+        ImplementationBridgeHelpers.CosmosExceptionHelper.getCosmosExceptionAccessor()
+            .setRequestUri(exception, firstUri);
+        StoreResponseDiagnostics firstDiagnostics = StoreResponseDiagnostics.createStoreResponseDiagnostics(
+            exception, request);
+
+        Uri secondUri = new Uri("https://account-westus.documents.azure.com/dbs/db/docs/id");
+        ImplementationBridgeHelpers.CosmosExceptionHelper.getCosmosExceptionAccessor()
+            .setRequestUri(exception, secondUri);
+        StoreResponseDiagnostics secondDiagnostics = StoreResponseDiagnostics.createStoreResponseDiagnostics(
+            exception, request);
+
+        try (TestState state = new TestState(CosmosMetricTagName.SERVICE_ENDPOINT)) {
+            assertThat(state.recordGateway(firstDiagnostics).getRequestUri()).isSameAs(firstUri.getURI());
+            assertThat(state.recordGateway(secondDiagnostics).getRequestUri()).isSameAs(secondUri.getURI());
+            assertThat(state.registry.get(CosmosMetricName.REQUEST_SUMMARY_GATEWAY_REQUESTS.toString())
+                .tag(SERVICE_ENDPOINT, "account-eastus.documents.azure.com_10250").counter().count()).isEqualTo(1);
+            assertThat(state.registry.get(CosmosMetricName.REQUEST_SUMMARY_GATEWAY_REQUESTS.toString())
+                .tag(SERVICE_ENDPOINT, "account-westus.documents.azure.com_443").counter().count()).isEqualTo(1);
+        }
+    }
+
+    @Test(groups = {"unit"})
+    public void missingCapturedUriDoesNotTriggerEndpointTextParsing() throws Exception {
+        StoreResponse response = new StoreResponse("https://account.documents.azure.com:443/dbs/db", 200,
+            Collections.singletonMap(HttpConstants.HttpHeaders.REQUEST_CHARGE, "2.5"), null, 0);
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
+            mock(DiagnosticsClientContext.class), OperationType.Read, ResourceType.Document);
+        StoreResponseDiagnostics diagnostics = StoreResponseDiagnostics.createStoreResponseDiagnostics(
+            response, request);
+
+        try (TestState state = new TestState(CosmosMetricTagName.SERVICE_ENDPOINT)) {
+            assertThat(state.recordGateway(diagnostics).getRequestUri()).isNull();
+            assertThat(state.registry.get(CosmosMetricName.REQUEST_SUMMARY_GATEWAY_REQUESTS.toString())
+                .tag(SERVICE_ENDPOINT, "NONE").counter().count()).isEqualTo(1);
+        }
+    }
+
     private static final class TestState implements AutoCloseable {
         private final SimpleMeterRegistry registry = new SimpleMeterRegistry();
         private final CosmosMicrometerMetricsOptions options;
@@ -181,18 +255,25 @@ public class GatewayEndpointMetricsTest {
             ClientTelemetryMetrics.add(this.registry, null, null);
         }
 
-        private void recordGateway(String endpoint, int statusCode) {
+        private void recordGateway(URI requestUri, int statusCode) {
+            StoreResponseDiagnostics response = mock(StoreResponseDiagnostics.class);
+            doReturn(requestUri != null ? requestUri.toString() : null).when(response).getEndpoint();
+            doReturn(requestUri).when(response).getRequestUri();
+            doReturn(statusCode).when(response).getStatusCode();
+            doReturn(2.5).when(response).getRequestCharge();
+            doReturn("activity-id").when(response).getActivityId();
+            recordGateway(response);
+        }
+
+        private ClientSideRequestStatistics.GatewayStatistics recordGateway(StoreResponseDiagnostics response) {
             CosmosDiagnostics diagnostics = new CosmosDiagnostics(mock(DiagnosticsClientContext.class));
             RxDocumentServiceRequest request = mock(RxDocumentServiceRequest.class);
             doReturn(OperationType.Read).when(request).getOperationType();
             doReturn(ResourceType.Document).when(request).getResourceType();
-            StoreResponseDiagnostics response = mock(StoreResponseDiagnostics.class);
-            doReturn(endpoint).when(response).getEndpoint();
-            doReturn(statusCode).when(response).getStatusCode();
-            doReturn(2.5).when(response).getRequestCharge();
-            doReturn("activity-id").when(response).getActivityId();
+            doReturn(new UUID(0, 1)).when(request).getActivityId();
             diagnostics.clientSideRequestStatistics().recordGatewayResponse(request, response, null);
-            record(diagnostics, statusCode);
+            record(diagnostics, response.getStatusCode());
+            return diagnostics.clientSideRequestStatistics().getGatewayStatisticsList().get(0);
         }
 
         private void record(CosmosDiagnostics diagnostics, int statusCode) {

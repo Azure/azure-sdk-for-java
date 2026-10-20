@@ -1640,6 +1640,7 @@ public class ClientMetricsTest extends BatchTestBase {
             for (ClientSideRequestStatistics.GatewayStatistics statistics : gatewayStatistics) {
                 assertThat(statistics.getEndpoint()).isNotBlank();
                 URI endpoint = URI.create(statistics.getEndpoint());
+                assertThat(statistics.getRequestUri()).isEqualTo(endpoint);
                 assertThat(endpoint.getScheme()).isEqualToIgnoringCase("https");
                 assertThat(endpoint.getHost()).isNotBlank();
                 String expectedEndpoint = endpoint.getHost() + "_" + (endpoint.getPort() == -1 ? 443 : endpoint.getPort());
