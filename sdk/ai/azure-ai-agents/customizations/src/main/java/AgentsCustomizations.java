@@ -11,12 +11,14 @@ import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.expr.AnnotationExpr;
 import com.github.javaparser.ast.expr.AssignExpr;
+import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.expr.NormalAnnotationExpr;
 import com.github.javaparser.ast.expr.ObjectCreationExpr;
 import com.github.javaparser.ast.expr.StringLiteralExpr;
 import com.github.javaparser.ast.nodeTypes.NodeWithAnnotations;
 import com.github.javaparser.ast.nodeTypes.NodeWithJavadoc;
 import com.github.javaparser.ast.stmt.ExpressionStmt;
+import com.github.javaparser.ast.stmt.IfStmt;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
@@ -42,7 +44,10 @@ public class AgentsCustomizations extends Customization {
         stopPagingWhenHasMoreIsFalse(libraryCustomization, logger);
         internalizeUnusedVoiceAgentFunctionToolType(libraryCustomization, logger);
         deprecateLegacyBrowserAutomationTools(libraryCustomization);
+        internalizeUnusedChatCompletionToolType(libraryCustomization, logger);
         protectPolymorphicBaseConstructors(libraryCustomization);
+        exposeVoiceAgentBaseDiscriminatorToSubtypes(libraryCustomization);
+        customizeVoiceAgentSubtypeDispatch(libraryCustomization);
         makeRealtimeMessageDiscriminatorsFinal(libraryCustomization);
         applyUnionTypeWrappers(libraryCustomization, logger);
         annotateBetaClients(libraryCustomization, logger);
@@ -183,6 +188,20 @@ public class AgentsCustomizations extends Customization {
             .removeModifier(Modifier.Keyword.PUBLIC));
     }
 
+    private void internalizeUnusedChatCompletionToolType(LibraryCustomization customization, Logger logger) {
+        ClassCustomization classCustomization;
+        try {
+            classCustomization = customization.getClass(MODELS_PACKAGE, "ChatCompletionToolType3");
+        } catch (IllegalArgumentException ex) {
+            logger.info("ChatCompletionToolType3 does not exist; skipping internalization.");
+            return;
+        }
+
+        classCustomization.customizeAst(ast -> ast.getEnumByName("ChatCompletionToolType3")
+            .orElseThrow(() -> new IllegalStateException("ChatCompletionToolType3 was not generated"))
+            .removeModifier(Modifier.Keyword.PUBLIC));
+    }
+
     /**
      * Prevents customers from directly constructing polymorphic base models that do not represent valid wire shapes.
      * The classes remain concrete so their generated {@code fromJson} methods can deserialize unknown future
@@ -211,6 +230,55 @@ public class AgentsCustomizations extends Customization {
                 .filter(constructor -> constructor.isPublic())
                 .forEach(constructor -> constructor.setModifiers(Modifier.Keyword.PROTECTED))));
         }
+    }
+
+    private void exposeVoiceAgentBaseDiscriminatorToSubtypes(LibraryCustomization customization) {
+        customization.getClass(MODELS_PACKAGE, "VoiceAgentBaseDefinition").customizeAst(ast -> ast
+            .getClassByName("VoiceAgentBaseDefinition")
+            .flatMap(clazz -> clazz.getFieldByName("kind"))
+            .orElseThrow(() -> new IllegalStateException("VoiceAgentBaseDefinition.kind was not generated"))
+            .removeModifier(Modifier.Keyword.PRIVATE));
+    }
+
+    private void customizeVoiceAgentSubtypeDispatch(LibraryCustomization customization) {
+        customization.getClass(MODELS_PACKAGE, "AgentDefinition").customizeAst(ast -> {
+            MethodDeclaration fromJson = ast.getClassByName("AgentDefinition")
+                .orElseThrow(() -> new IllegalStateException("AgentDefinition was not generated"))
+                .getMethodsByName("fromJson")
+                .stream()
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException("AgentDefinition.fromJson was not generated"));
+
+            fromJson.findFirst(MethodCallExpr.class,
+                call -> "fromJsonKnownDiscriminator".equals(call.getNameAsString())
+                    && call.getScope().map(Node::toString).filter("VoiceAgentBaseDefinition"::equals).isPresent())
+                .orElseThrow(() -> new IllegalStateException("AgentDefinition voice dispatch was not generated"))
+                .setName("fromJson");
+        });
+
+        customization.getClass(MODELS_PACKAGE, "VoiceAgentBaseDefinition").customizeAst(ast -> {
+            MethodDeclaration fromJson = ast.getClassByName("VoiceAgentBaseDefinition")
+                .orElseThrow(() -> new IllegalStateException("VoiceAgentBaseDefinition was not generated"))
+                .getMethodsByName("fromJson")
+                .stream()
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException("VoiceAgentBaseDefinition.fromJson was not generated"));
+
+            fromJson.findFirst(StringLiteralExpr.class, literal -> "kind".equals(literal.asString()))
+                .orElseThrow(() -> new IllegalStateException("Voice-agent discriminator field was not generated"))
+                .setString("sub_protocol");
+            fromJson.findFirst(IfStmt.class,
+                statement -> "\"VoiceAgentDefinition\".equals(discriminatorValue)"
+                    .equals(statement.getCondition().toString()))
+                .orElseThrow(() -> new IllegalStateException("Realtime voice-agent dispatch was not generated"))
+                .setCondition(StaticJavaParser.parseExpression(
+                    "discriminatorValue == null || \"realtime\".equals(discriminatorValue)"));
+            fromJson.findFirst(IfStmt.class,
+                statement -> "\"VoiceAgentLiveDefinition\".equals(discriminatorValue)"
+                    .equals(statement.getCondition().toString()))
+                .orElseThrow(() -> new IllegalStateException("Live voice-agent dispatch was not generated"))
+                .setCondition(StaticJavaParser.parseExpression("\"live\".equals(discriminatorValue)"));
+        });
     }
 
     /**

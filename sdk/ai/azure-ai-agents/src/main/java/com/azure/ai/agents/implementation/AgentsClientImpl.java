@@ -95,6 +95,20 @@ public final class AgentsClientImpl {
     }
 
     /**
+     * The BetaVoiceAgentsLiveConversationsImpl object to access its operations.
+     */
+    private final BetaVoiceAgentsLiveConversationsImpl betaVoiceAgentsLiveConversations;
+
+    /**
+     * Gets the BetaVoiceAgentsLiveConversationsImpl object to access its operations.
+     * 
+     * @return the BetaVoiceAgentsLiveConversationsImpl object.
+     */
+    public BetaVoiceAgentsLiveConversationsImpl getBetaVoiceAgentsLiveConversations() {
+        return this.betaVoiceAgentsLiveConversations;
+    }
+
+    /**
      * The BetaVoiceAgentsTelephoniesImpl object to access its operations.
      */
     private final BetaVoiceAgentsTelephoniesImpl betaVoiceAgentsTelephonies;
@@ -213,6 +227,7 @@ public final class AgentsClientImpl {
         this.endpoint = endpoint;
         this.serviceVersion = serviceVersion;
         this.betaVoiceAgentsConversations = new BetaVoiceAgentsConversationsImpl(this);
+        this.betaVoiceAgentsLiveConversations = new BetaVoiceAgentsLiveConversationsImpl(this);
         this.betaVoiceAgentsTelephonies = new BetaVoiceAgentsTelephoniesImpl(this);
         this.betaMemoryStores = new BetaMemoryStoresImpl(this);
         this.betaAgents = new BetaAgentsImpl(this);

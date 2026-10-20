@@ -25,13 +25,7 @@ import java.util.Map;
  */
 @Fluent
 @Beta(warningText = "Preview API. VoiceAgents=V1Preview")
-public final class VoiceAgentDefinition extends AgentDefinition {
-
-    /*
-     * The kind property.
-     */
-    @Generated
-    private AgentKind kind = AgentKind.VOICE;
+public final class VoiceAgentDefinition extends VoiceAgentBaseDefinition {
 
     /*
      * How the model backing this voice agent is served. Required with `model` for a model-backed voice agent and
@@ -57,13 +51,6 @@ public final class VoiceAgentDefinition extends AgentDefinition {
      */
     @Generated
     private VoiceConversationEngine conversationEngine;
-
-    /*
-     * A system (or developer) message inserted into the model's context. Supports template substitution via
-     * `structured_inputs`, rendered per session before the live session starts.
-     */
-    @Generated
-    private String instructions;
 
     /*
      * Optional session-start greeting. Template mode speaks exact rendered text; LLM-generated mode asks the session
@@ -132,41 +119,11 @@ public final class VoiceAgentDefinition extends AgentDefinition {
     @Generated
     private Boolean parallelToolCalls;
 
-    /*
-     * Set of structured inputs that participate in prompt template substitution, rendered per session before the live
-     * session starts.
-     */
-    @Generated
-    private Map<String, StructuredInputDefinition> structuredInputs;
-
-    /*
-     * Whether conversations with this agent are persisted. A single, all-or-nothing persistence switch that defaults to
-     * `false` (privacy-safe: off by default). When `true`, Foundry persists the full conversation — the
-     * transcript/event
-     * timeline and raw audio. When `false`, nothing is persisted and no conversation is surfaced. There is no separate
-     * audio-logging control; audio is persisted only as part of this switch. Latency/performance telemetry (e.g.
-     * time-to-first-audio, inter-token latency, interruption) is observability-only (customer trace / App Insights) and
-     * is not part of the persisted conversation content.
-     */
-    @Generated
-    private Boolean store;
-
     /**
      * Creates an instance of VoiceAgentDefinition class.
      */
     @Generated
     public VoiceAgentDefinition() {
-    }
-
-    /**
-     * Get the kind property: The kind property.
-     *
-     * @return the kind value.
-     */
-    @Generated
-    @Override
-    public AgentKind getKind() {
-        return this.kind;
     }
 
     /**
@@ -250,26 +207,12 @@ public final class VoiceAgentDefinition extends AgentDefinition {
     }
 
     /**
-     * Get the instructions property: A system (or developer) message inserted into the model's context. Supports
-     * template substitution via `structured_inputs`, rendered per session before the live session starts.
-     *
-     * @return the instructions value.
+     * {@inheritDoc}
      */
     @Generated
-    public String getInstructions() {
-        return this.instructions;
-    }
-
-    /**
-     * Set the instructions property: A system (or developer) message inserted into the model's context. Supports
-     * template substitution via `structured_inputs`, rendered per session before the live session starts.
-     *
-     * @param instructions the instructions value to set.
-     * @return the VoiceAgentDefinition object itself.
-     */
-    @Generated
+    @Override
     public VoiceAgentDefinition setInstructions(String instructions) {
-        this.instructions = instructions;
+        super.setInstructions(instructions);
         return this;
     }
 
@@ -466,62 +409,22 @@ public final class VoiceAgentDefinition extends AgentDefinition {
     }
 
     /**
-     * Get the structuredInputs property: Set of structured inputs that participate in prompt template substitution,
-     * rendered per session before the live session starts.
-     *
-     * @return the structuredInputs value.
+     * {@inheritDoc}
      */
     @Generated
-    public Map<String, StructuredInputDefinition> getStructuredInputs() {
-        return this.structuredInputs;
-    }
-
-    /**
-     * Set the structuredInputs property: Set of structured inputs that participate in prompt template substitution,
-     * rendered per session before the live session starts.
-     *
-     * @param structuredInputs the structuredInputs value to set.
-     * @return the VoiceAgentDefinition object itself.
-     */
-    @Generated
+    @Override
     public VoiceAgentDefinition setStructuredInputs(Map<String, StructuredInputDefinition> structuredInputs) {
-        this.structuredInputs = structuredInputs;
+        super.setStructuredInputs(structuredInputs);
         return this;
     }
 
     /**
-     * Get the store property: Whether conversations with this agent are persisted. A single, all-or-nothing persistence
-     * switch that defaults to
-     * `false` (privacy-safe: off by default). When `true`, Foundry persists the full conversation — the
-     * transcript/event
-     * timeline and raw audio. When `false`, nothing is persisted and no conversation is surfaced. There is no separate
-     * audio-logging control; audio is persisted only as part of this switch. Latency/performance telemetry (e.g.
-     * time-to-first-audio, inter-token latency, interruption) is observability-only (customer trace / App Insights) and
-     * is not part of the persisted conversation content.
-     *
-     * @return the store value.
+     * {@inheritDoc}
      */
     @Generated
-    public Boolean isStore() {
-        return this.store;
-    }
-
-    /**
-     * Set the store property: Whether conversations with this agent are persisted. A single, all-or-nothing persistence
-     * switch that defaults to
-     * `false` (privacy-safe: off by default). When `true`, Foundry persists the full conversation — the
-     * transcript/event
-     * timeline and raw audio. When `false`, nothing is persisted and no conversation is surfaced. There is no separate
-     * audio-logging control; audio is persisted only as part of this switch. Latency/performance telemetry (e.g.
-     * time-to-first-audio, inter-token latency, interruption) is observability-only (customer trace / App Insights) and
-     * is not part of the persisted conversation content.
-     *
-     * @param store the store value to set.
-     * @return the VoiceAgentDefinition object itself.
-     */
-    @Generated
+    @Override
     public VoiceAgentDefinition setStore(Boolean store) {
-        this.store = store;
+        super.setStore(store);
         return this;
     }
 
@@ -542,12 +445,16 @@ public final class VoiceAgentDefinition extends AgentDefinition {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("rai_config", getRaiConfig());
         jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        jsonWriter.writeJsonField("rai_config", getRaiConfig());
+        jsonWriter.writeStringField("instructions", getInstructions());
+        jsonWriter.writeMapField("structured_inputs", getStructuredInputs(),
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeBooleanField("store", isStore());
+        jsonWriter.writeStringField("sub_protocol", this.subProtocol == null ? null : this.subProtocol.toString());
         jsonWriter.writeStringField("model_type", this.modelType == null ? null : this.modelType.toString());
         jsonWriter.writeStringField("model", this.model);
         jsonWriter.writeJsonField("conversation_engine", this.conversationEngine);
-        jsonWriter.writeStringField("instructions", this.instructions);
         jsonWriter.writeJsonField("greeting", this.greeting);
         jsonWriter.writeJsonField("audio", this.audio);
         jsonWriter.writeArrayField("output_modalities", this.outputModalities,
@@ -566,10 +473,7 @@ public final class VoiceAgentDefinition extends AgentDefinition {
             this.toolChoice.writeTo(jsonWriter);
         }
         jsonWriter.writeBooleanField("parallel_tool_calls", this.parallelToolCalls);
-        jsonWriter.writeMapField("structured_inputs", this.structuredInputs,
-            (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("subagent_config", this.subagentConfiguration);
-        jsonWriter.writeBooleanField("store", this.store);
         return jsonWriter.writeEndObject();
     }
 
@@ -590,16 +494,22 @@ public final class VoiceAgentDefinition extends AgentDefinition {
                 reader.nextToken();
                 if ("rai_config".equals(fieldName)) {
                     deserializedVoiceAgentDefinition.setRaiConfig(RaiConfig.fromJson(reader));
-                } else if ("kind".equals(fieldName)) {
-                    deserializedVoiceAgentDefinition.kind = AgentKind.fromString(reader.getString());
+                } else if ("instructions".equals(fieldName)) {
+                    deserializedVoiceAgentDefinition.setInstructions(reader.getString());
+                } else if ("structured_inputs".equals(fieldName)) {
+                    Map<String, StructuredInputDefinition> structuredInputs
+                        = reader.readMap(reader1 -> StructuredInputDefinition.fromJson(reader1));
+                    deserializedVoiceAgentDefinition.setStructuredInputs(structuredInputs);
+                } else if ("store".equals(fieldName)) {
+                    deserializedVoiceAgentDefinition.setStore(reader.getNullable(JsonReader::getBoolean));
+                } else if ("sub_protocol".equals(fieldName)) {
+                    deserializedVoiceAgentDefinition.subProtocol = VoiceAgentSubProtocol.fromString(reader.getString());
                 } else if ("model_type".equals(fieldName)) {
                     deserializedVoiceAgentDefinition.modelType = VoiceModelType.fromString(reader.getString());
                 } else if ("model".equals(fieldName)) {
                     deserializedVoiceAgentDefinition.model = reader.getString();
                 } else if ("conversation_engine".equals(fieldName)) {
                     deserializedVoiceAgentDefinition.conversationEngine = VoiceConversationEngine.fromJson(reader);
-                } else if ("instructions".equals(fieldName)) {
-                    deserializedVoiceAgentDefinition.instructions = reader.getString();
                 } else if ("greeting".equals(fieldName)) {
                     deserializedVoiceAgentDefinition.greeting = VoiceAgentGreetingConfiguration.fromJson(reader);
                 } else if ("audio".equals(fieldName)) {
@@ -628,15 +538,9 @@ public final class VoiceAgentDefinition extends AgentDefinition {
                         = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
                 } else if ("parallel_tool_calls".equals(fieldName)) {
                     deserializedVoiceAgentDefinition.parallelToolCalls = reader.getNullable(JsonReader::getBoolean);
-                } else if ("structured_inputs".equals(fieldName)) {
-                    Map<String, StructuredInputDefinition> structuredInputs
-                        = reader.readMap(reader1 -> StructuredInputDefinition.fromJson(reader1));
-                    deserializedVoiceAgentDefinition.structuredInputs = structuredInputs;
                 } else if ("subagent_config".equals(fieldName)) {
                     deserializedVoiceAgentDefinition.subagentConfiguration
                         = VoiceAgentSubagentConfiguration.fromJson(reader);
-                } else if ("store".equals(fieldName)) {
-                    deserializedVoiceAgentDefinition.store = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }
@@ -887,6 +791,34 @@ public final class VoiceAgentDefinition extends AgentDefinition {
     @Generated
     public VoiceAgentDefinition setSubagentConfiguration(VoiceAgentSubagentConfiguration subagentConfiguration) {
         this.subagentConfiguration = subagentConfiguration;
+        return this;
+    }
+
+    /*
+     * Selects Realtime. May be omitted for legacy agents.
+     */
+    @Generated
+    private VoiceAgentSubProtocol subProtocol;
+
+    /**
+     * Get the subProtocol property: Selects Realtime. May be omitted for legacy agents.
+     *
+     * @return the subProtocol value.
+     */
+    @Generated
+    public VoiceAgentSubProtocol getSubProtocol() {
+        return this.subProtocol;
+    }
+
+    /**
+     * Set the subProtocol property: Selects Realtime. May be omitted for legacy agents.
+     *
+     * @param subProtocol the subProtocol value to set.
+     * @return the VoiceAgentDefinition object itself.
+     */
+    @Generated
+    public VoiceAgentDefinition setSubProtocol(VoiceAgentSubProtocol subProtocol) {
+        this.subProtocol = subProtocol;
         return this;
     }
 }
