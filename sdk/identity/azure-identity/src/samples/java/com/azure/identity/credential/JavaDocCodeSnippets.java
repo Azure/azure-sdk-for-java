@@ -39,6 +39,8 @@ import com.azure.identity.DeviceCodeCredential;
 import com.azure.identity.DeviceCodeCredentialBuilder;
 import com.azure.identity.EnvironmentCredential;
 import com.azure.identity.EnvironmentCredentialBuilder;
+import com.azure.identity.GitHubActionsCredential;
+import com.azure.identity.GitHubActionsCredentialBuilder;
 import com.azure.identity.IntelliJCredential;
 import com.azure.identity.IntelliJCredentialBuilder;
 import com.azure.identity.InteractiveBrowserCredential;
@@ -300,6 +302,26 @@ public final class JavaDocCodeSnippets {
             .systemAccessToken(systemAccessToken)
             .build();
         // END: com.azure.identity.credential.azurepipelinescredential.construct
+    }
+
+    /**
+     * Code snippets for {@link GitHubActionsCredential}.
+     */
+    public void gitHubActionsCredentialCodeSnippets() {
+        // BEGIN: com.azure.identity.credential.githubactionscredential.construct
+        GitHubActionsCredential credential = new GitHubActionsCredentialBuilder().build();
+        // END: com.azure.identity.credential.githubactionscredential.construct
+
+        // BEGIN: readme-sample-github-actions-credential
+        TokenCredential gitHubCredential = new GitHubActionsCredentialBuilder().build();
+        // END: readme-sample-github-actions-credential
+
+        // BEGIN: readme-sample-github-actions-credential-explicit
+        TokenCredential explicitCredential = new GitHubActionsCredentialBuilder()
+            .tenantId("<tenant-id>")
+            .clientId("<client-id>")
+            .build();
+        // END: readme-sample-github-actions-credential-explicit
     }
 
     public void silentAuthenticationSnippets() {
