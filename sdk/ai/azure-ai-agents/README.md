@@ -71,6 +71,7 @@ The Agents client library has the following sub-clients which group the differen
 - `BetaMemoryStoresClient` / `BetaMemoryStoresAsyncClient` **(preview)**: Manage memory stores and individual memory items for agents.
 - `ToolboxesClient` / `ToolboxesAsyncClient`: Manage toolboxes and toolbox versions.
 - `BetaVoiceAgentWebSocketClient` / `BetaVoiceAgentWebSocketAsyncClient` **(preview)**: Open typed realtime WebSocket sessions with voice agents.
+- `BetaVoiceAgentLiveWebSocketClient` / `BetaVoiceAgentLiveWebSocketAsyncClient` **(preview)**: Open native GPT Live WebSocket sessions with persisted Live voice agents.
 - `BetaVoiceAgentsTelephonyClient` / `BetaVoiceAgentsTelephonyAsyncClient` **(preview)**: Manage telephony bindings, calls, transfer targets, and outbound call jobs.
 - `BetaVoiceAgentsConversationsClient` / `BetaVoiceAgentsConversationsAsyncClient` **(preview)**: Read and delete persisted voice-agent conversations and retrieve their responses, items, and audio.
 
@@ -198,6 +199,7 @@ Build clients whose names start with `Beta` from `AgentsClientBuilder.beta()`. T
 | `BetaAgentsClient` | `WorkflowAgents=V1Preview,ExternalAgents=V1Preview,DraftAgents=V1Preview,VoiceAgents=V1Preview,DigitalWorker=V1Preview,GitHubCopilot=V1Preview,Skills=V1Preview,MicrosoftCopilot=V1Preview` |
 | `BetaMemoryStoresClient` | `MemoryStores=V1Preview` |
 | `BetaVoiceAgentWebSocketClient` | `VoiceAgents=V1Preview` |
+| `BetaVoiceAgentLiveWebSocketClient` / `BetaVoiceAgentLiveWebSocketAsyncClient` | `VoiceAgents=V1Preview` |
 | `BetaVoiceAgentsTelephonyClient` | `VoiceAgents=V1Preview` |
 | `BetaVoiceAgentsConversationsClient` | `VoiceAgents=V1Preview` |
 
@@ -1098,7 +1100,146 @@ When a `RealtimeResponseFunctionCallArgumentsDoneEvent` requests a client-side t
 
 All realtime examples require `FOUNDRY_PROJECT_ENDPOINT` and optionally use `FOUNDRY_VOICE_AGENT_NAME`. The function-tool example also optionally uses `FOUNDRY_VOICE_MODEL` and `FOUNDRY_VOICE_MODEL_TYPE`. The asynchronous text and audio examples delete their generated agents by default; set `FOUNDRY_KEEP_VOICE_AGENT=true` to retain them.
 
+The synchronous live text sample deletes and replaces the selected agent if creation returns a conflict,
+then deletes the replacement on exit, including on failure. Use a dedicated sample-agent name: this also
+applies when `FOUNDRY_VOICE_AGENT_NAME` is set. This synchronous sample does not support retaining its agent.
+
 The live audio example requires a Java Sound-compatible microphone and speaker. It streams signed, little-endian, mono PCM16 audio at 24 kHz. These examples use WebSocket transport. Although the generated protocol models include WebRTC signaling events, the Java client does not provide a WebRTC peer connection or media implementation.
+
+### GPT Live WebSocket examples (preview)
+
+GPT Live is a different wire protocol from Realtime. Create a persisted agent with `VoiceAgentLiveDefinition`,
+then use `BetaVoiceAgentLiveWebSocketClient` or `BetaVoiceAgentLiveWebSocketAsyncClient` to connect.
+These clients use
+`wss://{project-endpoint}/agents/{agent_name}/endpoint/protocols/voice/live/sessions?api-version=v1`,
+send the `Foundry-Features: VoiceAgents=V1Preview` header, and **do not** negotiate the `realtime` WebSocket
+subprotocol. `allowPreview(true)` is not required.
+
+Foundry sends the initial native `session.start`. Wait for `session.started` before sending application events;
+do not send `session.start` yourself. Live events are exposed as complete `BinaryData` JSON objects, not
+`RealtimeClientEvent` or `RealtimeServerEvent` models. This preserves native events, unknown properties,
+nested `response.event` backend events, and the Foundry `conversation_id` on `session.started`.
+The existing samples named `VoiceAgentLive*ConversationSample` above demonstrate live connections using the
+**Realtime** protocol; use the separate GPT Live clients for `VoiceAgentLiveDefinition` agents.
+
+Use `sendEvent(BinaryData)` with native Live JSON commands valid for the configured delegation mode.
+In particular, `response.item.create` and `response.create` are Responses-delegation-only commands.
+Service `error` events arrive as JSON events for the application to inspect; transport and malformed JSON
+errors fail the receive stream unless a malformed-event callback was explicitly configured.
+
+Configure timeouts, bounded receive capacity, overflow handling, message size, persistence, agent version,
+and structured inputs with `VoiceAgentLiveWebSocketConnectionOptions`. Structured inputs are passed as
+unencoded JSON to `setStructuredInputs` and URL-encoded by the SDK into the `structured_inputs` query parameter.
+Do not log endpoint URLs containing sensitive template inputs. Realtime-only transport and agent-session-ID
+options are not exposed. Options are copied when opening a session.
+
+Both transports retain the realtime clients' credential, proxy, custom-header and builder validation behavior.
+Custom HTTP clients, pipelines, policies, and retry settings are unsupported and fail at build time rather
+than being ignored. Each session permits one receiver. The default receive buffer holds 256 events; overflow
+terminates the session unless a drop strategy explicitly permits event loss.
+
+#### Runnable GPT Live scenarios
+
+These examples create a uniquely named `VoiceAgentLiveDefinition` agent with **Responses delegation**, connect
+using native GPT Live WebSockets, and delete the agent on exit, including on failure. They do not modify or delete
+an existing agent. Set these environment variables before running a sample's `main` method:
+
+| Variable | Value |
+|---|---|
+| `FOUNDRY_PROJECT_ENDPOINT` | Your Foundry project endpoint. Authentication uses `DefaultAzureCredential`. |
+| `FOUNDRY_GPT_LIVE_MODEL` | Optional. Your GPT Live **deployment name**, not a model catalog ID. Defaults to `gpt-live-1` when unset. |
+| `FOUNDRY_GPT_LIVE_BACKEND_MODEL` | Optional. Your Responses backend **deployment name in the Live resource**. Defaults to `gpt-5.6-terra` when unset. |
+| `FOUNDRY_KEEP_GPT_LIVE_AGENT` | Optional. Set to `true` to retain the sample-created agent; defaults to `false`. |
+
+Each sample reads, defaults, and validates these settings and configures its client builder directly in its own `main` method.
+Shared helpers receive explicit values rather than reading environment variables.
+Override the model variables if your deployment names differ from these defaults. Explicitly blank values are invalid.
+Generated agent names use `gpt-live-<scenario>-<UUID>` and are at most 57 characters for these scenarios,
+leaving headroom below the service's 63-character limit.
+
+| Scenario | Runnable sample |
+|---|---|
+| Synchronous multi-turn text | [GptLiveTextConversationSample.java](src/samples/java/com/azure/ai/agents/voice/GptLiveTextConversationSample.java) |
+| Asynchronous multi-turn text | [GptLiveTextConversationAsyncSample.java](src/samples/java/com/azure/ai/agents/voice/GptLiveTextConversationAsyncSample.java) |
+| Asynchronous microphone and speaker | [GptLiveAudioConversationAsyncSample.java](src/samples/java/com/azure/ai/agents/voice/GptLiveAudioConversationAsyncSample.java) |
+| Responses backend function tool | [GptLiveFunctionToolSample.java](src/samples/java/com/azure/ai/agents/voice/GptLiveFunctionToolSample.java) |
+
+Both text examples read terminal input interactively when no arguments are supplied. After each reply,
+they prompt for another message; submit a blank line or enter `exit` or `quit` to close the session.
+With arguments, they instead process each argument as a prompt and exit after the last reply.
+They wait for `session.started`, send `response.item.create` followed by `response.create`, and wait for the
+nested `response.completed` before advancing to the next turn. Scripted mode prints backend text without
+speaker playback. Both interactive examples instead request a spoken opening greeting with
+`session.commentary.append`, play the voice frontend's 24-kHz PCM16 audio, and print its spoken transcript
+rather than backend working notes. The synchronous example uses synchronous session send/receive calls on
+workers and shares the asynchronous example's voice-loop coordination.
+Before displaying the first `You:` prompt, it waits for both greeting audio and transcript, one second without
+speech activity, and completion of queued speaker playback. Continuous silent audio does not restart the timer.
+For this heuristic, PCM16 frames with peak sample magnitude at most 256 (about -42 dBFS) are treated as silence.
+The quiet period is a heuristic because native GPT Live
+has no speech-completed event: a long pause within a greeting can be mistaken for its end. Missing greeting output
+fails with a timeout instead of silently starting input before the introduction.
+It sends 20 milliseconds of silent PCM (960 bytes) every 20 milliseconds after startup, providing continuous
+audio input without opening a microphone. **This consumes voice-session usage while you type or wait.**
+The silent stream is stopped and pending audio sends complete before the sample requests `session.close`.
+If sending falls behind, silent-frame production waits for demand instead of accumulating timer ticks or
+failing with an interval overflow; it resumes without a burst of stale frames.
+Speaker playback runs off the WebSocket receive thread. If a speaker is unavailable, the sample reports that
+and still prints transcripts, like the Realtime text example.
+Agent creation and deletion occur on the main thread.
+
+Console input is line-oriented: press Enter to submit a message. The sample flushes the `You:` prompt immediately;
+character echo while typing is controlled by Windows CMD/PowerShell and its terminal host, not by the service.
+Interactive input uses a normal blocking line read on a worker rather than polling `Reader.ready()`,
+matching the Realtime sample's console interaction. The WebSocket receiver continues independently.
+When a native Java console is attached, input comes from `System.console().reader()` rather than `System.in`.
+Without a console, the sample reads `System.in`, supporting redirected input. End-of-input (EOF), a blank line,
+or an explicit exit command closes the session.
+The terminal echoes characters on the `You:` line as you type. Assistant transcript fragments are assembled into
+utterances independently of typed turns and backend completion. A one-second speech-inactivity period marks an
+utterance boundary using the same heuristic as the greeting; a long pause within speech can still divide the text.
+Completed utterances are printed with one `Assistant:` label each. While input is active, completed text waits
+until Enter so it cannot overwrite typed characters; incomplete text stays buffered across input submissions.
+Audio playback and input remain available. This dependency-free approach can delay captions until the next Enter.
+Session closure flushes any remaining transcript. Completed and incomplete text share a 65,536-character buffer
+limit; exceeding it fails the sample explicitly instead of dropping transcript text or growing memory indefinitely.
+The native console's echoed Enter already starts a new line; the sample avoids adding another blank line.
+After a remote disconnect, a console read that the operating system cannot interrupt may require Enter to release
+the worker. The sample does not close shared standard input to force a pending read to return.
+Backend `response.completed` permits the next typed prompt but does not mean that the frontend finished speaking:
+native GPT Live has no output-audio-done event. The sample keeps receiving audio and transcripts while you type.
+See [GPT-Live audio and transcript events](https://learn.microsoft.com/azure/foundry/openai/gpt-live-reference#sessionoutput_audiodelta).
+Server `remote_hangup` closes the conversation normally. Other unexpected closures remain failures and include
+the complete `session.closed` event, including its reason, rather than hiding the service diagnostic.
+
+The audio example requires a Java Sound-compatible microphone and speaker supporting raw, mono PCM16LE at
+24 kHz. After `session.started`, it sends a greeting request followed by `response.create` so the agent can
+open the conversation. It labels spoken transcript fragments as `You:` or `Assistant:` and omits backend
+text deltas, which are not necessarily the words spoken by the voice frontend.
+Press Enter to end the call; asking the model to end it does not itself close the session.
+Service moderation (`content_filter`) ends the call with an explicit error and the original service event;
+it is not treated as a successful completion. Audio devices and the WebSocket are released on failure.
+The standalone audio and text samples' `main` methods also shut down shared Reactor schedulers on exit
+to avoid lingering timer threads under `exec:java`. Do not invoke those `main` methods inside an application that
+shares Reactor schedulers.
+
+The audio sample sends `session.input_audio.append`, plays base64-decoded `session.output_audio.delta` chunks, and
+prints native input/output transcript deltas. It does not send Realtime audio-buffer commit or response-cancel
+commands. Capture and playback use dedicated threads; the playback backlog is bounded to 60 seconds.
+Device errors and overflow end the call explicitly. Press Enter to stop capture and finalize the session.
+This example must be the only reader of standard input.
+
+The function-tool example configures `get_weather` on the **Responses backend**, consumes completed
+`function_call` items from nested `response.output_item.done` events, then sends `function_call_output` items
+with the original `call_id` before requesting continuation. Its weather results are **simulated demonstration
+data**, not live weather. It does not assume lifecycle snapshots contain output items, and does not add
+Foundry-managed-agent tool-result routing.
+
+All four scenarios request `session.close` and wait for `session.closed` before normal transport cleanup.
+The asynchronous text example waits for terminal input without a timeout, while applying a 60-second timeout to
+startup, each response, and finalization. The synchronous text and tool examples use a 60-second event-wait timeout;
+the audio example uses a 60-second startup/finalization timeout.
+An unexpected disconnect or native service error fails the sample rather than being reported as success.
 
 ### Service API versions
 

@@ -5,12 +5,36 @@
 ### Features Added
 
 - Added Live voice-agent definitions and preview Live conversation REST clients for persisted conversations, items,
-  and audio. Live WebSocket transport is not included.
+  and audio.
+- Added preview synchronous and asynchronous GPT Live WebSocket clients through
+  `AgentsClientBuilder.beta().buildBetaVoiceAgentLiveWebSocketClient()` and
+  `buildBetaVoiceAgentLiveWebSocketAsyncClient()`. Native Live events are sent and received as lossless JSON
+  using `BinaryData`, separately from the Realtime protocol clients.
+- Added runnable native GPT Live samples for synchronous/asynchronous multi-turn text, asynchronous microphone
+  and speaker audio, and Responses backend function tools, including sample-agent creation and cleanup.
+  Model deployment names default to `gpt-live-1` and `gpt-5.6-terra` when their environment variables are unset.
+  The audio sample requests an opening greeting, labels spoken transcripts without duplicating backend text,
+  reports moderation failures explicitly, and shuts down shared Reactor schedulers when its standalone main exits.
+  Both text samples support interactive terminal input with blank-line, `exit`, and `quit` termination,
+  preserve scripted command-line prompts, and shut down shared Reactor schedulers when their standalone mains exit.
+  Both interactive text modes request a spoken greeting, play frontend audio and print spoken transcripts
+  instead of backend working notes. It preserves server closure diagnostics and handles remote hangup normally.
+  Interactive voice mode streams paced silent PCM input while typing (consuming voice-session usage), uses
+  blocking console line reads instead of readiness polling, and uses the native console reader when attached.
+  Assistant transcript fragments are assembled into utterances independently of backend and typed turns.
+  Completed text is buffered while typing on the `You:` line; audio and input remain available, and incomplete
+  text is not split or relabeled at Enter. Speech-inactivity boundaries remain heuristic.
+  The first input prompt waits for greeting audio and text, a one-second quiet period, and queued speaker playback.
+  Continuous silent output does not extend that quiet period, and paced silent input tolerates send backpressure
+  without overflowing a periodic timer.
+  Removed redundant blank lines between console input, assistant transcripts, and session closure.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
+- Updated the synchronous live text sample to replace an existing sample agent on a creation conflict and
+  delete the replacement on exit, including when the conversation fails.
 - Fixed voice-agent definition deserialization through `AgentDefinition` and `VoiceAgentBaseDefinition` to select
   Realtime for an omitted or `realtime` sub-protocol and Live for `live`.
 
