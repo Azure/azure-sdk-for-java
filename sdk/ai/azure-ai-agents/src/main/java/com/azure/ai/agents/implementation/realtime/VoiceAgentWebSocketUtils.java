@@ -7,6 +7,7 @@ import com.azure.ai.agents.implementation.models.AgentDefinitionOptInKeys;
 import com.azure.ai.agents.models.RawRealtimeServerEvent;
 import com.azure.ai.agents.models.RealtimeServerEvent;
 import com.azure.ai.agents.models.VoiceAgentTransport;
+import com.azure.ai.agents.models.VoiceAgentLiveWebSocketConnectionOptions;
 import com.azure.ai.agents.models.VoiceAgentWebSocketConnectionOptions;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpHeader;
@@ -54,9 +55,13 @@ public final class VoiceAgentWebSocketUtils {
     }
 
     public static RealtimeServerEvent deserializeEvent(String json) throws IOException {
+        return deserializeEvent(json, false);
+    }
+
+    public static RealtimeServerEvent deserializeEvent(String json, boolean live) throws IOException {
         validateEvent(BinaryData.fromString(json));
         RawRealtimeServerEvent raw = new RawRealtimeServerEvent(BinaryData.fromString(json));
-        if (raw.getType() == null) {
+        if (live || raw.getType() == null) {
             return raw;
         }
         try (JsonReader reader = JsonProviders.createReader(json)) {
@@ -69,6 +74,26 @@ public final class VoiceAgentWebSocketUtils {
     public static final String SUBPROTOCOL = "realtime";
 
     private VoiceAgentWebSocketUtils() {
+    }
+
+    public static VoiceAgentWebSocketConnectionOptions liveOptions(VoiceAgentLiveWebSocketConnectionOptions options) {
+        Objects.requireNonNull(options, "'options' cannot be null.");
+        return new VoiceAgentWebSocketConnectionOptions().setReceiveBufferCapacity(options.getReceiveBufferCapacity())
+            .setMaxMessageSize(options.getMaxMessageSize())
+            .setOverflowStrategy(options.getOverflowStrategy())
+            .setMalformedEventHandler(options.getMalformedEventHandler())
+            .setHandshakeTimeout(options.getHandshakeTimeout())
+            .setCloseTimeout(options.getCloseTimeout())
+            .setStoreEnabled(options.isStoreEnabled())
+            .setAgentVersionOverride(options.getAgentVersionOverride())
+            .setStructuredInputs(options.getStructuredInputs());
+    }
+
+    public static BinaryData liveEventPayload(RealtimeServerEvent event) {
+        if (event instanceof RawRealtimeServerEvent) {
+            return ((RawRealtimeServerEvent) event).getRawEvent();
+        }
+        throw new IllegalStateException("Expected a raw native Live event.");
     }
 
     public static void validateClose(int code, String reason) {
@@ -112,13 +137,16 @@ public final class VoiceAgentWebSocketUtils {
         }
 
         String basePath = endpoint.getRawPath() == null ? "" : endpoint.getRawPath().replaceAll("/$", "");
-        String path = basePath + "/agents/" + encode(agentName) + "/endpoint/protocols/voice";
+        String path = basePath + "/agents/" + encode(agentName) + "/endpoint/protocols/voice"
+            + (configuration.isLive() ? "/live/sessions" : "");
         URI baseUri = URI.create(scheme + "://" + endpoint.getRawAuthority() + path);
         UrlBuilder url = UrlBuilder.parse(baseUri.toString());
         url.setQueryParameter("api-version", encode(configuration.getApiVersion()));
         url.setQueryParameter("x-ms-client-sdk", encode(configuration.getUserAgent()));
-        VoiceAgentTransport transport = options.getTransport();
-        url.setQueryParameter("transport", transport == null ? "websocket" : encode(transport.toString()));
+        if (!configuration.isLive()) {
+            VoiceAgentTransport transport = options.getTransport();
+            url.setQueryParameter("transport", transport == null ? "websocket" : encode(transport.toString()));
+        }
         if (options.isStoreEnabled() != null) {
             url.setQueryParameter("store", options.isStoreEnabled().toString());
         }
@@ -127,6 +155,9 @@ public final class VoiceAgentWebSocketUtils {
         }
         if (options.getAgentSessionId() != null) {
             url.setQueryParameter("agent_session_id", encode(options.getAgentSessionId()));
+        }
+        if (configuration.isLive() && options.getStructuredInputs() != null) {
+            url.setQueryParameter("structured_inputs", encode(options.getStructuredInputs()));
         }
         return URI.create(url.toString());
     }
@@ -147,7 +178,7 @@ public final class VoiceAgentWebSocketUtils {
         }
         headers.set(HttpHeaderName.fromString("Foundry-Features"),
             AgentDefinitionOptInKeys.VOICE_AGENTS_V1_PREVIEW.toString());
-        if (options.getStructuredInputs() != null) {
+        if (!configuration.isLive() && options.getStructuredInputs() != null) {
             headers.set(HttpHeaderName.fromString("x-ms-voice-structured-inputs"), options.getStructuredInputs());
         }
         return headers.set(HttpHeaderName.AUTHORIZATION, "Bearer " + token);

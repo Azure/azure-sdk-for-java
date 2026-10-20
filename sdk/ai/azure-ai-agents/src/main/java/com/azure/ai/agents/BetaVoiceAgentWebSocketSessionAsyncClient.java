@@ -425,10 +425,12 @@ public final class BetaVoiceAgentWebSocketSessionAsyncClient implements AsyncClo
                     headers.set(header.getName(), header.getValue());
                 }
             });
-        WebsocketClientSpec spec = WebsocketClientSpec.builder()
-            .protocols(VoiceAgentWebSocketUtils.SUBPROTOCOL)
-            .maxFramePayloadLength(options.getMaxMessageSize())
-            .build();
+        WebsocketClientSpec.Builder specBuilder
+            = WebsocketClientSpec.builder().maxFramePayloadLength(options.getMaxMessageSize());
+        if (!configuration.isLive()) {
+            specBuilder.protocols(VoiceAgentWebSocketUtils.SUBPROTOCOL);
+        }
+        WebsocketClientSpec spec = specBuilder.build();
 
         return client.websocket(spec).uri(websocketUri.toString()).connect().flatMap(connection -> {
             if (!(connection instanceof WebsocketInbound) || !(connection instanceof WebsocketOutbound)) {
@@ -468,8 +470,8 @@ public final class BetaVoiceAgentWebSocketSessionAsyncClient implements AsyncClo
             try {
                 byte[] bytes = new byte[frame.content().readableBytes()];
                 frame.content().getBytes(frame.content().readerIndex(), bytes);
-                RealtimeServerEvent event
-                    = VoiceAgentWebSocketUtils.deserializeEvent(VoiceAgentWebSocketUtils.decodeEvent(bytes));
+                RealtimeServerEvent event = VoiceAgentWebSocketUtils
+                    .deserializeEvent(VoiceAgentWebSocketUtils.decodeEvent(bytes), configuration.isLive());
                 Sinks.EmitResult result = events.tryEmitNext(event);
                 if (result == Sinks.EmitResult.FAIL_OVERFLOW || result == Sinks.EmitResult.FAIL_ZERO_SUBSCRIBER) {
                     switch (options.getOverflowStrategy()) {
