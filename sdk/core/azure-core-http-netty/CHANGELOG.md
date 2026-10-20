@@ -3,6 +3,9 @@
 ## 1.17.0-beta.1 (Unreleased)
 
 ### Features Added
+- Added opt-in observation of the `Expect: 100-continue` handshake. When a caller places an `AtomicBoolean` in the
+  request `Context` under the key `azure-http-client-expect-continue-received`, the client sets it to `true` if the
+  service answers with an interim `100 Continue` response. This does not change how or when the request body is sent.
 
 ### Breaking Changes
 

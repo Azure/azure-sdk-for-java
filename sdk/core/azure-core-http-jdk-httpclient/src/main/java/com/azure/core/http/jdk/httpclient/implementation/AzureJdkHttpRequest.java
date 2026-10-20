@@ -43,23 +43,6 @@ public final class AzureJdkHttpRequest extends HttpRequest {
     private final Optional<Duration> responseTimeout;
 
     /**
-     * Creates a request with a callback when its body has finished being published.
-     *
-     * @param azureCoreRequest The Azure Core request.
-     * @param context The request context.
-     * @param restrictedHeaders The restricted header names.
-     * @param logger The logger.
-     * @param writeTimeout The write timeout.
-     * @param responseTimeout The response timeout.
-     * @param writeCompleted Callback after publishing the request body, or null to use the native request timeout.
-     */
-    public AzureJdkHttpRequest(com.azure.core.http.HttpRequest azureCoreRequest, Context context,
-        Set<String> restrictedHeaders, ClientLogger logger, Duration writeTimeout, Duration responseTimeout,
-        Runnable writeCompleted) {
-        this(azureCoreRequest, context, restrictedHeaders, logger, writeTimeout, responseTimeout, null, writeCompleted);
-    }
-
-    /**
      * Creates a request with callbacks for the start and completion of body publication.
      *
      * @param azureCoreRequest The Azure Core request.
@@ -68,12 +51,13 @@ public final class AzureJdkHttpRequest extends HttpRequest {
      * @param logger The logger.
      * @param writeTimeout The write timeout.
      * @param responseTimeout The response timeout.
-     * @param writeStarted Callback when the body is subscribed, or null.
-     * @param writeCompleted Callback after publishing the request body, or null to use the native request timeout.
+     * @param writeStartedCallback Callback when the body is subscribed, or null.
+     * @param writeCompletedCallback Callback after publishing the request body, or null to use the native request
+     * timeout.
      */
     public AzureJdkHttpRequest(com.azure.core.http.HttpRequest azureCoreRequest, Context context,
         Set<String> restrictedHeaders, ClientLogger logger, Duration writeTimeout, Duration responseTimeout,
-        Runnable writeStarted, Runnable writeCompleted) {
+        Runnable writeStartedCallback, Runnable writeCompletedCallback) {
         HttpMethod method = azureCoreRequest.getHttpMethod();
         ProgressReporter progressReporter = Contexts.with(context).getHttpRequestProgressReporter();
         responseTimeout = (Duration) context.getData(HttpUtils.AZURE_RESPONSE_TIMEOUT)
@@ -85,8 +69,8 @@ public final class AzureJdkHttpRequest extends HttpRequest {
             ? noBody()
             : BodyPublisherUtils.toBodyPublisher(azureCoreRequest, writeTimeout, progressReporter);
         boolean hasBody = publisher.contentLength() != 0;
-        this.bodyPublisher = (hasBody && writeCompleted != null)
-            ? new CompletionTrackingPublisher(publisher, writeStarted, writeCompleted)
+        this.bodyPublisher = (hasBody && writeCompletedCallback != null)
+            ? new CompletionTrackingPublisher(publisher, writeStartedCallback, writeCompletedCallback)
             : publisher;
 
         // The JDK enters its wait path on this flag alone, so only opt in when there is content to withhold. A
@@ -105,7 +89,7 @@ public final class AzureJdkHttpRequest extends HttpRequest {
                 restrictedHeaders, logger), (ignored1, ignored2) -> true);
         // The JDK does not subscribe to a zero-length publisher, so keep its native deadline for bodiless requests.
         // Non-empty uploads use the completion callback instead; a native deadline would also time out the upload.
-        this.responseTimeout = (writeCompleted == null || !hasBody)
+        this.responseTimeout = (writeCompletedCallback == null || !hasBody)
             && responseTimeout != null
             && !responseTimeout.isZero()
             && !responseTimeout.isNegative() ? Optional.of(responseTimeout) : Optional.empty();

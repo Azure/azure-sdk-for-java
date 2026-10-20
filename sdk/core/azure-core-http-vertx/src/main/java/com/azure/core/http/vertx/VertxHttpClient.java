@@ -184,8 +184,8 @@ class VertxHttpClient implements HttpClient {
             }
 
             HttpClientRequest vertxRequest = requestResult.result();
-            // A timed-out or cancelled response future does not abort the underlying HTTP exchange on its own.
-            promise.future().onFailure(ignored -> vertxRequest.reset());
+            // A timed-out or canceled response future does not abort the underlying HTTP exchange on its own.
+            promise.future().onFailure(cause -> resetRequest(vertxRequest, 0L, cause));
             if (promise.future().failed()) {
                 return;
             }

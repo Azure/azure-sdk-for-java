@@ -8,6 +8,7 @@
 
 ### Bugs Fixed
 
+- Prevented proxy authentication retries for HTTPS endpoint 407 responses while preserving CONNECT and cleartext HTTP proxy authentication.
 - Fixed configured default connection, read, and write timeouts being ignored when no explicit builder timeout is set.
 
 ### Other Changes
