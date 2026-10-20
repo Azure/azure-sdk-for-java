@@ -13,6 +13,9 @@ import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
 import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
+import com.azure.cosmos.models.CosmosClientTelemetryConfig;
+import com.azure.cosmos.models.CosmosMetricTagName;
+import com.azure.cosmos.models.CosmosMicrometerMetricsOptions;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.buffer.Unpooled;
@@ -86,11 +89,11 @@ public class RxGatewayStoreModelTest {
 
     @DataProvider(name = "gatewayResponseStatuses")
     public Object[][] gatewayResponseStatuses() {
-        return new Object[][] {{200}, {503}};
+        return new Object[][] {{200, true}, {503, true}, {200, false}, {503, false}};
     }
 
     @Test(groups = "unit", dataProvider = "gatewayResponseStatuses")
-    public void gatewayDiagnosticsCaptureAttemptRequestUri(int statusCode) throws Exception {
+    public void gatewayDiagnosticsCaptureAttemptRequestUri(int statusCode, boolean endpointTagEnabled) throws Exception {
         DiagnosticsClientContext clientContext = mockDiagnosticsClientContext();
         HttpResponse httpResponse = new HttpResponse() {
             @Override public int statusCode() { return statusCode; }
@@ -111,10 +114,15 @@ public class RxGatewayStoreModelTest {
 
         GatewayServiceConfigurationReader configurationReader = Mockito.mock(GatewayServiceConfigurationReader.class);
         Mockito.doReturn(ConsistencyLevel.SESSION).when(configurationReader).getDefaultConsistencyLevel();
+        CosmosClientTelemetryConfig telemetryConfig = new CosmosClientTelemetryConfig().metricsOptions(
+            new CosmosMicrometerMetricsOptions()
+                .configureDefaultTagNames(
+                    endpointTagEnabled ? CosmosMetricTagName.SERVICE_ENDPOINT : CosmosMetricTagName.DEFAULT)
+                .setEnabled(true));
         RxGatewayStoreModel storeModel = new RxGatewayStoreModel(
             clientContext, Mockito.mock(ISessionContainer.class), ConsistencyLevel.SESSION,
             QueryCompatibilityMode.Default, new UserAgentContainer(), Mockito.mock(GlobalEndpointManager.class),
-            httpClient, null, null);
+            httpClient, null, null, telemetryConfig);
         storeModel.setGatewayServiceConfigurationReader(configurationReader);
 
         RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(
@@ -144,6 +152,14 @@ public class RxGatewayStoreModelTest {
         ClientSideRequestStatistics.GatewayStatistics gatewayStatistics = statistics.getGatewayStatisticsList().get(0);
         assertThat(gatewayStatistics.getRequestUri()).isEqualTo(sentRequest.get().uri());
         assertThat(gatewayStatistics.getEndpoint()).isEqualTo(sentRequest.get().uri().toString());
+        if (endpointTagEnabled) {
+            assertThat(gatewayStatistics.getServiceEndpointMetricTag())
+                .isSameAs(storeModel.getServiceEndpointMetricTag(sentRequest.get().uri()));
+            assertThat(gatewayStatistics.getServiceEndpointMetricTag().getValue())
+                .isEqualTo("account.documents.azure.com_10250");
+        } else {
+            assertThat(gatewayStatistics.getServiceEndpointMetricTag()).isNull();
+        }
         if (statusCode == 200) {
             assertThat(gatewayStatistics.getRequestUri()).isSameAs(sentRequest.get().uri());
         } else {

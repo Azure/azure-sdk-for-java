@@ -3,18 +3,17 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
-import com.azure.cosmos.implementation.Configs;
-import com.azure.cosmos.implementation.ConnectionPolicy;
-import com.azure.cosmos.implementation.DatabaseAccountManagerInternal;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.OperationType;
+import com.azure.cosmos.implementation.QueryCompatibilityMode;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
+import com.azure.cosmos.implementation.RxGatewayStoreModel;
+import com.azure.cosmos.implementation.ThinClientStoreModel;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetryMetrics;
 import com.azure.cosmos.implementation.clienttelemetry.TagName;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
@@ -112,11 +111,11 @@ public class GatewayEndpointMetricsTest {
         URI firstUri = URI.create("https://account.documents.azure.com:10250/dbs/db/docs/first");
         URI secondUri = URI.create("https://account.documents.azure.com:10250/dbs/db/docs/second?query=value");
         try (TestState state = new TestState(CosmosMetricTagName.SERVICE_ENDPOINT)) {
-            Tag endpointTag = state.endpointManager.getServiceEndpointMetricTag(firstUri);
+            Tag endpointTag = state.storeModel.getServiceEndpointMetricTag(firstUri);
             state.recordGateway(firstUri, 200);
             state.recordGateway(secondUri, 200);
 
-            assertThat(state.endpointManager.getServiceEndpointMetricTag(secondUri)).isSameAs(endpointTag);
+            assertThat(state.storeModel.getServiceEndpointMetricTag(secondUri)).isSameAs(endpointTag);
             Tag emittedTag = state.registry.get(CosmosMetricName.REQUEST_SUMMARY_GATEWAY_REQUESTS.toString())
                 .counter().getId().getTags().stream()
                 .filter(tag -> SERVICE_ENDPOINT.equals(tag.getKey()))
@@ -129,7 +128,7 @@ public class GatewayEndpointMetricsTest {
     public void concurrentRequestsShareOneEndpointTag() throws Exception {
         try (TestState state = new TestState(CosmosMetricTagName.SERVICE_ENDPOINT)) {
             List<Tag> endpointTags = IntStream.range(0, 100).parallel()
-                .mapToObj(i -> state.endpointManager.getServiceEndpointMetricTag(
+                .mapToObj(i -> state.storeModel.getServiceEndpointMetricTag(
                     URI.create("https://account.documents.azure.com:10250/dbs/db/docs/" + i)))
                 .collect(Collectors.toList());
 
@@ -140,18 +139,42 @@ public class GatewayEndpointMetricsTest {
     }
 
     @Test(groups = {"unit"})
-    public void endpointTagsAreClientScopedAndClearedOnClose() throws Exception {
+    public void endpointTagsAreStoreModelScopedAndClearedOnClose() throws Exception {
         URI requestUri = URI.create("https://account.documents.azure.com:10250/dbs/db/docs/id");
         try (TestState first = new TestState(CosmosMetricTagName.SERVICE_ENDPOINT);
              TestState second = new TestState(CosmosMetricTagName.SERVICE_ENDPOINT)) {
-            Tag firstTag = first.endpointManager.getServiceEndpointMetricTag(requestUri);
-            Tag secondTag = second.endpointManager.getServiceEndpointMetricTag(requestUri);
+            Tag firstTag = first.storeModel.getServiceEndpointMetricTag(requestUri);
+            Tag secondTag = second.storeModel.getServiceEndpointMetricTag(requestUri);
             assertThat(firstTag).isEqualTo(secondTag).isNotSameAs(secondTag);
 
-            first.endpointManager.close();
-            assertThat(FieldUtils.readField(first.endpointManager, "serviceEndpointMetricTags", true))
+            first.storeModel.close();
+            assertThat(FieldUtils.readField(first.storeModel, "serviceEndpointMetricTags", true))
                 .isEqualTo(Collections.emptyMap());
-            assertThat(second.endpointManager.getServiceEndpointMetricTag(requestUri)).isSameAs(secondTag);
+            assertThat(second.storeModel.getServiceEndpointMetricTag(requestUri)).isSameAs(secondTag);
+        }
+    }
+
+    @Test(groups = {"unit"})
+    public void copiedStoreModelsReuseTheSameTags() throws Exception {
+        URI requestUri = URI.create("https://account.documents.azure.com:10250/dbs/db/docs/id");
+        try (TestState state = new TestState(CosmosMetricTagName.SERVICE_ENDPOINT);
+             RxGatewayStoreModel copy = new RxGatewayStoreModel(state.storeModel)) {
+            assertThat(copy.getServiceEndpointMetricTag(requestUri))
+                .isSameAs(state.storeModel.getServiceEndpointMetricTag(requestUri));
+        }
+    }
+
+    @Test(groups = {"unit"})
+    public void thinClientUsesInheritedEndpointTagCache() throws Exception {
+        URI requestUri = URI.create("https://account.documents.azure.com:10250/dbs/db/docs/id");
+        try (TestState state = new TestState(CosmosMetricTagName.SERVICE_ENDPOINT);
+             ThinClientStoreModel thinClient = new ThinClientStoreModel(
+                 mock(DiagnosticsClientContext.class), null, ConsistencyLevel.SESSION, null, null, null, null,
+                 state.telemetryConfig)) {
+            Tag tag = thinClient.getServiceEndpointMetricTag(requestUri);
+            assertThat(tag.getValue()).isEqualTo("account.documents.azure.com_10250");
+            assertThat(thinClient.getServiceEndpointMetricTag(
+                URI.create("https://account.documents.azure.com:10250/dbs/db/docs/other"))).isSameAs(tag);
         }
     }
 
@@ -180,7 +203,20 @@ public class GatewayEndpointMetricsTest {
             for (Meter meter : state.registry.getMeters()) {
                 assertThat(meter.getId().getTag(SERVICE_ENDPOINT)).isNull();
             }
-            assertThat(FieldUtils.readField(state.endpointManager, "serviceEndpointMetricTags", true))
+            assertThat(FieldUtils.readField(state.storeModel, "serviceEndpointMetricTags", true))
+                .isEqualTo(Collections.emptyMap());
+        }
+    }
+
+    @Test(groups = {"unit"})
+    public void globallyDisabledMetricsDoNotPopulateTheStoreCache() throws Exception {
+        try (TestState state = new TestState(CosmosMetricTagName.SERVICE_ENDPOINT)) {
+            state.telemetryConfig.metricsOptions(
+                new CosmosMicrometerMetricsOptions().configureDefaultTagNames(CosmosMetricTagName.SERVICE_ENDPOINT)
+                    .setEnabled(false));
+            assertThat(state.storeModel.getServiceEndpointMetricTag(
+                URI.create("https://account.documents.azure.com:10250/dbs/db"))).isNull();
+            assertThat(FieldUtils.readField(state.storeModel, "serviceEndpointMetricTags", true))
                 .isEqualTo(Collections.emptyMap());
         }
     }
@@ -224,25 +260,33 @@ public class GatewayEndpointMetricsTest {
 
     @Test(groups = {"unit"})
     public void successfulResponseReusesCapturedUriWithoutParsingEndpointText() throws Exception {
-        URI requestUri = URI.create("https://account.documents.azure.com:10250/dbs/db/docs/id");
-        StoreResponse response = new StoreResponse("not a URI", 200,
-            Collections.singletonMap(HttpConstants.HttpHeaders.REQUEST_CHARGE, "2.5"), null, 0);
-        response.setRequestUri(requestUri);
-        StoreResponse remappedResponse = response.withRemappedStatusCode(200, 0);
-        assertThat(remappedResponse.getRequestUri()).isSameAs(requestUri);
-
-        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
-            mock(DiagnosticsClientContext.class), OperationType.Read, ResourceType.Document);
-        StoreResponseDiagnostics diagnostics = StoreResponseDiagnostics.createStoreResponseDiagnostics(
-            remappedResponse, request);
-        assertThat(diagnostics.getRequestUri()).isSameAs(requestUri);
-        assertThat(diagnostics.getEndpoint()).isEqualTo("not a URI");
-        assertThat(new ObjectMapper().valueToTree(diagnostics).has("requestUri")).isFalse();
-
         try (TestState state = new TestState(CosmosMetricTagName.SERVICE_ENDPOINT)) {
+            URI requestUri = URI.create("https://account.documents.azure.com:10250/dbs/db/docs/id");
+            Tag endpointTag = state.storeModel.getServiceEndpointMetricTag(requestUri);
+            StoreResponse response = new StoreResponse("not a URI", 200,
+                Collections.singletonMap(HttpConstants.HttpHeaders.REQUEST_CHARGE, "2.5"), null, 0);
+            response.setRequestUri(requestUri);
+            response.setServiceEndpointMetricTag(endpointTag);
+            StoreResponse remappedResponse = response.withRemappedStatusCode(200, 0);
+            assertThat(remappedResponse.getRequestUri()).isSameAs(requestUri);
+            assertThat(remappedResponse.getServiceEndpointMetricTag()).isSameAs(endpointTag);
+
+            RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
+                mock(DiagnosticsClientContext.class), OperationType.Read, ResourceType.Document);
+            StoreResponseDiagnostics diagnostics = StoreResponseDiagnostics.createStoreResponseDiagnostics(
+                remappedResponse, request);
+            assertThat(diagnostics.getRequestUri()).isSameAs(requestUri);
+            assertThat(diagnostics.getEndpoint()).isEqualTo("not a URI");
+            assertThat(diagnostics.getServiceEndpointMetricTag()).isSameAs(endpointTag);
+            assertThat(new ObjectMapper().valueToTree(diagnostics).has("requestUri")).isFalse();
+            assertThat(new ObjectMapper().valueToTree(diagnostics).has("serviceEndpointMetricTag")).isFalse();
+
+            state.storeModel.close();
             ClientSideRequestStatistics.GatewayStatistics statistics = state.recordGateway(diagnostics);
             assertThat(statistics.getRequestUri()).isSameAs(requestUri);
+            assertThat(statistics.getServiceEndpointMetricTag()).isSameAs(endpointTag);
             assertThat(new ObjectMapper().valueToTree(statistics).has("requestUri")).isFalse();
+            assertThat(new ObjectMapper().valueToTree(statistics).has("serviceEndpointMetricTag")).isFalse();
             assertThat(state.registry.get(CosmosMetricName.REQUEST_SUMMARY_GATEWAY_REQUESTS.toString())
                 .tag(SERVICE_ENDPOINT, "account.documents.azure.com_10250").counter().count()).isEqualTo(1);
         }
@@ -250,24 +294,30 @@ public class GatewayEndpointMetricsTest {
 
     @Test(groups = {"unit"})
     public void failedResponsesSnapshotTheExistingExceptionUri() throws Exception {
-        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
-            mock(DiagnosticsClientContext.class), OperationType.Read, ResourceType.Document);
-        CosmosException exception = new CosmosException(503, "test failure");
-        Uri firstUri = new Uri("https://account-eastus.documents.azure.com:10250/dbs/db/docs/id");
-        ImplementationBridgeHelpers.CosmosExceptionHelper.getCosmosExceptionAccessor()
-            .setRequestUri(exception, firstUri);
-        StoreResponseDiagnostics firstDiagnostics = StoreResponseDiagnostics.createStoreResponseDiagnostics(
-            exception, request);
-
-        Uri secondUri = new Uri("https://account-westus.documents.azure.com/dbs/db/docs/id");
-        ImplementationBridgeHelpers.CosmosExceptionHelper.getCosmosExceptionAccessor()
-            .setRequestUri(exception, secondUri);
-        StoreResponseDiagnostics secondDiagnostics = StoreResponseDiagnostics.createStoreResponseDiagnostics(
-            exception, request);
-
         try (TestState state = new TestState(CosmosMetricTagName.SERVICE_ENDPOINT)) {
-            assertThat(state.recordGateway(firstDiagnostics).getRequestUri()).isSameAs(firstUri.getURI());
-            assertThat(state.recordGateway(secondDiagnostics).getRequestUri()).isSameAs(secondUri.getURI());
+            RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
+                mock(DiagnosticsClientContext.class), OperationType.Read, ResourceType.Document);
+            CosmosException exception = new CosmosException(503, "test failure");
+            Uri firstUri = new Uri("https://account-eastus.documents.azure.com:10250/dbs/db/docs/id");
+            Tag firstTag = state.storeModel.getServiceEndpointMetricTag(firstUri.getURI());
+            ImplementationBridgeHelpers.CosmosExceptionHelper.getCosmosExceptionAccessor()
+                .setRequestUri(exception, firstUri);
+            StoreResponseDiagnostics firstDiagnostics = StoreResponseDiagnostics.createStoreResponseDiagnostics(
+                exception, request, firstTag);
+
+            Uri secondUri = new Uri("https://account-westus.documents.azure.com/dbs/db/docs/id");
+            Tag secondTag = state.storeModel.getServiceEndpointMetricTag(secondUri.getURI());
+            ImplementationBridgeHelpers.CosmosExceptionHelper.getCosmosExceptionAccessor()
+                .setRequestUri(exception, secondUri);
+            StoreResponseDiagnostics secondDiagnostics = StoreResponseDiagnostics.createStoreResponseDiagnostics(
+                exception, request, secondTag);
+
+            ClientSideRequestStatistics.GatewayStatistics first = state.recordGateway(firstDiagnostics);
+            ClientSideRequestStatistics.GatewayStatistics second = state.recordGateway(secondDiagnostics);
+            assertThat(first.getRequestUri()).isSameAs(firstUri.getURI());
+            assertThat(second.getRequestUri()).isSameAs(secondUri.getURI());
+            assertThat(first.getServiceEndpointMetricTag()).isSameAs(firstTag);
+            assertThat(second.getServiceEndpointMetricTag()).isSameAs(secondTag);
             assertThat(state.registry.get(CosmosMetricName.REQUEST_SUMMARY_GATEWAY_REQUESTS.toString())
                 .tag(SERVICE_ENDPOINT, "account-eastus.documents.azure.com_10250").counter().count()).isEqualTo(1);
             assertThat(state.registry.get(CosmosMetricName.REQUEST_SUMMARY_GATEWAY_REQUESTS.toString())
@@ -295,16 +345,10 @@ public class GatewayEndpointMetricsTest {
         private final SimpleMeterRegistry registry = new SimpleMeterRegistry();
         private final CosmosMicrometerMetricsOptions options;
         private final CosmosAsyncClient client = mock(CosmosAsyncClient.class);
-        private final GlobalEndpointManager endpointManager;
+        private final RxGatewayStoreModel storeModel;
+        private final CosmosClientTelemetryConfig telemetryConfig;
 
         private TestState(CosmosMetricTagName tags) throws IllegalAccessException {
-            DatabaseAccountManagerInternal owner = mock(DatabaseAccountManagerInternal.class);
-            doReturn(URI.create("https://account.documents.azure.com")).when(owner).getServiceEndpoint();
-            this.endpointManager = new GlobalEndpointManager(
-                owner, new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig()), new Configs());
-            AsyncDocumentClient contextClient = mock(AsyncDocumentClient.class);
-            doReturn(this.endpointManager).when(contextClient).getGlobalEndpointManager();
-            doReturn(contextClient).when(this.client).getContextClient();
             this.options = new CosmosMicrometerMetricsOptions()
                 .meterRegistry(this.registry)
                 .configureDefaultTagNames(tags)
@@ -312,8 +356,12 @@ public class GatewayEndpointMetricsTest {
                 .configureDefaultPercentiles()
                 .applyDiagnosticThresholdsForTransportLevelMeters(false);
             this.options.setEnabled(true);
+            this.telemetryConfig = new CosmosClientTelemetryConfig().metricsOptions(this.options);
+            this.storeModel = new RxGatewayStoreModel(
+                mock(DiagnosticsClientContext.class), null, ConsistencyLevel.SESSION, QueryCompatibilityMode.Default,
+                null, mock(GlobalEndpointManager.class), null, null, null, this.telemetryConfig);
             FieldUtils.writeField(this.client, "clientTelemetryConfig",
-                new CosmosClientTelemetryConfig().metricsOptions(this.options), true);
+                this.telemetryConfig, true);
             FieldUtils.writeField(this.client, "clientMetricRegistrySnapshot", this.registry, true);
             doReturn("account").when(this.client).getAccountTagValue();
             doReturn(Tag.of(TagName.ClientCorrelationId.toString(), "gateway-endpoint-metrics"))
@@ -325,6 +373,7 @@ public class GatewayEndpointMetricsTest {
             StoreResponseDiagnostics response = mock(StoreResponseDiagnostics.class);
             doReturn(requestUri != null ? requestUri.toString() : null).when(response).getEndpoint();
             doReturn(requestUri).when(response).getRequestUri();
+            doReturn(this.storeModel.getServiceEndpointMetricTag(requestUri)).when(response).getServiceEndpointMetricTag();
             doReturn(statusCode).when(response).getStatusCode();
             doReturn(2.5).when(response).getRequestCharge();
             doReturn("activity-id").when(response).getActivityId();
@@ -356,7 +405,7 @@ public class GatewayEndpointMetricsTest {
         @Override
         public void close() {
             ClientTelemetryMetrics.remove(this.registry);
-            this.endpointManager.close();
+            this.storeModel.close();
         }
     }
 }

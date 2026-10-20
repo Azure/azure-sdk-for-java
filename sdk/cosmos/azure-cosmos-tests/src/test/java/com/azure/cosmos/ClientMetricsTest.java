@@ -1644,6 +1644,12 @@ public class ClientMetricsTest extends BatchTestBase {
                 assertThat(endpoint.getScheme()).isEqualToIgnoringCase("https");
                 assertThat(endpoint.getHost()).isNotBlank();
                 String expectedEndpoint = endpoint.getHost() + "_" + (endpoint.getPort() == -1 ? 443 : endpoint.getPort());
+                if (serviceEndpointEnabled) {
+                    assertThat(statistics.getServiceEndpointMetricTag()).isNotNull();
+                    assertThat(statistics.getServiceEndpointMetricTag().getValue()).isEqualTo(expectedEndpoint);
+                } else {
+                    assertThat(statistics.getServiceEndpointMetricTag()).isNull();
+                }
                 Tags requestTags = Tags.of(
                     this.clientCorrelationTag,
                     Tag.of(TagName.RequestOperationType.toString(),

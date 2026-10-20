@@ -14,6 +14,7 @@ import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelAcqu
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelStatistics;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpointStatistics;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.micrometer.core.instrument.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,6 +55,7 @@ public class StoreResponseDiagnostics {
     private final List<String> faultInjectionEvaluationResults;
     private final String endpoint;
     private final URI requestUri;
+    private final Tag serviceEndpointMetricTag;
     private final String requestThroughputControlGroupName;
     private final String requestThroughputControlGroupConfig;
 
@@ -68,7 +70,15 @@ public class StoreResponseDiagnostics {
         CosmosException cosmosException,
         RxDocumentServiceRequest rxDocumentServiceRequest) {
 
-        return new StoreResponseDiagnostics(cosmosException, rxDocumentServiceRequest);
+        return new StoreResponseDiagnostics(cosmosException, rxDocumentServiceRequest, null);
+    }
+
+    public static StoreResponseDiagnostics createStoreResponseDiagnostics(
+        CosmosException cosmosException,
+        RxDocumentServiceRequest rxDocumentServiceRequest,
+        Tag serviceEndpointMetricTag) {
+
+        return new StoreResponseDiagnostics(cosmosException, rxDocumentServiceRequest, serviceEndpointMetricTag);
     }
 
     private StoreResponseDiagnostics(StoreResponse storeResponse, RxDocumentServiceRequest rxDocumentServiceRequest) {
@@ -96,12 +106,15 @@ public class StoreResponseDiagnostics {
         this.faultInjectionEvaluationResults = storeResponse.getFaultInjectionRuleEvaluationResults();
         this.endpoint = storeResponse.getEndpoint();
         this.requestUri = storeResponse.getRequestUri();
+        this.serviceEndpointMetricTag = storeResponse.getServiceEndpointMetricTag();
         this.requestThroughputControlGroupName = rxDocumentServiceRequest.throughputControlGroupName;
         this.requestThroughputControlGroupConfig =
             rxDocumentServiceRequest.requestContext.throughputControlRequestContext != null ? rxDocumentServiceRequest.requestContext.throughputControlRequestContext.getConfigString() : null;
     }
 
-    private StoreResponseDiagnostics(CosmosException e, RxDocumentServiceRequest rxDocumentServiceRequest) {
+    private StoreResponseDiagnostics(
+        CosmosException e, RxDocumentServiceRequest rxDocumentServiceRequest, Tag serviceEndpointMetricTag) {
+        this.serviceEndpointMetricTag = serviceEndpointMetricTag;
         String rspPkRangeId = BridgeInternal.getPartitionKeyRangeId(e);
         this.partitionKeyRangeId = !Strings.isNullOrWhiteSpace(rspPkRangeId) ? rspPkRangeId :
             rxDocumentServiceRequest.getHeaders().get(HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID);
@@ -221,6 +234,11 @@ public class StoreResponseDiagnostics {
     @JsonIgnore
     public URI getRequestUri() {
         return this.requestUri;
+    }
+
+    @JsonIgnore
+    public Tag getServiceEndpointMetricTag() {
+        return this.serviceEndpointMetricTag;
     }
 
     public String getRequestThroughputControlGroupName() {

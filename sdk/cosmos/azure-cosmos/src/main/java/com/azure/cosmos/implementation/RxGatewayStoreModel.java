@@ -10,6 +10,9 @@ import com.azure.cosmos.ReadConsistencyStrategy;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
+import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetryMetrics;
+import com.azure.cosmos.implementation.clienttelemetry.MetricCategory;
+import com.azure.cosmos.implementation.clienttelemetry.TagName;
 import com.azure.cosmos.implementation.directconnectivity.GatewayServiceConfigurationReader;
 import com.azure.cosmos.implementation.directconnectivity.HttpUtils;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
@@ -29,6 +32,8 @@ import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import com.azure.cosmos.implementation.throughputControl.ThroughputControlStore;
 import com.azure.cosmos.models.CosmosContainerIdentity;
+import com.azure.cosmos.models.CosmosClientTelemetryConfig;
+import io.micrometer.core.instrument.Tag;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.Unpooled;
@@ -53,6 +58,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 
@@ -65,7 +71,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  *
  * Used internally to provide functionality to communicate and process response from GATEWAY in the Azure Cosmos DB database service.
  */
-public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerializer {
+public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerializer, AutoCloseable {
     private static ImplementationBridgeHelpers.CosmosExceptionHelper.CosmosExceptionAccessor cosmosExceptionAccessor() {
         return ImplementationBridgeHelpers.CosmosExceptionHelper.getCosmosExceptionAccessor();
     }
@@ -73,6 +79,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
     private static final boolean leakDetectionDebuggingEnabled = ResourceLeakDetector.getLevel().ordinal() >=
         ResourceLeakDetector.Level.ADVANCED.ordinal();
     private static final boolean HTTP_CONNECTION_WITHOUT_TLS_ALLOWED = Configs.isHttpConnectionWithoutTLSAllowed();
+    private static final Tag UNKNOWN_SERVICE_ENDPOINT_TAG = Tag.of(TagName.ServiceEndpoint.toString(), "NONE");
     private static final int GATEWAY_RETRY_WITH_TIMEOUT_IN_SECONDS = 30;
     private static final int STRONG_GATEWAY_RETRY_WITH_TIMEOUT_IN_SECONDS = 60;
     private static final List<String> headersNeedToBeEscaped = Arrays.asList(
@@ -98,6 +105,8 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
     private RxClientCollectionCache collectionCache;
     private GatewayServerErrorInjector gatewayServerErrorInjector;
     private final Map<String, String> additionalHeaders;
+    private final CosmosClientTelemetryConfig clientTelemetryConfig;
+    private final ConcurrentHashMap<String, Tag> serviceEndpointMetricTags;
 
     public RxGatewayStoreModel(
         DiagnosticsClientContext clientContext,
@@ -110,7 +119,25 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
         ApiType apiType,
         Map<String, String> additionalHeaders) {
 
+        this(clientContext, sessionContainer, defaultConsistencyLevel, queryCompatibilityMode, userAgentContainer,
+            globalEndpointManager, httpClient, apiType, additionalHeaders, null);
+    }
+
+    public RxGatewayStoreModel(
+        DiagnosticsClientContext clientContext,
+        ISessionContainer sessionContainer,
+        ConsistencyLevel defaultConsistencyLevel,
+        QueryCompatibilityMode queryCompatibilityMode,
+        UserAgentContainer userAgentContainer,
+        GlobalEndpointManager globalEndpointManager,
+        HttpClient httpClient,
+        ApiType apiType,
+        Map<String, String> additionalHeaders,
+        CosmosClientTelemetryConfig clientTelemetryConfig) {
+
         this.clientContext = clientContext;
+        this.clientTelemetryConfig = clientTelemetryConfig;
+        this.serviceEndpointMetricTags = new ConcurrentHashMap<>();
 
         if (userAgentContainer == null) {
             userAgentContainer = new UserAgentContainer();
@@ -129,6 +156,8 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
 
     public RxGatewayStoreModel(RxGatewayStoreModel inner) {
         this.clientContext = inner.clientContext;
+        this.clientTelemetryConfig = inner.clientTelemetryConfig;
+        this.serviceEndpointMetricTags = inner.serviceEndpointMetricTags;
         this.defaultHeaders = inner.defaultHeaders;
         this.defaultConsistencyLevel = inner.defaultConsistencyLevel;
         this.globalEndpointManager = inner.globalEndpointManager;
@@ -137,6 +166,50 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
         this.httpClient = inner.httpClient;
         this.sessionContainer = inner.sessionContainer;
         this.additionalHeaders = inner.additionalHeaders;
+    }
+
+    public Tag getServiceEndpointMetricTag(URI requestUri) {
+        if (this.clientTelemetryConfig == null) {
+            return null;
+        }
+
+        ImplementationBridgeHelpers.CosmosClientTelemetryConfigHelper.CosmosClientTelemetryConfigAccessor accessor =
+            ImplementationBridgeHelpers.CosmosClientTelemetryConfigHelper.getCosmosClientTelemetryConfigAccessor();
+        if (!accessor.isClientMetricsEnabled(this.clientTelemetryConfig)
+            || !accessor.getMetricCategories(this.clientTelemetryConfig).contains(MetricCategory.RequestSummary)
+            || !accessor.getMetricTagNames(this.clientTelemetryConfig).contains(TagName.ServiceEndpoint)) {
+            return null;
+        }
+
+        if (requestUri == null) {
+            return UNKNOWN_SERVICE_ENDPOINT_TAG;
+        }
+
+        String authority = requestUri.getRawAuthority();
+        if (authority == null || !"https".equalsIgnoreCase(requestUri.getScheme())) {
+            logger.warn("Gateway endpoint for request metrics must be an HTTPS URI with a hostname.");
+            return UNKNOWN_SERVICE_ENDPOINT_TAG;
+        }
+
+        Tag cachedTag = this.serviceEndpointMetricTags.get(authority);
+        if (cachedTag != null) {
+            return cachedTag;
+        }
+
+        if (requestUri.getHost() == null) {
+            logger.warn("Gateway endpoint for request metrics must be an HTTPS URI with a hostname.");
+            return UNKNOWN_SERVICE_ENDPOINT_TAG;
+        }
+
+        return this.serviceEndpointMetricTags.computeIfAbsent(authority, ignored -> Tag.of(
+            TagName.ServiceEndpoint.toString(),
+            ClientTelemetryMetrics.escape(requestUri.getHost() + "_"
+                + (requestUri.getPort() == -1 ? 443 : requestUri.getPort()))));
+    }
+
+    @Override
+    public void close() {
+        this.serviceEndpointMetricTags.clear();
     }
 
     protected Map<String, String> getDefaultHeaders(
@@ -574,6 +647,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                                                                       RxDocumentServiceRequest request,
                                                                       HttpRequest httpRequest) {
 
+        Tag serviceEndpointMetricTag = getServiceEndpointMetricTag(httpRequest.uri());
         return httpResponseMono
             .publishOn(CosmosSchedulers.TRANSPORT_RESPONSE_BOUNDED_ELASTIC)
             .flatMap(httpResponse -> {
@@ -652,6 +726,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                         retainedBufRef.compareAndSet(content, null);
 
                         rsp.setRequestUri(httpRequest.uri());
+                        rsp.setServiceEndpointMetricTag(serviceEndpointMetricTag);
 
                         if (reactorNettyRequestRecord != null) {
                             rsp.setRequestTimeline(reactorNettyRequestRecord.takeTimelineSnapshot());
@@ -788,7 +863,9 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                                     .getFaultInjectionRuleEvaluationResults(reactorNettyRequestRecord.getTransportRequestId()));
                     }
 
-                    BridgeInternal.recordGatewayResponse(request.requestContext.cosmosDiagnostics, request, dce, globalEndpointManager);
+                    BridgeInternal.recordGatewayResponse(
+                        request.requestContext.cosmosDiagnostics, request, dce, globalEndpointManager,
+                        serviceEndpointMetricTag);
                 }
 
                 return Mono.error(dce);
@@ -837,7 +914,9 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                                     request.faultInjectionRequestContext
                                         .getFaultInjectionRuleEvaluationResults(transportRequestId));
 
-                            BridgeInternal.recordGatewayResponse(request.requestContext.cosmosDiagnostics, request, oce, globalEndpointManager);
+                            BridgeInternal.recordGatewayResponse(
+                                request.requestContext.cosmosDiagnostics, request, oce, globalEndpointManager,
+                                serviceEndpointMetricTag);
                         }
                     }
                 }

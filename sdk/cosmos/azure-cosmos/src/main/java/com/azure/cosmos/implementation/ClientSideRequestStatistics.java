@@ -17,6 +17,7 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
+import io.micrometer.core.instrument.Tag;
 
 import java.io.IOException;
 import java.net.URI;
@@ -308,6 +309,7 @@ public class ClientSideRequestStatistics {
             gatewayStatistics.faultInjectionEvaluationResults = storeResponseDiagnostics.getFaultInjectionEvaluationResults();
             gatewayStatistics.endpoint = storeResponseDiagnostics.getEndpoint();
             gatewayStatistics.requestUri = storeResponseDiagnostics.getRequestUri();
+            gatewayStatistics.serviceEndpointMetricTag = storeResponseDiagnostics.getServiceEndpointMetricTag();
             gatewayStatistics.requestThroughputControlGroupName = storeResponseDiagnostics.getRequestThroughputControlGroupName();
             gatewayStatistics.requestThroughputControlGroupConfig = storeResponseDiagnostics.getRequestThroughputControlGroupConfig();
 
@@ -978,6 +980,7 @@ public class ClientSideRequestStatistics {
             = PerPartitionAutomaticFailoverInfoHolder.EMPTY;
         private String endpoint;
         private URI requestUri;
+        private Tag serviceEndpointMetricTag;
         private String requestThroughputControlGroupName;
         private String requestThroughputControlGroupConfig;
         private String isHubRegionProcessingOnly;
@@ -1058,6 +1061,11 @@ public class ClientSideRequestStatistics {
         @JsonIgnore
         public URI getRequestUri() {
             return this.requestUri;
+        }
+
+        @JsonIgnore
+        public Tag getServiceEndpointMetricTag() {
+            return this.serviceEndpointMetricTag;
         }
 
         public String getRequestThroughputControlGroupName() {

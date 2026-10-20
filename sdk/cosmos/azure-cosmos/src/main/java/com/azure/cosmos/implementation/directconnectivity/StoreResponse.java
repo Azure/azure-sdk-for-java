@@ -12,6 +12,7 @@ import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpointSta
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.JsonNode;
+import io.micrometer.core.instrument.Tag;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.util.IllegalReferenceCountException;
 import org.slf4j.Logger;
@@ -54,6 +55,7 @@ public class StoreResponse {
     private final JsonNodeStorePayload responsePayload;
     private final String endpoint;
     private URI requestUri;
+    private Tag serviceEndpointMetricTag;
 
     public StoreResponse(
             String endpoint,
@@ -384,6 +386,7 @@ public class StoreResponse {
             headers,
             this.responsePayload);
         remappedResponse.requestUri = this.requestUri;
+        remappedResponse.serviceEndpointMetricTag = this.serviceEndpointMetricTag;
         return remappedResponse;
     }
 
@@ -398,5 +401,14 @@ public class StoreResponse {
 
     public void setRequestUri(URI requestUri) {
         this.requestUri = requestUri;
+    }
+
+    @JsonIgnore
+    public Tag getServiceEndpointMetricTag() {
+        return this.serviceEndpointMetricTag;
+    }
+
+    public void setServiceEndpointMetricTag(Tag serviceEndpointMetricTag) {
+        this.serviceEndpointMetricTag = serviceEndpointMetricTag;
     }
 }

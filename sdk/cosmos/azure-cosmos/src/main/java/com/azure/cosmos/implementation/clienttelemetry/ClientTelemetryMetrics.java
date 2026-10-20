@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.clienttelemetry;
 
-import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosDiagnostics;
@@ -82,6 +81,7 @@ public final class ClientTelemetryMetrics {
     private static final Tag QUERYPLAN_TAG = Tag.of(
         TagName.RequestOperationType.toString(),
         ResourceType.DocumentCollection + "/" + OperationType.QueryPlan);
+    private static final Tag UNKNOWN_SERVICE_ENDPOINT_TAG = Tag.of(TagName.ServiceEndpoint.toString(), "NONE");
 
     private static String convertStackTraceToString(Throwable throwable)
     {
@@ -1192,8 +1192,8 @@ public final class ClientTelemetryMetrics {
                         null)
                 );
                 if (this.metricTagNames.contains(TagName.ServiceEndpoint)) {
-                    requestTags = requestTags.and(BridgeInternal.getContextClient(client)
-                        .getGlobalEndpointManager().getServiceEndpointMetricTag(gatewayStats.getRequestUri()));
+                    Tag endpointTag = gatewayStats.getServiceEndpointMetricTag();
+                    requestTags = requestTags.and(endpointTag != null ? endpointTag : UNKNOWN_SERVICE_ENDPOINT_TAG);
                 }
 
                 recordRequestPayloadSizes(
