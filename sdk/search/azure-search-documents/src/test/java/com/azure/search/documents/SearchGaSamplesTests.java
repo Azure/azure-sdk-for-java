@@ -38,6 +38,9 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.IOException;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -47,6 +50,27 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SearchGaSamplesTests {
+    @Test
+    @org.junit.jupiter.api.parallel.ResourceLock(org.junit.jupiter.api.parallel.Resources.SYSTEM_OUT)
+    public void streamSampleLogsErrorPayloadBeforeThrowing() throws IOException {
+        KnowledgeBaseRetrievalStreamEvent error = KnowledgeBaseRetrievalStreamEventConverter.convert("error",
+            "{\"error\":{\"code\":\"BadRequest\",\"message\":\"invalid request\"}}");
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        PrintStream original = System.out;
+        try (PrintStream capture = new PrintStream(output, true, StandardCharsets.UTF_8.name())) {
+            System.setOut(capture);
+            assertThrows(IllegalStateException.class, () -> KnowledgeBaseRetrievalStreamExample.inspectEvent(error,
+                new AtomicBoolean(), new AtomicBoolean()));
+        } finally {
+            System.setOut(original);
+        }
+        String logged = output.toString(StandardCharsets.UTF_8.name());
+        assertTrue(logged.contains("Received event: error"));
+        assertTrue(logged.contains("Event data: "));
+        assertTrue(logged.contains("\"code\":\"BadRequest\""));
+        assertTrue(logged.contains("\"message\":\"invalid request\""));
+    }
+
     @Test
     public void permissionSampleConfiguresSchemaIngestionAndFederation() throws IOException {
         SearchIndex index = DocumentPermissionsExample.permissionIndex("permissions", "application", "federation");

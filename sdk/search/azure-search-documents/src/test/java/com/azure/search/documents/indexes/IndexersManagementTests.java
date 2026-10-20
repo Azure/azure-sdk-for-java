@@ -1225,12 +1225,16 @@ public class IndexersManagementTests extends SearchTestBase {
     }
 
     private static SearchIndexerDataSourceConnection createDataSource(String name) {
+        return createDataSource(name, BLOB_CONTAINER_NAME);
+    }
+
+    private static SearchIndexerDataSourceConnection createDataSource(String name, String containerName) {
         // create the new data source object for this storage account and container
         return new SearchIndexerDataSourceConnection(name, SearchIndexerDataSourceType.AZURE_BLOB,
             new DataSourceCredentials().setConnectionString(String.format(
                 "ResourceId=/subscriptions/%s/resourceGroups/%s/providers/Microsoft.Storage/storageAccounts/%s;",
                 SUBSCRIPTION_ID, RESOURCE_GROUP, STORAGE_ACCOUNT_NAME)),
-            new SearchIndexerDataContainer(BLOB_CONTAINER_NAME).setQuery("/")).setDescription("real live blob");
+            new SearchIndexerDataContainer(containerName).setQuery("/")).setDescription("real live blob");
     }
 
     private List<String> createIndexersForPagination(String prefix) {
@@ -1254,8 +1258,10 @@ public class IndexersManagementTests extends SearchTestBase {
 
     private List<String> createDataSourcesForPagination(String prefix) {
         List<String> names = Arrays.asList(prefix + "data-one", prefix + "data-two");
+        // These recordings use "test", independently of the local storage configuration.
+        String containerName = TEST_MODE == TestMode.PLAYBACK ? "test" : BLOB_CONTAINER_NAME;
         names.forEach(name -> {
-            searchIndexerClient.createDataSourceConnection(createDataSource(name));
+            searchIndexerClient.createDataSourceConnection(createDataSource(name, containerName));
             dataSourcesToDelete.add(name);
         });
         return names;

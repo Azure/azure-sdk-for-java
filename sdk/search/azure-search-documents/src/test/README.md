@@ -93,6 +93,10 @@ to access storage, OpenAI, and AI Services without keys.
 | Search system-assigned identity | AI Services | Cognitive Services User |
 
 Configure these identities and roles on your existing resources. No Bicep deployment is needed for local setup.
+The [streaming example](../samples/java/com/azure/search/documents/KnowledgeBaseRetrievalStreamExample.java)
+uses `DefaultAzureCredential` for Search and the Search service's system-assigned identity for Azure OpenAI.
+Run `az login` locally and enable RBAC authentication on Search. Set `SEARCH_SERVICE_ENDPOINT`, `SEARCH_OPENAI_ENDPOINT`,
+`SEARCH_OPENAI_DEPLOYMENT_NAME`, and `SEARCH_OPENAI_MODEL_NAME`; API keys are not required.
 The unchanged [provisioning template](../../../test-resources.bicep) uses user-assigned identity and does not configure
 the system-assigned workflow described here.
 
@@ -108,7 +112,14 @@ Analyzer tests create indexes concurrently. An HTTP 429 reporting the service's 
 failure, not a serialization error. Retry with available capacity and bounded test parallelism. In playback,
 such a response is replayed from the recording and is not a fresh Azure request.
 
+`SearchIndexerClientBuilderTests.asyncListingHelpersPreserveContinuationPages` uses mock HTTP responses to
+verify that the async data source, indexer, and skillset listing helpers preserve typed items and continuation
+pages after regeneration or merge changes. It does not require Azure resources or recordings.
+
 ## Playback and recording assets
+
+The indexer prefix-pagination tests use the recorded container name `test` in playback. Live and record runs
+continue to use `SEARCH_STORAGE_CONTAINER_NAME`; no storage-container environment override is needed for playback.
 
 Run all tests without Azure calls:
 
