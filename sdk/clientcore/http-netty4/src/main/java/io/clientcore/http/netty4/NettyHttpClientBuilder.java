@@ -35,6 +35,12 @@ import java.time.Duration;
 import java.util.concurrent.ThreadFactory;
 import java.util.function.Consumer;
 
+import static io.clientcore.core.implementation.utils.ImplUtils.getDefaultHttpConnectTimeout;
+import static io.clientcore.core.implementation.utils.ImplUtils.getDefaultHttpReadTimeout;
+import static io.clientcore.core.implementation.utils.ImplUtils.getDefaultHttpResponseTimeout;
+import static io.clientcore.core.implementation.utils.ImplUtils.getDefaultHttpWriteTimeout;
+import static io.clientcore.core.implementation.utils.ImplUtils.getTimeout;
+
 /**
  * Builder for creating instances of NettyHttpClient.
  */
@@ -210,8 +216,9 @@ public class NettyHttpClientBuilder {
     /**
      * Sets the configuration store that is used during construction of the HTTP client.
      * <p>
-     * The default configuration store is a clone of the {@link Configuration#getGlobalConfiguration() global
-     * configuration store}.
+     * The default configuration store is the {@link Configuration#getGlobalConfiguration() global configuration store}.
+     * Timeouts explicitly set on this builder take precedence over this store, then the global store, then the default
+     * timeout. Missing timeout values fall back to the global store even when {@link Configuration#none()} is supplied.
      *
      * @param configuration The configuration store.
      * @return The updated builder.
@@ -223,6 +230,9 @@ public class NettyHttpClientBuilder {
 
     /**
      * Sets the connection timeout.
+     * <p>
+     * The default is 10 seconds. A duration less than or equal to zero disables the timeout. Positive durations less
+     * than one millisecond use one millisecond.
      *
      * @param connectTimeout The connection timeout.
      * @return The updated builder.
@@ -234,6 +244,9 @@ public class NettyHttpClientBuilder {
 
     /**
      * Sets the read timeout.
+     * <p>
+     * The default is 60 seconds. A duration less than or equal to zero disables the timeout. Positive durations less
+     * than one millisecond use one millisecond.
      *
      * @param readTimeout The read timeout.
      * @return The updated builder.
@@ -245,6 +258,9 @@ public class NettyHttpClientBuilder {
 
     /**
      * Sets the response timeout.
+     * <p>
+     * The default is 60 seconds. A duration less than or equal to zero disables the timeout. Positive durations less
+     * than one millisecond use one millisecond.
      *
      * @param responseTimeout The response timeout.
      * @return The updated builder.
@@ -256,6 +272,9 @@ public class NettyHttpClientBuilder {
 
     /**
      * Sets the write timeout.
+     * <p>
+     * The default is 60 seconds. A duration less than or equal to zero disables the timeout. Positive durations less
+     * than one millisecond use one millisecond.
      *
      * @param writeTimeout The write timeout.
      * @return The updated builder.
@@ -407,7 +426,8 @@ public class NettyHttpClientBuilder {
 
         Bootstrap bootstrap = new Bootstrap().group(group)
             .channel(channelClass)
-            .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, (int) getTimeoutMillis(connectTimeout, 10_000));
+            .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, (int) getTimeout(connectTimeout, configuration,
+                Configuration.REQUEST_CONNECT_TIMEOUT_IN_MS, getDefaultHttpConnectTimeout()).toMillis());
         bootstrap.option(ChannelOption.ALLOCATOR,
             // If io.netty.allocator.type was configured, respect the configuration. Otherwise, fallback to the default
             // setting from Netty 4.1 which was the pooled allocator. In the future, this should be validated for if
@@ -440,7 +460,12 @@ public class NettyHttpClientBuilder {
 
         return new NettyHttpClient(bootstrap, group, connectionPool, buildProxyOptions,
             new ChannelInitializationProxyHandler(buildProxyOptions), sslContextModifier, maximumHttpVersion,
-            getTimeoutMillis(readTimeout), getTimeoutMillis(responseTimeout), getTimeoutMillis(writeTimeout));
+            getTimeout(readTimeout, configuration, Configuration.REQUEST_READ_TIMEOUT_IN_MS,
+                getDefaultHttpReadTimeout()).toMillis(),
+            getTimeout(responseTimeout, configuration, Configuration.REQUEST_RESPONSE_TIMEOUT_IN_MS,
+                getDefaultHttpResponseTimeout()).toMillis(),
+            getTimeout(writeTimeout, configuration, Configuration.REQUEST_WRITE_TIMEOUT_IN_MS,
+                getDefaultHttpWriteTimeout()).toMillis());
     }
 
     static long getTimeoutMillis(Duration duration) {
@@ -448,15 +473,7 @@ public class NettyHttpClientBuilder {
     }
 
     static long getTimeoutMillis(Duration duration, long defaultTimeout) {
-        if (duration == null) {
-            return defaultTimeout;
-        }
-
-        if (duration.isNegative() || duration.isZero()) {
-            return 0;
-        }
-
-        return Math.max(1, duration.toMillis());
+        return getTimeout(duration, Duration.ofMillis(defaultTimeout)).toMillis();
     }
 
     // For testing.

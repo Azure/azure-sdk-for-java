@@ -10,10 +10,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT;
-import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_READ_TIMEOUT;
-import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT;
-import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT;
 import static com.azure.core.util.CoreUtils.getDefaultTimeoutFromEnvironment;
 
 /**
@@ -24,22 +20,10 @@ public final class HttpUtils {
     private static final ClientLogger LOGGER = new ClientLogger(HttpUtils.class);
 
     private static final Duration MINIMUM_TIMEOUT = Duration.ofMillis(1);
-    private static final Duration DEFAULT_CONNECT_TIMEOUT;
-    private static final Duration DEFAULT_WRITE_TIMEOUT;
-    private static final Duration DEFAULT_RESPONSE_TIMEOUT;
-    private static final Duration DEFAULT_READ_TIMEOUT;
-
-    static {
-        Configuration configuration = Configuration.getGlobalConfiguration();
-        DEFAULT_CONNECT_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration,
-            PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT, Duration.ofSeconds(10), LOGGER);
-        DEFAULT_WRITE_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration, PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT,
-            Duration.ofSeconds(60), LOGGER);
-        DEFAULT_RESPONSE_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration,
-            PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT, Duration.ofSeconds(60), LOGGER);
-        DEFAULT_READ_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration, PROPERTY_AZURE_REQUEST_READ_TIMEOUT,
-            Duration.ofSeconds(60), LOGGER);
-    }
+    private static final Duration DEFAULT_CONNECT_TIMEOUT = Duration.ofSeconds(10);
+    private static final Duration DEFAULT_WRITE_TIMEOUT = Duration.ofSeconds(60);
+    private static final Duration DEFAULT_RESPONSE_TIMEOUT = Duration.ofSeconds(60);
+    private static final Duration DEFAULT_READ_TIMEOUT = Duration.ofSeconds(60);
 
     /**
      * Context key used to indicate to an HttpClient implementation if it should eagerly read the response from the
@@ -148,6 +132,33 @@ public final class HttpUtils {
      */
     public static Duration getDefaultReadTimeout() {
         return DEFAULT_READ_TIMEOUT;
+    }
+
+    /**
+     * Resolves a timeout from the explicit value, the builder's configuration, the global configuration, and finally
+     * the default, in that order. Missing, empty, or invalid configuration values fall back to the next source.
+     * Nonpositive values disable the timeout; positive values less than one millisecond use one millisecond.
+     *
+     * @param configuredTimeout The explicitly configured timeout, or null.
+     * @param configuration The builder's configuration, or null to use the global configuration.
+     * @param timeoutPropertyName The timeout configuration property name.
+     * @param defaultTimeout The fallback timeout.
+     * @return The timeout to use.
+     */
+    public static Duration getTimeout(Duration configuredTimeout, Configuration configuration,
+        String timeoutPropertyName, Duration defaultTimeout) {
+        if (configuredTimeout != null) {
+            return getTimeout(configuredTimeout, defaultTimeout);
+        }
+
+        Configuration globalConfiguration = Configuration.getGlobalConfiguration();
+        Duration timeout = (configuration == null || configuration == globalConfiguration)
+            ? null
+            : getDefaultTimeoutFromEnvironment(configuration, timeoutPropertyName, null, LOGGER);
+
+        return timeout == null
+            ? getDefaultTimeoutFromEnvironment(globalConfiguration, timeoutPropertyName, defaultTimeout, LOGGER)
+            : timeout;
     }
 
     /**

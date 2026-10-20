@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Fixed timeout resolution to prefer explicit builder values, then builder-specific configuration, then global
+  configuration, and finally SDK defaults.
 - Fixed a bug where requests with a streaming body, such as `Flux<ByteBuffer>` or `InputStream`, would never be sent
   when running with Vert.x 5.x.
 - Fixed response timeouts and request cancellation leaving HTTP exchanges active and occupying pooled connections.

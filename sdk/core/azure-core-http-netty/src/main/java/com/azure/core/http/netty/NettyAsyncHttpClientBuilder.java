@@ -46,6 +46,10 @@ import static com.azure.core.implementation.util.HttpUtils.getDefaultReadTimeout
 import static com.azure.core.implementation.util.HttpUtils.getDefaultResponseTimeout;
 import static com.azure.core.implementation.util.HttpUtils.getDefaultWriteTimeout;
 import static com.azure.core.implementation.util.HttpUtils.getTimeout;
+import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT;
+import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_READ_TIMEOUT;
+import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT;
+import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT;
 
 /**
  * <p>
@@ -219,15 +223,20 @@ public class NettyAsyncHttpClientBuilder {
             setDefaultAddressResolverGroup = true;
         }
 
-        long writeTimeout = getTimeout(this.writeTimeout, getDefaultWriteTimeout()).toMillis();
-        long responseTimeout = getTimeout(this.responseTimeout, getDefaultResponseTimeout()).toMillis();
-        long readTimeout = getTimeout(this.readTimeout, getDefaultReadTimeout()).toMillis();
+        long writeTimeout = getTimeout(this.writeTimeout, configuration, PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT,
+            getDefaultWriteTimeout()).toMillis();
+        long responseTimeout = getTimeout(this.responseTimeout, configuration, PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT,
+            getDefaultResponseTimeout()).toMillis();
+        long readTimeout
+            = getTimeout(this.readTimeout, configuration, PROPERTY_AZURE_REQUEST_READ_TIMEOUT, getDefaultReadTimeout())
+                .toMillis();
 
         // Get the initial HttpResponseDecoderSpec and update it.
         // .httpResponseDecoder passes a new HttpResponseDecoderSpec and any existing configuration should be updated
         // instead of overwritten.
         HttpResponseDecoderSpec initialSpec = nettyHttpClient.configuration().decoder();
-        long connectTimeoutMillis = getTimeout(connectTimeout, getDefaultConnectTimeout()).toMillis();
+        long connectTimeoutMillis = getTimeout(connectTimeout, configuration, PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT,
+            getDefaultConnectTimeout()).toMillis();
         nettyHttpClient = nettyHttpClient.port(port)
             .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, (int) connectTimeoutMillis)
             .httpResponseDecoder(httpResponseDecoderSpec -> {
@@ -431,8 +440,10 @@ public class NettyAsyncHttpClientBuilder {
     /**
      * Sets the configuration store that is used during construction of the HTTP client.
      * <p>
-     * The default configuration store is a clone of the {@link Configuration#getGlobalConfiguration() global
-     * configuration store}, use {@link Configuration#NONE} to bypass using configuration settings during construction.
+     * The default configuration store is the {@link Configuration#getGlobalConfiguration() global configuration store}.
+     * Timeouts explicitly set on this builder take precedence over this store, then the global store, then the default
+     * timeout. Use {@link Configuration#NONE} to bypass other configuration settings during construction; unset
+     * timeouts still fall back to the global store.
      *
      * @param configuration The configuration store used to
      * @return The updated NettyAsyncHttpClientBuilder object.
