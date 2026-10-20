@@ -3,6 +3,7 @@
 
 package com.azure.identity.implementation.customtokenproxy;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,12 +21,12 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 public final class CustomTokenProxyHttpResponse extends HttpResponse {
 
     private static final ClientLogger LOGGER = new ClientLogger(CustomTokenProxyHttpResponse.class);
 
-    // private final HttpRequest request;
     private final int statusCode;
     private final HttpHeaders headers;
     private final HttpURLConnection connection;
@@ -77,28 +78,24 @@ public final class CustomTokenProxyHttpResponse extends HttpResponse {
 
     @Override
     public Mono<byte[]> getBodyAsByteArray() {
-        return Mono.fromCallable(() -> {
-            if (cachedResponseBodyBytes != null) {
-                return cachedResponseBodyBytes;
-            }
+        return Mono.fromCallable(this::readResponseBody).subscribeOn(Schedulers.boundedElastic());
+    }
 
-            InputStream stream = getResponseStream();
-            if (stream == null) {
-                cachedResponseBodyBytes = new byte[0];
-                return cachedResponseBodyBytes;
-            }
+    private synchronized byte[] readResponseBody() throws IOException {
+        if (cachedResponseBodyBytes != null) {
+            return cachedResponseBodyBytes;
+        }
 
-            try (InputStream notNullStream = stream) {
-                ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-                int n;
-                byte[] temp = new byte[4096];
-                while ((n = notNullStream.read(temp)) != -1) {
-                    buffer.write(temp, 0, n);
-                }
-                cachedResponseBodyBytes = buffer.toByteArray();
-                return cachedResponseBodyBytes;
+        try (InputStream stream = getResponseStream()) {
+            ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+            int n;
+            byte[] temp = new byte[4096];
+            while ((n = stream.read(temp)) != -1) {
+                buffer.write(temp, 0, n);
             }
-        });
+            cachedResponseBodyBytes = buffer.toByteArray();
+            return cachedResponseBodyBytes;
+        }
     }
 
     @Override
@@ -122,11 +119,11 @@ public final class CustomTokenProxyHttpResponse extends HttpResponse {
     }
 
     private InputStream getResponseStream() throws IOException {
-        try {
+        if (statusCode < 400) {
             return connection.getInputStream();
-        } catch (IOException e) {
-            return connection.getErrorStream();
         }
+        InputStream errorStream = connection.getErrorStream();
+        return errorStream == null ? new ByteArrayInputStream(new byte[0]) : errorStream;
     }
 
 }
