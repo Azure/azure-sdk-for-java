@@ -1,6 +1,6 @@
 # Release History
 
-## 1.2.0-beta.1 (2026-10-15)
+## 1.2.0-beta.1 (2026-10-20)
 
 - Azure Resource Manager Durable Task client library for Java. This package contains Microsoft Azure SDK for Durable Task Management SDK.  Package api-version 2026-07-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
@@ -83,16 +83,16 @@
 
 #### `DurableTaskManager` was modified
 
-* `detectors()` was added
 * `taskQueues()` was added
+* `detectors()` was added
 * `failoverInstances()` was added
 * `transparentDataEncryptions()` was added
 
 #### `models.Scheduler` was modified
 
+* `restart()` was added
 * `identity()` was added
 * `restartWithResponse(com.azure.core.util.Context)` was added
-* `restart()` was added
 
 #### `models.Scheduler$Update` was modified
 
@@ -105,8 +105,8 @@
 
 #### `models.SchedulerUpdate` was modified
 
-* `identity()` was added
 * `withIdentity(models.ManagedServiceIdentity)` was added
+* `identity()` was added
 
 ## 1.1.0 (2026-03-09)
 
