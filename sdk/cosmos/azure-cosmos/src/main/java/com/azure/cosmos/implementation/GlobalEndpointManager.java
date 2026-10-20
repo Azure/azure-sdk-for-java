@@ -35,6 +35,7 @@ import java.util.function.Function;
  */
 public class GlobalEndpointManager implements AutoCloseable {
     private static final Logger logger = LoggerFactory.getLogger(GlobalEndpointManager.class);
+
     private final int backgroundRefreshLocationTimeIntervalInMS;
     private final int backgroundRefreshJitterMaxInSeconds;
     private final LocationCache locationCache;

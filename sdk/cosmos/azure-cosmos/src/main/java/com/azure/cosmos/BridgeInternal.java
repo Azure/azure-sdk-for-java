@@ -42,7 +42,6 @@ import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
 import io.micrometer.core.instrument.MeterRegistry;
-import io.micrometer.core.instrument.Tag;
 
 import java.net.URI;
 import java.time.Duration;
@@ -518,18 +517,8 @@ public final class BridgeInternal {
                                              RxDocumentServiceRequest rxDocumentServiceRequest,
                                              CosmosException cosmosException,
                                              GlobalEndpointManager globalEndpointManager) {
-        recordGatewayResponse(
-            cosmosDiagnostics, rxDocumentServiceRequest, cosmosException, globalEndpointManager, null);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static void recordGatewayResponse(CosmosDiagnostics cosmosDiagnostics,
-                                             RxDocumentServiceRequest rxDocumentServiceRequest,
-                                             CosmosException cosmosException,
-                                             GlobalEndpointManager globalEndpointManager,
-                                             Tag serviceEndpointMetricTag) {
         StoreResponseDiagnostics storeResponseDiagnostics = StoreResponseDiagnostics
-            .createStoreResponseDiagnostics(cosmosException, rxDocumentServiceRequest, serviceEndpointMetricTag);
+            .createStoreResponseDiagnostics(cosmosException, rxDocumentServiceRequest);
         cosmosDiagnostics.clientSideRequestStatistics().recordGatewayResponse(rxDocumentServiceRequest, storeResponseDiagnostics, globalEndpointManager);
         cosmosException.setDiagnostics(cosmosDiagnostics);
     }

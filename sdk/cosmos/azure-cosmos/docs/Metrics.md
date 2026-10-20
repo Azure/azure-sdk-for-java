@@ -96,19 +96,10 @@ The micrometer.io documentation has a list with samples on how to create a `Mete
 
 
 
-The optional `ServiceEndpoint` tag also applies to Gateway request metrics (`cosmos.client.req.gw.*`).
-Its value uses the same `hostname_port` format as Direct request metrics. Gateway requests use HTTPS:
-an omitted port is resolved to `443`, while explicit ports such as `10250` are preserved.
-Resource paths, query strings, fragments, and user
-information are excluded. If the destination is unavailable or invalid, the value is `NONE`.
-Enable it while retaining the default tags with
+For Gateway request metrics (`cosmos.client.req.gw.*`), the optional `ServiceEndpoint` tag uses
+`hostname_port` (default port `443`; explicit ports such as `10250` are preserved), excluding paths
+and query strings. Unavailable or invalid destinations use `NONE`. Enable it with
 `CosmosMicrometerMetricsOptions.configureDefaultTagNames(CosmosMetricTagName.DEFAULT, CosmosMetricTagName.SERVICE_ENDPOINT)`.
-The tag remains disabled by default and can be suppressed for individual meters.
-Gateway endpoint tags are cached by destination authority within `RxGatewayStoreModel`, including its
-`ThinClientStoreModel` subclass, and captured in diagnostics for each request attempt. Document paths
-do not create cache entries. Metric emission reuses the captured tag without looking up the endpoint
-manager, reparsing URLs, or reformatting cached endpoint tags. The cache is cleared when the store
-model closes.
 
 ## What metrics are emitted?
 

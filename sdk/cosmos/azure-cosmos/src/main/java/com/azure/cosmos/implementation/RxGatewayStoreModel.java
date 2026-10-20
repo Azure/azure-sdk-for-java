@@ -16,6 +16,7 @@ import com.azure.cosmos.implementation.clienttelemetry.TagName;
 import com.azure.cosmos.implementation.directconnectivity.GatewayServiceConfigurationReader;
 import com.azure.cosmos.implementation.directconnectivity.HttpUtils;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
+import com.azure.cosmos.implementation.directconnectivity.StoreResponseDiagnostics;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.azure.cosmos.implementation.directconnectivity.WebExceptionUtility;
 import com.azure.cosmos.implementation.faultinjection.GatewayServerErrorInjector;
@@ -863,9 +864,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                                     .getFaultInjectionRuleEvaluationResults(reactorNettyRequestRecord.getTransportRequestId()));
                     }
 
-                    BridgeInternal.recordGatewayResponse(
-                        request.requestContext.cosmosDiagnostics, request, dce, globalEndpointManager,
-                        serviceEndpointMetricTag);
+                    recordGatewayFailure(request, dce, serviceEndpointMetricTag);
                 }
 
                 return Mono.error(dce);
@@ -914,13 +913,22 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                                     request.faultInjectionRequestContext
                                         .getFaultInjectionRuleEvaluationResults(transportRequestId));
 
-                            BridgeInternal.recordGatewayResponse(
-                                request.requestContext.cosmosDiagnostics, request, oce, globalEndpointManager,
-                                serviceEndpointMetricTag);
+                            recordGatewayFailure(request, oce, serviceEndpointMetricTag);
                         }
                     }
                 }
             });
+    }
+
+    private void recordGatewayFailure(
+        RxDocumentServiceRequest request, CosmosException exception, Tag serviceEndpointMetricTag) {
+
+        StoreResponseDiagnostics diagnostics = StoreResponseDiagnostics.createStoreResponseDiagnostics(
+            exception, request, serviceEndpointMetricTag);
+        ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor()
+            .getClientSideRequestStatisticsRaw(request.requestContext.cosmosDiagnostics)
+            .recordGatewayResponse(request, diagnostics, this.globalEndpointManager);
+        BridgeInternal.setCosmosDiagnostics(exception, request.requestContext.cosmosDiagnostics);
     }
 
     private void validateOrThrow(RxDocumentServiceRequest request,
