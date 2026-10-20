@@ -26,6 +26,11 @@ $localFolderPath = Join-Path $PSScriptRoot "azure-health-deidentification\src\te
 # Upper bound on how long to wait for storage RBAC / network ACL changes to propagate
 $storageReadinessTimeoutSeconds = 300
 
+# Minimum time after the network rule update before tests may start. The retries below only prove the
+# connected account's access; the DeID managed identity's access can't be observed here, so keep at
+# least the previous fixed propagation window for it.
+$deidIdentityMinimumWaitSeconds = 30
+
 # Check if the connection string is present
 if ([string]::IsNullOrWhiteSpace($storageAccountName)) {
     Write-Host "Error: Azure Storage Name string not found in environment variables."
@@ -76,6 +81,7 @@ $storageContext = New-AzStorageContext -StorageAccountName $storageAccountName -
 $networkRuleSet = New-Object -TypeName Microsoft.Azure.Commands.Management.Storage.Models.PSNetworkRuleSet
 $networkRuleSet.DefaultAction = "Allow"
 Set-AzStorageAccount -ResourceGroupName $resourceGroup -Name $storageAccountName -NetworkRuleSet $networkRuleSet
+$propagationStopwatch = [System.Diagnostics.Stopwatch]::StartNew()
 
 # Wait until the container is reachable with the connected account instead of sleeping a fixed time
 Invoke-WithRetry -Description "access container '$containerName' in storage account '$storageAccountName'" -Action {
@@ -103,6 +109,12 @@ foreach ($file in $files) {
 }
 
 Write-Host "Folder '$localFolderPath' uploaded to container '$containerName' successfully."
+
+$remainingWaitSeconds = $deidIdentityMinimumWaitSeconds - [int]$propagationStopwatch.Elapsed.TotalSeconds
+if ($remainingWaitSeconds -gt 0) {
+    Write-Host "Waiting $remainingWaitSeconds more seconds for the DeID service identity's storage access to propagate."
+    Start-Sleep -Seconds $remainingWaitSeconds
+}
 
 $endpoint = $endpoint -replace '^https://', ''
 # Set environment variables
