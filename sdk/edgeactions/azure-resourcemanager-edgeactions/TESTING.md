@@ -176,16 +176,12 @@ not establish whether the service accepts an execution filter referencing a vers
   Initial publishing also requires PowerShell 7, configured Git identity, and write permission to
   `Azure/azure-sdk-assets`.
 
-Run the following commands from this repository's root in PowerShell. If the test-only
-`azure-resourcemanager-test` dependency is not available from your Maven feed, build it locally first:
-
-```powershell
-mvn --% -B -f sdk\resourcemanager\azure-resourcemanager-test\pom.xml install -DskipTests -Dgpg.skip=true -Drevapi.skip=true
-```
-
-This builds the shared test helper, not Edge Actions recordings. Resolve feed authentication through the
-repository's [contribution instructions](https://github.com/Azure/azure-sdk-for-java/tree/main/CONTRIBUTING.md)
-if another dependency is inaccessible.
+Run the following commands from this repository's root in PowerShell. The tests require the published
+`azure-resourcemanager-test` version declared in this package's `pom.xml` (`2.0.0-beta.4`).
+If Maven cannot resolve that dependency, restore access to the configured Maven feed using the
+repository's [contribution instructions](https://github.com/Azure/azure-sdk-for-java/tree/main/CONTRIBUTING.md),
+then retry. Building the helper from this checkout is not a substitute: its source version may differ
+from the published version required by this package and will not satisfy that dependency.
 
 ## Record against Azure
 
