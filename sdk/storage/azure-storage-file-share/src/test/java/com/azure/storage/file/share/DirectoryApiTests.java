@@ -919,7 +919,7 @@ public class DirectoryApiTests extends FileShareTestBase {
     }
 
     @Test
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2026-12-06")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2027-07-07")
     public void listFilesAndDirectoriesAllTraitsSmb() {
         ShareDirectoryClient parentDir = primaryDirectoryClient;
         parentDir.create();
@@ -979,7 +979,7 @@ public class DirectoryApiTests extends FileShareTestBase {
         assertNull(dirItem.getProperties().getFileMode());
     }
 
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2026-12-06")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2027-07-07")
     @Test
     public void listFilesAndDirectoriesNfs() {
         ShareClient premiumShareClient = getPremiumNFSShareClient(generateShareName());

@@ -540,7 +540,7 @@ public class DirectoryAsyncApiTests extends FileShareTestBase {
         return Stream.of(Arguments.of("", null, 3), Arguments.of("", 1, 3), Arguments.of("noops", 3, 0));
     }
 
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2026-12-06")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2027-07-07")
     @Test
     public void listFilesAndDirectoriesAllTraitsSmb() {
         String fileName = generatePathName();
@@ -599,7 +599,7 @@ public class DirectoryAsyncApiTests extends FileShareTestBase {
         }).verifyComplete();
     }
 
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2026-12-06")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2027-07-07")
     @Test
     public void listFilesAndDirectoriesNfs() {
         String premiumShareName = generateShareName();
