@@ -630,12 +630,14 @@ public final class AgentsClientBuilder
             BetaAgentsClient.class,
             BetaMemoryStoresClient.class,
             BetaVoiceAgentWebSocketClient.class,
+            BetaVoiceAgentLiveWebSocketClient.class,
             BetaVoiceAgentsTelephonyClient.class,
             BetaVoiceAgentsConversationsClient.class,
             BetaVoiceAgentsLiveConversationsClient.class,
             BetaAgentsAsyncClient.class,
             BetaMemoryStoresAsyncClient.class,
             BetaVoiceAgentWebSocketAsyncClient.class,
+            BetaVoiceAgentLiveWebSocketAsyncClient.class,
             BetaVoiceAgentsTelephonyAsyncClient.class,
             BetaVoiceAgentsConversationsAsyncClient.class,
             BetaVoiceAgentsLiveConversationsAsyncClient.class })
@@ -784,6 +786,34 @@ public final class AgentsClientBuilder
         @Beta
         public BetaVoiceAgentWebSocketClient buildBetaVoiceAgentWebSocketClient() {
             return new BetaVoiceAgentWebSocketClient(createVoiceAgentWebSocketConfiguration());
+        }
+
+        /**
+         * Builds an asynchronous WebSocket client for persisted GPT Live voice agents.
+         * <p>
+         * Applies the same endpoint, credential, proxy and client options as the realtime WebSocket client.
+         * Custom HTTP clients, pipelines, policies and retry settings are not supported.
+         *
+         * @return an asynchronous Live WebSocket client.
+         * @throws IllegalStateException if unsupported HTTP pipeline configuration is present.
+         */
+        @Beta
+        public BetaVoiceAgentLiveWebSocketAsyncClient buildBetaVoiceAgentLiveWebSocketAsyncClient() {
+            return new BetaVoiceAgentLiveWebSocketAsyncClient(createVoiceAgentWebSocketConfiguration().forLive());
+        }
+
+        /**
+         * Builds a synchronous WebSocket client for persisted GPT Live voice agents.
+         * <p>
+         * Applies the same endpoint, credential, proxy and client options as the realtime WebSocket client.
+         * Custom HTTP clients, pipelines, policies and retry settings are not supported.
+         *
+         * @return a synchronous Live WebSocket client.
+         * @throws IllegalStateException if unsupported HTTP pipeline configuration is present.
+         */
+        @Beta
+        public BetaVoiceAgentLiveWebSocketClient buildBetaVoiceAgentLiveWebSocketClient() {
+            return new BetaVoiceAgentLiveWebSocketClient(createVoiceAgentWebSocketConfiguration().forLive());
         }
 
         /**

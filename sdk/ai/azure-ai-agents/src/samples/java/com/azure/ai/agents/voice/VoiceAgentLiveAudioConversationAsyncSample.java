@@ -42,6 +42,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Function;
 
 /**
  * Demonstrates an asynchronous hands-free voice conversation using Java Sound and server-side VAD.
@@ -195,7 +196,7 @@ public class VoiceAgentLiveAudioConversationAsyncSample {
         private static final int CHUNK_BYTES = 2400;
         static final int MAX_PLAYBACK_BYTES = VoiceAgentRealtimeSampleUtils.SAMPLE_RATE * 2 * 60;
         private static final byte[] STOP = new byte[0];
-        private final BetaVoiceAgentWebSocketSessionAsyncClient session;
+        private final Function<BinaryData, Mono<Void>> sendAudio;
         private final AudioFormat format = new AudioFormat(VoiceAgentRealtimeSampleUtils.SAMPLE_RATE, 16, 1, true, false);
         private final BlockingQueue<byte[]> playback = new LinkedBlockingQueue<>(MAX_PLAYBACK_BYTES / 2);
         private int queuedPlaybackBytes;
@@ -212,9 +213,17 @@ public class VoiceAgentLiveAudioConversationAsyncSample {
         }
 
         AudioProcessor(BetaVoiceAgentWebSocketSessionAsyncClient session, TargetDataLine microphone, SourceDataLine speaker) {
-            this.session = session;
+            this(microphone, speaker, pcm -> session.appendInputAudio(pcm));
+        }
+
+        AudioProcessor(TargetDataLine microphone, SourceDataLine speaker, Function<BinaryData, Mono<Void>> sendAudio) {
+            this.sendAudio = sendAudio;
             this.microphone = microphone;
             this.speaker = speaker;
+        }
+
+        Mono<Void> failureSignal() {
+            return failure.asMono();
         }
 
         synchronized void start() {
@@ -252,7 +261,7 @@ public class VoiceAgentLiveAudioConversationAsyncSample {
                 while (running.get()) {
                     int read = microphone.read(buffer, 0, buffer.length);
                     if (read > 0 && running.get()) {
-                        session.appendInputAudio(BinaryData.fromBytes(Arrays.copyOf(buffer, read))).block(SEND_TIMEOUT);
+                        sendAudio.apply(BinaryData.fromBytes(Arrays.copyOf(buffer, read))).block(SEND_TIMEOUT);
                     }
                 }
             } catch (RuntimeException error) {
