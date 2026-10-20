@@ -281,6 +281,27 @@ Unsupported authorities fail rather than defaulting to the public-cloud audience
 during `build()`, before a token request is attempted. This standalone credential is not part of
 `DefaultAzureCredential`.
 
+### Run the opt-in end-to-end test
+
+The [Identity GitHub Actions credential workflow][github_oidc_workflow] builds and tests both Identity packages
+against GitHub's OIDC provider and Entra. It runs on pushes to `vcolin7-github-actions-credential` and also
+supports manual dispatch.
+
+1. Configure a test application's federated identity credential with the actual GitHub issuer and subject for
+   the repository and ref you will run, and the public-cloud audience `api://AzureADTokenExchange`.
+   Subject formats can include immutable owner/repository IDs; do not assume the legacy subject format.
+2. Set repository variables `AZURE_IDENTITY_GITHUB_ACTIONS_TENANT_ID` and
+   `AZURE_IDENTITY_GITHUB_ACTIONS_CLIENT_ID` to the test application's tenant and client IDs.
+3. Push the workflow and SDK changes to `vcolin7-github-actions-credential` in your fork to run the tests.
+   For manual runs, the workflow must first be present on the repository's default branch. Then select
+   **Actions**, **Identity GitHub Actions credential**, **Run workflow**, and a ref trusted by the federated
+   identity credential.
+
+The live tests request a public-cloud ARM token without calling Azure resources or logging token values.
+They are skipped in ordinary local and CI runs. The dedicated workflow enables them with
+`RUN_GITHUB_ACTIONS_CREDENTIAL_LIVE_TESTS=true`, `AZURE_TEST_MODE=LIVE`, and the GitHub Actions environment.
+No federation resources or repository settings are created by the workflow.
+
 ## Environment variables
 
 `DefaultAzureCredential` and `EnvironmentCredential` can be configured with environment variables. Each type of authentication requires values for specific variables.
@@ -397,6 +418,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [cred_wic_ref]: https://learn.microsoft.com/azure/aks/workload-identity-overview
 [entraid_doc]: https://learn.microsoft.com/entra/identity/
 [github_oidc]: https://docs.github.com/en/actions/how-tos/secure-your-work/security-harden-deployments/oidc-in-azure
+[github_oidc_workflow]: https://github.com/Azure/azure-sdk-for-java/blob/main/.github/workflows/identity-github-actions-credential.yml
 [javadoc]: https://learn.microsoft.com/java/api/com.azure.identity?view=azure-java-stable
 [jdk_link]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [secrets_client_library]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/keyvault/azure-security-keyvault-secrets

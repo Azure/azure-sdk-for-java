@@ -68,6 +68,22 @@ identity credential:
 | `https://login.sovcloud-identity.de/` | `api://AzureADTokenExchangeGermany` |
 | `https://login.sovcloud-identity.sg/` | `api://AzureADTokenExchangeGovSG` |
 
+### Run the opt-in end-to-end test
+
+The [Identity GitHub Actions credential workflow][github_oidc_workflow] builds both Identity
+packages from source and requests a public-cloud ARM access token from each, without calling Azure resources or
+logging token values. It runs on pushes to `vcolin7-github-actions-credential` and also supports manual dispatch.
+
+Configure a test application's federated identity credential for your repository's actual issuer and subject
+(including immutable IDs when applicable), the ref to be tested, and audience `api://AzureADTokenExchange`.
+Set repository variables `AZURE_IDENTITY_GITHUB_ACTIONS_TENANT_ID` and `AZURE_IDENTITY_GITHUB_ACTIONS_CLIENT_ID`,
+then push the workflow and SDK changes to `vcolin7-github-actions-credential` in your fork.
+For manual runs, the workflow must first be present on the repository's default branch; you can then dispatch
+it on a trusted ref. The workflow does not create cloud resources or repository settings.
+
+The dedicated live test is skipped unless `RUN_GITHUB_ACTIONS_CREDENTIAL_LIVE_TESTS=true`, `AZURE_TEST_MODE=LIVE`,
+and `GITHUB_ACTIONS=true`. The workflow supplies those settings.
+
 ## Troubleshooting
 
 `GitHubActionsCredentialBuilder.build()` raises `CredentialUnavailableException` when required configuration is
@@ -94,3 +110,4 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 <!-- LINKS -->
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
 [github_oidc]: https://docs.github.com/en/actions/how-tos/secure-your-work/security-harden-deployments/oidc-in-azure
+[github_oidc_workflow]: https://github.com/Azure/azure-sdk-for-java/blob/main/.github/workflows/identity-github-actions-credential.yml
