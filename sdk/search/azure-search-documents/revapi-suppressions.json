@@ -13,6 +13,60 @@
             "match": "method void com\\.azure\\.search\\.documents\\.knowledgebases\\.models\\..*::<init>\\(.*\\)"
           },
           "justification": "Non-breaking change: constructor visibility increased on final classes in knowledgebases preview package."
+        },
+        {
+          "ignore": true,
+          "code": "java.class.removed",
+          "old": "class com.azure.search.documents.indexes.models.AIFoundryModelCatalogName",
+          "justification": "Intentional removal; the type is no longer part of the 2026-10-01 GA API surface."
+        },
+        {
+          "ignore": true,
+          "code": "java.class.removed",
+          "old": "class com.azure.search.documents.indexes.models.AzureMachineLearningParameters",
+          "justification": "Intentional removal; the type is no longer part of the 2026-10-01 GA API surface."
+        },
+        {
+          "ignore": true,
+          "code": "java.class.removed",
+          "old": "class com.azure.search.documents.indexes.models.AzureMachineLearningVectorizer",
+          "justification": "Intentional removal; the type is no longer part of the 2026-10-01 GA API surface."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.removed",
+          "old": "method com.azure.search.documents.knowledgebases.models.KnowledgeRetrievalReasoningEffort com.azure.search.documents.knowledgebases.models.KnowledgeBaseAgenticReasoningActivityRecord::getRetrievalReasoningEffort()",
+          "justification": "Intentional removal; the property is no longer part of the 2026-10-01 GA API surface."
+        },
+        {
+          "ignore": true,
+          "code": "java.field.removed",
+          "old": "field com.azure.search.documents.models.VectorFilterMode.STRICT_POST_FILTER",
+          "justification": "Intentional removal; the value is no longer part of the 2026-10-01 GA API surface."
+        },
+        {
+          "ignore": true,
+          "code": "java.field.removed",
+          "old": "field com.azure.search.documents.models.VectorQueryKind.IMAGE_BINARY",
+          "justification": "Intentional removal; the value is no longer part of the 2026-10-01 GA API surface."
+        },
+        {
+          "ignore": true,
+          "code": "java.field.removed",
+          "old": "field com.azure.search.documents.models.VectorQueryKind.IMAGE_URL",
+          "justification": "Intentional removal; the value is no longer part of the 2026-10-01 GA API surface."
+        },
+        {
+          "ignore": true,
+          "code": "java.class.removed",
+          "old": "class com.azure.search.documents.models.VectorizableImageBinaryQuery",
+          "justification": "Intentional removal; the type is no longer part of the 2026-10-01 GA API surface."
+        },
+        {
+          "ignore": true,
+          "code": "java.class.removed",
+          "old": "class com.azure.search.documents.models.VectorizableImageUrlQuery",
+          "justification": "Intentional removal; the type is no longer part of the 2026-10-01 GA API surface."
         }
       ]
     }
