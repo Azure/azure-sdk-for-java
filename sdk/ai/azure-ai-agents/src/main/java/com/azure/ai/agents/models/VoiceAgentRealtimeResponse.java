@@ -311,22 +311,6 @@ public final class VoiceAgentRealtimeResponse implements JsonSerializable<VoiceA
         });
     }
 
-    /*
-     * The object type, must be `realtime.response`.
-     */
-    @Generated
-    private VoiceResponseObjectType objectType;
-
-    /**
-     * Get the objectType property: The object type, must be `realtime.response`.
-     *
-     * @return the objectType value.
-     */
-    @Generated
-    public VoiceResponseObjectType getObjectType() {
-        return this.objectType;
-    }
-
     /**
      * Get the maxOutputTokens property: Maximum number of output tokens for a single assistant response, inclusive of
      * tool calls, that was used in this response.
@@ -361,5 +345,21 @@ public final class VoiceAgentRealtimeResponse implements JsonSerializable<VoiceA
             return null;
         }
         return this.maxOutputTokens.toObject(String.class);
+    }
+
+    /*
+     * The object type, must be `realtime.response`.
+     */
+    @Generated
+    private VoiceResponseObjectType objectType;
+
+    /**
+     * Get the objectType property: The object type, must be `realtime.response`.
+     *
+     * @return the objectType value.
+     */
+    @Generated
+    public VoiceResponseObjectType getObjectType() {
+        return this.objectType;
     }
 }
