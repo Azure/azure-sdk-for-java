@@ -10,6 +10,9 @@
 
 - Fixed a bug where requests with a streaming body, such as `Flux<ByteBuffer>` or `InputStream`, would never be sent
   when running with Vert.x 5.x.
+- Fixed response timeouts and request cancellation leaving HTTP exchanges active and occupying pooled connections.
+- Fixed the SDK write timeout continuing to run after writing completed, incorrectly terminating slow responses.
+- Fixed excessive retention of canceled write-timeout tasks during streamed uploads with many small buffers.
 
 ### Other Changes
 
