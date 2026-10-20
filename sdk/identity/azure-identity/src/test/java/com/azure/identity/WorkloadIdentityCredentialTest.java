@@ -5,6 +5,10 @@ package com.azure.identity;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.ProxyOptions;
 import com.azure.core.test.utils.TestConfigurationSource;
 import com.azure.core.util.Configuration;
 import com.azure.identity.implementation.IdentityClient;
@@ -19,6 +23,7 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -30,6 +35,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mockConstruction;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class WorkloadIdentityCredentialTest {
@@ -543,6 +549,71 @@ public class WorkloadIdentityCredentialTest {
 
             assertNotNull(identityClientMock);
         }
+    }
+
+    @Test
+    public void testProxyDoesNotMutateBuilderHttpClient() {
+        HttpClient httpClient = mock(HttpClient.class);
+        Configuration proxyConfiguration = TestUtils
+            .createTestConfiguration(new TestConfigurationSource().put(ENV_PROXY_URL, "https://proxy.example.com"));
+        WorkloadIdentityCredentialBuilder builder = new WorkloadIdentityCredentialBuilder().tenantId("tenant")
+            .clientId(CLIENT_ID)
+            .tokenFilePath("token.jwt")
+            .configuration(proxyConfiguration)
+            .httpClient(httpClient)
+            .enableAzureProxy();
+
+        builder.build();
+
+        Assertions.assertSame(httpClient, builder.identityClientOptions.getHttpClient());
+        builder.configuration(TestUtils.createTestConfiguration(new TestConfigurationSource())).build();
+        Assertions.assertSame(httpClient, builder.identityClientOptions.getHttpClient());
+    }
+
+    @Test
+    public void testProxyRejectsCustomPipelineInsteadOfBypassingProxy() {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(mock(HttpClient.class)).build();
+        WorkloadIdentityCredentialBuilder builder = new WorkloadIdentityCredentialBuilder().tenantId("tenant")
+            .clientId(CLIENT_ID)
+            .tokenFilePath("token.jwt")
+            .configuration(TestUtils
+                .createTestConfiguration(new TestConfigurationSource().put(ENV_PROXY_URL, "https://proxy.example.com")))
+            .pipeline(pipeline)
+            .enableAzureProxy();
+
+        Assertions.assertThrows(IllegalStateException.class, builder::build);
+        Assertions.assertDoesNotThrow(
+            () -> builder.configuration(TestUtils.createTestConfiguration(new TestConfigurationSource())).build());
+    }
+
+    @Test
+    public void testProxyRejectsLegacyProxyOptionsInsteadOfBypassingProxy() {
+        WorkloadIdentityCredentialBuilder builder = new WorkloadIdentityCredentialBuilder().tenantId("tenant")
+            .clientId(CLIENT_ID)
+            .tokenFilePath("token.jwt")
+            .configuration(TestUtils
+                .createTestConfiguration(new TestConfigurationSource().put(ENV_PROXY_URL, "https://proxy.example.com")))
+            .proxyOptions(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))
+            .enableAzureProxy();
+
+        Assertions.assertThrows(IllegalStateException.class, builder::build);
+    }
+
+    @Test
+    public void testProxySettingsAreIgnoredWithoutExplicitOptIn() {
+        Configuration configuration
+            = TestUtils.createTestConfiguration(new TestConfigurationSource().put(ENV_PROXY_URL, "http://invalid-proxy")
+                .put(ENV_CA_FILE, "missing.pem")
+                .put(ENV_CA_DATA, "invalid-data")
+                .put(Configuration.PROPERTY_AZURE_CLIENT_ID, CLIENT_ID)
+                .put(Configuration.PROPERTY_AZURE_TENANT_ID, "tenant")
+                .put("AZURE_FEDERATED_TOKEN_FILE", "token.jwt"));
+
+        Assertions
+            .assertDoesNotThrow(() -> new WorkloadIdentityCredentialBuilder().configuration(configuration).build());
+        Assertions.assertDoesNotThrow(() -> new DefaultAzureCredentialBuilder().configuration(configuration).build());
+        Assertions
+            .assertDoesNotThrow(() -> new ManagedIdentityCredentialBuilder().configuration(configuration).build());
     }
 
 }

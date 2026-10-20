@@ -6,6 +6,7 @@ package com.azure.identity;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.identity.implementation.customtokenproxy.CustomTokenProxyConfiguration;
 import com.azure.identity.implementation.customtokenproxy.CustomTokenProxyHttpClient;
 import com.azure.identity.implementation.customtokenproxy.ProxyConfig;
@@ -87,6 +88,8 @@ public class WorkloadIdentityCredentialBuilder extends AadCredentialBuilderBase<
      * Creates new {@link WorkloadIdentityCredential} with the configured options set.
      *
      * @return a {@link WorkloadIdentityCredential} with the current configurations.
+     * @throws IllegalArgumentException if required workload identity settings are missing or proxy configuration is invalid.
+     * @throws IllegalStateException if identity bindings are combined with a custom pipeline or legacy proxy options.
      */
     public WorkloadIdentityCredential build() {
         Configuration configuration = identityClientOptions.getConfiguration() == null
@@ -105,14 +108,19 @@ public class WorkloadIdentityCredentialBuilder extends AadCredentialBuilderBase<
         ValidationUtil.validate(this.getClass().getSimpleName(), LOGGER, "Client ID", clientIdInput, "Tenant ID",
             tenantIdInput, "Service Token File Path", federatedTokenFilePathInput);
 
+        IdentityClientOptions options = identityClientOptions.clone();
         if (enableAzureProxy) {
             ProxyConfig proxyConfig = CustomTokenProxyConfiguration.parseAndValidate(configuration);
             if (proxyConfig != null) {
-                identityClientOptions.setHttpClient(new CustomTokenProxyHttpClient(proxyConfig));
+                if (options.getHttpPipeline() != null || options.getProxyOptions() != null) {
+                    throw LOGGER.logExceptionAsError(new IllegalStateException(
+                        "AKS identity bindings cannot be combined with a custom HTTP pipeline or legacy proxyOptions. "
+                            + "Use addPolicy to configure policies on the credential's HTTP pipeline."));
+                }
+                options.setHttpClient(new CustomTokenProxyHttpClient(proxyConfig));
             }
         }
 
-        return new WorkloadIdentityCredential(tenantIdInput, clientIdInput, federatedTokenFilePathInput,
-            identityClientOptions.clone());
+        return new WorkloadIdentityCredential(tenantIdInput, clientIdInput, federatedTokenFilePathInput, options);
     }
 }
