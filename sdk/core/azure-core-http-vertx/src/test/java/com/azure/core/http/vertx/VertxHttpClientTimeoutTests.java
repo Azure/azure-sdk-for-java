@@ -97,6 +97,31 @@ public class VertxHttpClientTimeoutTests {
     }
 
     @Test
+    public void cancelledUploadCancelsBodyAndReleasesConnection() throws Exception {
+        try (TimeoutTestServer server = new TimeoutTestServer()) {
+            CompletableFuture<Void> cancelled = new CompletableFuture<>();
+            HttpRequest request = server.request("/hang")
+                .setHttpMethod(HttpMethod.POST)
+                .setBody(Flux.just(ByteBuffer.wrap(new byte[] { 1 }))
+                    .concatWith(Flux.never())
+                    .doOnCancel(() -> cancelled.complete(null)));
+            HttpClient client = server.client(Duration.ZERO);
+            CompletableFuture<HttpResponse> pending = client.send(request).toFuture();
+
+            try {
+                assertNotNull(server.received.get(TEST_TIMEOUT.toMillis(), TimeUnit.MILLISECONDS));
+                assertFalse(pending.isDone());
+                assertTrue(pending.cancel(true));
+
+                cancelled.get(TEST_TIMEOUT.toMillis(), TimeUnit.MILLISECONDS);
+                assertFastRequestSucceeds(client, server);
+            } finally {
+                pending.cancel(true);
+            }
+        }
+    }
+
+    @Test
     public void cancelledQueuedRequestDoesNotHoldConnection() throws Exception {
         try (TimeoutTestServer server = new TimeoutTestServer()) {
             HttpClient client = server.client(Duration.ZERO);
