@@ -109,6 +109,7 @@
     <module>sdk/durabletask</module>
     <module>sdk/dynatrace</module>
     <module>sdk/edgeactions</module>
+    <module>sdk/edgeoperator</module>
     <module>sdk/edgeorder</module>
     <module>sdk/edgezones</module>
     <module>sdk/education</module>
@@ -156,7 +157,6 @@
     <module>sdk/loadtesting</module>
     <module>sdk/loganalytics</module>
     <module>sdk/logic</module>
-    <module>sdk/logz</module>
     <module>sdk/machinelearning</module>
     <module>sdk/maintenance</module>
     <module>sdk/managedapplications</module>
@@ -170,7 +170,6 @@
     <module>sdk/metricsadvisor</module>
     <module>sdk/migration</module>
     <module>sdk/migrationdiscoverysap</module>
-    <module>sdk/mobilenetwork</module>
     <module>sdk/mongocluster</module>
     <module>sdk/mongodbatlas</module>
     <module>sdk/monitor</module>
