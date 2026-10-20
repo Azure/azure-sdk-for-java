@@ -8,8 +8,8 @@
 
 #### `models.ManagedHsmSkuName` was modified
 
-* `toString()` was removed
 * `models.ManagedHsmSkuName[] values()` -> `java.util.Collection values()`
+* `toString()` was removed
 * `valueOf(java.lang.String)` was removed
 
 ### Features Added
