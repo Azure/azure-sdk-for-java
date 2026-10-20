@@ -42,21 +42,6 @@ public final class AzureJdkHttpRequest extends HttpRequest {
     private final Optional<HttpClient.Version> httpVersion;
 
     /**
-     * Creates a new instance of the JDK HttpRequest.
-     *
-     * @param azureCoreRequest The Azure Core request to create the JDK HttpRequest from.
-     * @param context The context of the request.
-     * @param restrictedHeaders The set of restricted headers.
-     * @param logger The logger to log warnings to.
-     * @param writeTimeout The write timeout of the request.
-     * @param responseTimeout The response timeout of the request.
-     */
-    public AzureJdkHttpRequest(com.azure.core.http.HttpRequest azureCoreRequest, Context context,
-        Set<String> restrictedHeaders, ClientLogger logger, Duration writeTimeout, Duration responseTimeout) {
-        this(azureCoreRequest, context, restrictedHeaders, logger, writeTimeout, responseTimeout, null);
-    }
-
-    /**
      * Creates a JDK HttpRequest with an optional protocol preference.
      *
      * @param azureCoreRequest The Azure Core request to create the JDK HttpRequest from.
@@ -65,7 +50,7 @@ public final class AzureJdkHttpRequest extends HttpRequest {
      * @param logger The logger to log warnings to.
      * @param writeTimeout The write timeout of the request.
      * @param responseTimeout The response timeout of the request.
-     * @param httpVersion The protocol preference, or null to use the internal client's preference.
+     * @param httpVersion The protocol preference, or null to use the JDK client's preference.
      */
     public AzureJdkHttpRequest(com.azure.core.http.HttpRequest azureCoreRequest, Context context,
         Set<String> restrictedHeaders, ClientLogger logger, Duration writeTimeout, Duration responseTimeout,

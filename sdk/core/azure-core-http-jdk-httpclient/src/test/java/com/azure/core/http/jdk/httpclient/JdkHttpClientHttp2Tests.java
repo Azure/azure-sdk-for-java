@@ -19,7 +19,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.lang.reflect.Field;
 import java.time.Duration;
 import java.util.stream.Stream;
 
@@ -35,9 +34,9 @@ public class JdkHttpClientHttp2Tests extends HttpProtocolVersionTests {
 
     @Override
     protected HttpClient createHttpClient(HttpProtocolVersion version, boolean applySetting) throws Exception {
-        JdkHttpClientBuilder builder = new JdkHttpClientBuilder(java.net.http.HttpClient.newBuilder()
-            .sslContext(getSslContext())
-            .version(java.net.http.HttpClient.Version.HTTP_1_1)).configuration(Configuration.NONE);
+        JdkHttpClientBuilder builder
+            = new JdkHttpClientBuilder(java.net.http.HttpClient.newBuilder().sslContext(getSslContext()))
+                .configuration(Configuration.NONE);
         if (applySetting) {
             builder.maximumHttpVersion(version);
         }
@@ -114,7 +113,7 @@ public class JdkHttpClientHttp2Tests extends HttpProtocolVersionTests {
 
     @Override
     protected HttpProtocolVersion getDefaultMaximumHttpVersion() {
-        return HttpProtocolVersion.HTTP_1_1;
+        return HttpProtocolVersion.HTTP_2;
     }
 
     @Override
@@ -129,9 +128,7 @@ public class JdkHttpClientHttp2Tests extends HttpProtocolVersionTests {
         }
     }
 
-    static java.net.http.HttpClient getInternalClient(HttpClient client) throws ReflectiveOperationException {
-        Field field = JdkHttpClient.class.getDeclaredField("jdkHttpClient");
-        field.setAccessible(true);
-        return (java.net.http.HttpClient) field.get(client);
+    static java.net.http.HttpClient getInternalClient(HttpClient client) {
+        return ((JdkHttpClient) client).jdkHttpClient;
     }
 }

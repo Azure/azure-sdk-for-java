@@ -57,6 +57,17 @@ public class JdkHttpClientBuilderTests {
     private static final String SERVER_HTTP_URI = JdkHttpClientLocalTestServer.getServer().getHttpUri();
     private static final int PROXY_SERVER_HTTP_PORT = JdkHttpClientLocalTestServer.getProxyServer().getHttpPort();
 
+    @Test
+    public void defaultMaximumHttpVersionUsesHttp1() throws Exception {
+        HttpClient client = new JdkHttpClientBuilder().configuration(Configuration.NONE).build();
+        try {
+            assertEquals(java.net.http.HttpClient.Version.HTTP_1_1,
+                JdkHttpClientHttp2Tests.getInternalClient(client).version());
+        } finally {
+            JdkHttpClientHttp2Tests.closeInternalClient(client);
+        }
+    }
+
     @ParameterizedTest
     @EnumSource(HttpProtocolVersion.class)
     public void maximumHttpVersion(HttpProtocolVersion version) throws Exception {
@@ -94,12 +105,11 @@ public class JdkHttpClientBuilderTests {
     @ParameterizedTest
     @EnumSource(HttpProtocolVersion.class)
     public void maximumHttpVersionPreservesInternalBuilderVersion(HttpProtocolVersion version) throws Exception {
-        Executor executor = Runnable::run;
         java.net.http.HttpClient.Version internalVersion = version == HttpProtocolVersion.HTTP_2
             ? java.net.http.HttpClient.Version.HTTP_2
             : java.net.http.HttpClient.Version.HTTP_1_1;
         java.net.http.HttpClient.Builder internalBuilder
-            = java.net.http.HttpClient.newBuilder().version(internalVersion).executor(executor);
+            = java.net.http.HttpClient.newBuilder().version(internalVersion);
         JdkHttpClientBuilder builder = new JdkHttpClientBuilder(internalBuilder).configuration(Configuration.NONE);
         HttpClient original = builder.build();
         HttpClient overridden = builder
@@ -111,7 +121,6 @@ public class JdkHttpClientBuilderTests {
             assertEquals(internalVersion, JdkHttpClientHttp2Tests.getInternalClient(original).version());
             assertEquals(internalVersion, JdkHttpClientHttp2Tests.getInternalClient(overridden).version());
             assertEquals(internalVersion, JdkHttpClientHttp2Tests.getInternalClient(cleared).version());
-            assertSame(executor, JdkHttpClientHttp2Tests.getInternalClient(overridden).executor().orElse(null));
         } finally {
             JdkHttpClientHttp2Tests.closeInternalClient(original);
             JdkHttpClientHttp2Tests.closeInternalClient(overridden);

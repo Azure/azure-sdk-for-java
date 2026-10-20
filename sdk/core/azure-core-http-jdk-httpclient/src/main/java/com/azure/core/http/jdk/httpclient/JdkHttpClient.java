@@ -31,7 +31,7 @@ import static com.azure.core.http.jdk.httpclient.implementation.JdkHttpUtils.fro
 class JdkHttpClient implements HttpClient {
     private static final ClientLogger LOGGER = new ClientLogger(JdkHttpClient.class);
 
-    private final java.net.http.HttpClient jdkHttpClient;
+    final java.net.http.HttpClient jdkHttpClient;
 
     private final Set<String> restrictedHeaders;
 
@@ -153,7 +153,7 @@ class JdkHttpClient implements HttpClient {
      * @return the HttpRequest
      */
     private java.net.http.HttpRequest toJdkHttpRequest(HttpRequest request, Context context) {
-        // A request-level preference avoids rewriting the version on the caller's mutable internal builder.
+        // A request-level preference avoids rewriting the version on the caller's mutable JDK builder.
         return new AzureJdkHttpRequest(request, context, restrictedHeaders, LOGGER, writeTimeout, responseTimeout,
             httpVersion);
     }
