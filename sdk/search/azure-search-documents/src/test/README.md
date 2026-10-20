@@ -80,7 +80,8 @@ web-summarization activity records without calling Azure.
 
 ## Authentication and permissions
 
-[TestHelpers](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/test/java/com/azure/search/documents/TestHelpers.java) uses your `az login` identity for `RECORD` and `LIVE`.
+[TestHelpers](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/test/java/com/azure/search/documents/TestHelpers.java) uses the federated pipeline identity when
+`AZURESUBSCRIPTION_SERVICE_CONNECTION_ID` is configured, and your `az login` identity otherwise, for `RECORD` and `LIVE`.
 Your computer does not need a managed identity. Search separately uses its own system-assigned managed identity
 to access storage, OpenAI, and AI Services without keys.
 

@@ -19,6 +19,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.JsonSerializerProviders;
 import com.azure.identity.AzureCliCredentialBuilder;
+import com.azure.identity.AzurePipelinesCredentialBuilder;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -430,6 +431,15 @@ public final class TestHelpers {
     static TokenCredential createTestTokenCredential(TestMode mode, Configuration configuration) {
         if (mode == TestMode.PLAYBACK) {
             return new MockTokenCredential();
+        }
+        String serviceConnectionId = configuration.get("AZURESUBSCRIPTION_SERVICE_CONNECTION_ID");
+        if (serviceConnectionId != null && !serviceConnectionId.isEmpty()) {
+            return new AzurePipelinesCredentialBuilder().configuration(configuration)
+                .serviceConnectionId(serviceConnectionId)
+                .clientId(configuration.get("AZURESUBSCRIPTION_CLIENT_ID"))
+                .tenantId(configuration.get("AZURESUBSCRIPTION_TENANT_ID"))
+                .systemAccessToken(configuration.get("SYSTEM_ACCESSTOKEN"))
+                .build();
         }
         return new AzureCliCredentialBuilder().configuration(configuration).build();
     }
