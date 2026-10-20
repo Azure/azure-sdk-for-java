@@ -11,7 +11,6 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.List;
 
 /**
  * IdentityBinding properties.
@@ -32,16 +31,6 @@ public final class IdentityBindingProperties implements JsonSerializable<Identit
      * The status of the last operation.
      */
     private IdentityBindingProvisioningState provisioningState;
-
-    /*
-     * Optional list of subjects authorized to use this identity binding for
-     * token exchange. Each entry pairs a required namespace label selector
-     * with an optional service account label selector; selectors within an
-     * entry are AND'd, and multiple entries are OR'd. When omitted or empty,
-     * authorization falls back exclusively to ClusterRole/ClusterRoleBinding
-     * evaluation. Maximum 100 entries.
-     */
-    private List<AllowedSubject> allowedSubjects;
 
     /**
      * Creates an instance of IdentityBindingProperties class.
@@ -88,36 +77,6 @@ public final class IdentityBindingProperties implements JsonSerializable<Identit
     }
 
     /**
-     * Get the allowedSubjects property: Optional list of subjects authorized to use this identity binding for
-     * token exchange. Each entry pairs a required namespace label selector
-     * with an optional service account label selector; selectors within an
-     * entry are AND'd, and multiple entries are OR'd. When omitted or empty,
-     * authorization falls back exclusively to ClusterRole/ClusterRoleBinding
-     * evaluation. Maximum 100 entries.
-     * 
-     * @return the allowedSubjects value.
-     */
-    public List<AllowedSubject> allowedSubjects() {
-        return this.allowedSubjects;
-    }
-
-    /**
-     * Set the allowedSubjects property: Optional list of subjects authorized to use this identity binding for
-     * token exchange. Each entry pairs a required namespace label selector
-     * with an optional service account label selector; selectors within an
-     * entry are AND'd, and multiple entries are OR'd. When omitted or empty,
-     * authorization falls back exclusively to ClusterRole/ClusterRoleBinding
-     * evaluation. Maximum 100 entries.
-     * 
-     * @param allowedSubjects the allowedSubjects value to set.
-     * @return the IdentityBindingProperties object itself.
-     */
-    public IdentityBindingProperties withAllowedSubjects(List<AllowedSubject> allowedSubjects) {
-        this.allowedSubjects = allowedSubjects;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -133,9 +92,6 @@ public final class IdentityBindingProperties implements JsonSerializable<Identit
         if (oidcIssuer() != null) {
             oidcIssuer().validate();
         }
-        if (allowedSubjects() != null) {
-            allowedSubjects().forEach(e -> e.validate());
-        }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(IdentityBindingProperties.class);
@@ -147,8 +103,6 @@ public final class IdentityBindingProperties implements JsonSerializable<Identit
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("managedIdentity", this.managedIdentity);
-        jsonWriter.writeArrayField("allowedSubjects", this.allowedSubjects,
-            (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -177,10 +131,6 @@ public final class IdentityBindingProperties implements JsonSerializable<Identit
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedIdentityBindingProperties.provisioningState
                         = IdentityBindingProvisioningState.fromString(reader.getString());
-                } else if ("allowedSubjects".equals(fieldName)) {
-                    List<AllowedSubject> allowedSubjects
-                        = reader.readArray(reader1 -> AllowedSubject.fromJson(reader1));
-                    deserializedIdentityBindingProperties.allowedSubjects = allowedSubjects;
                 } else {
                     reader.skipChildren();
                 }
