@@ -5900,6 +5900,9 @@ public final class AgentsAsyncClient {
      * default is 20.
      * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
      * for descending order.
+     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
      * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
      * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
      * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
@@ -5913,7 +5916,8 @@ public final class AgentsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<AgentDetails> listAgents(AgentKind kind, Integer limit, PageOrder order, String before) {
+    public PagedFlux<AgentDetails> listAgents(AgentKind kind, Integer limit, PageOrder order, String after,
+        String before) {
         // Generated convenience method for listAgents
         RequestOptions requestOptions = new RequestOptions();
         if (kind != null) {
@@ -5928,7 +5932,7 @@ public final class AgentsAsyncClient {
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        PagedFlux<BinaryData> pagedFluxResponse = serviceClient.listAgentsAsync(null, requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = serviceClient.listAgentsAsync(after, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux;
             if (pageSizeParam == null) {
@@ -5960,6 +5964,9 @@ public final class AgentsAsyncClient {
      * default is 20.
      * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
      * for descending order.
+     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
      * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
      * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
      * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
@@ -5976,7 +5983,7 @@ public final class AgentsAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AgentVersionDetails> listAgentVersions(String agentName, Integer limit, PageOrder order,
-        String before, Boolean includeDrafts) {
+        String after, String before, Boolean includeDrafts) {
         // Generated convenience method for listAgentVersions
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
@@ -5991,7 +5998,8 @@ public final class AgentsAsyncClient {
         if (includeDrafts != null) {
             requestOptions.addQueryParam("include_drafts", String.valueOf(includeDrafts), false);
         }
-        PagedFlux<BinaryData> pagedFluxResponse = serviceClient.listAgentVersionsAsync(null, agentName, requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse
+            = serviceClient.listAgentVersionsAsync(after, agentName, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux;
             if (pageSizeParam == null) {
@@ -6024,6 +6032,9 @@ public final class AgentsAsyncClient {
      * default is 20.
      * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
      * for descending order.
+     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
      * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
      * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
      * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
@@ -6037,7 +6048,7 @@ public final class AgentsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<AgentSessionResource> listSessions(String agentName, Integer limit, PageOrder order,
+    public PagedFlux<AgentSessionResource> listSessions(String agentName, Integer limit, PageOrder order, String after,
         String before) {
         // Generated convenience method for listSessions
         RequestOptions requestOptions = new RequestOptions();
@@ -6050,7 +6061,7 @@ public final class AgentsAsyncClient {
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        PagedFlux<BinaryData> pagedFluxResponse = serviceClient.listSessionsAsync(null, agentName, requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = serviceClient.listSessionsAsync(after, agentName, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux;
             if (pageSizeParam == null) {
@@ -6088,6 +6099,9 @@ public final class AgentsAsyncClient {
      * default is 20.
      * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
      * for descending order.
+     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
      * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
      * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
      * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
@@ -6102,7 +6116,7 @@ public final class AgentsAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SessionDirectoryEntry> listSessionFiles(String agentName, String sessionId, String path,
-        Integer limit, PageOrder order, String before) {
+        Integer limit, PageOrder order, String after, String before) {
         // Generated convenience method for listSessionFiles
         RequestOptions requestOptions = new RequestOptions();
         if (path != null) {
@@ -6118,7 +6132,7 @@ public final class AgentsAsyncClient {
             requestOptions.addQueryParam("before", before, false);
         }
         PagedFlux<BinaryData> pagedFluxResponse
-            = serviceClient.listSessionFilesAsync(null, agentName, sessionId, requestOptions);
+            = serviceClient.listSessionFilesAsync(after, agentName, sessionId, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux;
             if (pageSizeParam == null) {
@@ -6150,6 +6164,9 @@ public final class AgentsAsyncClient {
      * default is 20.
      * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
      * for descending order.
+     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
      * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
      * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
      * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
@@ -6165,8 +6182,8 @@ public final class AgentsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<AgentOptimizationJob> listOptimizationJobs(Integer limit, PageOrder order, String before,
-        JobStatus status, String agentName) {
+    public PagedFlux<AgentOptimizationJob> listOptimizationJobs(Integer limit, PageOrder order, String after,
+        String before, JobStatus status, String agentName) {
         // Generated convenience method for listOptimizationJobs
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
@@ -6184,7 +6201,7 @@ public final class AgentsAsyncClient {
         if (agentName != null) {
             requestOptions.addQueryParam("agent_name", agentName, false);
         }
-        PagedFlux<BinaryData> pagedFluxResponse = serviceClient.listOptimizationJobsAsync(null, requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = serviceClient.listOptimizationJobsAsync(after, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux;
             if (pageSizeParam == null) {
@@ -6220,6 +6237,7 @@ public final class AgentsAsyncClient {
      * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
      * default is 20.
      * @param order Sort order by the candidate `started_at` timestamp.
+     * @param after Candidate-ID cursor identifying the last item from the previous page.
      * @param before Candidate-ID cursor identifying the first item from the following page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -6232,7 +6250,7 @@ public final class AgentsAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AgentOptimizationCandidate> listOptimizationCandidates(String jobId,
-        List<AgentOptimizationCandidateExpand> expand, Integer limit, PageOrder order, String before) {
+        List<AgentOptimizationCandidateExpand> expand, Integer limit, PageOrder order, String after, String before) {
         // Generated convenience method for listOptimizationCandidates
         RequestOptions requestOptions = new RequestOptions();
         if (expand != null) {
@@ -6252,7 +6270,7 @@ public final class AgentsAsyncClient {
             requestOptions.addQueryParam("before", before, false);
         }
         PagedFlux<BinaryData> pagedFluxResponse
-            = serviceClient.listOptimizationCandidatesAsync(null, jobId, requestOptions);
+            = serviceClient.listOptimizationCandidatesAsync(after, jobId, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux;
             if (pageSizeParam == null) {

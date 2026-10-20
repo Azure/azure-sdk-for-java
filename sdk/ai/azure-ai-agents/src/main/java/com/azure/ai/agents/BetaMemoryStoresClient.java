@@ -1559,6 +1559,9 @@ public final class BetaMemoryStoresClient {
      * default is 20.
      * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
      * for descending order.
+     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
      * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
      * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
      * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
@@ -1572,7 +1575,8 @@ public final class BetaMemoryStoresClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<MemoryStoreDetails> listMemoryStores(Integer limit, PageOrder order, String before) {
+    public PagedIterable<MemoryStoreDetails> listMemoryStores(Integer limit, PageOrder order, String after,
+        String before) {
         // Generated convenience method for listMemoryStores
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
@@ -1584,7 +1588,7 @@ public final class BetaMemoryStoresClient {
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        return serviceClient.listMemoryStores(null, requestOptions)
+        return serviceClient.listMemoryStores(after, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(MemoryStoreDetails.class));
     }
 }

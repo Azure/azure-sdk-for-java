@@ -1349,6 +1349,7 @@ public final class BetaAgentInsightMonitorsAsyncClient {
     /**
      * List Agent Insights monitors, optionally filtered by agent name.
      *
+     * @param after A cursor that identifies the last item in the previous page.
      * @param before A cursor that identifies the first item in the next page.
      * @param limit The maximum number of items to return. Defaults to 20.
      * @param order Sort order by creation time. Defaults to descending.
@@ -1363,7 +1364,7 @@ public final class BetaAgentInsightMonitorsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<AgentInsightMonitorListItem> listAgentInsightMonitors(String before, Integer limit,
+    public PagedFlux<AgentInsightMonitorListItem> listAgentInsightMonitors(String after, String before, Integer limit,
         PageOrder order, String agentName) {
         // Generated convenience method for listAgentInsightMonitors
         RequestOptions requestOptions = new RequestOptions();
@@ -1379,7 +1380,7 @@ public final class BetaAgentInsightMonitorsAsyncClient {
         if (agentName != null) {
             requestOptions.addQueryParam("agent_name", agentName, false);
         }
-        PagedFlux<BinaryData> pagedFluxResponse = serviceClient.listAgentInsightMonitorsAsync(null, requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = serviceClient.listAgentInsightMonitorsAsync(after, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux;
             if (pageSizeParam == null) {
@@ -1405,6 +1406,7 @@ public final class BetaAgentInsightMonitorsAsyncClient {
      * List Agent Insights runs for a monitor.
      *
      * @param monitorId The identifier of the monitor.
+     * @param after A cursor that identifies the last item in the previous page.
      * @param before A cursor that identifies the first item in the next page.
      * @param limit The maximum number of items to return. Defaults to 20.
      * @param order Sort order by creation time. Defaults to descending.
@@ -1420,7 +1422,7 @@ public final class BetaAgentInsightMonitorsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<AgentInsightRun> listAgentInsightRuns(String monitorId, String before, Integer limit,
+    public PagedFlux<AgentInsightRun> listAgentInsightRuns(String monitorId, String after, String before, Integer limit,
         PageOrder order, JobStatus status, AgentInsightRunTrigger trigger) {
         // Generated convenience method for listAgentInsightRuns
         RequestOptions requestOptions = new RequestOptions();
@@ -1440,7 +1442,7 @@ public final class BetaAgentInsightMonitorsAsyncClient {
             requestOptions.addQueryParam("trigger", trigger.toString(), false);
         }
         PagedFlux<BinaryData> pagedFluxResponse
-            = serviceClient.listAgentInsightRunsAsync(null, monitorId, requestOptions);
+            = serviceClient.listAgentInsightRunsAsync(after, monitorId, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux;
             if (pageSizeParam == null) {
@@ -1466,6 +1468,7 @@ public final class BetaAgentInsightMonitorsAsyncClient {
      * List current insights for an Agent Insights monitor.
      *
      * @param monitorId The identifier of the monitor.
+     * @param after A cursor that identifies the last item in the previous page.
      * @param before A cursor that identifies the first item in the next page.
      * @param limit The maximum number of items to return. Defaults to 20.
      * @param order Sort order by creation time. Defaults to descending.
@@ -1484,8 +1487,9 @@ public final class BetaAgentInsightMonitorsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<AgentInsight> listAgentInsights(String monitorId, String before, Integer limit, PageOrder order,
-        String category, AgentInsightSeverity severity, AgentInsightStatus status, Boolean includeDetails) {
+    public PagedFlux<AgentInsight> listAgentInsights(String monitorId, String after, String before, Integer limit,
+        PageOrder order, String category, AgentInsightSeverity severity, AgentInsightStatus status,
+        Boolean includeDetails) {
         // Generated convenience method for listAgentInsights
         RequestOptions requestOptions = new RequestOptions();
         if (before != null) {
@@ -1509,7 +1513,8 @@ public final class BetaAgentInsightMonitorsAsyncClient {
         if (includeDetails != null) {
             requestOptions.addQueryParam("include_details", String.valueOf(includeDetails), false);
         }
-        PagedFlux<BinaryData> pagedFluxResponse = serviceClient.listAgentInsightsAsync(null, monitorId, requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse
+            = serviceClient.listAgentInsightsAsync(after, monitorId, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux;
             if (pageSizeParam == null) {

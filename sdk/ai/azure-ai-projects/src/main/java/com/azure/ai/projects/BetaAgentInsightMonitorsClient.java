@@ -1275,6 +1275,7 @@ public final class BetaAgentInsightMonitorsClient {
     /**
      * List Agent Insights monitors, optionally filtered by agent name.
      *
+     * @param after A cursor that identifies the last item in the previous page.
      * @param before A cursor that identifies the first item in the next page.
      * @param limit The maximum number of items to return. Defaults to 20.
      * @param order Sort order by creation time. Defaults to descending.
@@ -1289,8 +1290,8 @@ public final class BetaAgentInsightMonitorsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AgentInsightMonitorListItem> listAgentInsightMonitors(String before, Integer limit,
-        PageOrder order, String agentName) {
+    public PagedIterable<AgentInsightMonitorListItem> listAgentInsightMonitors(String after, String before,
+        Integer limit, PageOrder order, String agentName) {
         // Generated convenience method for listAgentInsightMonitors
         RequestOptions requestOptions = new RequestOptions();
         if (before != null) {
@@ -1305,7 +1306,7 @@ public final class BetaAgentInsightMonitorsClient {
         if (agentName != null) {
             requestOptions.addQueryParam("agent_name", agentName, false);
         }
-        return serviceClient.listAgentInsightMonitors(null, requestOptions)
+        return serviceClient.listAgentInsightMonitors(after, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(AgentInsightMonitorListItem.class));
     }
 
@@ -1313,6 +1314,7 @@ public final class BetaAgentInsightMonitorsClient {
      * List Agent Insights runs for a monitor.
      *
      * @param monitorId The identifier of the monitor.
+     * @param after A cursor that identifies the last item in the previous page.
      * @param before A cursor that identifies the first item in the next page.
      * @param limit The maximum number of items to return. Defaults to 20.
      * @param order Sort order by creation time. Defaults to descending.
@@ -1328,8 +1330,8 @@ public final class BetaAgentInsightMonitorsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AgentInsightRun> listAgentInsightRuns(String monitorId, String before, Integer limit,
-        PageOrder order, JobStatus status, AgentInsightRunTrigger trigger) {
+    public PagedIterable<AgentInsightRun> listAgentInsightRuns(String monitorId, String after, String before,
+        Integer limit, PageOrder order, JobStatus status, AgentInsightRunTrigger trigger) {
         // Generated convenience method for listAgentInsightRuns
         RequestOptions requestOptions = new RequestOptions();
         if (before != null) {
@@ -1347,7 +1349,7 @@ public final class BetaAgentInsightMonitorsClient {
         if (trigger != null) {
             requestOptions.addQueryParam("trigger", trigger.toString(), false);
         }
-        return serviceClient.listAgentInsightRuns(null, monitorId, requestOptions)
+        return serviceClient.listAgentInsightRuns(after, monitorId, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(AgentInsightRun.class));
     }
 
@@ -1355,6 +1357,7 @@ public final class BetaAgentInsightMonitorsClient {
      * List current insights for an Agent Insights monitor.
      *
      * @param monitorId The identifier of the monitor.
+     * @param after A cursor that identifies the last item in the previous page.
      * @param before A cursor that identifies the first item in the next page.
      * @param limit The maximum number of items to return. Defaults to 20.
      * @param order Sort order by creation time. Defaults to descending.
@@ -1373,7 +1376,7 @@ public final class BetaAgentInsightMonitorsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AgentInsight> listAgentInsights(String monitorId, String before, Integer limit,
+    public PagedIterable<AgentInsight> listAgentInsights(String monitorId, String after, String before, Integer limit,
         PageOrder order, String category, AgentInsightSeverity severity, AgentInsightStatus status,
         Boolean includeDetails) {
         // Generated convenience method for listAgentInsights
@@ -1399,7 +1402,7 @@ public final class BetaAgentInsightMonitorsClient {
         if (includeDetails != null) {
             requestOptions.addQueryParam("include_details", String.valueOf(includeDetails), false);
         }
-        return serviceClient.listAgentInsights(null, monitorId, requestOptions)
+        return serviceClient.listAgentInsights(after, monitorId, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(AgentInsight.class));
     }
 }

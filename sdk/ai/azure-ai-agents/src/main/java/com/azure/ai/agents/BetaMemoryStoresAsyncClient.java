@@ -1621,6 +1621,9 @@ public final class BetaMemoryStoresAsyncClient {
      * default is 20.
      * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
      * for descending order.
+     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
      * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
      * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
      * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
@@ -1634,7 +1637,7 @@ public final class BetaMemoryStoresAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<MemoryStoreDetails> listMemoryStores(Integer limit, PageOrder order, String before) {
+    public PagedFlux<MemoryStoreDetails> listMemoryStores(Integer limit, PageOrder order, String after, String before) {
         // Generated convenience method for listMemoryStores
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
@@ -1646,7 +1649,7 @@ public final class BetaMemoryStoresAsyncClient {
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        PagedFlux<BinaryData> pagedFluxResponse = serviceClient.listMemoryStoresAsync(null, requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = serviceClient.listMemoryStoresAsync(after, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux;
             if (pageSizeParam == null) {
