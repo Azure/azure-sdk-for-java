@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Reload filesystem certificates from the configured custom and well-known directories when a keystore is constructed or loaded, without sharing mutable filesystem certificate state between keystores.
+
 ### Other Changes
 
 ## 2.12.1 (2026-10-17)
