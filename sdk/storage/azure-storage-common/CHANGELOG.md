@@ -8,6 +8,10 @@
 
 ### Bugs Fixed
 
+- Fixed a bug where uploads that are split into blocks, appends, or ranges moved the position of the caller's
+  `ByteBuffer`s. Uploading the same buffers again, such as when retrying an upload by subscribing to it again, uploaded
+  incomplete content.
+
 ### Other Changes
 
 ## 12.35.0 (2026-10-07)

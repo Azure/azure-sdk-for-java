@@ -8,6 +8,10 @@
 
 ### Bugs Fixed
 
+- Fixed a bug where `ShareFileAsyncClient` uploads that were split into ranges moved the position of the caller's
+  buffers. Uploading the same buffers again, such as when retrying the upload by subscribing to it again, uploaded a
+  file with incomplete content.
+
 ### Other Changes
 
 ## 12.32.0 (2026-10-07)

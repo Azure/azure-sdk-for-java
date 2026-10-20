@@ -8,6 +8,10 @@
 
 ### Bugs Fixed
 
+- Fixed a bug where uploads from a `Flux<ByteBuffer>` that were split into multiple appends moved the position of the
+  caller's buffers. Uploading the same buffers again, such as when retrying the upload by subscribing to it again,
+  uploaded a file with incomplete content.
+
 ### Other Changes
 
 ## 12.29.0 (2026-10-07)
