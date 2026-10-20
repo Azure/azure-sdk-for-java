@@ -20,10 +20,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static com.azure.core.implementation.util.HttpUtils.getDefaultConnectTimeout;
-import static com.azure.core.implementation.util.HttpUtils.getDefaultReadTimeout;
-import static com.azure.core.implementation.util.HttpUtils.getDefaultResponseTimeout;
-import static com.azure.core.implementation.util.HttpUtils.getDefaultWriteTimeout;
+import static com.azure.core.implementation.util.HttpUtils.DEFAULT_CONNECT_TIMEOUT;
+import static com.azure.core.implementation.util.HttpUtils.DEFAULT_READ_TIMEOUT;
+import static com.azure.core.implementation.util.HttpUtils.DEFAULT_RESPONSE_TIMEOUT;
+import static com.azure.core.implementation.util.HttpUtils.DEFAULT_WRITE_TIMEOUT;
 import static com.azure.core.implementation.util.HttpUtils.getTimeout;
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT;
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_READ_TIMEOUT;
@@ -365,11 +365,11 @@ public class OkHttpAsyncHttpClientBuilder {
         // Configure operation timeouts.
         httpClientBuilder
             .connectTimeout(getTimeout(connectionTimeout, configuration, PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT,
-                getDefaultConnectTimeout()))
+                DEFAULT_CONNECT_TIMEOUT))
             .writeTimeout(
-                getTimeout(writeTimeout, configuration, PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT, getDefaultWriteTimeout()))
+                getTimeout(writeTimeout, configuration, PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT, DEFAULT_WRITE_TIMEOUT))
             .readTimeout(
-                getTimeout(readTimeout, configuration, PROPERTY_AZURE_REQUEST_READ_TIMEOUT, getDefaultReadTimeout()));
+                getTimeout(readTimeout, configuration, PROPERTY_AZURE_REQUEST_READ_TIMEOUT, DEFAULT_READ_TIMEOUT));
 
         if (callTimeout != null) {
             // Call timeout is disabled by default.
@@ -409,6 +409,6 @@ public class OkHttpAsyncHttpClientBuilder {
         httpClientBuilder.followRedirects(this.followRedirects);
 
         return new OkHttpAsyncHttpClient(httpClientBuilder.build(), getTimeout(responseTimeout, configuration,
-            PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT, getDefaultResponseTimeout()));
+            PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT, DEFAULT_RESPONSE_TIMEOUT));
     }
 }

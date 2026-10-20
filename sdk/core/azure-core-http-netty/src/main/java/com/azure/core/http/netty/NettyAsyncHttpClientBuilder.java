@@ -41,10 +41,10 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Pattern;
 
-import static com.azure.core.implementation.util.HttpUtils.getDefaultConnectTimeout;
-import static com.azure.core.implementation.util.HttpUtils.getDefaultReadTimeout;
-import static com.azure.core.implementation.util.HttpUtils.getDefaultResponseTimeout;
-import static com.azure.core.implementation.util.HttpUtils.getDefaultWriteTimeout;
+import static com.azure.core.implementation.util.HttpUtils.DEFAULT_CONNECT_TIMEOUT;
+import static com.azure.core.implementation.util.HttpUtils.DEFAULT_READ_TIMEOUT;
+import static com.azure.core.implementation.util.HttpUtils.DEFAULT_RESPONSE_TIMEOUT;
+import static com.azure.core.implementation.util.HttpUtils.DEFAULT_WRITE_TIMEOUT;
 import static com.azure.core.implementation.util.HttpUtils.getTimeout;
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT;
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_READ_TIMEOUT;
@@ -223,20 +223,22 @@ public class NettyAsyncHttpClientBuilder {
             setDefaultAddressResolverGroup = true;
         }
 
-        long writeTimeout = getTimeout(this.writeTimeout, configuration, PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT,
-            getDefaultWriteTimeout()).toMillis();
+        long writeTimeout
+            = getTimeout(this.writeTimeout, configuration, PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT, DEFAULT_WRITE_TIMEOUT)
+                .toMillis();
         long responseTimeout = getTimeout(this.responseTimeout, configuration, PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT,
-            getDefaultResponseTimeout()).toMillis();
+            DEFAULT_RESPONSE_TIMEOUT).toMillis();
         long readTimeout
-            = getTimeout(this.readTimeout, configuration, PROPERTY_AZURE_REQUEST_READ_TIMEOUT, getDefaultReadTimeout())
+            = getTimeout(this.readTimeout, configuration, PROPERTY_AZURE_REQUEST_READ_TIMEOUT, DEFAULT_READ_TIMEOUT)
                 .toMillis();
 
         // Get the initial HttpResponseDecoderSpec and update it.
         // .httpResponseDecoder passes a new HttpResponseDecoderSpec and any existing configuration should be updated
         // instead of overwritten.
         HttpResponseDecoderSpec initialSpec = nettyHttpClient.configuration().decoder();
-        long connectTimeoutMillis = getTimeout(connectTimeout, configuration, PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT,
-            getDefaultConnectTimeout()).toMillis();
+        long connectTimeoutMillis
+            = getTimeout(connectTimeout, configuration, PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT, DEFAULT_CONNECT_TIMEOUT)
+                .toMillis();
         nettyHttpClient = nettyHttpClient.port(port)
             .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, (int) connectTimeoutMillis)
             .httpResponseDecoder(httpResponseDecoderSpec -> {

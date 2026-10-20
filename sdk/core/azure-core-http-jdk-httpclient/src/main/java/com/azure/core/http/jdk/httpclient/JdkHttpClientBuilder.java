@@ -25,10 +25,10 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.Executor;
 
-import static com.azure.core.implementation.util.HttpUtils.getDefaultConnectTimeout;
-import static com.azure.core.implementation.util.HttpUtils.getDefaultReadTimeout;
-import static com.azure.core.implementation.util.HttpUtils.getDefaultResponseTimeout;
-import static com.azure.core.implementation.util.HttpUtils.getDefaultWriteTimeout;
+import static com.azure.core.implementation.util.HttpUtils.DEFAULT_CONNECT_TIMEOUT;
+import static com.azure.core.implementation.util.HttpUtils.DEFAULT_READ_TIMEOUT;
+import static com.azure.core.implementation.util.HttpUtils.DEFAULT_RESPONSE_TIMEOUT;
+import static com.azure.core.implementation.util.HttpUtils.DEFAULT_WRITE_TIMEOUT;
 import static com.azure.core.implementation.util.HttpUtils.getTimeout;
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT;
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_READ_TIMEOUT;
@@ -248,17 +248,17 @@ public class JdkHttpClientBuilder {
         httpClientBuilder.version(java.net.http.HttpClient.Version.HTTP_1_1);
 
         Duration connectionTimeout = getTimeout(this.connectionTimeout, configuration,
-            PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT, getDefaultConnectTimeout());
+            PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT, DEFAULT_CONNECT_TIMEOUT);
         if (!connectionTimeout.isZero()) {
             httpClientBuilder.connectTimeout(connectionTimeout);
         }
 
-        Duration writeTimeout = getTimeout(this.writeTimeout, configuration, PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT,
-            getDefaultWriteTimeout());
+        Duration writeTimeout
+            = getTimeout(this.writeTimeout, configuration, PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT, DEFAULT_WRITE_TIMEOUT);
         Duration responseTimeout = getTimeout(this.responseTimeout, configuration,
-            PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT, getDefaultResponseTimeout());
+            PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT, DEFAULT_RESPONSE_TIMEOUT);
         Duration readTimeout
-            = getTimeout(this.readTimeout, configuration, PROPERTY_AZURE_REQUEST_READ_TIMEOUT, getDefaultReadTimeout());
+            = getTimeout(this.readTimeout, configuration, PROPERTY_AZURE_REQUEST_READ_TIMEOUT, DEFAULT_READ_TIMEOUT);
 
         Configuration buildConfiguration
             = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;

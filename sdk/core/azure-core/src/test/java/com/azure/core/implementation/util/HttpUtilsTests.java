@@ -6,6 +6,7 @@ package com.azure.core.implementation.util;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.ConfigurationBuilder;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Isolated;
 import org.junit.jupiter.api.parallel.ResourceLock;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -13,14 +14,61 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.time.Duration;
 import java.util.Collections;
+import java.util.function.Supplier;
 import java.util.stream.Stream;
 
+import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT;
+import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_READ_TIMEOUT;
+import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT;
+import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@Isolated("Modifies global HTTP timeout configuration")
 public class HttpUtilsTests {
     private static final String TIMEOUT_PROPERTY = "HttpUtilsTests.timeout";
+
+    @ParameterizedTest
+    @MethodSource("legacyTimeoutSupplier")
+    @SuppressWarnings("deprecation")
+    public void legacyTimeoutGettersHonorGlobalConfiguration(String property, Supplier<Duration> defaultTimeoutGetter,
+        Duration sdkDefault) {
+        Configuration global = Configuration.getGlobalConfiguration();
+        String previous = global.get(property);
+        try {
+            for (long timeoutMillis : new long[] { 123000, 0, -1 }) {
+                global.put(property, Long.toString(timeoutMillis));
+                assertEquals(Duration.ofMillis(Math.max(0, timeoutMillis)),
+                    HttpUtils.getTimeout(null, defaultTimeoutGetter.get()));
+                assertEquals(Duration.ofSeconds(3),
+                    HttpUtils.getTimeout(Duration.ofSeconds(3), defaultTimeoutGetter.get()));
+                assertEquals(Duration.ZERO, HttpUtils.getTimeout(Duration.ZERO, defaultTimeoutGetter.get()));
+            }
+
+            for (String value : new String[] { "", "invalid" }) {
+                global.put(property, value);
+                assertEquals(sdkDefault, HttpUtils.getTimeout(null, defaultTimeoutGetter.get()));
+            }
+        } finally {
+            global.remove(property);
+            if (previous != null) {
+                global.put(property, previous);
+            }
+        }
+    }
+
+    private static Stream<Arguments> legacyTimeoutSupplier() {
+        return Stream.of(
+            Arguments.of(PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT,
+                (Supplier<Duration>) HttpUtils::getDefaultConnectTimeout, Duration.ofSeconds(10)),
+            Arguments.of(PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT, (Supplier<Duration>) HttpUtils::getDefaultWriteTimeout,
+                Duration.ofSeconds(60)),
+            Arguments.of(PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT,
+                (Supplier<Duration>) HttpUtils::getDefaultResponseTimeout, Duration.ofSeconds(60)),
+            Arguments.of(PROPERTY_AZURE_REQUEST_READ_TIMEOUT, (Supplier<Duration>) HttpUtils::getDefaultReadTimeout,
+                Duration.ofSeconds(60)));
+    }
 
     @ParameterizedTest
     @MethodSource("timeoutPrecedenceSupplier")

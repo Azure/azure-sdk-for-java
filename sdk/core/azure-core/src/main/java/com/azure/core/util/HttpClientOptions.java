@@ -11,10 +11,10 @@ import com.azure.core.util.logging.ClientLogger;
 
 import java.time.Duration;
 
-import static com.azure.core.implementation.util.HttpUtils.getDefaultConnectTimeout;
-import static com.azure.core.implementation.util.HttpUtils.getDefaultReadTimeout;
-import static com.azure.core.implementation.util.HttpUtils.getDefaultResponseTimeout;
-import static com.azure.core.implementation.util.HttpUtils.getDefaultWriteTimeout;
+import static com.azure.core.implementation.util.HttpUtils.DEFAULT_CONNECT_TIMEOUT;
+import static com.azure.core.implementation.util.HttpUtils.DEFAULT_READ_TIMEOUT;
+import static com.azure.core.implementation.util.HttpUtils.DEFAULT_RESPONSE_TIMEOUT;
+import static com.azure.core.implementation.util.HttpUtils.DEFAULT_WRITE_TIMEOUT;
 import static com.azure.core.implementation.util.HttpUtils.getTimeout;
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT;
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_READ_TIMEOUT;
@@ -143,7 +143,7 @@ public final class HttpClientOptions extends ClientOptions {
      */
     public Duration getConnectTimeout() {
         return getTimeout(connectTimeout, configuration, PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT,
-            getDefaultConnectTimeout());
+            DEFAULT_CONNECT_TIMEOUT);
     }
 
     /**
@@ -185,7 +185,7 @@ public final class HttpClientOptions extends ClientOptions {
      * @return The writing timeout of a request to be sent.
      */
     public Duration getWriteTimeout() {
-        return getTimeout(writeTimeout, configuration, PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT, getDefaultWriteTimeout());
+        return getTimeout(writeTimeout, configuration, PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT, DEFAULT_WRITE_TIMEOUT);
     }
 
     /**
@@ -247,7 +247,7 @@ public final class HttpClientOptions extends ClientOptions {
      */
     public Duration getResponseTimeout() {
         return getTimeout(responseTimeout, configuration, PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT,
-            getDefaultResponseTimeout());
+            DEFAULT_RESPONSE_TIMEOUT);
     }
 
     /**
@@ -302,7 +302,7 @@ public final class HttpClientOptions extends ClientOptions {
      * @return The read timeout duration.
      */
     public Duration getReadTimeout() {
-        return getTimeout(readTimeout, configuration, PROPERTY_AZURE_REQUEST_READ_TIMEOUT, getDefaultReadTimeout());
+        return getTimeout(readTimeout, configuration, PROPERTY_AZURE_REQUEST_READ_TIMEOUT, DEFAULT_READ_TIMEOUT);
     }
 
     /**

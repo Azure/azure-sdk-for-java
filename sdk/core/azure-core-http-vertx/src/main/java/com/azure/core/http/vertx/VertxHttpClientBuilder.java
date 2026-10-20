@@ -24,10 +24,10 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.BiFunction;
 import java.util.regex.Pattern;
 
-import static com.azure.core.implementation.util.HttpUtils.getDefaultConnectTimeout;
-import static com.azure.core.implementation.util.HttpUtils.getDefaultReadTimeout;
-import static com.azure.core.implementation.util.HttpUtils.getDefaultResponseTimeout;
-import static com.azure.core.implementation.util.HttpUtils.getDefaultWriteTimeout;
+import static com.azure.core.implementation.util.HttpUtils.DEFAULT_CONNECT_TIMEOUT;
+import static com.azure.core.implementation.util.HttpUtils.DEFAULT_READ_TIMEOUT;
+import static com.azure.core.implementation.util.HttpUtils.DEFAULT_RESPONSE_TIMEOUT;
+import static com.azure.core.implementation.util.HttpUtils.DEFAULT_WRITE_TIMEOUT;
 import static com.azure.core.implementation.util.HttpUtils.getTimeout;
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT;
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_READ_TIMEOUT;
@@ -241,12 +241,12 @@ public class VertxHttpClientBuilder {
         Duration writeTimeout = Duration.ZERO;
         if (buildOptions == null) {
             writeTimeout = getTimeout(this.writeTimeout, configuration, PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT,
-                getDefaultWriteTimeout());
+                DEFAULT_WRITE_TIMEOUT);
             buildOptions = new HttpClientOptions().setIdleTimeoutUnit(TimeUnit.MILLISECONDS)
                 .setConnectTimeout((int) getTimeout(this.connectTimeout, configuration,
-                    PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT, getDefaultConnectTimeout()).toMillis())
+                    PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT, DEFAULT_CONNECT_TIMEOUT).toMillis())
                 .setReadIdleTimeout((int) getTimeout(this.readTimeout, configuration,
-                    PROPERTY_AZURE_REQUEST_READ_TIMEOUT, getDefaultReadTimeout()).toMillis());
+                    PROPERTY_AZURE_REQUEST_READ_TIMEOUT, DEFAULT_READ_TIMEOUT).toMillis());
 
             // For now, set the max header size to 256 KB. Follow up to see if this should be configurable.
             buildOptions.setMaxHeaderSize(256 * 1024);
@@ -297,7 +297,7 @@ public class VertxHttpClientBuilder {
 
         io.vertx.core.http.HttpClient client = VERTX_HTTP_CLIENT_FACTORY.apply(configuredVertx, buildOptions);
         return new VertxHttpClient(client, buildOptions, getTimeout(this.responseTimeout, configuration,
-            PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT, getDefaultResponseTimeout()), writeTimeout);
+            PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT, DEFAULT_RESPONSE_TIMEOUT), writeTimeout);
     }
 
     static Vertx getVertx(Iterator<VertxProvider> iterator) {

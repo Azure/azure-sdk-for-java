@@ -10,7 +10,8 @@
 
 - Fixed HTTP timeout resolution, including `HttpClientOptions`, to prefer explicit values, then builder-specific
   configuration, then global configuration, and finally SDK defaults. Global timeouts are resolved when needed rather
-  than cached at class initialization, and nonpositive timeout values disable the timeout.
+  than cached at class initialization, and nonpositive timeout values disable the timeout. Global timeout settings
+  continue to apply when using older HTTP transport versions.
 - Fixed `AccessTokenCache` and `SimpleTokenCache` leaving concurrent callers waiting forever when the caller that was
   refreshing the token was cancelled, for example by a timeout. Waiting callers now retry the token acquisition when
   the refresh they waited on ends without a token, including when `SimpleTokenCache`'s token supplier completes empty.
