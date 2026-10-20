@@ -14,7 +14,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-compute-batch</artifactId>
-  <version>1.0.1</version> <!-- {x-version-update;com.azure:azure-compute-batch;current} -->
+  <version>1.0.0</version> <!-- {x-version-update;com.azure:azure-compute-batch;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure client library for Batch Client</name>
