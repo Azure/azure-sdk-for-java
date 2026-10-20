@@ -74,7 +74,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.60.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.61.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
     </dependency>
     <dependency>
       <groupId>com.microsoft.azure</groupId>
@@ -84,7 +84,7 @@
     <dependency>
       <groupId>org.apache.qpid</groupId>
       <artifactId>proton-j</artifactId>
-      <version>0.34.1</version> <!-- {x-version-update;org.apache.qpid:proton-j;external_dependency} -->
+      <version>0.35.0</version> <!-- {x-version-update;org.apache.qpid:proton-j;external_dependency} -->
     </dependency>
 
     <dependency>
@@ -110,7 +110,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.27.0-beta.19</version>  <!-- {x-version-update;com.azure:azure-core-test;current} -->
+      <version>1.27.0-beta.20</version>  <!-- {x-version-update;com.azure:azure-core-test;current} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -126,7 +126,7 @@
             <bannedDependencies>
               <includes>
                 <include>com.microsoft.azure:qpid-proton-j-extensions:[1.2.6]</include> <!-- {x-include-update;com.microsoft.azure:qpid-proton-j-extensions;external_dependency} -->
-                <include>org.apache.qpid:proton-j:[0.34.1]</include> <!-- {x-include-update;org.apache.qpid:proton-j;external_dependency} -->
+                <include>org.apache.qpid:proton-j:[0.35.0]</include> <!-- {x-include-update;org.apache.qpid:proton-j;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

@@ -19,43 +19,43 @@ public final class MaintenanceWindowTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MaintenanceWindow model = BinaryData.fromString(
-            "{\"preference\":\"CustomPreference\",\"months\":[{\"name\":\"August\"},{\"name\":\"October\"},{\"name\":\"April\"},{\"name\":\"March\"}],\"weeksOfMonth\":[866198392],\"daysOfWeek\":[{\"name\":\"Saturday\"}],\"hoursOfDay\":[1346564492,1861834573,375848936,1220710831],\"leadTimeInWeeks\":956878361,\"patchingMode\":\"Rolling\",\"customActionTimeoutInMins\":722307224,\"isCustomActionTimeoutEnabled\":true,\"isMonthlyPatchingEnabled\":false}")
+            "{\"preference\":\"NoPreference\",\"months\":[{\"name\":\"December\"}],\"weeksOfMonth\":[29207263,950290701,760641013,1034850835],\"daysOfWeek\":[{\"name\":\"Monday\"},{\"name\":\"Thursday\"},{\"name\":\"Wednesday\"}],\"hoursOfDay\":[1540120272,1408996613,2117678486,509105588],\"leadTimeInWeeks\":1163515198,\"patchingMode\":\"NonRolling\",\"customActionTimeoutInMins\":493965696,\"isCustomActionTimeoutEnabled\":true,\"isMonthlyPatchingEnabled\":true}")
             .toObject(MaintenanceWindow.class);
-        Assertions.assertEquals(Preference.CUSTOM_PREFERENCE, model.preference());
-        Assertions.assertEquals(MonthName.AUGUST, model.months().get(0).name());
-        Assertions.assertEquals(866198392, model.weeksOfMonth().get(0));
-        Assertions.assertEquals(DayOfWeekName.SATURDAY, model.daysOfWeek().get(0).name());
-        Assertions.assertEquals(1346564492, model.hoursOfDay().get(0));
-        Assertions.assertEquals(956878361, model.leadTimeInWeeks());
-        Assertions.assertEquals(PatchingMode.ROLLING, model.patchingMode());
-        Assertions.assertEquals(722307224, model.customActionTimeoutInMins());
+        Assertions.assertEquals(Preference.NO_PREFERENCE, model.preference());
+        Assertions.assertEquals(MonthName.DECEMBER, model.months().get(0).name());
+        Assertions.assertEquals(29207263, model.weeksOfMonth().get(0));
+        Assertions.assertEquals(DayOfWeekName.MONDAY, model.daysOfWeek().get(0).name());
+        Assertions.assertEquals(1540120272, model.hoursOfDay().get(0));
+        Assertions.assertEquals(1163515198, model.leadTimeInWeeks());
+        Assertions.assertEquals(PatchingMode.NON_ROLLING, model.patchingMode());
+        Assertions.assertEquals(493965696, model.customActionTimeoutInMins());
         Assertions.assertTrue(model.isCustomActionTimeoutEnabled());
-        Assertions.assertFalse(model.isMonthlyPatchingEnabled());
+        Assertions.assertTrue(model.isMonthlyPatchingEnabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MaintenanceWindow model = new MaintenanceWindow().withPreference(Preference.CUSTOM_PREFERENCE)
-            .withMonths(Arrays.asList(new Month().withName(MonthName.AUGUST), new Month().withName(MonthName.OCTOBER),
-                new Month().withName(MonthName.APRIL), new Month().withName(MonthName.MARCH)))
-            .withWeeksOfMonth(Arrays.asList(866198392))
-            .withDaysOfWeek(Arrays.asList(new DayOfWeek().withName(DayOfWeekName.SATURDAY)))
-            .withHoursOfDay(Arrays.asList(1346564492, 1861834573, 375848936, 1220710831))
-            .withLeadTimeInWeeks(956878361)
-            .withPatchingMode(PatchingMode.ROLLING)
-            .withCustomActionTimeoutInMins(722307224)
+        MaintenanceWindow model = new MaintenanceWindow().withPreference(Preference.NO_PREFERENCE)
+            .withMonths(Arrays.asList(new Month().withName(MonthName.DECEMBER)))
+            .withWeeksOfMonth(Arrays.asList(29207263, 950290701, 760641013, 1034850835))
+            .withDaysOfWeek(Arrays.asList(new DayOfWeek().withName(DayOfWeekName.MONDAY),
+                new DayOfWeek().withName(DayOfWeekName.THURSDAY), new DayOfWeek().withName(DayOfWeekName.WEDNESDAY)))
+            .withHoursOfDay(Arrays.asList(1540120272, 1408996613, 2117678486, 509105588))
+            .withLeadTimeInWeeks(1163515198)
+            .withPatchingMode(PatchingMode.NON_ROLLING)
+            .withCustomActionTimeoutInMins(493965696)
             .withIsCustomActionTimeoutEnabled(true)
-            .withIsMonthlyPatchingEnabled(false);
+            .withIsMonthlyPatchingEnabled(true);
         model = BinaryData.fromObject(model).toObject(MaintenanceWindow.class);
-        Assertions.assertEquals(Preference.CUSTOM_PREFERENCE, model.preference());
-        Assertions.assertEquals(MonthName.AUGUST, model.months().get(0).name());
-        Assertions.assertEquals(866198392, model.weeksOfMonth().get(0));
-        Assertions.assertEquals(DayOfWeekName.SATURDAY, model.daysOfWeek().get(0).name());
-        Assertions.assertEquals(1346564492, model.hoursOfDay().get(0));
-        Assertions.assertEquals(956878361, model.leadTimeInWeeks());
-        Assertions.assertEquals(PatchingMode.ROLLING, model.patchingMode());
-        Assertions.assertEquals(722307224, model.customActionTimeoutInMins());
+        Assertions.assertEquals(Preference.NO_PREFERENCE, model.preference());
+        Assertions.assertEquals(MonthName.DECEMBER, model.months().get(0).name());
+        Assertions.assertEquals(29207263, model.weeksOfMonth().get(0));
+        Assertions.assertEquals(DayOfWeekName.MONDAY, model.daysOfWeek().get(0).name());
+        Assertions.assertEquals(1540120272, model.hoursOfDay().get(0));
+        Assertions.assertEquals(1163515198, model.leadTimeInWeeks());
+        Assertions.assertEquals(PatchingMode.NON_ROLLING, model.patchingMode());
+        Assertions.assertEquals(493965696, model.customActionTimeoutInMins());
         Assertions.assertTrue(model.isCustomActionTimeoutEnabled());
-        Assertions.assertFalse(model.isMonthlyPatchingEnabled());
+        Assertions.assertTrue(model.isMonthlyPatchingEnabled());
     }
 }

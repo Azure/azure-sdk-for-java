@@ -7,9 +7,13 @@ package com.azure.analytics.planetarycomputer.generated;
 import com.azure.analytics.planetarycomputer.DataClient;
 import com.azure.analytics.planetarycomputer.PlanetaryComputerProClientBuilder;
 import com.azure.analytics.planetarycomputer.models.AssetStatisticsResponse;
+import com.azure.analytics.planetarycomputer.models.Resampling;
+import com.azure.analytics.planetarycomputer.models.SelMethod;
+import com.azure.analytics.planetarycomputer.models.WarpKernelResampling;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import java.util.Arrays;
+import java.util.List;
 
 public class MosaicItemsAssetStatisticsGetAll {
     public static void main(String[] args) {
@@ -18,9 +22,12 @@ public class MosaicItemsAssetStatisticsGetAll {
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildDataClient();
         // BEGIN:com.azure.analytics.planetarycomputer.generated.data-get-item-asset-statistics.mosaic-items-asset-statistics-get-all
-        AssetStatisticsResponse response = dataClient.getItemAssetStatistics("naip-atl",
-            "ga_m_3308421_se_16_060_20211114", null, Arrays.asList("image"), null, null, null, null, null, null, null,
-            null, null, null, null, null, null, null, null, null, null, null, null, null);
+        AssetStatisticsResponse response
+            = dataClient.getItemAssetStatistics("naip-atl", "ga_m_3308421_se_16_060_20211114", (List<Integer>) null,
+                Arrays.asList("image"), (List<String>) null, (String) null, (Boolean) null, (WarpKernelResampling) null,
+                (Resampling) null, (Integer) null, (Boolean) null, (List<Integer>) null, (List<Integer>) null,
+                (String) null, (String) null, (String) null, (List<Integer>) null, (String) null, (String) null,
+                (List<String>) null, (SelMethod) null, (List<String>) null, (Integer) null, (Integer) null);
         // END:com.azure.analytics.planetarycomputer.generated.data-get-item-asset-statistics.mosaic-items-asset-statistics-get-all
     }
 }

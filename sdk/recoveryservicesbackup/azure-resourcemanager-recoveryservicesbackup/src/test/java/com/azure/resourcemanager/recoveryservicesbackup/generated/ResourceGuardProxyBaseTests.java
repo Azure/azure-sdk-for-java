@@ -14,32 +14,28 @@ public final class ResourceGuardProxyBaseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceGuardProxyBase model = BinaryData.fromString(
-            "{\"resourceGuardResourceId\":\"dwq\",\"resourceGuardOperationDetails\":[{\"vaultCriticalOperation\":\"zygleexahvm\",\"defaultResourceRequest\":\"hsbrcary\"},{\"vaultCriticalOperation\":\"jjzyvoaqajuve\",\"defaultResourceRequest\":\"ptdmkrrbhmpful\"},{\"vaultCriticalOperation\":\"efgybpmfbfununmp\",\"defaultResourceRequest\":\"rvfyifkdsch\"}],\"lastUpdatedTime\":\"vfictnkjjwgcwn\",\"description\":\"bkgfyrtogmhmjpjs\"}")
+            "{\"resourceGuardResourceId\":\"juyrsrziuctixg\",\"resourceGuardOperationDetails\":[{\"vaultCriticalOperation\":\"ifrevk\",\"defaultResourceRequest\":\"pezkis\"}],\"lastUpdatedTime\":\"jm\",\"description\":\"hsyparybjuf\"}")
             .toObject(ResourceGuardProxyBase.class);
-        Assertions.assertEquals("dwq", model.resourceGuardResourceId());
-        Assertions.assertEquals("zygleexahvm", model.resourceGuardOperationDetails().get(0).vaultCriticalOperation());
-        Assertions.assertEquals("hsbrcary", model.resourceGuardOperationDetails().get(0).defaultResourceRequest());
-        Assertions.assertEquals("vfictnkjjwgcwn", model.lastUpdatedTime());
-        Assertions.assertEquals("bkgfyrtogmhmjpjs", model.description());
+        Assertions.assertEquals("juyrsrziuctixg", model.resourceGuardResourceId());
+        Assertions.assertEquals("ifrevk", model.resourceGuardOperationDetails().get(0).vaultCriticalOperation());
+        Assertions.assertEquals("pezkis", model.resourceGuardOperationDetails().get(0).defaultResourceRequest());
+        Assertions.assertEquals("jm", model.lastUpdatedTime());
+        Assertions.assertEquals("hsyparybjuf", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourceGuardProxyBase model = new ResourceGuardProxyBase().withResourceGuardResourceId("dwq")
-            .withResourceGuardOperationDetails(Arrays.asList(
-                new ResourceGuardOperationDetail().withVaultCriticalOperation("zygleexahvm")
-                    .withDefaultResourceRequest("hsbrcary"),
-                new ResourceGuardOperationDetail().withVaultCriticalOperation("jjzyvoaqajuve")
-                    .withDefaultResourceRequest("ptdmkrrbhmpful"),
-                new ResourceGuardOperationDetail().withVaultCriticalOperation("efgybpmfbfununmp")
-                    .withDefaultResourceRequest("rvfyifkdsch")))
-            .withLastUpdatedTime("vfictnkjjwgcwn")
-            .withDescription("bkgfyrtogmhmjpjs");
+        ResourceGuardProxyBase model = new ResourceGuardProxyBase().withResourceGuardResourceId("juyrsrziuctixg")
+            .withResourceGuardOperationDetails(
+                Arrays.asList(new ResourceGuardOperationDetail().withVaultCriticalOperation("ifrevk")
+                    .withDefaultResourceRequest("pezkis")))
+            .withLastUpdatedTime("jm")
+            .withDescription("hsyparybjuf");
         model = BinaryData.fromObject(model).toObject(ResourceGuardProxyBase.class);
-        Assertions.assertEquals("dwq", model.resourceGuardResourceId());
-        Assertions.assertEquals("zygleexahvm", model.resourceGuardOperationDetails().get(0).vaultCriticalOperation());
-        Assertions.assertEquals("hsbrcary", model.resourceGuardOperationDetails().get(0).defaultResourceRequest());
-        Assertions.assertEquals("vfictnkjjwgcwn", model.lastUpdatedTime());
-        Assertions.assertEquals("bkgfyrtogmhmjpjs", model.description());
+        Assertions.assertEquals("juyrsrziuctixg", model.resourceGuardResourceId());
+        Assertions.assertEquals("ifrevk", model.resourceGuardOperationDetails().get(0).vaultCriticalOperation());
+        Assertions.assertEquals("pezkis", model.resourceGuardOperationDetails().get(0).defaultResourceRequest());
+        Assertions.assertEquals("jm", model.lastUpdatedTime());
+        Assertions.assertEquals("hsyparybjuf", model.description());
     }
 }

@@ -14,6 +14,7 @@ module io.clientcore.http.netty4 {
     requires io.netty.common;
     requires io.netty.handler.proxy;
     requires io.netty.codec;
+    requires io.netty.codec.compression;
     requires io.netty.resolver;
     requires io.netty.codec.http2;
     requires java.sql;

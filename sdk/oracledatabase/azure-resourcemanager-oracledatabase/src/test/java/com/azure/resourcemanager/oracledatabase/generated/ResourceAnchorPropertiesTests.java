@@ -11,7 +11,7 @@ public final class ResourceAnchorPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceAnchorProperties model
-            = BinaryData.fromString("{\"provisioningState\":\"Succeeded\",\"linkedCompartmentId\":\"rltzkatbhjmz\"}")
+            = BinaryData.fromString("{\"provisioningState\":\"Failed\",\"linkedCompartmentId\":\"fmpcycilrmca\"}")
                 .toObject(ResourceAnchorProperties.class);
     }
 

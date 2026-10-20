@@ -9,7 +9,7 @@ package com.azure.resourcemanager.storagecache.generated;
  */
 public final class StorageTargetOperationResumeSamples {
     /*
-     * x-ms-original-file: 2026-01-01/StorageTargets_Resume.json
+     * x-ms-original-file: 2026-08-01/StorageTargets_Resume.json
      */
     /**
      * Sample code: StorageTargets_Resume.

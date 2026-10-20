@@ -9,7 +9,7 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
  */
 public final class ProtectionContainersUnregisterSamples {
     /*
-     * x-ms-original-file: 2026-07-01/AzureWorkload/ProtectionContainers_Unregister.json
+     * x-ms-original-file: 2026-08-01/AzureWorkload/ProtectionContainers_Unregister.json
      */
     /**
      * Sample code: Unregister Protection Container.

@@ -8,7 +8,6 @@ import io.clientcore.core.http.client.HttpProtocolVersion;
 import io.clientcore.core.http.client.JdkHttpClientBuilder;
 import io.clientcore.core.http.models.ProxyOptions;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
-import io.clientcore.core.utils.SharedExecutorService;
 import io.clientcore.core.utils.ChallengeHandler;
 import io.clientcore.core.utils.configuration.Configuration;
 import io.clientcore.http.okhttp3.implementation.OkHttpProxySelector;
@@ -28,6 +27,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+
+import static io.clientcore.core.implementation.utils.ImplUtils.getDefaultTimeoutFromEnvironment;
 
 /**
  * Builder class responsible for creating instances of {@link HttpClient} backed by OkHttp.
@@ -61,7 +62,6 @@ public class OkHttpHttpClientBuilder {
      */
     public OkHttpHttpClientBuilder() {
         this.okHttpClient = null;
-        this.dispatcher = new Dispatcher(SharedExecutorService.getInstance());
     }
 
     /**
@@ -120,11 +120,8 @@ public class OkHttpHttpClientBuilder {
     /**
      * Sets the dispatcher that also composes the thread pool for executing HTTP requests.
      * <p>
-     * If this method is not invoked prior to {@link #build() building}, handling for a default will be based on whether
-     * the builder was created with the default constructor or the constructor that accepts an existing
-     * {@link OkHttpClient}. If the default constructor was used, a new {@link Dispatcher} will be created with based on
-     * {@link SharedExecutorService#getInstance()}}. If the constructor that accepts an existing {@link OkHttpClient}
-     * was used, the dispatcher from the existing {@link OkHttpClient} will be used.
+    * If this method is not invoked prior to {@link #build() building}, the default dispatcher will be used. When this
+    * builder is created from an existing {@link OkHttpClient}, that client's dispatcher will be retained.
      *
      * @param dispatcher The dispatcher to use.
      * @return The updated {@link OkHttpHttpClientBuilder} object.
@@ -334,6 +331,8 @@ public class OkHttpHttpClientBuilder {
     public HttpClient build() {
         OkHttpClient.Builder httpClientBuilder
             = this.okHttpClient == null ? new OkHttpClient.Builder() : this.okHttpClient.newBuilder();
+        Configuration buildConfiguration
+            = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
 
         // Add each interceptor that has been added.
         for (Interceptor interceptor : this.networkInterceptors) {
@@ -341,9 +340,15 @@ public class OkHttpHttpClientBuilder {
         }
 
         // Configure operation timeouts.
-        httpClientBuilder.connectTimeout(getTimeout(connectionTimeout, DEFAULT_CONNECT_TIMEOUT))
-            .writeTimeout(getTimeout(writeTimeout, DEFAULT_WRITE_TIMEOUT))
-            .readTimeout(getTimeout(readTimeout, DEFAULT_READ_TIMEOUT));
+        httpClientBuilder
+            .connectTimeout(getTimeout(connectionTimeout,
+                getDefaultTimeoutFromEnvironment(buildConfiguration, Configuration.REQUEST_CONNECT_TIMEOUT_IN_MS,
+                    DEFAULT_CONNECT_TIMEOUT, LOGGER)))
+            .writeTimeout(getTimeout(writeTimeout,
+                getDefaultTimeoutFromEnvironment(buildConfiguration, Configuration.REQUEST_WRITE_TIMEOUT_IN_MS,
+                    DEFAULT_WRITE_TIMEOUT, LOGGER)))
+            .readTimeout(getTimeout(readTimeout, getDefaultTimeoutFromEnvironment(buildConfiguration,
+                Configuration.REQUEST_READ_TIMEOUT_IN_MS, DEFAULT_READ_TIMEOUT, LOGGER)));
 
         if (callTimeout != null) {
             // Call timeout is disabled by default.
@@ -373,9 +378,6 @@ public class OkHttpHttpClientBuilder {
         } else if (this.maximumHttpVersion == HttpProtocolVersion.HTTP_2) {
             httpClientBuilder.protocols(Arrays.asList(Protocol.HTTP_2, Protocol.HTTP_1_1));
         }
-
-        Configuration buildConfiguration
-            = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
 
         ProxyOptions buildProxyOptions
             = (proxyOptions == null) ? ProxyOptions.fromConfiguration(buildConfiguration, true) : proxyOptions;

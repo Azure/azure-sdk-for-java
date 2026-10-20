@@ -23,7 +23,7 @@ public final class MaintenancesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"component\":\"VCSA\",\"displayName\":\"mjsmwr\",\"clusterId\":1712169364,\"infoLink\":\"xfzzzwyjafitlhgu\",\"impact\":\"uchlgmltx\",\"scheduledByMicrosoft\":false,\"state\":{\"name\":\"InProgress\",\"message\":\"sgzv\",\"startedAt\":\"2021-05-04T04:08:29Z\",\"endedAt\":\"2021-08-22T06:37:05Z\"},\"scheduledStartTime\":\"2021-02-08T10:28:39Z\",\"estimatedDurationInMinutes\":6814533521400429806,\"provisioningState\":\"Succeeded\",\"operations\":[{\"kind\":\"MaintenanceManagementOperation\"},{\"kind\":\"MaintenanceManagementOperation\"},{\"kind\":\"MaintenanceManagementOperation\"},{\"kind\":\"MaintenanceManagementOperation\"}],\"maintenanceReadiness\":{\"type\":\"Preflight\",\"status\":\"DataNotAvailable\",\"message\":\"mxq\",\"failedChecks\":[{\"name\":\"p\",\"impactedResources\":[{},{}]},{\"name\":\"t\",\"impactedResources\":[{},{},{}]}],\"lastUpdated\":\"2021-03-01T04:34:23Z\"}},\"id\":\"vl\",\"name\":\"jchcsrlzknmzla\",\"type\":\"rupdwvnphcnzq\"}]}";
+            = "{\"value\":[{\"properties\":{\"component\":\"NSXT\",\"displayName\":\"wy\",\"clusterId\":1413290916,\"activities\":[{\"kind\":\"Downgrade\",\"component\":\"vkh\",\"version\":\"bvqt\",\"infoLink\":\"arfdlpukhpyrnei\",\"impact\":\"cpeogkhnmgbrou\"},{\"kind\":\"Downgrade\",\"component\":\"dbhfhp\",\"version\":\"paz\",\"infoLink\":\"oywjxhpdulont\",\"impact\":\"np\"},{\"kind\":\"Upgrade\",\"component\":\"tehtuevrhrljyoog\",\"version\":\"xh\",\"infoLink\":\"duugwbsre\",\"impact\":\"fqkfuarenl\"},{\"kind\":\"Backup\",\"component\":\"htkln\",\"version\":\"nafvvkyfedev\",\"infoLink\":\"oslc\",\"impact\":\"y\"}],\"group\":{\"id\":\"kkhminqcymczngn\",\"name\":\"dxxewuninv\",\"kind\":\"Logical\"},\"relationships\":{\"dependencies\":[\"aqdtvqecrqctmxxd\"],\"prerequisites\":[\"mflhuytxzvtznapx\",\"annovvoxczytpr\",\"nwvroevytlyokrr\"]},\"infoLink\":\"uuxvnsasbcry\",\"impact\":\"dizr\",\"scheduledByMicrosoft\":false,\"state\":{\"name\":\"Scheduled\",\"message\":\"nazpmk\",\"startedAt\":\"2021-01-20T07:51:57Z\",\"endedAt\":\"2021-06-07T21:02:03Z\"},\"scheduledStartTime\":\"2021-02-13T18:06:33Z\",\"estimatedDurationInMinutes\":5134391935354807071,\"provisioningState\":\"Updating\",\"operations\":[{\"kind\":\"MaintenanceManagementOperation\"},{\"kind\":\"MaintenanceManagementOperation\"},{\"kind\":\"MaintenanceManagementOperation\"},{\"kind\":\"MaintenanceManagementOperation\"}],\"maintenanceReadiness\":{\"type\":\"Preflight\",\"status\":\"NotReady\",\"message\":\"ohrdddt\",\"failedChecks\":[{\"name\":\"ba\",\"impactedResources\":[{}]},{\"name\":\"bnzqcyknapq\",\"impactedResources\":[{},{},{}]}],\"lastUpdated\":\"2021-03-03T21:16:58Z\"}},\"id\":\"dhzbdybwwgb\",\"name\":\"vibidmhmwffpl\",\"type\":\"muvapc\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,8 +33,8 @@ public final class MaintenancesListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Maintenance> response = manager.maintenances()
-            .list("lxrzvhqjwtr", "tgvgzp", MaintenanceStateName.NOT_SCHEDULED, MaintenanceStatusFilter.ACTIVE,
-                OffsetDateTime.parse("2021-06-27T16:49:11Z"), OffsetDateTime.parse("2021-06-04T02:53:26Z"),
+            .list("u", "kzmkwklsnoxaxmqe", MaintenanceStateName.IN_PROGRESS, MaintenanceStatusFilter.ACTIVE,
+                OffsetDateTime.parse("2021-10-25T04:16:39Z"), OffsetDateTime.parse("2021-08-08T18:00:09Z"),
                 com.azure.core.util.Context.NONE);
 
     }

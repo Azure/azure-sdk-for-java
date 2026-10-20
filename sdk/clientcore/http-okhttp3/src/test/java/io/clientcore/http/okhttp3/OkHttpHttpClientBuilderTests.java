@@ -13,7 +13,6 @@ import io.clientcore.core.models.CoreException;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.shared.LocalTestServer;
 import io.clientcore.core.shared.TestConfigurationSource;
-import io.clientcore.core.utils.SharedExecutorService;
 import io.clientcore.core.utils.configuration.Configuration;
 import io.clientcore.core.utils.configuration.ConfigurationSource;
 import okhttp3.Call;
@@ -29,6 +28,7 @@ import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import javax.servlet.ServletException;
@@ -41,6 +41,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
@@ -320,6 +321,51 @@ public class OkHttpHttpClientBuilderTests {
         }
     }
 
+    @ParameterizedTest
+    @CsvSource({
+        "123000, 234000, 345000, 123000, 234000, 345000",
+        "0, 0, 0, 0, 0, 0",
+        "-1, -2, -3, 0, 0, 0",
+        "invalid, invalid, invalid, 10000, 60000, 60000" })
+    public void configuredTimeoutsAreUsed(String connect, String read, String write, int expectedConnect,
+        int expectedRead, int expectedWrite) {
+        Configuration configuration
+            = Configuration.from(new TestConfigurationSource().put(Configuration.REQUEST_CONNECT_TIMEOUT_IN_MS, connect)
+                .put(Configuration.REQUEST_READ_TIMEOUT_IN_MS, read)
+                .put(Configuration.REQUEST_WRITE_TIMEOUT_IN_MS, write));
+
+        validateTimeouts(new OkHttpHttpClientBuilder().configuration(configuration), expectedConnect, expectedRead,
+            expectedWrite);
+    }
+
+    @Test
+    public void explicitTimeoutsOverrideConfiguration() {
+        Configuration configuration = Configuration
+            .from(new TestConfigurationSource().put(Configuration.REQUEST_CONNECT_TIMEOUT_IN_MS, "123000")
+                .put(Configuration.REQUEST_READ_TIMEOUT_IN_MS, "234000")
+                .put(Configuration.REQUEST_WRITE_TIMEOUT_IN_MS, "345000"));
+
+        validateTimeouts(new OkHttpHttpClientBuilder().configuration(configuration)
+            .connectionTimeout(Duration.ofMillis(60001))
+            .readTimeout(Duration.ofMillis(60002))
+            .writeTimeout(Duration.ofMillis(60003)), 60001, 60002, 60003);
+    }
+
+    private static void validateTimeouts(OkHttpHttpClientBuilder builder, int connect, int read, int write) {
+        HttpClient client = builder.addNetworkInterceptor(chain -> {
+            assertEquals(connect, chain.connectTimeoutMillis());
+            assertEquals(read, chain.readTimeoutMillis());
+            assertEquals(write, chain.writeTimeoutMillis());
+            assertEquals(0, chain.call().timeout().timeoutNanos());
+            return chain.proceed(chain.request());
+        }).build();
+
+        try (Response<BinaryData> response
+            = client.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(defaultUri))) {
+            assertEquals(200, response.getStatusCode());
+        }
+    }
+
     /**
      * Tests building a client with a given {@code connectionPool}.
      */
@@ -359,15 +405,20 @@ public class OkHttpHttpClientBuilderTests {
          * result in the request we are about to send to be cancelled since the server will wait 5 seconds before
          * returning a response.
          */
-        SharedExecutorService.getInstance().schedule(() -> {
-            assertEquals(1, dispatcher.runningCallsCount());
-            dispatcher.cancelAll();
-        }, 1000, TimeUnit.MILLISECONDS);
+        ScheduledExecutorService cancellationExecutor = Executors.newSingleThreadScheduledExecutor();
+        try {
+            cancellationExecutor.schedule(() -> {
+                assertEquals(1, dispatcher.runningCallsCount());
+                dispatcher.cancelAll();
+            }, 1000, TimeUnit.MILLISECONDS);
 
-        CoreException ex = assertThrows(CoreException.class,
-            () -> client.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(dispatcherUri)).close());
+            CoreException ex = assertThrows(CoreException.class,
+                () -> client.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(dispatcherUri)).close());
 
-        assertInstanceOf(IOException.class, ex.getCause());
+            assertInstanceOf(IOException.class, ex.getCause());
+        } finally {
+            cancellationExecutor.shutdownNow();
+        }
     }
 
     /**
@@ -500,6 +551,7 @@ public class OkHttpHttpClientBuilderTests {
 
         Configuration simpleEnvProxy
             = Configuration.from(new TestConfigurationSource().put(Configuration.HTTP_PROXY, "http://localhost:12345")
+                .put(Configuration.HTTPS_PROXY, "")
                 .put(JAVA_SYSTEM_PROXY_PREREQUISITE, "true"));
 
         arguments.add(Arguments.of(true, simpleEnvProxy, defaultUri));
@@ -515,6 +567,7 @@ public class OkHttpHttpClientBuilderTests {
 
         Configuration envProxyWithAuthentication = Configuration.from(EMPTY_SOURCE, EMPTY_SOURCE,
             new TestConfigurationSource().put(Configuration.HTTP_PROXY, "http://1:1@localhost:12345")
+                .put(Configuration.HTTPS_PROXY, "")
                 .put(JAVA_SYSTEM_PROXY_PREREQUISITE, "true"));
 
         arguments.add(Arguments.of(true, envProxyWithAuthentication, defaultUri));
@@ -539,6 +592,7 @@ public class OkHttpHttpClientBuilderTests {
             = () -> baseJavaProxyConfigurationSupplier.get().put(JAVA_NON_PROXY_HOSTS, rawJavaNonProxyHosts);
         Supplier<TestConfigurationSource> envNonProxyHostsSupplier
             = () -> new TestConfigurationSource().put(Configuration.HTTP_PROXY, "http://localhost:12345")
+                .put(Configuration.HTTPS_PROXY, "")
                 .put(Configuration.NO_PROXY, rawEnvNonProxyHosts)
                 .put(JAVA_SYSTEM_PROXY_PREREQUISITE, "true");
         List<Supplier<TestConfigurationSource>> nonProxyHostsSuppliers
@@ -563,6 +617,7 @@ public class OkHttpHttpClientBuilderTests {
             = () -> javaNonProxyHostsSupplier.get().put(JAVA_HTTP_PROXY_USER, "1").put(JAVA_HTTP_PROXY_PASSWORD, "1");
         Supplier<TestConfigurationSource> authenticatedEnvNonProxyHostsSupplier
             = () -> new TestConfigurationSource().put(Configuration.HTTP_PROXY, "http://1:1@localhost:12345")
+                .put(Configuration.HTTPS_PROXY, "")
                 .put(Configuration.NO_PROXY, rawEnvNonProxyHosts)
                 .put(JAVA_SYSTEM_PROXY_PREREQUISITE, "true");
         List<Supplier<TestConfigurationSource>> authenticatedNonProxyHostsSuppliers

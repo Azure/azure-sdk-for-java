@@ -14,10 +14,10 @@ public final class StartMajorVersionUpgradePrecheckResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StartMajorVersionUpgradePrecheckResponseInner model = BinaryData
-            .fromString("{\"name\":\"wtmwerio\",\"createTime\":\"2021-06-25T19:10:09Z\",\"status\":\"Failed\"}")
+            .fromString("{\"name\":\"semwabnet\",\"createTime\":\"2021-07-19T10:32:31Z\",\"status\":\"Failed\"}")
             .toObject(StartMajorVersionUpgradePrecheckResponseInner.class);
-        Assertions.assertEquals("wtmwerio", model.name());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-25T19:10:09Z"), model.createTime());
+        Assertions.assertEquals("semwabnet", model.name());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-19T10:32:31Z"), model.createTime());
         Assertions.assertEquals(MajorVersionUpgradePrecheckStatus.FAILED, model.status());
     }
 }

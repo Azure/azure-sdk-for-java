@@ -15,31 +15,31 @@ public final class AzureWorkloadSqlAutoProtectionIntentTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureWorkloadSqlAutoProtectionIntent model = BinaryData.fromString(
-            "{\"protectionIntentItemType\":\"AzureWorkloadSQLAutoProtectionIntent\",\"workloadItemType\":\"SAPAseDatabase\",\"backupManagementType\":\"DefaultBackup\",\"sourceResourceId\":\"nvgmmbugtywa\",\"itemId\":\"qaqkuea\",\"policyId\":\"roeshoygzc\",\"protectionState\":\"NotProtected\"}")
+            "{\"protectionIntentItemType\":\"AzureWorkloadSQLAutoProtectionIntent\",\"workloadItemType\":\"SQLDataBase\",\"backupManagementType\":\"AzureBackupServer\",\"sourceResourceId\":\"fqxkfaoyteh\",\"itemId\":\"uvjmv\",\"policyId\":\"tdwckygr\",\"protectionState\":\"Protected\"}")
             .toObject(AzureWorkloadSqlAutoProtectionIntent.class);
-        Assertions.assertEquals(BackupManagementType.DEFAULT_BACKUP, model.backupManagementType());
-        Assertions.assertEquals("nvgmmbugtywa", model.sourceResourceId());
-        Assertions.assertEquals("qaqkuea", model.itemId());
-        Assertions.assertEquals("roeshoygzc", model.policyId());
-        Assertions.assertEquals(ProtectionStatus.NOT_PROTECTED, model.protectionState());
-        Assertions.assertEquals(WorkloadItemType.SAPASE_DATABASE, model.workloadItemType());
+        Assertions.assertEquals(BackupManagementType.AZURE_BACKUP_SERVER, model.backupManagementType());
+        Assertions.assertEquals("fqxkfaoyteh", model.sourceResourceId());
+        Assertions.assertEquals("uvjmv", model.itemId());
+        Assertions.assertEquals("tdwckygr", model.policyId());
+        Assertions.assertEquals(ProtectionStatus.PROTECTED, model.protectionState());
+        Assertions.assertEquals(WorkloadItemType.SQLDATA_BASE, model.workloadItemType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureWorkloadSqlAutoProtectionIntent model
-            = new AzureWorkloadSqlAutoProtectionIntent().withBackupManagementType(BackupManagementType.DEFAULT_BACKUP)
-                .withSourceResourceId("nvgmmbugtywa")
-                .withItemId("qaqkuea")
-                .withPolicyId("roeshoygzc")
-                .withProtectionState(ProtectionStatus.NOT_PROTECTED)
-                .withWorkloadItemType(WorkloadItemType.SAPASE_DATABASE);
+        AzureWorkloadSqlAutoProtectionIntent model = new AzureWorkloadSqlAutoProtectionIntent()
+            .withBackupManagementType(BackupManagementType.AZURE_BACKUP_SERVER)
+            .withSourceResourceId("fqxkfaoyteh")
+            .withItemId("uvjmv")
+            .withPolicyId("tdwckygr")
+            .withProtectionState(ProtectionStatus.PROTECTED)
+            .withWorkloadItemType(WorkloadItemType.SQLDATA_BASE);
         model = BinaryData.fromObject(model).toObject(AzureWorkloadSqlAutoProtectionIntent.class);
-        Assertions.assertEquals(BackupManagementType.DEFAULT_BACKUP, model.backupManagementType());
-        Assertions.assertEquals("nvgmmbugtywa", model.sourceResourceId());
-        Assertions.assertEquals("qaqkuea", model.itemId());
-        Assertions.assertEquals("roeshoygzc", model.policyId());
-        Assertions.assertEquals(ProtectionStatus.NOT_PROTECTED, model.protectionState());
-        Assertions.assertEquals(WorkloadItemType.SAPASE_DATABASE, model.workloadItemType());
+        Assertions.assertEquals(BackupManagementType.AZURE_BACKUP_SERVER, model.backupManagementType());
+        Assertions.assertEquals("fqxkfaoyteh", model.sourceResourceId());
+        Assertions.assertEquals("uvjmv", model.itemId());
+        Assertions.assertEquals("tdwckygr", model.policyId());
+        Assertions.assertEquals(ProtectionStatus.PROTECTED, model.protectionState());
+        Assertions.assertEquals(WorkloadItemType.SQLDATA_BASE, model.workloadItemType());
     }
 }

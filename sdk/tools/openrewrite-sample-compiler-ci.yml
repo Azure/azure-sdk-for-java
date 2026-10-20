@@ -42,15 +42,16 @@ extends:
               - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
                 parameters:
                   Paths:
-                    - "/sdk/tools/"
-                    - "/sdk/core-v2/"
-                    - "/sdk/identity-v2/"
-                    - "/sdk/appconfiguration-v2/"
-                    - "/eng/"
-                    - "/common/perf-test-core/"
                     - "**/*.xml"
                     - "**/*.md"
                     - "**/ci*.yml"
+                    - "/common/perf-test-core/"
+                    - "/eng/"
+                    - "/sdk/appconfiguration-v2/"
+                    - "/sdk/clientcore/"
+                    - "/sdk/core-v2/"
+                    - "/sdk/identity-v2/"
+                    - "/sdk/tools/"
 
               # Authenticate with Azure Artifacts
               - template: /eng/pipelines/templates/steps/maven-authenticate.yml
@@ -59,7 +60,7 @@ extends:
                 displayName: 'Build and Install Necessary Dependencies'
                 inputs:
                   goals: 'install'
-                  options: '-pl com.azure.v2:azure-core,com.azure.v2:azure-identity,com.azure.v2:azure-data-appconfiguration,com.azure:perf-test-core,com.azure:azure-openrewrite-compiler-maven-plugin -am -T 1C -Dcheckstyle.skip -Dgpg.skip -Dmaven.javadoc.skip -Drevapi.skip -DskipTests -Dspotbugs.skip -Djacoco.skip -Dspotless.skip --no-transfer-progress'
+                  options: '-pl com.azure.v2:azure-core,com.azure.v2:azure-identity,com.azure.v2:azure-data-appconfiguration,com.azure:perf-test-core,com.azure:azure-openrewrite-compiler-maven-plugin,io.clientcore:core -am -T 1C -Dcheckstyle.skip -Dgpg.skip -Dmaven.javadoc.skip -Drevapi.skip -DskipTests -Dspotbugs.skip -Djacoco.skip -Dspotless.skip --no-transfer-progress'
                   javaHomeOption: 'JDKVersion'
                   jdkVersionOption: '1.8'
 

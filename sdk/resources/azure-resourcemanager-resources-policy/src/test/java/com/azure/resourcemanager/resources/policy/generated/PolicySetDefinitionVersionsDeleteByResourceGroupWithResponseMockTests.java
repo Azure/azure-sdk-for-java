@@ -28,7 +28,7 @@ public final class PolicySetDefinitionVersionsDeleteByResourceGroupWithResponseM
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.policySetDefinitionVersions()
-            .deleteByResourceGroupWithResponse("aqpibjg", "vswmehfxrtt", com.azure.core.util.Context.NONE);
+            .deleteByResourceGroupWithResponse("zadi", "znllaslk", com.azure.core.util.Context.NONE);
 
     }
 }

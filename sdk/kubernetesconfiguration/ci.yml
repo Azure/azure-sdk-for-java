@@ -10,9 +10,17 @@ trigger:
     include:
       - sdk/kubernetesconfiguration/ci.yml
       - sdk/kubernetesconfiguration/azure-resourcemanager-kubernetesconfiguration/
+      - sdk/kubernetesconfiguration/azure-resourcemanager-kubernetesconfiguration-extensions/
+      - sdk/kubernetesconfiguration/azure-resourcemanager-kubernetesconfiguration-extensiontypes/
+      - sdk/kubernetesconfiguration/azure-resourcemanager-kubernetesconfiguration-fluxconfigurations/
+      - sdk/kubernetesconfiguration/azure-resourcemanager-kubernetesconfiguration-privatelinkscopes/
     exclude:
       - sdk/kubernetesconfiguration/pom.xml
       - sdk/kubernetesconfiguration/azure-resourcemanager-kubernetesconfiguration/pom.xml
+      - sdk/kubernetesconfiguration/azure-resourcemanager-kubernetesconfiguration-extensions/pom.xml
+      - sdk/kubernetesconfiguration/azure-resourcemanager-kubernetesconfiguration-extensiontypes/pom.xml
+      - sdk/kubernetesconfiguration/azure-resourcemanager-kubernetesconfiguration-fluxconfigurations/pom.xml
+      - sdk/kubernetesconfiguration/azure-resourcemanager-kubernetesconfiguration-privatelinkscopes/pom.xml
 
 pr:
   branches:
@@ -25,9 +33,17 @@ pr:
     include:
       - sdk/kubernetesconfiguration/ci.yml
       - sdk/kubernetesconfiguration/azure-resourcemanager-kubernetesconfiguration/
+      - sdk/kubernetesconfiguration/azure-resourcemanager-kubernetesconfiguration-extensions/
+      - sdk/kubernetesconfiguration/azure-resourcemanager-kubernetesconfiguration-extensiontypes/
+      - sdk/kubernetesconfiguration/azure-resourcemanager-kubernetesconfiguration-fluxconfigurations/
+      - sdk/kubernetesconfiguration/azure-resourcemanager-kubernetesconfiguration-privatelinkscopes/
     exclude:
       - sdk/kubernetesconfiguration/pom.xml
       - sdk/kubernetesconfiguration/azure-resourcemanager-kubernetesconfiguration/pom.xml
+      - sdk/kubernetesconfiguration/azure-resourcemanager-kubernetesconfiguration-extensions/pom.xml
+      - sdk/kubernetesconfiguration/azure-resourcemanager-kubernetesconfiguration-extensiontypes/pom.xml
+      - sdk/kubernetesconfiguration/azure-resourcemanager-kubernetesconfiguration-fluxconfigurations/pom.xml
+      - sdk/kubernetesconfiguration/azure-resourcemanager-kubernetesconfiguration-privatelinkscopes/pom.xml
 
 parameters:
   - name: release_azureresourcemanagerkubernetesconfiguration

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.monitor.workspaces.generated;
  */
 public final class IssueListSamples {
     /*
-     * x-ms-original-file: 2025-10-03/Issue_List_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-03-preview/Issue_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: Issue_List_MaximumSet.

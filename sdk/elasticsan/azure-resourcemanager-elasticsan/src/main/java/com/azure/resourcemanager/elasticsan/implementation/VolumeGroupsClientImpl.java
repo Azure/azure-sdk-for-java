@@ -38,6 +38,7 @@ import com.azure.resourcemanager.elasticsan.fluent.VolumeGroupsClient;
 import com.azure.resourcemanager.elasticsan.fluent.models.VolumeGroupInner;
 import com.azure.resourcemanager.elasticsan.implementation.models.VolumeGroupList;
 import com.azure.resourcemanager.elasticsan.models.VolumeGroupUpdate;
+import com.azure.resourcemanager.elasticsan.models.XMsAccessSoftDeletedResources;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -161,7 +162,9 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
         Mono<Response<VolumeGroupList>> listByElasticSan(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("elasticSanName") String elasticSanName, @HeaderParam("Accept") String accept, Context context);
+            @PathParam("elasticSanName") String elasticSanName,
+            @HeaderParam("x-ms-access-soft-deleted-resources") XMsAccessSoftDeletedResources xMsAccessSoftDeletedResources,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}/volumegroups")
@@ -170,7 +173,9 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
         Response<VolumeGroupList> listByElasticSanSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("elasticSanName") String elasticSanName, @HeaderParam("Accept") String accept, Context context);
+            @PathParam("elasticSanName") String elasticSanName,
+            @HeaderParam("x-ms-access-soft-deleted-resources") XMsAccessSoftDeletedResources xMsAccessSoftDeletedResources,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -178,6 +183,7 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<VolumeGroupList>> listByElasticSanNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("x-ms-access-soft-deleted-resources") XMsAccessSoftDeletedResources xMsAccessSoftDeletedResources,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -186,6 +192,7 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<VolumeGroupList> listByElasticSanNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("x-ms-access-soft-deleted-resources") XMsAccessSoftDeletedResources xMsAccessSoftDeletedResources,
             @HeaderParam("Accept") String accept, Context context);
     }
 
@@ -1072,6 +1079,8 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param elasticSanName The name of the ElasticSan.
+     * @param xMsAccessSoftDeletedResources Optional, returns only soft deleted volume groups if set to true. If set to
+     * false or if not specified, returns only active volume groups.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1079,7 +1088,7 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VolumeGroupInner>> listByElasticSanSinglePageAsync(String resourceGroupName,
-        String elasticSanName) {
+        String elasticSanName, XMsAccessSoftDeletedResources xMsAccessSoftDeletedResources) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -1098,10 +1107,31 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByElasticSan(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, elasticSanName, accept, context))
+                this.client.getSubscriptionId(), resourceGroupName, elasticSanName, xMsAccessSoftDeletedResources,
+                accept, context))
             .<PagedResponse<VolumeGroupInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * List VolumeGroups.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param elasticSanName The name of the ElasticSan.
+     * @param xMsAccessSoftDeletedResources Optional, returns only soft deleted volume groups if set to true. If set to
+     * false or if not specified, returns only active volume groups.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of Volume Groups as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<VolumeGroupInner> listByElasticSanAsync(String resourceGroupName, String elasticSanName,
+        XMsAccessSoftDeletedResources xMsAccessSoftDeletedResources) {
+        return new PagedFlux<>(
+            () -> listByElasticSanSinglePageAsync(resourceGroupName, elasticSanName, xMsAccessSoftDeletedResources),
+            nextLink -> listByElasticSanNextSinglePageAsync(nextLink, xMsAccessSoftDeletedResources));
     }
 
     /**
@@ -1116,8 +1146,10 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<VolumeGroupInner> listByElasticSanAsync(String resourceGroupName, String elasticSanName) {
-        return new PagedFlux<>(() -> listByElasticSanSinglePageAsync(resourceGroupName, elasticSanName),
-            nextLink -> listByElasticSanNextSinglePageAsync(nextLink));
+        final XMsAccessSoftDeletedResources xMsAccessSoftDeletedResources = null;
+        return new PagedFlux<>(
+            () -> listByElasticSanSinglePageAsync(resourceGroupName, elasticSanName, xMsAccessSoftDeletedResources),
+            nextLink -> listByElasticSanNextSinglePageAsync(nextLink, xMsAccessSoftDeletedResources));
     }
 
     /**
@@ -1125,14 +1157,16 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param elasticSanName The name of the ElasticSan.
+     * @param xMsAccessSoftDeletedResources Optional, returns only soft deleted volume groups if set to true. If set to
+     * false or if not specified, returns only active volume groups.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of Volume Groups along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<VolumeGroupInner> listByElasticSanSinglePage(String resourceGroupName,
-        String elasticSanName) {
+    private PagedResponse<VolumeGroupInner> listByElasticSanSinglePage(String resourceGroupName, String elasticSanName,
+        XMsAccessSoftDeletedResources xMsAccessSoftDeletedResources) {
         if (this.client.getEndpoint() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -1152,9 +1186,9 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
                 .log(new IllegalArgumentException("Parameter elasticSanName is required and cannot be null."));
         }
         final String accept = "application/json";
-        Response<VolumeGroupList> res
-            = service.listByElasticSanSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, elasticSanName, accept, Context.NONE);
+        Response<VolumeGroupList> res = service.listByElasticSanSync(this.client.getEndpoint(),
+            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, elasticSanName,
+            xMsAccessSoftDeletedResources, accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
@@ -1164,6 +1198,8 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param elasticSanName The name of the ElasticSan.
+     * @param xMsAccessSoftDeletedResources Optional, returns only soft deleted volume groups if set to true. If set to
+     * false or if not specified, returns only active volume groups.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1172,7 +1208,7 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<VolumeGroupInner> listByElasticSanSinglePage(String resourceGroupName, String elasticSanName,
-        Context context) {
+        XMsAccessSoftDeletedResources xMsAccessSoftDeletedResources, Context context) {
         if (this.client.getEndpoint() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -1192,9 +1228,9 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
                 .log(new IllegalArgumentException("Parameter elasticSanName is required and cannot be null."));
         }
         final String accept = "application/json";
-        Response<VolumeGroupList> res
-            = service.listByElasticSanSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, elasticSanName, accept, context);
+        Response<VolumeGroupList> res = service.listByElasticSanSync(this.client.getEndpoint(),
+            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, elasticSanName,
+            xMsAccessSoftDeletedResources, accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
@@ -1211,8 +1247,10 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VolumeGroupInner> listByElasticSan(String resourceGroupName, String elasticSanName) {
-        return new PagedIterable<>(() -> listByElasticSanSinglePage(resourceGroupName, elasticSanName),
-            nextLink -> listByElasticSanNextSinglePage(nextLink));
+        final XMsAccessSoftDeletedResources xMsAccessSoftDeletedResources = null;
+        return new PagedIterable<>(
+            () -> listByElasticSanSinglePage(resourceGroupName, elasticSanName, xMsAccessSoftDeletedResources),
+            nextLink -> listByElasticSanNextSinglePage(nextLink, xMsAccessSoftDeletedResources));
     }
 
     /**
@@ -1220,6 +1258,8 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param elasticSanName The name of the ElasticSan.
+     * @param xMsAccessSoftDeletedResources Optional, returns only soft deleted volume groups if set to true. If set to
+     * false or if not specified, returns only active volume groups.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1228,22 +1268,26 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VolumeGroupInner> listByElasticSan(String resourceGroupName, String elasticSanName,
-        Context context) {
-        return new PagedIterable<>(() -> listByElasticSanSinglePage(resourceGroupName, elasticSanName, context),
-            nextLink -> listByElasticSanNextSinglePage(nextLink, context));
+        XMsAccessSoftDeletedResources xMsAccessSoftDeletedResources, Context context) {
+        return new PagedIterable<>(
+            () -> listByElasticSanSinglePage(resourceGroupName, elasticSanName, xMsAccessSoftDeletedResources, context),
+            nextLink -> listByElasticSanNextSinglePage(nextLink, xMsAccessSoftDeletedResources, context));
     }
 
     /**
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @param xMsAccessSoftDeletedResources Optional, returns only soft deleted volume groups if set to true. If set to
+     * false or if not specified, returns only active volume groups.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of Volume Groups along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<VolumeGroupInner>> listByElasticSanNextSinglePageAsync(String nextLink) {
+    private Mono<PagedResponse<VolumeGroupInner>> listByElasticSanNextSinglePageAsync(String nextLink,
+        XMsAccessSoftDeletedResources xMsAccessSoftDeletedResources) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -1253,7 +1297,8 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listByElasticSanNext(nextLink, this.client.getEndpoint(), accept, context))
+            .withContext(context -> service.listByElasticSanNext(nextLink, this.client.getEndpoint(),
+                xMsAccessSoftDeletedResources, accept, context))
             .<PagedResponse<VolumeGroupInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -1263,13 +1308,16 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @param xMsAccessSoftDeletedResources Optional, returns only soft deleted volume groups if set to true. If set to
+     * false or if not specified, returns only active volume groups.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of Volume Groups along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<VolumeGroupInner> listByElasticSanNextSinglePage(String nextLink) {
+    private PagedResponse<VolumeGroupInner> listByElasticSanNextSinglePage(String nextLink,
+        XMsAccessSoftDeletedResources xMsAccessSoftDeletedResources) {
         if (nextLink == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
@@ -1280,8 +1328,8 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
                     "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        Response<VolumeGroupList> res
-            = service.listByElasticSanNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        Response<VolumeGroupList> res = service.listByElasticSanNextSync(nextLink, this.client.getEndpoint(),
+            xMsAccessSoftDeletedResources, accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
@@ -1290,6 +1338,8 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @param xMsAccessSoftDeletedResources Optional, returns only soft deleted volume groups if set to true. If set to
+     * false or if not specified, returns only active volume groups.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1297,7 +1347,8 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
      * @return list of Volume Groups along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<VolumeGroupInner> listByElasticSanNextSinglePage(String nextLink, Context context) {
+    private PagedResponse<VolumeGroupInner> listByElasticSanNextSinglePage(String nextLink,
+        XMsAccessSoftDeletedResources xMsAccessSoftDeletedResources, Context context) {
         if (nextLink == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
@@ -1308,8 +1359,8 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
                     "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        Response<VolumeGroupList> res
-            = service.listByElasticSanNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        Response<VolumeGroupList> res = service.listByElasticSanNextSync(nextLink, this.client.getEndpoint(),
+            xMsAccessSoftDeletedResources, accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
