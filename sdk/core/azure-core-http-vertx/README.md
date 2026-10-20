@@ -152,12 +152,12 @@ HttpClient client = new VertxHttpClientBuilder()
 
 The client uses ALPN to negotiate HTTP/2 over TLS. For plain HTTP requests, Vert.x's cleartext upgrade configuration
 applies. Use `HTTP_1_1` explicitly to limit the client to HTTP/1.1. Passing `null` clears the maximum, preserving the
-existing default or the protocols in supplied internal Vert.x instances. An explicit maximum overrides protocol and ALPN
+existing default or the protocols in supplied Vert.x options. An explicit maximum overrides protocol and ALPN
 settings in a copy of those options without mutating the originals; unrelated settings are retained.
 
 ### Customize the Underlying Instance
 
-Supply an application-configured internal Vert.x instance before supplying it to `VertxHttpClientBuilder.vertx`. This
+Configure a Vert.x instance before supplying it to `VertxHttpClientBuilder.vertx`. This
 example creates the instance with four event-loop threads.
 
 ```java readme-sample-createClientWithVertxInstance
@@ -191,7 +191,7 @@ io.netty.handler.codec.http.TooLongHttpHeaderException: HTTP header is larger th
 ```java readme-sample-customMaxHeaderSize
 // Constructs an HttpClient with a modified max header size.
 // This creates a Vert.x HttpClient with a max headers size of 256 KB.
-// NOTE: Internal options provide connection, read and write timeouts and proxy settings.
+// NOTE: Vert.x options provide connection, read and write timeouts and proxy settings.
 HttpClient httpClient = new VertxHttpClientBuilder()
     .httpClientOptions(new HttpClientOptions().setMaxHeaderSize(256 * 1024))
     .build();

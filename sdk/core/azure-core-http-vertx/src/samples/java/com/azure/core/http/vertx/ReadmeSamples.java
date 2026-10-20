@@ -58,7 +58,7 @@ public class ReadmeSamples {
         // BEGIN: readme-sample-customMaxHeaderSize
         // Constructs an HttpClient with a modified max header size.
         // This creates a Vert.x HttpClient with a max headers size of 256 KB.
-        // NOTE: Internal options provide connection, read and write timeouts and proxy settings.
+        // NOTE: Vert.x options provide connection, read and write timeouts and proxy settings.
         HttpClient httpClient = new VertxHttpClientBuilder()
             .httpClientOptions(new HttpClientOptions().setMaxHeaderSize(256 * 1024))
             .build();

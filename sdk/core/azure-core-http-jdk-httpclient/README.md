@@ -145,20 +145,20 @@ HttpClient client = new JdkHttpClientBuilder()
 ```
 
 The client treats HTTP/2 as a preferred version with HTTP/1.1 fallback, not as an HTTP/2-only mode. Not setting a
-maximum HTTP version or setting it to `null` preserves the a default of HTTP/1.1. If a JDK builder is provided as
+maximum HTTP version or setting it to `null` preserves the default of HTTP/1.1. If a JDK builder is provided as
 detailed in the next section, an unset or cleared maximum preserves that builder's protocol preference.
 
 ### Customize the Underlying Client
 
-Pass an application-configured internal JDK client builder to the Azure builder. This example selects the shared common
+Pass an application-configured JDK client builder to the Azure builder. This example selects the shared common
 pool for asynchronous work rather than creating an executor that needs a separate application lifecycle. Calling
-`JdkHttpClientBuilder.executor` overrides an executor supplied through the JDK builder. The configurable internal
+`JdkHttpClientBuilder.executor` overrides an executor supplied through the JDK builder. The configurable
 settings can differ from those exposed in `com.azure.core.util.HttpClientOptions`.
 
-```java readme-sample-customizeInternalBuilder
-java.net.http.HttpClient.Builder internalBuilder = java.net.http.HttpClient.newBuilder()
+```java readme-sample-customizeUnderlyingClient
+java.net.http.HttpClient.Builder jdkBuilder = java.net.http.HttpClient.newBuilder()
     .executor(ForkJoinPool.commonPool());
-HttpClient client = new JdkHttpClientBuilder(internalBuilder).build();
+HttpClient client = new JdkHttpClientBuilder(jdkBuilder).build();
 ```
 
 ## Next steps

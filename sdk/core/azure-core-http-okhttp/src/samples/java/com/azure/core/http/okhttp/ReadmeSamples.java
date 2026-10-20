@@ -128,14 +128,14 @@ public class ReadmeSamples {
     }
 
     /**
-     * Wraps an internal OkHttp client with connection retries disabled.
+     * Wraps an OkHttp client with connection retries disabled.
      */
-    public void customizeInternalClient() {
-        // BEGIN: readme-sample-customizeInternalClient
-        OkHttpClient internalClient = new OkHttpClient.Builder()
+    public void customizeUnderlyingClient() {
+        // BEGIN: readme-sample-customizeUnderlyingClient
+        OkHttpClient okHttpClient = new OkHttpClient.Builder()
             .retryOnConnectionFailure(false)
             .build();
-        HttpClient client = new OkHttpAsyncHttpClientBuilder(internalClient).build();
-        // END: readme-sample-customizeInternalClient
+        HttpClient client = new OkHttpAsyncHttpClientBuilder(okHttpClient).build();
+        // END: readme-sample-customizeUnderlyingClient
     }
 }

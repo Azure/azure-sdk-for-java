@@ -146,28 +146,28 @@ HttpClient client = new OkHttpAsyncHttpClientBuilder()
 
 HTTP/2 is negotiated over TLS, with HTTP/1.1 fallback; plain HTTP requests use HTTP/1.1. Use `HTTP_1_1` to limit the
 client to HTTP/1.1. Passing `null` clears the maximum, preserving OkHttp's default protocols or those of a supplied
-internal OkHttp client.
+OkHttp client.
 
 ### Customize the Underlying Client
 
-Pass an application-configured internal OkHttp client to the Azure builder. This example disables OkHttp's own
-connection retries; retry policies in an Azure HTTP pipeline remain independently configurable. The configurable internal
+Pass an application-configured OkHttp client to the Azure builder. This example disables OkHttp's own
+connection retries; retry policies in an Azure HTTP pipeline remain independently configurable. The configurable
 settings can differ from those exposed in `com.azure.core.util.HttpClientOptions`.
 
-```java readme-sample-customizeInternalClient
-OkHttpClient internalClient = new OkHttpClient.Builder()
+```java readme-sample-customizeUnderlyingClient
+OkHttpClient okHttpClient = new OkHttpClient.Builder()
     .retryOnConnectionFailure(false)
     .build();
-HttpClient client = new OkHttpAsyncHttpClientBuilder(internalClient).build();
+HttpClient client = new OkHttpAsyncHttpClientBuilder(okHttpClient).build();
 ```
 
 ### Advanced Configuration
 
 The following examples use OkHttp-specific protocol settings and are not portable to every HTTP transport.
 
-#### Configure HTTP/2 on an Internal Client
+#### Configure HTTP/2 on an OkHttp Client
 
-You can also configure the internal client's protocol list directly instead of using `maximumHttpVersion`.
+You can also configure the OkHttp client's protocol list directly instead of using `maximumHttpVersion`.
 
 ```java readme-sample-useHttp2WithConfiguredOkHttpClient
 // Constructs an HttpClient that supports both HTTP/1.1 and HTTP/2 with HTTP/2 being the preferred protocol.
