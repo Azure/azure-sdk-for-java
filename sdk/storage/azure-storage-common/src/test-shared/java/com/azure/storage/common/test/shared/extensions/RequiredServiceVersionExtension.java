@@ -4,6 +4,7 @@
 package com.azure.storage.common.test.shared.extensions;
 
 import com.azure.core.util.ServiceVersion;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.test.shared.TestEnvironment;
 import org.junit.jupiter.api.extension.ConditionEvaluationResult;
 import org.junit.jupiter.api.extension.ExecutionCondition;
@@ -11,8 +12,8 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
-import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Consumer;
 
 import static org.junit.platform.commons.util.AnnotationUtils.findAnnotation;
 
@@ -20,23 +21,38 @@ import static org.junit.platform.commons.util.AnnotationUtils.findAnnotation;
  * Extension to mark tests that should only be run with a specific service version.
  */
 public class RequiredServiceVersionExtension implements ExecutionCondition {
+    private static final ClientLogger LOGGER = new ClientLogger(RequiredServiceVersionExtension.class);
     private static final Map<Class<? extends Enum<? extends ServiceVersion>>, ServiceVersion[]> ALL_SERVICE_VERSIONS
         = new ConcurrentHashMap<>();
     private static final Map<Class<? extends Enum<? extends ServiceVersion>>, ServiceVersion> LATEST_SERVICE_VERSIONS
         = new ConcurrentHashMap<>();
 
-    static boolean shouldSkip(Class<? extends Enum<? extends ServiceVersion>> targetEnumClass,
-        String minServiceVersion, String environmentServiceVersion) {
+    static ConditionEvaluationResult evaluateServiceVersion(
+        Class<? extends Enum<? extends ServiceVersion>> targetEnumClass, String minServiceVersion,
+        String configuredServiceVersion, Consumer<String> warningLogger) {
         ServiceVersion[] serviceVersions = getServiceVersions(targetEnumClass);
-        if (environmentServiceVersion == null) {
+        int minOrdinal = getRequiredServiceVersionOrdinal(serviceVersions, minServiceVersion);
+
+        if (configuredServiceVersion == null) {
             // Fall back to "latest" service version if environment variable is not set.
-            environmentServiceVersion = getLatestServiceVersion(targetEnumClass).getVersion();
+            configuredServiceVersion = getLatestServiceVersion(targetEnumClass).getVersion();
         }
 
-        int minOrdinal = getOrdinal(serviceVersions, minServiceVersion, "minimum");
-        int environmentOrdinal = getOrdinal(serviceVersions, environmentServiceVersion, "configured");
+        int configuredOrdinalPos = findServiceVersionOrdinal(serviceVersions, configuredServiceVersion);
+        if (configuredOrdinalPos == -1) {
+            String reason = String.format(
+                "Skipping test because AZURE_LIVE_TEST_SERVICE_VERSION '%s' is not supported by %s; "
+                    + "the test requires minimum service version '%s'.",
+                configuredServiceVersion, targetEnumClass.getSimpleName(), minServiceVersion);
+            warningLogger.accept(reason);
+            return ConditionEvaluationResult.disabled(reason);
+        }
 
-        return environmentOrdinal < minOrdinal;
+        return configuredOrdinalPos < minOrdinal
+            ? ConditionEvaluationResult.disabled(
+                String.format("Test requires minimum service version '%s'.", minServiceVersion))
+            : ConditionEvaluationResult.enabled(
+                String.format("Configured service version meets minimum version '%s'.", minServiceVersion));
     }
 
     @Override
@@ -50,19 +66,9 @@ public class RequiredServiceVersionExtension implements ExecutionCondition {
             return ConditionEvaluationResult.enabled("No service version required");
         }
 
-        if (shouldSkip(requiredServiceVersion.clazz(), requiredServiceVersion.min())) {
-            return ConditionEvaluationResult.disabled("Test ignored to run with " + requiredServiceVersion.min()
-                + " service version");
-        } else {
-            return ConditionEvaluationResult.enabled("Test enabled to run with " + requiredServiceVersion.min()
-                + " service version");
-        }
-    }
-
-    private static boolean shouldSkip(Class<? extends Enum<? extends ServiceVersion>> targetEnumClass,
-        String minServiceVersion) {
-        String environmentServiceVersion = TestEnvironment.getInstance().getServiceVersion();
-        return shouldSkip(targetEnumClass, minServiceVersion, environmentServiceVersion);
+        String configuredServiceVersion = TestEnvironment.getInstance().getServiceVersion();
+        return evaluateServiceVersion(requiredServiceVersion.clazz(), requiredServiceVersion.min(),
+            configuredServiceVersion, LOGGER::warning);
     }
 
     private static ServiceVersion[] getServiceVersions(Class<? extends Enum<? extends ServiceVersion>> clazz) {
@@ -79,14 +85,32 @@ public class RequiredServiceVersionExtension implements ExecutionCondition {
         });
     }
 
-    private static int getOrdinal(ServiceVersion[] serviceVersions, String target, String description) {
+    /*
+     * Resolves the annotation's required minimum version. An unknown minimum indicates an invalid annotation and must
+     * fail the test rather than skip it.
+     */
+    private static int getRequiredServiceVersionOrdinal(ServiceVersion[] serviceVersions, String target) {
+        int ordinal = findServiceVersionOrdinal(serviceVersions, target);
+        if (ordinal == -1) {
+            throw new IllegalArgumentException(
+                String.format("Minimum service version '%s' is not supported.", target));
+        }
+        return ordinal;
+    }
+
+    /*
+     * Resolves either a service wire value or enum name. Returns -1 when the version is absent so an unknown configured
+     * version can be handled by warning and skipping the test.
+     */
+    private static int findServiceVersionOrdinal(ServiceVersion[] serviceVersions, String target) {
         for (int i = 0; i < serviceVersions.length; i++) {
             ServiceVersion serviceVersion = serviceVersions[i];
-            if (Objects.equals(serviceVersion.getVersion(), target)
-                || Objects.equals(((Enum<?>) serviceVersion).name(), target)) {
+            Enum<?> serviceVersionEnum = (Enum<?>) serviceVersion;
+
+            if (target.equals(serviceVersion.getVersion()) || target.equals(serviceVersionEnum.name())) {
                 return i;
             }
         }
-        throw new IllegalArgumentException("Unknown " + description + " service version '" + target + "'.");
+        return -1;
     }
 }
