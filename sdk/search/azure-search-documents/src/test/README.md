@@ -1,6 +1,6 @@
 # Azure AI Search tests
 
-Integration tests extend [SearchTestBase](java/com/azure/search/documents/SearchTestBase.java).
+Integration tests extend [SearchTestBase](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/test/java/com/azure/search/documents/SearchTestBase.java).
 `RECORD` calls Azure and records HTTP traffic; `LIVE` calls Azure without recording; `PLAYBACK` uses existing
 recordings and needs no Azure resources. Mock-based tests do not need resources or recordings.
 
@@ -13,7 +13,7 @@ Copy-Item ./sdk/search/azure-search-documents/Set-TestEnvironment.example.ps1 `
   ./sdk/search/azure-search-documents/Set-TestEnvironment.local.ps1
 ```
 
-The [example](../../Set-TestEnvironment.example.ps1) contains only `$env:` assignments and works with Windows
+The [example](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/Set-TestEnvironment.example.ps1) contains only `$env:` assignments and works with Windows
 PowerShell 5.1 or PowerShell 7. There is no dotenv loader, resource validation, or provisioning.
 The local copy is git-ignored; do not overwrite an existing local configuration.
 Uncomment and fill in only the settings needed by the tests you choose.
@@ -80,7 +80,7 @@ web-summarization activity records without calling Azure.
 
 ## Authentication and permissions
 
-[TestHelpers](java/com/azure/search/documents/TestHelpers.java) uses your `az login` identity for `RECORD` and `LIVE`.
+[TestHelpers](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/test/java/com/azure/search/documents/TestHelpers.java) uses your `az login` identity for `RECORD` and `LIVE`.
 Your computer does not need a managed identity. Search separately uses its own system-assigned managed identity
 to access storage, OpenAI, and AI Services without keys.
 
@@ -93,11 +93,11 @@ to access storage, OpenAI, and AI Services without keys.
 | Search system-assigned identity | AI Services | Cognitive Services User |
 
 Configure these identities and roles on your existing resources. No Bicep deployment is needed for local setup.
-The [streaming example](../samples/java/com/azure/search/documents/KnowledgeBaseRetrievalStreamExample.java)
+The [streaming example](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/KnowledgeBaseRetrievalStreamExample.java)
 uses `DefaultAzureCredential` for Search and the Search service's system-assigned identity for Azure OpenAI.
 Run `az login` locally and enable RBAC authentication on Search. Set `SEARCH_SERVICE_ENDPOINT`, `SEARCH_OPENAI_ENDPOINT`,
 `SEARCH_OPENAI_DEPLOYMENT_NAME`, and `SEARCH_OPENAI_MODEL_NAME`; API keys are not required.
-The unchanged [provisioning template](../../../test-resources.bicep) uses user-assigned identity and does not configure
+The unchanged [provisioning template](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/test-resources.bicep) uses user-assigned identity and does not configure
 the system-assigned workflow described here.
 
 **Use an isolated test service:** integration tests create, update, and delete resources, and some cleanup enumerates
@@ -128,9 +128,9 @@ $env:AZURE_TEST_MODE = 'PLAYBACK'
 mvn -f sdk/search/azure-search-documents/pom.xml --batch-mode test
 ```
 
-Recordings use [assets.json](../../assets.json) and an external, git-excluded assets checkout.
+Recordings use [assets.json](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/assets.json) and an external, git-excluded assets checkout.
 The test framework normally starts the test proxy automatically. To inspect and publish recordings with the
-[test-proxy CLI](../../../../../docs/test-proxy-migration.md#test-proxy-cli-commands):
+[test-proxy CLI](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/test-proxy-migration.md#test-proxy-cli-commands):
 
 ```powershell
 test-proxy config locate -a sdk/search/azure-search-documents/assets.json
