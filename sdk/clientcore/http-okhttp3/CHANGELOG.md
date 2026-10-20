@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Prevented proxy authentication retries for HTTPS endpoint 407 responses while preserving CONNECT and cleartext HTTP proxy authentication.
+
 ### Other Changes
 
 ## 1.0.0-beta.2 (2025-03-12)
