@@ -67,7 +67,8 @@ public class VertxHttpClientBuilderTests {
 
         assertEquals(10000, httpClient.buildOptions.getConnectTimeout());
         assertEquals(60000, httpClient.buildOptions.getReadIdleTimeout());
-        assertEquals(60000, httpClient.buildOptions.getWriteIdleTimeout());
+        // SDK write timeouts are enforced per request rather than for the lifetime of the connection.
+        assertEquals(0, httpClient.buildOptions.getWriteIdleTimeout());
     }
 
     @Test
@@ -86,7 +87,7 @@ public class VertxHttpClientBuilderTests {
 
         assertEquals(10000, httpClient.buildOptions.getConnectTimeout());
         assertEquals(30000, httpClient.buildOptions.getReadIdleTimeout());
-        assertEquals(40000, httpClient.buildOptions.getWriteIdleTimeout());
+        assertEquals(0, httpClient.buildOptions.getWriteIdleTimeout());
     }
 
     @ParameterizedTest
@@ -131,11 +132,10 @@ public class VertxHttpClientBuilderTests {
 
     @Test
     public void buildWithHttpProxyFromEnvConfiguration() {
-        Configuration configuration = new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE,
-            new TestConfigurationSource()
-                .put(Configuration.PROPERTY_HTTP_PROXY,
-                    "http://" + PROXY_USER_INFO + "localhost:" + PROXY_SERVER_HTTP_PORT)
-                .put("java.net.useSystemProxies", "true")).build();
+        Configuration configuration = new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE, new TestConfigurationSource()
+            .put(Configuration.PROPERTY_HTTP_PROXY, "http://" + PROXY_USER_INFO + "localhost:" + PROXY_SERVER_HTTP_PORT)
+            .put(Configuration.PROPERTY_HTTPS_PROXY, "")
+            .put("java.net.useSystemProxies", "true")).build();
 
         HttpClient httpClient = new VertxHttpClientBuilder().configuration(configuration).build();
 

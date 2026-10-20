@@ -8,7 +8,15 @@
 
 ### Bugs Fixed
 
+- Fixed `AccessTokenCache` and `SimpleTokenCache` leaving concurrent callers waiting forever when the caller that was
+  refreshing the token was cancelled, for example by a timeout. Waiting callers now retry the token acquisition when
+  the refresh they waited on ends without a token, including when `SimpleTokenCache`'s token supplier completes empty.
+
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded Reactor from `3.7.19` to `3.8.7`.
 
 ## 1.60.0 (2026-09-29)
 
@@ -26,6 +34,8 @@
   that point could never run, so this case is now logged and the work continues.
 
 ### Other Changes
+
+#### Dependency Updates
 
 - Upgraded Jackson from `2.18.9` to `2.18.11`.
 

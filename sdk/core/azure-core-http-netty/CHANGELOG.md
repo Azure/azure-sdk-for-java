@@ -3,12 +3,24 @@
 ## 1.17.0-beta.1 (Unreleased)
 
 ### Features Added
+- Added opt-in observation of the `Expect: 100-continue` handshake. When a caller places an `AtomicBoolean` in the
+  request `Context` under the key `azure-http-client-expect-continue-received`, the client sets it to `true` if the
+  service answers with an interim `100 Continue` response. This does not change how or when the request body is sent.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
+- Preserved asynchronous file downloads when Netty uses scoped direct buffers on newer JDKs.
+- Declared the Netty transport dependency directly to prevent older transitive transports from being selected.
+- Fixed response and read timeouts not being enforced when the write timeout is disabled.
+
 ### Other Changes
+
+#### Dependency Updates
+
+- Migrated Netty dependencies from `4.1.137.Final` to `4.2.19.Final`.
+- Upgraded Reactor Netty from `1.2.18` to `1.3.7` and Reactor from `3.7.19` to `3.8.7`.
 
 ## 1.16.8 (2026-09-29)
 

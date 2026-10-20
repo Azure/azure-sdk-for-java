@@ -15,20 +15,19 @@ public final class AutoExportJobUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AutoExportJobUpdate model = BinaryData.fromString(
-            "{\"tags\":{\"vmbmp\":\"sluicpdggkzz\",\"uefywsbpfvmwy\":\"xmodf\"},\"properties\":{\"adminStatus\":\"Disable\"}}")
+            "{\"tags\":{\"ulpiuj\":\"kcnqxwbpo\",\"obyu\":\"aasipqi\"},\"properties\":{\"adminStatus\":\"Enable\"}}")
             .toObject(AutoExportJobUpdate.class);
-        Assertions.assertEquals("sluicpdggkzz", model.tags().get("vmbmp"));
-        Assertions.assertEquals(AutoExportJobAdminStatus.DISABLE, model.adminStatus());
+        Assertions.assertEquals("kcnqxwbpo", model.tags().get("ulpiuj"));
+        Assertions.assertEquals(AutoExportJobAdminStatus.ENABLE, model.adminStatus());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AutoExportJobUpdate model
-            = new AutoExportJobUpdate().withTags(mapOf("vmbmp", "sluicpdggkzz", "uefywsbpfvmwy", "xmodf"))
-                .withAdminStatus(AutoExportJobAdminStatus.DISABLE);
+        AutoExportJobUpdate model = new AutoExportJobUpdate().withTags(mapOf("ulpiuj", "kcnqxwbpo", "obyu", "aasipqi"))
+            .withAdminStatus(AutoExportJobAdminStatus.ENABLE);
         model = BinaryData.fromObject(model).toObject(AutoExportJobUpdate.class);
-        Assertions.assertEquals("sluicpdggkzz", model.tags().get("vmbmp"));
-        Assertions.assertEquals(AutoExportJobAdminStatus.DISABLE, model.adminStatus());
+        Assertions.assertEquals("kcnqxwbpo", model.tags().get("ulpiuj"));
+        Assertions.assertEquals(AutoExportJobAdminStatus.ENABLE, model.adminStatus());
     }
 
     // Use "Map.of" if available
