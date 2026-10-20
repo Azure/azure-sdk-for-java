@@ -32,7 +32,7 @@ public final class CarbonServiceQueryCarbonEmissionReportsSamples {
     public static void queryCarbonEmissionTopNResourceTypeReport(
         com.azure.resourcemanager.carbonoptimization.CarbonOptimizationManager manager) {
         manager.carbonServices()
-            .queryCarbonEmissionReports(new TopItemsSummaryReportQueryFilter()
+            .queryCarbonEmissionReportsWithResponse(new TopItemsSummaryReportQueryFilter()
                 .withDateRange(
                     new DateRange().withStart(LocalDate.parse("2024-05-01")).withEnd(LocalDate.parse("2024-05-01")))
                 .withSubscriptionList(Arrays.asList("00000000-0000-0000-0000-000000000000",
@@ -56,7 +56,7 @@ public final class CarbonServiceQueryCarbonEmissionReportsSamples {
     public static void queryCarbonEmissionTopNResourceReport(
         com.azure.resourcemanager.carbonoptimization.CarbonOptimizationManager manager) {
         manager.carbonServices()
-            .queryCarbonEmissionReports(new TopItemsSummaryReportQueryFilter()
+            .queryCarbonEmissionReportsWithResponse(new TopItemsSummaryReportQueryFilter()
                 .withDateRange(
                     new DateRange().withStart(LocalDate.parse("2024-05-01")).withEnd(LocalDate.parse("2024-05-01")))
                 .withSubscriptionList(Arrays.asList("00000000-0000-0000-0000-000000000000",
@@ -82,7 +82,7 @@ public final class CarbonServiceQueryCarbonEmissionReportsSamples {
         queryCarbonEmissionMonthlySummaryReportWithOptionalFilterLocationListResourceTypeListResourceGroupUrlList(
             com.azure.resourcemanager.carbonoptimization.CarbonOptimizationManager manager) {
         manager.carbonServices()
-            .queryCarbonEmissionReports(
+            .queryCarbonEmissionReportsWithResponse(
                 new MonthlySummaryReportQueryFilter()
                     .withDateRange(
                         new DateRange().withStart(LocalDate.parse("2024-03-01")).withEnd(LocalDate.parse("2024-05-01")))
@@ -107,7 +107,7 @@ public final class CarbonServiceQueryCarbonEmissionReportsSamples {
     public static void queryCarbonEmissionSubscriptionsItemDetailsReport(
         com.azure.resourcemanager.carbonoptimization.CarbonOptimizationManager manager) {
         manager.carbonServices()
-            .queryCarbonEmissionReports(new ItemDetailsQueryFilter()
+            .queryCarbonEmissionReportsWithResponse(new ItemDetailsQueryFilter()
                 .withDateRange(
                     new DateRange().withStart(LocalDate.parse("2024-05-01")).withEnd(LocalDate.parse("2024-05-01")))
                 .withSubscriptionList(Arrays.asList("00000000-0000-0000-0000-000000000000",
@@ -133,7 +133,7 @@ public final class CarbonServiceQueryCarbonEmissionReportsSamples {
     public static void queryCarbonEmissionResourceGroupItemDetailsReport(
         com.azure.resourcemanager.carbonoptimization.CarbonOptimizationManager manager) {
         manager.carbonServices()
-            .queryCarbonEmissionReports(new ItemDetailsQueryFilter()
+            .queryCarbonEmissionReportsWithResponse(new ItemDetailsQueryFilter()
                 .withDateRange(
                     new DateRange().withStart(LocalDate.parse("2024-05-01")).withEnd(LocalDate.parse("2024-05-01")))
                 .withSubscriptionList(Arrays.asList("00000000-0000-0000-0000-000000000000",
@@ -159,7 +159,7 @@ public final class CarbonServiceQueryCarbonEmissionReportsSamples {
     public static void queryCarbonEmissionTopNResourceMonthlyReport(
         com.azure.resourcemanager.carbonoptimization.CarbonOptimizationManager manager) {
         manager.carbonServices()
-            .queryCarbonEmissionReports(new TopItemsMonthlySummaryReportQueryFilter()
+            .queryCarbonEmissionReportsWithResponse(new TopItemsMonthlySummaryReportQueryFilter()
                 .withDateRange(
                     new DateRange().withStart(LocalDate.parse("2024-03-01")).withEnd(LocalDate.parse("2024-05-01")))
                 .withSubscriptionList(Arrays.asList("00000000-0000-0000-0000-000000000000",
@@ -183,7 +183,7 @@ public final class CarbonServiceQueryCarbonEmissionReportsSamples {
     public static void queryCarbonEmissionOverallSummaryReport(
         com.azure.resourcemanager.carbonoptimization.CarbonOptimizationManager manager) {
         manager.carbonServices()
-            .queryCarbonEmissionReports(
+            .queryCarbonEmissionReportsWithResponse(
                 new OverallSummaryReportQueryFilter()
                     .withDateRange(
                         new DateRange().withStart(LocalDate.parse("2023-06-01")).withEnd(LocalDate.parse("2023-06-01")))
@@ -203,7 +203,7 @@ public final class CarbonServiceQueryCarbonEmissionReportsSamples {
     public static void queryCarbonEmissionTopNSubscriptionsReport(
         com.azure.resourcemanager.carbonoptimization.CarbonOptimizationManager manager) {
         manager.carbonServices()
-            .queryCarbonEmissionReports(new TopItemsSummaryReportQueryFilter()
+            .queryCarbonEmissionReportsWithResponse(new TopItemsSummaryReportQueryFilter()
                 .withDateRange(
                     new DateRange().withStart(LocalDate.parse("2024-05-01")).withEnd(LocalDate.parse("2024-05-01")))
                 .withSubscriptionList(Arrays.asList("00000000-0000-0000-0000-000000000000",
@@ -227,7 +227,7 @@ public final class CarbonServiceQueryCarbonEmissionReportsSamples {
     public static void queryCarbonEmissionTopNResourceGroupReport(
         com.azure.resourcemanager.carbonoptimization.CarbonOptimizationManager manager) {
         manager.carbonServices()
-            .queryCarbonEmissionReports(new TopItemsSummaryReportQueryFilter()
+            .queryCarbonEmissionReportsWithResponse(new TopItemsSummaryReportQueryFilter()
                 .withDateRange(
                     new DateRange().withStart(LocalDate.parse("2024-05-01")).withEnd(LocalDate.parse("2024-05-01")))
                 .withSubscriptionList(Arrays.asList("00000000-0000-0000-0000-000000000000",
@@ -251,7 +251,7 @@ public final class CarbonServiceQueryCarbonEmissionReportsSamples {
     public static void queryCarbonEmissionResourceItemDetailsReport(
         com.azure.resourcemanager.carbonoptimization.CarbonOptimizationManager manager) {
         manager.carbonServices()
-            .queryCarbonEmissionReports(new ItemDetailsQueryFilter()
+            .queryCarbonEmissionReportsWithResponse(new ItemDetailsQueryFilter()
                 .withDateRange(
                     new DateRange().withStart(LocalDate.parse("2024-05-01")).withEnd(LocalDate.parse("2024-05-01")))
                 .withSubscriptionList(Arrays.asList("00000000-0000-0000-0000-000000000000",
@@ -277,7 +277,7 @@ public final class CarbonServiceQueryCarbonEmissionReportsSamples {
     public static void queryCarbonEmissionTopNSubscriptionsMonthlyReport(
         com.azure.resourcemanager.carbonoptimization.CarbonOptimizationManager manager) {
         manager.carbonServices()
-            .queryCarbonEmissionReports(new TopItemsMonthlySummaryReportQueryFilter()
+            .queryCarbonEmissionReportsWithResponse(new TopItemsMonthlySummaryReportQueryFilter()
                 .withDateRange(
                     new DateRange().withStart(LocalDate.parse("2024-03-01")).withEnd(LocalDate.parse("2024-05-01")))
                 .withSubscriptionList(Arrays.asList("00000000-0000-0000-0000-000000000000",
@@ -301,7 +301,7 @@ public final class CarbonServiceQueryCarbonEmissionReportsSamples {
     public static void queryCarbonEmissionTopNLocationsReport(
         com.azure.resourcemanager.carbonoptimization.CarbonOptimizationManager manager) {
         manager.carbonServices()
-            .queryCarbonEmissionReports(new TopItemsSummaryReportQueryFilter()
+            .queryCarbonEmissionReportsWithResponse(new TopItemsSummaryReportQueryFilter()
                 .withDateRange(
                     new DateRange().withStart(LocalDate.parse("2024-05-01")).withEnd(LocalDate.parse("2024-05-01")))
                 .withSubscriptionList(Arrays.asList("00000000-0000-0000-0000-000000000000",
@@ -325,7 +325,7 @@ public final class CarbonServiceQueryCarbonEmissionReportsSamples {
     public static void queryCarbonEmissionResourceItemDetailsReportWithPaginationToken(
         com.azure.resourcemanager.carbonoptimization.CarbonOptimizationManager manager) {
         manager.carbonServices()
-            .queryCarbonEmissionReports(new ItemDetailsQueryFilter()
+            .queryCarbonEmissionReportsWithResponse(new ItemDetailsQueryFilter()
                 .withDateRange(
                     new DateRange().withStart(LocalDate.parse("2024-05-01")).withEnd(LocalDate.parse("2024-05-01")))
                 .withSubscriptionList(Arrays.asList("00000000-0000-0000-0000-000000000000",
@@ -352,7 +352,7 @@ public final class CarbonServiceQueryCarbonEmissionReportsSamples {
     public static void queryCarbonEmissionLocationItemDetailsReport(
         com.azure.resourcemanager.carbonoptimization.CarbonOptimizationManager manager) {
         manager.carbonServices()
-            .queryCarbonEmissionReports(new ItemDetailsQueryFilter()
+            .queryCarbonEmissionReportsWithResponse(new ItemDetailsQueryFilter()
                 .withDateRange(
                     new DateRange().withStart(LocalDate.parse("2024-05-01")).withEnd(LocalDate.parse("2024-05-01")))
                 .withSubscriptionList(Arrays.asList("00000000-0000-0000-0000-000000000000",
@@ -378,7 +378,7 @@ public final class CarbonServiceQueryCarbonEmissionReportsSamples {
     public static void queryCarbonEmissionOverallMonthlySummaryReport(
         com.azure.resourcemanager.carbonoptimization.CarbonOptimizationManager manager) {
         manager.carbonServices()
-            .queryCarbonEmissionReports(
+            .queryCarbonEmissionReportsWithResponse(
                 new MonthlySummaryReportQueryFilter()
                     .withDateRange(
                         new DateRange().withStart(LocalDate.parse("2024-03-01")).withEnd(LocalDate.parse("2024-05-01")))
@@ -400,7 +400,7 @@ public final class CarbonServiceQueryCarbonEmissionReportsSamples {
         queryCarbonEmissionOverallSummaryReportWithOptionalFilterLocationListResourceTypeListResourceGroupUrlList(
             com.azure.resourcemanager.carbonoptimization.CarbonOptimizationManager manager) {
         manager.carbonServices()
-            .queryCarbonEmissionReports(
+            .queryCarbonEmissionReportsWithResponse(
                 new OverallSummaryReportQueryFilter()
                     .withDateRange(
                         new DateRange().withStart(LocalDate.parse("2023-06-01")).withEnd(LocalDate.parse("2023-06-01")))
@@ -425,7 +425,7 @@ public final class CarbonServiceQueryCarbonEmissionReportsSamples {
     public static void queryCarbonEmissionTopNLocationsMonthlyReport(
         com.azure.resourcemanager.carbonoptimization.CarbonOptimizationManager manager) {
         manager.carbonServices()
-            .queryCarbonEmissionReports(new TopItemsMonthlySummaryReportQueryFilter()
+            .queryCarbonEmissionReportsWithResponse(new TopItemsMonthlySummaryReportQueryFilter()
                 .withDateRange(
                     new DateRange().withStart(LocalDate.parse("2024-03-01")).withEnd(LocalDate.parse("2024-05-01")))
                 .withSubscriptionList(Arrays.asList("00000000-0000-0000-0000-000000000000",
@@ -449,7 +449,7 @@ public final class CarbonServiceQueryCarbonEmissionReportsSamples {
     public static void queryCarbonEmissionTopNResourceTypeMonthlyReport(
         com.azure.resourcemanager.carbonoptimization.CarbonOptimizationManager manager) {
         manager.carbonServices()
-            .queryCarbonEmissionReports(new TopItemsMonthlySummaryReportQueryFilter()
+            .queryCarbonEmissionReportsWithResponse(new TopItemsMonthlySummaryReportQueryFilter()
                 .withDateRange(
                     new DateRange().withStart(LocalDate.parse("2024-03-01")).withEnd(LocalDate.parse("2024-05-01")))
                 .withSubscriptionList(Arrays.asList("00000000-0000-0000-0000-000000000000",
@@ -473,7 +473,7 @@ public final class CarbonServiceQueryCarbonEmissionReportsSamples {
     public static void queryCarbonEmissionResourceTypeItemDetailsReport(
         com.azure.resourcemanager.carbonoptimization.CarbonOptimizationManager manager) {
         manager.carbonServices()
-            .queryCarbonEmissionReports(new ItemDetailsQueryFilter()
+            .queryCarbonEmissionReportsWithResponse(new ItemDetailsQueryFilter()
                 .withDateRange(
                     new DateRange().withStart(LocalDate.parse("2024-05-01")).withEnd(LocalDate.parse("2024-05-01")))
                 .withSubscriptionList(Arrays.asList("00000000-0000-0000-0000-000000000000",
@@ -499,7 +499,7 @@ public final class CarbonServiceQueryCarbonEmissionReportsSamples {
     public static void queryCarbonEmissionTopNResourceGroupMonthlyReport(
         com.azure.resourcemanager.carbonoptimization.CarbonOptimizationManager manager) {
         manager.carbonServices()
-            .queryCarbonEmissionReports(new TopItemsMonthlySummaryReportQueryFilter()
+            .queryCarbonEmissionReportsWithResponse(new TopItemsMonthlySummaryReportQueryFilter()
                 .withDateRange(
                     new DateRange().withStart(LocalDate.parse("2024-03-01")).withEnd(LocalDate.parse("2024-05-01")))
                 .withSubscriptionList(Arrays.asList("00000000-0000-0000-0000-000000000000",

@@ -4,17 +4,16 @@
 
 package com.azure.resourcemanager.carbonoptimization.implementation;
 
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.carbonoptimization.fluent.CarbonServicesClient;
 import com.azure.resourcemanager.carbonoptimization.fluent.models.CarbonEmissionDataAvailableDateRangeInner;
-import com.azure.resourcemanager.carbonoptimization.fluent.models.CarbonEmissionDataInner;
+import com.azure.resourcemanager.carbonoptimization.fluent.models.CarbonEmissionDataListResultInner;
 import com.azure.resourcemanager.carbonoptimization.models.BillingAccountQueryFilter;
-import com.azure.resourcemanager.carbonoptimization.models.CarbonEmissionData;
 import com.azure.resourcemanager.carbonoptimization.models.CarbonEmissionDataAvailableDateRange;
+import com.azure.resourcemanager.carbonoptimization.models.CarbonEmissionDataListResult;
 import com.azure.resourcemanager.carbonoptimization.models.CarbonServices;
 import com.azure.resourcemanager.carbonoptimization.models.QueryFilter;
 
@@ -31,15 +30,21 @@ public final class CarbonServicesImpl implements CarbonServices {
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<CarbonEmissionData> queryCarbonEmissionReports(QueryFilter queryParameters) {
-        PagedIterable<CarbonEmissionDataInner> inner = this.serviceClient().queryCarbonEmissionReports(queryParameters);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new CarbonEmissionDataImpl(inner1, this.manager()));
+    public Response<CarbonEmissionDataListResult> queryCarbonEmissionReportsWithResponse(QueryFilter queryParameters,
+        Context context) {
+        Response<CarbonEmissionDataListResultInner> inner
+            = this.serviceClient().queryCarbonEmissionReportsWithResponse(queryParameters, context);
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new CarbonEmissionDataListResultImpl(inner.getValue(), this.manager()));
     }
 
-    public PagedIterable<CarbonEmissionData> queryCarbonEmissionReports(QueryFilter queryParameters, Context context) {
-        PagedIterable<CarbonEmissionDataInner> inner
-            = this.serviceClient().queryCarbonEmissionReports(queryParameters, context);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new CarbonEmissionDataImpl(inner1, this.manager()));
+    public CarbonEmissionDataListResult queryCarbonEmissionReports(QueryFilter queryParameters) {
+        CarbonEmissionDataListResultInner inner = this.serviceClient().queryCarbonEmissionReports(queryParameters);
+        if (inner != null) {
+            return new CarbonEmissionDataListResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<CarbonEmissionDataAvailableDateRange>
@@ -60,18 +65,23 @@ public final class CarbonServicesImpl implements CarbonServices {
         }
     }
 
-    public PagedIterable<CarbonEmissionData> queryCarbonEmissionReportsByBillingAccount(String scope,
-        BillingAccountQueryFilter queryParameters) {
-        PagedIterable<CarbonEmissionDataInner> inner
-            = this.serviceClient().queryCarbonEmissionReportsByBillingAccount(scope, queryParameters);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new CarbonEmissionDataImpl(inner1, this.manager()));
+    public Response<CarbonEmissionDataListResult> queryCarbonEmissionReportsByBillingAccountWithResponse(String scope,
+        BillingAccountQueryFilter queryParameters, Context context) {
+        Response<CarbonEmissionDataListResultInner> inner = this.serviceClient()
+            .queryCarbonEmissionReportsByBillingAccountWithResponse(scope, queryParameters, context);
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new CarbonEmissionDataListResultImpl(inner.getValue(), this.manager()));
     }
 
-    public PagedIterable<CarbonEmissionData> queryCarbonEmissionReportsByBillingAccount(String scope,
-        BillingAccountQueryFilter queryParameters, Context context) {
-        PagedIterable<CarbonEmissionDataInner> inner
-            = this.serviceClient().queryCarbonEmissionReportsByBillingAccount(scope, queryParameters, context);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new CarbonEmissionDataImpl(inner1, this.manager()));
+    public CarbonEmissionDataListResult queryCarbonEmissionReportsByBillingAccount(String scope,
+        BillingAccountQueryFilter queryParameters) {
+        CarbonEmissionDataListResultInner inner
+            = this.serviceClient().queryCarbonEmissionReportsByBillingAccount(scope, queryParameters);
+        if (inner != null) {
+            return new CarbonEmissionDataListResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     private CarbonServicesClient serviceClient() {
