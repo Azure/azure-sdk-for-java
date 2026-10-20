@@ -14,7 +14,7 @@ import com.azure.resourcemanager.durabletask.models.PrivateLinkServiceConnection
  */
 public final class SchedulersUpdatePrivateEndpointConnectionSamples {
     /*
-     * x-ms-original-file: 2026-02-01/PrivateEndpointConnections_Update.json
+     * x-ms-original-file: 2026-07-01-preview/PrivateEndpointConnections_Update.json
      */
     /**
      * Sample code: PrivateEndpointConnections_Update.
