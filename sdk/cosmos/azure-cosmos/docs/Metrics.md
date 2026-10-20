@@ -104,6 +104,9 @@ information are excluded. If the destination is unavailable or invalid, the valu
 Enable it while retaining the default tags with
 `CosmosMicrometerMetricsOptions.configureDefaultTagNames(CosmosMetricTagName.DEFAULT, CosmosMetricTagName.SERVICE_ENDPOINT)`.
 The tag remains disabled by default and can be suppressed for individual meters.
+Gateway endpoint tags are cached by destination authority within the client's endpoint manager and
+reused across requests. Document paths do not create cache entries, and metric emission does not
+reparse URLs or reformat cached endpoint tags.
 
 ## What metrics are emitted?
 

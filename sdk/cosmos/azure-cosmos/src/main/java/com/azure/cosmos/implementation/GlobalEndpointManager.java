@@ -4,10 +4,13 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
+import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetryMetrics;
+import com.azure.cosmos.implementation.clienttelemetry.TagName;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.routing.LocationCache;
 import com.azure.cosmos.implementation.routing.LocationHelper;
 import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
+import io.micrometer.core.instrument.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.Disposable;
@@ -22,6 +25,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
@@ -35,7 +39,9 @@ import java.util.function.Function;
  */
 public class GlobalEndpointManager implements AutoCloseable {
     private static final Logger logger = LoggerFactory.getLogger(GlobalEndpointManager.class);
+    private static final Tag UNKNOWN_SERVICE_ENDPOINT_TAG = Tag.of(TagName.ServiceEndpoint.toString(), "NONE");
 
+    private final ConcurrentHashMap<String, Tag> serviceEndpointMetricTags = new ConcurrentHashMap<>();
     private final int backgroundRefreshLocationTimeIntervalInMS;
     private final int backgroundRefreshJitterMaxInSeconds;
     private final LocationCache locationCache;
@@ -195,6 +201,7 @@ public class GlobalEndpointManager implements AutoCloseable {
 
     public void close() {
         this.isClosed = true;
+        this.serviceEndpointMetricTags.clear();
         this.perPartitionAutomaticFailoverConfigModifier = null;
         Disposable disposable = this.backgroundRefreshDisposable.getAndSet(null);
         if (disposable != null && !disposable.isDisposed()) {
@@ -558,6 +565,33 @@ public class GlobalEndpointManager implements AutoCloseable {
 
     public ConnectionPolicy getConnectionPolicy() {
         return this.connectionPolicy;
+    }
+
+    public Tag getServiceEndpointMetricTag(URI requestUri) {
+        if (requestUri == null) {
+            return UNKNOWN_SERVICE_ENDPOINT_TAG;
+        }
+
+        String authority = requestUri.getRawAuthority();
+        if (authority == null || !"https".equalsIgnoreCase(requestUri.getScheme())) {
+            logger.warn("Gateway endpoint for request metrics must be an HTTPS URI with a hostname.");
+            return UNKNOWN_SERVICE_ENDPOINT_TAG;
+        }
+
+        Tag cachedTag = this.serviceEndpointMetricTags.get(authority);
+        if (cachedTag != null) {
+            return cachedTag;
+        }
+
+        if (requestUri.getHost() == null) {
+            logger.warn("Gateway endpoint for request metrics must be an HTTPS URI with a hostname.");
+            return UNKNOWN_SERVICE_ENDPOINT_TAG;
+        }
+
+        return this.serviceEndpointMetricTags.computeIfAbsent(authority, ignored -> Tag.of(
+            TagName.ServiceEndpoint.toString(),
+            ClientTelemetryMetrics.escape(requestUri.getHost() + "_"
+                + (requestUri.getPort() == -1 ? 443 : requestUri.getPort()))));
     }
 
     private List<String> getEffectivePreferredRegions() {

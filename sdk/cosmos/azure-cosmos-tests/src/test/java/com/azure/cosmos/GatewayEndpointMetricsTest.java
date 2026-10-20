@@ -3,9 +3,14 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
+import com.azure.cosmos.implementation.Configs;
+import com.azure.cosmos.implementation.ConnectionPolicy;
+import com.azure.cosmos.implementation.DatabaseAccountManagerInternal;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.ResourceType;
@@ -32,7 +37,10 @@ import org.testng.annotations.Test;
 import java.net.URI;
 import java.time.Duration;
 import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.doReturn;
@@ -100,6 +108,54 @@ public class GatewayEndpointMetricsTest {
     }
 
     @Test(groups = {"unit"})
+    public void requestsReuseTheCachedEndpointTag() throws Exception {
+        URI firstUri = URI.create("https://account.documents.azure.com:10250/dbs/db/docs/first");
+        URI secondUri = URI.create("https://account.documents.azure.com:10250/dbs/db/docs/second?query=value");
+        try (TestState state = new TestState(CosmosMetricTagName.SERVICE_ENDPOINT)) {
+            Tag endpointTag = state.endpointManager.getServiceEndpointMetricTag(firstUri);
+            state.recordGateway(firstUri, 200);
+            state.recordGateway(secondUri, 200);
+
+            assertThat(state.endpointManager.getServiceEndpointMetricTag(secondUri)).isSameAs(endpointTag);
+            Tag emittedTag = state.registry.get(CosmosMetricName.REQUEST_SUMMARY_GATEWAY_REQUESTS.toString())
+                .counter().getId().getTags().stream()
+                .filter(tag -> SERVICE_ENDPOINT.equals(tag.getKey()))
+                .findFirst().orElseThrow(AssertionError::new);
+            assertThat(emittedTag).isSameAs(endpointTag);
+        }
+    }
+
+    @Test(groups = {"unit"})
+    public void concurrentRequestsShareOneEndpointTag() throws Exception {
+        try (TestState state = new TestState(CosmosMetricTagName.SERVICE_ENDPOINT)) {
+            List<Tag> endpointTags = IntStream.range(0, 100).parallel()
+                .mapToObj(i -> state.endpointManager.getServiceEndpointMetricTag(
+                    URI.create("https://account.documents.azure.com:10250/dbs/db/docs/" + i)))
+                .collect(Collectors.toList());
+
+            assertThat(endpointTags).hasSize(100);
+            assertThat(endpointTags).allSatisfy(tag -> assertThat(tag).isSameAs(endpointTags.get(0)));
+            assertThat(endpointTags.get(0).getValue()).isEqualTo("account.documents.azure.com_10250");
+        }
+    }
+
+    @Test(groups = {"unit"})
+    public void endpointTagsAreClientScopedAndClearedOnClose() throws Exception {
+        URI requestUri = URI.create("https://account.documents.azure.com:10250/dbs/db/docs/id");
+        try (TestState first = new TestState(CosmosMetricTagName.SERVICE_ENDPOINT);
+             TestState second = new TestState(CosmosMetricTagName.SERVICE_ENDPOINT)) {
+            Tag firstTag = first.endpointManager.getServiceEndpointMetricTag(requestUri);
+            Tag secondTag = second.endpointManager.getServiceEndpointMetricTag(requestUri);
+            assertThat(firstTag).isEqualTo(secondTag).isNotSameAs(secondTag);
+
+            first.endpointManager.close();
+            assertThat(FieldUtils.readField(first.endpointManager, "serviceEndpointMetricTags", true))
+                .isEqualTo(Collections.emptyMap());
+            assertThat(second.endpointManager.getServiceEndpointMetricTag(requestUri)).isSameAs(secondTag);
+        }
+    }
+
+    @Test(groups = {"unit"})
     public void failedRequestsRetainTheirDestination() throws Exception {
         try (TestState state = new TestState(CosmosMetricTagName.SERVICE_ENDPOINT)) {
             state.recordGateway(URI.create("https://account-eastus.documents.azure.com/dbs/db"), 503);
@@ -124,6 +180,8 @@ public class GatewayEndpointMetricsTest {
             for (Meter meter : state.registry.getMeters()) {
                 assertThat(meter.getId().getTag(SERVICE_ENDPOINT)).isNull();
             }
+            assertThat(FieldUtils.readField(state.endpointManager, "serviceEndpointMetricTags", true))
+                .isEqualTo(Collections.emptyMap());
         }
     }
 
@@ -237,8 +295,16 @@ public class GatewayEndpointMetricsTest {
         private final SimpleMeterRegistry registry = new SimpleMeterRegistry();
         private final CosmosMicrometerMetricsOptions options;
         private final CosmosAsyncClient client = mock(CosmosAsyncClient.class);
+        private final GlobalEndpointManager endpointManager;
 
         private TestState(CosmosMetricTagName tags) throws IllegalAccessException {
+            DatabaseAccountManagerInternal owner = mock(DatabaseAccountManagerInternal.class);
+            doReturn(URI.create("https://account.documents.azure.com")).when(owner).getServiceEndpoint();
+            this.endpointManager = new GlobalEndpointManager(
+                owner, new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig()), new Configs());
+            AsyncDocumentClient contextClient = mock(AsyncDocumentClient.class);
+            doReturn(this.endpointManager).when(contextClient).getGlobalEndpointManager();
+            doReturn(contextClient).when(this.client).getContextClient();
             this.options = new CosmosMicrometerMetricsOptions()
                 .meterRegistry(this.registry)
                 .configureDefaultTagNames(tags)
@@ -290,6 +356,7 @@ public class GatewayEndpointMetricsTest {
         @Override
         public void close() {
             ClientTelemetryMetrics.remove(this.registry);
+            this.endpointManager.close();
         }
     }
 }
