@@ -22,7 +22,7 @@ public final class VolumeQuotaRulesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Moving\",\"quotaSizeInKiBs\":7582580137587684684,\"quotaType\":\"DefaultGroupQuota\",\"quotaTarget\":\"telexhv\"},\"location\":\"b\",\"tags\":{\"zqocarku\":\"o\",\"nx\":\"lbcnndt\",\"llhdyzm\":\"wqy\",\"nxakckyw\":\"ckze\"},\"id\":\"mxgaabjkdtfohfao\",\"name\":\"zvkiwrsiwdy\",\"type\":\"quryk\"}";
+            = "{\"properties\":{\"provisioningState\":\"Moving\",\"quotaSizeInKiBs\":3357915863387443370,\"quotaType\":\"DefaultGroupQuota\",\"quotaTarget\":\"pnyghs\"},\"location\":\"cyl\",\"tags\":{\"jjkhvyomaclu\":\"mnsghpxycphdr\",\"wmkoisq\":\"vxnqmhrpqpd\",\"ypobkdqzr\":\"ssffxuifmc\"},\"id\":\"zsylollgt\",\"name\":\"czzydmxzjij\",\"type\":\"vuaurk\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,14 +32,14 @@ public final class VolumeQuotaRulesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         VolumeQuotaRule response = manager.volumeQuotaRules()
-            .getWithResponse("evdyz", "fajs", "kskmqozzkivyhjrl", "izjixlq", "hefkwabsolronqq",
+            .getWithResponse("psmgo", "guamlj", "l", "gmsplzgaufcshhv", "ewgnxkympqanxrj",
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("b", response.location());
-        Assertions.assertEquals("o", response.tags().get("zqocarku"));
-        Assertions.assertEquals(7582580137587684684L, response.quotaSizeInKiBs());
+        Assertions.assertEquals("cyl", response.location());
+        Assertions.assertEquals("mnsghpxycphdr", response.tags().get("jjkhvyomaclu"));
+        Assertions.assertEquals(3357915863387443370L, response.quotaSizeInKiBs());
         Assertions.assertEquals(QuotaType.DEFAULT_GROUP_QUOTA, response.quotaType());
-        Assertions.assertEquals("telexhv", response.quotaTarget());
+        Assertions.assertEquals("pnyghs", response.quotaTarget());
     }
 }

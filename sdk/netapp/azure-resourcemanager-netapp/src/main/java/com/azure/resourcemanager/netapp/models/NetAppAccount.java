@@ -89,13 +89,6 @@ public interface NetAppAccount {
     List<ActiveDirectory> activeDirectories();
 
     /**
-     * Gets the entraIdConfig property: Entra ID configuration for the account.
-     * 
-     * @return the entraIdConfig value.
-     */
-    EntraIdConfig entraIdConfig();
-
-    /**
      * Gets the encryption property: Encryption settings.
      * 
      * @return the encryption value.
@@ -216,8 +209,8 @@ public interface NetAppAccount {
          * to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithIdentity,
-            DefinitionStages.WithActiveDirectories, DefinitionStages.WithEntraIdConfig, DefinitionStages.WithEncryption,
-            DefinitionStages.WithNfsV4IdDomain, DefinitionStages.WithLdapConfiguration {
+            DefinitionStages.WithActiveDirectories, DefinitionStages.WithEncryption, DefinitionStages.WithNfsV4IdDomain,
+            DefinitionStages.WithLdapConfiguration {
             /**
              * Executes the create request.
              * 
@@ -274,19 +267,6 @@ public interface NetAppAccount {
         }
 
         /**
-         * The stage of the NetAppAccount definition allowing to specify entraIdConfig.
-         */
-        interface WithEntraIdConfig {
-            /**
-             * Specifies the entraIdConfig property: Entra ID configuration for the account..
-             * 
-             * @param entraIdConfig Entra ID configuration for the account.
-             * @return the next definition stage.
-             */
-            WithCreate withEntraIdConfig(EntraIdConfig entraIdConfig);
-        }
-
-        /**
          * The stage of the NetAppAccount definition allowing to specify encryption.
          */
         interface WithEncryption {
@@ -339,8 +319,7 @@ public interface NetAppAccount {
      * The template for NetAppAccount update.
      */
     interface Update extends UpdateStages.WithTags, UpdateStages.WithIdentity, UpdateStages.WithActiveDirectories,
-        UpdateStages.WithEncryption, UpdateStages.WithNfsV4IdDomain, UpdateStages.WithEntraIdConfig,
-        UpdateStages.WithLdapConfiguration {
+        UpdateStages.WithEncryption, UpdateStages.WithNfsV4IDDomain, UpdateStages.WithLdapConfiguration {
         /**
          * Executes the update request.
          * 
@@ -397,7 +376,7 @@ public interface NetAppAccount {
              * @param activeDirectories Active Directories.
              * @return the next definition stage.
              */
-            Update withActiveDirectories(List<ActiveDirectory> activeDirectories);
+            Update withActiveDirectoriesForUpdate(List<ActiveDirectoryPatch> activeDirectories);
         }
 
         /**
@@ -410,35 +389,22 @@ public interface NetAppAccount {
              * @param encryption Encryption settings.
              * @return the next definition stage.
              */
-            Update withEncryption(AccountEncryption encryption);
+            Update withEncryption(AccountEncryptionPatch encryption);
         }
 
         /**
-         * The stage of the NetAppAccount update allowing to specify nfsV4IdDomain.
+         * The stage of the NetAppAccount update allowing to specify nfsV4IDDomain.
          */
-        interface WithNfsV4IdDomain {
+        interface WithNfsV4IDDomain {
             /**
-             * Specifies the nfsV4IdDomain property: Domain for NFSv4 user ID mapping. This property will be set for all
+             * Specifies the nfsV4IDDomain property: Domain for NFSv4 user ID mapping. This property will be set for all
              * NetApp accounts in the subscription and region and only affect non ldap NFSv4 volumes..
              * 
-             * @param nfsV4IdDomain Domain for NFSv4 user ID mapping. This property will be set for all NetApp accounts
+             * @param nfsV4IDDomain Domain for NFSv4 user ID mapping. This property will be set for all NetApp accounts
              * in the subscription and region and only affect non ldap NFSv4 volumes.
              * @return the next definition stage.
              */
-            Update withNfsV4IdDomain(String nfsV4IdDomain);
-        }
-
-        /**
-         * The stage of the NetAppAccount update allowing to specify entraIdConfig.
-         */
-        interface WithEntraIdConfig {
-            /**
-             * Specifies the entraIdConfig property: Entra ID configuration for the account..
-             * 
-             * @param entraIdConfig Entra ID configuration for the account.
-             * @return the next definition stage.
-             */
-            Update withEntraIdConfig(EntraIdConfigPatch entraIdConfig);
+            Update withNfsV4IDDomain(String nfsV4IDDomain);
         }
 
         /**
