@@ -1174,6 +1174,7 @@ public final class ClientTelemetryMetrics {
             EnumSet<TagName> metricTagNamesForGateway = metricTagNames.clone();
             metricTagNamesForGateway.remove(TagName.RegionName);
             metricTagNamesForGateway.remove(TagName.ServiceAddress);
+            // Add the captured ServiceEndpoint tag below instead of rebuilding it in createRequestTags.
             metricTagNamesForGateway.remove(TagName.ServiceEndpoint);
             metricTagNamesForGateway.remove(TagName.PartitionId);
             metricTagNamesForGateway.remove(TagName.ReplicaId);
