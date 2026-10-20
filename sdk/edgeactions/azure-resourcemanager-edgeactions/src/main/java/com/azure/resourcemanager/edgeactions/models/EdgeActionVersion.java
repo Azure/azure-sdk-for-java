@@ -8,7 +8,6 @@ import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.edgeactions.fluent.models.EdgeActionVersionInner;
-import com.azure.resourcemanager.edgeactions.fluent.models.EdgeActionVersionPropertiesInner;
 import com.azure.resourcemanager.edgeactions.fluent.models.VersionCodeInner;
 import java.util.Map;
 
@@ -189,7 +188,7 @@ public interface EdgeActionVersion {
              * @param properties The resource-specific properties for this resource.
              * @return the next definition stage.
              */
-            WithCreate withProperties(EdgeActionVersionPropertiesInner properties);
+            WithCreate withProperties(EdgeActionVersionProperties properties);
         }
     }
 
@@ -273,9 +272,9 @@ public interface EdgeActionVersion {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an edge action version.
+     * @return concrete tracked resource types can be created by aliasing this type using a specific property type.
      */
-    EdgeActionVersionProperties deployVersionCode(VersionCodeInner body);
+    EdgeActionVersion deployVersionCode(VersionCodeInner body);
 
     /**
      * A long-running resource action.
@@ -285,9 +284,9 @@ public interface EdgeActionVersion {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an edge action version.
+     * @return concrete tracked resource types can be created by aliasing this type using a specific property type.
      */
-    EdgeActionVersionProperties deployVersionCode(VersionCodeInner body, Context context);
+    EdgeActionVersion deployVersionCode(VersionCodeInner body, Context context);
 
     /**
      * Get the version code for the edge action version.
