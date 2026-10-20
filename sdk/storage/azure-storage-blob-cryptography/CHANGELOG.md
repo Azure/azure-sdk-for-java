@@ -10,8 +10,6 @@
 
 - Fixed a bug where encrypted uploads included the bytes before the position of a `ByteBuffer` in the source data when
   splitting it into authenticated regions, corrupting the uploaded content.
-- Fixed a bug where encrypted uploads moved the position of the caller's buffers. Uploading the same buffers again,
-  such as when retrying the upload by subscribing to it again, encrypted and uploaded incomplete content.
 
 ### Other Changes
 

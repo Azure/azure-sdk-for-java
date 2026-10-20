@@ -53,16 +53,10 @@ public final class BufferStagingArea {
 
     /**
      * Writes ByteBuffers to a {@code Flux<BufferAggregator>}
-     * <p>
-     * The caller's buffer is never modified, not even its position or limit: the staged data refers to a duplicate of
-     * it. Otherwise writing the same buffer again, such as when an upload is retried by subscribing to its source again,
-     * would skip the bytes consumed the first time, and so upload incomplete data.
-     *
-     * @param source The buffer to write. Only the bytes between its position and limit are written.
+     * @param buf The buffer to write
      * @return The {@code Flux<BufferAggregator>}
      */
-    public Flux<BufferAggregator> write(ByteBuffer source) {
-        ByteBuffer buf = source.duplicate();
+    public Flux<BufferAggregator> write(ByteBuffer buf) {
 
         // Check if there's a buffer holding any data from a previous call to write. If not, get a new one.
         if (this.currentBuf == null) {

@@ -10,9 +10,6 @@
 
 - Fixed a bug where `ShareFileAsyncClient.uploadWithResponse` included the bytes before the position of a `ByteBuffer`
   in the source data when splitting it into ranges, corrupting the uploaded content.
-- Fixed a bug where `ShareFileAsyncClient` uploads that were split into ranges moved the position of the caller's
-  buffers. Uploading the same buffers again, such as when retrying the upload by subscribing to it again, uploaded a
-  file with incomplete content.
 
 ### Other Changes
 

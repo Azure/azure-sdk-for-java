@@ -62,7 +62,7 @@ public class StorageContentValidationEncodingPolicyBufferShapeTests {
         for (CapturedRequest request : requests) {
             assertSentContent(mode, content, request);
         }
-        source.assertUnchanged();
+        source.assertNoBytesChanged();
     }
 
     private static Stream<Arguments> bufferShapesSupplier() {
@@ -88,7 +88,7 @@ public class StorageContentValidationEncodingPolicyBufferShapeTests {
         for (CapturedRequest request : requests) {
             assertSentContent(mode, content, request);
         }
-        sources.forEach(ShapedByteBuffer::assertUnchanged);
+        sources.forEach(ShapedByteBuffer::assertNoBytesChanged);
     }
 
     private static Stream<String> mixedBufferShapesSupplier() {

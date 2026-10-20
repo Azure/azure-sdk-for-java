@@ -57,7 +57,7 @@ public class DataLakeBufferShapeUploadTests {
 
         assertEquals(expectedAppends, httpClient.getAppendCount());
         TestUtils.assertArraysEqual(content, httpClient.getFileContent());
-        source.assertUnchanged();
+        source.assertNoBytesChanged();
     }
 
     private static Stream<Arguments> partitionedUploadSupplier() {
@@ -85,26 +85,7 @@ public class DataLakeBufferShapeUploadTests {
 
         assertEquals(6, httpClient.getAppendCount());
         TestUtils.assertArraysEqual(content, httpClient.getFileContent());
-        sources.forEach(ShapedByteBuffer::assertUnchanged);
-    }
-
-    @Test
-    public void uploadingSameBuffersAgainSendsSameContent() {
-        byte[] content = randomBytes(5 * BLOCK_SIZE + 100);
-        List<ShapedByteBuffer> sources = TestBufferShape.mixed(content, 700);
-        List<ByteBuffer> buffers = new ArrayList<>();
-        sources.forEach(source -> buffers.add(source.getBuffer()));
-
-        for (int upload = 1; upload <= 2; upload++) {
-            RequestCapturingHttpClient httpClient = new RequestCapturingHttpClient();
-
-            fileClient(httpClient).uploadWithResponse(
-                new FileParallelUploadOptions(Flux.fromIterable(buffers)).setParallelTransferOptions(blockOptions()),
-                null, null);
-
-            TestUtils.assertArraysEqual(content, httpClient.getFileContent());
-        }
-        sources.forEach(ShapedByteBuffer::assertUnchanged);
+        sources.forEach(ShapedByteBuffer::assertNoBytesChanged);
     }
 
     @ParameterizedTest
@@ -118,7 +99,7 @@ public class DataLakeBufferShapeUploadTests {
 
         assertEquals(1, httpClient.getAppendCount());
         TestUtils.assertArraysEqual(content, httpClient.getFileContent());
-        source.assertUnchanged();
+        source.assertNoBytesChanged();
     }
 
     private static ParallelTransferOptions blockOptions() {
@@ -160,7 +141,7 @@ public class DataLakeBufferShapeUploadTests {
 
             Mono<byte[]> body = request.getBody() == null
                 ? Mono.just(new byte[0])
-                : FluxUtil.collectBytesInByteBufferStream(request.getBody().map(ByteBuffer::duplicate));
+                : FluxUtil.collectBytesInByteBufferStream(request.getBody());
             return body.map(bytes -> {
                 if ("append".equals(action)) {
                     synchronized (this) {

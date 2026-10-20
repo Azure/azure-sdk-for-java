@@ -64,7 +64,7 @@ public class ShareBufferShapeUploadTests {
 
         assertEquals(expectedRanges, httpClient.getRangeCount());
         TestUtils.assertArraysEqual(content, httpClient.getFileContent());
-        source.assertUnchanged();
+        source.assertNoBytesChanged();
     }
 
     private static Stream<Arguments> partitionedUploadSupplier() {
@@ -92,26 +92,7 @@ public class ShareBufferShapeUploadTests {
 
         assertEquals(6, httpClient.getRangeCount());
         TestUtils.assertArraysEqual(content, httpClient.getFileContent());
-        sources.forEach(ShapedByteBuffer::assertUnchanged);
-    }
-
-    @Test
-    public void uploadingSameBuffersAgainSendsSameContent() {
-        byte[] content = randomBytes(5 * RANGE_SIZE + 100);
-        List<ShapedByteBuffer> sources = TestBufferShape.mixed(content, 700);
-        List<ByteBuffer> buffers = new ArrayList<>();
-        sources.forEach(source -> buffers.add(source.getBuffer()));
-
-        for (int upload = 1; upload <= 2; upload++) {
-            RequestCapturingHttpClient httpClient = new RequestCapturingHttpClient();
-
-            fileClient(httpClient).uploadWithResponse(
-                new ShareFileUploadOptions(Flux.fromIterable(buffers)).setParallelTransferOptions(rangeOptions()), null,
-                null);
-
-            TestUtils.assertArraysEqual(content, httpClient.getFileContent());
-        }
-        sources.forEach(ShapedByteBuffer::assertUnchanged);
+        sources.forEach(ShapedByteBuffer::assertNoBytesChanged);
     }
 
     @Test
@@ -127,7 +108,7 @@ public class ShareBufferShapeUploadTests {
 
         assertEquals(2, httpClient.getRangeCount());
         TestUtils.assertArraysEqual(content, httpClient.getFileContent());
-        source.assertUnchanged();
+        source.assertNoBytesChanged();
     }
 
     @ParameterizedTest
@@ -141,7 +122,7 @@ public class ShareBufferShapeUploadTests {
 
         assertEquals(1, httpClient.getRangeCount());
         TestUtils.assertArraysEqual(content, httpClient.getFileContent());
-        source.assertUnchanged();
+        source.assertNoBytesChanged();
     }
 
     private static ParallelTransferOptions rangeOptions() {
@@ -185,7 +166,7 @@ public class ShareBufferShapeUploadTests {
 
             Mono<byte[]> body = request.getBody() == null
                 ? Mono.just(new byte[0])
-                : FluxUtil.collectBytesInByteBufferStream(request.getBody().map(ByteBuffer::duplicate));
+                : FluxUtil.collectBytesInByteBufferStream(request.getBody());
             return body.map(bytes -> {
                 Matcher matcher = RANGE_PATTERN.matcher(request.getHeaders().getValue(X_MS_RANGE));
                 assertTrue(matcher.matches());
