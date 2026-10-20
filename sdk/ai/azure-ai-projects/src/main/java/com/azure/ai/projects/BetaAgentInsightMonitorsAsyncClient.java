@@ -980,9 +980,16 @@ public final class BetaAgentInsightMonitorsAsyncClient {
         }
         PagedFlux<BinaryData> pagedFluxResponse = listAgentInsightMonitors(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux.map(pagedResponse -> new PagedResponseBase<Void, AgentInsightMonitorListItem>(
                 pagedResponse.getRequest(), pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
@@ -1010,9 +1017,16 @@ public final class BetaAgentInsightMonitorsAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listAgentInsightMonitors(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux.map(pagedResponse -> new PagedResponseBase<Void, AgentInsightMonitorListItem>(
                 pagedResponse.getRequest(), pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
@@ -1233,9 +1247,16 @@ public final class BetaAgentInsightMonitorsAsyncClient {
         }
         PagedFlux<BinaryData> pagedFluxResponse = listAgentInsightRuns(monitorId, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux.map(pagedResponse -> new PagedResponseBase<Void, AgentInsightRun>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
@@ -1265,9 +1286,16 @@ public final class BetaAgentInsightMonitorsAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listAgentInsightRuns(monitorId, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux.map(pagedResponse -> new PagedResponseBase<Void, AgentInsightRun>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
@@ -1377,9 +1405,16 @@ public final class BetaAgentInsightMonitorsAsyncClient {
         }
         PagedFlux<BinaryData> pagedFluxResponse = listAgentInsights(monitorId, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux.map(pagedResponse -> new PagedResponseBase<Void, AgentInsight>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
@@ -1409,9 +1444,16 @@ public final class BetaAgentInsightMonitorsAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listAgentInsights(monitorId, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux.map(pagedResponse -> new PagedResponseBase<Void, AgentInsight>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()

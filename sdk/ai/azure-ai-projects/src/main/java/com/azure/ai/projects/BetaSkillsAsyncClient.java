@@ -559,9 +559,16 @@ public final class BetaSkillsAsyncClient {
         }
         PagedFlux<BinaryData> pagedFluxResponse = listSkills(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux.map(pagedResponse -> new PagedResponseBase<Void, SkillDetails>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
@@ -591,9 +598,16 @@ public final class BetaSkillsAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listSkills(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux.map(pagedResponse -> new PagedResponseBase<Void, SkillDetails>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
@@ -700,10 +714,8 @@ public final class BetaSkillsAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a specific version of a skill on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SkillVersion> createSkillVersionFromFiles(String name, CreateSkillVersionFromFilesBody content) {
-        // Generated convenience method for createSkillVersionFromFilesWithResponseInternal
         RequestOptions requestOptions = new RequestOptions();
         return createSkillVersionFromFilesWithResponseInternal(name,
             new MultipartFormDataHelper(requestOptions)
@@ -711,7 +723,7 @@ public final class BetaSkillsAsyncClient {
                     content.getFiles().stream().map(SkillFileDetails::getContent).collect(Collectors.toList()),
                     content.getFiles().stream().map(SkillFileDetails::getContentType).collect(Collectors.toList()),
                     content.getFiles().stream().map(SkillFileDetails::getFilename).collect(Collectors.toList()))
-                .serializeTextField("default", Objects.toString(content.isDefaultProperty()))
+                .serializeTextField("default", Objects.toString(content.isDefaultProperty(), null))
                 .end()
                 .getRequestBody(),
             requestOptions).flatMap(FluxUtil::toMono)
@@ -762,9 +774,16 @@ public final class BetaSkillsAsyncClient {
         }
         PagedFlux<BinaryData> pagedFluxResponse = listSkillVersions(name, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux.map(pagedResponse -> new PagedResponseBase<Void, SkillVersion>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
@@ -796,9 +815,16 @@ public final class BetaSkillsAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listSkillVersions(name, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux.map(pagedResponse -> new PagedResponseBase<Void, SkillVersion>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()

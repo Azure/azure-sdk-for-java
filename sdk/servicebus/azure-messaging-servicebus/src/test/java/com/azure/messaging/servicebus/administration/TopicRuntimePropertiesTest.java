@@ -33,8 +33,7 @@ public class TopicRuntimePropertiesTest {
     }
 
     /**
-     * A service region that has not yet deployed the topic filter-count feature omits the elements
-     * entirely; the counts must gracefully default to zero rather than throw.
+     * Earlier service API versions omit the filter-count elements; the counts default to zero.
      */
     @Test
     void filterCountsDefaultToZeroWhenAbsent() {

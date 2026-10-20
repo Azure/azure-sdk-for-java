@@ -1011,9 +1011,29 @@ public final class SearchIndexerAsyncClient {
      * @return the names of all datasources as a paginated response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<String> listDataSourceConnectionNames() {
-        return listDataSourceConnections(new RequestOptions().addQueryParam("$select", "name", false))
-            .mapPage(SearchIndexerDataSourceConnection::getName);
+    PagedFlux<SearchIndexerDataSourceConnection> getDataSourceConnections() {
+        // Generated convenience method for getDataSourceConnections
+        RequestOptions requestOptions = new RequestOptions();
+        PagedFlux<BinaryData> pagedFluxResponse = getDataSourceConnections(requestOptions);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, SearchIndexerDataSourceConnection>(
+                pagedResponse.getRequest(), pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                pagedResponse.getValue()
+                    .stream()
+                    .map(protocolMethodData -> protocolMethodData.toObject(SearchIndexerDataSourceConnection.class))
+                    .collect(Collectors.toList()),
+                pagedResponse.getContinuationToken(), null));
+        });
     }
 
     /**
@@ -1226,9 +1246,29 @@ public final class SearchIndexerAsyncClient {
      * @return the names of all indexers as a paginated response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<String> listIndexerNames() {
-        return listIndexers(new RequestOptions().addQueryParam("$select", "name", false))
-            .mapPage(SearchIndexer::getName);
+    PagedFlux<SearchIndexer> getIndexers() {
+        // Generated convenience method for getIndexers
+        RequestOptions requestOptions = new RequestOptions();
+        PagedFlux<BinaryData> pagedFluxResponse = getIndexers(requestOptions);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, SearchIndexer>(pagedResponse.getRequest(),
+                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                pagedResponse.getValue()
+                    .stream()
+                    .map(protocolMethodData -> protocolMethodData.toObject(SearchIndexer.class))
+                    .collect(Collectors.toList()),
+                pagedResponse.getContinuationToken(), null));
+        });
     }
 
     /**
@@ -1398,12 +1438,34 @@ public final class SearchIndexerAsyncClient {
      * @return all skillsets as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<SearchIndexerSkillset> listSkillsets() {
-        return listSkillsets(new RequestOptions());
+    PagedFlux<SearchIndexerSkillset> getSkillsets() {
+        // Generated convenience method for getSkillsets
+        RequestOptions requestOptions = new RequestOptions();
+        PagedFlux<BinaryData> pagedFluxResponse = getSkillsets(requestOptions);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
+            return flux
+                .map(pagedResponse -> new PagedResponseBase<Void, SearchIndexerSkillset>(pagedResponse.getRequest(),
+                    pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                    pagedResponse.getValue()
+                        .stream()
+                        .map(protocolMethodData -> protocolMethodData.toObject(SearchIndexerSkillset.class))
+                        .collect(Collectors.toList()),
+                    pagedResponse.getContinuationToken(), null));
+        });
     }
 
     /**
-     * Lists all matching skillsets, following service-provided continuation links.
+     * List all skillsets in a search service.
      *
      * @param requestOptions The options to configure the HTTP request, including listing filters.
      * @throws HttpResponseException if the service rejects the request.
@@ -2495,6 +2557,265 @@ public final class SearchIndexerAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         return hiddenGeneratedResyncWithResponse(name, BinaryData.fromObject(indexerResync), requestOptions)
             .flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Resets specific documents in the datasource to be selectively re-ingested by the indexer.
+     *
+     * @param name The name of the indexer.
+     * @param overwrite If false, keys or ids will be appended to existing ones. If true, only the keys or ids in this
+     * payload will be queued to be re-ingested.
+     * @param keysOrIds The keys or ids of the documents to be re-ingested. If keys are provided, the document key field
+     * must be specified in the indexer configuration. If ids are provided, the document key field is ignored.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> resetDocuments(String name, Boolean overwrite, DocumentKeysOrIds keysOrIds) {
+        // Generated convenience method for resetDocumentsWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (overwrite != null) {
+            requestOptions.addQueryParam("overwrite", String.valueOf(overwrite), false);
+        }
+        if (keysOrIds != null) {
+            requestOptions.setBody(BinaryData.fromObject(keysOrIds));
+        }
+        return resetDocumentsWithResponse(name, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Resets specific documents in the datasource to be selectively re-ingested by the indexer.
+     *
+     * @param name The name of the indexer.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> resetDocuments(String name) {
+        // Generated convenience method for resetDocumentsWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return resetDocumentsWithResponse(name, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Reset an existing skillset in a search service.
+     *
+     * @param name The name of the skillset.
+     * @param skillNames The names of the skills to reset. If not specified, all skills in the skillset will be reset.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> resetSkills(String name, SkillNames skillNames) {
+        // Generated convenience method for hiddenGeneratedResetSkillsWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return hiddenGeneratedResetSkillsWithResponse(name, BinaryData.fromObject(skillNames), requestOptions)
+            .flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Lists all datasources available for a search service.
+     *
+     * @param select Selects which top-level properties to retrieve. Specified as a comma-separated list of JSON
+     * property names, or '*' for all properties. The default is all properties.
+     * @param search A string used to narrow down the listing so that fewer results need to be paged through. If omitted
+     * or an empty string is passed, no narrowing is applied.
+     * @param pageSize The maximum number of items to return in a single page. The server enforces a maximum; if
+     * omitted, the server determines a suitable default.
+     * @param searchType Specifies how the search parameter is interpreted. Currently only 'prefix' is supported.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response from a List Datasources request as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<SearchIndexerDataSourceConnection> getDataSourceConnections(List<String> select, String search,
+        Integer pageSize, ListingSearchType searchType) {
+        // Generated convenience method for getDataSourceConnections
+        RequestOptions requestOptions = new RequestOptions();
+        if (select != null) {
+            requestOptions.addQueryParam("$select",
+                select.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
+        }
+        if (search != null) {
+            requestOptions.addQueryParam("search", search, false);
+        }
+        if (pageSize != null) {
+            requestOptions.addQueryParam("pageSize", String.valueOf(pageSize), false);
+        }
+        if (searchType != null) {
+            requestOptions.addQueryParam("searchType", searchType.toString(), false);
+        }
+        PagedFlux<BinaryData> pagedFluxResponse = getDataSourceConnections(requestOptions);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, SearchIndexerDataSourceConnection>(
+                pagedResponse.getRequest(), pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                pagedResponse.getValue()
+                    .stream()
+                    .map(protocolMethodData -> protocolMethodData.toObject(SearchIndexerDataSourceConnection.class))
+                    .collect(Collectors.toList()),
+                pagedResponse.getContinuationToken(), null));
+        });
+    }
+
+    /**
+     * Lists all indexers available for a search service.
+     *
+     * @param select Selects which top-level properties to retrieve. Specified as a comma-separated list of JSON
+     * property names, or '*' for all properties. The default is all properties.
+     * @param search A string used to narrow down the listing so that fewer results need to be paged through. If omitted
+     * or an empty string is passed, no narrowing is applied.
+     * @param pageSize The maximum number of items to return in a single page. The server enforces a maximum; if
+     * omitted, the server determines a suitable default.
+     * @param searchType Specifies how the search parameter is interpreted. Currently only 'prefix' is supported.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response from a List Indexers request as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<SearchIndexer> getIndexers(List<String> select, String search, Integer pageSize,
+        ListingSearchType searchType) {
+        // Generated convenience method for getIndexers
+        RequestOptions requestOptions = new RequestOptions();
+        if (select != null) {
+            requestOptions.addQueryParam("$select",
+                select.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
+        }
+        if (search != null) {
+            requestOptions.addQueryParam("search", search, false);
+        }
+        if (pageSize != null) {
+            requestOptions.addQueryParam("pageSize", String.valueOf(pageSize), false);
+        }
+        if (searchType != null) {
+            requestOptions.addQueryParam("searchType", searchType.toString(), false);
+        }
+        PagedFlux<BinaryData> pagedFluxResponse = getIndexers(requestOptions);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, SearchIndexer>(pagedResponse.getRequest(),
+                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                pagedResponse.getValue()
+                    .stream()
+                    .map(protocolMethodData -> protocolMethodData.toObject(SearchIndexer.class))
+                    .collect(Collectors.toList()),
+                pagedResponse.getContinuationToken(), null));
+        });
+    }
+
+    /**
+     * List all skillsets in a search service.
+     *
+     * @param select Selects which top-level properties to retrieve. Specified as a comma-separated list of JSON
+     * property names, or '*' for all properties. The default is all properties.
+     * @param search A string used to narrow down the listing so that fewer results need to be paged through. If omitted
+     * or an empty string is passed, no narrowing is applied.
+     * @param pageSize The maximum number of items to return in a single page. The server enforces a maximum; if
+     * omitted, the server determines a suitable default.
+     * @param searchType Specifies how the search parameter is interpreted. Currently only 'prefix' is supported.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response from a list skillset request as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<SearchIndexerSkillset> getSkillsets(List<String> select, String search, Integer pageSize,
+        ListingSearchType searchType) {
+        // Generated convenience method for getSkillsets
+        RequestOptions requestOptions = new RequestOptions();
+        if (select != null) {
+            requestOptions.addQueryParam("$select",
+                select.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
+        }
+        if (search != null) {
+            requestOptions.addQueryParam("search", search, false);
+        }
+        if (pageSize != null) {
+            requestOptions.addQueryParam("pageSize", String.valueOf(pageSize), false);
+        }
+        if (searchType != null) {
+            requestOptions.addQueryParam("searchType", searchType.toString(), false);
+        }
+        PagedFlux<BinaryData> pagedFluxResponse = getSkillsets(requestOptions);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
+            return flux
+                .map(pagedResponse -> new PagedResponseBase<Void, SearchIndexerSkillset>(pagedResponse.getRequest(),
+                    pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                    pagedResponse.getValue()
+                        .stream()
+                        .map(protocolMethodData -> protocolMethodData.toObject(SearchIndexerSkillset.class))
+                        .collect(Collectors.toList()),
+                    pagedResponse.getContinuationToken(), null));
+        });
     }
 
     /**

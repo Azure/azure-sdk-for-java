@@ -12,7 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Settings that control how the scheduled action operation is executed.
+ * Settings that control how the recurring bulk action operation is executed.
  */
 @Fluent
 public final class ScheduledActionsExecutionParameters

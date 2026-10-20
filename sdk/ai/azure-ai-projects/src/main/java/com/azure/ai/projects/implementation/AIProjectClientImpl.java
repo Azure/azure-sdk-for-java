@@ -207,20 +207,6 @@ public final class AIProjectClientImpl {
     }
 
     /**
-     * The BetaDatasetsImpl object to access its operations.
-     */
-    private final BetaDatasetsImpl betaDatasets;
-
-    /**
-     * Gets the BetaDatasetsImpl object to access its operations.
-     * 
-     * @return the BetaDatasetsImpl object.
-     */
-    public BetaDatasetsImpl getBetaDatasets() {
-        return this.betaDatasets;
-    }
-
-    /**
      * The ConnectionsImpl object to access its operations.
      */
     private final ConnectionsImpl connections;
@@ -291,6 +277,20 @@ public final class AIProjectClientImpl {
     }
 
     /**
+     * The EvaluatorsImpl object to access its operations.
+     */
+    private final EvaluatorsImpl evaluators;
+
+    /**
+     * Gets the EvaluatorsImpl object to access its operations.
+     * 
+     * @return the EvaluatorsImpl object.
+     */
+    public EvaluatorsImpl getEvaluators() {
+        return this.evaluators;
+    }
+
+    /**
      * Initializes an instance of AIProjectClient client.
      * 
      * @param endpoint Foundry Project endpoint in the form
@@ -347,11 +347,11 @@ public final class AIProjectClientImpl {
         this.betaSchedules = new BetaSchedulesImpl(this);
         this.betaRoutines = new BetaRoutinesImpl(this);
         this.betaSkills = new BetaSkillsImpl(this);
-        this.betaDatasets = new BetaDatasetsImpl(this);
         this.connections = new ConnectionsImpl(this);
         this.datasets = new DatasetsImpl(this);
         this.indexes = new IndexesImpl(this);
         this.deployments = new DeploymentsImpl(this);
         this.evaluationRules = new EvaluationRulesImpl(this);
+        this.evaluators = new EvaluatorsImpl(this);
     }
 }
