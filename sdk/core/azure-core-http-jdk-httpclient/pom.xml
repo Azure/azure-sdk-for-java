@@ -201,6 +201,7 @@
                 </goals>
                 <configuration combine.self="override">
                   <testRelease>11</testRelease>
+                  <skip>${skipTestCompile}</skip>
                 </configuration>
               </execution>
             </executions>

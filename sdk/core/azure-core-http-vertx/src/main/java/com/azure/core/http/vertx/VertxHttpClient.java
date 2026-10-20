@@ -12,6 +12,8 @@ import com.azure.core.http.vertx.implementation.BufferedVertxHttpResponse;
 import com.azure.core.http.vertx.implementation.VertxHttpResponse;
 import com.azure.core.http.vertx.implementation.VertxRequestWriteSubscriber;
 import com.azure.core.http.vertx.implementation.VertxUtils;
+import com.azure.core.implementation.ReflectionUtils;
+import com.azure.core.implementation.ReflectiveInvoker;
 import com.azure.core.implementation.util.BinaryDataContent;
 import com.azure.core.implementation.util.BinaryDataHelper;
 import com.azure.core.implementation.util.ByteArrayContent;
@@ -38,6 +40,7 @@ import reactor.util.context.ContextView;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.lang.reflect.Method;
 import java.time.Duration;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -54,6 +57,20 @@ class VertxHttpClient implements HttpClient {
     // How long to wait for an interim 100 Continue before sending the body anyway, matching the defaults used by
     // other HTTP stacks. RFC 9110 requires a client not to wait indefinitely.
     private static final Duration EXPECT_CONTINUE_TIMEOUT = Duration.ofSeconds(1);
+
+    private static final ReflectiveInvoker REQUEST_RESET;
+    static {
+        // In order to support both Vert.x 4.5 and 5.x reflection is needed to reset an HttpClientRequest.
+        // HttpClientRequest.reset(long, Throwable) is available in both versions, but it returns boolean in 4.5 and
+        // Future<Void> in 5.x, so a call compiled against one version fails with NoSuchMethodError on the other.
+        try {
+            Method method = HttpClientRequest.class.getMethod("reset", long.class, Throwable.class);
+            REQUEST_RESET = ReflectionUtils.getMethodInvoker(HttpClientRequest.class, method, false);
+        } catch (Exception ex) {
+            // Fail here as the method isn't available and this HttpClient wouldn't be usable anyway.
+            throw LOGGER.logExceptionAsError(new IllegalStateException(ex));
+        }
+    }
 
     final io.vertx.core.http.HttpClient client;
     final HttpClientOptions buildOptions;
@@ -269,8 +286,19 @@ class VertxHttpClient implements HttpClient {
             // Right now both Flux<ByteBuffer> and InputStream bodies are being handled reactively.
             azureRequest.getBody()
                 .subscribe(new VertxRequestWriteSubscriber(vertxRequest::exceptionHandler, vertxRequest::drainHandler,
-                    vertxRequest::write, vertxRequest::writeQueueFull, vertxRequest::reset, vertxRequest::end, promise,
+                    vertxRequest::write, vertxRequest::writeQueueFull,
+                    (code, cause) -> resetRequest(vertxRequest, code, cause), vertxRequest::end, promise,
                     progressReporter, contextView));
+        }
+    }
+
+    private static void resetRequest(HttpClientRequest vertxRequest, long code, Throwable cause) {
+        try {
+            REQUEST_RESET.invokeWithArguments(vertxRequest, code, cause);
+        } catch (Exception ex) {
+            // The request is already being failed with 'cause', so don't let a failed reset replace that error.
+            cause.addSuppressed(ex);
+            LOGGER.atWarning().log("Failed to reset the Vert.x HttpClientRequest.", ex);
         }
     }
 
