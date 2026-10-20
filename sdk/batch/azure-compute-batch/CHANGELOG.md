@@ -1,5 +1,11 @@
 # Release History
 
+## 1.0.1 (Unreleased)
+
+### Bugs Fixed
+
+- Fixed a race condition that could cause bulk task creation to return before retrying tasks with server errors.
+
 ## 1.0.0 (2026-08-17)
 
 ### Breaking Changes
