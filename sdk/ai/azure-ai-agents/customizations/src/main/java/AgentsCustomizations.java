@@ -11,7 +11,9 @@ import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.expr.AnnotationExpr;
 import com.github.javaparser.ast.expr.AssignExpr;
+import com.github.javaparser.ast.expr.FieldAccessExpr;
 import com.github.javaparser.ast.expr.MethodCallExpr;
+import com.github.javaparser.ast.expr.NameExpr;
 import com.github.javaparser.ast.expr.NormalAnnotationExpr;
 import com.github.javaparser.ast.expr.ObjectCreationExpr;
 import com.github.javaparser.ast.expr.StringLiteralExpr;
@@ -48,6 +50,7 @@ public class AgentsCustomizations extends Customization {
         protectPolymorphicBaseConstructors(libraryCustomization);
         exposeVoiceAgentBaseDiscriminatorToSubtypes(libraryCustomization);
         customizeVoiceAgentSubtypeDispatch(libraryCustomization);
+        makeLiveModelConstantsStatic(libraryCustomization);
         makeRealtimeMessageDiscriminatorsFinal(libraryCustomization);
         applyUnionTypeWrappers(libraryCustomization, logger);
         annotateBetaClients(libraryCustomization, logger);
@@ -186,6 +189,42 @@ public class AgentsCustomizations extends Customization {
         enumCustomization.customizeAst(ast -> ast.getEnumByName("VoiceAgentFunctionToolType1")
             .orElseThrow(() -> new IllegalStateException("VoiceAgentFunctionToolType1 was not generated"))
             .removeModifier(Modifier.Keyword.PUBLIC));
+    }
+
+    /**
+     * Stores fixed Live model wire values once per class while preserving their public getters and serialization.
+     */
+    private void makeLiveModelConstantsStatic(LibraryCustomization customization) {
+        String[][] constants = {
+            { "LiveFunctionToolChoiceParam", "type", "TYPE" },
+            { "LiveFunctionToolInputParam", "type", "TYPE" },
+            { "LiveMCPToolChoiceParam", "type", "TYPE" },
+            { "LiveWebSearchToolInputParam", "type", "TYPE" },
+            { "VoiceAgentLiveConversation", "objectType", "OBJECT_TYPE" },
+            { "VoiceAgentLiveDefinition", "modelType", "MODEL_TYPE" },
+            { "VoiceAgentLiveManagedAgentDelegation", "type", "TYPE" }
+        };
+        for (String[] constant : constants) {
+            String className = constant[0];
+            String fieldName = constant[1];
+            String constantName = constant[2];
+            customization.getClass(MODELS_PACKAGE, className).customizeAst(ast -> {
+                ClassOrInterfaceDeclaration clazz = ast.getClassByName(className)
+                    .orElseThrow(() -> new IllegalStateException(className + " was not generated"));
+                FieldDeclaration field = clazz.getFieldByName(fieldName)
+                    .orElseThrow(() -> new IllegalStateException(className + "." + fieldName + " was not generated"));
+                if (!field.isPrivate() || !field.isFinal() || field.getVariables().size() != 1
+                    || !field.getVariable(0).getInitializer().filter(expression -> expression.isStringLiteralExpr())
+                        .isPresent()) {
+                    throw new IllegalStateException(className + "." + fieldName + " is not a private string constant");
+                }
+                field.setModifiers(Modifier.Keyword.PRIVATE, Modifier.Keyword.STATIC, Modifier.Keyword.FINAL);
+                field.getVariable(0).setName(constantName);
+                clazz.findAll(FieldAccessExpr.class).stream()
+                    .filter(access -> access.getScope().isThisExpr() && fieldName.equals(access.getNameAsString()))
+                    .forEach(access -> access.replace(new NameExpr(constantName)));
+            });
+        }
     }
 
     private void internalizeUnusedChatCompletionToolType(LibraryCustomization customization, Logger logger) {

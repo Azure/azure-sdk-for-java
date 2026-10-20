@@ -28,13 +28,17 @@ import io.opentelemetry.sdk.trace.SpanProcessor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -180,8 +184,8 @@ public final class GenAiAgentTracingTest {
 
     @Test
     public void experimentalGateDisabledOperationDoesNotEmitGenAiSpan() {
-        GenAiAgentTracing tracing = new GenAiAgentTracing(
-            new GenAiInstrumentation(ENDPOINT, new ConfigurationBuilder().build(), tracer, meter));
+        GenAiAgentTracing tracing
+            = new GenAiAgentTracing(new GenAiInstrumentation(ENDPOINT, configurationBuilder().build(), tracer, meter));
         AgentVersionDetails response = agentVersionResponse();
 
         AgentVersionDetails result = tracing.traceCreateAgentVersion(AGENT_NAME, new PromptAgentDefinition("gpt-4o"),
@@ -193,11 +197,10 @@ public final class GenAiAgentTracingTest {
 
     @Test
     public void standardContentSettingOverridesLegacySetting() {
-        Configuration configuration
-            = new ConfigurationBuilder().putProperty("experimental.enable_genai_tracing", "true")
-                .putProperty("otel.instrumentation.genai.capture_message_content", "false")
-                .putProperty("azure.tracing.gen_ai.content_recording_enabled", "true")
-                .build();
+        Configuration configuration = configurationBuilder().putProperty("experimental.enable_genai_tracing", "true")
+            .putProperty("otel.instrumentation.genai.capture_message_content", "false")
+            .putProperty("azure.tracing.gen_ai.content_recording_enabled", "true")
+            .build();
         GenAiAgentTracing tracing
             = new GenAiAgentTracing(new GenAiInstrumentation(ENDPOINT, configuration, tracer, meter));
 
@@ -212,10 +215,9 @@ public final class GenAiAgentTracingTest {
 
     @Test
     public void legacyContentSettingRemainsSupported() {
-        Configuration configuration
-            = new ConfigurationBuilder().putProperty("experimental.enable_genai_tracing", "true")
-                .putProperty("azure.tracing.gen_ai.content_recording_enabled", "true")
-                .build();
+        Configuration configuration = configurationBuilder().putProperty("experimental.enable_genai_tracing", "true")
+            .putProperty("azure.tracing.gen_ai.content_recording_enabled", "true")
+            .build();
         GenAiAgentTracing tracing
             = new GenAiAgentTracing(new GenAiInstrumentation(ENDPOINT, configuration, tracer, meter));
 
@@ -224,6 +226,28 @@ public final class GenAiAgentTracingTest {
             (request, options) -> agentVersionResponse(), BinaryData.fromString("{}"), new RequestOptions());
 
         assertTrue(getSpan().getAttributes().get(GEN_AI_SYSTEM_INSTRUCTIONS).contains("Legacy opt-in"));
+    }
+
+    @ParameterizedTest
+    @CsvSource({ "true,false,true", "false,true,false", ",true,true", ",false,false", "true,,true", ",,false" })
+    public void contentRecordingSettingsRespectPrecedence(String standard, String legacy, boolean expected) {
+        ConfigurationBuilder builder = configurationBuilder().putProperty("experimental.enable_genai_tracing", "true");
+        if (standard != null) {
+            builder.putProperty("otel.instrumentation.genai.capture_message_content", standard);
+        }
+        if (legacy != null) {
+            builder.putProperty("azure.tracing.gen_ai.content_recording_enabled", legacy);
+        }
+        GenAiAgentTracing tracing
+            = new GenAiAgentTracing(new GenAiInstrumentation(ENDPOINT, builder.build(), tracer, meter));
+
+        tracing.traceCreateAgentVersion(AGENT_NAME,
+            new PromptAgentDefinition("gpt-4o").setInstructions("Content recording opt-in"),
+            (request, options) -> agentVersionResponse(), BinaryData.fromString("{}"), new RequestOptions());
+
+        String instructions = getSpan().getAttributes().get(GEN_AI_SYSTEM_INSTRUCTIONS);
+        assertNotNull(instructions);
+        assertEquals(expected, instructions.contains("Content recording opt-in"));
     }
 
     private ReadableSpan getSpan() {
@@ -245,9 +269,22 @@ public final class GenAiAgentTracingTest {
     }
 
     private static Configuration configuration(boolean captureContent) {
-        return new ConfigurationBuilder().putProperty("experimental.enable_genai_tracing", "true")
+        return configurationBuilder().putProperty("experimental.enable_genai_tracing", "true")
             .putProperty("otel.instrumentation.genai.capture_message_content", Boolean.toString(captureContent))
             .build();
+    }
+
+    private static ConfigurationBuilder configurationBuilder() {
+        // Explicit nulls prevent missing settings from falling back to the process environment.
+        Map<String, String> systemProperties = new HashMap<>();
+        systemProperties.put("azure.experimental.enable_genai_tracing", null);
+        systemProperties.put("otel.instrumentation.genai.capture_message_content", null);
+        systemProperties.put("azure.tracing.gen_ai.content_recording_enabled", null);
+        Map<String, String> environment = new HashMap<>();
+        environment.put("AZURE_EXPERIMENTAL_ENABLE_GENAI_TRACING", null);
+        environment.put("OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT", null);
+        environment.put("AZURE_TRACING_GEN_AI_CONTENT_RECORDING_ENABLED", null);
+        return new ConfigurationBuilder(path -> Collections.emptyMap(), path -> systemProperties, path -> environment);
     }
 
     private static final class TestSpanProcessor implements SpanProcessor {

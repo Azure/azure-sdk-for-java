@@ -28,12 +28,6 @@ public final class VoiceAgentLiveDefinition extends VoiceAgentBaseDefinition {
     private final VoiceAgentSubProtocol subProtocol;
 
     /*
-     * Uses a Foundry model deployment.
-     */
-    @Generated
-    private final String modelType = "self_deployed";
-
-    /*
      * The GPT Live deployment name.
      */
     @Generated
@@ -88,7 +82,7 @@ public final class VoiceAgentLiveDefinition extends VoiceAgentBaseDefinition {
      */
     @Generated
     public String getModelType() {
-        return this.modelType;
+        return MODEL_TYPE;
     }
 
     /**
@@ -225,7 +219,7 @@ public final class VoiceAgentLiveDefinition extends VoiceAgentBaseDefinition {
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeBooleanField("store", isStore());
         jsonWriter.writeStringField("sub_protocol", this.subProtocol == null ? null : this.subProtocol.toString());
-        jsonWriter.writeStringField("model_type", this.modelType);
+        jsonWriter.writeStringField("model_type", MODEL_TYPE);
         jsonWriter.writeStringField("model", this.model);
         jsonWriter.writeJsonField("greeting", this.greeting);
         jsonWriter.writeJsonField("audio", this.audio);
@@ -295,4 +289,10 @@ public final class VoiceAgentLiveDefinition extends VoiceAgentBaseDefinition {
             return deserializedVoiceAgentLiveDefinition;
         });
     }
+
+    /*
+     * Uses a Foundry model deployment.
+     */
+    @Generated
+    private static final String MODEL_TYPE = "self_deployed";
 }
