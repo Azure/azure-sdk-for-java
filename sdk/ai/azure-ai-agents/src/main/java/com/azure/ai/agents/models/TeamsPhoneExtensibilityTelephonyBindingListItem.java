@@ -4,25 +4,25 @@
 package com.azure.ai.agents.models;
 
 import com.azure.ai.agents.implementation.utils.Beta;
-import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The request to create a Microsoft Teams Phone Extension binding.
+ * A Microsoft Teams Phone extensibility binding returned in a list, including its entity tag.
  */
-@Fluent
+@Immutable
 @Beta(warningText = "Preview API. VoiceAgents=V1Preview")
-public final class CreateTeamsPhoneExtensionTelephonyBindingInput extends CreateTelephonyBindingInput {
+public final class TeamsPhoneExtensibilityTelephonyBindingListItem extends TelephonyBindingListItem {
 
     /*
      * The telephony provider.
      */
     @Generated
-    private TelephonyProvider provider = TelephonyProvider.TEAMS_PHONE_EXTENSION;
+    private TelephonyProvider provider = TelephonyProvider.TEAMS_PHONE_EXTENSIBILITY;
 
     /*
      * The optional display phone number for the Teams resource account.
@@ -37,14 +37,18 @@ public final class CreateTeamsPhoneExtensionTelephonyBindingInput extends Create
     private final String resourceAccountObjectId;
 
     /**
-     * Creates an instance of CreateTeamsPhoneExtensionTelephonyBindingInput class.
+     * Creates an instance of TeamsPhoneExtensibilityTelephonyBindingListItem class.
      *
+     * @param id the id value to set.
      * @param connectionName the connectionName value to set.
+     * @param status the status value to set.
+     * @param incomingCallUrl the incomingCallUrl value to set.
      * @param resourceAccountObjectId the resourceAccountObjectId value to set.
      */
     @Generated
-    public CreateTeamsPhoneExtensionTelephonyBindingInput(String connectionName, String resourceAccountObjectId) {
-        super(connectionName);
+    private TeamsPhoneExtensibilityTelephonyBindingListItem(String id, String connectionName,
+        TelephonyBindingStatus status, String incomingCallUrl, String resourceAccountObjectId) {
+        super(id, connectionName, status, incomingCallUrl);
         this.resourceAccountObjectId = resourceAccountObjectId;
     }
 
@@ -70,18 +74,6 @@ public final class CreateTeamsPhoneExtensionTelephonyBindingInput extends Create
     }
 
     /**
-     * Set the phoneNumber property: The optional display phone number for the Teams resource account.
-     *
-     * @param phoneNumber the phoneNumber value to set.
-     * @return the CreateTeamsPhoneExtensionTelephonyBindingInput object itself.
-     */
-    @Generated
-    public CreateTeamsPhoneExtensionTelephonyBindingInput setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-        return this;
-    }
-
-    /**
      * Get the resourceAccountObjectId property: The Microsoft Teams resource-account object identifier as a GUID.
      *
      * @return the resourceAccountObjectId value.
@@ -96,19 +88,12 @@ public final class CreateTeamsPhoneExtensionTelephonyBindingInput extends Create
      */
     @Generated
     @Override
-    public CreateTeamsPhoneExtensionTelephonyBindingInput setLabel(String label) {
-        super.setLabel(label);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", getId());
         jsonWriter.writeStringField("connection_name", getConnectionName());
+        jsonWriter.writeStringField("status", getStatus() == null ? null : getStatus().toString());
+        jsonWriter.writeStringField("incoming_call_url", getIncomingCallUrl());
         jsonWriter.writeStringField("label", getLabel());
         jsonWriter.writeStringField("resource_account_object_id", this.resourceAccountObjectId);
         jsonWriter.writeStringField("provider", this.provider == null ? null : this.provider.toString());
@@ -117,27 +102,39 @@ public final class CreateTeamsPhoneExtensionTelephonyBindingInput extends Create
     }
 
     /**
-     * Reads an instance of CreateTeamsPhoneExtensionTelephonyBindingInput from the JsonReader.
+     * Reads an instance of TeamsPhoneExtensibilityTelephonyBindingListItem from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of CreateTeamsPhoneExtensionTelephonyBindingInput if the JsonReader was pointing to an
+     * @return An instance of TeamsPhoneExtensibilityTelephonyBindingListItem if the JsonReader was pointing to an
      * instance of it, or null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the CreateTeamsPhoneExtensionTelephonyBindingInput.
+     * @throws IOException If an error occurs while reading the TeamsPhoneExtensibilityTelephonyBindingListItem.
      */
     @Generated
-    public static CreateTeamsPhoneExtensionTelephonyBindingInput fromJson(JsonReader jsonReader) throws IOException {
+    public static TeamsPhoneExtensibilityTelephonyBindingListItem fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
+            String id = null;
             String connectionName = null;
+            TelephonyBindingStatus status = null;
+            String incomingCallUrl = null;
+            String eTag = null;
             String label = null;
             String resourceAccountObjectId = null;
-            TelephonyProvider provider = TelephonyProvider.TEAMS_PHONE_EXTENSION;
+            TelephonyProvider provider = TelephonyProvider.TEAMS_PHONE_EXTENSIBILITY;
             String phoneNumber = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("connection_name".equals(fieldName)) {
+                if ("id".equals(fieldName)) {
+                    id = reader.getString();
+                } else if ("connection_name".equals(fieldName)) {
                     connectionName = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    status = TelephonyBindingStatus.fromString(reader.getString());
+                } else if ("incoming_call_url".equals(fieldName)) {
+                    incomingCallUrl = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    eTag = reader.getString();
                 } else if ("label".equals(fieldName)) {
                     label = reader.getString();
                 } else if ("resource_account_object_id".equals(fieldName)) {
@@ -150,12 +147,14 @@ public final class CreateTeamsPhoneExtensionTelephonyBindingInput extends Create
                     reader.skipChildren();
                 }
             }
-            CreateTeamsPhoneExtensionTelephonyBindingInput deserializedCreateTeamsPhoneExtensionTelephonyBindingInput
-                = new CreateTeamsPhoneExtensionTelephonyBindingInput(connectionName, resourceAccountObjectId);
-            deserializedCreateTeamsPhoneExtensionTelephonyBindingInput.setLabel(label);
-            deserializedCreateTeamsPhoneExtensionTelephonyBindingInput.provider = provider;
-            deserializedCreateTeamsPhoneExtensionTelephonyBindingInput.phoneNumber = phoneNumber;
-            return deserializedCreateTeamsPhoneExtensionTelephonyBindingInput;
+            TeamsPhoneExtensibilityTelephonyBindingListItem deserializedTeamsPhoneExtensibilityTelephonyBindingListItem
+                = new TeamsPhoneExtensibilityTelephonyBindingListItem(id, connectionName, status, incomingCallUrl,
+                    resourceAccountObjectId);
+            deserializedTeamsPhoneExtensibilityTelephonyBindingListItem.setETag(eTag);
+            deserializedTeamsPhoneExtensibilityTelephonyBindingListItem.setLabel(label);
+            deserializedTeamsPhoneExtensibilityTelephonyBindingListItem.provider = provider;
+            deserializedTeamsPhoneExtensibilityTelephonyBindingListItem.phoneNumber = phoneNumber;
+            return deserializedTeamsPhoneExtensibilityTelephonyBindingListItem;
         });
     }
 }

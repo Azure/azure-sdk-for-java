@@ -81,7 +81,7 @@ public final class BetaVoiceAgentsTelephonyAsyncClient {
      * <pre>
      * {@code
      * {
-     *     provider: String(teams_phone_extension/twilio) (Required)
+     *     provider: String(teams_phone_extensibility/twilio) (Required)
      *     connection_name: String (Required)
      *     label: String (Optional)
      * }
@@ -93,7 +93,7 @@ public final class BetaVoiceAgentsTelephonyAsyncClient {
      * <pre>
      * {@code
      * {
-     *     provider: String(teams_phone_extension/twilio) (Required)
+     *     provider: String(teams_phone_extensibility/twilio) (Required)
      *     id: String (Required)
      *     connection_name: String (Required)
      *     label: String (Optional)
@@ -137,7 +137,7 @@ public final class BetaVoiceAgentsTelephonyAsyncClient {
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>provider</td><td>String</td><td>No</td><td>Filters bindings by provider. Allowed values:
-     * "teams_phone_extension", "twilio".</td></tr>
+     * "teams_phone_extensibility", "twilio".</td></tr>
      * <tr><td>status</td><td>String</td><td>No</td><td>Filters bindings by lifecycle status. Allowed values: "active",
      * "suspended".</td></tr>
      * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
@@ -161,7 +161,7 @@ public final class BetaVoiceAgentsTelephonyAsyncClient {
      * <pre>
      * {@code
      * {
-     *     provider: String(teams_phone_extension/twilio) (Required)
+     *     provider: String(teams_phone_extensibility/twilio) (Required)
      *     id: String (Required)
      *     connection_name: String (Required)
      *     label: String (Optional)
@@ -195,7 +195,7 @@ public final class BetaVoiceAgentsTelephonyAsyncClient {
      * <pre>
      * {@code
      * {
-     *     provider: String(teams_phone_extension/twilio) (Required)
+     *     provider: String(teams_phone_extensibility/twilio) (Required)
      *     id: String (Required)
      *     connection_name: String (Required)
      *     label: String (Optional)
@@ -254,7 +254,7 @@ public final class BetaVoiceAgentsTelephonyAsyncClient {
      * <pre>
      * {@code
      * {
-     *     provider: String(teams_phone_extension/twilio) (Required)
+     *     provider: String(teams_phone_extensibility/twilio) (Required)
      *     id: String (Required)
      *     connection_name: String (Required)
      *     label: String (Optional)
@@ -326,7 +326,7 @@ public final class BetaVoiceAgentsTelephonyAsyncClient {
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>provider</td><td>String</td><td>No</td><td>Filters calls by provider. Allowed values:
-     * "teams_phone_extension", "twilio".</td></tr>
+     * "teams_phone_extensibility", "twilio".</td></tr>
      * <tr><td>status</td><td>String</td><td>No</td><td>Filters calls by lifecycle status. Allowed values:
      * "in_progress", "success", "failed".</td></tr>
      * <tr><td>started_after</td><td>OffsetDateTime</td><td>No</td><td>Includes calls that started at or after this Unix
@@ -355,7 +355,7 @@ public final class BetaVoiceAgentsTelephonyAsyncClient {
      * {@code
      * {
      *     id: String (Required)
-     *     provider: String(teams_phone_extension/twilio) (Required)
+     *     provider: String(teams_phone_extensibility/twilio) (Required)
      *     provider_call_id: String (Optional)
      *     caller_number: String (Optional)
      *     provider_number: String (Optional)
@@ -399,7 +399,7 @@ public final class BetaVoiceAgentsTelephonyAsyncClient {
      * {@code
      * {
      *     id: String (Required)
-     *     provider: String(teams_phone_extension/twilio) (Required)
+     *     provider: String(teams_phone_extensibility/twilio) (Required)
      *     provider_call_id: String (Optional)
      *     caller_number: String (Optional)
      *     provider_number: String (Optional)
@@ -440,7 +440,7 @@ public final class BetaVoiceAgentsTelephonyAsyncClient {
      *          (Required){
      *             sequence: long (Required)
      *             name: String(telephony.webhook.received/telephony.webhook.validation/telephony.binding.resolve/telephony.provider.answer/telephony.media.connect/telephony.agent_session.connect/telephony.media.first_caller_audio/telephony.media.first_agent_audio/telephony.call.transfer/telephony.call.hangup/telephony.call.disconnect) (Required)
-     *             source: String(gateway/teams_phone_extension/twilio/voice_agent) (Required)
+     *             source: String(gateway/teams_phone_extensibility/twilio/voice_agent) (Required)
      *             outcome: String(observed/started/succeeded/failed/rejected/cancelled) (Required)
      *             observed_at: long (Required)
      *             occurred_at: Long (Optional)
@@ -496,7 +496,7 @@ public final class BetaVoiceAgentsTelephonyAsyncClient {
      * {@code
      * {
      *     id: String (Required)
-     *     provider: String(teams_phone_extension/twilio) (Required)
+     *     provider: String(teams_phone_extensibility/twilio) (Required)
      *     provider_call_id: String (Optional)
      *     caller_number: String (Optional)
      *     provider_number: String (Optional)
@@ -537,7 +537,7 @@ public final class BetaVoiceAgentsTelephonyAsyncClient {
      *          (Required){
      *             sequence: long (Required)
      *             name: String(telephony.webhook.received/telephony.webhook.validation/telephony.binding.resolve/telephony.provider.answer/telephony.media.connect/telephony.agent_session.connect/telephony.media.first_caller_audio/telephony.media.first_agent_audio/telephony.call.transfer/telephony.call.hangup/telephony.call.disconnect) (Required)
-     *             source: String(gateway/teams_phone_extension/twilio/voice_agent) (Required)
+     *             source: String(gateway/teams_phone_extensibility/twilio/voice_agent) (Required)
      *             outcome: String(observed/started/succeeded/failed/rejected/cancelled) (Required)
      *             observed_at: long (Required)
      *             occurred_at: Long (Optional)
@@ -583,7 +583,7 @@ public final class BetaVoiceAgentsTelephonyAsyncClient {
      * {@code
      * {
      *     id: String (Required)
-     *     provider: String(teams_phone_extension/twilio) (Required)
+     *     provider: String(teams_phone_extensibility/twilio) (Required)
      *     provider_call_id: String (Optional)
      *     caller_number: String (Optional)
      *     provider_number: String (Optional)
@@ -624,7 +624,7 @@ public final class BetaVoiceAgentsTelephonyAsyncClient {
      *          (Required){
      *             sequence: long (Required)
      *             name: String(telephony.webhook.received/telephony.webhook.validation/telephony.binding.resolve/telephony.provider.answer/telephony.media.connect/telephony.agent_session.connect/telephony.media.first_caller_audio/telephony.media.first_agent_audio/telephony.call.transfer/telephony.call.hangup/telephony.call.disconnect) (Required)
-     *             source: String(gateway/teams_phone_extension/twilio/voice_agent) (Required)
+     *             source: String(gateway/teams_phone_extensibility/twilio/voice_agent) (Required)
      *             outcome: String(observed/started/succeeded/failed/rejected/cancelled) (Required)
      *             observed_at: long (Required)
      *             occurred_at: Long (Optional)

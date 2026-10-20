@@ -4,9 +4,28 @@
 
 ### Features Added
 
+- Added `EvaluatorsClient` and `EvaluatorsAsyncClient`, built directly through
+  `AIProjectClientBuilder.buildEvaluatorsClient()` and `buildEvaluatorsAsyncClient()`, for generally available
+  evaluator-version management and rubric-generation jobs. Preview evaluator definitions such as
+  `EndpointBasedEvaluatorDefinition` require `allowPreview(true)`. `BetaEvaluatorsClient` and
+  `BetaEvaluatorsAsyncClient` retain preview pending-upload and credential operations.
+- Evaluation data generation graduated to general availability on `DatasetsClient` and `DatasetsAsyncClient`.
+  Added scenario-specific input and result models for evaluation, supervised fine-tuning, and reinforcement
+  fine-tuning. Fine-tuning scenarios remain in preview and require `allowPreview(true)`; their output configurations
+  support merge-file IDs.
+- Added `ConnectionType.OPEN_API` (`OpenAPI`) and `ConnectionType.REMOTE_A2A` (`RemoteA2A`) for listing and identifying
+  OpenAPI and remote agent-to-agent connections.
+- Added `ApiError.getMisalignment()` to expose structured misalignment details using the OpenAI
+  `ErrorObject.Misalignment` model.
+
 ### Breaking Changes
 
 ### Bugs Fixed
+
+- Fixed OpenAI clients built from `AIProjectClientBuilder` to acquire bearer tokens through the Azure HTTP pipeline.
+  Asynchronous clients now use asynchronous token acquisition instead of calling `TokenCredential.getTokenSync(...)`;
+  synchronous clients continue to use synchronous token acquisition.
+- Fixed skill file uploads to omit an unset `default` flag instead of sending the literal text `null`.
 
 ### Other Changes
 
