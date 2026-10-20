@@ -30,9 +30,55 @@ To take dependency on a particular version of the library that isn't present in 
 
 ## Examples
 
+### Authenticate GitHub Actions workflows
+
+`com.azure.v2.identity.GitHubActionsCredential` authenticates through GitHub Actions OIDC federation.
+Configure an Entra application's federated identity credential to trust your GitHub workflow's issuer, subject,
+and audience, following [GitHub's Azure OIDC setup guide][github_oidc].
+
+The workflow needs `permissions: id-token: write`. Set `AZURE_TENANT_ID` and `AZURE_CLIENT_ID` in the workflow
+environment. GitHub supplies `ACTIONS_ID_TOKEN_REQUEST_URL` and `ACTIONS_ID_TOKEN_REQUEST_TOKEN`; do not
+configure those values as repository secrets or print them. No client secret, certificate, or `azure/login`
+step is required.
+
+```java readme-sample-v2-github-actions-credential
+TokenCredential gitHubCredential = new GitHubActionsCredentialBuilder().build();
+```
+
+The builder also accepts explicit IDs, which override the environment variables:
+
+```java readme-sample-v2-github-actions-credential-explicit
+TokenCredential explicitCredential
+    = new GitHubActionsCredentialBuilder().tenantId("<tenant-id>").clientId("<client-id>").build();
+```
+
+The v2 credential uses `com.azure.v2.core.credentials.TokenCredential` and its synchronous `getToken` API.
+It is not included in `DefaultAzureCredential`.
+
+An explicit `authorityHost` takes precedence over `AZURE_AUTHORITY_HOST`, followed by Azure Public.
+The assertion audience is derived from the effective authority; configure the same audience on the federated
+identity credential:
+
+| Authority host | Audience |
+| --- | --- |
+| `https://login.microsoftonline.com/` | `api://AzureADTokenExchange` |
+| `https://login.chinacloudapi.cn/` | `api://AzureADTokenExchangeChina` |
+| `https://login.microsoftonline.us/` | `api://AzureADTokenExchangeUSGov` |
+| `https://login.sovcloud-identity.fr/` | `api://AzureADTokenExchangeFrance` |
+| `https://login.sovcloud-identity.de/` | `api://AzureADTokenExchangeGermany` |
+| `https://login.sovcloud-identity.sg/` | `api://AzureADTokenExchangeGovSG` |
 
 ## Troubleshooting
 
+`GitHubActionsCredentialBuilder.build()` raises `CredentialUnavailableException` when required configuration is
+missing, the runner request URL is invalid, or the authority has no supported audience mapping. Supply the Azure IDs
+through the builder or environment and ensure the job has `permissions: id-token: write`. The runner request URL
+must be an absolute HTTPS URL.
+
+GitHub OIDC HTTP or response-parsing failures raise `CredentialAuthenticationException`. For HTTP 401/403,
+check the workflow permissions and run the SDK in the step where GitHub provides its OIDC variables.
+For Entra federation errors, verify that the issuer, subject, and audience match the application's federated
+identity credential. Error messages do not include the assertion or raw OIDC response body.
 
 ## Next steps
 
@@ -47,3 +93,4 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 
 <!-- LINKS -->
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
+[github_oidc]: https://docs.github.com/en/actions/how-tos/secure-your-work/security-harden-deployments/oidc-in-azure

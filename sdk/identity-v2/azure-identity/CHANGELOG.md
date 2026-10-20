@@ -4,6 +4,7 @@
 
 ### Features Added
 
+- Added `GitHubActionsCredential` and `GitHubActionsCredentialBuilder` for authentication using GitHub Actions OIDC federation.
 - Added support for user-assigned managed identities on Azure Arc in `ManagedIdentityCredential` and `DefaultAzureCredential`.
 
 ### Breaking Changes
