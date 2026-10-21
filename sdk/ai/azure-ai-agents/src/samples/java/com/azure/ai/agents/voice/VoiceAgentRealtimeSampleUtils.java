@@ -139,6 +139,12 @@ final class VoiceAgentRealtimeSampleUtils {
             return line != null;
         }
 
+        synchronized void drain() {
+            if (line != null) {
+                line.drain();
+            }
+        }
+
         @Override
         public synchronized void close() {
             if (line != null) {

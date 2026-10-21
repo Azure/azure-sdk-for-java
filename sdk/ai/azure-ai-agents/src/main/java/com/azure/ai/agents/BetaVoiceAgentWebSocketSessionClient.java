@@ -68,6 +68,7 @@ public final class BetaVoiceAgentWebSocketSessionClient implements AutoCloseable
     private static final ClientLogger LOGGER = new ClientLogger(BetaVoiceAgentWebSocketSessionClient.class);
     private final URI websocketUri;
     private final VoiceAgentWebSocketConnectionOptions options;
+    private final boolean live;
     private final OkHttpClient httpClient;
     private final BlockingQueue<EventSignal> events;
     private final int receiveBufferCapacity;
@@ -87,6 +88,7 @@ public final class BetaVoiceAgentWebSocketSessionClient implements AutoCloseable
     private BetaVoiceAgentWebSocketSessionClient(VoiceAgentWebSocketClientConfiguration configuration, String agentName,
         VoiceAgentWebSocketConnectionOptions options) {
         this.options = options;
+        this.live = configuration.isLive();
         this.receiveBufferCapacity = options.getReceiveBufferCapacity();
         this.events = new ArrayBlockingQueue<>(receiveBufferCapacity + 1);
         this.websocketUri = VoiceAgentWebSocketUtils.buildWebSocketUri(configuration, agentName, options);
@@ -94,8 +96,10 @@ public final class BetaVoiceAgentWebSocketSessionClient implements AutoCloseable
             .getTokenSync(VoiceAgentWebSocketUtils.createTokenRequestContext())
             .getToken();
         this.httpClient = createHttpClient(configuration, options);
-        Request.Builder request = new Request.Builder().url(websocketUri.toString())
-            .header("Sec-WebSocket-Protocol", VoiceAgentWebSocketUtils.SUBPROTOCOL);
+        Request.Builder request = new Request.Builder().url(websocketUri.toString());
+        if (!live) {
+            request.header("Sec-WebSocket-Protocol", VoiceAgentWebSocketUtils.SUBPROTOCOL);
+        }
         for (HttpHeader header : VoiceAgentWebSocketUtils.buildHeaders(configuration, options, token)) {
             request.header(header.getName(), header.getValue());
         }
@@ -516,7 +520,7 @@ public final class BetaVoiceAgentWebSocketSessionClient implements AutoCloseable
                 return;
             }
             try {
-                signal(EventSignal.event(VoiceAgentWebSocketUtils.deserializeEvent(text)));
+                signal(EventSignal.event(VoiceAgentWebSocketUtils.deserializeEvent(text, live)));
             } catch (IOException | RuntimeException error) {
                 malformedEvent(webSocket, error);
             }
