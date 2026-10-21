@@ -11,10 +11,8 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.edgeactions.fluent.EdgeActionVersionsClient;
 import com.azure.resourcemanager.edgeactions.fluent.models.EdgeActionVersionInner;
-import com.azure.resourcemanager.edgeactions.fluent.models.EdgeActionVersionPropertiesInner;
 import com.azure.resourcemanager.edgeactions.fluent.models.VersionCodeInner;
 import com.azure.resourcemanager.edgeactions.models.EdgeActionVersion;
-import com.azure.resourcemanager.edgeactions.models.EdgeActionVersionProperties;
 import com.azure.resourcemanager.edgeactions.models.EdgeActionVersions;
 import com.azure.resourcemanager.edgeactions.models.VersionCode;
 
@@ -69,23 +67,23 @@ public final class EdgeActionVersionsImpl implements EdgeActionVersions {
         return ResourceManagerUtils.mapPage(inner, inner1 -> new EdgeActionVersionImpl(inner1, this.manager()));
     }
 
-    public EdgeActionVersionProperties deployVersionCode(String resourceGroupName, String edgeActionName,
-        String version, VersionCodeInner body) {
-        EdgeActionVersionPropertiesInner inner
+    public EdgeActionVersion deployVersionCode(String resourceGroupName, String edgeActionName, String version,
+        VersionCodeInner body) {
+        EdgeActionVersionInner inner
             = this.serviceClient().deployVersionCode(resourceGroupName, edgeActionName, version, body);
         if (inner != null) {
-            return new EdgeActionVersionPropertiesImpl(inner, this.manager());
+            return new EdgeActionVersionImpl(inner, this.manager());
         } else {
             return null;
         }
     }
 
-    public EdgeActionVersionProperties deployVersionCode(String resourceGroupName, String edgeActionName,
-        String version, VersionCodeInner body, Context context) {
-        EdgeActionVersionPropertiesInner inner
+    public EdgeActionVersion deployVersionCode(String resourceGroupName, String edgeActionName, String version,
+        VersionCodeInner body, Context context) {
+        EdgeActionVersionInner inner
             = this.serviceClient().deployVersionCode(resourceGroupName, edgeActionName, version, body, context);
         if (inner != null) {
-            return new EdgeActionVersionPropertiesImpl(inner, this.manager());
+            return new EdgeActionVersionImpl(inner, this.manager());
         } else {
             return null;
         }

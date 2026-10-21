@@ -10,6 +10,7 @@ import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.edgeactions.models.EdgeActionVersionProperties;
 import java.io.IOException;
 import java.util.Map;
 
@@ -21,7 +22,7 @@ public final class EdgeActionVersionInner extends Resource {
     /*
      * The resource-specific properties for this resource.
      */
-    private EdgeActionVersionPropertiesInner properties;
+    private EdgeActionVersionProperties properties;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
@@ -54,7 +55,7 @@ public final class EdgeActionVersionInner extends Resource {
      * 
      * @return the properties value.
      */
-    public EdgeActionVersionPropertiesInner properties() {
+    public EdgeActionVersionProperties properties() {
         return this.properties;
     }
 
@@ -64,7 +65,7 @@ public final class EdgeActionVersionInner extends Resource {
      * @param properties the properties value to set.
      * @return the EdgeActionVersionInner object itself.
      */
-    public EdgeActionVersionInner withProperties(EdgeActionVersionPropertiesInner properties) {
+    public EdgeActionVersionInner withProperties(EdgeActionVersionProperties properties) {
         this.properties = properties;
         return this;
     }
@@ -166,7 +167,7 @@ public final class EdgeActionVersionInner extends Resource {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedEdgeActionVersionInner.withTags(tags);
                 } else if ("properties".equals(fieldName)) {
-                    deserializedEdgeActionVersionInner.properties = EdgeActionVersionPropertiesInner.fromJson(reader);
+                    deserializedEdgeActionVersionInner.properties = EdgeActionVersionProperties.fromJson(reader);
                 } else if ("systemData".equals(fieldName)) {
                     deserializedEdgeActionVersionInner.systemData = SystemData.fromJson(reader);
                 } else {

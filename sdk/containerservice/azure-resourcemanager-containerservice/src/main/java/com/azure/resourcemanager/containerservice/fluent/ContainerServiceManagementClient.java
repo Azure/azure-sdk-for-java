@@ -145,6 +145,13 @@ public interface ContainerServiceManagementClient {
     MeshMembershipsClient getMeshMemberships();
 
     /**
+     * Gets the AgentFabricMembershipsClient object to access its operations.
+     * 
+     * @return the AgentFabricMembershipsClient object.
+     */
+    AgentFabricMembershipsClient getAgentFabricMemberships();
+
+    /**
      * Gets the OperationsClient object to access its operations.
      * 
      * @return the OperationsClient object.
@@ -157,6 +164,13 @@ public interface ContainerServiceManagementClient {
      * @return the AlertConfigurationsClient object.
      */
     AlertConfigurationsClient getAlertConfigurations();
+
+    /**
+     * Gets the UpgradeInsightsClient object to access its operations.
+     * 
+     * @return the UpgradeInsightsClient object.
+     */
+    UpgradeInsightsClient getUpgradeInsights();
 
     /**
      * Gets the OperationStatusResultsClient object to access its operations.

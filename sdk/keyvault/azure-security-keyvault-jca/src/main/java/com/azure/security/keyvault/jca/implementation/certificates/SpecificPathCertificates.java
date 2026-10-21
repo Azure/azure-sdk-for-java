@@ -31,8 +31,6 @@ import static java.util.logging.Level.WARNING;
  */
 public final class SpecificPathCertificates implements AzureCertificates {
 
-    private static final Map<String, SpecificPathCertificates> CACHE = new HashMap<>();
-
     /**
      * Stores the logger.
      */
@@ -211,17 +209,12 @@ public final class SpecificPathCertificates implements AzureCertificates {
     }
 
     /**
-     * Get File System certificates by path
+     * Load a new snapshot of file system certificates from the given path.
      *
-     * @param path certificate path, which works only in first time
-     * @return file certificate
+     * @param path certificate directory path
+     * @return independently loaded file system certificates
      */
-    public static synchronized SpecificPathCertificates getSpecificPathCertificates(String path) {
-        SpecificPathCertificates result = CACHE.getOrDefault(path, null);
-        if (result == null) {
-            result = new SpecificPathCertificates(path);
-            CACHE.put(path, result);
-        }
-        return result;
+    public static SpecificPathCertificates getSpecificPathCertificates(String path) {
+        return new SpecificPathCertificates(path);
     }
 }
