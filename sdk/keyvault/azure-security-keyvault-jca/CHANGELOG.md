@@ -1,14 +1,10 @@
 # Release History
 
-## 2.13.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 2.12.2 (2026-10-20)
 
 ### Bugs Fixed
 
-### Other Changes
+- Reload filesystem certificates from the configured custom and well-known directories when a keystore is constructed or loaded, without sharing mutable filesystem certificate state between keystores. ([#50893](https://github.com/Azure/azure-sdk-for-java/pull/50893))
 
 ## 2.12.1 (2026-10-17)
 
