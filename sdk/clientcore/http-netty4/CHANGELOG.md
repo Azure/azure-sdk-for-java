@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Fixed response and read timeouts not being enforced when the write timeout is disabled.
+
 ### Other Changes
 
 - Upgraded Netty to `4.2.19.Final`, using I/O handler factories for event loops while preserving pooled buffer allocation

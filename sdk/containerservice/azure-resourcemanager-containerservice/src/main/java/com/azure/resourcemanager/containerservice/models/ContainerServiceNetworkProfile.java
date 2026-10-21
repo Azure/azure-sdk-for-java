@@ -84,25 +84,9 @@ public final class ContainerServiceNetworkProfile implements JsonSerializable<Co
     private ManagedClusterLoadBalancerProfile loadBalancerProfile;
 
     /*
-     * Profile of the Bastion Host associated with the managed cluster.
-     * See https://aka.ms/aks/BastionConnect for more details.
-     */
-    private BastionProfile bastionProfile;
-
-    /*
      * Profile of the cluster NAT gateway.
      */
     private ManagedClusterNatGatewayProfile natGatewayProfile;
-
-    /*
-     * The Azure resource ID of the NAT gateway to use for egress at cluster startup when outboundType is
-     * 'userAssignedNATGateway' using StandardV2 Public IP, backend pool type is podIP, and load balancer type is
-     * service SKU. This is of the form:
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/natGateways/{
-     * natGatewayName}'. When using managed NATGateway this field is auto populated. For more information, see
-     * https://aka.ms/aks/container-native-slb
-     */
-    private String natGatewayId;
 
     /*
      * The profile for Static Egress Gateway addon. For more details about Static Egress Gateway, see
@@ -129,19 +113,6 @@ public final class ContainerServiceNetworkProfile implements JsonSerializable<Co
      * values are IPv4 and IPv6.
      */
     private List<IpFamily> ipFamilies;
-
-    /*
-     * Defines access to special link local addresses (Azure Instance Metadata Service, aka IMDS) for pods with
-     * hostNetwork=false. if not specified, the default is 'IMDS'.
-     */
-    private PodLinkLocalAccess podLinkLocalAccess;
-
-    /*
-     * Holds configuration customizations for kube-proxy. Any values not defined will use the kube-proxy defaulting
-     * behavior. See https://v<version>.docs.kubernetes.io/docs/reference/command-line-tools-reference/kube-proxy/ where
-     * <version> is represented by a <major version>-<minor version> string. Kubernetes version 1.23 would be '1-23'.
-     */
-    private ContainerServiceNetworkProfileKubeProxyConfig kubeProxyConfig;
 
     /**
      * Creates an instance of ContainerServiceNetworkProfile class.
@@ -407,28 +378,6 @@ public final class ContainerServiceNetworkProfile implements JsonSerializable<Co
     }
 
     /**
-     * Get the bastionProfile property: Profile of the Bastion Host associated with the managed cluster.
-     * See https://aka.ms/aks/BastionConnect for more details.
-     * 
-     * @return the bastionProfile value.
-     */
-    public BastionProfile bastionProfile() {
-        return this.bastionProfile;
-    }
-
-    /**
-     * Set the bastionProfile property: Profile of the Bastion Host associated with the managed cluster.
-     * See https://aka.ms/aks/BastionConnect for more details.
-     * 
-     * @param bastionProfile the bastionProfile value to set.
-     * @return the ContainerServiceNetworkProfile object itself.
-     */
-    public ContainerServiceNetworkProfile withBastionProfile(BastionProfile bastionProfile) {
-        this.bastionProfile = bastionProfile;
-        return this;
-    }
-
-    /**
      * Get the natGatewayProfile property: Profile of the cluster NAT gateway.
      * 
      * @return the natGatewayProfile value.
@@ -445,36 +394,6 @@ public final class ContainerServiceNetworkProfile implements JsonSerializable<Co
      */
     public ContainerServiceNetworkProfile withNatGatewayProfile(ManagedClusterNatGatewayProfile natGatewayProfile) {
         this.natGatewayProfile = natGatewayProfile;
-        return this;
-    }
-
-    /**
-     * Get the natGatewayId property: The Azure resource ID of the NAT gateway to use for egress at cluster startup when
-     * outboundType is 'userAssignedNATGateway' using StandardV2 Public IP, backend pool type is podIP, and load
-     * balancer type is service SKU. This is of the form:
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/natGateways/{natGatewayName}'.
-     * When using managed NATGateway this field is auto populated. For more information, see
-     * https://aka.ms/aks/container-native-slb.
-     * 
-     * @return the natGatewayId value.
-     */
-    public String natGatewayId() {
-        return this.natGatewayId;
-    }
-
-    /**
-     * Set the natGatewayId property: The Azure resource ID of the NAT gateway to use for egress at cluster startup when
-     * outboundType is 'userAssignedNATGateway' using StandardV2 Public IP, backend pool type is podIP, and load
-     * balancer type is service SKU. This is of the form:
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/natGateways/{natGatewayName}'.
-     * When using managed NATGateway this field is auto populated. For more information, see
-     * https://aka.ms/aks/container-native-slb.
-     * 
-     * @param natGatewayId the natGatewayId value to set.
-     * @return the ContainerServiceNetworkProfile object itself.
-     */
-    public ContainerServiceNetworkProfile withNatGatewayId(String natGatewayId) {
-        this.natGatewayId = natGatewayId;
         return this;
     }
 
@@ -574,57 +493,6 @@ public final class ContainerServiceNetworkProfile implements JsonSerializable<Co
     }
 
     /**
-     * Get the podLinkLocalAccess property: Defines access to special link local addresses (Azure Instance Metadata
-     * Service, aka IMDS) for pods with hostNetwork=false. if not specified, the default is 'IMDS'.
-     * 
-     * @return the podLinkLocalAccess value.
-     */
-    public PodLinkLocalAccess podLinkLocalAccess() {
-        return this.podLinkLocalAccess;
-    }
-
-    /**
-     * Set the podLinkLocalAccess property: Defines access to special link local addresses (Azure Instance Metadata
-     * Service, aka IMDS) for pods with hostNetwork=false. if not specified, the default is 'IMDS'.
-     * 
-     * @param podLinkLocalAccess the podLinkLocalAccess value to set.
-     * @return the ContainerServiceNetworkProfile object itself.
-     */
-    public ContainerServiceNetworkProfile withPodLinkLocalAccess(PodLinkLocalAccess podLinkLocalAccess) {
-        this.podLinkLocalAccess = podLinkLocalAccess;
-        return this;
-    }
-
-    /**
-     * Get the kubeProxyConfig property: Holds configuration customizations for kube-proxy. Any values not defined will
-     * use the kube-proxy defaulting behavior. See
-     * https://v&lt;version&gt;.docs.kubernetes.io/docs/reference/command-line-tools-reference/kube-proxy/ where
-     * &lt;version&gt; is represented by a &lt;major version&gt;-&lt;minor version&gt; string. Kubernetes version 1.23
-     * would be '1-23'.
-     * 
-     * @return the kubeProxyConfig value.
-     */
-    public ContainerServiceNetworkProfileKubeProxyConfig kubeProxyConfig() {
-        return this.kubeProxyConfig;
-    }
-
-    /**
-     * Set the kubeProxyConfig property: Holds configuration customizations for kube-proxy. Any values not defined will
-     * use the kube-proxy defaulting behavior. See
-     * https://v&lt;version&gt;.docs.kubernetes.io/docs/reference/command-line-tools-reference/kube-proxy/ where
-     * &lt;version&gt; is represented by a &lt;major version&gt;-&lt;minor version&gt; string. Kubernetes version 1.23
-     * would be '1-23'.
-     * 
-     * @param kubeProxyConfig the kubeProxyConfig value to set.
-     * @return the ContainerServiceNetworkProfile object itself.
-     */
-    public ContainerServiceNetworkProfile
-        withKubeProxyConfig(ContainerServiceNetworkProfileKubeProxyConfig kubeProxyConfig) {
-        this.kubeProxyConfig = kubeProxyConfig;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -636,17 +504,11 @@ public final class ContainerServiceNetworkProfile implements JsonSerializable<Co
         if (loadBalancerProfile() != null) {
             loadBalancerProfile().validate();
         }
-        if (bastionProfile() != null) {
-            bastionProfile().validate();
-        }
         if (natGatewayProfile() != null) {
             natGatewayProfile().validate();
         }
         if (staticEgressGatewayProfile() != null) {
             staticEgressGatewayProfile().validate();
-        }
-        if (kubeProxyConfig() != null) {
-            kubeProxyConfig().validate();
         }
     }
 
@@ -671,17 +533,12 @@ public final class ContainerServiceNetworkProfile implements JsonSerializable<Co
         jsonWriter.writeStringField("loadBalancerSku",
             this.loadBalancerSku == null ? null : this.loadBalancerSku.toString());
         jsonWriter.writeJsonField("loadBalancerProfile", this.loadBalancerProfile);
-        jsonWriter.writeJsonField("bastionProfile", this.bastionProfile);
         jsonWriter.writeJsonField("natGatewayProfile", this.natGatewayProfile);
-        jsonWriter.writeStringField("natGatewayId", this.natGatewayId);
         jsonWriter.writeJsonField("staticEgressGatewayProfile", this.staticEgressGatewayProfile);
         jsonWriter.writeArrayField("podCidrs", this.podCidrs, (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("serviceCidrs", this.serviceCidrs, (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("ipFamilies", this.ipFamilies,
             (writer, element) -> writer.writeString(element == null ? null : element.toString()));
-        jsonWriter.writeStringField("podLinkLocalAccess",
-            this.podLinkLocalAccess == null ? null : this.podLinkLocalAccess.toString());
-        jsonWriter.writeJsonField("kubeProxyConfig", this.kubeProxyConfig);
         return jsonWriter.writeEndObject();
     }
 
@@ -732,13 +589,9 @@ public final class ContainerServiceNetworkProfile implements JsonSerializable<Co
                 } else if ("loadBalancerProfile".equals(fieldName)) {
                     deserializedContainerServiceNetworkProfile.loadBalancerProfile
                         = ManagedClusterLoadBalancerProfile.fromJson(reader);
-                } else if ("bastionProfile".equals(fieldName)) {
-                    deserializedContainerServiceNetworkProfile.bastionProfile = BastionProfile.fromJson(reader);
                 } else if ("natGatewayProfile".equals(fieldName)) {
                     deserializedContainerServiceNetworkProfile.natGatewayProfile
                         = ManagedClusterNatGatewayProfile.fromJson(reader);
-                } else if ("natGatewayId".equals(fieldName)) {
-                    deserializedContainerServiceNetworkProfile.natGatewayId = reader.getString();
                 } else if ("staticEgressGatewayProfile".equals(fieldName)) {
                     deserializedContainerServiceNetworkProfile.staticEgressGatewayProfile
                         = ManagedClusterStaticEgressGatewayProfile.fromJson(reader);
@@ -751,12 +604,6 @@ public final class ContainerServiceNetworkProfile implements JsonSerializable<Co
                 } else if ("ipFamilies".equals(fieldName)) {
                     List<IpFamily> ipFamilies = reader.readArray(reader1 -> IpFamily.fromString(reader1.getString()));
                     deserializedContainerServiceNetworkProfile.ipFamilies = ipFamilies;
-                } else if ("podLinkLocalAccess".equals(fieldName)) {
-                    deserializedContainerServiceNetworkProfile.podLinkLocalAccess
-                        = PodLinkLocalAccess.fromString(reader.getString());
-                } else if ("kubeProxyConfig".equals(fieldName)) {
-                    deserializedContainerServiceNetworkProfile.kubeProxyConfig
-                        = ContainerServiceNetworkProfileKubeProxyConfig.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

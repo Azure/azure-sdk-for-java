@@ -146,7 +146,9 @@ public class JdkHttpClientBuilder {
      * </pre>
      * <!-- end com.azure.core.http.jdk.httpclient.JdkHttpClientBuilder.connectionTimeout#Duration -->
      *
-     * The default connection timeout is 10 seconds.
+     * The default connection timeout is 10 seconds. A duration less than or equal to zero disables the connection
+     * timeout applied by this builder. If an existing JDK builder was supplied, its connection timeout is retained
+     * in this case because the JDK API does not support clearing a configured timeout.
      *
      * @param connectionTimeout the connection timeout
      * @return the updated JdkHttpClientBuilder object
@@ -275,7 +277,10 @@ public class JdkHttpClientBuilder {
             httpClientBuilder.version(httpVersion == null ? java.net.http.HttpClient.Version.HTTP_1_1 : httpVersion);
         }
 
-        httpClientBuilder = httpClientBuilder.connectTimeout(getTimeout(connectionTimeout, getDefaultConnectTimeout()));
+        Duration connectionTimeout = getTimeout(this.connectionTimeout, getDefaultConnectTimeout());
+        if (!connectionTimeout.isZero()) {
+            httpClientBuilder.connectTimeout(connectionTimeout);
+        }
 
         Duration writeTimeout = getTimeout(this.writeTimeout, getDefaultWriteTimeout());
         Duration responseTimeout = getTimeout(this.responseTimeout, getDefaultResponseTimeout());

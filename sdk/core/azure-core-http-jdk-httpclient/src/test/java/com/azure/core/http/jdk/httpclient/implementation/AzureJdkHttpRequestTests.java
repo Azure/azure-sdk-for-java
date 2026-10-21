@@ -28,7 +28,7 @@ public class AzureJdkHttpRequestTests {
     @NullSource
     public void preservesRequestVersionPreference(HttpClient.Version version) {
         AzureJdkHttpRequest request = new AzureJdkHttpRequest(new HttpRequest(HttpMethod.GET, "https://localhost"),
-            Context.NONE, Collections.emptySet(), LOGGER, null, null, version);
+            Context.NONE, Collections.emptySet(), LOGGER, null, null, null, null, version);
         assertEquals(Optional.ofNullable(version), request.version());
     }
 }

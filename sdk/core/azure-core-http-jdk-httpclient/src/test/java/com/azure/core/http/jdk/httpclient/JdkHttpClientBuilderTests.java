@@ -21,9 +21,11 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import reactor.test.StepVerifier;
 
 import java.net.InetSocketAddress;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -165,6 +167,16 @@ public class JdkHttpClientBuilderTests {
     @Test
     public void startingWithNullClientDoesNotThrow() {
         assertDoesNotThrow(() -> new JdkHttpClientBuilder(null));
+    }
+
+    @ParameterizedTest
+    @ValueSource(longs = { 0, -1 })
+    public void disabledConnectionTimeoutDoesNotThrow(long timeoutMillis) {
+        java.net.http.HttpClient.Builder nativeBuilder = java.net.http.HttpClient.newBuilder();
+        assertNotNull(assertDoesNotThrow(() -> new JdkHttpClientBuilder(nativeBuilder).configuration(Configuration.NONE)
+            .connectionTimeout(Duration.ofMillis(timeoutMillis))
+            .build()));
+        assertFalse(nativeBuilder.build().connectTimeout().isPresent());
     }
 
     /**

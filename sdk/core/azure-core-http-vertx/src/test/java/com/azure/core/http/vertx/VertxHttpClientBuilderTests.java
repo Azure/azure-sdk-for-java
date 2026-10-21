@@ -142,7 +142,8 @@ public class VertxHttpClientBuilderTests {
 
         assertEquals(10000, httpClient.buildOptions.getConnectTimeout());
         assertEquals(60000, httpClient.buildOptions.getReadIdleTimeout());
-        assertEquals(60000, httpClient.buildOptions.getWriteIdleTimeout());
+        // SDK write timeouts are enforced per request rather than for the lifetime of the connection.
+        assertEquals(0, httpClient.buildOptions.getWriteIdleTimeout());
     }
 
     @Test
@@ -161,7 +162,7 @@ public class VertxHttpClientBuilderTests {
 
         assertEquals(10000, httpClient.buildOptions.getConnectTimeout());
         assertEquals(30000, httpClient.buildOptions.getReadIdleTimeout());
-        assertEquals(40000, httpClient.buildOptions.getWriteIdleTimeout());
+        assertEquals(0, httpClient.buildOptions.getWriteIdleTimeout());
     }
 
     @ParameterizedTest

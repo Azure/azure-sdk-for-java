@@ -13,13 +13,20 @@ import com.azure.core.http.jdk.httpclient.implementation.JdkHttpResponseAsync;
 import com.azure.core.http.jdk.httpclient.implementation.JdkHttpResponseSync;
 import com.azure.core.implementation.util.HttpUtils;
 import com.azure.core.util.Context;
+import com.azure.core.util.SharedExecutorService;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.net.http.HttpTimeoutException;
 import java.time.Duration;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -61,9 +68,8 @@ class JdkHttpClient implements HttpClient {
         this.writeTimeout
             = (writeTimeout != null && !writeTimeout.isNegative() && !writeTimeout.isZero()) ? writeTimeout : null;
 
-        // The responseTimeout is used by JDK 'HttpRequest.timeout()' which will throw an exception when the timeout
-        // is non-null and is zero or negative. We treat zero or negative as an infinite timeout, so reset to null to
-        // prevent the exception from being thrown and have the behavior we want.
+        // Nonpositive response timeouts disable both the continue-handshake and post-upload response deadlines.
+        // Bodiless requests use the native JDK timeout, which also requires a strictly positive duration.
         this.responseTimeout = (responseTimeout != null && !responseTimeout.isNegative() && !responseTimeout.isZero())
             ? responseTimeout
             : null;
@@ -80,34 +86,26 @@ class JdkHttpClient implements HttpClient {
     public Mono<HttpResponse> send(HttpRequest request, Context context) {
         boolean eagerlyReadResponse = (boolean) context.getData(HttpUtils.AZURE_EAGERLY_READ_RESPONSE).orElse(false);
         boolean ignoreResponseBody = (boolean) context.getData(HttpUtils.AZURE_IGNORE_RESPONSE_BODY).orElse(false);
-        Duration readTimeout = (Duration) context.getData(HttpUtils.AZURE_RESPONSE_TIMEOUT)
-            .filter(timeoutDuration -> timeoutDuration instanceof Duration)
-            .orElse(this.readTimeout);
-
-        Mono<java.net.http.HttpRequest> jdkRequestMono = Mono.fromCallable(() -> toJdkHttpRequest(request, context));
 
         if (eagerlyReadResponse || ignoreResponseBody) {
             java.net.http.HttpResponse.BodyHandler<byte[]> bodyHandler = getResponseHandler(hasReadTimeout, readTimeout,
                 java.net.http.HttpResponse.BodyHandlers::ofByteArray, ByteArrayTimeoutResponseSubscriber::new);
 
-            return jdkRequestMono
-                .flatMap(jdkRequest -> Mono.fromCompletionStage(jdkHttpClient.sendAsync(jdkRequest, bodyHandler)))
-                .map(jdkResponse -> {
-                    // For now, eagerlyReadResponse and ignoreResponseBody works the same.
-                    HttpHeaders headers = fromJdkHttpHeaders(jdkResponse.headers());
-                    int statusCode = jdkResponse.statusCode();
+            return Mono.defer(() -> Mono.fromFuture(sendInternal(request, context, bodyHandler, jdkResponse -> {
+                // For now, eagerlyReadResponse and ignoreResponseBody works the same.
+                HttpHeaders headers = fromJdkHttpHeaders(jdkResponse.headers());
+                int statusCode = jdkResponse.statusCode();
 
-                    return new JdkHttpResponseSync(request, statusCode, headers, jdkResponse.body());
-                });
+                return new JdkHttpResponseSync(request, statusCode, headers, jdkResponse.body());
+            })));
         } else {
             // The way 'BodyHandlers.ofPublisher()' works is that it returns the 'CompletableFuture' as soon as the
             // response is received, before any values of the 'Flow.Publisher<List<ByteBuffer>>' are emitted.
             // Given this, we can hook into 'Flux.timeout(Duration)' when we convert the
             // 'Flow.Publisher<List<ByteBuffer>>' to 'Flux<ByteBuffer>' to track the read timeout.
-            return jdkRequestMono
-                .flatMap(jdkRequest -> Mono.fromCompletionStage(
-                    jdkHttpClient.sendAsync(jdkRequest, java.net.http.HttpResponse.BodyHandlers.ofPublisher())))
-                .map(jdkResponse -> new JdkHttpResponseAsync(request, readTimeout, hasReadTimeout, jdkResponse));
+            return Mono.defer(() -> Mono
+                .fromFuture(sendInternal(request, context, java.net.http.HttpResponse.BodyHandlers.ofPublisher(),
+                    jdkResponse -> new JdkHttpResponseAsync(request, readTimeout, hasReadTimeout, jdkResponse))));
         }
     }
 
@@ -116,46 +114,158 @@ class JdkHttpClient implements HttpClient {
         boolean eagerlyReadResponse = (boolean) context.getData(HttpUtils.AZURE_EAGERLY_READ_RESPONSE).orElse(false);
         boolean ignoreResponseBody = (boolean) context.getData(HttpUtils.AZURE_IGNORE_RESPONSE_BODY).orElse(false);
 
-        java.net.http.HttpRequest jdkRequest = toJdkHttpRequest(request, context);
+        CompletableFuture<HttpResponse> responseFuture;
+        if (eagerlyReadResponse || ignoreResponseBody) {
+            java.net.http.HttpResponse.BodyHandler<byte[]> bodyHandler = getResponseHandler(hasReadTimeout, readTimeout,
+                java.net.http.HttpResponse.BodyHandlers::ofByteArray, ByteArrayTimeoutResponseSubscriber::new);
+            responseFuture = sendInternal(request, context, bodyHandler, response -> new JdkHttpResponseSync(request,
+                response.statusCode(), fromJdkHttpHeaders(response.headers()), response.body()));
+        } else {
+            responseFuture = sendInternal(request, context, java.net.http.HttpResponse.BodyHandlers.ofInputStream(),
+                response -> new JdkHttpResponseSync(request, response, readTimeout));
+        }
+
         try {
-            // For now, eagerlyReadResponse and ignoreResponseBody works the same.
-            // if (ignoreResponseBody) {
-            // java.net.http.HttpResponse<Void> jdKResponse = jdkHttpClient.send(jdkRequest,
-            // responseInfo -> new BodyIgnoringSubscriber(LOGGER));
-            // return new JdkHttpResponseSync(request, jdKResponse.statusCode(),
-            // fromJdkHttpHeaders(jdKResponse.headers()), IGNORED_BODY);
-            // }
-
-            if (eagerlyReadResponse || ignoreResponseBody) {
-                java.net.http.HttpResponse.BodyHandler<byte[]> bodyHandler
-                    = getResponseHandler(hasReadTimeout, readTimeout,
-                        java.net.http.HttpResponse.BodyHandlers::ofByteArray, ByteArrayTimeoutResponseSubscriber::new);
-
-                java.net.http.HttpResponse<byte[]> jdKResponse = jdkHttpClient.send(jdkRequest, bodyHandler);
-                return new JdkHttpResponseSync(request, jdKResponse.statusCode(),
-                    fromJdkHttpHeaders(jdKResponse.headers()), jdKResponse.body());
-            } else {
-                return new JdkHttpResponseSync(request,
-                    jdkHttpClient.send(jdkRequest, java.net.http.HttpResponse.BodyHandlers.ofInputStream()),
-                    readTimeout);
+            // The synchronous JDK API cannot cancel a phase deadline without interrupting the caller. Wait on the
+            // cancellable exchange instead, keeping timeout handling identical to the asynchronous path.
+            return responseFuture.get();
+        } catch (ExecutionException e) {
+            Throwable cause = unwrapCompletionException(e.getCause());
+            if (cause instanceof Error) {
+                throw LOGGER.logThrowableAsError((Error) cause);
             }
-        } catch (IOException e) {
-            throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
+            // Match HttpClient.send(): failures from the asynchronous exchange, including request-body publisher
+            // failures, are exposed as IOExceptions by the synchronous API.
+            if (cause instanceof IOException) {
+                throw LOGGER.logExceptionAsError(new UncheckedIOException((IOException) cause));
+            }
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(new IOException(cause.getMessage(), cause)));
         } catch (InterruptedException e) {
+            responseFuture.cancel(true);
+            Thread.currentThread().interrupt();
             throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
     }
 
-    /**
-     * Converts the given azure-core request to the JDK HttpRequest type.
-     *
-     * @param request the azure-core request
-     * @return the HttpRequest
-     */
-    private java.net.http.HttpRequest toJdkHttpRequest(HttpRequest request, Context context) {
+    private <T> CompletableFuture<HttpResponse> sendInternal(HttpRequest request, Context context,
+        java.net.http.HttpResponse.BodyHandler<T> bodyHandler,
+        Function<java.net.http.HttpResponse<T>, HttpResponse> responseFactory) {
+        Duration timeout = (Duration) context.getData(HttpUtils.AZURE_RESPONSE_TIMEOUT)
+            .filter(value -> value instanceof Duration)
+            .orElse(responseTimeout);
+        CompletableFuture<HttpResponse> result = new CompletableFuture<>();
+        ResponseTimeout watcher = new ResponseTimeout(timeout, result);
         // A request-level preference avoids rewriting the version on the caller's mutable JDK builder.
-        return new AzureJdkHttpRequest(request, context, restrictedHeaders, LOGGER, writeTimeout, responseTimeout,
-            httpVersion);
+        java.net.http.HttpRequest jdkRequest = new AzureJdkHttpRequest(request, context, restrictedHeaders, LOGGER,
+            writeTimeout, responseTimeout, watcher::uploadStarted, watcher::uploadCompleted, httpVersion);
+        CompletableFuture<java.net.http.HttpResponse<T>> exchange = jdkHttpClient.sendAsync(jdkRequest, info -> {
+            watcher.responseReceived();
+            return bodyHandler.apply(info);
+        });
+        if (jdkRequest.expectContinue()) {
+            watcher.waitForContinue();
+        }
+
+        result.whenComplete((ignored, error) -> {
+            watcher.close();
+            if (error != null) {
+                exchange.cancel(true);
+            }
+        });
+        exchange.thenApply(responseFactory).whenComplete((response, error) -> {
+            if (error != null) {
+                result.completeExceptionally(unwrapCompletionException(error));
+            } else if (!result.complete(response)) {
+                // A timeout or cancellation may win the race with receipt of the response.
+                response.close();
+            }
+        });
+        return result;
+    }
+
+    private static Throwable unwrapCompletionException(Throwable error) {
+        while (error instanceof CompletionException && error.getCause() != null) {
+            error = error.getCause();
+        }
+        return error;
+    }
+
+    private static final class ResponseTimeout {
+        private final Duration timeout;
+        private final CompletableFuture<?> result;
+        private ScheduledFuture<?> task;
+        private long generation;
+        private boolean uploadStarted;
+        private boolean responseReceived;
+        private boolean closed;
+
+        private ResponseTimeout(Duration timeout, CompletableFuture<?> result) {
+            this.timeout = timeout;
+            this.result = result;
+        }
+
+        private synchronized void uploadCompleted() {
+            // Start a fresh response deadline only after the publisher has finished the upload.
+            schedule("Response");
+        }
+
+        private synchronized void waitForContinue() {
+            // Subscription or an early final response can race with sendAsync returning its future.
+            if (!uploadStarted) {
+                schedule("Continue handshake");
+            }
+        }
+
+        private synchronized void uploadStarted() {
+            uploadStarted = true;
+            // Body publication has its own write timeout. Do not count it against the continue-wait deadline.
+            cancelTask();
+        }
+
+        private void schedule(String phase) {
+            if (closed
+                || responseReceived
+                || result.isDone()
+                || timeout == null
+                || timeout.isZero()
+                || timeout.isNegative()) {
+                return;
+            }
+            cancelTask();
+            long current = generation;
+            task = SharedExecutorService.getInstance()
+                .schedule(() -> timedOut(current, phase), Math.max(1, timeout.toMillis()), TimeUnit.MILLISECONDS);
+        }
+
+        private synchronized void responseReceived() {
+            responseReceived = true;
+            cancelTask();
+        }
+
+        private void timedOut(long current, String phase) {
+            synchronized (this) {
+                if (closed || responseReceived || current != generation) {
+                    return;
+                }
+                closed = true;
+                cancelTask();
+            }
+            // Completing the future can cancel the native exchange. Do not hold the timer lock across callbacks.
+            result.completeExceptionally(new HttpTimeoutException(phase + " timed out after " + timeout + "."));
+        }
+
+        private synchronized void close() {
+            closed = true;
+            cancelTask();
+        }
+
+        private void cancelTask() {
+            ++generation;
+            if (task != null) {
+                task.cancel(false);
+                task = null;
+            }
+        }
     }
 
     /**
