@@ -12,7 +12,6 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.netapp.models.AccountEncryption;
 import com.azure.resourcemanager.netapp.models.ActiveDirectory;
-import com.azure.resourcemanager.netapp.models.EntraIdConfig;
 import com.azure.resourcemanager.netapp.models.LdapConfiguration;
 import com.azure.resourcemanager.netapp.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.netapp.models.MultiAdStatus;
@@ -194,29 +193,6 @@ public final class NetAppAccountInner extends Resource {
             this.innerProperties = new AccountProperties();
         }
         this.innerProperties().withActiveDirectories(activeDirectories);
-        return this;
-    }
-
-    /**
-     * Get the entraIdConfig property: Entra ID configuration for the account.
-     * 
-     * @return the entraIdConfig value.
-     */
-    public EntraIdConfig entraIdConfig() {
-        return this.innerProperties() == null ? null : this.innerProperties().entraIdConfig();
-    }
-
-    /**
-     * Set the entraIdConfig property: Entra ID configuration for the account.
-     * 
-     * @param entraIdConfig the entraIdConfig value to set.
-     * @return the NetAppAccountInner object itself.
-     */
-    public NetAppAccountInner withEntraIdConfig(EntraIdConfig entraIdConfig) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new AccountProperties();
-        }
-        this.innerProperties().withEntraIdConfig(entraIdConfig);
         return this;
     }
 

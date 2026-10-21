@@ -16,7 +16,7 @@ import java.util.Arrays;
  */
 public final class AccountsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-06-15-preview/Accounts_CreateOrUpdate.json
+     * x-ms-original-file: 2026-07-01/Accounts_CreateOrUpdate.json
      */
     /**
      * Sample code: Accounts_CreateOrUpdate.
@@ -28,7 +28,7 @@ public final class AccountsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-15-preview/Accounts_CreateOrUpdateAD.json
+     * x-ms-original-file: 2026-07-01/Accounts_CreateOrUpdateAD.json
      */
     /**
      * Sample code: Accounts_CreateOrUpdateWithActiveDirectory.
@@ -55,7 +55,7 @@ public final class AccountsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-15-preview/Accounts_CreateOrUpdateLdapConfig.json
+     * x-ms-original-file: 2026-07-01/Accounts_CreateOrUpdateLdapConfig.json
      */
     /**
      * Sample code: Accounts_CreateOrUpdateLdapConfig.

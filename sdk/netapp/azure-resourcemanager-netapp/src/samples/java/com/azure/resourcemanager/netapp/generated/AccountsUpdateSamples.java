@@ -4,7 +4,10 @@
 
 package com.azure.resourcemanager.netapp.generated;
 
+import com.azure.resourcemanager.netapp.models.LdapConfigurationPatch;
 import com.azure.resourcemanager.netapp.models.NetAppAccount;
+import com.azure.resourcemanager.netapp.models.SecureLdapType;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,7 +16,7 @@ import java.util.Map;
  */
 public final class AccountsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-06-15-preview/Accounts_Update.json
+     * x-ms-original-file: 2026-07-01/Accounts_Update.json
      */
     /**
      * Sample code: Accounts_Update.
@@ -24,7 +27,13 @@ public final class AccountsUpdateSamples {
         NetAppAccount resource = manager.accounts()
             .getByResourceGroupWithResponse("myRG", "account1", com.azure.core.util.Context.NONE)
             .getValue();
-        resource.update().withTags(mapOf("Tag1", "Value1")).apply();
+        resource.update()
+            .withTags(mapOf("Tag1", "Value1"))
+            .withLdapConfiguration(new LdapConfigurationPatch().withDomain("example.com")
+                .withLdapServers(Arrays.asList("192.0.2.1", "192.0.2.2"))
+                .withSecureLdapType(SecureLdapType.LDAP_OVER_TLS)
+                .withLdapPort(636))
+            .apply();
     }
 
     // Use "Map.of" if available
