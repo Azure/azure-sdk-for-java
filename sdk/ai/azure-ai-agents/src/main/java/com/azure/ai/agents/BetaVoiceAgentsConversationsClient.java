@@ -1282,6 +1282,9 @@ public final class BetaVoiceAgentsConversationsClient {
      * default is 20.
      * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
      * for descending order.
+     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
      * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
      * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
      * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
@@ -1296,7 +1299,7 @@ public final class BetaVoiceAgentsConversationsClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VoiceConversation> listAgentConversations(String agentName, Integer limit, PageOrder order,
-        String before) {
+        String after, String before) {
         // Generated convenience method for listAgentConversations
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
@@ -1308,7 +1311,7 @@ public final class BetaVoiceAgentsConversationsClient {
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        return serviceClient.listAgentConversations(null, agentName, requestOptions)
+        return serviceClient.listAgentConversations(after, agentName, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(VoiceConversation.class));
     }
 
@@ -1325,6 +1328,9 @@ public final class BetaVoiceAgentsConversationsClient {
      * default is 20.
      * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
      * for descending order.
+     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
      * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
      * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
      * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
@@ -1339,7 +1345,7 @@ public final class BetaVoiceAgentsConversationsClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VoiceResponse> listAgentConversationResponses(String agentName, String conversationId,
-        Integer limit, PageOrder order, String before) {
+        Integer limit, PageOrder order, String after, String before) {
         // Generated convenience method for listAgentConversationResponses
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
@@ -1351,7 +1357,7 @@ public final class BetaVoiceAgentsConversationsClient {
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        return serviceClient.listAgentConversationResponses(null, agentName, conversationId, requestOptions)
+        return serviceClient.listAgentConversationResponses(after, agentName, conversationId, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(VoiceResponse.class));
     }
 
@@ -1370,6 +1376,9 @@ public final class BetaVoiceAgentsConversationsClient {
      * default is 20.
      * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
      * for descending order.
+     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
      * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
      * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
      * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
@@ -1384,7 +1393,7 @@ public final class BetaVoiceAgentsConversationsClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RealtimeConversationItem> listAgentConversationResponseItems(String agentName,
-        String conversationId, String responseId, Integer limit, PageOrder order, String before) {
+        String conversationId, String responseId, Integer limit, PageOrder order, String after, String before) {
         // Generated convenience method for listAgentConversationResponseItems
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
@@ -1397,7 +1406,7 @@ public final class BetaVoiceAgentsConversationsClient {
             requestOptions.addQueryParam("before", before, false);
         }
         return serviceClient
-            .listAgentConversationResponseItems(null, agentName, conversationId, responseId, requestOptions)
+            .listAgentConversationResponseItems(after, agentName, conversationId, responseId, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(RealtimeConversationItem.class));
     }
 
@@ -1414,6 +1423,9 @@ public final class BetaVoiceAgentsConversationsClient {
      * default is 20.
      * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
      * for descending order.
+     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
      * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
      * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
      * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
@@ -1428,7 +1440,7 @@ public final class BetaVoiceAgentsConversationsClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RealtimeConversationItem> listAgentConversationItems(String agentName, String conversationId,
-        Integer limit, PageOrder order, String before) {
+        Integer limit, PageOrder order, String after, String before) {
         // Generated convenience method for listAgentConversationItems
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
@@ -1440,7 +1452,7 @@ public final class BetaVoiceAgentsConversationsClient {
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        return serviceClient.listAgentConversationItems(null, agentName, conversationId, requestOptions)
+        return serviceClient.listAgentConversationItems(after, agentName, conversationId, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(RealtimeConversationItem.class));
     }
 }

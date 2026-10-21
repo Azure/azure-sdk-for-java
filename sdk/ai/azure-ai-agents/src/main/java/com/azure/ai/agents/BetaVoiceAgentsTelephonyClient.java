@@ -1387,6 +1387,9 @@ public final class BetaVoiceAgentsTelephonyClient {
      * default is 20.
      * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
      * for descending order.
+     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
      * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
      * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
      * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
@@ -1401,7 +1404,7 @@ public final class BetaVoiceAgentsTelephonyClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TelephonyBindingListItem> listTelephonyBindings(String agentName, TelephonyProvider provider,
-        TelephonyBindingStatus status, Integer limit, PageOrder order, String before) {
+        TelephonyBindingStatus status, Integer limit, PageOrder order, String after, String before) {
         // Generated convenience method for listTelephonyBindings
         RequestOptions requestOptions = new RequestOptions();
         if (provider != null) {
@@ -1419,7 +1422,7 @@ public final class BetaVoiceAgentsTelephonyClient {
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        return serviceClient.listTelephonyBindings(null, agentName, requestOptions)
+        return serviceClient.listTelephonyBindings(after, agentName, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(TelephonyBindingListItem.class));
     }
 
@@ -1437,6 +1440,9 @@ public final class BetaVoiceAgentsTelephonyClient {
      * default is 20.
      * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
      * for descending order.
+     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
      * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
      * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
      * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
@@ -1452,7 +1458,7 @@ public final class BetaVoiceAgentsTelephonyClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TelephonyCallSummary> listTelephonyCalls(String agentName, TelephonyProvider provider,
         TelephonyCallStatus status, OffsetDateTime startedAfter, OffsetDateTime startedBefore, Integer limit,
-        PageOrder order, String before) {
+        PageOrder order, String after, String before) {
         // Generated convenience method for listTelephonyCalls
         RequestOptions requestOptions = new RequestOptions();
         if (provider != null) {
@@ -1476,7 +1482,7 @@ public final class BetaVoiceAgentsTelephonyClient {
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        return serviceClient.listTelephonyCalls(null, agentName, requestOptions)
+        return serviceClient.listTelephonyCalls(after, agentName, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(TelephonyCallSummary.class));
     }
 }

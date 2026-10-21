@@ -966,6 +966,9 @@ public final class ToolboxesClient {
      * default is 20.
      * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
      * for descending order.
+     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
      * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
      * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
      * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
@@ -979,7 +982,7 @@ public final class ToolboxesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ToolboxDetails> listToolboxes(Integer limit, PageOrder order, String before) {
+    public PagedIterable<ToolboxDetails> listToolboxes(Integer limit, PageOrder order, String after, String before) {
         // Generated convenience method for listToolboxes
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
@@ -991,7 +994,7 @@ public final class ToolboxesClient {
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        return serviceClient.listToolboxes(null, requestOptions)
+        return serviceClient.listToolboxes(after, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(ToolboxDetails.class));
     }
 
@@ -1005,6 +1008,9 @@ public final class ToolboxesClient {
      * default is 20.
      * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
      * for descending order.
+     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
      * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
      * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
      * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
@@ -1019,7 +1025,7 @@ public final class ToolboxesClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ToolboxVersionDetails> listToolboxVersions(String name, Integer limit, PageOrder order,
-        String before) {
+        String after, String before) {
         // Generated convenience method for listToolboxVersions
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
@@ -1031,7 +1037,7 @@ public final class ToolboxesClient {
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        return serviceClient.listToolboxVersions(null, name, requestOptions)
+        return serviceClient.listToolboxVersions(after, name, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(ToolboxVersionDetails.class));
     }
 }

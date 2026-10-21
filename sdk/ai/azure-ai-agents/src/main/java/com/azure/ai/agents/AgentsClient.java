@@ -5709,6 +5709,9 @@ public final class AgentsClient {
      * default is 20.
      * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
      * for descending order.
+     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
      * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
      * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
      * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
@@ -5722,7 +5725,8 @@ public final class AgentsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AgentDetails> listAgents(AgentKind kind, Integer limit, PageOrder order, String before) {
+    public PagedIterable<AgentDetails> listAgents(AgentKind kind, Integer limit, PageOrder order, String after,
+        String before) {
         // Generated convenience method for listAgents
         RequestOptions requestOptions = new RequestOptions();
         if (kind != null) {
@@ -5737,7 +5741,7 @@ public final class AgentsClient {
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        return serviceClient.listAgents(null, requestOptions)
+        return serviceClient.listAgents(after, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(AgentDetails.class));
     }
 
@@ -5751,6 +5755,9 @@ public final class AgentsClient {
      * default is 20.
      * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
      * for descending order.
+     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
      * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
      * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
      * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
@@ -5767,7 +5774,7 @@ public final class AgentsClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AgentVersionDetails> listAgentVersions(String agentName, Integer limit, PageOrder order,
-        String before, Boolean includeDrafts) {
+        String after, String before, Boolean includeDrafts) {
         // Generated convenience method for listAgentVersions
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
@@ -5782,7 +5789,7 @@ public final class AgentsClient {
         if (includeDrafts != null) {
             requestOptions.addQueryParam("include_drafts", String.valueOf(includeDrafts), false);
         }
-        return serviceClient.listAgentVersions(null, agentName, requestOptions)
+        return serviceClient.listAgentVersions(after, agentName, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(AgentVersionDetails.class));
     }
 
@@ -5796,6 +5803,9 @@ public final class AgentsClient {
      * default is 20.
      * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
      * for descending order.
+     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
      * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
      * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
      * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
@@ -5810,7 +5820,7 @@ public final class AgentsClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AgentSessionResource> listSessions(String agentName, Integer limit, PageOrder order,
-        String before) {
+        String after, String before) {
         // Generated convenience method for listSessions
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
@@ -5822,7 +5832,7 @@ public final class AgentsClient {
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        return serviceClient.listSessions(null, agentName, requestOptions)
+        return serviceClient.listSessions(after, agentName, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(AgentSessionResource.class));
     }
 
@@ -5841,6 +5851,9 @@ public final class AgentsClient {
      * default is 20.
      * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
      * for descending order.
+     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
      * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
      * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
      * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
@@ -5855,7 +5868,7 @@ public final class AgentsClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SessionDirectoryEntry> listSessionFiles(String agentName, String sessionId, String path,
-        Integer limit, PageOrder order, String before) {
+        Integer limit, PageOrder order, String after, String before) {
         // Generated convenience method for listSessionFiles
         RequestOptions requestOptions = new RequestOptions();
         if (path != null) {
@@ -5870,7 +5883,7 @@ public final class AgentsClient {
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        return serviceClient.listSessionFiles(null, agentName, sessionId, requestOptions)
+        return serviceClient.listSessionFiles(after, agentName, sessionId, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(SessionDirectoryEntry.class));
     }
 
@@ -5883,6 +5896,9 @@ public final class AgentsClient {
      * default is 20.
      * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
      * for descending order.
+     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
      * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
      * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
      * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
@@ -5898,8 +5914,8 @@ public final class AgentsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AgentOptimizationJob> listOptimizationJobs(Integer limit, PageOrder order, String before,
-        JobStatus status, String agentName) {
+    public PagedIterable<AgentOptimizationJob> listOptimizationJobs(Integer limit, PageOrder order, String after,
+        String before, JobStatus status, String agentName) {
         // Generated convenience method for listOptimizationJobs
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
@@ -5917,7 +5933,7 @@ public final class AgentsClient {
         if (agentName != null) {
             requestOptions.addQueryParam("agent_name", agentName, false);
         }
-        return serviceClient.listOptimizationJobs(null, requestOptions)
+        return serviceClient.listOptimizationJobs(after, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(AgentOptimizationJob.class));
     }
 
@@ -5934,6 +5950,7 @@ public final class AgentsClient {
      * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
      * default is 20.
      * @param order Sort order by the candidate `started_at` timestamp.
+     * @param after Candidate-ID cursor identifying the last item from the previous page.
      * @param before Candidate-ID cursor identifying the first item from the following page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -5946,7 +5963,7 @@ public final class AgentsClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AgentOptimizationCandidate> listOptimizationCandidates(String jobId,
-        List<AgentOptimizationCandidateExpand> expand, Integer limit, PageOrder order, String before) {
+        List<AgentOptimizationCandidateExpand> expand, Integer limit, PageOrder order, String after, String before) {
         // Generated convenience method for listOptimizationCandidates
         RequestOptions requestOptions = new RequestOptions();
         if (expand != null) {
@@ -5965,7 +5982,7 @@ public final class AgentsClient {
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        return serviceClient.listOptimizationCandidates(null, jobId, requestOptions)
+        return serviceClient.listOptimizationCandidates(after, jobId, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(AgentOptimizationCandidate.class));
     }
 }

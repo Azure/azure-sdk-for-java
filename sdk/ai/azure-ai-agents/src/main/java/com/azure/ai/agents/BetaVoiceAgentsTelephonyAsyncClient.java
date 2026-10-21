@@ -1458,6 +1458,9 @@ public final class BetaVoiceAgentsTelephonyAsyncClient {
      * default is 20.
      * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
      * for descending order.
+     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
      * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
      * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
      * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
@@ -1472,7 +1475,7 @@ public final class BetaVoiceAgentsTelephonyAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<TelephonyBindingListItem> listTelephonyBindings(String agentName, TelephonyProvider provider,
-        TelephonyBindingStatus status, Integer limit, PageOrder order, String before) {
+        TelephonyBindingStatus status, Integer limit, PageOrder order, String after, String before) {
         // Generated convenience method for listTelephonyBindings
         RequestOptions requestOptions = new RequestOptions();
         if (provider != null) {
@@ -1491,7 +1494,7 @@ public final class BetaVoiceAgentsTelephonyAsyncClient {
             requestOptions.addQueryParam("before", before, false);
         }
         PagedFlux<BinaryData> pagedFluxResponse
-            = serviceClient.listTelephonyBindingsAsync(null, agentName, requestOptions);
+            = serviceClient.listTelephonyBindingsAsync(after, agentName, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux;
             if (pageSizeParam == null) {
@@ -1528,6 +1531,9 @@ public final class BetaVoiceAgentsTelephonyAsyncClient {
      * default is 20.
      * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
      * for descending order.
+     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
      * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
      * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
      * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
@@ -1543,7 +1549,7 @@ public final class BetaVoiceAgentsTelephonyAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<TelephonyCallSummary> listTelephonyCalls(String agentName, TelephonyProvider provider,
         TelephonyCallStatus status, OffsetDateTime startedAfter, OffsetDateTime startedBefore, Integer limit,
-        PageOrder order, String before) {
+        PageOrder order, String after, String before) {
         // Generated convenience method for listTelephonyCalls
         RequestOptions requestOptions = new RequestOptions();
         if (provider != null) {
@@ -1568,7 +1574,7 @@ public final class BetaVoiceAgentsTelephonyAsyncClient {
             requestOptions.addQueryParam("before", before, false);
         }
         PagedFlux<BinaryData> pagedFluxResponse
-            = serviceClient.listTelephonyCallsAsync(null, agentName, requestOptions);
+            = serviceClient.listTelephonyCallsAsync(after, agentName, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux;
             if (pageSizeParam == null) {
