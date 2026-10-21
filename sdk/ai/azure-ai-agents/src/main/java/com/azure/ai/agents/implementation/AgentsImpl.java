@@ -11058,6 +11058,9 @@ public final class AgentsImpl {
     private String getNextLink(BinaryData binaryData, String... path) {
         try {
             Object value = binaryData.toObject(Map.class);
+            if (Boolean.FALSE.equals(((Map<?, ?>) value).get("has_more"))) {
+                return null;
+            }
             for (String segment : path) {
                 value = ((Map<?, ?>) value).get(segment);
             }
