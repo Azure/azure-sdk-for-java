@@ -10,6 +10,9 @@
   `AgentsClientBuilder.beta().buildBetaVoiceAgentLiveWebSocketClient()` and
   `buildBetaVoiceAgentLiveWebSocketAsyncClient()`. Native Live events are sent and received as lossless JSON
   using `BinaryData`, separately from the Realtime protocol clients.
+- Added synchronous/asynchronous persisted GPT Live conversation history and audio-download examples with offline tests.
+- Added opt-in persistence to the GPT Live text and microphone/speaker samples using `FOUNDRY_GPT_LIVE_STORE` (default `false`),
+  with explicit startup output when the service does not provide a persisted conversation ID.
 - Added runnable native GPT Live samples for synchronous/asynchronous multi-turn text, asynchronous microphone
   and speaker audio, and Responses backend function tools, including sample-agent creation and cleanup.
   Model deployment names default to `gpt-live-1` and `gpt-5.6-terra` when their environment variables are unset.

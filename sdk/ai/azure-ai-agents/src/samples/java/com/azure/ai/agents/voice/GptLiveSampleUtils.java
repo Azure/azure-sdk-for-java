@@ -118,7 +118,8 @@ final class GptLiveSampleUtils {
         checkError(event);
         if ("session.started".equals(type(event))) {
             Object conversationId = event.get("conversation_id");
-            System.out.println(conversationId == null ? "Live session started."
+            System.out.println(conversationId == null
+                ? "Live session started; conversation_id not provided (persistence may be disabled)."
                 : "Live session started; conversation_id=" + conversationId);
         } else if ("session.input_transcript.delta".equals(type(event))) {
             System.out.print(string(event, "delta"));

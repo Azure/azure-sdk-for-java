@@ -1149,6 +1149,7 @@ an existing agent. Set these environment variables before running a sample's `ma
 | `FOUNDRY_PROJECT_ENDPOINT` | Your Foundry project endpoint. Authentication uses `DefaultAzureCredential`. |
 | `FOUNDRY_GPT_LIVE_MODEL` | Optional. Your GPT Live **deployment name**, not a model catalog ID. Defaults to `gpt-live-1` when unset. |
 | `FOUNDRY_GPT_LIVE_BACKEND_MODEL` | Optional. Your Responses backend **deployment name in the Live resource**. Defaults to `gpt-5.6-terra` when unset. |
+| `FOUNDRY_GPT_LIVE_STORE` | Optional, text and microphone/speaker examples. Set to `true` to persist conversation content and audio. Defaults to `false`. |
 | `FOUNDRY_KEEP_GPT_LIVE_AGENT` | Optional. Set to `true` to retain the sample-created agent; defaults to `false`. |
 
 Each sample reads, defaults, and validates these settings and configures its client builder directly in its own `main` method.
@@ -1163,6 +1164,52 @@ leaving headroom below the service's 63-character limit.
 | Asynchronous multi-turn text | [GptLiveTextConversationAsyncSample.java](src/samples/java/com/azure/ai/agents/voice/GptLiveTextConversationAsyncSample.java) |
 | Asynchronous microphone and speaker | [GptLiveAudioConversationAsyncSample.java](src/samples/java/com/azure/ai/agents/voice/GptLiveAudioConversationAsyncSample.java) |
 | Responses backend function tool | [GptLiveFunctionToolSample.java](src/samples/java/com/azure/ai/agents/voice/GptLiveFunctionToolSample.java) |
+
+#### Read persisted GPT Live conversations and audio
+
+These REST examples read existing persisted data; they do not start a WebSocket session, create an agent,
+or delete resources.
+
+| Scenario | Runnable sample |
+|---|---|
+| Synchronous history and transcripts | [GptLiveReadConversationSample.java](src/samples/java/com/azure/ai/agents/voice/GptLiveReadConversationSample.java) |
+| Asynchronous history and transcripts | [GptLiveReadConversationAsyncSample.java](src/samples/java/com/azure/ai/agents/voice/GptLiveReadConversationAsyncSample.java) |
+| Synchronous stored audio download | [GptLiveReadConversationAudioSample.java](src/samples/java/com/azure/ai/agents/voice/GptLiveReadConversationAudioSample.java) |
+| Asynchronous stored audio download | [GptLiveReadConversationAudioAsyncSample.java](src/samples/java/com/azure/ai/agents/voice/GptLiveReadConversationAudioAsyncSample.java) |
+
+Use an agent/session configured with `store=true` and retain the agent. With either text WebSocket example or the
+microphone/speaker example, set
+both `FOUNDRY_GPT_LIVE_STORE=true` and `FOUNDRY_KEEP_GPT_LIVE_AGENT=true`. The first sets the session persistence
+override; the second prevents sample cleanup from deleting the agent. Keeping the agent alone does **not** enable
+persistence. Both interactive and scripted modes print the Foundry `conversation_id` from `session.started`
+when provided. If absent, startup output explicitly reports that no persisted conversation ID was provided;
+it never substitutes the native session ID.
+Use `session.started.conversation_id`, not the native session ID. Set:
+
+| Variable | Value |
+|---|---|
+| `FOUNDRY_PROJECT_ENDPOINT` | Required. Your Foundry project endpoint; authentication uses `DefaultAzureCredential`. No default. |
+| `FOUNDRY_GPT_LIVE_AGENT_NAME` | Required. The existing Live agent's name. No default. |
+| `FOUNDRY_GPT_LIVE_CONVERSATION_ID` | Required. The persisted Foundry conversation ID. No default. |
+| `FOUNDRY_GPT_LIVE_ITEM_ID` | Optional, audio examples only: a speech item's ID, not a delegation item. Defaults to unset (merged audio only); explicitly blank values are invalid. |
+
+Model deployment settings such as `FOUNDRY_GPT_LIVE_MODEL` and `FOUNDRY_GPT_LIVE_BACKEND_MODEL` are not needed:
+these samples read existing conversations rather than creating agents.
+Run a history sample's `main` method with no arguments. For audio, pass one existing local output directory;
+there is no default output directory.
+Audio examples create uniquely named WAV files without overwriting existing files. History examples explicitly
+advance the `after` cursor until an empty page because the generated list clients do not expose automatic
+continuation; missing or repeated cursors fail explicitly. They show conversation status and usage seconds,
+input/output transcripts, and delegation targets/response IDs. Stored speech segments are not native turns or
+proof that audio was played. Treat the printed transcripts and downloaded audio as sensitive data.
+
+Wait for session completion and recording finalization before downloading. HTTP errors propagate: `404` can mean
+missing audio; `409` can mean `recording_not_ready` or `recording_unavailable`. Inspect `Retry-After` before retrying.
+BYOS metadata is reported without calling Foundry content endpoints; use the metadata's blob URI and your own
+Azure Storage credentials to download BYOS audio. The current generated Live REST builder methods require explicit
+preview opt-in, so these samples add `Foundry-Features: VoiceAgents=V1Preview` using an HTTP pipeline header policy.
+
+#### Using the interactive WebSocket samples
 
 Both text examples read terminal input interactively when no arguments are supplied. After each reply,
 they prompt for another message; submit a blank line or enter `exit` or `quit` to close the session.
