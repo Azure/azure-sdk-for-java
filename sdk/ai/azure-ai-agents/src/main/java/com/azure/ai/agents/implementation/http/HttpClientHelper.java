@@ -61,15 +61,32 @@ public final class HttpClientHelper {
      * @return A bridge client that honors the OpenAI interface but delegates execution to the Azure pipeline.
      */
     public static HttpClient mapToOpenAIHttpClient(HttpPipeline httpPipeline) {
-        return new HttpClientWrapper(httpPipeline);
+        return new HttpClientWrapper(httpPipeline, null);
+    }
+
+    /**
+     * Implements the OpenAI {@link HttpClient} interface and restores request-carried trace context before the Azure
+     * HTTP pipeline starts. This is required for OpenAI asynchronous clients, which may invoke the HTTP client on a
+     * different thread from the GenAI operation span.
+     *
+     * @param httpPipeline The Azure HTTP pipeline that will execute HTTP requests.
+     * @param contextBridge The bridge used to restore the Azure context associated with the OpenAI request.
+     * @return A bridge client that honors the OpenAI interface but delegates execution to the Azure pipeline.
+     */
+    public static HttpClient mapToOpenAIHttpClient(HttpPipeline httpPipeline,
+        OpenAITracingContextBridge contextBridge) {
+        return new HttpClientWrapper(httpPipeline,
+            Objects.requireNonNull(contextBridge, "'contextBridge' cannot be null."));
     }
 
     private static final class HttpClientWrapper implements HttpClient {
 
         private final HttpPipeline httpPipeline;
+        private final OpenAITracingContextBridge contextBridge;
 
-        private HttpClientWrapper(HttpPipeline httpPipeline) {
+        private HttpClientWrapper(HttpPipeline httpPipeline, OpenAITracingContextBridge contextBridge) {
             this.httpPipeline = Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
+            this.contextBridge = contextBridge;
         }
 
         @Override
@@ -89,8 +106,8 @@ public final class HttpClientHelper {
 
             try {
                 com.azure.core.http.HttpRequest azureRequest = buildAzureRequest(request);
-                return new AzureHttpResponseAdapter(
-                    this.httpPipeline.sendSync(azureRequest, buildRequestContext(requestOptions)));
+                return new AzureHttpResponseAdapter(this.httpPipeline.sendSync(azureRequest,
+                    buildRequestContext(request, requestOptions, contextBridge)));
             } catch (MalformedURLException exception) {
                 throw new OpenAIException("Invalid URL in request: " + exception.getMessage(),
                     LOGGER.logThrowableAsError(exception));
@@ -108,7 +125,8 @@ public final class HttpClientHelper {
             Objects.requireNonNull(requestOptions, "requestOptions");
 
             return Mono.fromCallable(() -> buildAzureRequest(request))
-                .flatMap(azureRequest -> this.httpPipeline.send(azureRequest, buildRequestContext(requestOptions)))
+                .flatMap(azureRequest -> this.httpPipeline.send(azureRequest,
+                    buildRequestContext(request, requestOptions, contextBridge)))
                 .map(response -> (HttpResponse) new AzureHttpResponseAdapter(response))
                 .onErrorMap(HttpClientWrapper::mapAzureExceptionToOpenAI)
                 // publishOn moves the CompletableFuture completion (and all OpenAI SDK continuations that
@@ -228,6 +246,9 @@ public final class HttpClientHelper {
         private static HttpHeaders toAzureHeaders(Headers sourceHeaders) {
             HttpHeaders target = new HttpHeaders();
             sourceHeaders.names().forEach(name -> {
+                if (OpenAITracingContextBridge.TRACE_CONTEXT_HEADER.equalsIgnoreCase(name)) {
+                    return;
+                }
                 List<String> values = sourceHeaders.values(name);
                 HttpHeaderName headerName = HttpHeaderName.fromString(name);
                 if (values.isEmpty()) {
@@ -240,12 +261,16 @@ public final class HttpClientHelper {
         }
 
         /**
-         * Builds the request context from the given request options.
+         * Builds the request context from the internal context token and request options.
+         * @param request OpenAI SDK request containing any propagated context token
          * @param requestOptions OpenAI SDK request options
          * @return Azure request {@link Context}
          */
-        private static Context buildRequestContext(RequestOptions requestOptions) {
-            Context context = Context.NONE;
+        private static Context buildRequestContext(HttpRequest request, RequestOptions requestOptions,
+            OpenAITracingContextBridge contextBridge) {
+            List<String> tokens = request.headers().values(OpenAITracingContextBridge.TRACE_CONTEXT_HEADER);
+            Context context
+                = contextBridge == null || tokens.isEmpty() ? Context.NONE : contextBridge.take(tokens.get(0));
             Timeout timeout = requestOptions.getTimeout();
             // we use "read" as it's the closest thing to the "response timeout"
             if (timeout != null && !timeout.read().isZero() && !timeout.read().isNegative()) {

@@ -235,8 +235,7 @@ public class AgentsCustomizations extends Customization {
         customizeUnionProperty(customization, "VoiceAgentSessionResponseConfiguration", "toolChoice",
             "Tool-selection behavior for the session.", toolChoice, false, false, logger);
 
-        // The response base models are immutable outputs. Their typed getters read through the overridable raw accessor
-        // so the generated subclasses that shadow the field share the same typed API.
+        // Retain base-model wrappers for older snapshots and expose them directly on the flattened response models.
         customizeUnionProperty(customization, "VoiceAgentRealtimeResponseBase", "maxOutputTokens",
             "Maximum number of output tokens for a single assistant response, inclusive of tool calls, that was used"
                 + " in this response.",
@@ -244,7 +243,7 @@ public class AgentsCustomizations extends Customization {
         customizeUnionProperty(customization, "VoiceAgentRealtimeResponse", "maxOutputTokens",
             "Maximum number of output tokens for a single assistant response, inclusive of tool calls, that was used"
                 + " in this response.",
-            new ArrayList<>(), false, false, logger);
+            longMaxOutputTokens, false, false, logger);
         customizeUnionProperty(customization, "VoiceResponseBase", "maxOutputTokens",
             "Maximum number of output tokens for a single assistant response, inclusive of tool calls, that was used"
                 + " in this response.",
@@ -252,7 +251,7 @@ public class AgentsCustomizations extends Customization {
         customizeUnionProperty(customization, "VoiceResponse", "maxOutputTokens",
             "Maximum number of output tokens for a single assistant response, inclusive of tool calls, that was used"
                 + " in this response.",
-            new ArrayList<>(), false, false, logger);
+            longMaxOutputTokens, false, false, logger);
         customizeUnionProperty(customization, "WebIqPreviewTool", "requireApproval",
             "Whether the agent requires approval before executing actions. When omitted, the service defaults to"
                 + " \"always\".",
