@@ -1012,60 +1012,6 @@ public final class BetaVoiceAgentsTelephonyClient {
      * Returns the telephony bindings owned by the voice agent named in the path.
      *
      * @param agentName The name of the voice agent whose bindings are listed.
-     * @param provider Filters bindings by provider.
-     * @param status Filters bindings by lifecycle status.
-     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
-     * default is 20.
-     * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
-     * for descending order.
-     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
-     * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<TelephonyBindingListItem> listTelephonyBindings(String agentName, TelephonyProvider provider,
-        TelephonyBindingStatus status, Integer limit, PageOrder order, String after, String before) {
-        // Generated convenience method for listTelephonyBindings
-        RequestOptions requestOptions = new RequestOptions();
-        if (provider != null) {
-            requestOptions.addQueryParam("provider", provider.toString(), false);
-        }
-        if (status != null) {
-            requestOptions.addQueryParam("status", status.toString(), false);
-        }
-        if (limit != null) {
-            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
-        }
-        if (order != null) {
-            requestOptions.addQueryParam("order", order.toString(), false);
-        }
-        if (after != null) {
-            requestOptions.addQueryParam("after", after, false);
-        }
-        if (before != null) {
-            requestOptions.addQueryParam("before", before, false);
-        }
-        return serviceClient.listTelephonyBindings(agentName, requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(TelephonyBindingListItem.class));
-    }
-
-    /**
-     * List agent telephony bindings
-     *
-     * Returns the telephony bindings owned by the voice agent named in the path.
-     *
-     * @param agentName The name of the voice agent whose bindings are listed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1079,7 +1025,7 @@ public final class BetaVoiceAgentsTelephonyClient {
     public PagedIterable<TelephonyBindingListItem> listTelephonyBindings(String agentName) {
         // Generated convenience method for listTelephonyBindings
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listTelephonyBindings(agentName, requestOptions)
+        return serviceClient.listTelephonyBindings(null, agentName, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(TelephonyBindingListItem.class));
     }
 
@@ -1139,69 +1085,6 @@ public final class BetaVoiceAgentsTelephonyClient {
      * Returns the durable inbound call history for the voice agent named in the path.
      *
      * @param agentName The name of the voice agent whose calls are listed.
-     * @param provider Filters calls by provider.
-     * @param status Filters calls by lifecycle status.
-     * @param startedAfter Includes calls that started at or after this Unix timestamp in seconds.
-     * @param startedBefore Includes calls that started at or before this Unix timestamp in seconds.
-     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
-     * default is 20.
-     * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
-     * for descending order.
-     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
-     * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<TelephonyCallSummary> listTelephonyCalls(String agentName, TelephonyProvider provider,
-        TelephonyCallStatus status, OffsetDateTime startedAfter, OffsetDateTime startedBefore, Integer limit,
-        PageOrder order, String after, String before) {
-        // Generated convenience method for listTelephonyCalls
-        RequestOptions requestOptions = new RequestOptions();
-        if (provider != null) {
-            requestOptions.addQueryParam("provider", provider.toString(), false);
-        }
-        if (status != null) {
-            requestOptions.addQueryParam("status", status.toString(), false);
-        }
-        if (startedAfter != null) {
-            requestOptions.addQueryParam("started_after", String.valueOf(startedAfter.toEpochSecond()), false);
-        }
-        if (startedBefore != null) {
-            requestOptions.addQueryParam("started_before", String.valueOf(startedBefore.toEpochSecond()), false);
-        }
-        if (limit != null) {
-            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
-        }
-        if (order != null) {
-            requestOptions.addQueryParam("order", order.toString(), false);
-        }
-        if (after != null) {
-            requestOptions.addQueryParam("after", after, false);
-        }
-        if (before != null) {
-            requestOptions.addQueryParam("before", before, false);
-        }
-        return serviceClient.listTelephonyCalls(agentName, requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(TelephonyCallSummary.class));
-    }
-
-    /**
-     * List agent telephony calls
-     *
-     * Returns the durable inbound call history for the voice agent named in the path.
-     *
-     * @param agentName The name of the voice agent whose calls are listed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1215,7 +1098,7 @@ public final class BetaVoiceAgentsTelephonyClient {
     public PagedIterable<TelephonyCallSummary> listTelephonyCalls(String agentName) {
         // Generated convenience method for listTelephonyCalls
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listTelephonyCalls(agentName, requestOptions)
+        return serviceClient.listTelephonyCalls(null, agentName, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(TelephonyCallSummary.class));
     }
 
@@ -1490,5 +1373,110 @@ public final class BetaVoiceAgentsTelephonyClient {
         RequestOptions requestOptions = new RequestOptions();
         return createTelephonyCallJobWithResponse(agentName, idempotencyKey, BinaryData.fromObject(body),
             requestOptions).getValue().toObject(TelephonyCallJob.class);
+    }
+
+    /**
+     * List agent telephony bindings
+     *
+     * Returns the telephony bindings owned by the voice agent named in the path.
+     *
+     * @param agentName The name of the voice agent whose bindings are listed.
+     * @param provider Filters bindings by provider.
+     * @param status Filters bindings by lifecycle status.
+     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
+     * default is 20.
+     * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
+     * for descending order.
+     * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<TelephonyBindingListItem> listTelephonyBindings(String agentName, TelephonyProvider provider,
+        TelephonyBindingStatus status, Integer limit, PageOrder order, String before) {
+        // Generated convenience method for listTelephonyBindings
+        RequestOptions requestOptions = new RequestOptions();
+        if (provider != null) {
+            requestOptions.addQueryParam("provider", provider.toString(), false);
+        }
+        if (status != null) {
+            requestOptions.addQueryParam("status", status.toString(), false);
+        }
+        if (limit != null) {
+            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
+        }
+        if (order != null) {
+            requestOptions.addQueryParam("order", order.toString(), false);
+        }
+        if (before != null) {
+            requestOptions.addQueryParam("before", before, false);
+        }
+        return serviceClient.listTelephonyBindings(null, agentName, requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(TelephonyBindingListItem.class));
+    }
+
+    /**
+     * List agent telephony calls
+     *
+     * Returns the durable inbound call history for the voice agent named in the path.
+     *
+     * @param agentName The name of the voice agent whose calls are listed.
+     * @param provider Filters calls by provider.
+     * @param status Filters calls by lifecycle status.
+     * @param startedAfter Includes calls that started at or after this Unix timestamp in seconds.
+     * @param startedBefore Includes calls that started at or before this Unix timestamp in seconds.
+     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
+     * default is 20.
+     * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
+     * for descending order.
+     * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<TelephonyCallSummary> listTelephonyCalls(String agentName, TelephonyProvider provider,
+        TelephonyCallStatus status, OffsetDateTime startedAfter, OffsetDateTime startedBefore, Integer limit,
+        PageOrder order, String before) {
+        // Generated convenience method for listTelephonyCalls
+        RequestOptions requestOptions = new RequestOptions();
+        if (provider != null) {
+            requestOptions.addQueryParam("provider", provider.toString(), false);
+        }
+        if (status != null) {
+            requestOptions.addQueryParam("status", status.toString(), false);
+        }
+        if (startedAfter != null) {
+            requestOptions.addQueryParam("started_after", String.valueOf(startedAfter.toEpochSecond()), false);
+        }
+        if (startedBefore != null) {
+            requestOptions.addQueryParam("started_before", String.valueOf(startedBefore.toEpochSecond()), false);
+        }
+        if (limit != null) {
+            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
+        }
+        if (order != null) {
+            requestOptions.addQueryParam("order", order.toString(), false);
+        }
+        if (before != null) {
+            requestOptions.addQueryParam("before", before, false);
+        }
+        return serviceClient.listTelephonyCalls(null, agentName, requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(TelephonyCallSummary.class));
     }
 }
