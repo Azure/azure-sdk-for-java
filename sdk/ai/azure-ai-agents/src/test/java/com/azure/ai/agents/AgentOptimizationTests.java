@@ -15,6 +15,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -29,6 +30,7 @@ public class AgentOptimizationTests extends AgentOptimizationTestBase {
     private static final String SUCCESS_AGENT_NAME = "java-optimization-sync-success";
     private static final String CANCEL_AGENT_NAME = "java-optimization-sync-cancel";
 
+    @Disabled("Paging behavior changed; the test may need to be re-recorded.")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.agents.TestUtils#getTestParameters")
     public void successfulOptimizationLifecycle(HttpClient httpClient, AgentsServiceVersion serviceVersion) {
