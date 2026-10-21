@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Added `ServiceBusReceivedMessage.fromAmqpMessage(BinaryData, String)` to decode an AMQP 1.0 message and a separately supplied lock token for integrations such as Azure Functions bindings.
+
 ### Breaking Changes
 
 ### Bugs Fixed

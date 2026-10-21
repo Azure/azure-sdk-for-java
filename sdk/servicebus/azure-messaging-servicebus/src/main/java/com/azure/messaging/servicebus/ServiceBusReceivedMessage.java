@@ -82,6 +82,73 @@ public final class ServiceBusReceivedMessage {
     }
 
     /**
+     * Creates a received message from an AMQP 1.0 encoded message and its separately supplied lock token.
+     *
+     * <p>This method is intended for integrations that receive a message through another transport, such as an
+     * Azure Functions binding. {@code encodedMessage} must contain exactly one AMQP message, without any transport
+     * framing or binding-specific prefix. It is not the message body alone. Message properties, annotations, and
+     * the body are decoded using the same mappings as messages received by a Service Bus receiver.</p>
+     *
+     * <p>Use {@link #getRawAmqpMessage()} to access AMQP sequence and value bodies. {@link #getBody()} supports only
+     * data bodies. Creating a message does not receive or renew a lock, or associate the message with a receiver.
+     * The integration remains responsible for settlement and lock management.</p>
+     *
+     * <p>Like the SDK's AMQP body model, this method supports a single data, sequence, or non-null value body section.
+     * Multiple body sections and null AMQP values are rejected rather than silently discarding data. A message without
+     * a body is represented by an empty data body. Encoded values nested more than 128 levels or messages with more
+     * than 1,000,000 combined list, map, and array entries are rejected.</p>
+     *
+     * <p><strong>Decode a message supplied by an integration</strong></p>
+     * <!-- src_embed com.azure.messaging.servicebus.ServiceBusReceivedMessage.fromAmqpMessage -->
+     * <pre>
+     * ServiceBusReceivedMessage message = ServiceBusReceivedMessage.fromAmqpMessage&#40;encodedMessage, lockToken&#41;;
+     * System.out.printf&#40;&quot;Message %s belongs to session %s%n&quot;, message.getMessageId&#40;&#41;, message.getSessionId&#40;&#41;&#41;;
+     * System.out.printf&#40;&quot;AMQP body type: %s%n&quot;, message.getRawAmqpMessage&#40;&#41;.getBody&#40;&#41;.getBodyType&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.messaging.servicebus.ServiceBusReceivedMessage.fromAmqpMessage -->
+     *
+     * @param encodedMessage The complete AMQP 1.0 encoded message, without transport framing.
+     * @param lockToken The lock token in UUID format, or {@code null} if the message has no lock.
+     * @return The decoded received message.
+     * @throws NullPointerException if {@code encodedMessage} is {@code null}.
+     * @throws IllegalArgumentException if the message is empty, malformed, has an unsupported body, or cannot be
+     * decoded completely, or if
+     * {@code lockToken} is not a UUID in the format {@code xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx}.
+     */
+    public static ServiceBusReceivedMessage fromAmqpMessage(BinaryData encodedMessage, String lockToken) {
+        Objects.requireNonNull(encodedMessage, "'encodedMessage' cannot be null.");
+        final UUID parsedLockToken;
+        if (lockToken == null) {
+            parsedLockToken = null;
+        } else {
+            try {
+                parsedLockToken = UUID.fromString(lockToken);
+                if (!parsedLockToken.toString().equalsIgnoreCase(lockToken)) {
+                    throw new IllegalArgumentException("Lock token must be a UUID in canonical format.");
+                }
+            } catch (IllegalArgumentException exception) {
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                    "'lockToken' must be a UUID in the format xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx.", exception));
+            }
+        }
+
+        final byte[] bytes = encodedMessage.toBytes();
+        if (bytes.length == 0) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'encodedMessage' cannot be empty."));
+        }
+
+        final ServiceBusReceivedMessage receivedMessage;
+        try {
+            receivedMessage = new ServiceBusMessageSerializer().deserializeMessage(bytes);
+        } catch (RuntimeException exception) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "'encodedMessage' must be a complete AMQP 1.0 message with a supported body.", exception));
+        }
+        receivedMessage.setLockToken(parsedLockToken);
+        return receivedMessage;
+    }
+
+    /**
      * Gets the set of free-form {@link ServiceBusReceivedMessage} properties which may be used for passing metadata
      * associated with the {@link ServiceBusReceivedMessage} during Service Bus operations. A common use-case for
      * {@code properties()} is to associate serialization hints for the {@link #getBody()} as an aid to consumers
