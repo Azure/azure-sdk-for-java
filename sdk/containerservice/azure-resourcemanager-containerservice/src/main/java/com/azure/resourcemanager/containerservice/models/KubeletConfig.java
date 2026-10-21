@@ -81,6 +81,50 @@ public final class KubeletConfig implements JsonSerializable<KubeletConfig> {
      */
     private Integer podMaxPids;
 
+    /*
+     * Specifies the default seccomp profile applied to all workloads. If not specified, 'Unconfined' will be used by
+     * default.
+     */
+    private SeccompDefault seccompDefault;
+
+    /*
+     * Kube-reserved values for kubelet. When a value is not set, the system-computed default based on VM size is used.
+     * See [AKS node resource reservations](https://aka.ms/aks/nodereservations) for details on computed defaults. Only
+     * applicable for Linux nodepools.
+     */
+    private KubeReserved kubeReserved;
+
+    /*
+     * Hard eviction thresholds for kubelet. When a threshold is not set, the system default is used. See [AKS node
+     * resource reservations](https://aka.ms/aks/nodereservations) for details on computed defaults. Only applicable for
+     * Linux nodepools.
+     */
+    private HardEvictionThreshold hardEvictionThreshold;
+
+    /*
+     * Soft eviction thresholds for kubelet. When crossed, pods are evicted after the paired softEvictionGracePeriod.
+     * System defaults apply when the cluster's `enableNodeHardening` property is true; otherwise no soft eviction is
+     * configured. For each signal (memoryAvailable, nodeFsAvailable, nodeFsInodesFree), the entries in
+     * softEvictionThreshold and softEvictionGracePeriod must be in the same state: both omitted (default), both
+     * non-empty (override), or both empty strings (opt that signal out). Only applicable for Linux nodepools. See
+     * https://kubernetes.io/docs/concepts/scheduling-eviction/node-pressure-eviction/#soft-eviction-thresholds.
+     */
+    private SoftEvictionThreshold softEvictionThreshold;
+
+    /*
+     * Grace periods for soft eviction signals — how long a threshold must be held before pod eviction. Same defaulting
+     * and pairing rules as softEvictionThreshold. Values are Go-style duration strings (e.g. '1m30s'); supported units
+     * are 'ns', 'us', 'ms', 's', 'm', and 'h'. Only applicable for Linux nodepools.
+     */
+    private SoftEvictionGracePeriod softEvictionGracePeriod;
+
+    /*
+     * Maximum grace period, in seconds, for pods to terminate during a soft eviction; caps the pod's
+     * terminationGracePeriodSeconds. Default is 60, applied when the cluster's `enableNodeHardening` property is true.
+     * Only applicable for Linux nodepools.
+     */
+    private Integer evictionMaxPodGracePeriodInSeconds;
+
     /**
      * Creates an instance of KubeletConfig class.
      */
@@ -332,11 +376,175 @@ public final class KubeletConfig implements JsonSerializable<KubeletConfig> {
     }
 
     /**
+     * Get the seccompDefault property: Specifies the default seccomp profile applied to all workloads. If not
+     * specified, 'Unconfined' will be used by default.
+     * 
+     * @return the seccompDefault value.
+     */
+    public SeccompDefault seccompDefault() {
+        return this.seccompDefault;
+    }
+
+    /**
+     * Set the seccompDefault property: Specifies the default seccomp profile applied to all workloads. If not
+     * specified, 'Unconfined' will be used by default.
+     * 
+     * @param seccompDefault the seccompDefault value to set.
+     * @return the KubeletConfig object itself.
+     */
+    public KubeletConfig withSeccompDefault(SeccompDefault seccompDefault) {
+        this.seccompDefault = seccompDefault;
+        return this;
+    }
+
+    /**
+     * Get the kubeReserved property: Kube-reserved values for kubelet. When a value is not set, the system-computed
+     * default based on VM size is used. See [AKS node resource reservations](https://aka.ms/aks/nodereservations) for
+     * details on computed defaults. Only applicable for Linux nodepools.
+     * 
+     * @return the kubeReserved value.
+     */
+    public KubeReserved kubeReserved() {
+        return this.kubeReserved;
+    }
+
+    /**
+     * Set the kubeReserved property: Kube-reserved values for kubelet. When a value is not set, the system-computed
+     * default based on VM size is used. See [AKS node resource reservations](https://aka.ms/aks/nodereservations) for
+     * details on computed defaults. Only applicable for Linux nodepools.
+     * 
+     * @param kubeReserved the kubeReserved value to set.
+     * @return the KubeletConfig object itself.
+     */
+    public KubeletConfig withKubeReserved(KubeReserved kubeReserved) {
+        this.kubeReserved = kubeReserved;
+        return this;
+    }
+
+    /**
+     * Get the hardEvictionThreshold property: Hard eviction thresholds for kubelet. When a threshold is not set, the
+     * system default is used. See [AKS node resource reservations](https://aka.ms/aks/nodereservations) for details on
+     * computed defaults. Only applicable for Linux nodepools.
+     * 
+     * @return the hardEvictionThreshold value.
+     */
+    public HardEvictionThreshold hardEvictionThreshold() {
+        return this.hardEvictionThreshold;
+    }
+
+    /**
+     * Set the hardEvictionThreshold property: Hard eviction thresholds for kubelet. When a threshold is not set, the
+     * system default is used. See [AKS node resource reservations](https://aka.ms/aks/nodereservations) for details on
+     * computed defaults. Only applicable for Linux nodepools.
+     * 
+     * @param hardEvictionThreshold the hardEvictionThreshold value to set.
+     * @return the KubeletConfig object itself.
+     */
+    public KubeletConfig withHardEvictionThreshold(HardEvictionThreshold hardEvictionThreshold) {
+        this.hardEvictionThreshold = hardEvictionThreshold;
+        return this;
+    }
+
+    /**
+     * Get the softEvictionThreshold property: Soft eviction thresholds for kubelet. When crossed, pods are evicted
+     * after the paired softEvictionGracePeriod. System defaults apply when the cluster's `enableNodeHardening` property
+     * is true; otherwise no soft eviction is configured. For each signal (memoryAvailable, nodeFsAvailable,
+     * nodeFsInodesFree), the entries in softEvictionThreshold and softEvictionGracePeriod must be in the same state:
+     * both omitted (default), both non-empty (override), or both empty strings (opt that signal out). Only applicable
+     * for Linux nodepools. See
+     * https://kubernetes.io/docs/concepts/scheduling-eviction/node-pressure-eviction/#soft-eviction-thresholds.
+     * 
+     * @return the softEvictionThreshold value.
+     */
+    public SoftEvictionThreshold softEvictionThreshold() {
+        return this.softEvictionThreshold;
+    }
+
+    /**
+     * Set the softEvictionThreshold property: Soft eviction thresholds for kubelet. When crossed, pods are evicted
+     * after the paired softEvictionGracePeriod. System defaults apply when the cluster's `enableNodeHardening` property
+     * is true; otherwise no soft eviction is configured. For each signal (memoryAvailable, nodeFsAvailable,
+     * nodeFsInodesFree), the entries in softEvictionThreshold and softEvictionGracePeriod must be in the same state:
+     * both omitted (default), both non-empty (override), or both empty strings (opt that signal out). Only applicable
+     * for Linux nodepools. See
+     * https://kubernetes.io/docs/concepts/scheduling-eviction/node-pressure-eviction/#soft-eviction-thresholds.
+     * 
+     * @param softEvictionThreshold the softEvictionThreshold value to set.
+     * @return the KubeletConfig object itself.
+     */
+    public KubeletConfig withSoftEvictionThreshold(SoftEvictionThreshold softEvictionThreshold) {
+        this.softEvictionThreshold = softEvictionThreshold;
+        return this;
+    }
+
+    /**
+     * Get the softEvictionGracePeriod property: Grace periods for soft eviction signals — how long a threshold must be
+     * held before pod eviction. Same defaulting and pairing rules as softEvictionThreshold. Values are Go-style
+     * duration strings (e.g. '1m30s'); supported units are 'ns', 'us', 'ms', 's', 'm', and 'h'. Only applicable for
+     * Linux nodepools.
+     * 
+     * @return the softEvictionGracePeriod value.
+     */
+    public SoftEvictionGracePeriod softEvictionGracePeriod() {
+        return this.softEvictionGracePeriod;
+    }
+
+    /**
+     * Set the softEvictionGracePeriod property: Grace periods for soft eviction signals — how long a threshold must be
+     * held before pod eviction. Same defaulting and pairing rules as softEvictionThreshold. Values are Go-style
+     * duration strings (e.g. '1m30s'); supported units are 'ns', 'us', 'ms', 's', 'm', and 'h'. Only applicable for
+     * Linux nodepools.
+     * 
+     * @param softEvictionGracePeriod the softEvictionGracePeriod value to set.
+     * @return the KubeletConfig object itself.
+     */
+    public KubeletConfig withSoftEvictionGracePeriod(SoftEvictionGracePeriod softEvictionGracePeriod) {
+        this.softEvictionGracePeriod = softEvictionGracePeriod;
+        return this;
+    }
+
+    /**
+     * Get the evictionMaxPodGracePeriodInSeconds property: Maximum grace period, in seconds, for pods to terminate
+     * during a soft eviction; caps the pod's terminationGracePeriodSeconds. Default is 60, applied when the cluster's
+     * `enableNodeHardening` property is true. Only applicable for Linux nodepools.
+     * 
+     * @return the evictionMaxPodGracePeriodInSeconds value.
+     */
+    public Integer evictionMaxPodGracePeriodInSeconds() {
+        return this.evictionMaxPodGracePeriodInSeconds;
+    }
+
+    /**
+     * Set the evictionMaxPodGracePeriodInSeconds property: Maximum grace period, in seconds, for pods to terminate
+     * during a soft eviction; caps the pod's terminationGracePeriodSeconds. Default is 60, applied when the cluster's
+     * `enableNodeHardening` property is true. Only applicable for Linux nodepools.
+     * 
+     * @param evictionMaxPodGracePeriodInSeconds the evictionMaxPodGracePeriodInSeconds value to set.
+     * @return the KubeletConfig object itself.
+     */
+    public KubeletConfig withEvictionMaxPodGracePeriodInSeconds(Integer evictionMaxPodGracePeriodInSeconds) {
+        this.evictionMaxPodGracePeriodInSeconds = evictionMaxPodGracePeriodInSeconds;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (kubeReserved() != null) {
+            kubeReserved().validate();
+        }
+        if (hardEvictionThreshold() != null) {
+            hardEvictionThreshold().validate();
+        }
+        if (softEvictionThreshold() != null) {
+            softEvictionThreshold().validate();
+        }
+        if (softEvictionGracePeriod() != null) {
+            softEvictionGracePeriod().validate();
+        }
     }
 
     /**
@@ -357,6 +565,13 @@ public final class KubeletConfig implements JsonSerializable<KubeletConfig> {
         jsonWriter.writeNumberField("containerLogMaxSizeMB", this.containerLogMaxSizeMB);
         jsonWriter.writeNumberField("containerLogMaxFiles", this.containerLogMaxFiles);
         jsonWriter.writeNumberField("podMaxPids", this.podMaxPids);
+        jsonWriter.writeStringField("seccompDefault",
+            this.seccompDefault == null ? null : this.seccompDefault.toString());
+        jsonWriter.writeJsonField("kubeReserved", this.kubeReserved);
+        jsonWriter.writeJsonField("hardEvictionThreshold", this.hardEvictionThreshold);
+        jsonWriter.writeJsonField("softEvictionThreshold", this.softEvictionThreshold);
+        jsonWriter.writeJsonField("softEvictionGracePeriod", this.softEvictionGracePeriod);
+        jsonWriter.writeNumberField("evictionMaxPodGracePeriodInSeconds", this.evictionMaxPodGracePeriodInSeconds);
         return jsonWriter.writeEndObject();
     }
 
@@ -398,6 +613,19 @@ public final class KubeletConfig implements JsonSerializable<KubeletConfig> {
                     deserializedKubeletConfig.containerLogMaxFiles = reader.getNullable(JsonReader::getInt);
                 } else if ("podMaxPids".equals(fieldName)) {
                     deserializedKubeletConfig.podMaxPids = reader.getNullable(JsonReader::getInt);
+                } else if ("seccompDefault".equals(fieldName)) {
+                    deserializedKubeletConfig.seccompDefault = SeccompDefault.fromString(reader.getString());
+                } else if ("kubeReserved".equals(fieldName)) {
+                    deserializedKubeletConfig.kubeReserved = KubeReserved.fromJson(reader);
+                } else if ("hardEvictionThreshold".equals(fieldName)) {
+                    deserializedKubeletConfig.hardEvictionThreshold = HardEvictionThreshold.fromJson(reader);
+                } else if ("softEvictionThreshold".equals(fieldName)) {
+                    deserializedKubeletConfig.softEvictionThreshold = SoftEvictionThreshold.fromJson(reader);
+                } else if ("softEvictionGracePeriod".equals(fieldName)) {
+                    deserializedKubeletConfig.softEvictionGracePeriod = SoftEvictionGracePeriod.fromJson(reader);
+                } else if ("evictionMaxPodGracePeriodInSeconds".equals(fieldName)) {
+                    deserializedKubeletConfig.evictionMaxPodGracePeriodInSeconds
+                        = reader.getNullable(JsonReader::getInt);
                 } else {
                     reader.skipChildren();
                 }
