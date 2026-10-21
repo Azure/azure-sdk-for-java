@@ -6,6 +6,7 @@ package com.azure.ai.agents.voice;
 import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.BetaVoiceAgentLiveWebSocketSessionAsyncClient;
 import com.azure.ai.agents.BetaVoiceAgentLiveWebSocketSessionClient;
+import com.azure.ai.agents.models.VoiceAgentLiveWebSocketConnectionOptions;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
@@ -116,8 +117,52 @@ public class GptLiveSamplesTests {
             System.setOut(original);
         }
         String transcript = new String(output.toByteArray(), StandardCharsets.UTF_8);
-        assertEquals("Live session started." + System.lineSeparator() + "You: Hello there" + System.lineSeparator()
-            + "Assistant: Hi!" + System.lineSeparator() + "Assistant: How can I help?", transcript);
+        assertEquals("Live session started; conversation_id not provided (persistence may be disabled)."
+            + System.lineSeparator() + "You: Hello there" + System.lineSeparator() + "Assistant: Hi!"
+            + System.lineSeparator() + "Assistant: How can I help?", transcript);
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    @ResourceLock("java.lang.System.out")
+    public void startupPrintsFoundryConversationIdInScriptedAndInteractiveModes(boolean interactive) {
+        Map<?, ?> event = GptLiveSampleUtils.object(BinaryData.fromString(
+            "{\"type\":\"session.started\",\"conversation_id\":\"conversation-1\",\"session\":{\"id\":\"native-1\"}}"));
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        PrintStream original = System.out;
+        try (PrintStream capture = new PrintStream(output)) {
+            System.setOut(capture);
+            if (interactive) {
+                new GptLiveSampleUtils.AudioTranscriptPrinter(false, true).print(event);
+            } else {
+                GptLiveSampleUtils.printEvent(event);
+            }
+        } finally {
+            System.setOut(original);
+        }
+        assertEquals("Live session started; conversation_id=conversation-1" + System.lineSeparator(),
+            new String(output.toByteArray(), StandardCharsets.UTF_8));
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    @ResourceLock("java.lang.System.out")
+    public void startupWithoutPersistenceDoesNotSubstituteNativeSessionId(boolean interactive) {
+        Map<?, ?> event = GptLiveSampleUtils.object(BinaryData.fromString(STARTED));
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        PrintStream original = System.out;
+        try (PrintStream capture = new PrintStream(output)) {
+            System.setOut(capture);
+            if (interactive) {
+                new GptLiveSampleUtils.AudioTranscriptPrinter(false, true).print(event);
+            } else {
+                GptLiveSampleUtils.printEvent(event);
+            }
+        } finally {
+            System.setOut(original);
+        }
+        assertEquals("Live session started; conversation_id not provided (persistence may be disabled)."
+            + System.lineSeparator(), new String(output.toByteArray(), StandardCharsets.UTF_8));
     }
 
     @Test
@@ -318,8 +363,8 @@ public class GptLiveSamplesTests {
             configuration.put("FOUNDRY_GPT_LIVE_MODEL", "gpt-live-1");
             configuration.put("FOUNDRY_GPT_LIVE_BACKEND_MODEL", "gpt-5.6-terra");
             configuration.put(setting, value);
-            IllegalArgumentException error = assertThrows(IllegalArgumentException.class,
-                () -> main.accept(new String[0]), sampleName);
+            IllegalArgumentException error
+                = assertThrows(IllegalArgumentException.class, () -> main.accept(new String[0]), sampleName);
             assertTrue(error.getMessage().contains(setting));
         } finally {
             original.forEach((name, previous) -> {
@@ -338,9 +383,10 @@ public class GptLiveSamplesTests {
         samples.put("text", GptLiveTextConversationSample::main);
         samples.put("text-async", GptLiveTextConversationAsyncSample::main);
         samples.put("tools", GptLiveFunctionToolSample::main);
-        return samples.entrySet().stream()
-            .flatMap(sample -> Stream.of("FOUNDRY_PROJECT_ENDPOINT", "FOUNDRY_GPT_LIVE_MODEL",
-                "FOUNDRY_GPT_LIVE_BACKEND_MODEL")
+        return samples.entrySet()
+            .stream()
+            .flatMap(sample -> Stream
+                .of("FOUNDRY_PROJECT_ENDPOINT", "FOUNDRY_GPT_LIVE_MODEL", "FOUNDRY_GPT_LIVE_BACKEND_MODEL")
                 .flatMap(setting -> Stream.of("", "   ")
                     .map(value -> Arguments.of(sample.getKey(), sample.getValue(), setting, value))));
     }
@@ -985,9 +1031,14 @@ public class GptLiveSamplesTests {
             () -> GptLiveAudioConversationAsyncSample.decodeAudio(Collections.singletonMap("delta", "AA==")));
     }
 
+    private static Stream<Arguments> audioSessionCases() {
+        return Stream.of(false, true)
+            .flatMap(moderated -> Stream.of(false, true).map(store -> Arguments.of(moderated, store)));
+    }
+
     @ParameterizedTest
-    @ValueSource(booleans = { false, true })
-    public void audioSampleGreetsCapturesPlaysAndReleasesDevices(boolean moderated) {
+    @MethodSource("audioSessionCases")
+    public void audioSampleGreetsCapturesPlaysAndReleasesDevices(boolean moderated, boolean store) {
         AtomicBoolean captured = new AtomicBoolean();
         AtomicInteger closed = new AtomicInteger();
         CountDownLatch unblockRead = new CountDownLatch(1);
@@ -1020,14 +1071,17 @@ public class GptLiveSamplesTests {
                 }
                 return null;
             });
-        server
-            = VoiceAgentWebSocketSessionTests.tlsServer()
-                .host("localhost")
-                .port(0)
-                .handle((request,
-                    response) -> response.sendWebsocket((inbound,
+        AtomicReference<String> requestUri = new AtomicReference<>();
+        String started = store
+            ? "{\"type\":\"session.started\",\"conversation_id\":\"conversation-1\",\"session\":{\"id\":\"live-1\"}}"
+            : STARTED;
+        server = VoiceAgentWebSocketSessionTests.tlsServer().host("localhost").port(0).handle((request, response) -> {
+            requestUri.set(request.uri());
+            return response
+                .sendWebsocket(
+                    (inbound,
                         outbound) -> outbound.sendString(Flux.concat(
-                            Flux.just(STARTED, "{\"type\":\"session.output_audio.delta\",\"delta\":\"AQI=\"}"),
+                            Flux.just(started, "{\"type\":\"session.output_audio.delta\",\"delta\":\"AQI=\"}"),
                             inbound.receive().asString().concatMap(json -> {
                                 Map<?, ?> command = GptLiveSampleUtils.object(BinaryData.fromString(json));
                                 commands.add(command);
@@ -1038,13 +1092,14 @@ public class GptLiveSamplesTests {
                                     return Mono.just(MODERATED);
                                 }
                                 return "session.close".equals(command.get("type")) ? Mono.just(CLOSED) : Mono.empty();
-                            }))).then()))
-                .bindNow();
+                            }))).then());
+        }).bindNow();
         BetaVoiceAgentLiveWebSocketSessionAsyncClient session = builder().beta()
             .buildBetaVoiceAgentLiveWebSocketAsyncClient()
-            .openWebSocketSession("agent")
+            .openWebSocketSession("agent", new VoiceAgentLiveWebSocketConnectionOptions().setStoreEnabled(store))
             .block(TIMEOUT);
         assertNotNull(session);
+        assertTrue(requestUri.get().contains("store=" + store), requestUri.get());
         InputStream enterAfterAudio = new InputStream() {
             @Override
             public int available() {
