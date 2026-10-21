@@ -13,8 +13,8 @@ import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.storage.common.ParallelTransferOptions;
-import com.azure.storage.common.test.shared.ShapedByteBuffer;
-import com.azure.storage.common.test.shared.TestBufferShape;
+import com.azure.storage.common.test.shared.ByteBufferState;
+import com.azure.storage.common.test.shared.TestByteBufferVariant;
 import com.azure.storage.file.datalake.options.FileParallelUploadOptions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
@@ -44,20 +44,20 @@ public class DataLakeBufferReuseUploadTests {
     @Test
     public void partitionedUploadDoesNotModifyCallerBuffers() {
         byte[] content = randomBytes(5 * BLOCK_SIZE + 100);
-        List<ShapedByteBuffer> sources = TestBufferShape.mixed(content, PIECE_LENGTH);
+        List<ByteBufferState> sources = TestByteBufferVariant.mixed(content, PIECE_LENGTH);
         RequestCapturingHttpClient httpClient = new RequestCapturingHttpClient();
 
         fileClient(httpClient).uploadWithResponse(new FileParallelUploadOptions(Flux.fromIterable(buffersOf(sources)))
             .setParallelTransferOptions(blockOptions()), null, null);
 
         TestUtils.assertArraysEqual(content, httpClient.getFileContent());
-        sources.forEach(ShapedByteBuffer::assertUnchanged);
+        sources.forEach(ByteBufferState::assertUnchanged);
     }
 
     @Test
     public void uploadingSameBuffersAgainSendsSameContent() {
         byte[] content = randomBytes(5 * BLOCK_SIZE + 100);
-        List<ShapedByteBuffer> sources = TestBufferShape.mixed(content, PIECE_LENGTH);
+        List<ByteBufferState> sources = TestByteBufferVariant.mixed(content, PIECE_LENGTH);
         List<ByteBuffer> buffers = buffersOf(sources);
 
         for (int upload = 1; upload <= 2; upload++) {
@@ -69,10 +69,10 @@ public class DataLakeBufferReuseUploadTests {
 
             TestUtils.assertArraysEqual(content, httpClient.getFileContent());
         }
-        sources.forEach(ShapedByteBuffer::assertUnchanged);
+        sources.forEach(ByteBufferState::assertUnchanged);
     }
 
-    private static List<ByteBuffer> buffersOf(List<ShapedByteBuffer> sources) {
+    private static List<ByteBuffer> buffersOf(List<ByteBufferState> sources) {
         List<ByteBuffer> buffers = new ArrayList<>();
         sources.forEach(source -> buffers.add(source.getBuffer()));
         return buffers;

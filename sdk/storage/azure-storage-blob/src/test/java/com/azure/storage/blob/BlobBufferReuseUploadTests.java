@@ -15,8 +15,8 @@ import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.options.BlobParallelUploadOptions;
-import com.azure.storage.common.test.shared.ShapedByteBuffer;
-import com.azure.storage.common.test.shared.TestBufferShape;
+import com.azure.storage.common.test.shared.ByteBufferState;
+import com.azure.storage.common.test.shared.TestByteBufferVariant;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -51,20 +51,20 @@ public class BlobBufferReuseUploadTests {
     @Test
     public void stagedUploadDoesNotModifyCallerBuffers() {
         byte[] content = randomBytes(5 * BLOCK_SIZE + 100);
-        List<ShapedByteBuffer> sources = TestBufferShape.mixed(content, PIECE_LENGTH);
+        List<ByteBufferState> sources = TestByteBufferVariant.mixed(content, PIECE_LENGTH);
         RequestCapturingHttpClient httpClient = new RequestCapturingHttpClient(0);
 
         blobClient(httpClient).uploadWithResponse(new BlobParallelUploadOptions(Flux.fromIterable(buffersOf(sources)))
             .setParallelTransferOptions(blockOptions()), null, null);
 
         TestUtils.assertArraysEqual(content, httpClient.getBlobContent());
-        sources.forEach(ShapedByteBuffer::assertUnchanged);
+        sources.forEach(ByteBufferState::assertUnchanged);
     }
 
     @Test
     public void uploadingSameBuffersAgainSendsSameContent() {
         byte[] content = randomBytes(5 * BLOCK_SIZE + 100);
-        List<ShapedByteBuffer> sources = TestBufferShape.mixed(content, PIECE_LENGTH);
+        List<ByteBufferState> sources = TestByteBufferVariant.mixed(content, PIECE_LENGTH);
         List<ByteBuffer> buffers = buffersOf(sources);
 
         for (int upload = 1; upload <= 2; upload++) {
@@ -76,13 +76,13 @@ public class BlobBufferReuseUploadTests {
 
             TestUtils.assertArraysEqual(content, httpClient.getBlobContent());
         }
-        sources.forEach(ShapedByteBuffer::assertUnchanged);
+        sources.forEach(ByteBufferState::assertUnchanged);
     }
 
     @Test
     public void retryingUploadBySubscribingAgainSendsSameContent() {
         byte[] content = randomBytes(5 * BLOCK_SIZE + 100);
-        List<ShapedByteBuffer> sources = TestBufferShape.mixed(content, PIECE_LENGTH);
+        List<ByteBufferState> sources = TestByteBufferVariant.mixed(content, PIECE_LENGTH);
         // The first commit fails, so the upload is retried by subscribing to it again, which re-reads the buffers.
         RequestCapturingHttpClient httpClient = new RequestCapturingHttpClient(1);
 
@@ -93,10 +93,10 @@ public class BlobBufferReuseUploadTests {
             .block();
 
         TestUtils.assertArraysEqual(content, httpClient.getBlobContent());
-        sources.forEach(ShapedByteBuffer::assertUnchanged);
+        sources.forEach(ByteBufferState::assertUnchanged);
     }
 
-    private static List<ByteBuffer> buffersOf(List<ShapedByteBuffer> sources) {
+    private static List<ByteBuffer> buffersOf(List<ByteBufferState> sources) {
         List<ByteBuffer> buffers = new ArrayList<>();
         sources.forEach(source -> buffers.add(source.getBuffer()));
         return buffers;

@@ -8,10 +8,6 @@
 
 ### Bugs Fixed
 
-- Fixed a bug where `AzureSeekableByteChannel` read into and wrote from the wrong bytes of a `ByteBuffer` created by
-  `ByteBuffer.slice()` (or otherwise backed by an array at a non-zero offset). Writes uploaded the wrong content, and
-  reads overwrote bytes of the backing array outside the buffer.
-
 ### Other Changes
 
 ## 12.0.0-beta.41 (2026-10-07)

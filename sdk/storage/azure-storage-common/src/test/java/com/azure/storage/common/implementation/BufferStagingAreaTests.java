@@ -3,8 +3,8 @@
 package com.azure.storage.common.implementation;
 
 import com.azure.core.test.utils.TestUtils;
-import com.azure.storage.common.test.shared.ShapedByteBuffer;
-import com.azure.storage.common.test.shared.TestBufferShape;
+import com.azure.storage.common.test.shared.ByteBufferState;
+import com.azure.storage.common.test.shared.TestByteBufferVariant;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -187,11 +187,11 @@ public class BufferStagingAreaTests {
     public void stagingDoesNotModifyCallerBuffers(int stagingSize, int pieceLength) {
         byte[] content = new byte[10 * stagingSize + 3];
         ThreadLocalRandom.current().nextBytes(content);
-        List<ShapedByteBuffer> sources = TestBufferShape.mixed(content, pieceLength);
+        List<ByteBufferState> sources = TestByteBufferVariant.mixed(content, pieceLength);
 
         TestUtils.assertArraysEqual(content, stage(stagingSize, sources));
 
-        sources.forEach(ShapedByteBuffer::assertUnchanged);
+        sources.forEach(ByteBufferState::assertUnchanged);
     }
 
     @ParameterizedTest
@@ -199,7 +199,7 @@ public class BufferStagingAreaTests {
     public void stagingSameBuffersAgainProducesSameContent(int stagingSize, int pieceLength) {
         byte[] content = new byte[10 * stagingSize + 3];
         ThreadLocalRandom.current().nextBytes(content);
-        List<ShapedByteBuffer> sources = TestBufferShape.mixed(content, pieceLength);
+        List<ByteBufferState> sources = TestByteBufferVariant.mixed(content, pieceLength);
 
         TestUtils.assertArraysEqual(content, stage(stagingSize, sources));
         TestUtils.assertArraysEqual(content, stage(stagingSize, sources));
@@ -217,10 +217,10 @@ public class BufferStagingAreaTests {
     /*
      * Stages the buffers with a new staging area and returns the content of the staged buffers, in order.
      */
-    private static byte[] stage(int stagingSize, List<ShapedByteBuffer> sources) {
+    private static byte[] stage(int stagingSize, List<ByteBufferState> sources) {
         BufferStagingArea stagingArea = new BufferStagingArea(stagingSize, stagingSize);
         List<ByteBuffer> staged = Flux.fromIterable(sources)
-            .map(ShapedByteBuffer::getBuffer)
+            .map(ByteBufferState::getBuffer)
             .flatMapSequential(stagingArea::write, 1)
             .concatWith(Flux.defer(stagingArea::flush))
             .concatMap(BufferAggregator::asFlux)

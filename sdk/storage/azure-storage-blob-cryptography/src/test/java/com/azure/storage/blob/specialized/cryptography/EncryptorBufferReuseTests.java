@@ -4,8 +4,8 @@
 package com.azure.storage.blob.specialized.cryptography;
 
 import com.azure.core.test.utils.TestUtils;
-import com.azure.storage.common.test.shared.ShapedByteBuffer;
-import com.azure.storage.common.test.shared.TestBufferShape;
+import com.azure.storage.common.test.shared.ByteBufferState;
+import com.azure.storage.common.test.shared.TestByteBufferVariant;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
@@ -44,11 +44,11 @@ public class EncryptorBufferReuseTests {
     private static final int PIECE_LENGTH = 11;
 
     @ParameterizedTest
-    @EnumSource(TestBufferShape.class)
-    public void encryptV2SingleRegionDoesNotModifyCallerBuffer(TestBufferShape shape) throws Exception {
+    @EnumSource(TestByteBufferVariant.class)
+    public void encryptV2SingleRegionDoesNotModifyCallerBuffer(TestByteBufferVariant variant) throws Exception {
         // Fits in a single region, so it's encrypted from the staged caller buffer itself.
         byte[] content = randomBytes(REGION_LENGTH - 3);
-        ShapedByteBuffer source = shape.wrap(content);
+        ByteBufferState source = variant.wrap(content);
         SecretKey key = newKey();
 
         byte[] ciphertext = concat(encryptorV2(key).encrypt(Flux.just(source.getBuffer())).collectList().block());
@@ -60,7 +60,7 @@ public class EncryptorBufferReuseTests {
     @Test
     public void encryptV2SameBuffersAgainEncryptsSameContent() throws Exception {
         byte[] content = randomBytes(5 * REGION_LENGTH + 5);
-        List<ShapedByteBuffer> sources = TestBufferShape.mixed(content, PIECE_LENGTH);
+        List<ByteBufferState> sources = TestByteBufferVariant.mixed(content, PIECE_LENGTH);
         List<ByteBuffer> buffers = buffersOf(sources);
         SecretKey key = newKey();
 
@@ -69,14 +69,14 @@ public class EncryptorBufferReuseTests {
 
             TestUtils.assertArraysEqual(content, decryptV2(key, ciphertext, 6));
         }
-        sources.forEach(ShapedByteBuffer::assertUnchanged);
+        sources.forEach(ByteBufferState::assertUnchanged);
     }
 
     @ParameterizedTest
-    @EnumSource(TestBufferShape.class)
-    public void encryptV1DoesNotModifyCallerBuffer(TestBufferShape shape) throws Exception {
+    @EnumSource(TestByteBufferVariant.class)
+    public void encryptV1DoesNotModifyCallerBuffer(TestByteBufferVariant variant) throws Exception {
         byte[] content = randomBytes(3 * REGION_LENGTH + 5);
-        ShapedByteBuffer source = shape.wrap(content);
+        ByteBufferState source = variant.wrap(content);
         SecretKey key = newKey();
         EncryptorV1 encryptor = new EncryptorV1(key);
 
@@ -89,7 +89,7 @@ public class EncryptorBufferReuseTests {
     @Test
     public void encryptV1SameBuffersAgainEncryptsSameContent() throws Exception {
         byte[] content = randomBytes(5 * REGION_LENGTH + 5);
-        List<ShapedByteBuffer> sources = TestBufferShape.mixed(content, PIECE_LENGTH);
+        List<ByteBufferState> sources = TestByteBufferVariant.mixed(content, PIECE_LENGTH);
         List<ByteBuffer> buffers = buffersOf(sources);
         SecretKey key = newKey();
 
@@ -99,7 +99,7 @@ public class EncryptorBufferReuseTests {
 
             TestUtils.assertArraysEqual(content, decryptV1(key, encryptor, ciphertext));
         }
-        sources.forEach(ShapedByteBuffer::assertUnchanged);
+        sources.forEach(ByteBufferState::assertUnchanged);
     }
 
     private static EncryptorV2 encryptorV2(SecretKey key) {
@@ -139,7 +139,7 @@ public class EncryptorBufferReuseTests {
         return cipher.doFinal(ciphertext);
     }
 
-    private static List<ByteBuffer> buffersOf(List<ShapedByteBuffer> sources) {
+    private static List<ByteBuffer> buffersOf(List<ByteBufferState> sources) {
         List<ByteBuffer> buffers = new ArrayList<>();
         sources.forEach(source -> buffers.add(source.getBuffer()));
         return buffers;

@@ -3,8 +3,8 @@
 
 package com.azure.storage.common;
 
-import com.azure.storage.common.test.shared.ShapedByteBuffer;
-import com.azure.storage.common.test.shared.TestBufferShape;
+import com.azure.storage.common.test.shared.ByteBufferState;
+import com.azure.storage.common.test.shared.TestByteBufferVariant;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -23,35 +23,35 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * Tests for {@link TestBufferShape} and {@link ShapedByteBuffer}, so tests that use them can rely on each kind of
+ * Tests for {@link TestByteBufferVariant} and {@link ByteBufferState}, so tests that use them can rely on each kind of
  * buffer having the properties it claims, and on the assertions detecting reads and writes outside the exposed bytes.
  */
-public class TestBufferShapeTests {
+public class TestByteBufferVariantTests {
     private static final int LENGTH = 100;
 
     @ParameterizedTest
-    @EnumSource(TestBufferShape.class)
-    public void wrapExposesContent(TestBufferShape shape) {
+    @EnumSource(TestByteBufferVariant.class)
+    public void wrapExposesContent(TestByteBufferVariant variant) {
         byte[] content = randomBytes(LENGTH, 1);
-        ShapedByteBuffer shaped = shape.wrap(content);
-        ByteBuffer buffer = shaped.getBuffer();
+        ByteBufferState state = variant.wrap(content);
+        ByteBuffer buffer = state.getBuffer();
 
-        assertEquals(shape, shaped.getShape());
+        assertEquals(variant, state.getVariant());
         assertEquals(LENGTH, buffer.remaining());
-        assertEquals(LENGTH, shaped.getLength());
-        assertArraysEqual(content, shaped.getExposedBytes());
-        assertEquals(shape.hasAccessibleArray(), buffer.hasArray());
-        assertEquals(!shape.isWritable(), buffer.isReadOnly());
-        shaped.assertNoBytesChanged();
-        shaped.assertPositionAndLimit(shaped.getOriginalPosition(), shaped.getOriginalLimit());
+        assertEquals(LENGTH, state.getLength());
+        assertArraysEqual(content, state.getExposedBytes());
+        assertEquals(variant.hasAccessibleArray(), buffer.hasArray());
+        assertEquals(!variant.isWritable(), buffer.isReadOnly());
+        state.assertNoBytesChanged();
+        state.assertPositionAndLimit(state.getOriginalPosition(), state.getOriginalLimit());
     }
 
     @ParameterizedTest
-    @EnumSource(TestBufferShape.class)
-    public void wrapCreatesTheDescribedKindOfBuffer(TestBufferShape shape) {
-        ByteBuffer buffer = shape.wrap(randomBytes(LENGTH, 1)).getBuffer();
+    @EnumSource(TestByteBufferVariant.class)
+    public void wrapCreatesTheDescribedKindOfBuffer(TestByteBufferVariant variant) {
+        ByteBuffer buffer = variant.wrap(randomBytes(LENGTH, 1)).getBuffer();
 
-        switch (shape) {
+        switch (variant) {
             case HEAP:
                 assertEquals(0, buffer.position());
                 assertEquals(0, buffer.arrayOffset());
@@ -84,55 +84,55 @@ public class TestBufferShapeTests {
                 break;
 
             default:
-                throw new IllegalStateException("Untested buffer shape: " + shape);
+                throw new IllegalStateException("Untested buffer variant: " + variant);
         }
 
         // Every kind except HEAP has bytes after the exposed bytes, to detect reads and writes past the limit. A slice
         // ends at its limit, so for SLICED kinds those bytes are only in the backing array.
-        if (shape == TestBufferShape.SLICED || shape == TestBufferShape.SLICED_POSITIONED) {
+        if (variant == TestByteBufferVariant.SLICED || variant == TestByteBufferVariant.SLICED_POSITIONED) {
             assertEquals(buffer.limit(), buffer.capacity());
             assertTrue(buffer.arrayOffset() + buffer.limit() < buffer.array().length);
-        } else if (shape != TestBufferShape.HEAP) {
+        } else if (variant != TestByteBufferVariant.HEAP) {
             assertTrue(buffer.limit() < buffer.capacity());
         }
     }
 
     @ParameterizedTest
-    @EnumSource(TestBufferShape.class)
-    public void allocateExposesRequestedLength(TestBufferShape shape) {
-        ShapedByteBuffer shaped = shape.allocate(LENGTH);
+    @EnumSource(TestByteBufferVariant.class)
+    public void allocateExposesRequestedLength(TestByteBufferVariant variant) {
+        ByteBufferState state = variant.allocate(LENGTH);
 
-        assertEquals(LENGTH, shaped.getBuffer().remaining());
-        assertEquals(LENGTH, shaped.getExposedBytes().length);
+        assertEquals(LENGTH, state.getBuffer().remaining());
+        assertEquals(LENGTH, state.getExposedBytes().length);
     }
 
     @Test
-    public void writableShapesExcludesReadOnly() {
-        List<TestBufferShape> writable = TestBufferShape.writableShapes();
+    public void writableVariantsExcludesReadOnly() {
+        List<TestByteBufferVariant> writable = TestByteBufferVariant.writableVariants();
 
-        assertFalse(writable.contains(TestBufferShape.READ_ONLY));
-        assertEquals(TestBufferShape.values().length - 1, writable.size());
+        assertFalse(writable.contains(TestByteBufferVariant.READ_ONLY));
+        assertEquals(TestByteBufferVariant.values().length - 1, writable.size());
     }
 
     @ParameterizedTest
-    @EnumSource(value = TestBufferShape.class, names = "READ_ONLY", mode = EnumSource.Mode.EXCLUDE)
-    public void writingOnlyExposedBytesIsAllowed(TestBufferShape shape) {
-        ShapedByteBuffer shaped = shape.allocate(LENGTH);
+    @EnumSource(value = TestByteBufferVariant.class, names = "READ_ONLY", mode = EnumSource.Mode.EXCLUDE)
+    public void writingOnlyExposedBytesIsAllowed(TestByteBufferVariant variant) {
+        ByteBufferState state = variant.allocate(LENGTH);
         byte[] written = randomBytes(LENGTH, 2);
 
-        shaped.getBuffer().put(written);
+        state.getBuffer().put(written);
 
-        assertArraysEqual(written, shaped.getExposedBytes());
-        shaped.assertOnlyExposedBytesChanged();
-        shaped.assertPositionAndLimit(shaped.getOriginalLimit(), shaped.getOriginalLimit());
-        assertThrows(AssertionFailedError.class, shaped::assertNoBytesChanged);
+        assertArraysEqual(written, state.getExposedBytes());
+        state.assertOnlyExposedBytesChanged();
+        state.assertPositionAndLimit(state.getOriginalLimit(), state.getOriginalLimit());
+        assertThrows(AssertionFailedError.class, state::assertNoBytesChanged);
     }
 
     @ParameterizedTest
-    @EnumSource(value = TestBufferShape.class, names = { "HEAP", "READ_ONLY" }, mode = EnumSource.Mode.EXCLUDE)
-    public void writingPastLimitIsDetected(TestBufferShape shape) {
-        ShapedByteBuffer shaped = shape.allocate(LENGTH);
-        ByteBuffer buffer = shaped.getBuffer();
+    @EnumSource(value = TestByteBufferVariant.class, names = { "HEAP", "READ_ONLY" }, mode = EnumSource.Mode.EXCLUDE)
+    public void writingPastLimitIsDetected(TestByteBufferVariant variant) {
+        ByteBufferState state = variant.allocate(LENGTH);
+        ByteBuffer buffer = state.getBuffer();
 
         if (buffer.capacity() > buffer.limit()) {
             // Absolute puts are bounded by the limit, so write past it through a view with a larger limit.
@@ -146,28 +146,28 @@ public class TestBufferShapeTests {
             array[afterLimit] = (byte) ~array[afterLimit];
         }
 
-        assertThrows(AssertionFailedError.class, shaped::assertOnlyExposedBytesChanged);
+        assertThrows(AssertionFailedError.class, state::assertOnlyExposedBytesChanged);
     }
 
     @ParameterizedTest
     @EnumSource(
-        value = TestBufferShape.class,
+        value = TestByteBufferVariant.class,
         names = { "POSITIONED", "PARTIALLY_READ", "SLICED_POSITIONED", "DIRECT" })
-    public void writingBeforePositionIsDetected(TestBufferShape shape) {
-        ShapedByteBuffer shaped = shape.allocate(LENGTH);
-        ByteBuffer buffer = shaped.getBuffer();
+    public void writingBeforePositionIsDetected(TestByteBufferVariant variant) {
+        ByteBufferState state = variant.allocate(LENGTH);
+        ByteBuffer buffer = state.getBuffer();
         int before = buffer.position() - 1;
 
         buffer.put(before, (byte) ~buffer.get(before));
 
-        assertThrows(AssertionFailedError.class, shaped::assertOnlyExposedBytesChanged);
+        assertThrows(AssertionFailedError.class, state::assertOnlyExposedBytesChanged);
     }
 
     @ParameterizedTest
-    @EnumSource(value = TestBufferShape.class, names = { "SLICED", "SLICED_POSITIONED" })
-    public void writingBackingArrayOutsideSliceIsDetected(TestBufferShape shape) {
-        ShapedByteBuffer shaped = shape.allocate(LENGTH);
-        ByteBuffer buffer = shaped.getBuffer();
+    @EnumSource(value = TestByteBufferVariant.class, names = { "SLICED", "SLICED_POSITIONED" })
+    public void writingBackingArrayOutsideSliceIsDetected(TestByteBufferVariant variant) {
+        ByteBufferState state = variant.allocate(LENGTH);
+        ByteBuffer buffer = state.getBuffer();
         byte[] array = buffer.array();
         // The mistake of indexing the backing array with the buffer's position, ignoring arrayOffset(), which writes
         // before the region the buffer exposes.
@@ -176,22 +176,22 @@ public class TestBufferShapeTests {
 
         array[wrongIndex] = (byte) ~array[wrongIndex];
 
-        assertThrows(AssertionFailedError.class, shaped::assertOnlyExposedBytesChanged);
+        assertThrows(AssertionFailedError.class, state::assertOnlyExposedBytesChanged);
     }
 
     @Test
-    public void mixedCoversContentWithEveryShape() {
-        byte[] content = randomBytes(10 * TestBufferShape.values().length + 3, 3);
+    public void mixedCoversContentWithEveryVariant() {
+        byte[] content = randomBytes(10 * TestByteBufferVariant.values().length + 3, 3);
         int pieceLength = 5;
 
-        List<ShapedByteBuffer> buffers = TestBufferShape.mixed(content, pieceLength);
+        List<ByteBufferState> buffers = TestByteBufferVariant.mixed(content, pieceLength);
 
         ByteArrayOutputStream combined = new ByteArrayOutputStream();
         for (int i = 0; i < buffers.size(); i++) {
-            ShapedByteBuffer shaped = buffers.get(i);
-            assertEquals(TestBufferShape.values()[i % TestBufferShape.values().length], shaped.getShape());
-            assertTrue(shaped.getLength() <= pieceLength);
-            byte[] exposed = shaped.getExposedBytes();
+            ByteBufferState state = buffers.get(i);
+            assertEquals(TestByteBufferVariant.values()[i % TestByteBufferVariant.values().length], state.getVariant());
+            assertTrue(state.getLength() <= pieceLength);
+            byte[] exposed = state.getExposedBytes();
             combined.write(exposed, 0, exposed.length);
         }
         assertArraysEqual(content, combined.toByteArray());
@@ -201,7 +201,7 @@ public class TestBufferShapeTests {
 
     @Test
     public void mixedRejectsInvalidPieceLength() {
-        assertThrows(IllegalArgumentException.class, () -> TestBufferShape.mixed(randomBytes(LENGTH, 4), 0));
+        assertThrows(IllegalArgumentException.class, () -> TestByteBufferVariant.mixed(randomBytes(LENGTH, 4), 0));
     }
 
     private static byte[] randomBytes(int length, long seed) {

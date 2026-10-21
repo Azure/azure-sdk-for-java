@@ -11,17 +11,17 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * The kinds of {@link ByteBuffer} a caller may pass to an SDK method. Each kind exposes the same bytes between its
- * position and limit, but differs in how those bytes map onto its backing storage. Code that reads or writes caller
- * buffers must handle every kind; in particular it must not assume that a buffer's position is 0, that the buffer's
- * index 0 is the backing array's index 0 ({@link ByteBuffer#arrayOffset()} is 0), or that the buffer has an accessible
- * array.
+ * The variants of {@link ByteBuffer} a caller may pass to an SDK method. Each variant exposes the same bytes between
+ * its position and limit, but differs in how those bytes map onto its backing storage. Code that reads or writes
+ * caller buffers must handle every variant; in particular it must not assume that a buffer's position is 0, that the
+ * buffer's index 0 is the backing array's index 0 ({@link ByteBuffer#arrayOffset()} is 0), or that the buffer has an
+ * accessible array.
  * <p>
- * Where the kind allows it, the exposed bytes are surrounded by other bytes in the backing storage, so a test can
+ * Where the variant allows it, the exposed bytes are surrounded by other bytes in the backing storage, so a test can
  * detect code that reads or writes outside the region between the buffer's position and limit. See
- * {@link ShapedByteBuffer}.
+ * {@link ByteBufferState}.
  */
-public enum TestBufferShape {
+public enum TestByteBufferVariant {
     /**
      * Backed by an array that holds exactly the exposed bytes. Position is 0 and {@code arrayOffset()} is 0.
      */
@@ -61,13 +61,13 @@ public enum TestBufferShape {
     READ_ONLY(false, false);
 
     /**
-     * The number of bytes in the backing storage before the exposed bytes, for kinds that have them. For SLICED kinds,
+     * The number of bytes in the backing storage before the exposed bytes, for variants that have them. For SLICED variants,
      * these are only in the backing array, not visible through the buffer.
      */
     static final int PREFIX_LENGTH = 7;
 
     /**
-     * The number of bytes in the backing storage after the exposed bytes, for kinds that have them. For SLICED kinds,
+     * The number of bytes in the backing storage after the exposed bytes, for variants that have them. For SLICED variants,
      * these are only in the backing array, not visible through the buffer, because a slice ends at its limit.
      */
     static final int SUFFIX_LENGTH = 5;
@@ -78,66 +78,66 @@ public enum TestBufferShape {
     private final boolean hasAccessibleArray;
     private final boolean writable;
 
-    TestBufferShape(boolean hasAccessibleArray, boolean writable) {
+    TestByteBufferVariant(boolean hasAccessibleArray, boolean writable) {
         this.hasAccessibleArray = hasAccessibleArray;
         this.writable = writable;
     }
 
     /**
-     * @return Whether buffers of this kind have an accessible backing array ({@link ByteBuffer#hasArray()}).
+     * @return Whether buffers of this variant have an accessible backing array ({@link ByteBuffer#hasArray()}).
      */
     public boolean hasAccessibleArray() {
         return hasAccessibleArray;
     }
 
     /**
-     * @return Whether buffers of this kind can be written to, such as by a download into the buffer.
+     * @return Whether buffers of this variant can be written to, such as by a download into the buffer.
      */
     public boolean isWritable() {
         return writable;
     }
 
     /**
-     * @return The kinds of buffer that can be written to, for tests that read data into a buffer.
+     * @return The variants that can be written to, for tests that read data into a buffer.
      */
-    public static List<TestBufferShape> writableShapes() {
-        List<TestBufferShape> shapes = new ArrayList<>();
-        for (TestBufferShape shape : values()) {
-            if (shape.writable) {
-                shapes.add(shape);
+    public static List<TestByteBufferVariant> writableVariants() {
+        List<TestByteBufferVariant> variants = new ArrayList<>();
+        for (TestByteBufferVariant variant : values()) {
+            if (variant.writable) {
+                variants.add(variant);
             }
         }
-        return Collections.unmodifiableList(shapes);
+        return Collections.unmodifiableList(variants);
     }
 
     /**
-     * Creates a buffer of this kind whose bytes between its position and limit are {@code content}. Use this for the
+     * Creates a buffer of this variant whose bytes between its position and limit are {@code content}. Use this for the
      * source of an upload or a write.
      *
      * @param content The bytes the buffer exposes. Not modified.
      * @return The buffer, with the means to check that only the exposed bytes were read or written.
      */
-    public ShapedByteBuffer wrap(byte[] content) {
+    public ByteBufferState wrap(byte[] content) {
         if (this == HEAP) {
             byte[] storage = Arrays.copyOf(content, content.length);
-            return new ShapedByteBuffer(this, ByteBuffer.wrap(storage), storage, 0, content.length);
+            return new ByteBufferState(this, ByteBuffer.wrap(storage), storage, 0, content.length);
         }
 
         byte[] storage = new byte[PREFIX_LENGTH + content.length + SUFFIX_LENGTH];
         // The surrounding bytes are random, so they are unlikely to be mistaken for content.
         new Random(31L * content.length + 17).nextBytes(storage);
         System.arraycopy(content, 0, storage, PREFIX_LENGTH, content.length);
-        return new ShapedByteBuffer(this, create(storage, content.length), storage, PREFIX_LENGTH, content.length);
+        return new ByteBufferState(this, create(storage, content.length), storage, PREFIX_LENGTH, content.length);
     }
 
     /**
-     * Creates a buffer of this kind that exposes {@code length} bytes between its position and limit, with random
+     * Creates a buffer of this variant that exposes {@code length} bytes between its position and limit, with random
      * content. Use this as the destination of a download or a read.
      *
      * @param length The number of bytes the buffer exposes.
      * @return The buffer, with the means to check that only the exposed bytes were read or written.
      */
-    public ShapedByteBuffer allocate(int length) {
+    public ByteBufferState allocate(int length) {
         byte[] content = new byte[length];
         new Random(length + 1).nextBytes(content);
         return wrap(content);
@@ -145,29 +145,29 @@ public enum TestBufferShape {
 
     /**
      * Creates buffers that together expose {@code content}, in pieces of at most {@code pieceLength} bytes, cycling
-     * through every kind of buffer. Use this as the source of an upload that takes a sequence of buffers, to cover
-     * every kind of buffer, and the boundaries between them, in a single upload.
+     * through every variant. Use this as the source of an upload that takes a sequence of buffers, to cover
+     * every variant, and the boundaries between them, in a single upload.
      *
      * @param content The bytes the buffers expose, in order. Not modified.
      * @param pieceLength The maximum number of bytes each buffer exposes.
      * @return The buffers, in order.
      */
-    public static List<ShapedByteBuffer> mixed(byte[] content, int pieceLength) {
+    public static List<ByteBufferState> mixed(byte[] content, int pieceLength) {
         if (pieceLength < 1) {
             throw new IllegalArgumentException("'pieceLength' must be at least 1.");
         }
 
-        List<ShapedByteBuffer> buffers = new ArrayList<>();
-        TestBufferShape[] shapes = values();
+        List<ByteBufferState> buffers = new ArrayList<>();
+        TestByteBufferVariant[] variants = values();
         for (int offset = 0, i = 0; offset < content.length; offset += pieceLength, i++) {
             int end = Math.min(offset + pieceLength, content.length);
-            buffers.add(shapes[i % shapes.length].wrap(Arrays.copyOfRange(content, offset, end)));
+            buffers.add(variants[i % variants.length].wrap(Arrays.copyOfRange(content, offset, end)));
         }
         return buffers;
     }
 
     /*
-     * Creates a buffer of this kind over storage, exposing length bytes starting at PREFIX_LENGTH.
+     * Creates a buffer of this variant over storage, exposing length bytes starting at PREFIX_LENGTH.
      */
     private ByteBuffer create(byte[] storage, int length) {
         switch (this) {
@@ -199,7 +199,7 @@ public enum TestBufferShape {
                 return ByteBuffer.wrap(storage, PREFIX_LENGTH, length).asReadOnlyBuffer();
 
             default:
-                throw new IllegalStateException("Unexpected buffer shape: " + this);
+                throw new IllegalStateException("Unexpected buffer variant: " + this);
         }
     }
 }
