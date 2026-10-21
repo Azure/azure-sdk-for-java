@@ -11,12 +11,12 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.test.utils.TestUtils;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.test.shared.ShapedByteBuffer;
 import com.azure.storage.common.test.shared.TestBufferShape;
 import com.azure.storage.file.datalake.options.FileParallelUploadOptions;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.EnumSource;
@@ -27,6 +27,7 @@ import reactor.core.publisher.Mono;
 import java.io.ByteArrayOutputStream;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -44,16 +45,23 @@ public class DataLakeBufferShapeUploadTests {
     // Small sizes keep the tests fast; the partitioning logic doesn't depend on the absolute sizes.
     private static final int BLOCK_SIZE = 1024;
 
+    /**
+     * The ways to pass the caller's buffers to a partitioned upload. The sync and async clients share an
+     * implementation today, but both are tested so they stay covered if their implementations diverge.
+     */
+    enum UploadMethod {
+        SYNC_FLUX, ASYNC_FLUX, SYNC_BINARY_DATA, ASYNC_BINARY_DATA
+    }
+
     @ParameterizedTest
     @MethodSource("partitionedUploadSupplier")
-    public void partitionedUploadSendsOnlyExposedBytes(TestBufferShape shape, int length, int expectedAppends) {
+    public void partitionedUploadSendsOnlyExposedBytes(UploadMethod method, TestBufferShape shape, int length,
+        int expectedAppends) {
         byte[] content = randomBytes(length);
         ShapedByteBuffer source = shape.wrap(content);
         RequestCapturingHttpClient httpClient = new RequestCapturingHttpClient();
 
-        fileClient(httpClient).uploadWithResponse(
-            new FileParallelUploadOptions(Flux.just(source.getBuffer())).setParallelTransferOptions(blockOptions()),
-            null, null);
+        upload(method, httpClient, Collections.singletonList(source.getBuffer()), length);
 
         assertEquals(expectedAppends, httpClient.getAppendCount());
         TestUtils.assertArraysEqual(content, httpClient.getFileContent());
@@ -61,17 +69,19 @@ public class DataLakeBufferShapeUploadTests {
     }
 
     private static Stream<Arguments> partitionedUploadSupplier() {
-        return Stream.of(TestBufferShape.values())
-            .flatMap(shape -> Stream.of(
-                // shape | length | expected appends
-                Arguments.of(shape, BLOCK_SIZE / 2, 1), // A single append.
-                Arguments.of(shape, BLOCK_SIZE, 1), // A single append, exactly the threshold.
-                Arguments.of(shape, 2 * BLOCK_SIZE + 100, 3), // Several appends, with a partial last one.
-                Arguments.of(shape, 3 * BLOCK_SIZE, 3))); // Several appends, an exact multiple of the block size.
+        return Stream.of(UploadMethod.values())
+            .flatMap(method -> Stream.of(TestBufferShape.values())
+                .flatMap(shape -> Stream.of(
+                    // method | shape | length | expected appends
+                    Arguments.of(method, shape, BLOCK_SIZE / 2, 1), // A single append.
+                    Arguments.of(method, shape, BLOCK_SIZE, 1), // A single append, exactly the threshold.
+                    Arguments.of(method, shape, 2 * BLOCK_SIZE + 100, 3), // Several appends, partial last one.
+                    Arguments.of(method, shape, 3 * BLOCK_SIZE, 3)))); // Several appends, exact multiple.
     }
 
-    @Test
-    public void partitionedUploadSendsOnlyExposedBytesOfMixedBuffers() {
+    @ParameterizedTest
+    @EnumSource(UploadMethod.class)
+    public void partitionedUploadSendsOnlyExposedBytesOfMixedBuffers(UploadMethod method) {
         byte[] content = randomBytes(5 * BLOCK_SIZE + 100);
         // Pieces that don't align with blocks, so appends span buffers of different kinds.
         List<ShapedByteBuffer> sources = TestBufferShape.mixed(content, 700);
@@ -79,13 +89,35 @@ public class DataLakeBufferShapeUploadTests {
         sources.forEach(source -> buffers.add(source.getBuffer()));
         RequestCapturingHttpClient httpClient = new RequestCapturingHttpClient();
 
-        fileClient(httpClient).uploadWithResponse(
-            new FileParallelUploadOptions(Flux.fromIterable(buffers)).setParallelTransferOptions(blockOptions()), null,
-            null);
+        upload(method, httpClient, buffers, content.length);
 
         assertEquals(6, httpClient.getAppendCount());
         TestUtils.assertArraysEqual(content, httpClient.getFileContent());
         sources.forEach(ShapedByteBuffer::assertNoBytesChanged);
+    }
+
+    /*
+     * Uploads the buffers with a partitioned upload, using the given client and kind of data.
+     */
+    private static void upload(UploadMethod method, HttpClient httpClient, List<ByteBuffer> buffers, long length) {
+        Flux<ByteBuffer> data = Flux.fromIterable(buffers);
+        FileParallelUploadOptions options;
+        if (method == UploadMethod.SYNC_FLUX || method == UploadMethod.ASYNC_FLUX) {
+            options = new FileParallelUploadOptions(data);
+        } else {
+            // BinaryData from a single buffer, or from several without copying them, keeps the caller's buffers.
+            BinaryData binaryData = buffers.size() == 1
+                ? BinaryData.fromByteBuffer(buffers.get(0))
+                : BinaryData.fromFlux(data, length, false).block();
+            options = new FileParallelUploadOptions(binaryData);
+        }
+        options.setParallelTransferOptions(blockOptions());
+
+        if (method == UploadMethod.SYNC_FLUX || method == UploadMethod.SYNC_BINARY_DATA) {
+            fileClient(httpClient).uploadWithResponse(options, null, null);
+        } else {
+            fileAsyncClient(httpClient).uploadWithResponse(options).block();
+        }
     }
 
     @ParameterizedTest

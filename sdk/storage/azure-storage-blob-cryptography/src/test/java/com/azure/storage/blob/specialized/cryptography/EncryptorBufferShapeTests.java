@@ -3,7 +3,18 @@
 
 package com.azure.storage.blob.specialized.cryptography;
 
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.test.utils.TestUtils;
+import com.azure.core.util.BinaryData;
+import com.azure.core.util.FluxUtil;
+import com.azure.storage.blob.options.BlobParallelUploadOptions;
 import com.azure.storage.common.test.shared.ShapedByteBuffer;
 import com.azure.storage.common.test.shared.TestBufferShape;
 import org.junit.jupiter.api.Test;
@@ -12,6 +23,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
@@ -42,6 +54,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class EncryptorBufferShapeTests {
     // Small regions keep the tests fast; the region logic doesn't depend on the absolute size.
     private static final int REGION_LENGTH = 16;
+    // The content encryption key used by the encrypted client uploads.
+    private static final byte[] CONTENT_KEY = randomBytes(32);
 
     @ParameterizedTest
     @MethodSource("encryptV2Supplier")
@@ -96,6 +110,113 @@ public class EncryptorBufferShapeTests {
         cipher.init(Cipher.DECRYPT_MODE, key, new IvParameterSpec(getV1Iv(encryptor)));
         TestUtils.assertArraysEqual(content, cipher.doFinal(ciphertext));
         source.assertNoBytesChanged();
+    }
+
+    /**
+     * The ways to pass the caller's buffers to an encrypted upload. The sync and async clients share an
+     * implementation today, but both are tested so they stay covered if their implementations diverge.
+     */
+    enum UploadMethod {
+        SYNC_FLUX, ASYNC_FLUX, SYNC_BINARY_DATA, ASYNC_BINARY_DATA
+    }
+
+    /*
+     * End to end through the encrypted clients: the uploaded blob, decrypted with the content encryption key, must be
+     * exactly the bytes between the source buffer's position and limit. Client-side encryption splits the data into
+     * regions regardless of the upload size, so this applies with the default transfer options.
+     */
+    @ParameterizedTest
+    @MethodSource("encryptedUploadSupplier")
+    public void encryptedUploadSendsOnlyExposedBytes(UploadMethod method, TestBufferShape shape, int length,
+        int expectedRegions) throws Exception {
+        byte[] content = randomBytes(length);
+        ShapedByteBuffer source = shape.wrap(content);
+        BodyCapturingHttpClient httpClient = new BodyCapturingHttpClient();
+
+        uploadEncrypted(method, httpClient, source.getBuffer());
+
+        TestUtils.assertArraysEqual(content, decryptV2(new SecretKeySpec(CONTENT_KEY, CryptographyConstants.AES),
+            httpClient.getBody(), expectedRegions));
+        source.assertNoBytesChanged();
+    }
+
+    private static Stream<Arguments> encryptedUploadSupplier() {
+        return Stream.of(UploadMethod.values())
+            .flatMap(method -> Stream.of(TestBufferShape.values())
+                .flatMap(shape -> Stream.of(
+                    // method | shape | length | expected regions
+                    Arguments.of(method, shape, REGION_LENGTH, 1), // Exactly one region.
+                    Arguments.of(method, shape, 2 * REGION_LENGTH + 5, 3), // Several regions, partial last one.
+                    Arguments.of(method, shape, 3 * REGION_LENGTH, 3)))); // Several regions, exact multiple.
+    }
+
+    private static void uploadEncrypted(UploadMethod method, HttpClient httpClient, ByteBuffer buffer) {
+        BlobParallelUploadOptions options = (method == UploadMethod.SYNC_FLUX || method == UploadMethod.ASYNC_FLUX)
+            ? new BlobParallelUploadOptions(Flux.just(buffer))
+            : new BlobParallelUploadOptions(BinaryData.fromByteBuffer(buffer));
+
+        // A fixed content encryption key, so the test can decrypt what was uploaded. Custom region sizes require
+        // encryption version 2.1.
+        EncryptedBlobAsyncClient asyncClient = new FixedKeyEncryptedBlobAsyncClient(
+            new EncryptedBlobClientBuilder(EncryptionVersion.V2_1).endpoint("https://account.blob.core.windows.net")
+                .containerName("container")
+                .blobName("blob")
+                .pipeline(new HttpPipelineBuilder().httpClient(httpClient).build())
+                .key(new FakeKey("keyId", randomBytes(256)), "keyWrapAlgorithm")
+                .clientSideEncryptionOptions(
+                    new BlobClientSideEncryptionOptions().setAuthenticatedRegionDataLengthInBytes(REGION_LENGTH))
+                .buildEncryptedBlobAsyncClient());
+
+        if (method == UploadMethod.SYNC_FLUX || method == UploadMethod.SYNC_BINARY_DATA) {
+            new EncryptedBlobClient(asyncClient).uploadWithResponse(options, null, null);
+        } else {
+            asyncClient.uploadWithResponse(options).block();
+        }
+    }
+
+    /*
+     * Captures the body of the single Put Blob request the encrypted upload makes. Reads request bodies through
+     * duplicates, as HTTP clients do.
+     */
+    private static final class BodyCapturingHttpClient implements HttpClient {
+        private byte[] body;
+
+        @Override
+        public Mono<HttpResponse> send(HttpRequest request) {
+            if (request.getHttpMethod() != HttpMethod.PUT || request.getUrl().getQuery() != null) {
+                return Mono.error(new IllegalStateException("Expected a single Put Blob request."));
+            }
+            return FluxUtil.collectBytesInByteBufferStream(request.getBody().map(ByteBuffer::duplicate)).map(bytes -> {
+                synchronized (this) {
+                    body = bytes;
+                }
+                return new MockHttpResponse(request, 201,
+                    new HttpHeaders().set(HttpHeaderName.fromString("x-ms-request-server-encrypted"), "true"));
+            });
+        }
+
+        synchronized byte[] getBody() {
+            return body;
+        }
+    }
+
+    /*
+     * Encrypts with a fixed content encryption key. The key is a SecretKeySpec, whose getEncoded() returns a copy, so
+     * a cipher clearing the key bytes after use can't change the key seen by other tests running in parallel.
+     */
+    private static final class FixedKeyEncryptedBlobAsyncClient extends EncryptedBlobAsyncClient {
+        FixedKeyEncryptedBlobAsyncClient(EncryptedBlobAsyncClient client) {
+            super(client.getHttpPipeline(), client.getAccountUrl(), client.getServiceVersion(), client.getAccountName(),
+                client.getContainerName(), client.getBlobName(), client.getSnapshotId(),
+                client.getCustomerProvidedKey(), client.getEncryptionScopeInternal(), client.getKeyWrapper(),
+                client.getKeyWrapAlgorithm(), client.getVersionId(), client.getEncryptionVersion(),
+                client.isRequiresEncryption(), client.getClientSideEncryptionOptions());
+        }
+
+        @Override
+        SecretKey generateSecretKey() {
+            return new SecretKeySpec(CONTENT_KEY, CryptographyConstants.AES);
+        }
     }
 
     private static EncryptorV2 encryptorV2(SecretKey key) {

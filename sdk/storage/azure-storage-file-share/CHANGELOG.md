@@ -8,8 +8,9 @@
 
 ### Bugs Fixed
 
-- Fixed a bug where `ShareFileAsyncClient.uploadWithResponse` included the bytes before the position of a `ByteBuffer`
-  in the source data when splitting it into ranges, corrupting the uploaded content.
+- Fixed a bug where `ShareFileClient` and `ShareFileAsyncClient` uploads from a `Flux<ByteBuffer>` using
+  `ShareFileUploadOptions` that were split into ranges also uploaded the bytes before a buffer's position, when that
+  position was not 0 and the buffer was larger than the range size.
 
 ### Other Changes
 

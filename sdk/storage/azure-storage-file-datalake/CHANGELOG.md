@@ -8,8 +8,9 @@
 
 ### Bugs Fixed
 
-- Fixed a bug where uploads from a `Flux<ByteBuffer>` that were split into multiple appends included the bytes before
-  the position of a `ByteBuffer`, corrupting the uploaded content.
+- Fixed a bug where `DataLakeFileClient` and `DataLakeFileAsyncClient` uploads from a `Flux<ByteBuffer>` or from
+  `BinaryData.fromByteBuffer` that were split into multiple appends also uploaded the bytes before a buffer's position,
+  when that position was not 0 and the buffer was larger than the block size.
 
 ### Other Changes
 
