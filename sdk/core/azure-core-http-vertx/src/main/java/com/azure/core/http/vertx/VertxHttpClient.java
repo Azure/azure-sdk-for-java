@@ -25,6 +25,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.Contexts;
 import com.azure.core.util.ProgressReporter;
+import com.azure.core.util.SharedExecutorService;
 import com.azure.core.util.logging.ClientLogger;
 import io.vertx.core.Future;
 import io.vertx.core.Promise;
@@ -43,10 +44,14 @@ import java.io.UncheckedIOException;
 import java.lang.reflect.Method;
 import java.time.Duration;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.CancellationException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * {@link HttpClient} implementation for the Vert.x {@link io.vertx.core.http.HttpClient}.
@@ -59,6 +64,7 @@ class VertxHttpClient implements HttpClient {
     private static final Duration EXPECT_CONTINUE_TIMEOUT = Duration.ofSeconds(1);
 
     private static final ReflectiveInvoker REQUEST_RESET;
+    private static final ReflectiveInvoker REQUEST_WRITE_HEAD;
     static {
         // In order to support both Vert.x 4.5 and 5.x reflection is needed to reset an HttpClientRequest.
         // HttpClientRequest.reset(long, Throwable) is available in both versions, but it returns boolean in 4.5 and
@@ -66,6 +72,16 @@ class VertxHttpClient implements HttpClient {
         try {
             Method method = HttpClientRequest.class.getMethod("reset", long.class, Throwable.class);
             REQUEST_RESET = ReflectionUtils.getMethodInvoker(HttpClientRequest.class, method, false);
+
+            // Vert.x 5.1 introduced writeHead() and deprecated sendHead() for removal. Resolve the appropriate method
+            // at runtime so the transport can still be compiled and used with Vert.x 4.5 and 5.0.
+            Method writeHeadMethod;
+            try {
+                writeHeadMethod = HttpClientRequest.class.getMethod("writeHead");
+            } catch (NoSuchMethodException ex) {
+                writeHeadMethod = HttpClientRequest.class.getMethod("sendHead");
+            }
+            REQUEST_WRITE_HEAD = ReflectionUtils.getMethodInvoker(HttpClientRequest.class, writeHeadMethod, false);
         } catch (Exception ex) {
             // Fail here as the method isn't available and this HttpClient wouldn't be usable anyway.
             throw LOGGER.logExceptionAsError(new IllegalStateException(ex));
@@ -75,6 +91,8 @@ class VertxHttpClient implements HttpClient {
     final io.vertx.core.http.HttpClient client;
     final HttpClientOptions buildOptions;
     private final Duration responseTimeout;
+    private final Duration writeTimeout;
+    private final ScheduledExecutorService writeTimeoutExecutor;
 
     /**
      * Constructs a {@link VertxHttpClient}.
@@ -82,9 +100,21 @@ class VertxHttpClient implements HttpClient {
      * @param client The Vert.x {@link io.vertx.core.http.HttpClient}
      */
     VertxHttpClient(io.vertx.core.http.HttpClient client, HttpClientOptions buildOptions, Duration responseTimeout) {
+        this(client, buildOptions, responseTimeout, Duration.ZERO);
+    }
+
+    VertxHttpClient(io.vertx.core.http.HttpClient client, HttpClientOptions buildOptions, Duration responseTimeout,
+        Duration writeTimeout) {
+        this(client, buildOptions, responseTimeout, writeTimeout, SharedExecutorService.getInstance());
+    }
+
+    VertxHttpClient(io.vertx.core.http.HttpClient client, HttpClientOptions buildOptions, Duration responseTimeout,
+        Duration writeTimeout, ScheduledExecutorService writeTimeoutExecutor) {
         this.client = Objects.requireNonNull(client, "client cannot be null");
         this.buildOptions = buildOptions;
         this.responseTimeout = responseTimeout;
+        this.writeTimeout = writeTimeout;
+        this.writeTimeoutExecutor = Objects.requireNonNull(writeTimeoutExecutor, "writeTimeoutExecutor cannot be null");
     }
 
     @Override
@@ -142,13 +172,37 @@ class VertxHttpClient implements HttpClient {
 
         // Create the Promise that will be returned. Promise.promise() is an uncompleted Promise.
         Promise<HttpResponse> promise = Promise.promise();
+        CompletableFuture<HttpResponse> requestFuture = new CompletableFuture<>();
+        promise.future().onComplete(result -> {
+            if (result.failed()) {
+                requestFuture.completeExceptionally(result.cause());
+            } else if (!requestFuture.complete(result.result())) {
+                // Cancellation may win the race with a successful response. Do not leave that response unconsumed.
+                result.result().close();
+            }
+        });
+        requestFuture.whenComplete((response, error) -> {
+            if (requestFuture.isCancelled()) {
+                // Fail the Vert.x promise too, including when cancellation occurs before request acquisition.
+                promise.tryFail(new CancellationException("HTTP request was cancelled."));
+            }
+        });
+
         client.request(options).andThen(requestResult -> {
             if (requestResult.failed()) {
-                promise.fail(requestResult.cause());
+                promise.tryFail(requestResult.cause());
                 return;
             }
 
             HttpClientRequest vertxRequest = requestResult.result();
+            // A timed-out or canceled response future does not abort the underlying HTTP exchange on its own.
+            promise.future().onFailure(cause -> resetRequest(vertxRequest, 0L, cause));
+            if (promise.future().failed()) {
+                return;
+            }
+            WriteTimeout writeWatcher = new WriteTimeout(writeTimeout, promise, writeTimeoutExecutor);
+            promise.future().onComplete(ignored -> writeWatcher.close());
+
             for (HttpHeader header : request.getHeaders()) {
                 // Potential optimization here would be creating a MultiMap wrapper around azure-core's
                 // HttpHeaders and using RequestOptions.setHeaders(MultiMap)
@@ -165,47 +219,48 @@ class VertxHttpClient implements HttpClient {
                 responseFuture = vertxRequest.response();
             }
 
-            responseFuture = responseFuture.onFailure(promise::fail);
+            responseFuture = responseFuture.onFailure(promise::tryFail);
 
             if (eagerlyReadResponse || ignoreResponseBody) {
                 responseFuture.andThen(responseResult -> {
                     if (responseResult.failed()) {
-                        promise.fail(responseResult.cause());
+                        promise.tryFail(responseResult.cause());
                         return;
                     }
 
                     HttpClientResponse vertxHttpResponse = responseResult.result();
                     vertxHttpResponse.body().andThen(bodyResult -> {
                         if (bodyResult.succeeded()) {
-                            promise.complete(
+                            promise.tryComplete(
                                 new BufferedVertxHttpResponse(request, vertxHttpResponse, bodyResult.result()));
                         } else {
-                            promise.fail(bodyResult.cause());
+                            promise.tryFail(bodyResult.cause());
                         }
                     });
                 });
             } else {
                 responseFuture.andThen(responseResult -> {
                     if (responseResult.succeeded()) {
-                        promise.complete(new VertxHttpResponse(request, responseResult.result()));
+                        promise.tryComplete(new VertxHttpResponse(request, responseResult.result()));
                     } else {
-                        promise.fail(responseResult.cause());
+                        promise.tryFail(responseResult.cause());
                     }
                 });
             }
 
-            sendBody(contextView, request, progressReporter, vertxRequest, promise);
+            sendBody(contextView, request, progressReporter, vertxRequest, promise, writeWatcher);
         });
 
-        return promise.future().toCompletionStage().toCompletableFuture();
+        return requestFuture;
     }
 
     private void sendBody(ContextView contextView, HttpRequest azureRequest, ProgressReporter progressReporter,
-        HttpClientRequest vertxRequest, Promise<HttpResponse> promise) {
+        HttpClientRequest vertxRequest, Promise<HttpResponse> promise, WriteTimeout writeWatcher) {
         BinaryData body = azureRequest.getBodyAsBinaryData();
 
         if (body == null) {
-            vertxRequest.send().onFailure(promise::fail);
+            writeWatcher.start();
+            vertxRequest.end().onSuccess(ignored -> writeWatcher.close()).onFailure(promise::tryFail);
             return;
         }
 
@@ -215,7 +270,7 @@ class VertxHttpClient implements HttpClient {
             AtomicBoolean bodyWritten = new AtomicBoolean();
             Runnable writeOnce = () -> {
                 if (bodyWritten.compareAndSet(false, true)) {
-                    writeBody(contextView, azureRequest, progressReporter, vertxRequest, promise, body, true);
+                    writeBody(contextView, azureRequest, progressReporter, vertxRequest, promise, body, writeWatcher);
                 }
             };
 
@@ -243,9 +298,10 @@ class VertxHttpClient implements HttpClient {
                 cancelFallback.run();
                 writeOnce.run();
             });
-            vertxRequest.sendHead().onFailure(promise::fail);
+            long headerWrite = writeWatcher.start();
+            writeHead(vertxRequest).onSuccess(ignored -> writeWatcher.pause(headerWrite)).onFailure(promise::tryFail);
         } else {
-            writeBody(contextView, azureRequest, progressReporter, vertxRequest, promise, body, false);
+            writeBody(contextView, azureRequest, progressReporter, vertxRequest, promise, body, writeWatcher);
         }
     }
 
@@ -268,7 +324,8 @@ class VertxHttpClient implements HttpClient {
     }
 
     private void writeBody(ContextView contextView, HttpRequest azureRequest, ProgressReporter progressReporter,
-        HttpClientRequest vertxRequest, Promise<HttpResponse> promise, BinaryData body, boolean headAlreadySent) {
+        HttpClientRequest vertxRequest, Promise<HttpResponse> promise, BinaryData body, WriteTimeout writeWatcher) {
+        writeWatcher.start();
         BinaryDataContent bodyContent = BinaryDataHelper.getContent(body);
         if (bodyContent instanceof ByteArrayContent
             || bodyContent instanceof ByteBufferContent
@@ -278,17 +335,27 @@ class VertxHttpClient implements HttpClient {
             // are in-memory and have a length.
             long contentLength = bodyContent.getLength();
             Buffer buffer = Buffer.buffer(bodyContent.toBytes());
-            // Once the head has been sent the body must be written onto the open request rather than sent as a
-            // whole new request.
-            Future<Void> written = headAlreadySent ? vertxRequest.end(buffer) : vertxRequest.send(buffer).mapEmpty();
-            written.onSuccess(ignored -> reportProgress(contentLength, progressReporter)).onFailure(promise::fail);
+            // end() completes with the write, whereas send() completes only after receiving response headers.
+            vertxRequest.end(buffer).onSuccess(ignored -> {
+                writeWatcher.close();
+                reportProgress(contentLength, progressReporter);
+            }).onFailure(promise::tryFail);
         } else {
             // Right now both Flux<ByteBuffer> and InputStream bodies are being handled reactively.
             azureRequest.getBody()
                 .subscribe(new VertxRequestWriteSubscriber(vertxRequest::exceptionHandler, vertxRequest::drainHandler,
-                    vertxRequest::write, vertxRequest::writeQueueFull,
-                    (code, cause) -> resetRequest(vertxRequest, code, cause), vertxRequest::end, promise,
-                    progressReporter, contextView));
+                    buffer -> vertxRequest.write(buffer).onSuccess(ignored -> writeWatcher.progress()),
+                    vertxRequest::writeQueueFull, (code, cause) -> resetRequest(vertxRequest, code, cause),
+                    vertxRequest::end, promise, progressReporter, contextView));
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private static Future<Void> writeHead(HttpClientRequest vertxRequest) {
+        try {
+            return (Future<Void>) REQUEST_WRITE_HEAD.invokeWithArguments(vertxRequest);
+        } catch (Exception ex) {
+            return Future.failedFuture(ex);
         }
     }
 
@@ -308,4 +375,82 @@ class VertxHttpClient implements HttpClient {
         }
     }
 
+    private static final class WriteTimeout {
+        private final Duration timeout;
+        private final Promise<HttpResponse> promise;
+        private final ScheduledExecutorService executor;
+        private final long timeoutNanos;
+        private ScheduledFuture<?> task;
+        private long generation;
+        private long watchdogGeneration;
+        private long lastProgressNanos;
+        private boolean closed;
+
+        private WriteTimeout(Duration timeout, Promise<HttpResponse> promise, ScheduledExecutorService executor) {
+            this.timeout = timeout;
+            this.promise = promise;
+            this.executor = executor;
+            this.timeoutNanos = timeout == null || timeout.isZero() || timeout.isNegative()
+                ? 0
+                : TimeUnit.MILLISECONDS.toNanos(Math.max(1, timeout.toMillis()));
+        }
+
+        private synchronized long start() {
+            long current = ++generation;
+            progress();
+            return current;
+        }
+
+        private synchronized void progress() {
+            if (!closed && !promise.future().isComplete() && timeoutNanos > 0) {
+                // Buffers update a timestamp, not the scheduled task. The shared executor retains canceled tasks
+                // until their deadlines, so replacing a task per buffer would retain the entire upload's history.
+                lastProgressNanos = System.nanoTime();
+                if (task == null) {
+                    long watchdog = ++watchdogGeneration;
+                    task = executor.schedule(() -> timedOut(watchdog), timeoutNanos, TimeUnit.NANOSECONDS);
+                }
+            }
+        }
+
+        private synchronized void pause(long current) {
+            // A late header-write completion must not pause a body write that has already begun.
+            if (current == generation) {
+                ++generation;
+                cancelTask();
+            }
+        }
+
+        private void timedOut(long current) {
+            synchronized (this) {
+                if (closed || current != watchdogGeneration) {
+                    return;
+                }
+                long remaining = timeoutNanos - (System.nanoTime() - lastProgressNanos);
+                if (remaining > 0) {
+                    // Progress updates only the timestamp. Schedule again after this watchdog has left the queue,
+                    // rather than retaining a canceled timer for every streamed buffer.
+                    task = executor.schedule(() -> timedOut(current), remaining, TimeUnit.NANOSECONDS);
+                    return;
+                }
+                closed = true;
+                cancelTask();
+            }
+            promise.tryFail(new TimeoutException("Request write timed out after " + timeout + "."));
+        }
+
+        private synchronized void close() {
+            closed = true;
+            ++generation;
+            cancelTask();
+        }
+
+        private void cancelTask() {
+            ++watchdogGeneration;
+            if (task != null) {
+                task.cancel(false);
+                task = null;
+            }
+        }
+    }
 }

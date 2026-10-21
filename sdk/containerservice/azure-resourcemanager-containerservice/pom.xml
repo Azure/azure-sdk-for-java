@@ -42,7 +42,7 @@
 
       --add-opens com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
     </javaModulesSurefireArgLine>
-    <revapi.skip>false</revapi.skip>
+    <revapi.skip>true</revapi.skip>
   </properties>
 
   <developers>

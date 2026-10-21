@@ -31,6 +31,19 @@ public final class AgentPoolMode extends ExpandableStringEnum<AgentPoolMode> {
     public static final AgentPoolMode GATEWAY = fromString("Gateway");
 
     /**
+     * ManagedSystem is a system pool managed by AKS. The pool scales dynamically according to cluster usage, and has
+     * additional automated monitoring and healing capabilities. There can only be one ManagedSystem pool, and it is
+     * recommended to delete all other system pools for the best experience.
+     */
+    public static final AgentPoolMode MANAGED_SYSTEM = fromString("ManagedSystem");
+
+    /**
+     * Machines agent pools are dedicated to hosting machines. Only limited operations, such as creation and deletion,
+     * are allowed at the pool level. Please use the machine APIs to manage the full machine lifecycle.
+     */
+    public static final AgentPoolMode MACHINES = fromString("Machines");
+
+    /**
      * Creates a new instance of AgentPoolMode value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

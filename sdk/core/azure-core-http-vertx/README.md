@@ -11,8 +11,11 @@ Azure Core Vert.x HTTP client is a plugin for the `azure-core` HTTP client API.
 
 ### Include the package
 
-This transport remains on Vert.x 4.5 and Netty 4.1 to support Java 8. Do not combine it with the Netty 4.2-based
-`azure-core-http-netty` library on the same classpath.
+By default, this transport uses Vert.x 4.5 and Netty 4.1 to support Java 8. It also supports Vert.x 5.0, 5.1, and 5.2
+on Java 11 or later when your application selects one of these Vert.x versions and its compatible transitive
+dependencies, including Netty 4.2.
+Keep Vert.x and Netty versions consistent across your application. Do not combine the default Vert.x 4.5/Netty 4.1
+dependencies with the Netty 4.2-based `azure-core-http-netty` library on the same classpath.
 
 #### Include the BOM file
 
