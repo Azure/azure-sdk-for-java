@@ -58,9 +58,12 @@ public final class CostControlLifecycleTests extends TestProxyTestBase {
         if (getTestMode() != TestMode.LIVE) {
             interceptorManager.removeSanitizers("AZSDK3493", "AZSDK3430");
             if (getTestMode() == TestMode.RECORD) {
-                interceptorManager.addSanitizers(createValueSanitizers(subscriptionId, SUBSCRIPTION_PLACEHOLDER));
-                interceptorManager.addSanitizers(createValueSanitizers(resourceGroupName, RESOURCE_GROUP_PLACEHOLDER));
-                interceptorManager.addSanitizers(createValueSanitizers(accountName, ACCOUNT_NAME_PLACEHOLDER));
+                interceptorManager
+                    .addSanitizers(createValueSanitizers("subscriptions", subscriptionId, SUBSCRIPTION_PLACEHOLDER));
+                interceptorManager.addSanitizers(
+                    createValueSanitizers("resourceGroups", resourceGroupName, RESOURCE_GROUP_PLACEHOLDER));
+                interceptorManager
+                    .addSanitizers(createValueSanitizers("accounts", accountName, ACCOUNT_NAME_PLACEHOLDER));
             }
             interceptorManager.addSanitizers(
                 new TestProxySanitizer("api-version=[^&]+", "api-version=" + RECORDED_API_VERSION,
@@ -154,9 +157,10 @@ public final class CostControlLifecycleTests extends TestProxyTestBase {
         }
     }
 
-    static TestProxySanitizer[] createValueSanitizers(String value, String replacement) {
+    static TestProxySanitizer[] createValueSanitizers(String segment, String value, String replacement) {
         // Escape identifier metacharacters using syntax supported by the .NET test proxy.
         String regex = value.replace(".", "\\.").replace("(", "\\(").replace(")", "\\)");
+        regex = "(?<=/" + segment + "/)" + regex + "(?=/|[?\"#]|$)";
         return new TestProxySanitizer[] {
             new TestProxySanitizer(regex, replacement, TestProxySanitizerType.URL),
             new TestProxySanitizer(regex, replacement, TestProxySanitizerType.BODY_REGEX) };
