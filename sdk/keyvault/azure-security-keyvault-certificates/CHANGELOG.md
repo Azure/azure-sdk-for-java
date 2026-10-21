@@ -1,14 +1,20 @@
 # Release History
 
-## 4.10.0-beta.2 (Unreleased)
+## 4.10.0-beta.2 (2026-10-21)
 
 ### Features Added
 
-### Breaking Changes
+* `models.PlatformManaged` was added
 
-### Bugs Fixed
+#### `models.CertificatePolicy` was modified
 
-### Other Changes
+* `setPlatformManaged(models.PlatformManaged)` was added
+* `forPlatformManaged(models.PlatformManaged)` was added
+* `getPlatformManaged()` was added
+
+#### `CertificateServiceVersion` was modified
+
+* `V2026_03_01_PREVIEW` was added
 
 ## 4.9.3 (2026-10-06)
 
