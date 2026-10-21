@@ -7,6 +7,7 @@ import com.azure.ai.agents.BetaVoiceAgentLiveWebSocketSessionAsyncClient;
 import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
+import com.azure.ai.agents.models.VoiceAgentLiveWebSocketConnectionOptions;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import java.io.BufferedReader;
 import java.io.Console;
@@ -52,6 +53,8 @@ import reactor.core.scheduler.Schedulers;
  *   <li>{@code FOUNDRY_GPT_LIVE_MODEL} - Optional. The GPT Live deployment name. Defaults to {@code gpt-live-1}.</li>
  *   <li>{@code FOUNDRY_GPT_LIVE_BACKEND_MODEL} - Optional. The Responses backend deployment name in the Live
  *   resource. Defaults to {@code gpt-5.6-terra}.</li>
+ *   <li>{@code FOUNDRY_GPT_LIVE_STORE} - Optional. Set to {@code true} to persist conversation content and audio
+ *   and request a Foundry conversation ID. Defaults to {@code false}. Also keep the agent for later REST reads.</li>
  *   <li>{@code FOUNDRY_KEEP_GPT_LIVE_AGENT} - Optional. Set to {@code true} to keep the agent after the sample.
  *   Defaults to {@code false}.</li>
  * </ul>
@@ -63,6 +66,7 @@ public class GptLiveTextConversationAsyncSample {
         String model = configuration.get("FOUNDRY_GPT_LIVE_MODEL");
         String backendModel = configuration.get("FOUNDRY_GPT_LIVE_BACKEND_MODEL");
         boolean keepAgent = Boolean.parseBoolean(configuration.get("FOUNDRY_KEEP_GPT_LIVE_AGENT", "false"));
+        boolean store = Boolean.parseBoolean(configuration.get("FOUNDRY_GPT_LIVE_STORE", "false"));
 
         if (endpoint == null || endpoint.trim().isEmpty()) {
             throw new IllegalArgumentException("Set environment variable FOUNDRY_PROJECT_ENDPOINT before running this sample.");
@@ -85,7 +89,7 @@ public class GptLiveTextConversationAsyncSample {
         try (GptLiveSampleUtils.AgentResource agent
             = GptLiveSampleUtils.createAgent(builder, model, backendModel, "text-async", false, keepAgent)) {
             Mono.usingWhen(agent.builder.beta().buildBetaVoiceAgentLiveWebSocketAsyncClient()
-                .openWebSocketSession(agent.name),
+                .openWebSocketSession(agent.name, new VoiceAgentLiveWebSocketConnectionOptions().setStoreEnabled(store)),
                 session -> args.length == 0
                     ? runConversation(session, console == null ? new InputStreamReader(System.in) : console.reader())
                     : runConversation(session, Arrays.asList(args)),
