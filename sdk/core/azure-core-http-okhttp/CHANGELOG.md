@@ -8,6 +8,9 @@
 
 ### Bugs Fixed
 
+- Fixed timeout resolution to prefer explicit builder values, then builder-specific configuration, then global
+  configuration, and finally SDK defaults. Nonpositive call timeouts now disable the timeout instead of rejecting
+  negative values.
 - Prevented proxy authentication retries for HTTPS endpoint 407 responses while preserving CONNECT and cleartext HTTP proxy authentication.
 - Fixed response timeouts remaining active while reading the response body after an `Expect: 100-continue` handshake.
 
