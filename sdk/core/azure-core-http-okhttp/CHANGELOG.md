@@ -8,6 +8,9 @@
 
 ### Bugs Fixed
 
+- Prevented proxy authentication retries for HTTPS endpoint 407 responses while preserving CONNECT and cleartext HTTP proxy authentication.
+- Fixed response timeouts remaining active while reading the response body after an `Expect: 100-continue` handshake.
+
 ### Other Changes
 
 ## 1.13.8 (2026-09-29)

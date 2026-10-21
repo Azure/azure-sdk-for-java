@@ -19,9 +19,11 @@ import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import reactor.test.StepVerifier;
 
 import java.net.InetSocketAddress;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -93,6 +95,16 @@ public class JdkHttpClientBuilderTests {
         assertDoesNotThrow(() -> new JdkHttpClientBuilder(null));
     }
 
+    @ParameterizedTest
+    @ValueSource(longs = { 0, -1 })
+    public void disabledConnectionTimeoutDoesNotThrow(long timeoutMillis) {
+        java.net.http.HttpClient.Builder nativeBuilder = java.net.http.HttpClient.newBuilder();
+        assertNotNull(assertDoesNotThrow(() -> new JdkHttpClientBuilder(nativeBuilder).configuration(Configuration.NONE)
+            .connectionTimeout(Duration.ofMillis(timeoutMillis))
+            .build()));
+        assertFalse(nativeBuilder.build().connectTimeout().isPresent());
+    }
+
     /**
      * Tests building a client with a given {@code Executor}.
      */
@@ -147,11 +159,10 @@ public class JdkHttpClientBuilderTests {
 
     @Test
     public void buildWithHttpProxyFromEnvConfiguration() {
-        Configuration configuration = new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE,
-            new TestConfigurationSource()
-                .put(Configuration.PROPERTY_HTTP_PROXY,
-                    "http://" + PROXY_USER_INFO + "localhost:" + PROXY_SERVER_HTTP_PORT)
-                .put("java.net.useSystemProxies", "true")).build();
+        Configuration configuration = new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE, new TestConfigurationSource()
+            .put(Configuration.PROPERTY_HTTP_PROXY, "http://" + PROXY_USER_INFO + "localhost:" + PROXY_SERVER_HTTP_PORT)
+            .put(Configuration.PROPERTY_HTTPS_PROXY, "")
+            .put("java.net.useSystemProxies", "true")).build();
 
         configurationProxyTest(configuration);
     }
@@ -193,6 +204,7 @@ public class JdkHttpClientBuilderTests {
 
         final Configuration envConfiguration = new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE,
             new TestConfigurationSource().put(Configuration.PROPERTY_HTTP_PROXY, "http://localhost:8888")
+                .put(Configuration.PROPERTY_HTTPS_PROXY, "")
                 .put(Configuration.PROPERTY_NO_PROXY, "localhost")).build();
 
         arguments.add(Arguments.of(envConfiguration));

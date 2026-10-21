@@ -4,56 +4,180 @@
 
 package com.azure.resourcemanager.edgeactions.models;
 
-import com.azure.resourcemanager.edgeactions.fluent.models.EdgeActionVersionPropertiesInner;
+import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
 /**
- * An immutable client-side representation of EdgeActionVersionProperties.
+ * Represents an edge action version.
  */
-public interface EdgeActionVersionProperties {
+@Fluent
+public final class EdgeActionVersionProperties implements JsonSerializable<EdgeActionVersionProperties> {
+    /*
+     * The deployment type for the Edge Action version. Set this value when creating the version. When updating an
+     * existing version, any supplied value must match the existing value.
+     */
+    private EdgeActionVersionDeploymentType deploymentType;
+
+    /*
+     * The validation status
+     */
+    private EdgeActionVersionValidationStatus validationStatus;
+
+    /*
+     * The provisioning state
+     */
+    private ProvisioningState provisioningState;
+
+    /*
+     * Indicates whether this is the default version. When creating a version, if the Edge Action has no default
+     * version, the service makes the new version the default even when false is supplied. If another default version
+     * exists, supplying true is rejected. When updating an existing version, any supplied value must match the existing
+     * value. Use swapDefault to change the default version.
+     */
+    private EdgeActionIsDefaultVersion isDefaultVersion;
+
+    /*
+     * The last update time in UTC for package update
+     */
+    private OffsetDateTime lastPackageUpdateTime;
+
     /**
-     * Gets the deploymentType property: The deployment type for the Edge Action version. Set this value when creating
+     * Creates an instance of EdgeActionVersionProperties class.
+     */
+    public EdgeActionVersionProperties() {
+    }
+
+    /**
+     * Get the deploymentType property: The deployment type for the Edge Action version. Set this value when creating
      * the version. When updating an existing version, any supplied value must match the existing value.
-     * 
+     *
      * @return the deploymentType value.
      */
-    EdgeActionVersionDeploymentType deploymentType();
+    public EdgeActionVersionDeploymentType deploymentType() {
+        return this.deploymentType;
+    }
 
     /**
-     * Gets the validationStatus property: The validation status.
-     * 
+     * Set the deploymentType property: The deployment type for the Edge Action version. Set this value when creating
+     * the version. When updating an existing version, any supplied value must match the existing value.
+     *
+     * @param deploymentType the deploymentType value to set.
+     * @return the EdgeActionVersionProperties object itself.
+     */
+    public EdgeActionVersionProperties withDeploymentType(EdgeActionVersionDeploymentType deploymentType) {
+        this.deploymentType = deploymentType;
+        return this;
+    }
+
+    /**
+     * Get the validationStatus property: The validation status.
+     *
      * @return the validationStatus value.
      */
-    EdgeActionVersionValidationStatus validationStatus();
+    public EdgeActionVersionValidationStatus validationStatus() {
+        return this.validationStatus;
+    }
 
     /**
-     * Gets the provisioningState property: The provisioning state.
-     * 
+     * Get the provisioningState property: The provisioning state.
+     *
      * @return the provisioningState value.
      */
-    ProvisioningState provisioningState();
+    public ProvisioningState provisioningState() {
+        return this.provisioningState;
+    }
 
     /**
-     * Gets the isDefaultVersion property: Indicates whether this is the default version. When creating a version, if
-     * the Edge Action has no default version, the service makes the new version the default even when false is
-     * supplied. If another default version exists, supplying true is rejected. When updating an existing version, any
-     * supplied value must match the existing value. Use swapDefault to change the default version.
-     * 
+     * Get the isDefaultVersion property: Indicates whether this is the default version. When creating a version, if the
+     * Edge Action has no default version, the service makes the new version the default even when false is supplied. If
+     * another default version exists, supplying true is rejected. When updating an existing version, any supplied value
+     * must match the existing value. Use swapDefault to change the default version.
+     *
      * @return the isDefaultVersion value.
      */
-    EdgeActionIsDefaultVersion isDefaultVersion();
+    public EdgeActionIsDefaultVersion isDefaultVersion() {
+        return this.isDefaultVersion;
+    }
 
     /**
-     * Gets the lastPackageUpdateTime property: The last update time in UTC for package update.
-     * 
+     * Set the isDefaultVersion property: Indicates whether this is the default version. When creating a version, if the
+     * Edge Action has no default version, the service makes the new version the default even when false is supplied. If
+     * another default version exists, supplying true is rejected. When updating an existing version, any supplied value
+     * must match the existing value. Use swapDefault to change the default version.
+     *
+     * @param isDefaultVersion the isDefaultVersion value to set.
+     * @return the EdgeActionVersionProperties object itself.
+     */
+    public EdgeActionVersionProperties withIsDefaultVersion(EdgeActionIsDefaultVersion isDefaultVersion) {
+        this.isDefaultVersion = isDefaultVersion;
+        return this;
+    }
+
+    /**
+     * Get the lastPackageUpdateTime property: The last update time in UTC for package update.
+     *
      * @return the lastPackageUpdateTime value.
      */
-    OffsetDateTime lastPackageUpdateTime();
+    public OffsetDateTime lastPackageUpdateTime() {
+        return this.lastPackageUpdateTime;
+    }
 
     /**
-     * Gets the inner com.azure.resourcemanager.edgeactions.fluent.models.EdgeActionVersionPropertiesInner object.
-     * 
-     * @return the inner object.
+     * {@inheritDoc}
      */
-    EdgeActionVersionPropertiesInner innerModel();
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("deploymentType",
+            this.deploymentType == null ? null : this.deploymentType.toString());
+        jsonWriter.writeStringField("isDefaultVersion",
+            this.isDefaultVersion == null ? null : this.isDefaultVersion.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EdgeActionVersionProperties from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EdgeActionVersionProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the EdgeActionVersionProperties.
+     */
+    public static EdgeActionVersionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EdgeActionVersionProperties deserializedEdgeActionVersionProperties = new EdgeActionVersionProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("deploymentType".equals(fieldName)) {
+                    deserializedEdgeActionVersionProperties.deploymentType
+                        = EdgeActionVersionDeploymentType.fromString(reader.getString());
+                } else if ("isDefaultVersion".equals(fieldName)) {
+                    deserializedEdgeActionVersionProperties.isDefaultVersion
+                        = EdgeActionIsDefaultVersion.fromString(reader.getString());
+                } else if ("validationStatus".equals(fieldName)) {
+                    deserializedEdgeActionVersionProperties.validationStatus
+                        = EdgeActionVersionValidationStatus.fromString(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedEdgeActionVersionProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("lastPackageUpdateTime".equals(fieldName)) {
+                    deserializedEdgeActionVersionProperties.lastPackageUpdateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEdgeActionVersionProperties;
+        });
+    }
 }

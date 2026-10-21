@@ -1,12 +1,26 @@
 # Release History
 
-## 2.13.0-beta.1 (Unreleased)
+## 2.14.0-beta.1 (Unreleased)
 
 ### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+- Reload filesystem certificates from the configured custom and well-known directories when a keystore is constructed or loaded, without sharing mutable filesystem certificate state between keystores.
+
+### Other Changes
+
+## 2.13.0 (2026-10-13)
+
+### Features Added
+- Added ISO-8601 duration support (e.g., `PT30S`) for `azure.keyvault.jca.certificates-refresh-interval`, while retaining support for millisecond values. ([#50785](https://github.com/Azure/azure-sdk-for-java/pull/50785))
 - Added lazy loading for Key Vault certificate details in the JCA keystore. Certificate details are now loaded by alias when requested, avoiding unnecessary reads for unconfigured certificates. ([#49774](https://github.com/Azure/azure-sdk-for-java/pull/49774))
 - Added support for `azure.keyvault.jca.certificate-alias-filter-pattern` to filter Key Vault certificate aliases with inclusion/exclusion regex patterns. Inclusion patterns are configured directly and exclusion patterns are prefixed with `!`. Configure more than one filter by appending a suffix to the property name, such as `azure.keyvault.jca.certificate-alias-filter-pattern.1`. A pattern can contain any character as long as the regex is correct. If no filter property is configured, alias filtering is disabled and all discovered Key Vault aliases remain eligible for lazy loading. ([#39487](https://github.com/Azure/azure-sdk-for-java/issues/39487))
 
 ### Breaking Changes
+- Removed support for `azure.keyvault.jca.certificates-refresh-interval-in-ms`. ([#50785](https://github.com/Azure/azure-sdk-for-java/pull/50785))
 
 ### Bugs Fixed
 - Preserved configured TLS endpoint identification and connection-specific validation when delegating certificate checks, including checks of certificates trusted through the Key Vault keystore. ([#50667](https://github.com/Azure/azure-sdk-for-java/pull/50667))
@@ -15,6 +29,7 @@
 - Fixed an issue where `KeyStore.load(KeyVaultLoadStoreParameter)` could combine explicit client settings with certificate cache and path settings captured earlier from system properties. The parameter now carries the complete key store configuration. ([#50163](https://github.com/Azure/azure-sdk-for-java/pull/50163))
 
 ### Other Changes
+- Changed the certificate refresh interval in `KeyVaultLoadStoreParameter` from `long` milliseconds to `Duration`. ([#50785](https://github.com/Azure/azure-sdk-for-java/pull/50785))
 - Added system property `azure.keyvault.jca.disable-aia-download` to disable automatic AIA chain completion. AIA chain completion downloads certificates from URLs embedded in certificate extensions, so this allows locked-down environments to prevent those outbound HTTP(S) requests, mitigating potential SSRF-like attack vectors when loading untrusted certificates. The value is captured when each Key Vault client is initialized and retained for lazy certificate-chain loading, so multiple keystores can use different settings without overwriting one another. Set to `true` to disable (defaults to `false`).
 - Added `KeyVaultJcaPropertyNames` as the central source for the system property names supported by the Azure Key Vault JCA provider. ([#50163](https://github.com/Azure/azure-sdk-for-java/pull/50163))
 - Replaced Apache HttpClient 5 with the JDK `HttpURLConnection`, removing the Apache HttpClient and SLF4J runtime dependencies while preserving strict HTTPS hostname verification, non-fatal AIA download failures, fail-closed TLS trust initialization, and automatic gzip and deflate response decompression. VM managed identity requests to IMDS use `Proxy.NO_PROXY` to bypass HTTP proxy routing. Other requests, including App Service and Container Apps managed identity requests, retain JDK proxy selection.
