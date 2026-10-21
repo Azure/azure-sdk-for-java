@@ -15,8 +15,8 @@ import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.implementation.Constants;
-import com.azure.storage.common.test.shared.ShapedByteBuffer;
-import com.azure.storage.common.test.shared.TestBufferShape;
+import com.azure.storage.common.test.shared.ByteBufferState;
+import com.azure.storage.common.test.shared.TestByteBufferVariant;
 import com.azure.storage.file.share.models.ShareFileUploadOptions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -41,9 +41,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Offline tests verifying that file share uploads send only the bytes between each source buffer's position and limit,
- * and don't modify the source buffers, for every kind of buffer (see {@link TestBufferShape}).
+ * and don't modify the source buffers, for every kind of buffer (see {@link TestByteBufferVariant}).
  */
-public class ShareBufferShapeUploadTests {
+public class ShareByteBufferVariantUploadTests {
     private static final String ENDPOINT = "https://account.file.core.windows.net";
     // Small sizes keep the tests fast; the partitioning logic doesn't depend on the absolute sizes.
     private static final int RANGE_SIZE = 1024;
@@ -60,10 +60,10 @@ public class ShareBufferShapeUploadTests {
 
     @ParameterizedTest
     @MethodSource("partitionedUploadSupplier")
-    public void partitionedUploadSendsOnlyExposedBytes(UploadMethod method, TestBufferShape shape, int length,
+    public void partitionedUploadSendsOnlyExposedBytes(UploadMethod method, TestByteBufferVariant variant, int length,
         int expectedRanges) {
         byte[] content = randomBytes(length);
-        ShapedByteBuffer source = shape.wrap(content);
+        ByteBufferState source = variant.wrap(content);
         RequestCapturingHttpClient httpClient = new RequestCapturingHttpClient();
 
         upload(method, httpClient,
@@ -76,13 +76,13 @@ public class ShareBufferShapeUploadTests {
 
     private static Stream<Arguments> partitionedUploadSupplier() {
         return Stream.of(UploadMethod.values())
-            .flatMap(method -> Stream.of(TestBufferShape.values())
-                .flatMap(shape -> Stream.of(
-                    // method | shape | length | expected ranges
-                    Arguments.of(method, shape, RANGE_SIZE / 2, 1), // A single range.
-                    Arguments.of(method, shape, RANGE_SIZE, 1), // A single range, exactly the threshold.
-                    Arguments.of(method, shape, 2 * RANGE_SIZE + 100, 3), // Several ranges, partial last one.
-                    Arguments.of(method, shape, 3 * RANGE_SIZE, 3)))); // Several ranges, exact multiple.
+            .flatMap(method -> Stream.of(TestByteBufferVariant.values())
+                .flatMap(variant -> Stream.of(
+                    // method | variant | length | expected ranges
+                    Arguments.of(method, variant, RANGE_SIZE / 2, 1), // A single range.
+                    Arguments.of(method, variant, RANGE_SIZE, 1), // A single range, exactly the threshold.
+                    Arguments.of(method, variant, 2 * RANGE_SIZE + 100, 3), // Several ranges, partial last one.
+                    Arguments.of(method, variant, 3 * RANGE_SIZE, 3)))); // Several ranges, exact multiple.
     }
 
     @ParameterizedTest
@@ -90,7 +90,7 @@ public class ShareBufferShapeUploadTests {
     public void partitionedUploadSendsOnlyExposedBytesOfMixedBuffers(UploadMethod method) {
         byte[] content = randomBytes(5 * RANGE_SIZE + 100);
         // Pieces that don't align with ranges, so ranges span buffers of different kinds.
-        List<ShapedByteBuffer> sources = TestBufferShape.mixed(content, 700);
+        List<ByteBufferState> sources = TestByteBufferVariant.mixed(content, 700);
         List<ByteBuffer> buffers = new ArrayList<>();
         sources.forEach(source -> buffers.add(source.getBuffer()));
         RequestCapturingHttpClient httpClient = new RequestCapturingHttpClient();
@@ -100,7 +100,7 @@ public class ShareBufferShapeUploadTests {
 
         assertEquals(6, httpClient.getRangeCount());
         TestUtils.assertArraysEqual(content, httpClient.getFileContent());
-        sources.forEach(ShapedByteBuffer::assertNoBytesChanged);
+        sources.forEach(ByteBufferState::assertNoBytesChanged);
     }
 
     @ParameterizedTest
@@ -109,7 +109,7 @@ public class ShareBufferShapeUploadTests {
         // The default options split content larger than the maximum range size, 4 MiB, into ranges.
         int length = 4 * Constants.MB + 100;
         byte[] content = randomBytes(length);
-        ShapedByteBuffer source = TestBufferShape.POSITIONED.wrap(content);
+        ByteBufferState source = TestByteBufferVariant.POSITIONED.wrap(content);
         RequestCapturingHttpClient httpClient = new RequestCapturingHttpClient();
 
         upload(method, httpClient, new ShareFileUploadOptions(Flux.just(source.getBuffer())));
@@ -128,10 +128,10 @@ public class ShareBufferShapeUploadTests {
     }
 
     @ParameterizedTest
-    @EnumSource(TestBufferShape.class)
-    public void uploadRangeSendsOnlyExposedBytes(TestBufferShape shape) {
+    @EnumSource(TestByteBufferVariant.class)
+    public void uploadRangeSendsOnlyExposedBytes(TestByteBufferVariant variant) {
         byte[] content = randomBytes(RANGE_SIZE + 100);
-        ShapedByteBuffer source = shape.wrap(content);
+        ByteBufferState source = variant.wrap(content);
         RequestCapturingHttpClient httpClient = new RequestCapturingHttpClient();
 
         fileAsyncClient(httpClient).uploadRange(Flux.just(source.getBuffer()), content.length).block();

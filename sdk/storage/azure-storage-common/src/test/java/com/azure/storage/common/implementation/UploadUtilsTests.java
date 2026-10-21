@@ -6,8 +6,8 @@ import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.ParallelTransferOptions;
-import com.azure.storage.common.test.shared.ShapedByteBuffer;
-import com.azure.storage.common.test.shared.TestBufferShape;
+import com.azure.storage.common.test.shared.ByteBufferState;
+import com.azure.storage.common.test.shared.TestByteBufferVariant;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -114,11 +114,11 @@ public class UploadUtilsTests {
     }
 
     @ParameterizedTest
-    @MethodSource("chunkSourceBufferShapesSupplier")
-    public void chunkSourceHandlesEveryBufferShape(TestBufferShape shape, int length, int chunkSize) {
+    @MethodSource("chunkSourceByteBufferVariantsSupplier")
+    public void chunkSourceHandlesEveryByteBufferVariant(TestByteBufferVariant variant, int length, int chunkSize) {
         byte[] content = new byte[length];
         new Random(length).nextBytes(content);
-        ShapedByteBuffer source = shape.wrap(content);
+        ByteBufferState source = variant.wrap(content);
 
         List<ByteBuffer> chunks
             = UploadUtils
@@ -142,13 +142,13 @@ public class UploadUtilsTests {
         source.assertPositionAndLimit(source.getOriginalPosition(), source.getOriginalLimit());
     }
 
-    private static Stream<Arguments> chunkSourceBufferShapesSupplier() {
-        return Stream.of(TestBufferShape.values())
-            .flatMap(shape -> Stream.of(
+    private static Stream<Arguments> chunkSourceByteBufferVariantsSupplier() {
+        return Stream.of(TestByteBufferVariant.values())
+            .flatMap(variant -> Stream.of(
                 // length | chunk size
-                Arguments.of(shape, 10, 4), // Split, with a partial last chunk.
-                Arguments.of(shape, 12, 4), // Split, an exact multiple of the chunk size.
-                Arguments.of(shape, 4, 4), // Fits in a single chunk exactly.
-                Arguments.of(shape, 3, 10))); // Smaller than a chunk.
+                Arguments.of(variant, 10, 4), // Split, with a partial last chunk.
+                Arguments.of(variant, 12, 4), // Split, an exact multiple of the chunk size.
+                Arguments.of(variant, 4, 4), // Fits in a single chunk exactly.
+                Arguments.of(variant, 3, 10))); // Smaller than a chunk.
     }
 }

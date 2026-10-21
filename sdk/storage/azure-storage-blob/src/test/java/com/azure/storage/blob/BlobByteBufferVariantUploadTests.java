@@ -17,8 +17,8 @@ import com.azure.core.util.FluxUtil;
 import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.options.BlobParallelUploadOptions;
-import com.azure.storage.common.test.shared.ShapedByteBuffer;
-import com.azure.storage.common.test.shared.TestBufferShape;
+import com.azure.storage.common.test.shared.ByteBufferState;
+import com.azure.storage.common.test.shared.TestByteBufferVariant;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.EnumSource;
@@ -47,9 +47,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Offline tests verifying that blob uploads send only the bytes between each source buffer's position and limit, and
- * don't modify the source buffers, for every kind of buffer (see {@link TestBufferShape}).
+ * don't modify the source buffers, for every kind of buffer (see {@link TestByteBufferVariant}).
  */
-public class BlobBufferShapeUploadTests {
+public class BlobByteBufferVariantUploadTests {
     private static final String ENDPOINT = "https://account.blob.core.windows.net";
     // Small sizes keep the tests fast; the partitioning logic doesn't depend on the absolute sizes.
     private static final int BLOCK_SIZE = 1024;
@@ -66,10 +66,10 @@ public class BlobBufferShapeUploadTests {
 
     @ParameterizedTest
     @MethodSource("partitionedUploadSupplier")
-    public void partitionedUploadSendsOnlyExposedBytes(UploadMethod method, TestBufferShape shape, int length,
+    public void partitionedUploadSendsOnlyExposedBytes(UploadMethod method, TestByteBufferVariant variant, int length,
         int expectedStagedBlocks) {
         byte[] content = randomBytes(length);
-        ShapedByteBuffer source = shape.wrap(content);
+        ByteBufferState source = variant.wrap(content);
         RequestCapturingHttpClient httpClient = new RequestCapturingHttpClient();
 
         upload(method, httpClient, Collections.singletonList(source.getBuffer()), length);
@@ -81,13 +81,13 @@ public class BlobBufferShapeUploadTests {
 
     private static Stream<Arguments> partitionedUploadSupplier() {
         return Stream.of(UploadMethod.values())
-            .flatMap(method -> Stream.of(TestBufferShape.values())
-                .flatMap(shape -> Stream.of(
-                    // method | shape | length | expected staged blocks
-                    Arguments.of(method, shape, BLOCK_SIZE / 2, 0), // A single request.
-                    Arguments.of(method, shape, BLOCK_SIZE, 0), // A single request, exactly the threshold.
-                    Arguments.of(method, shape, 2 * BLOCK_SIZE + 100, 3), // Staged, with a partial last block.
-                    Arguments.of(method, shape, 3 * BLOCK_SIZE, 3)))); // Staged, an exact multiple of the block size.
+            .flatMap(method -> Stream.of(TestByteBufferVariant.values())
+                .flatMap(variant -> Stream.of(
+                    // method | variant | length | expected staged blocks
+                    Arguments.of(method, variant, BLOCK_SIZE / 2, 0), // A single request.
+                    Arguments.of(method, variant, BLOCK_SIZE, 0), // A single request, exactly the threshold.
+                    Arguments.of(method, variant, 2 * BLOCK_SIZE + 100, 3), // Staged, with a partial last block.
+                    Arguments.of(method, variant, 3 * BLOCK_SIZE, 3)))); // Staged, an exact multiple of the block size.
     }
 
     @ParameterizedTest
@@ -95,7 +95,7 @@ public class BlobBufferShapeUploadTests {
     public void partitionedUploadSendsOnlyExposedBytesOfMixedBuffers(UploadMethod method) {
         byte[] content = randomBytes(5 * BLOCK_SIZE + 100);
         // Pieces that don't align with blocks, so blocks span buffers of different kinds.
-        List<ShapedByteBuffer> sources = TestBufferShape.mixed(content, 700);
+        List<ByteBufferState> sources = TestByteBufferVariant.mixed(content, 700);
         List<ByteBuffer> buffers = new ArrayList<>();
         sources.forEach(source -> buffers.add(source.getBuffer()));
         RequestCapturingHttpClient httpClient = new RequestCapturingHttpClient();
@@ -104,7 +104,7 @@ public class BlobBufferShapeUploadTests {
 
         assertEquals(6, httpClient.getStagedBlockCount());
         TestUtils.assertArraysEqual(content, httpClient.getBlobContent());
-        sources.forEach(ShapedByteBuffer::assertNoBytesChanged);
+        sources.forEach(ByteBufferState::assertNoBytesChanged);
     }
 
     /*
@@ -132,10 +132,10 @@ public class BlobBufferShapeUploadTests {
     }
 
     @ParameterizedTest
-    @EnumSource(TestBufferShape.class)
-    public void putBlobSendsOnlyExposedBytes(TestBufferShape shape) {
+    @EnumSource(TestByteBufferVariant.class)
+    public void putBlobSendsOnlyExposedBytes(TestByteBufferVariant variant) {
         byte[] content = randomBytes(BLOCK_SIZE + 100);
-        ShapedByteBuffer source = shape.wrap(content);
+        ByteBufferState source = variant.wrap(content);
         RequestCapturingHttpClient httpClient = new RequestCapturingHttpClient();
 
         blobAsyncClient(httpClient).getBlockBlobAsyncClient()
@@ -147,10 +147,10 @@ public class BlobBufferShapeUploadTests {
     }
 
     @ParameterizedTest
-    @EnumSource(TestBufferShape.class)
-    public void stageBlockSendsOnlyExposedBytes(TestBufferShape shape) {
+    @EnumSource(TestByteBufferVariant.class)
+    public void stageBlockSendsOnlyExposedBytes(TestByteBufferVariant variant) {
         byte[] content = randomBytes(BLOCK_SIZE + 100);
-        ShapedByteBuffer source = shape.wrap(content);
+        ByteBufferState source = variant.wrap(content);
         RequestCapturingHttpClient httpClient = new RequestCapturingHttpClient();
         String blockId = Base64.getEncoder().encodeToString("block".getBytes(StandardCharsets.UTF_8));
 
@@ -163,10 +163,10 @@ public class BlobBufferShapeUploadTests {
     }
 
     @ParameterizedTest
-    @EnumSource(TestBufferShape.class)
-    public void appendBlockSendsOnlyExposedBytes(TestBufferShape shape) {
+    @EnumSource(TestByteBufferVariant.class)
+    public void appendBlockSendsOnlyExposedBytes(TestByteBufferVariant variant) {
         byte[] content = randomBytes(BLOCK_SIZE + 100);
-        ShapedByteBuffer source = shape.wrap(content);
+        ByteBufferState source = variant.wrap(content);
         RequestCapturingHttpClient httpClient = new RequestCapturingHttpClient();
 
         blobAsyncClient(httpClient).getAppendBlobAsyncClient()
@@ -178,10 +178,10 @@ public class BlobBufferShapeUploadTests {
     }
 
     @ParameterizedTest
-    @EnumSource(TestBufferShape.class)
-    public void uploadPagesSendsOnlyExposedBytes(TestBufferShape shape) {
+    @EnumSource(TestByteBufferVariant.class)
+    public void uploadPagesSendsOnlyExposedBytes(TestByteBufferVariant variant) {
         byte[] content = randomBytes(2 * PAGE_SIZE);
-        ShapedByteBuffer source = shape.wrap(content);
+        ByteBufferState source = variant.wrap(content);
         RequestCapturingHttpClient httpClient = new RequestCapturingHttpClient();
 
         blobAsyncClient(httpClient).getPageBlobAsyncClient()

@@ -18,8 +18,8 @@ import com.azure.core.util.FluxUtil;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.contentvalidation.StorageCrc64Calculator;
 import com.azure.storage.common.implementation.contentvalidation.StructuredMessageDecoder;
-import com.azure.storage.common.test.shared.ShapedByteBuffer;
-import com.azure.storage.common.test.shared.TestBufferShape;
+import com.azure.storage.common.test.shared.ByteBufferState;
+import com.azure.storage.common.test.shared.TestByteBufferVariant;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -43,17 +43,17 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests that {@link StorageContentValidationEncodingPolicy} computes checksums over, and sends, exactly the bytes
- * between each request body buffer's position and limit, for every kind of buffer (see {@link TestBufferShape}), and
+ * between each request body buffer's position and limit, for every kind of buffer (see {@link TestByteBufferVariant}), and
  * that a retry sends the same content again without the caller's buffers being consumed or modified.
  */
-public class StorageContentValidationEncodingPolicyBufferShapeTests {
+public class StorageContentValidationEncodingPolicyByteBufferVariantTests {
     private static final String URL = "https://account.blob.core.windows.net/container/blob";
 
     @ParameterizedTest
-    @MethodSource("bufferShapesSupplier")
-    public void encodesOnlyExposedBytes(TestBufferShape shape, String mode, int length) {
+    @MethodSource("byteBufferVariantsSupplier")
+    public void encodesOnlyExposedBytes(TestByteBufferVariant variant, String mode, int length) {
         byte[] content = randomBytes(length);
-        ShapedByteBuffer source = shape.wrap(content);
+        ByteBufferState source = variant.wrap(content);
 
         List<CapturedRequest> requests = send(mode, content.length, source);
 
@@ -65,33 +65,33 @@ public class StorageContentValidationEncodingPolicyBufferShapeTests {
         source.assertNoBytesChanged();
     }
 
-    private static Stream<Arguments> bufferShapesSupplier() {
-        return Stream.of(TestBufferShape.values())
-            .flatMap(shape -> Stream.of(
-                // shape | mode | length
-                Arguments.of(shape, USE_CRC64_CHECKSUM_HEADER_CONTEXT, 1000),
-                Arguments.of(shape, USE_STRUCTURED_MESSAGE_CONTEXT, 1000), // A single segment.
+    private static Stream<Arguments> byteBufferVariantsSupplier() {
+        return Stream.of(TestByteBufferVariant.values())
+            .flatMap(variant -> Stream.of(
+                // variant | mode | length
+                Arguments.of(variant, USE_CRC64_CHECKSUM_HEADER_CONTEXT, 1000),
+                Arguments.of(variant, USE_STRUCTURED_MESSAGE_CONTEXT, 1000), // A single segment.
                 // Several segments, the last one partial.
-                Arguments.of(shape, USE_STRUCTURED_MESSAGE_CONTEXT, V1_DEFAULT_SEGMENT_CONTENT_LENGTH + 1000)));
+                Arguments.of(variant, USE_STRUCTURED_MESSAGE_CONTEXT, V1_DEFAULT_SEGMENT_CONTENT_LENGTH + 1000)));
     }
 
     @ParameterizedTest
-    @MethodSource("mixedBufferShapesSupplier")
+    @MethodSource("mixedByteBufferVariantsSupplier")
     public void encodesOnlyExposedBytesOfMixedBuffers(String mode) {
         byte[] content = randomBytes(V1_DEFAULT_SEGMENT_CONTENT_LENGTH + 1000);
         // Pieces that don't align with segments, so a segment spans buffers of different kinds.
-        List<ShapedByteBuffer> sources = TestBufferShape.mixed(content, 1024 * 1024 + 7);
+        List<ByteBufferState> sources = TestByteBufferVariant.mixed(content, 1024 * 1024 + 7);
 
-        List<CapturedRequest> requests = send(mode, content.length, sources.toArray(new ShapedByteBuffer[0]));
+        List<CapturedRequest> requests = send(mode, content.length, sources.toArray(new ByteBufferState[0]));
 
         assertEquals(2, requests.size());
         for (CapturedRequest request : requests) {
             assertSentContent(mode, content, request);
         }
-        sources.forEach(ShapedByteBuffer::assertNoBytesChanged);
+        sources.forEach(ByteBufferState::assertNoBytesChanged);
     }
 
-    private static Stream<String> mixedBufferShapesSupplier() {
+    private static Stream<String> mixedByteBufferVariantsSupplier() {
         return Stream.of(USE_CRC64_CHECKSUM_HEADER_CONTEXT, USE_STRUCTURED_MESSAGE_CONTEXT);
     }
 
@@ -99,9 +99,9 @@ public class StorageContentValidationEncodingPolicyBufferShapeTests {
      * Sends a request with the buffers as its body through the retry and encoding policies, with the first attempt
      * failing, and returns each attempt as sent.
      */
-    private static List<CapturedRequest> send(String mode, int length, ShapedByteBuffer... sources) {
+    private static List<CapturedRequest> send(String mode, int length, ByteBufferState... sources) {
         List<ByteBuffer> buffers = new ArrayList<>();
-        for (ShapedByteBuffer source : sources) {
+        for (ByteBufferState source : sources) {
             buffers.add(source.getBuffer());
         }
         List<CapturedRequest> requests = new ArrayList<>();

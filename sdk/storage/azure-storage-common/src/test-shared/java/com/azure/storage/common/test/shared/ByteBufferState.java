@@ -9,15 +9,16 @@ import static com.azure.core.test.utils.TestUtils.assertArraysEqual;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
- * A {@link ByteBuffer} of a given {@link TestBufferShape}, which remembers its initial state so a test can check what
- * code under test read from it or wrote to it.
+ * Wraps a {@link ByteBuffer} created as a given {@link TestByteBufferVariant}, and records the buffer's initial state so
+ * a test can check what code under test read from it or wrote to it. This is not itself a {@link ByteBuffer}; pass
+ * {@link #getBuffer()} to the code under test.
  * <p>
  * The <em>exposed</em> bytes are those between the buffer's position and limit when it was created. Code under test
  * may only read or write the exposed bytes. Every other byte of the buffer, and of its backing array when it has an
  * accessible one, must be left unchanged.
  */
-public final class ShapedByteBuffer {
-    private final TestBufferShape shape;
+public final class ByteBufferState {
+    private final TestByteBufferVariant variant;
     private final ByteBuffer buffer;
     private final byte[] storage;
     private final byte[] originalStorage;
@@ -27,8 +28,8 @@ public final class ShapedByteBuffer {
     private final int originalLimit;
     private final byte[] originalView;
 
-    ShapedByteBuffer(TestBufferShape shape, ByteBuffer buffer, byte[] storage, int storageStart, int length) {
-        this.shape = shape;
+    ByteBufferState(TestByteBufferVariant variant, ByteBuffer buffer, byte[] storage, int storageStart, int length) {
+        this.variant = variant;
         this.buffer = buffer;
         // Direct and read-only buffers don't expose their storage, so only check their storage through the buffer.
         this.storage = buffer.hasArray() ? storage : null;
@@ -39,14 +40,14 @@ public final class ShapedByteBuffer {
         this.originalLimit = buffer.limit();
         this.originalView = viewBytes(buffer, 0, buffer.capacity());
 
-        assertEquals(length, buffer.remaining(), "Buffer of shape " + shape + " exposes the wrong number of bytes.");
+        assertEquals(length, buffer.remaining(), "Buffer of variant " + variant + " exposes the wrong number of bytes.");
     }
 
     /**
-     * @return The kind of buffer.
+     * @return The variant the buffer was created as.
      */
-    public TestBufferShape getShape() {
-        return shape;
+    public TestByteBufferVariant getVariant() {
+        return variant;
     }
 
     /**
@@ -131,13 +132,13 @@ public final class ShapedByteBuffer {
      * @param expectedLimit The expected limit.
      */
     public void assertPositionAndLimit(int expectedPosition, int expectedLimit) {
-        assertEquals(expectedPosition, buffer.position(), "position of buffer of shape " + shape);
-        assertEquals(expectedLimit, buffer.limit(), "limit of buffer of shape " + shape);
+        assertEquals(expectedPosition, buffer.position(), "position of buffer of variant " + variant);
+        assertEquals(expectedLimit, buffer.limit(), "limit of buffer of variant " + variant);
     }
 
     @Override
     public String toString() {
-        return shape + "[length=" + length + "]";
+        return variant + "[length=" + length + "]";
     }
 
     /*

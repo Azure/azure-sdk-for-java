@@ -4,8 +4,8 @@
 package com.azure.storage.common.implementation.contentvalidation;
 
 import com.azure.core.util.FluxUtil;
-import com.azure.storage.common.test.shared.ShapedByteBuffer;
-import com.azure.storage.common.test.shared.TestBufferShape;
+import com.azure.storage.common.test.shared.ByteBufferState;
+import com.azure.storage.common.test.shared.TestByteBufferVariant;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -352,11 +352,11 @@ public class StructuredMessageEncoderTests {
      * when there isn't.
      */
     @ParameterizedTest
-    @MethodSource("encodeBufferShapesSupplier")
-    public void encodeHandlesEveryBufferShape(TestBufferShape shape, int length, int segmentSize,
+    @MethodSource("encodeByteBufferVariantsSupplier")
+    public void encodeHandlesEveryByteBufferVariant(TestByteBufferVariant variant, int length, int segmentSize,
         StructuredMessageFlags flags) {
         byte[] content = getRandomData(length);
-        ShapedByteBuffer source = shape.wrap(content);
+        ByteBufferState source = variant.wrap(content);
 
         byte[] actual
             = FluxUtil
@@ -369,37 +369,37 @@ public class StructuredMessageEncoderTests {
         source.assertNoBytesChanged();
     }
 
-    private static Stream<Arguments> encodeBufferShapesSupplier() {
-        return Stream.of(TestBufferShape.values())
-            .flatMap(shape -> Stream.of(StructuredMessageFlags.NONE, StructuredMessageFlags.STORAGE_CRC64)
+    private static Stream<Arguments> encodeByteBufferVariantsSupplier() {
+        return Stream.of(TestByteBufferVariant.values())
+            .flatMap(variant -> Stream.of(StructuredMessageFlags.NONE, StructuredMessageFlags.STORAGE_CRC64)
                 .flatMap(flags -> Stream.of(
-                    // shape | length | segment size | flags
-                    Arguments.of(shape, 10, 50, flags), // A single partial segment.
-                    Arguments.of(shape, 50, 50, flags), // Exactly one segment.
-                    Arguments.of(shape, 125, 50, flags), // Several segments, with a partial last one.
-                    Arguments.of(shape, 150, 50, flags)))); // Several segments, an exact multiple of the size.
+                    // variant | length | segment size | flags
+                    Arguments.of(variant, 10, 50, flags), // A single partial segment.
+                    Arguments.of(variant, 50, 50, flags), // Exactly one segment.
+                    Arguments.of(variant, 125, 50, flags), // Several segments, with a partial last one.
+                    Arguments.of(variant, 150, 50, flags)))); // Several segments, an exact multiple of the size.
     }
 
     @ParameterizedTest
-    @MethodSource("encodeMixedBufferShapesSupplier")
-    public void encodeHandlesMixedBufferShapes(int segmentSize, StructuredMessageFlags flags) {
+    @MethodSource("encodeMixedByteBufferVariantsSupplier")
+    public void encodeHandlesMixedByteBufferVariants(int segmentSize, StructuredMessageFlags flags) {
         byte[] content = getRandomData(300);
         // Pieces that don't align with segments, so segments span buffers of different kinds.
-        List<ShapedByteBuffer> sources = TestBufferShape.mixed(content, 37);
+        List<ByteBufferState> sources = TestByteBufferVariant.mixed(content, 37);
         StructuredMessageEncoder encoder = new StructuredMessageEncoder(content.length, segmentSize, flags);
 
         byte[] actual
             = FluxUtil
                 .collectBytesInByteBufferStream(
-                    Flux.fromIterable(sources).map(ShapedByteBuffer::getBuffer).concatMap(encoder::encode))
+                    Flux.fromIterable(sources).map(ByteBufferState::getBuffer).concatMap(encoder::encode))
                 .block();
 
         assertArrayEquals(encodePlain(content, segmentSize, flags), actual);
         assertArrayEquals(content, decode(actual));
-        sources.forEach(ShapedByteBuffer::assertNoBytesChanged);
+        sources.forEach(ByteBufferState::assertNoBytesChanged);
     }
 
-    private static Stream<Arguments> encodeMixedBufferShapesSupplier() {
+    private static Stream<Arguments> encodeMixedByteBufferVariantsSupplier() {
         return Stream.of(Arguments.of(50, StructuredMessageFlags.NONE),
             Arguments.of(50, StructuredMessageFlags.STORAGE_CRC64), Arguments.of(100, StructuredMessageFlags.NONE),
             Arguments.of(100, StructuredMessageFlags.STORAGE_CRC64));

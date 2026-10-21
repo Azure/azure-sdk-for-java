@@ -5,8 +5,8 @@ package com.azure.storage.common.implementation;
 import com.azure.core.test.utils.TestUtils;
 import com.azure.storage.common.implementation.mocking.MockReadBehavior;
 import com.azure.storage.common.implementation.mocking.MockWriteBehavior;
-import com.azure.storage.common.test.shared.ShapedByteBuffer;
-import com.azure.storage.common.test.shared.TestBufferShape;
+import com.azure.storage.common.test.shared.ByteBufferState;
+import com.azure.storage.common.test.shared.TestByteBufferVariant;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -354,18 +354,18 @@ public class StorageSeekableByteChannelTests {
     }
 
     // A write larger than the channel's buffer, so it's written to the resource in several pieces.
-    private static final int SHAPE_DATA_LENGTH = 2500;
-    private static final int SHAPE_CHUNK_SIZE = 1000;
+    private static final int VARIANT_DATA_LENGTH = 2500;
+    private static final int VARIANT_CHUNK_SIZE = 1000;
 
     @ParameterizedTest
-    @EnumSource(TestBufferShape.class)
-    public void writeWritesOnlyExposedBytes(TestBufferShape shape) throws IOException {
-        byte[] content = getRandomData(SHAPE_DATA_LENGTH);
-        ShapedByteBuffer src = shape.wrap(content);
+    @EnumSource(TestByteBufferVariant.class)
+    public void writeWritesOnlyExposedBytes(TestByteBufferVariant variant) throws IOException {
+        byte[] content = getRandomData(VARIANT_DATA_LENGTH);
+        ByteBufferState src = variant.wrap(content);
         ByteArrayOutputStream written = new ByteArrayOutputStream();
 
         try (StorageSeekableByteChannel channel
-            = new StorageSeekableByteChannel(SHAPE_CHUNK_SIZE, capturingWriteBehavior(written), 0L)) {
+            = new StorageSeekableByteChannel(VARIANT_CHUNK_SIZE, capturingWriteBehavior(written), 0L)) {
             while (src.getBuffer().hasRemaining()) {
                 channel.write(src.getBuffer());
             }
@@ -378,13 +378,13 @@ public class StorageSeekableByteChannelTests {
 
     @Test
     public void writeWritesOnlyExposedBytesOfMixedBuffers() throws IOException {
-        byte[] content = getRandomData(SHAPE_DATA_LENGTH);
-        List<ShapedByteBuffer> sources = TestBufferShape.mixed(content, 300);
+        byte[] content = getRandomData(VARIANT_DATA_LENGTH);
+        List<ByteBufferState> sources = TestByteBufferVariant.mixed(content, 300);
         ByteArrayOutputStream written = new ByteArrayOutputStream();
 
         try (StorageSeekableByteChannel channel
-            = new StorageSeekableByteChannel(SHAPE_CHUNK_SIZE, capturingWriteBehavior(written), 0L)) {
-            for (ShapedByteBuffer src : sources) {
+            = new StorageSeekableByteChannel(VARIANT_CHUNK_SIZE, capturingWriteBehavior(written), 0L)) {
+            for (ByteBufferState src : sources) {
                 while (src.getBuffer().hasRemaining()) {
                     channel.write(src.getBuffer());
                 }
@@ -392,17 +392,18 @@ public class StorageSeekableByteChannelTests {
         }
 
         TestUtils.assertArraysEqual(content, written.toByteArray());
-        for (ShapedByteBuffer src : sources) {
+        for (ByteBufferState src : sources) {
             src.assertNoBytesChanged();
         }
     }
 
     @ParameterizedTest
-    @EnumSource(value = TestBufferShape.class, names = "READ_ONLY", mode = EnumSource.Mode.EXCLUDE)
-    public void readFillsOnlyExposedBytes(TestBufferShape shape) throws IOException {
-        byte[] data = getRandomData(SHAPE_DATA_LENGTH);
-        ShapedByteBuffer dst = shape.allocate(SHAPE_DATA_LENGTH);
-        StorageSeekableByteChannel channel = new StorageSeekableByteChannel(SHAPE_CHUNK_SIZE, readBehaviorOf(data), 0L);
+    @EnumSource(value = TestByteBufferVariant.class, names = "READ_ONLY", mode = EnumSource.Mode.EXCLUDE)
+    public void readFillsOnlyExposedBytes(TestByteBufferVariant variant) throws IOException {
+        byte[] data = getRandomData(VARIANT_DATA_LENGTH);
+        ByteBufferState dst = variant.allocate(VARIANT_DATA_LENGTH);
+        StorageSeekableByteChannel channel
+            = new StorageSeekableByteChannel(VARIANT_CHUNK_SIZE, readBehaviorOf(data), 0L);
 
         while (dst.getBuffer().hasRemaining()) {
             channel.read(dst.getBuffer());
@@ -415,14 +416,15 @@ public class StorageSeekableByteChannelTests {
 
     @Test
     public void readFillsOnlyExposedBytesOfMixedBuffers() throws IOException {
-        byte[] data = getRandomData(SHAPE_DATA_LENGTH);
-        StorageSeekableByteChannel channel = new StorageSeekableByteChannel(SHAPE_CHUNK_SIZE, readBehaviorOf(data), 0L);
-        List<TestBufferShape> shapes = TestBufferShape.writableShapes();
+        byte[] data = getRandomData(VARIANT_DATA_LENGTH);
+        StorageSeekableByteChannel channel
+            = new StorageSeekableByteChannel(VARIANT_CHUNK_SIZE, readBehaviorOf(data), 0L);
+        List<TestByteBufferVariant> variants = TestByteBufferVariant.writableVariants();
         int pieceLength = 300;
 
         for (int offset = 0, i = 0; offset < data.length; offset += pieceLength, i++) {
             int length = Math.min(pieceLength, data.length - offset);
-            ShapedByteBuffer dst = shapes.get(i % shapes.size()).allocate(length);
+            ByteBufferState dst = variants.get(i % variants.size()).allocate(length);
 
             while (dst.getBuffer().hasRemaining()) {
                 channel.read(dst.getBuffer());

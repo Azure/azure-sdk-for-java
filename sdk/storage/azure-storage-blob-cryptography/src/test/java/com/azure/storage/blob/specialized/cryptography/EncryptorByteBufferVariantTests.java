@@ -15,8 +15,8 @@ import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
 import com.azure.storage.blob.options.BlobParallelUploadOptions;
-import com.azure.storage.common.test.shared.ShapedByteBuffer;
-import com.azure.storage.common.test.shared.TestBufferShape;
+import com.azure.storage.common.test.shared.ByteBufferState;
+import com.azure.storage.common.test.shared.TestByteBufferVariant;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -49,9 +49,9 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * Offline tests verifying that client-side encryption encrypts only the bytes between each source buffer's position and
- * limit, and doesn't modify the source buffers, for every kind of buffer (see {@link TestBufferShape}).
+ * limit, and doesn't modify the source buffers, for every kind of buffer (see {@link TestByteBufferVariant}).
  */
-public class EncryptorBufferShapeTests {
+public class EncryptorByteBufferVariantTests {
     // Small regions keep the tests fast; the region logic doesn't depend on the absolute size.
     private static final int REGION_LENGTH = 16;
     // The content encryption key used by the encrypted client uploads.
@@ -59,10 +59,10 @@ public class EncryptorBufferShapeTests {
 
     @ParameterizedTest
     @MethodSource("encryptV2Supplier")
-    public void encryptV2EncryptsOnlyExposedBytes(TestBufferShape shape, int length, int expectedRegions)
+    public void encryptV2EncryptsOnlyExposedBytes(TestByteBufferVariant variant, int length, int expectedRegions)
         throws Exception {
         byte[] content = randomBytes(length);
-        ShapedByteBuffer source = shape.wrap(content);
+        ByteBufferState source = variant.wrap(content);
         SecretKey key = newKey();
 
         byte[] ciphertext = concat(encryptorV2(key).encrypt(Flux.just(source.getBuffer())).collectList().block());
@@ -72,20 +72,20 @@ public class EncryptorBufferShapeTests {
     }
 
     private static Stream<Arguments> encryptV2Supplier() {
-        return Stream.of(TestBufferShape.values())
-            .flatMap(shape -> Stream.of(
-                // shape | length | expected regions
-                Arguments.of(shape, REGION_LENGTH / 2, 1), // A single partial region.
-                Arguments.of(shape, REGION_LENGTH, 1), // Exactly one region.
-                Arguments.of(shape, 2 * REGION_LENGTH + 5, 3), // Several regions, with a partial last one.
-                Arguments.of(shape, 3 * REGION_LENGTH, 3))); // Several regions, an exact multiple of the length.
+        return Stream.of(TestByteBufferVariant.values())
+            .flatMap(variant -> Stream.of(
+                // variant | length | expected regions
+                Arguments.of(variant, REGION_LENGTH / 2, 1), // A single partial region.
+                Arguments.of(variant, REGION_LENGTH, 1), // Exactly one region.
+                Arguments.of(variant, 2 * REGION_LENGTH + 5, 3), // Several regions, with a partial last one.
+                Arguments.of(variant, 3 * REGION_LENGTH, 3))); // Several regions, an exact multiple of the length.
     }
 
     @Test
     public void encryptV2EncryptsOnlyExposedBytesOfMixedBuffers() throws Exception {
         byte[] content = randomBytes(5 * REGION_LENGTH + 5);
         // Pieces that don't align with regions, so regions span buffers of different kinds.
-        List<ShapedByteBuffer> sources = TestBufferShape.mixed(content, 11);
+        List<ByteBufferState> sources = TestByteBufferVariant.mixed(content, 11);
         List<ByteBuffer> buffers = new ArrayList<>();
         sources.forEach(source -> buffers.add(source.getBuffer()));
         SecretKey key = newKey();
@@ -93,14 +93,14 @@ public class EncryptorBufferShapeTests {
         byte[] ciphertext = concat(encryptorV2(key).encrypt(Flux.fromIterable(buffers)).collectList().block());
 
         TestUtils.assertArraysEqual(content, decryptV2(key, ciphertext, 6));
-        sources.forEach(ShapedByteBuffer::assertNoBytesChanged);
+        sources.forEach(ByteBufferState::assertNoBytesChanged);
     }
 
     @ParameterizedTest
-    @EnumSource(TestBufferShape.class)
-    public void encryptV1EncryptsOnlyExposedBytes(TestBufferShape shape) throws Exception {
+    @EnumSource(TestByteBufferVariant.class)
+    public void encryptV1EncryptsOnlyExposedBytes(TestByteBufferVariant variant) throws Exception {
         byte[] content = randomBytes(3 * REGION_LENGTH + 5);
-        ShapedByteBuffer source = shape.wrap(content);
+        ByteBufferState source = variant.wrap(content);
         SecretKey key = newKey();
         EncryptorV1 encryptor = new EncryptorV1(key);
 
@@ -127,10 +127,10 @@ public class EncryptorBufferShapeTests {
      */
     @ParameterizedTest
     @MethodSource("encryptedUploadSupplier")
-    public void encryptedUploadSendsOnlyExposedBytes(UploadMethod method, TestBufferShape shape, int length,
+    public void encryptedUploadSendsOnlyExposedBytes(UploadMethod method, TestByteBufferVariant variant, int length,
         int expectedRegions) throws Exception {
         byte[] content = randomBytes(length);
-        ShapedByteBuffer source = shape.wrap(content);
+        ByteBufferState source = variant.wrap(content);
         BodyCapturingHttpClient httpClient = new BodyCapturingHttpClient();
 
         uploadEncrypted(method, httpClient, source.getBuffer());
@@ -142,12 +142,12 @@ public class EncryptorBufferShapeTests {
 
     private static Stream<Arguments> encryptedUploadSupplier() {
         return Stream.of(UploadMethod.values())
-            .flatMap(method -> Stream.of(TestBufferShape.values())
-                .flatMap(shape -> Stream.of(
-                    // method | shape | length | expected regions
-                    Arguments.of(method, shape, REGION_LENGTH, 1), // Exactly one region.
-                    Arguments.of(method, shape, 2 * REGION_LENGTH + 5, 3), // Several regions, partial last one.
-                    Arguments.of(method, shape, 3 * REGION_LENGTH, 3)))); // Several regions, exact multiple.
+            .flatMap(method -> Stream.of(TestByteBufferVariant.values())
+                .flatMap(variant -> Stream.of(
+                    // method | variant | length | expected regions
+                    Arguments.of(method, variant, REGION_LENGTH, 1), // Exactly one region.
+                    Arguments.of(method, variant, 2 * REGION_LENGTH + 5, 3), // Several regions, partial last one.
+                    Arguments.of(method, variant, 3 * REGION_LENGTH, 3)))); // Several regions, exact multiple.
     }
 
     private static void uploadEncrypted(UploadMethod method, HttpClient httpClient, ByteBuffer buffer) {
