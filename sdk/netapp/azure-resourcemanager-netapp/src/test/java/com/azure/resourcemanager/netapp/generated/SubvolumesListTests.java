@@ -12,11 +12,11 @@ public final class SubvolumesListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SubvolumesList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"path\":\"imrsopteecjmei\",\"size\":6980790748857263769,\"parentPath\":\"asylwx\",\"provisioningState\":\"aumweoohguufu\"},\"id\":\"oyjathwtzol\",\"name\":\"a\",\"type\":\"mwmdxmebwjscjpa\"},{\"properties\":{\"path\":\"veabfqxnmwmqtib\",\"size\":8915441115910242553,\"parentPath\":\"dt\",\"provisioningState\":\"cttadi\"},\"id\":\"eukmr\",\"name\":\"ieekpndzaa\",\"type\":\"mudqmeq\"},{\"properties\":{\"path\":\"pibudqwyxebeybpm\",\"size\":49496790728655586,\"parentPath\":\"ff\",\"provisioningState\":\"qitmhheioqaqhv\"},\"id\":\"ufuqyrx\",\"name\":\"dlcgqlsismjqfr\",\"type\":\"dgamquhiosrsj\"}],\"nextLink\":\"vfcdisyirn\"}")
+            "{\"value\":[{\"properties\":{\"path\":\"lkdghr\",\"size\":4652163287873378004,\"parentPath\":\"lwxezwzhokvbwnh\",\"provisioningState\":\"qlgehg\"},\"id\":\"ipifhpfeoajvg\",\"name\":\"xtxj\",\"type\":\"sheafid\"},{\"properties\":{\"path\":\"gsresmkssj\",\"size\":7013131157216511761,\"parentPath\":\"xfkfwegprhptill\",\"provisioningState\":\"biqtgdq\"},\"id\":\"mcwsldrizetpwb\",\"name\":\"a\",\"type\":\"llibphbqzmizak\"},{\"properties\":{\"path\":\"nkjpdnjzha\",\"size\":6459322743109308428,\"parentPath\":\"jlmuoyxprimrsopt\",\"provisioningState\":\"cjmeislstvasy\"},\"id\":\"xdza\",\"name\":\"mweoohgu\",\"type\":\"fuzboyjathwtzolb\"}],\"nextLink\":\"mwmdxmebwjscjpa\"}")
             .toObject(SubvolumesList.class);
-        Assertions.assertEquals("imrsopteecjmei", model.value().get(0).path());
-        Assertions.assertEquals(6980790748857263769L, model.value().get(0).size());
-        Assertions.assertEquals("asylwx", model.value().get(0).parentPath());
-        Assertions.assertEquals("vfcdisyirn", model.nextLink());
+        Assertions.assertEquals("lkdghr", model.value().get(0).path());
+        Assertions.assertEquals(4652163287873378004L, model.value().get(0).size());
+        Assertions.assertEquals("lwxezwzhokvbwnh", model.value().get(0).parentPath());
+        Assertions.assertEquals("mwmdxmebwjscjpa", model.nextLink());
     }
 }

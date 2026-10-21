@@ -30,9 +30,9 @@ public final class SnapshotsRestoreFilesMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.snapshots()
-            .restoreFiles("xh", "sd", "ugwbsreurfqkf", "arenlvhhtklnvnaf", "vkyfedevjbosl",
-                new SnapshotRestoreFiles().withFilePaths(Arrays.asList("xypokkhmi", "q", "ymc"))
-                    .withDestinationPath("gn"),
+            .restoreFiles("lrohkpig", "fusuckzmkwklsno", "axmqeqal", "hjnhgwydyynfsvk", "gbv",
+                new SnapshotRestoreFiles().withFilePaths(Arrays.asList("anarfdlpukhpyrne"))
+                    .withDestinationPath("jcpeogkhnmg"),
                 com.azure.core.util.Context.NONE);
 
     }

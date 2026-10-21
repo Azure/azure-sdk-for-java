@@ -28,7 +28,7 @@ public final class VolumesFinalizeRelocationMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.volumes()
-            .finalizeRelocation("dlfgtdysnaq", "flq", "ctqhamzjrwdk", "zeqyjleziun", com.azure.core.util.Context.NONE);
+            .finalizeRelocation("tjvidt", "gepuslvyjtc", "uwkasiz", "esfuught", com.azure.core.util.Context.NONE);
 
     }
 }

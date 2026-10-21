@@ -11,7 +11,6 @@ import com.azure.resourcemanager.netapp.fluent.models.NetAppAccountInner;
 import com.azure.resourcemanager.netapp.models.AccountEncryption;
 import com.azure.resourcemanager.netapp.models.AccountEncryptionPatch;
 import com.azure.resourcemanager.netapp.models.ActiveDirectory;
-import com.azure.resourcemanager.netapp.models.ActiveDirectoryPatch;
 import com.azure.resourcemanager.netapp.models.ChangeKeyVault;
 import com.azure.resourcemanager.netapp.models.EncryptionTransitionRequest;
 import com.azure.resourcemanager.netapp.models.GetKeyVaultStatusResponse;
@@ -264,8 +263,13 @@ public final class NetAppAccountImpl implements NetAppAccount, NetAppAccount.Def
     }
 
     public NetAppAccountImpl withActiveDirectories(List<ActiveDirectory> activeDirectories) {
-        this.innerModel().withActiveDirectories(activeDirectories);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withActiveDirectories(activeDirectories);
+            return this;
+        } else {
+            this.updateBody.withActiveDirectories(activeDirectories);
+            return this;
+        }
     }
 
     public NetAppAccountImpl withEncryption(AccountEncryption encryption) {
@@ -274,8 +278,13 @@ public final class NetAppAccountImpl implements NetAppAccount, NetAppAccount.Def
     }
 
     public NetAppAccountImpl withNfsV4IdDomain(String nfsV4IdDomain) {
-        this.innerModel().withNfsV4IdDomain(nfsV4IdDomain);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withNfsV4IdDomain(nfsV4IdDomain);
+            return this;
+        } else {
+            this.updateBody.withNfsV4IdDomain(nfsV4IdDomain);
+            return this;
+        }
     }
 
     public NetAppAccountImpl withLdapConfiguration(LdapConfiguration ldapConfiguration) {
@@ -283,18 +292,8 @@ public final class NetAppAccountImpl implements NetAppAccount, NetAppAccount.Def
         return this;
     }
 
-    public NetAppAccountImpl withActiveDirectoriesForUpdate(List<ActiveDirectoryPatch> activeDirectories) {
-        this.updateBody.withActiveDirectories(activeDirectories);
-        return this;
-    }
-
     public NetAppAccountImpl withEncryption(AccountEncryptionPatch encryption) {
         this.updateBody.withEncryption(encryption);
-        return this;
-    }
-
-    public NetAppAccountImpl withNfsV4IDDomain(String nfsV4IDDomain) {
-        this.updateBody.withNfsV4IDDomain(nfsV4IDDomain);
         return this;
     }
 

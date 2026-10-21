@@ -319,7 +319,7 @@ public interface NetAppAccount {
      * The template for NetAppAccount update.
      */
     interface Update extends UpdateStages.WithTags, UpdateStages.WithIdentity, UpdateStages.WithActiveDirectories,
-        UpdateStages.WithEncryption, UpdateStages.WithNfsV4IDDomain, UpdateStages.WithLdapConfiguration {
+        UpdateStages.WithEncryption, UpdateStages.WithNfsV4IdDomain, UpdateStages.WithLdapConfiguration {
         /**
          * Executes the update request.
          * 
@@ -376,7 +376,7 @@ public interface NetAppAccount {
              * @param activeDirectories Active Directories.
              * @return the next definition stage.
              */
-            Update withActiveDirectoriesForUpdate(List<ActiveDirectoryPatch> activeDirectories);
+            Update withActiveDirectories(List<ActiveDirectory> activeDirectories);
         }
 
         /**
@@ -393,18 +393,18 @@ public interface NetAppAccount {
         }
 
         /**
-         * The stage of the NetAppAccount update allowing to specify nfsV4IDDomain.
+         * The stage of the NetAppAccount update allowing to specify nfsV4IdDomain.
          */
-        interface WithNfsV4IDDomain {
+        interface WithNfsV4IdDomain {
             /**
-             * Specifies the nfsV4IDDomain property: Domain for NFSv4 user ID mapping. This property will be set for all
+             * Specifies the nfsV4IdDomain property: Domain for NFSv4 user ID mapping. This property will be set for all
              * NetApp accounts in the subscription and region and only affect non ldap NFSv4 volumes..
              * 
-             * @param nfsV4IDDomain Domain for NFSv4 user ID mapping. This property will be set for all NetApp accounts
+             * @param nfsV4IdDomain Domain for NFSv4 user ID mapping. This property will be set for all NetApp accounts
              * in the subscription and region and only affect non ldap NFSv4 volumes.
              * @return the next definition stage.
              */
-            Update withNfsV4IDDomain(String nfsV4IDDomain);
+            Update withNfsV4IdDomain(String nfsV4IdDomain);
         }
 
         /**

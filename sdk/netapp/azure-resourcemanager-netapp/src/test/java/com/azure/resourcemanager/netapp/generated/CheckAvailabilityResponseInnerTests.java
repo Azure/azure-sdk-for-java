@@ -12,11 +12,11 @@ import org.junit.jupiter.api.Assertions;
 public final class CheckAvailabilityResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CheckAvailabilityResponseInner model = BinaryData
-            .fromString("{\"isAvailable\":true,\"reason\":\"AlreadyExists\",\"message\":\"btuodxeszabbel\"}")
-            .toObject(CheckAvailabilityResponseInner.class);
-        Assertions.assertTrue(model.isAvailable());
-        Assertions.assertEquals(InAvailabilityReasonType.ALREADY_EXISTS, model.reason());
-        Assertions.assertEquals("btuodxeszabbel", model.message());
+        CheckAvailabilityResponseInner model
+            = BinaryData.fromString("{\"isAvailable\":false,\"reason\":\"Invalid\",\"message\":\"ujrtrhqvwr\"}")
+                .toObject(CheckAvailabilityResponseInner.class);
+        Assertions.assertFalse(model.isAvailable());
+        Assertions.assertEquals(InAvailabilityReasonType.INVALID, model.reason());
+        Assertions.assertEquals("ujrtrhqvwr", model.message());
     }
 }

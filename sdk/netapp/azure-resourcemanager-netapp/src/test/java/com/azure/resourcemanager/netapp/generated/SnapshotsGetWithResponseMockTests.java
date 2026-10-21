@@ -21,7 +21,7 @@ public final class SnapshotsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"snapshotId\":\"a\",\"created\":\"2021-02-05T02:32:18Z\",\"provisioningState\":\"djwnlaxpunjqi\"},\"location\":\"czvvit\",\"id\":\"gx\",\"name\":\"fcsserxhtvsox\",\"type\":\"lwntsjgqrs\"}";
+            = "{\"properties\":{\"snapshotId\":\"ktsysidfvclglxn\",\"created\":\"2021-09-07T01:07:02Z\",\"provisioningState\":\"tkbu\"},\"location\":\"qogsfikayian\",\"id\":\"arujt\",\"name\":\"iqxf\",\"type\":\"yjqtt\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +31,10 @@ public final class SnapshotsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Snapshot response = manager.snapshots()
-            .getWithResponse("kayi", "nsharujtjiqxfzyj", "ttvwkpqh", "penuy", "bqeqqekewvnqvcd",
+            .getWithResponse("razftxejwabmdujt", "vcopex", "m", "urbuhhlkyqltq", "rogtuwkf",
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("czvvit", response.location());
+        Assertions.assertEquals("qogsfikayian", response.location());
     }
 }
