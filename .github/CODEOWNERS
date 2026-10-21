@@ -441,15 +441,15 @@
 # ServiceOwners:                                                   @efrainretana @lc48t @mattgotteiner
 
 # PRLabel: %Service Bus
-/sdk/servicebus/                                                   @EldertGrootenboer @skarri-microsoft @j7nw4r @Azure/azure-java-sdk @ksalazar-91 @pranz1996
+/sdk/servicebus/                                                   @EldertGrootenboer @skarri-microsoft @j7nw4r @Azure/azure-java-sdk @pranz1996
 
 # PRLabel: %Service Bus %Track 1
-/sdk/servicebus/microsoft-azure-servicebus/                        @EldertGrootenboer @skarri-microsoft @j7nw4r @vinaysurya @Azure/azure-java-sdk @ksalazar-91 @pranz1996
+/sdk/servicebus/microsoft-azure-servicebus/                        @EldertGrootenboer @skarri-microsoft @j7nw4r @vinaysurya @Azure/azure-java-sdk @pranz1996
 
 # ServiceLabel: %Service Bus
-# ServiceOwners:                                                   @EldertGrootenboer @skarri-microsoft @j7nw4r @ksalazar-91 @pranz1996
+# ServiceOwners:                                                   @EldertGrootenboer @skarri-microsoft @j7nw4r @pranz1996
 
-# AzureSdkOwners:                                                  @EldertGrootenboer @skarri-microsoft @j7nw4r @ksalazar-91 @pranz1996
+# AzureSdkOwners:                                                  @EldertGrootenboer @skarri-microsoft @j7nw4r @pranz1996
 # ServiceLabel: %Service Bus %Track 1
 
 # PRLabel: %Speech Transcription
