@@ -165,10 +165,12 @@ final class WebSocketSessionNettyImpl implements WebSocketSession {
                     // the CloseWebSocketFrame from server
                     CloseWebSocketFrame closeFrame = clientHandler.getServerCloseWebSocketFrame();
                     if (closeFrame == null) {
-                        closeFrame = new CloseWebSocketFrame(WebSocketCloseStatus.NORMAL_CLOSURE);
+                        closeHandler.accept(new CloseReason(WebSocketCloseStatus.ABNORMAL_CLOSURE.code(),
+                            "Connection closed without receiving a CloseWebSocketFrame."));
+                    } else {
+                        closeHandler.accept(new CloseReason(closeFrame.statusCode(), closeFrame.reasonText()));
+                        closeFrame.release();   // release after use
                     }
-                    closeHandler.accept(new CloseReason(closeFrame.statusCode(), closeFrame.reasonText()));
-                    closeFrame.release();   // release after use
                 }
 
                 // closeCallbackFuture exists if close is initiated from client

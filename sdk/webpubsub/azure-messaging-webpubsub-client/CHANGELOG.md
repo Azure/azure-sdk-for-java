@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Fixed unexpected WebSocket disconnects being reported as normal closures when no close frame was received.
+
 - Fixed a race condition where Web PubSub client send operations could miss fast ack responses.
 
 ### Other Changes
