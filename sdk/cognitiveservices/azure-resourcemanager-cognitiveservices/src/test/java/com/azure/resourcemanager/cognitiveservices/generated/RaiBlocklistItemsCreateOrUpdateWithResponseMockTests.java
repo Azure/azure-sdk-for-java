@@ -24,7 +24,7 @@ public final class RaiBlocklistItemsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"pattern\":\"mmmkvavucgjiuaiq\",\"isRegex\":false},\"etag\":\"fzhrchx\",\"tags\":{\"wlvi\":\"zdmh\",\"pdviscotyxbrii\":\"jmxmlitqdsj\"},\"id\":\"f\",\"name\":\"dslvrqo\",\"type\":\"mwsieeailwdqmqf\"}";
+            = "{\"properties\":{\"pattern\":\"drznlaxozqthkwxf\",\"isRegex\":false},\"etag\":\"izyxduyjnqzb\",\"tags\":{\"viyjuca\":\"akmfc\",\"iuh\":\"nsbqoitwhmuc\",\"ehyklelyqdvpqfbx\":\"xy\",\"mtxqlefnohey\":\"ycudus\"},\"id\":\"fopkyll\",\"name\":\"ey\",\"type\":\"nj\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,15 +34,15 @@ public final class RaiBlocklistItemsCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         RaiBlocklistItem response = manager.raiBlocklistItems()
-            .define("eubkqiqmlf")
-            .withExistingRaiBlocklist("nrnjrcuf", "bgacnr", "fdtncmspsanma")
-            .withTags(mapOf("uuonjkkxukguehvv", "eipuugkwdrqmrpa"))
-            .withProperties(new RaiBlocklistItemProperties().withPattern("qcs").withIsRegex(false))
+            .define("xqfg")
+            .withExistingRaiBlocklist("zahgtv", "gdobimor", "olxosgihtrxueqb")
+            .withTags(mapOf("vsl", "mfxzspf"))
+            .withProperties(new RaiBlocklistItemProperties().withPattern("jqswshesgcs").withIsRegex(true))
             .create();
 
-        Assertions.assertEquals("mmmkvavucgjiuaiq", response.properties().pattern());
+        Assertions.assertEquals("drznlaxozqthkwxf", response.properties().pattern());
         Assertions.assertFalse(response.properties().isRegex());
-        Assertions.assertEquals("zdmh", response.tags().get("wlvi"));
+        Assertions.assertEquals("akmfc", response.tags().get("viyjuca"));
     }
 
     // Use "Map.of" if available

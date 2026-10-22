@@ -12,14 +12,14 @@ public final class ExtensionUpgradeParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExtensionUpgradeParameters model
-            = BinaryData.fromString("{\"targetVersion\":\"wypusuvjsl\"}").toObject(ExtensionUpgradeParameters.class);
-        Assertions.assertEquals("wypusuvjsl", model.targetVersion());
+            = BinaryData.fromString("{\"targetVersion\":\"memhooclutnpq\"}").toObject(ExtensionUpgradeParameters.class);
+        Assertions.assertEquals("memhooclutnpq", model.targetVersion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExtensionUpgradeParameters model = new ExtensionUpgradeParameters().withTargetVersion("wypusuvjsl");
+        ExtensionUpgradeParameters model = new ExtensionUpgradeParameters().withTargetVersion("memhooclutnpq");
         model = BinaryData.fromObject(model).toObject(ExtensionUpgradeParameters.class);
-        Assertions.assertEquals("wypusuvjsl", model.targetVersion());
+        Assertions.assertEquals("memhooclutnpq", model.targetVersion());
     }
 }

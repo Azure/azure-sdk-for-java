@@ -12,7 +12,7 @@ import java.util.Map;
  */
 public final class ExpansionJobsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-01-01/expansionJobs_CreateOrUpdate.json
+     * x-ms-original-file: 2026-08-01/expansionJobs_CreateOrUpdate.json
      */
     /**
      * Sample code: expansionJobs_CreateOrUpdate.

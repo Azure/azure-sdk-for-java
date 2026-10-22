@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.util.Map;
 
 /**
- * A recurring action that operates on specified compute resources.
+ * A recurring bulk action that operates on specified compute resources.
  */
 @Fluent
 public final class ScheduledActionInner extends Resource {

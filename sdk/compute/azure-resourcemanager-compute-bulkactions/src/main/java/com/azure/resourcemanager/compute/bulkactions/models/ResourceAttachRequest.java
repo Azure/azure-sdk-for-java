@@ -13,12 +13,12 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Resources to attach to a scheduled action.
+ * Resources to attach to a recurring bulk action.
  */
 @Fluent
 public final class ResourceAttachRequest implements JsonSerializable<ResourceAttachRequest> {
     /*
-     * The list of resources to attach to the scheduled action.
+     * The list of resources to attach to the recurring bulk action.
      */
     private List<ScheduledActionResourceInput> resources;
 
@@ -29,7 +29,7 @@ public final class ResourceAttachRequest implements JsonSerializable<ResourceAtt
     }
 
     /**
-     * Get the resources property: The list of resources to attach to the scheduled action.
+     * Get the resources property: The list of resources to attach to the recurring bulk action.
      * 
      * @return the resources value.
      */
@@ -38,7 +38,7 @@ public final class ResourceAttachRequest implements JsonSerializable<ResourceAtt
     }
 
     /**
-     * Set the resources property: The list of resources to attach to the scheduled action.
+     * Set the resources property: The list of resources to attach to the recurring bulk action.
      * 
      * @param resources the resources value to set.
      * @return the ResourceAttachRequest object itself.

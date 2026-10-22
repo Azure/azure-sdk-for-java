@@ -28,7 +28,7 @@ public final class IssuesCreateWithResponseMockTests {
     @Test
     public void testCreateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"title\":\"gdxpg\",\"status\":\"Mitigated\",\"severity\":\"chisze\",\"investigations\":[{\"id\":\"nb\",\"createdAt\":\"2021-01-06T23:48:23Z\"}],\"impactTime\":\"2021-05-09T12:03:02Z\",\"investigationsCount\":1812911967,\"background\":{\"type\":\"bbdaxco\",\"text\":\"ozauorsukokwb\",\"details\":[{\"name\":\"hlvnuuepzlr\",\"value\":\"hw\"}]},\"notifications\":{\"updateTypes\":[{\"updateType\":\"IssueNotificationType\"}],\"actionGroupIds\":[\"eyuqdunvmnnrwr\"],\"excludeDefaultActionGroups\":false},\"provisioningState\":\"Succeeded\"},\"id\":\"alywjhhgdn\",\"name\":\"xmsivfomiloxggdu\",\"type\":\"iqndieuzaofj\"}";
+            = "{\"properties\":{\"title\":\"pryu\",\"status\":\"InProgress\",\"severity\":\"wytpzdmovz\",\"investigations\":[{\"id\":\"va\",\"createdAt\":\"2021-06-08T04:09:14Z\"},{\"id\":\"zqadf\",\"createdAt\":\"2021-08-12T09:55:05Z\"}],\"impactTime\":\"2021-07-15T18:15:52Z\",\"investigationsCount\":318308535,\"background\":{\"type\":\"glae\",\"text\":\"ndtic\",\"details\":[{\"name\":\"vzm\",\"value\":\"qtmldgxo\"}]},\"notifications\":{\"updateTypes\":[{\"updateType\":\"IssueNotificationType\"},{\"updateType\":\"IssueNotificationType\"}],\"actionGroupIds\":[\"npkc\",\"ayzri\"],\"excludeDefaultActionGroups\":false},\"provisioningState\":\"Canceled\"},\"id\":\"fvjlboxqvkjlmx\",\"name\":\"omdynhdwdigum\",\"type\":\"nraauzz\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -38,34 +38,33 @@ public final class IssuesCreateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         IssueResource response = manager.issues()
-            .define("fwsrtawcoezbrhu")
-            .withExistingAccount("btx", "w")
-            .withProperties(new IssueProperties().withTitle("kh")
-                .withStatus(Status.IN_PROGRESS)
-                .withSeverity("ygo")
-                .withImpactTime(OffsetDateTime.parse("2021-06-21T23:29Z"))
-                .withBackground(new Background().withType("kq")
-                    .withText("qgzsles")
-                    .withDetails(Arrays.asList(new BackgroundDetails().withName("hernntiewdjc").withValue("bquwrbehw"),
-                        new BackgroundDetails().withName("gohbuffkmrq").withValue("mvvhmxtdrjfuta"),
-                        new BackgroundDetails().withName("oe").withValue("jvewzcjznmwcp"))))
+            .define("xkzb")
+            .withExistingAccount("drihpfhoqcaaewda", "mdjvlpj")
+            .withProperties(new IssueProperties().withTitle("sgeivsiy")
+                .withStatus(Status.CLOSED)
+                .withSeverity("kdncj")
+                .withImpactTime(OffsetDateTime.parse("2021-11-21T06:42:44Z"))
+                .withBackground(new Background().withType("w")
+                    .withText("zwiivwzjbhyzs")
+                    .withDetails(Arrays.asList(new BackgroundDetails().withName("kambtrnegvmnvuqe").withValue("vldspa"),
+                        new BackgroundDetails().withName("tjb").withValue("kdmflvestmjlx"))))
                 .withNotifications(new Notifications()
                     .withUpdateTypes(Arrays.asList(new IssueNotificationType(), new IssueNotificationType(),
                         new IssueNotificationType(), new IssueNotificationType()))
-                    .withActionGroupIds(Arrays.asList("raufactkahzova", "j", "iuxxpshneekulfg"))
-                    .withExcludeDefaultActionGroups(false)))
-            .withRelated("wpklvxw")
+                    .withActionGroupIds(Arrays.asList("apeewchpxlkt", "kuziycsle", "ufuztcktyhjtq"))
+                    .withExcludeDefaultActionGroups(true)))
+            .withRelated("qeevt")
             .create();
 
-        Assertions.assertEquals("gdxpg", response.properties().title());
-        Assertions.assertEquals(Status.MITIGATED, response.properties().status());
-        Assertions.assertEquals("chisze", response.properties().severity());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-09T12:03:02Z"), response.properties().impactTime());
-        Assertions.assertEquals("bbdaxco", response.properties().background().type());
-        Assertions.assertEquals("ozauorsukokwb", response.properties().background().text());
-        Assertions.assertEquals("hlvnuuepzlr", response.properties().background().details().get(0).name());
-        Assertions.assertEquals("hw", response.properties().background().details().get(0).value());
-        Assertions.assertEquals("eyuqdunvmnnrwr", response.properties().notifications().actionGroupIds().get(0));
+        Assertions.assertEquals("pryu", response.properties().title());
+        Assertions.assertEquals(Status.IN_PROGRESS, response.properties().status());
+        Assertions.assertEquals("wytpzdmovz", response.properties().severity());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-15T18:15:52Z"), response.properties().impactTime());
+        Assertions.assertEquals("glae", response.properties().background().type());
+        Assertions.assertEquals("ndtic", response.properties().background().text());
+        Assertions.assertEquals("vzm", response.properties().background().details().get(0).name());
+        Assertions.assertEquals("qtmldgxo", response.properties().background().details().get(0).value());
+        Assertions.assertEquals("npkc", response.properties().notifications().actionGroupIds().get(0));
         Assertions.assertFalse(response.properties().notifications().excludeDefaultActionGroups());
     }
 }

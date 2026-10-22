@@ -15,10 +15,14 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledForJreRange;
 import org.junit.jupiter.api.condition.JRE;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import javax.servlet.ServletException;
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.time.Duration;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -88,6 +92,7 @@ public class JdkHttpClientBuilderIT {
         Configuration configuration = Configuration.from(new TestConfigurationSource()
             .put(Configuration.HTTP_PROXY,
                 "http://" + PROXY_USER_INFO + proxyEndpoint.getHost() + ":" + proxyEndpoint.getPort())
+            .put(Configuration.HTTPS_PROXY, "")
             .put("java.net.useSystemProxies", "true"));
 
         HttpClient httpClient = new JdkHttpClientBuilder().configuration(configuration).build();
@@ -96,6 +101,44 @@ public class JdkHttpClientBuilderIT {
 
         try (Response<?> response = httpClient.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(serviceUri))) {
             assertEquals(200, response.getStatusCode());
+        }
+    }
+
+    @ParameterizedTest
+    @ValueSource(longs = { -1, 0, 123000 })
+    public void configuredTimeoutsAndExplicitOverrides(long timeoutMillis) throws ReflectiveOperationException {
+        String value = Long.toString(timeoutMillis);
+        Configuration configuration
+            = Configuration.from(new TestConfigurationSource().put(Configuration.REQUEST_CONNECT_TIMEOUT_IN_MS, value)
+                .put(Configuration.REQUEST_READ_TIMEOUT_IN_MS, value)
+                .put(Configuration.REQUEST_WRITE_TIMEOUT_IN_MS, value)
+                .put(Configuration.REQUEST_RESPONSE_TIMEOUT_IN_MS, value));
+        JdkHttpClientBuilder builder = new JdkHttpClientBuilder().configuration(configuration);
+        assertTimeouts(builder.build(), Math.max(0, timeoutMillis));
+        assertTimeouts(builder.connectionTimeout(Duration.ofMillis(456000))
+            .readTimeout(Duration.ofMillis(456000))
+            .writeTimeout(Duration.ofMillis(456000))
+            .responseTimeout(Duration.ofMillis(456000))
+            .build(), 456000);
+        assertTimeouts(builder.connectionTimeout(Duration.ofNanos(-1))
+            .readTimeout(Duration.ZERO)
+            .writeTimeout(Duration.ofNanos(-1))
+            .responseTimeout(Duration.ZERO)
+            .build(), 0);
+    }
+
+    private static void assertTimeouts(HttpClient client, long expected) throws ReflectiveOperationException {
+        java.lang.reflect.Field nativeClientField = client.getClass().getDeclaredField("jdkHttpClient");
+        nativeClientField.setAccessible(true);
+        Object nativeClient = nativeClientField.get(client);
+        Object connectTimeout
+            = Class.forName("java.net.http.HttpClient").getMethod("connectTimeout").invoke(nativeClient);
+        assertEquals(expected == 0 ? Optional.empty() : Optional.of(Duration.ofMillis(expected)), connectTimeout);
+        for (String name : new String[] { "readTimeout", "writeTimeout", "responseTimeout" }) {
+            java.lang.reflect.Field field = client.getClass().getDeclaredField(name);
+            field.setAccessible(true);
+            assertEquals(expected == 0 && !"readTimeout".equals(name) ? null : Duration.ofMillis(expected),
+                field.get(client));
         }
     }
 
