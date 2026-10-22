@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Replaced outgoing WebSocket message contents in verbose logs with the payload length in bytes.
+
 - Fixed a race condition where Web PubSub client send operations could miss fast ack responses.
 
 ### Other Changes
