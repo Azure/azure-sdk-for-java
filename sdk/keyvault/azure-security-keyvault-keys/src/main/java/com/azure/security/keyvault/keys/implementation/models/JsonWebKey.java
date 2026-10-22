@@ -119,6 +119,18 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
     @Generated
     private Base64Url y;
 
+    /*
+     * The algorithm identifier. This parameter is required when kty is AKP.
+     */
+    @Generated
+    private AKPAlgorithm alg;
+
+    /*
+     * The public key for Algorithm Key Pair (AKP) keys.
+     */
+    @Generated
+    private Base64Url pub;
+
     /**
      * Creates an instance of JsonWebKey class.
      */
@@ -567,6 +579,57 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
     }
 
     /**
+     * Get the alg property: The algorithm identifier. This parameter is required when kty is AKP.
+     * 
+     * @return the alg value.
+     */
+    @Generated
+    public AKPAlgorithm getAlg() {
+        return this.alg;
+    }
+
+    /**
+     * Set the alg property: The algorithm identifier. This parameter is required when kty is AKP.
+     * 
+     * @param alg the alg value to set.
+     * @return the JsonWebKey object itself.
+     */
+    @Generated
+    public JsonWebKey setAlg(AKPAlgorithm alg) {
+        this.alg = alg;
+        return this;
+    }
+
+    /**
+     * Get the pub property: The public key for Algorithm Key Pair (AKP) keys.
+     * 
+     * @return the pub value.
+     */
+    @Generated
+    public byte[] getPub() {
+        if (this.pub == null) {
+            return null;
+        }
+        return this.pub.decodedBytes();
+    }
+
+    /**
+     * Set the pub property: The public key for Algorithm Key Pair (AKP) keys.
+     * 
+     * @param pub the pub value to set.
+     * @return the JsonWebKey object itself.
+     */
+    @Generated
+    public JsonWebKey setPub(byte[] pub) {
+        if (pub == null) {
+            this.pub = null;
+        } else {
+            this.pub = Base64Url.encode(CoreUtils.clone(pub));
+        }
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Generated
@@ -589,6 +652,8 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
         jsonWriter.writeStringField("crv", this.crv == null ? null : this.crv.toString());
         jsonWriter.writeStringField("x", Objects.toString(this.x, null));
         jsonWriter.writeStringField("y", Objects.toString(this.y, null));
+        jsonWriter.writeStringField("alg", this.alg == null ? null : this.alg.toString());
+        jsonWriter.writeStringField("pub", Objects.toString(this.pub, null));
         return jsonWriter.writeEndObject();
     }
 
@@ -652,6 +717,11 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
                         = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
                 } else if ("y".equals(fieldName)) {
                     deserializedJsonWebKey.y
+                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                } else if ("alg".equals(fieldName)) {
+                    deserializedJsonWebKey.alg = AKPAlgorithm.fromString(reader.getString());
+                } else if ("pub".equals(fieldName)) {
+                    deserializedJsonWebKey.pub
                         = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();

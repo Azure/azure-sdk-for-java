@@ -4,9 +4,10 @@
 
 package com.azure.security.keyvault.keys.implementation.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.Base64Url;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -17,20 +18,20 @@ import java.util.Objects;
 /**
  * The key verify parameters.
  */
-@Immutable
+@Fluent
 public final class KeyVerifyParameters implements JsonSerializable<KeyVerifyParameters> {
     /*
      * The signing/verification algorithm. For more information on possible algorithm types, see
      * JsonWebKeySignatureAlgorithm.
      */
     @Generated
-    private final JsonWebKeySignatureAlgorithm algorithm;
+    private JsonWebKeySignatureAlgorithm algorithm;
 
     /*
      * The digest used for signing.
      */
     @Generated
-    private final Base64Url digest;
+    private Base64Url digest;
 
     /*
      * The signature to be verified.
@@ -38,21 +39,27 @@ public final class KeyVerifyParameters implements JsonSerializable<KeyVerifyPara
     @Generated
     private final Base64Url signature;
 
+    /*
+     * The pre-computed mu value for ML-DSA external mu mode (FIPS 204 Section 6.2). Must be exactly 64 bytes.
+     * When specified, the algorithm and digest fields must not be set. Only supported for ML-DSA (AKP) keys.
+     */
+    @Generated
+    private Base64Url externalMu;
+
+    /*
+     * The application context string for ML-DSA verification (FIPS 204 Section 5.2). Must be 0-255 bytes.
+     * Must not be set when external_mu is specified. Only supported for ML-DSA (AKP) keys.
+     */
+    @Generated
+    private Base64Url context;
+
     /**
      * Creates an instance of KeyVerifyParameters class.
      * 
-     * @param algorithm the algorithm value to set.
-     * @param digest the digest value to set.
      * @param signature the signature value to set.
      */
     @Generated
-    public KeyVerifyParameters(JsonWebKeySignatureAlgorithm algorithm, byte[] digest, byte[] signature) {
-        this.algorithm = algorithm;
-        if (digest == null) {
-            this.digest = null;
-        } else {
-            this.digest = Base64Url.encode(digest);
-        }
+    public KeyVerifyParameters(byte[] signature) {
         if (signature == null) {
             this.signature = null;
         } else {
@@ -72,6 +79,19 @@ public final class KeyVerifyParameters implements JsonSerializable<KeyVerifyPara
     }
 
     /**
+     * Set the algorithm property: The signing/verification algorithm. For more information on possible algorithm types,
+     * see JsonWebKeySignatureAlgorithm.
+     * 
+     * @param algorithm the algorithm value to set.
+     * @return the KeyVerifyParameters object itself.
+     */
+    @Generated
+    public KeyVerifyParameters setAlgorithm(JsonWebKeySignatureAlgorithm algorithm) {
+        this.algorithm = algorithm;
+        return this;
+    }
+
+    /**
      * Get the digest property: The digest used for signing.
      * 
      * @return the digest value.
@@ -82,6 +102,22 @@ public final class KeyVerifyParameters implements JsonSerializable<KeyVerifyPara
             return null;
         }
         return this.digest.decodedBytes();
+    }
+
+    /**
+     * Set the digest property: The digest used for signing.
+     * 
+     * @param digest the digest value to set.
+     * @return the KeyVerifyParameters object itself.
+     */
+    @Generated
+    public KeyVerifyParameters setDigest(byte[] digest) {
+        if (digest == null) {
+            this.digest = null;
+        } else {
+            this.digest = Base64Url.encode(CoreUtils.clone(digest));
+        }
+        return this;
     }
 
     /**
@@ -98,15 +134,83 @@ public final class KeyVerifyParameters implements JsonSerializable<KeyVerifyPara
     }
 
     /**
+     * Get the externalMu property: The pre-computed mu value for ML-DSA external mu mode (FIPS 204 Section 6.2). Must
+     * be exactly 64 bytes.
+     * When specified, the algorithm and digest fields must not be set. Only supported for ML-DSA (AKP) keys.
+     * 
+     * @return the externalMu value.
+     */
+    @Generated
+    public byte[] getExternalMu() {
+        if (this.externalMu == null) {
+            return null;
+        }
+        return this.externalMu.decodedBytes();
+    }
+
+    /**
+     * Set the externalMu property: The pre-computed mu value for ML-DSA external mu mode (FIPS 204 Section 6.2). Must
+     * be exactly 64 bytes.
+     * When specified, the algorithm and digest fields must not be set. Only supported for ML-DSA (AKP) keys.
+     * 
+     * @param externalMu the externalMu value to set.
+     * @return the KeyVerifyParameters object itself.
+     */
+    @Generated
+    public KeyVerifyParameters setExternalMu(byte[] externalMu) {
+        if (externalMu == null) {
+            this.externalMu = null;
+        } else {
+            this.externalMu = Base64Url.encode(CoreUtils.clone(externalMu));
+        }
+        return this;
+    }
+
+    /**
+     * Get the context property: The application context string for ML-DSA verification (FIPS 204 Section 5.2). Must be
+     * 0-255 bytes.
+     * Must not be set when external_mu is specified. Only supported for ML-DSA (AKP) keys.
+     * 
+     * @return the context value.
+     */
+    @Generated
+    public byte[] getContext() {
+        if (this.context == null) {
+            return null;
+        }
+        return this.context.decodedBytes();
+    }
+
+    /**
+     * Set the context property: The application context string for ML-DSA verification (FIPS 204 Section 5.2). Must be
+     * 0-255 bytes.
+     * Must not be set when external_mu is specified. Only supported for ML-DSA (AKP) keys.
+     * 
+     * @param context the context value to set.
+     * @return the KeyVerifyParameters object itself.
+     */
+    @Generated
+    public KeyVerifyParameters setContext(byte[] context) {
+        if (context == null) {
+            this.context = null;
+        } else {
+            this.context = Base64Url.encode(CoreUtils.clone(context));
+        }
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("value", Objects.toString(this.signature, null));
         jsonWriter.writeStringField("alg", this.algorithm == null ? null : this.algorithm.toString());
         jsonWriter.writeStringField("digest", Objects.toString(this.digest, null));
-        jsonWriter.writeStringField("value", Objects.toString(this.signature, null));
+        jsonWriter.writeStringField("external_mu", Objects.toString(this.externalMu, null));
+        jsonWriter.writeStringField("context", Objects.toString(this.context, null));
         return jsonWriter.writeEndObject();
     }
 
@@ -122,32 +226,40 @@ public final class KeyVerifyParameters implements JsonSerializable<KeyVerifyPara
     @Generated
     public static KeyVerifyParameters fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            JsonWebKeySignatureAlgorithm algorithm = null;
-            byte[] digest = null;
             byte[] signature = null;
+            JsonWebKeySignatureAlgorithm algorithm = null;
+            Base64Url digest = null;
+            Base64Url externalMu = null;
+            Base64Url context = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("alg".equals(fieldName)) {
-                    algorithm = JsonWebKeySignatureAlgorithm.fromString(reader.getString());
-                } else if ("digest".equals(fieldName)) {
-                    Base64Url digestHolder
-                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
-                    if (digestHolder != null) {
-                        digest = digestHolder.decodedBytes();
-                    }
-                } else if ("value".equals(fieldName)) {
+                if ("value".equals(fieldName)) {
                     Base64Url signatureHolder
                         = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
                     if (signatureHolder != null) {
                         signature = signatureHolder.decodedBytes();
                     }
+                } else if ("alg".equals(fieldName)) {
+                    algorithm = JsonWebKeySignatureAlgorithm.fromString(reader.getString());
+                } else if ("digest".equals(fieldName)) {
+                    digest = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                } else if ("external_mu".equals(fieldName)) {
+                    externalMu = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                } else if ("context".equals(fieldName)) {
+                    context = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }
             }
-            return new KeyVerifyParameters(algorithm, digest, signature);
+            KeyVerifyParameters deserializedKeyVerifyParameters = new KeyVerifyParameters(signature);
+            deserializedKeyVerifyParameters.algorithm = algorithm;
+            deserializedKeyVerifyParameters.digest = digest;
+            deserializedKeyVerifyParameters.externalMu = externalMu;
+            deserializedKeyVerifyParameters.context = context;
+
+            return deserializedKeyVerifyParameters;
         });
     }
 }

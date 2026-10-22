@@ -70,6 +70,12 @@ public final class KeyCreateParameters implements JsonSerializable<KeyCreatePara
     @Generated
     private KeyReleasePolicy releasePolicy;
 
+    /*
+     * The algorithm for Algorithm Key Pair (AKP) keys. For valid values, see AKPAlgorithm.
+     */
+    @Generated
+    private AKPAlgorithm alg;
+
     /**
      * Creates an instance of KeyCreateParameters class.
      * 
@@ -247,6 +253,28 @@ public final class KeyCreateParameters implements JsonSerializable<KeyCreatePara
     }
 
     /**
+     * Get the alg property: The algorithm for Algorithm Key Pair (AKP) keys. For valid values, see AKPAlgorithm.
+     * 
+     * @return the alg value.
+     */
+    @Generated
+    public AKPAlgorithm getAlg() {
+        return this.alg;
+    }
+
+    /**
+     * Set the alg property: The algorithm for Algorithm Key Pair (AKP) keys. For valid values, see AKPAlgorithm.
+     * 
+     * @param alg the alg value to set.
+     * @return the KeyCreateParameters object itself.
+     */
+    @Generated
+    public KeyCreateParameters setAlg(AKPAlgorithm alg) {
+        this.alg = alg;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Generated
@@ -262,6 +290,7 @@ public final class KeyCreateParameters implements JsonSerializable<KeyCreatePara
         jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("crv", this.curve == null ? null : this.curve.toString());
         jsonWriter.writeJsonField("release_policy", this.releasePolicy);
+        jsonWriter.writeStringField("alg", this.alg == null ? null : this.alg.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -285,6 +314,7 @@ public final class KeyCreateParameters implements JsonSerializable<KeyCreatePara
             Map<String, String> tags = null;
             KeyCurveName curve = null;
             KeyReleasePolicy releasePolicy = null;
+            AKPAlgorithm alg = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -305,6 +335,8 @@ public final class KeyCreateParameters implements JsonSerializable<KeyCreatePara
                     curve = KeyCurveName.fromString(reader.getString());
                 } else if ("release_policy".equals(fieldName)) {
                     releasePolicy = KeyReleasePolicy.fromJson(reader);
+                } else if ("alg".equals(fieldName)) {
+                    alg = AKPAlgorithm.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
@@ -317,6 +349,7 @@ public final class KeyCreateParameters implements JsonSerializable<KeyCreatePara
             deserializedKeyCreateParameters.tags = tags;
             deserializedKeyCreateParameters.curve = curve;
             deserializedKeyCreateParameters.releasePolicy = releasePolicy;
+            deserializedKeyCreateParameters.alg = alg;
 
             return deserializedKeyCreateParameters;
         });

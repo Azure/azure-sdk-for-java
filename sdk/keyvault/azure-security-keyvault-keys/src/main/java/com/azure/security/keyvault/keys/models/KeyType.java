@@ -13,6 +13,18 @@ import java.util.Collection;
  */
 public final class KeyType extends ExpandableStringEnum<KeyType> {
     /**
+     * Algorithm Key Pair.
+     */
+    @Generated
+    public static final KeyType AKP = fromString("AKP");
+
+    /**
+     * Algorithm Key Pair with private key material stored in HSM.
+     */
+    @Generated
+    public static final KeyType AKP_HSM = fromString("AKP-HSM");
+
+    /**
      * Elliptic Curve.
      */
     @Generated

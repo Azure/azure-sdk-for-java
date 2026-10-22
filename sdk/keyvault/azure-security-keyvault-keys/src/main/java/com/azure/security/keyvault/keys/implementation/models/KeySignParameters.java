@@ -4,9 +4,10 @@
 
 package com.azure.security.keyvault.keys.implementation.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.Base64Url;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -17,35 +18,40 @@ import java.util.Objects;
 /**
  * The key operations parameters.
  */
-@Immutable
+@Fluent
 public final class KeySignParameters implements JsonSerializable<KeySignParameters> {
     /*
      * The signing/verification algorithm identifier. For more information on possible algorithm types, see
      * JsonWebKeySignatureAlgorithm.
      */
     @Generated
-    private final JsonWebKeySignatureAlgorithm algorithm;
+    private JsonWebKeySignatureAlgorithm algorithm;
 
     /*
      * The value to operate on.
      */
     @Generated
-    private final Base64Url value;
+    private Base64Url value;
+
+    /*
+     * The pre-computed mu value for ML-DSA external mu mode (FIPS 204 Section 6.2). Must be exactly 64 bytes.
+     * When specified, the algorithm and value fields must not be set. Only supported for ML-DSA (AKP) keys.
+     */
+    @Generated
+    private Base64Url externalMu;
+
+    /*
+     * The application context string for ML-DSA signing (FIPS 204 Section 5.2). Must be 0-255 bytes.
+     * Must not be set when external_mu is specified. Only supported for ML-DSA (AKP) keys.
+     */
+    @Generated
+    private Base64Url context;
 
     /**
      * Creates an instance of KeySignParameters class.
-     * 
-     * @param algorithm the algorithm value to set.
-     * @param value the value value to set.
      */
     @Generated
-    public KeySignParameters(JsonWebKeySignatureAlgorithm algorithm, byte[] value) {
-        this.algorithm = algorithm;
-        if (value == null) {
-            this.value = null;
-        } else {
-            this.value = Base64Url.encode(value);
-        }
+    public KeySignParameters() {
     }
 
     /**
@@ -57,6 +63,19 @@ public final class KeySignParameters implements JsonSerializable<KeySignParamete
     @Generated
     public JsonWebKeySignatureAlgorithm getAlgorithm() {
         return this.algorithm;
+    }
+
+    /**
+     * Set the algorithm property: The signing/verification algorithm identifier. For more information on possible
+     * algorithm types, see JsonWebKeySignatureAlgorithm.
+     * 
+     * @param algorithm the algorithm value to set.
+     * @return the KeySignParameters object itself.
+     */
+    @Generated
+    public KeySignParameters setAlgorithm(JsonWebKeySignatureAlgorithm algorithm) {
+        this.algorithm = algorithm;
+        return this;
     }
 
     /**
@@ -73,6 +92,88 @@ public final class KeySignParameters implements JsonSerializable<KeySignParamete
     }
 
     /**
+     * Set the value property: The value to operate on.
+     * 
+     * @param value the value value to set.
+     * @return the KeySignParameters object itself.
+     */
+    @Generated
+    public KeySignParameters setValue(byte[] value) {
+        if (value == null) {
+            this.value = null;
+        } else {
+            this.value = Base64Url.encode(CoreUtils.clone(value));
+        }
+        return this;
+    }
+
+    /**
+     * Get the externalMu property: The pre-computed mu value for ML-DSA external mu mode (FIPS 204 Section 6.2). Must
+     * be exactly 64 bytes.
+     * When specified, the algorithm and value fields must not be set. Only supported for ML-DSA (AKP) keys.
+     * 
+     * @return the externalMu value.
+     */
+    @Generated
+    public byte[] getExternalMu() {
+        if (this.externalMu == null) {
+            return null;
+        }
+        return this.externalMu.decodedBytes();
+    }
+
+    /**
+     * Set the externalMu property: The pre-computed mu value for ML-DSA external mu mode (FIPS 204 Section 6.2). Must
+     * be exactly 64 bytes.
+     * When specified, the algorithm and value fields must not be set. Only supported for ML-DSA (AKP) keys.
+     * 
+     * @param externalMu the externalMu value to set.
+     * @return the KeySignParameters object itself.
+     */
+    @Generated
+    public KeySignParameters setExternalMu(byte[] externalMu) {
+        if (externalMu == null) {
+            this.externalMu = null;
+        } else {
+            this.externalMu = Base64Url.encode(CoreUtils.clone(externalMu));
+        }
+        return this;
+    }
+
+    /**
+     * Get the context property: The application context string for ML-DSA signing (FIPS 204 Section 5.2). Must be 0-255
+     * bytes.
+     * Must not be set when external_mu is specified. Only supported for ML-DSA (AKP) keys.
+     * 
+     * @return the context value.
+     */
+    @Generated
+    public byte[] getContext() {
+        if (this.context == null) {
+            return null;
+        }
+        return this.context.decodedBytes();
+    }
+
+    /**
+     * Set the context property: The application context string for ML-DSA signing (FIPS 204 Section 5.2). Must be 0-255
+     * bytes.
+     * Must not be set when external_mu is specified. Only supported for ML-DSA (AKP) keys.
+     * 
+     * @param context the context value to set.
+     * @return the KeySignParameters object itself.
+     */
+    @Generated
+    public KeySignParameters setContext(byte[] context) {
+        if (context == null) {
+            this.context = null;
+        } else {
+            this.context = Base64Url.encode(CoreUtils.clone(context));
+        }
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Generated
@@ -81,6 +182,8 @@ public final class KeySignParameters implements JsonSerializable<KeySignParamete
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("alg", this.algorithm == null ? null : this.algorithm.toString());
         jsonWriter.writeStringField("value", Objects.toString(this.value, null));
+        jsonWriter.writeStringField("external_mu", Objects.toString(this.externalMu, null));
+        jsonWriter.writeStringField("context", Objects.toString(this.context, null));
         return jsonWriter.writeEndObject();
     }
 
@@ -90,31 +193,34 @@ public final class KeySignParameters implements JsonSerializable<KeySignParamete
      * @param jsonReader The JsonReader being read.
      * @return An instance of KeySignParameters if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the KeySignParameters.
      */
     @Generated
     public static KeySignParameters fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            JsonWebKeySignatureAlgorithm algorithm = null;
-            byte[] value = null;
+            KeySignParameters deserializedKeySignParameters = new KeySignParameters();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("alg".equals(fieldName)) {
-                    algorithm = JsonWebKeySignatureAlgorithm.fromString(reader.getString());
+                    deserializedKeySignParameters.algorithm
+                        = JsonWebKeySignatureAlgorithm.fromString(reader.getString());
                 } else if ("value".equals(fieldName)) {
-                    Base64Url valueHolder
+                    deserializedKeySignParameters.value
                         = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
-                    if (valueHolder != null) {
-                        value = valueHolder.decodedBytes();
-                    }
+                } else if ("external_mu".equals(fieldName)) {
+                    deserializedKeySignParameters.externalMu
+                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                } else if ("context".equals(fieldName)) {
+                    deserializedKeySignParameters.context
+                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }
             }
-            return new KeySignParameters(algorithm, value);
+
+            return deserializedKeySignParameters;
         });
     }
 }

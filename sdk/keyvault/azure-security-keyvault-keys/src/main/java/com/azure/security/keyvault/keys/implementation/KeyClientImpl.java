@@ -822,7 +822,7 @@ public final class KeyClientImpl {
      * <pre>
      * {@code
      * {
-     *     kty: String(EC/EC-HSM/RSA/RSA-HSM/oct/oct-HSM) (Required)
+     *     kty: String(AKP/AKP-HSM/EC/EC-HSM/RSA/RSA-HSM/oct/oct-HSM) (Required)
      *     key_size: Integer (Optional)
      *     public_exponent: Integer (Optional)
      *     key_ops (Optional): [
@@ -858,6 +858,7 @@ public final class KeyClientImpl {
      *         immutable: Boolean (Optional)
      *         data: Base64Url (Optional)
      *     }
+     *     alg: String(ML-DSA-44/ML-DSA-65/ML-DSA-87) (Optional)
      * }
      * }
      * </pre>
@@ -869,7 +870,7 @@ public final class KeyClientImpl {
      * {
      *     key (Optional): {
      *         kid: String (Optional)
-     *         kty: String(EC/EC-HSM/RSA/RSA-HSM/oct/oct-HSM) (Optional)
+     *         kty: String(AKP/AKP-HSM/EC/EC-HSM/RSA/RSA-HSM/oct/oct-HSM) (Optional)
      *         key_ops (Optional): [
      *             String (Optional)
      *         ]
@@ -886,6 +887,8 @@ public final class KeyClientImpl {
      *         crv: String(P-256/P-384/P-521/P-256K) (Optional)
      *         x: Base64Url (Optional)
      *         y: Base64Url (Optional)
+     *         alg: String(ML-DSA-44/ML-DSA-65/ML-DSA-87) (Optional)
+     *         pub: Base64Url (Optional)
      *     }
      *     attributes (Optional): {
      *         enabled: Boolean (Optional)
@@ -952,7 +955,7 @@ public final class KeyClientImpl {
      * <pre>
      * {@code
      * {
-     *     kty: String(EC/EC-HSM/RSA/RSA-HSM/oct/oct-HSM) (Required)
+     *     kty: String(AKP/AKP-HSM/EC/EC-HSM/RSA/RSA-HSM/oct/oct-HSM) (Required)
      *     key_size: Integer (Optional)
      *     public_exponent: Integer (Optional)
      *     key_ops (Optional): [
@@ -988,6 +991,7 @@ public final class KeyClientImpl {
      *         immutable: Boolean (Optional)
      *         data: Base64Url (Optional)
      *     }
+     *     alg: String(ML-DSA-44/ML-DSA-65/ML-DSA-87) (Optional)
      * }
      * }
      * </pre>
@@ -999,7 +1003,7 @@ public final class KeyClientImpl {
      * {
      *     key (Optional): {
      *         kid: String (Optional)
-     *         kty: String(EC/EC-HSM/RSA/RSA-HSM/oct/oct-HSM) (Optional)
+     *         kty: String(AKP/AKP-HSM/EC/EC-HSM/RSA/RSA-HSM/oct/oct-HSM) (Optional)
      *         key_ops (Optional): [
      *             String (Optional)
      *         ]
@@ -1016,6 +1020,8 @@ public final class KeyClientImpl {
      *         crv: String(P-256/P-384/P-521/P-256K) (Optional)
      *         x: Base64Url (Optional)
      *         y: Base64Url (Optional)
+     *         alg: String(ML-DSA-44/ML-DSA-65/ML-DSA-87) (Optional)
+     *         pub: Base64Url (Optional)
      *     }
      *     attributes (Optional): {
      *         enabled: Boolean (Optional)
@@ -1082,7 +1088,7 @@ public final class KeyClientImpl {
      * {
      *     key (Optional): {
      *         kid: String (Optional)
-     *         kty: String(EC/EC-HSM/RSA/RSA-HSM/oct/oct-HSM) (Optional)
+     *         kty: String(AKP/AKP-HSM/EC/EC-HSM/RSA/RSA-HSM/oct/oct-HSM) (Optional)
      *         key_ops (Optional): [
      *             String (Optional)
      *         ]
@@ -1099,6 +1105,8 @@ public final class KeyClientImpl {
      *         crv: String(P-256/P-384/P-521/P-256K) (Optional)
      *         x: Base64Url (Optional)
      *         y: Base64Url (Optional)
+     *         alg: String(ML-DSA-44/ML-DSA-65/ML-DSA-87) (Optional)
+     *         pub: Base64Url (Optional)
      *     }
      *     attributes (Optional): {
      *         enabled: Boolean (Optional)
@@ -1161,7 +1169,7 @@ public final class KeyClientImpl {
      * {
      *     key (Optional): {
      *         kid: String (Optional)
-     *         kty: String(EC/EC-HSM/RSA/RSA-HSM/oct/oct-HSM) (Optional)
+     *         kty: String(AKP/AKP-HSM/EC/EC-HSM/RSA/RSA-HSM/oct/oct-HSM) (Optional)
      *         key_ops (Optional): [
      *             String (Optional)
      *         ]
@@ -1178,6 +1186,8 @@ public final class KeyClientImpl {
      *         crv: String(P-256/P-384/P-521/P-256K) (Optional)
      *         x: Base64Url (Optional)
      *         y: Base64Url (Optional)
+     *         alg: String(ML-DSA-44/ML-DSA-65/ML-DSA-87) (Optional)
+     *         pub: Base64Url (Optional)
      *     }
      *     attributes (Optional): {
      *         enabled: Boolean (Optional)
@@ -1241,7 +1251,7 @@ public final class KeyClientImpl {
      *     Hsm: Boolean (Optional)
      *     key (Required): {
      *         kid: String (Optional)
-     *         kty: String(EC/EC-HSM/RSA/RSA-HSM/oct/oct-HSM) (Optional)
+     *         kty: String(AKP/AKP-HSM/EC/EC-HSM/RSA/RSA-HSM/oct/oct-HSM) (Optional)
      *         key_ops (Optional): [
      *             String (Optional)
      *         ]
@@ -1258,6 +1268,8 @@ public final class KeyClientImpl {
      *         crv: String(P-256/P-384/P-521/P-256K) (Optional)
      *         x: Base64Url (Optional)
      *         y: Base64Url (Optional)
+     *         alg: String(ML-DSA-44/ML-DSA-65/ML-DSA-87) (Optional)
+     *         pub: Base64Url (Optional)
      *     }
      *     attributes (Optional): {
      *         enabled: Boolean (Optional)
@@ -1299,7 +1311,7 @@ public final class KeyClientImpl {
      * {
      *     key (Optional): {
      *         kid: String (Optional)
-     *         kty: String(EC/EC-HSM/RSA/RSA-HSM/oct/oct-HSM) (Optional)
+     *         kty: String(AKP/AKP-HSM/EC/EC-HSM/RSA/RSA-HSM/oct/oct-HSM) (Optional)
      *         key_ops (Optional): [
      *             String (Optional)
      *         ]
@@ -1316,6 +1328,8 @@ public final class KeyClientImpl {
      *         crv: String(P-256/P-384/P-521/P-256K) (Optional)
      *         x: Base64Url (Optional)
      *         y: Base64Url (Optional)
+     *         alg: String(ML-DSA-44/ML-DSA-65/ML-DSA-87) (Optional)
+     *         pub: Base64Url (Optional)
      *     }
      *     attributes (Optional): {
      *         enabled: Boolean (Optional)
@@ -1384,7 +1398,7 @@ public final class KeyClientImpl {
      *     Hsm: Boolean (Optional)
      *     key (Required): {
      *         kid: String (Optional)
-     *         kty: String(EC/EC-HSM/RSA/RSA-HSM/oct/oct-HSM) (Optional)
+     *         kty: String(AKP/AKP-HSM/EC/EC-HSM/RSA/RSA-HSM/oct/oct-HSM) (Optional)
      *         key_ops (Optional): [
      *             String (Optional)
      *         ]
@@ -1401,6 +1415,8 @@ public final class KeyClientImpl {
      *         crv: String(P-256/P-384/P-521/P-256K) (Optional)
      *         x: Base64Url (Optional)
      *         y: Base64Url (Optional)
+     *         alg: String(ML-DSA-44/ML-DSA-65/ML-DSA-87) (Optional)
+     *         pub: Base64Url (Optional)
      *     }
      *     attributes (Optional): {
      *         enabled: Boolean (Optional)
@@ -1442,7 +1458,7 @@ public final class KeyClientImpl {
      * {
      *     key (Optional): {
      *         kid: String (Optional)
-     *         kty: String(EC/EC-HSM/RSA/RSA-HSM/oct/oct-HSM) (Optional)
+     *         kty: String(AKP/AKP-HSM/EC/EC-HSM/RSA/RSA-HSM/oct/oct-HSM) (Optional)
      *         key_ops (Optional): [
      *             String (Optional)
      *         ]
@@ -1459,6 +1475,8 @@ public final class KeyClientImpl {
      *         crv: String(P-256/P-384/P-521/P-256K) (Optional)
      *         x: Base64Url (Optional)
      *         y: Base64Url (Optional)
+     *         alg: String(ML-DSA-44/ML-DSA-65/ML-DSA-87) (Optional)
+     *         pub: Base64Url (Optional)
      *     }
      *     attributes (Optional): {
      *         enabled: Boolean (Optional)
@@ -1526,7 +1544,7 @@ public final class KeyClientImpl {
      * {
      *     key (Optional): {
      *         kid: String (Optional)
-     *         kty: String(EC/EC-HSM/RSA/RSA-HSM/oct/oct-HSM) (Optional)
+     *         kty: String(AKP/AKP-HSM/EC/EC-HSM/RSA/RSA-HSM/oct/oct-HSM) (Optional)
      *         key_ops (Optional): [
      *             String (Optional)
      *         ]
@@ -1543,6 +1561,8 @@ public final class KeyClientImpl {
      *         crv: String(P-256/P-384/P-521/P-256K) (Optional)
      *         x: Base64Url (Optional)
      *         y: Base64Url (Optional)
+     *         alg: String(ML-DSA-44/ML-DSA-65/ML-DSA-87) (Optional)
+     *         pub: Base64Url (Optional)
      *     }
      *     attributes (Optional): {
      *         enabled: Boolean (Optional)
@@ -1610,7 +1630,7 @@ public final class KeyClientImpl {
      * {
      *     key (Optional): {
      *         kid: String (Optional)
-     *         kty: String(EC/EC-HSM/RSA/RSA-HSM/oct/oct-HSM) (Optional)
+     *         kty: String(AKP/AKP-HSM/EC/EC-HSM/RSA/RSA-HSM/oct/oct-HSM) (Optional)
      *         key_ops (Optional): [
      *             String (Optional)
      *         ]
@@ -1627,6 +1647,8 @@ public final class KeyClientImpl {
      *         crv: String(P-256/P-384/P-521/P-256K) (Optional)
      *         x: Base64Url (Optional)
      *         y: Base64Url (Optional)
+     *         alg: String(ML-DSA-44/ML-DSA-65/ML-DSA-87) (Optional)
+     *         pub: Base64Url (Optional)
      *     }
      *     attributes (Optional): {
      *         enabled: Boolean (Optional)
@@ -1735,7 +1757,7 @@ public final class KeyClientImpl {
      * {
      *     key (Optional): {
      *         kid: String (Optional)
-     *         kty: String(EC/EC-HSM/RSA/RSA-HSM/oct/oct-HSM) (Optional)
+     *         kty: String(AKP/AKP-HSM/EC/EC-HSM/RSA/RSA-HSM/oct/oct-HSM) (Optional)
      *         key_ops (Optional): [
      *             String (Optional)
      *         ]
@@ -1752,6 +1774,8 @@ public final class KeyClientImpl {
      *         crv: String(P-256/P-384/P-521/P-256K) (Optional)
      *         x: Base64Url (Optional)
      *         y: Base64Url (Optional)
+     *         alg: String(ML-DSA-44/ML-DSA-65/ML-DSA-87) (Optional)
+     *         pub: Base64Url (Optional)
      *     }
      *     attributes (Optional): {
      *         enabled: Boolean (Optional)
@@ -1862,7 +1886,7 @@ public final class KeyClientImpl {
      * {
      *     key (Optional): {
      *         kid: String (Optional)
-     *         kty: String(EC/EC-HSM/RSA/RSA-HSM/oct/oct-HSM) (Optional)
+     *         kty: String(AKP/AKP-HSM/EC/EC-HSM/RSA/RSA-HSM/oct/oct-HSM) (Optional)
      *         key_ops (Optional): [
      *             String (Optional)
      *         ]
@@ -1879,6 +1903,8 @@ public final class KeyClientImpl {
      *         crv: String(P-256/P-384/P-521/P-256K) (Optional)
      *         x: Base64Url (Optional)
      *         y: Base64Url (Optional)
+     *         alg: String(ML-DSA-44/ML-DSA-65/ML-DSA-87) (Optional)
+     *         pub: Base64Url (Optional)
      *     }
      *     attributes (Optional): {
      *         enabled: Boolean (Optional)
@@ -1945,7 +1971,7 @@ public final class KeyClientImpl {
      * {
      *     key (Optional): {
      *         kid: String (Optional)
-     *         kty: String(EC/EC-HSM/RSA/RSA-HSM/oct/oct-HSM) (Optional)
+     *         kty: String(AKP/AKP-HSM/EC/EC-HSM/RSA/RSA-HSM/oct/oct-HSM) (Optional)
      *         key_ops (Optional): [
      *             String (Optional)
      *         ]
@@ -1962,6 +1988,8 @@ public final class KeyClientImpl {
      *         crv: String(P-256/P-384/P-521/P-256K) (Optional)
      *         x: Base64Url (Optional)
      *         y: Base64Url (Optional)
+     *         alg: String(ML-DSA-44/ML-DSA-65/ML-DSA-87) (Optional)
+     *         pub: Base64Url (Optional)
      *     }
      *     attributes (Optional): {
      *         enabled: Boolean (Optional)
@@ -2030,7 +2058,7 @@ public final class KeyClientImpl {
      * {
      *     key (Optional): {
      *         kid: String (Optional)
-     *         kty: String(EC/EC-HSM/RSA/RSA-HSM/oct/oct-HSM) (Optional)
+     *         kty: String(AKP/AKP-HSM/EC/EC-HSM/RSA/RSA-HSM/oct/oct-HSM) (Optional)
      *         key_ops (Optional): [
      *             String (Optional)
      *         ]
@@ -2047,6 +2075,8 @@ public final class KeyClientImpl {
      *         crv: String(P-256/P-384/P-521/P-256K) (Optional)
      *         x: Base64Url (Optional)
      *         y: Base64Url (Optional)
+     *         alg: String(ML-DSA-44/ML-DSA-65/ML-DSA-87) (Optional)
+     *         pub: Base64Url (Optional)
      *     }
      *     attributes (Optional): {
      *         enabled: Boolean (Optional)
@@ -2732,7 +2762,7 @@ public final class KeyClientImpl {
      * {
      *     key (Optional): {
      *         kid: String (Optional)
-     *         kty: String(EC/EC-HSM/RSA/RSA-HSM/oct/oct-HSM) (Optional)
+     *         kty: String(AKP/AKP-HSM/EC/EC-HSM/RSA/RSA-HSM/oct/oct-HSM) (Optional)
      *         key_ops (Optional): [
      *             String (Optional)
      *         ]
@@ -2749,6 +2779,8 @@ public final class KeyClientImpl {
      *         crv: String(P-256/P-384/P-521/P-256K) (Optional)
      *         x: Base64Url (Optional)
      *         y: Base64Url (Optional)
+     *         alg: String(ML-DSA-44/ML-DSA-65/ML-DSA-87) (Optional)
+     *         pub: Base64Url (Optional)
      *     }
      *     attributes (Optional): {
      *         enabled: Boolean (Optional)
@@ -2831,7 +2863,7 @@ public final class KeyClientImpl {
      * {
      *     key (Optional): {
      *         kid: String (Optional)
-     *         kty: String(EC/EC-HSM/RSA/RSA-HSM/oct/oct-HSM) (Optional)
+     *         kty: String(AKP/AKP-HSM/EC/EC-HSM/RSA/RSA-HSM/oct/oct-HSM) (Optional)
      *         key_ops (Optional): [
      *             String (Optional)
      *         ]
@@ -2848,6 +2880,8 @@ public final class KeyClientImpl {
      *         crv: String(P-256/P-384/P-521/P-256K) (Optional)
      *         x: Base64Url (Optional)
      *         y: Base64Url (Optional)
+     *         alg: String(ML-DSA-44/ML-DSA-65/ML-DSA-87) (Optional)
+     *         pub: Base64Url (Optional)
      *     }
      *     attributes (Optional): {
      *         enabled: Boolean (Optional)
@@ -3139,8 +3173,10 @@ public final class KeyClientImpl {
      * <pre>
      * {@code
      * {
-     *     alg: String(PS256/PS384/PS512/RS256/RS384/RS512/HS256/HS384/HS512/RSNULL/ES256/ES384/ES512/ES256K) (Required)
-     *     value: Base64Url (Required)
+     *     alg: String(PS256/PS384/PS512/RS256/RS384/RS512/HS256/HS384/HS512/RSNULL/ES256/ES384/ES512/ES256K) (Optional)
+     *     value: Base64Url (Optional)
+     *     external_mu: Base64Url (Optional)
+     *     context: Base64Url (Optional)
      * }
      * }
      * </pre>
@@ -3189,8 +3225,10 @@ public final class KeyClientImpl {
      * <pre>
      * {@code
      * {
-     *     alg: String(PS256/PS384/PS512/RS256/RS384/RS512/HS256/HS384/HS512/RSNULL/ES256/ES384/ES512/ES256K) (Required)
-     *     value: Base64Url (Required)
+     *     alg: String(PS256/PS384/PS512/RS256/RS384/RS512/HS256/HS384/HS512/RSNULL/ES256/ES384/ES512/ES256K) (Optional)
+     *     value: Base64Url (Optional)
+     *     external_mu: Base64Url (Optional)
+     *     context: Base64Url (Optional)
      * }
      * }
      * </pre>
@@ -3240,9 +3278,11 @@ public final class KeyClientImpl {
      * <pre>
      * {@code
      * {
-     *     alg: String(PS256/PS384/PS512/RS256/RS384/RS512/HS256/HS384/HS512/RSNULL/ES256/ES384/ES512/ES256K) (Required)
-     *     digest: Base64Url (Required)
+     *     alg: String(PS256/PS384/PS512/RS256/RS384/RS512/HS256/HS384/HS512/RSNULL/ES256/ES384/ES512/ES256K) (Optional)
+     *     digest: Base64Url (Optional)
      *     value: Base64Url (Required)
+     *     external_mu: Base64Url (Optional)
+     *     context: Base64Url (Optional)
      * }
      * }
      * </pre>
@@ -3289,9 +3329,11 @@ public final class KeyClientImpl {
      * <pre>
      * {@code
      * {
-     *     alg: String(PS256/PS384/PS512/RS256/RS384/RS512/HS256/HS384/HS512/RSNULL/ES256/ES384/ES512/ES256K) (Required)
-     *     digest: Base64Url (Required)
+     *     alg: String(PS256/PS384/PS512/RS256/RS384/RS512/HS256/HS384/HS512/RSNULL/ES256/ES384/ES512/ES256K) (Optional)
+     *     digest: Base64Url (Optional)
      *     value: Base64Url (Required)
+     *     external_mu: Base64Url (Optional)
+     *     context: Base64Url (Optional)
      * }
      * }
      * </pre>
@@ -4140,7 +4182,7 @@ public final class KeyClientImpl {
      * {
      *     key (Optional): {
      *         kid: String (Optional)
-     *         kty: String(EC/EC-HSM/RSA/RSA-HSM/oct/oct-HSM) (Optional)
+     *         kty: String(AKP/AKP-HSM/EC/EC-HSM/RSA/RSA-HSM/oct/oct-HSM) (Optional)
      *         key_ops (Optional): [
      *             String (Optional)
      *         ]
@@ -4157,6 +4199,8 @@ public final class KeyClientImpl {
      *         crv: String(P-256/P-384/P-521/P-256K) (Optional)
      *         x: Base64Url (Optional)
      *         y: Base64Url (Optional)
+     *         alg: String(ML-DSA-44/ML-DSA-65/ML-DSA-87) (Optional)
+     *         pub: Base64Url (Optional)
      *     }
      *     attributes (Optional): {
      *         enabled: Boolean (Optional)
@@ -4226,7 +4270,7 @@ public final class KeyClientImpl {
      * {
      *     key (Optional): {
      *         kid: String (Optional)
-     *         kty: String(EC/EC-HSM/RSA/RSA-HSM/oct/oct-HSM) (Optional)
+     *         kty: String(AKP/AKP-HSM/EC/EC-HSM/RSA/RSA-HSM/oct/oct-HSM) (Optional)
      *         key_ops (Optional): [
      *             String (Optional)
      *         ]
@@ -4243,6 +4287,8 @@ public final class KeyClientImpl {
      *         crv: String(P-256/P-384/P-521/P-256K) (Optional)
      *         x: Base64Url (Optional)
      *         y: Base64Url (Optional)
+     *         alg: String(ML-DSA-44/ML-DSA-65/ML-DSA-87) (Optional)
+     *         pub: Base64Url (Optional)
      *     }
      *     attributes (Optional): {
      *         enabled: Boolean (Optional)
@@ -4354,7 +4400,7 @@ public final class KeyClientImpl {
      * {
      *     key (Optional): {
      *         kid: String (Optional)
-     *         kty: String(EC/EC-HSM/RSA/RSA-HSM/oct/oct-HSM) (Optional)
+     *         kty: String(AKP/AKP-HSM/EC/EC-HSM/RSA/RSA-HSM/oct/oct-HSM) (Optional)
      *         key_ops (Optional): [
      *             String (Optional)
      *         ]
@@ -4371,6 +4417,8 @@ public final class KeyClientImpl {
      *         crv: String(P-256/P-384/P-521/P-256K) (Optional)
      *         x: Base64Url (Optional)
      *         y: Base64Url (Optional)
+     *         alg: String(ML-DSA-44/ML-DSA-65/ML-DSA-87) (Optional)
+     *         pub: Base64Url (Optional)
      *     }
      *     attributes (Optional): {
      *         enabled: Boolean (Optional)
@@ -4437,7 +4485,7 @@ public final class KeyClientImpl {
      * {
      *     key (Optional): {
      *         kid: String (Optional)
-     *         kty: String(EC/EC-HSM/RSA/RSA-HSM/oct/oct-HSM) (Optional)
+     *         kty: String(AKP/AKP-HSM/EC/EC-HSM/RSA/RSA-HSM/oct/oct-HSM) (Optional)
      *         key_ops (Optional): [
      *             String (Optional)
      *         ]
@@ -4454,6 +4502,8 @@ public final class KeyClientImpl {
      *         crv: String(P-256/P-384/P-521/P-256K) (Optional)
      *         x: Base64Url (Optional)
      *         y: Base64Url (Optional)
+     *         alg: String(ML-DSA-44/ML-DSA-65/ML-DSA-87) (Optional)
+     *         pub: Base64Url (Optional)
      *     }
      *     attributes (Optional): {
      *         enabled: Boolean (Optional)
@@ -4846,7 +4896,7 @@ public final class KeyClientImpl {
      * {
      *     key (Optional): {
      *         kid: String (Optional)
-     *         kty: String(EC/EC-HSM/RSA/RSA-HSM/oct/oct-HSM) (Optional)
+     *         kty: String(AKP/AKP-HSM/EC/EC-HSM/RSA/RSA-HSM/oct/oct-HSM) (Optional)
      *         key_ops (Optional): [
      *             String (Optional)
      *         ]
@@ -4863,6 +4913,8 @@ public final class KeyClientImpl {
      *         crv: String(P-256/P-384/P-521/P-256K) (Optional)
      *         x: Base64Url (Optional)
      *         y: Base64Url (Optional)
+     *         alg: String(ML-DSA-44/ML-DSA-65/ML-DSA-87) (Optional)
+     *         pub: Base64Url (Optional)
      *     }
      *     attributes (Optional): {
      *         enabled: Boolean (Optional)
@@ -4931,7 +4983,7 @@ public final class KeyClientImpl {
      * {
      *     key (Optional): {
      *         kid: String (Optional)
-     *         kty: String(EC/EC-HSM/RSA/RSA-HSM/oct/oct-HSM) (Optional)
+     *         kty: String(AKP/AKP-HSM/EC/EC-HSM/RSA/RSA-HSM/oct/oct-HSM) (Optional)
      *         key_ops (Optional): [
      *             String (Optional)
      *         ]
@@ -4948,6 +5000,8 @@ public final class KeyClientImpl {
      *         crv: String(P-256/P-384/P-521/P-256K) (Optional)
      *         x: Base64Url (Optional)
      *         y: Base64Url (Optional)
+     *         alg: String(ML-DSA-44/ML-DSA-65/ML-DSA-87) (Optional)
+     *         pub: Base64Url (Optional)
      *     }
      *     attributes (Optional): {
      *         enabled: Boolean (Optional)
