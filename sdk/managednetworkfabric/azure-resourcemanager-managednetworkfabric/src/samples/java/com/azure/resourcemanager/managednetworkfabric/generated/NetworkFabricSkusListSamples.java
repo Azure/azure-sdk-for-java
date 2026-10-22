@@ -9,7 +9,7 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
  */
 public final class NetworkFabricSkusListSamples {
     /*
-     * x-ms-original-file: 2025-07-15/NetworkFabricSkus_ListBySubscription.json
+     * x-ms-original-file: 2026-01-15-preview/NetworkFabricSkus_ListBySubscription.json
      */
     /**
      * Sample code: NetworkFabricSkus_ListBySubscription_MaximumSet_Gen.

@@ -143,7 +143,7 @@ public interface L3IsolationDomains {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of the action validate configuration.
      */
-    ValidateConfigurationResponse validateConfiguration(String resourceGroupName, String l3IsolationDomainName);
+    ValidateConfigurationResponseV2 validateConfiguration(String resourceGroupName, String l3IsolationDomainName);
 
     /**
      * Validates the configuration of the resources.
@@ -156,7 +156,7 @@ public interface L3IsolationDomains {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of the action validate configuration.
      */
-    ValidateConfigurationResponse validateConfiguration(String resourceGroupName, String l3IsolationDomainName,
+    ValidateConfigurationResponseV2 validateConfiguration(String resourceGroupName, String l3IsolationDomainName,
         Context context);
 
     /**

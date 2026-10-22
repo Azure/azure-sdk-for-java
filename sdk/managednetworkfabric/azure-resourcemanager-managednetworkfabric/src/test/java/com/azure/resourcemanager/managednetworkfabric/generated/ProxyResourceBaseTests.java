@@ -10,7 +10,7 @@ import com.azure.resourcemanager.managednetworkfabric.models.ProxyResourceBase;
 public final class ProxyResourceBaseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ProxyResourceBase model = BinaryData.fromString("{\"id\":\"qnmelyksy\",\"type\":\"hiclmslnunk\"}")
+        ProxyResourceBase model = BinaryData.fromString("{\"id\":\"jlbsmndafbncuyj\",\"type\":\"kcnhpplzhc\"}")
             .toObject(ProxyResourceBase.class);
     }
 

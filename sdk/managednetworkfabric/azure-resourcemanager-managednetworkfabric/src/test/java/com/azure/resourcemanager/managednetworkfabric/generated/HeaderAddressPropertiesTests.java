@@ -12,18 +12,19 @@ import org.junit.jupiter.api.Assertions;
 public final class HeaderAddressPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        HeaderAddressProperties model = BinaryData.fromString("{\"headerName\":\"ysh\",\"addressList\":[\"kvb\"]}")
-            .toObject(HeaderAddressProperties.class);
-        Assertions.assertEquals("ysh", model.headerName());
-        Assertions.assertEquals("kvb", model.addressList().get(0));
+        HeaderAddressProperties model
+            = BinaryData.fromString("{\"headerName\":\"yvwehtaemxh\",\"addressList\":[\"se\"]}")
+                .toObject(HeaderAddressProperties.class);
+        Assertions.assertEquals("yvwehtaemxh", model.headerName());
+        Assertions.assertEquals("se", model.addressList().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         HeaderAddressProperties model
-            = new HeaderAddressProperties().withHeaderName("ysh").withAddressList(Arrays.asList("kvb"));
+            = new HeaderAddressProperties().withHeaderName("yvwehtaemxh").withAddressList(Arrays.asList("se"));
         model = BinaryData.fromObject(model).toObject(HeaderAddressProperties.class);
-        Assertions.assertEquals("ysh", model.headerName());
-        Assertions.assertEquals("kvb", model.addressList().get(0));
+        Assertions.assertEquals("yvwehtaemxh", model.headerName());
+        Assertions.assertEquals("se", model.addressList().get(0));
     }
 }

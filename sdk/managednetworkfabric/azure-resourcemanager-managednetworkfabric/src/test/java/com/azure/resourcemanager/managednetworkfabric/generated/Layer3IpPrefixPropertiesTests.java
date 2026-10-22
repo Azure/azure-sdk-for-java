@@ -12,24 +12,24 @@ public final class Layer3IpPrefixPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Layer3IpPrefixProperties model = BinaryData.fromString(
-            "{\"primaryIpv4Prefix\":\"rxgunnqgy\",\"primaryIpv6Prefix\":\"qtny\",\"secondaryIpv4Prefix\":\"uevqmvyumgmm\",\"secondaryIpv6Prefix\":\"bsnznwgsqufm\"}")
+            "{\"primaryIpv4Prefix\":\"avkmvyxzerejrkpz\",\"primaryIpv6Prefix\":\"yetjxryo\",\"secondaryIpv4Prefix\":\"ae\",\"secondaryIpv6Prefix\":\"whlbecgihzbpem\"}")
             .toObject(Layer3IpPrefixProperties.class);
-        Assertions.assertEquals("rxgunnqgy", model.primaryIpv4Prefix());
-        Assertions.assertEquals("qtny", model.primaryIpv6Prefix());
-        Assertions.assertEquals("uevqmvyumgmm", model.secondaryIpv4Prefix());
-        Assertions.assertEquals("bsnznwgsqufm", model.secondaryIpv6Prefix());
+        Assertions.assertEquals("avkmvyxzerejrkpz", model.primaryIpv4Prefix());
+        Assertions.assertEquals("yetjxryo", model.primaryIpv6Prefix());
+        Assertions.assertEquals("ae", model.secondaryIpv4Prefix());
+        Assertions.assertEquals("whlbecgihzbpem", model.secondaryIpv6Prefix());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Layer3IpPrefixProperties model = new Layer3IpPrefixProperties().withPrimaryIpv4Prefix("rxgunnqgy")
-            .withPrimaryIpv6Prefix("qtny")
-            .withSecondaryIpv4Prefix("uevqmvyumgmm")
-            .withSecondaryIpv6Prefix("bsnznwgsqufm");
+        Layer3IpPrefixProperties model = new Layer3IpPrefixProperties().withPrimaryIpv4Prefix("avkmvyxzerejrkpz")
+            .withPrimaryIpv6Prefix("yetjxryo")
+            .withSecondaryIpv4Prefix("ae")
+            .withSecondaryIpv6Prefix("whlbecgihzbpem");
         model = BinaryData.fromObject(model).toObject(Layer3IpPrefixProperties.class);
-        Assertions.assertEquals("rxgunnqgy", model.primaryIpv4Prefix());
-        Assertions.assertEquals("qtny", model.primaryIpv6Prefix());
-        Assertions.assertEquals("uevqmvyumgmm", model.secondaryIpv4Prefix());
-        Assertions.assertEquals("bsnznwgsqufm", model.secondaryIpv6Prefix());
+        Assertions.assertEquals("avkmvyxzerejrkpz", model.primaryIpv4Prefix());
+        Assertions.assertEquals("yetjxryo", model.primaryIpv6Prefix());
+        Assertions.assertEquals("ae", model.secondaryIpv4Prefix());
+        Assertions.assertEquals("whlbecgihzbpem", model.secondaryIpv6Prefix());
     }
 }

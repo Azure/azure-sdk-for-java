@@ -11,8 +11,11 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.managednetworkfabric.models.AdministrativeState;
 import com.azure.resourcemanager.managednetworkfabric.models.ConfigurationState;
+import com.azure.resourcemanager.managednetworkfabric.models.OperationalState;
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
+import com.azure.resourcemanager.managednetworkfabric.models.SecretRotationStatus;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Network Bootstrap Device Properties defines the properties of the resource.
@@ -33,6 +36,11 @@ public final class NetworkBootstrapDeviceProperties implements JsonSerializable<
      * Serial number of the device. Format of serial Number - Make;Model;HardwareRevisionId;SerialNumber.
      */
     private String serialNumber;
+
+    /*
+     * Control Plane Access Control List ARM resource IDs.
+     */
+    private List<String> controlPlaneAcls;
 
     /*
      * Current version of the device as defined in SKU.
@@ -88,6 +96,16 @@ public final class NetworkBootstrapDeviceProperties implements JsonSerializable<
      * Configuration state of the resource.
      */
     private ConfigurationState configurationState;
+
+    /*
+     * Operational state of networkBootstrapDevice indicating if the device is reachable and services are available.
+     */
+    private OperationalState operationalState;
+
+    /*
+     * Secret rotation status for the terminal server's secrets.
+     */
+    private List<SecretRotationStatus> secretRotationStatus;
 
     /**
      * Creates an instance of NetworkBootstrapDeviceProperties class.
@@ -154,6 +172,26 @@ public final class NetworkBootstrapDeviceProperties implements JsonSerializable<
      */
     public NetworkBootstrapDeviceProperties withSerialNumber(String serialNumber) {
         this.serialNumber = serialNumber;
+        return this;
+    }
+
+    /**
+     * Get the controlPlaneAcls property: Control Plane Access Control List ARM resource IDs.
+     * 
+     * @return the controlPlaneAcls value.
+     */
+    public List<String> controlPlaneAcls() {
+        return this.controlPlaneAcls;
+    }
+
+    /**
+     * Set the controlPlaneAcls property: Control Plane Access Control List ARM resource IDs.
+     * 
+     * @param controlPlaneAcls the controlPlaneAcls value to set.
+     * @return the NetworkBootstrapDeviceProperties object itself.
+     */
+    public NetworkBootstrapDeviceProperties withControlPlaneAcls(List<String> controlPlaneAcls) {
+        this.controlPlaneAcls = controlPlaneAcls;
         return this;
     }
 
@@ -268,6 +306,25 @@ public final class NetworkBootstrapDeviceProperties implements JsonSerializable<
     }
 
     /**
+     * Get the operationalState property: Operational state of networkBootstrapDevice indicating if the device is
+     * reachable and services are available.
+     * 
+     * @return the operationalState value.
+     */
+    public OperationalState operationalState() {
+        return this.operationalState;
+    }
+
+    /**
+     * Get the secretRotationStatus property: Secret rotation status for the terminal server's secrets.
+     * 
+     * @return the secretRotationStatus value.
+     */
+    public List<SecretRotationStatus> secretRotationStatus() {
+        return this.secretRotationStatus;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -276,6 +333,8 @@ public final class NetworkBootstrapDeviceProperties implements JsonSerializable<
         jsonWriter.writeStringField("annotation", this.annotation);
         jsonWriter.writeStringField("hostName", this.hostName);
         jsonWriter.writeStringField("serialNumber", this.serialNumber);
+        jsonWriter.writeArrayField("controlPlaneAcls", this.controlPlaneAcls,
+            (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("networkDeviceSku", this.networkDeviceSku);
         return jsonWriter.writeEndObject();
     }
@@ -302,6 +361,9 @@ public final class NetworkBootstrapDeviceProperties implements JsonSerializable<
                     deserializedNetworkBootstrapDeviceProperties.hostName = reader.getString();
                 } else if ("serialNumber".equals(fieldName)) {
                     deserializedNetworkBootstrapDeviceProperties.serialNumber = reader.getString();
+                } else if ("controlPlaneAcls".equals(fieldName)) {
+                    List<String> controlPlaneAcls = reader.readArray(reader1 -> reader1.getString());
+                    deserializedNetworkBootstrapDeviceProperties.controlPlaneAcls = controlPlaneAcls;
                 } else if ("version".equals(fieldName)) {
                     deserializedNetworkBootstrapDeviceProperties.version = reader.getString();
                 } else if ("networkDeviceSku".equals(fieldName)) {
@@ -327,6 +389,13 @@ public final class NetworkBootstrapDeviceProperties implements JsonSerializable<
                 } else if ("configurationState".equals(fieldName)) {
                     deserializedNetworkBootstrapDeviceProperties.configurationState
                         = ConfigurationState.fromString(reader.getString());
+                } else if ("operationalState".equals(fieldName)) {
+                    deserializedNetworkBootstrapDeviceProperties.operationalState
+                        = OperationalState.fromString(reader.getString());
+                } else if ("secretRotationStatus".equals(fieldName)) {
+                    List<SecretRotationStatus> secretRotationStatus
+                        = reader.readArray(reader1 -> SecretRotationStatus.fromJson(reader1));
+                    deserializedNetworkBootstrapDeviceProperties.secretRotationStatus = secretRotationStatus;
                 } else {
                     reader.skipChildren();
                 }

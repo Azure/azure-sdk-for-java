@@ -9,7 +9,7 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
  */
 public final class IpCommunitiesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-07-15/IpCommunities_ListByResourceGroup.json
+     * x-ms-original-file: 2026-01-15-preview/IpCommunities_ListByResourceGroup.json
      */
     /**
      * Sample code: IpCommunities_ListByResourceGroup_MaximumSet_Gen.

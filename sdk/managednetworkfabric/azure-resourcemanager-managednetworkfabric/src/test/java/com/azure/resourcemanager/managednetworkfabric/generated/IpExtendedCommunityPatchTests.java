@@ -17,31 +17,38 @@ public final class IpExtendedCommunityPatchTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IpExtendedCommunityPatch model = BinaryData.fromString(
-            "{\"properties\":{\"annotation\":\"zmxieqvdsmaklix\",\"ipExtendedCommunityRules\":[{\"action\":\"Permit\",\"sequenceNumber\":330622041052177048,\"routeTargets\":[\"alybxawoijpo\",\"tblxpkkwjdjodqhy\",\"incnr\",\"mehllizhceu\"]}]},\"tags\":{\"adywrxwhydt\":\"odkadppyibngq\",\"emlowuowhl\":\"uvvadswzsnu\",\"mouvbl\":\"lnwy\",\"zkltrfowtdvrfmv\":\"mo\"}}")
+            "{\"properties\":{\"annotation\":\"f\",\"ipExtendedCommunityRules\":[{\"action\":\"Permit\",\"sequenceNumber\":1060606839998197850,\"routeTargets\":[\"mwcdbcky\",\"ikxkxhneg\"]},{\"action\":\"Deny\",\"sequenceNumber\":2785122180998227471,\"routeTargets\":[\"bhtmeplvuk\",\"obrl\",\"pgsn\",\"agnchjhgemuowaky\"]},{\"action\":\"Permit\",\"sequenceNumber\":5726912588759109718,\"routeTargets\":[\"ymxcgqtag\",\"rclsso\"]},{\"action\":\"Deny\",\"sequenceNumber\":124055688722357344,\"routeTargets\":[\"vtfycnlbvgjcodk\"]}]},\"tags\":{\"s\":\"iiy\"}}")
             .toObject(IpExtendedCommunityPatch.class);
-        Assertions.assertEquals("odkadppyibngq", model.tags().get("adywrxwhydt"));
-        Assertions.assertEquals("zmxieqvdsmaklix", model.annotation());
+        Assertions.assertEquals("iiy", model.tags().get("s"));
+        Assertions.assertEquals("f", model.annotation());
         Assertions.assertEquals(CommunityActionTypes.PERMIT, model.ipExtendedCommunityRules().get(0).action());
-        Assertions.assertEquals(330622041052177048L, model.ipExtendedCommunityRules().get(0).sequenceNumber());
-        Assertions.assertEquals("alybxawoijpo", model.ipExtendedCommunityRules().get(0).routeTargets().get(0));
+        Assertions.assertEquals(1060606839998197850L, model.ipExtendedCommunityRules().get(0).sequenceNumber());
+        Assertions.assertEquals("mwcdbcky", model.ipExtendedCommunityRules().get(0).routeTargets().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IpExtendedCommunityPatch model = new IpExtendedCommunityPatch()
-            .withTags(mapOf("adywrxwhydt", "odkadppyibngq", "emlowuowhl", "uvvadswzsnu", "mouvbl", "lnwy",
-                "zkltrfowtdvrfmv", "mo"))
-            .withAnnotation("zmxieqvdsmaklix")
-            .withIpExtendedCommunityRules(
-                Arrays.asList(new IpExtendedCommunityRule().withAction(CommunityActionTypes.PERMIT)
-                    .withSequenceNumber(330622041052177048L)
-                    .withRouteTargets(Arrays.asList("alybxawoijpo", "tblxpkkwjdjodqhy", "incnr", "mehllizhceu"))));
+        IpExtendedCommunityPatch model = new IpExtendedCommunityPatch().withTags(mapOf("s", "iiy"))
+            .withAnnotation("f")
+            .withIpExtendedCommunityRules(Arrays.asList(
+                new IpExtendedCommunityRule().withAction(CommunityActionTypes.PERMIT)
+                    .withSequenceNumber(1060606839998197850L)
+                    .withRouteTargets(Arrays.asList("mwcdbcky", "ikxkxhneg")),
+                new IpExtendedCommunityRule().withAction(CommunityActionTypes.DENY)
+                    .withSequenceNumber(2785122180998227471L)
+                    .withRouteTargets(Arrays.asList("bhtmeplvuk", "obrl", "pgsn", "agnchjhgemuowaky")),
+                new IpExtendedCommunityRule().withAction(CommunityActionTypes.PERMIT)
+                    .withSequenceNumber(5726912588759109718L)
+                    .withRouteTargets(Arrays.asList("ymxcgqtag", "rclsso")),
+                new IpExtendedCommunityRule().withAction(CommunityActionTypes.DENY)
+                    .withSequenceNumber(124055688722357344L)
+                    .withRouteTargets(Arrays.asList("vtfycnlbvgjcodk"))));
         model = BinaryData.fromObject(model).toObject(IpExtendedCommunityPatch.class);
-        Assertions.assertEquals("odkadppyibngq", model.tags().get("adywrxwhydt"));
-        Assertions.assertEquals("zmxieqvdsmaklix", model.annotation());
+        Assertions.assertEquals("iiy", model.tags().get("s"));
+        Assertions.assertEquals("f", model.annotation());
         Assertions.assertEquals(CommunityActionTypes.PERMIT, model.ipExtendedCommunityRules().get(0).action());
-        Assertions.assertEquals(330622041052177048L, model.ipExtendedCommunityRules().get(0).sequenceNumber());
-        Assertions.assertEquals("alybxawoijpo", model.ipExtendedCommunityRules().get(0).routeTargets().get(0));
+        Assertions.assertEquals(1060606839998197850L, model.ipExtendedCommunityRules().get(0).sequenceNumber());
+        Assertions.assertEquals("mwcdbcky", model.ipExtendedCommunityRules().get(0).routeTargets().get(0));
     }
 
     // Use "Map.of" if available

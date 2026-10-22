@@ -13,16 +13,17 @@ import org.junit.jupiter.api.Assertions;
 public final class BmpExportPolicyPatchPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BmpExportPolicyPatchProperties model = BinaryData.fromString("{\"exportPolicies\":[\"LocalRib\",\"LocalRib\"]}")
-            .toObject(BmpExportPolicyPatchProperties.class);
-        Assertions.assertEquals(BmpExportPolicy.LOCAL_RIB, model.exportPolicies().get(0));
+        BmpExportPolicyPatchProperties model
+            = BinaryData.fromString("{\"exportPolicies\":[\"Pre-Policy\",\"LocalRib\",\"LocalRib\"]}")
+                .toObject(BmpExportPolicyPatchProperties.class);
+        Assertions.assertEquals(BmpExportPolicy.PRE_POLICY, model.exportPolicies().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BmpExportPolicyPatchProperties model = new BmpExportPolicyPatchProperties()
-            .withExportPolicies(Arrays.asList(BmpExportPolicy.LOCAL_RIB, BmpExportPolicy.LOCAL_RIB));
+        BmpExportPolicyPatchProperties model = new BmpExportPolicyPatchProperties().withExportPolicies(
+            Arrays.asList(BmpExportPolicy.PRE_POLICY, BmpExportPolicy.LOCAL_RIB, BmpExportPolicy.LOCAL_RIB));
         model = BinaryData.fromObject(model).toObject(BmpExportPolicyPatchProperties.class);
-        Assertions.assertEquals(BmpExportPolicy.LOCAL_RIB, model.exportPolicies().get(0));
+        Assertions.assertEquals(BmpExportPolicy.PRE_POLICY, model.exportPolicies().get(0));
     }
 }

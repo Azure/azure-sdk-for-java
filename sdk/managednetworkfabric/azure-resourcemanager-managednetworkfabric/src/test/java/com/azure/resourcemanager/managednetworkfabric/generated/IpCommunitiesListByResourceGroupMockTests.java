@@ -24,7 +24,7 @@ public final class IpCommunitiesListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"annotation\":\"ijpbychcwhlhdz\",\"networkFabricId\":\"rlfcmeyxypx\",\"ipCommunityRules\":[{\"action\":\"Permit\",\"sequenceNumber\":5666178434728554722,\"wellKnownCommunities\":[\"Internet\",\"NoAdvertise\",\"GShut\"],\"communityMembers\":[\"vetpdezebvtkg\"]}],\"lastOperation\":{\"details\":\"adfh\"},\"configurationState\":\"Provisioned\",\"provisioningState\":\"Succeeded\",\"administrativeState\":\"EnabledDegraded\"},\"location\":\"xuounzzckogcva\",\"tags\":{\"dw\":\"ovnyoftsodi\",\"zqd\":\"lkuamxhojtnqeony\",\"mkztwzlw\":\"v\",\"pfe\":\"llhm\"},\"id\":\"rfuzedud\",\"name\":\"tgdvwatfvjvum\",\"type\":\"mbcflhycluounv\"}]}";
+            = "{\"value\":[{\"properties\":{\"annotation\":\"ijpbychcwhlhdz\",\"networkFabricId\":\"rlfcmeyxypx\",\"ipCommunityRules\":[{\"action\":\"Permit\",\"sequenceNumber\":5666178434728554722,\"wellKnownCommunities\":[\"Internet\",\"NoAdvertise\",\"GShut\"],\"communityMembers\":[\"vetpdezebvtkg\"]}],\"lastOperation\":{\"details\":\"adfh\"},\"configurationState\":\"DeferredControl\",\"provisioningState\":\"Succeeded\",\"administrativeState\":\"EnabledDegraded\"},\"location\":\"xuounzzckogcva\",\"tags\":{\"dw\":\"ovnyoftsodi\",\"zqd\":\"lkuamxhojtnqeony\",\"mkztwzlw\":\"v\",\"pfe\":\"llhm\"},\"id\":\"rfuzedud\",\"name\":\"tgdvwatfvjvum\",\"type\":\"mbcflhycluounv\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));

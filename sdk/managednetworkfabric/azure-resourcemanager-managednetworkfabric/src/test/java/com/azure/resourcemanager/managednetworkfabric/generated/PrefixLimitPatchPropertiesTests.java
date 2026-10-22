@@ -12,21 +12,21 @@ public final class PrefixLimitPatchPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrefixLimitPatchProperties model = BinaryData
-            .fromString("{\"maximumRoutes\":1917543946,\"threshold\":2004089002,\"idleTimeExpiry\":1189896831}")
+            .fromString("{\"maximumRoutes\":1317744928,\"threshold\":1234666366,\"idleTimeExpiry\":554597959}")
             .toObject(PrefixLimitPatchProperties.class);
-        Assertions.assertEquals(1917543946, model.maximumRoutes());
-        Assertions.assertEquals(2004089002, model.threshold());
-        Assertions.assertEquals(1189896831, model.idleTimeExpiry());
+        Assertions.assertEquals(1317744928, model.maximumRoutes());
+        Assertions.assertEquals(1234666366, model.threshold());
+        Assertions.assertEquals(554597959, model.idleTimeExpiry());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrefixLimitPatchProperties model = new PrefixLimitPatchProperties().withMaximumRoutes(1917543946)
-            .withThreshold(2004089002)
-            .withIdleTimeExpiry(1189896831);
+        PrefixLimitPatchProperties model = new PrefixLimitPatchProperties().withMaximumRoutes(1317744928)
+            .withThreshold(1234666366)
+            .withIdleTimeExpiry(554597959);
         model = BinaryData.fromObject(model).toObject(PrefixLimitPatchProperties.class);
-        Assertions.assertEquals(1917543946, model.maximumRoutes());
-        Assertions.assertEquals(2004089002, model.threshold());
-        Assertions.assertEquals(1189896831, model.idleTimeExpiry());
+        Assertions.assertEquals(1317744928, model.maximumRoutes());
+        Assertions.assertEquals(1234666366, model.threshold());
+        Assertions.assertEquals(554597959, model.idleTimeExpiry());
     }
 }

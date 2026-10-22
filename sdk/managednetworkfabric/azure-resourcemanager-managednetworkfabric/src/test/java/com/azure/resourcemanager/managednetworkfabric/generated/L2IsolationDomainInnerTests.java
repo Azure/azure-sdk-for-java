@@ -18,41 +18,43 @@ public final class L2IsolationDomainInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         L2IsolationDomainInner model = BinaryData.fromString(
-            "{\"properties\":{\"networkFabricId\":\"tfnnxrk\",\"vlanId\":330841837,\"mtu\":846889023,\"extendedVlan\":\"Enabled\",\"networkToNetworkInterconnectId\":\"fmu\",\"lastOperation\":{\"details\":\"ri\"},\"configurationState\":\"ErrorProvisioning\",\"provisioningState\":\"Deleting\",\"administrativeState\":\"UnderMaintenance\",\"annotation\":\"xbbcbrw\"},\"identity\":{\"principalId\":\"tgnjizbeewoiymrv\",\"tenantId\":\"juyrsrziuctixg\",\"type\":\"None\",\"userAssignedIdentities\":{\"syparybjufp\":{\"principalId\":\"frevkaapezkiswqj\",\"clientId\":\"g\"}}},\"location\":\"jczjnciuiyqv\",\"tags\":{\"ppisqqzlgcndhzx\":\"sw\",\"srhkhgsnxuwwkpph\":\"rfc\"},\"id\":\"fsbzxlbzxo\",\"name\":\"eikjclwza\",\"type\":\"nmwpf\"}")
+            "{\"properties\":{\"networkFabricId\":\"zarpzeqacdldt\",\"vlanId\":1615507010,\"mtu\":2081028827,\"extendedVlan\":\"Disabled\",\"networkToNetworkInterconnectId\":\"cpczshnuqnd\",\"lastOperation\":{\"details\":\"upfkhuytuszxhmtv\"},\"configurationState\":\"Rejected\",\"provisioningState\":\"Accepted\",\"administrativeState\":\"Enabled\",\"annotation\":\"kvzwydw\"},\"identity\":{\"principalId\":\"aokgkskjivbsshaj\",\"tenantId\":\"u\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"onofninbdbzsxcw\":{\"principalId\":\"pgeumilh\",\"clientId\":\"itrdexy\"},\"fogdrtbfcm\":{\"principalId\":\"rsmpcbbprtuga\",\"clientId\":\"zbcyksiv\"},\"xkecifhocj\":{\"principalId\":\"ftsjcwj\",\"clientId\":\"sgmbawvif\"}}},\"location\":\"kl\",\"tags\":{\"xxvir\":\"rvtxvcmufunlc\",\"rquv\":\"eyngjg\"},\"id\":\"ygg\",\"name\":\"pmcrdcuelj\",\"type\":\"iahxmfqryarvs\"}")
             .toObject(L2IsolationDomainInner.class);
-        Assertions.assertEquals("jczjnciuiyqv", model.location());
-        Assertions.assertEquals("sw", model.tags().get("ppisqqzlgcndhzx"));
-        Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.identity().type());
-        Assertions.assertEquals("tfnnxrk", model.networkFabricId());
-        Assertions.assertEquals(330841837, model.vlanId());
-        Assertions.assertEquals(846889023, model.mtu());
-        Assertions.assertEquals(ExtendedVlan.ENABLED, model.extendedVlan());
-        Assertions.assertEquals("fmu", model.networkToNetworkInterconnectId());
-        Assertions.assertEquals("xbbcbrw", model.annotation());
+        Assertions.assertEquals("kl", model.location());
+        Assertions.assertEquals("rvtxvcmufunlc", model.tags().get("xxvir"));
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("zarpzeqacdldt", model.networkFabricId());
+        Assertions.assertEquals(1615507010, model.vlanId());
+        Assertions.assertEquals(2081028827, model.mtu());
+        Assertions.assertEquals(ExtendedVlan.DISABLED, model.extendedVlan());
+        Assertions.assertEquals("cpczshnuqnd", model.networkToNetworkInterconnectId());
+        Assertions.assertEquals("kvzwydw", model.annotation());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        L2IsolationDomainInner model = new L2IsolationDomainInner().withLocation("jczjnciuiyqv")
-            .withTags(mapOf("ppisqqzlgcndhzx", "sw", "srhkhgsnxuwwkpph", "rfc"))
-            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE)
-                .withUserAssignedIdentities(mapOf("syparybjufp", new UserAssignedIdentity())))
-            .withNetworkFabricId("tfnnxrk")
-            .withVlanId(330841837)
-            .withMtu(846889023)
-            .withExtendedVlan(ExtendedVlan.ENABLED)
-            .withNetworkToNetworkInterconnectId("fmu")
-            .withAnnotation("xbbcbrw");
+        L2IsolationDomainInner model = new L2IsolationDomainInner().withLocation("kl")
+            .withTags(mapOf("xxvir", "rvtxvcmufunlc", "rquv", "eyngjg"))
+            .withIdentity(
+                new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+                    .withUserAssignedIdentities(mapOf("onofninbdbzsxcw", new UserAssignedIdentity(), "fogdrtbfcm",
+                        new UserAssignedIdentity(), "xkecifhocj", new UserAssignedIdentity())))
+            .withNetworkFabricId("zarpzeqacdldt")
+            .withVlanId(1615507010)
+            .withMtu(2081028827)
+            .withExtendedVlan(ExtendedVlan.DISABLED)
+            .withNetworkToNetworkInterconnectId("cpczshnuqnd")
+            .withAnnotation("kvzwydw");
         model = BinaryData.fromObject(model).toObject(L2IsolationDomainInner.class);
-        Assertions.assertEquals("jczjnciuiyqv", model.location());
-        Assertions.assertEquals("sw", model.tags().get("ppisqqzlgcndhzx"));
-        Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.identity().type());
-        Assertions.assertEquals("tfnnxrk", model.networkFabricId());
-        Assertions.assertEquals(330841837, model.vlanId());
-        Assertions.assertEquals(846889023, model.mtu());
-        Assertions.assertEquals(ExtendedVlan.ENABLED, model.extendedVlan());
-        Assertions.assertEquals("fmu", model.networkToNetworkInterconnectId());
-        Assertions.assertEquals("xbbcbrw", model.annotation());
+        Assertions.assertEquals("kl", model.location());
+        Assertions.assertEquals("rvtxvcmufunlc", model.tags().get("xxvir"));
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("zarpzeqacdldt", model.networkFabricId());
+        Assertions.assertEquals(1615507010, model.vlanId());
+        Assertions.assertEquals(2081028827, model.mtu());
+        Assertions.assertEquals(ExtendedVlan.DISABLED, model.extendedVlan());
+        Assertions.assertEquals("cpczshnuqnd", model.networkToNetworkInterconnectId());
+        Assertions.assertEquals("kvzwydw", model.annotation());
     }
 
     // Use "Map.of" if available

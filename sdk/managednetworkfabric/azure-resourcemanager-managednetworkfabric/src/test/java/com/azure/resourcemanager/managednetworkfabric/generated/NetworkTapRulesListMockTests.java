@@ -27,7 +27,7 @@ public final class NetworkTapRulesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"annotation\":\"osoxxoqyikdjaog\",\"configurationType\":\"Inline\",\"tapRulesUrl\":\"xqxvmyb\",\"identitySelector\":{\"identityType\":\"SystemAssignedIdentity\",\"userAssignedIdentityResourceId\":\"rlfnsdcc\"},\"matchConfigurations\":[{\"matchConfigurationName\":\"h\",\"sequenceNumber\":7863229487440185713,\"ipAddressType\":\"IPv4\",\"matchConditions\":[{},{},{},{}],\"actions\":[{}]},{\"matchConfigurationName\":\"mzkxrqzgshqx\",\"sequenceNumber\":8976657734193947009,\"ipAddressType\":\"IPv6\",\"matchConditions\":[{}],\"actions\":[{}]},{\"matchConfigurationName\":\"imhoaqjalhlpzn\",\"sequenceNumber\":6573925024172789161,\"ipAddressType\":\"IPv4\",\"matchConditions\":[{},{},{}],\"actions\":[{}]}],\"dynamicMatchConfigurations\":[{\"ipGroups\":[{},{},{}],\"vlanGroups\":[{},{},{}],\"portGroups\":[{},{}]},{\"ipGroups\":[{},{}],\"vlanGroups\":[{}],\"portGroups\":[{},{},{}]},{\"ipGroups\":[{},{},{}],\"vlanGroups\":[{},{},{}],\"portGroups\":[{}]}],\"networkTapId\":\"yadyfnxtlln\",\"networkTapIds\":[\"d\",\"svaekuovwiwty\",\"pr\",\"ddbenfjhfszmxpos\"],\"pollingIntervalInSeconds\":440863677,\"lastSyncedTime\":\"2021-11-22T18:26:05Z\",\"globalNetworkTapRuleActions\":{\"enableCount\":\"False\",\"truncate\":\"pdleesljujpsubxg\"},\"lastOperation\":{\"details\":\"mvkni\"},\"networkFabricIds\":[\"yrc\"],\"configurationState\":\"ErrorProvisioning\",\"provisioningState\":\"Accepted\",\"administrativeState\":\"Disabled\"},\"identity\":{\"principalId\":\"csbkmaluchbfrtaj\",\"tenantId\":\"ddyqdxpnzpuk\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"nzl\":{\"principalId\":\"itxsyufexivhjyx\",\"clientId\":\"wtkqofrkfccqj\"},\"ozbdwflxdwl\":{\"principalId\":\"azy\",\"clientId\":\"jbvqaey\"},\"jlmstakgrebecxuu\":{\"principalId\":\"taieledmiupddlet\",\"clientId\":\"udcoktsgcy\"},\"tjx\":{\"principalId\":\"ukluukxejamyc\",\"clientId\":\"wrv\"}}},\"location\":\"txvmbedvvmrtnmg\",\"tags\":{\"lzwz\":\"zaaiih\",\"vooaacefxonsv\":\"lbpmpletheknbnam\",\"mmmmgbynvoy\":\"ctytytyrvtuxvzyw\",\"fqznvahpxdgyho\":\"dtv\"},\"id\":\"x\",\"name\":\"ptxvxf\",\"type\":\"wv\"}]}";
+            = "{\"value\":[{\"properties\":{\"annotation\":\"perhei\",\"configurationType\":\"File\",\"tapRulesUrl\":\"mswhqrdvqva\",\"identitySelector\":{\"identityType\":\"SystemAssignedIdentity\",\"userAssignedIdentityResourceId\":\"uwoigofu\"},\"matchConfigurations\":[{\"matchConfigurationName\":\"zedmfjgklmyomavb\",\"sequenceNumber\":6648192072441047692,\"ipAddressType\":\"IPv4\",\"matchConditions\":[{},{},{}],\"actions\":[{},{},{},{}]},{\"matchConfigurationName\":\"yinf\",\"sequenceNumber\":5190015770321796667,\"ipAddressType\":\"IPv4\",\"matchConditions\":[{},{},{}],\"actions\":[{},{}]}],\"dynamicMatchConfigurations\":[{\"ipGroups\":[{},{}],\"vlanGroups\":[{},{},{},{}],\"portGroups\":[{},{},{},{}]},{\"ipGroups\":[{},{}],\"vlanGroups\":[{},{}],\"portGroups\":[{},{}]},{\"ipGroups\":[{},{},{},{}],\"vlanGroups\":[{},{},{},{}],\"portGroups\":[{},{},{}]}],\"networkTapId\":\"ugdjd\",\"networkTapIds\":[\"xvcronridhwoyz\",\"jdds\"],\"pollingIntervalInSeconds\":161267653,\"lastSyncedTime\":\"2021-04-18T10:07:53Z\",\"globalNetworkTapRuleActions\":{\"enableCount\":\"True\",\"truncate\":\"ipuot\"},\"lastOperation\":{\"details\":\"zqmpgvyydjw\"},\"networkFabricIds\":[\"hjhcw\"],\"configurationState\":\"PendingCommit\",\"provisioningState\":\"Succeeded\",\"administrativeState\":\"Disabled\"},\"identity\":{\"principalId\":\"y\",\"tenantId\":\"h\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"xuwawmbuslegt\":{\"principalId\":\"yeoikxjp\",\"clientId\":\"ggpsaqfn\"},\"ylgpznb\":{\"principalId\":\"zkzworuhhvde\",\"clientId\":\"cdjhfxbkgpnxu\"},\"trfziubeflv\":{\"principalId\":\"hwuty\",\"clientId\":\"uz\"},\"awgzhbwhjvon\":{\"principalId\":\"jbmcepl\",\"clientId\":\"k\"}}},\"location\":\"vygx\",\"tags\":{\"jcjvdajxebm\":\"tjoxocothsg\",\"nd\":\"iyrctfaabkukra\",\"dhjdwfnbiyxqr\":\"hwdicntqsrhacjsb\"},\"id\":\"uyffkayovljtrml\",\"name\":\"rqllugnxmbwdkz\",\"type\":\"wwbqukjithx\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -38,26 +38,26 @@ public final class NetworkTapRulesListMockTests {
 
         PagedIterable<NetworkTapRule> response = manager.networkTapRules().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("txvmbedvvmrtnmg", response.iterator().next().location());
-        Assertions.assertEquals("zaaiih", response.iterator().next().tags().get("lzwz"));
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED,
+        Assertions.assertEquals("vygx", response.iterator().next().location());
+        Assertions.assertEquals("tjoxocothsg", response.iterator().next().tags().get("jcjvdajxebm"));
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED,
             response.iterator().next().identity().type());
-        Assertions.assertEquals("osoxxoqyikdjaog", response.iterator().next().annotation());
-        Assertions.assertEquals(ConfigurationType.INLINE, response.iterator().next().configurationType());
-        Assertions.assertEquals("xqxvmyb", response.iterator().next().tapRulesUrl());
+        Assertions.assertEquals("perhei", response.iterator().next().annotation());
+        Assertions.assertEquals(ConfigurationType.FILE, response.iterator().next().configurationType());
+        Assertions.assertEquals("mswhqrdvqva", response.iterator().next().tapRulesUrl());
         Assertions.assertEquals(ManagedServiceIdentitySelectorType.SYSTEM_ASSIGNED_IDENTITY,
             response.iterator().next().identitySelector().identityType());
-        Assertions.assertEquals("rlfnsdcc",
+        Assertions.assertEquals("uwoigofu",
             response.iterator().next().identitySelector().userAssignedIdentityResourceId());
-        Assertions.assertEquals("h", response.iterator().next().matchConfigurations().get(0).matchConfigurationName());
-        Assertions.assertEquals(7863229487440185713L,
+        Assertions.assertEquals("zedmfjgklmyomavb",
+            response.iterator().next().matchConfigurations().get(0).matchConfigurationName());
+        Assertions.assertEquals(6648192072441047692L,
             response.iterator().next().matchConfigurations().get(0).sequenceNumber());
         Assertions.assertEquals(IpAddressType.IPV4,
             response.iterator().next().matchConfigurations().get(0).ipAddressType());
-        Assertions.assertEquals(440863677, response.iterator().next().pollingIntervalInSeconds());
-        Assertions.assertEquals(BooleanEnumProperty.FALSE,
+        Assertions.assertEquals(161267653, response.iterator().next().pollingIntervalInSeconds());
+        Assertions.assertEquals(BooleanEnumProperty.TRUE,
             response.iterator().next().globalNetworkTapRuleActions().enableCount());
-        Assertions.assertEquals("pdleesljujpsubxg",
-            response.iterator().next().globalNetworkTapRuleActions().truncate());
+        Assertions.assertEquals("ipuot", response.iterator().next().globalNetworkTapRuleActions().truncate());
     }
 }

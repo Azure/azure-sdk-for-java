@@ -16,12 +16,15 @@ import com.azure.resourcemanager.managednetworkfabric.models.FabricLockPropertie
 import com.azure.resourcemanager.managednetworkfabric.models.FeatureFlagProperties;
 import com.azure.resourcemanager.managednetworkfabric.models.LastOperationProperties;
 import com.azure.resourcemanager.managednetworkfabric.models.ManagementNetworkConfigurationProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.OperationalState;
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
 import com.azure.resourcemanager.managednetworkfabric.models.QosProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.SecretArchiveSettings;
 import com.azure.resourcemanager.managednetworkfabric.models.SecretRotationSummary;
 import com.azure.resourcemanager.managednetworkfabric.models.StorageAccountConfiguration;
 import com.azure.resourcemanager.managednetworkfabric.models.TerminalServerConfiguration;
 import com.azure.resourcemanager.managednetworkfabric.models.UniqueRouteDistinguisherProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.UpgradeProfileProperties;
 import java.io.IOException;
 import java.util.List;
 
@@ -86,6 +89,11 @@ public final class NetworkFabricProperties extends AnnotationResource {
      * ASN of CE devices for CE/PE connectivity.
      */
     private long fabricAsn;
+
+    /*
+     * Azure resource ID for the NetworkBootstrapDevice belonging to this Network Fabric.
+     */
+    private String networkBootstrapDeviceId;
 
     /*
      * Network and credentials configuration currently applied to terminal server.
@@ -180,9 +188,25 @@ public final class NetworkFabricProperties extends AnnotationResource {
     private AdministrativeState administrativeState;
 
     /*
+     * Operational state of networkFabric indicating if the resources of the fabric are reachable and services are
+     * available.
+     */
+    private OperationalState operationalState;
+
+    /*
      * NetworkFabric QoS Configuration
      */
     private QosProperties qosConfiguration;
+
+    /*
+     * The settings for a customer secret archive that may be used to hold copies of credentials for the Network Fabric.
+     */
+    private SecretArchiveSettings secretArchiveSettings;
+
+    /*
+     * The upgrade profile to be used by devices in the network fabric during device operations
+     */
+    private List<UpgradeProfileProperties> upgradeProfile;
 
     /**
      * Creates an instance of NetworkFabricProperties class.
@@ -393,6 +417,16 @@ public final class NetworkFabricProperties extends AnnotationResource {
     public NetworkFabricProperties withFabricAsn(long fabricAsn) {
         this.fabricAsn = fabricAsn;
         return this;
+    }
+
+    /**
+     * Get the networkBootstrapDeviceId property: Azure resource ID for the NetworkBootstrapDevice belonging to this
+     * Network Fabric.
+     * 
+     * @return the networkBootstrapDeviceId value.
+     */
+    public String networkBootstrapDeviceId() {
+        return this.networkBootstrapDeviceId;
     }
 
     /**
@@ -664,6 +698,16 @@ public final class NetworkFabricProperties extends AnnotationResource {
     }
 
     /**
+     * Get the operationalState property: Operational state of networkFabric indicating if the resources of the fabric
+     * are reachable and services are available.
+     * 
+     * @return the operationalState value.
+     */
+    public OperationalState operationalState() {
+        return this.operationalState;
+    }
+
+    /**
      * Get the qosConfiguration property: NetworkFabric QoS Configuration.
      * 
      * @return the qosConfiguration value.
@@ -680,6 +724,50 @@ public final class NetworkFabricProperties extends AnnotationResource {
      */
     public NetworkFabricProperties withQosConfiguration(QosProperties qosConfiguration) {
         this.qosConfiguration = qosConfiguration;
+        return this;
+    }
+
+    /**
+     * Get the secretArchiveSettings property: The settings for a customer secret archive that may be used to hold
+     * copies of credentials for the Network Fabric.
+     * 
+     * @return the secretArchiveSettings value.
+     */
+    public SecretArchiveSettings secretArchiveSettings() {
+        return this.secretArchiveSettings;
+    }
+
+    /**
+     * Set the secretArchiveSettings property: The settings for a customer secret archive that may be used to hold
+     * copies of credentials for the Network Fabric.
+     * 
+     * @param secretArchiveSettings the secretArchiveSettings value to set.
+     * @return the NetworkFabricProperties object itself.
+     */
+    public NetworkFabricProperties withSecretArchiveSettings(SecretArchiveSettings secretArchiveSettings) {
+        this.secretArchiveSettings = secretArchiveSettings;
+        return this;
+    }
+
+    /**
+     * Get the upgradeProfile property: The upgrade profile to be used by devices in the network fabric during device
+     * operations.
+     * 
+     * @return the upgradeProfile value.
+     */
+    public List<UpgradeProfileProperties> upgradeProfile() {
+        return this.upgradeProfile;
+    }
+
+    /**
+     * Set the upgradeProfile property: The upgrade profile to be used by devices in the network fabric during device
+     * operations.
+     * 
+     * @param upgradeProfile the upgradeProfile value to set.
+     * @return the NetworkFabricProperties object itself.
+     */
+    public NetworkFabricProperties withUpgradeProfile(List<UpgradeProfileProperties> upgradeProfile) {
+        this.upgradeProfile = upgradeProfile;
         return this;
     }
 
@@ -720,6 +808,9 @@ public final class NetworkFabricProperties extends AnnotationResource {
         jsonWriter.writeNumberField("storageArrayCount", this.storageArrayCount);
         jsonWriter.writeJsonField("authorizedTransceiver", this.authorizedTransceiver);
         jsonWriter.writeJsonField("qosConfiguration", this.qosConfiguration);
+        jsonWriter.writeJsonField("secretArchiveSettings", this.secretArchiveSettings);
+        jsonWriter.writeArrayField("upgradeProfile", this.upgradeProfile,
+            (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -773,6 +864,8 @@ public final class NetworkFabricProperties extends AnnotationResource {
                     deserializedNetworkFabricProperties.rackCount = reader.getNullable(JsonReader::getInt);
                 } else if ("ipv6Prefix".equals(fieldName)) {
                     deserializedNetworkFabricProperties.ipv6Prefix = reader.getString();
+                } else if ("networkBootstrapDeviceId".equals(fieldName)) {
+                    deserializedNetworkFabricProperties.networkBootstrapDeviceId = reader.getString();
                 } else if ("racks".equals(fieldName)) {
                     List<String> racks = reader.readArray(reader1 -> reader1.getString());
                     deserializedNetworkFabricProperties.racks = racks;
@@ -818,8 +911,17 @@ public final class NetworkFabricProperties extends AnnotationResource {
                 } else if ("administrativeState".equals(fieldName)) {
                     deserializedNetworkFabricProperties.administrativeState
                         = AdministrativeState.fromString(reader.getString());
+                } else if ("operationalState".equals(fieldName)) {
+                    deserializedNetworkFabricProperties.operationalState
+                        = OperationalState.fromString(reader.getString());
                 } else if ("qosConfiguration".equals(fieldName)) {
                     deserializedNetworkFabricProperties.qosConfiguration = QosProperties.fromJson(reader);
+                } else if ("secretArchiveSettings".equals(fieldName)) {
+                    deserializedNetworkFabricProperties.secretArchiveSettings = SecretArchiveSettings.fromJson(reader);
+                } else if ("upgradeProfile".equals(fieldName)) {
+                    List<UpgradeProfileProperties> upgradeProfile
+                        = reader.readArray(reader1 -> UpgradeProfileProperties.fromJson(reader1));
+                    deserializedNetworkFabricProperties.upgradeProfile = upgradeProfile;
                 } else {
                     reader.skipChildren();
                 }

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
  */
 public final class NetworkDevicesListSamples {
     /*
-     * x-ms-original-file: 2025-07-15/NetworkDevices_ListBySubscription.json
+     * x-ms-original-file: 2026-01-15-preview/NetworkDevices_ListBySubscription.json
      */
     /**
      * Sample code: NetworkDevices_ListBySubscription_MaximumSet_Gen.

@@ -46,6 +46,11 @@ public final class NetworkPacketBrokerProperties implements JsonSerializable<Net
     private List<String> neighborGroupIds;
 
     /*
+     * ARM resource ID of the source Network Tap Rule.
+     */
+    private String sourceNetworkTapRuleId;
+
+    /*
      * Details of the last operation performed on the resource
      */
     private LastOperationProperties lastOperation;
@@ -124,6 +129,26 @@ public final class NetworkPacketBrokerProperties implements JsonSerializable<Net
     }
 
     /**
+     * Get the sourceNetworkTapRuleId property: ARM resource ID of the source Network Tap Rule.
+     * 
+     * @return the sourceNetworkTapRuleId value.
+     */
+    public String sourceNetworkTapRuleId() {
+        return this.sourceNetworkTapRuleId;
+    }
+
+    /**
+     * Set the sourceNetworkTapRuleId property: ARM resource ID of the source Network Tap Rule.
+     * 
+     * @param sourceNetworkTapRuleId the sourceNetworkTapRuleId value to set.
+     * @return the NetworkPacketBrokerProperties object itself.
+     */
+    public NetworkPacketBrokerProperties withSourceNetworkTapRuleId(String sourceNetworkTapRuleId) {
+        this.sourceNetworkTapRuleId = sourceNetworkTapRuleId;
+        return this;
+    }
+
+    /**
      * Get the lastOperation property: Details of the last operation performed on the resource.
      * 
      * @return the lastOperation value.
@@ -157,6 +182,7 @@ public final class NetworkPacketBrokerProperties implements JsonSerializable<Net
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("networkFabricId", this.networkFabricId);
+        jsonWriter.writeStringField("sourceNetworkTapRuleId", this.sourceNetworkTapRuleId);
         return jsonWriter.writeEndObject();
     }
 
@@ -191,6 +217,8 @@ public final class NetworkPacketBrokerProperties implements JsonSerializable<Net
                 } else if ("neighborGroupIds".equals(fieldName)) {
                     List<String> neighborGroupIds = reader.readArray(reader1 -> reader1.getString());
                     deserializedNetworkPacketBrokerProperties.neighborGroupIds = neighborGroupIds;
+                } else if ("sourceNetworkTapRuleId".equals(fieldName)) {
+                    deserializedNetworkPacketBrokerProperties.sourceNetworkTapRuleId = reader.getString();
                 } else if ("lastOperation".equals(fieldName)) {
                     deserializedNetworkPacketBrokerProperties.lastOperation = LastOperationProperties.fromJson(reader);
                 } else if ("provisioningState".equals(fieldName)) {

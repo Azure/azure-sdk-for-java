@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class NetworkRacksUpdateSamples {
     /*
-     * x-ms-original-file: 2025-07-15/NetworkRacks_Update.json
+     * x-ms-original-file: 2026-01-15-preview/NetworkRacks_Update.json
      */
     /**
      * Sample code: NetworkRacks_Update_MaximumSet_Gen.

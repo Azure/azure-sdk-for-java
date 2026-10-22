@@ -27,7 +27,9 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.managednetworkfabric.fluent.AccessControlListsClient;
+import com.azure.resourcemanager.managednetworkfabric.fluent.EdgeConnectorsClient;
 import com.azure.resourcemanager.managednetworkfabric.fluent.ExternalNetworksClient;
+import com.azure.resourcemanager.managednetworkfabric.fluent.FabricsClient;
 import com.azure.resourcemanager.managednetworkfabric.fluent.InternalNetworksClient;
 import com.azure.resourcemanager.managednetworkfabric.fluent.InternetGatewayRulesClient;
 import com.azure.resourcemanager.managednetworkfabric.fluent.InternetGatewaysClient;
@@ -531,6 +533,34 @@ public final class ManagedNetworkFabricManagementClientImpl implements ManagedNe
     }
 
     /**
+     * The EdgeConnectorsClient object to access its operations.
+     */
+    private final EdgeConnectorsClient edgeConnectors;
+
+    /**
+     * Gets the EdgeConnectorsClient object to access its operations.
+     * 
+     * @return the EdgeConnectorsClient object.
+     */
+    public EdgeConnectorsClient getEdgeConnectors() {
+        return this.edgeConnectors;
+    }
+
+    /**
+     * The FabricsClient object to access its operations.
+     */
+    private final FabricsClient fabrics;
+
+    /**
+     * Gets the FabricsClient object to access its operations.
+     * 
+     * @return the FabricsClient object.
+     */
+    public FabricsClient getFabrics() {
+        return this.fabrics;
+    }
+
+    /**
      * Initializes an instance of ManagedNetworkFabricManagementClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
@@ -547,7 +577,7 @@ public final class ManagedNetworkFabricManagementClientImpl implements ManagedNe
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2025-07-15";
+        this.apiVersion = "2026-01-15-preview";
         this.operations = new OperationsClientImpl(this);
         this.accessControlLists = new AccessControlListsClientImpl(this);
         this.internetGatewayRules = new InternetGatewayRulesClientImpl(this);
@@ -575,6 +605,8 @@ public final class ManagedNetworkFabricManagementClientImpl implements ManagedNe
         this.networkMonitors = new NetworkMonitorsClientImpl(this);
         this.networkBootstrapDevices = new NetworkBootstrapDevicesClientImpl(this);
         this.networkBootstrapInterfaces = new NetworkBootstrapInterfacesClientImpl(this);
+        this.edgeConnectors = new EdgeConnectorsClientImpl(this);
+        this.fabrics = new FabricsClientImpl(this);
     }
 
     /**

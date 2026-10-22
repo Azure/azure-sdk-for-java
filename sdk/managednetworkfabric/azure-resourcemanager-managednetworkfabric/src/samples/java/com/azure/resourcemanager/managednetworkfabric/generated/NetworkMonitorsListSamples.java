@@ -9,7 +9,7 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
  */
 public final class NetworkMonitorsListSamples {
     /*
-     * x-ms-original-file: 2025-07-15/NetworkMonitors_ListBySubscription.json
+     * x-ms-original-file: 2026-01-15-preview/NetworkMonitors_ListBySubscription.json
      */
     /**
      * Sample code: NetworkMonitors_ListBySubscription.

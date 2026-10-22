@@ -9,7 +9,7 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
  */
 public final class NetworkFabricsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-07-15/NetworkFabrics_Delete.json
+     * x-ms-original-file: 2026-01-15-preview/NetworkFabrics_Delete.json
      */
     /**
      * Sample code: NetworkFabrics_Delete_MaximumSet_Gen.

@@ -25,7 +25,7 @@ public final class L3IsolationDomainsGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"annotation\":\"dow\",\"redistributeConnectedSubnets\":\"True\",\"redistributeStaticRoutes\":\"False\",\"aggregateRouteConfiguration\":{\"ipv4Routes\":[{\"prefix\":\"pbieehp\"}],\"ipv6Routes\":[{\"prefix\":\"i\"},{\"prefix\":\"rrjprygjgyovc\"}]},\"connectedSubnetRoutePolicy\":{\"exportRoutePolicy\":{\"exportIpv4RoutePolicyId\":\"isma\",\"exportIpv6RoutePolicyId\":\"ktcoykr\"}},\"networkFabricId\":\"kkcxc\",\"staticRouteRoutePolicy\":{\"exportRoutePolicy\":{\"exportIpv4RoutePolicyId\":\"onxmtrhww\",\"exportIpv6RoutePolicyId\":\"ncqu\"}},\"uniqueRdConfiguration\":{\"uniqueRds\":[\"hzlvkmirnvdbza\",\"mepbmogtfpksk\",\"syoh\",\"rlyynkgnychu\"]},\"v4routePrefixLimit\":{\"hardLimit\":1604188770,\"threshold\":1589362548},\"v6routePrefixLimit\":{\"hardLimit\":803613526,\"threshold\":414573941},\"lastOperation\":{\"details\":\"oeodgnu\"},\"exportPolicyConfiguration\":{\"exportPolicies\":[\"Pre-Policy\"]},\"configurationState\":\"Deprovisioning\",\"provisioningState\":\"Accepted\",\"administrativeState\":\"Disabled\"},\"identity\":{\"principalId\":\"yavvexjqd\",\"tenantId\":\"o\",\"type\":\"None\",\"userAssignedIdentities\":{\"awhkdkvaqspbds\":{\"principalId\":\"wxj\",\"clientId\":\"rppmvnoqtwqci\"},\"h\":{\"principalId\":\"tidikxmtmj\",\"clientId\":\"mrjngrjsqtirhab\"},\"thfqcyycx\":{\"principalId\":\"vsdyjmbydrgxvnmt\",\"clientId\":\"uxrdmudwruog\"}}},\"location\":\"lkfjgjlwfssg\",\"tags\":{\"lamd\":\"qvuscmcegyiwzou\",\"o\":\"ffvxnis\",\"zzcdrgtu\":\"wfdtjpsjwlpcxl\"},\"id\":\"oouocafaxvhjrpb\",\"name\":\"rolge\",\"type\":\"sgn\"}";
+            = "{\"properties\":{\"annotation\":\"amdgff\",\"redistributeConnectedSubnets\":\"False\",\"redistributeStaticRoutes\":\"False\",\"aggregateRouteConfiguration\":{\"ipv4Routes\":[{\"prefix\":\"wfdtjpsjwlpcxl\"},{\"prefix\":\"zzcdrgtu\"},{\"prefix\":\"oouocafaxvhjrpb\"}],\"ipv6Routes\":[{\"prefix\":\"lgels\"},{\"prefix\":\"nenjtxuuwdmrqa\"},{\"prefix\":\"lbyjahbzbtl\"},{\"prefix\":\"acbwmvphmjyzice\"}]},\"connectedSubnetRoutePolicy\":{\"exportRoutePolicy\":{\"exportIpv4RoutePolicyId\":\"zcgwnibnd\",\"exportIpv6RoutePolicyId\":\"gjibrxxi\"}},\"networkFabricId\":\"ocrwuhumgwspugn\",\"staticRouteRoutePolicy\":{\"exportRoutePolicy\":{\"exportIpv4RoutePolicyId\":\"wadudokoxqbozezx\",\"exportIpv6RoutePolicyId\":\"inrguk\"}},\"uniqueRdConfiguration\":{\"uniqueRds\":[\"vq\"]},\"v4routePrefixLimit\":{\"hardLimit\":1806414494,\"threshold\":231602354},\"v6routePrefixLimit\":{\"hardLimit\":1292470542,\"threshold\":545120090},\"lastOperation\":{\"details\":\"njkcolo\"},\"exportPolicyConfiguration\":{\"exportPolicies\":[\"Pre-Policy\",\"LocalRib\",\"Pre-Policy\",\"All\"]},\"configurationState\":\"CommitStageFailed\",\"provisioningState\":\"Updating\",\"administrativeState\":\"Enabled\"},\"identity\":{\"principalId\":\"zq\",\"tenantId\":\"kujz\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"dbdnmguifq\":{\"principalId\":\"xkzhvfojcvnhpebu\",\"clientId\":\"wkysgqacbeauv\"},\"mokfdybv\":{\"principalId\":\"oxzxbljpzauug\",\"clientId\":\"rfumitjaii\"},\"tvxkxg\":{\"principalId\":\"bgmjrvrsqrjco\",\"clientId\":\"wrylc\"},\"tevfeugcwt\":{\"principalId\":\"pvvqwvv\",\"clientId\":\"oqaaqjblwqw\"}}},\"location\":\"txoswvfrymqqfksq\",\"tags\":{\"xygwvtkrqiyuqds\":\"dleohysdgkb\",\"pf\":\"jqztrpjme\",\"xkloabc\":\"taaq\",\"v\":\"xqa\"},\"id\":\"krepqasviy\",\"name\":\"bvolivianklqclft\",\"type\":\"neouxpdnlbp\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,30 +35,30 @@ public final class L3IsolationDomainsGetByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         L3IsolationDomain response = manager.l3IsolationDomains()
-            .getByResourceGroupWithResponse("qaqoveqowqodisp", "sxwiicfsbjhha", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("e", "yiwzou", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("lkfjgjlwfssg", response.location());
-        Assertions.assertEquals("qvuscmcegyiwzou", response.tags().get("lamd"));
-        Assertions.assertEquals(ManagedServiceIdentityType.NONE, response.identity().type());
-        Assertions.assertEquals("dow", response.annotation());
-        Assertions.assertEquals(RedistributeConnectedSubnets.TRUE, response.redistributeConnectedSubnets());
+        Assertions.assertEquals("txoswvfrymqqfksq", response.location());
+        Assertions.assertEquals("dleohysdgkb", response.tags().get("xygwvtkrqiyuqds"));
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, response.identity().type());
+        Assertions.assertEquals("amdgff", response.annotation());
+        Assertions.assertEquals(RedistributeConnectedSubnets.FALSE, response.redistributeConnectedSubnets());
         Assertions.assertEquals(RedistributeStaticRoutes.FALSE, response.redistributeStaticRoutes());
-        Assertions.assertEquals("pbieehp", response.aggregateRouteConfiguration().ipv4Routes().get(0).prefix());
-        Assertions.assertEquals("i", response.aggregateRouteConfiguration().ipv6Routes().get(0).prefix());
-        Assertions.assertEquals("isma",
+        Assertions.assertEquals("wfdtjpsjwlpcxl", response.aggregateRouteConfiguration().ipv4Routes().get(0).prefix());
+        Assertions.assertEquals("lgels", response.aggregateRouteConfiguration().ipv6Routes().get(0).prefix());
+        Assertions.assertEquals("zcgwnibnd",
             response.connectedSubnetRoutePolicy().exportRoutePolicy().exportIpv4RoutePolicyId());
-        Assertions.assertEquals("ktcoykr",
+        Assertions.assertEquals("gjibrxxi",
             response.connectedSubnetRoutePolicy().exportRoutePolicy().exportIpv6RoutePolicyId());
-        Assertions.assertEquals("kkcxc", response.networkFabricId());
-        Assertions.assertEquals("onxmtrhww",
+        Assertions.assertEquals("ocrwuhumgwspugn", response.networkFabricId());
+        Assertions.assertEquals("wadudokoxqbozezx",
             response.staticRouteRoutePolicy().exportRoutePolicy().exportIpv4RoutePolicyId());
-        Assertions.assertEquals("ncqu",
+        Assertions.assertEquals("inrguk",
             response.staticRouteRoutePolicy().exportRoutePolicy().exportIpv6RoutePolicyId());
-        Assertions.assertEquals(1604188770, response.v4routePrefixLimit().hardLimit());
-        Assertions.assertEquals(1589362548, response.v4routePrefixLimit().threshold());
-        Assertions.assertEquals(803613526, response.v6routePrefixLimit().hardLimit());
-        Assertions.assertEquals(414573941, response.v6routePrefixLimit().threshold());
+        Assertions.assertEquals(1806414494, response.v4routePrefixLimit().hardLimit());
+        Assertions.assertEquals(231602354, response.v4routePrefixLimit().threshold());
+        Assertions.assertEquals(1292470542, response.v6routePrefixLimit().hardLimit());
+        Assertions.assertEquals(545120090, response.v6routePrefixLimit().threshold());
         Assertions.assertEquals(BmpExportPolicy.PRE_POLICY,
             response.exportPolicyConfiguration().exportPolicies().get(0));
     }

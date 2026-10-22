@@ -13,7 +13,7 @@ import com.azure.resourcemanager.managednetworkfabric.models.NetworkFabricLockTy
  */
 public final class NetworkFabricsLockFabricSamples {
     /*
-     * x-ms-original-file: 2025-07-15/NetworkFabrics_LockFabric.json
+     * x-ms-original-file: 2026-01-15-preview/NetworkFabrics_LockFabric.json
      */
     /**
      * Sample code: NetworkFabrics_LockFabric_MaximumSet.

@@ -26,7 +26,7 @@ public final class NetworkPacketBrokersCreateMockTests {
     @Test
     public void testCreate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"networkFabricId\":\"sjxf\",\"networkDeviceIds\":[\"oartvkhufktqgtjf\",\"ctreotzgkokfztrv\"],\"sourceInterfaceIds\":[\"tnnwamk\"],\"networkTapIds\":[\"skmhdwsbz\"],\"neighborGroupIds\":[\"gerwotlp\"],\"lastOperation\":{\"details\":\"oslqmftkqzafjy\"},\"provisioningState\":\"Succeeded\",\"configurationState\":\"Accepted\"},\"identity\":{\"principalId\":\"aboee\",\"tenantId\":\"lecqyzdyz\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"ksoqzzyrovvnac\":{\"principalId\":\"kbtnhiaqegjvhyv\",\"clientId\":\"bhclb\"},\"gvydtjebb\":{\"principalId\":\"jmhclhcqcjngwmb\",\"clientId\":\"gsidasovlrj\"}}},\"location\":\"scirztsapxxbkx\",\"tags\":{\"mlgsghcnyb\":\"fhecpstfekbsly\",\"zogs\":\"vzltbgwjaepjmkr\"},\"id\":\"zoqjbnfaxcdcmqej\",\"name\":\"sirotj\",\"type\":\"ltugobscpt\"}";
+            = "{\"properties\":{\"networkFabricId\":\"ajqnsrcqd\",\"networkDeviceIds\":[\"lqa\",\"dlcukdmrvr\"],\"sourceInterfaceIds\":[\"cclsnprdartq\",\"abbxexacgmtpk\",\"bwobovexsnmwwhbm\",\"jlsztpygqwkdlx\"],\"networkTapIds\":[\"mkc\",\"mksfejzmyvlbz\",\"n\",\"xzpdnb\"],\"neighborGroupIds\":[\"hddvtnbtvlgkjfk\",\"oewimyiz\",\"glzzaufinwvyx\"],\"sourceNetworkTapRuleId\":\"ykng\",\"lastOperation\":{\"details\":\"gpyvjgsjyjn\"},\"provisioningState\":\"Succeeded\",\"configurationState\":\"Provisioned\"},\"identity\":{\"principalId\":\"nc\",\"tenantId\":\"zuerrvpamfpin\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"sollrquul\":{\"principalId\":\"kmfb\",\"clientId\":\"uhylqgeovnlbj\"},\"ppvpgsrfshk\":{\"principalId\":\"xrc\",\"clientId\":\"hicvrmwbgpcalqb\"},\"xibrooogijiqwxwp\":{\"principalId\":\"spb\",\"clientId\":\"ev\"}}},\"location\":\"d\",\"tags\":{\"vruhdjzivlaxii\":\"pr\"},\"id\":\"qnqmbf\",\"name\":\"tzixmksxxbdtjvv\",\"type\":\"gnvkkzulmqxf\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,20 +36,22 @@ public final class NetworkPacketBrokersCreateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         NetworkPacketBroker response = manager.networkPacketBrokers()
-            .define("myr")
-            .withRegion("qekqtiuveaz")
-            .withExistingResourceGroup("qegerxmlfnug")
-            .withNetworkFabricId("rt")
-            .withTags(mapOf("lspih", "wbiwygwpwquxiqg", "fizef", "xgvviotvoolk", "fwaehs", "brndaquxvuf"))
-            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE)
-                .withUserAssignedIdentities(mapOf("nrys", new UserAssignedIdentity(), "ddvnobesowbtnfq",
-                    new UserAssignedIdentity(), "ajiotlcxofqjninr", new UserAssignedIdentity())))
+            .define("tdbe")
+            .withRegion("azztvotf")
+            .withExistingResourceGroup("zvzqhvzjdsn")
+            .withNetworkFabricId("nigozjrcx")
+            .withTags(mapOf("oszcmfmynljigj", "yfxkfgxxefzliguw", "dmwtiv", "nk"))
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf("xazuboigorwpbbjz", new UserAssignedIdentity(), "tyypercazcchvww",
+                    new UserAssignedIdentity())))
+            .withSourceNetworkTapRuleId("e")
             .create();
 
-        Assertions.assertEquals("scirztsapxxbkx", response.location());
-        Assertions.assertEquals("fhecpstfekbsly", response.tags().get("mlgsghcnyb"));
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, response.identity().type());
-        Assertions.assertEquals("sjxf", response.networkFabricId());
+        Assertions.assertEquals("d", response.location());
+        Assertions.assertEquals("pr", response.tags().get("vruhdjzivlaxii"));
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, response.identity().type());
+        Assertions.assertEquals("ajqnsrcqd", response.networkFabricId());
+        Assertions.assertEquals("ykng", response.sourceNetworkTapRuleId());
     }
 
     // Use "Map.of" if available

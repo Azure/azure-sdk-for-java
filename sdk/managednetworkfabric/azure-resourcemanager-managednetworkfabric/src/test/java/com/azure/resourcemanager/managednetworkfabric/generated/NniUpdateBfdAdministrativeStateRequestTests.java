@@ -14,19 +14,19 @@ public final class NniUpdateBfdAdministrativeStateRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NniUpdateBfdAdministrativeStateRequest model
-            = BinaryData.fromString("{\"routeType\":\"Static\",\"administrativeState\":\"Enabled\"}")
+            = BinaryData.fromString("{\"routeType\":\"OptionA\",\"administrativeState\":\"RMA\"}")
                 .toObject(NniUpdateBfdAdministrativeStateRequest.class);
-        Assertions.assertEquals(RouteType.STATIC, model.routeType());
-        Assertions.assertEquals(BfdAdministrativeState.ENABLED, model.administrativeState());
+        Assertions.assertEquals(RouteType.OPTIONA, model.routeType());
+        Assertions.assertEquals(BfdAdministrativeState.RMA, model.administrativeState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         NniUpdateBfdAdministrativeStateRequest model
-            = new NniUpdateBfdAdministrativeStateRequest().withRouteType(RouteType.STATIC)
-                .withAdministrativeState(BfdAdministrativeState.ENABLED);
+            = new NniUpdateBfdAdministrativeStateRequest().withRouteType(RouteType.OPTIONA)
+                .withAdministrativeState(BfdAdministrativeState.RMA);
         model = BinaryData.fromObject(model).toObject(NniUpdateBfdAdministrativeStateRequest.class);
-        Assertions.assertEquals(RouteType.STATIC, model.routeType());
-        Assertions.assertEquals(BfdAdministrativeState.ENABLED, model.administrativeState());
+        Assertions.assertEquals(RouteType.OPTIONA, model.routeType());
+        Assertions.assertEquals(BfdAdministrativeState.RMA, model.administrativeState());
     }
 }

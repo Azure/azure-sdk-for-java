@@ -15,6 +15,7 @@ import com.azure.resourcemanager.managednetworkfabric.models.ConfigurationState;
 import com.azure.resourcemanager.managednetworkfabric.models.IdentitySelector;
 import com.azure.resourcemanager.managednetworkfabric.models.LastOperationProperties;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkDeviceRole;
+import com.azure.resourcemanager.managednetworkfabric.models.OperationalState;
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
 import com.azure.resourcemanager.managednetworkfabric.models.SecretRotationStatus;
 import java.io.IOException;
@@ -100,6 +101,11 @@ public final class NetworkDeviceProperties implements JsonSerializable<NetworkDe
      * Administrative state of the resource.
      */
     private AdministrativeState administrativeState;
+
+    /*
+     * Operational state of networkDevice indicating if the device is reachable and services are available.
+     */
+    private OperationalState operationalState;
 
     /*
      * Secret rotation status for the device's secrets.
@@ -317,6 +323,16 @@ public final class NetworkDeviceProperties implements JsonSerializable<NetworkDe
     }
 
     /**
+     * Get the operationalState property: Operational state of networkDevice indicating if the device is reachable and
+     * services are available.
+     * 
+     * @return the operationalState value.
+     */
+    public OperationalState operationalState() {
+        return this.operationalState;
+    }
+
+    /**
      * Get the secretRotationStatus property: Secret rotation status for the device's secrets.
      * 
      * @return the secretRotationStatus value.
@@ -407,6 +423,9 @@ public final class NetworkDeviceProperties implements JsonSerializable<NetworkDe
                 } else if ("administrativeState".equals(fieldName)) {
                     deserializedNetworkDeviceProperties.administrativeState
                         = AdministrativeState.fromString(reader.getString());
+                } else if ("operationalState".equals(fieldName)) {
+                    deserializedNetworkDeviceProperties.operationalState
+                        = OperationalState.fromString(reader.getString());
                 } else if ("secretRotationStatus".equals(fieldName)) {
                     List<SecretRotationStatus> secretRotationStatus
                         = reader.readArray(reader1 -> SecretRotationStatus.fromJson(reader1));

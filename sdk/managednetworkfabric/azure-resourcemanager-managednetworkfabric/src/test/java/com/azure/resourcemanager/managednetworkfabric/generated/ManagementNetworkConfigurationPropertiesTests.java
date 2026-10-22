@@ -19,161 +19,168 @@ public final class ManagementNetworkConfigurationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManagementNetworkConfigurationProperties model = BinaryData.fromString(
-            "{\"infrastructureVpnConfiguration\":{\"networkToNetworkInterconnectId\":\"qxfvgyx\",\"administrativeState\":\"MAT\",\"peeringOption\":\"OptionB\",\"optionBProperties\":{\"importRouteTargets\":[\"xlttxoq\",\"tdnzujsjirkrpskc\"],\"exportRouteTargets\":[\"mofbnivd\",\"tkykpaxnlsfgnys\",\"accptbzetxy\",\"xxicee\"],\"routeTargets\":{\"importIpv4RouteTargets\":[\"yuveoxmpz\",\"wahdrdvhaztkxbi\",\"zfgxmbry\"],\"importIpv6RouteTargets\":[\"ibio\",\"iqsykqfdqwdrt\"],\"exportIpv4RouteTargets\":[\"daglmrcok\",\"zertkounz\",\"iywhubymfpop\",\"k\"],\"exportIpv6RouteTargets\":[\"qnnfywt\"]}},\"optionAProperties\":{\"mtu\":34530368,\"vlanId\":1699220060,\"peerASN\":2104144988313178735,\"bfdConfiguration\":{\"administrativeState\":\"MAT\",\"intervalInMilliSeconds\":585292498,\"multiplier\":1633231640},\"primaryIpv4Prefix\":\"gf\",\"primaryIpv6Prefix\":\"ulojhhylx\",\"secondaryIpv4Prefix\":\"vfiyymot\",\"secondaryIpv6Prefix\":\"bybwjmtftcvelnir\"}},\"workloadVpnConfiguration\":{\"networkToNetworkInterconnectId\":\"kqnstpaqpibjgbvs\",\"administrativeState\":\"UnderMaintenance\",\"peeringOption\":\"OptionA\",\"optionBProperties\":{\"importRouteTargets\":[\"ttxbms\",\"nn\"],\"exportRouteTargets\":[\"bqcamalec\",\"cxs\"],\"routeTargets\":{\"importIpv4RouteTargets\":[\"dxmsynbkdnn\",\"ufxuzmsvzyqrbr\"],\"importIpv6RouteTargets\":[\"jtlxfikjkxara\"],\"exportIpv4RouteTargets\":[\"uasnjeglhtrxb\",\"zpcjcnwjzbqblxr\",\"w\",\"dsvoqiza\"],\"exportIpv6RouteTargets\":[\"dsorgfhjxsawo\"]}},\"optionAProperties\":{\"mtu\":1065368345,\"vlanId\":376869022,\"peerASN\":7722575456704087590,\"bfdConfiguration\":{\"administrativeState\":\"MAT\",\"intervalInMilliSeconds\":335998728,\"multiplier\":2095425122},\"primaryIpv4Prefix\":\"q\",\"primaryIpv6Prefix\":\"ybmrnotoc\",\"secondaryIpv4Prefix\":\"zdaiovrb\",\"secondaryIpv6Prefix\":\"pqphk\"}}}")
+            "{\"infrastructureVpnConfiguration\":{\"networkToNetworkInterconnectId\":\"hrjqfyaytvslyek\",\"administrativeState\":\"UnderMaintenance\",\"peeringOption\":\"OptionB\",\"optionBProperties\":{\"importRouteTargets\":[\"lcjiwgsxfaio\",\"wd\"],\"exportRouteTargets\":[\"jgnfgrzxbar\",\"bpaefzqsymjw\"],\"routeTargets\":{\"importIpv4RouteTargets\":[\"ytesm\",\"u\"],\"importIpv6RouteTargets\":[\"fodqhuauzmzi\",\"rtrfzh\"],\"exportIpv4RouteTargets\":[\"vhjudxdyyrudmahs\"],\"exportIpv6RouteTargets\":[\"dkxbq\",\"sgfenffdxb\"]}},\"optionAProperties\":{\"mtu\":1851126067,\"vlanId\":849040512,\"peerASN\":8993118167714426120,\"bfdConfiguration\":{\"administrativeState\":\"Enabled\",\"intervalInMilliSeconds\":567306618,\"multiplier\":726309602},\"primaryIpv4Prefix\":\"xndmuvar\",\"primaryIpv6Prefix\":\"mzjotprrmuh\",\"secondaryIpv4Prefix\":\"htuzlxiwyopgar\",\"secondaryIpv6Prefix\":\"ctwrapcz\"}},\"workloadVpnConfiguration\":{\"networkToNetworkInterconnectId\":\"jqyvzesipi\",\"administrativeState\":\"Enabled\",\"peeringOption\":\"OptionB\",\"optionBProperties\":{\"importRouteTargets\":[\"waadc\"],\"exportRouteTargets\":[\"za\"],\"routeTargets\":{\"importIpv4RouteTargets\":[\"tsewkaupwhlz\",\"ckremgjlmsvdorsi\",\"xxhyrkqakofa\",\"freprfvm\"],\"importIpv6RouteTargets\":[\"wteyrqshixbcejo\"],\"exportIpv4RouteTargets\":[\"blfs\",\"rrwcsp\"],\"exportIpv6RouteTargets\":[\"cvvfxrdytzf\"]}},\"optionAProperties\":{\"mtu\":610121119,\"vlanId\":1499035633,\"peerASN\":2830022439938803890,\"bfdConfiguration\":{\"administrativeState\":\"MAT\",\"intervalInMilliSeconds\":1530594040,\"multiplier\":1772619710},\"primaryIpv4Prefix\":\"qemcdi\",\"primaryIpv6Prefix\":\"sklbonxxupjxvtrk\",\"secondaryIpv4Prefix\":\"genj\",\"secondaryIpv6Prefix\":\"npjwkosnyxigfou\"}}}")
             .toObject(ManagementNetworkConfigurationProperties.class);
-        Assertions.assertEquals("qxfvgyx", model.infrastructureVpnConfiguration().networkToNetworkInterconnectId());
+        Assertions.assertEquals("hrjqfyaytvslyek",
+            model.infrastructureVpnConfiguration().networkToNetworkInterconnectId());
         Assertions.assertEquals(PeeringOption.OPTIONB, model.infrastructureVpnConfiguration().peeringOption());
-        Assertions.assertEquals("xlttxoq",
+        Assertions.assertEquals("lcjiwgsxfaio",
             model.infrastructureVpnConfiguration().optionBProperties().importRouteTargets().get(0));
-        Assertions.assertEquals("mofbnivd",
+        Assertions.assertEquals("jgnfgrzxbar",
             model.infrastructureVpnConfiguration().optionBProperties().exportRouteTargets().get(0));
-        Assertions.assertEquals("yuveoxmpz",
+        Assertions.assertEquals("ytesm",
             model.infrastructureVpnConfiguration().optionBProperties().routeTargets().importIpv4RouteTargets().get(0));
-        Assertions.assertEquals("ibio",
+        Assertions.assertEquals("fodqhuauzmzi",
             model.infrastructureVpnConfiguration().optionBProperties().routeTargets().importIpv6RouteTargets().get(0));
-        Assertions.assertEquals("daglmrcok",
+        Assertions.assertEquals("vhjudxdyyrudmahs",
             model.infrastructureVpnConfiguration().optionBProperties().routeTargets().exportIpv4RouteTargets().get(0));
-        Assertions.assertEquals("qnnfywt",
+        Assertions.assertEquals("dkxbq",
             model.infrastructureVpnConfiguration().optionBProperties().routeTargets().exportIpv6RouteTargets().get(0));
-        Assertions.assertEquals("gf", model.infrastructureVpnConfiguration().optionAProperties().primaryIpv4Prefix());
-        Assertions.assertEquals("ulojhhylx",
+        Assertions.assertEquals("xndmuvar",
+            model.infrastructureVpnConfiguration().optionAProperties().primaryIpv4Prefix());
+        Assertions.assertEquals("mzjotprrmuh",
             model.infrastructureVpnConfiguration().optionAProperties().primaryIpv6Prefix());
-        Assertions.assertEquals("vfiyymot",
+        Assertions.assertEquals("htuzlxiwyopgar",
             model.infrastructureVpnConfiguration().optionAProperties().secondaryIpv4Prefix());
-        Assertions.assertEquals("bybwjmtftcvelnir",
+        Assertions.assertEquals("ctwrapcz",
             model.infrastructureVpnConfiguration().optionAProperties().secondaryIpv6Prefix());
-        Assertions.assertEquals(34530368, model.infrastructureVpnConfiguration().optionAProperties().mtu());
-        Assertions.assertEquals(1699220060, model.infrastructureVpnConfiguration().optionAProperties().vlanId());
-        Assertions.assertEquals(2104144988313178735L,
+        Assertions.assertEquals(1851126067, model.infrastructureVpnConfiguration().optionAProperties().mtu());
+        Assertions.assertEquals(849040512, model.infrastructureVpnConfiguration().optionAProperties().vlanId());
+        Assertions.assertEquals(8993118167714426120L,
             model.infrastructureVpnConfiguration().optionAProperties().peerASN());
-        Assertions.assertEquals(585292498,
+        Assertions.assertEquals(567306618,
             model.infrastructureVpnConfiguration().optionAProperties().bfdConfiguration().intervalInMilliSeconds());
-        Assertions.assertEquals(1633231640,
+        Assertions.assertEquals(726309602,
             model.infrastructureVpnConfiguration().optionAProperties().bfdConfiguration().multiplier());
-        Assertions.assertEquals("kqnstpaqpibjgbvs", model.workloadVpnConfiguration().networkToNetworkInterconnectId());
-        Assertions.assertEquals(PeeringOption.OPTIONA, model.workloadVpnConfiguration().peeringOption());
-        Assertions.assertEquals("ttxbms",
+        Assertions.assertEquals("jqyvzesipi", model.workloadVpnConfiguration().networkToNetworkInterconnectId());
+        Assertions.assertEquals(PeeringOption.OPTIONB, model.workloadVpnConfiguration().peeringOption());
+        Assertions.assertEquals("waadc",
             model.workloadVpnConfiguration().optionBProperties().importRouteTargets().get(0));
-        Assertions.assertEquals("bqcamalec",
-            model.workloadVpnConfiguration().optionBProperties().exportRouteTargets().get(0));
-        Assertions.assertEquals("dxmsynbkdnn",
+        Assertions.assertEquals("za", model.workloadVpnConfiguration().optionBProperties().exportRouteTargets().get(0));
+        Assertions.assertEquals("tsewkaupwhlz",
             model.workloadVpnConfiguration().optionBProperties().routeTargets().importIpv4RouteTargets().get(0));
-        Assertions.assertEquals("jtlxfikjkxara",
+        Assertions.assertEquals("wteyrqshixbcejo",
             model.workloadVpnConfiguration().optionBProperties().routeTargets().importIpv6RouteTargets().get(0));
-        Assertions.assertEquals("uasnjeglhtrxb",
+        Assertions.assertEquals("blfs",
             model.workloadVpnConfiguration().optionBProperties().routeTargets().exportIpv4RouteTargets().get(0));
-        Assertions.assertEquals("dsorgfhjxsawo",
+        Assertions.assertEquals("cvvfxrdytzf",
             model.workloadVpnConfiguration().optionBProperties().routeTargets().exportIpv6RouteTargets().get(0));
-        Assertions.assertEquals("q", model.workloadVpnConfiguration().optionAProperties().primaryIpv4Prefix());
-        Assertions.assertEquals("ybmrnotoc", model.workloadVpnConfiguration().optionAProperties().primaryIpv6Prefix());
-        Assertions.assertEquals("zdaiovrb", model.workloadVpnConfiguration().optionAProperties().secondaryIpv4Prefix());
-        Assertions.assertEquals("pqphk", model.workloadVpnConfiguration().optionAProperties().secondaryIpv6Prefix());
-        Assertions.assertEquals(1065368345, model.workloadVpnConfiguration().optionAProperties().mtu());
-        Assertions.assertEquals(376869022, model.workloadVpnConfiguration().optionAProperties().vlanId());
-        Assertions.assertEquals(7722575456704087590L, model.workloadVpnConfiguration().optionAProperties().peerASN());
-        Assertions.assertEquals(335998728,
+        Assertions.assertEquals("qemcdi", model.workloadVpnConfiguration().optionAProperties().primaryIpv4Prefix());
+        Assertions.assertEquals("sklbonxxupjxvtrk",
+            model.workloadVpnConfiguration().optionAProperties().primaryIpv6Prefix());
+        Assertions.assertEquals("genj", model.workloadVpnConfiguration().optionAProperties().secondaryIpv4Prefix());
+        Assertions.assertEquals("npjwkosnyxigfou",
+            model.workloadVpnConfiguration().optionAProperties().secondaryIpv6Prefix());
+        Assertions.assertEquals(610121119, model.workloadVpnConfiguration().optionAProperties().mtu());
+        Assertions.assertEquals(1499035633, model.workloadVpnConfiguration().optionAProperties().vlanId());
+        Assertions.assertEquals(2830022439938803890L, model.workloadVpnConfiguration().optionAProperties().peerASN());
+        Assertions.assertEquals(1530594040,
             model.workloadVpnConfiguration().optionAProperties().bfdConfiguration().intervalInMilliSeconds());
-        Assertions.assertEquals(2095425122,
+        Assertions.assertEquals(1772619710,
             model.workloadVpnConfiguration().optionAProperties().bfdConfiguration().multiplier());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagementNetworkConfigurationProperties model = new ManagementNetworkConfigurationProperties()
-            .withInfrastructureVpnConfiguration(
-                new VpnConfigurationProperties().withNetworkToNetworkInterconnectId("qxfvgyx")
-                    .withPeeringOption(PeeringOption.OPTIONB)
-                    .withOptionBProperties(new VpnOptionBProperties()
-                        .withImportRouteTargets(Arrays.asList("xlttxoq", "tdnzujsjirkrpskc"))
-                        .withExportRouteTargets(Arrays.asList("mofbnivd", "tkykpaxnlsfgnys", "accptbzetxy", "xxicee"))
-                        .withRouteTargets(new RouteTargetInformation()
-                            .withImportIpv4RouteTargets(Arrays.asList("yuveoxmpz", "wahdrdvhaztkxbi", "zfgxmbry"))
-                            .withImportIpv6RouteTargets(Arrays.asList("ibio", "iqsykqfdqwdrt"))
-                            .withExportIpv4RouteTargets(Arrays.asList("daglmrcok", "zertkounz", "iywhubymfpop", "k"))
-                            .withExportIpv6RouteTargets(Arrays.asList("qnnfywt"))))
-                    .withOptionAProperties(
-                        new VpnOptionAProperties().withPrimaryIpv4Prefix("gf")
-                            .withPrimaryIpv6Prefix("ulojhhylx")
-                            .withSecondaryIpv4Prefix("vfiyymot")
-                            .withSecondaryIpv6Prefix("bybwjmtftcvelnir")
-                            .withMtu(34530368)
-                            .withVlanId(1699220060)
-                            .withPeerASN(2104144988313178735L)
-                            .withBfdConfiguration(new BfdConfiguration().withIntervalInMilliSeconds(585292498)
-                                .withMultiplier(1633231640))))
-            .withWorkloadVpnConfiguration(new VpnConfigurationProperties()
-                .withNetworkToNetworkInterconnectId("kqnstpaqpibjgbvs")
-                .withPeeringOption(PeeringOption.OPTIONA)
-                .withOptionBProperties(new VpnOptionBProperties().withImportRouteTargets(Arrays.asList("ttxbms", "nn"))
-                    .withExportRouteTargets(Arrays.asList("bqcamalec", "cxs"))
-                    .withRouteTargets(new RouteTargetInformation()
-                        .withImportIpv4RouteTargets(Arrays.asList("dxmsynbkdnn", "ufxuzmsvzyqrbr"))
-                        .withImportIpv6RouteTargets(Arrays.asList("jtlxfikjkxara"))
-                        .withExportIpv4RouteTargets(Arrays.asList("uasnjeglhtrxb", "zpcjcnwjzbqblxr", "w", "dsvoqiza"))
-                        .withExportIpv6RouteTargets(Arrays.asList("dsorgfhjxsawo"))))
-                .withOptionAProperties(new VpnOptionAProperties().withPrimaryIpv4Prefix("q")
-                    .withPrimaryIpv6Prefix("ybmrnotoc")
-                    .withSecondaryIpv4Prefix("zdaiovrb")
-                    .withSecondaryIpv6Prefix("pqphk")
-                    .withMtu(1065368345)
-                    .withVlanId(376869022)
-                    .withPeerASN(7722575456704087590L)
-                    .withBfdConfiguration(
-                        new BfdConfiguration().withIntervalInMilliSeconds(335998728).withMultiplier(2095425122))));
+        ManagementNetworkConfigurationProperties model
+            = new ManagementNetworkConfigurationProperties()
+                .withInfrastructureVpnConfiguration(
+                    new VpnConfigurationProperties().withNetworkToNetworkInterconnectId("hrjqfyaytvslyek")
+                        .withPeeringOption(PeeringOption.OPTIONB)
+                        .withOptionBProperties(
+                            new VpnOptionBProperties().withImportRouteTargets(Arrays.asList("lcjiwgsxfaio", "wd"))
+                                .withExportRouteTargets(Arrays.asList("jgnfgrzxbar", "bpaefzqsymjw"))
+                                .withRouteTargets(
+                                    new RouteTargetInformation().withImportIpv4RouteTargets(Arrays.asList("ytesm", "u"))
+                                        .withImportIpv6RouteTargets(Arrays.asList("fodqhuauzmzi", "rtrfzh"))
+                                        .withExportIpv4RouteTargets(Arrays.asList("vhjudxdyyrudmahs"))
+                                        .withExportIpv6RouteTargets(Arrays.asList("dkxbq", "sgfenffdxb"))))
+                        .withOptionAProperties(new VpnOptionAProperties().withPrimaryIpv4Prefix("xndmuvar")
+                            .withPrimaryIpv6Prefix("mzjotprrmuh")
+                            .withSecondaryIpv4Prefix("htuzlxiwyopgar")
+                            .withSecondaryIpv6Prefix("ctwrapcz")
+                            .withMtu(1851126067)
+                            .withVlanId(849040512)
+                            .withPeerASN(8993118167714426120L)
+                            .withBfdConfiguration(new BfdConfiguration().withIntervalInMilliSeconds(567306618)
+                                .withMultiplier(726309602))))
+                .withWorkloadVpnConfiguration(
+                    new VpnConfigurationProperties().withNetworkToNetworkInterconnectId("jqyvzesipi")
+                        .withPeeringOption(PeeringOption.OPTIONB)
+                        .withOptionBProperties(new VpnOptionBProperties().withImportRouteTargets(Arrays.asList("waadc"))
+                            .withExportRouteTargets(Arrays.asList("za"))
+                            .withRouteTargets(new RouteTargetInformation()
+                                .withImportIpv4RouteTargets(
+                                    Arrays.asList("tsewkaupwhlz", "ckremgjlmsvdorsi", "xxhyrkqakofa", "freprfvm"))
+                                .withImportIpv6RouteTargets(Arrays.asList("wteyrqshixbcejo"))
+                                .withExportIpv4RouteTargets(Arrays.asList("blfs", "rrwcsp"))
+                                .withExportIpv6RouteTargets(Arrays.asList("cvvfxrdytzf"))))
+                        .withOptionAProperties(new VpnOptionAProperties().withPrimaryIpv4Prefix("qemcdi")
+                            .withPrimaryIpv6Prefix("sklbonxxupjxvtrk")
+                            .withSecondaryIpv4Prefix("genj")
+                            .withSecondaryIpv6Prefix("npjwkosnyxigfou")
+                            .withMtu(610121119)
+                            .withVlanId(1499035633)
+                            .withPeerASN(2830022439938803890L)
+                            .withBfdConfiguration(new BfdConfiguration().withIntervalInMilliSeconds(1530594040)
+                                .withMultiplier(1772619710))));
         model = BinaryData.fromObject(model).toObject(ManagementNetworkConfigurationProperties.class);
-        Assertions.assertEquals("qxfvgyx", model.infrastructureVpnConfiguration().networkToNetworkInterconnectId());
+        Assertions.assertEquals("hrjqfyaytvslyek",
+            model.infrastructureVpnConfiguration().networkToNetworkInterconnectId());
         Assertions.assertEquals(PeeringOption.OPTIONB, model.infrastructureVpnConfiguration().peeringOption());
-        Assertions.assertEquals("xlttxoq",
+        Assertions.assertEquals("lcjiwgsxfaio",
             model.infrastructureVpnConfiguration().optionBProperties().importRouteTargets().get(0));
-        Assertions.assertEquals("mofbnivd",
+        Assertions.assertEquals("jgnfgrzxbar",
             model.infrastructureVpnConfiguration().optionBProperties().exportRouteTargets().get(0));
-        Assertions.assertEquals("yuveoxmpz",
+        Assertions.assertEquals("ytesm",
             model.infrastructureVpnConfiguration().optionBProperties().routeTargets().importIpv4RouteTargets().get(0));
-        Assertions.assertEquals("ibio",
+        Assertions.assertEquals("fodqhuauzmzi",
             model.infrastructureVpnConfiguration().optionBProperties().routeTargets().importIpv6RouteTargets().get(0));
-        Assertions.assertEquals("daglmrcok",
+        Assertions.assertEquals("vhjudxdyyrudmahs",
             model.infrastructureVpnConfiguration().optionBProperties().routeTargets().exportIpv4RouteTargets().get(0));
-        Assertions.assertEquals("qnnfywt",
+        Assertions.assertEquals("dkxbq",
             model.infrastructureVpnConfiguration().optionBProperties().routeTargets().exportIpv6RouteTargets().get(0));
-        Assertions.assertEquals("gf", model.infrastructureVpnConfiguration().optionAProperties().primaryIpv4Prefix());
-        Assertions.assertEquals("ulojhhylx",
+        Assertions.assertEquals("xndmuvar",
+            model.infrastructureVpnConfiguration().optionAProperties().primaryIpv4Prefix());
+        Assertions.assertEquals("mzjotprrmuh",
             model.infrastructureVpnConfiguration().optionAProperties().primaryIpv6Prefix());
-        Assertions.assertEquals("vfiyymot",
+        Assertions.assertEquals("htuzlxiwyopgar",
             model.infrastructureVpnConfiguration().optionAProperties().secondaryIpv4Prefix());
-        Assertions.assertEquals("bybwjmtftcvelnir",
+        Assertions.assertEquals("ctwrapcz",
             model.infrastructureVpnConfiguration().optionAProperties().secondaryIpv6Prefix());
-        Assertions.assertEquals(34530368, model.infrastructureVpnConfiguration().optionAProperties().mtu());
-        Assertions.assertEquals(1699220060, model.infrastructureVpnConfiguration().optionAProperties().vlanId());
-        Assertions.assertEquals(2104144988313178735L,
+        Assertions.assertEquals(1851126067, model.infrastructureVpnConfiguration().optionAProperties().mtu());
+        Assertions.assertEquals(849040512, model.infrastructureVpnConfiguration().optionAProperties().vlanId());
+        Assertions.assertEquals(8993118167714426120L,
             model.infrastructureVpnConfiguration().optionAProperties().peerASN());
-        Assertions.assertEquals(585292498,
+        Assertions.assertEquals(567306618,
             model.infrastructureVpnConfiguration().optionAProperties().bfdConfiguration().intervalInMilliSeconds());
-        Assertions.assertEquals(1633231640,
+        Assertions.assertEquals(726309602,
             model.infrastructureVpnConfiguration().optionAProperties().bfdConfiguration().multiplier());
-        Assertions.assertEquals("kqnstpaqpibjgbvs", model.workloadVpnConfiguration().networkToNetworkInterconnectId());
-        Assertions.assertEquals(PeeringOption.OPTIONA, model.workloadVpnConfiguration().peeringOption());
-        Assertions.assertEquals("ttxbms",
+        Assertions.assertEquals("jqyvzesipi", model.workloadVpnConfiguration().networkToNetworkInterconnectId());
+        Assertions.assertEquals(PeeringOption.OPTIONB, model.workloadVpnConfiguration().peeringOption());
+        Assertions.assertEquals("waadc",
             model.workloadVpnConfiguration().optionBProperties().importRouteTargets().get(0));
-        Assertions.assertEquals("bqcamalec",
-            model.workloadVpnConfiguration().optionBProperties().exportRouteTargets().get(0));
-        Assertions.assertEquals("dxmsynbkdnn",
+        Assertions.assertEquals("za", model.workloadVpnConfiguration().optionBProperties().exportRouteTargets().get(0));
+        Assertions.assertEquals("tsewkaupwhlz",
             model.workloadVpnConfiguration().optionBProperties().routeTargets().importIpv4RouteTargets().get(0));
-        Assertions.assertEquals("jtlxfikjkxara",
+        Assertions.assertEquals("wteyrqshixbcejo",
             model.workloadVpnConfiguration().optionBProperties().routeTargets().importIpv6RouteTargets().get(0));
-        Assertions.assertEquals("uasnjeglhtrxb",
+        Assertions.assertEquals("blfs",
             model.workloadVpnConfiguration().optionBProperties().routeTargets().exportIpv4RouteTargets().get(0));
-        Assertions.assertEquals("dsorgfhjxsawo",
+        Assertions.assertEquals("cvvfxrdytzf",
             model.workloadVpnConfiguration().optionBProperties().routeTargets().exportIpv6RouteTargets().get(0));
-        Assertions.assertEquals("q", model.workloadVpnConfiguration().optionAProperties().primaryIpv4Prefix());
-        Assertions.assertEquals("ybmrnotoc", model.workloadVpnConfiguration().optionAProperties().primaryIpv6Prefix());
-        Assertions.assertEquals("zdaiovrb", model.workloadVpnConfiguration().optionAProperties().secondaryIpv4Prefix());
-        Assertions.assertEquals("pqphk", model.workloadVpnConfiguration().optionAProperties().secondaryIpv6Prefix());
-        Assertions.assertEquals(1065368345, model.workloadVpnConfiguration().optionAProperties().mtu());
-        Assertions.assertEquals(376869022, model.workloadVpnConfiguration().optionAProperties().vlanId());
-        Assertions.assertEquals(7722575456704087590L, model.workloadVpnConfiguration().optionAProperties().peerASN());
-        Assertions.assertEquals(335998728,
+        Assertions.assertEquals("qemcdi", model.workloadVpnConfiguration().optionAProperties().primaryIpv4Prefix());
+        Assertions.assertEquals("sklbonxxupjxvtrk",
+            model.workloadVpnConfiguration().optionAProperties().primaryIpv6Prefix());
+        Assertions.assertEquals("genj", model.workloadVpnConfiguration().optionAProperties().secondaryIpv4Prefix());
+        Assertions.assertEquals("npjwkosnyxigfou",
+            model.workloadVpnConfiguration().optionAProperties().secondaryIpv6Prefix());
+        Assertions.assertEquals(610121119, model.workloadVpnConfiguration().optionAProperties().mtu());
+        Assertions.assertEquals(1499035633, model.workloadVpnConfiguration().optionAProperties().vlanId());
+        Assertions.assertEquals(2830022439938803890L, model.workloadVpnConfiguration().optionAProperties().peerASN());
+        Assertions.assertEquals(1530594040,
             model.workloadVpnConfiguration().optionAProperties().bfdConfiguration().intervalInMilliSeconds());
-        Assertions.assertEquals(2095425122,
+        Assertions.assertEquals(1772619710,
             model.workloadVpnConfiguration().optionAProperties().bfdConfiguration().multiplier());
     }
 }

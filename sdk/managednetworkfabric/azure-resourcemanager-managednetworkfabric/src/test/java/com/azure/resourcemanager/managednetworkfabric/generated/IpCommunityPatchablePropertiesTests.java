@@ -16,31 +16,36 @@ public final class IpCommunityPatchablePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IpCommunityPatchableProperties model = BinaryData.fromString(
-            "{\"ipCommunityRules\":[{\"action\":\"Permit\",\"sequenceNumber\":271327439098936771,\"wellKnownCommunities\":[\"NoAdvertise\"],\"communityMembers\":[\"thgygvfltgvdi\"]},{\"action\":\"Deny\",\"sequenceNumber\":190205408839754865,\"wellKnownCommunities\":[\"LocalAS\"],\"communityMembers\":[\"etwkdrcyrucpc\",\"nn\"]}]}")
+            "{\"ipCommunityRules\":[{\"action\":\"Deny\",\"sequenceNumber\":3182736841202603764,\"wellKnownCommunities\":[\"NoAdvertise\"],\"communityMembers\":[\"rhtssr\",\"qnmdvhazcvjy\"]},{\"action\":\"Permit\",\"sequenceNumber\":1304349903472369225,\"wellKnownCommunities\":[\"GShut\",\"NoAdvertise\"],\"communityMembers\":[\"zwxiytx\"]},{\"action\":\"Deny\",\"sequenceNumber\":189171711172436177,\"wellKnownCommunities\":[\"NoAdvertise\",\"LocalAS\",\"Internet\",\"GShut\"],\"communityMembers\":[\"gdstyouam\",\"ewres\",\"moweg\"]}]}")
             .toObject(IpCommunityPatchableProperties.class);
-        Assertions.assertEquals(CommunityActionTypes.PERMIT, model.ipCommunityRules().get(0).action());
-        Assertions.assertEquals(271327439098936771L, model.ipCommunityRules().get(0).sequenceNumber());
+        Assertions.assertEquals(CommunityActionTypes.DENY, model.ipCommunityRules().get(0).action());
+        Assertions.assertEquals(3182736841202603764L, model.ipCommunityRules().get(0).sequenceNumber());
         Assertions.assertEquals(WellKnownCommunities.NO_ADVERTISE,
             model.ipCommunityRules().get(0).wellKnownCommunities().get(0));
-        Assertions.assertEquals("thgygvfltgvdi", model.ipCommunityRules().get(0).communityMembers().get(0));
+        Assertions.assertEquals("rhtssr", model.ipCommunityRules().get(0).communityMembers().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         IpCommunityPatchableProperties model = new IpCommunityPatchableProperties().withIpCommunityRules(Arrays.asList(
-            new IpCommunityRule().withAction(CommunityActionTypes.PERMIT)
-                .withSequenceNumber(271327439098936771L)
-                .withWellKnownCommunities(Arrays.asList(WellKnownCommunities.NO_ADVERTISE))
-                .withCommunityMembers(Arrays.asList("thgygvfltgvdi")),
             new IpCommunityRule().withAction(CommunityActionTypes.DENY)
-                .withSequenceNumber(190205408839754865L)
-                .withWellKnownCommunities(Arrays.asList(WellKnownCommunities.LOCAL_AS))
-                .withCommunityMembers(Arrays.asList("etwkdrcyrucpc", "nn"))));
+                .withSequenceNumber(3182736841202603764L)
+                .withWellKnownCommunities(Arrays.asList(WellKnownCommunities.NO_ADVERTISE))
+                .withCommunityMembers(Arrays.asList("rhtssr", "qnmdvhazcvjy")),
+            new IpCommunityRule().withAction(CommunityActionTypes.PERMIT)
+                .withSequenceNumber(1304349903472369225L)
+                .withWellKnownCommunities(Arrays.asList(WellKnownCommunities.GSHUT, WellKnownCommunities.NO_ADVERTISE))
+                .withCommunityMembers(Arrays.asList("zwxiytx")),
+            new IpCommunityRule().withAction(CommunityActionTypes.DENY)
+                .withSequenceNumber(189171711172436177L)
+                .withWellKnownCommunities(Arrays.asList(WellKnownCommunities.NO_ADVERTISE,
+                    WellKnownCommunities.LOCAL_AS, WellKnownCommunities.INTERNET, WellKnownCommunities.GSHUT))
+                .withCommunityMembers(Arrays.asList("gdstyouam", "ewres", "moweg"))));
         model = BinaryData.fromObject(model).toObject(IpCommunityPatchableProperties.class);
-        Assertions.assertEquals(CommunityActionTypes.PERMIT, model.ipCommunityRules().get(0).action());
-        Assertions.assertEquals(271327439098936771L, model.ipCommunityRules().get(0).sequenceNumber());
+        Assertions.assertEquals(CommunityActionTypes.DENY, model.ipCommunityRules().get(0).action());
+        Assertions.assertEquals(3182736841202603764L, model.ipCommunityRules().get(0).sequenceNumber());
         Assertions.assertEquals(WellKnownCommunities.NO_ADVERTISE,
             model.ipCommunityRules().get(0).wellKnownCommunities().get(0));
-        Assertions.assertEquals("thgygvfltgvdi", model.ipCommunityRules().get(0).communityMembers().get(0));
+        Assertions.assertEquals("rhtssr", model.ipCommunityRules().get(0).communityMembers().get(0));
     }
 }
