@@ -344,7 +344,9 @@ public class ShareFileClientBuilder implements TokenCredentialTrait<ShareFileCli
                 this.shareSnapshot = snapshotArray[0];
             }
 
-            this.fileId = "";
+            if (length >= 2) {
+                this.fileId = "";
+            }
             String[] fileIdArray = queryParamsMap.remove("fileid");
             if (fileIdArray != null) {
                 ShareErrors.validateFileId(fileIdArray[0]);
