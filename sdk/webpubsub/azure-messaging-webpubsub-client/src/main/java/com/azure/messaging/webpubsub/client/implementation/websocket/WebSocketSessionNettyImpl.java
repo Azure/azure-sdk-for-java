@@ -100,6 +100,23 @@ final class WebSocketSessionNettyImpl implements WebSocketSession {
     }
 
     void connect() throws URISyntaxException, SSLException, InterruptedException, ExecutionException {
+        boolean connected = false;
+        try {
+            connectInternal();
+            connected = true;
+        } finally {
+            if (!connected) {
+                if (ch != null) {
+                    ch.close();
+                }
+                if (group != null) {
+                    group.shutdownGracefully();
+                }
+            }
+        }
+    }
+
+    private void connectInternal() throws URISyntaxException, SSLException, InterruptedException, ExecutionException {
         URI uri = new URI(path);
         String scheme = uri.getScheme() == null ? "ws" : uri.getScheme();
         final String host = uri.getHost() == null ? "127.0.0.1" : uri.getHost();
@@ -150,6 +167,7 @@ final class WebSocketSessionNettyImpl implements WebSocketSession {
         final CompletableFuture<Void> handshakeCallbackFuture = new CompletableFuture<>();
 
         ch = b.connect(uri.getHost(), port).sync().channel();
+        ch.closeFuture().addListener(future -> group.shutdownGracefully());
         // callback for openHandler
         clientHandler.handshakeFuture().addListener(future -> {
             if (future.isSuccess()) {
