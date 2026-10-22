@@ -471,8 +471,7 @@ public class SessionAuthenticationPolicyTest {
         assertTrue(actual.startsWith("Session " + FIRST_TOKEN + ":"),
             "Authorization should use the Session scheme with the cached session token.");
         String actualSignature = actual.substring(actual.indexOf(':') + 1);
-        assertTrue(actualSignature.matches("[A-Za-z0-9+/]+={0,2}"),
-            "Signature must be base64-encoded.");
+        assertTrue(actualSignature.matches("[A-Za-z0-9+/]+={0,2}"), "Signature must be base64-encoded.");
     }
 
     @Test

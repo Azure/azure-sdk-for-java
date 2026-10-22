@@ -20,11 +20,11 @@ import reactor.core.publisher.Mono;
 import java.time.Clock;
 import java.time.Duration;
 import java.time.OffsetDateTime;
-import java.util.Iterator;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import static com.azure.storage.common.implementation.Constants.HeaderConstants.ERROR_CODE_HEADER_NAME;
 
@@ -42,15 +42,14 @@ final class ContainerSessionProvider extends SessionProvider {
 
     private static final ClientLogger LOGGER = new ClientLogger(ContainerSessionProvider.class);
     private static final Duration IDLE_EVICTION_THRESHOLD = Duration.ofMinutes(IDLE_EVICTION_THRESHOLD_MINUTES);
-    private static final Duration EVICTION_SWEEP_INTERVAL = Duration.ofSeconds(10);
-    private static final int MAX_EVICTION_SWEEP_ENTRIES = 32;
+    private static final Duration EVICTION_SWEEP_INTERVAL = Duration.ofMinutes(1);
     private static final Duration DEFAULT_EXPIRATION_OFFSET = Duration.ofMinutes(5L);
     private static final String FEATURE_NOT_ENABLED = "FeatureNotEnabled";
 
     private final Clock clock;
     private final ConcurrentHashMap<String, ContainerSessionCache> containerSessionCaches = new ConcurrentHashMap<>();
-    private volatile OffsetDateTime lastEvictionSweep;
-    private Iterator<Map.Entry<String, ContainerSessionCache>> evictionIterator;
+    private final Lock evictionSweepLock = new ReentrantLock();
+    private volatile OffsetDateTime nextEvictionSweep;
 
     ContainerSessionProvider(Clock clock) {
         this.clock = Objects.requireNonNull(clock, "'clock' cannot be null.");
@@ -132,8 +131,8 @@ final class ContainerSessionProvider extends SessionProvider {
     private ContainerSessionCache updateCache(String containerName, String resolvedAccountName,
         SessionAcquirer acquirer) {
         String key = normalize(resolvedAccountName) + "/" + normalize(containerName);
+        OffsetDateTime now = OffsetDateTime.now(clock);
         ContainerSessionCache containerSessionCache = containerSessionCaches.compute(key, (k, existing) -> {
-            OffsetDateTime now = OffsetDateTime.now(clock);
             if (existing == null) {
                 return new ContainerSessionCache(this, clock, containerName, resolvedAccountName, acquirer, now);
             }
@@ -146,25 +145,34 @@ final class ContainerSessionProvider extends SessionProvider {
     }
 
     private void evictStaleCaches(OffsetDateTime now) {
-        synchronized (containerSessionCaches) {
-            if (lastEvictionSweep != null
-                && Duration.between(lastEvictionSweep, now).compareTo(EVICTION_SWEEP_INTERVAL) < 0) {
+        OffsetDateTime nextSweep = nextEvictionSweep;
+        if (nextSweep != null && now.isBefore(nextSweep)) {
+            return;
+        }
+
+        //using tryLock to avoid blocking the caller thread if another thread is already performing eviction sweep
+        if (!evictionSweepLock.tryLock()) {
+            return;
+        }
+        try {
+            nextSweep = nextEvictionSweep;
+            if (nextSweep != null && now.isBefore(nextSweep)) {
                 return;
             }
-            lastEvictionSweep = now;
-            if (evictionIterator == null || !evictionIterator.hasNext()) {
-                evictionIterator = containerSessionCaches.entrySet().iterator();
-            }
-            int inspected = 0;
-            while (evictionIterator.hasNext() && inspected++ < MAX_EVICTION_SWEEP_ENTRIES) {
-                Map.Entry<String, ContainerSessionCache> entry = evictionIterator.next();
-                containerSessionCaches.computeIfPresent(entry.getKey(),
-                    (ignored, cache) -> retainIfActive(now, cache));
-            }
+            nextEvictionSweep = now.plus(EVICTION_SWEEP_INTERVAL);
+            containerSessionCaches.keySet()
+                .forEach(key -> containerSessionCaches.computeIfPresent(key,
+                    (ignored, cache) -> retainIfActive(now, cache)));
+        } finally {
+            evictionSweepLock.unlock();
         }
     }
 
     private ContainerSessionCache retainIfActive(OffsetDateTime now, ContainerSessionCache cache) {
+        SessionCredential fallback = cache.fallback;
+        if (fallback != null && now.isBefore(fallback.getExpiresAt())) {
+            return cache;
+        }
         Duration idleTime = Duration.between(cache.lastAccess, now);
         if (idleTime.compareTo(IDLE_EVICTION_THRESHOLD) >= 0) {
             return null;
