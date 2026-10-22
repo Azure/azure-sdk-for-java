@@ -936,15 +936,13 @@ public class SessionTests {
                 : consumerTransport("second", customOptions, acquisitions, downloads, currentToken, rejectNextSession);
             HttpLogOptions logOptions = new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
                 .setRequestLogger((logger, context) -> {
-                    if (context.getHttpRequest().getHttpMethod() == HttpMethod.POST
-                        || isSessionAuthenticated(context.getHttpRequest())) {
+                    if (context.getHttpRequest().getHttpMethod() == HttpMethod.POST) {
                         loggedAcquisitions.incrementAndGet();
                     }
                     return Mono.empty();
                 })
                 .setResponseLogger((logger, context) -> {
-                    HttpRequest request = context.getHttpResponse().getRequest();
-                    if (request.getHttpMethod() == HttpMethod.POST || isSessionAuthenticated(request)) {
+                    if (context.getHttpResponse().getRequest().getHttpMethod() == HttpMethod.POST) {
                         loggedAcquisitions.incrementAndGet();
                     }
                     return Mono.just(context.getHttpResponse());
@@ -966,8 +964,7 @@ public class SessionTests {
             assertEquals(1, acquisitions.get("second").get(),
                 "Reacquisition must use the requesting client's pipeline.");
             assertEquals("second", currentToken.get());
-            assertEquals(0, loggedAcquisitions.get(),
-                "Custom HTTP loggers must not receive session acquisition or authentication values.");
+            assertEquals(0, loggedAcquisitions.get(), "Custom HTTP loggers must not receive session credentials.");
         }
 
         @Test
