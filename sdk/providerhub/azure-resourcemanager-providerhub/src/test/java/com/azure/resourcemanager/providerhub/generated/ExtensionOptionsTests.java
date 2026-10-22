@@ -14,21 +14,21 @@ public final class ExtensionOptionsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExtensionOptions model = BinaryData.fromString(
-            "{\"request\":[\"IncludeInternalMetadata\",\"NotSpecified\",\"NotSpecified\"],\"response\":[\"NotSpecified\"]}")
+            "{\"request\":[\"IncludeInternalMetadata\"],\"response\":[\"IncludeInternalMetadata\",\"NotSpecified\",\"IncludeInternalMetadata\",\"DoNotMergeExistingReadOnlyAndSecretProperties\"]}")
             .toObject(ExtensionOptions.class);
         Assertions.assertEquals(ExtensionOptionType.INCLUDE_INTERNAL_METADATA, model.request().get(0));
-        Assertions.assertEquals(ExtensionOptionType.NOT_SPECIFIED, model.response().get(0));
+        Assertions.assertEquals(ExtensionOptionType.INCLUDE_INTERNAL_METADATA, model.response().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ExtensionOptions model
-            = new ExtensionOptions()
-                .withRequest(Arrays.asList(ExtensionOptionType.INCLUDE_INTERNAL_METADATA,
-                    ExtensionOptionType.NOT_SPECIFIED, ExtensionOptionType.NOT_SPECIFIED))
-                .withResponse(Arrays.asList(ExtensionOptionType.NOT_SPECIFIED));
+            = new ExtensionOptions().withRequest(Arrays.asList(ExtensionOptionType.INCLUDE_INTERNAL_METADATA))
+                .withResponse(Arrays.asList(ExtensionOptionType.INCLUDE_INTERNAL_METADATA,
+                    ExtensionOptionType.NOT_SPECIFIED, ExtensionOptionType.INCLUDE_INTERNAL_METADATA,
+                    ExtensionOptionType.DO_NOT_MERGE_EXISTING_READ_ONLY_AND_SECRET_PROPERTIES));
         model = BinaryData.fromObject(model).toObject(ExtensionOptions.class);
         Assertions.assertEquals(ExtensionOptionType.INCLUDE_INTERNAL_METADATA, model.request().get(0));
-        Assertions.assertEquals(ExtensionOptionType.NOT_SPECIFIED, model.response().get(0));
+        Assertions.assertEquals(ExtensionOptionType.INCLUDE_INTERNAL_METADATA, model.response().get(0));
     }
 }

@@ -12,22 +12,23 @@ import org.junit.jupiter.api.Assertions;
 public final class DeleteDependencyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DeleteDependency model = BinaryData.fromString(
-            "{\"requiredFeatures\":[\"idjks\"],\"linkedProperty\":\"kyxvxevblbjedn\",\"linkedType\":\"lageuaulxun\"}")
+        DeleteDependency model = BinaryData
+            .fromString(
+                "{\"requiredFeatures\":[\"ojqtobaxk\",\"eytu\"],\"linkedProperty\":\"bfjkw\",\"linkedType\":\"snkq\"}")
             .toObject(DeleteDependency.class);
-        Assertions.assertEquals("idjks", model.requiredFeatures().get(0));
-        Assertions.assertEquals("kyxvxevblbjedn", model.linkedProperty());
-        Assertions.assertEquals("lageuaulxun", model.linkedType());
+        Assertions.assertEquals("ojqtobaxk", model.requiredFeatures().get(0));
+        Assertions.assertEquals("bfjkw", model.linkedProperty());
+        Assertions.assertEquals("snkq", model.linkedType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DeleteDependency model = new DeleteDependency().withRequiredFeatures(Arrays.asList("idjks"))
-            .withLinkedProperty("kyxvxevblbjedn")
-            .withLinkedType("lageuaulxun");
+        DeleteDependency model = new DeleteDependency().withRequiredFeatures(Arrays.asList("ojqtobaxk", "eytu"))
+            .withLinkedProperty("bfjkw")
+            .withLinkedType("snkq");
         model = BinaryData.fromObject(model).toObject(DeleteDependency.class);
-        Assertions.assertEquals("idjks", model.requiredFeatures().get(0));
-        Assertions.assertEquals("kyxvxevblbjedn", model.linkedProperty());
-        Assertions.assertEquals("lageuaulxun", model.linkedType());
+        Assertions.assertEquals("ojqtobaxk", model.requiredFeatures().get(0));
+        Assertions.assertEquals("bfjkw", model.linkedProperty());
+        Assertions.assertEquals("snkq", model.linkedType());
     }
 }

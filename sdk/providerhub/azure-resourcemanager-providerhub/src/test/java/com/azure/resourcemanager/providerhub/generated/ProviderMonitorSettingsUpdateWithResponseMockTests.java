@@ -21,7 +21,7 @@ public final class ProviderMonitorSettingsUpdateWithResponseMockTests {
     @Test
     public void testUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Accepted\"},\"location\":\"kumcfjxokyelsy\",\"tags\":{\"rugjqyckgtx\":\"fnkwmygjjekrknf\",\"b\":\"rdtulcrcjdklotcs\",\"bch\":\"zoonsv\",\"sl\":\"xfpwhd\"},\"id\":\"klglmnnkkwa\",\"name\":\"qshwyqxridt\",\"type\":\"bsaqjm\"}";
+            = "{\"properties\":{\"provisioningState\":\"Created\"},\"location\":\"hyogzmsimeht\",\"tags\":{\"ugisnomwnwngho\":\"wdhtqqhyhnimxtn\",\"ymicjixx\":\"ovke\"},\"id\":\"sfpcrtnuguefxxij\",\"name\":\"ebdvey\",\"type\":\"etkrhlolmcnwepf\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +31,10 @@ public final class ProviderMonitorSettingsUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ProviderMonitorSetting response = manager.providerMonitorSettings()
-            .updateWithResponse("fedyuep", "vpltidajjvy", com.azure.core.util.Context.NONE)
+            .updateWithResponse("exbzbqufpnezsjza", "m", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("kumcfjxokyelsy", response.location());
-        Assertions.assertEquals("fnkwmygjjekrknf", response.tags().get("rugjqyckgtx"));
+        Assertions.assertEquals("hyogzmsimeht", response.location());
+        Assertions.assertEquals("wdhtqqhyhnimxtn", response.tags().get("ugisnomwnwngho"));
     }
 }

@@ -11,26 +11,27 @@ import org.junit.jupiter.api.Assertions;
 public final class LocalizedOperationDisplayDefinitionQpsPlocTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LocalizedOperationDisplayDefinitionQpsPloc model = BinaryData.fromString(
-            "{\"provider\":\"rujbzbomvzzbtdc\",\"resource\":\"vp\",\"operation\":\"iyujviylwdshfs\",\"description\":\"n\"}")
+        LocalizedOperationDisplayDefinitionQpsPloc model = BinaryData
+            .fromString(
+                "{\"provider\":\"zddrt\",\"resource\":\"g\",\"operation\":\"ojbmxv\",\"description\":\"vrefdeesv\"}")
             .toObject(LocalizedOperationDisplayDefinitionQpsPloc.class);
-        Assertions.assertEquals("rujbzbomvzzbtdc", model.provider());
-        Assertions.assertEquals("vp", model.resource());
-        Assertions.assertEquals("iyujviylwdshfs", model.operation());
-        Assertions.assertEquals("n", model.description());
+        Assertions.assertEquals("zddrt", model.provider());
+        Assertions.assertEquals("g", model.resource());
+        Assertions.assertEquals("ojbmxv", model.operation());
+        Assertions.assertEquals("vrefdeesv", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         LocalizedOperationDisplayDefinitionQpsPloc model
-            = new LocalizedOperationDisplayDefinitionQpsPloc().withProvider("rujbzbomvzzbtdc")
-                .withResource("vp")
-                .withOperation("iyujviylwdshfs")
-                .withDescription("n");
+            = new LocalizedOperationDisplayDefinitionQpsPloc().withProvider("zddrt")
+                .withResource("g")
+                .withOperation("ojbmxv")
+                .withDescription("vrefdeesv");
         model = BinaryData.fromObject(model).toObject(LocalizedOperationDisplayDefinitionQpsPloc.class);
-        Assertions.assertEquals("rujbzbomvzzbtdc", model.provider());
-        Assertions.assertEquals("vp", model.resource());
-        Assertions.assertEquals("iyujviylwdshfs", model.operation());
-        Assertions.assertEquals("n", model.description());
+        Assertions.assertEquals("zddrt", model.provider());
+        Assertions.assertEquals("g", model.resource());
+        Assertions.assertEquals("ojbmxv", model.operation());
+        Assertions.assertEquals("vrefdeesv", model.description());
     }
 }

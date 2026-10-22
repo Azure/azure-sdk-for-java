@@ -14,19 +14,19 @@ public final class DefaultRolloutSpecificationMediumTrafficTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DefaultRolloutSpecificationMediumTraffic model
-            = BinaryData.fromString("{\"waitDuration\":\"PT119H14M39S\",\"regions\":[\"ixz\"]}")
+            = BinaryData.fromString("{\"waitDuration\":\"PT227H36M33S\",\"regions\":[\"vjfn\",\"jmvl\",\"yzgib\"]}")
                 .toObject(DefaultRolloutSpecificationMediumTraffic.class);
-        Assertions.assertEquals("ixz", model.regions().get(0));
-        Assertions.assertEquals(Duration.parse("PT119H14M39S"), model.waitDuration());
+        Assertions.assertEquals("vjfn", model.regions().get(0));
+        Assertions.assertEquals(Duration.parse("PT227H36M33S"), model.waitDuration());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DefaultRolloutSpecificationMediumTraffic model
-            = new DefaultRolloutSpecificationMediumTraffic().withRegions(Arrays.asList("ixz"))
-                .withWaitDuration(Duration.parse("PT119H14M39S"));
+            = new DefaultRolloutSpecificationMediumTraffic().withRegions(Arrays.asList("vjfn", "jmvl", "yzgib"))
+                .withWaitDuration(Duration.parse("PT227H36M33S"));
         model = BinaryData.fromObject(model).toObject(DefaultRolloutSpecificationMediumTraffic.class);
-        Assertions.assertEquals("ixz", model.regions().get(0));
-        Assertions.assertEquals(Duration.parse("PT119H14M39S"), model.waitDuration());
+        Assertions.assertEquals("vjfn", model.regions().get(0));
+        Assertions.assertEquals(Duration.parse("PT227H36M33S"), model.waitDuration());
     }
 }

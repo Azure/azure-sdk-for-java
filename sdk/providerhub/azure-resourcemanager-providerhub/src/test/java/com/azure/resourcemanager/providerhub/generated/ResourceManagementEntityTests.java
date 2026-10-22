@@ -12,21 +12,21 @@ public final class ResourceManagementEntityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceManagementEntity model = BinaryData.fromString(
-            "{\"resourceId\":\"jfoknubnoitpkp\",\"homeTenantId\":\"rgdg\",\"location\":\"coqra\",\"status\":\"ugyxpqit\"}")
+            "{\"resourceId\":\"ywhsbrcarycs\",\"homeTenantId\":\"zyvoaqa\",\"location\":\"vehzp\",\"status\":\"mk\"}")
             .toObject(ResourceManagementEntity.class);
-        Assertions.assertEquals("jfoknubnoitpkp", model.resourceId());
-        Assertions.assertEquals("rgdg", model.homeTenantId());
-        Assertions.assertEquals("coqra", model.location());
+        Assertions.assertEquals("ywhsbrcarycs", model.resourceId());
+        Assertions.assertEquals("zyvoaqa", model.homeTenantId());
+        Assertions.assertEquals("vehzp", model.location());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourceManagementEntity model = new ResourceManagementEntity().withResourceId("jfoknubnoitpkp")
-            .withHomeTenantId("rgdg")
-            .withLocation("coqra");
+        ResourceManagementEntity model = new ResourceManagementEntity().withResourceId("ywhsbrcarycs")
+            .withHomeTenantId("zyvoaqa")
+            .withLocation("vehzp");
         model = BinaryData.fromObject(model).toObject(ResourceManagementEntity.class);
-        Assertions.assertEquals("jfoknubnoitpkp", model.resourceId());
-        Assertions.assertEquals("rgdg", model.homeTenantId());
-        Assertions.assertEquals("coqra", model.location());
+        Assertions.assertEquals("ywhsbrcarycs", model.resourceId());
+        Assertions.assertEquals("zyvoaqa", model.homeTenantId());
+        Assertions.assertEquals("vehzp", model.location());
     }
 }

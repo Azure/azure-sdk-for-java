@@ -14,21 +14,32 @@ public final class CustomRolloutArrayResponseWithContinuationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CustomRolloutArrayResponseWithContinuation model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Accepted\",\"specification\":{\"autoProvisionConfig\":{\"storage\":true,\"resourceGraph\":false},\"canary\":{\"regions\":[\"vbroylaxxu\",\"cdisd\",\"sfjbjsvg\"]},\"releaseScopes\":[\"hryvy\",\"ytdc\",\"xgccknfnw\"],\"refreshSubscriptionRegistration\":true,\"skipReleaseScopeValidation\":true,\"providerRegistration\":{\"properties\":{},\"kind\":\"Managed\",\"id\":\"httz\",\"name\":\"efedxihchrphkm\",\"type\":\"rjdqnsdfzp\"},\"resourceTypeRegistrations\":[{\"id\":\"gkylkdghr\",\"name\":\"euutlwxezwzh\",\"type\":\"kvbwnhhtqlgeh\"}],\"rolloutId\":\"pipifh\",\"manifestCheckinSpecification\":{\"manifestCheckinOption\":\"DoNotAttemptAutomaticManifestCheckin\",\"manifestCheckinParams\":{\"environment\":\"jvgcxtx\",\"baselineArmManifestLocation\":\"csheafidltugsr\"}}},\"status\":{\"completedRegions\":[\"ssjhoiftxfkf\",\"egprhptil\",\"ucb\"],\"failedOrSkippedRegions\":{\"gdqoh\":{},\"cwsldri\":{},\"etpwbralll\":{},\"bphbqzmizakakank\":{}},\"manifestCheckinStatus\":{\"isCheckedIn\":false,\"statusMessage\":\"n\",\"pullRequest\":\"ha\",\"commitId\":\"ylhjlm\"},\"completedRegionsInfo\":[{}]}},\"id\":\"primr\",\"name\":\"opteecj\",\"type\":\"eislstvasylwx\"}],\"nextLink\":\"aumweoohguufu\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"specification\":{\"autoProvisionConfig\":{\"storage\":false,\"resourceGraph\":true},\"canary\":{\"regions\":[\"ospspshckf\",\"yjpmspbpssdfppyo\",\"tieyujtvczkcny\"]},\"releaseScopes\":[\"munjdxvglnkvx\"],\"refreshSubscriptionRegistration\":true,\"skipReleaseScopeValidation\":true,\"providerRegistration\":{\"properties\":{},\"kind\":\"Managed\",\"id\":\"gkcvkhpzvuq\",\"name\":\"fl\",\"type\":\"oniypfpubcpzgp\"},\"resourceTypeRegistrations\":[{\"id\":\"vhjknidi\",\"name\":\"gqjxgpnrhgovfgp\",\"type\":\"kqmhhaowjr\"},{\"id\":\"zvuporqzdfuydz\",\"name\":\"kfvxcnq\",\"type\":\"xqpswok\"},{\"id\":\"vkhlggdhbemz\",\"name\":\"kzsz\",\"type\":\"wiwtglxxhl\"}],\"rolloutId\":\"pg\",\"rolloutOrchestrationMetadata\":{\"isForManifestBuildout\":false,\"deploymentType\":\"nzhrgmqgjsxvpqcb\",\"trafficRing\":\"mbodthsqqgvri\",\"serviceGroup\":\"a\",\"serviceIdentifier\":\"lacjfrnxo\"},\"manifestCheckinSpecification\":{\"manifestCheckinOption\":\"AttemptAutomaticManifestCheckin\",\"manifestCheckinParams\":{\"environment\":\"zlwvsgmwohqfz\",\"baselineArmManifestLocation\":\"zvuxm\"}}},\"status\":{\"completedRegions\":[\"vthn\"],\"failedOrSkippedRegions\":{\"tekovmri\":{}},\"manifestCheckinStatus\":{\"isCheckedIn\":false,\"statusMessage\":\"ttgplucfotangcf\",\"pullRequest\":\"ykzcugswvxwl\",\"commitId\":\"qwm\"},\"completedRegionsInfo\":[{},{}]}},\"id\":\"jmxmcuqud\",\"name\":\"cvclxynpdk\",\"type\":\"gfabuiyjibuzphdu\"},{\"properties\":{\"provisioningState\":\"NotSpecified\",\"specification\":{\"autoProvisionConfig\":{\"storage\":false,\"resourceGraph\":false},\"canary\":{\"regions\":[\"jiuqhibtozi\",\"qw\",\"edmurrxxge\"]},\"releaseScopes\":[\"tvqylkmqpzoyhlfb\",\"gwgcl\",\"xoe\",\"qinjipnwjf\"],\"refreshSubscriptionRegistration\":true,\"skipReleaseScopeValidation\":false,\"providerRegistration\":{\"properties\":{},\"kind\":\"Managed\",\"id\":\"hpzpo\",\"name\":\"o\",\"type\":\"yjwpfilkmkkh\"},\"resourceTypeRegistrations\":[{\"id\":\"dndviauogp\",\"name\":\"uartvti\",\"type\":\"kyefchnmnahmnxhk\"},{\"id\":\"jqirwrw\",\"name\":\"ooxf\",\"type\":\"i\"},{\"id\":\"hx\",\"name\":\"rsnewmozqvbubqma\",\"type\":\"hsycxhxzgaz\"}],\"rolloutId\":\"abo\",\"rolloutOrchestrationMetadata\":{\"isForManifestBuildout\":true,\"deploymentType\":\"qhppubowsepdfgk\",\"trafficRing\":\"dherngbtcj\",\"serviceGroup\":\"hokq\",\"serviceIdentifier\":\"bkau\"},\"manifestCheckinSpecification\":{\"manifestCheckinOption\":\"AttemptAutomaticManifestCheckin\",\"manifestCheckinParams\":{\"environment\":\"fphwpnu\",\"baselineArmManifestLocation\":\"aiywzejywhsl\"}}},\"status\":{\"completedRegions\":[\"pllndnp\",\"wrpqafgfugsnnf\",\"yetefyp\",\"coc\"],\"failedOrSkippedRegions\":{\"gt\":{},\"xrjvzuyturmlm\":{}},\"manifestCheckinStatus\":{\"isCheckedIn\":false,\"statusMessage\":\"olbauirop\",\"pullRequest\":\"nszonwpngaj\",\"commitId\":\"nixjawrtmjfjmy\"},\"completedRegionsInfo\":[{},{},{},{}]}},\"id\":\"zhcoxovnekhe\",\"name\":\"lusfnrdtjxtxrdcq\",\"type\":\"jvidttge\"},{\"properties\":{\"provisioningState\":\"Canceled\",\"specification\":{\"autoProvisionConfig\":{\"storage\":false,\"resourceGraph\":false},\"canary\":{\"regions\":[\"wkasiziesf\",\"ughtuqfecjxeygtu\"]},\"releaseScopes\":[\"ic\",\"uewmrswnjlxuzrhw\",\"usxjbaqehg\"],\"refreshSubscriptionRegistration\":true,\"skipReleaseScopeValidation\":true,\"providerRegistration\":{\"properties\":{},\"kind\":\"Managed\",\"id\":\"coi\",\"name\":\"e\",\"type\":\"xncnwfe\"},\"resourceTypeRegistrations\":[{\"id\":\"wgfmx\",\"name\":\"gcgbjb\",\"type\":\"dlfgtdysnaq\"},{\"id\":\"flq\",\"name\":\"ctqhamzjrwdk\",\"type\":\"zeqyjleziun\"},{\"id\":\"xdfzantkw\",\"name\":\"eg\",\"type\":\"amlbnseqacjjvpil\"},{\"id\":\"uooqjagmdit\",\"name\":\"ueio\",\"type\":\"kjbsah\"}],\"rolloutId\":\"dt\",\"rolloutOrchestrationMetadata\":{\"isForManifestBuildout\":false,\"deploymentType\":\"ac\",\"trafficRing\":\"m\",\"serviceGroup\":\"oebn\",\"serviceIdentifier\":\"o\"},\"manifestCheckinSpecification\":{\"manifestCheckinOption\":\"AttemptAutomaticManifestCheckin\",\"manifestCheckinParams\":{\"environment\":\"gdirazf\",\"baselineArmManifestLocation\":\"xejw\"}}},\"status\":{\"completedRegions\":[\"ujtmvcopexcmjurb\",\"hhlkyqltqsrogtu\",\"kffdjktsys\"],\"failedOrSkippedRegions\":{\"vclglxnfuij\":{}},\"manifestCheckinStatus\":{\"isCheckedIn\":true,\"statusMessage\":\"usqogsfikayia\",\"pullRequest\":\"haru\",\"commitId\":\"ji\"},\"completedRegionsInfo\":[{},{}]}},\"id\":\"yjqtt\",\"name\":\"wkpqhjpenuygbq\",\"type\":\"qqekewvnqvcdlgu\"}],\"nextLink\":\"cmfdjwnlax\"}")
             .toObject(CustomRolloutArrayResponseWithContinuation.class);
-        Assertions.assertTrue(model.value().get(0).properties().specification().autoProvisionConfig().storage());
-        Assertions.assertFalse(model.value().get(0).properties().specification().autoProvisionConfig().resourceGraph());
-        Assertions.assertEquals("vbroylaxxu",
+        Assertions.assertFalse(model.value().get(0).properties().specification().autoProvisionConfig().storage());
+        Assertions.assertTrue(model.value().get(0).properties().specification().autoProvisionConfig().resourceGraph());
+        Assertions.assertEquals("ospspshckf",
             model.value().get(0).properties().specification().canary().regions().get(0));
-        Assertions.assertEquals("hryvy", model.value().get(0).properties().specification().releaseScopes().get(0));
+        Assertions.assertEquals("munjdxvglnkvx",
+            model.value().get(0).properties().specification().releaseScopes().get(0));
         Assertions.assertTrue(model.value().get(0).properties().specification().refreshSubscriptionRegistration());
         Assertions.assertTrue(model.value().get(0).properties().specification().skipReleaseScopeValidation());
         Assertions.assertEquals(ProviderRegistrationKind.MANAGED,
             model.value().get(0).properties().specification().providerRegistration().kind());
-        Assertions.assertEquals("pipifh", model.value().get(0).properties().specification().rolloutId());
-        Assertions.assertEquals(ManifestCheckinOption.DO_NOT_ATTEMPT_AUTOMATIC_MANIFEST_CHECKIN,
+        Assertions.assertEquals("pg", model.value().get(0).properties().specification().rolloutId());
+        Assertions.assertFalse(
+            model.value().get(0).properties().specification().rolloutOrchestrationMetadata().isForManifestBuildout());
+        Assertions.assertEquals("nzhrgmqgjsxvpqcb",
+            model.value().get(0).properties().specification().rolloutOrchestrationMetadata().deploymentType());
+        Assertions.assertEquals("mbodthsqqgvri",
+            model.value().get(0).properties().specification().rolloutOrchestrationMetadata().trafficRing());
+        Assertions.assertEquals("a",
+            model.value().get(0).properties().specification().rolloutOrchestrationMetadata().serviceGroup());
+        Assertions.assertEquals("lacjfrnxo",
+            model.value().get(0).properties().specification().rolloutOrchestrationMetadata().serviceIdentifier());
+        Assertions.assertEquals(ManifestCheckinOption.ATTEMPT_AUTOMATIC_MANIFEST_CHECKIN,
             model.value().get(0).properties().specification().manifestCheckinSpecification().manifestCheckinOption());
-        Assertions.assertEquals("jvgcxtx",
+        Assertions.assertEquals("zlwvsgmwohqfz",
             model.value()
                 .get(0)
                 .properties()
@@ -36,7 +47,7 @@ public final class CustomRolloutArrayResponseWithContinuationTests {
                 .manifestCheckinSpecification()
                 .manifestCheckinParams()
                 .environment());
-        Assertions.assertEquals("csheafidltugsr",
+        Assertions.assertEquals("zvuxm",
             model.value()
                 .get(0)
                 .properties()
@@ -44,13 +55,13 @@ public final class CustomRolloutArrayResponseWithContinuationTests {
                 .manifestCheckinSpecification()
                 .manifestCheckinParams()
                 .baselineArmManifestLocation());
-        Assertions.assertEquals("ssjhoiftxfkf", model.value().get(0).properties().status().completedRegions().get(0));
+        Assertions.assertEquals("vthn", model.value().get(0).properties().status().completedRegions().get(0));
         Assertions.assertFalse(model.value().get(0).properties().status().manifestCheckinStatus().isCheckedIn());
-        Assertions.assertEquals("n",
+        Assertions.assertEquals("ttgplucfotangcf",
             model.value().get(0).properties().status().manifestCheckinStatus().statusMessage());
-        Assertions.assertEquals("ha", model.value().get(0).properties().status().manifestCheckinStatus().pullRequest());
-        Assertions.assertEquals("ylhjlm",
-            model.value().get(0).properties().status().manifestCheckinStatus().commitId());
-        Assertions.assertEquals("aumweoohguufu", model.nextLink());
+        Assertions.assertEquals("ykzcugswvxwl",
+            model.value().get(0).properties().status().manifestCheckinStatus().pullRequest());
+        Assertions.assertEquals("qwm", model.value().get(0).properties().status().manifestCheckinStatus().commitId());
+        Assertions.assertEquals("cmfdjwnlax", model.nextLink());
     }
 }

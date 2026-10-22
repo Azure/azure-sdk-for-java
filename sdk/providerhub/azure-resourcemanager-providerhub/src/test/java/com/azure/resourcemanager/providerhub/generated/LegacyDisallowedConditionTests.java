@@ -13,21 +13,20 @@ import org.junit.jupiter.api.Assertions;
 public final class LegacyDisallowedConditionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LegacyDisallowedCondition model = BinaryData
-            .fromString(
-                "{\"disallowedLegacyOperations\":[\"NotSpecified\",\"Waiting\"],\"feature\":\"hnfhqlyvijouwi\"}")
-            .toObject(LegacyDisallowedCondition.class);
-        Assertions.assertEquals(LegacyOperation.NOT_SPECIFIED, model.disallowedLegacyOperations().get(0));
-        Assertions.assertEquals("hnfhqlyvijouwi", model.feature());
+        LegacyDisallowedCondition model
+            = BinaryData.fromString("{\"disallowedLegacyOperations\":[\"Waiting\"],\"feature\":\"zpnpbswv\"}")
+                .toObject(LegacyDisallowedCondition.class);
+        Assertions.assertEquals(LegacyOperation.WAITING, model.disallowedLegacyOperations().get(0));
+        Assertions.assertEquals("zpnpbswv", model.feature());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LegacyDisallowedCondition model = new LegacyDisallowedCondition()
-            .withDisallowedLegacyOperations(Arrays.asList(LegacyOperation.NOT_SPECIFIED, LegacyOperation.WAITING))
-            .withFeature("hnfhqlyvijouwi");
+        LegacyDisallowedCondition model
+            = new LegacyDisallowedCondition().withDisallowedLegacyOperations(Arrays.asList(LegacyOperation.WAITING))
+                .withFeature("zpnpbswv");
         model = BinaryData.fromObject(model).toObject(LegacyDisallowedCondition.class);
-        Assertions.assertEquals(LegacyOperation.NOT_SPECIFIED, model.disallowedLegacyOperations().get(0));
-        Assertions.assertEquals("hnfhqlyvijouwi", model.feature());
+        Assertions.assertEquals(LegacyOperation.WAITING, model.disallowedLegacyOperations().get(0));
+        Assertions.assertEquals("zpnpbswv", model.feature());
     }
 }

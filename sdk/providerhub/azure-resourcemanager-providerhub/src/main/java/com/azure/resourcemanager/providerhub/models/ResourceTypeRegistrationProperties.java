@@ -199,6 +199,11 @@ public final class ResourceTypeRegistrationProperties implements JsonSerializabl
     private Boolean superScaleEnabled;
 
     /*
+     * The resource type lifecycle information.
+     */
+    private ResourceTypeLifecycleInfo lifecycleInfo;
+
+    /*
      * The resource concurrency control options.
      */
     private Map<String, ResourceConcurrencyControlOption> resourceConcurrencyControlOptions;
@@ -1146,6 +1151,26 @@ public final class ResourceTypeRegistrationProperties implements JsonSerializabl
     }
 
     /**
+     * Get the lifecycleInfo property: The resource type lifecycle information.
+     * 
+     * @return the lifecycleInfo value.
+     */
+    public ResourceTypeLifecycleInfo lifecycleInfo() {
+        return this.lifecycleInfo;
+    }
+
+    /**
+     * Set the lifecycleInfo property: The resource type lifecycle information.
+     * 
+     * @param lifecycleInfo the lifecycleInfo value to set.
+     * @return the ResourceTypeRegistrationProperties object itself.
+     */
+    public ResourceTypeRegistrationProperties withLifecycleInfo(ResourceTypeLifecycleInfo lifecycleInfo) {
+        this.lifecycleInfo = lifecycleInfo;
+        return this;
+    }
+
+    /**
      * Get the resourceConcurrencyControlOptions property: The resource concurrency control options.
      * 
      * @return the resourceConcurrencyControlOptions value.
@@ -2074,6 +2099,9 @@ public final class ResourceTypeRegistrationProperties implements JsonSerializabl
         if (writeLock() != null) {
             writeLock().validate();
         }
+        if (lifecycleInfo() != null) {
+            lifecycleInfo().validate();
+        }
         if (resourceConcurrencyControlOptions() != null) {
             resourceConcurrencyControlOptions().values().forEach(e -> {
                 if (e != null) {
@@ -2209,6 +2237,7 @@ public final class ResourceTypeRegistrationProperties implements JsonSerializabl
         jsonWriter.writeJsonField("privateEndpointConfiguration", this.privateEndpointConfiguration);
         jsonWriter.writeJsonField("writeLock", this.writeLock);
         jsonWriter.writeBooleanField("superScaleEnabled", this.superScaleEnabled);
+        jsonWriter.writeJsonField("lifecycleInfo", this.lifecycleInfo);
         jsonWriter.writeMapField("resourceConcurrencyControlOptions", this.resourceConcurrencyControlOptions,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("resourceGraphConfiguration", this.resourceGraphConfiguration);
@@ -2401,6 +2430,9 @@ public final class ResourceTypeRegistrationProperties implements JsonSerializabl
                 } else if ("superScaleEnabled".equals(fieldName)) {
                     deserializedResourceTypeRegistrationProperties.superScaleEnabled
                         = reader.getNullable(JsonReader::getBoolean);
+                } else if ("lifecycleInfo".equals(fieldName)) {
+                    deserializedResourceTypeRegistrationProperties.lifecycleInfo
+                        = ResourceTypeLifecycleInfo.fromJson(reader);
                 } else if ("resourceConcurrencyControlOptions".equals(fieldName)) {
                     Map<String, ResourceConcurrencyControlOption> resourceConcurrencyControlOptions
                         = reader.readMap(reader1 -> ResourceConcurrencyControlOption.fromJson(reader1));

@@ -14,25 +14,26 @@ public final class ResourceTypeRegistrationPropertiesIdentityManagementTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceTypeRegistrationPropertiesIdentityManagement model = BinaryData.fromString(
-            "{\"type\":\"NotSpecified\",\"applicationId\":\"ekrsgs\",\"applicationIds\":[\"huzqgn\",\"dgkynscliqhzvhxn\",\"omtkub\"],\"delegationAppIds\":[\"pnvdxz\",\"hihfrbbcevqagtlt\"]}")
+            "{\"type\":\"Actor\",\"applicationId\":\"tjlrigjksky\",\"applicationIds\":[\"ovzidsx\"],\"delegationAppIds\":[\"bzmifrygznmmaxr\",\"zkzobgopxlhslnel\",\"ieixynllxe\",\"wcrojphslhcaw\"]}")
             .toObject(ResourceTypeRegistrationPropertiesIdentityManagement.class);
-        Assertions.assertEquals(IdentityManagementTypes.NOT_SPECIFIED, model.type());
-        Assertions.assertEquals("ekrsgs", model.applicationId());
-        Assertions.assertEquals("huzqgn", model.applicationIds().get(0));
-        Assertions.assertEquals("pnvdxz", model.delegationAppIds().get(0));
+        Assertions.assertEquals(IdentityManagementTypes.ACTOR, model.type());
+        Assertions.assertEquals("tjlrigjksky", model.applicationId());
+        Assertions.assertEquals("ovzidsx", model.applicationIds().get(0));
+        Assertions.assertEquals("bzmifrygznmmaxr", model.delegationAppIds().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ResourceTypeRegistrationPropertiesIdentityManagement model
-            = new ResourceTypeRegistrationPropertiesIdentityManagement().withType(IdentityManagementTypes.NOT_SPECIFIED)
-                .withApplicationId("ekrsgs")
-                .withApplicationIds(Arrays.asList("huzqgn", "dgkynscliqhzvhxn", "omtkub"))
-                .withDelegationAppIds(Arrays.asList("pnvdxz", "hihfrbbcevqagtlt"));
+            = new ResourceTypeRegistrationPropertiesIdentityManagement().withType(IdentityManagementTypes.ACTOR)
+                .withApplicationId("tjlrigjksky")
+                .withApplicationIds(Arrays.asList("ovzidsx"))
+                .withDelegationAppIds(
+                    Arrays.asList("bzmifrygznmmaxr", "zkzobgopxlhslnel", "ieixynllxe", "wcrojphslhcaw"));
         model = BinaryData.fromObject(model).toObject(ResourceTypeRegistrationPropertiesIdentityManagement.class);
-        Assertions.assertEquals(IdentityManagementTypes.NOT_SPECIFIED, model.type());
-        Assertions.assertEquals("ekrsgs", model.applicationId());
-        Assertions.assertEquals("huzqgn", model.applicationIds().get(0));
-        Assertions.assertEquals("pnvdxz", model.delegationAppIds().get(0));
+        Assertions.assertEquals(IdentityManagementTypes.ACTOR, model.type());
+        Assertions.assertEquals("tjlrigjksky", model.applicationId());
+        Assertions.assertEquals("ovzidsx", model.applicationIds().get(0));
+        Assertions.assertEquals("bzmifrygznmmaxr", model.delegationAppIds().get(0));
     }
 }
