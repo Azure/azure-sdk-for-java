@@ -89,6 +89,45 @@ public class DocumentProducerTest {
     private final String collectionRid = "myrid";
     private final String collectionLink = "/dbs/mydb/colls/mycol";
 
+    @DataProvider
+    public Object[][] narrowedChildRanges() {
+        return new Object[][] {
+            {"B", "E", true, false, "", "C", "B", "C", true, false},
+            {"B", "E", true, false, "C", "FF", "C", "E", true, false},
+            {"B", "E", false, true, "", "C", "B", "C", false, false},
+            {"B", "E", false, true, "C", "FF", "C", "E", true, true},
+            {"C", "E", false, true, "C", "E", "C", "E", false, false},
+            {"", "FF", true, false, "", "C", "", "C", true, false}
+        };
+    }
+
+    @Test(groups = "unit", dataProvider = "narrowedChildRanges")
+    public void splitChildrenPreserveRequestedBounds(
+        String min, String max, boolean minInclusive, boolean maxInclusive,
+        String physicalMin, String physicalMax, String expectedMin, String expectedMax,
+        boolean expectedMinInclusive, boolean expectedMaxInclusive) {
+
+        FeedRangeEpkImpl requestedRange = new FeedRangeEpkImpl(new Range<>(min, max, minInclusive, maxInclusive));
+        PartitionKeyRange physicalRange = mockPartitionKeyRange(
+            "child", new Range<>(physicalMin, physicalMax, true, false));
+        IDocumentQueryClient client = mockQueryClient(Collections.singletonList(physicalRange));
+        RequestCreator requests = RequestCreator.simpleMock();
+        List<DocumentProducer<Document>> parents = Arrays.asList(
+            new DocumentProducer<>(client, collectionRid, null, requests, request -> Mono.empty(), collectionLink,
+                null, Document.class, null, 1, "continuation", -1, requestedRange, () -> "narrowed split"),
+            new OrderByDocumentProducer(null, client, collectionRid, null, requests, request -> Mono.empty(),
+                requestedRange, collectionLink, null, Document.class, null, 1, "continuation", -1,
+                new HashMap<>(), () -> "narrowed ordered split"));
+
+        for (DocumentProducer<Document> parent : parents) {
+            DocumentProducer<Document> child = parent.createChildDocumentProducerOnSplit(physicalRange, "continuation");
+            assertThat(child.feedRange.getRange())
+                .as("Replacement scope for %s", parent.getClass().getSimpleName())
+                .isEqualTo(new Range<>(expectedMin, expectedMax, expectedMinInclusive, expectedMaxInclusive));
+            assertThat(child instanceof OrderByDocumentProducer).isEqualTo(parent instanceof OrderByDocumentProducer);
+        }
+    }
+
     @DataProvider(name = "splitParamProvider")
     public Object[][] splitParamProvider() {
         return new Object[][]{

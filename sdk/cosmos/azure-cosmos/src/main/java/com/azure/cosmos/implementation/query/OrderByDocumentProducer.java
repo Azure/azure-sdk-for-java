@@ -91,7 +91,7 @@ class OrderByDocumentProducer extends DocumentProducer<Document> {
             cosmosQueryRequestOptions,
             createRequestFunc,
             executeRequestFuncWithRetries,
-            new FeedRangeEpkImpl(targetRange.toRange()),
+            getChildFeedRange(targetRange),
             collectionLink,
             createRetryPolicyFunc,
             resourceType ,
