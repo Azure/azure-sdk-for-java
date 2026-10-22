@@ -1961,7 +1961,7 @@ public class BlobAsyncClientBase {
         return getLayoutPages(layoutOptions, requestConditions, context).flatMapIterable(PagedResponse::getValue)
             .collectList()
             .map(BlobLayoutCacheValue::new)
-            .onErrorResume(BlobStorageException.class, BlobAsyncClientBase::handleLayoutFetchError);
+            .onErrorResume(BlobAsyncClientBase::handleLayoutFetchError);
     }
 
     private Flux<PagedResponseBase<BlobsGetLayoutHeaders, BlobLayoutRange>>
@@ -1991,11 +1991,11 @@ public class BlobAsyncClientBase {
             : getLayoutPageWithHeaders(continuationToken, options, null, context);
     }
 
-    static Mono<BlobLayoutCacheValue> handleLayoutFetchError(BlobStorageException exception) {
-        if (ModelHelper.isFatalLayoutFetchStatus(exception.getStatusCode())) {
-            return Mono.error(exception);
+    static Mono<BlobLayoutCacheValue> handleLayoutFetchError(Throwable exception) {
+        if (ModelHelper.isRecoverableLayoutFetchError(exception)) {
+            return Mono.just(ModelHelper.createLayoutFallbackValue(exception));
         }
-        return Mono.just(ModelHelper.createLayoutFallbackValue(exception));
+        return Mono.error(exception);
     }
 
     private Mono<PagedResponse<BlobLayoutRange>> getPublicLayoutPageWithLockedETag(String marker,

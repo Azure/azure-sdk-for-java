@@ -61,6 +61,7 @@ import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -75,6 +76,7 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeoutException;
 
 /**
  * This class provides helper methods for common model patterns.
@@ -288,12 +290,34 @@ public final class ModelHelper {
     }
 
     /**
+     * Determines whether an optional layout fetch can fall back to the original blob endpoint.
+     *
+     * @param exception The layout-fetch failure.
+     * @return Whether the failure is a non-fatal service response or a transport failure.
+     */
+    public static boolean isRecoverableLayoutFetchError(Throwable exception) {
+        // Match RequestRetryPolicy's transport-failure classification, including wrapped causes.
+        for (Throwable cause = exception; cause != null; cause = cause.getCause()) {
+            if (cause instanceof Error) {
+                return false;
+            }
+            if (cause instanceof BlobStorageException) {
+                return !isFatalLayoutFetchStatus(((BlobStorageException) cause).getStatusCode());
+            }
+            if (cause instanceof IOException || cause instanceof TimeoutException) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * Creates the cached value used to fall back to the original blob endpoint after a non-fatal layout failure.
      *
      * @param exception The layout-fetch failure.
      * @return A cache value with no usable layout.
      */
-    public static BlobLayoutCacheValue createLayoutFallbackValue(BlobStorageException exception) {
+    public static BlobLayoutCacheValue createLayoutFallbackValue(Throwable exception) {
         LOGGER.verbose("Failed to retrieve blob layout for data locality; using the original endpoint.", exception);
         return new BlobLayoutCacheValue(null);
     }

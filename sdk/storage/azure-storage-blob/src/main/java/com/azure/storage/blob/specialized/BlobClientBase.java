@@ -1913,11 +1913,11 @@ public class BlobClientBase {
                 ranges.add(range);
             }
             return new BlobLayoutCacheValue(ranges);
-        } catch (BlobStorageException e) {
-            if (ModelHelper.isFatalLayoutFetchStatus(e.getStatusCode())) {
-                throw LOGGER.logExceptionAsError(e);
+        } catch (RuntimeException e) {
+            if (ModelHelper.isRecoverableLayoutFetchError(e)) {
+                return ModelHelper.createLayoutFallbackValue(e);
             }
-            return ModelHelper.createLayoutFallbackValue(e);
+            throw LOGGER.logExceptionAsError(e);
         }
     }
 

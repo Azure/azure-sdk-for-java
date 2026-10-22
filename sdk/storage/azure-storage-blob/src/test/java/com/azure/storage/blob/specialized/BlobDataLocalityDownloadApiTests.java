@@ -26,14 +26,17 @@ import com.azure.storage.blob.models.BlobDownloadAsyncResponse;
 import com.azure.storage.blob.models.BlobLayoutRange;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobRange;
+import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.options.BlobDownloadContentOptions;
 import com.azure.storage.blob.options.BlobDownloadStreamOptions;
 import com.azure.storage.blob.options.BlobDownloadToFileOptions;
 import com.azure.storage.blob.options.BlobInputStreamOptions;
+import com.azure.storage.blob.options.BlobSeekableByteChannelReadOptions;
 import com.azure.storage.common.LayoutAwareRouting;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import org.junit.jupiter.api.AfterEach;
@@ -42,6 +45,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.NullSource;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -55,8 +60,10 @@ import java.net.URI;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.nio.channels.SeekableByteChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -64,6 +71,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.TimeoutException;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -71,6 +80,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -383,6 +394,161 @@ public class BlobDataLocalityDownloadApiTests extends BlobTestBase {
     }
 
     @DoNotRecord
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("layoutTransportFailures")
+    public void asyncDownloadToFileFallsBackAfterLayoutTransportFailure(String description,
+        Mono<HttpResponse> layoutFailure) throws IOException {
+        LayoutRoutingHttpClient httpClient = new LayoutRoutingHttpClient(MOCK_BODY, layoutFailure);
+        BlobAsyncClient client = layoutFailureBuilder(httpClient).buildAsyncClient();
+        testFile = Files.createTempFile(generateBlobName(), ".dat");
+        Files.deleteIfExists(testFile);
+
+        StepVerifier
+            .create(client.downloadToFileWithResponse(new BlobDownloadToFileOptions(testFile.toString())
+                .setLayoutAwareRouting(LayoutAwareRouting.ENABLED)
+                .setParallelTransferOptions(new ParallelTransferOptions().setBlockSizeLong(8L).setMaxConcurrency(1))))
+            .assertNext(response -> assertEquals(MOCK_BODY.length, response.getValue().getBlobSize()))
+            .verifyComplete();
+
+        assertArrayEquals(MOCK_BODY, Files.readAllBytes(testFile));
+        assertLayoutTransportFallback(httpClient);
+    }
+
+    @DoNotRecord
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("layoutTransportFailures")
+    public void downloadToFileFallsBackAfterLayoutTransportFailure(String description, Mono<HttpResponse> layoutFailure)
+        throws IOException {
+        LayoutRoutingHttpClient httpClient = new LayoutRoutingHttpClient(MOCK_BODY, layoutFailure);
+        BlobClient client = layoutFailureBuilder(httpClient).buildClient();
+        testFile = Files.createTempFile(generateBlobName(), ".dat");
+        Files.deleteIfExists(testFile);
+
+        client.downloadToFileWithResponse(
+            new BlobDownloadToFileOptions(testFile.toString()).setLayoutAwareRouting(LayoutAwareRouting.ENABLED)
+                .setParallelTransferOptions(new ParallelTransferOptions().setBlockSizeLong(8L).setMaxConcurrency(1)),
+            null, Context.NONE);
+
+        assertArrayEquals(MOCK_BODY, Files.readAllBytes(testFile));
+        assertLayoutTransportFallback(httpClient);
+    }
+
+    @DoNotRecord
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("layoutTransportFailures")
+    public void inputStreamFallsBackAfterLayoutTransportFailure(String description, Mono<HttpResponse> layoutFailure)
+        throws IOException {
+        LayoutRoutingHttpClient httpClient = new LayoutRoutingHttpClient(MOCK_BODY, layoutFailure);
+        BlobClient client = layoutFailureBuilder(httpClient).buildClient();
+
+        try (InputStream stream = client.openInputStream(
+            new BlobInputStreamOptions().setBlockSize(8).setLayoutAwareRouting(LayoutAwareRouting.ENABLED),
+            Context.NONE)) {
+            assertArrayEquals(MOCK_BODY, readAll(stream));
+        }
+
+        assertLayoutTransportFallback(httpClient);
+    }
+
+    @DoNotRecord
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("layoutTransportFailures")
+    public void seekableChannelFallsBackAfterLayoutTransportFailure(String description,
+        Mono<HttpResponse> layoutFailure) throws IOException {
+        LayoutRoutingHttpClient httpClient = new LayoutRoutingHttpClient(MOCK_BODY, layoutFailure);
+        BlobClient client = layoutFailureBuilder(httpClient).buildClient();
+
+        try (SeekableByteChannel channel
+            = client.openSeekableByteChannelRead(new BlobSeekableByteChannelReadOptions().setReadSizeInBytes(8)
+                .setLayoutAwareRouting(LayoutAwareRouting.ENABLED), Context.NONE).getChannel()) {
+            ByteBuffer buffer = ByteBuffer.allocate(MOCK_BODY.length);
+            while (buffer.hasRemaining()) {
+                assertTrue(channel.read(buffer) > 0);
+            }
+            assertArrayEquals(MOCK_BODY, buffer.array());
+        }
+
+        assertLayoutTransportFallback(httpClient);
+    }
+
+    @DoNotRecord
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("layoutTransportErrors")
+    public void syncLayoutCacheFallsBackAfterTransportFailure(String description, Mono<HttpResponse> layoutFailure) {
+        LayoutRoutingHttpClient httpClient = new LayoutRoutingHttpClient(MOCK_BODY, layoutFailure);
+        BlobClientBase client = layoutFailureBuilder(httpClient).buildClient();
+
+        assertNull(client.fetchLayoutCacheValueSync(new BlobRange(0), null, Context.NONE).getRanges());
+        assertEquals(2, httpClient.getLayoutRequestCount());
+    }
+
+    private static Stream<Arguments> layoutTransportFailures() {
+        return Stream.concat(layoutTransportErrors(),
+            Stream.of(Arguments.of("retry policy try-timeout", Mono.never())));
+    }
+
+    private static Stream<Arguments> layoutTransportErrors() {
+        return Stream.of(Arguments.of("I/O error", Mono.error(() -> new IOException("Connection reset"))),
+            Arguments.of("wrapped I/O error",
+                Mono.error(() -> new RuntimeException(new IOException("Connection reset")))),
+            Arguments.of("timeout", Mono.error(() -> new TimeoutException("Read timed out"))), Arguments
+                .of("wrapped timeout", Mono.error(() -> new RuntimeException(new TimeoutException("Read timed out")))));
+    }
+
+    @DoNotRecord
+    @ParameterizedTest
+    @MethodSource("unrecoverableLayoutFailures")
+    public void asyncLayoutCachePropagatesUnrecoverableFailures(RuntimeException failure) {
+        BlobAsyncClientBase client = layoutFailureBuilder(request -> Mono.error(failure)).buildAsyncClient();
+
+        StepVerifier.create(client.fetchLayoutCacheValueAsync(new BlobRange(0), null, Context.NONE))
+            .expectErrorSatisfies(error -> assertSame(failure, error))
+            .verify();
+    }
+
+    @DoNotRecord
+    @ParameterizedTest
+    @MethodSource("unrecoverableLayoutFailures")
+    public void syncLayoutCachePropagatesUnrecoverableFailures(RuntimeException failure) {
+        BlobClientBase client = layoutFailureBuilder(request -> Mono.error(failure)).buildClient();
+
+        RuntimeException actual = assertThrows(RuntimeException.class,
+            () -> client.fetchLayoutCacheValueSync(new BlobRange(0), null, Context.NONE));
+        assertSame(rootCause(failure), rootCause(actual));
+    }
+
+    private static Throwable rootCause(Throwable failure) {
+        while (failure.getCause() != null) {
+            failure = failure.getCause();
+        }
+        return failure;
+    }
+
+    private static Stream<RuntimeException> unrecoverableLayoutFailures() {
+        return Stream.of(new IllegalArgumentException("Invalid layout argument"),
+            new IllegalStateException("Invalid layout state"), new NullPointerException("Invalid layout model"),
+            new BlobStorageException("Forbidden", new MockHttpResponse(null, 403), null),
+            new BlobStorageException("Not found", new MockHttpResponse(null, 404), null),
+            new BlobStorageException("Conflict", new MockHttpResponse(null, 409), null),
+            new BlobStorageException("Precondition failed", new MockHttpResponse(null, 412), null),
+            new RuntimeException(new BlobStorageException("Forbidden", new MockHttpResponse(null, 403), null)));
+    }
+
+    private static BlobClientBuilder layoutFailureBuilder(HttpClient httpClient) {
+        return mockBuilder(httpClient).retryOptions(
+            new RequestRetryOptions(null, 2, Duration.ofSeconds(1), Duration.ofMillis(1), Duration.ofMillis(1), null));
+    }
+
+    private static void assertLayoutTransportFallback(LayoutRoutingHttpClient httpClient) {
+        assertEquals(2, httpClient.getLayoutRequestCount(), "Only the initial layout acquisition should be retried.");
+        assertTrue(httpClient.getDataRequestRecords().size() > 2);
+        for (RequestRecord request : httpClient.getDataRequestRecords()) {
+            assertEquals(ORIGINAL_HOST, request.urlHost);
+            assertNull(request.hostHeader);
+        }
+    }
+
+    @DoNotRecord
     @Test
     public void downloadStreamWithResponseUsesDataLocalityEndpoint() {
         OneShotHttpClient httpClient = new OneShotHttpClient();
@@ -568,11 +734,17 @@ public class BlobDataLocalityDownloadApiTests extends BlobTestBase {
 
     private static final class LayoutRoutingHttpClient implements HttpClient {
         private final byte[] contentBytes;
+        private final Mono<HttpResponse> layoutFailure;
         private final List<RequestRecord> dataRequestRecords = new ArrayList<>();
         private int layoutRequestCount;
 
         private LayoutRoutingHttpClient(byte[] contentBytes) {
+            this(contentBytes, null);
+        }
+
+        private LayoutRoutingHttpClient(byte[] contentBytes, Mono<HttpResponse> layoutFailure) {
             this.contentBytes = contentBytes;
+            this.layoutFailure = layoutFailure;
         }
 
         @Override
@@ -580,6 +752,9 @@ public class BlobDataLocalityDownloadApiTests extends BlobTestBase {
             RequestRecord record = new RequestRecord(request);
             if (record.url.contains("comp=layout")) {
                 layoutRequestCount++;
+                if (layoutFailure != null) {
+                    return layoutFailure;
+                }
                 HttpHeaders headers = new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/xml")
                     .set(HttpHeaderName.ETAG, "\"layout-etag\"");
                 return Mono.just(new MockHttpResponse(request, 200, headers,
