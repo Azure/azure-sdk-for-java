@@ -60,7 +60,7 @@ public final class BetaSkillsAsyncClient {
      *
      * Retrieves the specified skill and its current configuration.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -113,7 +113,7 @@ public final class BetaSkillsAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -145,7 +145,7 @@ public final class BetaSkillsAsyncClient {
      *
      * Modifies the specified skill's configuration.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -153,9 +153,9 @@ public final class BetaSkillsAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -190,7 +190,7 @@ public final class BetaSkillsAsyncClient {
      *
      * Removes the specified skill and its associated versions.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -220,7 +220,7 @@ public final class BetaSkillsAsyncClient {
      *
      * Creates a new version of a skill. If the skill does not exist, it will be created.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -240,9 +240,9 @@ public final class BetaSkillsAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -297,7 +297,7 @@ public final class BetaSkillsAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -330,7 +330,7 @@ public final class BetaSkillsAsyncClient {
      *
      * Retrieves the specified version of a skill by name and version identifier.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -365,7 +365,7 @@ public final class BetaSkillsAsyncClient {
      *
      * Downloads the zip content for the default version of a skill.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * BinaryData
@@ -391,7 +391,7 @@ public final class BetaSkillsAsyncClient {
      *
      * Downloads the zip content for a specific version of a skill.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * BinaryData
@@ -466,7 +466,7 @@ public final class BetaSkillsAsyncClient {
      *
      * Removes the specified version of a skill.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -522,68 +522,6 @@ public final class BetaSkillsAsyncClient {
      *
      * Returns the skills available in the current project.
      *
-     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
-     * default is 20.
-     * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
-     * for descending order.
-     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
-     * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response data for a requested list of items as paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<SkillDetails> listSkills(Integer limit, PageOrder order, String after, String before) {
-        // Generated convenience method for listSkills
-        RequestOptions requestOptions = new RequestOptions();
-        if (limit != null) {
-            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
-        }
-        if (order != null) {
-            requestOptions.addQueryParam("order", order.toString(), false);
-        }
-        if (after != null) {
-            requestOptions.addQueryParam("after", after, false);
-        }
-        if (before != null) {
-            requestOptions.addQueryParam("before", before, false);
-        }
-        PagedFlux<BinaryData> pagedFluxResponse = listSkills(requestOptions);
-        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux;
-            if (pageSizeParam == null) {
-                flux = (continuationTokenParam == null)
-                    ? pagedFluxResponse.byPage().take(1)
-                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
-            } else {
-                flux = (continuationTokenParam == null)
-                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
-                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
-            }
-            return flux.map(pagedResponse -> new PagedResponseBase<Void, SkillDetails>(pagedResponse.getRequest(),
-                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue()
-                    .stream()
-                    .map(protocolMethodData -> protocolMethodData.toObject(SkillDetails.class))
-                    .collect(Collectors.toList()),
-                pagedResponse.getContinuationToken(), null));
-        });
-    }
-
-    /**
-     * List skills
-     *
-     * Returns the skills available in the current project.
-     *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
@@ -596,7 +534,7 @@ public final class BetaSkillsAsyncClient {
     public PagedFlux<SkillDetails> listSkills() {
         // Generated convenience method for listSkills
         RequestOptions requestOptions = new RequestOptions();
-        PagedFlux<BinaryData> pagedFluxResponse = listSkills(requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = serviceClient.listSkillsAsync(null, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux;
             if (pageSizeParam == null) {
@@ -700,67 +638,34 @@ public final class BetaSkillsAsyncClient {
     }
 
     /**
-     * List skill versions
+     * Create a skill version from uploaded files
      *
-     * Returns the available versions for the specified skill.
+     * Creates a new version of a skill from uploaded files via multipart form data.
      *
-     * @param name The name of the skill to list versions for.
-     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
-     * default is 20.
-     * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
-     * for descending order.
-     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
-     * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
+     * @param name The name of the skill.
+     * @param content The multipart request content.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response data for a requested list of items as paginated response with {@link PagedFlux}.
+     * @return a specific version of a skill on successful completion of {@link Mono}.
      */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<SkillVersion> listSkillVersions(String name, Integer limit, PageOrder order, String after,
-        String before) {
-        // Generated convenience method for listSkillVersions
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SkillVersion> createSkillVersionFromFiles(String name, CreateSkillVersionFromFilesBody content) {
         RequestOptions requestOptions = new RequestOptions();
-        if (limit != null) {
-            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
-        }
-        if (order != null) {
-            requestOptions.addQueryParam("order", order.toString(), false);
-        }
-        if (after != null) {
-            requestOptions.addQueryParam("after", after, false);
-        }
-        if (before != null) {
-            requestOptions.addQueryParam("before", before, false);
-        }
-        PagedFlux<BinaryData> pagedFluxResponse = listSkillVersions(name, requestOptions);
-        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux;
-            if (pageSizeParam == null) {
-                flux = (continuationTokenParam == null)
-                    ? pagedFluxResponse.byPage().take(1)
-                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
-            } else {
-                flux = (continuationTokenParam == null)
-                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
-                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
-            }
-            return flux.map(pagedResponse -> new PagedResponseBase<Void, SkillVersion>(pagedResponse.getRequest(),
-                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue()
-                    .stream()
-                    .map(protocolMethodData -> protocolMethodData.toObject(SkillVersion.class))
-                    .collect(Collectors.toList()),
-                pagedResponse.getContinuationToken(), null));
-        });
+        return createSkillVersionFromFilesWithResponseInternal(name,
+            new MultipartFormDataHelper(requestOptions)
+                .serializeFileFields("files",
+                    content.getFiles().stream().map(SkillFileDetails::getContent).collect(Collectors.toList()),
+                    content.getFiles().stream().map(SkillFileDetails::getContentType).collect(Collectors.toList()),
+                    content.getFiles().stream().map(SkillFileDetails::getFilename).collect(Collectors.toList()))
+                .serializeTextField("default", Objects.toString(content.isDefaultProperty(), null))
+                .end()
+                .getRequestBody(),
+            requestOptions).flatMap(FluxUtil::toMono)
+                .map(protocolMethodData -> protocolMethodData.toObject(SkillVersion.class));
     }
 
     /**
@@ -782,7 +687,7 @@ public final class BetaSkillsAsyncClient {
     public PagedFlux<SkillVersion> listSkillVersions(String name) {
         // Generated convenience method for listSkillVersions
         RequestOptions requestOptions = new RequestOptions();
-        PagedFlux<BinaryData> pagedFluxResponse = listSkillVersions(name, requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = serviceClient.listSkillVersionsAsync(null, name, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux;
             if (pageSizeParam == null) {
@@ -878,7 +783,7 @@ public final class BetaSkillsAsyncClient {
      *
      * Creates a new version of a skill from uploaded files via multipart form data.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -911,35 +816,122 @@ public final class BetaSkillsAsyncClient {
     }
 
     /**
-     * Create a skill version from uploaded files
+     * List skills
      *
-     * Creates a new version of a skill from uploaded files via multipart form data.
+     * Returns the skills available in the current project.
      *
-     * @param name The name of the skill.
-     * @param content The multipart request content.
+     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
+     * default is 20.
+     * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
+     * for descending order.
+     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
+     * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific version of a skill on successful completion of {@link Mono}.
+     * @return the response data for a requested list of items as paginated response with {@link PagedFlux}.
      */
     @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SkillVersion> createSkillVersionFromFiles(String name, CreateSkillVersionFromFilesBody content) {
-        // Generated convenience method for createSkillVersionFromFilesWithResponseInternal
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<SkillDetails> listSkills(Integer limit, PageOrder order, String after, String before) {
+        // Generated convenience method for listSkills
         RequestOptions requestOptions = new RequestOptions();
-        return createSkillVersionFromFilesWithResponseInternal(name,
-            new MultipartFormDataHelper(requestOptions)
-                .serializeFileFields("files",
-                    content.getFiles().stream().map(SkillFileDetails::getContent).collect(Collectors.toList()),
-                    content.getFiles().stream().map(SkillFileDetails::getContentType).collect(Collectors.toList()),
-                    content.getFiles().stream().map(SkillFileDetails::getFilename).collect(Collectors.toList()))
-                .serializeTextField("default", Objects.toString(content.isDefaultProperty(), null))
-                .end()
-                .getRequestBody(),
-            requestOptions).flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(SkillVersion.class));
+        if (limit != null) {
+            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
+        }
+        if (order != null) {
+            requestOptions.addQueryParam("order", order.toString(), false);
+        }
+        if (before != null) {
+            requestOptions.addQueryParam("before", before, false);
+        }
+        PagedFlux<BinaryData> pagedFluxResponse = serviceClient.listSkillsAsync(after, requestOptions);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, SkillDetails>(pagedResponse.getRequest(),
+                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                pagedResponse.getValue()
+                    .stream()
+                    .map(protocolMethodData -> protocolMethodData.toObject(SkillDetails.class))
+                    .collect(Collectors.toList()),
+                pagedResponse.getContinuationToken(), null));
+        });
+    }
+
+    /**
+     * List skill versions
+     *
+     * Returns the available versions for the specified skill.
+     *
+     * @param name The name of the skill to list versions for.
+     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
+     * default is 20.
+     * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
+     * for descending order.
+     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
+     * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response data for a requested list of items as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<SkillVersion> listSkillVersions(String name, Integer limit, PageOrder order, String after,
+        String before) {
+        // Generated convenience method for listSkillVersions
+        RequestOptions requestOptions = new RequestOptions();
+        if (limit != null) {
+            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
+        }
+        if (order != null) {
+            requestOptions.addQueryParam("order", order.toString(), false);
+        }
+        if (before != null) {
+            requestOptions.addQueryParam("before", before, false);
+        }
+        PagedFlux<BinaryData> pagedFluxResponse = serviceClient.listSkillVersionsAsync(after, name, requestOptions);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, SkillVersion>(pagedResponse.getRequest(),
+                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                pagedResponse.getValue()
+                    .stream()
+                    .map(protocolMethodData -> protocolMethodData.toObject(SkillVersion.class))
+                    .collect(Collectors.toList()),
+                pagedResponse.getContinuationToken(), null));
+        });
     }
 }
