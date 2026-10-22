@@ -95,7 +95,7 @@ public final class ServiceBusReceivedMessage {
      *
      * <p>Like the SDK's AMQP body model, this method supports a single data, sequence, or non-null value body section.
      * Multiple body sections and null AMQP values are rejected rather than silently discarding data. A message without
-     * a body is represented by an empty data body. Encoded values nested more than 128 levels or messages with more
+     * a body is represented by an empty data body. Encoded values nested more than 32 levels or messages with more
      * than 1,000,000 combined list, map, and array entries are rejected.</p>
      *
      * <p><strong>Decode a message supplied by an integration</strong></p>

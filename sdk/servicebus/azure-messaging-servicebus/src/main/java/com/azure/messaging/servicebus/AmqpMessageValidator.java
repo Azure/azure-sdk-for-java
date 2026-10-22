@@ -12,7 +12,9 @@ import java.nio.ByteBuffer;
  */
 final class AmqpMessageValidator {
     private static final ClientLogger LOGGER = new ClientLogger(AmqpMessageValidator.class);
-    private static final int MAX_DEPTH = 128;
+    // A section value is at depth 1, so 33 allows 32 nested containers around a leaf value. This matches Proton's
+    // default decode limit, so results are identical across Proton versions.
+    private static final int MAX_DEPTH = 33;
     private int remainingEntries = 1_000_000;
 
     private AmqpMessageValidator() {
@@ -32,8 +34,8 @@ final class AmqpMessageValidator {
 
     private void readValue(ByteBuffer buffer, int type, int depth) {
         if (depth > MAX_DEPTH) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("AMQP values cannot be nested more than 128 levels."));
+            throw LOGGER
+                .logExceptionAsError(new IllegalArgumentException("AMQP values cannot be nested more than 32 levels."));
         }
         if (type == 0) {
             readValue(buffer, depth + 1);
@@ -80,7 +82,7 @@ final class AmqpMessageValidator {
             while (constructor == 0) {
                 if (++constructorDepth > MAX_DEPTH) {
                     throw LOGGER.logExceptionAsError(
-                        new IllegalArgumentException("AMQP values cannot be nested more than 128 levels."));
+                        new IllegalArgumentException("AMQP values cannot be nested more than 32 levels."));
                 }
                 readValue(contents, constructorDepth);
                 constructor = Byte.toUnsignedInt(contents.get());

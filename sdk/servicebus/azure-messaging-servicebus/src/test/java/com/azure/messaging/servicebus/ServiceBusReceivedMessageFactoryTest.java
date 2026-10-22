@@ -237,7 +237,7 @@ class ServiceBusReceivedMessageFactoryTest {
     @Test
     void rejectsExcessiveNesting() {
         Object nested = "value";
-        for (int i = 0; i < 127; i++) {
+        for (int i = 0; i < 32; i++) {
             nested = Collections.singletonList(nested);
         }
         assertEquals(AmqpMessageBodyType.VALUE,
