@@ -6,10 +6,10 @@ package com.azure.ai.agents.models;
 import com.azure.ai.agents.implementation.utils.Beta;
 
 /**
- * Defines values for VoiceResponseBaseObject.
+ * Defines values for VoiceResponseObjectType.
  */
 @Beta(warningText = "Preview API.")
-public enum VoiceResponseBaseObject {
+public enum VoiceResponseObjectType {
 
     /**
      * Enum value realtime.response.
@@ -17,26 +17,26 @@ public enum VoiceResponseBaseObject {
     REALTIME_RESPONSE("realtime.response");
 
     /**
-     * The actual serialized value for a VoiceResponseBaseObject instance.
+     * The actual serialized value for a VoiceResponseObjectType instance.
      */
     private final String value;
 
-    VoiceResponseBaseObject(String value) {
+    VoiceResponseObjectType(String value) {
         this.value = value;
     }
 
     /**
-     * Parses a serialized value to a VoiceResponseBaseObject instance.
+     * Parses a serialized value to a VoiceResponseObjectType instance.
      *
      * @param value the serialized value to parse.
-     * @return the parsed VoiceResponseBaseObject object, or null if unable to parse.
+     * @return the parsed VoiceResponseObjectType object, or null if unable to parse.
      */
-    public static VoiceResponseBaseObject fromString(String value) {
+    public static VoiceResponseObjectType fromString(String value) {
         if (value == null) {
             return null;
         }
-        VoiceResponseBaseObject[] items = VoiceResponseBaseObject.values();
-        for (VoiceResponseBaseObject item : items) {
+        VoiceResponseObjectType[] items = VoiceResponseObjectType.values();
+        for (VoiceResponseObjectType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }
