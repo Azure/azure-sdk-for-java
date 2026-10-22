@@ -280,7 +280,7 @@ public class WorkloadIdentityCredentialIdentityBindingTest {
         assertEquals(new String(Files.readAllBytes(tokenFilePath), StandardCharsets.UTF_8),
             form.get("client_assertion"));
         assertTrue(Arrays.asList(form.get("scope").split(" ")).contains("https://management.azure.com/.default"));
-        assertEquals(1, tokenRequestCount.get());
+        assertEquals(1, tokenRequestCount.get(), tokenRequestUris::toString);
     }
 
     @Test
@@ -330,7 +330,7 @@ public class WorkloadIdentityCredentialIdentityBindingTest {
         credential.getTokenSync(new TokenRequestContext().addScopes("https://vault.azure.net/.default"));
 
         assertEquals(rotatedAssertion, parseForm(lastRequestBody).get("client_assertion"));
-        assertEquals(2, tokenRequestCount.get());
+        assertEquals(2, tokenRequestCount.get(), tokenRequestUris::toString);
     }
 
     @Test
@@ -428,6 +428,27 @@ public class WorkloadIdentityCredentialIdentityBindingTest {
             assertEquals(200, response.getStatusCode());
             assertEquals("application/json", response.getHeaderValue("Content-Type"));
             assertTrue(response.getBodyAsBinaryData().toString().contains("token_endpoint"));
+        }
+
+        assertEquals("GET", lastRequestMethod);
+        assertEquals(path, lastRequestUri);
+        assertEquals(1, metadataRequestCount.get());
+        assertEquals(0, tokenRequestCount.get());
+    }
+
+    @Test
+    public void testAksProxyRoutesInstanceDiscoveryRequests() throws Exception {
+        CustomTokenProxyHttpClient client = new CustomTokenProxyHttpClient(
+            new ProxyConfig(new URL(serverBaseUrl), AKS_SNI_NAME, caCertFilePath.toString(), null));
+        String path = "/common/discovery/instance?api-version=1.1";
+        HttpRequest request
+            = new HttpRequest(HttpMethod.GET, AzureAuthorityHosts.AZURE_PUBLIC_CLOUD + path.substring(1));
+
+        try (HttpResponse response = client.sendSync(request, Context.NONE)) {
+            assertEquals(200, response.getStatusCode());
+            String body = response.getBodyAsBinaryData().toString();
+            assertTrue(body.contains("\"tenant_discovery_endpoint\""));
+            assertTrue(body.contains("\"preferred_network\":\"login.microsoftonline.com\""));
         }
 
         assertEquals("GET", lastRequestMethod);
@@ -950,7 +971,16 @@ public class WorkloadIdentityCredentialIdentityBindingTest {
             }
             String responseBody;
 
-            if (uri.contains("/.well-known/openid-configuration")) {
+            // MSAL can request instance metadata before the token endpoint when its shared cache is cold.
+            if (uri.contains("/common/discovery/instance")) {
+                metadataRequestCount.incrementAndGet();
+                responseBody
+                    = String.format("{\"tenant_discovery_endpoint\":\"https://login.microsoftonline.com/%s/v2.0/"
+                        + ".well-known/openid-configuration\",\"api-version\":\"1.1\",\"metadata\":["
+                        + "{\"preferred_network\":\"login.microsoftonline.com\","
+                        + "\"preferred_cache\":\"login.windows.net\",\"aliases\":[\"login.microsoftonline.com\","
+                        + "\"login.windows.net\",\"login.microsoft.com\",\"sts.windows.net\"]}]}", TEST_TENANT_ID);
+            } else if (uri.contains("/.well-known/openid-configuration")) {
                 metadataRequestCount.incrementAndGet();
                 String base = serverBaseUrl + "/" + TEST_TENANT_ID;
                 responseBody = String
