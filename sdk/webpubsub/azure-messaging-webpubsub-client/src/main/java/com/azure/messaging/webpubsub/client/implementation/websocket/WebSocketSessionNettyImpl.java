@@ -152,29 +152,43 @@ final class WebSocketSessionNettyImpl implements WebSocketSession {
         ch = b.connect(uri.getHost(), port).sync().channel();
         // callback for openHandler
         clientHandler.handshakeFuture().addListener(future -> {
-            if (future.isSuccess()) {
-                openHandler.accept(this);
+            try {
+                if (future.isSuccess()) {
+                    openHandler.accept(this);
+                }
+                handshakeCallbackFuture.complete(null);
+            } catch (Throwable e) {
+                handshakeCallbackFuture.completeExceptionally(e);
             }
-            handshakeCallbackFuture.complete(null);
         }).sync();
 
         // callback for closeHandler, on channel close
         ch.closeFuture().addListener(future -> {
             if (clientHandler != null) {
-                if (future.isSuccess()) {
-                    // the CloseWebSocketFrame from server
-                    CloseWebSocketFrame closeFrame = clientHandler.getServerCloseWebSocketFrame();
-                    if (closeFrame == null) {
-                        closeFrame = new CloseWebSocketFrame(WebSocketCloseStatus.NORMAL_CLOSURE);
-                    }
-                    closeHandler.accept(new CloseReason(closeFrame.statusCode(), closeFrame.reasonText()));
-                    closeFrame.release();   // release after use
-                }
-
-                // closeCallbackFuture exists if close is initiated from client
                 CompletableFuture<Void> closeCallbackFuture = clientHandler.getClientCloseCallbackFuture();
-                if (closeCallbackFuture != null) {
-                    closeCallbackFuture.complete(null);
+                try {
+                    if (future.isSuccess()) {
+                        // the CloseWebSocketFrame from server
+                        CloseWebSocketFrame closeFrame = clientHandler.getServerCloseWebSocketFrame();
+                        if (closeFrame == null) {
+                            closeFrame = new CloseWebSocketFrame(WebSocketCloseStatus.NORMAL_CLOSURE);
+                        }
+                        try {
+                            closeHandler.accept(new CloseReason(closeFrame.statusCode(), closeFrame.reasonText()));
+                        } finally {
+                            closeFrame.release();
+                        }
+                    }
+
+                    if (closeCallbackFuture != null) {
+                        closeCallbackFuture.complete(null);
+                    }
+                } catch (Throwable e) {
+                    if (closeCallbackFuture != null) {
+                        closeCallbackFuture.completeExceptionally(e);
+                    } else {
+                        loggerReference.get().atWarning().log("Failed to handle closed WebSocket session.", e);
+                    }
                 }
             }
         });

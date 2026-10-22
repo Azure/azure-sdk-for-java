@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Fixed exceptions in WebSocket lifecycle callbacks leaving connection or close operations incomplete and leaking close frames.
+
 - Fixed a race condition where Web PubSub client send operations could miss fast ack responses.
 
 ### Other Changes
