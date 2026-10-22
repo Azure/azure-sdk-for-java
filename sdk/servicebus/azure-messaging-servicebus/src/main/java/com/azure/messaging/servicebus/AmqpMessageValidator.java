@@ -12,8 +12,8 @@ import java.nio.ByteBuffer;
  */
 final class AmqpMessageValidator {
     private static final ClientLogger LOGGER = new ClientLogger(AmqpMessageValidator.class);
-    // A section value is at depth 1, so 33 allows 32 nested containers around a leaf value. This matches Proton's
-    // default decode limit, so results are identical across Proton versions.
+    // A section value is at depth 1, so 33 allows 32 nested levels. Described wrappers count as levels, so this is as
+    // strict as Proton's default decode limit of 32 and sometimes stricter, and it applies on every Proton version.
     private static final int MAX_DEPTH = 33;
     private int remainingEntries = 1_000_000;
 
