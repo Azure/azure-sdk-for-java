@@ -215,8 +215,64 @@ public class EventDataAggregatorTest {
     }
 
     /**
-     * Each event cancels the running max-wait interval. That must not interrupt a timer-triggered publish that is in
-     * progress, otherwise creating the next batch fails and a send can close the connection's IO pipe.
+     * The max-wait timer is measured from the first event in a batch, so events that keep arriving faster than the
+     * max wait time must not postpone publishing a partially full batch.
+     */
+    @Test
+    public void pushesBatchAfterMaxTimeWhileEventsKeepArriving() throws InterruptedException {
+        // Arrange
+        final Duration waitTime = Duration.ofMillis(1000);
+        final BufferedProducerClientOptions options = new BufferedProducerClientOptions();
+        options.setMaxWaitTime(waitTime);
+
+        final EventData[] events = new EventData[6];
+        for (int i = 0; i < events.length; i++) {
+            events[i] = new EventData("event-" + i);
+        }
+        setupBatchMock(batch, new ArrayList<>(), events);
+        setupBatchMock(batch2, new ArrayList<>(), events);
+        setupBatchMock(batch3, new ArrayList<>(), events);
+
+        final AtomicInteger supplierCalls = new AtomicInteger();
+        final Supplier<EventDataBatch> supplier = () -> {
+            switch (supplierCalls.getAndIncrement()) {
+                case 0:
+                    return batch;
+
+                case 1:
+                    return batch2;
+
+                default:
+                    return batch3;
+            }
+        };
+
+        final TestPublisher<EventData> publisher = TestPublisher.createCold();
+        final EventDataAggregator aggregator
+            = new EventDataAggregator(publisher.flux(), supplier, NAMESPACE, options, PARTITION_ID);
+        final List<EventDataBatch> published = Collections.synchronizedList(new ArrayList<>());
+        final Disposable subscription = aggregator.subscribe(published::add);
+
+        try {
+            // Act: an event every 300 ms for 1.5 seconds, never leaving a gap of maxWaitTime.
+            for (EventData event : events) {
+                publisher.next(event);
+                TimeUnit.MILLISECONDS.sleep(300);
+            }
+
+            // Assert: the first batch was published about maxWaitTime after its first event, even though events
+            // kept arriving. Restarting the timer on every event would publish nothing until 1 second after the
+            // last event.
+            assertFalse(published.isEmpty(), "Partial batch was not published after maxWaitTime.");
+            assertSame(batch, published.get(0));
+        } finally {
+            subscription.dispose();
+        }
+    }
+
+    /**
+     * Starting a batch cancels the running max-wait interval. That must not interrupt a timer-triggered publish that is
+     * in progress, otherwise creating the next batch fails and a send can close the connection's IO pipe.
      */
     @Test
     public void newEventDoesNotInterruptTimerPublish() throws InterruptedException {
@@ -225,9 +281,10 @@ public class EventDataAggregatorTest {
         final BufferedProducerClientOptions options = new BufferedProducerClientOptions();
         options.setMaxWaitTime(waitTime);
 
+        setupBatchMock(batch, new ArrayList<>(), event1);
         final List<EventData> batchEvents = new ArrayList<>();
-        setupBatchMock(batch, batchEvents, event1, event2);
-        setupBatchMock(batch2, new ArrayList<>(), event1, event2, event3);
+        setupBatchMock(batch2, batchEvents, event2);
+        setupBatchMock(batch3, new ArrayList<>(), event1, event2, event3);
 
         final CountDownLatch event2Emitted = new CountDownLatch(1);
         final CountDownLatch timerPublishDone = new CountDownLatch(1);
@@ -235,19 +292,22 @@ public class EventDataAggregatorTest {
         final AtomicBoolean interrupted = new AtomicBoolean();
         final AtomicInteger supplierCalls = new AtomicInteger();
 
-        // Holds the aggregator lock (tryAdd is called under it) until the timer tick is waiting for it, so the tick
-        // is in progress when event2 restarts the interval.
+        // event2 starts a new batch. Holds the aggregator lock (tryAdd is called under it) until the still running
+        // interval's tick is waiting for it, so the tick is in progress when event2 restarts the interval.
         Mockito.doAnswer(invocation -> {
             tickWaitedForLock.set(awaitTimerTickBlockedOnLock());
             batchEvents.add(event2);
             return true;
-        }).when(batch).tryAdd(event2);
+        }).when(batch2).tryAdd(event2);
 
         final Supplier<EventDataBatch> supplier = () -> {
-            if (supplierCalls.getAndIncrement() == 0) {
+            final int call = supplierCalls.getAndIncrement();
+            if (call == 0) {
                 return batch;
+            } else if (call == 1) {
+                return batch2;
             }
-            // Called by the timer tick after it published the batch. Wait until the event2 emission cancelled the
+            // Called by the timer tick after it published batch2. Wait until event2 restarted (cancelled) the
             // interval, which is when an interrupt would arrive.
             try {
                 if (!event2Emitted.await(10, TimeUnit.SECONDS)) {
@@ -261,7 +321,7 @@ public class EventDataAggregatorTest {
             } finally {
                 timerPublishDone.countDown();
             }
-            return batch2;
+            return batch3;
         };
 
         final TestPublisher<EventData> publisher = TestPublisher.createCold();
@@ -273,6 +333,12 @@ public class EventDataAggregatorTest {
         try {
             // Act
             publisher.next(event1);
+            final long deadline = System.nanoTime() + TimeUnit.SECONDS.toNanos(10);
+            while (published.isEmpty() && System.nanoTime() < deadline) {
+                TimeUnit.MILLISECONDS.sleep(10);
+            }
+            assertEquals(Collections.singletonList(batch), published, "Timer did not publish the first batch.");
+
             publisher.next(event2);
             event2Emitted.countDown();
 
@@ -280,8 +346,8 @@ public class EventDataAggregatorTest {
             assertTrue(timerPublishDone.await(10, TimeUnit.SECONDS), "Timer did not publish the batch.");
             assertTrue(tickWaitedForLock.get(), "Timer tick did not wait for the aggregator lock.");
             assertFalse(interrupted.get(), "Timer-triggered publish was interrupted by a new event.");
-            assertEquals(Collections.singletonList(batch), published);
-            assertEquals(Arrays.asList(event1, event2), batchEvents);
+            assertEquals(Arrays.asList(batch, batch2), published);
+            assertEquals(Collections.singletonList(event2), batchEvents);
         } finally {
             subscription.dispose();
         }
