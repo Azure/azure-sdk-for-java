@@ -5,6 +5,7 @@ package com.azure.storage.blob.implementation.util;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.util.Context;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobContainerClientBuilder;
 import com.azure.storage.blob.BlobServiceClientBuilder;
@@ -32,7 +33,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class ContainerSessionProviderTests extends BlobTestBase {
+public class ContainerSessionApiTests extends BlobTestBase {
 
     @Test
     public void createSessionReturnsTokenAndKey() {
@@ -172,7 +173,7 @@ public class ContainerSessionProviderTests extends BlobTestBase {
     private static SessionRequestContext contextFor(String containerName, HttpPipeline pipeline) {
         SessionAcquirer acquirer = new SessionAcquirer(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint(),
             BlobServiceVersion.getLatest(), ENVIRONMENT.getPrimaryAccount().getName(), null).bind(pipeline);
-        return new SessionRequestContext(containerName, acquirer);
+        return new SessionRequestContext(containerName, acquirer, Context.NONE);
     }
 
     private String generateUserDelegationContainerSas(BlobContainerClient containerClient) {

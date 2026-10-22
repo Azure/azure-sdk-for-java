@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob.implementation.util;
 
+import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 
@@ -27,20 +28,23 @@ final class SessionRequestContext {
 
     private final String containerName;
     private final SessionAcquirer acquirer;
+    private final Context context;
 
     /**
      * Creates a new {@link SessionRequestContext}.
      *
      * @param containerName The container name. Must not be null or empty.
      * @param acquirer The session acquirer.
+     * @param context The context of the request that triggered session acquisition.
      */
-    SessionRequestContext(String containerName, SessionAcquirer acquirer) {
+    SessionRequestContext(String containerName, SessionAcquirer acquirer, Context context) {
         if (CoreUtils.isNullOrEmpty(containerName)) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'containerName' cannot be null or empty."));
         }
 
         this.containerName = containerName;
         this.acquirer = Objects.requireNonNull(acquirer, "'acquirer' cannot be null.");
+        this.context = Objects.requireNonNull(context, "'context' cannot be null.");
     }
 
     /**
@@ -59,5 +63,14 @@ final class SessionRequestContext {
      */
     SessionAcquirer getAcquirer() {
         return acquirer;
+    }
+
+    /**
+     * Gets the context of the request that triggered session acquisition.
+     *
+     * @return the originating request context.
+     */
+    Context getContext() {
+        return context;
     }
 }

@@ -108,9 +108,10 @@ final class SessionAcquirer {
      * Sends a CreateSession request for the container through the bound pipeline.
      *
      * @param containerName The container to create a session for.
+     * @param context The context of the request that triggered session acquisition.
      * @return The CreateSession response.
      */
-    Mono<Response<CreateSessionResponse>> createSessionAsync(String containerName) {
+    Mono<Response<CreateSessionResponse>> createSessionAsync(String containerName, Context context) {
         AzureBlobStorageImpl client = azureBlobStorage;
         if (client == null) {
             return Mono.error(LOGGER.logExceptionAsError(
@@ -119,9 +120,9 @@ final class SessionAcquirer {
 
         CreateSessionConfiguration config
             = new CreateSessionConfiguration().setAuthenticationType(AuthenticationType.HMAC);
+        Context acquisitionContext = context.addData(SESSION_ACQUISITION_CONTEXT_KEY, true);
         return client.getContainers()
-            .createSessionWithResponseAsync(containerName, config, null, null,
-                new Context(SESSION_ACQUISITION_CONTEXT_KEY, true));
+            .createSessionWithResponseAsync(containerName, config, null, null, acquisitionContext);
     }
 
     /**

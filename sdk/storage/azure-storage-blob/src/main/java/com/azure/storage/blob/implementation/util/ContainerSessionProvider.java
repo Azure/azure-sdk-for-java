@@ -83,7 +83,7 @@ final class ContainerSessionProvider extends SessionProvider {
         return Mono.defer(() -> {
             String container = requireContainerName(context);
             SessionAcquirer acquirer = requireAcquirer(context);
-            return updateCache(container, acquirer.getAccountName(), acquirer).getSessionAsync();
+            return updateCache(container, acquirer.getAccountName(), context).getSessionAsync();
         });
     }
 
@@ -126,15 +126,15 @@ final class ContainerSessionProvider extends SessionProvider {
     }
 
     private ContainerSessionCache updateCache(String containerName, String resolvedAccountName,
-        SessionAcquirer acquirer) {
+        SessionRequestContext requestContext) {
         String key = normalize(resolvedAccountName) + "/" + normalize(containerName);
         OffsetDateTime now = OffsetDateTime.now(clock);
         evictExpiredCaches(now);
         return containerSessionCaches.compute(key, (k, existing) -> {
             if (existing == null) {
-                return new ContainerSessionCache(this, clock, containerName, resolvedAccountName, acquirer);
+                return new ContainerSessionCache(this, clock, containerName, resolvedAccountName, requestContext);
             }
-            existing.latestAcquirer = acquirer;
+            existing.latestRequestContext = requestContext;
             return existing;
         });
     }
@@ -163,9 +163,11 @@ final class ContainerSessionProvider extends SessionProvider {
         }
     }
 
-    private Mono<SessionCredential> createSessionAsync(SessionAcquirer acquirer, String container,
+    private Mono<SessionCredential> createSessionAsync(SessionRequestContext requestContext, String container,
         String resolvedAccountName) {
-        return acquirer.createSessionAsync(container).map(response -> toCredential(response, resolvedAccountName));
+        return requestContext.getAcquirer()
+            .createSessionAsync(container, requestContext.getContext())
+            .map(response -> toCredential(response, resolvedAccountName));
     }
 
     private static boolean shouldFallback(Throwable error) {
@@ -214,17 +216,17 @@ final class ContainerSessionProvider extends SessionProvider {
 
     private static final class ContainerSessionCache {
         final AutoRefreshingCache<SessionCredential> cache;
-        // The acquirer of the most recent caller. Refreshes go through that client's pipeline. An idle entry keeps
-        // this pipeline reachable until its session credential expires and the entry is evicted.
-        volatile SessionAcquirer latestAcquirer;
+        // The most recent caller's acquirer and Context are retained together so refreshes use one client's pipeline
+        // and request data. An idle entry keeps this snapshot reachable until its session expires and it is evicted.
+        volatile SessionRequestContext latestRequestContext;
         private final Clock clock;
         private volatile SessionCredential fallback;
         private volatile OffsetDateTime expiration;
 
         private ContainerSessionCache(ContainerSessionProvider provider, Clock clock, String containerName,
-            String resolvedAccountName, SessionAcquirer acquirer) {
+            String resolvedAccountName, SessionRequestContext requestContext) {
             this.clock = clock;
-            this.latestAcquirer = acquirer;
+            this.latestRequestContext = requestContext;
             this.cache = new AutoRefreshingCache<>(() -> {
                 SessionCredential currentFallback = fallback;
                 Mono<SessionCredential> acquisition;
@@ -232,7 +234,8 @@ final class ContainerSessionProvider extends SessionProvider {
                     // Proactive refresh and service hints must not shorten a cached fallback's cooldown.
                     acquisition = Mono.just(currentFallback);
                 } else {
-                    acquisition = provider.createSessionAsync(latestAcquirer, containerName, resolvedAccountName)
+                    SessionRequestContext latestContext = latestRequestContext;
+                    acquisition = provider.createSessionAsync(latestContext, containerName, resolvedAccountName)
                         .doOnNext(ignored -> fallback = null)
                         .onErrorResume(error -> {
                             if (!shouldFallback(error)) {

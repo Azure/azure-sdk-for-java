@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob.implementation.util;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpPipelineNextSyncPolicy;
@@ -16,44 +17,47 @@ import java.util.Objects;
 
 /**
  * Wraps an {@link HttpLoggingPolicy} so that CreateSession responses, which contain the session key and token, are
- * never logged with their body or passed to a custom logger.
+ * never passed to an HTTP logger. Session-authenticated requests also bypass the logger so an allow-listed
+ * {@code Authorization} header cannot expose the session token or signature.
  * <p>
  * Requests that aren't session acquisitions are logged by the wrapped policy exactly as configured. Session
- * acquisition requests, identified by {@link SessionAcquirer#isAcquisitionRequest(HttpPipelineCallContext)}, are
- * logged by the redacted policy, or not logged by this policy at all when no redacted policy is provided.
+ * acquisition requests, identified by {@link SessionAcquirer#isAcquisitionRequest(HttpPipelineCallContext)}, bypass
+ * this policy's logger.
  */
 final class SessionAwareLoggingPolicy implements HttpPipelinePolicy {
     private final HttpPipelinePolicy loggingPolicy;
-    private final HttpPipelinePolicy acquisitionLoggingPolicy;
 
     /**
      * Creates a session-aware logging policy.
      *
      * @param loggingPolicy The logging policy used for all requests other than session acquisition.
-     * @param acquisitionLoggingPolicy The body-redacted logging policy used for session acquisition, or {@code null}
-     * to skip logging session acquisition in this policy.
      */
-    SessionAwareLoggingPolicy(HttpPipelinePolicy loggingPolicy, HttpPipelinePolicy acquisitionLoggingPolicy) {
+    SessionAwareLoggingPolicy(HttpPipelinePolicy loggingPolicy) {
         this.loggingPolicy = Objects.requireNonNull(loggingPolicy, "'loggingPolicy' cannot be null.");
-        this.acquisitionLoggingPolicy = acquisitionLoggingPolicy;
     }
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        if (!SessionAcquirer.isAcquisitionRequest(context)) {
+        if (!isSensitiveSessionRequest(context)) {
             return loggingPolicy.process(context, next);
         }
-        return acquisitionLoggingPolicy == null ? next.process() : acquisitionLoggingPolicy.process(context, next);
+        return next.process();
     }
 
     @Override
     public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
-        if (!SessionAcquirer.isAcquisitionRequest(context)) {
+        if (!isSensitiveSessionRequest(context)) {
             return loggingPolicy.processSync(context, next);
         }
-        return acquisitionLoggingPolicy == null
-            ? next.processSync()
-            : acquisitionLoggingPolicy.processSync(context, next);
+        return next.processSync();
+    }
+
+    private static boolean isSensitiveSessionRequest(HttpPipelineCallContext context) {
+        if (SessionAcquirer.isAcquisitionRequest(context)) {
+            return true;
+        }
+        String authorization = context.getHttpRequest().getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
+        return authorization != null && authorization.startsWith("Session ");
     }
 
     @Override

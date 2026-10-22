@@ -102,12 +102,12 @@ final class SessionAuthenticationPolicy implements HttpPipelinePolicy {
         try {
             sessionMono = sessionProvider.getSessionAsync(requestContext);
         } catch (RuntimeException ex) {
-            handleSessionAcquisitionFailure(ex);
+            handleSessionAcquisitionFailure();
             return bearerPolicy.process(context, next);
         }
 
         return sessionMono.onErrorResume(error -> {
-            handleSessionAcquisitionFailure(error);
+            handleSessionAcquisitionFailure();
             return Mono.empty();
         }).flatMap(session -> {
             signRequest(context, session);
@@ -128,7 +128,7 @@ final class SessionAuthenticationPolicy implements HttpPipelinePolicy {
         try {
             session = sessionProvider.getSession(requestContext);
         } catch (RuntimeException ex) {
-            handleSessionAcquisitionFailure(ex);
+            handleSessionAcquisitionFailure();
             return bearerPolicy.processSync(context, next);
         }
         if (session == null) {
@@ -150,7 +150,7 @@ final class SessionAuthenticationPolicy implements HttpPipelinePolicy {
             return null;
         }
 
-        return new SessionRequestContext(parts.getBlobContainerName(), sessionAcquirer);
+        return new SessionRequestContext(parts.getBlobContainerName(), sessionAcquirer, context.getContext());
     }
 
     /**
@@ -236,7 +236,7 @@ final class SessionAuthenticationPolicy implements HttpPipelinePolicy {
      * request can acquire a new session. A credential already replaced by a concurrent refresh is left unchanged.
      */
     private void handleSessionRejection(SessionRequestContext requestContext, SessionCredential session) {
-        logSessionInvalidation(requestContext, sessionProvider.invalidateSession(requestContext, session));
+        logSessionInvalidation(sessionProvider.invalidateSession(requestContext, session));
     }
 
     private void handleSessionExpiringHeader(HttpResponse response, SessionRequestContext requestContext) {
@@ -246,21 +246,18 @@ final class SessionAuthenticationPolicy implements HttpPipelinePolicy {
         }
     }
 
-    private static void logSessionInvalidation(SessionRequestContext requestContext, boolean invalidated) {
+    private static void logSessionInvalidation(boolean invalidated) {
         if (invalidated) {
-            LOGGER.warning(
-                "Session authentication was rejected with HTTP 401 for container '{}'. "
-                    + "The cached session was invalidated and the request will proceed using bearer token.",
-                requestContext.getContainerName());
+            LOGGER.warning("Session authentication was rejected with HTTP 401. "
+                + "The cached session was invalidated and the request will proceed using bearer token.");
         } else {
             LOGGER.verbose(
-                "Session authentication was rejected with HTTP 401 for container '{}', but the cached "
-                    + "session was already invalidated. The request will proceed using bearer token.",
-                requestContext.getContainerName());
+                "Session authentication was rejected with HTTP 401, but the cached session was already invalidated. "
+                    + "The request will proceed using bearer token.");
         }
     }
 
-    private void handleSessionAcquisitionFailure(Throwable error) {
-        LOGGER.warning("Unable to obtain a session credential. Using bearer token.", error);
+    private void handleSessionAcquisitionFailure() {
+        LOGGER.warning("Unable to obtain a session credential. Using bearer token.");
     }
 }

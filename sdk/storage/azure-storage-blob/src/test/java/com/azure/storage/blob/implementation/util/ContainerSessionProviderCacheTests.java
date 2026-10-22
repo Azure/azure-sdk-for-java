@@ -14,6 +14,7 @@ import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Context;
 import com.azure.core.util.DateTimeRfc1123;
+import com.azure.core.util.tracing.Tracer;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.storage.blob.implementation.accesshelpers.SessionContextAccessor;
@@ -55,6 +56,7 @@ import java.util.function.Supplier;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -65,12 +67,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * These tests drive {@link ContainerSessionProvider} with an injectable {@link Clock} and a fake HTTP transport
  * ({@link CreateSessionTransport}) so the expiry, proactive-refresh, and per-container independence logic
  * can be exercised without waiting for real credential expiration or hitting the service.
- * {@link ContainerSessionProviderTests} covers session acquisition through the service client; these tests
+ * {@link ContainerSessionApiTests} covers session acquisition through the service client; these tests
  * focus on cache timing, returned credentials, and CreateSession call counts. Per-container acquisition
  * cooldown is shared across clients using the same options. Tests inject a clock-controlled provider into options;
- * {@link SessionContextTests} covers provider creation and sharing through the public builders.
+ * {@link SessionTests} covers provider creation and sharing through the public builders.
  */
-public class ContainerSessionProviderCacheTest {
+public class ContainerSessionProviderCacheTests {
 
     private static final String ACCOUNT_NAME = "testaccount";
     private static final String CONTAINER_A = "container-a";
@@ -78,6 +80,9 @@ public class ContainerSessionProviderCacheTest {
     private static final String FIRST_TOKEN = "first-session-token";
     private static final String SECOND_TOKEN = "second-session-token";
     private static final HttpHeaderName CLIENT_HEADER = HttpHeaderName.fromString("x-test-client");
+    private static final HttpHeaderName ACQUISITION_HEADER = HttpHeaderName.fromString("x-test-acquisition");
+    private static final HttpHeaderName TRACING_DISABLED_HEADER = HttpHeaderName.fromString("x-test-tracing-disabled");
+    private static final String CLIENT_CONTEXT_KEY = "test-session-client";
 
     // A session's usable lifetime in these tests.
     private static final Duration SESSION_LIFETIME = Duration.ofMinutes(5);
@@ -195,6 +200,65 @@ public class ContainerSessionProviderCacheTest {
         waitForRequestCount(CONTAINER_A, 2);
 
         assertEquals(Arrays.asList("first", "second"), httpClient.getAcquiringClients());
+    }
+
+    @Test
+    public void syncAcquisitionPreservesOriginatingContext() {
+        enqueueContextAwareSessionResponse();
+        HttpPipeline pipeline = contextAwareClientBuilder().buildClient().getHttpPipeline();
+        Context context = new Context(CLIENT_CONTEXT_KEY, "sync").addData(Tracer.DISABLE_TRACING_KEY, true);
+        HttpRequest request = dataRequest(CONTAINER_A);
+
+        try (HttpResponse response = pipeline.sendSync(request, context)) {
+            assertEquals(200, response.getStatusCode());
+            assertEquals("sync", response.getRequest().getHeaders().getValue(CLIENT_HEADER));
+            assertEquals("true", response.getRequest().getHeaders().getValue(TRACING_DISABLED_HEADER));
+            assertNull(response.getRequest().getHeaders().getValue(ACQUISITION_HEADER));
+        }
+
+        assertEquals(Collections.singletonList("sync"), httpClient.getAcquiringClients());
+        assertFalse(context.getData(SessionAcquirer.SESSION_ACQUISITION_CONTEXT_KEY).isPresent());
+    }
+
+    @Test
+    public void asyncAcquisitionPreservesOriginatingContext() {
+        enqueueContextAwareSessionResponse();
+        HttpPipeline pipeline = contextAwareClientBuilder().buildAsyncClient().getHttpPipeline();
+        Context context = new Context(CLIENT_CONTEXT_KEY, "async").addData(Tracer.DISABLE_TRACING_KEY, true);
+        HttpRequest request = dataRequest(CONTAINER_A);
+
+        StepVerifier.create(pipeline.send(request, context)).assertNext(response -> {
+            assertEquals(200, response.getStatusCode());
+            assertEquals("async", response.getRequest().getHeaders().getValue(CLIENT_HEADER));
+            assertEquals("true", response.getRequest().getHeaders().getValue(TRACING_DISABLED_HEADER));
+            assertNull(response.getRequest().getHeaders().getValue(ACQUISITION_HEADER));
+            response.close();
+        }).verifyComplete();
+
+        assertEquals(Collections.singletonList("async"), httpClient.getAcquiringClients());
+        assertFalse(context.getData(SessionAcquirer.SESSION_ACQUISITION_CONTEXT_KEY).isPresent());
+    }
+
+    private void enqueueContextAwareSessionResponse() {
+        httpClient.enqueueResponse(CONTAINER_A, request -> {
+            assertEquals("true", request.getHeaders().getValue(ACQUISITION_HEADER));
+            assertEquals("true", request.getHeaders().getValue(TRACING_DISABLED_HEADER));
+            return Mono.just(buildResponse(request, FIRST_TOKEN, now().plusMinutes(20)));
+        });
+    }
+
+    private BlobServiceClientBuilder contextAwareClientBuilder() {
+        return independentClientBuilder().addPolicy((context, next) -> {
+            context.getData(CLIENT_CONTEXT_KEY)
+                .ifPresent(value -> context.getHttpRequest().setHeader(CLIENT_HEADER, value.toString()));
+            context.getData(Tracer.DISABLE_TRACING_KEY)
+                .filter(Boolean.TRUE::equals)
+                .ifPresent(ignored -> context.getHttpRequest().setHeader(TRACING_DISABLED_HEADER, "true"));
+            if (SessionAcquirer.isAcquisitionRequest(context)) {
+                context.getHttpRequest().setHeader(ACQUISITION_HEADER, "true");
+            }
+            return next.process();
+        });
     }
 
     private HttpPipeline namedClientPipeline(String name) {
@@ -907,14 +971,14 @@ public class ContainerSessionProviderCacheTest {
     }
 
     private SessionRequestContext contextFor(String containerName) {
-        return new SessionRequestContext(containerName, acquirer);
+        return new SessionRequestContext(containerName, acquirer, Context.NONE);
     }
 
     private SessionRequestContext contextFor(String containerName, String accountName) {
         SessionAcquirer accountAcquirer
             = new SessionAcquirer("https://" + ACCOUNT_NAME + ".blob.core.windows.net", BlobServiceVersion.getLatest(),
                 accountName, null).bind(new HttpPipelineBuilder().httpClient(httpClient).build());
-        return new SessionRequestContext(containerName, accountAcquirer);
+        return new SessionRequestContext(containerName, accountAcquirer, Context.NONE);
     }
 
     private OffsetDateTime now() {
