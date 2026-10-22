@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Fixed WebSocket close operations hanging when the peer does not respond or the close frame cannot be sent.
+
 - Fixed a race condition where Web PubSub client send operations could miss fast ack responses.
 
 ### Other Changes

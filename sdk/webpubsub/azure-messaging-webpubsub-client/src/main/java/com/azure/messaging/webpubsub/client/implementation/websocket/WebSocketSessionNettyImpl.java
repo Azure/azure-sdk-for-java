@@ -13,6 +13,7 @@ import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBufAllocator;
 import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.ChannelPipeline;
@@ -132,6 +133,7 @@ final class WebSocketSessionNettyImpl implements WebSocketSession {
 
         handshaker = WebSocketClientHandshakerFactory.newHandshaker(uri, WebSocketVersion.V13, protocol, true,
             new DefaultHttpHeaders().add(HttpHeaderName.USER_AGENT.getCaseInsensitiveName(), userAgent));
+        handshaker.setForceCloseTimeoutMillis(10_000);
 
         clientHandler = new WebSocketClientHandler(handshaker, loggerReference, messageDecoder, messageHandler);
 
@@ -247,8 +249,8 @@ final class WebSocketSessionNettyImpl implements WebSocketSession {
                         .addKeyValue("statusCode", closeFrame.statusCode())
                         .addKeyValue("reasonText", closeFrame.reasonText())
                         .log("Send CloseWebSocketFrame");
-                    ch.writeAndFlush(closeFrame);
-                    // server will reply a CloseWebSocketFrame and close TCP connection, wait for it
+                    handshaker.close(ch, closeFrame).addListener(ChannelFutureListener.CLOSE_ON_FAILURE);
+                    // The handshaker forces the transport closed if the peer does not respond in time.
                     ch.closeFuture().sync();
                 }
 
