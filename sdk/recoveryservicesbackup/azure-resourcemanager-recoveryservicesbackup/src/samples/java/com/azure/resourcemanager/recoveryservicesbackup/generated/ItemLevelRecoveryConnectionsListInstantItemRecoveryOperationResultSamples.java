@@ -11,7 +11,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.InstantItemRecove
  */
 public final class ItemLevelRecoveryConnectionsListInstantItemRecoveryOperationResultSamples {
     /*
-     * x-ms-original-file: 2026-08-01/AzureIaasVm/ListInstantItemRecoveryOperationResult.json
+     * x-ms-original-file: 2026-10-01/AzureIaasVm/ListInstantItemRecoveryOperationResult.json
      */
     /**
      * Sample code: List the Instant Item Recovery operation result (mount scripts) for an active ILR session.

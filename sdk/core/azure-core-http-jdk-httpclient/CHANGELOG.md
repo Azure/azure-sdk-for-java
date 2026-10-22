@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Fixed timeout resolution to prefer explicit builder values, then builder-specific configuration, then global
+  configuration, and finally SDK defaults.
 - Fixed client construction failing when the connection timeout is disabled.
 - Fixed per-call response timeout overrides incorrectly changing asynchronous response-body read timeouts.
 - Fixed response timeouts expiring during otherwise valid request-body uploads.
