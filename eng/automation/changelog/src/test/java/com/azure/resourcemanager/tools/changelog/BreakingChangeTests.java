@@ -45,10 +45,10 @@ public class BreakingChangeTests {
     }
 
     @Test
-    public void testClassLevelDetails() {
+    public void testClassTypeChangeDetails() {
         BreakingChange breakingChange = BreakingChange.onJavaClass("MyClass");
-        breakingChange.addClassLevelChange("Changed from a class to an interface");
-        breakingChange.addClassLevelChange("Changed from a class to an interface");
+        breakingChange.addClassTypeChange("a class", "an interface");
+        breakingChange.addClassTypeChange("a class", "an interface");
         breakingChange.addMethodLevelChange("`sku()` was removed");
         breakingChange.addFieldLevelChange("`VALUE` was removed");
         breakingChange.addStageLevelChange("Required stage 3 was removed");
@@ -59,7 +59,7 @@ public class BreakingChangeTests {
             + "* `VALUE` was removed\n"
             + "* `sku()` was removed\n\n", breakingChange.getForChangelog());
         Assertions.assertEquals(java.util.Arrays.asList(
-            "Changed from a class to an interface in class `MyClass`.",
+            "Type `MyClass` changed from a class to an interface.",
             "Required stage 3 was removed in class `MyClass`.",
             "Field `VALUE` was removed in class `MyClass`.",
             "Method `sku()` was removed in class `MyClass`."), breakingChange.getItems());

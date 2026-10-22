@@ -163,7 +163,8 @@ public class TypeChangeTests {
         assertEquals("### Breaking Changes\n\n#### `ResourceOperation` was modified\n\n* " + change + ".\n\n",
             result.getString("changelog"));
         assertEquals(1, result.getJSONArray("breakingChanges").length());
-        assertEquals(change + " in class `" + CLASS_NAME + "`.", result.getJSONArray("breakingChanges").getString(0));
+        assertEquals("Type `" + CLASS_NAME + "` changed from " + oldType + " to " + newType + ".",
+            result.getJSONArray("breakingChanges").getString(0));
     }
 
     private static void assertChange(JSONObject result, String change) {

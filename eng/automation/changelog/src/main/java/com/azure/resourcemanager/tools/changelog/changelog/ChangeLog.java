@@ -129,9 +129,9 @@ public class ChangeLog {
             case REMOVED: breakingChange.setClassLevelChangeType(BreakingChange.Type.REMOVED); break;
             default:
                 if (isClassTypeChange(ClassType.CLASS, ClassType.INTERFACE)) {
-                    breakingChange.addClassLevelChange("Changed from a class to an interface");
+                    breakingChange.addClassTypeChange("a class", "an interface");
                 } else if (isClassTypeChange(ClassType.INTERFACE, ClassType.CLASS)) {
-                    breakingChange.addClassLevelChange("Changed from an interface to a class");
+                    breakingChange.addClassTypeChange("an interface", "a class");
                 }
                 boolean checkReturnType = !ClassName.name(getJApiClass()).equals("Definition");
                 allMethods.getConstructors().forEach(constructor -> this.calcChangelogForConstructor(constructor));
