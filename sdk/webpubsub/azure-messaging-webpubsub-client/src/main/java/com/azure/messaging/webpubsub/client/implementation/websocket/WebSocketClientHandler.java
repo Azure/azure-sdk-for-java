@@ -25,8 +25,12 @@ import io.netty.handler.codec.http.websocketx.WebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketHandshakeException;
 
 import java.nio.ByteBuffer;
+import java.nio.channels.ClosedChannelException;
 import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
@@ -65,7 +69,26 @@ final class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> {
 
     @Override
     public void channelActive(ChannelHandlerContext context) {
-        handshaker.handshake(context.channel());
+        ScheduledFuture<?> timeoutFuture = context.executor().schedule(() -> {
+            handshakeFuture.tryFailure(new TimeoutException("WebSocket handshake timed out."));
+        }, 10, TimeUnit.SECONDS);
+        handshakeFuture.addListener(future -> {
+            timeoutFuture.cancel(false);
+            if (!future.isSuccess()) {
+                context.close();
+            }
+        });
+        handshaker.handshake(context.channel()).addListener(future -> {
+            if (!future.isSuccess()) {
+                handshakeFuture.tryFailure(future.cause());
+            }
+        });
+    }
+
+    @Override
+    public void channelInactive(ChannelHandlerContext context) {
+        handshakeFuture.tryFailure(new ClosedChannelException());
+        context.fireChannelInactive();
     }
 
     @Override
@@ -75,9 +98,9 @@ final class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> {
 
             try {
                 handshaker.finishHandshake(channel, (FullHttpResponse) message);
-                handshakeFuture.setSuccess();
+                handshakeFuture.trySuccess();
             } catch (WebSocketHandshakeException e) {
-                handshakeFuture.setFailure(e);
+                handshakeFuture.tryFailure(e);
             }
             return;
         }
@@ -95,7 +118,7 @@ final class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> {
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
         if (handshakeFuture != null && !handshakeFuture.isDone()) {
-            handshakeFuture.setFailure(cause);
+            handshakeFuture.tryFailure(cause);
         }
         ctx.close();
         release(compositeByteBuf);

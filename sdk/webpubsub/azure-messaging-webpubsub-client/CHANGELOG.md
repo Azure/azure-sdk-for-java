@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Fixed WebSocket connection attempts hanging when the handshake times out, the connection closes, or the handshake request fails to send.
+
 - Fixed a race condition where Web PubSub client send operations could miss fast ack responses.
 
 ### Other Changes
