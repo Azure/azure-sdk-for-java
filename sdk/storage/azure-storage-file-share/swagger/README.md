@@ -16,7 +16,7 @@ autorest
 ### Code generation settings
 ``` yaml
 use: '@autorest/java@4.1.63'
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/15d7f54a5389d5906ffb4e56bb2f38fe5525c0d3/specification/storage/data-plane/Microsoft.FileStorage/stable/2026-06-06/file.json
+input-file: https://raw.githubusercontent.com/browndav-msft/azure-rest-api-specs/b6915c1d71519f3e720def065c4710bd96385d25/specification/storage/data-plane/Microsoft.FileStorage/stable/2027-03-07/file.json
 java: true
 output-folder: ../
 namespace: com.azure.storage.file.share
@@ -249,6 +249,7 @@ directive:
         $.SharePropertiesInternal.properties.Metadata = { "$ref": path };
     }
     $.SharePropertiesInternal.properties.Etag["x-ms-client-name"] = "eTag";
+    $.SharePropertiesInternal.properties.CreationTime.xml = {"name": "Creation-Time"};
 ```
 
 ### ShareUsageBytes

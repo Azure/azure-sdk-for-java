@@ -3,6 +3,8 @@
 ## 12.33.0-beta.1 (Unreleased)
 
 ### Features Added
+- Added `ShareProperties.getCreationTime()` and `ShareProperties.setCreationTime(OffsetDateTime)` to expose the share
+  creation time returned in list and get properties responses.
 
 ### Breaking Changes
 
