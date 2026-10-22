@@ -2,6 +2,10 @@
 
 ## 4.12.0-beta.1 (2026-10-22)
 
+### Other Changes
+
+- Regenerated the library using the `2026-03-01-preview` Key Vault TypeSpec configuration.
+
 ## 4.11.3 (2026-10-06)
 
 ### Other Changes
