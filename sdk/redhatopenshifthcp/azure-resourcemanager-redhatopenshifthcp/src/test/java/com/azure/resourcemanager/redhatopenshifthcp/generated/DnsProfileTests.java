@@ -11,16 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class DnsProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DnsProfile model
-            = BinaryData.fromString("{\"baseDomain\":\"hsgcbacphejkot\",\"baseDomainPrefix\":\"qgoulznd\"}")
-                .toObject(DnsProfile.class);
-        Assertions.assertEquals("qgoulznd", model.baseDomainPrefix());
+        DnsProfile model = BinaryData.fromString("{\"baseDomain\":\"bacphejko\",\"baseDomainPrefix\":\"nqgoulzndli\"}")
+            .toObject(DnsProfile.class);
+        Assertions.assertEquals("nqgoulzndli", model.baseDomainPrefix());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DnsProfile model = new DnsProfile().withBaseDomainPrefix("qgoulznd");
+        DnsProfile model = new DnsProfile().withBaseDomainPrefix("nqgoulzndli");
         model = BinaryData.fromObject(model).toObject(DnsProfile.class);
-        Assertions.assertEquals("qgoulznd", model.baseDomainPrefix());
+        Assertions.assertEquals("nqgoulzndli", model.baseDomainPrefix());
     }
 }

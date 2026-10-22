@@ -30,6 +30,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import javax.servlet.ServletException;
 import java.io.IOException;
@@ -292,13 +293,12 @@ public class OkHttpHttpClientBuilderTests {
         }
     }
 
-    /**
-     * Tests building a client with negative callTimeout.
-     */
-    @Test
-    public void throwsWithNegativeCallTimeout() {
-        assertThrows(IllegalArgumentException.class,
-            () -> new OkHttpHttpClientBuilder().callTimeout(Duration.ofSeconds(-1)));
+    @ParameterizedTest
+    @ValueSource(longs = { -1, 0 })
+    public void nonpositiveCallTimeoutIsDisabled(long timeoutMillis) {
+        OkHttpHttpClient client
+            = (OkHttpHttpClient) new OkHttpHttpClientBuilder().callTimeout(Duration.ofMillis(timeoutMillis)).build();
+        assertEquals(0, client.httpClient.callTimeoutMillis());
     }
 
     /**
@@ -338,17 +338,20 @@ public class OkHttpHttpClientBuilderTests {
             expectedWrite);
     }
 
-    @Test
-    public void explicitTimeoutsOverrideConfiguration() {
+    @ParameterizedTest
+    @ValueSource(longs = { -1, 0, 60000 })
+    public void explicitTimeoutsOverrideConfiguration(long timeoutMillis) {
         Configuration configuration = Configuration
             .from(new TestConfigurationSource().put(Configuration.REQUEST_CONNECT_TIMEOUT_IN_MS, "123000")
                 .put(Configuration.REQUEST_READ_TIMEOUT_IN_MS, "234000")
                 .put(Configuration.REQUEST_WRITE_TIMEOUT_IN_MS, "345000"));
 
-        validateTimeouts(new OkHttpHttpClientBuilder().configuration(configuration)
-            .connectionTimeout(Duration.ofMillis(60001))
-            .readTimeout(Duration.ofMillis(60002))
-            .writeTimeout(Duration.ofMillis(60003)), 60001, 60002, 60003);
+        validateTimeouts(
+            new OkHttpHttpClientBuilder().configuration(configuration)
+                .connectionTimeout(Duration.ofMillis(timeoutMillis))
+                .readTimeout(Duration.ofMillis(timeoutMillis))
+                .writeTimeout(Duration.ofMillis(timeoutMillis)),
+            (int) Math.max(0, timeoutMillis), (int) Math.max(0, timeoutMillis), (int) Math.max(0, timeoutMillis));
     }
 
     private static void validateTimeouts(OkHttpHttpClientBuilder builder, int connect, int read, int write) {

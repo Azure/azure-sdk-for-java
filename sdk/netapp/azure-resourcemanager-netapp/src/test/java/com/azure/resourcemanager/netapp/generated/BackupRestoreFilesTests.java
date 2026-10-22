@@ -12,23 +12,22 @@ import org.junit.jupiter.api.Assertions;
 public final class BackupRestoreFilesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BackupRestoreFiles model = BinaryData
-            .fromString(
-                "{\"fileList\":[\"wggahttzlswvaj\",\"fu\"],\"restoreFilePath\":\"x\",\"destinationVolumeId\":\"oqza\"}")
+        BackupRestoreFiles model = BinaryData.fromString(
+            "{\"fileList\":[\"dlpagzrcxfail\",\"f\"],\"restoreFilePath\":\"m\",\"destinationVolumeId\":\"boxdfgsftufq\"}")
             .toObject(BackupRestoreFiles.class);
-        Assertions.assertEquals("wggahttzlswvaj", model.fileList().get(0));
-        Assertions.assertEquals("x", model.restoreFilePath());
-        Assertions.assertEquals("oqza", model.destinationVolumeId());
+        Assertions.assertEquals("dlpagzrcxfail", model.fileList().get(0));
+        Assertions.assertEquals("m", model.restoreFilePath());
+        Assertions.assertEquals("boxdfgsftufq", model.destinationVolumeId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BackupRestoreFiles model = new BackupRestoreFiles().withFileList(Arrays.asList("wggahttzlswvaj", "fu"))
-            .withRestoreFilePath("x")
-            .withDestinationVolumeId("oqza");
+        BackupRestoreFiles model = new BackupRestoreFiles().withFileList(Arrays.asList("dlpagzrcxfail", "f"))
+            .withRestoreFilePath("m")
+            .withDestinationVolumeId("boxdfgsftufq");
         model = BinaryData.fromObject(model).toObject(BackupRestoreFiles.class);
-        Assertions.assertEquals("wggahttzlswvaj", model.fileList().get(0));
-        Assertions.assertEquals("x", model.restoreFilePath());
-        Assertions.assertEquals("oqza", model.destinationVolumeId());
+        Assertions.assertEquals("dlpagzrcxfail", model.fileList().get(0));
+        Assertions.assertEquals("m", model.restoreFilePath());
+        Assertions.assertEquals("boxdfgsftufq", model.destinationVolumeId());
     }
 }

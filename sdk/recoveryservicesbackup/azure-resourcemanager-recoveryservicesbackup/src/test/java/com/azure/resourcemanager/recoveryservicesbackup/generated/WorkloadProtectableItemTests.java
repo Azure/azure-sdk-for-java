@@ -13,11 +13,11 @@ public final class WorkloadProtectableItemTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkloadProtectableItem model = BinaryData.fromString(
-            "{\"protectableItemType\":\"WorkloadProtectableItem\",\"backupManagementType\":\"gltbxoeeo\",\"workloadType\":\"lnf\",\"friendlyName\":\"y\",\"protectionState\":\"ProtectionFailed\"}")
+            "{\"protectableItemType\":\"WorkloadProtectableItem\",\"backupManagementType\":\"wa\",\"workloadType\":\"rympmlq\",\"friendlyName\":\"nhzd\",\"protectionState\":\"ProtectionFailed\"}")
             .toObject(WorkloadProtectableItem.class);
-        Assertions.assertEquals("gltbxoeeo", model.backupManagementType());
-        Assertions.assertEquals("lnf", model.workloadType());
-        Assertions.assertEquals("y", model.friendlyName());
+        Assertions.assertEquals("wa", model.backupManagementType());
+        Assertions.assertEquals("rympmlq", model.workloadType());
+        Assertions.assertEquals("nhzd", model.friendlyName());
         Assertions.assertEquals(ProtectionStatus.PROTECTION_FAILED, model.protectionState());
     }
 }
