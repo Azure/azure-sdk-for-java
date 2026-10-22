@@ -19,6 +19,7 @@ import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.Header;
+import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.implementation.util.BlobUserAgentModificationPolicy;
@@ -268,9 +269,9 @@ public class EncryptedBlobClientBuilderTests {
             .key(new FakeKey("keyId", randomData), "keyWrapAlgorithm")
             .buildEncryptedBlobClient();
 
-        // The encrypted pipeline never installs DataLocalityPolicy, so the chunked download paths must skip the
-        // getLayout call entirely rather than pay for a round trip whose result nothing can act on. The decryption
-        // policy would also mishandle the layout response, and layout offsets are ciphertext rather than plaintext.
+        // The encrypted pipeline never retains or installs DataLocalityPolicy, so the chunked download paths skip the
+        // getLayout call entirely rather than pay for a round trip whose result nothing can act on. Layout offsets are
+        // also ciphertext rather than plaintext.
         assertFalse(StorageImplUtils.pipelineSupportsDataLocality(encryptedBlobClient.getHttpPipeline()));
 
         BlobClient blobClient = new BlobClientBuilder().endpoint(ENDPOINT)
@@ -280,6 +281,28 @@ public class EncryptedBlobClientBuilderTests {
             .buildClient();
 
         assertTrue(StorageImplUtils.pipelineSupportsDataLocality(blobClient.getHttpPipeline()));
+
+        EncryptedBlobClient encryptedBlobClientFromBlobClient = new EncryptedBlobClientBuilder().blobClient(blobClient)
+            .key(new FakeKey("keyId", randomData), "keyWrapAlgorithm")
+            .buildEncryptedBlobClient();
+
+        assertFalse(StorageImplUtils.pipelineSupportsDataLocality(encryptedBlobClientFromBlobClient.getHttpPipeline()));
+
+        BlobAsyncClient blobAsyncClient = new BlobClientBuilder().endpoint(ENDPOINT)
+            .containerName("container")
+            .blobName("blob")
+            .credential(CREDENTIALS)
+            .buildAsyncClient();
+
+        assertTrue(StorageImplUtils.pipelineSupportsDataLocality(blobAsyncClient.getHttpPipeline()));
+
+        EncryptedBlobAsyncClient encryptedBlobClientFromBlobAsyncClient
+            = new EncryptedBlobClientBuilder().blobAsyncClient(blobAsyncClient)
+                .key(new FakeKey("keyId", randomData), "keyWrapAlgorithm")
+                .buildEncryptedBlobAsyncClient();
+
+        assertFalse(
+            StorageImplUtils.pipelineSupportsDataLocality(encryptedBlobClientFromBlobAsyncClient.getHttpPipeline()));
     }
 
     private static Stream<Arguments> getNonEncodedBlobNameSupplier() {
