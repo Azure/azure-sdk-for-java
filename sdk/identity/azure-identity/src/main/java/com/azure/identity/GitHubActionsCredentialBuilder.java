@@ -15,6 +15,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -65,7 +67,8 @@ public class GitHubActionsCredentialBuilder extends AadCredentialBuilderBase<Git
      * Builds a credential using the configured values and the GitHub Actions environment.
      *
      * <p>An explicit client ID, tenant ID, or authority host takes precedence over its environment variable.
-     * The default authority is Azure Public. The assertion audience is derived from the authority host.</p>
+     * The default authority is Azure Public. The assertion audience is derived from the authority host.
+     * Missing GitHub runner variables are reported together with a link to troubleshooting guidance.</p>
      *
      * @return the configured credential.
      * @throws CredentialUnavailableException if required configuration is missing, the GitHub request URL is
@@ -82,9 +85,21 @@ public class GitHubActionsCredentialBuilder extends AadCredentialBuilderBase<Git
         String resolvedTenantId = required("AZURE_TENANT_ID",
             CoreUtils.isNullOrEmpty(tenantId) ? configuration.get(Configuration.PROPERTY_AZURE_TENANT_ID) : tenantId);
         ValidationUtil.validateTenantIdCharacterRange(resolvedTenantId, LOGGER);
-        String requestUrl = required("ACTIONS_ID_TOKEN_REQUEST_URL", configuration.get("ACTIONS_ID_TOKEN_REQUEST_URL"));
-        String requestToken
-            = required("ACTIONS_ID_TOKEN_REQUEST_TOKEN", configuration.get("ACTIONS_ID_TOKEN_REQUEST_TOKEN"));
+        String requestUrl = configuration.get("ACTIONS_ID_TOKEN_REQUEST_URL");
+        String requestToken = configuration.get("ACTIONS_ID_TOKEN_REQUEST_TOKEN");
+        List<String> missing = new ArrayList<>(2);
+        if (CoreUtils.isNullOrEmpty(requestUrl)) {
+            missing.add("ACTIONS_ID_TOKEN_REQUEST_URL");
+        }
+        if (CoreUtils.isNullOrEmpty(requestToken)) {
+            missing.add("ACTIONS_ID_TOKEN_REQUEST_TOKEN");
+        }
+        if (!missing.isEmpty()) {
+            throw LOGGER.logExceptionAsError(new CredentialUnavailableException("GitHubActionsCredential requires "
+                + String.join(", ", missing) + ". Run in a GitHub Actions workflow with "
+                + "'permissions: id-token: write'. For troubleshooting information, see "
+                + "https://aka.ms/azsdk/java/identity/troubleshoot."));
+        }
         String resolvedAuthority = authorityHost == null
             ? configuration.get(Configuration.PROPERTY_AZURE_AUTHORITY_HOST, AzureAuthorityHosts.AZURE_PUBLIC_CLOUD)
             : authorityHost;

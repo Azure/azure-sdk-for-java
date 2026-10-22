@@ -41,8 +41,29 @@ class GitHubActionsCredentialBuilderTest {
             assertTrue(error.getMessage().contains(setting));
             assertTrue(error.getMessage().contains("id-token: write"));
             assertFalse(error.getMessage().contains("runner-token-sentinel"));
+            if (setting.startsWith("ACTIONS_ID_TOKEN_REQUEST_")) {
+                assertTrue(error.getMessage().contains("https://aka.ms/azsdk/java/identity/troubleshoot"));
+                String configuredSetting
+                    = setting.endsWith("_URL") ? "ACTIONS_ID_TOKEN_REQUEST_TOKEN" : "ACTIONS_ID_TOKEN_REQUEST_URL";
+                assertFalse(error.getMessage().contains(configuredSetting));
+            }
             assertEquals(0, http.oidcRequests.get());
         }
+    }
+
+    @ParameterizedTest
+    @CsvSource(value = { "null,null", "null,''", "'',null", "'',''" }, nullValues = "null")
+    void reportsBothMissingGitHubVariables(String requestUrl, String requestToken) {
+        Map<String, String> values = settings();
+        values.put("ACTIONS_ID_TOKEN_REQUEST_URL", requestUrl);
+        values.put("ACTIONS_ID_TOKEN_REQUEST_TOKEN", requestToken);
+        GitHubActionsCredentialTest.FakeHttpClient http = new GitHubActionsCredentialTest.FakeHttpClient();
+        CredentialUnavailableException error = assertThrows(CredentialUnavailableException.class,
+            () -> credentialBuilder(http).configuration(configuration(values)).build());
+        assertTrue(error.getMessage().contains("ACTIONS_ID_TOKEN_REQUEST_URL, ACTIONS_ID_TOKEN_REQUEST_TOKEN"));
+        assertTrue(error.getMessage().contains("permissions: id-token: write"));
+        assertTrue(error.getMessage().contains("https://aka.ms/azsdk/java/identity/troubleshoot"));
+        assertEquals(0, http.oidcRequests.get());
     }
 
     @Test
