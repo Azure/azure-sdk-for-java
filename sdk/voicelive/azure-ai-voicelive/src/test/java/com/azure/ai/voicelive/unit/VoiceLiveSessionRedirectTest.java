@@ -9,7 +9,6 @@ import com.azure.ai.voicelive.VoiceLiveSessionAsyncClient;
 import com.azure.ai.voicelive.models.AgentSessionConfig;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.KeyCredential;
-import io.netty.handler.codec.http.HttpHeaderNames;
 import io.netty.handler.codec.http.HttpHeaders;
 import io.netty.handler.codec.http.websocketx.WebSocketClientHandshakeException;
 import org.junit.jupiter.api.AfterEach;
@@ -78,7 +77,7 @@ class VoiceLiveSessionRedirectTest {
             }
             handshakeRequests.incrementAndGet();
             handshakeHeaders.set(request.requestHeaders().copy());
-            return response.status(status).header(HttpHeaderNames.LOCATION, location).send();
+            return response.status(status).header("Location", location).send();
         }).bindNow(TIMEOUT);
 
         AtomicReference<WebSocketClientHandshakeException> handshakeError = new AtomicReference<>();
@@ -160,7 +159,7 @@ class VoiceLiveSessionRedirectTest {
     private static void assertAuthentication(boolean tokenCredential, HttpHeaders headers) {
         assertNotNull(headers);
         assertEquals(tokenCredential ? "Bearer " + FAKE_TOKEN : FAKE_KEY,
-            headers.get(tokenCredential ? HttpHeaderNames.AUTHORIZATION.toString() : "api-key"));
+            headers.get(tokenCredential ? "Authorization" : "api-key"));
     }
 
     private static Stream<Arguments> sessionConfigurations() {
