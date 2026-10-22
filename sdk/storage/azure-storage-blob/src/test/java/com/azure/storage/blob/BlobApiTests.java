@@ -121,7 +121,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -3204,6 +3206,59 @@ public class BlobApiTests extends BlobTestBase {
         BlobClient aadBlob = getBlobClientBuilderWithTokenCredential(bc.getBlobUrl()).audience(audience).buildClient();
 
         assertTrue(aadBlob.exists());
+    }
+
+    @Test
+    @LiveOnly
+    @ResourceLock("BlobSessionAuth")
+    public void sharedSessionContextUsesSameLiveTokenAcrossIndependentClients() {
+        String blobName = generateBlobName();
+        String content = "shared-session-context";
+        cc.getBlobClient(blobName).upload(BinaryData.fromString(content), true);
+
+        AtomicInteger sessionDownloads = new AtomicInteger();
+        AtomicReference<String> sharedSessionToken = new AtomicReference<>();
+        AtomicBoolean sessionTokenMismatch = new AtomicBoolean();
+        WireTapHttpClient inspect = new WireTapHttpClient(getHttpClient(), request -> {
+            String path = request.getUrl().getPath();
+            if (request.getHttpMethod() == HttpMethod.GET && path != null && path.endsWith("/" + blobName)) {
+                String authorization = request.getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
+                if (authorization != null && authorization.startsWith("Session ")) {
+                    sessionDownloads.incrementAndGet();
+                    int signatureDelimiter = authorization.lastIndexOf(':');
+                    if (signatureDelimiter <= "Session ".length()) {
+                        sessionTokenMismatch.set(true);
+                        return;
+                    }
+                    String sessionToken = authorization.substring("Session ".length(), signatureDelimiter);
+                    String firstToken = sharedSessionToken.get();
+                    if (firstToken == null) {
+                        if (!sharedSessionToken.compareAndSet(null, sessionToken)
+                            && !sessionToken.equals(sharedSessionToken.get())) {
+                            sessionTokenMismatch.set(true);
+                        }
+                    } else if (!sessionToken.equals(firstToken)) {
+                        sessionTokenMismatch.set(true);
+                    }
+                }
+            }
+        });
+        SessionContext sharedContext
+            = new SessionContext().setSessionMode(SessionMode.ENABLED).setAccountName(cc.getAccountName());
+
+        BlobClient first
+            = getOAuthServiceClient(sharedContext, inspect).getBlobContainerClient(cc.getBlobContainerName())
+                .getBlobClient(blobName);
+        BlobClient second
+            = getOAuthServiceClient(sharedContext, inspect).getBlobContainerClient(cc.getBlobContainerName())
+                .getBlobClient(blobName);
+
+        assertEquals(content, first.downloadContent().toString());
+        assertEquals(1, sessionDownloads.get(), "The first client should use session authentication.");
+        assertEquals(content, second.downloadContent().toString());
+        assertEquals(2, sessionDownloads.get(), "The second client should also use session authentication.");
+        assertNotNull(sharedSessionToken.get(), "A live session token must have been captured.");
+        assertFalse(sessionTokenMismatch.get(), "The independent clients used different live session tokens.");
     }
 
     @Test

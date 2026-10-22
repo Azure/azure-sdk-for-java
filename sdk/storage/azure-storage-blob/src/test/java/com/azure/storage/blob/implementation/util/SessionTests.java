@@ -99,7 +99,7 @@ public class SessionTests {
     private static final String ENDPOINT = "https://account.blob.core.windows.net";
     private static final HttpHeaderName CONSUMER_HEADER = HttpHeaderName.fromString("x-test-consumer");
 
-    private TestSessionProvider sessionProvider;
+    private SessionProvider sessionProvider;
     private StorageBearerTokenChallengeAuthorizationPolicy bearerPolicy;
     private SessionAuthenticationPolicy policy;
 
@@ -108,7 +108,7 @@ public class SessionTests {
         if (testInfo.getTestClass().orElse(null) != SessionTests.class) {
             return;
         }
-        sessionProvider = mock(TestSessionProvider.class);
+        sessionProvider = mock(SessionProvider.class);
         bearerPolicy = mock(StorageBearerTokenChallengeAuthorizationPolicy.class);
         when(sessionProvider.getEligibleRequestParts(any()))
             .thenReturn(BlobUrlParts.parse("https://testaccount.blob.core.windows.net/mycontainer/myblob"));
