@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Added `HttpProtocolVersion` for configuring the maximum HTTP protocol version in HTTP client builders.
+
 ### Breaking Changes
 
 ### Bugs Fixed

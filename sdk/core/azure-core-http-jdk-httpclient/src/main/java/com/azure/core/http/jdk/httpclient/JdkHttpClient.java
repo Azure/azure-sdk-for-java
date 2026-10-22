@@ -38,7 +38,7 @@ import static com.azure.core.http.jdk.httpclient.implementation.JdkHttpUtils.fro
 class JdkHttpClient implements HttpClient {
     private static final ClientLogger LOGGER = new ClientLogger(JdkHttpClient.class);
 
-    private final java.net.http.HttpClient jdkHttpClient;
+    final java.net.http.HttpClient jdkHttpClient;
 
     private final Set<String> restrictedHeaders;
 
@@ -46,10 +46,12 @@ class JdkHttpClient implements HttpClient {
     private final Duration responseTimeout;
     private final Duration readTimeout;
     private final boolean hasReadTimeout;
+    private final java.net.http.HttpClient.Version httpVersion;
 
     JdkHttpClient(java.net.http.HttpClient httpClient, Set<String> restrictedHeaders, Duration writeTimeout,
-        Duration responseTimeout, Duration readTimeout) {
+        Duration responseTimeout, Duration readTimeout, java.net.http.HttpClient.Version httpVersion) {
         this.jdkHttpClient = httpClient;
+        this.httpVersion = httpVersion;
         int javaVersion = getJavaVersion();
         if (javaVersion <= 11) {
             throw LOGGER.logExceptionAsError(
@@ -153,8 +155,9 @@ class JdkHttpClient implements HttpClient {
             .orElse(responseTimeout);
         CompletableFuture<HttpResponse> result = new CompletableFuture<>();
         ResponseTimeout watcher = new ResponseTimeout(timeout, result);
+        // A request-level preference avoids rewriting the version on the caller's mutable JDK builder.
         java.net.http.HttpRequest jdkRequest = new AzureJdkHttpRequest(request, context, restrictedHeaders, LOGGER,
-            writeTimeout, responseTimeout, watcher::uploadStarted, watcher::uploadCompleted);
+            writeTimeout, responseTimeout, watcher::uploadStarted, watcher::uploadCompleted, httpVersion);
         CompletableFuture<java.net.http.HttpResponse<T>> exchange = jdkHttpClient.sendAsync(jdkRequest, info -> {
             watcher.responseReceived();
             return bodyHandler.apply(info);
