@@ -120,6 +120,7 @@ public final class CustomTokenProxyHttpResponse extends HttpResponse {
 
     private InputStream getResponseStream() throws IOException {
         if (statusCode < 400) {
+            // JDK getInputStream() throws for HTTP errors, so we only check for non-error status codes
             return connection.getInputStream();
         }
         InputStream errorStream = connection.getErrorStream();
