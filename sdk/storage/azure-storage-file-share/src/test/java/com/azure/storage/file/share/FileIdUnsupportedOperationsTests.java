@@ -15,6 +15,7 @@ import com.azure.storage.file.share.models.ShareFileUploadRangeOptions;
 import com.azure.storage.file.share.options.ShareFileCopyOptions;
 import com.azure.storage.file.share.options.ShareFileCreateHardLinkOptions;
 import com.azure.storage.file.share.options.ShareFileCreateOptions;
+import com.azure.storage.file.share.specialized.ShareLeaseClientBuilder;
 import com.azure.storage.file.share.options.ShareFileCreateSymbolicLinkOptions;
 import com.azure.storage.file.share.options.ShareFileDownloadOptions;
 import com.azure.storage.file.share.options.ShareFileListRangesDiffOptions;
@@ -143,6 +144,50 @@ class FileIdUnsupportedOperationsTests {
         assertThrows(IllegalStateException.class, () -> fileClient.getFileSeekableByteChannelRead(null));
         assertThrows(IllegalStateException.class, () -> fileClient.getFileSeekableByteChannelWrite(null));
         Assertions.assertFalse(requestSent.get());
+    }
+
+    @DoNotRecord
+    @Test
+    public void fileIdLeaseBuildersRejectPathOperations() {
+        AtomicReference<Boolean> requestSent = new AtomicReference<>(false);
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(request -> {
+            requestSent.set(true);
+            return Mono.just(new MockHttpResponse(request, 200));
+        }).build();
+
+        ShareClient testShareClient = new ShareServiceClientBuilder().endpoint(FileIdTestHelper.ENDPOINT)
+            .pipeline(pipeline)
+            .serviceVersion(ShareServiceVersion.V2027_03_07)
+            .buildClient()
+            .getShareClient(FileIdTestHelper.SHARE_NAME);
+        ShareFileClient fileClient = testShareClient.getFileClientByFileId(FileIdTestHelper.FILE_ID);
+
+        IllegalStateException buildException
+            = assertThrows(IllegalStateException.class, () -> new ShareLeaseClientBuilder().fileClient(fileClient));
+        assertEquals("fileClient is not supported for a file-ID-addressed client.", buildException.getMessage());
+        assertFalse(requestSent.get());
+    }
+
+    @DoNotRecord
+    @Test
+    public void asyncFileIdLeaseBuildersRejectPathOperations() {
+        AtomicReference<Boolean> requestSent = new AtomicReference<>(false);
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(request -> {
+            requestSent.set(true);
+            return Mono.just(new MockHttpResponse(request, 200));
+        }).build();
+
+        ShareAsyncClient testShareClient = new ShareServiceClientBuilder().endpoint(FileIdTestHelper.ENDPOINT)
+            .pipeline(pipeline)
+            .serviceVersion(ShareServiceVersion.V2027_03_07)
+            .buildAsyncClient()
+            .getShareAsyncClient(FileIdTestHelper.SHARE_NAME);
+        ShareFileAsyncClient fileClient = testShareClient.getFileClientByFileId(FileIdTestHelper.FILE_ID);
+
+        IllegalStateException buildException = assertThrows(IllegalStateException.class,
+            () -> new ShareLeaseClientBuilder().fileAsyncClient(fileClient));
+        assertEquals("fileAsyncClient is not supported for a file-ID-addressed client.", buildException.getMessage());
+        assertFalse(requestSent.get());
     }
 
     @DoNotRecord
