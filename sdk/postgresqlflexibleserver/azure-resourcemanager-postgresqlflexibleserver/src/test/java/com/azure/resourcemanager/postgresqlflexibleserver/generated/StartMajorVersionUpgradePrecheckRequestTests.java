@@ -5,23 +5,22 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.PostgresMajorVersion;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.StartMajorVersionUpgradePrecheckRequest;
 import org.junit.jupiter.api.Assertions;
 
 public final class StartMajorVersionUpgradePrecheckRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        StartMajorVersionUpgradePrecheckRequest model = BinaryData.fromString("{\"targetVersion\":\"17\"}")
+        StartMajorVersionUpgradePrecheckRequest model = BinaryData.fromString("{\"targetVersion\":\"yqsemwa\"}")
             .toObject(StartMajorVersionUpgradePrecheckRequest.class);
-        Assertions.assertEquals(PostgresMajorVersion.ONE_SEVEN, model.targetVersion());
+        Assertions.assertEquals("yqsemwa", model.targetVersion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         StartMajorVersionUpgradePrecheckRequest model
-            = new StartMajorVersionUpgradePrecheckRequest().withTargetVersion(PostgresMajorVersion.ONE_SEVEN);
+            = new StartMajorVersionUpgradePrecheckRequest().withTargetVersion("yqsemwa");
         model = BinaryData.fromObject(model).toObject(StartMajorVersionUpgradePrecheckRequest.class);
-        Assertions.assertEquals(PostgresMajorVersion.ONE_SEVEN, model.targetVersion());
+        Assertions.assertEquals("yqsemwa", model.targetVersion());
     }
 }

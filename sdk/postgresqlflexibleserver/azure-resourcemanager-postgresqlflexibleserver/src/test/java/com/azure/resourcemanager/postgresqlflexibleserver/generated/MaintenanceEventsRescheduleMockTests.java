@@ -23,7 +23,7 @@ public final class MaintenanceEventsRescheduleMockTests {
     @Test
     public void testReschedule() throws Exception {
         String responseStr
-            = "{\"maintenanceEventId\":\"xc\",\"serverId\":\"tprwnw\",\"status\":\"InProgress\",\"plannedStartTime\":\"2021-07-23T15:37:34Z\",\"plannedEndTime\":\"2021-06-23T16:27:42Z\",\"appliedNow\":false,\"lastUpdatedTime\":\"2021-03-19T09:46:34Z\"}";
+            = "{\"maintenanceEventId\":\"hiqakydiwfbrk\",\"serverId\":\"zdq\",\"status\":\"Rescheduled\",\"plannedStartTime\":\"2021-03-13T16:41:36Z\",\"plannedEndTime\":\"2021-09-09T00:14:51Z\",\"appliedNow\":false,\"lastUpdatedTime\":\"2021-04-20T18:33:38Z\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,16 +33,15 @@ public final class MaintenanceEventsRescheduleMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         MaintenanceEventActionResponse response = manager.maintenanceEvents()
-            .reschedule("qct", "xxdtddmflh", "ytxzvtznapxbanno", new MaintenanceEventRescheduleRequest()
-                .withPostponeToDateTime(OffsetDateTime.parse("2021-07-27T02:09:27Z")),
-                com.azure.core.util.Context.NONE);
+            .reschedule("e", "lpxuzzjgnrefq", "hqo", new MaintenanceEventRescheduleRequest().withPostponeToDateTime(
+                OffsetDateTime.parse("2021-11-19T06:34:37Z")), com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("xc", response.maintenanceEventId());
-        Assertions.assertEquals("tprwnw", response.serverId());
-        Assertions.assertEquals(MaintenanceEventStatus.IN_PROGRESS, response.status());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-23T15:37:34Z"), response.plannedStartTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-23T16:27:42Z"), response.plannedEndTime());
+        Assertions.assertEquals("hiqakydiwfbrk", response.maintenanceEventId());
+        Assertions.assertEquals("zdq", response.serverId());
+        Assertions.assertEquals(MaintenanceEventStatus.RESCHEDULED, response.status());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-13T16:41:36Z"), response.plannedStartTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-09T00:14:51Z"), response.plannedEndTime());
         Assertions.assertFalse(response.appliedNow());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-19T09:46:34Z"), response.lastUpdatedTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-20T18:33:38Z"), response.lastUpdatedTime());
     }
 }
