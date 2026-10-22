@@ -25,7 +25,7 @@ public final class UsernameClaimProfile implements JsonSerializable<UsernameClai
 
     /*
      * 
-     * Prefix for the claim external profile
+     * Prefix for the claim external profile.
      * Must be set when the prefixPolicy field is set to 'Prefix' and must be unset
      * otherwise.
      */
@@ -83,7 +83,7 @@ public final class UsernameClaimProfile implements JsonSerializable<UsernameClai
 
     /**
      * Get the prefix property:
-     * Prefix for the claim external profile
+     * Prefix for the claim external profile.
      * Must be set when the prefixPolicy field is set to 'Prefix' and must be unset
      * otherwise.
      * 
@@ -95,7 +95,7 @@ public final class UsernameClaimProfile implements JsonSerializable<UsernameClai
 
     /**
      * Set the prefix property:
-     * Prefix for the claim external profile
+     * Prefix for the claim external profile.
      * Must be set when the prefixPolicy field is set to 'Prefix' and must be unset
      * otherwise.
      * 
