@@ -224,9 +224,11 @@ final class WebSocketSessionNettyImpl implements WebSocketSession {
                     ch.closeFuture().sync();
                 }
 
-                group.shutdownGracefully();
             } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
                 throw loggerReference.get().logExceptionAsError(new ConnectFailedException("Failed to disconnect", e));
+            } finally {
+                group.shutdownGracefully();
             }
         }
     }
@@ -252,14 +254,17 @@ final class WebSocketSessionNettyImpl implements WebSocketSession {
                     ch.closeFuture().sync();
                 }
 
-                group.shutdownGracefully();
-
                 // make sure closeHandler callback is completed before returns
                 if (closeCallbackFuture != null) {
                     closeCallbackFuture.get();
                 }
-            } catch (InterruptedException | ExecutionException e) {
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
                 throw loggerReference.get().logExceptionAsError(new ConnectFailedException("Failed to disconnect", e));
+            } catch (ExecutionException e) {
+                throw loggerReference.get().logExceptionAsError(new ConnectFailedException("Failed to disconnect", e));
+            } finally {
+                group.shutdownGracefully();
             }
         }
     }

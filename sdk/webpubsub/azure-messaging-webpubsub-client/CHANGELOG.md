@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Fixed interrupted WebSocket close operations losing the thread interrupt flag and skipping event loop cleanup.
+
 - Fixed a race condition where Web PubSub client send operations could miss fast ack responses.
 
 ### Other Changes
