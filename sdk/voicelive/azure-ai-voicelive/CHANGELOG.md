@@ -1,12 +1,14 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
+## 1.1.1 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
 
 ### Bugs Fixed
+
+- Disabled redirects during WebSocket handshakes to prevent credentials from being forwarded to redirect destinations.
 
 ### Other Changes
 
