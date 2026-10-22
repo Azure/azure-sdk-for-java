@@ -38,10 +38,7 @@ import static com.azure.storage.common.implementation.Constants.HeaderConstants.
  */
 final class ContainerSessionProvider extends SessionProvider {
 
-    static final int IDLE_EVICTION_THRESHOLD_MINUTES = 1;
-
     private static final ClientLogger LOGGER = new ClientLogger(ContainerSessionProvider.class);
-    private static final Duration IDLE_EVICTION_THRESHOLD = Duration.ofMinutes(IDLE_EVICTION_THRESHOLD_MINUTES);
     private static final Duration EVICTION_SWEEP_INTERVAL = Duration.ofMinutes(1);
     private static final Duration DEFAULT_EXPIRATION_OFFSET = Duration.ofMinutes(5L);
     private static final String FEATURE_NOT_ENABLED = "FeatureNotEnabled";
@@ -132,19 +129,17 @@ final class ContainerSessionProvider extends SessionProvider {
         SessionAcquirer acquirer) {
         String key = normalize(resolvedAccountName) + "/" + normalize(containerName);
         OffsetDateTime now = OffsetDateTime.now(clock);
-        ContainerSessionCache containerSessionCache = containerSessionCaches.compute(key, (k, existing) -> {
+        evictExpiredCaches(now);
+        return containerSessionCaches.compute(key, (k, existing) -> {
             if (existing == null) {
-                return new ContainerSessionCache(this, clock, containerName, resolvedAccountName, acquirer, now);
+                return new ContainerSessionCache(this, clock, containerName, resolvedAccountName, acquirer);
             }
-            existing.lastAccess = now;
             existing.latestAcquirer = acquirer;
             return existing;
         });
-        evictStaleCaches(now);
-        return containerSessionCache;
     }
 
-    private void evictStaleCaches(OffsetDateTime now) {
+    private void evictExpiredCaches(OffsetDateTime now) {
         OffsetDateTime nextSweep = nextEvictionSweep;
         if (nextSweep != null && now.isBefore(nextSweep)) {
             return;
@@ -162,22 +157,10 @@ final class ContainerSessionProvider extends SessionProvider {
             nextEvictionSweep = now.plus(EVICTION_SWEEP_INTERVAL);
             containerSessionCaches.keySet()
                 .forEach(key -> containerSessionCaches.computeIfPresent(key,
-                    (ignored, cache) -> retainIfActive(now, cache)));
+                    (ignored, cache) -> cache.isExpired(now) ? null : cache));
         } finally {
             evictionSweepLock.unlock();
         }
-    }
-
-    private ContainerSessionCache retainIfActive(OffsetDateTime now, ContainerSessionCache cache) {
-        SessionCredential fallback = cache.fallback;
-        if (fallback != null && now.isBefore(fallback.getExpiresAt())) {
-            return cache;
-        }
-        Duration idleTime = Duration.between(cache.lastAccess, now);
-        if (idleTime.compareTo(IDLE_EVICTION_THRESHOLD) >= 0) {
-            return null;
-        }
-        return cache;
     }
 
     private Mono<SessionCredential> createSessionAsync(SessionAcquirer acquirer, String container,
@@ -231,36 +214,43 @@ final class ContainerSessionProvider extends SessionProvider {
 
     private static final class ContainerSessionCache {
         final AutoRefreshingCache<SessionCredential> cache;
-        volatile OffsetDateTime lastAccess;
         // The acquirer of the most recent caller. Refreshes go through that client's pipeline. An idle entry keeps
-        // this pipeline reachable until the entry is evicted.
+        // this pipeline reachable until its session credential expires and the entry is evicted.
         volatile SessionAcquirer latestAcquirer;
         private final Clock clock;
         private volatile SessionCredential fallback;
+        private volatile OffsetDateTime expiration;
 
         private ContainerSessionCache(ContainerSessionProvider provider, Clock clock, String containerName,
-            String resolvedAccountName, SessionAcquirer acquirer, OffsetDateTime lastAccess) {
+            String resolvedAccountName, SessionAcquirer acquirer) {
             this.clock = clock;
             this.latestAcquirer = acquirer;
             this.cache = new AutoRefreshingCache<>(() -> {
                 SessionCredential currentFallback = fallback;
+                Mono<SessionCredential> acquisition;
                 if (currentFallback != null && OffsetDateTime.now(clock).isBefore(currentFallback.getExpiresAt())) {
                     // Proactive refresh and service hints must not shorten a cached fallback's cooldown.
-                    return Mono.just(currentFallback);
+                    acquisition = Mono.just(currentFallback);
+                } else {
+                    acquisition = provider.createSessionAsync(latestAcquirer, containerName, resolvedAccountName)
+                        .doOnNext(ignored -> fallback = null)
+                        .onErrorResume(error -> {
+                            if (!shouldFallback(error)) {
+                                return Mono.error(error);
+                            }
+                            SessionCredential newFallback
+                                = SessionCredential.fallback(OffsetDateTime.now(clock).plus(DEFAULT_EXPIRATION_OFFSET));
+                            fallback = newFallback;
+                            return Mono.just(newFallback);
+                        });
                 }
-                return provider.createSessionAsync(latestAcquirer, containerName, resolvedAccountName)
-                    .doOnNext(ignored -> fallback = null)
-                    .onErrorResume(error -> {
-                        if (!shouldFallback(error)) {
-                            return Mono.error(error);
-                        }
-                        SessionCredential newFallback
-                            = SessionCredential.fallback(OffsetDateTime.now(clock).plus(DEFAULT_EXPIRATION_OFFSET));
-                        fallback = newFallback;
-                        return Mono.just(newFallback);
-                    });
+                return acquisition.doOnNext(value -> expiration = value.getExpiresAt());
             }, SessionCredential::getExpiresAt, clock);
-            this.lastAccess = lastAccess;
+        }
+
+        private boolean isExpired(OffsetDateTime now) {
+            OffsetDateTime currentExpiration = expiration;
+            return currentExpiration != null && !now.isBefore(currentExpiration);
         }
 
         private Mono<SessionCredential> getSessionAsync() {

@@ -443,20 +443,22 @@ public class ContainerSessionProviderCacheTest {
     }
 
     @Test
-    public void recentlyAccessedCacheSurvivesEvictionSweep() {
+    public void validIdleCacheSurvivesEvictionSweep() {
         enqueueSessionResponse(CONTAINER_A, FIRST_TOKEN, now().plusMinutes(20));
+        enqueueSessionResponse(CONTAINER_B, "container-b-token", now().plusMinutes(20));
 
         assertEquals(FIRST_TOKEN, provider.getSession(contextFor(CONTAINER_A)).getSessionToken());
         clock.advance(Duration.ofMinutes(1));
 
+        assertEquals("container-b-token", provider.getSession(contextFor(CONTAINER_B)).getSessionToken());
         assertEquals(FIRST_TOKEN, provider.getSession(contextFor(CONTAINER_A)).getSessionToken());
         assertEquals(1, httpClient.getRequestCount(CONTAINER_A));
     }
 
     @Test
-    public void evictionSweepRemovesAllIdleEntries() {
+    public void evictionSweepRemovesExpiredEntries() {
         int entryCount = 64;
-        populateSessionCaches(entryCount);
+        populateSessionCaches(entryCount, Duration.ofMinutes(1));
         clock.advance(Duration.ofMinutes(1));
 
         enqueueSessionResponse("trigger", "trigger-token", now().plusMinutes(20));
@@ -469,31 +471,7 @@ public class ContainerSessionProviderCacheTest {
     }
 
     @Test
-    public void evictionSweepRunsOnlyAtMinuteDeadline() {
-        enqueueSessionResponse("trigger", "trigger-token", now().plusMinutes(20));
-        provider.getSession(contextFor("trigger"));
-        clock.advance(Duration.ofSeconds(30));
-        populateSessionCaches(2);
-
-        clock.advance(Duration.ofSeconds(30));
-        provider.getSession(contextFor("trigger"));
-        clock.advance(Duration.ofSeconds(59));
-        for (int i = 0; i < 64; i++) {
-            provider.getSession(contextFor("trigger"));
-        }
-        // Both entries are idle, but the next sweep is not due until the two-minute mark.
-        assertEquals(FIRST_TOKEN, provider.getSession(contextFor("container-0")).getSessionToken());
-
-        clock.advance(Duration.ofSeconds(1));
-        provider.getSession(contextFor("trigger"));
-        assertEquals(SECOND_TOKEN, provider.getSession(contextFor("container-1")).getSessionToken());
-        assertEquals(FIRST_TOKEN, provider.getSession(contextFor("container-0")).getSessionToken());
-        assertEquals(1, httpClient.getRequestCount("container-0"));
-        assertEquals(2, httpClient.getRequestCount("container-1"));
-    }
-
-    @Test
-    public void activeCooldownSurvivesIdleSweep() {
+    public void activeCooldownSurvivesEvictionSweep() {
         httpClient.enqueueResponse(CONTAINER_A, request -> {
             MockHttpResponse response = new MockHttpResponse(request, 403);
             return Mono.just(response);
@@ -509,7 +487,7 @@ public class ContainerSessionProviderCacheTest {
     }
 
     @Test
-    public void concurrentAccessAtSweepBoundaryRetainsActiveCache() throws Exception {
+    public void concurrentAccessAtSweepBoundaryRetainsValidCache() throws Exception {
         enqueueSessionResponse(CONTAINER_A, FIRST_TOKEN, now().plusMinutes(20));
         SessionRequestContext context = contextFor(CONTAINER_A);
         assertEquals(FIRST_TOKEN, provider.getSession(context).getSessionToken());
@@ -540,10 +518,10 @@ public class ContainerSessionProviderCacheTest {
         assertEquals(1, httpClient.getRequestCount(CONTAINER_A));
     }
 
-    private void populateSessionCaches(int entryCount) {
+    private void populateSessionCaches(int entryCount, Duration lifetime) {
         for (int i = 0; i < entryCount; i++) {
             String container = "container-" + i;
-            enqueueSessionResponse(container, FIRST_TOKEN, now().plusMinutes(20));
+            enqueueSessionResponse(container, FIRST_TOKEN, now().plus(lifetime));
             enqueueSessionResponse(container, SECOND_TOKEN, now().plusMinutes(20));
             assertEquals(FIRST_TOKEN, provider.getSession(contextFor(container)).getSessionToken());
         }
@@ -560,17 +538,16 @@ public class ContainerSessionProviderCacheTest {
     }
 
     @Test
-    public void idleCacheIsEvictedAfterOneMinute() {
+    public void validIdleCacheIsRetainedAfterOneMinute() {
         enqueueSessionResponse(CONTAINER_A, FIRST_TOKEN, now().plusMinutes(20));
-        enqueueSessionResponse(CONTAINER_A, SECOND_TOKEN, now().plusMinutes(20));
         enqueueSessionResponse(CONTAINER_B, "container-b-token", now().plusMinutes(20));
 
         assertEquals(FIRST_TOKEN, provider.getSession(contextFor(CONTAINER_A)).getSessionToken());
         clock.advance(Duration.ofMinutes(1));
 
         assertEquals("container-b-token", provider.getSession(contextFor(CONTAINER_B)).getSessionToken());
-        assertEquals(SECOND_TOKEN, provider.getSession(contextFor(CONTAINER_A)).getSessionToken());
-        assertEquals(2, httpClient.getRequestCount(CONTAINER_A));
+        assertEquals(FIRST_TOKEN, provider.getSession(contextFor(CONTAINER_A)).getSessionToken());
+        assertEquals(1, httpClient.getRequestCount(CONTAINER_A));
     }
 
     @Test
