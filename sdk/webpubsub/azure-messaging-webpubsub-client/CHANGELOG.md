@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Fixed incomplete WebSocket messages being decoded when a connection closes or its handler is removed.
+
 - Fixed a race condition where Web PubSub client send operations could miss fast ack responses.
 
 ### Other Changes

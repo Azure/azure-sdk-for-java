@@ -60,7 +60,8 @@ final class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> {
 
     @Override
     public void handlerRemoved(ChannelHandlerContext ctx) {
-        publishBuffer();
+        release(compositeByteBuf);
+        compositeByteBuf = null;
     }
 
     @Override
