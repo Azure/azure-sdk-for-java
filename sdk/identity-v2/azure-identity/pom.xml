@@ -118,14 +118,6 @@
   <build>
     <plugins>
       <plugin>
-        <groupId>com.azure.tools</groupId>
-        <artifactId>codesnippet-maven-plugin</artifactId>
-        <configuration>
-          <codesnippetRootDirectory>${project.basedir}/src/test/java</codesnippetRootDirectory>
-          <codesnippetGlob>**/*CodeSnippets.java</codesnippetGlob>
-        </configuration>
-      </plugin>
-      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
         <version>3.6.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
