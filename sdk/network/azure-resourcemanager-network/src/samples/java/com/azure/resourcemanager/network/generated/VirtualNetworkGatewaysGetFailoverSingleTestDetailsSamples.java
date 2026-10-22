@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class VirtualNetworkGatewaysGetFailoverSingleTestDetailsSamples {
     /*
-     * x-ms-original-file: 2026-01-01/VirtualNetworkGatewayGetFailoverSingleTestDetails.json
+     * x-ms-original-file: 2026-03-01/VirtualNetworkGatewayGetFailoverSingleTestDetails.json
      */
     /**
      * Sample code: VirtualNetworkGatewayGetFailoverSingleTestDetails.

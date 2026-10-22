@@ -27,7 +27,8 @@ public final class EdgeActionExecutionFiltersDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.edgeActionExecutionFilters().delete("ovplw", "bhvgy", "gu", com.azure.core.util.Context.NONE);
+        manager.edgeActionExecutionFilters()
+            .delete("vlopwiyighx", "kdwzbaiuebbaumny", "upedeojnabckhs", com.azure.core.util.Context.NONE);
 
     }
 }

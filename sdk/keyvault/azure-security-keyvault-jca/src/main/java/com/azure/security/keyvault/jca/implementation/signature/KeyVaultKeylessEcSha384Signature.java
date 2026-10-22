@@ -6,10 +6,14 @@ package com.azure.security.keyvault.jca.implementation.signature;
  * key vault SHA384
  */
 public final class KeyVaultKeylessEcSha384Signature extends KeyVaultKeylessEcSignature {
+    /**
+     * Algorithm name used by this implementation.
+     */
+    public static final String ALGORITHM_NAME = "SHA384withECDSA";
 
     @Override
     public String getAlgorithmName() {
-        return "SHA384withECDSA";
+        return ALGORITHM_NAME;
     }
 
     /**

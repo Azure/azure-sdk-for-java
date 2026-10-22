@@ -59,14 +59,14 @@ public enum FoundryFeaturesOptInKeys {
     MODELS_V1_PREVIEW("Models=V1Preview"),
 
     /**
-     * Enum value AgentsOptimization=V2Preview.
-     */
-    AGENTS_OPTIMIZATION_V2_PREVIEW("AgentsOptimization=V2Preview"),
-
-    /**
      * Enum value ModelRouterControls=V1Preview.
      */
-    MODEL_ROUTER_CONTROLS_V1_PREVIEW("ModelRouterControls=V1Preview");
+    MODEL_ROUTER_CONTROLS_V1_PREVIEW("ModelRouterControls=V1Preview"),
+
+    /**
+     * Enum value FineTuningSessions=V1Preview.
+     */
+    FINETUNING_SESSIONS_V1_PREVIEW("FineTuningSessions=V1Preview");
 
     /**
      * The actual serialized value for a FoundryFeaturesOptInKeys instance.

@@ -27,6 +27,11 @@ public final class SkuLocationInfo implements JsonSerializable<SkuLocationInfo> 
      */
     private List<String> zones;
 
+    /*
+     * Details of capabilities available in each zone.
+     */
+    private List<SkuZoneDetails> zoneDetails;
+
     /**
      * Creates an instance of SkuLocationInfo class.
      */
@@ -52,11 +57,23 @@ public final class SkuLocationInfo implements JsonSerializable<SkuLocationInfo> 
     }
 
     /**
+     * Get the zoneDetails property: Details of capabilities available in each zone.
+     * 
+     * @return the zoneDetails value.
+     */
+    public List<SkuZoneDetails> zoneDetails() {
+        return this.zoneDetails;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (zoneDetails() != null) {
+            zoneDetails().forEach(e -> e.validate());
+        }
     }
 
     /**
@@ -88,6 +105,9 @@ public final class SkuLocationInfo implements JsonSerializable<SkuLocationInfo> 
                 } else if ("zones".equals(fieldName)) {
                     List<String> zones = reader.readArray(reader1 -> reader1.getString());
                     deserializedSkuLocationInfo.zones = zones;
+                } else if ("zoneDetails".equals(fieldName)) {
+                    List<SkuZoneDetails> zoneDetails = reader.readArray(reader1 -> SkuZoneDetails.fromJson(reader1));
+                    deserializedSkuLocationInfo.zoneDetails = zoneDetails;
                 } else {
                     reader.skipChildren();
                 }

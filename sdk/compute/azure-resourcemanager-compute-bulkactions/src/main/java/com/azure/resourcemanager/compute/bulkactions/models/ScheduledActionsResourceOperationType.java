@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * The operation to retry when a scheduled action fails.
+ * The operation to retry when a recurring bulk action fails.
  */
 public final class ScheduledActionsResourceOperationType
     extends ExpandableStringEnum<ScheduledActionsResourceOperationType> {

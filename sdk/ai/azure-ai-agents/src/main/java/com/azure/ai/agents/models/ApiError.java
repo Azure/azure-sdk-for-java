@@ -47,19 +47,19 @@ public final class ApiError implements JsonSerializable<ApiError> {
     private String type;
 
     /*
-     * The details property.
+     * Additional errors that contributed to this failure.
      */
     @Generated
     private List<ApiError> details;
 
     /*
-     * The additionalInfo property.
+     * Additional structured information about the failure.
      */
     @Generated
     private Map<String, BinaryData> additionalInfo;
 
     /*
-     * The debugInfo property.
+     * Diagnostic information supplied by the service for troubleshooting.
      */
     @Generated
     private Map<String, BinaryData> debugInfo;
@@ -117,7 +117,7 @@ public final class ApiError implements JsonSerializable<ApiError> {
     }
 
     /**
-     * Get the details property: The details property.
+     * Get the details property: Additional errors that contributed to this failure.
      *
      * @return the details value.
      */
@@ -127,7 +127,7 @@ public final class ApiError implements JsonSerializable<ApiError> {
     }
 
     /**
-     * Get the additionalInfo property: The additionalInfo property.
+     * Get the additionalInfo property: Additional structured information about the failure.
      *
      * @return the additionalInfo value.
      */
@@ -137,7 +137,7 @@ public final class ApiError implements JsonSerializable<ApiError> {
     }
 
     /**
-     * Get the debugInfo property: The debugInfo property.
+     * Get the debugInfo property: Diagnostic information supplied by the service for troubleshooting.
      *
      * @return the debugInfo value.
      */

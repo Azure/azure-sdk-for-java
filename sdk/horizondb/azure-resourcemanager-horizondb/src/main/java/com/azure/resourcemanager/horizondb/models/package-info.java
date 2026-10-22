@@ -4,6 +4,6 @@
 
 /**
  * Package containing the data models for HorizonDb.
- * Azure Resource Provider API for managing HorizonDB clusters, pools, replicas, and firewall rules.
+ * Azure Resource Provider API for managing HorizonDB clusters, pools, endpoints, nodes, and firewall rules.
  */
 package com.azure.resourcemanager.horizondb.models;

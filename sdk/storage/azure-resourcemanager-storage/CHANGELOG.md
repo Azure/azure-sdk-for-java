@@ -1,6 +1,6 @@
 # Release History
 
-## 2.59.0-beta.1 (Unreleased)
+## 2.60.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,139 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.59.0 (2026-10-13)
+
+- Package api-version 2026-09-01.
+
+### Features Added
+
+* `models.BlobAccessPointAccessKeyAuthProperties` was added
+
+* `models.BlobAccessPointEndpointConnectionPropertiesUpdate` was added
+
+* `models.ResourceProvisioningState` was added
+
+* `models.BlobAccessPointConnectionPropertiesUpdate` was added
+
+* `models.BlobAccessPointAccessKeyAuthPropertiesUpdate` was added
+
+* `models.BlobAccessPointNetAppOntapSourceProperties` was added
+
+* `models.BlobAccessPointGenericS3SourcePropertiesUpdate` was added
+
+* `models.BlobAccessPointDellOneFsSourcePropertiesUpdate` was added
+
+* `models.BlobAccessPointQumuloSourceProperties` was added
+
+* `models.BlobAccessPointProposedConnectionTestRequest` was added
+
+* `models.BlobAccessPointConnectionTestRequest` was added
+
+* `models.BlobAccessPointTlsVerification` was added
+
+* `models.BlobAccessPointRemoteAuthProperties` was added
+
+* `models.BlobAccessPointSourceType` was added
+
+* `models.BlobAccessPointRemoteAuthType` was added
+
+* `models.BlobAccessPointConfigurationUpdate` was added
+
+* `models.TurboTierStatus` was added
+
+* `models.BlobAccessPointPrivateLinkIdType` was added
+
+* `models.TurboTier` was added
+
+* `models.BlobAccessPointSourcePropertiesUpdate` was added
+
+* `models.BlobAccessPointNasuniSourceProperties` was added
+
+* `models.BlobAccessPointPrivateLinkConnectionPropertiesUpdate` was added
+
+* `models.BlobAccessPointQumuloSourcePropertiesUpdate` was added
+
+* `models.BlobAccessPointConnectionTestStatus` was added
+
+* `models.BlobAccessPointConfigurationConnection` was added
+
+* `models.BlobAccessPointConnectionType` was added
+
+* `models.BlobAccessPointNetAppOntapSourcePropertiesUpdate` was added
+
+* `models.ContextCacheCheckNameAvailabilityParameters` was added
+
+* `models.BlobAccessPointAzureNetAppFilesSourceProperties` was added
+
+* `models.BlobAccessPointAzureNetAppFilesSourcePropertiesUpdate` was added
+
+* `models.BlobAccessPointConfigurationProperties` was added
+
+* `models.BlobAccessPointConfigurationState` was added
+
+* `models.BlobAccessPointConnectionProperties` was added
+
+* `models.BlobAccessPointGenericS3SourceProperties` was added
+
+* `models.BlobAccessPointCommvaultSourcePropertiesUpdate` was added
+
+* `models.BlobAccessPointEndpointConnectionProperties` was added
+
+* `models.BlobAccessPointCommvaultSourceProperties` was added
+
+* `models.BlobAccessPointNasuniSourcePropertiesUpdate` was added
+
+* `models.ContextCacheCheckNameAvailabilityFailureReason` was added
+
+* `models.BlobAccessPointRemoteAuthPropertiesUpdate` was added
+
+* `models.BlobAccessPointConfigurationPropertiesUpdate` was added
+
+* `models.BlobAccessPointDellOneFsSourceProperties` was added
+
+* `models.BlobAccessPointPrivateLinkConnectionProperties` was added
+
+* `models.BlobAccessPointSourceProperties` was added
+
+#### `models.StorageAccountUpdateParameters` was modified
+
+* `withTurboTier(models.TurboTier)` was added
+* `turboTier()` was added
+
+#### `models.NspAccessRuleProperties` was modified
+
+* `serviceTags()` was added
+
+#### `models.StorageDataCollaborationPolicyProperties` was modified
+
+* `withAllowBlobAccessPoints(java.lang.Boolean)` was added
+* `allowBlobAccessPoints()` was added
+
+#### `models.StorageAccountCreateParameters` was modified
+
+* `withTurboTier(models.TurboTier)` was added
+* `turboTier()` was added
+
+## 2.58.2 (2026-10-09)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-resources` from `2.54.4` to version `2.55.0`.
+- Upgraded `azure-resourcemanager-msi` from `2.54.2` to version `2.54.3`.
+- Upgraded `azure-resourcemanager-authorization` from `2.53.13` to version `2.53.14`.
+
+## 2.58.1 (2026-10-06)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-msi` from `2.54.1` to version `2.54.2`.
+- Upgraded `azure-resourcemanager-authorization` from `2.53.12` to version `2.53.13`.
+- Upgraded `azure-resourcemanager-resources` from `2.54.3` to version `2.54.4`.
 
 ## 2.58.0 (2026-08-26)
 

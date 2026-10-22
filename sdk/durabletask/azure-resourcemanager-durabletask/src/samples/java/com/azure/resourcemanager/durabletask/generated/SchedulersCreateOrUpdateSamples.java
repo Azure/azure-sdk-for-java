@@ -4,9 +4,12 @@
 
 package com.azure.resourcemanager.durabletask.generated;
 
+import com.azure.resourcemanager.durabletask.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.durabletask.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.durabletask.models.SchedulerProperties;
 import com.azure.resourcemanager.durabletask.models.SchedulerSku;
 import com.azure.resourcemanager.durabletask.models.SchedulerSkuName;
+import com.azure.resourcemanager.durabletask.models.UserAssignedIdentity;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,7 +19,7 @@ import java.util.Map;
  */
 public final class SchedulersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-02-01/Schedulers_CreateOrUpdate.json
+     * x-ms-original-file: 2026-07-01-preview/Schedulers_CreateOrUpdate.json
      */
     /**
      * Sample code: Schedulers_CreateOrUpdate.
@@ -31,6 +34,10 @@ public final class SchedulersCreateOrUpdateSamples {
             .withTags(mapOf("department", "research", "development", "true"))
             .withProperties(new SchedulerProperties().withIpAllowlist(Arrays.asList("10.0.0.0/8"))
                 .withSku(new SchedulerSku().withName(SchedulerSkuName.DEDICATED)))
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf(
+                    "/subscriptions/EE9BD735-67CE-4A90-89C4-439D3F6A4C93/resourceGroups/rgopenapi/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testidentity",
+                    new UserAssignedIdentity())))
             .create();
     }
 

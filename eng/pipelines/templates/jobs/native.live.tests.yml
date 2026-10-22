@@ -106,6 +106,7 @@ jobs:
           targetPath: $(System.DefaultWorkingDirectory)/troubleshooting
           displayName: 'Capture troubleshooting artifacts'
           condition: and(not(succeeded()), eq(variables['HAS_TROUBLESHOOTING'], 'true'))
+          isProduction: false
           sbomEnabled: false
 
     steps:

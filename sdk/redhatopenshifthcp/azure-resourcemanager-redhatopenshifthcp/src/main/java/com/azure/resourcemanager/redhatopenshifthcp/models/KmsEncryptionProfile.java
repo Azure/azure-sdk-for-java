@@ -34,6 +34,11 @@ public final class KmsEncryptionProfile implements JsonSerializable<KmsEncryptio
      */
     private KmsKey activeKey;
 
+    /*
+     * The type of keyvault used for KMS encryption. Defaults to KeyVault when absent.
+     */
+    private KmsKeyVaultType keyVaultType;
+
     /**
      * Creates an instance of KmsEncryptionProfile class.
      */
@@ -101,6 +106,26 @@ public final class KmsEncryptionProfile implements JsonSerializable<KmsEncryptio
     }
 
     /**
+     * Get the keyVaultType property: The type of keyvault used for KMS encryption. Defaults to KeyVault when absent.
+     * 
+     * @return the keyVaultType value.
+     */
+    public KmsKeyVaultType keyVaultType() {
+        return this.keyVaultType;
+    }
+
+    /**
+     * Set the keyVaultType property: The type of keyvault used for KMS encryption. Defaults to KeyVault when absent.
+     * 
+     * @param keyVaultType the keyVaultType value to set.
+     * @return the KmsEncryptionProfile object itself.
+     */
+    public KmsEncryptionProfile withKeyVaultType(KmsKeyVaultType keyVaultType) {
+        this.keyVaultType = keyVaultType;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -109,6 +134,7 @@ public final class KmsEncryptionProfile implements JsonSerializable<KmsEncryptio
         jsonWriter.writeStringField("vaultName", this.vaultName);
         jsonWriter.writeStringField("visibility", this.visibility == null ? null : this.visibility.toString());
         jsonWriter.writeJsonField("activeKey", this.activeKey);
+        jsonWriter.writeStringField("keyVaultType", this.keyVaultType == null ? null : this.keyVaultType.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -134,6 +160,8 @@ public final class KmsEncryptionProfile implements JsonSerializable<KmsEncryptio
                     deserializedKmsEncryptionProfile.visibility = KeyVaultVisibility.fromString(reader.getString());
                 } else if ("activeKey".equals(fieldName)) {
                     deserializedKmsEncryptionProfile.activeKey = KmsKey.fromJson(reader);
+                } else if ("keyVaultType".equals(fieldName)) {
+                    deserializedKmsEncryptionProfile.keyVaultType = KmsKeyVaultType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

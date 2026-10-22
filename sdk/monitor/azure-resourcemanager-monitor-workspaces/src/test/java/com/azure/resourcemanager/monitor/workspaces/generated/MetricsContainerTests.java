@@ -6,20 +6,30 @@ package com.azure.resourcemanager.monitor.workspaces.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.monitor.workspaces.models.MetricsContainer;
+import com.azure.resourcemanager.monitor.workspaces.models.MetricsLimits;
 import org.junit.jupiter.api.Assertions;
 
 public final class MetricsContainerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MetricsContainer model = BinaryData.fromString("{\"provisioningState\":\"Failed\",\"version\":\"afnn\"}")
+        MetricsContainer model = BinaryData.fromString(
+            "{\"provisioningState\":\"Succeeded\",\"limits\":{\"enableAutoScale\":true,\"maxActiveTimeSeries\":2041040539740838939,\"maxEventsPerMinute\":4836259477113614061},\"version\":\"ovasrruvwbhsqfsu\"}")
             .toObject(MetricsContainer.class);
-        Assertions.assertEquals("afnn", model.version());
+        Assertions.assertTrue(model.limits().enableAutoScale());
+        Assertions.assertEquals(2041040539740838939L, model.limits().maxActiveTimeSeries());
+        Assertions.assertEquals(4836259477113614061L, model.limits().maxEventsPerMinute());
+        Assertions.assertEquals("ovasrruvwbhsqfsu", model.version());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MetricsContainer model = new MetricsContainer().withVersion("afnn");
+        MetricsContainer model = new MetricsContainer().withLimits(new MetricsLimits().withEnableAutoScale(true)
+            .withMaxActiveTimeSeries(2041040539740838939L)
+            .withMaxEventsPerMinute(4836259477113614061L)).withVersion("ovasrruvwbhsqfsu");
         model = BinaryData.fromObject(model).toObject(MetricsContainer.class);
-        Assertions.assertEquals("afnn", model.version());
+        Assertions.assertTrue(model.limits().enableAutoScale());
+        Assertions.assertEquals(2041040539740838939L, model.limits().maxActiveTimeSeries());
+        Assertions.assertEquals(4836259477113614061L, model.limits().maxEventsPerMinute());
+        Assertions.assertEquals("ovasrruvwbhsqfsu", model.version());
     }
 }
