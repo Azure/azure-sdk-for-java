@@ -56,7 +56,7 @@ public final class EdgeActionVersionProperties implements JsonSerializable<EdgeA
     /**
      * Get the deploymentType property: The deployment type for the Edge Action version. Set this value when creating
      * the version. When updating an existing version, any supplied value must match the existing value.
-     *
+     * 
      * @return the deploymentType value.
      */
     public EdgeActionVersionDeploymentType deploymentType() {
@@ -66,7 +66,7 @@ public final class EdgeActionVersionProperties implements JsonSerializable<EdgeA
     /**
      * Set the deploymentType property: The deployment type for the Edge Action version. Set this value when creating
      * the version. When updating an existing version, any supplied value must match the existing value.
-     *
+     * 
      * @param deploymentType the deploymentType value to set.
      * @return the EdgeActionVersionProperties object itself.
      */
@@ -77,7 +77,7 @@ public final class EdgeActionVersionProperties implements JsonSerializable<EdgeA
 
     /**
      * Get the validationStatus property: The validation status.
-     *
+     * 
      * @return the validationStatus value.
      */
     public EdgeActionVersionValidationStatus validationStatus() {
@@ -86,7 +86,7 @@ public final class EdgeActionVersionProperties implements JsonSerializable<EdgeA
 
     /**
      * Get the provisioningState property: The provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -98,7 +98,7 @@ public final class EdgeActionVersionProperties implements JsonSerializable<EdgeA
      * Edge Action has no default version, the service makes the new version the default even when false is supplied. If
      * another default version exists, supplying true is rejected. When updating an existing version, any supplied value
      * must match the existing value. Use swapDefault to change the default version.
-     *
+     * 
      * @return the isDefaultVersion value.
      */
     public EdgeActionIsDefaultVersion isDefaultVersion() {
@@ -110,7 +110,7 @@ public final class EdgeActionVersionProperties implements JsonSerializable<EdgeA
      * Edge Action has no default version, the service makes the new version the default even when false is supplied. If
      * another default version exists, supplying true is rejected. When updating an existing version, any supplied value
      * must match the existing value. Use swapDefault to change the default version.
-     *
+     * 
      * @param isDefaultVersion the isDefaultVersion value to set.
      * @return the EdgeActionVersionProperties object itself.
      */
@@ -121,7 +121,7 @@ public final class EdgeActionVersionProperties implements JsonSerializable<EdgeA
 
     /**
      * Get the lastPackageUpdateTime property: The last update time in UTC for package update.
-     *
+     * 
      * @return the lastPackageUpdateTime value.
      */
     public OffsetDateTime lastPackageUpdateTime() {
@@ -143,7 +143,7 @@ public final class EdgeActionVersionProperties implements JsonSerializable<EdgeA
 
     /**
      * Reads an instance of EdgeActionVersionProperties from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of EdgeActionVersionProperties if the JsonReader was pointing to an instance of it, or null
      * if it was pointing to JSON null.

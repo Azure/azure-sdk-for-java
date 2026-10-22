@@ -22,12 +22,12 @@ public final class SmbSettings implements JsonSerializable<SmbSettings> {
     private SmbEncryptionState smbEncryption;
 
     /*
-     * Enables access-based enumeration share property for SMB Shares. Only applicable for SMB/DualProtocol volume
+     * Enables access-based enumeration share property for SMB Shares. Only applicable for SMB/DualProtocol cache
      */
     private SmbAccessBasedEnumeration smbAccessBasedEnumeration;
 
     /*
-     * Enables non-browsable property for SMB Shares. Only applicable for SMB/DualProtocol volume
+     * Enables non-browsable property for SMB Shares. Only applicable for SMB/DualProtocol cache
      */
     private SmbNonBrowsable smbNonBrowsable;
 
@@ -61,7 +61,7 @@ public final class SmbSettings implements JsonSerializable<SmbSettings> {
 
     /**
      * Get the smbAccessBasedEnumeration property: Enables access-based enumeration share property for SMB Shares. Only
-     * applicable for SMB/DualProtocol volume.
+     * applicable for SMB/DualProtocol cache.
      * 
      * @return the smbAccessBasedEnumeration value.
      */
@@ -71,7 +71,7 @@ public final class SmbSettings implements JsonSerializable<SmbSettings> {
 
     /**
      * Set the smbAccessBasedEnumeration property: Enables access-based enumeration share property for SMB Shares. Only
-     * applicable for SMB/DualProtocol volume.
+     * applicable for SMB/DualProtocol cache.
      * 
      * @param smbAccessBasedEnumeration the smbAccessBasedEnumeration value to set.
      * @return the SmbSettings object itself.
@@ -83,7 +83,7 @@ public final class SmbSettings implements JsonSerializable<SmbSettings> {
 
     /**
      * Get the smbNonBrowsable property: Enables non-browsable property for SMB Shares. Only applicable for
-     * SMB/DualProtocol volume.
+     * SMB/DualProtocol cache.
      * 
      * @return the smbNonBrowsable value.
      */
@@ -93,7 +93,7 @@ public final class SmbSettings implements JsonSerializable<SmbSettings> {
 
     /**
      * Set the smbNonBrowsable property: Enables non-browsable property for SMB Shares. Only applicable for
-     * SMB/DualProtocol volume.
+     * SMB/DualProtocol cache.
      * 
      * @param smbNonBrowsable the smbNonBrowsable value to set.
      * @return the SmbSettings object itself.

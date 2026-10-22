@@ -179,6 +179,39 @@ public class JdkHttpClientBuilderTests {
         assertFalse(nativeBuilder.build().connectTimeout().isPresent());
     }
 
+    @ParameterizedTest
+    @ValueSource(longs = { -1, 0, 123000 })
+    public void configuredTimeoutsAndExplicitOverrides(long timeoutMillis) throws ReflectiveOperationException {
+        String value = Long.toString(timeoutMillis);
+        Configuration configuration = new ConfigurationBuilder(EMPTY_SOURCE,
+            new TestConfigurationSource().put(Configuration.PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT, value)
+                .put(Configuration.PROPERTY_AZURE_REQUEST_READ_TIMEOUT, value)
+                .put(Configuration.PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT, value)
+                .put(Configuration.PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT, value),
+            EMPTY_SOURCE).build();
+        java.net.http.HttpClient.Builder nativeBuilder = java.net.http.HttpClient.newBuilder();
+        JdkHttpClientBuilder builder = new JdkHttpClientBuilder(nativeBuilder).configuration(configuration);
+        assertTimeouts((JdkHttpClient) builder.build(), Math.max(0, timeoutMillis));
+        assertEquals(Duration.ofMillis(Math.max(0, timeoutMillis)),
+            nativeBuilder.build().connectTimeout().orElse(Duration.ZERO));
+
+        assertTimeouts((JdkHttpClient) builder.connectionTimeout(Duration.ofMillis(456000))
+            .readTimeout(Duration.ofMillis(456000))
+            .writeTimeout(Duration.ofMillis(456000))
+            .responseTimeout(Duration.ofMillis(456000))
+            .build(), 456000);
+        assertEquals(Duration.ofMillis(456000), nativeBuilder.build().connectTimeout().get());
+    }
+
+    private static void assertTimeouts(JdkHttpClient client, long expected) throws ReflectiveOperationException {
+        for (String name : new String[] { "readTimeout", "writeTimeout", "responseTimeout" }) {
+            java.lang.reflect.Field field = JdkHttpClient.class.getDeclaredField(name);
+            field.setAccessible(true);
+            assertEquals(expected == 0 && !"readTimeout".equals(name) ? null : Duration.ofMillis(expected),
+                field.get(client));
+        }
+    }
+
     /**
      * Tests building a client with a given {@code Executor}.
      */

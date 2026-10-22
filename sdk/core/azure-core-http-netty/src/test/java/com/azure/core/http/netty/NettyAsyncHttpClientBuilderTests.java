@@ -36,6 +36,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import reactor.netty.http.client.HttpClient;
 import reactor.netty.http.HttpProtocol;
 import reactor.netty.http.client.HttpResponseDecoderSpec;
@@ -641,6 +642,26 @@ public class NettyAsyncHttpClientBuilderTests {
             Arguments.of(Duration.ofSeconds(-1), 0),
             Arguments.of(Duration.ofSeconds(120), TimeUnit.SECONDS.toMillis(120)),
             Arguments.of(Duration.ofNanos(1), TimeUnit.MILLISECONDS.toMillis(1)));
+    }
+
+    @ParameterizedTest
+    @ValueSource(longs = { -1, 0, 123000 })
+    public void configuredConnectionTimeoutAndExplicitOverride(long timeoutMillis) {
+        Configuration configuration = new ConfigurationBuilder(EMPTY_SOURCE, new TestConfigurationSource()
+            .put(Configuration.PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT, Long.toString(timeoutMillis)), EMPTY_SOURCE)
+                .build();
+        NettyAsyncHttpClientBuilder builder = new NettyAsyncHttpClientBuilder().configuration(configuration);
+        NettyAsyncHttpClient configured = (NettyAsyncHttpClient) builder.build();
+        assertEquals((int) Math.max(0, timeoutMillis),
+            configured.nettyClient.configuration().options().get(ChannelOption.CONNECT_TIMEOUT_MILLIS));
+
+        NettyAsyncHttpClient overridden
+            = (NettyAsyncHttpClient) builder.connectTimeout(Duration.ofMillis(456000)).build();
+        assertEquals(456000,
+            overridden.nettyClient.configuration().options().get(ChannelOption.CONNECT_TIMEOUT_MILLIS));
+
+        NettyAsyncHttpClient disabled = (NettyAsyncHttpClient) builder.connectTimeout(Duration.ofNanos(-1)).build();
+        assertEquals(0, disabled.nettyClient.configuration().options().get(ChannelOption.CONNECT_TIMEOUT_MILLIS));
     }
 
     @Test

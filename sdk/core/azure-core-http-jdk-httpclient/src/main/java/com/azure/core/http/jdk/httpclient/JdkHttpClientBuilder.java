@@ -26,11 +26,15 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.Executor;
 
-import static com.azure.core.implementation.util.HttpUtils.getDefaultConnectTimeout;
-import static com.azure.core.implementation.util.HttpUtils.getDefaultReadTimeout;
-import static com.azure.core.implementation.util.HttpUtils.getDefaultResponseTimeout;
-import static com.azure.core.implementation.util.HttpUtils.getDefaultWriteTimeout;
+import static com.azure.core.implementation.util.HttpUtils.DEFAULT_CONNECT_TIMEOUT;
+import static com.azure.core.implementation.util.HttpUtils.DEFAULT_READ_TIMEOUT;
+import static com.azure.core.implementation.util.HttpUtils.DEFAULT_RESPONSE_TIMEOUT;
+import static com.azure.core.implementation.util.HttpUtils.DEFAULT_WRITE_TIMEOUT;
 import static com.azure.core.implementation.util.HttpUtils.getTimeout;
+import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT;
+import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_READ_TIMEOUT;
+import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT;
+import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT;
 
 /**
  * Builder to configure and build an instance of the azure-core {@link HttpClient} type using the JDK HttpClient APIs,
@@ -248,8 +252,10 @@ public class JdkHttpClientBuilder {
     /**
      * Sets the configuration store that is used during construction of the HTTP client.
      * <p>
-     * The default configuration store is a clone of the {@link Configuration#getGlobalConfiguration() global
-     * configuration store}, use {@link Configuration#NONE} to bypass using configuration settings during construction.
+     * The default configuration store is the {@link Configuration#getGlobalConfiguration() global configuration store}.
+     * Timeouts explicitly set on this builder take precedence over this store, then the global store, then the default
+     * timeout. Use {@link Configuration#NONE} to bypass other configuration settings during construction; unset
+     * timeouts still fall back to the global store.
      *
      * @param configuration The configuration store used to
      * @return The updated JdkHttpClientBuilder object.
@@ -277,14 +283,18 @@ public class JdkHttpClientBuilder {
             httpClientBuilder.version(httpVersion == null ? java.net.http.HttpClient.Version.HTTP_1_1 : httpVersion);
         }
 
-        Duration connectionTimeout = getTimeout(this.connectionTimeout, getDefaultConnectTimeout());
+        Duration connectionTimeout = getTimeout(this.connectionTimeout, configuration,
+            PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT, DEFAULT_CONNECT_TIMEOUT);
         if (!connectionTimeout.isZero()) {
             httpClientBuilder.connectTimeout(connectionTimeout);
         }
 
-        Duration writeTimeout = getTimeout(this.writeTimeout, getDefaultWriteTimeout());
-        Duration responseTimeout = getTimeout(this.responseTimeout, getDefaultResponseTimeout());
-        Duration readTimeout = getTimeout(this.readTimeout, getDefaultReadTimeout());
+        Duration writeTimeout
+            = getTimeout(this.writeTimeout, configuration, PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT, DEFAULT_WRITE_TIMEOUT);
+        Duration responseTimeout = getTimeout(this.responseTimeout, configuration,
+            PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT, DEFAULT_RESPONSE_TIMEOUT);
+        Duration readTimeout
+            = getTimeout(this.readTimeout, configuration, PROPERTY_AZURE_REQUEST_READ_TIMEOUT, DEFAULT_READ_TIMEOUT);
 
         Configuration buildConfiguration
             = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
