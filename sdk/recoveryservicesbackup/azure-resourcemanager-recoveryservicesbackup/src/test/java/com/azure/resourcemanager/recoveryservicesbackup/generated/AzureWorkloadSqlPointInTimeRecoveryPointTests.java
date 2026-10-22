@@ -20,30 +20,71 @@ public final class AzureWorkloadSqlPointInTimeRecoveryPointTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureWorkloadSqlPointInTimeRecoveryPoint model = BinaryData.fromString(
-            "{\"objectType\":\"AzureWorkloadSQLPointInTimeRecoveryPoint\",\"timeRanges\":[{\"startTime\":\"2021-02-28T13:12:04Z\",\"endTime\":\"2021-04-29T15:05:43Z\"}],\"extendedInfo\":{\"dataDirectoryTimeInUTC\":\"2020-12-26T05:50:43Z\",\"dataDirectoryPaths\":[{\"type\":\"Log\",\"path\":\"jaltolmnc\",\"logicalName\":\"obqwcsdbnwdcfh\"},{\"type\":\"Data\",\"path\":\"pfuvglsbjjca\",\"logicalName\":\"xbvtvudu\"},{\"type\":\"Data\",\"path\":\"rmrlxqtvcof\",\"logicalName\":\"f\"},{\"type\":\"Log\",\"path\":\"jub\",\"logicalName\":\"knnqvsaznq\"}]},\"recoveryPointTimeInUTC\":\"2021-01-16T21:03:09Z\",\"type\":\"Invalid\",\"recoveryPointTierDetails\":[{\"type\":\"HardenedRP\",\"status\":\"Disabled\",\"extendedInfo\":{\"u\":\"auwjuetaebu\",\"l\":\"dmovsm\",\"oefki\":\"wabm\"}},{\"type\":\"HardenedRP\",\"status\":\"Disabled\",\"extendedInfo\":{\"doaon\":\"lgkfbt\",\"ed\":\"bjcntujitc\"}},{\"type\":\"Invalid\",\"status\":\"Deleted\",\"extendedInfo\":{\"i\":\"dcpzfoqo\"}}],\"recoveryPointMoveReadinessInfo\":{\"zuf\":{\"isReadyForMove\":false,\"additionalInfo\":\"zg\"},\"p\":{\"isReadyForMove\":true,\"additionalInfo\":\"q\"},\"bon\":{\"isReadyForMove\":false,\"additionalInfo\":\"mciodhkhazxkhn\"},\"szzcmrvexztv\":{\"isReadyForMove\":false,\"additionalInfo\":\"oegokdwbwh\"}},\"recoveryPointProperties\":{\"expiryTime\":\"gsfraoyzkoow\",\"ruleName\":\"mnguxawqaldsyu\",\"isSoftDeleted\":true,\"immutabilityProperties\":{\"isImmutable\":false,\"expiryTime\":\"2020-12-25T05:18:59Z\"}},\"threatStatus\":\"Unknown\",\"threatInfo\":[{\"threatTitle\":\"znkbykutwpfhpagm\",\"threatDescription\":\"skdsnfdsdoakg\",\"lastUpdatedTime\":\"2021-11-05T14:44:19Z\",\"threatState\":\"Active\",\"threatStartTime\":\"2021-11-30T20:09:20Z\",\"threatEndTime\":\"2021-01-31T23:02:22Z\",\"threatURI\":\"l\",\"threatSeverity\":\"Informational\"},{\"threatTitle\":\"usdsttwv\",\"threatDescription\":\"vbbejdcng\",\"lastUpdatedTime\":\"2021-02-12T16:56:22Z\",\"threatState\":\"InProgress\",\"threatStartTime\":\"2021-01-28T01:08:20Z\",\"threatEndTime\":\"2021-03-29T19:45:43Z\",\"threatURI\":\"jzrwrdgrtw\",\"threatSeverity\":\"Warning\"},{\"threatTitle\":\"uzkopbminrfd\",\"threatDescription\":\"yuhhziu\",\"lastUpdatedTime\":\"2021-07-06T04:06:38Z\",\"threatState\":\"Active\",\"threatStartTime\":\"2021-05-03T20:50:59Z\",\"threatEndTime\":\"2021-02-07T20:29:27Z\",\"threatURI\":\"mlmz\",\"threatSeverity\":\"Warning\"}]}")
+            "{\"objectType\":\"AzureWorkloadSQLPointInTimeRecoveryPoint\",\"timeRanges\":[{\"startTime\":\"2021-06-23T19:51:13Z\",\"endTime\":\"2021-12-10T23:56:18Z\"},{\"startTime\":\"2021-04-04T08:27:15Z\",\"endTime\":\"2021-09-14T16:01:44Z\"},{\"startTime\":\"2021-03-31T00:55:07Z\",\"endTime\":\"2021-10-16T07:40:20Z\"}],\"extendedInfo\":{\"dataDirectoryTimeInUTC\":\"2021-06-08T15:06:14Z\",\"dataDirectoryPaths\":[{\"type\":\"Log\",\"path\":\"hhxvrhmzkwpj\",\"logicalName\":\"wspughftqsxhqx\"},{\"type\":\"Invalid\",\"path\":\"kndxdigrjgu\",\"logicalName\":\"zdmsyqtfi\"},{\"type\":\"Log\",\"path\":\"otzi\",\"logicalName\":\"amvpphoszqzudph\"},{\"type\":\"Log\",\"path\":\"dkfw\",\"logicalName\":\"wcvtbvkayhmtnvyq\"}],\"includedDatabases\":[{\"datasourceId\":\"zwpcnpwzcjaesg\",\"datasourceName\":\"sccyajguqf\"},{\"datasourceId\":\"ygz\",\"datasourceName\":\"dnkfx\"},{\"datasourceId\":\"emdwzrmuhapfc\",\"datasourceName\":\"psqxq\"}],\"snapshotRecoveryPointInfo\":{\"snapshotResourceGroup\":\"vuoy\",\"sourceFilesystemInfo\":[{\"volumeGuid\":\"elvezrypq\",\"fileSystemType\":\"feo\",\"label\":\"rqwky\",\"accessPaths\":[\"bopgxedkowepbqp\"],\"isOnStorageSpace\":false,\"storageSpaceInfo\":{\"storagePoolUniqueId\":\"wccsnjvcdwxlpqek\",\"storagePoolFriendlyName\":\"nkhtjsyingw\",\"virtualDiskUniqueId\":\"atmtdhtmdvy\",\"virtualDiskFriendlyName\":\"ikdgszywkbir\"},\"diskInfoList\":[{},{},{}]},{\"volumeGuid\":\"hlhkjoqrvqqaatj\",\"fileSystemType\":\"rv\",\"label\":\"upmfiibfg\",\"accessPaths\":[\"ool\",\"rwxkvtkkgl\",\"qwjygvja\",\"vblm\"],\"isOnStorageSpace\":false,\"storageSpaceInfo\":{\"storagePoolUniqueId\":\"hbxvvyhgsopbyrqu\",\"storagePoolFriendlyName\":\"g\",\"virtualDiskUniqueId\":\"vwz\",\"virtualDiskFriendlyName\":\"nhlmctlpdng\"},\"diskInfoList\":[{},{}]}]}},\"recoveryPointTimeInUTC\":\"2021-02-05T15:31:44Z\",\"type\":\"Incremental\",\"recoveryPointTierDetails\":[{\"type\":\"HardenedRP\",\"status\":\"Rehydrated\",\"extendedInfo\":{\"b\":\"egrhbpnaixexc\"}},{\"type\":\"ArchivedRP\",\"status\":\"Deleted\",\"extendedInfo\":{\"nhyjsv\":\"rvqahqkghtpwi\",\"vrvmtgjqppyost\":\"ycxzbfvoo\"}},{\"type\":\"Invalid\",\"status\":\"Invalid\",\"extendedInfo\":{\"afxtsgum\":\"nsxkmcwaekrrjr\",\"pvuzlmv\":\"jglikkxwslolb\",\"gplcrpwjxeznoigb\":\"elfk\"}},{\"type\":\"ArchivedRP\",\"status\":\"Deleted\",\"extendedInfo\":{\"oqkag\":\"azej\"}}],\"recoveryPointMoveReadinessInfo\":{\"dm\":{\"isReadyForMove\":true,\"additionalInfo\":\"augzxnfaazpxdtn\"},\"ou\":{\"isReadyForMove\":false,\"additionalInfo\":\"lwuenvrkp\"}},\"recoveryPointProperties\":{\"expiryTime\":\"rebqaaysjk\",\"ruleName\":\"qtnqtt\",\"isSoftDeleted\":false,\"immutabilityProperties\":{\"isImmutable\":false,\"expiryTime\":\"2021-01-15T10:22:53Z\"}},\"threatStatus\":\"UnHealthy\",\"threatInfo\":[{\"threatTitle\":\"pqqmted\",\"threatDescription\":\"mmji\",\"lastUpdatedTime\":\"2021-01-23T06:09:40Z\",\"threatState\":\"Active\",\"threatStartTime\":\"2021-02-27T20:08:37Z\",\"threatEndTime\":\"2021-03-06T19:52:25Z\",\"threatURI\":\"uyqncygupkvipmd\",\"threatSeverity\":\"Critical\"},{\"threatTitle\":\"qupevzh\",\"threatDescription\":\"totxhojujb\",\"lastUpdatedTime\":\"2021-01-07T11:25:05Z\",\"threatState\":\"Active\",\"threatStartTime\":\"2021-09-11T23:02:16Z\",\"threatEndTime\":\"2021-10-20T01:33:25Z\",\"threatURI\":\"xbjxyfwnylrcools\",\"threatSeverity\":\"Critical\"},{\"threatTitle\":\"iwkkbn\",\"threatDescription\":\"rywvtylbfpn\",\"lastUpdatedTime\":\"2021-10-05T21:52:34Z\",\"threatState\":\"Ignored\",\"threatStartTime\":\"2021-07-17T10:48:48Z\",\"threatEndTime\":\"2021-02-21T18:31:28Z\",\"threatURI\":\"htywubxcbihwq\",\"threatSeverity\":\"Informational\"},{\"threatTitle\":\"ntwjch\",\"threatDescription\":\"goihx\",\"lastUpdatedTime\":\"2021-06-23T07:57Z\",\"threatState\":\"Active\",\"threatStartTime\":\"2021-06-22T06:40:38Z\",\"threatEndTime\":\"2021-07-09T14:12:15Z\",\"threatURI\":\"luudfdlwggytsb\",\"threatSeverity\":\"Informational\"}]}")
             .toObject(AzureWorkloadSqlPointInTimeRecoveryPoint.class);
-        Assertions.assertEquals(ThreatStatus.UNKNOWN, model.threatStatus());
+        Assertions.assertEquals(ThreatStatus.UN_HEALTHY, model.threatStatus());
         Assertions.assertEquals(ThreatState.ACTIVE, model.threatInfo().get(0).threatState());
-        Assertions.assertEquals(ThreatSeverity.INFORMATIONAL, model.threatInfo().get(0).threatSeverity());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-16T21:03:09Z"), model.recoveryPointTimeInUtc());
-        Assertions.assertEquals(RestorePointType.INVALID, model.type());
-        Assertions.assertEquals("auwjuetaebu", model.recoveryPointTierDetails().get(0).extendedInfo().get("u"));
+        Assertions.assertEquals(ThreatSeverity.CRITICAL, model.threatInfo().get(0).threatSeverity());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-05T15:31:44Z"), model.recoveryPointTimeInUtc());
+        Assertions.assertEquals(RestorePointType.INCREMENTAL, model.type());
+        Assertions.assertEquals("egrhbpnaixexc", model.recoveryPointTierDetails().get(0).extendedInfo().get("b"));
         Assertions.assertEquals(RecoveryPointTierType.HARDENED_RP, model.recoveryPointTierDetails().get(0).type());
-        Assertions.assertEquals(RecoveryPointTierStatus.DISABLED, model.recoveryPointTierDetails().get(0).status());
-        Assertions.assertFalse(model.recoveryPointMoveReadinessInfo().get("zuf").isReadyForMove());
-        Assertions.assertEquals("zg", model.recoveryPointMoveReadinessInfo().get("zuf").additionalInfo());
-        Assertions.assertEquals("gsfraoyzkoow", model.recoveryPointProperties().expiryTime());
-        Assertions.assertEquals("mnguxawqaldsyu", model.recoveryPointProperties().ruleName());
-        Assertions.assertTrue(model.recoveryPointProperties().isSoftDeleted());
+        Assertions.assertEquals(RecoveryPointTierStatus.REHYDRATED, model.recoveryPointTierDetails().get(0).status());
+        Assertions.assertTrue(model.recoveryPointMoveReadinessInfo().get("dm").isReadyForMove());
+        Assertions.assertEquals("augzxnfaazpxdtn", model.recoveryPointMoveReadinessInfo().get("dm").additionalInfo());
+        Assertions.assertEquals("rebqaaysjk", model.recoveryPointProperties().expiryTime());
+        Assertions.assertEquals("qtnqtt", model.recoveryPointProperties().ruleName());
+        Assertions.assertFalse(model.recoveryPointProperties().isSoftDeleted());
         Assertions.assertFalse(model.recoveryPointProperties().immutabilityProperties().isImmutable());
-        Assertions.assertEquals(OffsetDateTime.parse("2020-12-25T05:18:59Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-15T10:22:53Z"),
             model.recoveryPointProperties().immutabilityProperties().expiryTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2020-12-26T05:50:43Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-08T15:06:14Z"),
             model.extendedInfo().dataDirectoryTimeInUtc());
         Assertions.assertEquals(SqlDataDirectoryType.LOG, model.extendedInfo().dataDirectoryPaths().get(0).type());
-        Assertions.assertEquals("jaltolmnc", model.extendedInfo().dataDirectoryPaths().get(0).path());
-        Assertions.assertEquals("obqwcsdbnwdcfh", model.extendedInfo().dataDirectoryPaths().get(0).logicalName());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-28T13:12:04Z"), model.timeRanges().get(0).startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-29T15:05:43Z"), model.timeRanges().get(0).endTime());
+        Assertions.assertEquals("hhxvrhmzkwpj", model.extendedInfo().dataDirectoryPaths().get(0).path());
+        Assertions.assertEquals("wspughftqsxhqx", model.extendedInfo().dataDirectoryPaths().get(0).logicalName());
+        Assertions.assertEquals("zwpcnpwzcjaesg", model.extendedInfo().includedDatabases().get(0).datasourceId());
+        Assertions.assertEquals("sccyajguqf", model.extendedInfo().includedDatabases().get(0).datasourceName());
+        Assertions.assertEquals("vuoy", model.extendedInfo().snapshotRecoveryPointInfo().snapshotResourceGroup());
+        Assertions.assertEquals("elvezrypq",
+            model.extendedInfo().snapshotRecoveryPointInfo().sourceFilesystemInfo().get(0).volumeGuid());
+        Assertions.assertEquals("feo",
+            model.extendedInfo().snapshotRecoveryPointInfo().sourceFilesystemInfo().get(0).fileSystemType());
+        Assertions.assertEquals("rqwky",
+            model.extendedInfo().snapshotRecoveryPointInfo().sourceFilesystemInfo().get(0).label());
+        Assertions.assertEquals("bopgxedkowepbqp",
+            model.extendedInfo().snapshotRecoveryPointInfo().sourceFilesystemInfo().get(0).accessPaths().get(0));
+        Assertions.assertFalse(
+            model.extendedInfo().snapshotRecoveryPointInfo().sourceFilesystemInfo().get(0).isOnStorageSpace());
+        Assertions.assertEquals("wccsnjvcdwxlpqek",
+            model.extendedInfo()
+                .snapshotRecoveryPointInfo()
+                .sourceFilesystemInfo()
+                .get(0)
+                .storageSpaceInfo()
+                .storagePoolUniqueId());
+        Assertions.assertEquals("nkhtjsyingw",
+            model.extendedInfo()
+                .snapshotRecoveryPointInfo()
+                .sourceFilesystemInfo()
+                .get(0)
+                .storageSpaceInfo()
+                .storagePoolFriendlyName());
+        Assertions.assertEquals("atmtdhtmdvy",
+            model.extendedInfo()
+                .snapshotRecoveryPointInfo()
+                .sourceFilesystemInfo()
+                .get(0)
+                .storageSpaceInfo()
+                .virtualDiskUniqueId());
+        Assertions.assertEquals("ikdgszywkbir",
+            model.extendedInfo()
+                .snapshotRecoveryPointInfo()
+                .sourceFilesystemInfo()
+                .get(0)
+                .storageSpaceInfo()
+                .virtualDiskFriendlyName());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-23T19:51:13Z"), model.timeRanges().get(0).startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-12-10T23:56:18Z"), model.timeRanges().get(0).endTime());
     }
 }
