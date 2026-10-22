@@ -20,7 +20,9 @@ import reactor.core.publisher.Mono;
 import java.time.Clock;
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.util.Iterator;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -40,11 +42,15 @@ final class ContainerSessionProvider extends SessionProvider {
 
     private static final ClientLogger LOGGER = new ClientLogger(ContainerSessionProvider.class);
     private static final Duration IDLE_EVICTION_THRESHOLD = Duration.ofMinutes(IDLE_EVICTION_THRESHOLD_MINUTES);
+    private static final Duration EVICTION_SWEEP_INTERVAL = Duration.ofSeconds(10);
+    private static final int MAX_EVICTION_SWEEP_ENTRIES = 32;
     private static final Duration DEFAULT_EXPIRATION_OFFSET = Duration.ofMinutes(5L);
     private static final String FEATURE_NOT_ENABLED = "FeatureNotEnabled";
 
     private final Clock clock;
     private final ConcurrentHashMap<String, ContainerSessionCache> containerSessionCaches = new ConcurrentHashMap<>();
+    private volatile OffsetDateTime lastEvictionSweep;
+    private Iterator<Map.Entry<String, ContainerSessionCache>> evictionIterator;
 
     ContainerSessionProvider(Clock clock) {
         this.clock = Objects.requireNonNull(clock, "'clock' cannot be null.");
@@ -135,20 +141,30 @@ final class ContainerSessionProvider extends SessionProvider {
             existing.latestAcquirer = acquirer;
             return existing;
         });
-        evictStaleCaches();
+        evictStaleCaches(now);
         return containerSessionCache;
     }
 
-    private void evictStaleCaches() {
-        containerSessionCaches.keySet().forEach(this::evictStaleCache);
+    private void evictStaleCaches(OffsetDateTime now) {
+        synchronized (containerSessionCaches) {
+            if (lastEvictionSweep != null
+                && Duration.between(lastEvictionSweep, now).compareTo(EVICTION_SWEEP_INTERVAL) < 0) {
+                return;
+            }
+            lastEvictionSweep = now;
+            if (evictionIterator == null || !evictionIterator.hasNext()) {
+                evictionIterator = containerSessionCaches.entrySet().iterator();
+            }
+            int inspected = 0;
+            while (evictionIterator.hasNext() && inspected++ < MAX_EVICTION_SWEEP_ENTRIES) {
+                Map.Entry<String, ContainerSessionCache> entry = evictionIterator.next();
+                containerSessionCaches.computeIfPresent(entry.getKey(),
+                    (ignored, cache) -> retainIfActive(now, cache));
+            }
+        }
     }
 
-    private void evictStaleCache(String key) {
-        containerSessionCaches.computeIfPresent(key, this::retainIfActive);
-    }
-
-    private ContainerSessionCache retainIfActive(String ignored, ContainerSessionCache cache) {
-        OffsetDateTime now = OffsetDateTime.now(clock);
+    private ContainerSessionCache retainIfActive(OffsetDateTime now, ContainerSessionCache cache) {
         Duration idleTime = Duration.between(cache.lastAccess, now);
         if (idleTime.compareTo(IDLE_EVICTION_THRESHOLD) >= 0) {
             return null;

@@ -2716,7 +2716,7 @@ public class ContainerApiTests extends BlobTestBase {
         Set<String> distinctTokens = new HashSet<>(inspect.getSessionTokens());
         assertTrue(distinctTokens.size() >= 2,
             "Expected the session token to rotate at least once over the sparse-polling window; only saw "
-                + distinctTokens);
+                + distinctTokens.size() + " distinct token(s)");
     }
 
     /**
