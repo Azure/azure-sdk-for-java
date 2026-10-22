@@ -81,8 +81,9 @@ public class WorkloadIdentityCredentialBuilder extends AadCredentialBuilderBase<
      *
      * <p>If no proxy settings are present, the credential uses direct authentication. Incomplete or invalid proxy
      * configuration fails rather than falling back to direct authentication. When a proxy is configured, its dedicated
-     * transport replaces any client set with {@link #httpClient(com.azure.core.http.HttpClient)}. A custom HTTP pipeline
-     * or legacy {@code proxyOptions} cannot be combined with this feature. Use {@link #addPolicy} for pipeline policies.
+     * transport is set on a copy of the credential options, replacing any client set with
+     * {@link #httpClient(com.azure.core.http.HttpClient)}. A custom HTTP pipeline retains its usual precedence over
+     * HTTP client settings.
      * Keep the authority host set to the Microsoft Entra authority, not the proxy URL.</p>
      *
      * <p><strong>Sample: Enable AKS identity bindings</strong></p>
@@ -107,7 +108,6 @@ public class WorkloadIdentityCredentialBuilder extends AadCredentialBuilderBase<
      *
      * @return a {@link WorkloadIdentityCredential} with the current configurations.
      * @throws IllegalArgumentException if required workload identity settings are missing or proxy configuration is invalid.
-     * @throws IllegalStateException if identity bindings are combined with a custom pipeline or legacy proxy options.
      */
     public WorkloadIdentityCredential build() {
         Configuration configuration = identityClientOptions.getConfiguration() == null
@@ -130,11 +130,6 @@ public class WorkloadIdentityCredentialBuilder extends AadCredentialBuilderBase<
         if (enableAzureProxy) {
             ProxyConfig proxyConfig = CustomTokenProxyConfiguration.parseAndValidate(configuration);
             if (proxyConfig != null) {
-                if (options.getHttpPipeline() != null || options.getProxyOptions() != null) {
-                    throw LOGGER.logExceptionAsError(new IllegalStateException(
-                        "AKS identity bindings cannot be combined with a custom HTTP pipeline or legacy proxyOptions. "
-                            + "Use addPolicy to configure policies on the credential's HTTP pipeline."));
-                }
                 options.setHttpClient(new CustomTokenProxyHttpClient(proxyConfig));
             }
         }

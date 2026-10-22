@@ -186,8 +186,8 @@ provided, the platform trust store is used.
 
 Enabling the option without any proxy settings uses the direct workload identity flow. Partial or invalid proxy
 configuration fails instead of silently falling back to direct authentication. With proxy configuration present,
-the credential uses a dedicated HTTP transport. A custom HTTP pipeline or legacy `proxyOptions` isn't supported;
-use `addPolicy()` to add pipeline policies.
+a dedicated HTTP transport is set on a copy of the credential options. A custom HTTP pipeline retains its usual
+precedence over HTTP client settings.
 
 An identity binding authorizes token acquisition, not access to Azure resources. Assign Azure roles to the managed
 identity separately when resource access is required.

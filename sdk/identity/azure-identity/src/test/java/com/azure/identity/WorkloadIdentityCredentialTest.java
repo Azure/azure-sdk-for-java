@@ -6,9 +6,11 @@ package com.azure.identity;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.ProxyOptions;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.test.utils.TestConfigurationSource;
 import com.azure.core.util.Configuration;
 import com.azure.identity.implementation.IdentityClient;
@@ -30,6 +32,7 @@ import java.nio.file.Path;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -571,32 +574,52 @@ public class WorkloadIdentityCredentialTest {
     }
 
     @Test
-    public void testProxyRejectsCustomPipelineInsteadOfBypassingProxy() {
-        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(mock(HttpClient.class)).build();
+    public void testProxyEnabledWithCustomPipelineUsesPipelineTransport(@TempDir Path tempDir) throws IOException {
+        Path tokenFile = tempDir.resolve("token.jwt");
+        Files.write(tokenFile, "dummy-token".getBytes(StandardCharsets.UTF_8));
+        AtomicInteger requests = new AtomicInteger();
+        HttpClient pipelineClient = request -> {
+            Assertions.assertEquals("login.microsoftonline.com", request.getUrl().getHost());
+            requests.incrementAndGet();
+            return Mono.just(new MockHttpResponse(request, 200, new HttpHeaders(),
+                "{\"access_token\":\"pipeline-token\",\"expires_in\":3600,\"token_type\":\"Bearer\"}"
+                    .getBytes(StandardCharsets.UTF_8)));
+        };
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(pipelineClient).build();
         WorkloadIdentityCredentialBuilder builder = new WorkloadIdentityCredentialBuilder().tenantId("tenant")
             .clientId(CLIENT_ID)
-            .tokenFilePath("token.jwt")
+            .tokenFilePath(tokenFile.toString())
             .configuration(TestUtils
-                .createTestConfiguration(new TestConfigurationSource().put(ENV_PROXY_URL, "https://proxy.example.com")))
+                .createTestConfiguration(new TestConfigurationSource().put(ENV_PROXY_URL, "https://proxy.example.com")
+                    .put(Configuration.PROPERTY_AZURE_AUTHORITY_HOST, AzureAuthorityHosts.AZURE_PUBLIC_CLOUD)))
             .pipeline(pipeline)
+            .disableInstanceDiscovery()
             .enableAzureProxy();
 
-        Assertions.assertThrows(IllegalStateException.class, builder::build);
-        Assertions.assertDoesNotThrow(
-            () -> builder.configuration(TestUtils.createTestConfiguration(new TestConfigurationSource())).build());
+        WorkloadIdentityCredential credential = Assertions.assertDoesNotThrow(builder::build);
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com/.default");
+
+        Assertions.assertEquals("pipeline-token", credential.getTokenSync(request).getToken());
+        StepVerifier.create(credential.getToken(request))
+            .expectNextMatches(token -> "pipeline-token".equals(token.getToken()))
+            .verifyComplete();
+        assertTrue(requests.get() > 0);
+        Assertions.assertSame(pipeline, builder.identityClientOptions.getHttpPipeline());
     }
 
     @Test
-    public void testProxyRejectsLegacyProxyOptionsInsteadOfBypassingProxy() {
+    public void testProxyEnabledWithLegacyProxyOptionsDoesNotThrow() {
+        ProxyOptions proxyOptions = new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888));
         WorkloadIdentityCredentialBuilder builder = new WorkloadIdentityCredentialBuilder().tenantId("tenant")
             .clientId(CLIENT_ID)
             .tokenFilePath("token.jwt")
             .configuration(TestUtils
                 .createTestConfiguration(new TestConfigurationSource().put(ENV_PROXY_URL, "https://proxy.example.com")))
-            .proxyOptions(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))
+            .proxyOptions(proxyOptions)
             .enableAzureProxy();
 
-        Assertions.assertThrows(IllegalStateException.class, builder::build);
+        assertNotNull(Assertions.assertDoesNotThrow(builder::build));
+        Assertions.assertSame(proxyOptions, builder.identityClientOptions.getProxyOptions());
     }
 
     @Test

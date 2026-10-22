@@ -13,7 +13,7 @@
 - Fixed AKS identity binding proxy TLS server-name verification and rejection of partially malformed CA bundles.
 - Fixed AKS identity binding CA file reloads to retain the previously loaded CA during missing or empty rotation windows.
 - Fixed workload identity proxy requests and response reads blocking Reactor event-loop threads, and response read failures being returned as empty bodies.
-- Fixed identity binding transport configuration leaking into subsequent credentials built with the same builder. Unsupported custom pipelines and legacy proxy options now fail explicitly instead of bypassing the proxy.
+- Fixed identity binding transport configuration leaking into subsequent credentials built with the same builder.
 - Disabled MSAL's internal retry for Confidential Client, Managed Identity and Public Client Applications. ([#48472](https://github.com/Azure/azure-sdk-for-java/pull/48472))
 - Fixed misleading authentication error reporting when token requests are interrupted or the JVM shuts down. ([#50585](https://github.com/Azure/azure-sdk-for-java/issues/50585))
 - Fixed IMDS discovery in `DefaultAzureCredential` to wait for HTTP response headers with a read timeout, allowing the credential chain to continue when a local endpoint accepts connections but does not respond, while preserving fallback on probe setup failures. ([#50517](https://github.com/Azure/azure-sdk-for-java/pull/50517))
