@@ -3,6 +3,16 @@
 ## 12.33.0-beta.1 (Unreleased)
 
 ### Features Added
+- Added support for NFS List Files and Directories V2. `ShareDirectoryClient.listFilesAndDirectories` and 
+`ShareDirectoryClient.listFilesAndDirectories` now return symbolic links, block devices, character devices, FIFOs and 
+sockets in addition to files and directories when supported by the service.
+- Added `ShareFileItem.getLinkCount()`, `ShareFileItem.getFileType()`, `ShareFileItem.getLinkText()`,
+  `ShareFileItem.getDeviceMajor()` and `ShareFileItem.getDeviceMinor()`.
+- Added `ShareFileItemProperties.getOwner()`, `ShareFileItemProperties.getGroup()` and
+  `ShareFileItemProperties.getFileMode()`.
+- Added `FileType` to identify regular files, directories, symbolic links, block devices, character devices, FIFOs and sockets.
+- Added `ShareListFilesAndDirectoriesOptions.setIncludePermissions`, `setIncludeLinkCount`, `setIncludeNfsAttributes`
+  and `setIncludeAll`.
 
 ### Breaking Changes
 
