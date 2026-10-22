@@ -178,6 +178,7 @@ public final class AccessTokenCache {
                 ? tokenRequestContext.getTenantId() == null
                 : (tokenRequestContext.getTenantId() != null
                     && tokenRequestContext.getTenantId().equals(this.tokenRequestContext.getTenantId())))
+            && this.tokenRequestContext.isCaeEnabled() == tokenRequestContext.isCaeEnabled()
             && this.tokenRequestContext.getScopes().equals(tokenRequestContext.getScopes()));
     }
 
