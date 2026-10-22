@@ -30,9 +30,10 @@ import java.util.concurrent.locks.ReentrantLock;
  *
  * <p>
  * When the {@code refreshOnContextChange} flag is {@code true}, the cache compares the incoming
- * {@link TokenRequestContext} (scopes, tenant ID, and claims) against the context used to acquire the current cached
- * token. A mismatch causes an immediate refresh without falling back to the previously cached token. This supports
- * Continuous Access Evaluation (CAE) claims challenges.
+ * {@link TokenRequestContext} (scopes, tenant ID, and claims) against a snapshot of the context used to acquire the
+ * current cached token. Changes to the original context do not modify this snapshot. A mismatch causes an immediate
+ * refresh without falling back to the previously cached token. This supports Continuous Access Evaluation (CAE)
+ * claims challenges.
  * </p>
  *
  * <p>
@@ -66,7 +67,7 @@ public final class AccessTokenCache {
     private static final ClientLogger LOGGER = new ClientLogger(AccessTokenCache.class);
     private volatile AccessTokenCacheInfo cacheInfo;
     private final TokenCredential tokenCredential;
-    // Stores the last authenticated token request context. The cached token is valid under this context.
+    // Stores a snapshot of the last authenticated token request context.
     private TokenRequestContext tokenRequestContext;
 
     // Used for sync flow.
@@ -97,7 +98,8 @@ public final class AccessTokenCache {
      *
      * @param tokenRequestContext The request context for token acquisition.
      * @param refreshOnContextChange When {@code true}, a change in scopes, tenant ID, or claims causes an immediate token
-     * refresh regardless of expiry. When {@code false}, the cached token's context is retained for subsequent refreshes.
+     * refresh regardless of expiry. When {@code false}, the cached token's context snapshot is retained for subsequent
+     * refreshes.
      * @return The cached or newly acquired access token.
      * @throws IllegalArgumentException if {@code tokenRequestContext} is {@code null}.
      * @throws RuntimeException if token acquisition fails and no cached token can be used.
@@ -124,12 +126,15 @@ public final class AccessTokenCache {
         boolean forceRefresh = (refreshOnContextChange && checkIfForceRefreshRequired(tokenRequestContext))
             || this.tokenRequestContext == null;
         if (forceRefresh) {
-            this.tokenRequestContext = tokenRequestContext;
+            this.tokenRequestContext = new TokenRequestContext().setScopes(tokenRequestContext.getScopes())
+                .setTenantId(tokenRequestContext.getTenantId())
+                .setClaims(tokenRequestContext.getClaims())
+                .setCaeEnabled(tokenRequestContext.isCaeEnabled());
             fallback = null;
-        } else if (cachedToken != null && !checkIfRefreshIsNeeded(cachedToken)) {
-            return cachedToken;
         } else if (cachedToken == null || cachedToken.isExpired()) {
             fallback = null;
+        } else if (!checkIfRefreshIsNeeded(cachedToken)) {
+            return cachedToken;
         } else {
             if (!now.isAfter(cache.getNextTokenRefreshAt())) {
                 return cachedToken;
@@ -151,7 +156,7 @@ public final class AccessTokenCache {
         } catch (Throwable error) {
             buildTokenRefreshLog(LogLevel.ERROR, cachedToken).setThrowable(error)
                 .log("Failed to acquire a new access token.");
-            this.cacheInfo = new AccessTokenCacheInfo(cachedToken, OffsetDateTime.now());
+            this.cacheInfo = new AccessTokenCacheInfo(fallback, OffsetDateTime.now());
 
             if (fallback != null) {
                 return fallback;

@@ -10,7 +10,8 @@
 
 ### Bugs Fixed
 
-- Aligned access token caching with `azure-core`, including tenant-aware context changes and refresh error handling that
-  only falls back to a valid token for the cached context.
+- Aligned access token caching with `azure-core`, including tenant-aware context changes, request-context snapshots,
+  and invalidation of unusable tokens after refresh failures.
+- Fixed token expiry checks when credential-provided refresh times are later than token expiration.
 
 ### Other Changes
