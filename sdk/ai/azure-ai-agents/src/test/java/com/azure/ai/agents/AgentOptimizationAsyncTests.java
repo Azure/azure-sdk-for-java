@@ -11,7 +11,6 @@ import com.azure.ai.agents.models.PageOrder;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.core.http.HttpClient;
 import com.azure.core.util.polling.LongRunningOperationStatus;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Mono;
@@ -29,7 +28,6 @@ public class AgentOptimizationAsyncTests extends AgentOptimizationTestBase {
     private static final String SUCCESS_AGENT_NAME = "java-optimization-async-success";
     private static final String CANCEL_AGENT_NAME = "java-optimization-async-cancel";
 
-    @Disabled("Paging behavior changed; the test may need to be re-recorded.")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.agents.TestUtils#getTestParameters")
     public void successfulOptimizationLifecycle(HttpClient httpClient, AgentsServiceVersion serviceVersion) {
