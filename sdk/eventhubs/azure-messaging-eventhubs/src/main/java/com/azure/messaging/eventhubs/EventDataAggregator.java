@@ -138,7 +138,7 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
             this.disposable = Flux
                 .switchOnNext(eventSink.asFlux()
                     .map(e -> Flux.interval(options.getMaxWaitTime()).takeUntil(index -> isCompleted.get())))
-                // Every event cancels the running interval, and cancelling it interrupts the interval's thread if a
+                // Every new batch cancels the running interval, and cancelling it interrupts the interval's thread if a
                 // tick is in progress. Handling ticks on another thread keeps that interrupt away from the batch
                 // creation (which would fail) and the send (which would close the connection's IO pipe).
                 .onBackpressureDrop()
@@ -212,9 +212,12 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
 
         @Override
         public void onNext(EventData eventData) {
-            updateOrPublishBatch(eventData, false);
-
-            eventSink.emitNext(1L, Sinks.EmitFailureHandler.FAIL_FAST);
+            // maxWaitTime is measured from the first event in a batch. Restarting the timer on every event would
+            // postpone the time-based publish for as long as events keep arriving faster than maxWaitTime, leaving a
+            // partially full batch waiting until it fills up.
+            if (updateOrPublishBatch(eventData, false)) {
+                eventSink.emitNext(1L, Sinks.EmitFailureHandler.FAIL_FAST);
+            }
 
             // When an EventDataBatch is pushed downstream, we decrement REQUESTED. However, if REQUESTED is still > 0,
             // that means we did not publish the EventDataBatch (i.e. because it was not full). We request another
@@ -256,17 +259,18 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
          *
          * @param eventData EventData to add to or null if there are no events to add to the batch.
          * @param alwaysPublish {@code true} to always push batch downstream. {@code false}, otherwise.
+         * @return {@code true} if {@code eventData} was added as the first event of a batch.
          */
-        private void updateOrPublishBatch(EventData eventData, boolean alwaysPublish) {
+        private boolean updateOrPublishBatch(EventData eventData, boolean alwaysPublish) {
             final boolean isFlush = isFlushSignal(eventData);
             if (alwaysPublish || isFlush) {
                 publishDownstream(isFlush);
-                return;
+                return false;
             }
             if (eventData == null) {
                 // EventData will be null in the case when options.maxWaitTime() has elapsed  and we want to push the
                 // batch downstream.
-                return;
+                return false;
             }
 
             Throwable failure;
@@ -275,7 +279,7 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
                 if (batch != null) {
                     failure = tryAdd(batch, eventData);
                     if (failure == null) {
-                        return;
+                        return batch.getCount() == 1;
                     }
 
                     publishDownstream(false);
@@ -284,7 +288,7 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
                     if (batch != null) {
                         failure = tryAdd(batch, eventData);
                         if (failure == null) {
-                            return;
+                            return batch.getCount() == 1;
                         }
                     } else {
                         failure = batchCreationError();
@@ -295,6 +299,7 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
             }
 
             reportFailedEvent(eventData, failure);
+            return false;
         }
 
         /**
