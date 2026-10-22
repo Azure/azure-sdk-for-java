@@ -15,9 +15,12 @@ import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.implementation.util.BlobUserAgentModificationPolicy;
+import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.BlockBlobItem;
 import com.azure.storage.blob.models.CustomerProvidedKey;
+import com.azure.storage.blob.options.BlobDownloadToFileOptions;
+import com.azure.storage.common.LayoutAwareRouting;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.policy.DataLocalityPolicy;
@@ -27,6 +30,7 @@ import reactor.core.publisher.Mono;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +40,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -97,6 +102,29 @@ public class BlobCryptographyBuilderTests extends BlobCryptographyTestBase {
         beac.uploadFromFile(file.toPath().toString()).block();
 
         compareDataToFile(beac.download(), file);
+    }
+
+    @Test
+    public void encryptedDownloadWithEnabledDataLocalitySucceeds() throws IOException {
+        cc.create();
+        File source = getRandomFile(Constants.KB);
+        File destination = File.createTempFile(testResourceNamer.randomName(prefix, 60), ".txt");
+        Files.deleteIfExists(destination.toPath());
+
+        try {
+            beac.uploadFromFile(source.toPath().toString()).block();
+
+            Response<BlobProperties> response
+                = beac.downloadToFileWithResponse(new BlobDownloadToFileOptions(destination.toPath().toString())
+                    .setLayoutAwareRouting(LayoutAwareRouting.ENABLED)).block();
+
+            assertNotNull(response);
+            assertFalse(StorageImplUtils.pipelineSupportsDataLocality(beac.getHttpPipeline()));
+            compareFiles(source, destination, 0, source.length());
+        } finally {
+            Files.deleteIfExists(source.toPath());
+            Files.deleteIfExists(destination.toPath());
+        }
     }
 
     @Test

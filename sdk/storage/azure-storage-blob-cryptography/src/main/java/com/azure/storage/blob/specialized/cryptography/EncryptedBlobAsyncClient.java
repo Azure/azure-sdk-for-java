@@ -82,7 +82,7 @@ import static com.azure.storage.blob.specialized.cryptography.CryptographyConsta
  * Docs For Client-Side Encryption</a> for more information.
  *
  * <p>Layout-aware routing is not supported for client-side encrypted downloads. Downloads use the client's configured
- * endpoint even when {@link LayoutAwareRouting#ENABLED} is requested.</p>
+ * endpoint and log a warning when {@link LayoutAwareRouting#ENABLED} is requested.</p>
  *
  * <p>
  * This client is instantiated through {@link EncryptedBlobClientBuilder}

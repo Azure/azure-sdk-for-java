@@ -5,6 +5,7 @@ package com.azure.storage.blob.implementation.util;
 
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRange;
 import com.azure.core.http.RequestConditions;
 import com.azure.core.http.rest.Response;
@@ -112,6 +113,10 @@ public final class ModelHelper {
      */
     private static final LayoutAwareRouting DEFAULT_LAYOUT_AWARE_ROUTING = LayoutAwareRouting.DISABLED;
 
+    static final String UNSUPPORTED_DATA_LOCALITY_WARNING
+        = "Layout-aware routing was enabled, but this client does not support data locality. "
+            + "The download will use the configured endpoint.";
+
     /**
      * Determines whether the passed authority is IP style, that is, it is of the format {@code <host>:<port>}.
      *
@@ -216,13 +221,29 @@ public final class ModelHelper {
     }
 
     /**
-     * Gets whether layout-aware routing should be used after resolving the default routing mode.
+     * Gets whether layout-aware routing should be used after resolving the default routing mode and checking pipeline
+     * support. If routing was explicitly enabled for an unsupported pipeline, logs a warning and returns {@code false}.
      *
      * @param layoutAwareRouting The layout-aware routing option.
+     * @param pipeline The pipeline used by the client.
      * @return Whether layout-aware routing should be used.
      */
-    public static boolean isLayoutRoutingEnabled(LayoutAwareRouting layoutAwareRouting) {
-        return resolveLayoutAwareRouting(layoutAwareRouting) == LayoutAwareRouting.ENABLED;
+    public static boolean isLayoutRoutingEnabled(LayoutAwareRouting layoutAwareRouting, HttpPipeline pipeline) {
+        return isLayoutRoutingEnabled(layoutAwareRouting, pipeline, LOGGER);
+    }
+
+    static boolean isLayoutRoutingEnabled(LayoutAwareRouting layoutAwareRouting, HttpPipeline pipeline,
+        ClientLogger logger) {
+        if (resolveLayoutAwareRouting(layoutAwareRouting) != LayoutAwareRouting.ENABLED) {
+            return false;
+        }
+        if (StorageImplUtils.pipelineSupportsDataLocality(pipeline)) {
+            return true;
+        }
+        if (layoutAwareRouting == LayoutAwareRouting.ENABLED) {
+            logger.warning(UNSUPPORTED_DATA_LOCALITY_WARNING);
+        }
+        return false;
     }
 
     /**

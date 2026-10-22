@@ -1564,7 +1564,8 @@ public class BlobAsyncClientBase {
             = ModelHelper.populateAndApplyDefaults(options.getParallelTransferOptions());
         BlobRequestConditions finalConditions
             = options.getRequestConditions() == null ? new BlobRequestConditions() : options.getRequestConditions();
-        final boolean layoutRoutingEnabled = ModelHelper.isLayoutRoutingEnabled(options.getLayoutAwareRouting());
+        final boolean layoutRoutingEnabled
+            = ModelHelper.isLayoutRoutingEnabled(options.getLayoutAwareRouting(), getHttpPipeline());
 
         // Default behavior is not to overwrite
         Set<OpenOption> openOptions = options.getOpenOptions();
@@ -1629,8 +1630,7 @@ public class BlobAsyncClientBase {
                 long remainingCount = newCount - initialChunkSize;
                 if (DownloadHint.LAYOUT.equals(initialResponse.getDeserializedHeaders().getDownloadHint())
                     && remainingCount > 0
-                    && layoutRoutingEnabled
-                    && StorageImplUtils.pipelineSupportsDataLocality(this.getHttpPipeline())) {
+                    && layoutRoutingEnabled) {
                     Context finalContext = context == null ? Context.NONE : context;
                     BlobRange layoutRange = new BlobRange(remainingOffset, remainingCount);
                     layoutCache = new AutoRefreshingCache<>(

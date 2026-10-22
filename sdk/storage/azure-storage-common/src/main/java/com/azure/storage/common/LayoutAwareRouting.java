@@ -7,7 +7,8 @@ package com.azure.storage.common;
  * Defines the routing behavior the SDK should use when download hint metadata indicates blob layout is available.
  * <p>
  * This is a performance optimization only. The bytes returned are identical regardless of the mode used.
- * Client-side encrypted blob clients do not support layout-aware routing and always use their configured endpoint.
+ * Client-side encrypted blob clients do not support layout-aware routing and always use their configured endpoint. A
+ * warning is logged when {@link #ENABLED} is explicitly requested for an unsupported client.
  */
 public enum LayoutAwareRouting {
     /**
