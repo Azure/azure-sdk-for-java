@@ -22,6 +22,7 @@ import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
+import com.azure.storage.file.share.implementation.ShareErrors;
 import com.azure.storage.file.share.implementation.models.SharePermission;
 import com.azure.storage.file.share.implementation.models.ShareSignedIdentifierWrapper;
 import com.azure.storage.file.share.implementation.models.ShareStats;
@@ -181,6 +182,27 @@ public class ShareClient {
     }
 
     /**
+     * Creates a directory client that addresses a directory by its file ID.
+     *
+     * <p>Call {@link ShareDirectoryClient#getProperties()} on the returned client to retrieve properties without
+     * knowing the directory path. Obtain the ID from {@link FileSmbProperties#getFileId()} in a path-based properties
+     * response. Other service operations require a path-addressed client.</p>
+     *
+     * <pre>{@code
+     * ShareDirectoryProperties properties = shareClient.getDirectoryClientByFileId(fileId).getProperties();
+     * }</pre>
+     *
+     * @param fileId The file ID of the directory.
+     * @return A client for interacting with the directory by ID.
+     * @throws IllegalArgumentException If {@code fileId} is null or blank.
+     */
+    public ShareDirectoryClient getDirectoryClientByFileId(String fileId) {
+        ShareErrors.validateFileId(fileId);
+        return new ShareDirectoryClient(azureFileStorageClient, shareName, "", fileId, snapshot, accountName,
+            serviceVersion, sasToken);
+    }
+
+    /**
      * Constructs a {@link ShareFileClient} that interacts with the specified file.
      *
      * <p>If the file doesn't exist in the share {@link ShareFileClient#create(long)} ) create} in the client will
@@ -194,6 +216,30 @@ public class ShareClient {
             new ShareFileAsyncClient(azureFileStorageClient, shareName, filePath, snapshot, accountName, serviceVersion,
                 sasToken),
             azureFileStorageClient, shareName, filePath, snapshot, accountName, serviceVersion, sasToken);
+    }
+
+    /**
+     * Creates a file client that addresses a file by its file ID.
+     *
+     * <p>Call {@link ShareFileClient#getProperties()} on the returned client to retrieve properties without knowing
+     * the file path. Obtain the ID from {@link FileSmbProperties#getFileId()} in a path-based properties response.
+     * The returned client supports property retrieval and {@link ShareFileClient#getFileLinks()} (SMB only).
+     * Other service operations require a path-addressed client.</p>
+     *
+     * <pre>{@code
+     * ShareFileProperties properties = shareClient.getFileClientByFileId(fileId).getProperties();
+     * }</pre>
+     *
+     * @param fileId The file ID of the file.
+     * @return A client for interacting with the file by ID.
+     * @throws IllegalArgumentException If {@code fileId} is null or blank.
+     */
+    public ShareFileClient getFileClientByFileId(String fileId) {
+        ShareErrors.validateFileId(fileId);
+        ShareFileAsyncClient asyncClient = new ShareFileAsyncClient(azureFileStorageClient, shareName, "", fileId,
+            snapshot, accountName, serviceVersion, sasToken);
+        return new ShareFileClient(asyncClient, azureFileStorageClient, shareName, "", fileId, snapshot, accountName,
+            serviceVersion, sasToken);
     }
 
     /**

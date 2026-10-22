@@ -3,6 +3,8 @@
 ## 12.33.0-beta.1 (Unreleased)
 
 ### Features Added
+- Added support for retrieving file and directory properties by file ID
+- Added support for retrieving a file's hard links by file ID on SMB shares.
 
 ### Breaking Changes
 
