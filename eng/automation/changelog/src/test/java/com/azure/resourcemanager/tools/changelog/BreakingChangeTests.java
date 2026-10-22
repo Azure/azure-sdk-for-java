@@ -45,6 +45,27 @@ public class BreakingChangeTests {
     }
 
     @Test
+    public void testClassLevelDetails() {
+        BreakingChange breakingChange = BreakingChange.onJavaClass("MyClass");
+        breakingChange.addClassLevelChange("Changed from a class to an interface");
+        breakingChange.addClassLevelChange("Changed from a class to an interface");
+        breakingChange.addMethodLevelChange("`sku()` was removed");
+        breakingChange.addFieldLevelChange("`VALUE` was removed");
+        breakingChange.addStageLevelChange("Required stage 3 was removed");
+
+        Assertions.assertEquals("#### `MyClass` was modified\n\n"
+            + "* Changed from a class to an interface.\n"
+            + "* Required stage 3 was removed\n"
+            + "* `VALUE` was removed\n"
+            + "* `sku()` was removed\n\n", breakingChange.getForChangelog());
+        Assertions.assertEquals(java.util.Arrays.asList(
+            "Changed from a class to an interface in class `MyClass`.",
+            "Required stage 3 was removed in class `MyClass`.",
+            "Field `VALUE` was removed in class `MyClass`.",
+            "Method `sku()` was removed in class `MyClass`."), breakingChange.getItems());
+    }
+
+    @Test
     public void testCompareJars() {
         URL oldJar = BreakingChangeTests.class.getResource("/old.jar");
         URL newJar = BreakingChangeTests.class.getResource("/new.jar");
