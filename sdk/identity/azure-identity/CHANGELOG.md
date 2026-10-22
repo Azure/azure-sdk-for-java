@@ -2,6 +2,8 @@
 
 ## 1.19.0-beta.3 (Unreleased)
 
+The AKS identity binding updates below affect only the opt-in proxy implementation in 1.19.0 beta releases, not the 1.18.x stable implementation or ordinary workload identity authentication.
+
 ### Features Added
 
 - Added support for user-assigned managed identities on Azure Arc in `ManagedIdentityCredential` and `DefaultAzureCredential`.
@@ -10,10 +12,13 @@
 
 ### Bugs Fixed
 
-- Fixed AKS identity binding proxy TLS server-name verification and rejection of partially malformed CA bundles.
-- Fixed AKS identity binding CA file reloads to retain the previously loaded CA during missing or empty rotation windows.
-- Fixed workload identity proxy requests and response reads blocking Reactor event-loop threads, and response read failures being returned as empty bodies.
-- Fixed identity binding transport configuration leaking into subsequent credentials built with the same builder.
+- Fixed verification of `AZURE_KUBERNETES_SNI_NAME` being skipped when the proxy certificate already matched the proxy URL hostname. The configured name is now checked before sending the service-account assertion.
+- Fixed the AKS token proxy accepting CA bundles containing a valid certificate followed by a malformed certificate entry.
+- Fixed authentication failures when a previously loaded proxy CA file temporarily disappears during rotation. The existing fallback for an empty CA file is unchanged.
+- Fixed a race between proxy CA reloads and socket factory creation that could leave requests using the previous CA configuration.
+- Fixed blocking I/O in the internal AKS proxy transport's reactive send and response-body APIs running on subscriber threads. These operations now use a blocking-I/O scheduler; the MSAL bridge's synchronous send path is unchanged.
+- Fixed the AKS token proxy converting I/O failures while opening response streams for HTTP statuses below 400 into empty bodies. These failures now propagate. HTTP error responses without a body still retain their error status.
+- Fixed the proxy transport leaking into subsequent credentials built with the same `WorkloadIdentityCredentialBuilder` after proxy settings were removed. Proxy options are now applied to a per-credential copy instead of mutating the builder.
 - Disabled MSAL's internal retry for Confidential Client, Managed Identity and Public Client Applications. ([#48472](https://github.com/Azure/azure-sdk-for-java/pull/48472))
 - Fixed misleading authentication error reporting when token requests are interrupted or the JVM shuts down. ([#50585](https://github.com/Azure/azure-sdk-for-java/issues/50585))
 - Fixed IMDS discovery in `DefaultAzureCredential` to wait for HTTP response headers with a read timeout, allowing the credential chain to continue when a local endpoint accepts connections but does not respond, while preserving fallback on probe setup failures. ([#50517](https://github.com/Azure/azure-sdk-for-java/pull/50517))
