@@ -3,9 +3,12 @@
 
 package com.azure.v2.core.credentials;
 
-import com.azure.v2.core.implementation.AccessTokenCache;
 import io.clientcore.core.credentials.oauth.AccessToken;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -13,11 +16,201 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import static java.lang.Thread.sleep;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class TokenCacheTests {
+    private static final String SCOPE = "https://management.azure.com/.default";
+
+    @Test
+    public void testNullCredential() {
+        assertThrows(NullPointerException.class, () -> new AccessTokenCache(null));
+    }
+
+    @Test
+    public void testNullRequestContext() {
+        AtomicInteger refreshes = new AtomicInteger();
+        AccessTokenCache cache = new AccessTokenCache(request -> {
+            refreshes.incrementAndGet();
+            return new AccessToken("token", OffsetDateTime.now().plusHours(1));
+        });
+
+        assertThrows(IllegalArgumentException.class, () -> cache.getToken(null, false));
+        assertEquals(0, refreshes.get());
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { true, false })
+    public void testMatchingContextDoesNotRefresh(boolean refreshOnFirstRequest) {
+        AtomicInteger refreshes = new AtomicInteger();
+        AccessTokenCache cache = new AccessTokenCache(
+            request -> new AccessToken("token-" + refreshes.incrementAndGet(), OffsetDateTime.now().plusHours(1)));
+        TokenRequestContext initialContext
+            = new TokenRequestContext().addScopes(SCOPE).setTenantId("tenant").setClaims("claims");
+        TokenRequestContext matchingContext
+            = new TokenRequestContext().addScopes(SCOPE).setTenantId("tenant").setClaims("claims");
+
+        AccessToken token = cache.getToken(initialContext, refreshOnFirstRequest);
+
+        assertSame(token, cache.getToken(matchingContext, true));
+        assertEquals(1, refreshes.get());
+    }
+
+    @ParameterizedTest
+    @MethodSource("changedContexts")
+    public void testContextChangeTriggersRefresh(TokenRequestContext initialContext,
+        TokenRequestContext changedContext) {
+        AtomicInteger refreshes = new AtomicInteger();
+        AccessTokenCache cache = new AccessTokenCache(
+            request -> new AccessToken("token-" + refreshes.incrementAndGet(), OffsetDateTime.now().plusHours(1)));
+        assertEquals("token-1", cache.getToken(initialContext, false).getToken());
+        assertEquals("token-2", cache.getToken(changedContext, true).getToken());
+        assertEquals("token-2", cache.getToken(changedContext, true).getToken());
+        assertEquals(2, refreshes.get());
+        assertEquals("token-3", cache.getToken(initialContext, true).getToken());
+        assertEquals(3, refreshes.get());
+    }
+
+    @ParameterizedTest
+    @MethodSource("changedContexts")
+    public void testContextChangeIgnoredWhenRefreshDisabled(TokenRequestContext initialContext,
+        TokenRequestContext changedContext) {
+        AtomicInteger refreshes = new AtomicInteger();
+        AccessTokenCache cache = new AccessTokenCache(
+            request -> new AccessToken("token-" + refreshes.incrementAndGet(), OffsetDateTime.now().plusHours(1)));
+        AccessToken token = cache.getToken(initialContext, false);
+
+        assertSame(token, cache.getToken(changedContext, false));
+        assertEquals(1, refreshes.get());
+    }
+
+    private static Stream<Arguments> changedContexts() {
+        Stream<Arguments> changesFromNull = Stream
+            .of(new TokenRequestContext().addScopes(SCOPE).setTenantId("tenant"),
+                new TokenRequestContext().addScopes(SCOPE).setTenantId(""),
+                new TokenRequestContext().addScopes(SCOPE).setClaims("claims"),
+                new TokenRequestContext().addScopes(SCOPE).setClaims(""),
+                new TokenRequestContext().addScopes("https://graph.microsoft.com/.default"),
+                new TokenRequestContext().addScopes("https://graph.microsoft.com/.default")
+                    .setTenantId("tenant")
+                    .setClaims("claims"))
+            .map(changedContext -> Arguments.of(new TokenRequestContext().addScopes(SCOPE), changedContext));
+
+        return Stream.concat(changesFromNull,
+            Stream.of(
+                Arguments.of(new TokenRequestContext().addScopes(SCOPE).setTenantId("tenant-1"),
+                    new TokenRequestContext().addScopes(SCOPE).setTenantId("tenant-2")),
+                Arguments.of(new TokenRequestContext().addScopes(SCOPE).setClaims("claims-1"),
+                    new TokenRequestContext().addScopes(SCOPE).setClaims("claims-2"))));
+    }
+
+    @Test
+    public void testRefreshUsesCachedContextWhenRefreshOnContextChangeIsDisabled() {
+        AtomicInteger refreshes = new AtomicInteger();
+        TokenRequestContext initialContext
+            = new TokenRequestContext().addScopes(SCOPE).setTenantId("tenant").setClaims("claims");
+        AccessTokenCache cache = new AccessTokenCache(request -> {
+            assertSame(initialContext, request);
+            int count = refreshes.incrementAndGet();
+            return new AccessToken("token-" + count,
+                count == 1 ? OffsetDateTime.now().minusMinutes(1) : OffsetDateTime.now().plusHours(1));
+        });
+
+        cache.getToken(initialContext, false);
+
+        assertEquals("token-2",
+            cache.getToken(new TokenRequestContext().addScopes("https://graph.microsoft.com/.default"), false)
+                .getToken());
+        assertEquals(2, refreshes.get());
+    }
+
+    @Test
+    public void testInitialAcquisitionFailurePropagatesAndCanRetry() {
+        AtomicInteger refreshes = new AtomicInteger();
+        RuntimeException failure = new IllegalStateException("Token acquisition failed.");
+        AccessTokenCache cache = new AccessTokenCache(request -> {
+            if (refreshes.incrementAndGet() == 1) {
+                throw failure;
+            }
+            return new AccessToken("token", OffsetDateTime.now().plusHours(1));
+        });
+        TokenRequestContext context = new TokenRequestContext().addScopes(SCOPE);
+
+        assertSame(failure, assertThrows(IllegalStateException.class, () -> cache.getToken(context, false)));
+        assertEquals("token", cache.getToken(context, false).getToken());
+        assertEquals(2, refreshes.get());
+    }
+
+    @Test
+    public void testExpiredTokenIsNotReturnedOnRefreshFailure() {
+        AtomicInteger refreshes = new AtomicInteger();
+        RuntimeException failure = new IllegalStateException("Token refresh failed.");
+        AccessTokenCache cache = new AccessTokenCache(request -> {
+            int count = refreshes.incrementAndGet();
+            if (count == 2) {
+                throw failure;
+            }
+            return new AccessToken("token-" + count,
+                count == 1 ? OffsetDateTime.now().minusMinutes(1) : OffsetDateTime.now().plusHours(1));
+        });
+        TokenRequestContext context = new TokenRequestContext().addScopes(SCOPE);
+
+        cache.getToken(context, false);
+
+        assertSame(failure, assertThrows(IllegalStateException.class, () -> cache.getToken(context, false)));
+        assertEquals("token-3", cache.getToken(context, false).getToken());
+        assertEquals(3, refreshes.get());
+    }
+
+    @ParameterizedTest
+    @MethodSource("changedContexts")
+    public void testContextChangeRefreshFailureDoesNotReturnCachedToken(TokenRequestContext initialContext,
+        TokenRequestContext changedContext) {
+        AtomicInteger refreshes = new AtomicInteger();
+        RuntimeException failure = new IllegalStateException("Context-change token refresh failed.");
+        AccessTokenCache cache = new AccessTokenCache(request -> {
+            if (refreshes.incrementAndGet() == 1) {
+                return new AccessToken("token", OffsetDateTime.now().plusHours(1));
+            }
+            throw failure;
+        });
+
+        cache.getToken(initialContext, false);
+
+        assertSame(failure, assertThrows(IllegalStateException.class, () -> cache.getToken(changedContext, true)));
+        assertEquals(2, refreshes.get());
+    }
+
+    @Test
+    public void testNonRuntimeFailureIsWrapped() {
+        AssertionError failure = new AssertionError("Token acquisition failed.");
+        AccessTokenCache cache = new AccessTokenCache(request -> {
+            throw failure;
+        });
+
+        RuntimeException exception = assertThrows(RuntimeException.class,
+            () -> cache.getToken(new TokenRequestContext().addScopes(SCOPE), false));
+
+        assertSame(failure, exception.getCause());
+    }
+
+    @Test
+    public void testProactiveRefreshDelay() {
+        AtomicInteger refreshes = new AtomicInteger();
+        AccessTokenCache cache = new AccessTokenCache(request -> {
+            refreshes.incrementAndGet();
+            return new AccessToken("token", OffsetDateTime.now().plusMinutes(1), OffsetDateTime.now().minusMinutes(1));
+        });
+        TokenRequestContext context = new TokenRequestContext().addScopes(SCOPE);
+        AccessToken token = cache.getToken(context, false);
+
+        assertSame(token, cache.getToken(context, false));
+        assertEquals(1, refreshes.get());
+    }
 
     @Test
     public void testEachSyncThreadRefreshesToken() {
@@ -68,20 +261,27 @@ public class TokenCacheTests {
         AtomicLong refreshes = new AtomicLong(0);
 
         TokenCredential dummyCred = request -> {
-            refreshes.incrementAndGet();
-            return new Token("testToken", 200000, 33000);
+            long count = refreshes.incrementAndGet();
+            if (count == 2) {
+                throw new IllegalStateException("Proactive token refresh failed.");
+            }
+            return new Token("testToken" + count, 200000, 33000);
         };
 
         AccessTokenCache cache = new AccessTokenCache(dummyCred);
 
-        cache.getToken(new TokenRequestContext(), false);
+        AccessToken token = cache.getToken(new TokenRequestContext(), false);
 
         sleep(40000);
 
-        cache.getToken(new TokenRequestContext(), false);
-
-        // Ensure refresh is made after refreshOn duration.
+        assertSame(token, cache.getToken(new TokenRequestContext(), false));
         assertEquals(2, refreshes.get());
+
+        // Retries require the current time to be strictly after the failed refresh timestamp.
+        sleep(100);
+
+        assertEquals("testToken3", cache.getToken(new TokenRequestContext(), false).getToken());
+        assertEquals(3, refreshes.get());
     }
 
     // First token takes latency seconds, and adds 1 sec every subsequent call
