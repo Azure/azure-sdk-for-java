@@ -6,6 +6,7 @@ package com.azure.storage.common.implementation;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.util.Configuration;
 import com.azure.storage.common.sas.SasProtocol;
+import java.time.Duration;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
@@ -93,6 +94,11 @@ public final class Constants {
     public static final String ADJUSTED_BLOB_LENGTH_KEY = "adjustedBlobLength";
 
     public static final String SKIP_ECHO_VALIDATION_KEY = "skipEchoValidation";
+
+    /**
+     * Default lifetime for storage values cached when the service does not provide an expiration.
+     */
+    public static final Duration DEFAULT_CACHE_LIFETIME = Duration.ofMinutes(5);
 
     private Constants() {
     }

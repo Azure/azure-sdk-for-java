@@ -9,6 +9,7 @@ import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.DownloadRetryOptions;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.ContentValidationAlgorithm;
+import com.azure.storage.common.LayoutAwareRouting;
 import com.azure.storage.common.ValidatableContent;
 import com.azure.storage.common.implementation.StorageImplUtils;
 
@@ -28,6 +29,7 @@ public class BlobDownloadToFileOptions implements ValidatableContent {
     private boolean retrieveContentRangeMd5;
     private Set<OpenOption> openOptions;
     private ContentValidationAlgorithm contentValidationAlgorithm;
+    private LayoutAwareRouting layoutAwareRouting;
 
     /**
      * Constructs a {@link BlobDownloadToFileOptions}.
@@ -181,6 +183,15 @@ public class BlobDownloadToFileOptions implements ValidatableContent {
     }
 
     /**
+     * Gets the {@link LayoutAwareRouting}.
+     *
+     * @return {@link LayoutAwareRouting}
+     */
+    public LayoutAwareRouting getLayoutAwareRouting() {
+        return layoutAwareRouting;
+    }
+
+    /**
      * Sets the algorithm to use for transfer content validation on the response. See {@link ContentValidationAlgorithm}
      * for more details.
      *
@@ -191,6 +202,17 @@ public class BlobDownloadToFileOptions implements ValidatableContent {
     public BlobDownloadToFileOptions
         setContentValidationAlgorithm(ContentValidationAlgorithm contentValidationAlgorithm) {
         this.contentValidationAlgorithm = contentValidationAlgorithm;
+        return this;
+    }
+
+    /**
+     * Sets the {@link LayoutAwareRouting}.
+     *
+     * @param layoutAwareRouting {@link LayoutAwareRouting}
+     * @return The updated options.
+     */
+    public BlobDownloadToFileOptions setLayoutAwareRouting(LayoutAwareRouting layoutAwareRouting) {
+        this.layoutAwareRouting = layoutAwareRouting;
         return this;
     }
 }
