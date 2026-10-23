@@ -23,12 +23,18 @@ import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.RetryPolicyType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
+import org.junit.jupiter.api.parallel.Isolated;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
+import org.reactivestreams.Subscription;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Sinks;
 import reactor.test.StepVerifier;
 
+import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
 import java.time.Clock;
 import java.time.Duration;
@@ -41,6 +47,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -72,6 +79,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * cooldown is shared across clients using the same options. Tests inject a clock-controlled provider into options;
  * {@link SessionTests} covers provider creation and sharing through the public builders.
  */
+@Isolated("Virtual-time tests temporarily replace Reactor schedulers.")
+@Execution(ExecutionMode.SAME_THREAD)
 public class ContainerSessionProviderCacheTests {
 
     private static final String ACCOUNT_NAME = "testaccount";
@@ -100,14 +109,6 @@ public class ContainerSessionProviderCacheTests {
         httpClient = new CreateSessionTransport();
 
         configureProvider();
-    }
-
-    private void configureProvider() {
-        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(httpClient).build();
-        provider = new ContainerSessionProvider(clock);
-        acquirer = new SessionAcquirer("https://" + ACCOUNT_NAME + ".blob.core.windows.net",
-            BlobServiceVersion.getLatest(), ACCOUNT_NAME, null).bind(pipeline);
-        initializeSessionContext();
     }
 
     @Test
@@ -175,11 +176,6 @@ public class ContainerSessionProviderCacheTests {
         assertEquals(2, httpClient.getRequestCount(CONTAINER_A));
     }
 
-    private void configureTestProvider() {
-        clock = new MutableClock(Instant.now());
-        configureProvider();
-    }
-
     /**
      * Each client acquires sessions through its own pipeline, and a forced refresh goes through the pipeline of the
      * client that used the session most recently.
@@ -239,35 +235,6 @@ public class ContainerSessionProviderCacheTests {
         assertFalse(context.getData(SessionAcquirer.SESSION_ACQUISITION_CONTEXT_KEY).isPresent());
     }
 
-    private void enqueueContextAwareSessionResponse() {
-        httpClient.enqueueResponse(CONTAINER_A, request -> {
-            assertEquals("true", request.getHeaders().getValue(ACQUISITION_HEADER));
-            assertEquals("true", request.getHeaders().getValue(TRACING_DISABLED_HEADER));
-            return Mono.just(buildResponse(request, FIRST_TOKEN, now().plusMinutes(20)));
-        });
-    }
-
-    private BlobServiceClientBuilder contextAwareClientBuilder() {
-        return independentClientBuilder().addPolicy((context, next) -> {
-            context.getData(CLIENT_CONTEXT_KEY)
-                .ifPresent(value -> context.getHttpRequest().setHeader(CLIENT_HEADER, value.toString()));
-            context.getData(Tracer.DISABLE_TRACING_KEY)
-                .filter(Boolean.TRUE::equals)
-                .ifPresent(ignored -> context.getHttpRequest().setHeader(TRACING_DISABLED_HEADER, "true"));
-            if (SessionAcquirer.isAcquisitionRequest(context)) {
-                context.getHttpRequest().setHeader(ACQUISITION_HEADER, "true");
-            }
-            return next.process();
-        });
-    }
-
-    private HttpPipeline namedClientPipeline(String name) {
-        return independentClientBuilder().addPolicy((context, next) -> {
-            context.getHttpRequest().setHeader(CLIENT_HEADER, name);
-            return next.process();
-        }).buildClient().getHttpPipeline();
-    }
-
     @ParameterizedTest
     @CsvSource({ "403,", "500,", "503,", "599,", "400,FeatureNotEnabled", "400,featurenotenabled" })
     public void policiesUsingSameProviderShareCooldownAndExpirationSync(int status, String errorCode) {
@@ -320,18 +287,6 @@ public class ContainerSessionProviderCacheTests {
         assertAsyncToken(independentAsyncClientPipeline(), CONTAINER_A, null);
         assertAsyncToken(independentAsyncClientPipeline(), CONTAINER_A, SECOND_TOKEN);
         assertEquals(2, httpClient.getRequestCount(CONTAINER_A));
-    }
-
-    private void enqueueCooldown(int status, String errorCode) {
-        httpClient.enqueueResponse(CONTAINER_A, request -> {
-            MockHttpResponse response = new MockHttpResponse(request, status);
-            if (errorCode != null) {
-                response.addHeader("x-ms-error-code", errorCode);
-            }
-            return Mono.just(response);
-        });
-        enqueueSessionResponse(CONTAINER_A, SECOND_TOKEN, now().plusMinutes(20));
-        enqueueSessionResponse(CONTAINER_B, "container-b-token", now().plusMinutes(20));
     }
 
     @Test
@@ -419,69 +374,6 @@ public class ContainerSessionProviderCacheTests {
         assertEquals(1, httpClient.getRequestCount(CONTAINER_A));
     }
 
-    private BlobServiceClientBuilder accountResolutionBuilder(String endpoint, String accountName) {
-        sessionContext
-            = new SessionContext().setSessionMode(SessionContext.SessionMode.ENABLED).setAccountName(accountName);
-        SessionContextAccessor.getOrCreateSessionProvider(sessionContext, SessionProvider.class, () -> provider);
-        return independentClientBuilder().endpoint(endpoint);
-    }
-
-    private BlobServiceClientBuilder overrideAccountBuilder() {
-        sessionContext.setAccountName("override-account");
-        return independentClientBuilder();
-    }
-
-    private BlobServiceClientBuilder independentClientBuilder() {
-        // Retries are disabled so each CreateSession response is consumed by exactly one acquisition attempt.
-        return new BlobServiceClientBuilder().endpoint("https://" + ACCOUNT_NAME + ".blob.core.windows.net")
-            .credential(new MockTokenCredential())
-            .httpClient(httpClient)
-            .retryOptions(new RequestRetryOptions(RetryPolicyType.FIXED, 1, 30, 1L, 1L, null))
-            .sessionContext(sessionContext);
-    }
-
-    private void initializeSessionContext() {
-        sessionContext
-            = new SessionContext("https://" + ACCOUNT_NAME + ".blob.core.windows.net", new MockTokenCredential())
-                .setSessionMode(SessionContext.SessionMode.ENABLED);
-        SessionContextAccessor.getOrCreateSessionProvider(sessionContext, SessionProvider.class, () -> provider);
-    }
-
-    private HttpPipeline independentClientPipeline() {
-        return independentClientBuilder().buildClient().getHttpPipeline();
-    }
-
-    private HttpPipeline independentAsyncClientPipeline() {
-        return independentClientBuilder().buildAsyncClient().getHttpPipeline();
-    }
-
-    private void assertSyncToken(HttpPipeline pipeline, String container, String token) {
-        HttpRequest request = dataRequest(container);
-        try (HttpResponse response = pipeline.sendSync(request, Context.NONE)) {
-            assertEquals(200, response.getStatusCode());
-            assertAuthorization(response.getRequest(), token);
-        }
-    }
-
-    private void assertAsyncToken(HttpPipeline pipeline, String container, String token) {
-        HttpRequest request = dataRequest(container);
-        StepVerifier.create(pipeline.send(request)).assertNext(response -> {
-            assertEquals(200, response.getStatusCode());
-            assertAuthorization(response.getRequest(), token);
-            response.close();
-        }).verifyComplete();
-    }
-
-    private static HttpRequest dataRequest(String container) {
-        return new HttpRequest(HttpMethod.GET,
-            "https://" + ACCOUNT_NAME + ".blob.core.windows.net/" + container + "/blob");
-    }
-
-    private static void assertAuthorization(HttpRequest request, String token) {
-        String authorization = request.getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
-        assertTrue(authorization.startsWith(token == null ? "Bearer " : "Session " + token + ":"));
-    }
-
     /**
      * A request returns a good (valid) token. The clock then advances past the token's expiration. The next
      * request must detect that the cached token is expired purely due to the passage of time and request a
@@ -521,17 +413,201 @@ public class ContainerSessionProviderCacheTests {
 
     @Test
     public void evictionSweepRemovesExpiredEntries() {
-        int entryCount = 64;
-        populateSessionCaches(entryCount, Duration.ofMinutes(1));
+        enqueueSessionResponse(CONTAINER_A, FIRST_TOKEN, now().plusMinutes(1));
+        enqueueSessionResponse(CONTAINER_B, SECOND_TOKEN, now().plusMinutes(1));
+        assertEquals(FIRST_TOKEN, provider.getSession(contextFor(CONTAINER_A)).getSessionToken());
+        assertEquals(SECOND_TOKEN, provider.getSession(contextFor(CONTAINER_B)).getSessionToken());
+        assertEquals(2, sessionCaches().size());
         clock.advance(Duration.ofMinutes(1));
 
         enqueueSessionResponse("trigger", "trigger-token", now().plusMinutes(20));
         assertEquals("trigger-token", provider.getSession(contextFor("trigger")).getSessionToken());
-        for (int i = 0; i < entryCount; i++) {
-            assertEquals("trigger-token", provider.getSession(contextFor("trigger")).getSessionToken());
-        }
 
-        assertEquals(entryCount, reacquireSessions(entryCount));
+        assertEquals(1, sessionCaches().size());
+        assertTrue(sessionCaches().containsKey(ACCOUNT_NAME + "/trigger"));
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    public void evictionSweepRemovesFailedInitialAcquisition(boolean transportError) {
+        if (transportError) {
+            enqueueFailure(CONTAINER_A);
+        } else {
+            httpClient.enqueueResponse(CONTAINER_A, request -> Mono.just(new MockHttpResponse(request, 404)));
+        }
+        StepVerifier.create(provider.getSessionAsync(contextFor(CONTAINER_A))).verifyError();
+        assertEquals(1, sessionCaches().size());
+        assertTrue(sessionCaches().containsKey(ACCOUNT_NAME + "/" + CONTAINER_A));
+
+        sweepWithAnotherContainer();
+
+        assertEquals(1, sessionCaches().size());
+        assertFalse(sessionCaches().containsKey(ACCOUNT_NAME + "/" + CONTAINER_A));
+        assertEquals(1, httpClient.getRequestCount(CONTAINER_A));
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    public void pendingAcquisitionSurvivesSweepAfterCallerCancellation(boolean retry) {
+        if (retry) {
+            enqueueFailure(CONTAINER_A);
+            StepVerifier.create(provider.getSessionAsync(contextFor(CONTAINER_A))).verifyError();
+        }
+        Sinks.One<HttpResponse> pending = Sinks.one();
+        AtomicReference<HttpRequest> request = new AtomicReference<>();
+        AtomicInteger cancellations = new AtomicInteger();
+        httpClient.enqueueResponse(CONTAINER_A, value -> {
+            request.set(value);
+            return pending.asMono().doOnCancel(cancellations::incrementAndGet);
+        });
+
+        StepVerifier.create(provider.getSessionAsync(contextFor(CONTAINER_A)))
+            .then(() -> assertEquals(retry ? 2 : 1, httpClient.getRequestCount(CONTAINER_A)))
+            .thenCancel()
+            .verify();
+        Object entry = sessionCaches().get(ACCOUNT_NAME + "/" + CONTAINER_A);
+        try {
+            // Even a long acquisition must not be mistaken for an idle failed entry.
+            clock.advance(Duration.ofHours(1));
+            sweepWithAnotherContainer();
+            assertSame(entry, sessionCaches().get(ACCOUNT_NAME + "/" + CONTAINER_A));
+            assertEquals(0, cancellations.get());
+            StepVerifier.create(provider.getSessionAsync(contextFor(CONTAINER_A))).then(() -> {
+                assertEquals(retry ? 2 : 1, httpClient.getRequestCount(CONTAINER_A));
+                assertEquals(Sinks.EmitResult.OK,
+                    pending.tryEmitValue(buildResponse(request.get(), FIRST_TOKEN, now().plusMinutes(20))));
+            }).assertNext(value -> assertEquals(FIRST_TOKEN, value.getSessionToken())).verifyComplete();
+        } finally {
+            pending.tryEmitError(new IllegalStateException("Test finished."));
+        }
+    }
+
+    @Test
+    public void cancelledCallersFailedAcquisitionIsEvicted() {
+        Sinks.One<HttpResponse> pending = Sinks.one();
+        httpClient.enqueueResponse(CONTAINER_A, request -> pending.asMono());
+        StepVerifier.create(provider.getSessionAsync(contextFor(CONTAINER_A))).thenCancel().verify();
+        assertEquals(1, httpClient.getRequestCount(CONTAINER_A));
+
+        assertEquals(Sinks.EmitResult.OK, pending.tryEmitError(new IllegalStateException("CreateSession failed.")));
+        sweepWithAnotherContainer();
+
+        assertFalse(sessionCaches().containsKey(ACCOUNT_NAME + "/" + CONTAINER_A));
+        assertEquals(1, sessionCaches().size());
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    public void pendingRefreshSurvivesSweepAfterCredentialExpiration(boolean forced) {
+        enqueueSessionResponse(CONTAINER_A, FIRST_TOKEN, now().plus(SESSION_LIFETIME));
+        assertEquals(FIRST_TOKEN, provider.getSession(contextFor(CONTAINER_A)).getSessionToken());
+        Object entry = sessionCaches().get(ACCOUNT_NAME + "/" + CONTAINER_A);
+        Sinks.One<HttpResponse> pending = Sinks.one();
+        AtomicReference<HttpRequest> request = new AtomicReference<>();
+        httpClient.enqueueResponse(CONTAINER_A, value -> {
+            request.set(value);
+            return pending.asMono();
+        });
+        if (forced) {
+            provider.refreshSession(contextFor(CONTAINER_A));
+        } else {
+            clock.advance(SESSION_LIFETIME.minusSeconds(2));
+            assertEquals(FIRST_TOKEN, provider.getSession(contextFor(CONTAINER_A)).getSessionToken());
+        }
+        try {
+            assertEquals(2, httpClient.getRequestCount(CONTAINER_A));
+            clock.advance(SESSION_LIFETIME);
+            sweepWithAnotherContainer();
+            assertSame(entry, sessionCaches().get(ACCOUNT_NAME + "/" + CONTAINER_A));
+            StepVerifier.create(provider.getSessionAsync(contextFor(CONTAINER_A))).then(() -> {
+                assertEquals(2, httpClient.getRequestCount(CONTAINER_A));
+                assertEquals(Sinks.EmitResult.OK,
+                    pending.tryEmitValue(buildResponse(request.get(), SECOND_TOKEN, now().plusMinutes(20))));
+            }).assertNext(value -> assertEquals(SECOND_TOKEN, value.getSessionToken())).verifyComplete();
+        } finally {
+            pending.tryEmitError(new IllegalStateException("Test finished."));
+        }
+    }
+
+    @Test
+    public void backgroundTimeoutReleasesEntryForEviction() {
+        AtomicInteger cancellations = new AtomicInteger();
+        StepVerifier.withVirtualTime(() -> {
+            // Construct the entry only after virtual time installs the timeout scheduler.
+            enqueueSessionResponse(CONTAINER_A, FIRST_TOKEN, now().plus(SESSION_LIFETIME));
+            assertEquals(FIRST_TOKEN, provider.getSession(contextFor(CONTAINER_A)).getSessionToken());
+            httpClient.enqueueResponse(CONTAINER_A,
+                request -> Mono.<HttpResponse>never().doOnCancel(cancellations::incrementAndGet));
+            provider.refreshSession(contextFor(CONTAINER_A));
+            clock.advance(SESSION_LIFETIME);
+            sweepWithAnotherContainer();
+            assertTrue(sessionCaches().containsKey(ACCOUNT_NAME + "/" + CONTAINER_A));
+            return Mono.never();
+        }).expectSubscription().thenAwait(Duration.ofSeconds(30)).then(() -> {
+            assertEquals(1, cancellations.get());
+            sweepWithAnotherContainer();
+            assertFalse(sessionCaches().containsKey(ACCOUNT_NAME + "/" + CONTAINER_A));
+            assertEquals(1, sessionCaches().size());
+        }).thenCancel().verify();
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    public void lookupReservationSurvivesSweepBeforeAcquisitionSubscription(boolean cancel) throws Exception {
+        enqueueFailure(CONTAINER_A);
+        StepVerifier.create(provider.getSessionAsync(contextFor(CONTAINER_A))).verifyError();
+        Object entry = sessionCaches().get(ACCOUNT_NAME + "/" + CONTAINER_A);
+        Sinks.One<HttpResponse> pending = Sinks.one();
+        AtomicReference<HttpRequest> request = new AtomicReference<>();
+        httpClient.enqueueResponse(CONTAINER_A, value -> {
+            request.set(value);
+            return pending.asMono();
+        });
+        CountDownLatch lookupReserved = new CountDownLatch(1);
+        CountDownLatch resume = new CountDownLatch(1);
+        AtomicInteger reads = new AtomicInteger();
+        // The first clock read is the map lookup's sweep; the second is the shared cache's value lookup.
+        // Pause before the supplier is subscribed, when tracking only supplier activity would miss the caller.
+        clock.onRead = () -> {
+            if (reads.incrementAndGet() == 2) {
+                lookupReserved.countDown();
+                awaitLatch(resume);
+            }
+        };
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        AtomicReference<Subscription> subscription = new AtomicReference<>();
+        Future<CompletableFuture<SessionCredential>> first = executor.submit(
+            () -> provider.getSessionAsync(contextFor(CONTAINER_A)).doOnSubscribe(subscription::set).toFuture());
+        try {
+            awaitLatch(lookupReserved);
+            if (cancel) {
+                subscription.get().cancel();
+            }
+            sweepWithAnotherContainer();
+            assertSame(entry, sessionCaches().get(ACCOUNT_NAME + "/" + CONTAINER_A));
+            CompletableFuture<SessionCredential> second = provider.getSessionAsync(contextFor(CONTAINER_A)).toFuture();
+            resume.countDown();
+            CompletableFuture<SessionCredential> firstResult = first.get(5, TimeUnit.SECONDS);
+            assertFalse(firstResult.isDone());
+            assertFalse(second.isDone());
+            assertEquals(2, httpClient.getRequestCount(CONTAINER_A));
+            assertEquals(Sinks.EmitResult.OK,
+                pending.tryEmitValue(buildResponse(request.get(), FIRST_TOKEN, now().plusMinutes(20))));
+            SessionCredential credential = second.get(5, TimeUnit.SECONDS);
+            assertEquals(FIRST_TOKEN, credential.getSessionToken());
+            if (cancel) {
+                // Cancelling the raw Subscription above deliberately does not complete the observing future.
+                assertFalse(firstResult.isDone());
+                firstResult.cancel(false);
+            } else {
+                assertSame(firstResult.get(5, TimeUnit.SECONDS), credential);
+            }
+        } finally {
+            clock.onRead = null;
+            resume.countDown();
+            pending.tryEmitError(new IllegalStateException("Test finished."));
+            executor.shutdownNow();
+        }
     }
 
     @Test
@@ -582,38 +658,6 @@ public class ContainerSessionProviderCacheTests {
         assertEquals(1, httpClient.getRequestCount(CONTAINER_A));
     }
 
-    private void populateSessionCaches(int entryCount, Duration lifetime) {
-        for (int i = 0; i < entryCount; i++) {
-            String container = "container-" + i;
-            enqueueSessionResponse(container, FIRST_TOKEN, now().plus(lifetime));
-            enqueueSessionResponse(container, SECOND_TOKEN, now().plusMinutes(20));
-            assertEquals(FIRST_TOKEN, provider.getSession(contextFor(container)).getSessionToken());
-        }
-    }
-
-    private int reacquireSessions(int entryCount) {
-        int reacquiredSessions = 0;
-        for (int i = 0; i < entryCount; i++) {
-            String container = "container-" + i;
-            provider.getSession(contextFor(container));
-            reacquiredSessions += httpClient.getRequestCount(container) - 1;
-        }
-        return reacquiredSessions;
-    }
-
-    @Test
-    public void validIdleCacheIsRetainedAfterOneMinute() {
-        enqueueSessionResponse(CONTAINER_A, FIRST_TOKEN, now().plusMinutes(20));
-        enqueueSessionResponse(CONTAINER_B, "container-b-token", now().plusMinutes(20));
-
-        assertEquals(FIRST_TOKEN, provider.getSession(contextFor(CONTAINER_A)).getSessionToken());
-        clock.advance(Duration.ofMinutes(1));
-
-        assertEquals("container-b-token", provider.getSession(contextFor(CONTAINER_B)).getSessionToken());
-        assertEquals(FIRST_TOKEN, provider.getSession(contextFor(CONTAINER_A)).getSessionToken());
-        assertEquals(1, httpClient.getRequestCount(CONTAINER_A));
-    }
-
     @Test
     public void absentExpirationUsesProviderClock() {
         enqueueSessionResponse(CONTAINER_A, FIRST_TOKEN, null);
@@ -621,53 +665,6 @@ public class ContainerSessionProviderCacheTests {
         SessionCredential credential = provider.getSession(contextFor(CONTAINER_A));
 
         assertEquals(now().plus(SESSION_LIFETIME), credential.getExpiresAt());
-    }
-
-    /**
-     * When the service has NOT sent a {@code session_expiring} hint, the cache must still refresh
-     * on a lookup after its jittered refresh time (while the current token is still usable), serving
-     * the current token until the refreshed one is ready.
-     */
-    @Test
-    public void automaticBackgroundRefreshFiresWithoutServiceHint() {
-        enqueueSessionResponse(CONTAINER_A, FIRST_TOKEN, now().plus(SESSION_LIFETIME));
-        enqueueSessionResponse(CONTAINER_A, SECOND_TOKEN, now().plus(SESSION_LIFETIME.multipliedBy(2)));
-
-        // First request: cold cache mints the initial token.
-        assertEquals(FIRST_TOKEN, provider.getSession(contextFor(CONTAINER_A)).getSessionToken());
-        assertEquals(1, httpClient.getRequestCount(CONTAINER_A));
-
-        // Advance to a point guaranteed to be past the jittered refresh time (80-100% of lifetime minus the
-        // 5s safety buffer => at most lifetime-5s) but still before hard expiry, so the token remains usable.
-        clock.advance(SESSION_LIFETIME.minusSeconds(2));
-
-        // Second request: token still usable, refresh time passed, no service hint => automatic background
-        // refresh. The current token is served while the refresh happens.
-        assertEquals(FIRST_TOKEN, provider.getSession(contextFor(CONTAINER_A)).getSessionToken());
-        assertEquals(2, httpClient.getRequestCount(CONTAINER_A));
-
-        // Third request: the background refresh has swapped in the new token, which is now served. The
-        // refresh runs on a background subscription, so poll briefly rather than asserting immediately.
-        assertEquals(SECOND_TOKEN, waitForToken(() -> provider.getSession(contextFor(CONTAINER_A))).getSessionToken());
-        // Still only one inline creation and one background refresh overall (no over-eager churn).
-        assertEquals(2, httpClient.getRequestCount(CONTAINER_A));
-    }
-
-    /**
-     * Invalidation must evict the live credential and cause the next request to mint a replacement.
-     */
-    @Test
-    public void invalidateSessionEvictsTheLiveCredential() {
-        enqueueSessionResponse(CONTAINER_A, FIRST_TOKEN, now().plus(SESSION_LIFETIME));
-        enqueueSessionResponse(CONTAINER_A, SECOND_TOKEN, now().plus(SESSION_LIFETIME.multipliedBy(2)));
-        SessionRequestContext context = contextFor(CONTAINER_A);
-
-        SessionCredential credential = provider.getSession(context);
-        assertTrue(provider.invalidateSession(context, credential));
-
-        SessionCredential replacement = provider.getSession(context);
-        assertEquals(SECOND_TOKEN, replacement.getSessionToken());
-        assertEquals(2, httpClient.getRequestCount(CONTAINER_A));
     }
 
     /**
@@ -748,21 +745,6 @@ public class ContainerSessionProviderCacheTests {
     }
 
     /**
-     * The async path on a cold cache must mint a value through the async CreateSession call and emit exactly
-     * one element before completing.
-     */
-    @Test
-    public void coldCacheCreatesValueAsync() {
-        enqueueSessionResponse(CONTAINER_A, FIRST_TOKEN, now().plus(SESSION_LIFETIME));
-
-        StepVerifier.create(provider.getSessionAsync(contextFor(CONTAINER_A)))
-            .assertNext(credential -> assertEquals(FIRST_TOKEN, credential.getSessionToken()))
-            .verifyComplete();
-
-        assertEquals(1, httpClient.getRequestCount(CONTAINER_A));
-    }
-
-    /**
      * Once the async path has cached a usable value, later async requests made before the jittered refresh
      * window must replay that cached value rather than creating a second one.
      */
@@ -833,62 +815,7 @@ public class ContainerSessionProviderCacheTests {
         assertTrue(provider.invalidateSession(context, second));
         assertFalse(provider.invalidateSession(context, second));
         assertEquals("third-session-token", provider.getSession(context).getSessionToken());
-    }
-
-    /**
-     * Concurrent async callers arriving while a creation is still in flight must join that single in-flight
-     * creation instead of each triggering their own, and all of them must observe the same value.
-     */
-    @Test
-    public void concurrentAsyncRequestsShareASingleInFlightCreation() {
-        // A response that is never completed inline models a CreateSession call that is still outstanding.
-        Sinks.One<HttpResponse> pendingResponse = Sinks.one();
-        AtomicReference<HttpRequest> pendingRequest = new AtomicReference<>();
-        httpClient.enqueueResponse(CONTAINER_A, request -> {
-            pendingRequest.set(request);
-            return pendingResponse.asMono();
-        });
-
-        Mono<SessionCredential> first = provider.getSessionAsync(contextFor(CONTAINER_A));
-        Mono<SessionCredential> second = provider.getSessionAsync(contextFor(CONTAINER_A));
-
-        AtomicReference<SessionCredential> firstResult = new AtomicReference<>();
-        AtomicReference<SessionCredential> secondResult = new AtomicReference<>();
-        CountDownLatch firstLatch = new CountDownLatch(1);
-        CountDownLatch secondLatch = new CountDownLatch(1);
-        first.subscribe(cred -> {
-            firstResult.set(cred);
-            firstLatch.countDown();
-        });
-        second.subscribe(cred -> {
-            secondResult.set(cred);
-            secondLatch.countDown();
-        });
-
-        // Only one CreateSession call was made even though two callers subscribed.
-        assertEquals(1, httpClient.getRequestCount(CONTAINER_A));
-
-        pendingResponse.tryEmitValue(buildResponse(pendingRequest.get(), FIRST_TOKEN, now().plus(SESSION_LIFETIME)));
-
-        awaitLatch(firstLatch);
-        awaitLatch(secondLatch);
-
-        assertEquals(FIRST_TOKEN, firstResult.get().getSessionToken());
-        assertEquals(FIRST_TOKEN, secondResult.get().getSessionToken());
-        assertEquals(1, httpClient.getRequestCount(CONTAINER_A));
-    }
-
-    @Test
-    public void syncAndAsyncRequestsReuseCachedSession() {
-        enqueueSessionResponse(CONTAINER_A, FIRST_TOKEN, now().plus(SESSION_LIFETIME));
-        SessionRequestContext context = contextFor(CONTAINER_A);
-
-        SessionCredential credential = provider.getSession(context);
-        StepVerifier.create(provider.getSessionAsync(context))
-            .assertNext(value -> assertSame(credential, value))
-            .verifyComplete();
-        assertSame(credential, provider.getSession(context));
-        assertEquals(1, httpClient.getRequestCount(CONTAINER_A));
+        assertEquals(3, httpClient.getRequestCount(CONTAINER_A));
     }
 
     @Test
@@ -918,12 +845,148 @@ public class ContainerSessionProviderCacheTests {
             assertEquals(FIRST_TOKEN, credential.getSessionToken());
             assertSame(credential, asyncResult.get(5, TimeUnit.SECONDS));
             assertSame(credential, provider.getSession(context));
+            StepVerifier.create(provider.getSessionAsync(context))
+                .assertNext(value -> assertSame(credential, value))
+                .verifyComplete();
             assertEquals(1, httpClient.getRequestCount(CONTAINER_A));
         } finally {
             pendingResponse.tryEmitError(new IllegalStateException("Test finished."));
             syncResult.cancel(true);
             executor.shutdownNow();
         }
+    }
+
+    private void configureProvider() {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(httpClient).build();
+        provider = new ContainerSessionProvider(clock);
+        acquirer = new SessionAcquirer("https://" + ACCOUNT_NAME + ".blob.core.windows.net",
+            BlobServiceVersion.getLatest(), ACCOUNT_NAME, null).bind(pipeline);
+        initializeSessionContext();
+    }
+
+    private void configureTestProvider() {
+        clock = new MutableClock(Instant.now());
+        configureProvider();
+    }
+
+    private void enqueueContextAwareSessionResponse() {
+        httpClient.enqueueResponse(CONTAINER_A, request -> {
+            assertEquals("true", request.getHeaders().getValue(ACQUISITION_HEADER));
+            assertEquals("true", request.getHeaders().getValue(TRACING_DISABLED_HEADER));
+            return Mono.just(buildResponse(request, FIRST_TOKEN, now().plusMinutes(20)));
+        });
+    }
+
+    private BlobServiceClientBuilder contextAwareClientBuilder() {
+        return independentClientBuilder().addPolicy((context, next) -> {
+            context.getData(CLIENT_CONTEXT_KEY)
+                .ifPresent(value -> context.getHttpRequest().setHeader(CLIENT_HEADER, value.toString()));
+            context.getData(Tracer.DISABLE_TRACING_KEY)
+                .filter(Boolean.TRUE::equals)
+                .ifPresent(ignored -> context.getHttpRequest().setHeader(TRACING_DISABLED_HEADER, "true"));
+            if (SessionAcquirer.isAcquisitionRequest(context)) {
+                context.getHttpRequest().setHeader(ACQUISITION_HEADER, "true");
+            }
+            return next.process();
+        });
+    }
+
+    private HttpPipeline namedClientPipeline(String name) {
+        return independentClientBuilder().addPolicy((context, next) -> {
+            context.getHttpRequest().setHeader(CLIENT_HEADER, name);
+            return next.process();
+        }).buildClient().getHttpPipeline();
+    }
+
+    private void enqueueCooldown(int status, String errorCode) {
+        httpClient.enqueueResponse(CONTAINER_A, request -> {
+            MockHttpResponse response = new MockHttpResponse(request, status);
+            if (errorCode != null) {
+                response.addHeader("x-ms-error-code", errorCode);
+            }
+            return Mono.just(response);
+        });
+        enqueueSessionResponse(CONTAINER_A, SECOND_TOKEN, now().plusMinutes(20));
+        enqueueSessionResponse(CONTAINER_B, "container-b-token", now().plusMinutes(20));
+    }
+
+    private BlobServiceClientBuilder accountResolutionBuilder(String endpoint, String accountName) {
+        sessionContext
+            = new SessionContext().setSessionMode(SessionContext.SessionMode.ENABLED).setAccountName(accountName);
+        SessionContextAccessor.getOrCreateSessionProvider(sessionContext, SessionProvider.class, () -> provider);
+        return independentClientBuilder().endpoint(endpoint);
+    }
+
+    private BlobServiceClientBuilder overrideAccountBuilder() {
+        sessionContext.setAccountName("override-account");
+        return independentClientBuilder();
+    }
+
+    private BlobServiceClientBuilder independentClientBuilder() {
+        // Retries are disabled so each CreateSession response is consumed by exactly one acquisition attempt.
+        return new BlobServiceClientBuilder().endpoint("https://" + ACCOUNT_NAME + ".blob.core.windows.net")
+            .credential(new MockTokenCredential())
+            .httpClient(httpClient)
+            .retryOptions(new RequestRetryOptions(RetryPolicyType.FIXED, 1, 30, 1L, 1L, null))
+            .sessionContext(sessionContext);
+    }
+
+    private void initializeSessionContext() {
+        sessionContext
+            = new SessionContext("https://" + ACCOUNT_NAME + ".blob.core.windows.net", new MockTokenCredential())
+                .setSessionMode(SessionContext.SessionMode.ENABLED);
+        SessionContextAccessor.getOrCreateSessionProvider(sessionContext, SessionProvider.class, () -> provider);
+    }
+
+    private HttpPipeline independentClientPipeline() {
+        return independentClientBuilder().buildClient().getHttpPipeline();
+    }
+
+    private HttpPipeline independentAsyncClientPipeline() {
+        return independentClientBuilder().buildAsyncClient().getHttpPipeline();
+    }
+
+    private void assertSyncToken(HttpPipeline pipeline, String container, String token) {
+        HttpRequest request = dataRequest(container);
+        try (HttpResponse response = pipeline.sendSync(request, Context.NONE)) {
+            assertEquals(200, response.getStatusCode());
+            assertAuthorization(response.getRequest(), token);
+        }
+    }
+
+    private void assertAsyncToken(HttpPipeline pipeline, String container, String token) {
+        HttpRequest request = dataRequest(container);
+        StepVerifier.create(pipeline.send(request)).assertNext(response -> {
+            assertEquals(200, response.getStatusCode());
+            assertAuthorization(response.getRequest(), token);
+            response.close();
+        }).verifyComplete();
+    }
+
+    private static HttpRequest dataRequest(String container) {
+        return new HttpRequest(HttpMethod.GET,
+            "https://" + ACCOUNT_NAME + ".blob.core.windows.net/" + container + "/blob");
+    }
+
+    private static void assertAuthorization(HttpRequest request, String token) {
+        String authorization = request.getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
+        assertTrue(authorization.startsWith(token == null ? "Bearer " : "Session " + token + ":"));
+    }
+
+    private Map<?, ?> sessionCaches() {
+        try {
+            Field field = ContainerSessionProvider.class.getDeclaredField("containerSessionCaches");
+            field.setAccessible(true);
+            return (Map<?, ?>) field.get(provider);
+        } catch (ReflectiveOperationException ex) {
+            throw new AssertionError(ex);
+        }
+    }
+
+    private void sweepWithAnotherContainer() {
+        clock.advance(Duration.ofMinutes(1));
+        enqueueSessionResponse(CONTAINER_B, "container-b-token", now().plusMinutes(20));
+        assertEquals("container-b-token", provider.getSession(contextFor(CONTAINER_B)).getSessionToken());
     }
 
     private static void awaitLatch(CountDownLatch latch) {
@@ -1067,7 +1130,8 @@ public class ContainerSessionProviderCacheTests {
      */
     private static final class MutableClock extends Clock {
         private final ZoneId zone;
-        private Instant instant;
+        private volatile Instant instant;
+        private volatile Runnable onRead;
 
         MutableClock(Instant instant) {
             this(instant, ZoneOffset.UTC);
@@ -1090,6 +1154,10 @@ public class ContainerSessionProviderCacheTests {
 
         @Override
         public Instant instant() {
+            Runnable callback = onRead;
+            if (callback != null) {
+                callback.run();
+            }
             return instant;
         }
 

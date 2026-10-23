@@ -23,6 +23,7 @@ import java.time.OffsetDateTime;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -83,7 +84,12 @@ final class ContainerSessionProvider extends SessionProvider {
         return Mono.defer(() -> {
             String container = requireContainerName(context);
             SessionAcquirer acquirer = requireAcquirer(context);
-            return updateCache(container, acquirer.getAccountName(), context).getSessionAsync();
+            // Reserve under the map's per-key lock, before subscribing outside it. Shield the reservation as well
+            // as the shared acquisition from cancellation, including cancellation before the supplier is subscribed.
+            return Mono
+                .using(() -> reserveCache(container, acquirer.getAccountName(), context),
+                    ContainerSessionCache::getSessionAsync, ContainerSessionCache::release, false)
+                .cache();
         });
     }
 
@@ -102,9 +108,14 @@ final class ContainerSessionProvider extends SessionProvider {
             return;
         }
         String key = cacheKey(context);
-        ContainerSessionCache containerSessionCache = containerSessionCaches.get(key);
+        ContainerSessionCache containerSessionCache
+            = containerSessionCaches.computeIfPresent(key, (ignored, cache) -> cache.retain());
         if (containerSessionCache != null) {
-            containerSessionCache.cache.forceRefreshValueInBackground();
+            try {
+                containerSessionCache.cache.forceRefreshValueInBackground();
+            } finally {
+                containerSessionCache.release();
+            }
         }
     }
 
@@ -125,17 +136,17 @@ final class ContainerSessionProvider extends SessionProvider {
         return acquirer;
     }
 
-    private ContainerSessionCache updateCache(String containerName, String resolvedAccountName,
+    private ContainerSessionCache reserveCache(String containerName, String resolvedAccountName,
         SessionRequestContext requestContext) {
         String key = normalize(resolvedAccountName) + "/" + normalize(containerName);
         OffsetDateTime now = OffsetDateTime.now(clock);
         evictExpiredCaches(now);
         return containerSessionCaches.compute(key, (k, existing) -> {
             if (existing == null) {
-                return new ContainerSessionCache(this, clock, containerName, resolvedAccountName, requestContext);
+                existing = new ContainerSessionCache(this, clock, containerName, resolvedAccountName, requestContext);
             }
             existing.latestRequestContext = requestContext;
-            return existing;
+            return existing.retain();
         });
     }
 
@@ -217,9 +228,10 @@ final class ContainerSessionProvider extends SessionProvider {
     private static final class ContainerSessionCache {
         final AutoRefreshingCache<SessionCredential> cache;
         // The most recent caller's acquirer and Context are retained together so refreshes use one client's pipeline
-        // and request data. An idle entry keeps this snapshot reachable until its session expires and it is evicted.
+        // and request data. The sweep removes entries with no active references and no unexpired session/cooldown.
         volatile SessionRequestContext latestRequestContext;
         private final Clock clock;
+        private final AtomicInteger references = new AtomicInteger();
         private volatile SessionCredential fallback;
         private volatile OffsetDateTime expiration;
 
@@ -227,7 +239,7 @@ final class ContainerSessionProvider extends SessionProvider {
             String resolvedAccountName, SessionRequestContext requestContext) {
             this.clock = clock;
             this.latestRequestContext = requestContext;
-            this.cache = new AutoRefreshingCache<>(() -> {
+            this.cache = new AutoRefreshingCache<>(() -> Mono.using(this::retain, ignored -> {
                 SessionCredential currentFallback = fallback;
                 Mono<SessionCredential> acquisition;
                 if (currentFallback != null && OffsetDateTime.now(clock).isBefore(currentFallback.getExpiresAt())) {
@@ -236,7 +248,7 @@ final class ContainerSessionProvider extends SessionProvider {
                 } else {
                     SessionRequestContext latestContext = latestRequestContext;
                     acquisition = provider.createSessionAsync(latestContext, containerName, resolvedAccountName)
-                        .doOnNext(ignored -> fallback = null)
+                        .doOnNext(credential -> fallback = null)
                         .onErrorResume(error -> {
                             if (!shouldFallback(error)) {
                                 return Mono.error(error);
@@ -248,12 +260,24 @@ final class ContainerSessionProvider extends SessionProvider {
                         });
                 }
                 return acquisition.doOnNext(value -> expiration = value.getExpiresAt());
-            }, SessionCredential::getExpiresAt, clock);
+            }, ContainerSessionCache::release, false), SessionCredential::getExpiresAt, clock);
+        }
+
+        private ContainerSessionCache retain() {
+            references.incrementAndGet();
+            return this;
+        }
+
+        private void release() {
+            references.decrementAndGet();
         }
 
         private boolean isExpired(OffsetDateTime now) {
+            if (references.get() != 0) {
+                return false;
+            }
             OffsetDateTime currentExpiration = expiration;
-            return currentExpiration != null && !now.isBefore(currentExpiration);
+            return currentExpiration == null || !now.isBefore(currentExpiration);
         }
 
         private Mono<SessionCredential> getSessionAsync() {
