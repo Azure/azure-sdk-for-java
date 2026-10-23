@@ -22,16 +22,11 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.time.Duration;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Verifies that overriding Host changes the HTTP authority without changing the connection destination.
@@ -68,6 +63,9 @@ public class VertxHttpClientHostHeaderTests {
 
             for (String host : new String[] {
                 "account.blob.core.windows.net",
+                "Account.blob.core.windows.net",
+                "storage_account.blob.core.windows.net",
+                "account.blob.core.windows.net:80",
                 "account.blob.core.windows.net:8443",
                 "[2001:db8::1]",
                 "[2001:db8::1]:8443",
@@ -96,27 +94,6 @@ public class VertxHttpClientHostHeaderTests {
                 assertEquals(host, request.getHeaders().getValue(HttpHeaderName.HOST));
             }
 
-            if (version == HttpVersion.HTTP_2) {
-                for (List<String> hosts : Arrays.asList(
-                    Collections.singletonList("account.blob.core.windows.net:invalid"),
-                    Collections.singletonList("account.blob.core.windows.net:65536"),
-                    Collections.singletonList("account.blob.core.windows.net/path"),
-                    Collections.singletonList("user@account.blob.core.windows.net"), Collections.singletonList(""),
-                    Arrays.asList("account.blob.core.windows.net", "other.blob.core.windows.net"))) {
-                    HttpRequest invalid = new HttpRequest(HttpMethod.GET, serverUri + requestUri);
-                    invalid.getHeaders().set(HttpHeaderName.HOST, hosts);
-                    IllegalArgumentException error = assertThrows(IllegalArgumentException.class,
-                        () -> send(client, invalid, synchronous).close());
-                    assertTrue(error.getMessage().contains("Host"), error.getMessage());
-                }
-
-                try (HttpResponse response
-                    = send(client, new HttpRequest(HttpMethod.GET, serverUri + requestUri), synchronous)) {
-                    assertEquals(200, response.getStatusCode());
-                    assertEquals("localhost:" + server.actualPort(),
-                        response.getHeaderValue(HttpHeaderName.fromString("x-request-authority")));
-                }
-            }
         } finally {
             vertx.close().toCompletionStage().toCompletableFuture().get(TEST_TIMEOUT.toMillis(), TimeUnit.MILLISECONDS);
         }

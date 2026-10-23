@@ -11,7 +11,7 @@
 ### Bugs Fixed
 
 - Fixed HTTP/2 requests with an explicit `Host` header sending a conflicting URL-derived `:authority`. The override
-  now sets `:authority` while the connection still uses the request URL.
+  now passes the `Host` value unchanged as `:authority` while the connection still uses the request URL.
 - Fixed streaming responses reading and buffering data without downstream demand. Cancelling response consumption
   now resets the HTTP exchange without closing unrelated HTTP/2 streams.
 - Fixed timeout resolution to prefer explicit builder values, then builder-specific configuration, then global
