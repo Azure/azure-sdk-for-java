@@ -9,7 +9,7 @@ package com.azure.resourcemanager.providerhub.generated;
  */
 public final class SkusDeleteNestedResourceTypeFirstSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Skus_DeleteNestedResourceTypeFirst.json
+     * x-ms-original-file: 2026-10-01/Skus_DeleteNestedResourceTypeFirst.json
      */
     /**
      * Sample code: Skus_DeleteNestedResourceTypeFirst.

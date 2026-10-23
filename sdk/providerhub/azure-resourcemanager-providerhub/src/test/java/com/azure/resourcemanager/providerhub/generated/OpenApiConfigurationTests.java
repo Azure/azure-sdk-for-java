@@ -13,16 +13,16 @@ public final class OpenApiConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OpenApiConfiguration model
-            = BinaryData.fromString("{\"validation\":{\"allowNoncompliantCollectionResponse\":true}}")
+            = BinaryData.fromString("{\"validation\":{\"allowNoncompliantCollectionResponse\":false}}")
                 .toObject(OpenApiConfiguration.class);
-        Assertions.assertTrue(model.validation().allowNoncompliantCollectionResponse());
+        Assertions.assertFalse(model.validation().allowNoncompliantCollectionResponse());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         OpenApiConfiguration model = new OpenApiConfiguration()
-            .withValidation(new OpenApiValidation().withAllowNoncompliantCollectionResponse(true));
+            .withValidation(new OpenApiValidation().withAllowNoncompliantCollectionResponse(false));
         model = BinaryData.fromObject(model).toObject(OpenApiConfiguration.class);
-        Assertions.assertTrue(model.validation().allowNoncompliantCollectionResponse());
+        Assertions.assertFalse(model.validation().allowNoncompliantCollectionResponse());
     }
 }

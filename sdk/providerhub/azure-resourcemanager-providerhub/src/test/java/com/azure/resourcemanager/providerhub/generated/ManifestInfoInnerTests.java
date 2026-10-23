@@ -13,18 +13,18 @@ public final class ManifestInfoInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManifestInfoInner model = BinaryData.fromString(
-            "{\"properties\":{\"manifest\":\"iknaqlnuwig\",\"manifestUri\":\"xly\",\"commitId\":\"phvxz\"},\"id\":\"xhmpejtlkex\",\"name\":\"onwivkcqhrxhxkn\",\"type\":\"ccrmmk\"}")
+            "{\"properties\":{\"manifest\":\"oqujlyegqavn\",\"manifestUri\":\"flqqbtnyjpylxd\",\"commitId\":\"vabm\"},\"id\":\"s\",\"name\":\"baevwjcnkottl\",\"type\":\"uhvajmailfemjjza\"}")
             .toObject(ManifestInfoInner.class);
-        Assertions.assertEquals("iknaqlnuwig", model.properties().manifest());
-        Assertions.assertEquals("xly", model.properties().manifestUri());
+        Assertions.assertEquals("oqujlyegqavn", model.properties().manifest());
+        Assertions.assertEquals("flqqbtnyjpylxd", model.properties().manifestUri());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManifestInfoInner model = new ManifestInfoInner()
-            .withProperties(new ManifestInfoProperties().withManifest("iknaqlnuwig").withManifestUri("xly"));
+        ManifestInfoInner model = new ManifestInfoInner().withProperties(
+            new ManifestInfoProperties().withManifest("oqujlyegqavn").withManifestUri("flqqbtnyjpylxd"));
         model = BinaryData.fromObject(model).toObject(ManifestInfoInner.class);
-        Assertions.assertEquals("iknaqlnuwig", model.properties().manifest());
-        Assertions.assertEquals("xly", model.properties().manifestUri());
+        Assertions.assertEquals("oqujlyegqavn", model.properties().manifest());
+        Assertions.assertEquals("flqqbtnyjpylxd", model.properties().manifestUri());
     }
 }

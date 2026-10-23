@@ -13,21 +13,21 @@ public final class EndpointInformationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EndpointInformation model = BinaryData
-            .fromString("{\"endpoint\":\"bajlka\",\"endpointType\":\"Eventhub\",\"schemaVersion\":\"yiopi\"}")
+            .fromString("{\"endpoint\":\"eohibet\",\"endpointType\":\"Eventhub\",\"schemaVersion\":\"nkrrf\"}")
             .toObject(EndpointInformation.class);
-        Assertions.assertEquals("bajlka", model.endpoint());
+        Assertions.assertEquals("eohibet", model.endpoint());
         Assertions.assertEquals(NotificationEndpointType.EVENTHUB, model.endpointType());
-        Assertions.assertEquals("yiopi", model.schemaVersion());
+        Assertions.assertEquals("nkrrf", model.schemaVersion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EndpointInformation model = new EndpointInformation().withEndpoint("bajlka")
+        EndpointInformation model = new EndpointInformation().withEndpoint("eohibet")
             .withEndpointType(NotificationEndpointType.EVENTHUB)
-            .withSchemaVersion("yiopi");
+            .withSchemaVersion("nkrrf");
         model = BinaryData.fromObject(model).toObject(EndpointInformation.class);
-        Assertions.assertEquals("bajlka", model.endpoint());
+        Assertions.assertEquals("eohibet", model.endpoint());
         Assertions.assertEquals(NotificationEndpointType.EVENTHUB, model.endpointType());
-        Assertions.assertEquals("yiopi", model.schemaVersion());
+        Assertions.assertEquals("nkrrf", model.schemaVersion());
     }
 }

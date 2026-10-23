@@ -92,6 +92,11 @@ public class ResourceProviderManagement implements JsonSerializable<ResourceProv
      */
     private List<String> featureManagementOwners;
 
+    /*
+     * List of claims to approve or reject feature registration.
+     */
+    private List<String> featureApprovalClaims;
+
     /**
      * Creates an instance of ResourceProviderManagement class.
      */
@@ -401,6 +406,26 @@ public class ResourceProviderManagement implements JsonSerializable<ResourceProv
     }
 
     /**
+     * Get the featureApprovalClaims property: List of claims to approve or reject feature registration.
+     * 
+     * @return the featureApprovalClaims value.
+     */
+    public List<String> featureApprovalClaims() {
+        return this.featureApprovalClaims;
+    }
+
+    /**
+     * Set the featureApprovalClaims property: List of claims to approve or reject feature registration.
+     * 
+     * @param featureApprovalClaims the featureApprovalClaims value to set.
+     * @return the ResourceProviderManagement object itself.
+     */
+    public ResourceProviderManagement withFeatureApprovalClaims(List<String> featureApprovalClaims) {
+        this.featureApprovalClaims = featureApprovalClaims;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -444,6 +469,8 @@ public class ResourceProviderManagement implements JsonSerializable<ResourceProv
         jsonWriter.writeStringField("pcCode", this.pcCode);
         jsonWriter.writeStringField("profitCenterProgramId", this.profitCenterProgramId);
         jsonWriter.writeArrayField("featureManagementOwners", this.featureManagementOwners,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("featureApprovalClaims", this.featureApprovalClaims,
             (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
@@ -504,6 +531,9 @@ public class ResourceProviderManagement implements JsonSerializable<ResourceProv
                 } else if ("featureManagementOwners".equals(fieldName)) {
                     List<String> featureManagementOwners = reader.readArray(reader1 -> reader1.getString());
                     deserializedResourceProviderManagement.featureManagementOwners = featureManagementOwners;
+                } else if ("featureApprovalClaims".equals(fieldName)) {
+                    List<String> featureApprovalClaims = reader.readArray(reader1 -> reader1.getString());
+                    deserializedResourceProviderManagement.featureApprovalClaims = featureApprovalClaims;
                 } else {
                     reader.skipChildren();
                 }

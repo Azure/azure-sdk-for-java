@@ -24,7 +24,7 @@ public final class ProviderRegistrationsGenerateOperationsWithResponseMockTests 
     @Test
     public void testGenerateOperationsWithResponse() throws Exception {
         String responseStr
-            = "[{\"name\":\"iiwllbvgwzsf\",\"isDataAction\":false,\"origin\":\"System\",\"display\":{\"provider\":\"us\",\"resource\":\"ktjtgra\",\"operation\":\"aqo\",\"description\":\"fkbebauzl\"},\"actionType\":\"NotSpecified\",\"properties\":\"\\\"dataxwpfhnjzud\\\"\"},{\"name\":\"tpzkgmeboywhcz\",\"isDataAction\":true,\"origin\":\"System\",\"display\":{\"provider\":\"n\",\"resource\":\"qbedygisrzwn\",\"operation\":\"kdidjc\",\"description\":\"lrmpwctofldse\"},\"actionType\":\"NotSpecified\",\"properties\":\"\\\"dataztx\\\"\"},{\"name\":\"brfgdrwji\",\"isDataAction\":true,\"origin\":\"System\",\"display\":{\"provider\":\"jsrwqrxetf\",\"resource\":\"cwv\",\"operation\":\"r\",\"description\":\"dqntycnawthv\"},\"actionType\":\"Internal\",\"properties\":\"\\\"datanuyeamcmhud\\\"\"}]";
+            = "[{\"name\":\"wvixq\",\"isDataAction\":false,\"origin\":\"System\",\"display\":{\"provider\":\"kybsj\",\"resource\":\"clrvtzqnrbctbh\",\"operation\":\"jhxpcvrd\",\"description\":\"y\"},\"actionType\":\"Internal\",\"properties\":\"\\\"datan\\\"\"},{\"name\":\"qady\",\"isDataAction\":true,\"origin\":\"User\",\"display\":{\"provider\":\"wriuomzczfkic\",\"resource\":\"evsaa\",\"operation\":\"wspcaxikhfjqebg\",\"description\":\"cx\"},\"actionType\":\"NotSpecified\",\"properties\":\"\\\"datazromvygys\\\"\"},{\"name\":\"mtmesrfsv\",\"isDataAction\":true,\"origin\":\"System\",\"display\":{\"provider\":\"pat\",\"resource\":\"tdiswxspvckojaz\",\"operation\":\"bgspf\",\"description\":\"esubzpvpv\"},\"actionType\":\"NotSpecified\",\"properties\":\"\\\"datatcovqseusrfjb\\\"\"},{\"name\":\"xzfxn\",\"isDataAction\":false,\"origin\":\"System\",\"display\":{\"provider\":\"uoswkjmdih\",\"resource\":\"cy\",\"operation\":\"yzlwhbwzjnufzrf\",\"description\":\"m\"},\"actionType\":\"NotSpecified\",\"properties\":\"\\\"datanbzrtfte\\\"\"}]";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,16 +34,16 @@ public final class ProviderRegistrationsGenerateOperationsWithResponseMockTests 
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         List<OperationsDefinition> response = manager.providerRegistrations()
-            .generateOperationsWithResponse("e", com.azure.core.util.Context.NONE)
+            .generateOperationsWithResponse("a", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("iiwllbvgwzsf", response.get(0).name());
+        Assertions.assertEquals("wvixq", response.get(0).name());
         Assertions.assertFalse(response.get(0).isDataAction());
         Assertions.assertEquals(OperationOrigins.SYSTEM, response.get(0).origin());
-        Assertions.assertEquals("us", response.get(0).display().provider());
-        Assertions.assertEquals("ktjtgra", response.get(0).display().resource());
-        Assertions.assertEquals("aqo", response.get(0).display().operation());
-        Assertions.assertEquals("fkbebauzl", response.get(0).display().description());
-        Assertions.assertEquals(OperationActionType.NOT_SPECIFIED, response.get(0).actionType());
+        Assertions.assertEquals("kybsj", response.get(0).display().provider());
+        Assertions.assertEquals("clrvtzqnrbctbh", response.get(0).display().resource());
+        Assertions.assertEquals("jhxpcvrd", response.get(0).display().operation());
+        Assertions.assertEquals("y", response.get(0).display().description());
+        Assertions.assertEquals(OperationActionType.INTERNAL, response.get(0).actionType());
     }
 }

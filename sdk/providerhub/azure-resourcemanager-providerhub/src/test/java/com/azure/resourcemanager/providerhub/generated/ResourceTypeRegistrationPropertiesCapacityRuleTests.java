@@ -13,19 +13,19 @@ public final class ResourceTypeRegistrationPropertiesCapacityRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceTypeRegistrationPropertiesCapacityRule model
-            = BinaryData.fromString("{\"capacityPolicy\":\"Restricted\",\"skuAlias\":\"yzunbixxrtikv\"}")
+            = BinaryData.fromString("{\"capacityPolicy\":\"Restricted\",\"skuAlias\":\"ccsrmozihmipgaw\"}")
                 .toObject(ResourceTypeRegistrationPropertiesCapacityRule.class);
         Assertions.assertEquals(CapacityPolicy.RESTRICTED, model.capacityPolicy());
-        Assertions.assertEquals("yzunbixxrtikv", model.skuAlias());
+        Assertions.assertEquals("ccsrmozihmipgaw", model.skuAlias());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ResourceTypeRegistrationPropertiesCapacityRule model
             = new ResourceTypeRegistrationPropertiesCapacityRule().withCapacityPolicy(CapacityPolicy.RESTRICTED)
-                .withSkuAlias("yzunbixxrtikv");
+                .withSkuAlias("ccsrmozihmipgaw");
         model = BinaryData.fromObject(model).toObject(ResourceTypeRegistrationPropertiesCapacityRule.class);
         Assertions.assertEquals(CapacityPolicy.RESTRICTED, model.capacityPolicy());
-        Assertions.assertEquals("yzunbixxrtikv", model.skuAlias());
+        Assertions.assertEquals("ccsrmozihmipgaw", model.skuAlias());
     }
 }

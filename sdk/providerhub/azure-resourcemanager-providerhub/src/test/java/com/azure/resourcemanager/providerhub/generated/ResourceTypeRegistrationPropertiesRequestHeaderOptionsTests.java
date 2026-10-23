@@ -14,21 +14,20 @@ public final class ResourceTypeRegistrationPropertiesRequestHeaderOptionsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceTypeRegistrationPropertiesRequestHeaderOptions model = BinaryData
-            .fromString(
-                "{\"optInHeaders\":\"ResourceGroupLocation\",\"optOutHeaders\":\"SystemDataCreatedByLastModifiedBy\"}")
+            .fromString("{\"optInHeaders\":\"UnboundedClientGroupMembership\",\"optOutHeaders\":\"NotSpecified\"}")
             .toObject(ResourceTypeRegistrationPropertiesRequestHeaderOptions.class);
-        Assertions.assertEquals(OptInHeaderType.RESOURCE_GROUP_LOCATION, model.optInHeaders());
-        Assertions.assertEquals(OptOutHeaderType.SYSTEM_DATA_CREATED_BY_LAST_MODIFIED_BY, model.optOutHeaders());
+        Assertions.assertEquals(OptInHeaderType.UNBOUNDED_CLIENT_GROUP_MEMBERSHIP, model.optInHeaders());
+        Assertions.assertEquals(OptOutHeaderType.NOT_SPECIFIED, model.optOutHeaders());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ResourceTypeRegistrationPropertiesRequestHeaderOptions model
             = new ResourceTypeRegistrationPropertiesRequestHeaderOptions()
-                .withOptInHeaders(OptInHeaderType.RESOURCE_GROUP_LOCATION)
-                .withOptOutHeaders(OptOutHeaderType.SYSTEM_DATA_CREATED_BY_LAST_MODIFIED_BY);
+                .withOptInHeaders(OptInHeaderType.UNBOUNDED_CLIENT_GROUP_MEMBERSHIP)
+                .withOptOutHeaders(OptOutHeaderType.NOT_SPECIFIED);
         model = BinaryData.fromObject(model).toObject(ResourceTypeRegistrationPropertiesRequestHeaderOptions.class);
-        Assertions.assertEquals(OptInHeaderType.RESOURCE_GROUP_LOCATION, model.optInHeaders());
-        Assertions.assertEquals(OptOutHeaderType.SYSTEM_DATA_CREATED_BY_LAST_MODIFIED_BY, model.optOutHeaders());
+        Assertions.assertEquals(OptInHeaderType.UNBOUNDED_CLIENT_GROUP_MEMBERSHIP, model.optInHeaders());
+        Assertions.assertEquals(OptOutHeaderType.NOT_SPECIFIED, model.optOutHeaders());
     }
 }

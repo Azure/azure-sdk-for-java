@@ -28,8 +28,8 @@ public final class SkusDeleteNestedResourceTypeSecondWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.skus()
-            .deleteNestedResourceTypeSecondWithResponse("ukz", "dtzxsoe", "nlwglihezomucmq", "isnionetbzdrdpue",
-                "xkgtlzlmtrlxcznn", com.azure.core.util.Context.NONE);
+            .deleteNestedResourceTypeSecondWithResponse("wdcsk", "kqnqvkixnmbzme", "uyrzw", "mbzayspzvrietv",
+                "phmdzxplgtp", com.azure.core.util.Context.NONE);
 
     }
 }

@@ -13,7 +13,7 @@ import java.util.Arrays;
  */
 public final class ResourceActionsDeleteResourcesSamples {
     /*
-     * x-ms-original-file: 2025-10-01/ResourceActions_DeleteResources.json
+     * x-ms-original-file: 2026-10-01/ResourceActions_DeleteResources.json
      */
     /**
      * Sample code: ResourceActions_DeleteResources.

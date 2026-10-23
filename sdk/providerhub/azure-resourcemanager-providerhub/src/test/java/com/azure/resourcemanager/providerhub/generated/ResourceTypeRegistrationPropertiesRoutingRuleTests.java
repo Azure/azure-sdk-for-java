@@ -12,16 +12,16 @@ public final class ResourceTypeRegistrationPropertiesRoutingRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceTypeRegistrationPropertiesRoutingRule model
-            = BinaryData.fromString("{\"hostResourceType\":\"nlsvxeiz\"}")
+            = BinaryData.fromString("{\"hostResourceType\":\"hdenxaulk\"}")
                 .toObject(ResourceTypeRegistrationPropertiesRoutingRule.class);
-        Assertions.assertEquals("nlsvxeiz", model.hostResourceType());
+        Assertions.assertEquals("hdenxaulk", model.hostResourceType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ResourceTypeRegistrationPropertiesRoutingRule model
-            = new ResourceTypeRegistrationPropertiesRoutingRule().withHostResourceType("nlsvxeiz");
+            = new ResourceTypeRegistrationPropertiesRoutingRule().withHostResourceType("hdenxaulk");
         model = BinaryData.fromObject(model).toObject(ResourceTypeRegistrationPropertiesRoutingRule.class);
-        Assertions.assertEquals("nlsvxeiz", model.hostResourceType());
+        Assertions.assertEquals("hdenxaulk", model.hostResourceType());
     }
 }

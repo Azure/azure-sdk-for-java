@@ -12,20 +12,20 @@ import org.junit.jupiter.api.Assertions;
 public final class ManagedResourceGroupDenyAssignmentConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ManagedResourceGroupDenyAssignmentConfiguration model = BinaryData
-            .fromString("{\"enabled\":false,\"notActions\":[\"ozuxylfsbtkadpys\",\"wn\",\"tgkbugrjqctojc\"]}")
-            .toObject(ManagedResourceGroupDenyAssignmentConfiguration.class);
-        Assertions.assertFalse(model.enabled());
-        Assertions.assertEquals("ozuxylfsbtkadpys", model.notActions().get(0));
+        ManagedResourceGroupDenyAssignmentConfiguration model
+            = BinaryData.fromString("{\"enabled\":true,\"notActions\":[\"qxeiiqbimhtmwwi\",\"h\",\"hfqpofv\"]}")
+                .toObject(ManagedResourceGroupDenyAssignmentConfiguration.class);
+        Assertions.assertTrue(model.enabled());
+        Assertions.assertEquals("qxeiiqbimhtmwwi", model.notActions().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ManagedResourceGroupDenyAssignmentConfiguration model
-            = new ManagedResourceGroupDenyAssignmentConfiguration().withEnabled(false)
-                .withNotActions(Arrays.asList("ozuxylfsbtkadpys", "wn", "tgkbugrjqctojc"));
+            = new ManagedResourceGroupDenyAssignmentConfiguration().withEnabled(true)
+                .withNotActions(Arrays.asList("qxeiiqbimhtmwwi", "h", "hfqpofv"));
         model = BinaryData.fromObject(model).toObject(ManagedResourceGroupDenyAssignmentConfiguration.class);
-        Assertions.assertFalse(model.enabled());
-        Assertions.assertEquals("ozuxylfsbtkadpys", model.notActions().get(0));
+        Assertions.assertTrue(model.enabled());
+        Assertions.assertEquals("qxeiiqbimhtmwwi", model.notActions().get(0));
     }
 }
