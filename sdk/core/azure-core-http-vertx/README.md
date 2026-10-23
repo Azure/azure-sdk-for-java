@@ -66,6 +66,10 @@ add the direct dependency to your project as follows.
 
 ## Key concepts
 
+An explicit request `Host` header overrides the HTTP authority without changing the connection destination specified
+by the request URL. With HTTP/1.1 it is sent as `Host`; with HTTP/2 its value is passed unchanged as `:authority`
+instead of sending a conflicting `Host` header. Requests without an explicit `Host` continue to use the URL's authority.
+
 ## Examples
 
 The following sections provide several code snippets covering some of the most common client configuration scenarios.
