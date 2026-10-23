@@ -6,9 +6,12 @@ package com.azure.search.documents.models.implementation.sse;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.function.Consumer;
 import org.reactivestreams.Subscription;
 import reactor.core.publisher.BaseSubscriber;
 
@@ -25,25 +28,49 @@ final class ServerSentEventStreamResponse {
     }
 
     static ServerSentEventStreamResponse fromResponse(Response<BinaryData> response) {
+        return fromResponse(response, ServerSentEventStreamResponse::cancelBody);
+    }
+
+    static ServerSentEventStreamResponse fromSyncResponse(Response<BinaryData> response) {
+        return fromResponse(response, body -> {
+            if (body != null) {
+                try {
+                    body.toStream().close();
+                } catch (IOException exception) {
+                    throw new UncheckedIOException("Failed to close the server-sent event response.", exception);
+                }
+            }
+        });
+    }
+
+    private static ServerSentEventStreamResponse fromResponse(Response<BinaryData> response,
+        Consumer<BinaryData> releaseBody) {
         Objects.requireNonNull(response, "'response' cannot be null.");
         int statusCode = response.getStatusCode();
-        if (statusCode != 200 && statusCode != 204) {
-            cancelBody(response.getValue());
-            throw new IllegalStateException("Expected a server-sent event response to have status code 200 or 204.");
-        }
-
-        if (statusCode == 200 && !isTextEventStream(response.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
-            cancelBody(response.getValue());
-            throw new IllegalStateException(
-                "Expected a successful server-sent event response to have Content-Type 'text/event-stream'.");
-        }
-
         BinaryData body = response.getValue();
-        if (statusCode == 200 && body == null) {
-            throw new NullPointerException("'response.getValue()' cannot be null unless the status code is 204.");
+        RuntimeException validationFailure = null;
+        if (statusCode != 200 && statusCode != 204) {
+            validationFailure
+                = new IllegalStateException("Expected a server-sent event response to have status code 200 or 204.");
+        } else if (statusCode == 200
+            && !isTextEventStream(response.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
+            validationFailure = new IllegalStateException(
+                "Expected a successful server-sent event response to have Content-Type 'text/event-stream'.");
+        } else if (statusCode == 200 && body == null) {
+            validationFailure
+                = new NullPointerException("'response.getValue()' cannot be null unless the status code is 204.");
+        }
+
+        if (validationFailure != null) {
+            try {
+                releaseBody.accept(body);
+            } catch (RuntimeException cleanupFailure) {
+                validationFailure.addSuppressed(cleanupFailure);
+            }
+            throw validationFailure;
         }
         if (statusCode == 204) {
-            cancelBody(body);
+            releaseBody.accept(body);
         }
         return new ServerSentEventStreamResponse(statusCode, body);
     }

@@ -25,6 +25,8 @@ import com.azure.search.documents.SearchServiceVersion;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -32,9 +34,11 @@ import reactor.test.StepVerifier;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 import java.time.Duration;
 import java.util.Collections;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -47,6 +51,56 @@ public class SearchIndexerClientBuilderTests {
     private final AzureKeyCredential searchApiKeyCredential = new AzureKeyCredential("0123");
     private final String searchEndpoint = "https://test.search.windows.net";
     private final SearchServiceVersion apiVersion = SearchServiceVersion.V2026_04_01;
+
+    @ParameterizedTest
+    @ValueSource(strings = { "datasources", "indexers", "skillsets" })
+    public void asyncListingHelpersPreserveContinuationPages(String resource) {
+        AtomicInteger requests = new AtomicInteger();
+        String continuation = searchEndpoint + "/" + resource + "?api-version=2026-10-01&$skiptoken=next";
+        HttpClient httpClient = request -> {
+            assertEquals("/" + resource, request.getUrl().getPath());
+            int page = requests.incrementAndGet();
+            assertTrue(page <= 2);
+            String body = "{\"value\":[{\"name\":\"item-" + page + "\",\"type\":\"azureblob\","
+                + "\"credentials\":{\"connectionString\":\"UseDevelopmentStorage=true\"},"
+                + "\"container\":{\"name\":\"test\"},\"dataSourceName\":\"source\","
+                + "\"targetIndexName\":\"index\",\"skills\":[]}]"
+                + (page == 1 ? ",\"@odata.nextLink\":\"" + continuation + "\"" : "") + "}";
+            return Mono
+                .just(new MockHttpResponse(request, 200, new HttpHeaders(), body.getBytes(StandardCharsets.UTF_8)));
+        };
+        SearchIndexerAsyncClient client = new SearchIndexerClientBuilder().endpoint(searchEndpoint)
+            .credential(searchApiKeyCredential)
+            .httpClient(httpClient)
+            .buildAsyncClient();
+
+        switch (resource) {
+            case "datasources":
+                StepVerifier.create(client.getDataSourceConnections().byPage()).assertNext(page -> {
+                    assertEquals("item-1", page.getValue().get(0).getName());
+                    assertEquals(continuation, page.getContinuationToken());
+                }).assertNext(page -> assertEquals("item-2", page.getValue().get(0).getName())).verifyComplete();
+                break;
+
+            case "indexers":
+                StepVerifier.create(client.getIndexers().byPage()).assertNext(page -> {
+                    assertEquals("item-1", page.getValue().get(0).getName());
+                    assertEquals(continuation, page.getContinuationToken());
+                }).assertNext(page -> assertEquals("item-2", page.getValue().get(0).getName())).verifyComplete();
+                break;
+
+            case "skillsets":
+                StepVerifier.create(client.getSkillsets().byPage()).assertNext(page -> {
+                    assertEquals("item-1", page.getValue().get(0).getName());
+                    assertEquals(continuation, page.getContinuationToken());
+                }).assertNext(page -> assertEquals("item-2", page.getValue().get(0).getName())).verifyComplete();
+                break;
+
+            default:
+                throw new IllegalArgumentException("Unexpected resource: " + resource);
+        }
+        assertEquals(2, requests.get());
+    }
 
     @Test
     public void buildSyncClientTest() {

@@ -4,8 +4,10 @@
 package com.azure.search.documents;
 
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.http.rest.RequestOptions;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
+import com.azure.search.documents.indexes.SearchIndexAsyncClient;
 import com.azure.search.documents.indexes.models.KnowledgeBase;
 import com.azure.search.documents.indexes.models.KnowledgeSourceReference;
 import com.azure.search.documents.indexes.models.SearchField;
@@ -15,8 +17,6 @@ import com.azure.search.documents.indexes.models.SearchIndexKnowledgeSource;
 import com.azure.search.documents.indexes.models.SearchIndexKnowledgeSourceParameters;
 
 import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -28,7 +28,6 @@ import java.util.UUID;
  *     <li>Getting a knowledge base by name</li>
  *     <li>Listing all knowledge bases</li>
  *     <li>Updating a knowledge base</li>
- *     <li>Creating, retrieving, and updating knowledge base tags</li>
  *     <li>Deleting a knowledge base</li>
  * </ul>
  * <p>
@@ -68,19 +67,12 @@ public class KnowledgeBaseCrudExample {
             searchIndexClient.createKnowledgeSource(knowledgeSource);
             knowledgeSourceCreated = true;
 
-            Map<String, String> initialTags = new LinkedHashMap<>();
-            initialTags.put("environment", "sample");
-            initialTags.put("owner", "search-sdk");
-
-            // Tags are customer-defined resource metadata. They don't configure or prove billing attribution.
             KnowledgeBase knowledgeBase
-                = new KnowledgeBase(knowledgeBaseName, new KnowledgeSourceReference(knowledgeSourceName))
-                    .setTags(initialTags);
+                = new KnowledgeBase(knowledgeBaseName, new KnowledgeSourceReference(knowledgeSourceName));
 
             KnowledgeBase created = searchIndexClient.createKnowledgeBase(knowledgeBase);
             knowledgeBaseCreated = true;
             System.out.println("Created knowledge base: " + created.getName());
-            verifyTags(initialTags, created.getTags(), "create");
             if (!knowledgeBaseName.equals(created.getName())) {
                 throw new IllegalStateException("The created knowledge base name didn't match the request.");
             }
@@ -90,13 +82,13 @@ public class KnowledgeBaseCrudExample {
             System.out.println("Retrieved knowledge base: " + retrieved.getName());
             System.out.println("ETag: " + retrieved.getETag());
             System.out.println("Knowledge sources: " + retrieved.getKnowledgeSources().size());
-            verifyTags(initialTags, retrieved.getTags(), "get");
             if (retrieved.getETag() == null || retrieved.getKnowledgeSources().size() != 1) {
                 throw new IllegalStateException("The retrieved knowledge base was missing its ETag or source.");
             }
 
             // List all knowledge bases
-            boolean listed = searchIndexClient.listKnowledgeBases()
+            boolean listed = searchIndexClient.listKnowledgeBases(new RequestOptions()
+                .addQueryParam("search", knowledgeBaseName).addQueryParam("searchType", "prefix").addQueryParam("pageSize", "1"))
                 .stream()
                 .anyMatch(kb -> knowledgeBaseName.equals(kb.getName()));
             if (!listed) {
@@ -104,14 +96,20 @@ public class KnowledgeBaseCrudExample {
             }
 
             // Update a knowledge base
-            Map<String, String> updatedTags = new LinkedHashMap<>(initialTags);
-            updatedTags.put("release", "2026-08-01-preview");
             retrieved.setDescription("Updated description for sample knowledge base");
-            retrieved.setTags(updatedTags);
-            KnowledgeBase updated = searchIndexClient.createOrUpdateKnowledgeBase(retrieved);
+            KnowledgeBase updated;
+            if (args.length > 0 && "async".equals(args[0])) {
+                SearchIndexAsyncClient asyncClient = new SearchIndexClientBuilder()
+                    .credential(new AzureKeyCredential(API_KEY)).endpoint(ENDPOINT).buildAsyncClient();
+                updated = asyncClient.createOrUpdateKnowledgeBase(retrieved).block();
+            } else {
+                updated = searchIndexClient.createOrUpdateKnowledgeBase(retrieved);
+            }
+            if (updated == null) {
+                throw new IllegalStateException("The knowledge base update completed without a response body.");
+            }
             System.out.println("\nUpdated knowledge base: " + updated.getName());
             System.out.println("Description: " + updated.getDescription());
-            verifyTags(updatedTags, updated.getTags(), "update");
             if (!retrieved.getDescription().equals(updated.getDescription())) {
                 throw new IllegalStateException("The updated description wasn't persisted.");
             }
@@ -156,9 +154,4 @@ public class KnowledgeBaseCrudExample {
         return previousFailure;
     }
 
-    private static void verifyTags(Map<String, String> expected, Map<String, String> actual, String operation) {
-        if (!expected.equals(actual)) {
-            throw new IllegalStateException("Knowledge base tags didn't persist after " + operation + ".");
-        }
-    }
 }

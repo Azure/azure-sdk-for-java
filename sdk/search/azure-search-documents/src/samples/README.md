@@ -61,7 +61,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-search-documents</artifactId>
-    <version>11.8.0</version>
+    <version>12.1.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -100,17 +100,53 @@ The following sections provide several code snippets covering some of the most c
 - [Rewrite Request URL to replace OData URL syntax with standard syntax](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/SearchRequestUrlRewriterPolicy.java)
 - [Vector search using reduced embeddings](https://github.com/Azure/azure-sdk-for-java/blob/40261403b3a75aa56a3eeaf18c2ba0fd071c87a6/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/VectorSearchReducedEmbeddings.java)
 
-### Knowledge Base & Knowledge Source Preview Samples
-- [Knowledge Base configuration (preview)](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/KnowledgeBasePreviewConfigurationExample.java)
-- [Streaming knowledge base retrieval with server-sent events (preview)](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/KnowledgeBaseRetrievalStreamExample.java)
-- [Knowledge Base retrieval response parsing (preview)](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/KnowledgeRetrievalPreviewResponseExample.java)
-- [Knowledge service statistics (preview)](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/KnowledgeServiceStatsPreviewExample.java)
-- [Knowledge Source freshness and defaults (preview)](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/KnowledgeSourceFreshnessPreviewExample.java)
-- [File Knowledge Source (preview)](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/KnowledgeSourceFilePreviewExample.java)
-- [MCP Server Knowledge Source (preview)](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/KnowledgeSourceMcpServerPreviewExample.java)
-- [Work IQ Knowledge Source (preview)](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/KnowledgeSourceWorkIqPreviewExample.java)
-- [Fabric Ontology Knowledge Source (preview)](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/KnowledgeSourceFabricOntologyPreviewExample.java)
-- [Fabric Data Agent Knowledge Source (preview)](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/KnowledgeSourceFabricDataAgentPreviewExample.java)
+### Knowledge bases and knowledge sources
+
+These samples target the `2026-10-01` GA service API. Knowledge bases, retrieval, and the earlier knowledge source
+types already existed in `12.0.2`; the table below identifies the additional `12.1.0` scenarios.
+
+- [Knowledge base CRUD](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/KnowledgeBaseCrudExample.java)
+- [Knowledge source CRUD and source-specific configuration](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/KnowledgeSourceCrudExample.java)
+- [Knowledge base configuration and request overrides](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/KnowledgeBaseConfigurationExample.java)
+- [Retrieval, conversation history, and source-specific parameters](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/KnowledgeRetrievalExample.java)
+- [Response activity and citation URLs](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/KnowledgeRetrievalResponseExample.java)
+- [Typed synchronous and asynchronous streaming](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/KnowledgeBaseRetrievalStreamExample.java)
+- [File upload, update, capacity, listing, and deletion](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/KnowledgeSourceFileExample.java)
+
+### New GA feature coverage
+
+| Feature added since `12.0.2` | Sample and intended flow |
+| --- | --- |
+| Similar-document queries (`moreLikeThis`) | [SearchOptionsExample](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/SearchOptionsExample.java) queries a document key without search text and limits search fields to top-level text fields. |
+| Permission-aware queries and document lookup | [DocumentPermissionsExample](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/DocumentPermissionsExample.java) passes the end user's query-source token to search, lookup, and retrieval with elevated reads disabled. |
+| Permission schema, SharePoint registration, ACL ingestion, federated identity, and ACL refresh/resynchronization | [DocumentPermissionsExample](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/DocumentPermissionsExample.java) includes provisioning models and an explicit creation method; supply deployment-specific mappings and roles. Pass `resync` with `SEARCH_INDEXER_NAME` to resynchronize permissions. Created resources are not automatically deleted. |
+| Resource pagination, name-prefix filtering, selected properties, aliases, and opaque continuation tokens | [ListIndexesExample](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/indexes/ListIndexesExample.java), [ListIndexersExample](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/indexes/ListIndexersExample.java), and [SynonymMapsCreateExample](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/SynonymMapsCreateExample.java). Knowledge resource CRUD samples also use pageable listings. |
+| Index statistics summaries and service/indexer runtime | [IndexAndServiceStatisticsExample](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/IndexAndServiceStatisticsExample.java) and [ListIndexersExample](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/indexes/ListIndexersExample.java) report usage, remaining runtime, and reporting periods. |
+| File knowledge sources, file metadata and prefixes, multipart upload/update, deletion, and capacity | [KnowledgeSourceFileExample](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/KnowledgeSourceFileExample.java) checks capacity before uploading and deletes the files and source afterward. |
+| Indexed SQL content/embedding mappings and indexed SharePoint container selection | Run [KnowledgeSourceCrudExample](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/KnowledgeSourceCrudExample.java) with `sql` or `sharepoint`; prerequisites are listed in the class JavaDoc. |
+| Knowledge ingestion permissions and public/private network configuration | [KnowledgeSourceCrudExample](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/KnowledgeSourceCrudExample.java) configures ingestion, inspects generated Blob resources, and demonstrates permission ingestion for SharePoint. Private connectivity must already be configured. |
+| Web language, market, result count, and freshness | Run [KnowledgeSourceCrudExample](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/KnowledgeSourceCrudExample.java) with `web`. |
+| Low/medium reasoning, answer/extractive output modes, instructions, CORS, and request precedence | [KnowledgeBaseConfigurationExample](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/KnowledgeBaseConfigurationExample.java) configures defaults and overrides them per request. |
+| Typed asynchronous knowledge resource updates | Run [KnowledgeBaseCrudExample](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/KnowledgeBaseCrudExample.java) with `async`; the source-specific [KnowledgeSourceCrudExample](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/KnowledgeSourceCrudExample.java) flows inspect typed asynchronous update responses. |
+| Conversation messages, role/content constructors, query planning, and per-source result/error controls | [KnowledgeRetrievalExample](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/KnowledgeRetrievalExample.java) uses an existing populated knowledge base. Optionally set `SEARCH_IMAGE_URL` for an image-capable model. Pass `file`, `sql`, or `sharepoint` with `KNOWLEDGE_SOURCE_NAME` to use the corresponding retrieval parameters. |
+| Typed source/model activities, timestamps, warnings, model/deployment metadata, and citation URLs | [KnowledgeRetrievalResponseExample](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/KnowledgeRetrievalResponseExample.java) reads responses without modifying existing resources. Citation URLs are Search-owned and require appropriate Search authorization. |
+| Retrieval, activity, answer, reference, error, and completion stream events | [KnowledgeBaseRetrievalStreamExample](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/KnowledgeBaseRetrievalStreamExample.java) handles typed events and disposes synchronous streams. Pass `sync` for the synchronous flow. |
+| Content understanding model/deployment and fixed-size/semantic chunking, including tokens | Run [CreateSkillsetExample](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/indexes/CreateSkillsetExample.java) with `content-understanding`; its factory also demonstrates fixed-size character chunks. |
+| Additional Azure OpenAI model names | Knowledge base configuration accepts `SEARCH_OPENAI_MODEL_NAME`, including `gpt-5.4`, `gpt-5.5`, `gpt-5.6-sol`, `gpt-5.6-terra`, and `gpt-5.6-luna`. The matching supported deployment must exist. |
+
+Knowledge source ingestion is asynchronous. The source/file CRUD samples demonstrate resource management and clean
+up their resources; they do not assume uploaded content is immediately searchable. Run retrieval examples against an
+existing source whose ingestion has completed. The caller needs the appropriate Search management/data roles;
+the Search service identity separately needs permission to read source data and invoke configured model deployments.
+
+The parameterless `SearchResourceEncryptionKey` constructor is also new, but the Java model does not expose the
+service-level-key selector referenced by that constructor's JavaDoc, or setters for its key name and vault URL.
+It is therefore not demonstrated as a working service-level encryption flow. For customer-managed keys, continue
+to use the constructor accepting a key name and Key Vault URL with an authorized identity.
+
+The sample configurations and response-handling helpers are covered by offline tests in
+[SearchGaSamplesTests](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/test/java/com/azure/search/documents/SearchGaSamplesTests.java). All samples are compiled
+by the package build; provisioning and ingestion require a live, suitably configured Azure service.
 
 ## Troubleshooting
 Troubleshooting steps can be found [here][SDK_README_TROUBLESHOOTING].
@@ -129,5 +165,3 @@ This project welcomes contributions and suggestions. Find [more contributing][SD
 [SDK_README_KEY_CONCEPTS]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/README.md#key-concepts
 [SDK_README_DEPENDENCY]: ../../README.md#adding-the-package-to-your-product
 [azsearch_docs]: https://learn.microsoft.com/azure/search
-
-
