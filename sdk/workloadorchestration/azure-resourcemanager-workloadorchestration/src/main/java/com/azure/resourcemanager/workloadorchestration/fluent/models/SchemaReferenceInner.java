@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.workloadorchestration.fluent.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
@@ -16,7 +16,7 @@ import java.io.IOException;
 /**
  * Schema Reference Resource.
  */
-@Immutable
+@Fluent
 public final class SchemaReferenceInner extends ProxyResource {
     /*
      * The resource-specific properties for this resource.
@@ -54,7 +54,7 @@ public final class SchemaReferenceInner extends ProxyResource {
     /**
      * Creates an instance of SchemaReferenceInner class.
      */
-    private SchemaReferenceInner() {
+    public SchemaReferenceInner() {
     }
 
     /**
@@ -64,6 +64,17 @@ public final class SchemaReferenceInner extends ProxyResource {
      */
     public SchemaReferenceProperties properties() {
         return this.properties;
+    }
+
+    /**
+     * Set the properties property: The resource-specific properties for this resource.
+     * 
+     * @param properties the properties value to set.
+     * @return the SchemaReferenceInner object itself.
+     */
+    public SchemaReferenceInner withProperties(SchemaReferenceProperties properties) {
+        this.properties = properties;
+        return this;
     }
 
     /**

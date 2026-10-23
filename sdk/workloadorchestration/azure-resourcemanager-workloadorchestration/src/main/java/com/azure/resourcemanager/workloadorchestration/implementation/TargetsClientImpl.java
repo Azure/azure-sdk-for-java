@@ -319,6 +319,24 @@ public final class TargetsClientImpl implements TargetsClient {
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") UpdateExternalValidationStatusParameter body, Context context);
 
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/targets/{targetName}/unstageSolutionVersion")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> unstageSolutionVersion(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("targetName") String targetName,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") SolutionVersionParameter body, Context context);
+
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/targets/{targetName}/unstageSolutionVersion")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> unstageSolutionVersionSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("targetName") String targetName,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") SolutionVersionParameter body, Context context);
+
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -2377,6 +2395,183 @@ public final class TargetsClientImpl implements TargetsClient {
     public SolutionVersionInner updateExternalValidationStatus(String resourceGroupName, String targetName,
         UpdateExternalValidationStatusParameter body, Context context) {
         return beginUpdateExternalValidationStatus(resourceGroupName, targetName, body, context).getFinalResult();
+    }
+
+    /**
+     * Post request to unstage solution version.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param targetName Name of the target.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return solution Version Resource along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> unstageSolutionVersionWithResponseAsync(String resourceGroupName,
+        String targetName, SolutionVersionParameter body) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context -> service.unstageSolutionVersion(this.client.getEndpoint(), this.client.getApiVersion(),
+                    this.client.getSubscriptionId(), resourceGroupName, targetName, contentType, accept, body, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Post request to unstage solution version.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param targetName Name of the target.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return solution Version Resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> unstageSolutionVersionWithResponse(String resourceGroupName, String targetName,
+        SolutionVersionParameter body) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.unstageSolutionVersionSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, targetName, contentType, accept, body, Context.NONE);
+    }
+
+    /**
+     * Post request to unstage solution version.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param targetName Name of the target.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return solution Version Resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> unstageSolutionVersionWithResponse(String resourceGroupName, String targetName,
+        SolutionVersionParameter body, Context context) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.unstageSolutionVersionSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, targetName, contentType, accept, body, context);
+    }
+
+    /**
+     * Post request to unstage solution version.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param targetName Name of the target.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of solution Version Resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<SolutionVersionInner>, SolutionVersionInner>
+        beginUnstageSolutionVersionAsync(String resourceGroupName, String targetName, SolutionVersionParameter body) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = unstageSolutionVersionWithResponseAsync(resourceGroupName, targetName, body);
+        return this.client.<SolutionVersionInner, SolutionVersionInner>getLroResult(mono, this.client.getHttpPipeline(),
+            SolutionVersionInner.class, SolutionVersionInner.class, this.client.getContext());
+    }
+
+    /**
+     * Post request to unstage solution version.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param targetName Name of the target.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of solution Version Resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<SolutionVersionInner>, SolutionVersionInner>
+        beginUnstageSolutionVersion(String resourceGroupName, String targetName, SolutionVersionParameter body) {
+        Response<BinaryData> response = unstageSolutionVersionWithResponse(resourceGroupName, targetName, body);
+        return this.client.<SolutionVersionInner, SolutionVersionInner>getLroResult(response,
+            SolutionVersionInner.class, SolutionVersionInner.class, Context.NONE);
+    }
+
+    /**
+     * Post request to unstage solution version.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param targetName Name of the target.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of solution Version Resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<SolutionVersionInner>, SolutionVersionInner> beginUnstageSolutionVersion(
+        String resourceGroupName, String targetName, SolutionVersionParameter body, Context context) {
+        Response<BinaryData> response
+            = unstageSolutionVersionWithResponse(resourceGroupName, targetName, body, context);
+        return this.client.<SolutionVersionInner, SolutionVersionInner>getLroResult(response,
+            SolutionVersionInner.class, SolutionVersionInner.class, context);
+    }
+
+    /**
+     * Post request to unstage solution version.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param targetName Name of the target.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return solution Version Resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<SolutionVersionInner> unstageSolutionVersionAsync(String resourceGroupName, String targetName,
+        SolutionVersionParameter body) {
+        return beginUnstageSolutionVersionAsync(resourceGroupName, targetName, body).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Post request to unstage solution version.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param targetName Name of the target.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return solution Version Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SolutionVersionInner unstageSolutionVersion(String resourceGroupName, String targetName,
+        SolutionVersionParameter body) {
+        return beginUnstageSolutionVersion(resourceGroupName, targetName, body).getFinalResult();
+    }
+
+    /**
+     * Post request to unstage solution version.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param targetName Name of the target.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return solution Version Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SolutionVersionInner unstageSolutionVersion(String resourceGroupName, String targetName,
+        SolutionVersionParameter body, Context context) {
+        return beginUnstageSolutionVersion(resourceGroupName, targetName, body, context).getFinalResult();
     }
 
     /**

@@ -15,30 +15,30 @@ public final class InstancePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         InstanceProperties model = BinaryData.fromString(
-            "{\"solutionVersionId\":\"vlhv\",\"targetId\":\"gdyftumrtwna\",\"activeState\":\"active\",\"reconciliationPolicy\":{\"state\":\"active\",\"interval\":\"iw\"},\"solutionScope\":\"jgcyztsfmznba\",\"status\":{\"lastModified\":\"2021-03-23T01:57:59Z\",\"deployed\":1138539224,\"expectedRunningJobId\":1311384548,\"runningJobId\":1941100702,\"status\":\"pxehuwrykqga\",\"statusDetails\":\"mvikl\",\"generation\":703238637,\"targetStatuses\":[{\"name\":\"bejdznxcv\",\"status\":\"rhnj\",\"componentStatuses\":[{\"name\":\"v\",\"status\":\"ovqfzge\"},{\"name\":\"dftuljltduce\",\"status\":\"tmczuomejwcwwqi\"},{\"name\":\"nssxmojmsvpk\",\"status\":\"rvkwc\"}]},{\"name\":\"ql\",\"status\":\"x\",\"componentStatuses\":[{\"name\":\"heyd\",\"status\":\"dshmkxmaehvbbx\"},{\"name\":\"iplt\",\"status\":\"htba\"}]},{\"name\":\"gx\",\"status\":\"rc\",\"componentStatuses\":[{\"name\":\"lyhpluodpvruud\",\"status\":\"zibt\"},{\"name\":\"stgktst\",\"status\":\"xeclzedqbcvhzlhp\"},{\"name\":\"dqkdlwwqfbu\",\"status\":\"kxtrq\"},{\"name\":\"smlmbtxhwgfwsrta\",\"status\":\"oezbrhubsk\"}]}]},\"deploymentTimestampEpoch\":2353090484810813231,\"provisioningState\":\"Succeeded\"}")
+            "{\"solutionVersionId\":\"bo\",\"targetId\":\"lcqxypokk\",\"activeState\":\"inactive\",\"reconciliationPolicy\":{\"state\":\"inactive\",\"interval\":\"cymczngn\"},\"solutionScope\":\"xxewu\",\"status\":{\"lastModified\":\"2021-01-13T22:28:19Z\",\"deployed\":290904524,\"expectedRunningJobId\":314847187,\"runningJobId\":2102301127,\"status\":\"dtvqe\",\"statusDetails\":\"qct\",\"generation\":1857605955,\"targetStatuses\":[{\"name\":\"dmflhuytx\",\"status\":\"tznapxbannovv\",\"componentStatuses\":[{\"name\":\"ytprwnwvroev\",\"status\":\"lyokrrrou\"},{\"name\":\"vnsasbcrymodi\",\"status\":\"xkl\"}]},{\"name\":\"d\",\"status\":\"azpmkmlmv\",\"componentStatuses\":[{\"name\":\"zopjhbzxliohr\",\"status\":\"dtfgxqbawpcbb\"}]}]},\"deploymentTimestampEpoch\":2776880760546842080,\"provisioningState\":\"Canceled\"}")
             .toObject(InstanceProperties.class);
-        Assertions.assertEquals("vlhv", model.solutionVersionId());
-        Assertions.assertEquals("gdyftumrtwna", model.targetId());
-        Assertions.assertEquals(ActiveState.ACTIVE, model.activeState());
-        Assertions.assertEquals(ReconciliationState.ACTIVE, model.reconciliationPolicy().state());
-        Assertions.assertEquals("iw", model.reconciliationPolicy().interval());
-        Assertions.assertEquals("jgcyztsfmznba", model.solutionScope());
+        Assertions.assertEquals("bo", model.solutionVersionId());
+        Assertions.assertEquals("lcqxypokk", model.targetId());
+        Assertions.assertEquals(ActiveState.INACTIVE, model.activeState());
+        Assertions.assertEquals(ReconciliationState.INACTIVE, model.reconciliationPolicy().state());
+        Assertions.assertEquals("cymczngn", model.reconciliationPolicy().interval());
+        Assertions.assertEquals("xxewu", model.solutionScope());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InstanceProperties model = new InstanceProperties().withSolutionVersionId("vlhv")
-            .withTargetId("gdyftumrtwna")
-            .withActiveState(ActiveState.ACTIVE)
+        InstanceProperties model = new InstanceProperties().withSolutionVersionId("bo")
+            .withTargetId("lcqxypokk")
+            .withActiveState(ActiveState.INACTIVE)
             .withReconciliationPolicy(
-                new ReconciliationPolicyProperties().withState(ReconciliationState.ACTIVE).withInterval("iw"))
-            .withSolutionScope("jgcyztsfmznba");
+                new ReconciliationPolicyProperties().withState(ReconciliationState.INACTIVE).withInterval("cymczngn"))
+            .withSolutionScope("xxewu");
         model = BinaryData.fromObject(model).toObject(InstanceProperties.class);
-        Assertions.assertEquals("vlhv", model.solutionVersionId());
-        Assertions.assertEquals("gdyftumrtwna", model.targetId());
-        Assertions.assertEquals(ActiveState.ACTIVE, model.activeState());
-        Assertions.assertEquals(ReconciliationState.ACTIVE, model.reconciliationPolicy().state());
-        Assertions.assertEquals("iw", model.reconciliationPolicy().interval());
-        Assertions.assertEquals("jgcyztsfmznba", model.solutionScope());
+        Assertions.assertEquals("bo", model.solutionVersionId());
+        Assertions.assertEquals("lcqxypokk", model.targetId());
+        Assertions.assertEquals(ActiveState.INACTIVE, model.activeState());
+        Assertions.assertEquals(ReconciliationState.INACTIVE, model.reconciliationPolicy().state());
+        Assertions.assertEquals("cymczngn", model.reconciliationPolicy().interval());
+        Assertions.assertEquals("xxewu", model.solutionScope());
     }
 }

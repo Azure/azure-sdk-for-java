@@ -13,7 +13,6 @@ import com.azure.resourcemanager.workloadorchestration.WorkloadOrchestrationMana
 import com.azure.resourcemanager.workloadorchestration.models.SchemaVersion;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
@@ -21,7 +20,7 @@ public final class SchemaVersionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"value\":\"r\",\"provisioningState\":\"InProgress\"},\"eTag\":\"zlwhhmemhooclu\",\"id\":\"pqmem\",\"name\":\"zjkmmykyujxs\",\"type\":\"lhsrrry\"}";
+            = "{\"properties\":{\"value\":\"\\\"datansjulugdybnh\\\"\",\"provisioningState\":\"Failed\"},\"eTag\":\"l\",\"id\":\"hkeizcp\",\"name\":\"htdm\",\"type\":\"wjekptycaydbj\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,9 +30,8 @@ public final class SchemaVersionsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SchemaVersion response = manager.schemaVersions()
-            .getWithResponse("uic", "hvtrrmhwrbfdpyf", "ubhvj", com.azure.core.util.Context.NONE)
+            .getWithResponse("qelwgdhuruzytza", "ogatmoljiy", "mpinmzvfkneerzzt", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("r", response.properties().value());
     }
 }

@@ -14,6 +14,7 @@ import com.azure.resourcemanager.workloadorchestration.models.StageSpec;
 import com.azure.resourcemanager.workloadorchestration.models.TaskOption;
 import com.azure.resourcemanager.workloadorchestration.models.TaskSpec;
 import com.azure.resourcemanager.workloadorchestration.models.WorkflowVersionProperties;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -23,73 +24,74 @@ public final class WorkflowVersionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkflowVersionInner model = BinaryData.fromString(
-            "{\"properties\":{\"revision\":1584096460,\"configuration\":\"nkppxynen\",\"stageSpec\":[{\"name\":\"vxei\",\"specification\":{},\"tasks\":[{\"name\":\"lnsrmffe\",\"targetId\":\"xcktpiymerteeamm\",\"specification\":{}},{\"name\":\"iekkkzddrtkgdojb\",\"targetId\":\"vavrefdees\",\"specification\":{}},{\"name\":\"cuijpxt\",\"targetId\":\"uwprtujwsawd\",\"specification\":{}}],\"taskOption\":{\"concurrency\":1148238938,\"errorAction\":{\"mode\":\"stopOnNFailures\",\"maxToleratedFailures\":1148508080}}},{\"name\":\"itvtzeexavo\",\"specification\":{},\"tasks\":[{\"name\":\"ecdmdqbwpy\",\"targetId\":\"tgsfja\",\"specification\":{}},{\"name\":\"slhhxudbxv\",\"targetId\":\"htnsi\",\"specification\":{}},{\"name\":\"dhzmmesckdlp\",\"targetId\":\"zrcxfailcfxwmdbo\",\"specification\":{}}],\"taskOption\":{\"concurrency\":1260487269,\"errorAction\":{\"mode\":\"silentlyContinue\",\"maxToleratedFailures\":1025084643}}},{\"name\":\"obrjlnacgcc\",\"specification\":{},\"tasks\":[{\"name\":\"kizvytn\",\"targetId\":\"vuljraaeranokqg\",\"specification\":{}},{\"name\":\"kjq\",\"targetId\":\"broyla\",\"specification\":{}}],\"taskOption\":{\"concurrency\":1120271954,\"errorAction\":{\"mode\":\"stopOnAnyFailure\",\"maxToleratedFailures\":2065681131}}},{\"name\":\"sfjbjsvg\",\"specification\":{},\"tasks\":[{\"name\":\"yvycytdclxgcckn\",\"targetId\":\"wmbtmvpdvjdhtt\",\"specification\":{}}],\"taskOption\":{\"concurrency\":1761945314,\"errorAction\":{\"mode\":\"silentlyContinue\",\"maxToleratedFailures\":439511971}}}],\"reviewId\":\"rphkmcrjdqnsdfz\",\"state\":\"PendingExternalValidation\",\"specification\":{},\"provisioningState\":\"Succeeded\"},\"extendedLocation\":{\"name\":\"kdghrjeuutlwx\",\"type\":\"EdgeZone\"},\"eTag\":\"zhokvbwnhh\",\"id\":\"lgehg\",\"name\":\"pipifh\",\"type\":\"f\"}")
+            "{\"properties\":{\"revision\":635821645,\"configuration\":\"wibvjogj\",\"stageSpec\":[{\"name\":\"mcyefoyzbam\",\"specification\":{\"evboclzhzjknyuxg\":\"\\\"dataeofvfkakpoldt\\\"\"},\"tasks\":[{\"name\":\"xpn\",\"targetId\":\"pzaamrdixtreki\",\"specification\":{\"k\":\"\\\"datawyskbruffgll\\\"\",\"qhvmblcouqe\":\"\\\"datautvlxhr\\\"\",\"randoypmb\":\"\\\"databhbcdszir\\\"\"}},{\"name\":\"t\",\"targetId\":\"rmkfqlwxldykals\",\"specification\":{\"ibjgsjjxxahm\":\"\\\"dataaolnjpnnbmjk\\\"\"}},{\"name\":\"nadzyq\",\"targetId\":\"xyivpinbm\",\"specification\":{\"bkezn\":\"\\\"databjijkgqxnh\\\"\",\"nggiycwkdtaa\":\"\\\"dataaujvaa\\\"\"}}],\"taskOption\":{\"concurrency\":388566249,\"errorAction\":{\"mode\":\"silentlyContinue\",\"maxToleratedFailures\":1402948836}}}],\"reviewId\":\"rq\",\"state\":\"NotApplicable\",\"specification\":{\"idbirkfpkso\":\"\\\"datakratbnxwbj\\\"\",\"ewijymrhbguz\":\"\\\"datadgo\\\"\",\"nfnzhhh\":\"\\\"datazkye\\\"\",\"mffjkutycyarn\":\"\\\"datao\\\"\"},\"provisioningState\":\"Succeeded\"},\"extendedLocation\":{\"name\":\"g\",\"type\":\"CustomLocation\"},\"eTag\":\"zoghktdpyczhc\",\"id\":\"ocnhzqrottjzcfyj\",\"name\":\"pt\",\"type\":\"rl\"}")
             .toObject(WorkflowVersionInner.class);
-        Assertions.assertEquals("vxei", model.properties().stageSpec().get(0).name());
-        Assertions.assertEquals("lnsrmffe", model.properties().stageSpec().get(0).tasks().get(0).name());
-        Assertions.assertEquals("xcktpiymerteeamm", model.properties().stageSpec().get(0).tasks().get(0).targetId());
-        Assertions.assertEquals(1148238938, model.properties().stageSpec().get(0).taskOption().concurrency());
-        Assertions.assertEquals(ErrorActionMode.STOP_ON_NFAILURES,
+        Assertions.assertEquals("mcyefoyzbam", model.properties().stageSpec().get(0).name());
+        Assertions.assertEquals("xpn", model.properties().stageSpec().get(0).tasks().get(0).name());
+        Assertions.assertEquals("pzaamrdixtreki", model.properties().stageSpec().get(0).tasks().get(0).targetId());
+        Assertions.assertEquals(388566249, model.properties().stageSpec().get(0).taskOption().concurrency());
+        Assertions.assertEquals(ErrorActionMode.SILENTLY_CONTINUE,
             model.properties().stageSpec().get(0).taskOption().errorAction().mode());
-        Assertions.assertEquals(1148508080,
+        Assertions.assertEquals(1402948836,
             model.properties().stageSpec().get(0).taskOption().errorAction().maxToleratedFailures());
-        Assertions.assertEquals("kdghrjeuutlwx", model.extendedLocation().name());
-        Assertions.assertEquals(ExtendedLocationType.EDGE_ZONE, model.extendedLocation().type());
+        Assertions.assertEquals("g", model.extendedLocation().name());
+        Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION, model.extendedLocation().type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkflowVersionInner model = new WorkflowVersionInner()
-            .withProperties(new WorkflowVersionProperties().withStageSpec(Arrays.asList(new StageSpec().withName("vxei")
-                .withSpecification(mapOf())
-                .withTasks(Arrays.asList(
-                    new TaskSpec().withName("lnsrmffe").withTargetId("xcktpiymerteeamm").withSpecification(mapOf()),
-                    new TaskSpec().withName("iekkkzddrtkgdojb").withTargetId("vavrefdees").withSpecification(mapOf()),
-                    new TaskSpec().withName("cuijpxt").withTargetId("uwprtujwsawd").withSpecification(mapOf())))
-                .withTaskOption(new TaskOption().withConcurrency(1148238938)
-                    .withErrorAction(new ErrorAction().withMode(ErrorActionMode.STOP_ON_NFAILURES)
-                        .withMaxToleratedFailures(1148508080))),
-                new StageSpec().withName("itvtzeexavo")
-                    .withSpecification(mapOf())
-                    .withTasks(Arrays.asList(
-                        new TaskSpec().withName("ecdmdqbwpy").withTargetId("tgsfja").withSpecification(mapOf()),
-                        new TaskSpec().withName("slhhxudbxv").withTargetId("htnsi").withSpecification(mapOf()),
-                        new TaskSpec().withName("dhzmmesckdlp")
-                            .withTargetId("zrcxfailcfxwmdbo")
-                            .withSpecification(mapOf())))
-                    .withTaskOption(new TaskOption().withConcurrency(1260487269)
-                        .withErrorAction(new ErrorAction().withMode(ErrorActionMode.SILENTLY_CONTINUE)
-                            .withMaxToleratedFailures(1025084643))),
-                new StageSpec().withName("obrjlnacgcc")
-                    .withSpecification(mapOf())
-                    .withTasks(Arrays.asList(
-                        new TaskSpec().withName("kizvytn").withTargetId("vuljraaeranokqg").withSpecification(mapOf()),
-                        new TaskSpec().withName("kjq").withTargetId("broyla").withSpecification(mapOf())))
-                    .withTaskOption(new TaskOption().withConcurrency(1120271954)
-                        .withErrorAction(new ErrorAction().withMode(ErrorActionMode.STOP_ON_ANY_FAILURE)
-                            .withMaxToleratedFailures(2065681131))),
-                new StageSpec().withName("sfjbjsvg")
-                    .withSpecification(mapOf())
-                    .withTasks(Arrays.asList(new TaskSpec().withName("yvycytdclxgcckn")
-                        .withTargetId("wmbtmvpdvjdhtt")
-                        .withSpecification(mapOf())))
-                    .withTaskOption(new TaskOption().withConcurrency(1761945314)
-                        .withErrorAction(new ErrorAction().withMode(ErrorActionMode.SILENTLY_CONTINUE)
-                            .withMaxToleratedFailures(439511971)))))
-                .withSpecification(mapOf()))
-            .withExtendedLocation(
-                new ExtendedLocation().withName("kdghrjeuutlwx").withType(ExtendedLocationType.EDGE_ZONE));
+        WorkflowVersionInner model
+            = new WorkflowVersionInner()
+                .withProperties(
+                    new WorkflowVersionProperties()
+                        .withStageSpec(
+                            Arrays.asList(new StageSpec().withName("mcyefoyzbam")
+                                .withSpecification(mapOf("evboclzhzjknyuxg",
+                                    BinaryData.fromBytes("\"dataeofvfkakpoldt\"".getBytes(StandardCharsets.UTF_8))))
+                                .withTasks(Arrays.asList(
+                                    new TaskSpec().withName("xpn")
+                                        .withTargetId("pzaamrdixtreki")
+                                        .withSpecification(mapOf("k",
+                                            BinaryData.fromBytes(
+                                                "\"datawyskbruffgll\"".getBytes(StandardCharsets.UTF_8)),
+                                            "qhvmblcouqe",
+                                            BinaryData.fromBytes("\"datautvlxhr\"".getBytes(StandardCharsets.UTF_8)),
+                                            "randoypmb",
+                                            BinaryData
+                                                .fromBytes("\"databhbcdszir\"".getBytes(StandardCharsets.UTF_8)))),
+                                    new TaskSpec()
+                                        .withName("t")
+                                        .withTargetId("rmkfqlwxldykals")
+                                        .withSpecification(mapOf("ibjgsjjxxahm",
+                                            BinaryData
+                                                .fromBytes("\"dataaolnjpnnbmjk\"".getBytes(StandardCharsets.UTF_8)))),
+                                    new TaskSpec().withName("nadzyq")
+                                        .withTargetId("xyivpinbm")
+                                        .withSpecification(mapOf("bkezn",
+                                            BinaryData.fromBytes("\"databjijkgqxnh\"".getBytes(StandardCharsets.UTF_8)),
+                                            "nggiycwkdtaa",
+                                            BinaryData.fromBytes("\"dataaujvaa\"".getBytes(StandardCharsets.UTF_8))))))
+                                .withTaskOption(new TaskOption().withConcurrency(388566249)
+                                    .withErrorAction(new ErrorAction().withMode(ErrorActionMode.SILENTLY_CONTINUE)
+                                        .withMaxToleratedFailures(1402948836)))))
+                        .withSpecification(mapOf("idbirkfpkso",
+                            BinaryData.fromBytes("\"datakratbnxwbj\"".getBytes(StandardCharsets.UTF_8)), "ewijymrhbguz",
+                            BinaryData.fromBytes("\"datadgo\"".getBytes(StandardCharsets.UTF_8)), "nfnzhhh",
+                            BinaryData.fromBytes("\"datazkye\"".getBytes(StandardCharsets.UTF_8)), "mffjkutycyarn",
+                            BinaryData.fromBytes("\"datao\"".getBytes(StandardCharsets.UTF_8)))))
+                .withExtendedLocation(
+                    new ExtendedLocation().withName("g").withType(ExtendedLocationType.CUSTOM_LOCATION));
         model = BinaryData.fromObject(model).toObject(WorkflowVersionInner.class);
-        Assertions.assertEquals("vxei", model.properties().stageSpec().get(0).name());
-        Assertions.assertEquals("lnsrmffe", model.properties().stageSpec().get(0).tasks().get(0).name());
-        Assertions.assertEquals("xcktpiymerteeamm", model.properties().stageSpec().get(0).tasks().get(0).targetId());
-        Assertions.assertEquals(1148238938, model.properties().stageSpec().get(0).taskOption().concurrency());
-        Assertions.assertEquals(ErrorActionMode.STOP_ON_NFAILURES,
+        Assertions.assertEquals("mcyefoyzbam", model.properties().stageSpec().get(0).name());
+        Assertions.assertEquals("xpn", model.properties().stageSpec().get(0).tasks().get(0).name());
+        Assertions.assertEquals("pzaamrdixtreki", model.properties().stageSpec().get(0).tasks().get(0).targetId());
+        Assertions.assertEquals(388566249, model.properties().stageSpec().get(0).taskOption().concurrency());
+        Assertions.assertEquals(ErrorActionMode.SILENTLY_CONTINUE,
             model.properties().stageSpec().get(0).taskOption().errorAction().mode());
-        Assertions.assertEquals(1148508080,
+        Assertions.assertEquals(1402948836,
             model.properties().stageSpec().get(0).taskOption().errorAction().maxToleratedFailures());
-        Assertions.assertEquals("kdghrjeuutlwx", model.extendedLocation().name());
-        Assertions.assertEquals(ExtendedLocationType.EDGE_ZONE, model.extendedLocation().type());
+        Assertions.assertEquals("g", model.extendedLocation().name());
+        Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION, model.extendedLocation().type());
     }
 
     // Use "Map.of" if available

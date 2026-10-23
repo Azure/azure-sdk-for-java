@@ -19,43 +19,38 @@ public final class ContextInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ContextInner model = BinaryData.fromString(
-            "{\"properties\":{\"capabilities\":[{\"name\":\"ztrksxwpndf\",\"description\":\"pfnznthjtwkj\",\"state\":\"inactive\"},{\"name\":\"rxuzvoam\",\"description\":\"tcqiosmg\",\"state\":\"active\"},{\"name\":\"hgxqdlyrt\",\"description\":\"tlaprltzkatb\",\"state\":\"inactive\"},{\"name\":\"znnbsoqeqalarvl\",\"description\":\"gunbtgfebwlnbm\",\"state\":\"inactive\"}],\"hierarchies\":[{\"name\":\"eudzqavbpd\",\"description\":\"mjxlyyzglgouw\"}],\"provisioningState\":\"Initialized\"},\"location\":\"jyuojqtobaxkjeyt\",\"tags\":{\"u\":\"bfjkw\",\"njqhdenxa\":\"nkqbhsyrq\"},\"id\":\"l\",\"name\":\"pakdkifmjnnawt\",\"type\":\"abpxuc\"}")
+            "{\"properties\":{\"uniqueIdentifier\":\"yuuatvlmbjwcolbm\",\"capabilities\":[{\"name\":\"b\",\"description\":\"w\",\"state\":\"inactive\"},{\"name\":\"pa\",\"description\":\"pr\",\"state\":\"inactive\"},{\"name\":\"xhmtfhocnxzc\",\"description\":\"jhngxnoq\",\"state\":\"inactive\"}],\"hierarchies\":[{\"name\":\"isn\",\"description\":\"evhdlmydid\"},{\"name\":\"hepfwwtjfdoes\",\"description\":\"xhmw\"}],\"provisioningState\":\"Deleting\"},\"location\":\"ky\",\"tags\":{\"plvukaobrlbpg\":\"xkxhnegknjzrbhtm\",\"g\":\"nbagnchj\",\"xcgqtagdrclsso\":\"muowakywalhjy\"},\"id\":\"jomevtfycnlb\",\"name\":\"gjco\",\"type\":\"kk\"}")
             .toObject(ContextInner.class);
-        Assertions.assertEquals("jyuojqtobaxkjeyt", model.location());
-        Assertions.assertEquals("bfjkw", model.tags().get("u"));
-        Assertions.assertEquals("ztrksxwpndf", model.properties().capabilities().get(0).name());
-        Assertions.assertEquals("pfnznthjtwkj", model.properties().capabilities().get(0).description());
+        Assertions.assertEquals("ky", model.location());
+        Assertions.assertEquals("xkxhnegknjzrbhtm", model.tags().get("plvukaobrlbpg"));
+        Assertions.assertEquals("b", model.properties().capabilities().get(0).name());
+        Assertions.assertEquals("w", model.properties().capabilities().get(0).description());
         Assertions.assertEquals(ResourceState.INACTIVE, model.properties().capabilities().get(0).state());
-        Assertions.assertEquals("eudzqavbpd", model.properties().hierarchies().get(0).name());
-        Assertions.assertEquals("mjxlyyzglgouw", model.properties().hierarchies().get(0).description());
+        Assertions.assertEquals("isn", model.properties().hierarchies().get(0).name());
+        Assertions.assertEquals("evhdlmydid", model.properties().hierarchies().get(0).description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ContextInner model = new ContextInner().withLocation("jyuojqtobaxkjeyt")
-            .withTags(mapOf("u", "bfjkw", "njqhdenxa", "nkqbhsyrq"))
+        ContextInner model = new ContextInner().withLocation("ky")
+            .withTags(mapOf("plvukaobrlbpg", "xkxhnegknjzrbhtm", "g", "nbagnchj", "xcgqtagdrclsso", "muowakywalhjy"))
             .withProperties(new ContextProperties()
-                .withCapabilities(Arrays.asList(
-                    new Capability().withName("ztrksxwpndf")
-                        .withDescription("pfnznthjtwkj")
-                        .withState(ResourceState.INACTIVE),
-                    new Capability().withName("rxuzvoam").withDescription("tcqiosmg").withState(ResourceState.ACTIVE),
-                    new Capability().withName("hgxqdlyrt")
-                        .withDescription("tlaprltzkatb")
-                        .withState(ResourceState.INACTIVE),
-                    new Capability().withName("znnbsoqeqalarvl")
-                        .withDescription("gunbtgfebwlnbm")
-                        .withState(ResourceState.INACTIVE)))
-                .withHierarchies(
-                    Arrays.asList(new Hierarchy().withName("eudzqavbpd").withDescription("mjxlyyzglgouw"))));
+                .withCapabilities(
+                    Arrays.asList(new Capability().withName("b").withDescription("w").withState(ResourceState.INACTIVE),
+                        new Capability().withName("pa").withDescription("pr").withState(ResourceState.INACTIVE),
+                        new Capability().withName("xhmtfhocnxzc")
+                            .withDescription("jhngxnoq")
+                            .withState(ResourceState.INACTIVE)))
+                .withHierarchies(Arrays.asList(new Hierarchy().withName("isn").withDescription("evhdlmydid"),
+                    new Hierarchy().withName("hepfwwtjfdoes").withDescription("xhmw"))));
         model = BinaryData.fromObject(model).toObject(ContextInner.class);
-        Assertions.assertEquals("jyuojqtobaxkjeyt", model.location());
-        Assertions.assertEquals("bfjkw", model.tags().get("u"));
-        Assertions.assertEquals("ztrksxwpndf", model.properties().capabilities().get(0).name());
-        Assertions.assertEquals("pfnznthjtwkj", model.properties().capabilities().get(0).description());
+        Assertions.assertEquals("ky", model.location());
+        Assertions.assertEquals("xkxhnegknjzrbhtm", model.tags().get("plvukaobrlbpg"));
+        Assertions.assertEquals("b", model.properties().capabilities().get(0).name());
+        Assertions.assertEquals("w", model.properties().capabilities().get(0).description());
         Assertions.assertEquals(ResourceState.INACTIVE, model.properties().capabilities().get(0).state());
-        Assertions.assertEquals("eudzqavbpd", model.properties().hierarchies().get(0).name());
-        Assertions.assertEquals("mjxlyyzglgouw", model.properties().hierarchies().get(0).description());
+        Assertions.assertEquals("isn", model.properties().hierarchies().get(0).name());
+        Assertions.assertEquals("evhdlmydid", model.properties().hierarchies().get(0).description());
     }
 
     // Use "Map.of" if available

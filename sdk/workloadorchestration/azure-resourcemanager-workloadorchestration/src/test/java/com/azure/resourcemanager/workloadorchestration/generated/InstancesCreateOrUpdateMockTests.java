@@ -27,7 +27,7 @@ public final class InstancesCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"solutionVersionId\":\"pefcpcz\",\"targetId\":\"hnuqndaizu\",\"activeState\":\"active\",\"reconciliationPolicy\":{\"state\":\"active\",\"interval\":\"ytus\"},\"solutionScope\":\"hmt\",\"status\":{\"lastModified\":\"2020-12-21T03:09:55Z\",\"deployed\":239385444,\"expectedRunningJobId\":397812436,\"runningJobId\":1816525505,\"status\":\"zwydwtth\",\"statusDetails\":\"kgkskjivbsshaj\",\"generation\":121782295,\"targetStatuses\":[{\"name\":\"expgeumilhwu\",\"status\":\"rdexyio\",\"componentStatuses\":[{},{},{}]},{\"name\":\"inbd\",\"status\":\"s\",\"componentStatuses\":[{},{},{},{}]},{\"name\":\"qrs\",\"status\":\"cbbprtugav\",\"componentStatuses\":[{},{},{}]},{\"name\":\"yksivmfogdrtbfc\",\"status\":\"rftsjcwjjxs\",\"componentStatuses\":[{},{}]}]},\"deploymentTimestampEpoch\":3638056724847854965,\"provisioningState\":\"Succeeded\"},\"extendedLocation\":{\"name\":\"xkecifhocj\",\"type\":\"EdgeZone\"},\"eTag\":\"loozrvt\",\"id\":\"cmufunlcpxxv\",\"name\":\"ryeyngjgv\",\"type\":\"quv\"}";
+            = "{\"properties\":{\"solutionVersionId\":\"qayrehjuqwva\",\"targetId\":\"xrlzhpziha\",\"activeState\":\"active\",\"reconciliationPolicy\":{\"state\":\"inactive\",\"interval\":\"zlxnqzubf\"},\"solutionScope\":\"fdbgmkfwm\",\"status\":{\"lastModified\":\"2021-05-04T08:43:20Z\",\"deployed\":649568800,\"expectedRunningJobId\":1816529038,\"runningJobId\":1974680731,\"status\":\"rk\",\"statusDetails\":\"ehzlry\",\"generation\":933457686,\"targetStatuses\":[{\"name\":\"mkaeplrajubow\",\"status\":\"wevtjrieikmwla\",\"componentStatuses\":[{},{}]}]},\"deploymentTimestampEpoch\":1652669514825376098,\"provisioningState\":\"Succeeded\"},\"extendedLocation\":{\"name\":\"gucbmt\",\"type\":\"EdgeZone\"},\"eTag\":\"scnnst\",\"id\":\"yyuvtzrxzhclec\",\"name\":\"wtzqzcloyhy\",\"type\":\"pgidhzgyresgzsdt\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -37,25 +37,25 @@ public final class InstancesCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Instance response = manager.instances()
-            .define("ajfoxc")
-            .withExistingSolution("x", "fciatxtjrr", "kmdskjhhxd")
-            .withProperties(new InstanceProperties().withSolutionVersionId("cvslxlhuavkrmukm")
-                .withTargetId("jmkxettcslojf")
+            .define("uppiyxlzm")
+            .withExistingSolution("skwgqr", "taumd", "cjlvkrkegtyc")
+            .withProperties(new InstanceProperties().withSolutionVersionId("ddeeqzqvabm")
+                .withTargetId("vsexduetb")
                 .withActiveState(ActiveState.ACTIVE)
-                .withReconciliationPolicy(new ReconciliationPolicyProperties().withState(ReconciliationState.INACTIVE)
-                    .withInterval("qtoqxjhqxcsq"))
-                .withSolutionScope("kbtn"))
+                .withReconciliationPolicy(
+                    new ReconciliationPolicyProperties().withState(ReconciliationState.ACTIVE).withInterval("ewxtrl"))
+                .withSolutionScope("pxyazk"))
             .withExtendedLocation(
-                new ExtendedLocation().withName("djxqeskoynuiylpc").withType(ExtendedLocationType.EDGE_ZONE))
+                new ExtendedLocation().withName("rletndqlmf").withType(ExtendedLocationType.CUSTOM_LOCATION))
             .create();
 
-        Assertions.assertEquals("pefcpcz", response.properties().solutionVersionId());
-        Assertions.assertEquals("hnuqndaizu", response.properties().targetId());
+        Assertions.assertEquals("qayrehjuqwva", response.properties().solutionVersionId());
+        Assertions.assertEquals("xrlzhpziha", response.properties().targetId());
         Assertions.assertEquals(ActiveState.ACTIVE, response.properties().activeState());
-        Assertions.assertEquals(ReconciliationState.ACTIVE, response.properties().reconciliationPolicy().state());
-        Assertions.assertEquals("ytus", response.properties().reconciliationPolicy().interval());
-        Assertions.assertEquals("hmt", response.properties().solutionScope());
-        Assertions.assertEquals("xkecifhocj", response.extendedLocation().name());
+        Assertions.assertEquals(ReconciliationState.INACTIVE, response.properties().reconciliationPolicy().state());
+        Assertions.assertEquals("zlxnqzubf", response.properties().reconciliationPolicy().interval());
+        Assertions.assertEquals("fdbgmkfwm", response.properties().solutionScope());
+        Assertions.assertEquals("gucbmt", response.extendedLocation().name());
         Assertions.assertEquals(ExtendedLocationType.EDGE_ZONE, response.extendedLocation().type());
     }
 }

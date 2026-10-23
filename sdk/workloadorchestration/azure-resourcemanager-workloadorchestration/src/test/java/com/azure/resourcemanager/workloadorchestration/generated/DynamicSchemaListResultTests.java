@@ -12,8 +12,8 @@ public final class DynamicSchemaListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DynamicSchemaListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"configurationType\":\"Hierarchy\",\"configurationModel\":\"Application\",\"provisioningState\":\"Deleting\"},\"eTag\":\"bhdxbm\",\"id\":\"ioq\",\"name\":\"zehtbmu\",\"type\":\"p\"},{\"properties\":{\"configurationType\":\"Shared\",\"configurationModel\":\"Application\",\"provisioningState\":\"Deleting\"},\"eTag\":\"rxybqsoq\",\"id\":\"gkdmb\",\"name\":\"azlobcufpdznrbt\",\"type\":\"qqjnqgl\"}],\"nextLink\":\"gnufoooj\"}")
+            "{\"value\":[{\"properties\":{\"displayName\":\"soqijg\",\"configurationType\":\"Hierarchy\",\"configurationModel\":\"Common\",\"provisioningState\":\"Succeeded\"},\"eTag\":\"obcu\",\"id\":\"dznrbtcqq\",\"name\":\"nq\",\"type\":\"lhqgnufooojy\"},{\"properties\":{\"displayName\":\"sqe\",\"configurationType\":\"Hierarchy\",\"configurationModel\":\"Common\",\"provisioningState\":\"Failed\"},\"eTag\":\"lzl\",\"id\":\"xrifkwmrvkts\",\"name\":\"zntocipaouajps\",\"type\":\"ucmpoyfd\"},{\"properties\":{\"displayName\":\"gknygjofjddeqs\",\"configurationType\":\"Hierarchy\",\"configurationModel\":\"Application\",\"provisioningState\":\"Succeeded\"},\"eTag\":\"wreitj\",\"id\":\"flusarhmof\",\"name\":\"qhsmyurkdtml\",\"type\":\"he\"}],\"nextLink\":\"k\"}")
             .toObject(DynamicSchemaListResult.class);
-        Assertions.assertEquals("gnufoooj", model.nextLink());
+        Assertions.assertEquals("k", model.nextLink());
     }
 }

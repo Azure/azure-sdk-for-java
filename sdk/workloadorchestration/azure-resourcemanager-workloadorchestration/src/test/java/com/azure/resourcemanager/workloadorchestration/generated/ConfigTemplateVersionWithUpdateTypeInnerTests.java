@@ -9,29 +9,29 @@ import com.azure.resourcemanager.workloadorchestration.fluent.models.ConfigTempl
 import com.azure.resourcemanager.workloadorchestration.fluent.models.ConfigTemplateVersionWithUpdateTypeInner;
 import com.azure.resourcemanager.workloadorchestration.models.ConfigTemplateVersionProperties;
 import com.azure.resourcemanager.workloadorchestration.models.UpdateType;
+import java.nio.charset.StandardCharsets;
 import org.junit.jupiter.api.Assertions;
 
 public final class ConfigTemplateVersionWithUpdateTypeInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConfigTemplateVersionWithUpdateTypeInner model = BinaryData.fromString(
-            "{\"updateType\":\"Major\",\"version\":\"mvec\",\"configTemplateVersion\":{\"properties\":{\"configurations\":\"txmwoteyow\",\"provisioningState\":\"Initialized\"},\"eTag\":\"ovekqvgqouwi\",\"id\":\"mpjw\",\"name\":\"ivqikfxcvhr\",\"type\":\"sphuagrttikteus\"}}")
+            "{\"updateType\":\"Patch\",\"version\":\"wetzqddtjwfljh\",\"configTemplateVersion\":{\"properties\":{\"configurations\":\"\\\"dataamtuatmzwcjjnc\\\"\",\"provisioningState\":\"Initialized\"},\"eTag\":\"mizvgbgatzuuvbx\",\"id\":\"rebwggahtt\",\"name\":\"lswva\",\"type\":\"qfutlxjo\"}}")
             .toObject(ConfigTemplateVersionWithUpdateTypeInner.class);
-        Assertions.assertEquals(UpdateType.MAJOR, model.updateType());
-        Assertions.assertEquals("mvec", model.version());
-        Assertions.assertEquals("txmwoteyow", model.configTemplateVersion().properties().configurations());
+        Assertions.assertEquals(UpdateType.PATCH, model.updateType());
+        Assertions.assertEquals("wetzqddtjwfljh", model.version());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ConfigTemplateVersionWithUpdateTypeInner model
-            = new ConfigTemplateVersionWithUpdateTypeInner().withUpdateType(UpdateType.MAJOR)
-                .withVersion("mvec")
+            = new ConfigTemplateVersionWithUpdateTypeInner().withUpdateType(UpdateType.PATCH)
+                .withVersion("wetzqddtjwfljh")
                 .withConfigTemplateVersion(new ConfigTemplateVersionInner()
-                    .withProperties(new ConfigTemplateVersionProperties().withConfigurations("txmwoteyow")));
+                    .withProperties(new ConfigTemplateVersionProperties().withConfigurations(
+                        BinaryData.fromBytes("\"dataamtuatmzwcjjnc\"".getBytes(StandardCharsets.UTF_8)))));
         model = BinaryData.fromObject(model).toObject(ConfigTemplateVersionWithUpdateTypeInner.class);
-        Assertions.assertEquals(UpdateType.MAJOR, model.updateType());
-        Assertions.assertEquals("mvec", model.version());
-        Assertions.assertEquals("txmwoteyow", model.configTemplateVersion().properties().configurations());
+        Assertions.assertEquals(UpdateType.PATCH, model.updateType());
+        Assertions.assertEquals("wetzqddtjwfljh", model.version());
     }
 }

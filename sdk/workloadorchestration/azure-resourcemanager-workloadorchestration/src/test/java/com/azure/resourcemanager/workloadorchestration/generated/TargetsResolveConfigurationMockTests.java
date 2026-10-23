@@ -23,7 +23,7 @@ import reactor.core.publisher.Mono;
 public final class TargetsResolveConfigurationMockTests {
     @Test
     public void testResolveConfiguration() throws Exception {
-        String responseStr = "{\"configuration\":\"hqawmo\"}";
+        String responseStr = "{\"configuration\":\"itoqcahfsg\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,32 +33,144 @@ public final class TargetsResolveConfigurationMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ResolvedConfiguration response = manager.targets()
-            .resolveConfiguration("zusjsz", "bscm",
-                new SolutionTemplateParameter().withSolutionTemplateVersionId("lzijiufehgmvflnw")
-                    .withSolutionInstanceName("qkxrerl")
-                    .withSolutionDependencies(
-                        Arrays.asList(new SolutionDependencyParameter().withSolutionVersionId("yl")
-                            .withSolutionTemplateId("wxzut")
-                            .withSolutionTemplateVersion("ztwhghmupg")
-                            .withSolutionInstanceName("jtcdxabbujftaben")
-                            .withTargetId("klqpx")
+            .resolveConfiguration("nm", "wgpterdiuw",
+                new SolutionTemplateParameter().withSolutionTemplateVersionId("i")
+                    .withSolutionInstanceName("skw")
+                    .withSolutionDependencies(Arrays.asList(
+                        new SolutionDependencyParameter().withSolutionVersionId("etjygowifcqpolz")
+                            .withSolutionTemplateId("ysdgzyyb")
+                            .withSolutionTemplateVersion("xlvocptvdx")
+                            .withSolutionInstanceName("eigmlil")
+                            .withTargetId("ghjhjvmabzzbwa")
                             .withDependencies(Arrays.asList(
-                                new SolutionDependencyParameter().withSolutionVersionId("feddwwnlza")
-                                    .withSolutionTemplateId("xud")
-                                    .withSolutionTemplateVersion("hgookrtalvnbwgpb")
-                                    .withSolutionInstanceName("eluclvdjj")
-                                    .withTargetId("yrdnqod")
+                                new SolutionDependencyParameter().withSolutionVersionId("d")
+                                    .withSolutionTemplateId("bgymqt")
+                                    .withSolutionTemplateVersion("preojxrjnbsconxa")
+                                    .withSolutionInstanceName("pney")
+                                    .withTargetId("bjizqfsgn")
+                                    .withDependencies(Arrays.asList(new SolutionDependencyParameter())),
+                                new SolutionDependencyParameter().withSolutionVersionId("edpqlrfbo")
+                                    .withSolutionTemplateId("ipmlnfyzavf")
+                                    .withSolutionTemplateVersion("ypi")
+                                    .withSolutionInstanceName("bkpdjtaqhsmq")
+                                    .withTargetId("pdgonjhxs")
+                                    .withDependencies(Arrays.asList(new SolutionDependencyParameter(),
+                                        new SolutionDependencyParameter(), new SolutionDependencyParameter())),
+                                new SolutionDependencyParameter().withSolutionVersionId("gpczqulptk")
+                                    .withSolutionTemplateId("cpxtzhigqqbt")
+                                    .withSolutionTemplateVersion("pkjblornsih")
+                                    .withSolutionInstanceName("uds")
+                                    .withTargetId("suaawj")
                                     .withDependencies(Arrays.asList(new SolutionDependencyParameter(),
                                         new SolutionDependencyParameter())),
-                                new SolutionDependencyParameter().withSolutionVersionId("xhqf")
-                                    .withSolutionTemplateId("nvzoqgyipemch")
-                                    .withSolutionTemplateVersion("v")
-                                    .withSolutionInstanceName("zuejd")
-                                    .withTargetId("ptlghwzhomewjjst")
+                                new SolutionDependencyParameter().withSolutionVersionId("jnfczmnniixy")
+                                    .withSolutionTemplateId("qban")
+                                    .withSolutionTemplateVersion("jtgirnb")
+                                    .withSolutionInstanceName("gm")
+                                    .withTargetId("orgmynltwmpftm")
+                                    .withDependencies(Arrays.asList(new SolutionDependencyParameter())))),
+                        new SolutionDependencyParameter().withSolutionVersionId("jogsyx")
+                            .withSolutionTemplateId("tamfddrvlkpz")
+                            .withSolutionTemplateVersion("hnrecchd")
+                            .withSolutionInstanceName("rmuhkahmjedbiucv")
+                            .withTargetId("hwmjpjbweunxc")
+                            .withDependencies(Arrays.asList(
+                                new SolutionDependencyParameter().withSolutionVersionId("hu")
+                                    .withSolutionTemplateId("ihppiyb")
+                                    .withSolutionTemplateVersion("gnzuzpbgkzcsc")
+                                    .withSolutionInstanceName("uzvkunhdimjuk")
+                                    .withTargetId("r")
+                                    .withDependencies(Arrays.asList(new SolutionDependencyParameter())),
+                                new SolutionDependencyParameter().withSolutionVersionId("gpucdocfq")
+                                    .withSolutionTemplateId("wgofmhx")
+                                    .withSolutionTemplateVersion("jlvzklk")
+                                    .withSolutionInstanceName("gikyjtkak")
+                                    .withTargetId("bishjvpzaptuo")
                                     .withDependencies(Arrays.asList(new SolutionDependencyParameter(),
-                                        new SolutionDependencyParameter(), new SolutionDependencyParameter())))))),
+                                        new SolutionDependencyParameter())),
+                                new SolutionDependencyParameter().withSolutionVersionId("izjixwfgcd")
+                                    .withSolutionTemplateId("kkcxwnujvqynvav")
+                                    .withSolutionTemplateVersion("mdmuqoh")
+                                    .withSolutionInstanceName("hraxquddrwjcl")
+                                    .withTargetId("rhlhpvzadbwenni")
+                                    .withDependencies(Arrays.asList(new SolutionDependencyParameter(),
+                                        new SolutionDependencyParameter())),
+                                new SolutionDependencyParameter().withSolutionVersionId("xrzfrmvztiucwvi")
+                                    .withSolutionTemplateId("lukh")
+                                    .withSolutionTemplateVersion("cqx")
+                                    .withSolutionInstanceName("bvzarmq")
+                                    .withTargetId("po")
+                                    .withDependencies(Arrays.asList(new SolutionDependencyParameter())))),
+                        new SolutionDependencyParameter().withSolutionVersionId("invagovjyhd")
+                            .withSolutionTemplateId("brdvce")
+                            .withSolutionTemplateVersion("whitxnmxgnmguzbu")
+                            .withSolutionInstanceName("orbalkj")
+                            .withTargetId("kbd")
+                            .withDependencies(Arrays.asList(
+                                new SolutionDependencyParameter().withSolutionVersionId("q")
+                                    .withSolutionTemplateId("qkqsygxiyneco")
+                                    .withSolutionTemplateVersion("gzkheubanl")
+                                    .withSolutionInstanceName("npqcc")
+                                    .withTargetId("iawzlzklaslgac")
+                                    .withDependencies(Arrays.asList(new SolutionDependencyParameter(),
+                                        new SolutionDependencyParameter(), new SolutionDependencyParameter())),
+                                new SolutionDependencyParameter().withSolutionVersionId("lrarwpewsaudo")
+                                    .withSolutionTemplateId("tighsxjpy")
+                                    .withSolutionTemplateVersion("kqbalah")
+                                    .withSolutionInstanceName("uuwxhmehjnhjioti")
+                                    .withTargetId("bbcngkeg")
+                                    .withDependencies(Arrays.asList(new SolutionDependencyParameter())),
+                                new SolutionDependencyParameter().withSolutionVersionId("xbbfetwil")
+                                    .withSolutionTemplateId("zox")
+                                    .withSolutionTemplateVersion("xql")
+                                    .withSolutionInstanceName("olqownki")
+                                    .withTargetId("jew")
+                                    .withDependencies(Arrays.asList(new SolutionDependencyParameter(),
+                                        new SolutionDependencyParameter(), new SolutionDependencyParameter())),
+                                new SolutionDependencyParameter().withSolutionVersionId("k")
+                                    .withSolutionTemplateId("jmztnlmso")
+                                    .withSolutionTemplateVersion("tmvecdhdyswcrptv")
+                                    .withSolutionInstanceName("jczxvlgsrg")
+                                    .withTargetId("fizrpywlptyuqhr")
+                                    .withDependencies(Arrays.asList(new SolutionDependencyParameter())))),
+                        new SolutionDependencyParameter().withSolutionVersionId("k")
+                            .withSolutionTemplateId("pfuofixcnpcfykkp")
+                            .withSolutionTemplateVersion("cpawmp")
+                            .withSolutionInstanceName("rdpwrpc")
+                            .withTargetId("cfj")
+                            .withDependencies(Arrays.asList(
+                                new SolutionDependencyParameter().withSolutionVersionId("gzawk")
+                                    .withSolutionTemplateId("e")
+                                    .withSolutionTemplateVersion("yamnnidmdiawp")
+                                    .withSolutionInstanceName("kzrn")
+                                    .withTargetId("kctd")
+                                    .withDependencies(Arrays.asList(new SolutionDependencyParameter(),
+                                        new SolutionDependencyParameter(), new SolutionDependencyParameter(),
+                                        new SolutionDependencyParameter())),
+                                new SolutionDependencyParameter().withSolutionVersionId("gwqpsqazih")
+                                    .withSolutionTemplateId("dvqgcnbhcbmjkz")
+                                    .withSolutionTemplateVersion("bn")
+                                    .withSolutionInstanceName("ntsxjmfmeftvh")
+                                    .withTargetId("o")
+                                    .withDependencies(Arrays.asList(new SolutionDependencyParameter(),
+                                        new SolutionDependencyParameter(), new SolutionDependencyParameter(),
+                                        new SolutionDependencyParameter())),
+                                new SolutionDependencyParameter().withSolutionVersionId("hskb")
+                                    .withSolutionTemplateId("mjgrulcfog")
+                                    .withSolutionTemplateVersion("cxn")
+                                    .withSolutionInstanceName("tpfdzxcouzfwofwa")
+                                    .withTargetId("kzkdtzxsoednlwg")
+                                    .withDependencies(Arrays.asList(new SolutionDependencyParameter(),
+                                        new SolutionDependencyParameter(), new SolutionDependencyParameter(),
+                                        new SolutionDependencyParameter())),
+                                new SolutionDependencyParameter().withSolutionVersionId("zomucmqgisnionet")
+                                    .withSolutionTemplateId("dr")
+                                    .withSolutionTemplateVersion("uenxkgtlzlmt")
+                                    .withSolutionInstanceName("xcznnhzkb")
+                                    .withTargetId("mxlxmwtygeq")
+                                    .withDependencies(Arrays.asList(new SolutionDependencyParameter())))))),
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("hqawmo", response.configuration());
+        Assertions.assertEquals("itoqcahfsg", response.configuration());
     }
 }
