@@ -11,11 +11,11 @@ import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.PartitionKeyDefinitionVersion;
 import com.azure.cosmos.models.PartitionKind;
-import com.azure.cosmos.models.ThroughputProperties;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.math.BigInteger;
@@ -48,8 +48,8 @@ public final class FeedRangeTestData implements AutoCloseable {
             PartitionKeyDefinition definition = new PartitionKeyDefinition();
             definition.setPaths(Collections.singletonList("/pk"));
             definition.setVersion(PartitionKeyDefinitionVersion.V2);
-            database.createContainer(new CosmosContainerProperties(container.getId(), definition),
-                ThroughputProperties.createManualThroughput(12000)).block(REQUEST_TIMEOUT);
+            TestSuiteBase.createCollection(database, new CosmosContainerProperties(container.getId(), definition),
+                new CosmosContainerRequestOptions(), 12000);
             for (int i = 0; i < 32; i++) {
                 String key = "range-" + i;
                 ObjectNode document = Utils.getSimpleObjectMapper().createObjectNode().put("id", key).put("pk", key);
@@ -59,7 +59,8 @@ public final class FeedRangeTestData implements AutoCloseable {
                 idsByEpk.put(internalKey.getEffectivePartitionKeyString(internalKey, definition), key);
             }
 
-            List<FeedRange> feedRanges = container.getFeedRanges().block(REQUEST_TIMEOUT);
+            List<FeedRange> feedRanges = TestSuiteBase.getFeedRangesWithRetry(
+                container, "range regression fixture topology");
             assertThat(feedRanges).as("Fixture must span multiple physical partitions").hasSizeGreaterThan(1);
             List<List<String>> partitionPoints = new ArrayList<>();
             for (FeedRange feedRange : feedRanges) {
@@ -98,10 +99,11 @@ public final class FeedRangeTestData implements AutoCloseable {
         definition.setKind(PartitionKind.MULTI_HASH);
         definition.setVersion(PartitionKeyDefinitionVersion.V2);
         definition.setPaths(Arrays.asList("/tenantId", "/userId"));
-        database.createContainer(new CosmosContainerProperties("hierarchical", definition),
-            ThroughputProperties.createManualThroughput(12000)).block(REQUEST_TIMEOUT);
-        CosmosAsyncContainer hierarchicalContainer = database.getContainer("hierarchical");
-        assertThat(hierarchicalContainer.getFeedRanges().block(REQUEST_TIMEOUT))
+        CosmosAsyncContainer hierarchicalContainer = TestSuiteBase.createCollection(
+            database, new CosmosContainerProperties("hierarchical", definition),
+            new CosmosContainerRequestOptions(), 12000);
+        assertThat(TestSuiteBase.getFeedRangesWithRetry(
+            hierarchicalContainer, "hierarchical range regression fixture topology"))
             .as("More tenant prefixes than physical partitions guarantees co-located foreign tenants")
             .hasSizeBetween(2, 7);
         for (int tenant = 0; tenant < 8; tenant++) {
