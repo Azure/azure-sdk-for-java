@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Fixed JSON payloads sent to groups or server events being encoded as strings instead of JSON values.
+
 - Replaced outgoing WebSocket message contents in verbose logs with the payload length in bytes.
 
 - Fixed WebSocket Pong frames to echo the payload of the corresponding Ping frame.
