@@ -9,7 +9,7 @@ package com.azure.resourcemanager.elastic.generated;
  */
 public final class TagRulesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-06-01/TagRules_CreateOrUpdate.json
+     * x-ms-original-file: 2026-03-15-preview/TagRules_CreateOrUpdate.json
      */
     /**
      * Sample code: TagRules_CreateOrUpdate.

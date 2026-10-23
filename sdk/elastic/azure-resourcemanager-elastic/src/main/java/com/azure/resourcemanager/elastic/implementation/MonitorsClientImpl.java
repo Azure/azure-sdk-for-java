@@ -137,7 +137,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("monitorName") String monitorName,
-            Context context);
+            @QueryParam("softDelete") Boolean softDelete, Context context);
 
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors/{monitorName}")
@@ -146,7 +146,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
         Response<BinaryData> deleteSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("monitorName") String monitorName,
-            Context context);
+            @QueryParam("softDelete") Boolean softDelete, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors")
@@ -773,16 +773,20 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
+     * @param softDelete Indicates whether to perform a soft delete. When set to true, the Azure resource (Liftr
+     * integration) only is deleted and not the Partner Cloud resource. When set to false (default), the resource is
+     * permanently deleted from both Azure and the Partner Cloud.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String monitorName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String monitorName,
+        Boolean softDelete) {
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, monitorName, context))
+                this.client.getSubscriptionId(), resourceGroupName, monitorName, softDelete, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -792,15 +796,18 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
+     * @param softDelete Indicates whether to perform a soft delete. When set to true, the Azure resource (Liftr
+     * integration) only is deleted and not the Partner Cloud resource. When set to false (default), the resource is
+     * permanently deleted from both Azure and the Partner Cloud.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String monitorName) {
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String monitorName, Boolean softDelete) {
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, monitorName, Context.NONE);
+            this.client.getSubscriptionId(), resourceGroupName, monitorName, softDelete, Context.NONE);
     }
 
     /**
@@ -809,6 +816,9 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
+     * @param softDelete Indicates whether to perform a soft delete. When set to true, the Azure resource (Liftr
+     * integration) only is deleted and not the Partner Cloud resource. When set to false (default), the resource is
+     * permanently deleted from both Azure and the Partner Cloud.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -816,9 +826,32 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String monitorName, Context context) {
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String monitorName, Boolean softDelete,
+        Context context) {
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, monitorName, context);
+            this.client.getSubscriptionId(), resourceGroupName, monitorName, softDelete, context);
+    }
+
+    /**
+     * Delete an existing Elastic monitor resource from your Azure subscription, removing its observability and
+     * monitoring capabilities.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param monitorName Monitor resource name.
+     * @param softDelete Indicates whether to perform a soft delete. When set to true, the Azure resource (Liftr
+     * integration) only is deleted and not the Partner Cloud resource. When set to false (default), the resource is
+     * permanently deleted from both Azure and the Partner Cloud.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String monitorName,
+        Boolean softDelete) {
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, monitorName, softDelete);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -834,9 +867,31 @@ public final class MonitorsClientImpl implements MonitorsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String monitorName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, monitorName);
+        final Boolean softDelete = null;
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, monitorName, softDelete);
         return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
             this.client.getContext());
+    }
+
+    /**
+     * Delete an existing Elastic monitor resource from your Azure subscription, removing its observability and
+     * monitoring capabilities.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param monitorName Monitor resource name.
+     * @param softDelete Indicates whether to perform a soft delete. When set to true, the Azure resource (Liftr
+     * integration) only is deleted and not the Partner Cloud resource. When set to false (default), the resource is
+     * permanently deleted from both Azure and the Partner Cloud.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String monitorName,
+        Boolean softDelete) {
+        Response<BinaryData> response = deleteWithResponse(resourceGroupName, monitorName, softDelete);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -852,7 +907,8 @@ public final class MonitorsClientImpl implements MonitorsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String monitorName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, monitorName);
+        final Boolean softDelete = null;
+        Response<BinaryData> response = deleteWithResponse(resourceGroupName, monitorName, softDelete);
         return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
@@ -862,6 +918,9 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
+     * @param softDelete Indicates whether to perform a soft delete. When set to true, the Azure resource (Liftr
+     * integration) only is deleted and not the Partner Cloud resource. When set to false (default), the resource is
+     * permanently deleted from both Azure and the Partner Cloud.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -870,9 +929,29 @@ public final class MonitorsClientImpl implements MonitorsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String monitorName,
-        Context context) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, monitorName, context);
+        Boolean softDelete, Context context) {
+        Response<BinaryData> response = deleteWithResponse(resourceGroupName, monitorName, softDelete, context);
         return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
+    }
+
+    /**
+     * Delete an existing Elastic monitor resource from your Azure subscription, removing its observability and
+     * monitoring capabilities.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param monitorName Monitor resource name.
+     * @param softDelete Indicates whether to perform a soft delete. When set to true, the Azure resource (Liftr
+     * integration) only is deleted and not the Partner Cloud resource. When set to false (default), the resource is
+     * permanently deleted from both Azure and the Partner Cloud.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> deleteAsync(String resourceGroupName, String monitorName, Boolean softDelete) {
+        return beginDeleteAsync(resourceGroupName, monitorName, softDelete).last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -888,7 +967,9 @@ public final class MonitorsClientImpl implements MonitorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String monitorName) {
-        return beginDeleteAsync(resourceGroupName, monitorName).last().flatMap(this.client::getLroFinalResultOrError);
+        final Boolean softDelete = null;
+        return beginDeleteAsync(resourceGroupName, monitorName, softDelete).last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -903,7 +984,8 @@ public final class MonitorsClientImpl implements MonitorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String monitorName) {
-        beginDelete(resourceGroupName, monitorName).getFinalResult();
+        final Boolean softDelete = null;
+        beginDelete(resourceGroupName, monitorName, softDelete).getFinalResult();
     }
 
     /**
@@ -912,14 +994,17 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
+     * @param softDelete Indicates whether to perform a soft delete. When set to true, the Azure resource (Liftr
+     * integration) only is deleted and not the Partner Cloud resource. When set to false (default), the resource is
+     * permanently deleted from both Azure and the Partner Cloud.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String monitorName, Context context) {
-        beginDelete(resourceGroupName, monitorName, context).getFinalResult();
+    public void delete(String resourceGroupName, String monitorName, Boolean softDelete, Context context) {
+        beginDelete(resourceGroupName, monitorName, softDelete, context).getFinalResult();
     }
 
     /**
