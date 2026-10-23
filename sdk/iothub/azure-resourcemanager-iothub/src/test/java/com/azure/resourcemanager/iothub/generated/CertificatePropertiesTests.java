@@ -12,21 +12,21 @@ public final class CertificatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CertificateProperties model = BinaryData.fromString(
-            "{\"subject\":\"ph\",\"expiry\":\"Wed, 13 Jan 2021 02:58:16 GMT\",\"thumbprint\":\"pjrvxagl\",\"isVerified\":false,\"created\":\"Thu, 23 Sep 2021 10:13:50 GMT\",\"updated\":\"Sat, 16 Oct 2021 12:23:58 GMT\",\"certificate\":\"ytxitcsk\",\"certificateAuthorityResourceId\":\"k\"}")
+            "{\"subject\":\"bpkkpwdre\",\"expiry\":\"Sun, 12 Sep 2021 16:04:39 GMT\",\"thumbprint\":\"vq\",\"isVerified\":false,\"created\":\"Fri, 12 Nov 2021 04:23:21 GMT\",\"updated\":\"Sun, 13 Jun 2021 02:13:45 GMT\",\"certificate\":\"suwsyrsnds\",\"certificateAuthorityResourceId\":\"g\"}")
             .toObject(CertificateProperties.class);
         Assertions.assertFalse(model.isVerified());
-        Assertions.assertEquals("ytxitcsk", model.certificate());
-        Assertions.assertEquals("k", model.certificateAuthorityResourceId());
+        Assertions.assertEquals("suwsyrsnds", model.certificate());
+        Assertions.assertEquals("g", model.certificateAuthorityResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CertificateProperties model = new CertificateProperties().withIsVerified(false)
-            .withCertificate("ytxitcsk")
-            .withCertificateAuthorityResourceId("k");
+            .withCertificate("suwsyrsnds")
+            .withCertificateAuthorityResourceId("g");
         model = BinaryData.fromObject(model).toObject(CertificateProperties.class);
         Assertions.assertFalse(model.isVerified());
-        Assertions.assertEquals("ytxitcsk", model.certificate());
-        Assertions.assertEquals("k", model.certificateAuthorityResourceId());
+        Assertions.assertEquals("suwsyrsnds", model.certificate());
+        Assertions.assertEquals("g", model.certificateAuthorityResourceId());
     }
 }

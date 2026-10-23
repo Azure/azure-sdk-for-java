@@ -26,7 +26,7 @@ public final class FallbackRouteProperties implements JsonSerializable<FallbackR
     /*
      * The source to which the routing rule is to be applied to. For example, DeviceMessages
      */
-    private RoutingSource source;
+    private FallbackRouteSource source;
 
     /*
      * The condition which is evaluated in order to apply the fallback route. If the condition is not provided it will
@@ -79,7 +79,7 @@ public final class FallbackRouteProperties implements JsonSerializable<FallbackR
      * 
      * @return the source value.
      */
-    public RoutingSource source() {
+    public FallbackRouteSource source() {
         return this.source;
     }
 
@@ -89,7 +89,7 @@ public final class FallbackRouteProperties implements JsonSerializable<FallbackR
      * @param source the source value to set.
      * @return the FallbackRouteProperties object itself.
      */
-    public FallbackRouteProperties withSource(RoutingSource source) {
+    public FallbackRouteProperties withSource(FallbackRouteSource source) {
         this.source = source;
         return this;
     }
@@ -192,7 +192,7 @@ public final class FallbackRouteProperties implements JsonSerializable<FallbackR
                 reader.nextToken();
 
                 if ("source".equals(fieldName)) {
-                    deserializedFallbackRouteProperties.source = RoutingSource.fromString(reader.getString());
+                    deserializedFallbackRouteProperties.source = FallbackRouteSource.fromString(reader.getString());
                 } else if ("endpointNames".equals(fieldName)) {
                     List<String> endpointNames = reader.readArray(reader1 -> reader1.getString());
                     deserializedFallbackRouteProperties.endpointNames = endpointNames;

@@ -15,7 +15,7 @@ import java.util.Map;
  */
 public final class IotHubResourceTestAllRoutesSamples {
     /*
-     * x-ms-original-file: 2026-10-01-preview/iothub_testallroutes.json
+     * x-ms-original-file: 2026-11-01/iothub_testallroutes.json
      */
     /**
      * Sample code: IotHubResource_TestAllRoutes.
