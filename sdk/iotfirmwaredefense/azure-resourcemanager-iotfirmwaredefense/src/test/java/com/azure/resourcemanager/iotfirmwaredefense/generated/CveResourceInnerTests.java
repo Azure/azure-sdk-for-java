@@ -6,31 +6,48 @@ package com.azure.resourcemanager.iotfirmwaredefense.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.iotfirmwaredefense.fluent.models.CveResourceInner;
+import com.azure.resourcemanager.iotfirmwaredefense.models.ExploitMaturityLevel;
+import com.azure.resourcemanager.iotfirmwaredefense.models.RansomwareCampaignUse;
+import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 
 public final class CveResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CveResourceInner model = BinaryData.fromString(
-            "{\"properties\":{\"cveId\":\"eun\",\"componentId\":\"qhgyxzkonocukok\",\"componentName\":\"axuconuq\",\"componentVersion\":\"fkbey\",\"severity\":\"wrmjmwvvjektc\",\"cveName\":\"enhwlrs\",\"component\":{\"componentId\":\"zpwv\",\"name\":\"dqgbiqylihkaetc\",\"version\":\"vfcivfsnkymuc\"},\"cvssScore\":\"hjfbebrjcxe\",\"cvssV2Score\":\"uwutttxfvjrbi\",\"cvssV3Score\":\"hxepcyvahfnlj\",\"cvssVersion\":\"qxj\",\"effectiveCvssScore\":45.9964588316922,\"effectiveCvssVersion\":1970519416,\"cvssScores\":[{\"version\":528662531,\"score\":60.2726973374229},{\"version\":792619615,\"score\":75.79938532718504}],\"links\":[{\"href\":\"cltbgsncghkjesz\",\"label\":\"bijhtxfvgxbf\"}],\"description\":\"xnehmpvec\",\"provisioningState\":\"Canceled\"},\"id\":\"ebfqkkrbm\",\"name\":\"ukgri\",\"type\":\"flz\"}")
+            "{\"properties\":{\"cveId\":\"zhlrqjb\",\"componentId\":\"kfrlhrxsbky\",\"componentName\":\"ycanuzbpzkafku\",\"componentVersion\":\"crnwbmeh\",\"severity\":\"eyvjusrtslhspkde\",\"cveName\":\"aofmxagkvtme\",\"component\":{\"componentId\":\"krh\",\"name\":\"vljua\",\"version\":\"quhcdhmduala\"},\"cvssScore\":\"qpv\",\"cvssV2Score\":\"dmwsrcrgvxpvgomz\",\"cvssV3Score\":\"misgwbnb\",\"cvssVersion\":\"ldawkzbaliourqha\",\"effectiveCvssScore\":50.710878881745415,\"effectiveCvssVersion\":1375924345,\"effectiveVectorString\":\"sfwxosowzxc\",\"effectiveExploitMaturity\":\"NOT_DEFINED\",\"cvssScores\":[{\"version\":559757947,\"score\":19.32626693592068,\"vectorString\":\"ebwpucwwfvo\",\"exploitMaturity\":\"ATTACKED\"},{\"version\":812601807,\"score\":46.67335949895842,\"vectorString\":\"ivyhzceuojgjrwju\",\"exploitMaturity\":\"ATTACKED\"},{\"version\":798957461,\"score\":86.80580319212577,\"vectorString\":\"ytdxwit\",\"exploitMaturity\":\"NOT_DEFINED\"}],\"links\":[{\"href\":\"gqwgxhniskxfbkp\",\"label\":\"gklwn\"},{\"href\":\"hjdauwhvylwz\",\"label\":\"dhxujznbmpo\"},{\"href\":\"wpr\",\"label\":\"lve\"}],\"description\":\"lupj\",\"epss\":{\"score\":51.07742785273444,\"percentile\":67.89578859974978},\"cwes\":[{\"cweId\":\"s\",\"cweName\":\"jriplrbpbewtghf\",\"description\":\"lcgwxzvlvqh\"}],\"kev\":{\"knownRansomwareCampaignUse\":\"Unknown\",\"dateAdded\":\"2021-11-14T02:33:08Z\",\"remediationDueDate\":\"2021-03-26T15:32:51Z\",\"requiredAction\":\"xiebwwaloayqcg\"},\"fixedInVersions\":[\"zjuzgwyz\",\"htxongmtsavjc\",\"pwxqp\",\"rknftguvriuhprwm\"],\"provisioningState\":\"Succeeded\"},\"id\":\"qtayri\",\"name\":\"wroyqbexrmcq\",\"type\":\"bycnojvkn\"}")
             .toObject(CveResourceInner.class);
-        Assertions.assertEquals("eun", model.cveId());
-        Assertions.assertEquals("qhgyxzkonocukok", model.componentId());
-        Assertions.assertEquals("axuconuq", model.componentName());
-        Assertions.assertEquals("fkbey", model.componentVersion());
-        Assertions.assertEquals("wrmjmwvvjektc", model.severity());
-        Assertions.assertEquals("enhwlrs", model.cveName());
-        Assertions.assertEquals("zpwv", model.component().componentId());
-        Assertions.assertEquals("dqgbiqylihkaetc", model.component().name());
-        Assertions.assertEquals("vfcivfsnkymuc", model.component().version());
-        Assertions.assertEquals("hjfbebrjcxe", model.cvssScore());
-        Assertions.assertEquals("uwutttxfvjrbi", model.cvssV2Score());
-        Assertions.assertEquals("hxepcyvahfnlj", model.cvssV3Score());
-        Assertions.assertEquals("qxj", model.cvssVersion());
-        Assertions.assertEquals(45.9964588316922D, model.effectiveCvssScore());
-        Assertions.assertEquals(1970519416, model.effectiveCvssVersion());
-        Assertions.assertEquals(528662531, model.cvssScores().get(0).version());
-        Assertions.assertEquals(60.2726973374229D, model.cvssScores().get(0).score());
-        Assertions.assertEquals("xnehmpvec", model.description());
+        Assertions.assertEquals("zhlrqjb", model.cveId());
+        Assertions.assertEquals("kfrlhrxsbky", model.componentId());
+        Assertions.assertEquals("ycanuzbpzkafku", model.componentName());
+        Assertions.assertEquals("crnwbmeh", model.componentVersion());
+        Assertions.assertEquals("eyvjusrtslhspkde", model.severity());
+        Assertions.assertEquals("aofmxagkvtme", model.cveName());
+        Assertions.assertEquals("krh", model.component().componentId());
+        Assertions.assertEquals("vljua", model.component().name());
+        Assertions.assertEquals("quhcdhmduala", model.component().version());
+        Assertions.assertEquals("qpv", model.cvssScore());
+        Assertions.assertEquals("dmwsrcrgvxpvgomz", model.cvssV2Score());
+        Assertions.assertEquals("misgwbnb", model.cvssV3Score());
+        Assertions.assertEquals("ldawkzbaliourqha", model.cvssVersion());
+        Assertions.assertEquals(50.710878881745415D, model.effectiveCvssScore());
+        Assertions.assertEquals(1375924345, model.effectiveCvssVersion());
+        Assertions.assertEquals("sfwxosowzxc", model.effectiveVectorString());
+        Assertions.assertEquals(ExploitMaturityLevel.NOT_DEFINED, model.effectiveExploitMaturity());
+        Assertions.assertEquals(559757947, model.cvssScores().get(0).version());
+        Assertions.assertEquals(19.32626693592068D, model.cvssScores().get(0).score());
+        Assertions.assertEquals("ebwpucwwfvo", model.cvssScores().get(0).vectorString());
+        Assertions.assertEquals(ExploitMaturityLevel.ATTACKED, model.cvssScores().get(0).exploitMaturity());
+        Assertions.assertEquals("lupj", model.description());
+        Assertions.assertEquals(51.07742785273444D, model.epss().score());
+        Assertions.assertEquals(67.89578859974978D, model.epss().percentile());
+        Assertions.assertEquals("s", model.cwes().get(0).cweId());
+        Assertions.assertEquals("jriplrbpbewtghf", model.cwes().get(0).cweName());
+        Assertions.assertEquals("lcgwxzvlvqh", model.cwes().get(0).description());
+        Assertions.assertEquals(RansomwareCampaignUse.UNKNOWN, model.kev().knownRansomwareCampaignUse());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-14T02:33:08Z"), model.kev().dateAdded());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-26T15:32:51Z"), model.kev().remediationDueDate());
+        Assertions.assertEquals("xiebwwaloayqcg", model.kev().requiredAction());
+        Assertions.assertEquals("zjuzgwyz", model.fixedInVersions().get(0));
     }
 }
