@@ -11,7 +11,8 @@
 - Fixed concurrent or cancelled `PollerFlux` subscriptions busy-waiting for activation. Pending activation is now
   shared without blocking, and successful activation is reused even when its first subscriber cancels.
 - Fixed asynchronous channel and file writes blocking producer threads. Writes now use completion handlers,
-  preserve partial writes, and stop requesting source data when cancelled.
+  preserve partial writes, copy producer-owned buffers before returning from `onNext`, and stop requesting source
+  data when cancelled.
 - Fixed HTTP timeout resolution, including `HttpClientOptions`, to prefer explicit values, then builder-specific
   configuration, then global configuration, and finally SDK defaults. Global timeouts are resolved when needed rather
   than cached at class initialization, and nonpositive timeout values disable the timeout. Global timeout settings

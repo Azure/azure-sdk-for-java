@@ -3,6 +3,7 @@
 
 package com.azure.core.implementation;
 
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
@@ -68,7 +69,8 @@ public final class AsynchronousByteChannelWriteSubscriber
             return;
         }
 
-        buffer = bytes;
+        // The producer may reclaim its storage as soon as onNext returns.
+        buffer = ByteBuffer.wrap(FluxUtil.byteBufferToArray(bytes));
         requested = false;
         drain();
     }

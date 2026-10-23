@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.reactivestreams.Subscription;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -377,6 +378,28 @@ public class AsynchronousByteChannelWriteSubscriberTests {
 
         assertArrayEquals(new byte[] { 1, 2, 3, 4, 5, 6 }, channel.output.toByteArray());
         assertTrue(channel.isOpen());
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    public void deferredWritesOwnProducerStorage(boolean direct) {
+        DeferredWriteChannel channel = new DeferredWriteChannel();
+        ByteBuffer producer = direct ? ByteBuffer.allocateDirect(8) : ByteBuffer.allocate(8);
+        producer.put(new byte[] { 0, 1, 2, 3, 4, 5, 6, 7 });
+        producer.position(2);
+        producer.limit(6);
+        Flux<ByteBuffer> content = Flux.just(producer.asReadOnlyBuffer());
+
+        StepVerifier.create(FluxUtil.writeFile(content, channel)).then(() -> {
+            assertNotNull(channel.pending.get());
+            producer.clear();
+            while (producer.hasRemaining()) {
+                producer.put((byte) 99);
+            }
+            channel.completeWrite();
+            channel.completeWrite();
+        }).expectComplete().verify(Duration.ofSeconds(5));
+        assertArrayEquals(new byte[] { 2, 3, 4, 5 }, channel.output.toByteArray());
     }
 
     @Test

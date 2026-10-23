@@ -13,8 +13,6 @@ import com.azure.core.http.netty.mocking.MockEventLoop;
 import com.azure.core.http.netty.mocking.MockHttpClientResponse;
 import com.azure.core.http.netty.mocking.MockNettyInbound;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.io.IOUtils;
-import com.azure.core.util.mocking.MockAsynchronousFileChannel;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
 import io.netty.channel.EventLoop;
@@ -40,6 +38,7 @@ import java.lang.reflect.Method;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.nio.channels.AsynchronousByteChannel;
 import java.nio.channels.CompletionHandler;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -167,8 +166,7 @@ public class NettyAsyncHttpResponseTests {
         MockEventLoop eventLoop = new MockEventLoop();
         NettyAsyncHttpResponse response = response(body, disableBufferCopy, eventLoop);
         DeferredWriteChannel channel = new DeferredWriteChannel();
-        CompletableFuture<Void> transfer
-            = response.writeBodyToAsync(IOUtils.toAsynchronousByteChannel(channel, 0)).toFuture();
+        CompletableFuture<Void> transfer = response.writeBodyToAsync(channel).toFuture();
         try {
             assertFalse(transfer.isDone());
             assertEquals(0, networkBuffer.refCnt());
@@ -196,8 +194,7 @@ public class NettyAsyncHttpResponseTests {
         DeferredWriteChannel channel = new DeferredWriteChannel();
         IOException expected = new IOException("Destination failed");
 
-        StepVerifier
-            .create(response(body, true, eventLoop).writeBodyToAsync(IOUtils.toAsynchronousByteChannel(channel, 0)))
+        StepVerifier.create(response(body, true, eventLoop).writeBodyToAsync(channel))
             .then(() -> channel.failWrite(expected))
             .expectErrorMatches(error -> error == expected)
             .verify(Duration.ofSeconds(5));
@@ -215,9 +212,7 @@ public class NettyAsyncHttpResponseTests {
             .doOnCancel(() -> cancelled.set(true)));
         MockEventLoop eventLoop = new MockEventLoop();
         DeferredWriteChannel channel = new DeferredWriteChannel();
-        CompletableFuture<Void> transfer
-            = response(body, true, eventLoop).writeBodyToAsync(IOUtils.toAsynchronousByteChannel(channel, 0))
-                .toFuture();
+        CompletableFuture<Void> transfer = response(body, true, eventLoop).writeBodyToAsync(channel).toFuture();
 
         assertFalse(transfer.isDone());
         assertTrue(transfer.cancel(true));
@@ -242,14 +237,14 @@ public class NettyAsyncHttpResponseTests {
             REQUEST, disableBufferCopy, false);
     }
 
-    private static final class DeferredWriteChannel extends MockAsynchronousFileChannel {
+    private static final class DeferredWriteChannel implements AsynchronousByteChannel {
         private final ByteArrayOutputStream output = new ByteArrayOutputStream();
         private final AtomicReference<Runnable> pending = new AtomicReference<>();
         private Consumer<Throwable> fail;
+        private boolean open = true;
 
         @Override
-        public <A> void write(ByteBuffer src, long position, A attachment,
-            CompletionHandler<Integer, ? super A> handler) {
+        public <A> void write(ByteBuffer src, A attachment, CompletionHandler<Integer, ? super A> handler) {
             assertFalse(src.isDirect(), "Asynchronous file channels must not receive scoped direct buffers");
             assertNull(pending.get());
             pending.set(() -> {
@@ -263,8 +258,18 @@ public class NettyAsyncHttpResponseTests {
         }
 
         @Override
-        public Future<Integer> write(ByteBuffer src, long position) {
+        public Future<Integer> write(ByteBuffer src) {
             throw new AssertionError("The response must not wait on a Future");
+        }
+
+        @Override
+        public <A> void read(ByteBuffer dst, A attachment, CompletionHandler<Integer, ? super A> handler) {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public Future<Integer> read(ByteBuffer dst) {
+            throw new UnsupportedOperationException();
         }
 
         private void completeWrite() {
@@ -280,7 +285,12 @@ public class NettyAsyncHttpResponseTests {
 
         @Override
         public boolean isOpen() {
-            return true;
+            return open;
+        }
+
+        @Override
+        public void close() {
+            open = false;
         }
     }
 
