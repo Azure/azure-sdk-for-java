@@ -2,7 +2,7 @@
 
 Azure Resource Manager Redis Enterprise client library for Java.
 
-This package contains Microsoft Azure SDK for Redis Enterprise Management SDK. REST API for managing Redis Enterprise resources in Azure. Package api-version 2026-06-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+This package contains Microsoft Azure SDK for Redis Enterprise Management SDK. REST API for managing Redis Enterprise resources in Azure. Package api-version 2026-09-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ## We'd love to hear your feedback
 
@@ -32,7 +32,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure.resourcemanager</groupId>
     <artifactId>azure-resourcemanager-redisenterprise</artifactId>
-    <version>2.2.0-beta.1</version>
+    <version>2.2.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -70,16 +70,6 @@ See [API design][design] for general introduction on design and key concepts on 
 
 ## Examples
 
-```java
-cluster = redisEnterpriseManager.redisEnterprises()
-    .define(clusterName)
-    .withRegion(REGION)
-    .withExistingResourceGroup(resourceGroupName)
-    .withSku(new Sku().withName(SkuName.ENTERPRISE_E10).withCapacity(2))
-    .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE))
-    .withMinimumTlsVersion(TlsVersion.ONE_TWO)
-    .create();
-```
 [Code snippets and samples](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/redisenterprise/azure-resourcemanager-redisenterprise/SAMPLE.md)
 
 
