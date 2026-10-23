@@ -16,7 +16,7 @@ The updates below only denote differences between this release and previous 1.19
 
 ### Bugs Fixed
 
-- Fixed verification of `AZURE_KUBERNETES_SNI_NAME` being skipped when the proxy certificate already matched the proxy URL hostname. The configured name is now checked before sending the service-account assertion. ([#50917](https://github.com/Azure/azure-sdk-for-java/pull/50917))
+- Fixed verification of `AZURE_KUBERNETES_SNI_NAME` being skipped when the proxy certificate already matched the proxy URL hostname. The configured name is now checked before sending the service-account assertion, while accepting certificate DNS wildcards that match exactly one label. ([#50917](https://github.com/Azure/azure-sdk-for-java/pull/50917))
 - Fixed the AKS token proxy accepting CA bundles containing a valid certificate followed by a malformed certificate entry. ([#50917](https://github.com/Azure/azure-sdk-for-java/pull/50917))
 - Fixed authentication failures when a previously loaded proxy CA file temporarily disappears during rotation. The existing fallback for an empty CA file is unchanged. ([#50917](https://github.com/Azure/azure-sdk-for-java/pull/50917))
 - Fixed a race between proxy CA reloads and socket factory creation that could leave requests using the previous CA configuration. ([#50917](https://github.com/Azure/azure-sdk-for-java/pull/50917))

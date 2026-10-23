@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
+import java.net.IDN;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Files;
@@ -259,7 +260,7 @@ public class CustomTokenProxyHttpClient implements HttpClient {
                 for (List<?> san : sanList) {
                     if (san.size() >= 2 && san.get(0).equals(2)) {
                         String certDnsName = (String) san.get(1);
-                        if (certDnsName.equalsIgnoreCase(dnsName)) {
+                        if (matchesDnsName(dnsName, certDnsName)) {
                             return true;
                         }
                     }
@@ -269,6 +270,29 @@ public class CustomTokenProxyHttpClient implements HttpClient {
             return false;
         }
         return false;
+    }
+
+    static boolean matchesDnsName(String dnsName, String certificateDnsName) {
+        if (certificateDnsName.indexOf('*') == -1) {
+            return certificateDnsName.equalsIgnoreCase(dnsName);
+        }
+
+        // A certificate wildcard can replace only the complete left-most DNS label (RFC 9525, section 6.3).
+        if (!certificateDnsName.startsWith("*.")
+            || certificateDnsName.length() == 2
+            || certificateDnsName.indexOf('*', 1) != -1) {
+            return false;
+        }
+
+        try {
+            String asciiDnsName = IDN.toASCII(dnsName, IDN.USE_STD3_ASCII_RULES);
+            int firstDot = asciiDnsName.indexOf('.');
+            return firstDot > 0
+                && !asciiDnsName.matches("[0-9.]+")
+                && certificateDnsName.substring(1).equalsIgnoreCase(asciiDnsName.substring(firstDot));
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
     }
 
 }

@@ -603,6 +603,40 @@ public class WorkloadIdentityCredentialIdentityBindingTest {
         assertEquals(0, tokenRequestCount.get(), "The assertion must not be sent to a host with the wrong TLS name");
     }
 
+    @ParameterizedTest
+    @CsvSource({
+        "proxy.example.com, true",
+        "PROXY.EXAMPLE.COM, true",
+        "example.com, false",
+        "nested.proxy.example.com, false",
+        "proxy.example.net, false" })
+    public void testAksProxyValidatesWildcardSniBeforeSendingRequest(String serverName, boolean matches)
+        throws Exception {
+        KeyStore keyStore = KeyStore.getInstance("PKCS12");
+        try (InputStream stream = getClass().getResourceAsStream("/test-aks-cert-wildcard.p12")) {
+            assertNotNull(stream);
+            keyStore.load(stream, "password".toCharArray());
+        }
+        X509Certificate wildcardCertificate = (X509Certificate) keyStore.getCertificate("test-cert");
+        List<String> dnsNames = fetchCertificateSAN(wildcardCertificate);
+        assertTrue(dnsNames.contains("localhost"));
+        assertTrue(dnsNames.contains("*.example.com"));
+        startNettyHttpsServer((PrivateKey) keyStore.getKey("test-cert", "password".toCharArray()), wildcardCertificate);
+
+        // The localhost SAN allows URL-host verification to succeed independently of the configured SNI name.
+        CustomTokenProxyHttpClient client = new CustomTokenProxyHttpClient(new ProxyConfig(new URL(serverBaseUrl),
+            serverName, null, toPemFormat(wildcardCertificate).getBytes(StandardCharsets.UTF_8)));
+
+        if (matches) {
+            sendProxyRequest(client);
+            assertEquals(serverName, lastServerName);
+            assertEquals(1, tokenRequestCount.get());
+        } else {
+            assertThrows(RuntimeException.class, () -> sendProxyRequest(client));
+            assertEquals(0, tokenRequestCount.get(), "The assertion must not be sent for an unrelated TLS name");
+        }
+    }
+
     @Test
     public void testAksProxyWithInvalidTokenFile() {
         Path nonExistentTokenFile = tempDir.resolve("non-existent-token.jwt");
