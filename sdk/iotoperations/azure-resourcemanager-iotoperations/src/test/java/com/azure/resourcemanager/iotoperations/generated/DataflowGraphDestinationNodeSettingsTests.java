@@ -7,6 +7,8 @@ package com.azure.resourcemanager.iotoperations.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.iotoperations.models.DataflowGraphDestinationHeaderAction;
 import com.azure.resourcemanager.iotoperations.models.DataflowGraphDestinationNodeSettings;
+import com.azure.resourcemanager.iotoperations.models.DataflowGraphDestinationSchemaSerializationFormat;
+import com.azure.resourcemanager.iotoperations.models.DataflowGraphDestinationSchemaSettings;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
@@ -14,21 +16,29 @@ public final class DataflowGraphDestinationNodeSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataflowGraphDestinationNodeSettings model = BinaryData.fromString(
-            "{\"endpointRef\":\"rbuukzclewyhmlwp\",\"dataDestination\":\"ztzp\",\"headers\":[{\"actionType\":\"DataflowGraphDestinationHeaderAction\"},{\"actionType\":\"DataflowGraphDestinationHeaderAction\"}]}")
+            "{\"endpointRef\":\"n\",\"dataDestination\":\"orudsgsa\",\"headers\":[{\"actionType\":\"DataflowGraphDestinationHeaderAction\"},{\"actionType\":\"DataflowGraphDestinationHeaderAction\"},{\"actionType\":\"DataflowGraphDestinationHeaderAction\"}],\"outputSchemaSettings\":{\"serializationFormat\":\"Parquet\",\"schemaRef\":\"rauwjuetaebu\"}}")
             .toObject(DataflowGraphDestinationNodeSettings.class);
-        Assertions.assertEquals("rbuukzclewyhmlwp", model.endpointRef());
-        Assertions.assertEquals("ztzp", model.dataDestination());
+        Assertions.assertEquals("n", model.endpointRef());
+        Assertions.assertEquals("orudsgsa", model.dataDestination());
+        Assertions.assertEquals(DataflowGraphDestinationSchemaSerializationFormat.PARQUET,
+            model.outputSchemaSettings().serializationFormat());
+        Assertions.assertEquals("rauwjuetaebu", model.outputSchemaSettings().schemaRef());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataflowGraphDestinationNodeSettings model = new DataflowGraphDestinationNodeSettings()
-            .withEndpointRef("rbuukzclewyhmlwp")
-            .withDataDestination("ztzp")
-            .withHeaders(
-                Arrays.asList(new DataflowGraphDestinationHeaderAction(), new DataflowGraphDestinationHeaderAction()));
+        DataflowGraphDestinationNodeSettings model = new DataflowGraphDestinationNodeSettings().withEndpointRef("n")
+            .withDataDestination("orudsgsa")
+            .withHeaders(Arrays.asList(new DataflowGraphDestinationHeaderAction(),
+                new DataflowGraphDestinationHeaderAction(), new DataflowGraphDestinationHeaderAction()))
+            .withOutputSchemaSettings(new DataflowGraphDestinationSchemaSettings()
+                .withSerializationFormat(DataflowGraphDestinationSchemaSerializationFormat.PARQUET)
+                .withSchemaRef("rauwjuetaebu"));
         model = BinaryData.fromObject(model).toObject(DataflowGraphDestinationNodeSettings.class);
-        Assertions.assertEquals("rbuukzclewyhmlwp", model.endpointRef());
-        Assertions.assertEquals("ztzp", model.dataDestination());
+        Assertions.assertEquals("n", model.endpointRef());
+        Assertions.assertEquals("orudsgsa", model.dataDestination());
+        Assertions.assertEquals(DataflowGraphDestinationSchemaSerializationFormat.PARQUET,
+            model.outputSchemaSettings().serializationFormat());
+        Assertions.assertEquals("rauwjuetaebu", model.outputSchemaSettings().schemaRef());
     }
 }

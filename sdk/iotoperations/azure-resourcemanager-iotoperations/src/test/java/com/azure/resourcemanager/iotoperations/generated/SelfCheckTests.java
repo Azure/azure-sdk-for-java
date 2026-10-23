@@ -13,21 +13,21 @@ public final class SelfCheckTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SelfCheck model = BinaryData
-            .fromString("{\"mode\":\"Enabled\",\"intervalSeconds\":1041920176,\"timeoutSeconds\":1475447223}")
+            .fromString("{\"mode\":\"Enabled\",\"intervalSeconds\":1771773023,\"timeoutSeconds\":1041920176}")
             .toObject(SelfCheck.class);
         Assertions.assertEquals(OperationalMode.ENABLED, model.mode());
-        Assertions.assertEquals(1041920176, model.intervalSeconds());
-        Assertions.assertEquals(1475447223, model.timeoutSeconds());
+        Assertions.assertEquals(1771773023, model.intervalSeconds());
+        Assertions.assertEquals(1041920176, model.timeoutSeconds());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SelfCheck model = new SelfCheck().withMode(OperationalMode.ENABLED)
-            .withIntervalSeconds(1041920176)
-            .withTimeoutSeconds(1475447223);
+            .withIntervalSeconds(1771773023)
+            .withTimeoutSeconds(1041920176);
         model = BinaryData.fromObject(model).toObject(SelfCheck.class);
         Assertions.assertEquals(OperationalMode.ENABLED, model.mode());
-        Assertions.assertEquals(1041920176, model.intervalSeconds());
-        Assertions.assertEquals(1475447223, model.timeoutSeconds());
+        Assertions.assertEquals(1771773023, model.intervalSeconds());
+        Assertions.assertEquals(1041920176, model.timeoutSeconds());
     }
 }

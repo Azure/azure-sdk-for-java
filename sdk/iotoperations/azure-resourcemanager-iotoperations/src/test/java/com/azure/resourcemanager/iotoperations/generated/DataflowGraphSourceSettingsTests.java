@@ -12,22 +12,22 @@ import org.junit.jupiter.api.Assertions;
 public final class DataflowGraphSourceSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DataflowGraphSourceSettings model = BinaryData
-            .fromString("{\"endpointRef\":\"kooebwnu\",\"dataSources\":[\"emmsbvdkc\",\"odtji\"],\"assetRef\":\"wj\"}")
+        DataflowGraphSourceSettings model = BinaryData.fromString(
+            "{\"endpointRef\":\"dxrbuukzcle\",\"dataSources\":[\"hmlwpaztzpo\",\"ncckw\",\"fz\"],\"assetRef\":\"hxx\"}")
             .toObject(DataflowGraphSourceSettings.class);
-        Assertions.assertEquals("kooebwnu", model.endpointRef());
-        Assertions.assertEquals("emmsbvdkc", model.dataSources().get(0));
-        Assertions.assertEquals("wj", model.assetRef());
+        Assertions.assertEquals("dxrbuukzcle", model.endpointRef());
+        Assertions.assertEquals("hmlwpaztzpo", model.dataSources().get(0));
+        Assertions.assertEquals("hxx", model.assetRef());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataflowGraphSourceSettings model = new DataflowGraphSourceSettings().withEndpointRef("kooebwnu")
-            .withDataSources(Arrays.asList("emmsbvdkc", "odtji"))
-            .withAssetRef("wj");
+        DataflowGraphSourceSettings model = new DataflowGraphSourceSettings().withEndpointRef("dxrbuukzcle")
+            .withDataSources(Arrays.asList("hmlwpaztzpo", "ncckw", "fz"))
+            .withAssetRef("hxx");
         model = BinaryData.fromObject(model).toObject(DataflowGraphSourceSettings.class);
-        Assertions.assertEquals("kooebwnu", model.endpointRef());
-        Assertions.assertEquals("emmsbvdkc", model.dataSources().get(0));
-        Assertions.assertEquals("wj", model.assetRef());
+        Assertions.assertEquals("dxrbuukzcle", model.endpointRef());
+        Assertions.assertEquals("hmlwpaztzpo", model.dataSources().get(0));
+        Assertions.assertEquals("hxx", model.assetRef());
     }
 }
