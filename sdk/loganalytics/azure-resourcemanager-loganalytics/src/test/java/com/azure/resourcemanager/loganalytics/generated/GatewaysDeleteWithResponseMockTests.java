@@ -27,7 +27,8 @@ public final class GatewaysDeleteWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.gateways().deleteWithResponse("z", "vxhmtfhocnxzcmj", "ngxno", com.azure.core.util.Context.NONE);
+        manager.gateways()
+            .deleteWithResponse("tmoqqtlffhzb", "rkjjjavfqnvhnq", "ewdogiyetesy", com.azure.core.util.Context.NONE);
 
     }
 }

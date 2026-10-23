@@ -56,6 +56,11 @@ public final class WorkspaceFeatures implements JsonSerializable<WorkspaceFeatur
     private List<String> associations;
 
     /*
+     * Enable Data authorization mode for the workspace.
+     */
+    private Boolean dataAuthorizationMode;
+
+    /*
      * Workspace features.
      */
     private Map<String, Object> additionalProperties;
@@ -190,6 +195,26 @@ public final class WorkspaceFeatures implements JsonSerializable<WorkspaceFeatur
     }
 
     /**
+     * Get the dataAuthorizationMode property: Enable Data authorization mode for the workspace.
+     * 
+     * @return the dataAuthorizationMode value.
+     */
+    public Boolean dataAuthorizationMode() {
+        return this.dataAuthorizationMode;
+    }
+
+    /**
+     * Set the dataAuthorizationMode property: Enable Data authorization mode for the workspace.
+     * 
+     * @param dataAuthorizationMode the dataAuthorizationMode value to set.
+     * @return the WorkspaceFeatures object itself.
+     */
+    public WorkspaceFeatures withDataAuthorizationMode(Boolean dataAuthorizationMode) {
+        this.dataAuthorizationMode = dataAuthorizationMode;
+        return this;
+    }
+
+    /**
      * Get the additionalProperties property: Workspace features.
      * 
      * @return the additionalProperties value.
@@ -221,6 +246,7 @@ public final class WorkspaceFeatures implements JsonSerializable<WorkspaceFeatur
             this.enableLogAccessUsingOnlyResourcePermissions);
         jsonWriter.writeStringField("clusterResourceId", this.clusterResourceId);
         jsonWriter.writeBooleanField("disableLocalAuth", this.disableLocalAuth);
+        jsonWriter.writeBooleanField("dataAuthorizationMode", this.dataAuthorizationMode);
         if (additionalProperties != null) {
             for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
@@ -263,6 +289,8 @@ public final class WorkspaceFeatures implements JsonSerializable<WorkspaceFeatur
                 } else if ("associations".equals(fieldName)) {
                     List<String> associations = reader.readArray(reader1 -> reader1.getString());
                     deserializedWorkspaceFeatures.associations = associations;
+                } else if ("dataAuthorizationMode".equals(fieldName)) {
+                    deserializedWorkspaceFeatures.dataAuthorizationMode = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     if (additionalProperties == null) {
                         additionalProperties = new LinkedHashMap<>();

@@ -12,7 +12,7 @@ import java.util.Map;
  */
 public final class QueryPacksCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-07-01/QueryPacksCreate.json
+     * x-ms-original-file: 2026-03-01/QueryPacksCreate.json
      */
     /**
      * Sample code: QueryPackCreate.
@@ -28,7 +28,7 @@ public final class QueryPacksCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/QueryPacksUpdate.json
+     * x-ms-original-file: 2026-03-01/QueryPacksUpdate.json
      */
     /**
      * Sample code: QueryPackUpdate.
