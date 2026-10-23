@@ -13,10 +13,10 @@ public final class ApprovalRecordTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ApprovalRecord model = BinaryData
-            .fromString("{\"comment\":\"jbasvmsmjqulngs\",\"actor\":\"tnb\",\"occurredAt\":\"2021-06-06T02:55:58Z\"}")
+            .fromString("{\"comment\":\"xxwr\",\"actor\":\"jdous\",\"occurredAt\":\"2021-11-20T13:48:40Z\"}")
             .toObject(ApprovalRecord.class);
-        Assertions.assertEquals("jbasvmsmjqulngs", model.comment());
-        Assertions.assertEquals("tnb", model.actor());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-06T02:55:58Z"), model.occurredAt());
+        Assertions.assertEquals("xxwr", model.comment());
+        Assertions.assertEquals("jdous", model.actor());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-20T13:48:40Z"), model.occurredAt());
     }
 }

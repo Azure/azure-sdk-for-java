@@ -21,7 +21,7 @@ public final class GroupQuotaLimitsListWithResponseMockTests {
     @Test
     public void testListWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Failed\",\"value\":[{\"properties\":{\"resourceName\":\"zyh\",\"limit\":3835671102059625578,\"comment\":\"ypyynpcdpumnzg\",\"unit\":\"z\",\"name\":{},\"availableLimit\":6753075814486696287,\"allocatedToSubscriptions\":{}}},{\"properties\":{\"resourceName\":\"orgjhxbldt\",\"limit\":8467924740961026044,\"comment\":\"kdmtncvokotll\",\"unit\":\"yhgsy\",\"name\":{},\"availableLimit\":4877471072225031792,\"allocatedToSubscriptions\":{}}},{\"properties\":{\"resourceName\":\"tbnnha\",\"limit\":723581934822095821,\"comment\":\"kvci\",\"unit\":\"nvpamq\",\"name\":{},\"availableLimit\":7776859938318021776,\"allocatedToSubscriptions\":{}}},{\"properties\":{\"resourceName\":\"kywggxkallatmel\",\"limit\":4889606083827449989,\"comment\":\"ccjzkzivgvv\",\"unit\":\"ayrhyrnx\",\"name\":{},\"availableLimit\":8141122622506603180,\"allocatedToSubscriptions\":{}}}],\"nextLink\":\"drd\"},\"id\":\"tkwqqtchealm\",\"name\":\"mtdaa\",\"type\":\"gdv\"}";
+            = "{\"properties\":{\"provisioningState\":\"Accepted\",\"value\":[{\"properties\":{\"resourceName\":\"fqntcyp\",\"limit\":1419187115637928307,\"comment\":\"oimwkslirc\",\"unit\":\"jxv\",\"name\":{},\"availableLimit\":3621612714020184368,\"allocatedToSubscriptions\":{}}},{\"properties\":{\"resourceName\":\"lhvygdyftu\",\"limit\":8526636886938814175,\"comment\":\"awjs\",\"unit\":\"iw\",\"name\":{},\"availableLimit\":5263273195459135313,\"allocatedToSubscriptions\":{}}},{\"properties\":{\"resourceName\":\"sfmznbaeqphc\",\"limit\":5632353746465153295,\"comment\":\"rpxeh\",\"unit\":\"rykqgaifmvikl\",\"name\":{},\"availableLimit\":1179747194157520727,\"allocatedToSubscriptions\":{}}},{\"properties\":{\"resourceName\":\"jdz\",\"limit\":9192342846154996560,\"comment\":\"srhnjivo\",\"unit\":\"tnovqfzgemjdftul\",\"name\":{},\"availableLimit\":790673033168007546,\"allocatedToSubscriptions\":{}}}],\"nextLink\":\"amtmcz\"},\"id\":\"m\",\"name\":\"jw\",\"type\":\"w\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,12 +31,12 @@ public final class GroupQuotaLimitsListWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         GroupQuotaLimitList response = manager.groupQuotaLimits()
-            .listWithResponse("ntorzihleosjswsr", "slyzrpzbchckqq", "qioxi", "suiizynkedyat",
+            .listWithResponse("urisjnhnytxifqj", "gxmrhublwp", "esutrgjupauutpw", "qhih",
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("zyh", response.properties().value().get(0).properties().resourceName());
-        Assertions.assertEquals(3835671102059625578L, response.properties().value().get(0).properties().limit());
-        Assertions.assertEquals("ypyynpcdpumnzg", response.properties().value().get(0).properties().comment());
+        Assertions.assertEquals("fqntcyp", response.properties().value().get(0).properties().resourceName());
+        Assertions.assertEquals(1419187115637928307L, response.properties().value().get(0).properties().limit());
+        Assertions.assertEquals("oimwkslirc", response.properties().value().get(0).properties().comment());
     }
 }

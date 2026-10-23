@@ -15,21 +15,21 @@ public final class CurrentQuotaLimitBaseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CurrentQuotaLimitBaseInner model = BinaryData.fromString(
-            "{\"properties\":{\"limit\":{\"limitObjectType\":\"LimitJsonObject\"},\"unit\":\"p\",\"name\":{\"value\":\"fkuwbcrnwbmehhse\",\"localizedValue\":\"jusrtslhspk\"},\"resourceType\":\"emaofmxagkvt\",\"quotaPeriod\":\"lmqkrhahvlj\",\"isQuotaApplicable\":false,\"properties\":\"dataquhcdhmduala\"},\"id\":\"qpv\",\"name\":\"adm\",\"type\":\"sr\"}")
+            "{\"properties\":{\"limit\":{\"limitObjectType\":\"LimitJsonObject\"},\"unit\":\"vdrhvoo\",\"name\":{\"value\":\"tbobz\",\"localizedValue\":\"pcjwv\"},\"resourceType\":\"dldwmgxc\",\"quotaPeriod\":\"slpmutwuo\",\"isQuotaApplicable\":false,\"properties\":\"\\\"datakhjwn\\\"\"},\"id\":\"qsluicp\",\"name\":\"ggkzzlvmbmpa\",\"type\":\"modfvuefywsbpfvm\"}")
             .toObject(CurrentQuotaLimitBaseInner.class);
-        Assertions.assertEquals("fkuwbcrnwbmehhse", model.properties().name().value());
-        Assertions.assertEquals("emaofmxagkvt", model.properties().resourceType());
+        Assertions.assertEquals("tbobz", model.properties().name().value());
+        Assertions.assertEquals("dldwmgxc", model.properties().resourceType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CurrentQuotaLimitBaseInner model
             = new CurrentQuotaLimitBaseInner().withProperties(new QuotaProperties().withLimit(new LimitJsonObject())
-                .withName(new ResourceName().withValue("fkuwbcrnwbmehhse"))
-                .withResourceType("emaofmxagkvt")
-                .withProperties("dataquhcdhmduala"));
+                .withName(new ResourceName().withValue("tbobz"))
+                .withResourceType("dldwmgxc")
+                .withProperties("\"datakhjwn\""));
         model = BinaryData.fromObject(model).toObject(CurrentQuotaLimitBaseInner.class);
-        Assertions.assertEquals("fkuwbcrnwbmehhse", model.properties().name().value());
-        Assertions.assertEquals("emaofmxagkvt", model.properties().resourceType());
+        Assertions.assertEquals("tbobz", model.properties().name().value());
+        Assertions.assertEquals("dldwmgxc", model.properties().resourceType());
     }
 }
