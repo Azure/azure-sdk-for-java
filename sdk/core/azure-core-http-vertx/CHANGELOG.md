@@ -10,6 +10,8 @@
 
 ### Bugs Fixed
 
+- Fixed streaming responses reading and buffering data without downstream demand. Cancelling response consumption
+  now resets the HTTP exchange without closing unrelated HTTP/2 streams.
 - Fixed timeout resolution to prefer explicit builder values, then builder-specific configuration, then global
   configuration, and finally SDK defaults.
 - Fixed a bug where requests with a streaming body, such as `Flux<ByteBuffer>` or `InputStream`, would never be sent

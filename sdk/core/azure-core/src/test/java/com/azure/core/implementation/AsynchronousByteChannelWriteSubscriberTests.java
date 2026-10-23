@@ -3,6 +3,7 @@
 
 package com.azure.core.implementation;
 
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.io.IOUtils;
 import com.azure.core.util.mocking.MockAsynchronousFileChannel;
 import com.azure.core.util.mocking.MockMonoSink;
@@ -19,14 +20,17 @@ import reactor.util.context.Context;
 import reactor.util.context.ContextView;
 
 import java.io.IOException;
+import java.io.ByteArrayOutputStream;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
 import java.nio.channels.CompletionHandler;
+import java.time.Duration;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.stream.IntStream;
@@ -34,8 +38,12 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests {@link AsynchronousByteChannelWriteSubscriber}.
@@ -54,8 +62,8 @@ public class AsynchronousByteChannelWriteSubscriberTests {
             }
         };
 
-        AsynchronousByteChannelWriteSubscriber fileWriteSubscriber
-            = new AsynchronousByteChannelWriteSubscriber(IOUtils.toAsynchronousByteChannel(channel, 0), null);
+        AsynchronousByteChannelWriteSubscriber fileWriteSubscriber = new AsynchronousByteChannelWriteSubscriber(
+            IOUtils.toAsynchronousByteChannel(channel, 0), new MockMonoSink<>());
 
         CallTrackingSubscription subscription1 = new CallTrackingSubscription();
         CallTrackingSubscription subscription2 = new CallTrackingSubscription();
@@ -340,6 +348,146 @@ public class AsynchronousByteChannelWriteSubscriberTests {
 
         assertEquals(1, errorCallCount.get());
         assertEquals(0, successCallCount.get());
+    }
+
+    @Test
+    public void deferredPartialWritesRespectDemandAndDelayCompletion() {
+        DeferredWriteChannel channel = new DeferredWriteChannel();
+        AtomicInteger emitted = new AtomicInteger();
+        AtomicBoolean completed = new AtomicBoolean();
+        Flux<ByteBuffer> content
+            = Flux.just(ByteBuffer.wrap(new byte[] { 1, 2, 3 }), ByteBuffer.wrap(new byte[] { 4, 5, 6 }))
+                .doOnNext(ignored -> emitted.incrementAndGet());
+
+        StepVerifier.create(FluxUtil.writeFile(content, channel).doOnSuccess(ignored -> completed.set(true)))
+            .then(() -> {
+                assertEquals(1, emitted.get());
+                assertFalse(completed.get());
+                channel.completeWrite();
+                assertEquals(1, emitted.get());
+                channel.completeWrite();
+                assertEquals(2, emitted.get());
+                assertFalse(completed.get());
+                channel.completeWrite();
+                assertFalse(completed.get());
+                channel.completeWrite();
+            })
+            .expectComplete()
+            .verify(Duration.ofSeconds(5));
+
+        assertArrayEquals(new byte[] { 1, 2, 3, 4, 5, 6 }, channel.output.toByteArray());
+        assertTrue(channel.isOpen());
+    }
+
+    @Test
+    public void pendingWriteFailureAfterSourceCompletionIsPropagated() {
+        DeferredWriteChannel channel = new DeferredWriteChannel();
+        IOException expected = new IOException("Write failed");
+        StepVerifier.create(FluxUtil.writeFile(Flux.just(ByteBuffer.wrap(new byte[] { 1 })), channel))
+            .then(() -> channel.failWrite(expected))
+            .expectErrorMatches(error -> error == expected)
+            .verify(Duration.ofSeconds(5));
+    }
+
+    @Test
+    public void sourceErrorWaitsForPendingWrite() {
+        DeferredWriteChannel channel = new DeferredWriteChannel();
+        IOException expected = new IOException("Source failed");
+        Flux<ByteBuffer> content = Flux.just(ByteBuffer.wrap(new byte[] { 1, 2, 3 })).concatWith(Flux.error(expected));
+
+        StepVerifier.create(FluxUtil.writeFile(content, channel))
+            .then(channel::completeWrite)
+            .then(channel::completeWrite)
+            .expectErrorMatches(error -> error == expected)
+            .verify(Duration.ofSeconds(5));
+        assertArrayEquals(new byte[] { 1, 2, 3 }, channel.output.toByteArray());
+    }
+
+    @Test
+    public void inlinePartialWritesDoNotRecurse() {
+        AtomicInteger writes = new AtomicInteger();
+        MockAsynchronousFileChannel channel = new MockAsynchronousFileChannel() {
+            @Override
+            public <A> void write(ByteBuffer src, long position, A attachment,
+                CompletionHandler<Integer, ? super A> handler) {
+                src.get();
+                writes.incrementAndGet();
+                handler.completed(1, attachment);
+            }
+        };
+        StepVerifier.create(FluxUtil.writeFile(Flux.just(ByteBuffer.allocate(65536)), channel))
+            .expectComplete()
+            .verify(Duration.ofSeconds(5));
+        assertEquals(65536, writes.get());
+    }
+
+    @Test
+    public void cancellationStopsSourceWithoutClosingCallerChannel() {
+        DeferredWriteChannel channel = new DeferredWriteChannel();
+        AtomicBoolean cancelled = new AtomicBoolean();
+        Flux<ByteBuffer> content = Flux.just(ByteBuffer.wrap(new byte[] { 1, 2, 3 }))
+            .concatWith(Flux.never())
+            .doOnCancel(() -> cancelled.set(true));
+        CompletableFuture<Void> transfer = FluxUtil.writeFile(content, channel).toFuture();
+
+        assertFalse(transfer.isDone());
+        assertTrue(transfer.cancel(true));
+        assertTrue(cancelled.get());
+        channel.completeWrite();
+        assertNull(channel.pending.get());
+        assertTrue(channel.isOpen());
+    }
+
+    @Test
+    public void cancellationBeforeSubscriptionCancelsSource() {
+        AsynchronousByteChannelWriteSubscriber subscriber
+            = new AsynchronousByteChannelWriteSubscriber(null, new MockMonoSink<>());
+        subscriber.dispose();
+        CallTrackingSubscription subscription = new CallTrackingSubscription();
+        subscriber.onSubscribe(subscription);
+        assertEquals(1, subscription.cancelCalls.get());
+        assertEquals(0, subscription.requestOneCalls.get());
+    }
+
+    private static final class DeferredWriteChannel extends MockAsynchronousFileChannel {
+        private final ByteArrayOutputStream output = new ByteArrayOutputStream();
+        private final AtomicReference<Runnable> pending = new AtomicReference<>();
+        private Consumer<Throwable> fail;
+
+        @Override
+        public <A> void write(ByteBuffer src, long position, A attachment,
+            CompletionHandler<Integer, ? super A> handler) {
+            assertNull(pending.get(), "Only one write may be pending");
+            pending.set(() -> {
+                int count = Math.min(2, src.remaining());
+                for (int i = 0; i < count; i++) {
+                    output.write(src.get());
+                }
+                handler.completed(count, attachment);
+            });
+            fail = error -> handler.failed(error, attachment);
+        }
+
+        @Override
+        public Future<Integer> write(ByteBuffer src, long position) {
+            throw new AssertionError("Asynchronous writes must use a completion handler");
+        }
+
+        private void completeWrite() {
+            Runnable completion = pending.getAndSet(null);
+            assertNotNull(completion);
+            completion.run();
+        }
+
+        private void failWrite(Throwable error) {
+            assertNotNull(pending.getAndSet(null));
+            fail.accept(error);
+        }
+
+        @Override
+        public boolean isOpen() {
+            return true;
+        }
     }
 
     private static final class CallTrackingSubscription implements Subscription {

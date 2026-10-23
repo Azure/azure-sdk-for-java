@@ -8,6 +8,7 @@
 
 ### Bugs Fixed
 
+- Fixed synchronous response downloads losing bytes when the destination channel performs partial writes.
 - Fixed timeout resolution to prefer explicit builder values, then builder-specific configuration, then global
   configuration, and finally SDK defaults.
 - Fixed client construction failing when the connection timeout is disabled.
