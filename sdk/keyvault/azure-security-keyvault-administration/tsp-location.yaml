@@ -1,4 +1,9 @@
 directory: specification/keyvault/data-plane/Administration
-commit: 4fa18eb25269da05ccc35a73241f0df9db19b6c8
+commit: 569464e8c8b02ebd1b4d939f899508467528c696
 repo: Azure/azure-rest-api-specs
-cleanup: true
+additionalDirectories: 
+- specification/keyvault/data-plane/Administration/BackupRestore
+- specification/keyvault/data-plane/Administration/common
+- specification/keyvault/data-plane/Administration/EKM
+- specification/keyvault/data-plane/Administration/RBAC
+- specification/keyvault/data-plane/Administration/Settings

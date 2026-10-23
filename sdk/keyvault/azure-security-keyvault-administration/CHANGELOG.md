@@ -1,14 +1,38 @@
 # Release History
 
-## 4.9.0-beta.2 (Unreleased)
+## 4.9.0-beta.2 (2026-10-23)
 
 ### Features Added
 
-### Breaking Changes
+* `models.KeyVaultEkmPrivateEndpointConnectionStatus` was added
 
-### Bugs Fixed
+* `models.KeyVaultEkmProxyInfo` was added
 
-### Other Changes
+* `models.KeyVaultEkmPrivateEndpoint` was added
+
+* `KeyVaultEkmClient` was added
+
+* `models.KeyVaultEkmProxyClientCertificateInfo` was added
+
+* `KeyVaultEkmAsyncClient` was added
+
+* `models.KeyVaultEkmPrivateEndpointConnectionState` was added
+
+* `models.KeyVaultEkmConnectivityMode` was added
+
+* `models.KeyVaultEkmPrivateEndpointProperties` was added
+
+* `models.KeyVaultEkmConnection` was added
+
+* `KeyVaultEkmClientBuilder` was added
+
+* `models.KeyVaultEkmPrivateEndpointOperationType` was added
+
+* `models.KeyVaultEkmPrivateEndpointProvisioningState` was added
+
+#### `KeyVaultAdministrationServiceVersion` was modified
+
+* `V2026_01_01_PREVIEW` was added
 
 ## 4.8.3 (2026-10-06)
 
