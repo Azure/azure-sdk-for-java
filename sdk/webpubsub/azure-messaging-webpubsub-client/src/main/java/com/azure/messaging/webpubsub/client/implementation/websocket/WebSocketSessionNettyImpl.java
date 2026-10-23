@@ -13,6 +13,7 @@ import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBufAllocator;
 import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.ChannelPipeline;
@@ -100,6 +101,23 @@ final class WebSocketSessionNettyImpl implements WebSocketSession {
     }
 
     void connect() throws URISyntaxException, SSLException, InterruptedException, ExecutionException {
+        boolean connected = false;
+        try {
+            connectInternal();
+            connected = true;
+        } finally {
+            if (!connected) {
+                if (ch != null) {
+                    ch.close();
+                }
+                if (group != null) {
+                    group.shutdownGracefully();
+                }
+            }
+        }
+    }
+
+    private void connectInternal() throws URISyntaxException, SSLException, InterruptedException, ExecutionException {
         URI uri = new URI(path);
         String scheme = uri.getScheme() == null ? "ws" : uri.getScheme();
         final String host = uri.getHost() == null ? "127.0.0.1" : uri.getHost();
@@ -132,6 +150,7 @@ final class WebSocketSessionNettyImpl implements WebSocketSession {
 
         handshaker = WebSocketClientHandshakerFactory.newHandshaker(uri, WebSocketVersion.V13, protocol, true,
             new DefaultHttpHeaders().add(HttpHeaderName.USER_AGENT.getCaseInsensitiveName(), userAgent));
+        handshaker.setForceCloseTimeoutMillis(10_000);
 
         clientHandler = new WebSocketClientHandler(handshaker, loggerReference, messageDecoder, messageHandler);
 
@@ -150,31 +169,49 @@ final class WebSocketSessionNettyImpl implements WebSocketSession {
         final CompletableFuture<Void> handshakeCallbackFuture = new CompletableFuture<>();
 
         ch = b.connect(uri.getHost(), port).sync().channel();
+        ch.closeFuture().addListener(future -> group.shutdownGracefully());
         // callback for openHandler
         clientHandler.handshakeFuture().addListener(future -> {
-            if (future.isSuccess()) {
-                openHandler.accept(this);
+            try {
+                if (future.isSuccess()) {
+                    openHandler.accept(this);
+                }
+                handshakeCallbackFuture.complete(null);
+            } catch (Throwable e) {
+                handshakeCallbackFuture.completeExceptionally(e);
             }
-            handshakeCallbackFuture.complete(null);
         }).sync();
 
         // callback for closeHandler, on channel close
         ch.closeFuture().addListener(future -> {
             if (clientHandler != null) {
-                if (future.isSuccess()) {
-                    // the CloseWebSocketFrame from server
-                    CloseWebSocketFrame closeFrame = clientHandler.getServerCloseWebSocketFrame();
-                    if (closeFrame == null) {
-                        closeFrame = new CloseWebSocketFrame(WebSocketCloseStatus.NORMAL_CLOSURE);
-                    }
-                    closeHandler.accept(new CloseReason(closeFrame.statusCode(), closeFrame.reasonText()));
-                    closeFrame.release();   // release after use
-                }
-
                 // closeCallbackFuture exists if close is initiated from client
                 CompletableFuture<Void> closeCallbackFuture = clientHandler.getClientCloseCallbackFuture();
-                if (closeCallbackFuture != null) {
-                    closeCallbackFuture.complete(null);
+                try {
+                    if (future.isSuccess()) {
+                        // the CloseWebSocketFrame from server
+                        CloseWebSocketFrame closeFrame = clientHandler.getServerCloseWebSocketFrame();
+                        if (closeFrame == null) {
+                            closeHandler.accept(new CloseReason(WebSocketCloseStatus.ABNORMAL_CLOSURE.code(),
+                                "Connection closed without receiving a CloseWebSocketFrame."));
+                        } else {
+                            try {
+                                closeHandler.accept(new CloseReason(closeFrame.statusCode(), closeFrame.reasonText()));
+                            } finally {
+                                closeFrame.release();
+                            }
+                        }
+                    }
+
+                    if (closeCallbackFuture != null) {
+                        closeCallbackFuture.complete(null);
+                    }
+                } catch (Throwable e) {
+                    if (closeCallbackFuture != null) {
+                        closeCallbackFuture.completeExceptionally(e);
+                    } else {
+                        loggerReference.get().atWarning().log("Failed to handle closed WebSocket session.", e);
+                    }
                 }
             }
         });
@@ -227,9 +264,11 @@ final class WebSocketSessionNettyImpl implements WebSocketSession {
                     ch.closeFuture().sync();
                 }
 
-                group.shutdownGracefully();
             } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
                 throw loggerReference.get().logExceptionAsError(new ConnectFailedException("Failed to disconnect", e));
+            } finally {
+                group.shutdownGracefully();
             }
         }
     }
@@ -250,19 +289,22 @@ final class WebSocketSessionNettyImpl implements WebSocketSession {
                         .addKeyValue("statusCode", closeFrame.statusCode())
                         .addKeyValue("reasonText", closeFrame.reasonText())
                         .log("Send CloseWebSocketFrame");
-                    ch.writeAndFlush(closeFrame);
-                    // server will reply a CloseWebSocketFrame and close TCP connection, wait for it
+                    handshaker.close(ch, closeFrame).addListener(ChannelFutureListener.CLOSE_ON_FAILURE);
+                    // The handshaker forces the transport closed if the peer does not respond in time.
                     ch.closeFuture().sync();
                 }
-
-                group.shutdownGracefully();
 
                 // make sure closeHandler callback is completed before returns
                 if (closeCallbackFuture != null) {
                     closeCallbackFuture.get();
                 }
-            } catch (InterruptedException | ExecutionException e) {
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
                 throw loggerReference.get().logExceptionAsError(new ConnectFailedException("Failed to disconnect", e));
+            } catch (ExecutionException e) {
+                throw loggerReference.get().logExceptionAsError(new ConnectFailedException("Failed to disconnect", e));
+            } finally {
+                group.shutdownGracefully();
             }
         }
     }
