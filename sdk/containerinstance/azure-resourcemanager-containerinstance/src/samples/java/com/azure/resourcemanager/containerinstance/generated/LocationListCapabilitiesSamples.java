@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerinstance.generated;
  */
 public final class LocationListCapabilitiesSamples {
     /*
-     * x-ms-original-file: 2025-09-01/CapabilitiesList.json
+     * x-ms-original-file: 2026-08-01-preview/CapabilitiesList.json
      */
     /**
      * Sample code: GetCapabilities.
