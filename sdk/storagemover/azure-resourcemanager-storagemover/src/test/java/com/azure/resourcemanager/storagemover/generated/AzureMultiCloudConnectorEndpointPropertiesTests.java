@@ -13,25 +13,25 @@ public final class AzureMultiCloudConnectorEndpointPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureMultiCloudConnectorEndpointProperties model = BinaryData.fromString(
-            "{\"endpointType\":\"AzureMultiCloudConnector\",\"multiCloudConnectorId\":\"j\",\"awsS3BucketId\":\"odxobnbdxkqpxok\",\"description\":\"ionpimexg\",\"endpointKind\":\"Source\",\"provisioningState\":\"Succeeded\"}")
+            "{\"endpointType\":\"AzureMultiCloudConnector\",\"multiCloudConnectorId\":\"clwhijcoejctbz\",\"awsS3BucketId\":\"qsqsy\",\"description\":\"kbfkg\",\"endpointKind\":\"Target\",\"provisioningState\":\"Deleting\"}")
             .toObject(AzureMultiCloudConnectorEndpointProperties.class);
-        Assertions.assertEquals("ionpimexg", model.description());
-        Assertions.assertEquals(EndpointKind.SOURCE, model.endpointKind());
-        Assertions.assertEquals("j", model.multiCloudConnectorId());
-        Assertions.assertEquals("odxobnbdxkqpxok", model.awsS3BucketId());
+        Assertions.assertEquals("kbfkg", model.description());
+        Assertions.assertEquals(EndpointKind.TARGET, model.endpointKind());
+        Assertions.assertEquals("clwhijcoejctbz", model.multiCloudConnectorId());
+        Assertions.assertEquals("qsqsy", model.awsS3BucketId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureMultiCloudConnectorEndpointProperties model
-            = new AzureMultiCloudConnectorEndpointProperties().withDescription("ionpimexg")
-                .withEndpointKind(EndpointKind.SOURCE)
-                .withMultiCloudConnectorId("j")
-                .withAwsS3BucketId("odxobnbdxkqpxok");
+            = new AzureMultiCloudConnectorEndpointProperties().withDescription("kbfkg")
+                .withEndpointKind(EndpointKind.TARGET)
+                .withMultiCloudConnectorId("clwhijcoejctbz")
+                .withAwsS3BucketId("qsqsy");
         model = BinaryData.fromObject(model).toObject(AzureMultiCloudConnectorEndpointProperties.class);
-        Assertions.assertEquals("ionpimexg", model.description());
-        Assertions.assertEquals(EndpointKind.SOURCE, model.endpointKind());
-        Assertions.assertEquals("j", model.multiCloudConnectorId());
-        Assertions.assertEquals("odxobnbdxkqpxok", model.awsS3BucketId());
+        Assertions.assertEquals("kbfkg", model.description());
+        Assertions.assertEquals(EndpointKind.TARGET, model.endpointKind());
+        Assertions.assertEquals("clwhijcoejctbz", model.multiCloudConnectorId());
+        Assertions.assertEquals("qsqsy", model.awsS3BucketId());
     }
 }

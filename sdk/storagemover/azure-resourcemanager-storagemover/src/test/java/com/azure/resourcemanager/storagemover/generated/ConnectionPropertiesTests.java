@@ -13,21 +13,21 @@ public final class ConnectionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConnectionProperties model = BinaryData.fromString(
-            "{\"description\":\"hpigv\",\"connectionStatus\":\"Disconnected\",\"privateLinkServiceId\":\"lgqg\",\"privateEndpointName\":\"xmedjvcsly\",\"privateEndpointResourceId\":\"wwncwzzhxgk\",\"jobList\":[\"gucnapkte\",\"ellwptfdy\"],\"provisioningState\":\"Failed\"}")
+            "{\"description\":\"cwyhzdxssa\",\"connectionStatus\":\"Disconnected\",\"privateLinkServiceId\":\"mnvdfzn\",\"privateEndpointName\":\"ao\",\"privateEndpointResourceId\":\"xzb\",\"jobList\":[\"lylpstdb\",\"hxsrzdzucersc\",\"ntnev\"],\"provisioningState\":\"Succeeded\"}")
             .toObject(ConnectionProperties.class);
-        Assertions.assertEquals("hpigv", model.description());
-        Assertions.assertEquals("lgqg", model.privateLinkServiceId());
-        Assertions.assertEquals("gucnapkte", model.jobList().get(0));
+        Assertions.assertEquals("cwyhzdxssa", model.description());
+        Assertions.assertEquals("mnvdfzn", model.privateLinkServiceId());
+        Assertions.assertEquals("lylpstdb", model.jobList().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ConnectionProperties model = new ConnectionProperties().withDescription("hpigv")
-            .withPrivateLinkServiceId("lgqg")
-            .withJobList(Arrays.asList("gucnapkte", "ellwptfdy"));
+        ConnectionProperties model = new ConnectionProperties().withDescription("cwyhzdxssa")
+            .withPrivateLinkServiceId("mnvdfzn")
+            .withJobList(Arrays.asList("lylpstdb", "hxsrzdzucersc", "ntnev"));
         model = BinaryData.fromObject(model).toObject(ConnectionProperties.class);
-        Assertions.assertEquals("hpigv", model.description());
-        Assertions.assertEquals("lgqg", model.privateLinkServiceId());
-        Assertions.assertEquals("gucnapkte", model.jobList().get(0));
+        Assertions.assertEquals("cwyhzdxssa", model.description());
+        Assertions.assertEquals("mnvdfzn", model.privateLinkServiceId());
+        Assertions.assertEquals("lylpstdb", model.jobList().get(0));
     }
 }

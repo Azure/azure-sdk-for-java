@@ -12,8 +12,8 @@ public final class ProjectListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ProjectList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"description\":\"lfh\",\"provisioningState\":\"Succeeded\"},\"id\":\"cynpwlbjnp\",\"name\":\"acfta\",\"type\":\"ehxnltyfsop\"},{\"properties\":{\"description\":\"uesnzwdejbavo\",\"provisioningState\":\"Failed\"},\"id\":\"mohctb\",\"name\":\"vudwx\",\"type\":\"ndnvo\"},{\"properties\":{\"description\":\"jjugwdkcglhslaz\",\"provisioningState\":\"Failed\"},\"id\":\"gdtjixhbkuofqwey\",\"name\":\"hmenevfyexfwhybc\",\"type\":\"bvyvdcsity\"}],\"nextLink\":\"aamdect\"}")
+            "{\"value\":[{\"properties\":{\"description\":\"vyifqrvkdvjsl\",\"provisioningState\":\"Succeeded\"},\"id\":\"vdfwatkpn\",\"name\":\"ulexxbczwtr\",\"type\":\"wiqzbqjvsovmyo\"},{\"properties\":{\"description\":\"spkwlhzdobpxjm\",\"provisioningState\":\"Failed\"},\"id\":\"vnchrkcci\",\"name\":\"wzjuqk\",\"type\":\"rsa\"}],\"nextLink\":\"wkuofoskghsauu\"}")
             .toObject(ProjectList.class);
-        Assertions.assertEquals("aamdect", model.nextLink());
+        Assertions.assertEquals("wkuofoskghsauu", model.nextLink());
     }
 }

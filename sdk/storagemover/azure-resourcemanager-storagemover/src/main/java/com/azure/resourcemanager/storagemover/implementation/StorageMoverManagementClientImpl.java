@@ -262,7 +262,7 @@ public final class StorageMoverManagementClientImpl implements StorageMoverManag
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2025-12-01";
+        this.apiVersion = "2026-05-01";
         this.operations = new OperationsClientImpl(this);
         this.storageMovers = new StorageMoversClientImpl(this);
         this.agents = new AgentsClientImpl(this);

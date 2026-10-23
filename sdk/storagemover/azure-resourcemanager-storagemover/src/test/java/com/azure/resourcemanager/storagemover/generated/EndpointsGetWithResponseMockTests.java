@@ -23,7 +23,7 @@ public final class EndpointsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"endpointType\":\"EndpointBaseProperties\",\"description\":\"uzsoi\",\"endpointKind\":\"Source\",\"provisioningState\":\"Failed\"},\"identity\":{\"principalId\":\"xtrthz\",\"tenantId\":\"ytdw\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"ivpdtiir\":{\"principalId\":\"ubpaxhe\",\"clientId\":\"i\"},\"xrxxlep\":{\"principalId\":\"d\",\"clientId\":\"axoruzfgsquy\"},\"ooaojkniodkooebw\":{\"principalId\":\"amxjezwlw\",\"clientId\":\"xuqlcvydypat\"},\"infwjlfltkacjve\":{\"principalId\":\"jhemms\",\"clientId\":\"dkcrodt\"}}},\"id\":\"dlfoakggkfp\",\"name\":\"gaowpulpqblylsyx\",\"type\":\"qjnsjervtia\"}";
+            = "{\"properties\":{\"endpointType\":\"EndpointBaseProperties\",\"description\":\"gsfraoyzkoow\",\"endpointKind\":\"Target\",\"provisioningState\":\"Deleting\"},\"identity\":{\"principalId\":\"aw\",\"tenantId\":\"ldsyuuximerqfob\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"r\":{\"principalId\":\"bykutw\",\"clientId\":\"hpagm\"},\"twvogvbbe\":{\"principalId\":\"dsnfdsdoakgtdl\",\"clientId\":\"kzevdlhewpusds\"},\"enuuzkopbm\":{\"principalId\":\"cngqqmoakufgmjz\",\"clientId\":\"rdgrtw\"}}},\"id\":\"rfdwoyu\",\"name\":\"hziuiefozbhdms\",\"type\":\"l\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,11 +33,11 @@ public final class EndpointsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Endpoint response = manager.endpoints()
-            .getWithResponse("gsexne", "fdnw", "wmewzsyy", com.azure.core.util.Context.NONE)
+            .getWithResponse("zxkhnzbonlwnto", "gokdwbwhks", "zcmrvexztvb", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("uzsoi", response.properties().description());
-        Assertions.assertEquals(EndpointKind.SOURCE, response.properties().endpointKind());
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, response.identity().type());
+        Assertions.assertEquals("gsfraoyzkoow", response.properties().description());
+        Assertions.assertEquals(EndpointKind.TARGET, response.properties().endpointKind());
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, response.identity().type());
     }
 }
