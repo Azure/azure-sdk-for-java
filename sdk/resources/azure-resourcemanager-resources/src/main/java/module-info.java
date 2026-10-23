@@ -63,6 +63,7 @@ module com.azure.resourcemanager.resources {
 
     // open packages specifically for azure core
     opens com.azure.resourcemanager.resources.fluent.models to com.azure.core;
+    opens com.azure.resourcemanager.resources.implementation.models to com.azure.core;
     opens com.azure.resourcemanager.resources.models to com.azure.core;
     opens com.azure.resourcemanager.resources.fluentcore.model.implementation to com.azure.core;
 }

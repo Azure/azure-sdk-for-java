@@ -23,4 +23,6 @@
   <!-- Package-specific: test methods use underscore naming to match test proxy recording file names -->
   <suppress checks="MethodName"
             files="src[/\\]test[/\\]java[/\\].*\.java"/>
+  <suppress files="com.azure.analytics.planetarycomputer.StacAsyncClient.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ServiceClientCheck" />
+  <suppress files="com.azure.analytics.planetarycomputer.StacClient.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ServiceClientCheck" />
 </suppressions>

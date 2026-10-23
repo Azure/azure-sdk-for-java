@@ -187,7 +187,7 @@ public final class SecretsStoreExtensionMgmtClientImpl implements SecretsStoreEx
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2024-08-21-preview";
+        this.apiVersion = "2026-09-25-preview";
         this.operations = new OperationsClientImpl(this);
         this.azureKeyVaultSecretProviderClasses = new AzureKeyVaultSecretProviderClassesClientImpl(this);
         this.secretSyncs = new SecretSyncsClientImpl(this);

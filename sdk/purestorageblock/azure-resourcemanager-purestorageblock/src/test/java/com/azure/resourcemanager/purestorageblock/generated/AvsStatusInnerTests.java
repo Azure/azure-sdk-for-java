@@ -12,10 +12,10 @@ public final class AvsStatusInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AvsStatusInner model = BinaryData.fromString(
-            "{\"avsEnabled\":true,\"currentConnectionStatus\":\"iodkooebwnujhem\",\"sddcResourceId\":\"bvdkcrodtjin\"}")
+            "{\"avsEnabled\":true,\"currentConnectionStatus\":\"thzvaytdwkqbrqu\",\"sddcResourceId\":\"axhexiilivp\"}")
             .toObject(AvsStatusInner.class);
         Assertions.assertTrue(model.avsEnabled());
-        Assertions.assertEquals("iodkooebwnujhem", model.currentConnectionStatus());
-        Assertions.assertEquals("bvdkcrodtjin", model.clusterResourceId());
+        Assertions.assertEquals("thzvaytdwkqbrqu", model.currentConnectionStatus());
+        Assertions.assertEquals("axhexiilivp", model.clusterResourceId());
     }
 }

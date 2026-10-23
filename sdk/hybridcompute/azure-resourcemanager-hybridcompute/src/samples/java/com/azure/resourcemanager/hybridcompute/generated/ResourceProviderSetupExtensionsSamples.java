@@ -13,7 +13,7 @@ import java.util.Arrays;
  */
 public final class ResourceProviderSetupExtensionsSamples {
     /*
-     * x-ms-original-file: 2026-06-16-preview/extension/Extension_Add.json
+     * x-ms-original-file: 2026-07-15/extension/Extension_Add.json
      */
     /**
      * Sample code: Setup Machine Extensions.

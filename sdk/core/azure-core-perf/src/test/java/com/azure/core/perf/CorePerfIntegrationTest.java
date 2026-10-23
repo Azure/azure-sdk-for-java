@@ -72,18 +72,15 @@ public class CorePerfIntegrationTest {
     private static Stream<String[]> generateArgsCombination() {
         List<String[]> args = new ArrayList<>();
 
-        for (BackendType backendType : Arrays.asList(BackendType.MOCK, BackendType.WIREMOCK)) {
-            for (HttpClientType httpClientType : Arrays.asList(NETTY, OKHTTP)) {
-                for (BinaryDataSource binaryDataSource : BinaryDataSource.values()) {
-                    for (Boolean includePipelinePolicies : Arrays.asList(true, false)) {
-                        List<String> argLine = new ArrayList<>(
-                            Arrays.asList("unused", "--backend-type", backendType.name(), "--http-client",
-                                httpClientType.toString(), "--binary-data-source", binaryDataSource.name()));
-                        if (includePipelinePolicies) {
-                            argLine.add("--include-pipeline-policies");
-                        }
-                        args.add(argLine.toArray(new String[0]));
+        for (HttpClientType httpClientType : Arrays.asList(NETTY, OKHTTP)) {
+            for (BinaryDataSource binaryDataSource : BinaryDataSource.values()) {
+                for (Boolean includePipelinePolicies : Arrays.asList(true, false)) {
+                    List<String> argLine = new ArrayList<>(Arrays.asList("unused", "--backend-type", "mock",
+                        "--http-client", httpClientType.toString(), "--binary-data-source", binaryDataSource.name()));
+                    if (includePipelinePolicies) {
+                        argLine.add("--include-pipeline-policies");
                     }
+                    args.add(argLine.toArray(new String[0]));
                 }
             }
         }

@@ -8,51 +8,36 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Values that define the states of operations in Bulkactions.
+ * The current state of a bulk action.
  */
 public final class OperationState extends ExpandableStringEnum<OperationState> {
     /**
-     * The default value for the operation state enum.
-     */
-    public static final OperationState UNKNOWN = fromString("Unknown");
-
-    /**
-     * Operations that are pending scheduling.
-     */
-    public static final OperationState PENDING_SCHEDULING = fromString("PendingScheduling");
-
-    /**
-     * Operations that have been scheduled.
+     * The operation has been scheduled.
      */
     public static final OperationState SCHEDULED = fromString("Scheduled");
 
     /**
-     * Operations that are waiting to be executed.
-     */
-    public static final OperationState PENDING_EXECUTION = fromString("PendingExecution");
-
-    /**
-     * Operations that are in the process of being executed.
+     * The operation is in progress.
      */
     public static final OperationState EXECUTING = fromString("Executing");
 
     /**
-     * Operations that succeeded.
+     * The operation completed successfully.
      */
     public static final OperationState SUCCEEDED = fromString("Succeeded");
 
     /**
-     * Operations that have failed.
+     * The operation failed.
      */
     public static final OperationState FAILED = fromString("Failed");
 
     /**
-     * Operations that have been Cancelled by the user.
+     * The operation was canceled by the caller.
      */
     public static final OperationState CANCELLED = fromString("Cancelled");
 
     /**
-     * Operations that are blocked.
+     * The operation cannot currently make progress.
      */
     public static final OperationState BLOCKED = fromString("Blocked");
 

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.networkcloud.generated;
  */
 public final class CloudServicesNetworksGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/CloudServicesNetworks_Get.json
+     * x-ms-original-file: 2026-07-01/CloudServicesNetworks_Get.json
      */
     /**
      * Sample code: Get cloud services network.

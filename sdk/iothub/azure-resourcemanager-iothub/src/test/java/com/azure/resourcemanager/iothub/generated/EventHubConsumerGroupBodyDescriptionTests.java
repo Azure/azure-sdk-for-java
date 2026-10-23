@@ -13,16 +13,16 @@ public final class EventHubConsumerGroupBodyDescriptionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EventHubConsumerGroupBodyDescription model
-            = BinaryData.fromString("{\"properties\":{\"name\":\"gureodkwobdag\"}}")
+            = BinaryData.fromString("{\"properties\":{\"name\":\"erpqlpqwcciuqg\"}}")
                 .toObject(EventHubConsumerGroupBodyDescription.class);
-        Assertions.assertEquals("gureodkwobdag", model.properties().name());
+        Assertions.assertEquals("erpqlpqwcciuqg", model.properties().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         EventHubConsumerGroupBodyDescription model = new EventHubConsumerGroupBodyDescription()
-            .withProperties(new EventHubConsumerGroupName().withName("gureodkwobdag"));
+            .withProperties(new EventHubConsumerGroupName().withName("erpqlpqwcciuqg"));
         model = BinaryData.fromObject(model).toObject(EventHubConsumerGroupBodyDescription.class);
-        Assertions.assertEquals("gureodkwobdag", model.properties().name());
+        Assertions.assertEquals("erpqlpqwcciuqg", model.properties().name());
     }
 }

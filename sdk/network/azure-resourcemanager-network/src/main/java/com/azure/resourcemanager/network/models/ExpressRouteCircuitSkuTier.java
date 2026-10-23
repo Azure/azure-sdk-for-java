@@ -32,6 +32,11 @@ public final class ExpressRouteCircuitSkuTier extends ExpandableStringEnum<Expre
     public static final ExpressRouteCircuitSkuTier LOCAL = fromString("Local");
 
     /**
+     * MultiCloud tier for cross-cloud connectivity.
+     */
+    public static final ExpressRouteCircuitSkuTier MULTI_CLOUD = fromString("MultiCloud");
+
+    /**
      * Creates a new instance of ExpressRouteCircuitSkuTier value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

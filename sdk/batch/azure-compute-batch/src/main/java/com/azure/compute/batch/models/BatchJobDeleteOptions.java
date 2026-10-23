@@ -14,13 +14,6 @@ import java.time.Duration;
 public final class BatchJobDeleteOptions {
 
     /*
-     * The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If the
-     * value is larger than 30, the default will be used instead.".
-     */
-    @Generated
-    private Long timeOutInSeconds;
-
-    /*
      * If true, the server will delete the Job even if the corresponding nodes have not fully processed the deletion.
      * The default value is false.
      */
@@ -32,20 +25,6 @@ public final class BatchJobDeleteOptions {
      */
     @Generated
     public BatchJobDeleteOptions() {
-    }
-
-    /**
-     * Get the timeOutInSeconds property: The maximum time that the server can spend processing the request, in seconds.
-     * The default is 30 seconds. If the value is larger than 30, the default will be used instead.".
-     *
-     * @return the timeOutInSeconds value.
-     */
-    @Generated
-    public Duration getTimeOutInSeconds() {
-        if (this.timeOutInSeconds == null) {
-            return null;
-        }
-        return Duration.ofSeconds(this.timeOutInSeconds);
     }
 
     /**
@@ -72,19 +51,40 @@ public final class BatchJobDeleteOptions {
         return this;
     }
 
+    /*
+     * The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If the
+     * value is larger than 30, the default will be used instead.".
+     */
+    @Generated
+    private Long timeout;
+
     /**
-     * Set the timeOutInSeconds property: The maximum time that the server can spend processing the request, in seconds.
-     * The default is 30 seconds. If the value is larger than 30, the default will be used instead.".
+     * Get the timeout property: The maximum time that the server can spend processing the request, in seconds. The
+     * default is 30 seconds. If the value is larger than 30, the default will be used instead.".
      *
-     * @param timeOutInSeconds the timeOutInSeconds value to set.
+     * @return the timeout value.
+     */
+    @Generated
+    public Duration getTimeout() {
+        if (this.timeout == null) {
+            return null;
+        }
+        return Duration.ofSeconds(this.timeout);
+    }
+
+    /**
+     * Set the timeout property: The maximum time that the server can spend processing the request, in seconds. The
+     * default is 30 seconds. If the value is larger than 30, the default will be used instead.".
+     *
+     * @param timeout the timeout value to set.
      * @return the BatchJobDeleteOptions object itself.
      */
     @Generated
-    public BatchJobDeleteOptions setTimeOutInSeconds(Duration timeOutInSeconds) {
-        if (timeOutInSeconds == null) {
-            this.timeOutInSeconds = null;
+    public BatchJobDeleteOptions setTimeout(Duration timeout) {
+        if (timeout == null) {
+            this.timeout = null;
         } else {
-            this.timeOutInSeconds = timeOutInSeconds.getSeconds();
+            this.timeout = timeout.getSeconds();
         }
         return this;
     }

@@ -12,13 +12,12 @@ import org.junit.jupiter.api.Assertions;
 public final class SkuMixPlacementItemTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SkuMixPlacementItem model = BinaryData.fromString(
-            "{\"name\":\"zdatqxhocdg\",\"priority\":\"Spot\",\"capacity\":274751337,\"capacityMax\":885062254,\"zone\":\"huticndvkao\"}")
+        SkuMixPlacementItem model = BinaryData
+            .fromString("{\"name\":\"asy\",\"priority\":\"Spot\",\"capacity\":1042739054,\"zone\":\"dhsgcba\"}")
             .toObject(SkuMixPlacementItem.class);
-        Assertions.assertEquals("zdatqxhocdg", model.name());
+        Assertions.assertEquals("asy", model.name());
         Assertions.assertEquals(SkuMixPlacementPriority.SPOT, model.priority());
-        Assertions.assertEquals(274751337, model.capacity());
-        Assertions.assertEquals(885062254, model.capacityMax());
-        Assertions.assertEquals("huticndvkao", model.zone());
+        Assertions.assertEquals(1042739054, model.capacity());
+        Assertions.assertEquals("dhsgcba", model.zone());
     }
 }

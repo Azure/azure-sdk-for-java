@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class PrivateAccessesUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/PrivateAccesses_Update.json
+     * x-ms-original-file: 2026-08-01-preview/PrivateAccesses_Update.json
      */
     /**
      * Sample code: Update a private access resource's tags.

@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.cognitiveservices.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.management.exception.ManagementError;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
@@ -19,12 +19,17 @@ import java.util.List;
  * Base properties for all compute resource types.
  * The computeType discriminator determines the concrete property shape.
  */
-@Immutable
+@Fluent
 public class ComputeProperties implements JsonSerializable<ComputeProperties> {
     /*
      * The type of compute resource.
      */
     private ComputeType computeType = ComputeType.fromString("ComputeProperties");
+
+    /*
+     * The location of the compute resource.
+     */
+    private String location;
 
     /*
      * Provisioning state of the compute resource.
@@ -54,6 +59,26 @@ public class ComputeProperties implements JsonSerializable<ComputeProperties> {
      */
     public ComputeType computeType() {
         return this.computeType;
+    }
+
+    /**
+     * Get the location property: The location of the compute resource.
+     * 
+     * @return the location value.
+     */
+    public String location() {
+        return this.location;
+    }
+
+    /**
+     * Set the location property: The location of the compute resource.
+     * 
+     * @param location the location value to set.
+     * @return the ComputeProperties object itself.
+     */
+    public ComputeProperties withLocation(String location) {
+        this.location = location;
+        return this;
     }
 
     /**
@@ -122,6 +147,7 @@ public class ComputeProperties implements JsonSerializable<ComputeProperties> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", this.location);
         jsonWriter.writeStringField("computeType", this.computeType == null ? null : this.computeType.toString());
         return jsonWriter.writeEndObject();
     }
@@ -132,6 +158,7 @@ public class ComputeProperties implements JsonSerializable<ComputeProperties> {
      * @param jsonReader The JsonReader being read.
      * @return An instance of ComputeProperties if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ComputeProperties.
      */
     public static ComputeProperties fromJson(JsonReader jsonReader) throws IOException {
@@ -168,7 +195,9 @@ public class ComputeProperties implements JsonSerializable<ComputeProperties> {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("computeType".equals(fieldName)) {
+                if ("location".equals(fieldName)) {
+                    deserializedComputeProperties.location = reader.getString();
+                } else if ("computeType".equals(fieldName)) {
                     deserializedComputeProperties.computeType = ComputeType.fromString(reader.getString());
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedComputeProperties.provisioningState

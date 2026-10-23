@@ -20,37 +20,39 @@ public final class SqlStoredProcedureCreateUpdateParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SqlStoredProcedureCreateUpdateParameters model = BinaryData.fromString(
-            "{\"properties\":{\"resource\":{\"id\":\"uktalhsnvkcdmxz\",\"body\":\"oaimlnw\"},\"options\":{\"throughput\":1776733764,\"autoscaleSettings\":{\"maxThroughput\":234368989}}},\"id\":\"eazulcs\",\"name\":\"hwwn\",\"type\":\"hlf\",\"location\":\"wpchwahf\",\"tags\":{\"ncxykxhdjhlimm\":\"snfepgfewetwlyx\",\"cjzhqi\":\"cxfhbcporxv\",\"ftjuh\":\"xfpxtgqscja\"},\"identity\":{\"principalId\":\"zkmtgguwpijrajci\",\"tenantId\":\"mghfcfiwrxgkne\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"zdjtxvzflbqv\":{\"principalId\":\"qodfvp\",\"clientId\":\"hoxgsgbpf\"},\"cvuzhyrmewipmve\":{\"principalId\":\"qvlgafcqusrdvetn\",\"clientId\":\"dtutnwldu\"},\"hhzjhfj\":{\"principalId\":\"xukuqgsj\",\"clientId\":\"undxgketw\"}}}}")
+            "{\"properties\":{\"resource\":{\"id\":\"nsmjbl\",\"body\":\"jhlnymzotqyryu\"},\"options\":{\"throughput\":1337241911,\"autoscaleSettings\":{\"maxThroughput\":1331204401}}},\"id\":\"mv\",\"name\":\"gtayxonsupeujlz\",\"type\":\"hcvsqltnzoi\",\"location\":\"sxgnx\",\"tags\":{\"bxiqxeiiqbimht\":\"onmpqoxwdof\",\"pofvwb\":\"wwinhehf\",\"vqihebwtswbzuwf\":\"blembnkbwvqvxkd\"},\"identity\":{\"principalId\":\"ragegi\",\"tenantId\":\"cjfelisdjubgg\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"apvu\":{\"principalId\":\"kbsazgak\",\"clientId\":\"cyrcmjdmspo\"},\"jed\":{\"principalId\":\"ylnio\",\"clientId\":\"zgb\"},\"ibmikostbzb\":{\"principalId\":\"tkvnlvxbcuiiznkt\",\"clientId\":\"ansnvp\"},\"bcunezzceze\":{\"principalId\":\"wbuqn\",\"clientId\":\"phzfylsgcrp\"}}}}")
             .toObject(SqlStoredProcedureCreateUpdateParameters.class);
-        Assertions.assertEquals("wpchwahf", model.location());
-        Assertions.assertEquals("snfepgfewetwlyx", model.tags().get("ncxykxhdjhlimm"));
+        Assertions.assertEquals("sxgnx", model.location());
+        Assertions.assertEquals("onmpqoxwdof", model.tags().get("bxiqxeiiqbimht"));
         Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("uktalhsnvkcdmxz", model.resource().id());
-        Assertions.assertEquals("oaimlnw", model.resource().body());
-        Assertions.assertEquals(1776733764, model.options().throughput());
-        Assertions.assertEquals(234368989, model.options().autoscaleSettings().maxThroughput());
+        Assertions.assertEquals("nsmjbl", model.resource().id());
+        Assertions.assertEquals("jhlnymzotqyryu", model.resource().body());
+        Assertions.assertEquals(1337241911, model.options().throughput());
+        Assertions.assertEquals(1331204401, model.options().autoscaleSettings().maxThroughput());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SqlStoredProcedureCreateUpdateParameters model = new SqlStoredProcedureCreateUpdateParameters()
-            .withLocation("wpchwahf")
-            .withTags(mapOf("ncxykxhdjhlimm", "snfepgfewetwlyx", "cjzhqi", "cxfhbcporxv", "ftjuh", "xfpxtgqscja"))
-            .withIdentity(new ManagedServiceIdentity().withType(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
-                .withUserAssignedIdentities(mapOf("zdjtxvzflbqv", new ManagedServiceIdentityUserAssignedIdentities(),
-                    "cvuzhyrmewipmve", new ManagedServiceIdentityUserAssignedIdentities(), "hhzjhfj",
-                    new ManagedServiceIdentityUserAssignedIdentities())))
-            .withResource(new SqlStoredProcedureResource().withId("uktalhsnvkcdmxz").withBody("oaimlnw"))
-            .withOptions(new CreateUpdateOptions().withThroughput(1776733764)
-                .withAutoscaleSettings(new AutoscaleSettings().withMaxThroughput(234368989)));
+        SqlStoredProcedureCreateUpdateParameters model
+            = new SqlStoredProcedureCreateUpdateParameters().withLocation("sxgnx")
+                .withTags(
+                    mapOf("bxiqxeiiqbimht", "onmpqoxwdof", "pofvwb", "wwinhehf", "vqihebwtswbzuwf", "blembnkbwvqvxkd"))
+                .withIdentity(new ManagedServiceIdentity().withType(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+                    .withUserAssignedIdentities(mapOf("apvu", new ManagedServiceIdentityUserAssignedIdentities(), "jed",
+                        new ManagedServiceIdentityUserAssignedIdentities(), "ibmikostbzb",
+                        new ManagedServiceIdentityUserAssignedIdentities(), "bcunezzceze",
+                        new ManagedServiceIdentityUserAssignedIdentities())))
+                .withResource(new SqlStoredProcedureResource().withId("nsmjbl").withBody("jhlnymzotqyryu"))
+                .withOptions(new CreateUpdateOptions().withThroughput(1337241911)
+                    .withAutoscaleSettings(new AutoscaleSettings().withMaxThroughput(1331204401)));
         model = BinaryData.fromObject(model).toObject(SqlStoredProcedureCreateUpdateParameters.class);
-        Assertions.assertEquals("wpchwahf", model.location());
-        Assertions.assertEquals("snfepgfewetwlyx", model.tags().get("ncxykxhdjhlimm"));
+        Assertions.assertEquals("sxgnx", model.location());
+        Assertions.assertEquals("onmpqoxwdof", model.tags().get("bxiqxeiiqbimht"));
         Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("uktalhsnvkcdmxz", model.resource().id());
-        Assertions.assertEquals("oaimlnw", model.resource().body());
-        Assertions.assertEquals(1776733764, model.options().throughput());
-        Assertions.assertEquals(234368989, model.options().autoscaleSettings().maxThroughput());
+        Assertions.assertEquals("nsmjbl", model.resource().id());
+        Assertions.assertEquals("jhlnymzotqyryu", model.resource().body());
+        Assertions.assertEquals(1337241911, model.options().throughput());
+        Assertions.assertEquals(1331204401, model.options().autoscaleSettings().maxThroughput());
     }
 
     // Use "Map.of" if available

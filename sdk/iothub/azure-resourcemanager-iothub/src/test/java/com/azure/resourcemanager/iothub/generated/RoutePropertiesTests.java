@@ -14,27 +14,30 @@ public final class RoutePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RouteProperties model = BinaryData.fromString(
-            "{\"name\":\"frzpwvlqdqgb\",\"source\":\"DigitalTwinChangeEvents\",\"condition\":\"lihkaetcktvfc\",\"endpointNames\":[\"fsnkymuctq\"],\"isEnabled\":false}")
+            "{\"name\":\"wiyighxpkdw\",\"source\":\"DigitalTwinChangeEvents\",\"condition\":\"iuebbaumny\",\"dataSchema\":\"ped\",\"endpointNames\":[\"jn\",\"bckhsmtxpsi\",\"btfhvpesaps\",\"rdqmhjjdhtldwkyz\"],\"isEnabled\":false}")
             .toObject(RouteProperties.class);
-        Assertions.assertEquals("frzpwvlqdqgb", model.name());
+        Assertions.assertEquals("wiyighxpkdw", model.name());
         Assertions.assertEquals(RoutingSource.DIGITAL_TWIN_CHANGE_EVENTS, model.source());
-        Assertions.assertEquals("lihkaetcktvfc", model.condition());
-        Assertions.assertEquals("fsnkymuctq", model.endpointNames().get(0));
+        Assertions.assertEquals("iuebbaumny", model.condition());
+        Assertions.assertEquals("ped", model.dataSchema());
+        Assertions.assertEquals("jn", model.endpointNames().get(0));
         Assertions.assertFalse(model.isEnabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RouteProperties model = new RouteProperties().withName("frzpwvlqdqgb")
+        RouteProperties model = new RouteProperties().withName("wiyighxpkdw")
             .withSource(RoutingSource.DIGITAL_TWIN_CHANGE_EVENTS)
-            .withCondition("lihkaetcktvfc")
-            .withEndpointNames(Arrays.asList("fsnkymuctq"))
+            .withCondition("iuebbaumny")
+            .withDataSchema("ped")
+            .withEndpointNames(Arrays.asList("jn", "bckhsmtxpsi", "btfhvpesaps", "rdqmhjjdhtldwkyz"))
             .withIsEnabled(false);
         model = BinaryData.fromObject(model).toObject(RouteProperties.class);
-        Assertions.assertEquals("frzpwvlqdqgb", model.name());
+        Assertions.assertEquals("wiyighxpkdw", model.name());
         Assertions.assertEquals(RoutingSource.DIGITAL_TWIN_CHANGE_EVENTS, model.source());
-        Assertions.assertEquals("lihkaetcktvfc", model.condition());
-        Assertions.assertEquals("fsnkymuctq", model.endpointNames().get(0));
+        Assertions.assertEquals("iuebbaumny", model.condition());
+        Assertions.assertEquals("ped", model.dataSchema());
+        Assertions.assertEquals("jn", model.endpointNames().get(0));
         Assertions.assertFalse(model.isEnabled());
     }
 }

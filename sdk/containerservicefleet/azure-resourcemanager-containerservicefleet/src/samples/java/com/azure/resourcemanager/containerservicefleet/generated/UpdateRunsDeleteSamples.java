@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerservicefleet.generated;
  */
 public final class UpdateRunsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-06-01/UpdateRuns_Delete.json
+     * x-ms-original-file: 2026-06-02-preview/UpdateRuns_Delete.json
      */
     /**
      * Sample code: Delete an updateRun resource.

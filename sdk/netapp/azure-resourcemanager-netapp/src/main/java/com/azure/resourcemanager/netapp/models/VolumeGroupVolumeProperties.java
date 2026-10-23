@@ -251,7 +251,9 @@ public final class VolumeGroupVolumeProperties implements JsonSerializable<Volum
     }
 
     /**
-     * Get the protocolTypes property: Set of protocol types, default NFSv3, CIFS for SMB protocol.
+     * Get the protocolTypes property: Specify the protocol types for the volume. Supported values are NFSv3, NFSv4.1,
+     * and CIFS. For SMB volumes, specify CIFS.
+     * The value SMB isn't supported in the protocolTypes property. Default: NFSv3.
      * 
      * @return the protocolTypes value.
      */
@@ -260,7 +262,9 @@ public final class VolumeGroupVolumeProperties implements JsonSerializable<Volum
     }
 
     /**
-     * Set the protocolTypes property: Set of protocol types, default NFSv3, CIFS for SMB protocol.
+     * Set the protocolTypes property: Specify the protocol types for the volume. Supported values are NFSv3, NFSv4.1,
+     * and CIFS. For SMB volumes, specify CIFS.
+     * The value SMB isn't supported in the protocolTypes property. Default: NFSv3.
      * 
      * @param protocolTypes the protocolTypes value to set.
      * @return the VolumeGroupVolumeProperties object itself.

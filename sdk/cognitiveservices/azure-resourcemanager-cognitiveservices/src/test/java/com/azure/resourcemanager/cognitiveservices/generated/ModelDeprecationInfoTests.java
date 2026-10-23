@@ -13,10 +13,11 @@ public final class ModelDeprecationInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ModelDeprecationInfo model = BinaryData
-            .fromString("{\"fineTune\":\"ijhtxf\",\"inference\":\"xbf\",\"deprecationStatus\":\"Tentative\"}")
+            .fromString(
+                "{\"fineTune\":\"nyyazttbtwwrqpue\",\"inference\":\"kzywbiex\",\"deprecationStatus\":\"Tentative\"}")
             .toObject(ModelDeprecationInfo.class);
-        Assertions.assertEquals("ijhtxf", model.fineTune());
-        Assertions.assertEquals("xbf", model.inference());
+        Assertions.assertEquals("nyyazttbtwwrqpue", model.fineTune());
+        Assertions.assertEquals("kzywbiex", model.inference());
         Assertions.assertEquals(DeprecationStatus.TENTATIVE, model.deprecationStatus());
     }
 }

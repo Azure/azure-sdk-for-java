@@ -22,7 +22,7 @@ public final class SecurityPoliciesInterfacesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"policyType\":\"ipAccessRules\",\"wafPolicy\":{\"id\":\"h\"},\"ipAccessRulesPolicy\":{\"rules\":[{\"name\":\"nbmpowuwprzq\",\"priority\":1300670095,\"sourceAddressPrefixes\":[\"ualupjmkh\",\"xobbcswsrt\",\"riplrbpbewtg\"],\"action\":\"allow\"},{\"name\":\"gblcgwxzvlvq\",\"priority\":2103137599,\"sourceAddressPrefixes\":[\"begibtnmxiebwwa\",\"oayqc\"],\"action\":\"allow\"},{\"name\":\"rtzju\",\"priority\":1115460475,\"sourceAddressPrefixes\":[\"yzm\",\"txon\",\"mtsavjcbpwxqp\"],\"action\":\"deny\"},{\"name\":\"knftguvriuh\",\"priority\":773993487,\"sourceAddressPrefixes\":[\"mdyvxqtayriw\",\"ro\",\"qbex\"],\"action\":\"deny\"}]},\"provisioningState\":\"Canceled\"},\"location\":\"bycnojvkn\",\"tags\":{\"zhpvgqzcjrvxd\":\"qsgzvahapj\",\"vawjvzunlu\":\"zlmwlxkvugfhz\",\"xipeilpjzuaejx\":\"hnnpr\"},\"id\":\"ultskzbbtdz\",\"name\":\"mv\",\"type\":\"ekg\"}";
+            = "{\"properties\":{\"policyType\":\"waf\",\"wafPolicy\":{\"id\":\"jw\"},\"ipAccessRulesPolicy\":{\"rules\":[{\"name\":\"sluicpdggkzz\",\"priority\":1186626451,\"sourceAddressPrefixes\":[\"bmpaxmodfvu\",\"fy\",\"sbpfvmwyhr\",\"ouyftaakc\"],\"action\":\"deny\"},{\"name\":\"iyzvqtmnub\",\"priority\":661760953,\"sourceAddressPrefixes\":[\"pzk\",\"mond\",\"mquxvypo\"],\"action\":\"deny\"}]},\"provisioningState\":\"Provisioning\"},\"location\":\"kwhojvpaj\",\"tags\":{\"apvhelxprgly\":\"ysmocmbqfqvmkcxo\",\"uejrjxgc\":\"tddckcb\"},\"id\":\"qibrhosxsdqrhzoy\",\"name\":\"i\",\"type\":\"m\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,17 +32,17 @@ public final class SecurityPoliciesInterfacesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SecurityPolicy response = manager.securityPoliciesInterfaces()
-            .getWithResponse("hniskxfbkpyc", "klwndnhjdauwhv", "l", com.azure.core.util.Context.NONE)
+            .getWithResponse("obzdopcjwvnhdl", "wmgxcxrsl", "mutwuoe", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("bycnojvkn", response.location());
-        Assertions.assertEquals("qsgzvahapj", response.tags().get("zhpvgqzcjrvxd"));
-        Assertions.assertEquals("h", response.properties().wafPolicy().id());
-        Assertions.assertEquals("nbmpowuwprzq", response.properties().ipAccessRulesPolicy().rules().get(0).name());
-        Assertions.assertEquals(1300670095, response.properties().ipAccessRulesPolicy().rules().get(0).priority());
-        Assertions.assertEquals("ualupjmkh",
+        Assertions.assertEquals("kwhojvpaj", response.location());
+        Assertions.assertEquals("ysmocmbqfqvmkcxo", response.tags().get("apvhelxprgly"));
+        Assertions.assertEquals("jw", response.properties().wafPolicy().id());
+        Assertions.assertEquals("sluicpdggkzz", response.properties().ipAccessRulesPolicy().rules().get(0).name());
+        Assertions.assertEquals(1186626451, response.properties().ipAccessRulesPolicy().rules().get(0).priority());
+        Assertions.assertEquals("bmpaxmodfvu",
             response.properties().ipAccessRulesPolicy().rules().get(0).sourceAddressPrefixes().get(0));
-        Assertions.assertEquals(IpAccessRuleAction.ALLOW,
+        Assertions.assertEquals(IpAccessRuleAction.DENY,
             response.properties().ipAccessRulesPolicy().rules().get(0).action());
     }
 }

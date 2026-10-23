@@ -20,7 +20,7 @@ public final class DiscoveredResourcesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"namespace\":\"lhjym\",\"resourceName\":\"cgqtag\",\"resourceType\":\"rclsso\",\"fullyQualifiedIdentifier\":\"jomevtfycnlb\",\"discoveredAt\":\"2021-08-10T19:14:01Z\",\"scope\":\"jcodkkgjiiytssi\"},\"id\":\"z\",\"name\":\"cufqbvntnrgmqs\",\"type\":\"rhcekxgnly\"}";
+            = "{\"properties\":{\"namespace\":\"wynefx\",\"resourceName\":\"x\",\"resourceType\":\"fciatxtjrr\",\"fullyQualifiedIdentifier\":\"kmdskjhhxd\",\"discoveredAt\":\"2021-11-16T15:47:25Z\",\"scope\":\"jfoxcxscvslxl\"},\"id\":\"a\",\"name\":\"krmukmyjmkxett\",\"type\":\"slojfkqidnqt\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class DiscoveredResourcesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DiscoveredResource response = manager.discoveredResources()
-            .getWithResponse("kaobrl", "pgsn", "agnchjhgemuowaky", com.azure.core.util.Context.NONE)
+            .getWithResponse("uhspfefyihduy", "uyld", "hmtybkcgsuthhll", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

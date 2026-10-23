@@ -27,6 +27,6 @@ public final class GetEnclaveQuotesTests extends ConfidentialLedgerClientTestBas
 
         JsonNode enclaveQuotes = responseBodyJson.get("enclaveQuotes");
         String enclaveQuotesKey = enclaveQuotes.fields().next().getKey();
-        Assertions.assertEquals("OE_SGX_v1", enclaveQuotes.get(enclaveQuotesKey).get("quoteVersion").asText());
+        Assertions.assertEquals("AMD_SEV_SNP_v1", enclaveQuotes.get(enclaveQuotesKey).get("quoteVersion").asText());
     }
 }

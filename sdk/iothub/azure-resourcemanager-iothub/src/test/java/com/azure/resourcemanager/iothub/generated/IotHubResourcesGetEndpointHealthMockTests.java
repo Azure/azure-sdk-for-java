@@ -23,7 +23,7 @@ public final class IotHubResourcesGetEndpointHealthMockTests {
     @Test
     public void testGetEndpointHealth() throws Exception {
         String responseStr
-            = "{\"value\":[{\"endpointId\":\"cedcpnmdy\",\"healthStatus\":\"degraded\",\"lastKnownError\":\"zxltjcvn\",\"lastKnownErrorTime\":\"Sat, 20 Feb 2021 03:38:09 GMT\",\"lastSuccessfulSendAttemptTime\":\"Tue, 30 Mar 2021 18:37:22 GMT\",\"lastSendAttemptTime\":\"Mon, 26 Apr 2021 11:17:50 GMT\"}]}";
+            = "{\"value\":[{\"endpointId\":\"ygz\",\"healthStatus\":\"degraded\",\"lastKnownError\":\"kfxu\",\"lastKnownErrorTime\":\"Sat, 16 Oct 2021 01:46:34 GMT\",\"lastSuccessfulSendAttemptTime\":\"Sun, 14 Feb 2021 09:42:03 GMT\",\"lastSendAttemptTime\":\"Wed, 23 Dec 2020 10:27:47 GMT\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,16 +33,16 @@ public final class IotHubResourcesGetEndpointHealthMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<EndpointHealthData> response = manager.iotHubResources()
-            .getEndpointHealth("ftswibyrcdlbhsh", "wpracstwitykhev", com.azure.core.util.Context.NONE);
+            .getEndpointHealth("cnpwzcjaesgvvscc", "ajguqf", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("cedcpnmdy", response.iterator().next().endpointId());
+        Assertions.assertEquals("ygz", response.iterator().next().endpointId());
         Assertions.assertEquals(EndpointHealthStatus.DEGRADED, response.iterator().next().healthStatus());
-        Assertions.assertEquals("zxltjcvn", response.iterator().next().lastKnownError());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-20T03:38:09Z"),
+        Assertions.assertEquals("kfxu", response.iterator().next().lastKnownError());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-16T01:46:34Z"),
             response.iterator().next().lastKnownErrorTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-30T18:37:22Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-14T09:42:03Z"),
             response.iterator().next().lastSuccessfulSendAttemptTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-26T11:17:50Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2020-12-23T10:27:47Z"),
             response.iterator().next().lastSendAttemptTime());
     }
 }

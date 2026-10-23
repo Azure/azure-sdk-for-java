@@ -12,7 +12,7 @@ import com.azure.resourcemanager.newrelicobservability.models.MonitoredSubscript
  */
 public final class MonitoredSubscriptionsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/MonitoredSubscriptions_Update.json
+     * x-ms-original-file: 2026-06-01/MonitoredSubscriptions_Update.json
      */
     /**
      * Sample code: Monitors_UpdateMonitoredSubscriptions.

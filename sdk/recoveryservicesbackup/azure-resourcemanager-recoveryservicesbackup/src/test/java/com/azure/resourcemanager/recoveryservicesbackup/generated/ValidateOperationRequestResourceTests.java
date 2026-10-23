@@ -13,16 +13,16 @@ public final class ValidateOperationRequestResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ValidateOperationRequestResource model = BinaryData
-            .fromString("{\"id\":\"jfoknubnoitpkp\",\"properties\":{\"objectType\":\"ValidateOperationRequest\"}}")
+            .fromString("{\"id\":\"riyehqbeivdlhy\",\"properties\":{\"objectType\":\"ValidateOperationRequest\"}}")
             .toObject(ValidateOperationRequestResource.class);
-        Assertions.assertEquals("jfoknubnoitpkp", model.id());
+        Assertions.assertEquals("riyehqbeivdlhy", model.id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ValidateOperationRequestResource model = new ValidateOperationRequestResource().withId("jfoknubnoitpkp")
+        ValidateOperationRequestResource model = new ValidateOperationRequestResource().withId("riyehqbeivdlhy")
             .withProperties(new ValidateOperationRequest());
         model = BinaryData.fromObject(model).toObject(ValidateOperationRequestResource.class);
-        Assertions.assertEquals("jfoknubnoitpkp", model.id());
+        Assertions.assertEquals("riyehqbeivdlhy", model.id());
     }
 }

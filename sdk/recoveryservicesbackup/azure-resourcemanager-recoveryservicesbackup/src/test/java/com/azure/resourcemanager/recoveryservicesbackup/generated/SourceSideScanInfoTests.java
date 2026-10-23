@@ -13,19 +13,20 @@ import org.junit.jupiter.api.Assertions;
 public final class SourceSideScanInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SourceSideScanInfo model
-            = BinaryData.fromString("{\"sourceSideScanStatus\":\"Configured\",\"sourceSideScanSummary\":\"Healthy\"}")
-                .toObject(SourceSideScanInfo.class);
-        Assertions.assertEquals(SourceSideScanStatus.CONFIGURED, model.sourceSideScanStatus());
-        Assertions.assertEquals(SourceSideScanSummary.HEALTHY, model.sourceSideScanSummary());
+        SourceSideScanInfo model = BinaryData
+            .fromString("{\"sourceSideScanStatus\":\"NotConfigured\",\"sourceSideScanSummary\":\"Unknown\"}")
+            .toObject(SourceSideScanInfo.class);
+        Assertions.assertEquals(SourceSideScanStatus.NOT_CONFIGURED, model.sourceSideScanStatus());
+        Assertions.assertEquals(SourceSideScanSummary.UNKNOWN, model.sourceSideScanSummary());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SourceSideScanInfo model = new SourceSideScanInfo().withSourceSideScanStatus(SourceSideScanStatus.CONFIGURED)
-            .withSourceSideScanSummary(SourceSideScanSummary.HEALTHY);
+        SourceSideScanInfo model
+            = new SourceSideScanInfo().withSourceSideScanStatus(SourceSideScanStatus.NOT_CONFIGURED)
+                .withSourceSideScanSummary(SourceSideScanSummary.UNKNOWN);
         model = BinaryData.fromObject(model).toObject(SourceSideScanInfo.class);
-        Assertions.assertEquals(SourceSideScanStatus.CONFIGURED, model.sourceSideScanStatus());
-        Assertions.assertEquals(SourceSideScanSummary.HEALTHY, model.sourceSideScanSummary());
+        Assertions.assertEquals(SourceSideScanStatus.NOT_CONFIGURED, model.sourceSideScanStatus());
+        Assertions.assertEquals(SourceSideScanSummary.UNKNOWN, model.sourceSideScanSummary());
     }
 }

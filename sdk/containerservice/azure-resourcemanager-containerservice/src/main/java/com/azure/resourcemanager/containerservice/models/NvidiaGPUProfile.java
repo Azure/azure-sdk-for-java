@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * NVIDIA-specific GPU settings.
@@ -24,10 +25,27 @@ public final class NvidiaGPUProfile implements JsonSerializable<NvidiaGPUProfile
     private ManagementMode managementMode;
 
     /*
+     * 
+     * NVIDIA GPU resource allocation mode. DevicePlugin installs the NVIDIA
+     * Kubernetes device plugin. DRA installs the NVIDIA DRA driver.
+     */
+    private NvidiaDriverMode driverMode;
+
+    /*
      * Sets the MIG (Multi-Instance GPU) strategy that will be used for managed MIG support. For more information about
      * the different strategies, visit aka.ms/aks/managed-gpu. When not specified, the default is None.
      */
     private MigStrategy migStrategy;
+
+    /*
+     * The ordered list of MIG (Multi-Instance GPU) partition profiles to assign to each supported NVIDIA GPU. When
+     * `migStrategy` is `Single`, exactly one profile must be specified. When `migStrategy` is `Mixed`, one or more
+     * profiles may be specified and the combination is validated against the supported MIG geometry for the agent
+     * pool's GPU VM size. The same value may appear more than once to request multiple partitions of that size. This
+     * field is mutually exclusive with the top-level `gpuInstanceProfile` property. For more information, see
+     * https://aka.ms/aks/managed-gpu.
+     */
+    private List<GpuInstanceProfile> migProfiles;
 
     /**
      * Creates an instance of NvidiaGPUProfile class.
@@ -60,6 +78,30 @@ public final class NvidiaGPUProfile implements JsonSerializable<NvidiaGPUProfile
     }
 
     /**
+     * Get the driverMode property:
+     * NVIDIA GPU resource allocation mode. DevicePlugin installs the NVIDIA
+     * Kubernetes device plugin. DRA installs the NVIDIA DRA driver.
+     * 
+     * @return the driverMode value.
+     */
+    public NvidiaDriverMode driverMode() {
+        return this.driverMode;
+    }
+
+    /**
+     * Set the driverMode property:
+     * NVIDIA GPU resource allocation mode. DevicePlugin installs the NVIDIA
+     * Kubernetes device plugin. DRA installs the NVIDIA DRA driver.
+     * 
+     * @param driverMode the driverMode value to set.
+     * @return the NvidiaGPUProfile object itself.
+     */
+    public NvidiaGPUProfile withDriverMode(NvidiaDriverMode driverMode) {
+        this.driverMode = driverMode;
+        return this;
+    }
+
+    /**
      * Get the migStrategy property: Sets the MIG (Multi-Instance GPU) strategy that will be used for managed MIG
      * support. For more information about the different strategies, visit aka.ms/aks/managed-gpu. When not specified,
      * the default is None.
@@ -84,6 +126,36 @@ public final class NvidiaGPUProfile implements JsonSerializable<NvidiaGPUProfile
     }
 
     /**
+     * Get the migProfiles property: The ordered list of MIG (Multi-Instance GPU) partition profiles to assign to each
+     * supported NVIDIA GPU. When `migStrategy` is `Single`, exactly one profile must be specified. When `migStrategy`
+     * is `Mixed`, one or more profiles may be specified and the combination is validated against the supported MIG
+     * geometry for the agent pool's GPU VM size. The same value may appear more than once to request multiple
+     * partitions of that size. This field is mutually exclusive with the top-level `gpuInstanceProfile` property. For
+     * more information, see https://aka.ms/aks/managed-gpu.
+     * 
+     * @return the migProfiles value.
+     */
+    public List<GpuInstanceProfile> migProfiles() {
+        return this.migProfiles;
+    }
+
+    /**
+     * Set the migProfiles property: The ordered list of MIG (Multi-Instance GPU) partition profiles to assign to each
+     * supported NVIDIA GPU. When `migStrategy` is `Single`, exactly one profile must be specified. When `migStrategy`
+     * is `Mixed`, one or more profiles may be specified and the combination is validated against the supported MIG
+     * geometry for the agent pool's GPU VM size. The same value may appear more than once to request multiple
+     * partitions of that size. This field is mutually exclusive with the top-level `gpuInstanceProfile` property. For
+     * more information, see https://aka.ms/aks/managed-gpu.
+     * 
+     * @param migProfiles the migProfiles value to set.
+     * @return the NvidiaGPUProfile object itself.
+     */
+    public NvidiaGPUProfile withMigProfiles(List<GpuInstanceProfile> migProfiles) {
+        this.migProfiles = migProfiles;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -99,7 +171,10 @@ public final class NvidiaGPUProfile implements JsonSerializable<NvidiaGPUProfile
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("managementMode",
             this.managementMode == null ? null : this.managementMode.toString());
+        jsonWriter.writeStringField("driverMode", this.driverMode == null ? null : this.driverMode.toString());
         jsonWriter.writeStringField("migStrategy", this.migStrategy == null ? null : this.migStrategy.toString());
+        jsonWriter.writeArrayField("migProfiles", this.migProfiles,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
         return jsonWriter.writeEndObject();
     }
 
@@ -120,8 +195,14 @@ public final class NvidiaGPUProfile implements JsonSerializable<NvidiaGPUProfile
 
                 if ("managementMode".equals(fieldName)) {
                     deserializedNvidiaGPUProfile.managementMode = ManagementMode.fromString(reader.getString());
+                } else if ("driverMode".equals(fieldName)) {
+                    deserializedNvidiaGPUProfile.driverMode = NvidiaDriverMode.fromString(reader.getString());
                 } else if ("migStrategy".equals(fieldName)) {
                     deserializedNvidiaGPUProfile.migStrategy = MigStrategy.fromString(reader.getString());
+                } else if ("migProfiles".equals(fieldName)) {
+                    List<GpuInstanceProfile> migProfiles
+                        = reader.readArray(reader1 -> GpuInstanceProfile.fromString(reader1.getString()));
+                    deserializedNvidiaGPUProfile.migProfiles = migProfiles;
                 } else {
                     reader.skipChildren();
                 }

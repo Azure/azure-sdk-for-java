@@ -411,6 +411,8 @@ public final class AzureVmWorkloadSapHanaDatabaseProtectedItem extends AzureVmWo
                 } else if ("softDeleteRetentionPeriodInDays".equals(fieldName)) {
                     deserializedAzureVmWorkloadSapHanaDatabaseProtectedItem
                         .withSoftDeleteRetentionPeriodInDays(reader.getNullable(JsonReader::getInt));
+                } else if ("sourceLocation".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapHanaDatabaseProtectedItem.withSourceLocation(reader.getString());
                 } else if ("vaultId".equals(fieldName)) {
                     deserializedAzureVmWorkloadSapHanaDatabaseProtectedItem.withVaultId(reader.getString());
                 } else if ("sourceSideScanInfo".equals(fieldName)) {

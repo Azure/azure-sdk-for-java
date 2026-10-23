@@ -13,10 +13,10 @@ public final class IopsUsageTests {
     public void testDeserialize() throws Exception {
         IopsUsage model = BinaryData
             .fromString(
-                "{\"current\":4942892095072246886,\"provisioned\":5967113662628227205,\"max\":6786807909891437356}")
+                "{\"current\":1857528814684738489,\"provisioned\":4589373462999613920,\"max\":1349349327808665603}")
             .toObject(IopsUsage.class);
-        Assertions.assertEquals(4942892095072246886L, model.current());
-        Assertions.assertEquals(5967113662628227205L, model.provisioned());
-        Assertions.assertEquals(6786807909891437356L, model.max());
+        Assertions.assertEquals(1857528814684738489L, model.current());
+        Assertions.assertEquals(4589373462999613920L, model.provisioned());
+        Assertions.assertEquals(1349349327808665603L, model.max());
     }
 }

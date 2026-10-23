@@ -9,7 +9,7 @@ package com.azure.resourcemanager.networkcloud.generated;
  */
 public final class VirtualMachinesReimageSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/VirtualMachines_Reimage.json
+     * x-ms-original-file: 2026-07-01/VirtualMachines_Reimage.json
      */
     /**
      * Sample code: Reimage virtual machine.

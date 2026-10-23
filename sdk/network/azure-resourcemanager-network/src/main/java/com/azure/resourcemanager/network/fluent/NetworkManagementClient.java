@@ -97,6 +97,13 @@ public interface NetworkManagementClient {
     ApplicationSecurityGroupsClient getApplicationSecurityGroups();
 
     /**
+     * Gets the AuthenticationPoliciesClient object to access its operations.
+     * 
+     * @return the AuthenticationPoliciesClient object.
+     */
+    AuthenticationPoliciesClient getAuthenticationPolicies();
+
+    /**
      * Gets the AzureFirewallsClient object to access its operations.
      * 
      * @return the AzureFirewallsClient object.
@@ -209,6 +216,20 @@ public interface NetworkManagementClient {
     ExpressRoutePortAuthorizationsClient getExpressRoutePortAuthorizations();
 
     /**
+     * Gets the ExpressRouteLagsClient object to access its operations.
+     * 
+     * @return the ExpressRouteLagsClient object.
+     */
+    ExpressRouteLagsClient getExpressRouteLags();
+
+    /**
+     * Gets the ExpressRouteLagAuthorizationsClient object to access its operations.
+     * 
+     * @return the ExpressRouteLagAuthorizationsClient object.
+     */
+    ExpressRouteLagAuthorizationsClient getExpressRouteLagAuthorizations();
+
+    /**
      * Gets the FirewallPoliciesClient object to access its operations.
      * 
      * @return the FirewallPoliciesClient object.
@@ -221,6 +242,13 @@ public interface NetworkManagementClient {
      * @return the FirewallPolicyRuleCollectionGroupsClient object.
      */
     FirewallPolicyRuleCollectionGroupsClient getFirewallPolicyRuleCollectionGroups();
+
+    /**
+     * Gets the FirewallPolicyKubeSelectorGroupsClient object to access its operations.
+     * 
+     * @return the FirewallPolicyKubeSelectorGroupsClient object.
+     */
+    FirewallPolicyKubeSelectorGroupsClient getFirewallPolicyKubeSelectorGroups();
 
     /**
      * Gets the FirewallPolicyIdpsSignaturesOverridesClient object to access its operations.
@@ -734,6 +762,13 @@ public interface NetworkManagementClient {
     VirtualNetworkAppliancesClient getVirtualNetworkAppliances();
 
     /**
+     * Gets the VirtualNetworkApplianceCapabilitiesClient object to access its operations.
+     * 
+     * @return the VirtualNetworkApplianceCapabilitiesClient object.
+     */
+    VirtualNetworkApplianceCapabilitiesClient getVirtualNetworkApplianceCapabilities();
+
+    /**
      * Gets the ServiceGatewaysClient object to access its operations.
      * 
      * @return the ServiceGatewaysClient object.
@@ -753,6 +788,20 @@ public interface NetworkManagementClient {
      * @return the SubgroupsClient object.
      */
     SubgroupsClient getSubgroups();
+
+    /**
+     * Gets the FirstPartyServiceTagsClient object to access its operations.
+     * 
+     * @return the FirstPartyServiceTagsClient object.
+     */
+    FirstPartyServiceTagsClient getFirstPartyServiceTags();
+
+    /**
+     * Gets the AddressPrefixSetsClient object to access its operations.
+     * 
+     * @return the AddressPrefixSetsClient object.
+     */
+    AddressPrefixSetsClient getAddressPrefixSets();
 
     /**
      * Gets the ApplicationGatewayPrivateLinkResourcesClient object to access its operations.

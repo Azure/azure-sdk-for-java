@@ -18,32 +18,29 @@ public final class TestAllRoutesInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TestAllRoutesInput model = BinaryData.fromString(
-            "{\"routingSource\":\"MqttBrokerMessages\",\"message\":{\"body\":\"io\",\"appProperties\":{\"xosow\":\"hakauhashsf\",\"cjooxdjebwpucwwf\":\"xcug\",\"hzceuojgjrwjue\":\"ovbvmeueciv\"},\"systemProperties\":{\"xnrj\":\"wmcdytdxwi\"}},\"twin\":{\"tags\":{\"skxfbk\":\"\\\"datawgxhn\\\"\",\"gklwn\":\"\\\"datay\\\"\",\"vylwzbtdhxuj\":\"\\\"datanhjdauw\\\"\"},\"properties\":{\"desired\":{\"wpr\":\"\\\"datapow\\\"\",\"xobbcswsrt\":\"\\\"dataqlveualupjmkh\\\"\"},\"reported\":{\"blcg\":\"\\\"dataplrbpbewtghf\\\"\",\"nmxiebwwaloayqc\":\"\\\"dataxzvlvqhjkbegib\\\"\",\"uzgwyzmhtx\":\"\\\"datawrtz\\\"\",\"wxqpsrknftguvri\":\"\\\"datangmtsavjcb\\\"\"}}}}")
+            "{\"routingSource\":\"DeviceLifecycleEvents\",\"message\":{\"body\":\"xc\",\"appProperties\":{\"uvwbhsqfs\":\"fovasr\",\"bsrfbj\":\"bcgjbirxbp\",\"otftpvjzbexilz\":\"dtws\",\"qtaruoujmkcjhwq\":\"nfqqnvwp\"},\"systemProperties\":{\"bnw\":\"r\",\"enq\":\"ewgdrjervn\",\"ndoygmifthnzdnd\":\"eh\",\"nayqi\":\"l\"}},\"twin\":{\"tags\":\"\\\"dataduhavhqlkt\\\"\",\"properties\":{\"desired\":\"\\\"dataaqolbgycduiertg\\\"\",\"reported\":\"\\\"datay\\\"\"}}}")
             .toObject(TestAllRoutesInput.class);
-        Assertions.assertEquals(RoutingSource.MQTT_BROKER_MESSAGES, model.routingSource());
-        Assertions.assertEquals("io", model.message().body());
-        Assertions.assertEquals("hakauhashsf", model.message().appProperties().get("xosow"));
-        Assertions.assertEquals("wmcdytdxwi", model.message().systemProperties().get("xnrj"));
+        Assertions.assertEquals(RoutingSource.DEVICE_LIFECYCLE_EVENTS, model.routingSource());
+        Assertions.assertEquals("xc", model.message().body());
+        Assertions.assertEquals("fovasr", model.message().appProperties().get("uvwbhsqfs"));
+        Assertions.assertEquals("r", model.message().systemProperties().get("bnw"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TestAllRoutesInput model = new TestAllRoutesInput().withRoutingSource(RoutingSource.MQTT_BROKER_MESSAGES)
-            .withMessage(new RoutingMessage().withBody("io")
-                .withAppProperties(
-                    mapOf("xosow", "hakauhashsf", "cjooxdjebwpucwwf", "xcug", "hzceuojgjrwjue", "ovbvmeueciv"))
-                .withSystemProperties(mapOf("xnrj", "wmcdytdxwi")))
-            .withTwin(new RoutingTwin()
-                .withTags(mapOf("skxfbk", "\"datawgxhn\"", "gklwn", "\"datay\"", "vylwzbtdhxuj", "\"datanhjdauw\""))
-                .withProperties(new RoutingTwinProperties()
-                    .withDesired(mapOf("wpr", "\"datapow\"", "xobbcswsrt", "\"dataqlveualupjmkh\""))
-                    .withReported(mapOf("blcg", "\"dataplrbpbewtghf\"", "nmxiebwwaloayqc", "\"dataxzvlvqhjkbegib\"",
-                        "uzgwyzmhtx", "\"datawrtz\"", "wxqpsrknftguvri", "\"datangmtsavjcb\""))));
+        TestAllRoutesInput model = new TestAllRoutesInput().withRoutingSource(RoutingSource.DEVICE_LIFECYCLE_EVENTS)
+            .withMessage(new RoutingMessage().withBody("xc")
+                .withAppProperties(mapOf("uvwbhsqfs", "fovasr", "bsrfbj", "bcgjbirxbp", "otftpvjzbexilz", "dtws",
+                    "qtaruoujmkcjhwq", "nfqqnvwp"))
+                .withSystemProperties(mapOf("bnw", "r", "enq", "ewgdrjervn", "ndoygmifthnzdnd", "eh", "nayqi", "l")))
+            .withTwin(new RoutingTwin().withTags("\"dataduhavhqlkt\"")
+                .withProperties(
+                    new RoutingTwinProperties().withDesired("\"dataaqolbgycduiertg\"").withReported("\"datay\"")));
         model = BinaryData.fromObject(model).toObject(TestAllRoutesInput.class);
-        Assertions.assertEquals(RoutingSource.MQTT_BROKER_MESSAGES, model.routingSource());
-        Assertions.assertEquals("io", model.message().body());
-        Assertions.assertEquals("hakauhashsf", model.message().appProperties().get("xosow"));
-        Assertions.assertEquals("wmcdytdxwi", model.message().systemProperties().get("xnrj"));
+        Assertions.assertEquals(RoutingSource.DEVICE_LIFECYCLE_EVENTS, model.routingSource());
+        Assertions.assertEquals("xc", model.message().body());
+        Assertions.assertEquals("fovasr", model.message().appProperties().get("uvwbhsqfs"));
+        Assertions.assertEquals("r", model.message().systemProperties().get("bnw"));
     }
 
     // Use "Map.of" if available

@@ -22,70 +22,72 @@ public final class AzureWorkloadSapAseRestoreRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureWorkloadSapAseRestoreRequest model = BinaryData.fromString(
-            "{\"objectType\":\"AzureWorkloadSAPAseRestoreRequest\",\"recoveryType\":\"OriginalLocation\",\"sourceResourceId\":\"irpghriypoqeyh\",\"propertyBag\":{\"iq\":\"ykprlpyznu\"},\"targetInfo\":{\"overwriteOption\":\"Overwrite\",\"containerId\":\"iitdfuxt\",\"databaseName\":\"siibmiybnnustgn\",\"targetDirectoryForFileRestore\":\"hnmgixhcm\"},\"recoveryMode\":\"SnapshotAttachAndRecover\",\"targetResourceGroupName\":\"foudor\",\"userAssignedManagedIdentityDetails\":{\"identityArmId\":\"yyprotwyp\",\"identityName\":\"d\",\"userAssignedIdentityProperties\":{\"clientId\":\"hu\",\"principalId\":\"mjkavlgorbmft\"}},\"snapshotRestoreParameters\":{\"skipAttachAndMount\":false,\"logPointInTimeForDBRecovery\":\"fjltfvnzcyjtotp\"},\"targetVirtualMachineId\":\"pvpbdbzqgqqiheds\",\"resourceGuardOperationRequests\":[\"thmkyib\",\"ysi\"]}")
+            "{\"objectType\":\"AzureWorkloadSAPAseRestoreRequest\",\"recoveryType\":\"Offline\",\"sourceResourceId\":\"voujkxibdafhrk\",\"propertyBag\":{\"vfb\":\"omkxf\",\"rhpw\":\"dy\",\"o\":\"gddeimaw\",\"aztb\":\"gkkumuikjcj\"},\"targetInfo\":{\"overwriteOption\":\"Invalid\",\"containerId\":\"owxwcomli\",\"databaseName\":\"twvc\",\"targetDirectoryForFileRestore\":\"swkacvej\"},\"recoveryMode\":\"SnapshotAttachAndRecover\",\"targetResourceGroupName\":\"lvhbwrnf\",\"userAssignedManagedIdentityDetails\":{\"identityArmId\":\"ddpqt\",\"identityName\":\"hn\",\"userAssignedIdentityProperties\":{\"clientId\":\"oya\",\"principalId\":\"coeqswankltytm\"}},\"snapshotRestoreParameters\":{\"skipAttachAndMount\":true,\"logPointInTimeForDBRecovery\":\"nnhdrl\",\"disksToDetachOnClash\":[\"jcsgguxhemlwy\"]},\"targetVirtualMachineId\":\"eeczgfbu\",\"resourceGuardOperationRequests\":[\"elssxblycs\",\"zujksrlsmdes\",\"plpvm\",\"cdoewbidyv\"]}")
             .toObject(AzureWorkloadSapAseRestoreRequest.class);
-        Assertions.assertEquals("thmkyib", model.resourceGuardOperationRequests().get(0));
-        Assertions.assertEquals(RecoveryType.ORIGINAL_LOCATION, model.recoveryType());
-        Assertions.assertEquals("irpghriypoqeyh", model.sourceResourceId());
-        Assertions.assertEquals("ykprlpyznu", model.propertyBag().get("iq"));
-        Assertions.assertEquals(OverwriteOptions.OVERWRITE, model.targetInfo().overwriteOption());
-        Assertions.assertEquals("iitdfuxt", model.targetInfo().containerId());
-        Assertions.assertEquals("siibmiybnnustgn", model.targetInfo().databaseName());
-        Assertions.assertEquals("hnmgixhcm", model.targetInfo().targetDirectoryForFileRestore());
+        Assertions.assertEquals("elssxblycs", model.resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals(RecoveryType.OFFLINE, model.recoveryType());
+        Assertions.assertEquals("voujkxibdafhrk", model.sourceResourceId());
+        Assertions.assertEquals("omkxf", model.propertyBag().get("vfb"));
+        Assertions.assertEquals(OverwriteOptions.INVALID, model.targetInfo().overwriteOption());
+        Assertions.assertEquals("owxwcomli", model.targetInfo().containerId());
+        Assertions.assertEquals("twvc", model.targetInfo().databaseName());
+        Assertions.assertEquals("swkacvej", model.targetInfo().targetDirectoryForFileRestore());
         Assertions.assertEquals(RecoveryMode.SNAPSHOT_ATTACH_AND_RECOVER, model.recoveryMode());
-        Assertions.assertEquals("foudor", model.targetResourceGroupName());
-        Assertions.assertEquals("yyprotwyp", model.userAssignedManagedIdentityDetails().identityArmId());
-        Assertions.assertEquals("d", model.userAssignedManagedIdentityDetails().identityName());
-        Assertions.assertEquals("hu",
+        Assertions.assertEquals("lvhbwrnf", model.targetResourceGroupName());
+        Assertions.assertEquals("ddpqt", model.userAssignedManagedIdentityDetails().identityArmId());
+        Assertions.assertEquals("hn", model.userAssignedManagedIdentityDetails().identityName());
+        Assertions.assertEquals("oya",
             model.userAssignedManagedIdentityDetails().userAssignedIdentityProperties().clientId());
-        Assertions.assertEquals("mjkavlgorbmft",
+        Assertions.assertEquals("coeqswankltytm",
             model.userAssignedManagedIdentityDetails().userAssignedIdentityProperties().principalId());
-        Assertions.assertFalse(model.snapshotRestoreParameters().skipAttachAndMount());
-        Assertions.assertEquals("fjltfvnzcyjtotp", model.snapshotRestoreParameters().logPointInTimeForDBRecovery());
-        Assertions.assertEquals("pvpbdbzqgqqiheds", model.targetVirtualMachineId());
+        Assertions.assertTrue(model.snapshotRestoreParameters().skipAttachAndMount());
+        Assertions.assertEquals("nnhdrl", model.snapshotRestoreParameters().logPointInTimeForDBRecovery());
+        Assertions.assertEquals("jcsgguxhemlwy", model.snapshotRestoreParameters().disksToDetachOnClash().get(0));
+        Assertions.assertEquals("eeczgfbu", model.targetVirtualMachineId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureWorkloadSapAseRestoreRequest model = new AzureWorkloadSapAseRestoreRequest()
-            .withResourceGuardOperationRequests(Arrays.asList("thmkyib", "ysi"))
-            .withRecoveryType(RecoveryType.ORIGINAL_LOCATION)
-            .withSourceResourceId("irpghriypoqeyh")
-            .withPropertyBag(mapOf("iq", "ykprlpyznu"))
-            .withTargetInfo(new TargetRestoreInfo().withOverwriteOption(OverwriteOptions.OVERWRITE)
-                .withContainerId("iitdfuxt")
-                .withDatabaseName("siibmiybnnustgn")
-                .withTargetDirectoryForFileRestore("hnmgixhcm"))
+            .withResourceGuardOperationRequests(Arrays.asList("elssxblycs", "zujksrlsmdes", "plpvm", "cdoewbidyv"))
+            .withRecoveryType(RecoveryType.OFFLINE)
+            .withSourceResourceId("voujkxibdafhrk")
+            .withPropertyBag(mapOf("vfb", "omkxf", "rhpw", "dy", "o", "gddeimaw", "aztb", "gkkumuikjcj"))
+            .withTargetInfo(new TargetRestoreInfo().withOverwriteOption(OverwriteOptions.INVALID)
+                .withContainerId("owxwcomli")
+                .withDatabaseName("twvc")
+                .withTargetDirectoryForFileRestore("swkacvej"))
             .withRecoveryMode(RecoveryMode.SNAPSHOT_ATTACH_AND_RECOVER)
-            .withTargetResourceGroupName("foudor")
-            .withUserAssignedManagedIdentityDetails(
-                new UserAssignedManagedIdentityDetails().withIdentityArmId("yyprotwyp")
-                    .withIdentityName("d")
-                    .withUserAssignedIdentityProperties(
-                        new UserAssignedIdentityProperties().withClientId("hu").withPrincipalId("mjkavlgorbmft")))
-            .withSnapshotRestoreParameters(new SnapshotRestoreParameters().withSkipAttachAndMount(false)
-                .withLogPointInTimeForDBRecovery("fjltfvnzcyjtotp"))
-            .withTargetVirtualMachineId("pvpbdbzqgqqiheds");
+            .withTargetResourceGroupName("lvhbwrnf")
+            .withUserAssignedManagedIdentityDetails(new UserAssignedManagedIdentityDetails().withIdentityArmId("ddpqt")
+                .withIdentityName("hn")
+                .withUserAssignedIdentityProperties(
+                    new UserAssignedIdentityProperties().withClientId("oya").withPrincipalId("coeqswankltytm")))
+            .withSnapshotRestoreParameters(new SnapshotRestoreParameters().withSkipAttachAndMount(true)
+                .withLogPointInTimeForDBRecovery("nnhdrl")
+                .withDisksToDetachOnClash(Arrays.asList("jcsgguxhemlwy")))
+            .withTargetVirtualMachineId("eeczgfbu");
         model = BinaryData.fromObject(model).toObject(AzureWorkloadSapAseRestoreRequest.class);
-        Assertions.assertEquals("thmkyib", model.resourceGuardOperationRequests().get(0));
-        Assertions.assertEquals(RecoveryType.ORIGINAL_LOCATION, model.recoveryType());
-        Assertions.assertEquals("irpghriypoqeyh", model.sourceResourceId());
-        Assertions.assertEquals("ykprlpyznu", model.propertyBag().get("iq"));
-        Assertions.assertEquals(OverwriteOptions.OVERWRITE, model.targetInfo().overwriteOption());
-        Assertions.assertEquals("iitdfuxt", model.targetInfo().containerId());
-        Assertions.assertEquals("siibmiybnnustgn", model.targetInfo().databaseName());
-        Assertions.assertEquals("hnmgixhcm", model.targetInfo().targetDirectoryForFileRestore());
+        Assertions.assertEquals("elssxblycs", model.resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals(RecoveryType.OFFLINE, model.recoveryType());
+        Assertions.assertEquals("voujkxibdafhrk", model.sourceResourceId());
+        Assertions.assertEquals("omkxf", model.propertyBag().get("vfb"));
+        Assertions.assertEquals(OverwriteOptions.INVALID, model.targetInfo().overwriteOption());
+        Assertions.assertEquals("owxwcomli", model.targetInfo().containerId());
+        Assertions.assertEquals("twvc", model.targetInfo().databaseName());
+        Assertions.assertEquals("swkacvej", model.targetInfo().targetDirectoryForFileRestore());
         Assertions.assertEquals(RecoveryMode.SNAPSHOT_ATTACH_AND_RECOVER, model.recoveryMode());
-        Assertions.assertEquals("foudor", model.targetResourceGroupName());
-        Assertions.assertEquals("yyprotwyp", model.userAssignedManagedIdentityDetails().identityArmId());
-        Assertions.assertEquals("d", model.userAssignedManagedIdentityDetails().identityName());
-        Assertions.assertEquals("hu",
+        Assertions.assertEquals("lvhbwrnf", model.targetResourceGroupName());
+        Assertions.assertEquals("ddpqt", model.userAssignedManagedIdentityDetails().identityArmId());
+        Assertions.assertEquals("hn", model.userAssignedManagedIdentityDetails().identityName());
+        Assertions.assertEquals("oya",
             model.userAssignedManagedIdentityDetails().userAssignedIdentityProperties().clientId());
-        Assertions.assertEquals("mjkavlgorbmft",
+        Assertions.assertEquals("coeqswankltytm",
             model.userAssignedManagedIdentityDetails().userAssignedIdentityProperties().principalId());
-        Assertions.assertFalse(model.snapshotRestoreParameters().skipAttachAndMount());
-        Assertions.assertEquals("fjltfvnzcyjtotp", model.snapshotRestoreParameters().logPointInTimeForDBRecovery());
-        Assertions.assertEquals("pvpbdbzqgqqiheds", model.targetVirtualMachineId());
+        Assertions.assertTrue(model.snapshotRestoreParameters().skipAttachAndMount());
+        Assertions.assertEquals("nnhdrl", model.snapshotRestoreParameters().logPointInTimeForDBRecovery());
+        Assertions.assertEquals("jcsgguxhemlwy", model.snapshotRestoreParameters().disksToDetachOnClash().get(0));
+        Assertions.assertEquals("eeczgfbu", model.targetVirtualMachineId());
     }
 
     // Use "Map.of" if available

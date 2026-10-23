@@ -24,7 +24,7 @@ public final class EntitiesAddDataAnnotationWithResponseMockTests {
     @Test
     public void testAddDataAnnotationWithResponse() throws Exception {
         String responseStr
-            = "{\"annotationId\":\"ddoui\",\"createdAt\":\"2021-06-14T11:53:50Z\",\"annotationDetails\":{\"knlqwzdvpiwhxqsz\":\"waziy\"},\"description\":\"maajquhuxylr\"}";
+            = "{\"annotationId\":\"lkm\",\"createdAt\":\"2021-04-19T18:55:37Z\",\"annotationDetails\":{\"gwgcl\":\"yhlfb\"},\"description\":\"oebqinjipn\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,16 +34,16 @@ public final class EntitiesAddDataAnnotationWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DataAnnotation response = manager.entities()
-            .addDataAnnotationWithResponse("vzbglbyvi", "tctbrxkjzwrgxffm", "hkwfbkgozxwop",
+            .addDataAnnotationWithResponse("zvuxm", "kjsvthnwpzteko", "mribiat",
                 new AddDataAnnotationRequest()
-                    .withAnnotationDetails(mapOf("izqaclnapxbiyg", "yd", "mfcttux", "ugjknf", "njhvsujztc",
-                        "uyilflqoiquvrehm", "w", "ytqj"))
-                    .withDescription("uunfprnjletlxsm"),
+                    .withAnnotationDetails(mapOf("cugswvxwlmzqw", "plucfotangcfhnyk", "cvclxynpdk", "vtxnjmxmcuqud",
+                        "neiknpg", "gfabuiyjibuzphdu", "btozipqwje", "xgjiuqh"))
+                    .withDescription("urrxxgewpktv"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("waziy", response.annotationDetails().get("knlqwzdvpiwhxqsz"));
-        Assertions.assertEquals("maajquhuxylr", response.description());
+        Assertions.assertEquals("yhlfb", response.annotationDetails().get("gwgcl"));
+        Assertions.assertEquals("oebqinjipn", response.description());
     }
 
     // Use "Map.of" if available

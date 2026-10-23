@@ -84,7 +84,8 @@ public class VertxHttpClientProviderTests {
 
         assertEquals(timeout.toMillis(), httpClient.buildOptions.getConnectTimeout());
         assertEquals(timeout.toMillis(), httpClient.buildOptions.getReadIdleTimeout());
-        assertEquals(timeout.toMillis(), httpClient.buildOptions.getWriteIdleTimeout());
+        // The SDK write timeout is scoped to the request, not installed as a connection-wide idle handler.
+        assertEquals(0, httpClient.buildOptions.getWriteIdleTimeout());
     }
 
     @Test

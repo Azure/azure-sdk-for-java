@@ -14,7 +14,7 @@ public final class UpdateRunGateTargetPropertiesTests {
     public void testDeserialize() throws Exception {
         UpdateRunGateTargetProperties model = BinaryData
             .fromString(
-                "{\"name\":\"jn\",\"stage\":\"ckhsmtxpsieb\",\"group\":\"hvpesapskrdqm\",\"timing\":\"Before\"}")
+                "{\"name\":\"qapnedgfbcv\",\"stage\":\"vq\",\"group\":\"keqdcvdrhvoods\",\"timing\":\"Before\"}")
             .toObject(UpdateRunGateTargetProperties.class);
         Assertions.assertEquals(Timing.BEFORE, model.timing());
     }

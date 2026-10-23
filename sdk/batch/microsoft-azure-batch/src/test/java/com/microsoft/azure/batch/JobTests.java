@@ -4,7 +4,10 @@
 package com.microsoft.azure.batch;
 
 import com.microsoft.azure.batch.protocol.models.*;
-import org.junit.*;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import java.util.*;
 
@@ -12,17 +15,17 @@ public class JobTests extends BatchIntegrationTestBase {
     private static CloudPool livePool;
     static String poolId;
 
-    @BeforeClass
+    @BeforeAll
     public static void setup() throws Exception {
         poolId = getStringIdWithUserNamePrefix("-testpool");
         if(isRecordMode()) {
             createClient(AuthMode.AAD);
             livePool = createIfNotExistIaaSPool(poolId);
-            Assert.assertNotNull(livePool);
+            Assertions.assertNotNull(livePool);
         }
     }
 
-    @AfterClass
+    @AfterAll
     public static void cleanup() throws Exception {
         try {
             //batchClient.poolOperations().deletePool(livePool.id());
@@ -44,16 +47,16 @@ public class JobTests extends BatchIntegrationTestBase {
         try {
             // GET
             CloudJob job = batchClient.jobOperations().getJob(jobId);
-            Assert.assertNotNull(job);
-            Assert.assertNotNull(job.allowTaskPreemption());
-            Assert.assertEquals(-1, (int) job.maxParallelTasks());
-            Assert.assertEquals(jobId, job.id());
-            Assert.assertEquals((Integer) 0, job.priority());
+            Assertions.assertNotNull(job);
+            Assertions.assertNotNull(job.allowTaskPreemption());
+            Assertions.assertEquals(-1, (int) job.maxParallelTasks());
+            Assertions.assertEquals(jobId, job.id());
+            Assertions.assertEquals((Integer) 0, job.priority());
 
             // LIST
             List<CloudJob> jobs = batchClient.jobOperations().listJobs();
-            Assert.assertNotNull(jobs);
-            Assert.assertTrue(jobs.size() > 0);
+            Assertions.assertNotNull(jobs);
+            Assertions.assertTrue(jobs.size() > 0);
 
             boolean found = false;
             for (CloudJob j : jobs) {
@@ -63,19 +66,19 @@ public class JobTests extends BatchIntegrationTestBase {
                 }
             }
 
-            Assert.assertTrue(found);
+            Assertions.assertTrue(found);
 
 
             // UPDATE
             batchClient.jobOperations().updateJob(jobId, poolInfo, 1, null, null, null);
             job = batchClient.jobOperations().getJob(jobId);
-            Assert.assertEquals((Integer) 1, job.priority());
+            Assertions.assertEquals((Integer) 1, job.priority());
 
             // DELETE
             batchClient.jobOperations().deleteJob(jobId);
             try {
                 batchClient.jobOperations().getJob(jobId);
-                Assert.assertTrue("Shouldn't be here, the job should be deleted", true);
+                Assertions.assertTrue(true, "Shouldn't be here, the job should be deleted");
             } catch (BatchErrorException err) {
                 if (!err.body().code().equals(BatchErrorCodeStrings.JobNotFound)) {
                     throw err;
@@ -106,7 +109,7 @@ public class JobTests extends BatchIntegrationTestBase {
         try {
             // GET
             CloudJob job = batchClient.jobOperations().getJob(jobId);
-            Assert.assertEquals(JobState.ACTIVE, job.state());
+            Assertions.assertEquals(JobState.ACTIVE, job.state());
 
             // UPDATE
             JobUpdateParameter updateParam = new JobUpdateParameter();
@@ -116,33 +119,33 @@ public class JobTests extends BatchIntegrationTestBase {
             batchClient.jobOperations().updateJob(jobId, updateParam);
 
             job = batchClient.jobOperations().getJob(jobId);
-            Assert.assertEquals(priority, job.priority());
-            Assert.assertEquals(maxTaskRetryCount, job.constraints().maxTaskRetryCount());
+            Assertions.assertEquals(priority, job.priority());
+            Assertions.assertEquals(maxTaskRetryCount, job.constraints().maxTaskRetryCount());
 
             batchClient.jobOperations().disableJob(jobId, DisableJobOption.REQUEUE.REQUEUE);
             job = batchClient.jobOperations().getJob(jobId);
-            Assert.assertTrue(JobState.DISABLING == job.state() || JobState.DISABLED == job.state());
+            Assertions.assertTrue(JobState.DISABLING == job.state() || JobState.DISABLED == job.state());
 
             Thread.sleep(5 * 1000);
             job = batchClient.jobOperations().getJob(jobId);
-            Assert.assertEquals(JobState.DISABLED, job.state());
+            Assertions.assertEquals(JobState.DISABLED, job.state());
 
-            Assert.assertEquals(OnAllTasksComplete.NO_ACTION, job.onAllTasksComplete());
+            Assertions.assertEquals(OnAllTasksComplete.NO_ACTION, job.onAllTasksComplete());
             batchClient.jobOperations().patchJob(jobId, OnAllTasksComplete.TERMINATE_JOB);
             job = batchClient.jobOperations().getJob(jobId);
-            Assert.assertEquals(OnAllTasksComplete.TERMINATE_JOB, job.onAllTasksComplete());
+            Assertions.assertEquals(OnAllTasksComplete.TERMINATE_JOB, job.onAllTasksComplete());
 
             batchClient.jobOperations().enableJob(jobId);
             job = batchClient.jobOperations().getJob(jobId);
-            Assert.assertEquals(JobState.ACTIVE, job.state());
+            Assertions.assertEquals(JobState.ACTIVE, job.state());
 
             batchClient.jobOperations().terminateJob(jobId, "myreason");
             job = batchClient.jobOperations().getJob(jobId);
-            Assert.assertTrue(JobState.TERMINATING == job.state() || JobState.COMPLETED == job.state());
+            Assertions.assertTrue(JobState.TERMINATING == job.state() || JobState.COMPLETED == job.state());
 
             Thread.sleep(2 * 1000);
             job = batchClient.jobOperations().getJob(jobId);
-            Assert.assertEquals(JobState.COMPLETED, job.state());
+            Assertions.assertEquals(JobState.COMPLETED, job.state());
         }
         finally {
             try {
@@ -177,15 +180,15 @@ public class JobTests extends BatchIntegrationTestBase {
         try {
             // GET
             CloudJob job = batchClient.jobOperations().getJob(jobId);
-            Assert.assertNotNull(job);
-            Assert.assertEquals(jobId, job.id());
-            Assert.assertEquals(targetMode, job.poolInfo().autoPoolSpecification().pool().targetNodeCommunicationMode());
+            Assertions.assertNotNull(job);
+            Assertions.assertEquals(jobId, job.id());
+            Assertions.assertEquals(targetMode, job.poolInfo().autoPoolSpecification().pool().targetNodeCommunicationMode());
 
             // DELETE
             batchClient.jobOperations().deleteJob(jobId);
             try {
                 batchClient.jobOperations().getJob(jobId);
-                Assert.assertTrue("Shouldn't be here, the job should be deleted", true);
+                Assertions.assertTrue(true, "Shouldn't be here, the job should be deleted");
             } catch (BatchErrorException err) {
                 if (!err.body().code().equals(BatchErrorCodeStrings.JobNotFound)) {
                     throw err;

@@ -39,9 +39,11 @@ import com.azure.resourcemanager.elasticsan.fluent.VolumesClient;
 import com.azure.resourcemanager.elasticsan.fluent.models.PreValidationResponseInner;
 import com.azure.resourcemanager.elasticsan.fluent.models.VolumeInner;
 import com.azure.resourcemanager.elasticsan.implementation.models.VolumeList;
+import com.azure.resourcemanager.elasticsan.models.DeleteType;
 import com.azure.resourcemanager.elasticsan.models.DiskSnapshotList;
 import com.azure.resourcemanager.elasticsan.models.VolumeNameList;
 import com.azure.resourcemanager.elasticsan.models.VolumeUpdate;
+import com.azure.resourcemanager.elasticsan.models.XMsAccessSoftDeletedResources;
 import com.azure.resourcemanager.elasticsan.models.XMsDeleteSnapshots;
 import com.azure.resourcemanager.elasticsan.models.XMsForceDelete;
 import java.nio.ByteBuffer;
@@ -153,7 +155,8 @@ public final class VolumesClientImpl implements VolumesClient {
             @PathParam("elasticSanName") String elasticSanName, @PathParam("volumeGroupName") String volumeGroupName,
             @PathParam("volumeName") String volumeName,
             @HeaderParam("x-ms-delete-snapshots") XMsDeleteSnapshots xMsDeleteSnapshots,
-            @HeaderParam("x-ms-force-delete") XMsForceDelete xMsForceDelete, Context context);
+            @HeaderParam("x-ms-force-delete") XMsForceDelete xMsForceDelete,
+            @QueryParam("deleteType") DeleteType deleteType, Context context);
 
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}/volumegroups/{volumeGroupName}/volumes/{volumeName}")
@@ -165,7 +168,8 @@ public final class VolumesClientImpl implements VolumesClient {
             @PathParam("elasticSanName") String elasticSanName, @PathParam("volumeGroupName") String volumeGroupName,
             @PathParam("volumeName") String volumeName,
             @HeaderParam("x-ms-delete-snapshots") XMsDeleteSnapshots xMsDeleteSnapshots,
-            @HeaderParam("x-ms-force-delete") XMsForceDelete xMsForceDelete, Context context);
+            @HeaderParam("x-ms-force-delete") XMsForceDelete xMsForceDelete,
+            @QueryParam("deleteType") DeleteType deleteType, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}/volumegroups/{volumeGroupName}/volumes")
@@ -175,6 +179,7 @@ public final class VolumesClientImpl implements VolumesClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("elasticSanName") String elasticSanName, @PathParam("volumeGroupName") String volumeGroupName,
+            @HeaderParam("x-ms-access-soft-deleted-resources") XMsAccessSoftDeletedResources xMsAccessSoftDeletedResources,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -185,6 +190,7 @@ public final class VolumesClientImpl implements VolumesClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("elasticSanName") String elasticSanName, @PathParam("volumeGroupName") String volumeGroupName,
+            @HeaderParam("x-ms-access-soft-deleted-resources") XMsAccessSoftDeletedResources xMsAccessSoftDeletedResources,
             @HeaderParam("Accept") String accept, Context context);
 
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}/volumegroups/{volumeGroupName}/preBackup")
@@ -232,14 +238,18 @@ public final class VolumesClientImpl implements VolumesClient {
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<VolumeList>> listByVolumeGroupNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
+            @HostParam("endpoint") String endpoint,
+            @HeaderParam("x-ms-access-soft-deleted-resources") XMsAccessSoftDeletedResources xMsAccessSoftDeletedResources,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<VolumeList> listByVolumeGroupNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
+            @HostParam("endpoint") String endpoint,
+            @HeaderParam("x-ms-access-soft-deleted-resources") XMsAccessSoftDeletedResources xMsAccessSoftDeletedResources,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -961,6 +971,8 @@ public final class VolumesClientImpl implements VolumesClient {
      * Default value is false.
      * @param xMsForceDelete Optional, used to delete volume if active sessions present. Allowed value are only true or
      * false. Default value is false.
+     * @param deleteType Optional. Specifies that the delete operation should be a permanent delete for the soft deleted
+     * volume. The value of deleteType can only be 'permanent'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -968,8 +980,8 @@ public final class VolumesClientImpl implements VolumesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String elasticSanName,
-        String volumeGroupName, String volumeName, XMsDeleteSnapshots xMsDeleteSnapshots,
-        XMsForceDelete xMsForceDelete) {
+        String volumeGroupName, String volumeName, XMsDeleteSnapshots xMsDeleteSnapshots, XMsForceDelete xMsForceDelete,
+        DeleteType deleteType) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -995,7 +1007,7 @@ public final class VolumesClientImpl implements VolumesClient {
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, elasticSanName, volumeGroupName, volumeName,
-                xMsDeleteSnapshots, xMsForceDelete, context))
+                xMsDeleteSnapshots, xMsForceDelete, deleteType, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1010,6 +1022,8 @@ public final class VolumesClientImpl implements VolumesClient {
      * Default value is false.
      * @param xMsForceDelete Optional, used to delete volume if active sessions present. Allowed value are only true or
      * false. Default value is false.
+     * @param deleteType Optional. Specifies that the delete operation should be a permanent delete for the soft deleted
+     * volume. The value of deleteType can only be 'permanent'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1017,8 +1031,8 @@ public final class VolumesClientImpl implements VolumesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String elasticSanName,
-        String volumeGroupName, String volumeName, XMsDeleteSnapshots xMsDeleteSnapshots,
-        XMsForceDelete xMsForceDelete) {
+        String volumeGroupName, String volumeName, XMsDeleteSnapshots xMsDeleteSnapshots, XMsForceDelete xMsForceDelete,
+        DeleteType deleteType) {
         if (this.client.getEndpoint() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -1047,7 +1061,7 @@ public final class VolumesClientImpl implements VolumesClient {
         }
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, elasticSanName, volumeGroupName, volumeName,
-            xMsDeleteSnapshots, xMsForceDelete, Context.NONE);
+            xMsDeleteSnapshots, xMsForceDelete, deleteType, Context.NONE);
     }
 
     /**
@@ -1061,6 +1075,8 @@ public final class VolumesClientImpl implements VolumesClient {
      * Default value is false.
      * @param xMsForceDelete Optional, used to delete volume if active sessions present. Allowed value are only true or
      * false. Default value is false.
+     * @param deleteType Optional. Specifies that the delete operation should be a permanent delete for the soft deleted
+     * volume. The value of deleteType can only be 'permanent'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1070,7 +1086,7 @@ public final class VolumesClientImpl implements VolumesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String elasticSanName,
         String volumeGroupName, String volumeName, XMsDeleteSnapshots xMsDeleteSnapshots, XMsForceDelete xMsForceDelete,
-        Context context) {
+        DeleteType deleteType, Context context) {
         if (this.client.getEndpoint() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -1099,7 +1115,7 @@ public final class VolumesClientImpl implements VolumesClient {
         }
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, elasticSanName, volumeGroupName, volumeName,
-            xMsDeleteSnapshots, xMsForceDelete, context);
+            xMsDeleteSnapshots, xMsForceDelete, deleteType, context);
     }
 
     /**
@@ -1113,6 +1129,8 @@ public final class VolumesClientImpl implements VolumesClient {
      * Default value is false.
      * @param xMsForceDelete Optional, used to delete volume if active sessions present. Allowed value are only true or
      * false. Default value is false.
+     * @param deleteType Optional. Specifies that the delete operation should be a permanent delete for the soft deleted
+     * volume. The value of deleteType can only be 'permanent'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1120,10 +1138,10 @@ public final class VolumesClientImpl implements VolumesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String elasticSanName,
-        String volumeGroupName, String volumeName, XMsDeleteSnapshots xMsDeleteSnapshots,
-        XMsForceDelete xMsForceDelete) {
+        String volumeGroupName, String volumeName, XMsDeleteSnapshots xMsDeleteSnapshots, XMsForceDelete xMsForceDelete,
+        DeleteType deleteType) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, elasticSanName,
-            volumeGroupName, volumeName, xMsDeleteSnapshots, xMsForceDelete);
+            volumeGroupName, volumeName, xMsDeleteSnapshots, xMsForceDelete, deleteType);
         return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
             this.client.getContext());
     }
@@ -1145,8 +1163,9 @@ public final class VolumesClientImpl implements VolumesClient {
         String volumeGroupName, String volumeName) {
         final XMsDeleteSnapshots xMsDeleteSnapshots = null;
         final XMsForceDelete xMsForceDelete = null;
+        final DeleteType deleteType = null;
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, elasticSanName,
-            volumeGroupName, volumeName, xMsDeleteSnapshots, xMsForceDelete);
+            volumeGroupName, volumeName, xMsDeleteSnapshots, xMsForceDelete, deleteType);
         return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
             this.client.getContext());
     }
@@ -1162,6 +1181,8 @@ public final class VolumesClientImpl implements VolumesClient {
      * Default value is false.
      * @param xMsForceDelete Optional, used to delete volume if active sessions present. Allowed value are only true or
      * false. Default value is false.
+     * @param deleteType Optional. Specifies that the delete operation should be a permanent delete for the soft deleted
+     * volume. The value of deleteType can only be 'permanent'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1169,10 +1190,10 @@ public final class VolumesClientImpl implements VolumesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String elasticSanName,
-        String volumeGroupName, String volumeName, XMsDeleteSnapshots xMsDeleteSnapshots,
-        XMsForceDelete xMsForceDelete) {
+        String volumeGroupName, String volumeName, XMsDeleteSnapshots xMsDeleteSnapshots, XMsForceDelete xMsForceDelete,
+        DeleteType deleteType) {
         Response<BinaryData> response = deleteWithResponse(resourceGroupName, elasticSanName, volumeGroupName,
-            volumeName, xMsDeleteSnapshots, xMsForceDelete);
+            volumeName, xMsDeleteSnapshots, xMsForceDelete, deleteType);
         return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
@@ -1193,8 +1214,9 @@ public final class VolumesClientImpl implements VolumesClient {
         String volumeGroupName, String volumeName) {
         final XMsDeleteSnapshots xMsDeleteSnapshots = null;
         final XMsForceDelete xMsForceDelete = null;
+        final DeleteType deleteType = null;
         Response<BinaryData> response = deleteWithResponse(resourceGroupName, elasticSanName, volumeGroupName,
-            volumeName, xMsDeleteSnapshots, xMsForceDelete);
+            volumeName, xMsDeleteSnapshots, xMsForceDelete, deleteType);
         return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
@@ -1209,6 +1231,8 @@ public final class VolumesClientImpl implements VolumesClient {
      * Default value is false.
      * @param xMsForceDelete Optional, used to delete volume if active sessions present. Allowed value are only true or
      * false. Default value is false.
+     * @param deleteType Optional. Specifies that the delete operation should be a permanent delete for the soft deleted
+     * volume. The value of deleteType can only be 'permanent'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1218,9 +1242,9 @@ public final class VolumesClientImpl implements VolumesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String elasticSanName,
         String volumeGroupName, String volumeName, XMsDeleteSnapshots xMsDeleteSnapshots, XMsForceDelete xMsForceDelete,
-        Context context) {
+        DeleteType deleteType, Context context) {
         Response<BinaryData> response = deleteWithResponse(resourceGroupName, elasticSanName, volumeGroupName,
-            volumeName, xMsDeleteSnapshots, xMsForceDelete, context);
+            volumeName, xMsDeleteSnapshots, xMsForceDelete, deleteType, context);
         return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
@@ -1235,6 +1259,8 @@ public final class VolumesClientImpl implements VolumesClient {
      * Default value is false.
      * @param xMsForceDelete Optional, used to delete volume if active sessions present. Allowed value are only true or
      * false. Default value is false.
+     * @param deleteType Optional. Specifies that the delete operation should be a permanent delete for the soft deleted
+     * volume. The value of deleteType can only be 'permanent'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1242,9 +1268,10 @@ public final class VolumesClientImpl implements VolumesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String elasticSanName, String volumeGroupName,
-        String volumeName, XMsDeleteSnapshots xMsDeleteSnapshots, XMsForceDelete xMsForceDelete) {
+        String volumeName, XMsDeleteSnapshots xMsDeleteSnapshots, XMsForceDelete xMsForceDelete,
+        DeleteType deleteType) {
         return beginDeleteAsync(resourceGroupName, elasticSanName, volumeGroupName, volumeName, xMsDeleteSnapshots,
-            xMsForceDelete).last().flatMap(this.client::getLroFinalResultOrError);
+            xMsForceDelete, deleteType).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1264,8 +1291,9 @@ public final class VolumesClientImpl implements VolumesClient {
         String volumeName) {
         final XMsDeleteSnapshots xMsDeleteSnapshots = null;
         final XMsForceDelete xMsForceDelete = null;
+        final DeleteType deleteType = null;
         return beginDeleteAsync(resourceGroupName, elasticSanName, volumeGroupName, volumeName, xMsDeleteSnapshots,
-            xMsForceDelete).last().flatMap(this.client::getLroFinalResultOrError);
+            xMsForceDelete, deleteType).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1283,8 +1311,9 @@ public final class VolumesClientImpl implements VolumesClient {
     public void delete(String resourceGroupName, String elasticSanName, String volumeGroupName, String volumeName) {
         final XMsDeleteSnapshots xMsDeleteSnapshots = null;
         final XMsForceDelete xMsForceDelete = null;
-        beginDelete(resourceGroupName, elasticSanName, volumeGroupName, volumeName, xMsDeleteSnapshots, xMsForceDelete)
-            .getFinalResult();
+        final DeleteType deleteType = null;
+        beginDelete(resourceGroupName, elasticSanName, volumeGroupName, volumeName, xMsDeleteSnapshots, xMsForceDelete,
+            deleteType).getFinalResult();
     }
 
     /**
@@ -1298,6 +1327,8 @@ public final class VolumesClientImpl implements VolumesClient {
      * Default value is false.
      * @param xMsForceDelete Optional, used to delete volume if active sessions present. Allowed value are only true or
      * false. Default value is false.
+     * @param deleteType Optional. Specifies that the delete operation should be a permanent delete for the soft deleted
+     * volume. The value of deleteType can only be 'permanent'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1305,9 +1336,9 @@ public final class VolumesClientImpl implements VolumesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String elasticSanName, String volumeGroupName, String volumeName,
-        XMsDeleteSnapshots xMsDeleteSnapshots, XMsForceDelete xMsForceDelete, Context context) {
+        XMsDeleteSnapshots xMsDeleteSnapshots, XMsForceDelete xMsForceDelete, DeleteType deleteType, Context context) {
         beginDelete(resourceGroupName, elasticSanName, volumeGroupName, volumeName, xMsDeleteSnapshots, xMsForceDelete,
-            context).getFinalResult();
+            deleteType, context).getFinalResult();
     }
 
     /**
@@ -1316,6 +1347,8 @@ public final class VolumesClientImpl implements VolumesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param elasticSanName The name of the ElasticSan.
      * @param volumeGroupName The name of the VolumeGroup.
+     * @param xMsAccessSoftDeletedResources Optional, returns only soft deleted volumes if set to true. If set to false
+     * or if not specified, returns only active volumes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1323,7 +1356,7 @@ public final class VolumesClientImpl implements VolumesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VolumeInner>> listByVolumeGroupSinglePageAsync(String resourceGroupName,
-        String elasticSanName, String volumeGroupName) {
+        String elasticSanName, String volumeGroupName, XMsAccessSoftDeletedResources xMsAccessSoftDeletedResources) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -1346,10 +1379,33 @@ public final class VolumesClientImpl implements VolumesClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByVolumeGroup(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, elasticSanName, volumeGroupName, accept, context))
+                this.client.getSubscriptionId(), resourceGroupName, elasticSanName, volumeGroupName,
+                xMsAccessSoftDeletedResources, accept, context))
             .<PagedResponse<VolumeInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * List Volumes in a VolumeGroup.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param elasticSanName The name of the ElasticSan.
+     * @param volumeGroupName The name of the VolumeGroup.
+     * @param xMsAccessSoftDeletedResources Optional, returns only soft deleted volumes if set to true. If set to false
+     * or if not specified, returns only active volumes.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of Volumes as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<VolumeInner> listByVolumeGroupAsync(String resourceGroupName, String elasticSanName,
+        String volumeGroupName, XMsAccessSoftDeletedResources xMsAccessSoftDeletedResources) {
+        return new PagedFlux<>(
+            () -> listByVolumeGroupSinglePageAsync(resourceGroupName, elasticSanName, volumeGroupName,
+                xMsAccessSoftDeletedResources),
+            nextLink -> listByVolumeGroupNextSinglePageAsync(nextLink, xMsAccessSoftDeletedResources));
     }
 
     /**
@@ -1366,9 +1422,11 @@ public final class VolumesClientImpl implements VolumesClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<VolumeInner> listByVolumeGroupAsync(String resourceGroupName, String elasticSanName,
         String volumeGroupName) {
+        final XMsAccessSoftDeletedResources xMsAccessSoftDeletedResources = null;
         return new PagedFlux<>(
-            () -> listByVolumeGroupSinglePageAsync(resourceGroupName, elasticSanName, volumeGroupName),
-            nextLink -> listByVolumeGroupNextSinglePageAsync(nextLink));
+            () -> listByVolumeGroupSinglePageAsync(resourceGroupName, elasticSanName, volumeGroupName,
+                xMsAccessSoftDeletedResources),
+            nextLink -> listByVolumeGroupNextSinglePageAsync(nextLink, xMsAccessSoftDeletedResources));
     }
 
     /**
@@ -1377,6 +1435,8 @@ public final class VolumesClientImpl implements VolumesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param elasticSanName The name of the ElasticSan.
      * @param volumeGroupName The name of the VolumeGroup.
+     * @param xMsAccessSoftDeletedResources Optional, returns only soft deleted volumes if set to true. If set to false
+     * or if not specified, returns only active volumes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1384,7 +1444,7 @@ public final class VolumesClientImpl implements VolumesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<VolumeInner> listByVolumeGroupSinglePage(String resourceGroupName, String elasticSanName,
-        String volumeGroupName) {
+        String volumeGroupName, XMsAccessSoftDeletedResources xMsAccessSoftDeletedResources) {
         if (this.client.getEndpoint() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -1409,7 +1469,8 @@ public final class VolumesClientImpl implements VolumesClient {
         }
         final String accept = "application/json";
         Response<VolumeList> res = service.listByVolumeGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, elasticSanName, volumeGroupName, accept, Context.NONE);
+            this.client.getSubscriptionId(), resourceGroupName, elasticSanName, volumeGroupName,
+            xMsAccessSoftDeletedResources, accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
@@ -1420,6 +1481,8 @@ public final class VolumesClientImpl implements VolumesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param elasticSanName The name of the ElasticSan.
      * @param volumeGroupName The name of the VolumeGroup.
+     * @param xMsAccessSoftDeletedResources Optional, returns only soft deleted volumes if set to true. If set to false
+     * or if not specified, returns only active volumes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1428,7 +1491,7 @@ public final class VolumesClientImpl implements VolumesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<VolumeInner> listByVolumeGroupSinglePage(String resourceGroupName, String elasticSanName,
-        String volumeGroupName, Context context) {
+        String volumeGroupName, XMsAccessSoftDeletedResources xMsAccessSoftDeletedResources, Context context) {
         if (this.client.getEndpoint() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -1453,7 +1516,8 @@ public final class VolumesClientImpl implements VolumesClient {
         }
         final String accept = "application/json";
         Response<VolumeList> res = service.listByVolumeGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, elasticSanName, volumeGroupName, accept, context);
+            this.client.getSubscriptionId(), resourceGroupName, elasticSanName, volumeGroupName,
+            xMsAccessSoftDeletedResources, accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
@@ -1472,9 +1536,11 @@ public final class VolumesClientImpl implements VolumesClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VolumeInner> listByVolumeGroup(String resourceGroupName, String elasticSanName,
         String volumeGroupName) {
+        final XMsAccessSoftDeletedResources xMsAccessSoftDeletedResources = null;
         return new PagedIterable<>(
-            () -> listByVolumeGroupSinglePage(resourceGroupName, elasticSanName, volumeGroupName),
-            nextLink -> listByVolumeGroupNextSinglePage(nextLink));
+            () -> listByVolumeGroupSinglePage(resourceGroupName, elasticSanName, volumeGroupName,
+                xMsAccessSoftDeletedResources),
+            nextLink -> listByVolumeGroupNextSinglePage(nextLink, xMsAccessSoftDeletedResources));
     }
 
     /**
@@ -1483,6 +1549,8 @@ public final class VolumesClientImpl implements VolumesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param elasticSanName The name of the ElasticSan.
      * @param volumeGroupName The name of the VolumeGroup.
+     * @param xMsAccessSoftDeletedResources Optional, returns only soft deleted volumes if set to true. If set to false
+     * or if not specified, returns only active volumes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1491,10 +1559,11 @@ public final class VolumesClientImpl implements VolumesClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VolumeInner> listByVolumeGroup(String resourceGroupName, String elasticSanName,
-        String volumeGroupName, Context context) {
+        String volumeGroupName, XMsAccessSoftDeletedResources xMsAccessSoftDeletedResources, Context context) {
         return new PagedIterable<>(
-            () -> listByVolumeGroupSinglePage(resourceGroupName, elasticSanName, volumeGroupName, context),
-            nextLink -> listByVolumeGroupNextSinglePage(nextLink, context));
+            () -> listByVolumeGroupSinglePage(resourceGroupName, elasticSanName, volumeGroupName,
+                xMsAccessSoftDeletedResources, context),
+            nextLink -> listByVolumeGroupNextSinglePage(nextLink, xMsAccessSoftDeletedResources, context));
     }
 
     /**
@@ -2064,13 +2133,16 @@ public final class VolumesClientImpl implements VolumesClient {
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @param xMsAccessSoftDeletedResources Optional, returns only soft deleted volumes if set to true. If set to false
+     * or if not specified, returns only active volumes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of Volumes along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<VolumeInner>> listByVolumeGroupNextSinglePageAsync(String nextLink) {
+    private Mono<PagedResponse<VolumeInner>> listByVolumeGroupNextSinglePageAsync(String nextLink,
+        XMsAccessSoftDeletedResources xMsAccessSoftDeletedResources) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -2080,7 +2152,8 @@ public final class VolumesClientImpl implements VolumesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listByVolumeGroupNext(nextLink, this.client.getEndpoint(), accept, context))
+            .withContext(context -> service.listByVolumeGroupNext(nextLink, this.client.getEndpoint(),
+                xMsAccessSoftDeletedResources, accept, context))
             .<PagedResponse<VolumeInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -2090,13 +2163,16 @@ public final class VolumesClientImpl implements VolumesClient {
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @param xMsAccessSoftDeletedResources Optional, returns only soft deleted volumes if set to true. If set to false
+     * or if not specified, returns only active volumes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of Volumes along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<VolumeInner> listByVolumeGroupNextSinglePage(String nextLink) {
+    private PagedResponse<VolumeInner> listByVolumeGroupNextSinglePage(String nextLink,
+        XMsAccessSoftDeletedResources xMsAccessSoftDeletedResources) {
         if (nextLink == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
@@ -2107,8 +2183,8 @@ public final class VolumesClientImpl implements VolumesClient {
                     "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        Response<VolumeList> res
-            = service.listByVolumeGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        Response<VolumeList> res = service.listByVolumeGroupNextSync(nextLink, this.client.getEndpoint(),
+            xMsAccessSoftDeletedResources, accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
@@ -2117,6 +2193,8 @@ public final class VolumesClientImpl implements VolumesClient {
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @param xMsAccessSoftDeletedResources Optional, returns only soft deleted volumes if set to true. If set to false
+     * or if not specified, returns only active volumes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2124,7 +2202,8 @@ public final class VolumesClientImpl implements VolumesClient {
      * @return list of Volumes along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<VolumeInner> listByVolumeGroupNextSinglePage(String nextLink, Context context) {
+    private PagedResponse<VolumeInner> listByVolumeGroupNextSinglePage(String nextLink,
+        XMsAccessSoftDeletedResources xMsAccessSoftDeletedResources, Context context) {
         if (nextLink == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
@@ -2135,8 +2214,8 @@ public final class VolumesClientImpl implements VolumesClient {
                     "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        Response<VolumeList> res
-            = service.listByVolumeGroupNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        Response<VolumeList> res = service.listByVolumeGroupNextSync(nextLink, this.client.getEndpoint(),
+            xMsAccessSoftDeletedResources, accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }

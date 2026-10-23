@@ -20,7 +20,7 @@ import java.util.Map;
  * A routine definition returned by the service.
  */
 @Immutable
-@Beta(warningText = "Preview API. Routines=V1Preview")
+@Beta(warningText = "Preview API. Routines=V2Preview")
 public final class Routine implements JsonSerializable<Routine> {
 
     /*

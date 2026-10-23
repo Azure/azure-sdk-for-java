@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.rx.changefeed.epkversion;
 
+import com.azure.cosmos.CosmosDatabaseForTest;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ChangeFeedProcessor;
 import com.azure.cosmos.ChangeFeedProcessorBuilder;
@@ -112,7 +113,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
     private final int FEED_COLLECTION_THROUGHPUT = 400;
     private final int FEED_COLLECTION_THROUGHPUT_FOR_SPLIT = 10100;
     private final int LEASE_COLLECTION_THROUGHPUT = 400;
-    private final String MULTI_WRITE_DATABASE_NAME = "multi-write-test-database" + UUID.randomUUID();
+    private final String MULTI_WRITE_DATABASE_NAME = CosmosDatabaseForTest.generateId("cfpMultiWrite");
     private final String MULTI_WRITE_MONITORED_COLLECTION_NAME = "multi-write-test-monitored-container" + UUID.randomUUID();
     private final String MULTI_WRITE_LEASE_COLLECTION_NAME = "multi-write-test-lease-container" + UUID.randomUUID();
 
@@ -513,7 +514,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
         CosmosAsyncContainer createdLeaseCollectionSatelliteRegion = null;
         CosmosAsyncDatabase cosmosAsyncDatabaseRegionOne = null;
 
-        String dbId = UUID.randomUUID().toString();
+        String dbId = CosmosDatabaseForTest.generateId("cfp");
         String feedCollectionId = UUID.randomUUID().toString();
         String leaseCollectionId = UUID.randomUUID().toString();
 
@@ -647,7 +648,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
         CosmosAsyncContainer createdLeaseCollectionSatelliteRegion = null;
         CosmosAsyncDatabase cosmosAsyncDatabaseRegionOne = null;
 
-        String dbId = UUID.randomUUID().toString();
+        String dbId = CosmosDatabaseForTest.generateId("cfp");
         String feedContainerId = UUID.randomUUID().toString();
         String leaseContainerId = UUID.randomUUID().toString();
 

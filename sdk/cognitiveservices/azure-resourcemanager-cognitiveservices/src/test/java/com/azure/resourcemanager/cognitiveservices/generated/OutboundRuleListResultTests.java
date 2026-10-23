@@ -14,10 +14,10 @@ public final class OutboundRuleListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OutboundRuleListResult model = BinaryData.fromString(
-            "{\"nextLink\":\"jymxcgqt\",\"value\":[{\"properties\":{\"type\":\"OutboundRule\",\"category\":\"Dependency\",\"status\":\"Inactive\",\"errorInformation\":\"ol\",\"parentRuleNames\":[\"evtf\",\"cnlbv\",\"jcodkkgjiiytssi\",\"izbcufqbvntnr\"]},\"id\":\"qsorh\",\"name\":\"ekxgn\",\"type\":\"ykmxcpwzvm\"},{\"properties\":{\"type\":\"OutboundRule\",\"category\":\"Required\",\"status\":\"Inactive\",\"errorInformation\":\"tiwlwxlboncqb\",\"parentRuleNames\":[\"icqchygtv\",\"byjanep\",\"bdpkxyqvgx\"]},\"id\":\"od\",\"name\":\"tvo\",\"type\":\"kxdxuwsaifmcwn\"},{\"properties\":{\"type\":\"OutboundRule\",\"category\":\"Recommended\",\"status\":\"Provisioning\",\"errorInformation\":\"hg\",\"parentRuleNames\":[\"bcknjolgj\"]},\"id\":\"xpvelszerqzevxo\",\"name\":\"eintxwaljglzobl\",\"type\":\"waafrqulh\"}]}")
+            "{\"nextLink\":\"nbpvzlq\",\"value\":[{\"properties\":{\"type\":\"OutboundRule\",\"category\":\"Required\",\"status\":\"Failed\",\"errorInformation\":\"ckhmocgjshgouarh\",\"parentRuleNames\":[\"xqqggljky\"]},\"id\":\"jrclrvtzq\",\"name\":\"rbctbhpjhxpcvrd\",\"type\":\"y\"},{\"properties\":{\"type\":\"OutboundRule\",\"category\":\"UserDefined\",\"status\":\"Provisioning\",\"errorInformation\":\"qady\",\"parentRuleNames\":[\"ahwriuomzczfk\",\"ceevsa\",\"xwspcaxikhfjq\",\"bglcxkxgzzromvy\"]},\"id\":\"sem\",\"name\":\"mesrfsvpi\",\"type\":\"kzpatqtdi\"}]}")
             .toObject(OutboundRuleListResult.class);
-        Assertions.assertEquals("jymxcgqt", model.nextLink());
-        Assertions.assertEquals(RuleCategory.DEPENDENCY, model.value().get(0).properties().category());
-        Assertions.assertEquals(RuleStatus.INACTIVE, model.value().get(0).properties().status());
+        Assertions.assertEquals("nbpvzlq", model.nextLink());
+        Assertions.assertEquals(RuleCategory.REQUIRED, model.value().get(0).properties().category());
+        Assertions.assertEquals(RuleStatus.FAILED, model.value().get(0).properties().status());
     }
 }

@@ -15,24 +15,24 @@ public final class ImportJobPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ImportJobProperties model = BinaryData.fromString(
-            "{\"provisioningState\":\"Updating\",\"adminStatus\":\"Cancel\",\"importPrefixes\":[\"h\",\"pkkpw\"],\"conflictResolutionMode\":\"OverwriteIfDirty\",\"maximumErrors\":959921308,\"status\":{\"state\":\"Completed\",\"statusMessage\":\"fovljxyws\",\"totalBlobsWalked\":8630612296658639985,\"blobsWalkedPerSecond\":811516386251549164,\"totalBlobsImported\":4579993960866529408,\"importedFiles\":164789879294916168,\"importedDirectories\":8488213744236915877,\"importedSymlinks\":4788176872253697893,\"preexistingFiles\":1506102374253246749,\"preexistingDirectories\":8790170709983104417,\"preexistingSymlinks\":8134406541939443957,\"blobsImportedPerSecond\":5080605539580294993,\"lastCompletionTime\":\"2021-05-21T16:07:38Z\",\"lastStartedTime\":\"2021-04-21T05:48:06Z\",\"totalErrors\":1024305587,\"totalConflicts\":419659092}}")
+            "{\"provisioningState\":\"Updating\",\"adminStatus\":\"Active\",\"importPrefixes\":[\"biknsorgjhxbld\",\"lwwrl\"],\"conflictResolutionMode\":\"Fail\",\"maximumErrors\":1488672187,\"status\":{\"state\":\"Cancelling\",\"statusMessage\":\"otllxdyhgsyo\",\"totalBlobsWalked\":4877471072225031792,\"blobsWalkedPerSecond\":3528662492556478567,\"totalBlobsImported\":7818158463712312814,\"importedFiles\":8180810548190524314,\"importedDirectories\":4404179597869624816,\"importedSymlinks\":3020486930690600862,\"preexistingFiles\":6607949081134989897,\"preexistingDirectories\":1994212450158328847,\"preexistingSymlinks\":191719140386438255,\"blobsImportedPerSecond\":3968582438542794420,\"lastCompletionTime\":\"2021-06-21T15:02:53Z\",\"lastStartedTime\":\"2021-01-28T23:44:08Z\",\"totalErrors\":1862318440,\"totalConflicts\":1817330156}}")
             .toObject(ImportJobProperties.class);
-        Assertions.assertEquals(ImportJobAdminStatus.CANCEL, model.adminStatus());
-        Assertions.assertEquals("h", model.importPrefixes().get(0));
-        Assertions.assertEquals(ConflictResolutionMode.OVERWRITE_IF_DIRTY, model.conflictResolutionMode());
-        Assertions.assertEquals(959921308, model.maximumErrors());
+        Assertions.assertEquals(ImportJobAdminStatus.ACTIVE, model.adminStatus());
+        Assertions.assertEquals("biknsorgjhxbld", model.importPrefixes().get(0));
+        Assertions.assertEquals(ConflictResolutionMode.FAIL, model.conflictResolutionMode());
+        Assertions.assertEquals(1488672187, model.maximumErrors());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ImportJobProperties model = new ImportJobProperties().withAdminStatus(ImportJobAdminStatus.CANCEL)
-            .withImportPrefixes(Arrays.asList("h", "pkkpw"))
-            .withConflictResolutionMode(ConflictResolutionMode.OVERWRITE_IF_DIRTY)
-            .withMaximumErrors(959921308);
+        ImportJobProperties model = new ImportJobProperties().withAdminStatus(ImportJobAdminStatus.ACTIVE)
+            .withImportPrefixes(Arrays.asList("biknsorgjhxbld", "lwwrl"))
+            .withConflictResolutionMode(ConflictResolutionMode.FAIL)
+            .withMaximumErrors(1488672187);
         model = BinaryData.fromObject(model).toObject(ImportJobProperties.class);
-        Assertions.assertEquals(ImportJobAdminStatus.CANCEL, model.adminStatus());
-        Assertions.assertEquals("h", model.importPrefixes().get(0));
-        Assertions.assertEquals(ConflictResolutionMode.OVERWRITE_IF_DIRTY, model.conflictResolutionMode());
-        Assertions.assertEquals(959921308, model.maximumErrors());
+        Assertions.assertEquals(ImportJobAdminStatus.ACTIVE, model.adminStatus());
+        Assertions.assertEquals("biknsorgjhxbld", model.importPrefixes().get(0));
+        Assertions.assertEquals(ConflictResolutionMode.FAIL, model.conflictResolutionMode());
+        Assertions.assertEquals(1488672187, model.maximumErrors());
     }
 }

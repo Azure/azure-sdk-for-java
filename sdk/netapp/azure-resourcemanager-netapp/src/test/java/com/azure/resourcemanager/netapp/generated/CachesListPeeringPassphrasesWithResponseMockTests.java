@@ -21,7 +21,7 @@ public final class CachesListPeeringPassphrasesWithResponseMockTests {
     @Test
     public void testListPeeringPassphrasesWithResponse() throws Exception {
         String responseStr
-            = "{\"clusterPeeringCommand\":\"qkyojwyvf\",\"clusterPeeringPassphrase\":\"mbtsuahxsg\",\"vserverPeeringCommand\":\"jcmmzrrscub\",\"criticalWarning\":\"sd\"}";
+            = "{\"clusterPeeringCommand\":\"txptlghw\",\"clusterPeeringPassphrase\":\"homewjjstliu\",\"vserverPeeringCommand\":\"qawmoaianc\",\"criticalWarning\":\"vodrrslblxydkxr\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,12 +31,12 @@ public final class CachesListPeeringPassphrasesWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PeeringPassphrases response = manager.caches()
-            .listPeeringPassphrasesWithResponse("qb", "jhvefgwbmqjchnt", "sf", "ymxbulpzealb",
+            .listPeeringPassphrasesWithResponse("ukyrdnqodxahh", "hqfaqnvz", "qgyi", "emchgavsczuej",
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("qkyojwyvf", response.clusterPeeringCommand());
-        Assertions.assertEquals("mbtsuahxsg", response.clusterPeeringPassphrase());
-        Assertions.assertEquals("jcmmzrrscub", response.vserverPeeringCommand());
+        Assertions.assertEquals("txptlghw", response.clusterPeeringCommand());
+        Assertions.assertEquals("homewjjstliu", response.clusterPeeringPassphrase());
+        Assertions.assertEquals("qawmoaianc", response.vserverPeeringCommand());
     }
 }

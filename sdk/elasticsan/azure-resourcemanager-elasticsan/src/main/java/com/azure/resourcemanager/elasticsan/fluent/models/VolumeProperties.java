@@ -10,10 +10,11 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.elasticsan.models.IscsiTargetInfo;
-import com.azure.resourcemanager.elasticsan.models.ManagedByInfo;
+import com.azure.resourcemanager.elasticsan.models.ManagedByResources;
 import com.azure.resourcemanager.elasticsan.models.ProvisioningStates;
 import com.azure.resourcemanager.elasticsan.models.SourceCreationData;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Volume response properties.
@@ -41,9 +42,9 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
     private IscsiTargetInfo storageTarget;
 
     /*
-     * Parent resource information.
+     * Information about Azure services owning the ElasticSan volume resource.
      */
-    private ManagedByInfo managedBy;
+    private List<ManagedByResources> managedBy;
 
     /*
      * State of the operation on the resource.
@@ -115,21 +116,21 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
     }
 
     /**
-     * Get the managedBy property: Parent resource information.
+     * Get the managedBy property: Information about Azure services owning the ElasticSan volume resource.
      * 
      * @return the managedBy value.
      */
-    public ManagedByInfo managedBy() {
+    public List<ManagedByResources> managedBy() {
         return this.managedBy;
     }
 
     /**
-     * Set the managedBy property: Parent resource information.
+     * Set the managedBy property: Information about Azure services owning the ElasticSan volume resource.
      * 
      * @param managedBy the managedBy value to set.
      * @return the VolumeProperties object itself.
      */
-    public VolumeProperties withManagedBy(ManagedByInfo managedBy) {
+    public VolumeProperties withManagedBy(List<ManagedByResources> managedBy) {
         this.managedBy = managedBy;
         return this;
     }
@@ -156,7 +157,7 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
             storageTarget().validate();
         }
         if (managedBy() != null) {
-            managedBy().validate();
+            managedBy().forEach(e -> e.validate());
         }
     }
 
@@ -168,7 +169,7 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
         jsonWriter.writeStartObject();
         jsonWriter.writeLongField("sizeGiB", this.sizeGiB);
         jsonWriter.writeJsonField("creationData", this.creationData);
-        jsonWriter.writeJsonField("managedBy", this.managedBy);
+        jsonWriter.writeArrayField("managedBy", this.managedBy, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -197,7 +198,9 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
                 } else if ("storageTarget".equals(fieldName)) {
                     deserializedVolumeProperties.storageTarget = IscsiTargetInfo.fromJson(reader);
                 } else if ("managedBy".equals(fieldName)) {
-                    deserializedVolumeProperties.managedBy = ManagedByInfo.fromJson(reader);
+                    List<ManagedByResources> managedBy
+                        = reader.readArray(reader1 -> ManagedByResources.fromJson(reader1));
+                    deserializedVolumeProperties.managedBy = managedBy;
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedVolumeProperties.provisioningState = ProvisioningStates.fromString(reader.getString());
                 } else {

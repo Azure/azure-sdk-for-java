@@ -183,6 +183,8 @@ public final class GenericContainer extends ProtectionContainer {
                     deserializedGenericContainer.withHealthStatus(reader.getString());
                 } else if ("protectableObjectType".equals(fieldName)) {
                     deserializedGenericContainer.withProtectableObjectType(reader.getString());
+                } else if ("sourceLocation".equals(fieldName)) {
+                    deserializedGenericContainer.withSourceLocation(reader.getString());
                 } else if ("containerType".equals(fieldName)) {
                     deserializedGenericContainer.containerType
                         = ProtectableContainerType.fromString(reader.getString());

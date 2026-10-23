@@ -6,6 +6,7 @@ package com.azure.analytics.planetarycomputer.generated;
 
 import com.azure.analytics.planetarycomputer.DataClient;
 import com.azure.analytics.planetarycomputer.PlanetaryComputerProClientBuilder;
+import com.azure.analytics.planetarycomputer.models.SelMethod;
 import com.azure.analytics.planetarycomputer.models.StacItemPointAsset;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -19,7 +20,9 @@ public class MosaicSearchesPointWithAssetsGetPointAssets {
                 .buildDataClient();
         // BEGIN:com.azure.analytics.planetarycomputer.generated.data-get-search-point-with-assets.mosaic-searches-point-with-assets-get-point-assets
         List<StacItemPointAsset> response = dataClient.getSearchPointWithAssets("ba13fc7947b9b585690d84ee61aaa653",
-            -122.4194, 37.7749, null, null, null, null, null, null, null, null, null, null, null, null);
+            -122.4194, 37.7749, (Integer) null, (Integer) null, (Integer) null, (Boolean) null, (Boolean) null,
+            (String) null, (List<Integer>) null, (String) null, (String) null, (List<String>) null, (SelMethod) null,
+            (String) null);
         // END:com.azure.analytics.planetarycomputer.generated.data-get-search-point-with-assets.mosaic-searches-point-with-assets-get-point-assets
     }
 }

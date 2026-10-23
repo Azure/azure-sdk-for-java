@@ -15,19 +15,20 @@ public final class WeeklyRetentionFormatTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WeeklyRetentionFormat model = BinaryData.fromString(
-            "{\"daysOfTheWeek\":[\"Monday\",\"Monday\",\"Monday\",\"Friday\"],\"weeksOfTheMonth\":[\"Invalid\",\"Invalid\"]}")
+            "{\"daysOfTheWeek\":[\"Saturday\",\"Wednesday\",\"Sunday\",\"Sunday\"],\"weeksOfTheMonth\":[\"Fourth\",\"Fourth\",\"Last\"]}")
             .toObject(WeeklyRetentionFormat.class);
-        Assertions.assertEquals(DayOfWeek.MONDAY, model.daysOfTheWeek().get(0));
-        Assertions.assertEquals(WeekOfMonth.INVALID, model.weeksOfTheMonth().get(0));
+        Assertions.assertEquals(DayOfWeek.SATURDAY, model.daysOfTheWeek().get(0));
+        Assertions.assertEquals(WeekOfMonth.FOURTH, model.weeksOfTheMonth().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         WeeklyRetentionFormat model = new WeeklyRetentionFormat()
-            .withDaysOfTheWeek(Arrays.asList(DayOfWeek.MONDAY, DayOfWeek.MONDAY, DayOfWeek.MONDAY, DayOfWeek.FRIDAY))
-            .withWeeksOfTheMonth(Arrays.asList(WeekOfMonth.INVALID, WeekOfMonth.INVALID));
+            .withDaysOfTheWeek(
+                Arrays.asList(DayOfWeek.SATURDAY, DayOfWeek.WEDNESDAY, DayOfWeek.SUNDAY, DayOfWeek.SUNDAY))
+            .withWeeksOfTheMonth(Arrays.asList(WeekOfMonth.FOURTH, WeekOfMonth.FOURTH, WeekOfMonth.LAST));
         model = BinaryData.fromObject(model).toObject(WeeklyRetentionFormat.class);
-        Assertions.assertEquals(DayOfWeek.MONDAY, model.daysOfTheWeek().get(0));
-        Assertions.assertEquals(WeekOfMonth.INVALID, model.weeksOfTheMonth().get(0));
+        Assertions.assertEquals(DayOfWeek.SATURDAY, model.daysOfTheWeek().get(0));
+        Assertions.assertEquals(WeekOfMonth.FOURTH, model.weeksOfTheMonth().get(0));
     }
 }

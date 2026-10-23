@@ -12,18 +12,18 @@ public final class TargetAfsRestoreInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TargetAfsRestoreInfo model
-            = BinaryData.fromString("{\"name\":\"qdrfegcealzxwhc\",\"targetResourceId\":\"symoyq\"}")
+            = BinaryData.fromString("{\"name\":\"xcmjurbu\",\"targetResourceId\":\"lkyqltqsrog\"}")
                 .toObject(TargetAfsRestoreInfo.class);
-        Assertions.assertEquals("qdrfegcealzxwhc", model.name());
-        Assertions.assertEquals("symoyq", model.targetResourceId());
+        Assertions.assertEquals("xcmjurbu", model.name());
+        Assertions.assertEquals("lkyqltqsrog", model.targetResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         TargetAfsRestoreInfo model
-            = new TargetAfsRestoreInfo().withName("qdrfegcealzxwhc").withTargetResourceId("symoyq");
+            = new TargetAfsRestoreInfo().withName("xcmjurbu").withTargetResourceId("lkyqltqsrog");
         model = BinaryData.fromObject(model).toObject(TargetAfsRestoreInfo.class);
-        Assertions.assertEquals("qdrfegcealzxwhc", model.name());
-        Assertions.assertEquals("symoyq", model.targetResourceId());
+        Assertions.assertEquals("xcmjurbu", model.name());
+        Assertions.assertEquals("lkyqltqsrog", model.targetResourceId());
     }
 }

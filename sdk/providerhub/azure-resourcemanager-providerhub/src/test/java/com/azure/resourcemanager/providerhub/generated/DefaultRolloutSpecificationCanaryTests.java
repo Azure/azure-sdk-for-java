@@ -13,19 +13,19 @@ public final class DefaultRolloutSpecificationCanaryTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DefaultRolloutSpecificationCanary model
-            = BinaryData.fromString("{\"skipRegions\":[\"nkqbhsyrq\"],\"regions\":[\"qhd\",\"nxaulk\"]}")
+            = BinaryData.fromString("{\"skipRegions\":[\"cw\",\"hohsd\"],\"regions\":[\"dzsufc\",\"hdxbzlm\"]}")
                 .toObject(DefaultRolloutSpecificationCanary.class);
-        Assertions.assertEquals("nkqbhsyrq", model.skipRegions().get(0));
-        Assertions.assertEquals("qhd", model.regions().get(0));
+        Assertions.assertEquals("cw", model.skipRegions().get(0));
+        Assertions.assertEquals("dzsufc", model.regions().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DefaultRolloutSpecificationCanary model
-            = new DefaultRolloutSpecificationCanary().withSkipRegions(Arrays.asList("nkqbhsyrq"))
-                .withRegions(Arrays.asList("qhd", "nxaulk"));
+            = new DefaultRolloutSpecificationCanary().withSkipRegions(Arrays.asList("cw", "hohsd"))
+                .withRegions(Arrays.asList("dzsufc", "hdxbzlm"));
         model = BinaryData.fromObject(model).toObject(DefaultRolloutSpecificationCanary.class);
-        Assertions.assertEquals("nkqbhsyrq", model.skipRegions().get(0));
-        Assertions.assertEquals("qhd", model.regions().get(0));
+        Assertions.assertEquals("cw", model.skipRegions().get(0));
+        Assertions.assertEquals("dzsufc", model.regions().get(0));
     }
 }

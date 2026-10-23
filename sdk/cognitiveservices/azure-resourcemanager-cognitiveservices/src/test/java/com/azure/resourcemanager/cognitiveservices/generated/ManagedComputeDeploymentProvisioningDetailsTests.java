@@ -13,9 +13,9 @@ public final class ManagedComputeDeploymentProvisioningDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManagedComputeDeploymentProvisioningDetails model
-            = BinaryData.fromString("{\"message\":\"gchbapxkiy\",\"lastOperationTimestamp\":\"2021-02-28T15:19:21Z\"}")
+            = BinaryData.fromString("{\"message\":\"wjjxsgm\",\"lastOperationTimestamp\":\"2021-09-19T21:59:04Z\"}")
                 .toObject(ManagedComputeDeploymentProvisioningDetails.class);
-        Assertions.assertEquals("gchbapxkiy", model.message());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-28T15:19:21Z"), model.lastOperationTimestamp());
+        Assertions.assertEquals("wjjxsgm", model.message());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-19T21:59:04Z"), model.lastOperationTimestamp());
     }
 }

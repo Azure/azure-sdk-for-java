@@ -12,21 +12,22 @@ public final class ApiServerAccessProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ApiServerAccessProfile model = BinaryData
-            .fromString("{\"enablePrivateCluster\":false,\"enableVnetIntegration\":true,\"subnetId\":\"jbp\"}")
+            .fromString(
+                "{\"enablePrivateCluster\":true,\"enableVnetIntegration\":true,\"subnetId\":\"gsntnbybkzgcwr\"}")
             .toObject(ApiServerAccessProfile.class);
-        Assertions.assertFalse(model.enablePrivateCluster());
+        Assertions.assertTrue(model.enablePrivateCluster());
         Assertions.assertTrue(model.enableVnetIntegration());
-        Assertions.assertEquals("jbp", model.subnetId());
+        Assertions.assertEquals("gsntnbybkzgcwr", model.subnetId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApiServerAccessProfile model = new ApiServerAccessProfile().withEnablePrivateCluster(false)
+        ApiServerAccessProfile model = new ApiServerAccessProfile().withEnablePrivateCluster(true)
             .withEnableVnetIntegration(true)
-            .withSubnetId("jbp");
+            .withSubnetId("gsntnbybkzgcwr");
         model = BinaryData.fromObject(model).toObject(ApiServerAccessProfile.class);
-        Assertions.assertFalse(model.enablePrivateCluster());
+        Assertions.assertTrue(model.enablePrivateCluster());
         Assertions.assertTrue(model.enableVnetIntegration());
-        Assertions.assertEquals("jbp", model.subnetId());
+        Assertions.assertEquals("gsntnbybkzgcwr", model.subnetId());
     }
 }

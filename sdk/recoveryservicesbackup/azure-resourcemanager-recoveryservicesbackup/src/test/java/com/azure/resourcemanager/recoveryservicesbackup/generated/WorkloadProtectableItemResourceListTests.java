@@ -13,15 +13,15 @@ public final class WorkloadProtectableItemResourceListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkloadProtectableItemResourceList model = BinaryData.fromString(
-            "{\"value\":[{\"location\":\"vdimwrzregzgy\",\"tags\":{\"ryekzkd\":\"trwpw\",\"osxw\":\"meottawj\",\"jpnwynudql\":\"hnhjtfvpndpmi\"},\"eTag\":\"sauzpjlx\",\"properties\":{\"protectableItemType\":\"WorkloadProtectableItem\",\"backupManagementType\":\"uxiqhzlraymezxl\",\"workloadType\":\"ihmxrfdsajredn\",\"friendlyName\":\"yshtuwgmev\",\"protectionState\":\"Invalid\"},\"id\":\"wzyif\",\"name\":\"kgwl\",\"type\":\"xeqipx\"},{\"location\":\"dyimsfay\",\"tags\":{\"vk\":\"r\"},\"eTag\":\"geslabnsmj\",\"properties\":{\"protectableItemType\":\"WorkloadProtectableItem\",\"backupManagementType\":\"nqxaekqsyk\",\"workloadType\":\"jtqpkevmyltjcrsp\",\"friendlyName\":\"l\",\"protectionState\":\"Invalid\"},\"id\":\"lfg\",\"name\":\"annnoytzposewx\",\"type\":\"gpxvkqmaupxvpi\"}],\"nextLink\":\"f\"}")
+            "{\"value\":[{\"location\":\"aj\",\"tags\":{\"evhamfowg\":\"pq\",\"ofqovchiqbplv\":\"btmkekxpkzwaq\",\"ztekxbyjgmsfep\":\"idu\"},\"eTag\":\"ihpq\",\"properties\":{\"protectableItemType\":\"WorkloadProtectableItem\",\"backupManagementType\":\"grhrdic\",\"workloadType\":\"wyjfowxwyovcxjs\",\"friendlyName\":\"ipcukdveks\",\"protectionState\":\"Invalid\"},\"id\":\"duchvls\",\"name\":\"rdpibfd\",\"type\":\"jdusspyszekb\"}],\"nextLink\":\"lkaaggkr\"}")
             .toObject(WorkloadProtectableItemResourceList.class);
-        Assertions.assertEquals("f", model.nextLink());
-        Assertions.assertEquals("vdimwrzregzgy", model.value().get(0).location());
-        Assertions.assertEquals("trwpw", model.value().get(0).tags().get("ryekzkd"));
-        Assertions.assertEquals("sauzpjlx", model.value().get(0).eTag());
-        Assertions.assertEquals("uxiqhzlraymezxl", model.value().get(0).properties().backupManagementType());
-        Assertions.assertEquals("ihmxrfdsajredn", model.value().get(0).properties().workloadType());
-        Assertions.assertEquals("yshtuwgmev", model.value().get(0).properties().friendlyName());
+        Assertions.assertEquals("lkaaggkr", model.nextLink());
+        Assertions.assertEquals("aj", model.value().get(0).location());
+        Assertions.assertEquals("pq", model.value().get(0).tags().get("evhamfowg"));
+        Assertions.assertEquals("ihpq", model.value().get(0).eTag());
+        Assertions.assertEquals("grhrdic", model.value().get(0).properties().backupManagementType());
+        Assertions.assertEquals("wyjfowxwyovcxjs", model.value().get(0).properties().workloadType());
+        Assertions.assertEquals("ipcukdveks", model.value().get(0).properties().friendlyName());
         Assertions.assertEquals(ProtectionStatus.INVALID, model.value().get(0).properties().protectionState());
     }
 }

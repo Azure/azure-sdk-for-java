@@ -1,0 +1,13 @@
+diff --git a/sdk/security/azure-resourcemanager-security/CHANGELOG.md b/sdk/security/azure-resourcemanager-security/CHANGELOG.md
+index b3bf1da..c273ae4 100644
+--- a/sdk/security/azure-resourcemanager-security/CHANGELOG.md
++++ b/sdk/security/azure-resourcemanager-security/CHANGELOG.md
+@@ -1,3 +1,8 @@
+ # Release History
++
++## 1.1.0 (Unreleased)
++
++- Azure Resource Manager Security client library for Java. Package api-version AlertsAPI: 2022-01-01, ApiCollectionsAPI: 2023-11-15, ApplicationsAPI: 2022-07-01-preview.
++- Added application discovery operations.
+ 
+ ## 1.0.0 (2026-01-01)

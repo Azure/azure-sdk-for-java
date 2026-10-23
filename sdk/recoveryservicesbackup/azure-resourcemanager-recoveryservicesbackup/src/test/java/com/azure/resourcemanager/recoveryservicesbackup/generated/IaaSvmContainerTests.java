@@ -13,36 +13,36 @@ public final class IaaSvmContainerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IaaSvmContainer model = BinaryData.fromString(
-            "{\"containerType\":\"IaasVMContainer\",\"virtualMachineId\":\"mrqemvvhmx\",\"virtualMachineVersion\":\"rjfut\",\"resourceGroup\":\"oe\",\"friendlyName\":\"vewzcj\",\"backupManagementType\":\"AzureBackupServer\",\"registrationStatus\":\"cpmguaadraufact\",\"healthStatus\":\"hzovaj\",\"protectableObjectType\":\"iuxxpshneekulfg\"}")
+            "{\"containerType\":\"IaasVMContainer\",\"virtualMachineId\":\"lnzonzlrpiqywn\",\"virtualMachineVersion\":\"jtszcof\",\"resourceGroup\":\"e\",\"friendlyName\":\"dhgbjkvre\",\"backupManagementType\":\"MAB\",\"registrationStatus\":\"murvzm\",\"healthStatus\":\"vuanashcxlp\",\"protectableObjectType\":\"erbdk\",\"sourceLocation\":\"vidizozsdb\"}")
             .toObject(IaaSvmContainer.class);
-        Assertions.assertEquals("vewzcj", model.friendlyName());
-        Assertions.assertEquals(BackupManagementType.AZURE_BACKUP_SERVER, model.backupManagementType());
-        Assertions.assertEquals("cpmguaadraufact", model.registrationStatus());
-        Assertions.assertEquals("hzovaj", model.healthStatus());
-        Assertions.assertEquals("iuxxpshneekulfg", model.protectableObjectType());
-        Assertions.assertEquals("mrqemvvhmx", model.virtualMachineId());
-        Assertions.assertEquals("rjfut", model.virtualMachineVersion());
-        Assertions.assertEquals("oe", model.resourceGroup());
+        Assertions.assertEquals("dhgbjkvre", model.friendlyName());
+        Assertions.assertEquals(BackupManagementType.MAB, model.backupManagementType());
+        Assertions.assertEquals("murvzm", model.registrationStatus());
+        Assertions.assertEquals("vuanashcxlp", model.healthStatus());
+        Assertions.assertEquals("erbdk", model.protectableObjectType());
+        Assertions.assertEquals("lnzonzlrpiqywn", model.virtualMachineId());
+        Assertions.assertEquals("jtszcof", model.virtualMachineVersion());
+        Assertions.assertEquals("e", model.resourceGroup());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IaaSvmContainer model = new IaaSvmContainer().withFriendlyName("vewzcj")
-            .withBackupManagementType(BackupManagementType.AZURE_BACKUP_SERVER)
-            .withRegistrationStatus("cpmguaadraufact")
-            .withHealthStatus("hzovaj")
-            .withProtectableObjectType("iuxxpshneekulfg")
-            .withVirtualMachineId("mrqemvvhmx")
-            .withVirtualMachineVersion("rjfut")
-            .withResourceGroup("oe");
+        IaaSvmContainer model = new IaaSvmContainer().withFriendlyName("dhgbjkvre")
+            .withBackupManagementType(BackupManagementType.MAB)
+            .withRegistrationStatus("murvzm")
+            .withHealthStatus("vuanashcxlp")
+            .withProtectableObjectType("erbdk")
+            .withVirtualMachineId("lnzonzlrpiqywn")
+            .withVirtualMachineVersion("jtszcof")
+            .withResourceGroup("e");
         model = BinaryData.fromObject(model).toObject(IaaSvmContainer.class);
-        Assertions.assertEquals("vewzcj", model.friendlyName());
-        Assertions.assertEquals(BackupManagementType.AZURE_BACKUP_SERVER, model.backupManagementType());
-        Assertions.assertEquals("cpmguaadraufact", model.registrationStatus());
-        Assertions.assertEquals("hzovaj", model.healthStatus());
-        Assertions.assertEquals("iuxxpshneekulfg", model.protectableObjectType());
-        Assertions.assertEquals("mrqemvvhmx", model.virtualMachineId());
-        Assertions.assertEquals("rjfut", model.virtualMachineVersion());
-        Assertions.assertEquals("oe", model.resourceGroup());
+        Assertions.assertEquals("dhgbjkvre", model.friendlyName());
+        Assertions.assertEquals(BackupManagementType.MAB, model.backupManagementType());
+        Assertions.assertEquals("murvzm", model.registrationStatus());
+        Assertions.assertEquals("vuanashcxlp", model.healthStatus());
+        Assertions.assertEquals("erbdk", model.protectableObjectType());
+        Assertions.assertEquals("lnzonzlrpiqywn", model.virtualMachineId());
+        Assertions.assertEquals("jtszcof", model.virtualMachineVersion());
+        Assertions.assertEquals("e", model.resourceGroup());
     }
 }

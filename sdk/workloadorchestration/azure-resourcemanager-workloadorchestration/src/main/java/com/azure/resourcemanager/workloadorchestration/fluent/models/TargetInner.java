@@ -34,7 +34,7 @@ public final class TargetInner extends Resource {
     private String eTag;
 
     /*
-     * The extendedLocation property.
+     * The extended location of the resource.
      */
     private ExtendedLocation extendedLocation;
 
@@ -97,7 +97,7 @@ public final class TargetInner extends Resource {
     }
 
     /**
-     * Get the extendedLocation property: The extendedLocation property.
+     * Get the extendedLocation property: The extended location of the resource.
      * 
      * @return the extendedLocation value.
      */
@@ -106,7 +106,7 @@ public final class TargetInner extends Resource {
     }
 
     /**
-     * Set the extendedLocation property: The extendedLocation property.
+     * Set the extendedLocation property: The extended location of the resource.
      * 
      * @param extendedLocation the extendedLocation value to set.
      * @return the TargetInner object itself.

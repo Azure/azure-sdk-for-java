@@ -5,8 +5,8 @@ package com.microsoft.azure.servicebus;
 
 import com.microsoft.azure.servicebus.management.QueueDescription;
 import com.microsoft.azure.servicebus.primitives.ServiceBusException;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -39,7 +39,7 @@ public class QueueSendReceiveTests extends SendReceiveTests {
         this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, this.receiveEntityPath, ReceiveMode.PEEKLOCK);
 
         TransactionContext transaction = this.factory.startTransactionAsync().get();
-        Assert.assertNotNull(transaction);
+        Assertions.assertNotNull(transaction);
 
         String messageId = UUID.randomUUID().toString();
         Message message = new Message("AMQP message");
@@ -52,8 +52,8 @@ public class QueueSendReceiveTests extends SendReceiveTests {
         this.factory.endTransactionAsync(transaction, true).get();
 
         IMessage receivedMessage = this.receiver.receive(TestCommons.SHORT_WAIT_TIME);
-        Assert.assertNotNull("Message not received", receivedMessage);
-        Assert.assertEquals("Message Id did not match", messageId, receivedMessage.getMessageId());
+        Assertions.assertNotNull(receivedMessage, "Message not received");
+        Assertions.assertEquals(messageId, receivedMessage.getMessageId(), "Message Id did not match");
 
         this.receiver.complete(receivedMessage.getLockToken());
     }
@@ -63,7 +63,7 @@ public class QueueSendReceiveTests extends SendReceiveTests {
         this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, this.receiveEntityPath, ReceiveMode.PEEKLOCK);
 
         TransactionContext transaction = this.factory.startTransactionAsync().get();
-        Assert.assertNotNull(transaction);
+        Assertions.assertNotNull(transaction);
 
         String messageId = UUID.randomUUID().toString();
         Message message = new Message("AMQP message");
@@ -76,7 +76,7 @@ public class QueueSendReceiveTests extends SendReceiveTests {
         this.factory.endTransactionAsync(transaction, false).get();
 
         IMessage receivedMessage = this.receiver.receive(TestCommons.SHORT_WAIT_TIME);
-        Assert.assertNull(receivedMessage);
+        Assertions.assertNull(receivedMessage);
     }
 
     @Test
@@ -91,7 +91,7 @@ public class QueueSendReceiveTests extends SendReceiveTests {
         this.receiver.complete(receivedMessage.getLockToken(), transaction);
         transaction.commit();
         receivedMessage = this.receiver.receive(TestCommons.SHORT_WAIT_TIME);
-        Assert.assertNull(receivedMessage);
+        Assertions.assertNull(receivedMessage);
     }
 
     @Test
@@ -103,7 +103,7 @@ public class QueueSendReceiveTests extends SendReceiveTests {
 
         IMessage receivedMessage = this.receiver.receive(TestCommons.SHORT_WAIT_TIME);
         TransactionContext transaction = this.factory.startTransactionAsync().get();
-        Assert.assertNotNull(transaction);
+        Assertions.assertNotNull(transaction);
         this.receiver.complete(receivedMessage.getLockToken(), transaction);
         transaction.rollback();
         this.receiver.complete(receivedMessage.getLockToken());
@@ -118,14 +118,14 @@ public class QueueSendReceiveTests extends SendReceiveTests {
         IMessage receivedMessage = this.receiver.receive(TestCommons.SHORT_WAIT_TIME);
         this.receiver.defer(receivedMessage.getLockToken());
         receivedMessage = this.receiver.receiveDeferredMessage(receivedMessage.getSequenceNumber());
-        Assert.assertNotNull(receivedMessage);
+        Assertions.assertNotNull(receivedMessage);
 
         TransactionContext transaction = this.factory.startTransactionAsync().get();
         this.receiver.complete(receivedMessage.getLockToken(), transaction);
         this.factory.endTransactionAsync(transaction, true).get();
 
         receivedMessage = this.receiver.receive(TestCommons.SHORT_WAIT_TIME);
-        Assert.assertNull(receivedMessage);
+        Assertions.assertNull(receivedMessage);
     }
 
     @Test
@@ -137,10 +137,10 @@ public class QueueSendReceiveTests extends SendReceiveTests {
         IMessage receivedMessage = this.receiver.receive(TestCommons.SHORT_WAIT_TIME);
         this.receiver.defer(receivedMessage.getLockToken());
         receivedMessage = this.receiver.receiveDeferredMessage(receivedMessage.getSequenceNumber());
-        Assert.assertNotNull(receivedMessage);
+        Assertions.assertNotNull(receivedMessage);
 
         TransactionContext transaction = this.factory.startTransactionAsync().get();
-        Assert.assertNotNull(transaction);
+        Assertions.assertNotNull(transaction);
         this.receiver.complete(receivedMessage.getLockToken(), transaction);
         this.factory.endTransactionAsync(transaction, false).get();
 
@@ -174,7 +174,7 @@ public class QueueSendReceiveTests extends SendReceiveTests {
                 caught = true;
             }
 
-            Assert.assertTrue(caught);
+            Assertions.assertTrue(caught);
             this.factory.endTransactionAsync(transaction, false).get();
 
             pSender.send(message1);
@@ -182,8 +182,8 @@ public class QueueSendReceiveTests extends SendReceiveTests {
 
             IMessage receivedMessage1 = pReceiver.receive();
             IMessage receivedMessage2 = pReceiver.receive();
-            Assert.assertNotNull("Message not received", receivedMessage1);
-            Assert.assertNotNull("Message not received", receivedMessage2);
+            Assertions.assertNotNull(receivedMessage1, "Message not received");
+            Assertions.assertNotNull(receivedMessage2, "Message not received");
 
             transaction = this.factory.startTransactionAsync().get();
             pReceiver.complete(receivedMessage1.getLockToken(), transaction);
@@ -194,7 +194,7 @@ public class QueueSendReceiveTests extends SendReceiveTests {
                 caught = true;
             }
 
-            Assert.assertTrue(caught);
+            Assertions.assertTrue(caught);
 
             this.factory.endTransactionAsync(transaction, false);
         } finally {
@@ -222,11 +222,11 @@ public class QueueSendReceiveTests extends SendReceiveTests {
         this.factory.endTransactionAsync(transaction, true).get();
 
         receivedMessage = this.receiver.receive();
-        Assert.assertNotNull(receivedMessage);
-        Assert.assertEquals("2", receivedMessage.getMessageId());
+        Assertions.assertNotNull(receivedMessage);
+        Assertions.assertEquals("2", receivedMessage.getMessageId());
 
         receivedMessage = this.receiver.receive(TestCommons.SHORT_WAIT_TIME);
-        Assert.assertNull(receivedMessage);
+        Assertions.assertNull(receivedMessage);
     }
 
     @Test
@@ -269,8 +269,8 @@ public class QueueSendReceiveTests extends SendReceiveTests {
 
             intermediateSender.send(message1);
             IMessage receivedMessage = intermediateReceiver.receive();
-            Assert.assertNotNull(receivedMessage);
-            Assert.assertEquals("pk1", receivedMessage.getPartitionKey());
+            Assertions.assertNotNull(receivedMessage);
+            Assertions.assertEquals("pk1", receivedMessage.getPartitionKey());
 
             // If the transaction succeeds, then all the operations occurred on the same partition.
             TransactionContext transaction = this.factory.startTransactionAsync().get();
@@ -281,12 +281,12 @@ public class QueueSendReceiveTests extends SendReceiveTests {
 
             // Assert that first message indeed completed.
             receivedMessage = intermediateReceiver.receive();
-            Assert.assertNull(receivedMessage);
+            Assertions.assertNull(receivedMessage);
 
             // Assert that second message reached its destination.
             IMessage receivedMessage1 = destination1Receiver.receive();
-            Assert.assertNotNull(receivedMessage1);
-            Assert.assertEquals("pk2", receivedMessage1.getPartitionKey());
+            Assertions.assertNotNull(receivedMessage1);
+            Assertions.assertEquals("pk2", receivedMessage1.getPartitionKey());
 
             // Assert destination1 message indeed used partitionKey in the destination entity.
             Message destination1Message = new Message("message");
@@ -299,8 +299,8 @@ public class QueueSendReceiveTests extends SendReceiveTests {
 
             // Assert that third message reached its destination.
             IMessage receivedMessage2 = destination2Receiver.receive();
-            Assert.assertNotNull(receivedMessage2);
-            Assert.assertEquals("pk3", receivedMessage2.getPartitionKey());
+            Assertions.assertNotNull(receivedMessage2);
+            Assertions.assertEquals("pk3", receivedMessage2.getPartitionKey());
             destination2Receiver.complete(receivedMessage2.getLockToken());
 
             // Cleanup
@@ -351,13 +351,13 @@ public class QueueSendReceiveTests extends SendReceiveTests {
             sequenceNum = destination1ViaSender.scheduleMessage(message2, Instant.now().plusSeconds(2), transaction);
             transaction.commit();
 
-            Assert.assertNotEquals(0, sequenceNum);
+            Assertions.assertNotEquals(0, sequenceNum);
 
             IMessage message = destinationReceiver.receive();
-            Assert.assertEquals("2", message.getMessageId());
+            Assertions.assertEquals("2", message.getMessageId());
 
             message = destinationReceiver.receive(Duration.ofSeconds(5));
-            Assert.assertNull(message);
+            Assertions.assertNull(message);
         } finally {
             destination1ViaSender.close();
             destinationReceiver.close();

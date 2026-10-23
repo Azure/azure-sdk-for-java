@@ -6,10 +6,13 @@ package com.azure.resourcemanager.durabletask.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.durabletask.fluent.models.SchedulerInner;
+import com.azure.resourcemanager.durabletask.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.durabletask.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.durabletask.models.PublicNetworkAccess;
 import com.azure.resourcemanager.durabletask.models.SchedulerProperties;
 import com.azure.resourcemanager.durabletask.models.SchedulerSku;
 import com.azure.resourcemanager.durabletask.models.SchedulerSkuName;
+import com.azure.resourcemanager.durabletask.models.UserAssignedIdentity;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,30 +22,38 @@ public final class SchedulerInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SchedulerInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"endpoint\":\"pzvgnwzsymglzufc\",\"ipAllowlist\":[\"kohdbiha\"],\"sku\":{\"name\":\"Consumption\",\"capacity\":1908195338,\"redundancyState\":\"None\"},\"publicNetworkAccess\":\"Enabled\",\"privateEndpointConnections\":[{\"properties\":{\"groupIds\":[\"th\",\"qhabifpikxwcz\",\"yscnpqxu\"],\"privateEndpoint\":{\"id\":\"y\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"b\",\"actionsRequired\":\"rkxvdum\"},\"provisioningState\":\"Succeeded\"},\"id\":\"fwvuk\",\"name\":\"gaudcc\",\"type\":\"nhsjcnyej\"}]},\"location\":\"ryhtnapczwlokjy\",\"tags\":{\"nchgej\":\"kvnipjoxz\",\"huxinpmqnj\":\"podmailzydehojwy\",\"vcputegj\":\"qwixjspro\"},\"id\":\"wmfdatscmdvpjhul\",\"name\":\"uuvmkjozkrwfnd\",\"type\":\"odjpslwejd\"}")
+            "{\"properties\":{\"provisioningState\":\"Updating\",\"endpoint\":\"sounqecanoaeu\",\"ipAllowlist\":[\"hy\",\"ltrpmopj\",\"cma\",\"u\"],\"sku\":{\"name\":\"Dedicated\",\"capacity\":607140678,\"redundancyState\":\"Zone\"},\"publicNetworkAccess\":\"Disabled\",\"privateEndpointConnections\":[{\"properties\":{\"groupIds\":[\"cpkvxodp\"],\"privateEndpoint\":{\"id\":\"myzydagfuaxbez\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"kktwhrdxw\",\"actionsRequired\":\"wqsmbsur\"},\"provisioningState\":\"Failed\"},\"id\":\"o\",\"name\":\"yocf\",\"type\":\"fksymddystki\"},{\"properties\":{\"groupIds\":[\"qyud\",\"o\",\"rq\",\"b\"],\"privateEndpoint\":{\"id\":\"zvyifqrvkdvj\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"mvvd\",\"actionsRequired\":\"atkpnp\"},\"provisioningState\":\"Deleting\"},\"id\":\"xbczwtruwiqz\",\"name\":\"qjvsovmyokacs\",\"type\":\"kwlhzdo\"},{\"properties\":{\"groupIds\":[\"mflbv\",\"nchrkcciww\",\"juqk\"],\"privateEndpoint\":{\"id\":\"ajiwkuo\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"ghsauuimjmvxied\",\"actionsRequired\":\"gidyjrrf\"},\"provisioningState\":\"Succeeded\"},\"id\":\"svexcsonpclhoco\",\"name\":\"slkevle\",\"type\":\"gz\"},{\"properties\":{\"groupIds\":[\"fmvfaxkffeiit\",\"lvmezyvshxmzsbbz\",\"ggi\"],\"privateEndpoint\":{\"id\":\"wburvjxxjnspydpt\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"kouknvudwtiu\",\"actionsRequired\":\"ldngkpoci\"},\"provisioningState\":\"Succeeded\"},\"id\":\"xoegukgjnpiucgy\",\"name\":\"evqzntypmrbp\",\"type\":\"zcdrqjsdpydnfyhx\"}]},\"identity\":{\"principalId\":\"ejzicwifsjtt\",\"tenantId\":\"fbishcbkha\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"agalpbuxwgipwhon\":{\"principalId\":\"a\",\"clientId\":\"p\"},\"uzoqft\":{\"principalId\":\"kgshwa\",\"clientId\":\"ixzbinjeputtmryw\"},\"yav\":{\"principalId\":\"qzrnkcqvyxlwhz\",\"clientId\":\"icohoqqnwvl\"},\"yaxuconuqszfkb\":{\"principalId\":\"heun\",\"clientId\":\"qhgyxzkonocukok\"}}},\"location\":\"pewr\",\"tags\":{\"jektcxsenh\":\"wv\",\"rzpwvlqdqgbiq\":\"lrsf\",\"vf\":\"lihkaetcktvfc\",\"xerf\":\"nkymuctqhjfbebrj\"},\"id\":\"wutttxfvjrbi\",\"name\":\"phxepcyvahf\",\"type\":\"ljkyqxjvuuj\"}")
             .toObject(SchedulerInner.class);
-        Assertions.assertEquals("ryhtnapczwlokjy", model.location());
-        Assertions.assertEquals("kvnipjoxz", model.tags().get("nchgej"));
-        Assertions.assertEquals("kohdbiha", model.properties().ipAllowlist().get(0));
-        Assertions.assertEquals(SchedulerSkuName.CONSUMPTION, model.properties().sku().name());
-        Assertions.assertEquals(1908195338, model.properties().sku().capacity());
-        Assertions.assertEquals(PublicNetworkAccess.ENABLED, model.properties().publicNetworkAccess());
+        Assertions.assertEquals("pewr", model.location());
+        Assertions.assertEquals("wv", model.tags().get("jektcxsenh"));
+        Assertions.assertEquals("hy", model.properties().ipAllowlist().get(0));
+        Assertions.assertEquals(SchedulerSkuName.DEDICATED, model.properties().sku().name());
+        Assertions.assertEquals(607140678, model.properties().sku().capacity());
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED, model.properties().publicNetworkAccess());
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SchedulerInner model = new SchedulerInner().withLocation("ryhtnapczwlokjy")
-            .withTags(mapOf("nchgej", "kvnipjoxz", "huxinpmqnj", "podmailzydehojwy", "vcputegj", "qwixjspro"))
-            .withProperties(new SchedulerProperties().withIpAllowlist(Arrays.asList("kohdbiha"))
-                .withSku(new SchedulerSku().withName(SchedulerSkuName.CONSUMPTION).withCapacity(1908195338))
-                .withPublicNetworkAccess(PublicNetworkAccess.ENABLED));
+        SchedulerInner model = new SchedulerInner().withLocation("pewr")
+            .withTags(
+                mapOf("jektcxsenh", "wv", "rzpwvlqdqgbiq", "lrsf", "vf", "lihkaetcktvfc", "xerf", "nkymuctqhjfbebrj"))
+            .withProperties(new SchedulerProperties().withIpAllowlist(Arrays.asList("hy", "ltrpmopj", "cma", "u"))
+                .withSku(new SchedulerSku().withName(SchedulerSkuName.DEDICATED).withCapacity(607140678))
+                .withPublicNetworkAccess(PublicNetworkAccess.DISABLED))
+            .withIdentity(
+                new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+                    .withUserAssignedIdentities(
+                        mapOf("agalpbuxwgipwhon", new UserAssignedIdentity(), "uzoqft", new UserAssignedIdentity(),
+                            "yav", new UserAssignedIdentity(), "yaxuconuqszfkb", new UserAssignedIdentity())));
         model = BinaryData.fromObject(model).toObject(SchedulerInner.class);
-        Assertions.assertEquals("ryhtnapczwlokjy", model.location());
-        Assertions.assertEquals("kvnipjoxz", model.tags().get("nchgej"));
-        Assertions.assertEquals("kohdbiha", model.properties().ipAllowlist().get(0));
-        Assertions.assertEquals(SchedulerSkuName.CONSUMPTION, model.properties().sku().name());
-        Assertions.assertEquals(1908195338, model.properties().sku().capacity());
-        Assertions.assertEquals(PublicNetworkAccess.ENABLED, model.properties().publicNetworkAccess());
+        Assertions.assertEquals("pewr", model.location());
+        Assertions.assertEquals("wv", model.tags().get("jektcxsenh"));
+        Assertions.assertEquals("hy", model.properties().ipAllowlist().get(0));
+        Assertions.assertEquals(SchedulerSkuName.DEDICATED, model.properties().sku().name());
+        Assertions.assertEquals(607140678, model.properties().sku().capacity());
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED, model.properties().publicNetworkAccess());
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
     }
 
     // Use "Map.of" if available

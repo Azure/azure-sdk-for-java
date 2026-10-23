@@ -9,7 +9,7 @@ package com.azure.resourcemanager.enclave.generated;
  */
 public final class TransitHubDeleteSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/TransitHub_Delete.json
+     * x-ms-original-file: 2026-04-01/TransitHub_Delete.json
      */
     /**
      * Sample code: TransitHub_Delete.

@@ -102,7 +102,7 @@
 
 ### Dependency Updates
 
-- Added a new libary entry to the BOM:
+- Added a new library entry to the BOM:
   - [azure-health-deidentification](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/healthdataaiservices/azure-health-deidentification/README.md)
 
 - Updated Azure SDK dependency versions to the latest releases.
