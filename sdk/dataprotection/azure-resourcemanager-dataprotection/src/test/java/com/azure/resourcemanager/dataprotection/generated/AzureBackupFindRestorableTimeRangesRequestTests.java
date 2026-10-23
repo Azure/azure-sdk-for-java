@@ -13,23 +13,22 @@ public final class AzureBackupFindRestorableTimeRangesRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureBackupFindRestorableTimeRangesRequest model = BinaryData
-            .fromString(
-                "{\"sourceDataStoreType\":\"ArchiveStore\",\"startTime\":\"bizikayuhq\",\"endTime\":\"jbsybbqw\"}")
+            .fromString("{\"sourceDataStoreType\":\"VaultStore\",\"startTime\":\"p\",\"endTime\":\"ksrpqv\"}")
             .toObject(AzureBackupFindRestorableTimeRangesRequest.class);
-        Assertions.assertEquals(RestoreSourceDataStoreType.ARCHIVE_STORE, model.sourceDataStoreType());
-        Assertions.assertEquals("bizikayuhq", model.startTime());
-        Assertions.assertEquals("jbsybbqw", model.endTime());
+        Assertions.assertEquals(RestoreSourceDataStoreType.VAULT_STORE, model.sourceDataStoreType());
+        Assertions.assertEquals("p", model.startTime());
+        Assertions.assertEquals("ksrpqv", model.endTime());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureBackupFindRestorableTimeRangesRequest model = new AzureBackupFindRestorableTimeRangesRequest()
-            .withSourceDataStoreType(RestoreSourceDataStoreType.ARCHIVE_STORE)
-            .withStartTime("bizikayuhq")
-            .withEndTime("jbsybbqw");
+            .withSourceDataStoreType(RestoreSourceDataStoreType.VAULT_STORE)
+            .withStartTime("p")
+            .withEndTime("ksrpqv");
         model = BinaryData.fromObject(model).toObject(AzureBackupFindRestorableTimeRangesRequest.class);
-        Assertions.assertEquals(RestoreSourceDataStoreType.ARCHIVE_STORE, model.sourceDataStoreType());
-        Assertions.assertEquals("bizikayuhq", model.startTime());
-        Assertions.assertEquals("jbsybbqw", model.endTime());
+        Assertions.assertEquals(RestoreSourceDataStoreType.VAULT_STORE, model.sourceDataStoreType());
+        Assertions.assertEquals("p", model.startTime());
+        Assertions.assertEquals("ksrpqv", model.endTime());
     }
 }

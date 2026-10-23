@@ -22,6 +22,7 @@ public final class BlobBackupRuleBasedAutoProtectionSettings extends BlobBackupA
     private String objectType = "BlobBackupRuleBasedAutoProtectionSettings";
 
     /*
+     * 
      * Rules are evaluated in the order provided. Inclusion adds candidates; exclusion removes candidates.
      * If no rules are present, all containers are considered eligible when enabled = true.
      */
@@ -44,8 +45,8 @@ public final class BlobBackupRuleBasedAutoProtectionSettings extends BlobBackupA
     }
 
     /**
-     * Get the rules property: Rules are evaluated in the order provided. Inclusion adds candidates; exclusion removes
-     * candidates.
+     * Get the rules property:
+     * Rules are evaluated in the order provided. Inclusion adds candidates; exclusion removes candidates.
      * If no rules are present, all containers are considered eligible when enabled = true.
      * 
      * @return the rules value.
@@ -55,8 +56,8 @@ public final class BlobBackupRuleBasedAutoProtectionSettings extends BlobBackupA
     }
 
     /**
-     * Set the rules property: Rules are evaluated in the order provided. Inclusion adds candidates; exclusion removes
-     * candidates.
+     * Set the rules property:
+     * Rules are evaluated in the order provided. Inclusion adds candidates; exclusion removes candidates.
      * If no rules are present, all containers are considered eligible when enabled = true.
      * 
      * @param rules the rules value to set.

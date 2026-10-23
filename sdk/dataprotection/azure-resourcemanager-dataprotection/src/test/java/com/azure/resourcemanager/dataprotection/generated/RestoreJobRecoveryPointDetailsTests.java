@@ -12,10 +12,10 @@ import org.junit.jupiter.api.Assertions;
 public final class RestoreJobRecoveryPointDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RestoreJobRecoveryPointDetails model = BinaryData
-            .fromString("{\"recoveryPointID\":\"snrbgyefrymsgao\",\"recoveryPointTime\":\"2020-12-25T11:28:29Z\"}")
-            .toObject(RestoreJobRecoveryPointDetails.class);
-        Assertions.assertEquals("snrbgyefrymsgao", model.recoveryPointId());
-        Assertions.assertEquals(OffsetDateTime.parse("2020-12-25T11:28:29Z"), model.recoveryPointTime());
+        RestoreJobRecoveryPointDetails model
+            = BinaryData.fromString("{\"recoveryPointID\":\"oi\",\"recoveryPointTime\":\"2021-03-06T20:05:06Z\"}")
+                .toObject(RestoreJobRecoveryPointDetails.class);
+        Assertions.assertEquals("oi", model.recoveryPointId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-06T20:05:06Z"), model.recoveryPointTime());
     }
 }

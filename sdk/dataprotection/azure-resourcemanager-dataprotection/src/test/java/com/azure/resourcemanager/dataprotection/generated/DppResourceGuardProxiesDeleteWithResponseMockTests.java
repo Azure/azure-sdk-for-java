@@ -27,8 +27,7 @@ public final class DppResourceGuardProxiesDeleteWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.dppResourceGuardProxies()
-            .deleteWithResponse("dtfgxqbawpcbb", "zqcyknap", "ofyuicd", com.azure.core.util.Context.NONE);
+        manager.dppResourceGuardProxies().deleteWithResponse("ad", "yqegx", "iv", com.azure.core.util.Context.NONE);
 
     }
 }

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.dataprotection.generated;
  */
 public final class ResourceGuardsGetDeleteResourceGuardProxyRequestsObjectsSamples {
     /*
-     * x-ms-original-file: 2026-07-01/ResourceGuardCRUD/ListDeleteResourceGuardProxyRequests.json
+     * x-ms-original-file: 2026-08-31-preview/ResourceGuardCRUD/ListDeleteResourceGuardProxyRequests.json
      */
     /**
      * Sample code: List OperationsRequestObject.

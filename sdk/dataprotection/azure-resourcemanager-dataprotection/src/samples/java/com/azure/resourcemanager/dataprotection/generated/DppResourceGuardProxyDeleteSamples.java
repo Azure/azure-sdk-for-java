@@ -9,7 +9,7 @@ package com.azure.resourcemanager.dataprotection.generated;
  */
 public final class DppResourceGuardProxyDeleteSamples {
     /*
-     * x-ms-original-file: 2026-07-01/ResourceGuardProxyCRUD/DeleteResourceGuardProxy.json
+     * x-ms-original-file: 2026-08-31-preview/ResourceGuardProxyCRUD/DeleteResourceGuardProxy.json
      */
     /**
      * Sample code: Delete ResourceGuardProxy.
