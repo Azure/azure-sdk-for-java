@@ -80,7 +80,6 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
     private static final boolean leakDetectionDebuggingEnabled = ResourceLeakDetector.getLevel().ordinal() >=
         ResourceLeakDetector.Level.ADVANCED.ordinal();
     private static final boolean HTTP_CONNECTION_WITHOUT_TLS_ALLOWED = Configs.isHttpConnectionWithoutTLSAllowed();
-    private static final Tag UNKNOWN_SERVICE_ENDPOINT_TAG = Tag.of(TagName.ServiceEndpoint.toString(), "NONE");
     private static final int GATEWAY_RETRY_WITH_TIMEOUT_IN_SECONDS = 30;
     private static final int STRONG_GATEWAY_RETRY_WITH_TIMEOUT_IN_SECONDS = 60;
     private static final List<String> headersNeedToBeEscaped = Arrays.asList(
@@ -170,42 +169,41 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
     }
 
     public Tag getServiceEndpointMetricTag(URI requestUri) {
-        if (this.clientTelemetryConfig == null) {
+        if (!isServiceEndpointMetricTagEnabled() || requestUri == null) {
             return null;
         }
 
-        ImplementationBridgeHelpers.CosmosClientTelemetryConfigHelper.CosmosClientTelemetryConfigAccessor accessor =
-            ImplementationBridgeHelpers.CosmosClientTelemetryConfigHelper.getCosmosClientTelemetryConfigAccessor();
-        if (!accessor.isClientMetricsEnabled(this.clientTelemetryConfig)
-            || !accessor.getMetricCategories(this.clientTelemetryConfig).contains(MetricCategory.RequestSummary)
-            || !accessor.getMetricTagNames(this.clientTelemetryConfig).contains(TagName.ServiceEndpoint)) {
-            return null;
-        }
+        if (!"https".equalsIgnoreCase(requestUri.getScheme())
+            || requestUri.getRawAuthority() == null
+            || requestUri.getHost() == null) {
 
-        if (requestUri == null) {
-            return UNKNOWN_SERVICE_ENDPOINT_TAG;
+            logger.debug("Cannot create ServiceEndpoint metric tag: destination is not a valid HTTPS endpoint.");
+            return null;
         }
 
         String authority = requestUri.getRawAuthority();
-        if (authority == null || !"https".equalsIgnoreCase(requestUri.getScheme())) {
-            logger.warn("Gateway endpoint for request metrics must be an HTTPS URI with a hostname.");
-            return UNKNOWN_SERVICE_ENDPOINT_TAG;
-        }
-
-        Tag cachedTag = this.serviceEndpointMetricTags.get(authority);
+        Tag cachedTag = serviceEndpointMetricTags.get(authority);
         if (cachedTag != null) {
             return cachedTag;
         }
 
-        if (requestUri.getHost() == null) {
-            logger.warn("Gateway endpoint for request metrics must be an HTTPS URI with a hostname.");
-            return UNKNOWN_SERVICE_ENDPOINT_TAG;
+        return serviceEndpointMetricTags.computeIfAbsent(authority, ignored -> {
+            int port = requestUri.getPort() == -1 ? 443 : requestUri.getPort();
+            String endpoint = requestUri.getHost() + "_" + port;
+            return Tag.of(TagName.ServiceEndpoint.toString(), ClientTelemetryMetrics.escape(endpoint));
+        });
+    }
+
+    private boolean isServiceEndpointMetricTagEnabled() {
+        if (this.clientTelemetryConfig == null) {
+            return false;
         }
 
-        return this.serviceEndpointMetricTags.computeIfAbsent(authority, ignored -> Tag.of(
-            TagName.ServiceEndpoint.toString(),
-            ClientTelemetryMetrics.escape(requestUri.getHost() + "_"
-                + (requestUri.getPort() == -1 ? 443 : requestUri.getPort()))));
+        ImplementationBridgeHelpers.CosmosClientTelemetryConfigHelper.CosmosClientTelemetryConfigAccessor accessor =
+            ImplementationBridgeHelpers.CosmosClientTelemetryConfigHelper.getCosmosClientTelemetryConfigAccessor();
+        return accessor.isClientMetricsEnabled(this.clientTelemetryConfig)
+            && accessor.getMetricCategories(this.clientTelemetryConfig).contains(MetricCategory.RequestSummary)
+            && accessor.getMetricTagNames(this.clientTelemetryConfig).contains(TagName.ServiceEndpoint);
     }
 
     @Override

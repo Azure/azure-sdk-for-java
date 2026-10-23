@@ -71,6 +71,15 @@ public class GatewayEndpointMetricsTest {
     @Test(groups = {"unit"}, dataProvider = "gatewayEndpoints")
     public void gatewayMetersUseDestinationHostAndPort(URI endpoint, String expectedEndpoint) throws Exception {
         try (TestState state = new TestState(CosmosMetricTagName.ALL)) {
+            Tag capturedTag = state.storeModel.getServiceEndpointMetricTag(endpoint);
+            if ("NONE".equals(expectedEndpoint)) {
+                assertThat(capturedTag).isNull();
+                assertThat(FieldUtils.readField(state.storeModel, "serviceEndpointMetricTags", true))
+                    .isEqualTo(Collections.emptyMap());
+            } else {
+                assertThat(capturedTag).isNotNull();
+                assertThat(capturedTag.getValue()).isEqualTo(expectedEndpoint);
+            }
             state.recordGateway(endpoint, 200);
 
             assertThat(state.registry.get(CosmosMetricName.REQUEST_SUMMARY_GATEWAY_REQUESTS.toString())
