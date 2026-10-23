@@ -9,6 +9,7 @@ import com.azure.messaging.servicebus.models.ServiceBusMessageState;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.Symbol;
+import org.apache.qpid.proton.amqp.UnsignedInteger;
 import org.apache.qpid.proton.amqp.messaging.AmqpSequence;
 import org.apache.qpid.proton.amqp.messaging.AmqpValue;
 import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
@@ -16,6 +17,7 @@ import org.apache.qpid.proton.amqp.messaging.Data;
 import org.apache.qpid.proton.amqp.messaging.DeliveryAnnotations;
 import org.apache.qpid.proton.amqp.messaging.Footer;
 import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
+import org.apache.qpid.proton.amqp.messaging.Properties;
 import org.apache.qpid.proton.amqp.messaging.Section;
 import org.apache.qpid.proton.message.Message;
 import org.junit.jupiter.api.Test;
@@ -158,7 +160,8 @@ class ServiceBusReceivedMessageFactoryTest {
     void preservesUnsignedGroupSequence(long groupSequence) {
         Message message = Proton.message();
         message.setBody(new Data(new Binary(BODY)));
-        message.setGroupSequence(groupSequence);
+        message.setProperties(new Properties());
+        message.getProperties().setGroupSequence(UnsignedInteger.valueOf(groupSequence));
         ServiceBusReceivedMessage received = ServiceBusReceivedMessage.fromAmqpMessage(encode(message), null);
         assertEquals(groupSequence, received.getRawAmqpMessage().getProperties().getGroupSequence());
     }

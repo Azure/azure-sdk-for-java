@@ -10,6 +10,8 @@
 
 ### Bugs Fixed
 
+- Preserved an absent AMQP group sequence as null when deserializing received messages.
+
 ### Other Changes
 
 - Added a sample showing how to configure processor drain timeout and allow in-flight message settlement during shutdown.

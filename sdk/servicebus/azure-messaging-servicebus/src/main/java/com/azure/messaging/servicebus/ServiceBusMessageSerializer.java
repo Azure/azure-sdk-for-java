@@ -563,9 +563,9 @@ class ServiceBusMessageSerializer implements MessageSerializer {
         brokeredProperties.setSubject(amqpMessage.getSubject());
         brokeredProperties.setGroupId(amqpMessage.getGroupId());
         brokeredProperties.setContentEncoding(amqpMessage.getContentEncoding());
-        brokeredProperties.setGroupSequence(amqpProperties != null && amqpProperties.getGroupSequence() != null
-            ? amqpProperties.getGroupSequence().longValue()
-            : 0L);
+        brokeredProperties.setGroupSequence(amqpProperties == null || amqpProperties.getGroupSequence() == null
+            ? null
+            : amqpProperties.getGroupSequence().longValue());
         brokeredProperties.setUserId(amqpMessage.getUserId());
 
         // DeliveryAnnotations
