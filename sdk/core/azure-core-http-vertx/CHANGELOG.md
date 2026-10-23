@@ -4,7 +4,7 @@
 
 ### Features Added
 
-- Added support for Vert.x 5.1 and 5.2 while retaining compatibility with Vert.x 4.5 and 5.0.
+- Added support for Vert.x 5.1.1 and 5.2 while retaining compatibility with Vert.x 4.5 and 5.0.
 
 ### Breaking Changes
 
@@ -12,6 +12,8 @@
 
 - Fixed HTTP/2 requests with an explicit `Host` header sending a conflicting URL-derived `:authority`. The override
   now sets `:authority` while the connection still uses the request URL.
+- Fixed streaming responses reading and buffering data without downstream demand. Cancelling response consumption
+  now resets the HTTP exchange without closing unrelated HTTP/2 streams.
 - Fixed timeout resolution to prefer explicit builder values, then builder-specific configuration, then global
   configuration, and finally SDK defaults.
 - Fixed a bug where requests with a streaming body, such as `Flux<ByteBuffer>` or `InputStream`, would never be sent

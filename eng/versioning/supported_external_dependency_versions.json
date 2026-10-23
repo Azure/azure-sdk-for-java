@@ -204,8 +204,8 @@
     { "io.vertx:vertx-core": "5.0.0" }
   ],
   "vertx_5.1": [
-    { "io.vertx:vertx-codegen": "5.1.0" },
-    { "io.vertx:vertx-core": "5.1.0" }
+    { "io.vertx:vertx-codegen": "5.1.1" },
+    { "io.vertx:vertx-core": "5.1.1" }
   ],
   "vertx_5.2": [
     { "io.vertx:vertx-codegen": "5.2.0" },

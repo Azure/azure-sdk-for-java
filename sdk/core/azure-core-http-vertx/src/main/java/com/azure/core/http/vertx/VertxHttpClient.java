@@ -57,6 +57,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import static com.azure.core.http.vertx.implementation.VertxUtils.resetRequest;
+
 /**
  * {@link HttpClient} implementation for the Vert.x {@link io.vertx.core.http.HttpClient}.
  */
@@ -67,16 +69,9 @@ class VertxHttpClient implements HttpClient {
     // other HTTP stacks. RFC 9110 requires a client not to wait indefinitely.
     private static final Duration EXPECT_CONTINUE_TIMEOUT = Duration.ofSeconds(1);
 
-    private static final ReflectiveInvoker REQUEST_RESET;
     private static final ReflectiveInvoker REQUEST_WRITE_HEAD;
     static {
-        // In order to support both Vert.x 4.5 and 5.x reflection is needed to reset an HttpClientRequest.
-        // HttpClientRequest.reset(long, Throwable) is available in both versions, but it returns boolean in 4.5 and
-        // Future<Void> in 5.x, so a call compiled against one version fails with NoSuchMethodError on the other.
         try {
-            Method method = HttpClientRequest.class.getMethod("reset", long.class, Throwable.class);
-            REQUEST_RESET = ReflectionUtils.getMethodInvoker(HttpClientRequest.class, method, false);
-
             // Vert.x 5.1 introduced writeHead() and deprecated sendHead() for removal. Resolve the appropriate method
             // at runtime so the transport can still be compiled and used with Vert.x 4.5 and 5.0.
             Method writeHeadMethod;
@@ -393,16 +388,6 @@ class VertxHttpClient implements HttpClient {
             return (Future<Void>) REQUEST_WRITE_HEAD.invokeWithArguments(vertxRequest);
         } catch (Exception ex) {
             return Future.failedFuture(ex);
-        }
-    }
-
-    private static void resetRequest(HttpClientRequest vertxRequest, long code, Throwable cause) {
-        try {
-            REQUEST_RESET.invokeWithArguments(vertxRequest, code, cause);
-        } catch (Exception ex) {
-            // The request is already being failed with 'cause', so don't let a failed reset replace that error.
-            cause.addSuppressed(ex);
-            LOGGER.atWarning().log("Failed to reset the Vert.x HttpClientRequest.", ex);
         }
     }
 
