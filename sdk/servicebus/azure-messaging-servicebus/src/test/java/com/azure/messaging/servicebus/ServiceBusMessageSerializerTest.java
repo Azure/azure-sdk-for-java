@@ -12,6 +12,7 @@ import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
 import org.apache.qpid.proton.amqp.messaging.DeliveryAnnotations;
 import org.apache.qpid.proton.amqp.messaging.Footer;
 import org.apache.qpid.proton.amqp.messaging.Header;
+import org.apache.qpid.proton.amqp.messaging.Properties;
 import org.apache.qpid.proton.message.Message;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -141,6 +142,23 @@ class ServiceBusMessageSerializerTest {
 
         // Verifying the contents of our message is the same.
         assertEquals(payload, actualMessage.getBody().toString());
+    }
+
+    @Test
+    void deserializeMessageWithoutGroupSequence() {
+        for (boolean hasOtherProperties : new boolean[] { false, true }) {
+            Message message = Proton.message();
+            message.setBody(new AmqpValue("test"));
+            if (hasOtherProperties) {
+                message.setProperties(new Properties());
+                message.getProperties().setTo("destination");
+            }
+
+            ServiceBusReceivedMessage received = serializer.deserialize(message, ServiceBusReceivedMessage.class);
+            Assertions.assertNull(received.getRawAmqpMessage().getProperties().getGroupSequence());
+            Assertions
+                .assertNull(serializer.serialize(new ServiceBusMessage(received)).getProperties().getGroupSequence());
+        }
     }
 
     /**
