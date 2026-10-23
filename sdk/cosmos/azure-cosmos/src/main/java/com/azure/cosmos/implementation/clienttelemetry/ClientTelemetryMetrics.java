@@ -81,6 +81,7 @@ public final class ClientTelemetryMetrics {
     private static final Tag QUERYPLAN_TAG = Tag.of(
         TagName.RequestOperationType.toString(),
         ResourceType.DocumentCollection + "/" + OperationType.QueryPlan);
+    private static final Tag UNKNOWN_SERVICE_ENDPOINT_TAG = Tag.of(TagName.ServiceEndpoint.toString(), "NONE");
 
     private static String convertStackTraceToString(Throwable throwable)
     {
@@ -1173,6 +1174,7 @@ public final class ClientTelemetryMetrics {
             EnumSet<TagName> metricTagNamesForGateway = metricTagNames.clone();
             metricTagNamesForGateway.remove(TagName.RegionName);
             metricTagNamesForGateway.remove(TagName.ServiceAddress);
+            // Add the captured ServiceEndpoint tag below instead of rebuilding it in createRequestTags.
             metricTagNamesForGateway.remove(TagName.ServiceEndpoint);
             metricTagNamesForGateway.remove(TagName.PartitionId);
             metricTagNamesForGateway.remove(TagName.ReplicaId);
@@ -1190,6 +1192,10 @@ public final class ClientTelemetryMetrics {
                         null,
                         null)
                 );
+                if (this.metricTagNames.contains(TagName.ServiceEndpoint)) {
+                    Tag endpointTag = gatewayStats.getServiceEndpointMetricTag();
+                    requestTags = requestTags.and(endpointTag != null ? endpointTag : UNKNOWN_SERVICE_ENDPOINT_TAG);
+                }
 
                 recordRequestPayloadSizes(
                     ctx,

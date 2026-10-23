@@ -3,6 +3,7 @@
 ### 4.84.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added the opt-in `ServiceEndpoint` metric tag to Gateway request metrics, identifying the HTTPS destination hostname and port without resource paths or query strings.
 
 #### Breaking Changes
 
