@@ -12,10 +12,10 @@ public final class CertificateListDescriptionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CertificateListDescriptionInner model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"subject\":\"ekkezzikhlyfjh\",\"expiry\":\"Fri, 19 Feb 2021 20:13:34 GMT\",\"thumbprint\":\"gebdunygaeq\",\"isVerified\":true,\"created\":\"Sat, 07 Aug 2021 13:11:54 GMT\",\"updated\":\"Wed, 13 Jan 2021 01:50:50 GMT\",\"certificate\":\"xllrxcyjm\",\"certificateAuthorityResourceId\":\"dsuvarmywdmjsjqb\"},\"etag\":\"hyxxrwlycoduhpk\",\"id\":\"gymare\",\"name\":\"n\",\"type\":\"jxqugjhky\"},{\"properties\":{\"subject\":\"eddgssofw\",\"expiry\":\"Thu, 12 Aug 2021 00:48:32 GMT\",\"thumbprint\":\"alkrmn\",\"isVerified\":false,\"created\":\"Fri, 03 Dec 2021 00:29:17 GMT\",\"updated\":\"Thu, 16 Sep 2021 05:14:56 GMT\",\"certificate\":\"qudf\",\"certificateAuthorityResourceId\":\"yxbaaabjyvayf\"},\"etag\":\"m\",\"id\":\"rtuzqogs\",\"name\":\"xnevfdnwn\",\"type\":\"mewzsyyc\"},{\"properties\":{\"subject\":\"soibjudpfrx\",\"expiry\":\"Wed, 06 Oct 2021 21:06:57 GMT\",\"thumbprint\":\"zvaytdwkqbr\",\"isVerified\":true,\"created\":\"Wed, 20 Jan 2021 18:23:45 GMT\",\"updated\":\"Sat, 19 Jun 2021 07:52:19 GMT\",\"certificate\":\"xiilivpdtiirqt\",\"certificateAuthorityResourceId\":\"oaxoruzfgsqu\"},\"etag\":\"xrxxlep\",\"id\":\"amxjezwlw\",\"name\":\"wxuqlcvydypatdoo\",\"type\":\"ojknio\"}]}")
+            "{\"value\":[{\"properties\":{\"subject\":\"aeaeneqnzarrw\",\"expiry\":\"Fri, 21 May 2021 16:07:38 GMT\",\"thumbprint\":\"ijfqkacewiipfp\",\"isVerified\":false,\"created\":\"Fri, 06 Aug 2021 09:42:10 GMT\",\"updated\":\"Sun, 24 Jan 2021 11:42:32 GMT\",\"certificate\":\"f\",\"certificateAuthorityResourceId\":\"hqkvpuvksgplsak\"},\"etag\":\"n\",\"id\":\"ynl\",\"name\":\"ph\",\"type\":\"op\"},{\"properties\":{\"subject\":\"lqiyntorzihl\",\"expiry\":\"Sat, 03 Jul 2021 10:26:48 GMT\",\"thumbprint\":\"swsrms\",\"isVerified\":false,\"created\":\"Tue, 30 Mar 2021 08:07:03 GMT\",\"updated\":\"Fri, 08 Oct 2021 11:48:09 GMT\",\"certificate\":\"hckqqzqioxiy\",\"certificateAuthorityResourceId\":\"iizynkedyatrwyh\"},\"etag\":\"ibzyhwitsmyp\",\"id\":\"npcdpumnzgm\",\"name\":\"z\",\"type\":\"mabiknsorgjhxb\"}]}")
             .toObject(CertificateListDescriptionInner.class);
-        Assertions.assertTrue(model.value().get(0).properties().isVerified());
-        Assertions.assertEquals("xllrxcyjm", model.value().get(0).properties().certificate());
-        Assertions.assertEquals("dsuvarmywdmjsjqb", model.value().get(0).properties().certificateAuthorityResourceId());
+        Assertions.assertFalse(model.value().get(0).properties().isVerified());
+        Assertions.assertEquals("f", model.value().get(0).properties().certificate());
+        Assertions.assertEquals("hqkvpuvksgplsak", model.value().get(0).properties().certificateAuthorityResourceId());
     }
 }

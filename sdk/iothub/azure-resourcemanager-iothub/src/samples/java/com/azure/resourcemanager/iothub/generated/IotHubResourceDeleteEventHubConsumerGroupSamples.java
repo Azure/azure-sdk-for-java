@@ -9,7 +9,7 @@ package com.azure.resourcemanager.iothub.generated;
  */
 public final class IotHubResourceDeleteEventHubConsumerGroupSamples {
     /*
-     * x-ms-original-file: 2026-10-01-preview/iothub_deleteconsumergroup.json
+     * x-ms-original-file: 2026-11-01/iothub_deleteconsumergroup.json
      */
     /**
      * Sample code: IotHubResource_DeleteEventHubConsumerGroup.

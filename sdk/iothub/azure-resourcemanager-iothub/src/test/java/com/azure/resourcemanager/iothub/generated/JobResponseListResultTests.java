@@ -12,8 +12,8 @@ public final class JobResponseListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         JobResponseListResult model = BinaryData.fromString(
-            "{\"value\":[{\"jobId\":\"zumveekgpwo\",\"startTimeUtc\":\"Sat, 16 Jan 2021 14:31:18 GMT\",\"endTimeUtc\":\"Sun, 10 Oct 2021 22:25:32 GMT\",\"type\":\"writeDeviceProperties\",\"status\":\"failed\",\"failureReason\":\"ofd\",\"statusMessage\":\"uusdttouwa\",\"parentJobId\":\"ekqvkeln\"},{\"jobId\":\"vbxwyjsflhh\",\"startTimeUtc\":\"Sun, 20 Dec 2020 13:53:44 GMT\",\"endTimeUtc\":\"Sat, 06 Feb 2021 03:40:59 GMT\",\"type\":\"export\",\"status\":\"completed\",\"failureReason\":\"xyawj\",\"statusMessage\":\"aq\",\"parentJobId\":\"lyjpk\"},{\"jobId\":\"dzyexznelixh\",\"startTimeUtc\":\"Thu, 26 Aug 2021 08:15:37 GMT\",\"endTimeUtc\":\"Fri, 07 May 2021 02:19:01 GMT\",\"type\":\"factoryResetDevice\",\"status\":\"enqueued\",\"failureReason\":\"xknalaulppg\",\"statusMessage\":\"tpnapnyiropuhpig\",\"parentJobId\":\"gylgqgitxmedjvcs\"}],\"nextLink\":\"n\"}")
+            "{\"value\":[{\"jobId\":\"o\",\"startTimeUtc\":\"Tue, 30 Mar 2021 09:51:22 GMT\",\"endTimeUtc\":\"Wed, 12 May 2021 18:53:43 GMT\",\"type\":\"writeDeviceProperties\",\"status\":\"failed\",\"failureReason\":\"fj\",\"statusMessage\":\"njbkcnxdhbttkph\",\"parentJobId\":\"pnvjtoqnermclf\"},{\"jobId\":\"phoxus\",\"startTimeUtc\":\"Fri, 26 Feb 2021 20:34:01 GMT\",\"endTimeUtc\":\"Mon, 01 Feb 2021 08:33:04 GMT\",\"type\":\"updateDeviceConfiguration\",\"status\":\"unknown\",\"failureReason\":\"bjtazqugxywpmu\",\"statusMessage\":\"fjz\",\"parentJobId\":\"qkqujidsu\"},{\"jobId\":\"nobglaocq\",\"startTimeUtc\":\"Tue, 07 Dec 2021 11:44:31 GMT\",\"endTimeUtc\":\"Mon, 28 Dec 2020 11:59:00 GMT\",\"type\":\"readDeviceProperties\",\"status\":\"running\",\"failureReason\":\"ytlmoyrxvwfud\",\"statusMessage\":\"zntxhdz\",\"parentJobId\":\"rqjbhckfrl\"}],\"nextLink\":\"xsbkyvpyca\"}")
             .toObject(JobResponseListResult.class);
-        Assertions.assertEquals("n", model.nextLink());
+        Assertions.assertEquals("xsbkyvpyca", model.nextLink());
     }
 }
