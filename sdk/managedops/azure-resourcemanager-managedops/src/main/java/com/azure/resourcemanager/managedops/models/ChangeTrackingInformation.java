@@ -26,6 +26,11 @@ public final class ChangeTrackingInformation implements JsonSerializable<ChangeT
      */
     private EnablementState enablementStatus;
 
+    /*
+     * Optional error message if the service is in Failed state.
+     */
+    private ErrorDetails errorDetails;
+
     /**
      * Creates an instance of ChangeTrackingInformation class.
      */
@@ -51,6 +56,15 @@ public final class ChangeTrackingInformation implements JsonSerializable<ChangeT
     }
 
     /**
+     * Get the errorDetails property: Optional error message if the service is in Failed state.
+     * 
+     * @return the errorDetails value.
+     */
+    public ErrorDetails errorDetails() {
+        return this.errorDetails;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -59,6 +73,7 @@ public final class ChangeTrackingInformation implements JsonSerializable<ChangeT
         jsonWriter.writeStringField("dcrId", this.dcrId);
         jsonWriter.writeStringField("enablementStatus",
             this.enablementStatus == null ? null : this.enablementStatus.toString());
+        jsonWriter.writeJsonField("errorDetails", this.errorDetails);
         return jsonWriter.writeEndObject();
     }
 
@@ -83,6 +98,8 @@ public final class ChangeTrackingInformation implements JsonSerializable<ChangeT
                 } else if ("enablementStatus".equals(fieldName)) {
                     deserializedChangeTrackingInformation.enablementStatus
                         = EnablementState.fromString(reader.getString());
+                } else if ("errorDetails".equals(fieldName)) {
+                    deserializedChangeTrackingInformation.errorDetails = ErrorDetails.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

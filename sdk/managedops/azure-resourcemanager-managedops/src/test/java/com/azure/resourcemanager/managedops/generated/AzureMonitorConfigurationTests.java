@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class AzureMonitorConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzureMonitorConfiguration model = BinaryData.fromString("{\"azureMonitorWorkspaceId\":\"hqtrgqjbpf\"}")
-            .toObject(AzureMonitorConfiguration.class);
-        Assertions.assertEquals("hqtrgqjbpf", model.azureMonitorWorkspaceId());
+        AzureMonitorConfiguration model
+            = BinaryData.fromString("{\"azureMonitorWorkspaceId\":\"o\"}").toObject(AzureMonitorConfiguration.class);
+        Assertions.assertEquals("o", model.azureMonitorWorkspaceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureMonitorConfiguration model = new AzureMonitorConfiguration().withAzureMonitorWorkspaceId("hqtrgqjbpf");
+        AzureMonitorConfiguration model = new AzureMonitorConfiguration().withAzureMonitorWorkspaceId("o");
         model = BinaryData.fromObject(model).toObject(AzureMonitorConfiguration.class);
-        Assertions.assertEquals("hqtrgqjbpf", model.azureMonitorWorkspaceId());
+        Assertions.assertEquals("o", model.azureMonitorWorkspaceId());
     }
 }
