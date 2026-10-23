@@ -4,7 +4,7 @@
 
 ### Features Added
 
-- Added support for Vert.x 5.1 and 5.2 while retaining compatibility with Vert.x 4.5 and 5.0.
+- Added support for Vert.x 5.1.1 and 5.2 while retaining compatibility with Vert.x 4.5 and 5.0.
 
 ### Breaking Changes
 
