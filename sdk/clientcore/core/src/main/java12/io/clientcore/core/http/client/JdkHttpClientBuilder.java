@@ -14,6 +14,7 @@ import javax.net.ssl.SSLContext;
 import java.io.IOException;
 import java.io.Reader;
 import java.net.Authenticator;
+import java.net.InetSocketAddress;
 import java.net.PasswordAuthentication;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -179,6 +180,8 @@ public class JdkHttpClientBuilder {
 
     /**
      * Sets the proxy.
+     * If credentials are configured, they are used only for authentication requests from the configured proxy host
+     * and port, not from destination servers.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -304,7 +307,8 @@ public class JdkHttpClientBuilder {
 
             if (buildProxyOptions.getUsername() != null) {
                 httpClientBuilder.authenticator(
-                    new ProxyAuthenticator(buildProxyOptions.getUsername(), buildProxyOptions.getPassword()));
+                    new ProxyAuthenticator(buildProxyOptions.getAddress(), buildProxyOptions.getUsername(),
+                        buildProxyOptions.getPassword()));
             }
         }
 
@@ -356,16 +360,23 @@ public class JdkHttpClientBuilder {
     }
 
     private static class ProxyAuthenticator extends Authenticator {
+        private final InetSocketAddress proxyAddress;
         private final String userName;
         private final String password;
 
-        ProxyAuthenticator(String userName, String password) {
+        ProxyAuthenticator(InetSocketAddress proxyAddress, String userName, String password) {
+            this.proxyAddress = proxyAddress;
             this.userName = userName;
             this.password = password;
         }
 
         @Override
         protected PasswordAuthentication getPasswordAuthentication() {
+            if (getRequestorType() != RequestorType.PROXY
+                || getRequestingPort() != proxyAddress.getPort()
+                || !proxyAddress.getHostString().equalsIgnoreCase(getRequestingHost())) {
+                return null;
+            }
             return new PasswordAuthentication(this.userName, password.toCharArray());
         }
     }
