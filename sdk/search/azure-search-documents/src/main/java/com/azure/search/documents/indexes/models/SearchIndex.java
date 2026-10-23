@@ -610,6 +610,7 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeArrayField("fields", this.fields, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeJsonField("graphProfile", this.graphProfile);
         jsonWriter.writeArrayField("scoringProfiles", this.scoringProfiles,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("defaultScoringProfile", this.defaultScoringProfile);
@@ -627,6 +628,7 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
         jsonWriter.writeStringField("permissionFilterOption",
             this.permissionFilterOption == null ? null : this.permissionFilterOption.toString());
         jsonWriter.writeJsonField("sharePointConnectorAppRegistration", this.sharePointConnectorAppRegistration);
+        jsonWriter.writeJsonField("oneLakeSecuritySource", this.oneLakeSecuritySource);
         jsonWriter.writeStringField("@odata.etag", this.eTag);
         return jsonWriter.writeEndObject();
     }
@@ -646,6 +648,7 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
             String name = null;
             List<SearchField> fields = null;
             String description = null;
+            GraphProfile graphProfile = null;
             List<ScoringProfile> scoringProfiles = null;
             String defaultScoringProfile = null;
             CorsOptions corsOptions = null;
@@ -661,6 +664,7 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
             VectorSearch vectorSearch = null;
             SearchIndexPermissionFilterOption permissionFilterOption = null;
             SharePointConnectorAppRegistration sharePointConnectorAppRegistration = null;
+            OneLakeSecuritySource oneLakeSecuritySource = null;
             String eTag = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -671,6 +675,8 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
                     fields = reader.readArray(reader1 -> SearchField.fromJson(reader1));
                 } else if ("description".equals(fieldName)) {
                     description = reader.getString();
+                } else if ("graphProfile".equals(fieldName)) {
+                    graphProfile = GraphProfile.fromJson(reader);
                 } else if ("scoringProfiles".equals(fieldName)) {
                     scoringProfiles = reader.readArray(reader1 -> ScoringProfile.fromJson(reader1));
                 } else if ("defaultScoringProfile".equals(fieldName)) {
@@ -701,6 +707,8 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
                     permissionFilterOption = SearchIndexPermissionFilterOption.fromString(reader.getString());
                 } else if ("sharePointConnectorAppRegistration".equals(fieldName)) {
                     sharePointConnectorAppRegistration = SharePointConnectorAppRegistration.fromJson(reader);
+                } else if ("oneLakeSecuritySource".equals(fieldName)) {
+                    oneLakeSecuritySource = OneLakeSecuritySource.fromJson(reader);
                 } else if ("@odata.etag".equals(fieldName)) {
                     eTag = reader.getString();
                 } else {
@@ -709,6 +717,7 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
             }
             SearchIndex deserializedSearchIndex = new SearchIndex(name, fields);
             deserializedSearchIndex.description = description;
+            deserializedSearchIndex.graphProfile = graphProfile;
             deserializedSearchIndex.scoringProfiles = scoringProfiles;
             deserializedSearchIndex.defaultScoringProfile = defaultScoringProfile;
             deserializedSearchIndex.corsOptions = corsOptions;
@@ -724,6 +733,7 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
             deserializedSearchIndex.vectorSearch = vectorSearch;
             deserializedSearchIndex.permissionFilterOption = permissionFilterOption;
             deserializedSearchIndex.sharePointConnectorAppRegistration = sharePointConnectorAppRegistration;
+            deserializedSearchIndex.oneLakeSecuritySource = oneLakeSecuritySource;
             deserializedSearchIndex.eTag = eTag;
             return deserializedSearchIndex;
         });
@@ -790,6 +800,70 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
     public SearchIndex
         setSharePointConnectorAppRegistration(SharePointConnectorAppRegistration sharePointConnectorAppRegistration) {
         this.sharePointConnectorAppRegistration = sharePointConnectorAppRegistration;
+        return this;
+    }
+
+    /*
+     * Maps edge-list graph roles to this index's fields. Required for search.graph; omitted on ordinary document
+     * indexes.
+     */
+    @Generated
+    private GraphProfile graphProfile;
+
+    /*
+     * Identifies the Microsoft Fabric OneLake lakehouse that the index's documents originate from. Required when any
+     * field uses the 'oneLakeParentFolders' or 'oneLakeLakehouseId' permission filter.
+     */
+    @Generated
+    private OneLakeSecuritySource oneLakeSecuritySource;
+
+    /**
+     * Get the graphProfile property: Maps edge-list graph roles to this index's fields. Required for search.graph;
+     * omitted on ordinary document indexes.
+     *
+     * @return the graphProfile value.
+     */
+    @Generated
+    public GraphProfile getGraphProfile() {
+        return this.graphProfile;
+    }
+
+    /**
+     * Set the graphProfile property: Maps edge-list graph roles to this index's fields. Required for search.graph;
+     * omitted on ordinary document indexes.
+     *
+     * @param graphProfile the graphProfile value to set.
+     * @return the SearchIndex object itself.
+     */
+    @Generated
+    public SearchIndex setGraphProfile(GraphProfile graphProfile) {
+        this.graphProfile = graphProfile;
+        return this;
+    }
+
+    /**
+     * Get the oneLakeSecuritySource property: Identifies the Microsoft Fabric OneLake lakehouse that the index's
+     * documents originate from. Required when any field uses the 'oneLakeParentFolders' or 'oneLakeLakehouseId'
+     * permission filter.
+     *
+     * @return the oneLakeSecuritySource value.
+     */
+    @Generated
+    public OneLakeSecuritySource getOneLakeSecuritySource() {
+        return this.oneLakeSecuritySource;
+    }
+
+    /**
+     * Set the oneLakeSecuritySource property: Identifies the Microsoft Fabric OneLake lakehouse that the index's
+     * documents originate from. Required when any field uses the 'oneLakeParentFolders' or 'oneLakeLakehouseId'
+     * permission filter.
+     *
+     * @param oneLakeSecuritySource the oneLakeSecuritySource value to set.
+     * @return the SearchIndex object itself.
+     */
+    @Generated
+    public SearchIndex setOneLakeSecuritySource(OneLakeSecuritySource oneLakeSecuritySource) {
+        this.oneLakeSecuritySource = oneLakeSecuritySource;
         return this;
     }
 }

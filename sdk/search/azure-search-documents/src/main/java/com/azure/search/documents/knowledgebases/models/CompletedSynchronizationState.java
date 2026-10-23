@@ -154,6 +154,7 @@ public final class CompletedSynchronizationState implements JsonSerializable<Com
             int itemsUpdatesProcessed = 0;
             int itemsUpdatesFailed = 0;
             int itemsSkipped = 0;
+            KnowledgeSourceGraphStatistics graphStatistics = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -169,12 +170,33 @@ public final class CompletedSynchronizationState implements JsonSerializable<Com
                     itemsUpdatesFailed = reader.getInt();
                 } else if ("itemsSkipped".equals(fieldName)) {
                     itemsSkipped = reader.getInt();
+                } else if ("graphStatistics".equals(fieldName)) {
+                    graphStatistics = KnowledgeSourceGraphStatistics.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
-            return new CompletedSynchronizationState(startTime, endTime, itemsUpdatesProcessed, itemsUpdatesFailed,
-                itemsSkipped);
+            CompletedSynchronizationState deserializedCompletedSynchronizationState = new CompletedSynchronizationState(
+                startTime, endTime, itemsUpdatesProcessed, itemsUpdatesFailed, itemsSkipped);
+            deserializedCompletedSynchronizationState.graphStatistics = graphStatistics;
+            return deserializedCompletedSynchronizationState;
         });
+    }
+
+    /*
+     * Graph extraction statistics for this synchronization. Omitted when no graph extraction took place.
+     */
+    @Generated
+    private KnowledgeSourceGraphStatistics graphStatistics;
+
+    /**
+     * Get the graphStatistics property: Graph extraction statistics for this synchronization. Omitted when no graph
+     * extraction took place.
+     *
+     * @return the graphStatistics value.
+     */
+    @Generated
+    public KnowledgeSourceGraphStatistics getGraphStatistics() {
+        return this.graphStatistics;
     }
 }

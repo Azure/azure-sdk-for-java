@@ -60,4 +60,21 @@ public final class IndexerPermissionOption extends ExpandableStringEnum<IndexerP
     public static Collection<IndexerPermissionOption> values() {
         return values(IndexerPermissionOption.class);
     }
+
+    /**
+     * For OneLake data sources only, ingest all ancestor folder paths from '/Files' through the immediate parent,
+     * excluding the file name, as the string collection 'metadata_onelake_parent_folders'. Use indexer fieldMappings to
+     * map this source metadata to a filterable Collection(Edm.String) field with permissionFilter
+     * 'oneLakeParentFolders'; index projections use source '/document/metadata_onelake_parent_folders'. The index must
+     * also specify 'oneLakeSecuritySource'.
+     */
+    @Generated
+    public static final IndexerPermissionOption ONE_LAKE_PARENT_FOLDERS = fromString("oneLakeParentFolders");
+
+    /**
+     * For OneLake data sources only, ingest the source item's lakehouse ID for mapping to an index field with
+     * permissionFilter 'oneLakeLakehouseId'. The index must also specify 'oneLakeSecuritySource'.
+     */
+    @Generated
+    public static final IndexerPermissionOption ONE_LAKE_LAKEHOUSE_ID = fromString("oneLakeLakehouseId");
 }
