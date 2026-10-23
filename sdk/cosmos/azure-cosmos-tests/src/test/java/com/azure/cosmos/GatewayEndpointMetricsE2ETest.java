@@ -6,6 +6,7 @@ package com.azure.cosmos;
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
+import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.clienttelemetry.TagName;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
@@ -18,6 +19,14 @@ import com.azure.cosmos.models.CosmosMetricTagName;
 import com.azure.cosmos.models.CosmosMicrometerMetricsOptions;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.rx.TestSuiteBase;
+import com.azure.cosmos.test.faultinjection.CosmosFaultInjectionHelper;
+import com.azure.cosmos.test.faultinjection.FaultInjectionConditionBuilder;
+import com.azure.cosmos.test.faultinjection.FaultInjectionConnectionType;
+import com.azure.cosmos.test.faultinjection.FaultInjectionOperationType;
+import com.azure.cosmos.test.faultinjection.FaultInjectionResultBuilders;
+import com.azure.cosmos.test.faultinjection.FaultInjectionRule;
+import com.azure.cosmos.test.faultinjection.FaultInjectionRuleBuilder;
+import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.micrometer.core.instrument.Counter;
@@ -36,7 +45,9 @@ import reactor.core.publisher.Mono;
 import java.net.URI;
 import java.time.Duration;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -88,6 +99,16 @@ public class GatewayEndpointMetricsE2ETest extends TestSuiteBase {
         validateGatewayRequestMetrics(true);
     }
 
+    @Test(groups = {"fast"}, timeOut = SETUP_TIMEOUT)
+    public void computeGatewayRetryIsCapturedInEndpointMetrics() {
+        validateRetryMetrics(false);
+    }
+
+    @Test(groups = {"thinclient", "thinclientEndpointProbe"}, timeOut = SETUP_TIMEOUT)
+    public void gatewayV2RetryIsCapturedInEndpointMetrics() {
+        validateRetryMetrics(true);
+    }
+
     private CosmosClientBuilder gatewayBuilder(boolean http2Enabled) {
         GatewayConnectionConfig connectionConfig = new GatewayConnectionConfig();
         connectionConfig.getHttp2ConnectionConfig().setEnabled(http2Enabled);
@@ -114,20 +135,7 @@ public class GatewayEndpointMetricsE2ETest extends TestSuiteBase {
                     .buildClient()) {
                     assertThat(client.asyncClient().getConnectionPolicy().getConnectionMode())
                         .isEqualTo(ConnectionMode.GATEWAY);
-                    if (gatewayV2) {
-                        assertThat(Configs.isThinClientEnabled())
-                            .as("GatewayV2 must not be explicitly disabled by the test environment")
-                            .isNotEqualTo(Boolean.FALSE);
-                        if (Configs.isThinClientEnabled() == null) {
-                            GlobalEndpointManager endpointManager = BridgeInternal.getContextClient(client.asyncClient())
-                                .getGlobalEndpointManager();
-                            Mono.delay(Duration.ZERO)
-                                .repeatWhen(signals -> signals.delayElements(Duration.ofMillis(100)))
-                                .filter(ignored -> Boolean.TRUE.equals(endpointManager.getProxyProbeDecision()))
-                                .next()
-                                .block(Duration.ofSeconds(30));
-                        }
-                    }
+                    awaitGatewayV2Readiness(client, gatewayV2);
                     CosmosContainer container = client.getDatabase(database.getId()).getContainer(CONTAINER_ID);
                     Tag correlationTag = client.asyncClient().getClientCorrelationTag();
 
@@ -168,6 +176,114 @@ public class GatewayEndpointMetricsE2ETest extends TestSuiteBase {
             } finally {
                 registry.close();
             }
+        }
+    }
+
+    private void awaitGatewayV2Readiness(CosmosClient client, boolean gatewayV2) {
+        if (!gatewayV2) {
+            return;
+        }
+        assertThat(Configs.isThinClientEnabled())
+            .as("GatewayV2 must not be explicitly disabled by the test environment")
+            .isNotEqualTo(Boolean.FALSE);
+        if (Configs.isThinClientEnabled() == null) {
+            GlobalEndpointManager endpointManager = BridgeInternal.getContextClient(client.asyncClient())
+                .getGlobalEndpointManager();
+            Mono.delay(Duration.ZERO)
+                .repeatWhen(signals -> signals.delayElements(Duration.ofMillis(100)))
+                .filter(ignored -> Boolean.TRUE.equals(endpointManager.getProxyProbeDecision()))
+                .next()
+                .block(Duration.ofSeconds(30));
+        }
+    }
+
+    private void validateRetryMetrics(boolean gatewayV2) {
+        String id = UUID.randomUUID().toString();
+        ObjectNode document = OBJECT_MAPPER.createObjectNode().put("id", id).put("mypk", id);
+        resourceSetupClient.getDatabase(database.getId()).getContainer(CONTAINER_ID).createItem(document).block();
+
+        SimpleMeterRegistry registry = new SimpleMeterRegistry();
+        FaultInjectionRule rule = new FaultInjectionRuleBuilder("endpoint-metric-retry-" + id)
+            .condition(new FaultInjectionConditionBuilder()
+                .connectionType(FaultInjectionConnectionType.GATEWAY)
+                .operationType(FaultInjectionOperationType.READ_ITEM)
+                .build())
+            .result(FaultInjectionResultBuilders.getResultBuilder(FaultInjectionServerErrorType.TOO_MANY_REQUEST)
+                .times(1).build())
+            .hitLimit(1)
+            .build();
+        try {
+            CosmosMicrometerMetricsOptions metricsOptions = new CosmosMicrometerMetricsOptions()
+                .meterRegistry(registry)
+                .setEnabled(true)
+                .setMetricCategories(CosmosMetricCategory.DEFAULT)
+                .configureDefaultTagNames(CosmosMetricTagName.DEFAULT, CosmosMetricTagName.SERVICE_ENDPOINT)
+                .applyDiagnosticThresholdsForTransportLevelMeters(false);
+            try (CosmosClient client = gatewayBuilder(gatewayV2)
+                .clientTelemetryConfig(new CosmosClientTelemetryConfig().metricsOptions(metricsOptions))
+                .buildClient()) {
+                awaitGatewayV2Readiness(client, gatewayV2);
+                CosmosContainer container = client.getDatabase(database.getId()).getContainer(CONTAINER_ID);
+                PartitionKey partitionKey = new PartitionKey(id);
+                container.readItem(id, partitionKey, ObjectNode.class);
+                CosmosFaultInjectionHelper.configureFaultInjectionRules(
+                    client.asyncClient().getDatabase(database.getId()).getContainer(CONTAINER_ID),
+                    Collections.singletonList(rule)).block();
+
+                Map<Meter.Id, Double> baseline = registry.getMeters().stream()
+                    .filter(meter -> meter instanceof Counter)
+                    .collect(Collectors.toMap(Meter::getId, meter -> ((Counter) meter).count()));
+                CosmosItemResponse<ObjectNode> response = container.readItem(id, partitionKey, ObjectNode.class);
+                assertThat(response.getStatusCode()).isEqualTo(200);
+                assertThat(response.getItem().get("id").asText()).isEqualTo(id);
+                assertThat(rule.getHitCount()).isEqualTo(1);
+                assertThat(response.getDiagnostics().getDiagnosticsContext().getRetryCount()).isGreaterThanOrEqualTo(1);
+
+                List<ClientSideRequestStatistics.GatewayStatistics> attempts = response.getDiagnostics()
+                    .getClientSideRequestStatistics().stream()
+                    .flatMap(statistics -> statistics.getGatewayStatisticsList().stream())
+                    .filter(statistics -> statistics.getResourceType() == ResourceType.Document
+                        && statistics.getOperationType() == OperationType.Read)
+                    .collect(Collectors.toList());
+                assertThat(attempts).hasSizeGreaterThanOrEqualTo(2);
+                assertThat(attempts.stream().filter(attempt -> attempt.getStatusCode() == 429).count()).isEqualTo(1);
+                assertThat(attempts).anySatisfy(attempt -> {
+                    assertThat(attempt.getStatusCode()).isEqualTo(429);
+                    assertThat(attempt.getFaultInjectionRuleId()).isEqualTo(rule.getId());
+                });
+                assertThat(attempts).anySatisfy(attempt -> {
+                    assertThat(attempt.getStatusCode()).isEqualTo(200);
+                    assertThat(attempt.isHttp2()).isEqualTo(gatewayV2);
+                });
+
+                Tag correlationTag = client.asyncClient().getClientCorrelationTag();
+                Map<Tags, Long> expectedCounts = attempts.stream().collect(Collectors.groupingBy(attempt -> {
+                    URI endpoint = attempt.getRequestUri();
+                    assertThat(endpoint).isNotNull();
+                    int port = endpoint.getPort() == -1 ? 443 : endpoint.getPort();
+                    assertThat(port).isEqualTo(gatewayV2 ? 10250 : 443);
+                    Tag endpointTag = attempt.getServiceEndpointMetricTag();
+                    assertThat(endpointTag).isNotNull();
+                    assertThat(endpointTag.getValue()).isEqualTo(endpoint.getHost() + "_" + port);
+                    return Tags.of(correlationTag, endpointTag,
+                        Tag.of(TagName.RequestOperationType.toString(), "Document/Read"),
+                        Tag.of(TagName.RequestStatusCode.toString(),
+                            attempt.getStatusCode() + "/" + attempt.getSubStatusCode()));
+                }, Collectors.counting()));
+                expectedCounts.forEach((tags, expectedCount) -> {
+                    Counter counter = registry.get(CosmosMetricName.REQUEST_SUMMARY_GATEWAY_REQUESTS.toString())
+                        .tags(tags).counter();
+                    assertThat(counter.count() - baseline.getOrDefault(counter.getId(), 0d))
+                        .as("Request counter delta must match recorded attempts for %s", tags)
+                        .isEqualTo(expectedCount.doubleValue());
+                });
+                Counter operations = registry.get(CosmosMetricName.OPERATION_SUMMARY_CALLS.toString())
+                    .tags(Tags.of(correlationTag, Tag.of(TagName.OperationStatusCode.toString(), "200"))).counter();
+                assertThat(operations.count() - baseline.getOrDefault(operations.getId(), 0d)).isEqualTo(1);
+            }
+        } finally {
+            rule.disable();
+            registry.close();
         }
     }
 
