@@ -12,6 +12,23 @@ for the authoritative explanation. Key points:
 - **`current-version`** — the in-development version of the library on `main`.
   This must **not** change during a merge-back.
 
+Patch changelog and merge-back scripts parse this file through
+`eng/scripts/Convert-VersionClientToJson.ps1`. The generated JSON is temporary
+and must not be committed. It is keyed by artifact coordinate:
+
+```json
+{
+  "com.azure:azure-example": {
+    "dependency": "1.0.0",
+    "current": "1.1.0-beta.1"
+  }
+}
+```
+
+Two-column external and unreleased entries have a `null` `current` value.
+`version_client.txt` remains the canonical file and the merge-back writes its
+updated dependency versions back to that file.
+
 ## Resolution algorithm
 
 Compare the file on `main` against the file on `RELEASE_BRANCH`, line by line

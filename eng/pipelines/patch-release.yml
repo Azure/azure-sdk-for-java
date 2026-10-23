@@ -12,7 +12,6 @@ extends:
   parameters:
     TestPipeline: ${{ parameters.TestPipeline }}
     PatchMergeBack: true
-    PatchChangelogPath: patch-changelog.md
     artifacts:
     - name: azure-sdk-template
       groupId: com.azure

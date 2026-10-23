@@ -10,9 +10,6 @@ parameters:
   - name: PatchMergeBack
     type: boolean
     default: false
-  - name: PatchChangelogPath
-    type: string
-    default: patch-changelog.md
     # A different environment will be passed in for service directories that have
     # live tests enabled for release and ReleaseDependsOnLiveTests is false
   - name: Environment
@@ -237,8 +234,6 @@ stages:
                   filePath: eng/scripts/Create-Patch-Mergeback.ps1
                   arguments: >
                     -ReleaseBranch "$(Build.SourceVersion)"
-                    -BaseBranch main
-                    -PatchChangelogPath "${{ parameters.PatchChangelogPath }}"
                     -ExpectedArtifacts $('$(ArtifactsJson)' | ConvertFrom-Json | ForEach-Object { "$($_.groupId):$($_.name)" })
                 displayName: 'Prepare patch merge-back against main'
 
@@ -258,7 +253,6 @@ stages:
               - pwsh: |
                   $ArtifactsList = $('$(ArtifactsJson)' | ConvertFrom-Json | Select-Object name, groupId)
                   $ArtifactsList | Format-Table -Property GroupId, Name | Out-String | Write-Host
-                  python --version
                   foreach($artifact in $ArtifactsList) {
                     python eng/versioning/set_versions.py --increment-version --ai $($artifact.name) --gi $($artifact.groupId)
                   }

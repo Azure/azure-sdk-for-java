@@ -85,9 +85,6 @@ extends:
                 inputs:
                   pwsh: true
                   filePath: eng/scripts/New-PatchChangelog.ps1
-                  arguments: >
-                    -PackagesYmlPath eng/pipelines/patch-release.yml
-                    -OutputPath patch-changelog.md
 
               # Create a PR with the patches prepared
               - template: /eng/common/pipelines/templates/steps/create-pull-request.yml

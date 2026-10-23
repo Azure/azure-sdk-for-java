@@ -9,10 +9,11 @@
 Creates the version, changelog, and generated POM changes for a patch merge-back.
 
 .DESCRIPTION
-Reads patch-changelog.md and version_client.txt from a patch release branch,
-checks out the requested base branch, promotes released patch versions into the
-base branch dependency-version column without changing current-version, inserts
-the exact patch changelog entries, and regenerates POM files.
+Reads patch-changelog.md and a generated JSON representation of version_client.txt
+from a patch release branch, checks out origin/main, promotes released patch
+versions into the main branch dependency-version column without changing
+current-version, inserts the exact patch changelog entries, and regenerates POM
+files.
 
 The script does not commit, push, or create a pull request.
 #>
@@ -21,10 +22,6 @@ The script does not commit, push, or create a pull request.
 param(
     [Parameter(Mandatory = $true)]
     [string]$ReleaseBranch,
-
-    [string]$BaseBranch = 'main',
-
-    [string]$PatchChangelogPath = 'patch-changelog.md',
 
     [string[]]$ExpectedArtifacts = @(),
 
@@ -39,6 +36,7 @@ if (-not $RepoRoot) {
 $RepoRoot = (Resolve-Path $RepoRoot).Path
 
 . (Join-Path $PSScriptRoot 'patch-mergeback-helpers.ps1')
+$versionClientConverterPath = Join-Path $PSScriptRoot 'Convert-VersionClientToJson.ps1'
 
 function Invoke-Git {
     param([Parameter(ValueFromRemainingArguments = $true)][string[]]$Arguments)
@@ -55,9 +53,7 @@ try {
         throw 'Working tree is not clean. Commit, stash, or discard local changes before creating a merge-back.'
     }
 
-    $baseBranchName = $BaseBranch -replace '^refs/heads/', '' -replace '^origin/', ''
-
-    Invoke-Git fetch --quiet origin $baseBranchName
+    Invoke-Git fetch --quiet origin main
 
     if ($ReleaseBranch -match '^[0-9a-fA-F]{40}$') {
         $releaseRef = $ReleaseBranch
@@ -66,14 +62,14 @@ try {
         Invoke-Git fetch --quiet origin $releaseBranchName
         $releaseRef = "origin/$releaseBranchName"
     }
-    $baseRef = "origin/$baseBranchName"
+    $baseRef = 'origin/main'
 
     Invoke-Git rev-parse --verify $releaseRef
     Invoke-Git rev-parse --verify $baseRef
 
-    $manifestContent = git show "${releaseRef}:${PatchChangelogPath}"
+    $manifestContent = git show "${releaseRef}:patch-changelog.md"
     if ($LASTEXITCODE -ne 0) {
-        throw "Could not read '$PatchChangelogPath' from '$releaseRef'."
+        throw "Could not read 'patch-changelog.md' from '$releaseRef'."
     }
     $entries = ConvertFrom-PatchChangelog -Content ($manifestContent -join "`n")
 
@@ -81,19 +77,14 @@ try {
     if ($LASTEXITCODE -ne 0) {
         throw "Could not read eng/versioning/version_client.txt from '$releaseRef'."
     }
-    $releaseVersions = @{}
-    foreach ($line in $releaseVersionContent) {
-        $parsed = ConvertFrom-VersionClientLine -Line $line
-        if ($parsed) {
-            $releaseVersions[$parsed.Artifact] = $parsed
-        }
-    }
+    $releaseVersionJson = & $versionClientConverterPath -Lines $releaseVersionContent
+    $releaseVersions = $releaseVersionJson | ConvertFrom-Json -AsHashtable
     foreach ($entry in $entries) {
         if (-not $releaseVersions.ContainsKey($entry.Artifact)) {
             throw "Manifest artifact '$($entry.Artifact)' was not found on '$releaseRef'."
         }
-        if ($releaseVersions[$entry.Artifact].CurrentVersion -ne $entry.Version) {
-            throw "Manifest version '$($entry.Version)' for '$($entry.Artifact)' does not match release current-version '$($releaseVersions[$entry.Artifact].CurrentVersion)'."
+        if ($releaseVersions[$entry.Artifact].current -ne $entry.Version) {
+            throw "Manifest version '$($entry.Version)' for '$($entry.Artifact)' does not match release current-version '$($releaseVersions[$entry.Artifact].current)'."
         }
     }
 
@@ -122,7 +113,10 @@ try {
 
     $versionClientPath = Join-Path $RepoRoot 'eng/versioning/version_client.txt'
     $versionLines = Get-Content -LiteralPath $versionClientPath
-    $updatedVersionLines = Update-VersionClientForPatch -Lines $versionLines -Entries $entries
+    $versionJson = & $versionClientConverterPath -VersionClientPath $versionClientPath
+    $versions = $versionJson | ConvertFrom-Json -AsHashtable
+    $updatedVersions = Update-VersionClientForPatch -Versions $versions -Entries $entries
+    $updatedVersionLines = Update-VersionClientLines -Lines $versionLines -Versions $updatedVersions -Entries $entries
     $versionEol = if ((Get-Content -LiteralPath $versionClientPath -Raw).Contains("`r`n")) { "`r`n" } else { "`n" }
     [System.IO.File]::WriteAllText($versionClientPath, ($updatedVersionLines -join $versionEol) + $versionEol)
 

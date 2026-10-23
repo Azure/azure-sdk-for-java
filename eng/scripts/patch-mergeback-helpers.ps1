@@ -1,41 +1,13 @@
 # Copyright (c) Microsoft Corporation. All rights reserved.
 # Licensed under the MIT License.
 
-$script:PatchChangelogStartMarker = '<!-- PATCH-CHANGELOG-ENTRY '
+$script:PatchChangelogStartMarker = '<!-- PATCH-CHANGELOG-ENTRY -->'
 $script:PatchChangelogEndMarker = '<!-- /PATCH-CHANGELOG-ENTRY -->'
-
-function ConvertFrom-VersionClientLine {
-    param([string]$Line)
-
-    if ([string]::IsNullOrWhiteSpace($Line) -or $Line.TrimStart().StartsWith('#')) {
-        return $null
-    }
-
-    $body = $Line
-    $comment = ''
-    $commentIndex = $Line.IndexOf(' #')
-    if ($commentIndex -ge 0) {
-        $body = $Line.Substring(0, $commentIndex)
-        $comment = $Line.Substring($commentIndex)
-    }
-
-    $parts = $body.Split(';')
-    if ($parts.Count -ne 3) {
-        return $null
-    }
-
-    return [pscustomobject]@{
-        Artifact = $parts[0].Trim()
-        DependencyVersion = $parts[1].Trim()
-        CurrentVersion = $parts[2].Trim()
-        Comment = $comment
-    }
-}
 
 function ConvertTo-ComparableVersion {
     param([Parameter(Mandatory = $true)][string]$Version)
 
-    if ($Version -notmatch '^(?<major>\d+)\.(?<minor>\d+)\.(?<patch>\d+)(?:-(?<label>[0-9A-Za-z-]+)(?:\.(?<number>\d+))?)?$') {
+    if ($Version -notmatch '^(?<major>\d+)\.(?<minor>\d+)\.(?<patch>\d+)(?:-(?<label>[0-9A-Za-z-]+)(?:\.(?<labelVersion>\d+))?)?$') {
         throw "Version '$Version' is not a supported semantic version."
     }
 
@@ -44,7 +16,7 @@ function ConvertTo-ComparableVersion {
         Minor = [int]$Matches.minor
         Patch = [int]$Matches.patch
         Label = $Matches.label
-        Number = if ($Matches.number) { [int]$Matches.number } else { 0 }
+        LabelVersion = if ($Matches.labelVersion) { [int]$Matches.labelVersion } else { 0 }
     }
 }
 
@@ -79,7 +51,7 @@ function Compare-PatchVersion {
         return $labelComparison
     }
 
-    return $leftVersion.Number.CompareTo($rightVersion.Number)
+    return $leftVersion.LabelVersion.CompareTo($rightVersion.LabelVersion)
 }
 
 function Get-ChangelogEntry {
@@ -157,7 +129,8 @@ function New-PatchChangelogContent {
             version = $entry.Version
         } | ConvertTo-Json -Compress
 
-        $lines.Add("$script:PatchChangelogStartMarker$metadata -->")
+        $lines.Add($script:PatchChangelogStartMarker)
+        $lines.Add($metadata)
         $lines.Add($entry.Content.TrimEnd())
         $lines.Add($script:PatchChangelogEndMarker)
         $lines.Add('')
@@ -169,7 +142,7 @@ function New-PatchChangelogContent {
 function ConvertFrom-PatchChangelog {
     param([Parameter(Mandatory = $true)][string]$Content)
 
-    $pattern = '(?ms)<!-- PATCH-CHANGELOG-ENTRY (?<metadata>\{[^\r\n]+\}) -->\r?\n(?<entry>.*?)\r?\n<!-- /PATCH-CHANGELOG-ENTRY -->'
+    $pattern = '(?ms)<!-- PATCH-CHANGELOG-ENTRY(?: (?<inlineMetadata>\{[^\r\n]+\}))? -->\r?\n(?:(?<lineMetadata>\{[^\r\n]+\})\r?\n)?(?<entry>.*?)\r?\n<!-- /PATCH-CHANGELOG-ENTRY -->'
     $matches = [regex]::Matches($Content, $pattern)
     if ($matches.Count -eq 0) {
         throw 'patch-changelog.md contains no patch changelog entries.'
@@ -186,8 +159,15 @@ function ConvertFrom-PatchChangelog {
     $paths = @{}
 
     foreach ($match in $matches) {
+        $inlineMetadata = $match.Groups['inlineMetadata']
+        $lineMetadata = $match.Groups['lineMetadata']
+        if ($inlineMetadata.Success -eq $lineMetadata.Success) {
+            throw 'Each patch changelog entry must contain exactly one JSON metadata object.'
+        }
+        $metadataContent = if ($inlineMetadata.Success) { $inlineMetadata.Value } else { $lineMetadata.Value }
+
         try {
-            $metadata = $match.Groups['metadata'].Value | ConvertFrom-Json
+            $metadata = $metadataContent | ConvertFrom-Json
         } catch {
             throw "patch-changelog.md contains invalid entry metadata: $($_.Exception.Message)"
         }
@@ -236,37 +216,54 @@ function ConvertFrom-PatchChangelog {
 
 function Update-VersionClientForPatch {
     param(
-        [Parameter(Mandatory = $true)][AllowEmptyString()][string[]]$Lines,
+        [Parameter(Mandatory = $true)][System.Collections.IDictionary]$Versions,
         [Parameter(Mandatory = $true)][object[]]$Entries
     )
 
-    $entryMap = @{}
     foreach ($entry in $Entries) {
-        $entryMap[$entry.Artifact] = $entry
+        if (-not $Versions.Contains($entry.Artifact)) {
+            throw "Artifact '$($entry.Artifact)' was not found in version_client.txt."
+        }
+
+        $version = $Versions[$entry.Artifact]
+        if ([string]::IsNullOrWhiteSpace($version.current)) {
+            throw "Artifact '$($entry.Artifact)' does not define a current version in version_client.txt."
+        }
+        $dependencyVersion = $version.dependency
+        if ((Compare-PatchVersion -Left $entry.Version -Right $dependencyVersion) -gt 0) {
+            $version.dependency = $entry.Version
+        }
     }
 
-    $found = @{}
+    return $Versions
+}
+
+function Update-VersionClientLines {
+    param(
+        [Parameter(Mandatory = $true)][AllowEmptyString()][string[]]$Lines,
+        [Parameter(Mandatory = $true)][System.Collections.IDictionary]$Versions,
+        [Parameter(Mandatory = $true)][object[]]$Entries
+    )
+
+    $patchedArtifacts = @{}
+    foreach ($entry in $Entries) {
+        $patchedArtifacts[$entry.Artifact] = $true
+    }
+
     $updated = [System.Collections.Generic.List[string]]::new()
     foreach ($line in $Lines) {
-        $parsed = ConvertFrom-VersionClientLine -Line $line
-        if (-not $parsed -or -not $entryMap.ContainsKey($parsed.Artifact)) {
+        $commentIndex = $line.IndexOf(' #')
+        $body = if ($commentIndex -ge 0) { $line.Substring(0, $commentIndex) } else { $line }
+        $comment = if ($commentIndex -ge 0) { $line.Substring($commentIndex) } else { '' }
+        $parts = $body.Split(';')
+        $artifact = if ($parts.Count -eq 3) { $parts[0].Trim() } else { '' }
+        if (-not $patchedArtifacts.ContainsKey($artifact)) {
             $updated.Add($line)
             continue
         }
 
-        $entry = $entryMap[$parsed.Artifact]
-        $found[$parsed.Artifact] = $true
-        $dependencyVersion = $parsed.DependencyVersion
-        if ((Compare-PatchVersion -Left $entry.Version -Right $dependencyVersion) -gt 0) {
-            $dependencyVersion = $entry.Version
-        }
-
-        $updated.Add("$($parsed.Artifact);$dependencyVersion;$($parsed.CurrentVersion)$($parsed.Comment)")
-    }
-
-    $missingArtifacts = @($entryMap.Keys | Where-Object { -not $found.ContainsKey($_) })
-    if ($missingArtifacts.Count -gt 0) {
-        throw "Artifacts were not found in version_client.txt: $($missingArtifacts -join ', ')."
+        $version = $Versions[$artifact]
+        $updated.Add("$artifact;$($version.dependency);$($version.current)$comment")
     }
 
     return $updated.ToArray()

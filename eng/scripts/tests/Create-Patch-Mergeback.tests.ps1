@@ -69,8 +69,6 @@ pom.write_text(pom.read_text().replace("<version>1.0.0</version>", "<version>1.0
                 & $script:CreateMergeBackPath `
                     -RepoRoot $cloneRepo `
                     -ReleaseBranch release/patch/test `
-                    -BaseBranch main `
-                    -PatchChangelogPath patch-changelog.md `
                     -ExpectedArtifacts @('com.azure:azure-other')
             } | Should -Throw
 
@@ -78,8 +76,6 @@ pom.write_text(pom.read_text().replace("<version>1.0.0</version>", "<version>1.0
             & $script:CreateMergeBackPath `
                 -RepoRoot $cloneRepo `
                 -ReleaseBranch $releaseCommit `
-                -BaseBranch main `
-                -PatchChangelogPath patch-changelog.md `
                 -ExpectedArtifacts @('com.azure:azure-example')
 
             $LASTEXITCODE | Should -Be 0

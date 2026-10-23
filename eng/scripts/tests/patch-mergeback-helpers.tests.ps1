@@ -3,6 +3,7 @@
 
 BeforeAll {
     . (Join-Path $PSScriptRoot '..' 'patch-mergeback-helpers.ps1')
+    $script:VersionClientConverterPath = Join-Path $PSScriptRoot '..' 'Convert-VersionClientToJson.ps1'
 
     function New-TestPatchEntry {
         param(
@@ -19,6 +20,38 @@ BeforeAll {
             Version = $Version
             Content = "## $Version ($Date)`n`n### Other Changes`n`n$Message"
         }
+    }
+
+    function Update-TestVersionClient {
+        param(
+            [string[]]$Lines,
+            [object[]]$Entries
+        )
+
+        $json = & $script:VersionClientConverterPath -Lines $Lines
+        $versions = $json | ConvertFrom-Json -AsHashtable
+        $updatedVersions = Update-VersionClientForPatch -Versions $versions -Entries $Entries
+        return @(Update-VersionClientLines -Lines $Lines -Versions $updatedVersions -Entries $Entries)
+    }
+}
+
+Describe 'ConvertTo-ComparableVersion' -Tag 'UnitTest' {
+    It 'sets LabelVersion to <Expected> for <Version>' -TestCases @(
+        @{ Version = '1.0.0-beta.2'; Expected = 2 }
+        @{ Version = '1.0.0-beta'; Expected = 0 }
+        @{ Version = '1.0.0'; Expected = 0 }
+    ) {
+        param($Version, $Expected)
+
+        $result = ConvertTo-ComparableVersion -Version $Version
+
+        $result.LabelVersion | Should -Be $Expected
+    }
+}
+
+Describe 'Compare-PatchVersion' -Tag 'UnitTest' {
+    It 'compares label versions numerically' {
+        Compare-PatchVersion -Left '1.0.0-beta.2' -Right '1.0.0-beta.10' | Should -BeLessThan 0
     }
 }
 
@@ -40,8 +73,30 @@ Describe 'Patch changelog manifest' -Tag 'UnitTest' {
         }
 
         $parsed.Count | Should -Be 2
+        $manifest | Should -Match '<!-- PATCH-CHANGELOG-ENTRY -->\r?\n\{"artifact":'
         $parsedByArtifact['com.azure:azure-example'].Content | Should -Match '^## 1\.0\.1 \(2026-09-10\)'
         $parsedByArtifact['com.azure:azure-example-two'].Version | Should -Be '2.0.3'
+    }
+
+    It 'accepts the legacy inline metadata format' {
+        $entry = New-TestPatchEntry
+        $metadata = [ordered]@{
+            artifact = $entry.Artifact
+            path = $entry.Path
+            version = $entry.Version
+        } | ConvertTo-Json -Compress
+        $manifest = @"
+# Patch Changelog
+
+<!-- PATCH-CHANGELOG-ENTRY $metadata -->
+$($entry.Content)
+<!-- /PATCH-CHANGELOG-ENTRY -->
+"@
+
+        $parsed = @(ConvertFrom-PatchChangelog -Content $manifest)
+
+        $parsed.Count | Should -Be 1
+        $parsed[0].Artifact | Should -Be $entry.Artifact
     }
 
     It 'rejects content outside manifest entry blocks' {
@@ -99,7 +154,7 @@ Describe 'Resolve-PatchDependencyVersions' -Tag 'UnitTest' {
 
 Describe 'Update-VersionClientForPatch' -Tag 'UnitTest' {
     It 'promotes the patch version and preserves the main current version' {
-        $result = @(Update-VersionClientForPatch `
+        $result = @(Update-TestVersionClient `
             -Lines @('com.azure:azure-example;1.0.0;1.1.0-beta.3') `
             -Entries @((New-TestPatchEntry)))
 
@@ -107,7 +162,7 @@ Describe 'Update-VersionClientForPatch' -Tag 'UnitTest' {
     }
 
     It 'does not downgrade a newer dependency version on main' {
-        $result = @(Update-VersionClientForPatch `
+        $result = @(Update-TestVersionClient `
             -Lines @('com.azure:azure-example;1.0.2;1.1.0-beta.3') `
             -Entries @((New-TestPatchEntry)))
 
@@ -115,7 +170,7 @@ Describe 'Update-VersionClientForPatch' -Tag 'UnitTest' {
     }
 
     It 'does not modify unlisted artifacts' {
-        $result = @(Update-VersionClientForPatch `
+        $result = @(Update-TestVersionClient `
             -Lines @(
                 'com.azure:azure-example;1.0.0;1.1.0-beta.3',
                 'com.azure:azure-other;2.0.0;2.1.0-beta.1'
@@ -127,10 +182,18 @@ Describe 'Update-VersionClientForPatch' -Tag 'UnitTest' {
 
     It 'fails when a manifest artifact is missing from version_client.txt' {
         {
-            Update-VersionClientForPatch `
+            Update-TestVersionClient `
                 -Lines @('com.azure:azure-other;2.0.0;2.1.0-beta.1') `
                 -Entries @((New-TestPatchEntry))
         } | Should -Throw
+    }
+
+    It 'preserves an inline comment when updating an entry' {
+        $result = @(Update-TestVersionClient `
+            -Lines @('com.azure:azure-example;1.0.0;1.1.0-beta.3 # keep this') `
+            -Entries @((New-TestPatchEntry)))
+
+        $result | Should -Be @('com.azure:azure-example;1.0.1;1.1.0-beta.3 # keep this')
     }
 }
 
