@@ -9,7 +9,7 @@ package com.azure.resourcemanager.networkcloud.generated;
  */
 public final class ClustersDeleteSamples {
     /*
-     * x-ms-original-file: 2026-07-01/Clusters_Delete.json
+     * x-ms-original-file: 2026-08-01-preview/Clusters_Delete.json
      */
     /**
      * Sample code: Delete cluster.

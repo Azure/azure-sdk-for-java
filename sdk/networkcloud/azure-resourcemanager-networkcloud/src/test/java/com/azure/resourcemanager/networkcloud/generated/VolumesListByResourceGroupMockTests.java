@@ -23,7 +23,7 @@ public final class VolumesListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"sizeMiB\":3960268840786703349,\"storageApplianceId\":\"iynd\",\"allocatedSizeMiB\":2150541271370935561,\"assignedStorageApplianceId\":\"sbfvdstrkzxsgtzn\",\"attachedTo\":[\"rds\"],\"detailedStatus\":\"Active\",\"detailedStatusMessage\":\"im\",\"serialNumber\":\"dnox\",\"provisioningState\":\"Canceled\"},\"etag\":\"qaqotnn\",\"extendedLocation\":{\"name\":\"xolousdv\",\"type\":\"EdgeZone\"},\"location\":\"tqm\",\"tags\":{\"btqgkujdsoox\":\"jdrpizfulgycts\",\"arikeejdpdfhtwmm\":\"qwoeurbtigapd\"},\"id\":\"fqbriqu\",\"name\":\"wwtrjm\",\"type\":\"qkvyhzokpoyuohu\"}]}";
+            = "{\"value\":[{\"properties\":{\"sizeMiB\":7770214639227268274,\"storageApplianceId\":\"qsygxiynec\",\"allocatedSizeMiB\":2386255786106433320,\"assignedStorageApplianceId\":\"kheubanlx\",\"attachedTo\":[\"qcckqiawzlz\",\"laslgacizux\",\"r\"],\"detailedStatus\":\"Active\",\"detailedStatusMessage\":\"ew\",\"serialNumber\":\"udoejtighsxjp\",\"provisioningState\":\"Canceled\"},\"etag\":\"qbalahovuuwxhme\",\"extendedLocation\":{\"name\":\"jnhj\",\"type\":\"EdgeZone\"},\"location\":\"iffbbcn\",\"tags\":{\"bfetwily\":\"gxcypx\",\"dxqlfrolq\":\"zox\"},\"id\":\"wnk\",\"name\":\"u\",\"type\":\"jew\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,13 +33,13 @@ public final class VolumesListByResourceGroupMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Volume> response = manager.volumes()
-            .listByResourceGroup("lblfxlupibaqzizx", 782593007, "zweghlwwbogvg", com.azure.core.util.Context.NONE);
+            .listByResourceGroup("uwvorbalkjn", 726879090, "bdhlltq", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("tqm", response.iterator().next().location());
-        Assertions.assertEquals("jdrpizfulgycts", response.iterator().next().tags().get("btqgkujdsoox"));
-        Assertions.assertEquals("xolousdv", response.iterator().next().extendedLocation().name());
+        Assertions.assertEquals("iffbbcn", response.iterator().next().location());
+        Assertions.assertEquals("gxcypx", response.iterator().next().tags().get("bfetwily"));
+        Assertions.assertEquals("jnhj", response.iterator().next().extendedLocation().name());
         Assertions.assertEquals(ExtendedLocationType.EDGE_ZONE, response.iterator().next().extendedLocation().type());
-        Assertions.assertEquals(3960268840786703349L, response.iterator().next().sizeMiB());
-        Assertions.assertEquals("iynd", response.iterator().next().storageApplianceId());
+        Assertions.assertEquals(7770214639227268274L, response.iterator().next().sizeMiB());
+        Assertions.assertEquals("qsygxiynec", response.iterator().next().storageApplianceId());
     }
 }
