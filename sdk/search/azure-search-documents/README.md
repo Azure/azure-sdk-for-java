@@ -553,6 +553,18 @@ provides more information on configuring or changing the HTTP client.
 
 ## Next steps
 
+### November 2026 preview
+
+The unreleased beta defaults to `SearchServiceVersion.V2026_11_01_PREVIEW`.
+Set `serviceVersion` on a client builder to continue using a previously supported API version.
+The preview includes graph querying and diagnostics, knowledge source graph extraction and enrichment caches,
+vector topic graph retrieval, automatic facet-backed filter hints, and random scoring.
+
+Use `SearchClient.graph` or `SearchAsyncClient.graph` with `GraphOptions` to query an existing graph index.
+For response headers and status, use `graphWithResponse`. A plan-only request must request at least one explain stage.
+See the [preview samples](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/PreviewSearchSamples.java).
+These APIs require a service that supports the preview; the samples do not provision resources.
+
 * Samples are explained in detail [here][samples_readme].
 * Read more about the [Azure AI Search service](https://learn.microsoft.com/azure/search/search-what-is-azure-search)
 
@@ -593,5 +605,4 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [HttpResponseException]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/exception/HttpResponseException.java
 [status_codes]: https://learn.microsoft.com/rest/api/searchservice/http-status-codes
 [search-get-started-portal]: https://learn.microsoft.com/azure/search/search-get-started-portal
-
 

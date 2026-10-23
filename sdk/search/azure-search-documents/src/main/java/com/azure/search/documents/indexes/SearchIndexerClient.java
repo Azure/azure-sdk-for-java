@@ -30,8 +30,6 @@ import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
 import com.azure.search.documents.indexes.models.SearchIndexerStatus;
 import com.azure.search.documents.indexes.models.SkillNames;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 /**
  * Initializes a new instance of the synchronous SearchIndexerClient type.
@@ -118,7 +116,7 @@ public final class SearchIndexerClient {
      *         &#64;odata.type: String (Required)
      *     }
      *     indexerPermissionOptions (Optional): [
-     *         String(userIds/groupIds/rbacScope) (Optional)
+     *         String(userIds/groupIds/rbacScope/oneLakeParentFolders/oneLakeLakehouseId) (Optional)
      *     ]
      *     dataChangeDetectionPolicy (Optional): {
      *         &#64;odata.type: String (Required)
@@ -162,7 +160,7 @@ public final class SearchIndexerClient {
      *         &#64;odata.type: String (Required)
      *     }
      *     indexerPermissionOptions (Optional): [
-     *         String(userIds/groupIds/rbacScope) (Optional)
+     *         String(userIds/groupIds/rbacScope/oneLakeParentFolders/oneLakeLakehouseId) (Optional)
      *     ]
      *     dataChangeDetectionPolicy (Optional): {
      *         &#64;odata.type: String (Required)
@@ -357,6 +355,7 @@ public final class SearchIndexerClient {
      *             pdfTextRotationAlgorithm: String(none/detectAngles) (Optional)
      *             executionEnvironment: String(standard/private) (Optional)
      *             queryTimeout: String (Optional)
+     *             refreshAllAcls: Boolean (Optional)
      *              (Optional): {
      *                 String: Object (Required)
      *             }
@@ -439,6 +438,7 @@ public final class SearchIndexerClient {
      *             pdfTextRotationAlgorithm: String(none/detectAngles) (Optional)
      *             executionEnvironment: String(standard/private) (Optional)
      *             queryTimeout: String (Optional)
+     *             refreshAllAcls: Boolean (Optional)
      *              (Optional): {
      *                 String: Object (Required)
      *             }
@@ -1040,25 +1040,6 @@ public final class SearchIndexerClient {
     }
 
     /**
-     * Lists all datasources available for a search service.
-     *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response from a List Datasources request as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SearchIndexerDataSourceConnection> getDataSourceConnections() {
-        // Generated convenience method for getDataSourceConnections
-        RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.getDataSourceConnections(requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(SearchIndexerDataSourceConnection.class));
-    }
-
-    /**
      * Creates a new datasource.
      *
      * @param dataSourceConnection The definition of the datasource to create.
@@ -1249,25 +1230,6 @@ public final class SearchIndexerClient {
     }
 
     /**
-     * Lists all indexers available for a search service.
-     *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response from a List Indexers request as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SearchIndexer> getIndexers() {
-        // Generated convenience method for getIndexers
-        RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.getIndexers(requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(SearchIndexer.class));
-    }
-
-    /**
      * Creates a new indexer.
      *
      * @param indexer The definition of the indexer to create.
@@ -1412,25 +1374,6 @@ public final class SearchIndexerClient {
         RequestOptions requestOptions = new RequestOptions();
         return hiddenGeneratedGetSkillsetWithResponse(name, requestOptions).getValue()
             .toObject(SearchIndexerSkillset.class);
-    }
-
-    /**
-     * List all skillsets in a search service.
-     *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response from a list skillset request as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SearchIndexerSkillset> getSkillsets() {
-        // Generated convenience method for getSkillsets
-        RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.getSkillsets(requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(SearchIndexerSkillset.class));
     }
 
     /**
@@ -1627,7 +1570,7 @@ public final class SearchIndexerClient {
      *         &#64;odata.type: String (Required)
      *     }
      *     indexerPermissionOptions (Optional): [
-     *         String(userIds/groupIds/rbacScope) (Optional)
+     *         String(userIds/groupIds/rbacScope/oneLakeParentFolders/oneLakeLakehouseId) (Optional)
      *     ]
      *     dataChangeDetectionPolicy (Optional): {
      *         &#64;odata.type: String (Required)
@@ -1689,7 +1632,7 @@ public final class SearchIndexerClient {
      *         &#64;odata.type: String (Required)
      *     }
      *     indexerPermissionOptions (Optional): [
-     *         String(userIds/groupIds/rbacScope) (Optional)
+     *         String(userIds/groupIds/rbacScope/oneLakeParentFolders/oneLakeLakehouseId) (Optional)
      *     ]
      *     dataChangeDetectionPolicy (Optional): {
      *         &#64;odata.type: String (Required)
@@ -1733,7 +1676,7 @@ public final class SearchIndexerClient {
      *         &#64;odata.type: String (Required)
      *     }
      *     indexerPermissionOptions (Optional): [
-     *         String(userIds/groupIds/rbacScope) (Optional)
+     *         String(userIds/groupIds/rbacScope/oneLakeParentFolders/oneLakeLakehouseId) (Optional)
      *     ]
      *     dataChangeDetectionPolicy (Optional): {
      *         &#64;odata.type: String (Required)
@@ -1812,6 +1755,7 @@ public final class SearchIndexerClient {
      *             pdfTextRotationAlgorithm: String(none/detectAngles) (Optional)
      *             executionEnvironment: String(standard/private) (Optional)
      *             queryTimeout: String (Optional)
+     *             refreshAllAcls: Boolean (Optional)
      *              (Optional): {
      *                 String: Object (Required)
      *             }
@@ -1910,6 +1854,7 @@ public final class SearchIndexerClient {
      *             pdfTextRotationAlgorithm: String(none/detectAngles) (Optional)
      *             executionEnvironment: String(standard/private) (Optional)
      *             queryTimeout: String (Optional)
+     *             refreshAllAcls: Boolean (Optional)
      *              (Optional): {
      *                 String: Object (Required)
      *             }
@@ -1992,6 +1937,7 @@ public final class SearchIndexerClient {
      *             pdfTextRotationAlgorithm: String(none/detectAngles) (Optional)
      *             executionEnvironment: String(standard/private) (Optional)
      *             queryTimeout: String (Optional)
+     *             refreshAllAcls: Boolean (Optional)
      *              (Optional): {
      *                 String: Object (Required)
      *             }
@@ -2060,7 +2006,7 @@ public final class SearchIndexerClient {
      * {
      *     name: String (Required)
      *     status: String(unknown/error/running) (Required)
-     *     runtime (Required): {
+     *     runtime (Optional): {
      *         usedSeconds: long (Required)
      *         remainingSeconds: Long (Optional)
      *         beginningTime: OffsetDateTime (Required)
@@ -2730,138 +2676,6 @@ public final class SearchIndexerClient {
 
     /**
      * Lists all datasources available for a search service.
-     *
-     * @param select Selects which top-level properties to retrieve. Specified as a comma-separated list of JSON
-     * property names, or '*' for all properties. The default is all properties.
-     * @param search A string used to narrow down the listing so that fewer results need to be paged through. If omitted
-     * or an empty string is passed, no narrowing is applied.
-     * @param pageSize The maximum number of items to return in a single page. The server enforces a maximum; if
-     * omitted, the server determines a suitable default.
-     * @param searchType Specifies how the search parameter is interpreted. Currently only 'prefix' is supported.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response from a List Datasources request as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SearchIndexerDataSourceConnection> getDataSourceConnections(List<String> select, String search,
-        Integer pageSize, ListingSearchType searchType) {
-        // Generated convenience method for getDataSourceConnections
-        RequestOptions requestOptions = new RequestOptions();
-        if (select != null) {
-            requestOptions.addQueryParam("$select",
-                select.stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(",")),
-                false);
-        }
-        if (search != null) {
-            requestOptions.addQueryParam("search", search, false);
-        }
-        if (pageSize != null) {
-            requestOptions.addQueryParam("pageSize", String.valueOf(pageSize), false);
-        }
-        if (searchType != null) {
-            requestOptions.addQueryParam("searchType", searchType.toString(), false);
-        }
-        return serviceClient.getDataSourceConnections(requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(SearchIndexerDataSourceConnection.class));
-    }
-
-    /**
-     * Lists all indexers available for a search service.
-     *
-     * @param select Selects which top-level properties to retrieve. Specified as a comma-separated list of JSON
-     * property names, or '*' for all properties. The default is all properties.
-     * @param search A string used to narrow down the listing so that fewer results need to be paged through. If omitted
-     * or an empty string is passed, no narrowing is applied.
-     * @param pageSize The maximum number of items to return in a single page. The server enforces a maximum; if
-     * omitted, the server determines a suitable default.
-     * @param searchType Specifies how the search parameter is interpreted. Currently only 'prefix' is supported.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response from a List Indexers request as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SearchIndexer> getIndexers(List<String> select, String search, Integer pageSize,
-        ListingSearchType searchType) {
-        // Generated convenience method for getIndexers
-        RequestOptions requestOptions = new RequestOptions();
-        if (select != null) {
-            requestOptions.addQueryParam("$select",
-                select.stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(",")),
-                false);
-        }
-        if (search != null) {
-            requestOptions.addQueryParam("search", search, false);
-        }
-        if (pageSize != null) {
-            requestOptions.addQueryParam("pageSize", String.valueOf(pageSize), false);
-        }
-        if (searchType != null) {
-            requestOptions.addQueryParam("searchType", searchType.toString(), false);
-        }
-        return serviceClient.getIndexers(requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(SearchIndexer.class));
-    }
-
-    /**
-     * List all skillsets in a search service.
-     *
-     * @param select Selects which top-level properties to retrieve. Specified as a comma-separated list of JSON
-     * property names, or '*' for all properties. The default is all properties.
-     * @param search A string used to narrow down the listing so that fewer results need to be paged through. If omitted
-     * or an empty string is passed, no narrowing is applied.
-     * @param pageSize The maximum number of items to return in a single page. The server enforces a maximum; if
-     * omitted, the server determines a suitable default.
-     * @param searchType Specifies how the search parameter is interpreted. Currently only 'prefix' is supported.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response from a list skillset request as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SearchIndexerSkillset> getSkillsets(List<String> select, String search, Integer pageSize,
-        ListingSearchType searchType) {
-        // Generated convenience method for getSkillsets
-        RequestOptions requestOptions = new RequestOptions();
-        if (select != null) {
-            requestOptions.addQueryParam("$select",
-                select.stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(",")),
-                false);
-        }
-        if (search != null) {
-            requestOptions.addQueryParam("search", search, false);
-        }
-        if (pageSize != null) {
-            requestOptions.addQueryParam("pageSize", String.valueOf(pageSize), false);
-        }
-        if (searchType != null) {
-            requestOptions.addQueryParam("searchType", searchType.toString(), false);
-        }
-        return serviceClient.getSkillsets(requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(SearchIndexerSkillset.class));
-    }
-
-    /**
-     * Lists all datasources available for a search service.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -2897,7 +2711,7 @@ public final class SearchIndexerClient {
      *         &#64;odata.type: String (Required)
      *     }
      *     indexerPermissionOptions (Optional): [
-     *         String(userIds/groupIds/rbacScope) (Optional)
+     *         String(userIds/groupIds/rbacScope/oneLakeParentFolders/oneLakeLakehouseId) (Optional)
      *     ]
      *     dataChangeDetectionPolicy (Optional): {
      *         &#64;odata.type: String (Required)
@@ -2930,8 +2744,8 @@ public final class SearchIndexerClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<BinaryData> getDataSourceConnections(RequestOptions requestOptions) {
-        return this.serviceClient.getDataSourceConnections(requestOptions);
+    PagedIterable<BinaryData> hiddenGeneratedListDataSourceConnections(RequestOptions requestOptions) {
+        return this.serviceClient.listDataSourceConnections(requestOptions);
     }
 
     /**
@@ -2988,6 +2802,7 @@ public final class SearchIndexerClient {
      *             pdfTextRotationAlgorithm: String(none/detectAngles) (Optional)
      *             executionEnvironment: String(standard/private) (Optional)
      *             queryTimeout: String (Optional)
+     *             refreshAllAcls: Boolean (Optional)
      *              (Optional): {
      *                 String: Object (Required)
      *             }
@@ -3042,8 +2857,8 @@ public final class SearchIndexerClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<BinaryData> getIndexers(RequestOptions requestOptions) {
-        return this.serviceClient.getIndexers(requestOptions);
+    PagedIterable<BinaryData> hiddenGeneratedListIndexers(RequestOptions requestOptions) {
+        return this.serviceClient.listIndexers(requestOptions);
     }
 
     /**
@@ -3193,7 +3008,63 @@ public final class SearchIndexerClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<BinaryData> getSkillsets(RequestOptions requestOptions) {
-        return this.serviceClient.getSkillsets(requestOptions);
+    PagedIterable<BinaryData> hiddenGeneratedListSkillsets(RequestOptions requestOptions) {
+        return this.serviceClient.listSkillsets(requestOptions);
+    }
+
+    PagedIterable<SearchIndexerDataSourceConnection> getDataSourceConnections(List<String> select, String search,
+        Integer pageSize, ListingSearchType searchType) {
+        RequestOptions requestOptions = new RequestOptions();
+        if (select != null) {
+            requestOptions.addQueryParam("$select", String.join(",", select), false);
+        }
+        if (search != null) {
+            requestOptions.addQueryParam("search", search, false);
+        }
+        if (pageSize != null) {
+            requestOptions.addQueryParam("pageSize", pageSize.toString(), false);
+        }
+        if (searchType != null) {
+            requestOptions.addQueryParam("searchType", searchType.toString(), false);
+        }
+        return serviceClient.listDataSourceConnections(requestOptions)
+            .mapPage(value -> value.toObject(SearchIndexerDataSourceConnection.class));
+    }
+
+    PagedIterable<SearchIndexer> getIndexers(List<String> select, String search, Integer pageSize,
+        ListingSearchType searchType) {
+        RequestOptions requestOptions = new RequestOptions();
+        if (select != null) {
+            requestOptions.addQueryParam("$select", String.join(",", select), false);
+        }
+        if (search != null) {
+            requestOptions.addQueryParam("search", search, false);
+        }
+        if (pageSize != null) {
+            requestOptions.addQueryParam("pageSize", pageSize.toString(), false);
+        }
+        if (searchType != null) {
+            requestOptions.addQueryParam("searchType", searchType.toString(), false);
+        }
+        return serviceClient.listIndexers(requestOptions).mapPage(value -> value.toObject(SearchIndexer.class));
+    }
+
+    PagedIterable<SearchIndexerSkillset> getSkillsets(List<String> select, String search, Integer pageSize,
+        ListingSearchType searchType) {
+        RequestOptions requestOptions = new RequestOptions();
+        if (select != null) {
+            requestOptions.addQueryParam("$select", String.join(",", select), false);
+        }
+        if (search != null) {
+            requestOptions.addQueryParam("search", search, false);
+        }
+        if (pageSize != null) {
+            requestOptions.addQueryParam("pageSize", pageSize.toString(), false);
+        }
+        if (searchType != null) {
+            requestOptions.addQueryParam("searchType", searchType.toString(), false);
+        }
+        return serviceClient.listSkillsets(requestOptions)
+            .mapPage(value -> value.toObject(SearchIndexerSkillset.class));
     }
 }

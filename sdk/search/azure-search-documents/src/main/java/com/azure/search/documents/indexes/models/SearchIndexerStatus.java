@@ -136,14 +136,14 @@ public final class SearchIndexerStatus implements JsonSerializable<SearchIndexer
                     deserializedSearchIndexerStatus.name = reader.getString();
                 } else if ("status".equals(fieldName)) {
                     deserializedSearchIndexerStatus.status = IndexerStatus.fromString(reader.getString());
-                } else if ("runtime".equals(fieldName)) {
-                    deserializedSearchIndexerStatus.runtime = IndexerRuntime.fromJson(reader);
                 } else if ("executionHistory".equals(fieldName)) {
                     List<IndexerExecutionResult> executionHistory
                         = reader.readArray(reader1 -> IndexerExecutionResult.fromJson(reader1));
                     deserializedSearchIndexerStatus.executionHistory = executionHistory;
                 } else if ("limits".equals(fieldName)) {
                     deserializedSearchIndexerStatus.limits = SearchIndexerLimits.fromJson(reader);
+                } else if ("runtime".equals(fieldName)) {
+                    deserializedSearchIndexerStatus.runtime = IndexerRuntime.fromJson(reader);
                 } else if ("lastResult".equals(fieldName)) {
                     deserializedSearchIndexerStatus.lastResult = IndexerExecutionResult.fromJson(reader);
                 } else if ("currentState".equals(fieldName)) {

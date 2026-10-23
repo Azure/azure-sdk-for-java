@@ -37,9 +37,16 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.PollingStrategyOptions;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.core.util.serializer.TypeReference;
 import com.azure.search.documents.SearchServiceVersion;
+import com.azure.search.documents.indexes.models.KnowledgeSourceFile;
+import com.azure.search.documents.indexes.models.KnowledgeSourceFileIngestionOperation;
+import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -163,8 +170,8 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createOrUpdateSynonymMap(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @HeaderParam("Prefer") String prefer, @PathParam("synonymMapName") String name,
+            @QueryParam("api-version") String apiVersion, @PathParam("synonymMapName") String name,
+            @HeaderParam("Accept") String accept, @HeaderParam("Prefer") String prefer,
             @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") BinaryData synonymMap,
             RequestOptions requestOptions, Context context);
 
@@ -175,8 +182,8 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createOrUpdateSynonymMapSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @HeaderParam("Prefer") String prefer, @PathParam("synonymMapName") String name,
+            @QueryParam("api-version") String apiVersion, @PathParam("synonymMapName") String name,
+            @HeaderParam("Accept") String accept, @HeaderParam("Prefer") String prefer,
             @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") BinaryData synonymMap,
             RequestOptions requestOptions, Context context);
 
@@ -186,8 +193,8 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteSynonymMap(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("synonymMapName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("synonymMapName") String name,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/synonymmaps('{synonymMapName}')")
         @ExpectedResponses({ 204, 404 })
@@ -195,8 +202,8 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteSynonymMapSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("synonymMapName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("synonymMapName") String name,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/synonymmaps('{synonymMapName}')")
         @ExpectedResponses({ 200 })
@@ -205,8 +212,8 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getSynonymMap(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("synonymMapName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("synonymMapName") String name,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/synonymmaps('{synonymMapName}')")
         @ExpectedResponses({ 200 })
@@ -215,8 +222,8 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getSynonymMapSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("synonymMapName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("synonymMapName") String name,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/synonymmaps")
         @ExpectedResponses({ 200 })
@@ -224,7 +231,7 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getSynonymMaps(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> listSynonymMaps(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
@@ -234,7 +241,7 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getSynonymMapsSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> listSynonymMapsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
@@ -267,8 +274,8 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createOrUpdateIndex(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @HeaderParam("Prefer") String prefer, @PathParam("indexName") String name,
+            @QueryParam("api-version") String apiVersion, @PathParam("indexName") String name,
+            @HeaderParam("Accept") String accept, @HeaderParam("Prefer") String prefer,
             @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") BinaryData index,
             RequestOptions requestOptions, Context context);
 
@@ -279,8 +286,8 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createOrUpdateIndexSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @HeaderParam("Prefer") String prefer, @PathParam("indexName") String name,
+            @QueryParam("api-version") String apiVersion, @PathParam("indexName") String name,
+            @HeaderParam("Accept") String accept, @HeaderParam("Prefer") String prefer,
             @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") BinaryData index,
             RequestOptions requestOptions, Context context);
 
@@ -290,8 +297,8 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteIndex(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("indexName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("indexName") String name,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/indexes('{indexName}')")
         @ExpectedResponses({ 204, 404 })
@@ -299,8 +306,8 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteIndexSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("indexName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("indexName") String name,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/indexes('{indexName}')")
         @ExpectedResponses({ 200 })
@@ -309,8 +316,8 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getIndex(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("indexName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("indexName") String name,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/indexes('{indexName}')")
         @ExpectedResponses({ 200 })
@@ -319,8 +326,8 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getIndexSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("indexName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("indexName") String name,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/indexes")
         @ExpectedResponses({ 200 })
@@ -391,8 +398,8 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getIndexStatistics(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("indexName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("indexName") String name,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/indexes('{indexName}')/search.stats")
         @ExpectedResponses({ 200 })
@@ -401,8 +408,8 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getIndexStatisticsSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("indexName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("indexName") String name,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/indexes('{indexName}')/search.analyze")
         @ExpectedResponses({ 200 })
@@ -411,8 +418,8 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> analyzeText(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("indexName") String name, @HeaderParam("Content-Type") String contentType,
+            @QueryParam("api-version") String apiVersion, @PathParam("indexName") String name,
+            @HeaderParam("Accept") String accept, @HeaderParam("Content-Type") String contentType,
             @BodyParam("application/json") BinaryData request, RequestOptions requestOptions, Context context);
 
         @Post("/indexes('{indexName}')/search.analyze")
@@ -422,8 +429,8 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> analyzeTextSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("indexName") String name, @HeaderParam("Content-Type") String contentType,
+            @QueryParam("api-version") String apiVersion, @PathParam("indexName") String name,
+            @HeaderParam("Accept") String accept, @HeaderParam("Content-Type") String contentType,
             @BodyParam("application/json") BinaryData request, RequestOptions requestOptions, Context context);
 
         @Put("/aliases('{aliasName}')")
@@ -433,8 +440,8 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createOrUpdateAlias(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @HeaderParam("Prefer") String prefer, @PathParam("aliasName") String name,
+            @QueryParam("api-version") String apiVersion, @PathParam("aliasName") String name,
+            @HeaderParam("Accept") String accept, @HeaderParam("Prefer") String prefer,
             @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") BinaryData alias,
             RequestOptions requestOptions, Context context);
 
@@ -445,8 +452,8 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createOrUpdateAliasSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @HeaderParam("Prefer") String prefer, @PathParam("aliasName") String name,
+            @QueryParam("api-version") String apiVersion, @PathParam("aliasName") String name,
+            @HeaderParam("Accept") String accept, @HeaderParam("Prefer") String prefer,
             @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") BinaryData alias,
             RequestOptions requestOptions, Context context);
 
@@ -456,8 +463,8 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteAlias(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("aliasName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("aliasName") String name,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/aliases('{aliasName}')")
         @ExpectedResponses({ 204, 404 })
@@ -465,8 +472,8 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteAliasSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("aliasName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("aliasName") String name,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/aliases('{aliasName}')")
         @ExpectedResponses({ 200 })
@@ -475,8 +482,8 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getAlias(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("aliasName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("aliasName") String name,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/aliases('{aliasName}')")
         @ExpectedResponses({ 200 })
@@ -485,8 +492,8 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getAliasSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("aliasName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("aliasName") String name,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/aliases")
         @ExpectedResponses({ 200 })
@@ -537,8 +544,8 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createOrUpdateKnowledgeBase(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @HeaderParam("Prefer") String prefer, @PathParam("knowledgeBaseName") String name,
+            @QueryParam("api-version") String apiVersion, @PathParam("knowledgeBaseName") String name,
+            @HeaderParam("Accept") String accept, @HeaderParam("Prefer") String prefer,
             @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") BinaryData knowledgeBase,
             RequestOptions requestOptions, Context context);
 
@@ -549,8 +556,8 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createOrUpdateKnowledgeBaseSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @HeaderParam("Prefer") String prefer, @PathParam("knowledgeBaseName") String name,
+            @QueryParam("api-version") String apiVersion, @PathParam("knowledgeBaseName") String name,
+            @HeaderParam("Accept") String accept, @HeaderParam("Prefer") String prefer,
             @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") BinaryData knowledgeBase,
             RequestOptions requestOptions, Context context);
 
@@ -560,8 +567,8 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteKnowledgeBase(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("knowledgeBaseName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("knowledgeBaseName") String name,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/knowledgebases('{knowledgeBaseName}')")
         @ExpectedResponses({ 204, 404 })
@@ -569,8 +576,8 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteKnowledgeBaseSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("knowledgeBaseName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("knowledgeBaseName") String name,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/knowledgebases('{knowledgeBaseName}')")
         @ExpectedResponses({ 200 })
@@ -579,8 +586,8 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getKnowledgeBase(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("knowledgeBaseName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("knowledgeBaseName") String name,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/knowledgebases('{knowledgeBaseName}')")
         @ExpectedResponses({ 200 })
@@ -589,8 +596,8 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getKnowledgeBaseSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("knowledgeBaseName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("knowledgeBaseName") String name,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/knowledgebases")
         @ExpectedResponses({ 200 })
@@ -641,8 +648,8 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createOrUpdateKnowledgeSource(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @HeaderParam("Prefer") String prefer, @PathParam("sourceName") String name,
+            @QueryParam("api-version") String apiVersion, @PathParam("sourceName") String name,
+            @HeaderParam("Accept") String accept, @HeaderParam("Prefer") String prefer,
             @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") BinaryData knowledgeSource,
             RequestOptions requestOptions, Context context);
 
@@ -653,8 +660,8 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createOrUpdateKnowledgeSourceSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @HeaderParam("Prefer") String prefer, @PathParam("sourceName") String name,
+            @QueryParam("api-version") String apiVersion, @PathParam("sourceName") String name,
+            @HeaderParam("Accept") String accept, @HeaderParam("Prefer") String prefer,
             @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") BinaryData knowledgeSource,
             RequestOptions requestOptions, Context context);
 
@@ -664,8 +671,8 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteKnowledgeSource(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("sourceName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("sourceName") String name,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/knowledgesources('{sourceName}')")
         @ExpectedResponses({ 204, 404 })
@@ -673,8 +680,8 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteKnowledgeSourceSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("sourceName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("sourceName") String name,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/knowledgesources('{sourceName}')")
         @ExpectedResponses({ 200 })
@@ -683,8 +690,8 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getKnowledgeSource(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("sourceName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("sourceName") String name,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/knowledgesources('{sourceName}')")
         @ExpectedResponses({ 200 })
@@ -693,8 +700,8 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getKnowledgeSourceSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("sourceName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("sourceName") String name,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/knowledgesources")
         @ExpectedResponses({ 200 })
@@ -745,8 +752,8 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getKnowledgeSourceStatus(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("sourceName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("sourceName") String name,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/knowledgesources('{sourceName}')/status")
         @ExpectedResponses({ 200 })
@@ -755,8 +762,8 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getKnowledgeSourceStatusSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("sourceName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("sourceName") String name,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/knowledgesources('{sourceName}')/files")
         @ExpectedResponses({ 201 })
@@ -765,10 +772,10 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> uploadKnowledgeSourceFile(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @HeaderParam("Content-Disposition") String contentDisposition, @PathParam("sourceName") String name,
-            @HeaderParam("Accept") String accept, @BodyParam("application/octet-stream") BinaryData file,
-            RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("sourceName") String name,
+            @HeaderParam("content-type") String contentType,
+            @HeaderParam("Content-Disposition") String contentDisposition, @HeaderParam("Accept") String accept,
+            @BodyParam("application/octet-stream") BinaryData file, RequestOptions requestOptions, Context context);
 
         @Post("/knowledgesources('{sourceName}')/files")
         @ExpectedResponses({ 201 })
@@ -777,10 +784,10 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> uploadKnowledgeSourceFileSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @HeaderParam("Content-Disposition") String contentDisposition, @PathParam("sourceName") String name,
-            @HeaderParam("Accept") String accept, @BodyParam("application/octet-stream") BinaryData file,
-            RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("sourceName") String name,
+            @HeaderParam("content-type") String contentType,
+            @HeaderParam("Content-Disposition") String contentDisposition, @HeaderParam("Accept") String accept,
+            @BodyParam("application/octet-stream") BinaryData file, RequestOptions requestOptions, Context context);
 
         // @Multipart not supported by RestProxy
         @Post("/knowledgesources('{sourceName}')/files")
@@ -806,6 +813,30 @@ public final class SearchIndexClientImpl {
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("multipart/form-data") BinaryData body, RequestOptions requestOptions, Context context);
 
+        // @Multipart not supported by RestProxy
+        @Post("/knowledgesources('{sourceName}')/files:ingest")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> ingestKnowledgeSourceFileMultipart(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("sourceName") String name,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("multipart/form-data") BinaryData body, RequestOptions requestOptions, Context context);
+
+        // @Multipart not supported by RestProxy
+        @Post("/knowledgesources('{sourceName}')/files:ingest")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> ingestKnowledgeSourceFileMultipartSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("sourceName") String name,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("multipart/form-data") BinaryData body, RequestOptions requestOptions, Context context);
+
         @Get("/knowledgesources('{sourceName}')/files")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
@@ -813,8 +844,8 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listKnowledgeSourceFiles(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("sourceName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("sourceName") String name,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/knowledgesources('{sourceName}')/files")
         @ExpectedResponses({ 200 })
@@ -823,8 +854,8 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listKnowledgeSourceFilesSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("sourceName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("sourceName") String name,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/knowledgesources('{sourceName}')/files('{fileId}')")
         @ExpectedResponses({ 204, 404 })
@@ -832,8 +863,8 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteKnowledgeSourceFile(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("fileId") String fileId,
-            @HeaderParam("Accept") String accept, @PathParam("sourceName") String name, RequestOptions requestOptions,
+            @QueryParam("api-version") String apiVersion, @PathParam("sourceName") String name,
+            @PathParam("fileId") String fileId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Delete("/knowledgesources('{sourceName}')/files('{fileId}')")
@@ -842,8 +873,8 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteKnowledgeSourceFileSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("fileId") String fileId,
-            @HeaderParam("Accept") String accept, @PathParam("sourceName") String name, RequestOptions requestOptions,
+            @QueryParam("api-version") String apiVersion, @PathParam("sourceName") String name,
+            @PathParam("fileId") String fileId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         // @Multipart not supported by RestProxy
@@ -854,8 +885,8 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> updateKnowledgeSourceFile(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("fileId") String fileId,
-            @PathParam("sourceName") String name, @HeaderParam("Content-Type") String contentType,
+            @QueryParam("api-version") String apiVersion, @PathParam("sourceName") String name,
+            @PathParam("fileId") String fileId, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("multipart/form-data") BinaryData body,
             RequestOptions requestOptions, Context context);
 
@@ -867,10 +898,78 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> updateKnowledgeSourceFileSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("fileId") String fileId,
-            @PathParam("sourceName") String name, @HeaderParam("Content-Type") String contentType,
+            @QueryParam("api-version") String apiVersion, @PathParam("sourceName") String name,
+            @PathParam("fileId") String fileId, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("multipart/form-data") BinaryData body,
             RequestOptions requestOptions, Context context);
+
+        // @Multipart not supported by RestProxy
+        @Post("/knowledgesources('{sourceName}')/files('{fileId}'):ingest")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> ingestKnowledgeSourceFileReplacement(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("sourceName") String name,
+            @PathParam("fileId") String fileId, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("multipart/form-data") BinaryData body,
+            RequestOptions requestOptions, Context context);
+
+        // @Multipart not supported by RestProxy
+        @Post("/knowledgesources('{sourceName}')/files('{fileId}'):ingest")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> ingestKnowledgeSourceFileReplacementSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("sourceName") String name,
+            @PathParam("fileId") String fileId, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("multipart/form-data") BinaryData body,
+            RequestOptions requestOptions, Context context);
+
+        @Get("/knowledgesources('{sourceName}')/files/operations/{operationId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> getKnowledgeSourceFileIngestionOperation(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("sourceName") String name,
+            @HeaderParam("Accept") String accept, @PathParam("operationId") String operationId,
+            RequestOptions requestOptions, Context context);
+
+        @Get("/knowledgesources('{sourceName}')/files/operations/{operationId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getKnowledgeSourceFileIngestionOperationSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("sourceName") String name,
+            @HeaderParam("Accept") String accept, @PathParam("operationId") String operationId,
+            RequestOptions requestOptions, Context context);
+
+        @Get("/knowledgesources('{sourceName}')/files/operations")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> listKnowledgeSourceFileIngestionOperations(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("sourceName") String name,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("/knowledgesources('{sourceName}')/files/operations")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listKnowledgeSourceFileIngestionOperationsSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("sourceName") String name,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/servicestats")
         @ExpectedResponses({ 200 })
@@ -918,7 +1017,7 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getSynonymMapsNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+        Mono<Response<BinaryData>> listSynonymMapsNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
@@ -928,7 +1027,7 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getSynonymMapsNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
+        Response<BinaryData> listSynonymMapsNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
@@ -1058,6 +1157,26 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> listKnowledgeSourceFileIngestionOperationsNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listKnowledgeSourceFileIngestionOperationsNextSync(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listIndexStatsSummaryNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
@@ -1157,8 +1276,8 @@ public final class SearchIndexClientImpl {
         final String prefer = "return=representation";
         final String contentType = "application/json";
         return FluxUtil.withContext(
-            context -> service.createOrUpdateSynonymMap(this.getEndpoint(), this.getServiceVersion().getVersion(),
-                accept, prefer, name, contentType, synonymMap, requestOptions, context));
+            context -> service.createOrUpdateSynonymMap(this.getEndpoint(), this.getServiceVersion().getVersion(), name,
+                accept, prefer, contentType, synonymMap, requestOptions, context));
     }
 
     /**
@@ -1244,8 +1363,8 @@ public final class SearchIndexClientImpl {
         final String accept = "application/json;odata.metadata=minimal";
         final String prefer = "return=representation";
         final String contentType = "application/json";
-        return service.createOrUpdateSynonymMapSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
-            prefer, name, contentType, synonymMap, requestOptions, Context.NONE);
+        return service.createOrUpdateSynonymMapSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name,
+            accept, prefer, contentType, synonymMap, requestOptions, Context.NONE);
     }
 
     /**
@@ -1272,7 +1391,7 @@ public final class SearchIndexClientImpl {
     public Mono<Response<Void>> deleteSynonymMapWithResponseAsync(String name, RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
         return FluxUtil.withContext(context -> service.deleteSynonymMap(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, name, requestOptions, context));
+            this.getServiceVersion().getVersion(), name, accept, requestOptions, context));
     }
 
     /**
@@ -1298,7 +1417,7 @@ public final class SearchIndexClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteSynonymMapWithResponse(String name, RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
-        return service.deleteSynonymMapSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, name,
+        return service.deleteSynonymMapSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name, accept,
             requestOptions, Context.NONE);
     }
 
@@ -1344,7 +1463,7 @@ public final class SearchIndexClientImpl {
     public Mono<Response<BinaryData>> getSynonymMapWithResponseAsync(String name, RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
         return FluxUtil.withContext(context -> service.getSynonymMap(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, name, requestOptions, context));
+            this.getServiceVersion().getVersion(), name, accept, requestOptions, context));
     }
 
     /**
@@ -1388,7 +1507,7 @@ public final class SearchIndexClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getSynonymMapWithResponse(String name, RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
-        return service.getSynonymMapSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, name,
+        return service.getSynonymMapSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name, accept,
             requestOptions, Context.NONE);
     }
 
@@ -1446,10 +1565,10 @@ public final class SearchIndexClientImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> getSynonymMapsSinglePageAsync(RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listSynonymMapsSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
         return FluxUtil
-            .withContext(context -> service.getSynonymMaps(this.getEndpoint(), this.getServiceVersion().getVersion(),
+            .withContext(context -> service.listSynonymMaps(this.getEndpoint(), this.getServiceVersion().getVersion(),
                 accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "@odata.nextLink"), null));
@@ -1508,12 +1627,12 @@ public final class SearchIndexClientImpl {
      * @return response from a List SynonymMaps request as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> getSynonymMapsAsync(RequestOptions requestOptions) {
+    public PagedFlux<BinaryData> listSynonymMapsAsync(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
             requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
-        return new PagedFlux<>(() -> getSynonymMapsSinglePageAsync(requestOptions),
-            nextLink -> getSynonymMapsNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+        return new PagedFlux<>(() -> listSynonymMapsSinglePageAsync(requestOptions),
+            nextLink -> listSynonymMapsNextSinglePageAsync(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -1569,10 +1688,10 @@ public final class SearchIndexClientImpl {
      * @return response from a List SynonymMaps request along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> getSynonymMapsSinglePage(RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> listSynonymMapsSinglePage(RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
-        Response<BinaryData> res = service.getSynonymMapsSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            accept, requestOptions, Context.NONE);
+        Response<BinaryData> res = service.listSynonymMapsSync(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "@odata.nextLink"), null);
     }
@@ -1630,12 +1749,12 @@ public final class SearchIndexClientImpl {
      * @return response from a List SynonymMaps request as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> getSynonymMaps(RequestOptions requestOptions) {
+    public PagedIterable<BinaryData> listSynonymMaps(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
             requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
-        return new PagedIterable<>(() -> getSynonymMapsSinglePage(requestOptions),
-            nextLink -> getSynonymMapsNextSinglePage(nextLink, requestOptionsForNextPage));
+        return new PagedIterable<>(() -> listSynonymMapsSinglePage(requestOptions),
+            nextLink -> listSynonymMapsNextSinglePage(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -1827,7 +1946,8 @@ public final class SearchIndexClientImpl {
      *             filterable: Boolean (Optional)
      *             sortable: Boolean (Optional)
      *             facetable: Boolean (Optional)
-     *             permissionFilter: String(userIds/groupIds/rbacScope) (Optional)
+     *             permissionFilter: String(userIds/groupIds/rbacScope/oneLakeParentFolders/oneLakeLakehouseId) (Optional)
+     *             organizationAccessExpiration: Boolean (Optional)
      *             sensitivityLabelId: Boolean (Optional)
      *             sensitivityLabelName: Boolean (Optional)
      *             sourceDocumentId: Boolean (Optional)
@@ -1838,6 +1958,7 @@ public final class SearchIndexClientImpl {
      *             normalizer: String(asciifolding/elision/lowercase/standard/uppercase) (Optional)
      *             dimensions: Integer (Optional)
      *             vectorSearchProfile: String (Optional)
+     *             topicGraphProfile: String (Optional)
      *             vectorEncoding: String(packedBit) (Optional)
      *             synonymMaps (Optional): [
      *                 String (Optional)
@@ -1847,6 +1968,34 @@ public final class SearchIndexClientImpl {
      *             ]
      *         }
      *     ]
+     *     graphProfile (Optional): {
+     *         kind: String(edgeList) (Required)
+     *         fields (Required): {
+     *             assertionIdField: String (Required)
+     *             factIdField: String (Required)
+     *             subjectField: String (Required)
+     *             predicateField: String (Required)
+     *             objectField: String (Required)
+     *             objectStringField: String (Required)
+     *             objectDoubleField: String (Required)
+     *             objectBoolField: String (Required)
+     *             objectDateTimeField: String (Required)
+     *             subjectTypeField: String (Required)
+     *             subjectIdField: String (Required)
+     *             objectTypeField: String (Required)
+     *             objectIdField: String (Required)
+     *             confidenceField: String (Required)
+     *             subjectConfidenceField: String (Required)
+     *             predicateConfidenceField: String (Required)
+     *             objectConfidenceField: String (Required)
+     *             sourceChunkIdField: String (Required)
+     *             sourceParentIdField: String (Required)
+     *             graphNameField: String (Required)
+     *             subjectIdDisplayNameField: String (Required)
+     *             objectIdDisplayNameField: String (Required)
+     *         }
+     *         provenanceIndexName: String (Optional)
+     *     }
      *     scoringProfiles (Optional): [
      *          (Optional){
      *             name: String (Required)
@@ -1858,8 +2007,6 @@ public final class SearchIndexClientImpl {
      *             functions (Optional): [
      *                  (Optional){
      *                     type: String (Required)
-     *                     fieldName: String (Required)
-     *                     boost: double (Required)
      *                     interpolation: String(linear/constant/quadratic/logarithmic) (Optional)
      *                 }
      *             ]
@@ -1966,7 +2113,7 @@ public final class SearchIndexClientImpl {
      *         ]
      *         vectorizers (Optional): [
      *              (Optional){
-     *                 kind: String(azureOpenAI/customWebApi/aiServicesVision/aml) (Required)
+     *                 kind: String(azureOpenAI/openAICompatible/customWebApi/aiServicesVision/aml) (Required)
      *                 name: String (Required)
      *             }
      *         ]
@@ -1982,6 +2129,15 @@ public final class SearchIndexClientImpl {
      *                 truncationDimension: Integer (Optional)
      *             }
      *         ]
+     *         topicGraphProfiles (Optional): [
+     *              (Optional){
+     *                 name: String (Required)
+     *                 indexName: String (Required)
+     *                 defaultKind: String(none/diverse/balanced) (Required)
+     *                 defaultDiversityFactor: Float (Optional)
+     *                 defaultMinDiversityPoolSize: Integer (Optional)
+     *             }
+     *         ]
      *     }
      *     permissionFilterOption: String(enabled/disabled) (Optional)
      *     purviewEnabled: Boolean (Optional)
@@ -1989,6 +2145,10 @@ public final class SearchIndexClientImpl {
      *         applicationId: String (Required)
      *         federatedCredentialId: String (Required)
      *         tenantId: String (Optional)
+     *     }
+     *     oneLakeSecuritySource (Optional): {
+     *         fabricWorkspaceId: String (Required)
+     *         lakehouseId: String (Required)
      *     }
      *     &#64;odata.etag: String (Optional)
      * }
@@ -2013,7 +2173,8 @@ public final class SearchIndexClientImpl {
      *             filterable: Boolean (Optional)
      *             sortable: Boolean (Optional)
      *             facetable: Boolean (Optional)
-     *             permissionFilter: String(userIds/groupIds/rbacScope) (Optional)
+     *             permissionFilter: String(userIds/groupIds/rbacScope/oneLakeParentFolders/oneLakeLakehouseId) (Optional)
+     *             organizationAccessExpiration: Boolean (Optional)
      *             sensitivityLabelId: Boolean (Optional)
      *             sensitivityLabelName: Boolean (Optional)
      *             sourceDocumentId: Boolean (Optional)
@@ -2024,6 +2185,7 @@ public final class SearchIndexClientImpl {
      *             normalizer: String(asciifolding/elision/lowercase/standard/uppercase) (Optional)
      *             dimensions: Integer (Optional)
      *             vectorSearchProfile: String (Optional)
+     *             topicGraphProfile: String (Optional)
      *             vectorEncoding: String(packedBit) (Optional)
      *             synonymMaps (Optional): [
      *                 String (Optional)
@@ -2033,6 +2195,34 @@ public final class SearchIndexClientImpl {
      *             ]
      *         }
      *     ]
+     *     graphProfile (Optional): {
+     *         kind: String(edgeList) (Required)
+     *         fields (Required): {
+     *             assertionIdField: String (Required)
+     *             factIdField: String (Required)
+     *             subjectField: String (Required)
+     *             predicateField: String (Required)
+     *             objectField: String (Required)
+     *             objectStringField: String (Required)
+     *             objectDoubleField: String (Required)
+     *             objectBoolField: String (Required)
+     *             objectDateTimeField: String (Required)
+     *             subjectTypeField: String (Required)
+     *             subjectIdField: String (Required)
+     *             objectTypeField: String (Required)
+     *             objectIdField: String (Required)
+     *             confidenceField: String (Required)
+     *             subjectConfidenceField: String (Required)
+     *             predicateConfidenceField: String (Required)
+     *             objectConfidenceField: String (Required)
+     *             sourceChunkIdField: String (Required)
+     *             sourceParentIdField: String (Required)
+     *             graphNameField: String (Required)
+     *             subjectIdDisplayNameField: String (Required)
+     *             objectIdDisplayNameField: String (Required)
+     *         }
+     *         provenanceIndexName: String (Optional)
+     *     }
      *     scoringProfiles (Optional): [
      *          (Optional){
      *             name: String (Required)
@@ -2044,8 +2234,6 @@ public final class SearchIndexClientImpl {
      *             functions (Optional): [
      *                  (Optional){
      *                     type: String (Required)
-     *                     fieldName: String (Required)
-     *                     boost: double (Required)
      *                     interpolation: String(linear/constant/quadratic/logarithmic) (Optional)
      *                 }
      *             ]
@@ -2152,7 +2340,7 @@ public final class SearchIndexClientImpl {
      *         ]
      *         vectorizers (Optional): [
      *              (Optional){
-     *                 kind: String(azureOpenAI/customWebApi/aiServicesVision/aml) (Required)
+     *                 kind: String(azureOpenAI/openAICompatible/customWebApi/aiServicesVision/aml) (Required)
      *                 name: String (Required)
      *             }
      *         ]
@@ -2168,6 +2356,15 @@ public final class SearchIndexClientImpl {
      *                 truncationDimension: Integer (Optional)
      *             }
      *         ]
+     *         topicGraphProfiles (Optional): [
+     *              (Optional){
+     *                 name: String (Required)
+     *                 indexName: String (Required)
+     *                 defaultKind: String(none/diverse/balanced) (Required)
+     *                 defaultDiversityFactor: Float (Optional)
+     *                 defaultMinDiversityPoolSize: Integer (Optional)
+     *             }
+     *         ]
      *     }
      *     permissionFilterOption: String(enabled/disabled) (Optional)
      *     purviewEnabled: Boolean (Optional)
@@ -2175,6 +2372,10 @@ public final class SearchIndexClientImpl {
      *         applicationId: String (Required)
      *         federatedCredentialId: String (Required)
      *         tenantId: String (Optional)
+     *     }
+     *     oneLakeSecuritySource (Optional): {
+     *         fabricWorkspaceId: String (Required)
+     *         lakehouseId: String (Required)
      *     }
      *     &#64;odata.etag: String (Optional)
      * }
@@ -2198,7 +2399,7 @@ public final class SearchIndexClientImpl {
         final String prefer = "return=representation";
         final String contentType = "application/json";
         return FluxUtil.withContext(context -> service.createOrUpdateIndex(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, prefer, name, contentType, index, requestOptions, context));
+            this.getServiceVersion().getVersion(), name, accept, prefer, contentType, index, requestOptions, context));
     }
 
     /**
@@ -2241,7 +2442,8 @@ public final class SearchIndexClientImpl {
      *             filterable: Boolean (Optional)
      *             sortable: Boolean (Optional)
      *             facetable: Boolean (Optional)
-     *             permissionFilter: String(userIds/groupIds/rbacScope) (Optional)
+     *             permissionFilter: String(userIds/groupIds/rbacScope/oneLakeParentFolders/oneLakeLakehouseId) (Optional)
+     *             organizationAccessExpiration: Boolean (Optional)
      *             sensitivityLabelId: Boolean (Optional)
      *             sensitivityLabelName: Boolean (Optional)
      *             sourceDocumentId: Boolean (Optional)
@@ -2252,6 +2454,7 @@ public final class SearchIndexClientImpl {
      *             normalizer: String(asciifolding/elision/lowercase/standard/uppercase) (Optional)
      *             dimensions: Integer (Optional)
      *             vectorSearchProfile: String (Optional)
+     *             topicGraphProfile: String (Optional)
      *             vectorEncoding: String(packedBit) (Optional)
      *             synonymMaps (Optional): [
      *                 String (Optional)
@@ -2261,6 +2464,34 @@ public final class SearchIndexClientImpl {
      *             ]
      *         }
      *     ]
+     *     graphProfile (Optional): {
+     *         kind: String(edgeList) (Required)
+     *         fields (Required): {
+     *             assertionIdField: String (Required)
+     *             factIdField: String (Required)
+     *             subjectField: String (Required)
+     *             predicateField: String (Required)
+     *             objectField: String (Required)
+     *             objectStringField: String (Required)
+     *             objectDoubleField: String (Required)
+     *             objectBoolField: String (Required)
+     *             objectDateTimeField: String (Required)
+     *             subjectTypeField: String (Required)
+     *             subjectIdField: String (Required)
+     *             objectTypeField: String (Required)
+     *             objectIdField: String (Required)
+     *             confidenceField: String (Required)
+     *             subjectConfidenceField: String (Required)
+     *             predicateConfidenceField: String (Required)
+     *             objectConfidenceField: String (Required)
+     *             sourceChunkIdField: String (Required)
+     *             sourceParentIdField: String (Required)
+     *             graphNameField: String (Required)
+     *             subjectIdDisplayNameField: String (Required)
+     *             objectIdDisplayNameField: String (Required)
+     *         }
+     *         provenanceIndexName: String (Optional)
+     *     }
      *     scoringProfiles (Optional): [
      *          (Optional){
      *             name: String (Required)
@@ -2272,8 +2503,6 @@ public final class SearchIndexClientImpl {
      *             functions (Optional): [
      *                  (Optional){
      *                     type: String (Required)
-     *                     fieldName: String (Required)
-     *                     boost: double (Required)
      *                     interpolation: String(linear/constant/quadratic/logarithmic) (Optional)
      *                 }
      *             ]
@@ -2380,7 +2609,7 @@ public final class SearchIndexClientImpl {
      *         ]
      *         vectorizers (Optional): [
      *              (Optional){
-     *                 kind: String(azureOpenAI/customWebApi/aiServicesVision/aml) (Required)
+     *                 kind: String(azureOpenAI/openAICompatible/customWebApi/aiServicesVision/aml) (Required)
      *                 name: String (Required)
      *             }
      *         ]
@@ -2396,6 +2625,15 @@ public final class SearchIndexClientImpl {
      *                 truncationDimension: Integer (Optional)
      *             }
      *         ]
+     *         topicGraphProfiles (Optional): [
+     *              (Optional){
+     *                 name: String (Required)
+     *                 indexName: String (Required)
+     *                 defaultKind: String(none/diverse/balanced) (Required)
+     *                 defaultDiversityFactor: Float (Optional)
+     *                 defaultMinDiversityPoolSize: Integer (Optional)
+     *             }
+     *         ]
      *     }
      *     permissionFilterOption: String(enabled/disabled) (Optional)
      *     purviewEnabled: Boolean (Optional)
@@ -2403,6 +2641,10 @@ public final class SearchIndexClientImpl {
      *         applicationId: String (Required)
      *         federatedCredentialId: String (Required)
      *         tenantId: String (Optional)
+     *     }
+     *     oneLakeSecuritySource (Optional): {
+     *         fabricWorkspaceId: String (Required)
+     *         lakehouseId: String (Required)
      *     }
      *     &#64;odata.etag: String (Optional)
      * }
@@ -2427,7 +2669,8 @@ public final class SearchIndexClientImpl {
      *             filterable: Boolean (Optional)
      *             sortable: Boolean (Optional)
      *             facetable: Boolean (Optional)
-     *             permissionFilter: String(userIds/groupIds/rbacScope) (Optional)
+     *             permissionFilter: String(userIds/groupIds/rbacScope/oneLakeParentFolders/oneLakeLakehouseId) (Optional)
+     *             organizationAccessExpiration: Boolean (Optional)
      *             sensitivityLabelId: Boolean (Optional)
      *             sensitivityLabelName: Boolean (Optional)
      *             sourceDocumentId: Boolean (Optional)
@@ -2438,6 +2681,7 @@ public final class SearchIndexClientImpl {
      *             normalizer: String(asciifolding/elision/lowercase/standard/uppercase) (Optional)
      *             dimensions: Integer (Optional)
      *             vectorSearchProfile: String (Optional)
+     *             topicGraphProfile: String (Optional)
      *             vectorEncoding: String(packedBit) (Optional)
      *             synonymMaps (Optional): [
      *                 String (Optional)
@@ -2447,6 +2691,34 @@ public final class SearchIndexClientImpl {
      *             ]
      *         }
      *     ]
+     *     graphProfile (Optional): {
+     *         kind: String(edgeList) (Required)
+     *         fields (Required): {
+     *             assertionIdField: String (Required)
+     *             factIdField: String (Required)
+     *             subjectField: String (Required)
+     *             predicateField: String (Required)
+     *             objectField: String (Required)
+     *             objectStringField: String (Required)
+     *             objectDoubleField: String (Required)
+     *             objectBoolField: String (Required)
+     *             objectDateTimeField: String (Required)
+     *             subjectTypeField: String (Required)
+     *             subjectIdField: String (Required)
+     *             objectTypeField: String (Required)
+     *             objectIdField: String (Required)
+     *             confidenceField: String (Required)
+     *             subjectConfidenceField: String (Required)
+     *             predicateConfidenceField: String (Required)
+     *             objectConfidenceField: String (Required)
+     *             sourceChunkIdField: String (Required)
+     *             sourceParentIdField: String (Required)
+     *             graphNameField: String (Required)
+     *             subjectIdDisplayNameField: String (Required)
+     *             objectIdDisplayNameField: String (Required)
+     *         }
+     *         provenanceIndexName: String (Optional)
+     *     }
      *     scoringProfiles (Optional): [
      *          (Optional){
      *             name: String (Required)
@@ -2458,8 +2730,6 @@ public final class SearchIndexClientImpl {
      *             functions (Optional): [
      *                  (Optional){
      *                     type: String (Required)
-     *                     fieldName: String (Required)
-     *                     boost: double (Required)
      *                     interpolation: String(linear/constant/quadratic/logarithmic) (Optional)
      *                 }
      *             ]
@@ -2566,7 +2836,7 @@ public final class SearchIndexClientImpl {
      *         ]
      *         vectorizers (Optional): [
      *              (Optional){
-     *                 kind: String(azureOpenAI/customWebApi/aiServicesVision/aml) (Required)
+     *                 kind: String(azureOpenAI/openAICompatible/customWebApi/aiServicesVision/aml) (Required)
      *                 name: String (Required)
      *             }
      *         ]
@@ -2582,6 +2852,15 @@ public final class SearchIndexClientImpl {
      *                 truncationDimension: Integer (Optional)
      *             }
      *         ]
+     *         topicGraphProfiles (Optional): [
+     *              (Optional){
+     *                 name: String (Required)
+     *                 indexName: String (Required)
+     *                 defaultKind: String(none/diverse/balanced) (Required)
+     *                 defaultDiversityFactor: Float (Optional)
+     *                 defaultMinDiversityPoolSize: Integer (Optional)
+     *             }
+     *         ]
      *     }
      *     permissionFilterOption: String(enabled/disabled) (Optional)
      *     purviewEnabled: Boolean (Optional)
@@ -2589,6 +2868,10 @@ public final class SearchIndexClientImpl {
      *         applicationId: String (Required)
      *         federatedCredentialId: String (Required)
      *         tenantId: String (Optional)
+     *     }
+     *     oneLakeSecuritySource (Optional): {
+     *         fabricWorkspaceId: String (Required)
+     *         lakehouseId: String (Required)
      *     }
      *     &#64;odata.etag: String (Optional)
      * }
@@ -2611,8 +2894,8 @@ public final class SearchIndexClientImpl {
         final String accept = "application/json;odata.metadata=minimal";
         final String prefer = "return=representation";
         final String contentType = "application/json";
-        return service.createOrUpdateIndexSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
-            prefer, name, contentType, index, requestOptions, Context.NONE);
+        return service.createOrUpdateIndexSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name, accept,
+            prefer, contentType, index, requestOptions, Context.NONE);
     }
 
     /**
@@ -2641,7 +2924,7 @@ public final class SearchIndexClientImpl {
     public Mono<Response<Void>> deleteIndexWithResponseAsync(String name, RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
         return FluxUtil.withContext(context -> service.deleteIndex(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, name, requestOptions, context));
+            this.getServiceVersion().getVersion(), name, accept, requestOptions, context));
     }
 
     /**
@@ -2669,7 +2952,7 @@ public final class SearchIndexClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteIndexWithResponse(String name, RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
-        return service.deleteIndexSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, name,
+        return service.deleteIndexSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name, accept,
             requestOptions, Context.NONE);
     }
 
@@ -2693,7 +2976,8 @@ public final class SearchIndexClientImpl {
      *             filterable: Boolean (Optional)
      *             sortable: Boolean (Optional)
      *             facetable: Boolean (Optional)
-     *             permissionFilter: String(userIds/groupIds/rbacScope) (Optional)
+     *             permissionFilter: String(userIds/groupIds/rbacScope/oneLakeParentFolders/oneLakeLakehouseId) (Optional)
+     *             organizationAccessExpiration: Boolean (Optional)
      *             sensitivityLabelId: Boolean (Optional)
      *             sensitivityLabelName: Boolean (Optional)
      *             sourceDocumentId: Boolean (Optional)
@@ -2704,6 +2988,7 @@ public final class SearchIndexClientImpl {
      *             normalizer: String(asciifolding/elision/lowercase/standard/uppercase) (Optional)
      *             dimensions: Integer (Optional)
      *             vectorSearchProfile: String (Optional)
+     *             topicGraphProfile: String (Optional)
      *             vectorEncoding: String(packedBit) (Optional)
      *             synonymMaps (Optional): [
      *                 String (Optional)
@@ -2713,6 +2998,34 @@ public final class SearchIndexClientImpl {
      *             ]
      *         }
      *     ]
+     *     graphProfile (Optional): {
+     *         kind: String(edgeList) (Required)
+     *         fields (Required): {
+     *             assertionIdField: String (Required)
+     *             factIdField: String (Required)
+     *             subjectField: String (Required)
+     *             predicateField: String (Required)
+     *             objectField: String (Required)
+     *             objectStringField: String (Required)
+     *             objectDoubleField: String (Required)
+     *             objectBoolField: String (Required)
+     *             objectDateTimeField: String (Required)
+     *             subjectTypeField: String (Required)
+     *             subjectIdField: String (Required)
+     *             objectTypeField: String (Required)
+     *             objectIdField: String (Required)
+     *             confidenceField: String (Required)
+     *             subjectConfidenceField: String (Required)
+     *             predicateConfidenceField: String (Required)
+     *             objectConfidenceField: String (Required)
+     *             sourceChunkIdField: String (Required)
+     *             sourceParentIdField: String (Required)
+     *             graphNameField: String (Required)
+     *             subjectIdDisplayNameField: String (Required)
+     *             objectIdDisplayNameField: String (Required)
+     *         }
+     *         provenanceIndexName: String (Optional)
+     *     }
      *     scoringProfiles (Optional): [
      *          (Optional){
      *             name: String (Required)
@@ -2724,8 +3037,6 @@ public final class SearchIndexClientImpl {
      *             functions (Optional): [
      *                  (Optional){
      *                     type: String (Required)
-     *                     fieldName: String (Required)
-     *                     boost: double (Required)
      *                     interpolation: String(linear/constant/quadratic/logarithmic) (Optional)
      *                 }
      *             ]
@@ -2832,7 +3143,7 @@ public final class SearchIndexClientImpl {
      *         ]
      *         vectorizers (Optional): [
      *              (Optional){
-     *                 kind: String(azureOpenAI/customWebApi/aiServicesVision/aml) (Required)
+     *                 kind: String(azureOpenAI/openAICompatible/customWebApi/aiServicesVision/aml) (Required)
      *                 name: String (Required)
      *             }
      *         ]
@@ -2848,6 +3159,15 @@ public final class SearchIndexClientImpl {
      *                 truncationDimension: Integer (Optional)
      *             }
      *         ]
+     *         topicGraphProfiles (Optional): [
+     *              (Optional){
+     *                 name: String (Required)
+     *                 indexName: String (Required)
+     *                 defaultKind: String(none/diverse/balanced) (Required)
+     *                 defaultDiversityFactor: Float (Optional)
+     *                 defaultMinDiversityPoolSize: Integer (Optional)
+     *             }
+     *         ]
      *     }
      *     permissionFilterOption: String(enabled/disabled) (Optional)
      *     purviewEnabled: Boolean (Optional)
@@ -2855,6 +3175,10 @@ public final class SearchIndexClientImpl {
      *         applicationId: String (Required)
      *         federatedCredentialId: String (Required)
      *         tenantId: String (Optional)
+     *     }
+     *     oneLakeSecuritySource (Optional): {
+     *         fabricWorkspaceId: String (Required)
+     *         lakehouseId: String (Required)
      *     }
      *     &#64;odata.etag: String (Optional)
      * }
@@ -2874,7 +3198,7 @@ public final class SearchIndexClientImpl {
     public Mono<Response<BinaryData>> getIndexWithResponseAsync(String name, RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
         return FluxUtil.withContext(context -> service.getIndex(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, name, requestOptions, context));
+            this.getServiceVersion().getVersion(), name, accept, requestOptions, context));
     }
 
     /**
@@ -2897,7 +3221,8 @@ public final class SearchIndexClientImpl {
      *             filterable: Boolean (Optional)
      *             sortable: Boolean (Optional)
      *             facetable: Boolean (Optional)
-     *             permissionFilter: String(userIds/groupIds/rbacScope) (Optional)
+     *             permissionFilter: String(userIds/groupIds/rbacScope/oneLakeParentFolders/oneLakeLakehouseId) (Optional)
+     *             organizationAccessExpiration: Boolean (Optional)
      *             sensitivityLabelId: Boolean (Optional)
      *             sensitivityLabelName: Boolean (Optional)
      *             sourceDocumentId: Boolean (Optional)
@@ -2908,6 +3233,7 @@ public final class SearchIndexClientImpl {
      *             normalizer: String(asciifolding/elision/lowercase/standard/uppercase) (Optional)
      *             dimensions: Integer (Optional)
      *             vectorSearchProfile: String (Optional)
+     *             topicGraphProfile: String (Optional)
      *             vectorEncoding: String(packedBit) (Optional)
      *             synonymMaps (Optional): [
      *                 String (Optional)
@@ -2917,6 +3243,34 @@ public final class SearchIndexClientImpl {
      *             ]
      *         }
      *     ]
+     *     graphProfile (Optional): {
+     *         kind: String(edgeList) (Required)
+     *         fields (Required): {
+     *             assertionIdField: String (Required)
+     *             factIdField: String (Required)
+     *             subjectField: String (Required)
+     *             predicateField: String (Required)
+     *             objectField: String (Required)
+     *             objectStringField: String (Required)
+     *             objectDoubleField: String (Required)
+     *             objectBoolField: String (Required)
+     *             objectDateTimeField: String (Required)
+     *             subjectTypeField: String (Required)
+     *             subjectIdField: String (Required)
+     *             objectTypeField: String (Required)
+     *             objectIdField: String (Required)
+     *             confidenceField: String (Required)
+     *             subjectConfidenceField: String (Required)
+     *             predicateConfidenceField: String (Required)
+     *             objectConfidenceField: String (Required)
+     *             sourceChunkIdField: String (Required)
+     *             sourceParentIdField: String (Required)
+     *             graphNameField: String (Required)
+     *             subjectIdDisplayNameField: String (Required)
+     *             objectIdDisplayNameField: String (Required)
+     *         }
+     *         provenanceIndexName: String (Optional)
+     *     }
      *     scoringProfiles (Optional): [
      *          (Optional){
      *             name: String (Required)
@@ -2928,8 +3282,6 @@ public final class SearchIndexClientImpl {
      *             functions (Optional): [
      *                  (Optional){
      *                     type: String (Required)
-     *                     fieldName: String (Required)
-     *                     boost: double (Required)
      *                     interpolation: String(linear/constant/quadratic/logarithmic) (Optional)
      *                 }
      *             ]
@@ -3036,7 +3388,7 @@ public final class SearchIndexClientImpl {
      *         ]
      *         vectorizers (Optional): [
      *              (Optional){
-     *                 kind: String(azureOpenAI/customWebApi/aiServicesVision/aml) (Required)
+     *                 kind: String(azureOpenAI/openAICompatible/customWebApi/aiServicesVision/aml) (Required)
      *                 name: String (Required)
      *             }
      *         ]
@@ -3052,6 +3404,15 @@ public final class SearchIndexClientImpl {
      *                 truncationDimension: Integer (Optional)
      *             }
      *         ]
+     *         topicGraphProfiles (Optional): [
+     *              (Optional){
+     *                 name: String (Required)
+     *                 indexName: String (Required)
+     *                 defaultKind: String(none/diverse/balanced) (Required)
+     *                 defaultDiversityFactor: Float (Optional)
+     *                 defaultMinDiversityPoolSize: Integer (Optional)
+     *             }
+     *         ]
      *     }
      *     permissionFilterOption: String(enabled/disabled) (Optional)
      *     purviewEnabled: Boolean (Optional)
@@ -3059,6 +3420,10 @@ public final class SearchIndexClientImpl {
      *         applicationId: String (Required)
      *         federatedCredentialId: String (Required)
      *         tenantId: String (Optional)
+     *     }
+     *     oneLakeSecuritySource (Optional): {
+     *         fabricWorkspaceId: String (Required)
+     *         lakehouseId: String (Required)
      *     }
      *     &#64;odata.etag: String (Optional)
      * }
@@ -3077,7 +3442,7 @@ public final class SearchIndexClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getIndexWithResponse(String name, RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
-        return service.getIndexSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, name,
+        return service.getIndexSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name, accept,
             requestOptions, Context.NONE);
     }
 
@@ -3113,7 +3478,8 @@ public final class SearchIndexClientImpl {
      *             filterable: Boolean (Optional)
      *             sortable: Boolean (Optional)
      *             facetable: Boolean (Optional)
-     *             permissionFilter: String(userIds/groupIds/rbacScope) (Optional)
+     *             permissionFilter: String(userIds/groupIds/rbacScope/oneLakeParentFolders/oneLakeLakehouseId) (Optional)
+     *             organizationAccessExpiration: Boolean (Optional)
      *             sensitivityLabelId: Boolean (Optional)
      *             sensitivityLabelName: Boolean (Optional)
      *             sourceDocumentId: Boolean (Optional)
@@ -3124,6 +3490,7 @@ public final class SearchIndexClientImpl {
      *             normalizer: String(asciifolding/elision/lowercase/standard/uppercase) (Optional)
      *             dimensions: Integer (Optional)
      *             vectorSearchProfile: String (Optional)
+     *             topicGraphProfile: String (Optional)
      *             vectorEncoding: String(packedBit) (Optional)
      *             synonymMaps (Optional): [
      *                 String (Optional)
@@ -3133,6 +3500,34 @@ public final class SearchIndexClientImpl {
      *             ]
      *         }
      *     ]
+     *     graphProfile (Optional): {
+     *         kind: String(edgeList) (Required)
+     *         fields (Required): {
+     *             assertionIdField: String (Required)
+     *             factIdField: String (Required)
+     *             subjectField: String (Required)
+     *             predicateField: String (Required)
+     *             objectField: String (Required)
+     *             objectStringField: String (Required)
+     *             objectDoubleField: String (Required)
+     *             objectBoolField: String (Required)
+     *             objectDateTimeField: String (Required)
+     *             subjectTypeField: String (Required)
+     *             subjectIdField: String (Required)
+     *             objectTypeField: String (Required)
+     *             objectIdField: String (Required)
+     *             confidenceField: String (Required)
+     *             subjectConfidenceField: String (Required)
+     *             predicateConfidenceField: String (Required)
+     *             objectConfidenceField: String (Required)
+     *             sourceChunkIdField: String (Required)
+     *             sourceParentIdField: String (Required)
+     *             graphNameField: String (Required)
+     *             subjectIdDisplayNameField: String (Required)
+     *             objectIdDisplayNameField: String (Required)
+     *         }
+     *         provenanceIndexName: String (Optional)
+     *     }
      *     scoringProfiles (Optional): [
      *          (Optional){
      *             name: String (Required)
@@ -3144,8 +3539,6 @@ public final class SearchIndexClientImpl {
      *             functions (Optional): [
      *                  (Optional){
      *                     type: String (Required)
-     *                     fieldName: String (Required)
-     *                     boost: double (Required)
      *                     interpolation: String(linear/constant/quadratic/logarithmic) (Optional)
      *                 }
      *             ]
@@ -3252,7 +3645,7 @@ public final class SearchIndexClientImpl {
      *         ]
      *         vectorizers (Optional): [
      *              (Optional){
-     *                 kind: String(azureOpenAI/customWebApi/aiServicesVision/aml) (Required)
+     *                 kind: String(azureOpenAI/openAICompatible/customWebApi/aiServicesVision/aml) (Required)
      *                 name: String (Required)
      *             }
      *         ]
@@ -3268,6 +3661,15 @@ public final class SearchIndexClientImpl {
      *                 truncationDimension: Integer (Optional)
      *             }
      *         ]
+     *         topicGraphProfiles (Optional): [
+     *              (Optional){
+     *                 name: String (Required)
+     *                 indexName: String (Required)
+     *                 defaultKind: String(none/diverse/balanced) (Required)
+     *                 defaultDiversityFactor: Float (Optional)
+     *                 defaultMinDiversityPoolSize: Integer (Optional)
+     *             }
+     *         ]
      *     }
      *     permissionFilterOption: String(enabled/disabled) (Optional)
      *     purviewEnabled: Boolean (Optional)
@@ -3275,6 +3677,10 @@ public final class SearchIndexClientImpl {
      *         applicationId: String (Required)
      *         federatedCredentialId: String (Required)
      *         tenantId: String (Optional)
+     *     }
+     *     oneLakeSecuritySource (Optional): {
+     *         fabricWorkspaceId: String (Required)
+     *         lakehouseId: String (Required)
      *     }
      *     &#64;odata.etag: String (Optional)
      * }
@@ -3331,7 +3737,8 @@ public final class SearchIndexClientImpl {
      *             filterable: Boolean (Optional)
      *             sortable: Boolean (Optional)
      *             facetable: Boolean (Optional)
-     *             permissionFilter: String(userIds/groupIds/rbacScope) (Optional)
+     *             permissionFilter: String(userIds/groupIds/rbacScope/oneLakeParentFolders/oneLakeLakehouseId) (Optional)
+     *             organizationAccessExpiration: Boolean (Optional)
      *             sensitivityLabelId: Boolean (Optional)
      *             sensitivityLabelName: Boolean (Optional)
      *             sourceDocumentId: Boolean (Optional)
@@ -3342,6 +3749,7 @@ public final class SearchIndexClientImpl {
      *             normalizer: String(asciifolding/elision/lowercase/standard/uppercase) (Optional)
      *             dimensions: Integer (Optional)
      *             vectorSearchProfile: String (Optional)
+     *             topicGraphProfile: String (Optional)
      *             vectorEncoding: String(packedBit) (Optional)
      *             synonymMaps (Optional): [
      *                 String (Optional)
@@ -3351,6 +3759,34 @@ public final class SearchIndexClientImpl {
      *             ]
      *         }
      *     ]
+     *     graphProfile (Optional): {
+     *         kind: String(edgeList) (Required)
+     *         fields (Required): {
+     *             assertionIdField: String (Required)
+     *             factIdField: String (Required)
+     *             subjectField: String (Required)
+     *             predicateField: String (Required)
+     *             objectField: String (Required)
+     *             objectStringField: String (Required)
+     *             objectDoubleField: String (Required)
+     *             objectBoolField: String (Required)
+     *             objectDateTimeField: String (Required)
+     *             subjectTypeField: String (Required)
+     *             subjectIdField: String (Required)
+     *             objectTypeField: String (Required)
+     *             objectIdField: String (Required)
+     *             confidenceField: String (Required)
+     *             subjectConfidenceField: String (Required)
+     *             predicateConfidenceField: String (Required)
+     *             objectConfidenceField: String (Required)
+     *             sourceChunkIdField: String (Required)
+     *             sourceParentIdField: String (Required)
+     *             graphNameField: String (Required)
+     *             subjectIdDisplayNameField: String (Required)
+     *             objectIdDisplayNameField: String (Required)
+     *         }
+     *         provenanceIndexName: String (Optional)
+     *     }
      *     scoringProfiles (Optional): [
      *          (Optional){
      *             name: String (Required)
@@ -3362,8 +3798,6 @@ public final class SearchIndexClientImpl {
      *             functions (Optional): [
      *                  (Optional){
      *                     type: String (Required)
-     *                     fieldName: String (Required)
-     *                     boost: double (Required)
      *                     interpolation: String(linear/constant/quadratic/logarithmic) (Optional)
      *                 }
      *             ]
@@ -3470,7 +3904,7 @@ public final class SearchIndexClientImpl {
      *         ]
      *         vectorizers (Optional): [
      *              (Optional){
-     *                 kind: String(azureOpenAI/customWebApi/aiServicesVision/aml) (Required)
+     *                 kind: String(azureOpenAI/openAICompatible/customWebApi/aiServicesVision/aml) (Required)
      *                 name: String (Required)
      *             }
      *         ]
@@ -3486,6 +3920,15 @@ public final class SearchIndexClientImpl {
      *                 truncationDimension: Integer (Optional)
      *             }
      *         ]
+     *         topicGraphProfiles (Optional): [
+     *              (Optional){
+     *                 name: String (Required)
+     *                 indexName: String (Required)
+     *                 defaultKind: String(none/diverse/balanced) (Required)
+     *                 defaultDiversityFactor: Float (Optional)
+     *                 defaultMinDiversityPoolSize: Integer (Optional)
+     *             }
+     *         ]
      *     }
      *     permissionFilterOption: String(enabled/disabled) (Optional)
      *     purviewEnabled: Boolean (Optional)
@@ -3493,6 +3936,10 @@ public final class SearchIndexClientImpl {
      *         applicationId: String (Required)
      *         federatedCredentialId: String (Required)
      *         tenantId: String (Optional)
+     *     }
+     *     oneLakeSecuritySource (Optional): {
+     *         fabricWorkspaceId: String (Required)
+     *         lakehouseId: String (Required)
      *     }
      *     &#64;odata.etag: String (Optional)
      * }
@@ -3547,7 +3994,8 @@ public final class SearchIndexClientImpl {
      *             filterable: Boolean (Optional)
      *             sortable: Boolean (Optional)
      *             facetable: Boolean (Optional)
-     *             permissionFilter: String(userIds/groupIds/rbacScope) (Optional)
+     *             permissionFilter: String(userIds/groupIds/rbacScope/oneLakeParentFolders/oneLakeLakehouseId) (Optional)
+     *             organizationAccessExpiration: Boolean (Optional)
      *             sensitivityLabelId: Boolean (Optional)
      *             sensitivityLabelName: Boolean (Optional)
      *             sourceDocumentId: Boolean (Optional)
@@ -3558,6 +4006,7 @@ public final class SearchIndexClientImpl {
      *             normalizer: String(asciifolding/elision/lowercase/standard/uppercase) (Optional)
      *             dimensions: Integer (Optional)
      *             vectorSearchProfile: String (Optional)
+     *             topicGraphProfile: String (Optional)
      *             vectorEncoding: String(packedBit) (Optional)
      *             synonymMaps (Optional): [
      *                 String (Optional)
@@ -3567,6 +4016,34 @@ public final class SearchIndexClientImpl {
      *             ]
      *         }
      *     ]
+     *     graphProfile (Optional): {
+     *         kind: String(edgeList) (Required)
+     *         fields (Required): {
+     *             assertionIdField: String (Required)
+     *             factIdField: String (Required)
+     *             subjectField: String (Required)
+     *             predicateField: String (Required)
+     *             objectField: String (Required)
+     *             objectStringField: String (Required)
+     *             objectDoubleField: String (Required)
+     *             objectBoolField: String (Required)
+     *             objectDateTimeField: String (Required)
+     *             subjectTypeField: String (Required)
+     *             subjectIdField: String (Required)
+     *             objectTypeField: String (Required)
+     *             objectIdField: String (Required)
+     *             confidenceField: String (Required)
+     *             subjectConfidenceField: String (Required)
+     *             predicateConfidenceField: String (Required)
+     *             objectConfidenceField: String (Required)
+     *             sourceChunkIdField: String (Required)
+     *             sourceParentIdField: String (Required)
+     *             graphNameField: String (Required)
+     *             subjectIdDisplayNameField: String (Required)
+     *             objectIdDisplayNameField: String (Required)
+     *         }
+     *         provenanceIndexName: String (Optional)
+     *     }
      *     scoringProfiles (Optional): [
      *          (Optional){
      *             name: String (Required)
@@ -3578,8 +4055,6 @@ public final class SearchIndexClientImpl {
      *             functions (Optional): [
      *                  (Optional){
      *                     type: String (Required)
-     *                     fieldName: String (Required)
-     *                     boost: double (Required)
      *                     interpolation: String(linear/constant/quadratic/logarithmic) (Optional)
      *                 }
      *             ]
@@ -3686,7 +4161,7 @@ public final class SearchIndexClientImpl {
      *         ]
      *         vectorizers (Optional): [
      *              (Optional){
-     *                 kind: String(azureOpenAI/customWebApi/aiServicesVision/aml) (Required)
+     *                 kind: String(azureOpenAI/openAICompatible/customWebApi/aiServicesVision/aml) (Required)
      *                 name: String (Required)
      *             }
      *         ]
@@ -3702,6 +4177,15 @@ public final class SearchIndexClientImpl {
      *                 truncationDimension: Integer (Optional)
      *             }
      *         ]
+     *         topicGraphProfiles (Optional): [
+     *              (Optional){
+     *                 name: String (Required)
+     *                 indexName: String (Required)
+     *                 defaultKind: String(none/diverse/balanced) (Required)
+     *                 defaultDiversityFactor: Float (Optional)
+     *                 defaultMinDiversityPoolSize: Integer (Optional)
+     *             }
+     *         ]
      *     }
      *     permissionFilterOption: String(enabled/disabled) (Optional)
      *     purviewEnabled: Boolean (Optional)
@@ -3709,6 +4193,10 @@ public final class SearchIndexClientImpl {
      *         applicationId: String (Required)
      *         federatedCredentialId: String (Required)
      *         tenantId: String (Optional)
+     *     }
+     *     oneLakeSecuritySource (Optional): {
+     *         fabricWorkspaceId: String (Required)
+     *         lakehouseId: String (Required)
      *     }
      *     &#64;odata.etag: String (Optional)
      * }
@@ -3763,7 +4251,8 @@ public final class SearchIndexClientImpl {
      *             filterable: Boolean (Optional)
      *             sortable: Boolean (Optional)
      *             facetable: Boolean (Optional)
-     *             permissionFilter: String(userIds/groupIds/rbacScope) (Optional)
+     *             permissionFilter: String(userIds/groupIds/rbacScope/oneLakeParentFolders/oneLakeLakehouseId) (Optional)
+     *             organizationAccessExpiration: Boolean (Optional)
      *             sensitivityLabelId: Boolean (Optional)
      *             sensitivityLabelName: Boolean (Optional)
      *             sourceDocumentId: Boolean (Optional)
@@ -3774,6 +4263,7 @@ public final class SearchIndexClientImpl {
      *             normalizer: String(asciifolding/elision/lowercase/standard/uppercase) (Optional)
      *             dimensions: Integer (Optional)
      *             vectorSearchProfile: String (Optional)
+     *             topicGraphProfile: String (Optional)
      *             vectorEncoding: String(packedBit) (Optional)
      *             synonymMaps (Optional): [
      *                 String (Optional)
@@ -3783,6 +4273,34 @@ public final class SearchIndexClientImpl {
      *             ]
      *         }
      *     ]
+     *     graphProfile (Optional): {
+     *         kind: String(edgeList) (Required)
+     *         fields (Required): {
+     *             assertionIdField: String (Required)
+     *             factIdField: String (Required)
+     *             subjectField: String (Required)
+     *             predicateField: String (Required)
+     *             objectField: String (Required)
+     *             objectStringField: String (Required)
+     *             objectDoubleField: String (Required)
+     *             objectBoolField: String (Required)
+     *             objectDateTimeField: String (Required)
+     *             subjectTypeField: String (Required)
+     *             subjectIdField: String (Required)
+     *             objectTypeField: String (Required)
+     *             objectIdField: String (Required)
+     *             confidenceField: String (Required)
+     *             subjectConfidenceField: String (Required)
+     *             predicateConfidenceField: String (Required)
+     *             objectConfidenceField: String (Required)
+     *             sourceChunkIdField: String (Required)
+     *             sourceParentIdField: String (Required)
+     *             graphNameField: String (Required)
+     *             subjectIdDisplayNameField: String (Required)
+     *             objectIdDisplayNameField: String (Required)
+     *         }
+     *         provenanceIndexName: String (Optional)
+     *     }
      *     scoringProfiles (Optional): [
      *          (Optional){
      *             name: String (Required)
@@ -3794,8 +4312,6 @@ public final class SearchIndexClientImpl {
      *             functions (Optional): [
      *                  (Optional){
      *                     type: String (Required)
-     *                     fieldName: String (Required)
-     *                     boost: double (Required)
      *                     interpolation: String(linear/constant/quadratic/logarithmic) (Optional)
      *                 }
      *             ]
@@ -3902,7 +4418,7 @@ public final class SearchIndexClientImpl {
      *         ]
      *         vectorizers (Optional): [
      *              (Optional){
-     *                 kind: String(azureOpenAI/customWebApi/aiServicesVision/aml) (Required)
+     *                 kind: String(azureOpenAI/openAICompatible/customWebApi/aiServicesVision/aml) (Required)
      *                 name: String (Required)
      *             }
      *         ]
@@ -3918,6 +4434,15 @@ public final class SearchIndexClientImpl {
      *                 truncationDimension: Integer (Optional)
      *             }
      *         ]
+     *         topicGraphProfiles (Optional): [
+     *              (Optional){
+     *                 name: String (Required)
+     *                 indexName: String (Required)
+     *                 defaultKind: String(none/diverse/balanced) (Required)
+     *                 defaultDiversityFactor: Float (Optional)
+     *                 defaultMinDiversityPoolSize: Integer (Optional)
+     *             }
+     *         ]
      *     }
      *     permissionFilterOption: String(enabled/disabled) (Optional)
      *     purviewEnabled: Boolean (Optional)
@@ -3925,6 +4450,10 @@ public final class SearchIndexClientImpl {
      *         applicationId: String (Required)
      *         federatedCredentialId: String (Required)
      *         tenantId: String (Optional)
+     *     }
+     *     oneLakeSecuritySource (Optional): {
+     *         fabricWorkspaceId: String (Required)
+     *         lakehouseId: String (Required)
      *     }
      *     &#64;odata.etag: String (Optional)
      * }
@@ -3982,7 +4511,8 @@ public final class SearchIndexClientImpl {
      *             filterable: Boolean (Optional)
      *             sortable: Boolean (Optional)
      *             facetable: Boolean (Optional)
-     *             permissionFilter: String(userIds/groupIds/rbacScope) (Optional)
+     *             permissionFilter: String(userIds/groupIds/rbacScope/oneLakeParentFolders/oneLakeLakehouseId) (Optional)
+     *             organizationAccessExpiration: Boolean (Optional)
      *             sensitivityLabelId: Boolean (Optional)
      *             sensitivityLabelName: Boolean (Optional)
      *             sourceDocumentId: Boolean (Optional)
@@ -3993,6 +4523,7 @@ public final class SearchIndexClientImpl {
      *             normalizer: String(asciifolding/elision/lowercase/standard/uppercase) (Optional)
      *             dimensions: Integer (Optional)
      *             vectorSearchProfile: String (Optional)
+     *             topicGraphProfile: String (Optional)
      *             vectorEncoding: String(packedBit) (Optional)
      *             synonymMaps (Optional): [
      *                 String (Optional)
@@ -4002,6 +4533,34 @@ public final class SearchIndexClientImpl {
      *             ]
      *         }
      *     ]
+     *     graphProfile (Optional): {
+     *         kind: String(edgeList) (Required)
+     *         fields (Required): {
+     *             assertionIdField: String (Required)
+     *             factIdField: String (Required)
+     *             subjectField: String (Required)
+     *             predicateField: String (Required)
+     *             objectField: String (Required)
+     *             objectStringField: String (Required)
+     *             objectDoubleField: String (Required)
+     *             objectBoolField: String (Required)
+     *             objectDateTimeField: String (Required)
+     *             subjectTypeField: String (Required)
+     *             subjectIdField: String (Required)
+     *             objectTypeField: String (Required)
+     *             objectIdField: String (Required)
+     *             confidenceField: String (Required)
+     *             subjectConfidenceField: String (Required)
+     *             predicateConfidenceField: String (Required)
+     *             objectConfidenceField: String (Required)
+     *             sourceChunkIdField: String (Required)
+     *             sourceParentIdField: String (Required)
+     *             graphNameField: String (Required)
+     *             subjectIdDisplayNameField: String (Required)
+     *             objectIdDisplayNameField: String (Required)
+     *         }
+     *         provenanceIndexName: String (Optional)
+     *     }
      *     scoringProfiles (Optional): [
      *          (Optional){
      *             name: String (Required)
@@ -4013,8 +4572,6 @@ public final class SearchIndexClientImpl {
      *             functions (Optional): [
      *                  (Optional){
      *                     type: String (Required)
-     *                     fieldName: String (Required)
-     *                     boost: double (Required)
      *                     interpolation: String(linear/constant/quadratic/logarithmic) (Optional)
      *                 }
      *             ]
@@ -4121,7 +4678,7 @@ public final class SearchIndexClientImpl {
      *         ]
      *         vectorizers (Optional): [
      *              (Optional){
-     *                 kind: String(azureOpenAI/customWebApi/aiServicesVision/aml) (Required)
+     *                 kind: String(azureOpenAI/openAICompatible/customWebApi/aiServicesVision/aml) (Required)
      *                 name: String (Required)
      *             }
      *         ]
@@ -4137,9 +4694,27 @@ public final class SearchIndexClientImpl {
      *                 truncationDimension: Integer (Optional)
      *             }
      *         ]
+     *         topicGraphProfiles (Optional): [
+     *              (Optional){
+     *                 name: String (Required)
+     *                 indexName: String (Required)
+     *                 defaultKind: String(none/diverse/balanced) (Required)
+     *                 defaultDiversityFactor: Float (Optional)
+     *                 defaultMinDiversityPoolSize: Integer (Optional)
+     *             }
+     *         ]
      *     }
      *     permissionFilterOption: String(enabled/disabled) (Optional)
      *     purviewEnabled: Boolean (Optional)
+     *     sharePointConnectorAppRegistration (Optional): {
+     *         applicationId: String (Required)
+     *         federatedCredentialId: String (Required)
+     *         tenantId: String (Optional)
+     *     }
+     *     oneLakeSecuritySource (Optional): {
+     *         fabricWorkspaceId: String (Required)
+     *         lakehouseId: String (Required)
+     *     }
      *     &#64;odata.etag: String (Optional)
      * }
      * }
@@ -4199,7 +4774,8 @@ public final class SearchIndexClientImpl {
      *             filterable: Boolean (Optional)
      *             sortable: Boolean (Optional)
      *             facetable: Boolean (Optional)
-     *             permissionFilter: String(userIds/groupIds/rbacScope) (Optional)
+     *             permissionFilter: String(userIds/groupIds/rbacScope/oneLakeParentFolders/oneLakeLakehouseId) (Optional)
+     *             organizationAccessExpiration: Boolean (Optional)
      *             sensitivityLabelId: Boolean (Optional)
      *             sensitivityLabelName: Boolean (Optional)
      *             sourceDocumentId: Boolean (Optional)
@@ -4210,6 +4786,7 @@ public final class SearchIndexClientImpl {
      *             normalizer: String(asciifolding/elision/lowercase/standard/uppercase) (Optional)
      *             dimensions: Integer (Optional)
      *             vectorSearchProfile: String (Optional)
+     *             topicGraphProfile: String (Optional)
      *             vectorEncoding: String(packedBit) (Optional)
      *             synonymMaps (Optional): [
      *                 String (Optional)
@@ -4219,6 +4796,34 @@ public final class SearchIndexClientImpl {
      *             ]
      *         }
      *     ]
+     *     graphProfile (Optional): {
+     *         kind: String(edgeList) (Required)
+     *         fields (Required): {
+     *             assertionIdField: String (Required)
+     *             factIdField: String (Required)
+     *             subjectField: String (Required)
+     *             predicateField: String (Required)
+     *             objectField: String (Required)
+     *             objectStringField: String (Required)
+     *             objectDoubleField: String (Required)
+     *             objectBoolField: String (Required)
+     *             objectDateTimeField: String (Required)
+     *             subjectTypeField: String (Required)
+     *             subjectIdField: String (Required)
+     *             objectTypeField: String (Required)
+     *             objectIdField: String (Required)
+     *             confidenceField: String (Required)
+     *             subjectConfidenceField: String (Required)
+     *             predicateConfidenceField: String (Required)
+     *             objectConfidenceField: String (Required)
+     *             sourceChunkIdField: String (Required)
+     *             sourceParentIdField: String (Required)
+     *             graphNameField: String (Required)
+     *             subjectIdDisplayNameField: String (Required)
+     *             objectIdDisplayNameField: String (Required)
+     *         }
+     *         provenanceIndexName: String (Optional)
+     *     }
      *     scoringProfiles (Optional): [
      *          (Optional){
      *             name: String (Required)
@@ -4230,8 +4835,6 @@ public final class SearchIndexClientImpl {
      *             functions (Optional): [
      *                  (Optional){
      *                     type: String (Required)
-     *                     fieldName: String (Required)
-     *                     boost: double (Required)
      *                     interpolation: String(linear/constant/quadratic/logarithmic) (Optional)
      *                 }
      *             ]
@@ -4338,7 +4941,7 @@ public final class SearchIndexClientImpl {
      *         ]
      *         vectorizers (Optional): [
      *              (Optional){
-     *                 kind: String(azureOpenAI/customWebApi/aiServicesVision/aml) (Required)
+     *                 kind: String(azureOpenAI/openAICompatible/customWebApi/aiServicesVision/aml) (Required)
      *                 name: String (Required)
      *             }
      *         ]
@@ -4354,9 +4957,27 @@ public final class SearchIndexClientImpl {
      *                 truncationDimension: Integer (Optional)
      *             }
      *         ]
+     *         topicGraphProfiles (Optional): [
+     *              (Optional){
+     *                 name: String (Required)
+     *                 indexName: String (Required)
+     *                 defaultKind: String(none/diverse/balanced) (Required)
+     *                 defaultDiversityFactor: Float (Optional)
+     *                 defaultMinDiversityPoolSize: Integer (Optional)
+     *             }
+     *         ]
      *     }
      *     permissionFilterOption: String(enabled/disabled) (Optional)
      *     purviewEnabled: Boolean (Optional)
+     *     sharePointConnectorAppRegistration (Optional): {
+     *         applicationId: String (Required)
+     *         federatedCredentialId: String (Required)
+     *         tenantId: String (Optional)
+     *     }
+     *     oneLakeSecuritySource (Optional): {
+     *         fabricWorkspaceId: String (Required)
+     *         lakehouseId: String (Required)
+     *     }
      *     &#64;odata.etag: String (Optional)
      * }
      * }
@@ -4413,7 +5034,8 @@ public final class SearchIndexClientImpl {
      *             filterable: Boolean (Optional)
      *             sortable: Boolean (Optional)
      *             facetable: Boolean (Optional)
-     *             permissionFilter: String(userIds/groupIds/rbacScope) (Optional)
+     *             permissionFilter: String(userIds/groupIds/rbacScope/oneLakeParentFolders/oneLakeLakehouseId) (Optional)
+     *             organizationAccessExpiration: Boolean (Optional)
      *             sensitivityLabelId: Boolean (Optional)
      *             sensitivityLabelName: Boolean (Optional)
      *             sourceDocumentId: Boolean (Optional)
@@ -4424,6 +5046,7 @@ public final class SearchIndexClientImpl {
      *             normalizer: String(asciifolding/elision/lowercase/standard/uppercase) (Optional)
      *             dimensions: Integer (Optional)
      *             vectorSearchProfile: String (Optional)
+     *             topicGraphProfile: String (Optional)
      *             vectorEncoding: String(packedBit) (Optional)
      *             synonymMaps (Optional): [
      *                 String (Optional)
@@ -4433,6 +5056,34 @@ public final class SearchIndexClientImpl {
      *             ]
      *         }
      *     ]
+     *     graphProfile (Optional): {
+     *         kind: String(edgeList) (Required)
+     *         fields (Required): {
+     *             assertionIdField: String (Required)
+     *             factIdField: String (Required)
+     *             subjectField: String (Required)
+     *             predicateField: String (Required)
+     *             objectField: String (Required)
+     *             objectStringField: String (Required)
+     *             objectDoubleField: String (Required)
+     *             objectBoolField: String (Required)
+     *             objectDateTimeField: String (Required)
+     *             subjectTypeField: String (Required)
+     *             subjectIdField: String (Required)
+     *             objectTypeField: String (Required)
+     *             objectIdField: String (Required)
+     *             confidenceField: String (Required)
+     *             subjectConfidenceField: String (Required)
+     *             predicateConfidenceField: String (Required)
+     *             objectConfidenceField: String (Required)
+     *             sourceChunkIdField: String (Required)
+     *             sourceParentIdField: String (Required)
+     *             graphNameField: String (Required)
+     *             subjectIdDisplayNameField: String (Required)
+     *             objectIdDisplayNameField: String (Required)
+     *         }
+     *         provenanceIndexName: String (Optional)
+     *     }
      *     scoringProfiles (Optional): [
      *          (Optional){
      *             name: String (Required)
@@ -4444,8 +5095,6 @@ public final class SearchIndexClientImpl {
      *             functions (Optional): [
      *                  (Optional){
      *                     type: String (Required)
-     *                     fieldName: String (Required)
-     *                     boost: double (Required)
      *                     interpolation: String(linear/constant/quadratic/logarithmic) (Optional)
      *                 }
      *             ]
@@ -4552,7 +5201,7 @@ public final class SearchIndexClientImpl {
      *         ]
      *         vectorizers (Optional): [
      *              (Optional){
-     *                 kind: String(azureOpenAI/customWebApi/aiServicesVision/aml) (Required)
+     *                 kind: String(azureOpenAI/openAICompatible/customWebApi/aiServicesVision/aml) (Required)
      *                 name: String (Required)
      *             }
      *         ]
@@ -4568,9 +5217,27 @@ public final class SearchIndexClientImpl {
      *                 truncationDimension: Integer (Optional)
      *             }
      *         ]
+     *         topicGraphProfiles (Optional): [
+     *              (Optional){
+     *                 name: String (Required)
+     *                 indexName: String (Required)
+     *                 defaultKind: String(none/diverse/balanced) (Required)
+     *                 defaultDiversityFactor: Float (Optional)
+     *                 defaultMinDiversityPoolSize: Integer (Optional)
+     *             }
+     *         ]
      *     }
      *     permissionFilterOption: String(enabled/disabled) (Optional)
      *     purviewEnabled: Boolean (Optional)
+     *     sharePointConnectorAppRegistration (Optional): {
+     *         applicationId: String (Required)
+     *         federatedCredentialId: String (Required)
+     *         tenantId: String (Optional)
+     *     }
+     *     oneLakeSecuritySource (Optional): {
+     *         fabricWorkspaceId: String (Required)
+     *         lakehouseId: String (Required)
+     *     }
      *     &#64;odata.etag: String (Optional)
      * }
      * }
@@ -4627,7 +5294,8 @@ public final class SearchIndexClientImpl {
      *             filterable: Boolean (Optional)
      *             sortable: Boolean (Optional)
      *             facetable: Boolean (Optional)
-     *             permissionFilter: String(userIds/groupIds/rbacScope) (Optional)
+     *             permissionFilter: String(userIds/groupIds/rbacScope/oneLakeParentFolders/oneLakeLakehouseId) (Optional)
+     *             organizationAccessExpiration: Boolean (Optional)
      *             sensitivityLabelId: Boolean (Optional)
      *             sensitivityLabelName: Boolean (Optional)
      *             sourceDocumentId: Boolean (Optional)
@@ -4638,6 +5306,7 @@ public final class SearchIndexClientImpl {
      *             normalizer: String(asciifolding/elision/lowercase/standard/uppercase) (Optional)
      *             dimensions: Integer (Optional)
      *             vectorSearchProfile: String (Optional)
+     *             topicGraphProfile: String (Optional)
      *             vectorEncoding: String(packedBit) (Optional)
      *             synonymMaps (Optional): [
      *                 String (Optional)
@@ -4647,6 +5316,34 @@ public final class SearchIndexClientImpl {
      *             ]
      *         }
      *     ]
+     *     graphProfile (Optional): {
+     *         kind: String(edgeList) (Required)
+     *         fields (Required): {
+     *             assertionIdField: String (Required)
+     *             factIdField: String (Required)
+     *             subjectField: String (Required)
+     *             predicateField: String (Required)
+     *             objectField: String (Required)
+     *             objectStringField: String (Required)
+     *             objectDoubleField: String (Required)
+     *             objectBoolField: String (Required)
+     *             objectDateTimeField: String (Required)
+     *             subjectTypeField: String (Required)
+     *             subjectIdField: String (Required)
+     *             objectTypeField: String (Required)
+     *             objectIdField: String (Required)
+     *             confidenceField: String (Required)
+     *             subjectConfidenceField: String (Required)
+     *             predicateConfidenceField: String (Required)
+     *             objectConfidenceField: String (Required)
+     *             sourceChunkIdField: String (Required)
+     *             sourceParentIdField: String (Required)
+     *             graphNameField: String (Required)
+     *             subjectIdDisplayNameField: String (Required)
+     *             objectIdDisplayNameField: String (Required)
+     *         }
+     *         provenanceIndexName: String (Optional)
+     *     }
      *     scoringProfiles (Optional): [
      *          (Optional){
      *             name: String (Required)
@@ -4658,8 +5355,6 @@ public final class SearchIndexClientImpl {
      *             functions (Optional): [
      *                  (Optional){
      *                     type: String (Required)
-     *                     fieldName: String (Required)
-     *                     boost: double (Required)
      *                     interpolation: String(linear/constant/quadratic/logarithmic) (Optional)
      *                 }
      *             ]
@@ -4766,7 +5461,7 @@ public final class SearchIndexClientImpl {
      *         ]
      *         vectorizers (Optional): [
      *              (Optional){
-     *                 kind: String(azureOpenAI/customWebApi/aiServicesVision/aml) (Required)
+     *                 kind: String(azureOpenAI/openAICompatible/customWebApi/aiServicesVision/aml) (Required)
      *                 name: String (Required)
      *             }
      *         ]
@@ -4782,9 +5477,27 @@ public final class SearchIndexClientImpl {
      *                 truncationDimension: Integer (Optional)
      *             }
      *         ]
+     *         topicGraphProfiles (Optional): [
+     *              (Optional){
+     *                 name: String (Required)
+     *                 indexName: String (Required)
+     *                 defaultKind: String(none/diverse/balanced) (Required)
+     *                 defaultDiversityFactor: Float (Optional)
+     *                 defaultMinDiversityPoolSize: Integer (Optional)
+     *             }
+     *         ]
      *     }
      *     permissionFilterOption: String(enabled/disabled) (Optional)
      *     purviewEnabled: Boolean (Optional)
+     *     sharePointConnectorAppRegistration (Optional): {
+     *         applicationId: String (Required)
+     *         federatedCredentialId: String (Required)
+     *         tenantId: String (Optional)
+     *     }
+     *     oneLakeSecuritySource (Optional): {
+     *         fabricWorkspaceId: String (Required)
+     *         lakehouseId: String (Required)
+     *     }
      *     &#64;odata.etag: String (Optional)
      * }
      * }
@@ -4826,7 +5539,8 @@ public final class SearchIndexClientImpl {
      *             filterable: Boolean (Optional)
      *             sortable: Boolean (Optional)
      *             facetable: Boolean (Optional)
-     *             permissionFilter: String(userIds/groupIds/rbacScope) (Optional)
+     *             permissionFilter: String(userIds/groupIds/rbacScope/oneLakeParentFolders/oneLakeLakehouseId) (Optional)
+     *             organizationAccessExpiration: Boolean (Optional)
      *             sensitivityLabelId: Boolean (Optional)
      *             sensitivityLabelName: Boolean (Optional)
      *             sourceDocumentId: Boolean (Optional)
@@ -4837,6 +5551,7 @@ public final class SearchIndexClientImpl {
      *             normalizer: String(asciifolding/elision/lowercase/standard/uppercase) (Optional)
      *             dimensions: Integer (Optional)
      *             vectorSearchProfile: String (Optional)
+     *             topicGraphProfile: String (Optional)
      *             vectorEncoding: String(packedBit) (Optional)
      *             synonymMaps (Optional): [
      *                 String (Optional)
@@ -4846,6 +5561,34 @@ public final class SearchIndexClientImpl {
      *             ]
      *         }
      *     ]
+     *     graphProfile (Optional): {
+     *         kind: String(edgeList) (Required)
+     *         fields (Required): {
+     *             assertionIdField: String (Required)
+     *             factIdField: String (Required)
+     *             subjectField: String (Required)
+     *             predicateField: String (Required)
+     *             objectField: String (Required)
+     *             objectStringField: String (Required)
+     *             objectDoubleField: String (Required)
+     *             objectBoolField: String (Required)
+     *             objectDateTimeField: String (Required)
+     *             subjectTypeField: String (Required)
+     *             subjectIdField: String (Required)
+     *             objectTypeField: String (Required)
+     *             objectIdField: String (Required)
+     *             confidenceField: String (Required)
+     *             subjectConfidenceField: String (Required)
+     *             predicateConfidenceField: String (Required)
+     *             objectConfidenceField: String (Required)
+     *             sourceChunkIdField: String (Required)
+     *             sourceParentIdField: String (Required)
+     *             graphNameField: String (Required)
+     *             subjectIdDisplayNameField: String (Required)
+     *             objectIdDisplayNameField: String (Required)
+     *         }
+     *         provenanceIndexName: String (Optional)
+     *     }
      *     scoringProfiles (Optional): [
      *          (Optional){
      *             name: String (Required)
@@ -4857,8 +5600,6 @@ public final class SearchIndexClientImpl {
      *             functions (Optional): [
      *                  (Optional){
      *                     type: String (Required)
-     *                     fieldName: String (Required)
-     *                     boost: double (Required)
      *                     interpolation: String(linear/constant/quadratic/logarithmic) (Optional)
      *                 }
      *             ]
@@ -4965,7 +5706,7 @@ public final class SearchIndexClientImpl {
      *         ]
      *         vectorizers (Optional): [
      *              (Optional){
-     *                 kind: String(azureOpenAI/customWebApi/aiServicesVision/aml) (Required)
+     *                 kind: String(azureOpenAI/openAICompatible/customWebApi/aiServicesVision/aml) (Required)
      *                 name: String (Required)
      *             }
      *         ]
@@ -4981,6 +5722,15 @@ public final class SearchIndexClientImpl {
      *                 truncationDimension: Integer (Optional)
      *             }
      *         ]
+     *         topicGraphProfiles (Optional): [
+     *              (Optional){
+     *                 name: String (Required)
+     *                 indexName: String (Required)
+     *                 defaultKind: String(none/diverse/balanced) (Required)
+     *                 defaultDiversityFactor: Float (Optional)
+     *                 defaultMinDiversityPoolSize: Integer (Optional)
+     *             }
+     *         ]
      *     }
      *     permissionFilterOption: String(enabled/disabled) (Optional)
      *     purviewEnabled: Boolean (Optional)
@@ -4988,6 +5738,10 @@ public final class SearchIndexClientImpl {
      *         applicationId: String (Required)
      *         federatedCredentialId: String (Required)
      *         tenantId: String (Optional)
+     *     }
+     *     oneLakeSecuritySource (Optional): {
+     *         fabricWorkspaceId: String (Required)
+     *         lakehouseId: String (Required)
      *     }
      *     &#64;odata.etag: String (Optional)
      * }
@@ -5012,7 +5766,8 @@ public final class SearchIndexClientImpl {
      *             filterable: Boolean (Optional)
      *             sortable: Boolean (Optional)
      *             facetable: Boolean (Optional)
-     *             permissionFilter: String(userIds/groupIds/rbacScope) (Optional)
+     *             permissionFilter: String(userIds/groupIds/rbacScope/oneLakeParentFolders/oneLakeLakehouseId) (Optional)
+     *             organizationAccessExpiration: Boolean (Optional)
      *             sensitivityLabelId: Boolean (Optional)
      *             sensitivityLabelName: Boolean (Optional)
      *             sourceDocumentId: Boolean (Optional)
@@ -5023,6 +5778,7 @@ public final class SearchIndexClientImpl {
      *             normalizer: String(asciifolding/elision/lowercase/standard/uppercase) (Optional)
      *             dimensions: Integer (Optional)
      *             vectorSearchProfile: String (Optional)
+     *             topicGraphProfile: String (Optional)
      *             vectorEncoding: String(packedBit) (Optional)
      *             synonymMaps (Optional): [
      *                 String (Optional)
@@ -5032,6 +5788,34 @@ public final class SearchIndexClientImpl {
      *             ]
      *         }
      *     ]
+     *     graphProfile (Optional): {
+     *         kind: String(edgeList) (Required)
+     *         fields (Required): {
+     *             assertionIdField: String (Required)
+     *             factIdField: String (Required)
+     *             subjectField: String (Required)
+     *             predicateField: String (Required)
+     *             objectField: String (Required)
+     *             objectStringField: String (Required)
+     *             objectDoubleField: String (Required)
+     *             objectBoolField: String (Required)
+     *             objectDateTimeField: String (Required)
+     *             subjectTypeField: String (Required)
+     *             subjectIdField: String (Required)
+     *             objectTypeField: String (Required)
+     *             objectIdField: String (Required)
+     *             confidenceField: String (Required)
+     *             subjectConfidenceField: String (Required)
+     *             predicateConfidenceField: String (Required)
+     *             objectConfidenceField: String (Required)
+     *             sourceChunkIdField: String (Required)
+     *             sourceParentIdField: String (Required)
+     *             graphNameField: String (Required)
+     *             subjectIdDisplayNameField: String (Required)
+     *             objectIdDisplayNameField: String (Required)
+     *         }
+     *         provenanceIndexName: String (Optional)
+     *     }
      *     scoringProfiles (Optional): [
      *          (Optional){
      *             name: String (Required)
@@ -5043,8 +5827,6 @@ public final class SearchIndexClientImpl {
      *             functions (Optional): [
      *                  (Optional){
      *                     type: String (Required)
-     *                     fieldName: String (Required)
-     *                     boost: double (Required)
      *                     interpolation: String(linear/constant/quadratic/logarithmic) (Optional)
      *                 }
      *             ]
@@ -5151,7 +5933,7 @@ public final class SearchIndexClientImpl {
      *         ]
      *         vectorizers (Optional): [
      *              (Optional){
-     *                 kind: String(azureOpenAI/customWebApi/aiServicesVision/aml) (Required)
+     *                 kind: String(azureOpenAI/openAICompatible/customWebApi/aiServicesVision/aml) (Required)
      *                 name: String (Required)
      *             }
      *         ]
@@ -5167,6 +5949,15 @@ public final class SearchIndexClientImpl {
      *                 truncationDimension: Integer (Optional)
      *             }
      *         ]
+     *         topicGraphProfiles (Optional): [
+     *              (Optional){
+     *                 name: String (Required)
+     *                 indexName: String (Required)
+     *                 defaultKind: String(none/diverse/balanced) (Required)
+     *                 defaultDiversityFactor: Float (Optional)
+     *                 defaultMinDiversityPoolSize: Integer (Optional)
+     *             }
+     *         ]
      *     }
      *     permissionFilterOption: String(enabled/disabled) (Optional)
      *     purviewEnabled: Boolean (Optional)
@@ -5174,6 +5965,10 @@ public final class SearchIndexClientImpl {
      *         applicationId: String (Required)
      *         federatedCredentialId: String (Required)
      *         tenantId: String (Optional)
+     *     }
+     *     oneLakeSecuritySource (Optional): {
+     *         fabricWorkspaceId: String (Required)
+     *         lakehouseId: String (Required)
      *     }
      *     &#64;odata.etag: String (Optional)
      * }
@@ -5217,7 +6012,8 @@ public final class SearchIndexClientImpl {
      *             filterable: Boolean (Optional)
      *             sortable: Boolean (Optional)
      *             facetable: Boolean (Optional)
-     *             permissionFilter: String(userIds/groupIds/rbacScope) (Optional)
+     *             permissionFilter: String(userIds/groupIds/rbacScope/oneLakeParentFolders/oneLakeLakehouseId) (Optional)
+     *             organizationAccessExpiration: Boolean (Optional)
      *             sensitivityLabelId: Boolean (Optional)
      *             sensitivityLabelName: Boolean (Optional)
      *             sourceDocumentId: Boolean (Optional)
@@ -5228,6 +6024,7 @@ public final class SearchIndexClientImpl {
      *             normalizer: String(asciifolding/elision/lowercase/standard/uppercase) (Optional)
      *             dimensions: Integer (Optional)
      *             vectorSearchProfile: String (Optional)
+     *             topicGraphProfile: String (Optional)
      *             vectorEncoding: String(packedBit) (Optional)
      *             synonymMaps (Optional): [
      *                 String (Optional)
@@ -5237,6 +6034,34 @@ public final class SearchIndexClientImpl {
      *             ]
      *         }
      *     ]
+     *     graphProfile (Optional): {
+     *         kind: String(edgeList) (Required)
+     *         fields (Required): {
+     *             assertionIdField: String (Required)
+     *             factIdField: String (Required)
+     *             subjectField: String (Required)
+     *             predicateField: String (Required)
+     *             objectField: String (Required)
+     *             objectStringField: String (Required)
+     *             objectDoubleField: String (Required)
+     *             objectBoolField: String (Required)
+     *             objectDateTimeField: String (Required)
+     *             subjectTypeField: String (Required)
+     *             subjectIdField: String (Required)
+     *             objectTypeField: String (Required)
+     *             objectIdField: String (Required)
+     *             confidenceField: String (Required)
+     *             subjectConfidenceField: String (Required)
+     *             predicateConfidenceField: String (Required)
+     *             objectConfidenceField: String (Required)
+     *             sourceChunkIdField: String (Required)
+     *             sourceParentIdField: String (Required)
+     *             graphNameField: String (Required)
+     *             subjectIdDisplayNameField: String (Required)
+     *             objectIdDisplayNameField: String (Required)
+     *         }
+     *         provenanceIndexName: String (Optional)
+     *     }
      *     scoringProfiles (Optional): [
      *          (Optional){
      *             name: String (Required)
@@ -5248,8 +6073,6 @@ public final class SearchIndexClientImpl {
      *             functions (Optional): [
      *                  (Optional){
      *                     type: String (Required)
-     *                     fieldName: String (Required)
-     *                     boost: double (Required)
      *                     interpolation: String(linear/constant/quadratic/logarithmic) (Optional)
      *                 }
      *             ]
@@ -5356,7 +6179,7 @@ public final class SearchIndexClientImpl {
      *         ]
      *         vectorizers (Optional): [
      *              (Optional){
-     *                 kind: String(azureOpenAI/customWebApi/aiServicesVision/aml) (Required)
+     *                 kind: String(azureOpenAI/openAICompatible/customWebApi/aiServicesVision/aml) (Required)
      *                 name: String (Required)
      *             }
      *         ]
@@ -5372,6 +6195,15 @@ public final class SearchIndexClientImpl {
      *                 truncationDimension: Integer (Optional)
      *             }
      *         ]
+     *         topicGraphProfiles (Optional): [
+     *              (Optional){
+     *                 name: String (Required)
+     *                 indexName: String (Required)
+     *                 defaultKind: String(none/diverse/balanced) (Required)
+     *                 defaultDiversityFactor: Float (Optional)
+     *                 defaultMinDiversityPoolSize: Integer (Optional)
+     *             }
+     *         ]
      *     }
      *     permissionFilterOption: String(enabled/disabled) (Optional)
      *     purviewEnabled: Boolean (Optional)
@@ -5379,6 +6211,10 @@ public final class SearchIndexClientImpl {
      *         applicationId: String (Required)
      *         federatedCredentialId: String (Required)
      *         tenantId: String (Optional)
+     *     }
+     *     oneLakeSecuritySource (Optional): {
+     *         fabricWorkspaceId: String (Required)
+     *         lakehouseId: String (Required)
      *     }
      *     &#64;odata.etag: String (Optional)
      * }
@@ -5403,7 +6239,8 @@ public final class SearchIndexClientImpl {
      *             filterable: Boolean (Optional)
      *             sortable: Boolean (Optional)
      *             facetable: Boolean (Optional)
-     *             permissionFilter: String(userIds/groupIds/rbacScope) (Optional)
+     *             permissionFilter: String(userIds/groupIds/rbacScope/oneLakeParentFolders/oneLakeLakehouseId) (Optional)
+     *             organizationAccessExpiration: Boolean (Optional)
      *             sensitivityLabelId: Boolean (Optional)
      *             sensitivityLabelName: Boolean (Optional)
      *             sourceDocumentId: Boolean (Optional)
@@ -5414,6 +6251,7 @@ public final class SearchIndexClientImpl {
      *             normalizer: String(asciifolding/elision/lowercase/standard/uppercase) (Optional)
      *             dimensions: Integer (Optional)
      *             vectorSearchProfile: String (Optional)
+     *             topicGraphProfile: String (Optional)
      *             vectorEncoding: String(packedBit) (Optional)
      *             synonymMaps (Optional): [
      *                 String (Optional)
@@ -5423,6 +6261,34 @@ public final class SearchIndexClientImpl {
      *             ]
      *         }
      *     ]
+     *     graphProfile (Optional): {
+     *         kind: String(edgeList) (Required)
+     *         fields (Required): {
+     *             assertionIdField: String (Required)
+     *             factIdField: String (Required)
+     *             subjectField: String (Required)
+     *             predicateField: String (Required)
+     *             objectField: String (Required)
+     *             objectStringField: String (Required)
+     *             objectDoubleField: String (Required)
+     *             objectBoolField: String (Required)
+     *             objectDateTimeField: String (Required)
+     *             subjectTypeField: String (Required)
+     *             subjectIdField: String (Required)
+     *             objectTypeField: String (Required)
+     *             objectIdField: String (Required)
+     *             confidenceField: String (Required)
+     *             subjectConfidenceField: String (Required)
+     *             predicateConfidenceField: String (Required)
+     *             objectConfidenceField: String (Required)
+     *             sourceChunkIdField: String (Required)
+     *             sourceParentIdField: String (Required)
+     *             graphNameField: String (Required)
+     *             subjectIdDisplayNameField: String (Required)
+     *             objectIdDisplayNameField: String (Required)
+     *         }
+     *         provenanceIndexName: String (Optional)
+     *     }
      *     scoringProfiles (Optional): [
      *          (Optional){
      *             name: String (Required)
@@ -5434,8 +6300,6 @@ public final class SearchIndexClientImpl {
      *             functions (Optional): [
      *                  (Optional){
      *                     type: String (Required)
-     *                     fieldName: String (Required)
-     *                     boost: double (Required)
      *                     interpolation: String(linear/constant/quadratic/logarithmic) (Optional)
      *                 }
      *             ]
@@ -5542,7 +6406,7 @@ public final class SearchIndexClientImpl {
      *         ]
      *         vectorizers (Optional): [
      *              (Optional){
-     *                 kind: String(azureOpenAI/customWebApi/aiServicesVision/aml) (Required)
+     *                 kind: String(azureOpenAI/openAICompatible/customWebApi/aiServicesVision/aml) (Required)
      *                 name: String (Required)
      *             }
      *         ]
@@ -5558,6 +6422,15 @@ public final class SearchIndexClientImpl {
      *                 truncationDimension: Integer (Optional)
      *             }
      *         ]
+     *         topicGraphProfiles (Optional): [
+     *              (Optional){
+     *                 name: String (Required)
+     *                 indexName: String (Required)
+     *                 defaultKind: String(none/diverse/balanced) (Required)
+     *                 defaultDiversityFactor: Float (Optional)
+     *                 defaultMinDiversityPoolSize: Integer (Optional)
+     *             }
+     *         ]
      *     }
      *     permissionFilterOption: String(enabled/disabled) (Optional)
      *     purviewEnabled: Boolean (Optional)
@@ -5565,6 +6438,10 @@ public final class SearchIndexClientImpl {
      *         applicationId: String (Required)
      *         federatedCredentialId: String (Required)
      *         tenantId: String (Optional)
+     *     }
+     *     oneLakeSecuritySource (Optional): {
+     *         fabricWorkspaceId: String (Required)
+     *         lakehouseId: String (Required)
      *     }
      *     &#64;odata.etag: String (Optional)
      * }
@@ -5614,7 +6491,7 @@ public final class SearchIndexClientImpl {
     public Mono<Response<BinaryData>> getIndexStatisticsWithResponseAsync(String name, RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
         return FluxUtil.withContext(context -> service.getIndexStatistics(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, name, requestOptions, context));
+            this.getServiceVersion().getVersion(), name, accept, requestOptions, context));
     }
 
     /**
@@ -5642,7 +6519,7 @@ public final class SearchIndexClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getIndexStatisticsWithResponse(String name, RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
-        return service.getIndexStatisticsSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, name,
+        return service.getIndexStatisticsSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name, accept,
             requestOptions, Context.NONE);
     }
 
@@ -5700,7 +6577,7 @@ public final class SearchIndexClientImpl {
         final String accept = "application/json;odata.metadata=minimal";
         final String contentType = "application/json";
         return FluxUtil.withContext(context -> service.analyzeText(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, name, contentType, request, requestOptions, context));
+            this.getServiceVersion().getVersion(), name, accept, contentType, request, requestOptions, context));
     }
 
     /**
@@ -5755,7 +6632,7 @@ public final class SearchIndexClientImpl {
         RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
         final String contentType = "application/json";
-        return service.analyzeTextSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, name,
+        return service.analyzeTextSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name, accept,
             contentType, request, requestOptions, Context.NONE);
     }
 
@@ -5816,7 +6693,7 @@ public final class SearchIndexClientImpl {
         final String prefer = "return=representation";
         final String contentType = "application/json";
         return FluxUtil.withContext(context -> service.createOrUpdateAlias(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, prefer, name, contentType, alias, requestOptions, context));
+            this.getServiceVersion().getVersion(), name, accept, prefer, contentType, alias, requestOptions, context));
     }
 
     /**
@@ -5875,8 +6752,8 @@ public final class SearchIndexClientImpl {
         final String accept = "application/json;odata.metadata=minimal";
         final String prefer = "return=representation";
         final String contentType = "application/json";
-        return service.createOrUpdateAliasSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
-            prefer, name, contentType, alias, requestOptions, Context.NONE);
+        return service.createOrUpdateAliasSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name, accept,
+            prefer, contentType, alias, requestOptions, Context.NONE);
     }
 
     /**
@@ -5904,7 +6781,7 @@ public final class SearchIndexClientImpl {
     public Mono<Response<Void>> deleteAliasWithResponseAsync(String name, RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
         return FluxUtil.withContext(context -> service.deleteAlias(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, name, requestOptions, context));
+            this.getServiceVersion().getVersion(), name, accept, requestOptions, context));
     }
 
     /**
@@ -5931,7 +6808,7 @@ public final class SearchIndexClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteAliasWithResponse(String name, RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
-        return service.deleteAliasSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, name,
+        return service.deleteAliasSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name, accept,
             requestOptions, Context.NONE);
     }
 
@@ -5964,7 +6841,7 @@ public final class SearchIndexClientImpl {
     public Mono<Response<BinaryData>> getAliasWithResponseAsync(String name, RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
         return FluxUtil.withContext(context -> service.getAlias(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, name, requestOptions, context));
+            this.getServiceVersion().getVersion(), name, accept, requestOptions, context));
     }
 
     /**
@@ -5995,7 +6872,7 @@ public final class SearchIndexClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getAliasWithResponse(String name, RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
-        return service.getAliasSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, name,
+        return service.getAliasSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name, accept,
             requestOptions, Context.NONE);
     }
 
@@ -6296,14 +7173,36 @@ public final class SearchIndexClientImpl {
      *             enableFreshness: Boolean (Optional)
      *         }
      *     ]
-     *     models (Optional): [
+     *     tools (Optional): [
      *          (Optional){
-     *             kind: String(azureOpenAI) (Required)
+     *             name: String (Required)
+     *             description: String (Required)
+     *             knowledgeSources (Required): [
+     *                  (Required){
+     *                     name: String (Required)
+     *                     alwaysQuerySource: Boolean (Optional)
+     *                     rerankerThreshold: Float (Optional)
+     *                     filterAddOn: String (Optional)
+     *                     maxOutputDocuments: Integer (Optional)
+     *                     failOnError: Boolean (Optional)
+     *                 }
+     *             ]
+     *             retrievalReasoningEffort (Optional): {
+     *                 kind: String(minimal/low/medium/auto) (Required)
+     *             }
+     *             retrieveDefaults (Optional): {
+     *                 maxRuntimeInSeconds: Integer (Optional)
+     *                 maxOutputDocuments: Integer (Optional)
+     *                 maxOutputSizeInTokens: Integer (Optional)
+     *             }
      *         }
      *     ]
-     *     retrievalReasoningEffort (Optional): {
-     *         kind: String(minimal/low/medium/auto) (Required)
-     *     }
+     *     models (Optional): [
+     *          (Optional){
+     *             kind: String(azureOpenAI/openAICompatible/microsoftRetriever1) (Required)
+     *         }
+     *     ]
+     *     retrievalReasoningEffort (Optional): (recursive schema, see retrievalReasoningEffort above)
      *     outputMode: String(extractiveData/answerSynthesis) (Optional)
      *     &#64;odata.etag: String (Optional)
      *     encryptionKey (Optional): {
@@ -6331,11 +7230,7 @@ public final class SearchIndexClientImpl {
      *         ]
      *         maxAgeInSeconds: Long (Optional)
      *     }
-     *     retrieveDefaults (Optional): {
-     *         maxRuntimeInSeconds: Integer (Optional)
-     *         maxOutputDocuments: Integer (Optional)
-     *         maxOutputSizeInTokens: Integer (Optional)
-     *     }
+     *     retrieveDefaults (Optional): (recursive schema, see retrieveDefaults above)
      * }
      * }
      * </pre>
@@ -6353,14 +7248,36 @@ public final class SearchIndexClientImpl {
      *             enableFreshness: Boolean (Optional)
      *         }
      *     ]
-     *     models (Optional): [
+     *     tools (Optional): [
      *          (Optional){
-     *             kind: String(azureOpenAI) (Required)
+     *             name: String (Required)
+     *             description: String (Required)
+     *             knowledgeSources (Required): [
+     *                  (Required){
+     *                     name: String (Required)
+     *                     alwaysQuerySource: Boolean (Optional)
+     *                     rerankerThreshold: Float (Optional)
+     *                     filterAddOn: String (Optional)
+     *                     maxOutputDocuments: Integer (Optional)
+     *                     failOnError: Boolean (Optional)
+     *                 }
+     *             ]
+     *             retrievalReasoningEffort (Optional): {
+     *                 kind: String(minimal/low/medium/auto) (Required)
+     *             }
+     *             retrieveDefaults (Optional): {
+     *                 maxRuntimeInSeconds: Integer (Optional)
+     *                 maxOutputDocuments: Integer (Optional)
+     *                 maxOutputSizeInTokens: Integer (Optional)
+     *             }
      *         }
      *     ]
-     *     retrievalReasoningEffort (Optional): {
-     *         kind: String(minimal/low/medium/auto) (Required)
-     *     }
+     *     models (Optional): [
+     *          (Optional){
+     *             kind: String(azureOpenAI/openAICompatible/microsoftRetriever1) (Required)
+     *         }
+     *     ]
+     *     retrievalReasoningEffort (Optional): (recursive schema, see retrievalReasoningEffort above)
      *     outputMode: String(extractiveData/answerSynthesis) (Optional)
      *     &#64;odata.etag: String (Optional)
      *     encryptionKey (Optional): {
@@ -6388,11 +7305,7 @@ public final class SearchIndexClientImpl {
      *         ]
      *         maxAgeInSeconds: Long (Optional)
      *     }
-     *     retrieveDefaults (Optional): {
-     *         maxRuntimeInSeconds: Integer (Optional)
-     *         maxOutputDocuments: Integer (Optional)
-     *         maxOutputSizeInTokens: Integer (Optional)
-     *     }
+     *     retrieveDefaults (Optional): (recursive schema, see retrieveDefaults above)
      * }
      * }
      * </pre>
@@ -6415,7 +7328,7 @@ public final class SearchIndexClientImpl {
         final String contentType = "application/json";
         return FluxUtil.withContext(
             context -> service.createOrUpdateKnowledgeBase(this.getEndpoint(), this.getServiceVersion().getVersion(),
-                accept, prefer, name, contentType, knowledgeBase, requestOptions, context));
+                name, accept, prefer, contentType, knowledgeBase, requestOptions, context));
     }
 
     /**
@@ -6443,14 +7356,36 @@ public final class SearchIndexClientImpl {
      *             enableFreshness: Boolean (Optional)
      *         }
      *     ]
-     *     models (Optional): [
+     *     tools (Optional): [
      *          (Optional){
-     *             kind: String(azureOpenAI) (Required)
+     *             name: String (Required)
+     *             description: String (Required)
+     *             knowledgeSources (Required): [
+     *                  (Required){
+     *                     name: String (Required)
+     *                     alwaysQuerySource: Boolean (Optional)
+     *                     rerankerThreshold: Float (Optional)
+     *                     filterAddOn: String (Optional)
+     *                     maxOutputDocuments: Integer (Optional)
+     *                     failOnError: Boolean (Optional)
+     *                 }
+     *             ]
+     *             retrievalReasoningEffort (Optional): {
+     *                 kind: String(minimal/low/medium/auto) (Required)
+     *             }
+     *             retrieveDefaults (Optional): {
+     *                 maxRuntimeInSeconds: Integer (Optional)
+     *                 maxOutputDocuments: Integer (Optional)
+     *                 maxOutputSizeInTokens: Integer (Optional)
+     *             }
      *         }
      *     ]
-     *     retrievalReasoningEffort (Optional): {
-     *         kind: String(minimal/low/medium/auto) (Required)
-     *     }
+     *     models (Optional): [
+     *          (Optional){
+     *             kind: String(azureOpenAI/openAICompatible/microsoftRetriever1) (Required)
+     *         }
+     *     ]
+     *     retrievalReasoningEffort (Optional): (recursive schema, see retrievalReasoningEffort above)
      *     outputMode: String(extractiveData/answerSynthesis) (Optional)
      *     &#64;odata.etag: String (Optional)
      *     encryptionKey (Optional): {
@@ -6478,11 +7413,7 @@ public final class SearchIndexClientImpl {
      *         ]
      *         maxAgeInSeconds: Long (Optional)
      *     }
-     *     retrieveDefaults (Optional): {
-     *         maxRuntimeInSeconds: Integer (Optional)
-     *         maxOutputDocuments: Integer (Optional)
-     *         maxOutputSizeInTokens: Integer (Optional)
-     *     }
+     *     retrieveDefaults (Optional): (recursive schema, see retrieveDefaults above)
      * }
      * }
      * </pre>
@@ -6500,14 +7431,36 @@ public final class SearchIndexClientImpl {
      *             enableFreshness: Boolean (Optional)
      *         }
      *     ]
-     *     models (Optional): [
+     *     tools (Optional): [
      *          (Optional){
-     *             kind: String(azureOpenAI) (Required)
+     *             name: String (Required)
+     *             description: String (Required)
+     *             knowledgeSources (Required): [
+     *                  (Required){
+     *                     name: String (Required)
+     *                     alwaysQuerySource: Boolean (Optional)
+     *                     rerankerThreshold: Float (Optional)
+     *                     filterAddOn: String (Optional)
+     *                     maxOutputDocuments: Integer (Optional)
+     *                     failOnError: Boolean (Optional)
+     *                 }
+     *             ]
+     *             retrievalReasoningEffort (Optional): {
+     *                 kind: String(minimal/low/medium/auto) (Required)
+     *             }
+     *             retrieveDefaults (Optional): {
+     *                 maxRuntimeInSeconds: Integer (Optional)
+     *                 maxOutputDocuments: Integer (Optional)
+     *                 maxOutputSizeInTokens: Integer (Optional)
+     *             }
      *         }
      *     ]
-     *     retrievalReasoningEffort (Optional): {
-     *         kind: String(minimal/low/medium/auto) (Required)
-     *     }
+     *     models (Optional): [
+     *          (Optional){
+     *             kind: String(azureOpenAI/openAICompatible/microsoftRetriever1) (Required)
+     *         }
+     *     ]
+     *     retrievalReasoningEffort (Optional): (recursive schema, see retrievalReasoningEffort above)
      *     outputMode: String(extractiveData/answerSynthesis) (Optional)
      *     &#64;odata.etag: String (Optional)
      *     encryptionKey (Optional): {
@@ -6535,11 +7488,7 @@ public final class SearchIndexClientImpl {
      *         ]
      *         maxAgeInSeconds: Long (Optional)
      *     }
-     *     retrieveDefaults (Optional): {
-     *         maxRuntimeInSeconds: Integer (Optional)
-     *         maxOutputDocuments: Integer (Optional)
-     *         maxOutputSizeInTokens: Integer (Optional)
-     *     }
+     *     retrieveDefaults (Optional): (recursive schema, see retrieveDefaults above)
      * }
      * }
      * </pre>
@@ -6559,8 +7508,8 @@ public final class SearchIndexClientImpl {
         final String accept = "application/json;odata.metadata=minimal";
         final String prefer = "return=representation";
         final String contentType = "application/json";
-        return service.createOrUpdateKnowledgeBaseSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            accept, prefer, name, contentType, knowledgeBase, requestOptions, Context.NONE);
+        return service.createOrUpdateKnowledgeBaseSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name,
+            accept, prefer, contentType, knowledgeBase, requestOptions, Context.NONE);
     }
 
     /**
@@ -6587,7 +7536,7 @@ public final class SearchIndexClientImpl {
     public Mono<Response<Void>> deleteKnowledgeBaseWithResponseAsync(String name, RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
         return FluxUtil.withContext(context -> service.deleteKnowledgeBase(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, name, requestOptions, context));
+            this.getServiceVersion().getVersion(), name, accept, requestOptions, context));
     }
 
     /**
@@ -6613,7 +7562,7 @@ public final class SearchIndexClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteKnowledgeBaseWithResponse(String name, RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
-        return service.deleteKnowledgeBaseSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, name,
+        return service.deleteKnowledgeBaseSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name, accept,
             requestOptions, Context.NONE);
     }
 
@@ -6632,14 +7581,36 @@ public final class SearchIndexClientImpl {
      *             enableFreshness: Boolean (Optional)
      *         }
      *     ]
-     *     models (Optional): [
+     *     tools (Optional): [
      *          (Optional){
-     *             kind: String(azureOpenAI) (Required)
+     *             name: String (Required)
+     *             description: String (Required)
+     *             knowledgeSources (Required): [
+     *                  (Required){
+     *                     name: String (Required)
+     *                     alwaysQuerySource: Boolean (Optional)
+     *                     rerankerThreshold: Float (Optional)
+     *                     filterAddOn: String (Optional)
+     *                     maxOutputDocuments: Integer (Optional)
+     *                     failOnError: Boolean (Optional)
+     *                 }
+     *             ]
+     *             retrievalReasoningEffort (Optional): {
+     *                 kind: String(minimal/low/medium/auto) (Required)
+     *             }
+     *             retrieveDefaults (Optional): {
+     *                 maxRuntimeInSeconds: Integer (Optional)
+     *                 maxOutputDocuments: Integer (Optional)
+     *                 maxOutputSizeInTokens: Integer (Optional)
+     *             }
      *         }
      *     ]
-     *     retrievalReasoningEffort (Optional): {
-     *         kind: String(minimal/low/medium/auto) (Required)
-     *     }
+     *     models (Optional): [
+     *          (Optional){
+     *             kind: String(azureOpenAI/openAICompatible/microsoftRetriever1) (Required)
+     *         }
+     *     ]
+     *     retrievalReasoningEffort (Optional): (recursive schema, see retrievalReasoningEffort above)
      *     outputMode: String(extractiveData/answerSynthesis) (Optional)
      *     &#64;odata.etag: String (Optional)
      *     encryptionKey (Optional): {
@@ -6667,11 +7638,7 @@ public final class SearchIndexClientImpl {
      *         ]
      *         maxAgeInSeconds: Long (Optional)
      *     }
-     *     retrieveDefaults (Optional): {
-     *         maxRuntimeInSeconds: Integer (Optional)
-     *         maxOutputDocuments: Integer (Optional)
-     *         maxOutputSizeInTokens: Integer (Optional)
-     *     }
+     *     retrieveDefaults (Optional): (recursive schema, see retrieveDefaults above)
      * }
      * }
      * </pre>
@@ -6689,7 +7656,7 @@ public final class SearchIndexClientImpl {
     public Mono<Response<BinaryData>> getKnowledgeBaseWithResponseAsync(String name, RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
         return FluxUtil.withContext(context -> service.getKnowledgeBase(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, name, requestOptions, context));
+            this.getServiceVersion().getVersion(), name, accept, requestOptions, context));
     }
 
     /**
@@ -6707,14 +7674,36 @@ public final class SearchIndexClientImpl {
      *             enableFreshness: Boolean (Optional)
      *         }
      *     ]
-     *     models (Optional): [
+     *     tools (Optional): [
      *          (Optional){
-     *             kind: String(azureOpenAI) (Required)
+     *             name: String (Required)
+     *             description: String (Required)
+     *             knowledgeSources (Required): [
+     *                  (Required){
+     *                     name: String (Required)
+     *                     alwaysQuerySource: Boolean (Optional)
+     *                     rerankerThreshold: Float (Optional)
+     *                     filterAddOn: String (Optional)
+     *                     maxOutputDocuments: Integer (Optional)
+     *                     failOnError: Boolean (Optional)
+     *                 }
+     *             ]
+     *             retrievalReasoningEffort (Optional): {
+     *                 kind: String(minimal/low/medium/auto) (Required)
+     *             }
+     *             retrieveDefaults (Optional): {
+     *                 maxRuntimeInSeconds: Integer (Optional)
+     *                 maxOutputDocuments: Integer (Optional)
+     *                 maxOutputSizeInTokens: Integer (Optional)
+     *             }
      *         }
      *     ]
-     *     retrievalReasoningEffort (Optional): {
-     *         kind: String(minimal/low/medium/auto) (Required)
-     *     }
+     *     models (Optional): [
+     *          (Optional){
+     *             kind: String(azureOpenAI/openAICompatible/microsoftRetriever1) (Required)
+     *         }
+     *     ]
+     *     retrievalReasoningEffort (Optional): (recursive schema, see retrievalReasoningEffort above)
      *     outputMode: String(extractiveData/answerSynthesis) (Optional)
      *     &#64;odata.etag: String (Optional)
      *     encryptionKey (Optional): {
@@ -6742,11 +7731,7 @@ public final class SearchIndexClientImpl {
      *         ]
      *         maxAgeInSeconds: Long (Optional)
      *     }
-     *     retrieveDefaults (Optional): {
-     *         maxRuntimeInSeconds: Integer (Optional)
-     *         maxOutputDocuments: Integer (Optional)
-     *         maxOutputSizeInTokens: Integer (Optional)
-     *     }
+     *     retrieveDefaults (Optional): (recursive schema, see retrieveDefaults above)
      * }
      * }
      * </pre>
@@ -6762,7 +7747,7 @@ public final class SearchIndexClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getKnowledgeBaseWithResponse(String name, RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
-        return service.getKnowledgeBaseSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, name,
+        return service.getKnowledgeBaseSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name, accept,
             requestOptions, Context.NONE);
     }
 
@@ -6793,14 +7778,36 @@ public final class SearchIndexClientImpl {
      *             enableFreshness: Boolean (Optional)
      *         }
      *     ]
-     *     models (Optional): [
+     *     tools (Optional): [
      *          (Optional){
-     *             kind: String(azureOpenAI) (Required)
+     *             name: String (Required)
+     *             description: String (Required)
+     *             knowledgeSources (Required): [
+     *                  (Required){
+     *                     name: String (Required)
+     *                     alwaysQuerySource: Boolean (Optional)
+     *                     rerankerThreshold: Float (Optional)
+     *                     filterAddOn: String (Optional)
+     *                     maxOutputDocuments: Integer (Optional)
+     *                     failOnError: Boolean (Optional)
+     *                 }
+     *             ]
+     *             retrievalReasoningEffort (Optional): {
+     *                 kind: String(minimal/low/medium/auto) (Required)
+     *             }
+     *             retrieveDefaults (Optional): {
+     *                 maxRuntimeInSeconds: Integer (Optional)
+     *                 maxOutputDocuments: Integer (Optional)
+     *                 maxOutputSizeInTokens: Integer (Optional)
+     *             }
      *         }
      *     ]
-     *     retrievalReasoningEffort (Optional): {
-     *         kind: String(minimal/low/medium/auto) (Required)
-     *     }
+     *     models (Optional): [
+     *          (Optional){
+     *             kind: String(azureOpenAI/openAICompatible/microsoftRetriever1) (Required)
+     *         }
+     *     ]
+     *     retrievalReasoningEffort (Optional): (recursive schema, see retrievalReasoningEffort above)
      *     outputMode: String(extractiveData/answerSynthesis) (Optional)
      *     &#64;odata.etag: String (Optional)
      *     encryptionKey (Optional): {
@@ -6828,11 +7835,7 @@ public final class SearchIndexClientImpl {
      *         ]
      *         maxAgeInSeconds: Long (Optional)
      *     }
-     *     retrieveDefaults (Optional): {
-     *         maxRuntimeInSeconds: Integer (Optional)
-     *         maxOutputDocuments: Integer (Optional)
-     *         maxOutputSizeInTokens: Integer (Optional)
-     *     }
+     *     retrieveDefaults (Optional): (recursive schema, see retrieveDefaults above)
      * }
      * }
      * </pre>
@@ -6882,14 +7885,36 @@ public final class SearchIndexClientImpl {
      *             enableFreshness: Boolean (Optional)
      *         }
      *     ]
-     *     models (Optional): [
+     *     tools (Optional): [
      *          (Optional){
-     *             kind: String(azureOpenAI) (Required)
+     *             name: String (Required)
+     *             description: String (Required)
+     *             knowledgeSources (Required): [
+     *                  (Required){
+     *                     name: String (Required)
+     *                     alwaysQuerySource: Boolean (Optional)
+     *                     rerankerThreshold: Float (Optional)
+     *                     filterAddOn: String (Optional)
+     *                     maxOutputDocuments: Integer (Optional)
+     *                     failOnError: Boolean (Optional)
+     *                 }
+     *             ]
+     *             retrievalReasoningEffort (Optional): {
+     *                 kind: String(minimal/low/medium/auto) (Required)
+     *             }
+     *             retrieveDefaults (Optional): {
+     *                 maxRuntimeInSeconds: Integer (Optional)
+     *                 maxOutputDocuments: Integer (Optional)
+     *                 maxOutputSizeInTokens: Integer (Optional)
+     *             }
      *         }
      *     ]
-     *     retrievalReasoningEffort (Optional): {
-     *         kind: String(minimal/low/medium/auto) (Required)
-     *     }
+     *     models (Optional): [
+     *          (Optional){
+     *             kind: String(azureOpenAI/openAICompatible/microsoftRetriever1) (Required)
+     *         }
+     *     ]
+     *     retrievalReasoningEffort (Optional): (recursive schema, see retrievalReasoningEffort above)
      *     outputMode: String(extractiveData/answerSynthesis) (Optional)
      *     &#64;odata.etag: String (Optional)
      *     encryptionKey (Optional): {
@@ -6917,11 +7942,7 @@ public final class SearchIndexClientImpl {
      *         ]
      *         maxAgeInSeconds: Long (Optional)
      *     }
-     *     retrieveDefaults (Optional): {
-     *         maxRuntimeInSeconds: Integer (Optional)
-     *         maxOutputDocuments: Integer (Optional)
-     *         maxOutputSizeInTokens: Integer (Optional)
-     *     }
+     *     retrieveDefaults (Optional): (recursive schema, see retrieveDefaults above)
      * }
      * }
      * </pre>
@@ -6969,14 +7990,36 @@ public final class SearchIndexClientImpl {
      *             enableFreshness: Boolean (Optional)
      *         }
      *     ]
-     *     models (Optional): [
+     *     tools (Optional): [
      *          (Optional){
-     *             kind: String(azureOpenAI) (Required)
+     *             name: String (Required)
+     *             description: String (Required)
+     *             knowledgeSources (Required): [
+     *                  (Required){
+     *                     name: String (Required)
+     *                     alwaysQuerySource: Boolean (Optional)
+     *                     rerankerThreshold: Float (Optional)
+     *                     filterAddOn: String (Optional)
+     *                     maxOutputDocuments: Integer (Optional)
+     *                     failOnError: Boolean (Optional)
+     *                 }
+     *             ]
+     *             retrievalReasoningEffort (Optional): {
+     *                 kind: String(minimal/low/medium/auto) (Required)
+     *             }
+     *             retrieveDefaults (Optional): {
+     *                 maxRuntimeInSeconds: Integer (Optional)
+     *                 maxOutputDocuments: Integer (Optional)
+     *                 maxOutputSizeInTokens: Integer (Optional)
+     *             }
      *         }
      *     ]
-     *     retrievalReasoningEffort (Optional): {
-     *         kind: String(minimal/low/medium/auto) (Required)
-     *     }
+     *     models (Optional): [
+     *          (Optional){
+     *             kind: String(azureOpenAI/openAICompatible/microsoftRetriever1) (Required)
+     *         }
+     *     ]
+     *     retrievalReasoningEffort (Optional): (recursive schema, see retrievalReasoningEffort above)
      *     outputMode: String(extractiveData/answerSynthesis) (Optional)
      *     &#64;odata.etag: String (Optional)
      *     encryptionKey (Optional): {
@@ -7004,11 +8047,7 @@ public final class SearchIndexClientImpl {
      *         ]
      *         maxAgeInSeconds: Long (Optional)
      *     }
-     *     retrieveDefaults (Optional): {
-     *         maxRuntimeInSeconds: Integer (Optional)
-     *         maxOutputDocuments: Integer (Optional)
-     *         maxOutputSizeInTokens: Integer (Optional)
-     *     }
+     *     retrieveDefaults (Optional): (recursive schema, see retrieveDefaults above)
      * }
      * }
      * </pre>
@@ -7056,14 +8095,36 @@ public final class SearchIndexClientImpl {
      *             enableFreshness: Boolean (Optional)
      *         }
      *     ]
-     *     models (Optional): [
+     *     tools (Optional): [
      *          (Optional){
-     *             kind: String(azureOpenAI) (Required)
+     *             name: String (Required)
+     *             description: String (Required)
+     *             knowledgeSources (Required): [
+     *                  (Required){
+     *                     name: String (Required)
+     *                     alwaysQuerySource: Boolean (Optional)
+     *                     rerankerThreshold: Float (Optional)
+     *                     filterAddOn: String (Optional)
+     *                     maxOutputDocuments: Integer (Optional)
+     *                     failOnError: Boolean (Optional)
+     *                 }
+     *             ]
+     *             retrievalReasoningEffort (Optional): {
+     *                 kind: String(minimal/low/medium/auto) (Required)
+     *             }
+     *             retrieveDefaults (Optional): {
+     *                 maxRuntimeInSeconds: Integer (Optional)
+     *                 maxOutputDocuments: Integer (Optional)
+     *                 maxOutputSizeInTokens: Integer (Optional)
+     *             }
      *         }
      *     ]
-     *     retrievalReasoningEffort (Optional): {
-     *         kind: String(minimal/low/medium/auto) (Required)
-     *     }
+     *     models (Optional): [
+     *          (Optional){
+     *             kind: String(azureOpenAI/openAICompatible/microsoftRetriever1) (Required)
+     *         }
+     *     ]
+     *     retrievalReasoningEffort (Optional): (recursive schema, see retrievalReasoningEffort above)
      *     outputMode: String(extractiveData/answerSynthesis) (Optional)
      *     &#64;odata.etag: String (Optional)
      *     encryptionKey (Optional): {
@@ -7091,11 +8152,7 @@ public final class SearchIndexClientImpl {
      *         ]
      *         maxAgeInSeconds: Long (Optional)
      *     }
-     *     retrieveDefaults (Optional): {
-     *         maxRuntimeInSeconds: Integer (Optional)
-     *         maxOutputDocuments: Integer (Optional)
-     *         maxOutputSizeInTokens: Integer (Optional)
-     *     }
+     *     retrieveDefaults (Optional): (recursive schema, see retrieveDefaults above)
      * }
      * }
      * </pre>
@@ -7131,14 +8188,36 @@ public final class SearchIndexClientImpl {
      *             enableFreshness: Boolean (Optional)
      *         }
      *     ]
-     *     models (Optional): [
+     *     tools (Optional): [
      *          (Optional){
-     *             kind: String(azureOpenAI) (Required)
+     *             name: String (Required)
+     *             description: String (Required)
+     *             knowledgeSources (Required): [
+     *                  (Required){
+     *                     name: String (Required)
+     *                     alwaysQuerySource: Boolean (Optional)
+     *                     rerankerThreshold: Float (Optional)
+     *                     filterAddOn: String (Optional)
+     *                     maxOutputDocuments: Integer (Optional)
+     *                     failOnError: Boolean (Optional)
+     *                 }
+     *             ]
+     *             retrievalReasoningEffort (Optional): {
+     *                 kind: String(minimal/low/medium/auto) (Required)
+     *             }
+     *             retrieveDefaults (Optional): {
+     *                 maxRuntimeInSeconds: Integer (Optional)
+     *                 maxOutputDocuments: Integer (Optional)
+     *                 maxOutputSizeInTokens: Integer (Optional)
+     *             }
      *         }
      *     ]
-     *     retrievalReasoningEffort (Optional): {
-     *         kind: String(minimal/low/medium/auto) (Required)
-     *     }
+     *     models (Optional): [
+     *          (Optional){
+     *             kind: String(azureOpenAI/openAICompatible/microsoftRetriever1) (Required)
+     *         }
+     *     ]
+     *     retrievalReasoningEffort (Optional): (recursive schema, see retrievalReasoningEffort above)
      *     outputMode: String(extractiveData/answerSynthesis) (Optional)
      *     &#64;odata.etag: String (Optional)
      *     encryptionKey (Optional): {
@@ -7166,11 +8245,7 @@ public final class SearchIndexClientImpl {
      *         ]
      *         maxAgeInSeconds: Long (Optional)
      *     }
-     *     retrieveDefaults (Optional): {
-     *         maxRuntimeInSeconds: Integer (Optional)
-     *         maxOutputDocuments: Integer (Optional)
-     *         maxOutputSizeInTokens: Integer (Optional)
-     *     }
+     *     retrieveDefaults (Optional): (recursive schema, see retrieveDefaults above)
      * }
      * }
      * </pre>
@@ -7188,14 +8263,36 @@ public final class SearchIndexClientImpl {
      *             enableFreshness: Boolean (Optional)
      *         }
      *     ]
-     *     models (Optional): [
+     *     tools (Optional): [
      *          (Optional){
-     *             kind: String(azureOpenAI) (Required)
+     *             name: String (Required)
+     *             description: String (Required)
+     *             knowledgeSources (Required): [
+     *                  (Required){
+     *                     name: String (Required)
+     *                     alwaysQuerySource: Boolean (Optional)
+     *                     rerankerThreshold: Float (Optional)
+     *                     filterAddOn: String (Optional)
+     *                     maxOutputDocuments: Integer (Optional)
+     *                     failOnError: Boolean (Optional)
+     *                 }
+     *             ]
+     *             retrievalReasoningEffort (Optional): {
+     *                 kind: String(minimal/low/medium/auto) (Required)
+     *             }
+     *             retrieveDefaults (Optional): {
+     *                 maxRuntimeInSeconds: Integer (Optional)
+     *                 maxOutputDocuments: Integer (Optional)
+     *                 maxOutputSizeInTokens: Integer (Optional)
+     *             }
      *         }
      *     ]
-     *     retrievalReasoningEffort (Optional): {
-     *         kind: String(minimal/low/medium/auto) (Required)
-     *     }
+     *     models (Optional): [
+     *          (Optional){
+     *             kind: String(azureOpenAI/openAICompatible/microsoftRetriever1) (Required)
+     *         }
+     *     ]
+     *     retrievalReasoningEffort (Optional): (recursive schema, see retrievalReasoningEffort above)
      *     outputMode: String(extractiveData/answerSynthesis) (Optional)
      *     &#64;odata.etag: String (Optional)
      *     encryptionKey (Optional): {
@@ -7223,11 +8320,7 @@ public final class SearchIndexClientImpl {
      *         ]
      *         maxAgeInSeconds: Long (Optional)
      *     }
-     *     retrieveDefaults (Optional): {
-     *         maxRuntimeInSeconds: Integer (Optional)
-     *         maxOutputDocuments: Integer (Optional)
-     *         maxOutputSizeInTokens: Integer (Optional)
-     *     }
+     *     retrieveDefaults (Optional): (recursive schema, see retrieveDefaults above)
      * }
      * }
      * </pre>
@@ -7265,14 +8358,36 @@ public final class SearchIndexClientImpl {
      *             enableFreshness: Boolean (Optional)
      *         }
      *     ]
-     *     models (Optional): [
+     *     tools (Optional): [
      *          (Optional){
-     *             kind: String(azureOpenAI) (Required)
+     *             name: String (Required)
+     *             description: String (Required)
+     *             knowledgeSources (Required): [
+     *                  (Required){
+     *                     name: String (Required)
+     *                     alwaysQuerySource: Boolean (Optional)
+     *                     rerankerThreshold: Float (Optional)
+     *                     filterAddOn: String (Optional)
+     *                     maxOutputDocuments: Integer (Optional)
+     *                     failOnError: Boolean (Optional)
+     *                 }
+     *             ]
+     *             retrievalReasoningEffort (Optional): {
+     *                 kind: String(minimal/low/medium/auto) (Required)
+     *             }
+     *             retrieveDefaults (Optional): {
+     *                 maxRuntimeInSeconds: Integer (Optional)
+     *                 maxOutputDocuments: Integer (Optional)
+     *                 maxOutputSizeInTokens: Integer (Optional)
+     *             }
      *         }
      *     ]
-     *     retrievalReasoningEffort (Optional): {
-     *         kind: String(minimal/low/medium/auto) (Required)
-     *     }
+     *     models (Optional): [
+     *          (Optional){
+     *             kind: String(azureOpenAI/openAICompatible/microsoftRetriever1) (Required)
+     *         }
+     *     ]
+     *     retrievalReasoningEffort (Optional): (recursive schema, see retrievalReasoningEffort above)
      *     outputMode: String(extractiveData/answerSynthesis) (Optional)
      *     &#64;odata.etag: String (Optional)
      *     encryptionKey (Optional): {
@@ -7300,11 +8415,7 @@ public final class SearchIndexClientImpl {
      *         ]
      *         maxAgeInSeconds: Long (Optional)
      *     }
-     *     retrieveDefaults (Optional): {
-     *         maxRuntimeInSeconds: Integer (Optional)
-     *         maxOutputDocuments: Integer (Optional)
-     *         maxOutputSizeInTokens: Integer (Optional)
-     *     }
+     *     retrieveDefaults (Optional): (recursive schema, see retrieveDefaults above)
      * }
      * }
      * </pre>
@@ -7322,14 +8433,36 @@ public final class SearchIndexClientImpl {
      *             enableFreshness: Boolean (Optional)
      *         }
      *     ]
-     *     models (Optional): [
+     *     tools (Optional): [
      *          (Optional){
-     *             kind: String(azureOpenAI) (Required)
+     *             name: String (Required)
+     *             description: String (Required)
+     *             knowledgeSources (Required): [
+     *                  (Required){
+     *                     name: String (Required)
+     *                     alwaysQuerySource: Boolean (Optional)
+     *                     rerankerThreshold: Float (Optional)
+     *                     filterAddOn: String (Optional)
+     *                     maxOutputDocuments: Integer (Optional)
+     *                     failOnError: Boolean (Optional)
+     *                 }
+     *             ]
+     *             retrievalReasoningEffort (Optional): {
+     *                 kind: String(minimal/low/medium/auto) (Required)
+     *             }
+     *             retrieveDefaults (Optional): {
+     *                 maxRuntimeInSeconds: Integer (Optional)
+     *                 maxOutputDocuments: Integer (Optional)
+     *                 maxOutputSizeInTokens: Integer (Optional)
+     *             }
      *         }
      *     ]
-     *     retrievalReasoningEffort (Optional): {
-     *         kind: String(minimal/low/medium/auto) (Required)
-     *     }
+     *     models (Optional): [
+     *          (Optional){
+     *             kind: String(azureOpenAI/openAICompatible/microsoftRetriever1) (Required)
+     *         }
+     *     ]
+     *     retrievalReasoningEffort (Optional): (recursive schema, see retrievalReasoningEffort above)
      *     outputMode: String(extractiveData/answerSynthesis) (Optional)
      *     &#64;odata.etag: String (Optional)
      *     encryptionKey (Optional): {
@@ -7357,11 +8490,7 @@ public final class SearchIndexClientImpl {
      *         ]
      *         maxAgeInSeconds: Long (Optional)
      *     }
-     *     retrieveDefaults (Optional): {
-     *         maxRuntimeInSeconds: Integer (Optional)
-     *         maxOutputDocuments: Integer (Optional)
-     *         maxOutputSizeInTokens: Integer (Optional)
-     *     }
+     *     retrieveDefaults (Optional): (recursive schema, see retrieveDefaults above)
      * }
      * }
      * </pre>
@@ -7467,7 +8596,7 @@ public final class SearchIndexClientImpl {
         final String contentType = "application/json";
         return FluxUtil.withContext(
             context -> service.createOrUpdateKnowledgeSource(this.getEndpoint(), this.getServiceVersion().getVersion(),
-                accept, prefer, name, contentType, knowledgeSource, requestOptions, context));
+                name, accept, prefer, contentType, knowledgeSource, requestOptions, context));
     }
 
     /**
@@ -7552,7 +8681,7 @@ public final class SearchIndexClientImpl {
         final String prefer = "return=representation";
         final String contentType = "application/json";
         return service.createOrUpdateKnowledgeSourceSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            accept, prefer, name, contentType, knowledgeSource, requestOptions, Context.NONE);
+            name, accept, prefer, contentType, knowledgeSource, requestOptions, Context.NONE);
     }
 
     /**
@@ -7579,7 +8708,7 @@ public final class SearchIndexClientImpl {
     public Mono<Response<Void>> deleteKnowledgeSourceWithResponseAsync(String name, RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
         return FluxUtil.withContext(context -> service.deleteKnowledgeSource(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, name, requestOptions, context));
+            this.getServiceVersion().getVersion(), name, accept, requestOptions, context));
     }
 
     /**
@@ -7605,8 +8734,8 @@ public final class SearchIndexClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteKnowledgeSourceWithResponse(String name, RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
-        return service.deleteKnowledgeSourceSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
-            name, requestOptions, Context.NONE);
+        return service.deleteKnowledgeSourceSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name,
+            accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -7651,7 +8780,7 @@ public final class SearchIndexClientImpl {
     public Mono<Response<BinaryData>> getKnowledgeSourceWithResponseAsync(String name, RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
         return FluxUtil.withContext(context -> service.getKnowledgeSource(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, name, requestOptions, context));
+            this.getServiceVersion().getVersion(), name, accept, requestOptions, context));
     }
 
     /**
@@ -7694,7 +8823,7 @@ public final class SearchIndexClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getKnowledgeSourceWithResponse(String name, RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
-        return service.getKnowledgeSourceSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, name,
+        return service.getKnowledgeSourceSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name, accept,
             requestOptions, Context.NONE);
     }
 
@@ -8086,6 +9215,10 @@ public final class SearchIndexClientImpl {
      *     synchronizationStatus: String(creating/active/deleting) (Required)
      *     synchronizationInterval: Duration (Optional)
      *     currentSynchronizationState (Optional): {
+     *         graphStatistics (Optional): {
+     *             ontologyName: String (Optional)
+     *             triplesWritten: long (Required)
+     *         }
      *         startTime: OffsetDateTime (Required)
      *         itemsUpdatesProcessed: int (Required)
      *         itemsUpdatesFailed: int (Required)
@@ -8102,6 +9235,7 @@ public final class SearchIndexClientImpl {
      *         ]
      *     }
      *     lastSynchronizationState (Optional): {
+     *         graphStatistics (Optional): (recursive schema, see graphStatistics above)
      *         startTime: OffsetDateTime (Required)
      *         endTime: OffsetDateTime (Required)
      *         itemsUpdatesProcessed: int (Required)
@@ -8112,6 +9246,11 @@ public final class SearchIndexClientImpl {
      *         totalSynchronization: int (Required)
      *         averageSynchronizationDuration: Duration (Required)
      *         averageItemsProcessedPerSynchronization: int (Required)
+     *     }
+     *     fileCapacity (Optional): {
+     *         maxFileCount: int (Required)
+     *         remainingFileCount: int (Required)
+     *         maxFileSizeBytes: long (Required)
      *     }
      * }
      * }
@@ -8131,7 +9270,7 @@ public final class SearchIndexClientImpl {
         RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
         return FluxUtil.withContext(context -> service.getKnowledgeSourceStatus(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, name, requestOptions, context));
+            this.getServiceVersion().getVersion(), name, accept, requestOptions, context));
     }
 
     /**
@@ -8145,6 +9284,10 @@ public final class SearchIndexClientImpl {
      *     synchronizationStatus: String(creating/active/deleting) (Required)
      *     synchronizationInterval: Duration (Optional)
      *     currentSynchronizationState (Optional): {
+     *         graphStatistics (Optional): {
+     *             ontologyName: String (Optional)
+     *             triplesWritten: long (Required)
+     *         }
      *         startTime: OffsetDateTime (Required)
      *         itemsUpdatesProcessed: int (Required)
      *         itemsUpdatesFailed: int (Required)
@@ -8161,6 +9304,7 @@ public final class SearchIndexClientImpl {
      *         ]
      *     }
      *     lastSynchronizationState (Optional): {
+     *         graphStatistics (Optional): (recursive schema, see graphStatistics above)
      *         startTime: OffsetDateTime (Required)
      *         endTime: OffsetDateTime (Required)
      *         itemsUpdatesProcessed: int (Required)
@@ -8171,6 +9315,11 @@ public final class SearchIndexClientImpl {
      *         totalSynchronization: int (Required)
      *         averageSynchronizationDuration: Duration (Required)
      *         averageItemsProcessedPerSynchronization: int (Required)
+     *     }
+     *     fileCapacity (Optional): {
+     *         maxFileCount: int (Required)
+     *         remainingFileCount: int (Required)
+     *         maxFileSizeBytes: long (Required)
      *     }
      * }
      * }
@@ -8187,8 +9336,8 @@ public final class SearchIndexClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getKnowledgeSourceStatusWithResponse(String name, RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
-        return service.getKnowledgeSourceStatusSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
-            name, requestOptions, Context.NONE);
+        return service.getKnowledgeSourceStatusSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name,
+            accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -8222,10 +9371,10 @@ public final class SearchIndexClientImpl {
      * }
      * </pre>
      * 
+     * @param name The name of the knowledge source.
      * @param contentDisposition The Content-Disposition header specifying the filename of the uploaded file.
      * Must follow the format: `attachment; filename="&lt;filename&gt;"`.
      * For example: `attachment; filename="installation-guide.pdf"`.
-     * @param name The name of the knowledge source.
      * @param file The file content to upload.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -8236,13 +9385,13 @@ public final class SearchIndexClientImpl {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> uploadKnowledgeSourceFileWithResponseAsync(String contentDisposition, String name,
+    public Mono<Response<BinaryData>> uploadKnowledgeSourceFileWithResponseAsync(String name, String contentDisposition,
         BinaryData file, RequestOptions requestOptions) {
         final String contentType = "application/octet-stream";
         final String accept = "application/json";
         return FluxUtil.withContext(
             context -> service.uploadKnowledgeSourceFile(this.getEndpoint(), this.getServiceVersion().getVersion(),
-                contentType, contentDisposition, name, accept, file, requestOptions, context));
+                name, contentType, contentDisposition, accept, file, requestOptions, context));
     }
 
     /**
@@ -8276,10 +9425,10 @@ public final class SearchIndexClientImpl {
      * }
      * </pre>
      * 
+     * @param name The name of the knowledge source.
      * @param contentDisposition The Content-Disposition header specifying the filename of the uploaded file.
      * Must follow the format: `attachment; filename="&lt;filename&gt;"`.
      * For example: `attachment; filename="installation-guide.pdf"`.
-     * @param name The name of the knowledge source.
      * @param file The file content to upload.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -8289,12 +9438,12 @@ public final class SearchIndexClientImpl {
      * @return metadata for a file uploaded to a File knowledge source along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> uploadKnowledgeSourceFileWithResponse(String contentDisposition, String name,
+    public Response<BinaryData> uploadKnowledgeSourceFileWithResponse(String name, String contentDisposition,
         BinaryData file, RequestOptions requestOptions) {
         final String contentType = "application/octet-stream";
         final String accept = "application/json";
-        return service.uploadKnowledgeSourceFileSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            contentType, contentDisposition, name, accept, file, requestOptions, Context.NONE);
+        return service.uploadKnowledgeSourceFileSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name,
+            contentType, contentDisposition, accept, file, requestOptions, Context.NONE);
     }
 
     /**
@@ -8383,6 +9532,348 @@ public final class SearchIndexClientImpl {
     }
 
     /**
+     * Starts asynchronous ingestion of a new file into a File knowledge source, processed on a Content Processor. Poll
+     * the returned operation to retrieve the created file.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     kind: String (Required)
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
+     *     result (Optional): {
+     *         fileId: String (Optional)
+     *         fileName: String (Optional)
+     *         fileSizeBytes: Long (Optional)
+     *         createdAt: OffsetDateTime (Optional)
+     *         lastUpdatedAt: OffsetDateTime (Optional)
+     *         errorMessage: String (Optional)
+     *         prefix: String (Optional)
+     *         metadata (Optional): {
+     *             String: String (Required)
+     *         }
+     *         parsingMode: String(default/text/delimitedText/json/jsonArray/jsonLines/markdown) (Optional)
+     *         extractionMode: String(minimal/standard) (Optional)
+     *     }
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param name The name of the knowledge source.
+     * @param body The multipart/form-data body containing the metadata and content parts.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return tracks asynchronous upload or replacement of a file in a knowledge source along with {@link Response} on
+     * successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<BinaryData>> ingestKnowledgeSourceFileMultipartWithResponseAsync(String name, BinaryData body,
+        RequestOptions requestOptions) {
+        final String contentType = "multipart/form-data";
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.ingestKnowledgeSourceFileMultipart(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), name, contentType, accept, body, requestOptions, context));
+    }
+
+    /**
+     * Starts asynchronous ingestion of a new file into a File knowledge source, processed on a Content Processor. Poll
+     * the returned operation to retrieve the created file.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     kind: String (Required)
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
+     *     result (Optional): {
+     *         fileId: String (Optional)
+     *         fileName: String (Optional)
+     *         fileSizeBytes: Long (Optional)
+     *         createdAt: OffsetDateTime (Optional)
+     *         lastUpdatedAt: OffsetDateTime (Optional)
+     *         errorMessage: String (Optional)
+     *         prefix: String (Optional)
+     *         metadata (Optional): {
+     *             String: String (Required)
+     *         }
+     *         parsingMode: String(default/text/delimitedText/json/jsonArray/jsonLines/markdown) (Optional)
+     *         extractionMode: String(minimal/standard) (Optional)
+     *     }
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param name The name of the knowledge source.
+     * @param body The multipart/form-data body containing the metadata and content parts.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return tracks asynchronous upload or replacement of a file in a knowledge source along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> ingestKnowledgeSourceFileMultipartWithResponse(String name, BinaryData body,
+        RequestOptions requestOptions) {
+        final String contentType = "multipart/form-data";
+        final String accept = "application/json";
+        return service.ingestKnowledgeSourceFileMultipartSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
+            name, contentType, accept, body, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Starts asynchronous ingestion of a new file into a File knowledge source, processed on a Content Processor. Poll
+     * the returned operation to retrieve the created file.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     kind: String (Required)
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
+     *     result (Optional): {
+     *         fileId: String (Optional)
+     *         fileName: String (Optional)
+     *         fileSizeBytes: Long (Optional)
+     *         createdAt: OffsetDateTime (Optional)
+     *         lastUpdatedAt: OffsetDateTime (Optional)
+     *         errorMessage: String (Optional)
+     *         prefix: String (Optional)
+     *         metadata (Optional): {
+     *             String: String (Required)
+     *         }
+     *         parsingMode: String(default/text/delimitedText/json/jsonArray/jsonLines/markdown) (Optional)
+     *         extractionMode: String(minimal/standard) (Optional)
+     *     }
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param name The name of the knowledge source.
+     * @param body The multipart/form-data body containing the metadata and content parts.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link PollerFlux} for polling of tracks asynchronous upload or replacement of a file in a knowledge
+     * source.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<KnowledgeSourceFileIngestionOperation, KnowledgeSourceFile>
+        beginIngestKnowledgeSourceFileMultipartWithModelAsync(String name, BinaryData body,
+            RequestOptions requestOptions) {
+        return PollerFlux.create(Duration.ofSeconds(1),
+            () -> this.ingestKnowledgeSourceFileMultipartWithResponseAsync(name, body, requestOptions),
+            new com.azure.search.documents.implementation.OperationLocationPollingStrategy<>(
+                new PollingStrategyOptions(this.getHttpPipeline())
+                    .setEndpoint("{endpoint}".replace("{endpoint}", this.getEndpoint()))
+                    .setContext(requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE)
+                    .setServiceVersion(this.getServiceVersion().getVersion()),
+                "result"),
+            TypeReference.createInstance(KnowledgeSourceFileIngestionOperation.class),
+            TypeReference.createInstance(KnowledgeSourceFile.class));
+    }
+
+    /**
+     * Starts asynchronous ingestion of a new file into a File knowledge source, processed on a Content Processor. Poll
+     * the returned operation to retrieve the created file.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     kind: String (Required)
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
+     *     result (Optional): {
+     *         fileId: String (Optional)
+     *         fileName: String (Optional)
+     *         fileSizeBytes: Long (Optional)
+     *         createdAt: OffsetDateTime (Optional)
+     *         lastUpdatedAt: OffsetDateTime (Optional)
+     *         errorMessage: String (Optional)
+     *         prefix: String (Optional)
+     *         metadata (Optional): {
+     *             String: String (Required)
+     *         }
+     *         parsingMode: String(default/text/delimitedText/json/jsonArray/jsonLines/markdown) (Optional)
+     *         extractionMode: String(minimal/standard) (Optional)
+     *     }
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param name The name of the knowledge source.
+     * @param body The multipart/form-data body containing the metadata and content parts.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link SyncPoller} for polling of tracks asynchronous upload or replacement of a file in a knowledge
+     * source.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<KnowledgeSourceFileIngestionOperation, KnowledgeSourceFile>
+        beginIngestKnowledgeSourceFileMultipartWithModel(String name, BinaryData body, RequestOptions requestOptions) {
+        return SyncPoller.createPoller(Duration.ofSeconds(1),
+            () -> this.ingestKnowledgeSourceFileMultipartWithResponse(name, body, requestOptions),
+            new com.azure.search.documents.implementation.SyncOperationLocationPollingStrategy<>(
+                new PollingStrategyOptions(this.getHttpPipeline())
+                    .setEndpoint("{endpoint}".replace("{endpoint}", this.getEndpoint()))
+                    .setContext(requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE)
+                    .setServiceVersion(this.getServiceVersion().getVersion()),
+                "result"),
+            TypeReference.createInstance(KnowledgeSourceFileIngestionOperation.class),
+            TypeReference.createInstance(KnowledgeSourceFile.class));
+    }
+
+    /**
+     * Starts asynchronous ingestion of a new file into a File knowledge source, processed on a Content Processor. Poll
+     * the returned operation to retrieve the created file.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     kind: String (Required)
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
+     *     result (Optional): {
+     *         fileId: String (Optional)
+     *         fileName: String (Optional)
+     *         fileSizeBytes: Long (Optional)
+     *         createdAt: OffsetDateTime (Optional)
+     *         lastUpdatedAt: OffsetDateTime (Optional)
+     *         errorMessage: String (Optional)
+     *         prefix: String (Optional)
+     *         metadata (Optional): {
+     *             String: String (Required)
+     *         }
+     *         parsingMode: String(default/text/delimitedText/json/jsonArray/jsonLines/markdown) (Optional)
+     *         extractionMode: String(minimal/standard) (Optional)
+     *     }
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param name The name of the knowledge source.
+     * @param body The multipart/form-data body containing the metadata and content parts.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link PollerFlux} for polling of tracks asynchronous upload or replacement of a file in a knowledge
+     * source.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginIngestKnowledgeSourceFileMultipartInternalAsync(String name,
+        BinaryData body, RequestOptions requestOptions) {
+        return PollerFlux.create(Duration.ofSeconds(1),
+            () -> this.ingestKnowledgeSourceFileMultipartWithResponseAsync(name, body, requestOptions),
+            new com.azure.search.documents.implementation.OperationLocationPollingStrategy<>(
+                new PollingStrategyOptions(this.getHttpPipeline())
+                    .setEndpoint("{endpoint}".replace("{endpoint}", this.getEndpoint()))
+                    .setContext(requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE)
+                    .setServiceVersion(this.getServiceVersion().getVersion()),
+                "result"),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Starts asynchronous ingestion of a new file into a File knowledge source, processed on a Content Processor. Poll
+     * the returned operation to retrieve the created file.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     kind: String (Required)
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
+     *     result (Optional): {
+     *         fileId: String (Optional)
+     *         fileName: String (Optional)
+     *         fileSizeBytes: Long (Optional)
+     *         createdAt: OffsetDateTime (Optional)
+     *         lastUpdatedAt: OffsetDateTime (Optional)
+     *         errorMessage: String (Optional)
+     *         prefix: String (Optional)
+     *         metadata (Optional): {
+     *             String: String (Required)
+     *         }
+     *         parsingMode: String(default/text/delimitedText/json/jsonArray/jsonLines/markdown) (Optional)
+     *         extractionMode: String(minimal/standard) (Optional)
+     *     }
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param name The name of the knowledge source.
+     * @param body The multipart/form-data body containing the metadata and content parts.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link SyncPoller} for polling of tracks asynchronous upload or replacement of a file in a knowledge
+     * source.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, BinaryData> beginIngestKnowledgeSourceFileMultipartInternal(String name,
+        BinaryData body, RequestOptions requestOptions) {
+        return SyncPoller.createPoller(Duration.ofSeconds(1),
+            () -> this.ingestKnowledgeSourceFileMultipartWithResponse(name, body, requestOptions),
+            new com.azure.search.documents.implementation.SyncOperationLocationPollingStrategy<>(
+                new PollingStrategyOptions(this.getHttpPipeline())
+                    .setEndpoint("{endpoint}".replace("{endpoint}", this.getEndpoint()))
+                    .setContext(requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE)
+                    .setServiceVersion(this.getServiceVersion().getVersion()),
+                "result"),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
      * Lists all files in a File knowledge source.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
@@ -8434,7 +9925,7 @@ public final class SearchIndexClientImpl {
         final String accept = "application/json;odata.metadata=minimal";
         return FluxUtil
             .withContext(context -> service.listKnowledgeSourceFiles(this.getEndpoint(),
-                this.getServiceVersion().getVersion(), accept, name, requestOptions, context))
+                this.getServiceVersion().getVersion(), name, accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "@odata.nextLink"), null));
     }
@@ -8542,7 +10033,7 @@ public final class SearchIndexClientImpl {
     private PagedResponse<BinaryData> listKnowledgeSourceFilesSinglePage(String name, RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
         Response<BinaryData> res = service.listKnowledgeSourceFilesSync(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, name, requestOptions, Context.NONE);
+            this.getServiceVersion().getVersion(), name, accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "@odata.nextLink"), null);
     }
@@ -8604,8 +10095,8 @@ public final class SearchIndexClientImpl {
     /**
      * Deletes a file from a File knowledge source and removes all indexed content derived from it.
      * 
-     * @param fileId The unique identifier of the file to delete.
      * @param name The name of the knowledge source.
+     * @param fileId The unique identifier of the file to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -8613,18 +10104,18 @@ public final class SearchIndexClientImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteKnowledgeSourceFileWithResponseAsync(String fileId, String name,
+    public Mono<Response<Void>> deleteKnowledgeSourceFileWithResponseAsync(String name, String fileId,
         RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
         return FluxUtil.withContext(context -> service.deleteKnowledgeSourceFile(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), fileId, accept, name, requestOptions, context));
+            this.getServiceVersion().getVersion(), name, fileId, accept, requestOptions, context));
     }
 
     /**
      * Deletes a file from a File knowledge source and removes all indexed content derived from it.
      * 
-     * @param fileId The unique identifier of the file to delete.
      * @param name The name of the knowledge source.
+     * @param fileId The unique identifier of the file to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -8632,11 +10123,11 @@ public final class SearchIndexClientImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteKnowledgeSourceFileWithResponse(String fileId, String name,
+    public Response<Void> deleteKnowledgeSourceFileWithResponse(String name, String fileId,
         RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
-        return service.deleteKnowledgeSourceFileSync(this.getEndpoint(), this.getServiceVersion().getVersion(), fileId,
-            accept, name, requestOptions, Context.NONE);
+        return service.deleteKnowledgeSourceFileSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name,
+            fileId, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -8664,8 +10155,8 @@ public final class SearchIndexClientImpl {
      * }
      * </pre>
      * 
-     * @param fileId The unique identifier of the file to update.
      * @param name The name of the knowledge source.
+     * @param fileId The unique identifier of the file to update.
      * @param body The multipart/form-data body containing the metadata and content parts.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -8676,12 +10167,12 @@ public final class SearchIndexClientImpl {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> updateKnowledgeSourceFileWithResponseInternalAsync(String fileId, String name,
+    public Mono<Response<BinaryData>> updateKnowledgeSourceFileWithResponseInternalAsync(String name, String fileId,
         BinaryData body, RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.updateKnowledgeSourceFile(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), fileId, name, contentType, accept, body, requestOptions, context));
+            this.getServiceVersion().getVersion(), name, fileId, contentType, accept, body, requestOptions, context));
     }
 
     /**
@@ -8709,8 +10200,8 @@ public final class SearchIndexClientImpl {
      * }
      * </pre>
      * 
-     * @param fileId The unique identifier of the file to update.
      * @param name The name of the knowledge source.
+     * @param fileId The unique identifier of the file to update.
      * @param body The multipart/form-data body containing the metadata and content parts.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -8720,12 +10211,718 @@ public final class SearchIndexClientImpl {
      * @return metadata for a file uploaded to a File knowledge source along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> updateKnowledgeSourceFileWithResponseInternal(String fileId, String name,
+    public Response<BinaryData> updateKnowledgeSourceFileWithResponseInternal(String name, String fileId,
         BinaryData body, RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
         final String accept = "application/json";
-        return service.updateKnowledgeSourceFileSync(this.getEndpoint(), this.getServiceVersion().getVersion(), fileId,
-            name, contentType, accept, body, requestOptions, Context.NONE);
+        return service.updateKnowledgeSourceFileSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name,
+            fileId, contentType, accept, body, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Starts asynchronous ingestion that replaces an existing file in a File knowledge source, processed on a Content
+     * Processor. Poll the returned operation to retrieve the updated file.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     kind: String (Required)
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
+     *     result (Optional): {
+     *         fileId: String (Optional)
+     *         fileName: String (Optional)
+     *         fileSizeBytes: Long (Optional)
+     *         createdAt: OffsetDateTime (Optional)
+     *         lastUpdatedAt: OffsetDateTime (Optional)
+     *         errorMessage: String (Optional)
+     *         prefix: String (Optional)
+     *         metadata (Optional): {
+     *             String: String (Required)
+     *         }
+     *         parsingMode: String(default/text/delimitedText/json/jsonArray/jsonLines/markdown) (Optional)
+     *         extractionMode: String(minimal/standard) (Optional)
+     *     }
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param name The name of the knowledge source.
+     * @param fileId The unique identifier of the file to update.
+     * @param body The multipart/form-data body containing the metadata and content parts.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return tracks asynchronous upload or replacement of a file in a knowledge source along with {@link Response} on
+     * successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<BinaryData>> ingestKnowledgeSourceFileReplacementWithResponseAsync(String name, String fileId,
+        BinaryData body, RequestOptions requestOptions) {
+        final String contentType = "multipart/form-data";
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.ingestKnowledgeSourceFileReplacement(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), name, fileId, contentType, accept, body, requestOptions, context));
+    }
+
+    /**
+     * Starts asynchronous ingestion that replaces an existing file in a File knowledge source, processed on a Content
+     * Processor. Poll the returned operation to retrieve the updated file.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     kind: String (Required)
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
+     *     result (Optional): {
+     *         fileId: String (Optional)
+     *         fileName: String (Optional)
+     *         fileSizeBytes: Long (Optional)
+     *         createdAt: OffsetDateTime (Optional)
+     *         lastUpdatedAt: OffsetDateTime (Optional)
+     *         errorMessage: String (Optional)
+     *         prefix: String (Optional)
+     *         metadata (Optional): {
+     *             String: String (Required)
+     *         }
+     *         parsingMode: String(default/text/delimitedText/json/jsonArray/jsonLines/markdown) (Optional)
+     *         extractionMode: String(minimal/standard) (Optional)
+     *     }
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param name The name of the knowledge source.
+     * @param fileId The unique identifier of the file to update.
+     * @param body The multipart/form-data body containing the metadata and content parts.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return tracks asynchronous upload or replacement of a file in a knowledge source along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> ingestKnowledgeSourceFileReplacementWithResponse(String name, String fileId,
+        BinaryData body, RequestOptions requestOptions) {
+        final String contentType = "multipart/form-data";
+        final String accept = "application/json";
+        return service.ingestKnowledgeSourceFileReplacementSync(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), name, fileId, contentType, accept, body, requestOptions,
+            Context.NONE);
+    }
+
+    /**
+     * Starts asynchronous ingestion that replaces an existing file in a File knowledge source, processed on a Content
+     * Processor. Poll the returned operation to retrieve the updated file.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     kind: String (Required)
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
+     *     result (Optional): {
+     *         fileId: String (Optional)
+     *         fileName: String (Optional)
+     *         fileSizeBytes: Long (Optional)
+     *         createdAt: OffsetDateTime (Optional)
+     *         lastUpdatedAt: OffsetDateTime (Optional)
+     *         errorMessage: String (Optional)
+     *         prefix: String (Optional)
+     *         metadata (Optional): {
+     *             String: String (Required)
+     *         }
+     *         parsingMode: String(default/text/delimitedText/json/jsonArray/jsonLines/markdown) (Optional)
+     *         extractionMode: String(minimal/standard) (Optional)
+     *     }
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param name The name of the knowledge source.
+     * @param fileId The unique identifier of the file to update.
+     * @param body The multipart/form-data body containing the metadata and content parts.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link PollerFlux} for polling of tracks asynchronous upload or replacement of a file in a knowledge
+     * source.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<KnowledgeSourceFileIngestionOperation, KnowledgeSourceFile>
+        beginIngestKnowledgeSourceFileReplacementWithModelAsync(String name, String fileId, BinaryData body,
+            RequestOptions requestOptions) {
+        return PollerFlux.create(Duration.ofSeconds(1),
+            () -> this.ingestKnowledgeSourceFileReplacementWithResponseAsync(name, fileId, body, requestOptions),
+            new com.azure.search.documents.implementation.OperationLocationPollingStrategy<>(
+                new PollingStrategyOptions(this.getHttpPipeline())
+                    .setEndpoint("{endpoint}".replace("{endpoint}", this.getEndpoint()))
+                    .setContext(requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE)
+                    .setServiceVersion(this.getServiceVersion().getVersion()),
+                "result"),
+            TypeReference.createInstance(KnowledgeSourceFileIngestionOperation.class),
+            TypeReference.createInstance(KnowledgeSourceFile.class));
+    }
+
+    /**
+     * Starts asynchronous ingestion that replaces an existing file in a File knowledge source, processed on a Content
+     * Processor. Poll the returned operation to retrieve the updated file.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     kind: String (Required)
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
+     *     result (Optional): {
+     *         fileId: String (Optional)
+     *         fileName: String (Optional)
+     *         fileSizeBytes: Long (Optional)
+     *         createdAt: OffsetDateTime (Optional)
+     *         lastUpdatedAt: OffsetDateTime (Optional)
+     *         errorMessage: String (Optional)
+     *         prefix: String (Optional)
+     *         metadata (Optional): {
+     *             String: String (Required)
+     *         }
+     *         parsingMode: String(default/text/delimitedText/json/jsonArray/jsonLines/markdown) (Optional)
+     *         extractionMode: String(minimal/standard) (Optional)
+     *     }
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param name The name of the knowledge source.
+     * @param fileId The unique identifier of the file to update.
+     * @param body The multipart/form-data body containing the metadata and content parts.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link SyncPoller} for polling of tracks asynchronous upload or replacement of a file in a knowledge
+     * source.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<KnowledgeSourceFileIngestionOperation, KnowledgeSourceFile>
+        beginIngestKnowledgeSourceFileReplacementWithModel(String name, String fileId, BinaryData body,
+            RequestOptions requestOptions) {
+        return SyncPoller.createPoller(Duration.ofSeconds(1),
+            () -> this.ingestKnowledgeSourceFileReplacementWithResponse(name, fileId, body, requestOptions),
+            new com.azure.search.documents.implementation.SyncOperationLocationPollingStrategy<>(
+                new PollingStrategyOptions(this.getHttpPipeline())
+                    .setEndpoint("{endpoint}".replace("{endpoint}", this.getEndpoint()))
+                    .setContext(requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE)
+                    .setServiceVersion(this.getServiceVersion().getVersion()),
+                "result"),
+            TypeReference.createInstance(KnowledgeSourceFileIngestionOperation.class),
+            TypeReference.createInstance(KnowledgeSourceFile.class));
+    }
+
+    /**
+     * Starts asynchronous ingestion that replaces an existing file in a File knowledge source, processed on a Content
+     * Processor. Poll the returned operation to retrieve the updated file.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     kind: String (Required)
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
+     *     result (Optional): {
+     *         fileId: String (Optional)
+     *         fileName: String (Optional)
+     *         fileSizeBytes: Long (Optional)
+     *         createdAt: OffsetDateTime (Optional)
+     *         lastUpdatedAt: OffsetDateTime (Optional)
+     *         errorMessage: String (Optional)
+     *         prefix: String (Optional)
+     *         metadata (Optional): {
+     *             String: String (Required)
+     *         }
+     *         parsingMode: String(default/text/delimitedText/json/jsonArray/jsonLines/markdown) (Optional)
+     *         extractionMode: String(minimal/standard) (Optional)
+     *     }
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param name The name of the knowledge source.
+     * @param fileId The unique identifier of the file to update.
+     * @param body The multipart/form-data body containing the metadata and content parts.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link PollerFlux} for polling of tracks asynchronous upload or replacement of a file in a knowledge
+     * source.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginIngestKnowledgeSourceFileReplacementInternalAsync(String name,
+        String fileId, BinaryData body, RequestOptions requestOptions) {
+        return PollerFlux.create(Duration.ofSeconds(1),
+            () -> this.ingestKnowledgeSourceFileReplacementWithResponseAsync(name, fileId, body, requestOptions),
+            new com.azure.search.documents.implementation.OperationLocationPollingStrategy<>(
+                new PollingStrategyOptions(this.getHttpPipeline())
+                    .setEndpoint("{endpoint}".replace("{endpoint}", this.getEndpoint()))
+                    .setContext(requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE)
+                    .setServiceVersion(this.getServiceVersion().getVersion()),
+                "result"),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Starts asynchronous ingestion that replaces an existing file in a File knowledge source, processed on a Content
+     * Processor. Poll the returned operation to retrieve the updated file.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     kind: String (Required)
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
+     *     result (Optional): {
+     *         fileId: String (Optional)
+     *         fileName: String (Optional)
+     *         fileSizeBytes: Long (Optional)
+     *         createdAt: OffsetDateTime (Optional)
+     *         lastUpdatedAt: OffsetDateTime (Optional)
+     *         errorMessage: String (Optional)
+     *         prefix: String (Optional)
+     *         metadata (Optional): {
+     *             String: String (Required)
+     *         }
+     *         parsingMode: String(default/text/delimitedText/json/jsonArray/jsonLines/markdown) (Optional)
+     *         extractionMode: String(minimal/standard) (Optional)
+     *     }
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param name The name of the knowledge source.
+     * @param fileId The unique identifier of the file to update.
+     * @param body The multipart/form-data body containing the metadata and content parts.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link SyncPoller} for polling of tracks asynchronous upload or replacement of a file in a knowledge
+     * source.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, BinaryData> beginIngestKnowledgeSourceFileReplacementInternal(String name,
+        String fileId, BinaryData body, RequestOptions requestOptions) {
+        return SyncPoller.createPoller(Duration.ofSeconds(1),
+            () -> this.ingestKnowledgeSourceFileReplacementWithResponse(name, fileId, body, requestOptions),
+            new com.azure.search.documents.implementation.SyncOperationLocationPollingStrategy<>(
+                new PollingStrategyOptions(this.getHttpPipeline())
+                    .setEndpoint("{endpoint}".replace("{endpoint}", this.getEndpoint()))
+                    .setContext(requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE)
+                    .setServiceVersion(this.getServiceVersion().getVersion()),
+                "result"),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Gets the status and, when successful, the result of a file ingestion operation.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     kind: String (Required)
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
+     *     result (Optional): {
+     *         fileId: String (Optional)
+     *         fileName: String (Optional)
+     *         fileSizeBytes: Long (Optional)
+     *         createdAt: OffsetDateTime (Optional)
+     *         lastUpdatedAt: OffsetDateTime (Optional)
+     *         errorMessage: String (Optional)
+     *         prefix: String (Optional)
+     *         metadata (Optional): {
+     *             String: String (Required)
+     *         }
+     *         parsingMode: String(default/text/delimitedText/json/jsonArray/jsonLines/markdown) (Optional)
+     *         extractionMode: String(minimal/standard) (Optional)
+     *     }
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>Retry-After</td><td>int</td><td>The suggested delay in seconds before polling a nonterminal operation
+     * again.</td></tr>
+     * </table>
+     * 
+     * @param name The name of the knowledge source.
+     * @param operationId The server-generated identifier returned when ingestion was accepted.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the status and, when successful, the result of a file ingestion operation along with {@link Response} on
+     * successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getKnowledgeSourceFileIngestionOperationWithResponseAsync(String name,
+        String operationId, RequestOptions requestOptions) {
+        final String accept = "application/json;odata.metadata=minimal";
+        return FluxUtil.withContext(context -> service.getKnowledgeSourceFileIngestionOperation(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), name, accept, operationId, requestOptions, context));
+    }
+
+    /**
+     * Gets the status and, when successful, the result of a file ingestion operation.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     kind: String (Required)
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
+     *     result (Optional): {
+     *         fileId: String (Optional)
+     *         fileName: String (Optional)
+     *         fileSizeBytes: Long (Optional)
+     *         createdAt: OffsetDateTime (Optional)
+     *         lastUpdatedAt: OffsetDateTime (Optional)
+     *         errorMessage: String (Optional)
+     *         prefix: String (Optional)
+     *         metadata (Optional): {
+     *             String: String (Required)
+     *         }
+     *         parsingMode: String(default/text/delimitedText/json/jsonArray/jsonLines/markdown) (Optional)
+     *         extractionMode: String(minimal/standard) (Optional)
+     *     }
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>Retry-After</td><td>int</td><td>The suggested delay in seconds before polling a nonterminal operation
+     * again.</td></tr>
+     * </table>
+     * 
+     * @param name The name of the knowledge source.
+     * @param operationId The server-generated identifier returned when ingestion was accepted.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the status and, when successful, the result of a file ingestion operation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getKnowledgeSourceFileIngestionOperationWithResponse(String name, String operationId,
+        RequestOptions requestOptions) {
+        final String accept = "application/json;odata.metadata=minimal";
+        return service.getKnowledgeSourceFileIngestionOperationSync(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), name, accept, operationId, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Lists retained file ingestion operations for this knowledge source.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>pageSize</td><td>Integer</td><td>No</td><td>The maximum number of operations to return.</td></tr>
+     * <tr><td>continuationToken</td><td>String</td><td>No</td><td>An opaque continuation token returned by the
+     * service.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     kind: String (Required)
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
+     *     result (Optional): {
+     *         fileId: String (Optional)
+     *         fileName: String (Optional)
+     *         fileSizeBytes: Long (Optional)
+     *         createdAt: OffsetDateTime (Optional)
+     *         lastUpdatedAt: OffsetDateTime (Optional)
+     *         errorMessage: String (Optional)
+     *         prefix: String (Optional)
+     *         metadata (Optional): {
+     *             String: String (Required)
+     *         }
+     *         parsingMode: String(default/text/delimitedText/json/jsonArray/jsonLines/markdown) (Optional)
+     *         extractionMode: String(minimal/standard) (Optional)
+     *     }
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param name The name of the knowledge source.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a page of retained ingestion operations belonging to a knowledge source along with {@link PagedResponse}
+     * on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<BinaryData>> listKnowledgeSourceFileIngestionOperationsSinglePageAsync(String name,
+        RequestOptions requestOptions) {
+        final String accept = "application/json;odata.metadata=minimal";
+        return FluxUtil
+            .withContext(context -> service.listKnowledgeSourceFileIngestionOperations(this.getEndpoint(),
+                this.getServiceVersion().getVersion(), name, accept, requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "@odata.nextLink"), null));
+    }
+
+    /**
+     * Lists retained file ingestion operations for this knowledge source.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>pageSize</td><td>Integer</td><td>No</td><td>The maximum number of operations to return.</td></tr>
+     * <tr><td>continuationToken</td><td>String</td><td>No</td><td>An opaque continuation token returned by the
+     * service.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     kind: String (Required)
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
+     *     result (Optional): {
+     *         fileId: String (Optional)
+     *         fileName: String (Optional)
+     *         fileSizeBytes: Long (Optional)
+     *         createdAt: OffsetDateTime (Optional)
+     *         lastUpdatedAt: OffsetDateTime (Optional)
+     *         errorMessage: String (Optional)
+     *         prefix: String (Optional)
+     *         metadata (Optional): {
+     *             String: String (Required)
+     *         }
+     *         parsingMode: String(default/text/delimitedText/json/jsonArray/jsonLines/markdown) (Optional)
+     *         extractionMode: String(minimal/standard) (Optional)
+     *     }
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param name The name of the knowledge source.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a page of retained ingestion operations belonging to a knowledge source as paginated response with
+     * {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listKnowledgeSourceFileIngestionOperationsAsync(String name,
+        RequestOptions requestOptions) {
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
+        return new PagedFlux<>(() -> listKnowledgeSourceFileIngestionOperationsSinglePageAsync(name, requestOptions),
+            nextLink -> listKnowledgeSourceFileIngestionOperationsNextSinglePageAsync(nextLink,
+                requestOptionsForNextPage));
+    }
+
+    /**
+     * Lists retained file ingestion operations for this knowledge source.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>pageSize</td><td>Integer</td><td>No</td><td>The maximum number of operations to return.</td></tr>
+     * <tr><td>continuationToken</td><td>String</td><td>No</td><td>An opaque continuation token returned by the
+     * service.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     kind: String (Required)
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
+     *     result (Optional): {
+     *         fileId: String (Optional)
+     *         fileName: String (Optional)
+     *         fileSizeBytes: Long (Optional)
+     *         createdAt: OffsetDateTime (Optional)
+     *         lastUpdatedAt: OffsetDateTime (Optional)
+     *         errorMessage: String (Optional)
+     *         prefix: String (Optional)
+     *         metadata (Optional): {
+     *             String: String (Required)
+     *         }
+     *         parsingMode: String(default/text/delimitedText/json/jsonArray/jsonLines/markdown) (Optional)
+     *         extractionMode: String(minimal/standard) (Optional)
+     *     }
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param name The name of the knowledge source.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a page of retained ingestion operations belonging to a knowledge source along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BinaryData> listKnowledgeSourceFileIngestionOperationsSinglePage(String name,
+        RequestOptions requestOptions) {
+        final String accept = "application/json;odata.metadata=minimal";
+        Response<BinaryData> res = service.listKnowledgeSourceFileIngestionOperationsSync(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), name, accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "@odata.nextLink"), null);
+    }
+
+    /**
+     * Lists retained file ingestion operations for this knowledge source.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>pageSize</td><td>Integer</td><td>No</td><td>The maximum number of operations to return.</td></tr>
+     * <tr><td>continuationToken</td><td>String</td><td>No</td><td>An opaque continuation token returned by the
+     * service.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     kind: String (Required)
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
+     *     result (Optional): {
+     *         fileId: String (Optional)
+     *         fileName: String (Optional)
+     *         fileSizeBytes: Long (Optional)
+     *         createdAt: OffsetDateTime (Optional)
+     *         lastUpdatedAt: OffsetDateTime (Optional)
+     *         errorMessage: String (Optional)
+     *         prefix: String (Optional)
+     *         metadata (Optional): {
+     *             String: String (Required)
+     *         }
+     *         parsingMode: String(default/text/delimitedText/json/jsonArray/jsonLines/markdown) (Optional)
+     *         extractionMode: String(minimal/standard) (Optional)
+     *     }
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param name The name of the knowledge source.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a page of retained ingestion operations belonging to a knowledge source as paginated response with
+     * {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listKnowledgeSourceFileIngestionOperations(String name,
+        RequestOptions requestOptions) {
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
+        return new PagedIterable<>(() -> listKnowledgeSourceFileIngestionOperationsSinglePage(name, requestOptions),
+            nextLink -> listKnowledgeSourceFileIngestionOperationsNextSinglePage(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -8760,7 +10957,7 @@ public final class SearchIndexClientImpl {
      *         maxCumulativeIndexerRuntimeSeconds: Long (Optional)
      *         maxVectorIndexSizePerIndexInBytes: Long (Optional)
      *     }
-     *     indexersRuntime (Required): {
+     *     indexersRuntime (Optional): {
      *         usedSeconds: long (Required)
      *         remainingSeconds: Long (Optional)
      *         beginningTime: OffsetDateTime (Required)
@@ -8817,7 +11014,7 @@ public final class SearchIndexClientImpl {
      *         maxCumulativeIndexerRuntimeSeconds: Long (Optional)
      *         maxVectorIndexSizePerIndexInBytes: Long (Optional)
      *     }
-     *     indexersRuntime (Required): {
+     *     indexersRuntime (Optional): {
      *         usedSeconds: long (Required)
      *         remainingSeconds: Long (Optional)
      *         beginningTime: OffsetDateTime (Required)
@@ -9057,12 +11254,12 @@ public final class SearchIndexClientImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> getSynonymMapsNextSinglePageAsync(String nextLink,
+    private Mono<PagedResponse<BinaryData>> listSynonymMapsNextSinglePageAsync(String nextLink,
         RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
         return FluxUtil
             .withContext(
-                context -> service.getSynonymMapsNext(nextLink, this.getEndpoint(), accept, requestOptions, context))
+                context -> service.listSynonymMapsNext(nextLink, this.getEndpoint(), accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "@odata.nextLink"), null));
     }
@@ -9106,10 +11303,10 @@ public final class SearchIndexClientImpl {
      * @return response from a List SynonymMaps request along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> getSynonymMapsNextSinglePage(String nextLink, RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> listSynonymMapsNextSinglePage(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
         Response<BinaryData> res
-            = service.getSynonymMapsNextSync(nextLink, this.getEndpoint(), accept, requestOptions, Context.NONE);
+            = service.listSynonymMapsNextSync(nextLink, this.getEndpoint(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "@odata.nextLink"), null);
     }
@@ -9134,7 +11331,8 @@ public final class SearchIndexClientImpl {
      *             filterable: Boolean (Optional)
      *             sortable: Boolean (Optional)
      *             facetable: Boolean (Optional)
-     *             permissionFilter: String(userIds/groupIds/rbacScope) (Optional)
+     *             permissionFilter: String(userIds/groupIds/rbacScope/oneLakeParentFolders/oneLakeLakehouseId) (Optional)
+     *             organizationAccessExpiration: Boolean (Optional)
      *             sensitivityLabelId: Boolean (Optional)
      *             sensitivityLabelName: Boolean (Optional)
      *             sourceDocumentId: Boolean (Optional)
@@ -9145,6 +11343,7 @@ public final class SearchIndexClientImpl {
      *             normalizer: String(asciifolding/elision/lowercase/standard/uppercase) (Optional)
      *             dimensions: Integer (Optional)
      *             vectorSearchProfile: String (Optional)
+     *             topicGraphProfile: String (Optional)
      *             vectorEncoding: String(packedBit) (Optional)
      *             synonymMaps (Optional): [
      *                 String (Optional)
@@ -9154,6 +11353,34 @@ public final class SearchIndexClientImpl {
      *             ]
      *         }
      *     ]
+     *     graphProfile (Optional): {
+     *         kind: String(edgeList) (Required)
+     *         fields (Required): {
+     *             assertionIdField: String (Required)
+     *             factIdField: String (Required)
+     *             subjectField: String (Required)
+     *             predicateField: String (Required)
+     *             objectField: String (Required)
+     *             objectStringField: String (Required)
+     *             objectDoubleField: String (Required)
+     *             objectBoolField: String (Required)
+     *             objectDateTimeField: String (Required)
+     *             subjectTypeField: String (Required)
+     *             subjectIdField: String (Required)
+     *             objectTypeField: String (Required)
+     *             objectIdField: String (Required)
+     *             confidenceField: String (Required)
+     *             subjectConfidenceField: String (Required)
+     *             predicateConfidenceField: String (Required)
+     *             objectConfidenceField: String (Required)
+     *             sourceChunkIdField: String (Required)
+     *             sourceParentIdField: String (Required)
+     *             graphNameField: String (Required)
+     *             subjectIdDisplayNameField: String (Required)
+     *             objectIdDisplayNameField: String (Required)
+     *         }
+     *         provenanceIndexName: String (Optional)
+     *     }
      *     scoringProfiles (Optional): [
      *          (Optional){
      *             name: String (Required)
@@ -9165,8 +11392,6 @@ public final class SearchIndexClientImpl {
      *             functions (Optional): [
      *                  (Optional){
      *                     type: String (Required)
-     *                     fieldName: String (Required)
-     *                     boost: double (Required)
      *                     interpolation: String(linear/constant/quadratic/logarithmic) (Optional)
      *                 }
      *             ]
@@ -9273,7 +11498,7 @@ public final class SearchIndexClientImpl {
      *         ]
      *         vectorizers (Optional): [
      *              (Optional){
-     *                 kind: String(azureOpenAI/customWebApi/aiServicesVision/aml) (Required)
+     *                 kind: String(azureOpenAI/openAICompatible/customWebApi/aiServicesVision/aml) (Required)
      *                 name: String (Required)
      *             }
      *         ]
@@ -9289,6 +11514,15 @@ public final class SearchIndexClientImpl {
      *                 truncationDimension: Integer (Optional)
      *             }
      *         ]
+     *         topicGraphProfiles (Optional): [
+     *              (Optional){
+     *                 name: String (Required)
+     *                 indexName: String (Required)
+     *                 defaultKind: String(none/diverse/balanced) (Required)
+     *                 defaultDiversityFactor: Float (Optional)
+     *                 defaultMinDiversityPoolSize: Integer (Optional)
+     *             }
+     *         ]
      *     }
      *     permissionFilterOption: String(enabled/disabled) (Optional)
      *     purviewEnabled: Boolean (Optional)
@@ -9296,6 +11530,10 @@ public final class SearchIndexClientImpl {
      *         applicationId: String (Required)
      *         federatedCredentialId: String (Required)
      *         tenantId: String (Optional)
+     *     }
+     *     oneLakeSecuritySource (Optional): {
+     *         fabricWorkspaceId: String (Required)
+     *         lakehouseId: String (Required)
      *     }
      *     &#64;odata.etag: String (Optional)
      * }
@@ -9342,7 +11580,8 @@ public final class SearchIndexClientImpl {
      *             filterable: Boolean (Optional)
      *             sortable: Boolean (Optional)
      *             facetable: Boolean (Optional)
-     *             permissionFilter: String(userIds/groupIds/rbacScope) (Optional)
+     *             permissionFilter: String(userIds/groupIds/rbacScope/oneLakeParentFolders/oneLakeLakehouseId) (Optional)
+     *             organizationAccessExpiration: Boolean (Optional)
      *             sensitivityLabelId: Boolean (Optional)
      *             sensitivityLabelName: Boolean (Optional)
      *             sourceDocumentId: Boolean (Optional)
@@ -9353,6 +11592,7 @@ public final class SearchIndexClientImpl {
      *             normalizer: String(asciifolding/elision/lowercase/standard/uppercase) (Optional)
      *             dimensions: Integer (Optional)
      *             vectorSearchProfile: String (Optional)
+     *             topicGraphProfile: String (Optional)
      *             vectorEncoding: String(packedBit) (Optional)
      *             synonymMaps (Optional): [
      *                 String (Optional)
@@ -9362,6 +11602,34 @@ public final class SearchIndexClientImpl {
      *             ]
      *         }
      *     ]
+     *     graphProfile (Optional): {
+     *         kind: String(edgeList) (Required)
+     *         fields (Required): {
+     *             assertionIdField: String (Required)
+     *             factIdField: String (Required)
+     *             subjectField: String (Required)
+     *             predicateField: String (Required)
+     *             objectField: String (Required)
+     *             objectStringField: String (Required)
+     *             objectDoubleField: String (Required)
+     *             objectBoolField: String (Required)
+     *             objectDateTimeField: String (Required)
+     *             subjectTypeField: String (Required)
+     *             subjectIdField: String (Required)
+     *             objectTypeField: String (Required)
+     *             objectIdField: String (Required)
+     *             confidenceField: String (Required)
+     *             subjectConfidenceField: String (Required)
+     *             predicateConfidenceField: String (Required)
+     *             objectConfidenceField: String (Required)
+     *             sourceChunkIdField: String (Required)
+     *             sourceParentIdField: String (Required)
+     *             graphNameField: String (Required)
+     *             subjectIdDisplayNameField: String (Required)
+     *             objectIdDisplayNameField: String (Required)
+     *         }
+     *         provenanceIndexName: String (Optional)
+     *     }
      *     scoringProfiles (Optional): [
      *          (Optional){
      *             name: String (Required)
@@ -9373,8 +11641,6 @@ public final class SearchIndexClientImpl {
      *             functions (Optional): [
      *                  (Optional){
      *                     type: String (Required)
-     *                     fieldName: String (Required)
-     *                     boost: double (Required)
      *                     interpolation: String(linear/constant/quadratic/logarithmic) (Optional)
      *                 }
      *             ]
@@ -9481,7 +11747,7 @@ public final class SearchIndexClientImpl {
      *         ]
      *         vectorizers (Optional): [
      *              (Optional){
-     *                 kind: String(azureOpenAI/customWebApi/aiServicesVision/aml) (Required)
+     *                 kind: String(azureOpenAI/openAICompatible/customWebApi/aiServicesVision/aml) (Required)
      *                 name: String (Required)
      *             }
      *         ]
@@ -9497,6 +11763,15 @@ public final class SearchIndexClientImpl {
      *                 truncationDimension: Integer (Optional)
      *             }
      *         ]
+     *         topicGraphProfiles (Optional): [
+     *              (Optional){
+     *                 name: String (Required)
+     *                 indexName: String (Required)
+     *                 defaultKind: String(none/diverse/balanced) (Required)
+     *                 defaultDiversityFactor: Float (Optional)
+     *                 defaultMinDiversityPoolSize: Integer (Optional)
+     *             }
+     *         ]
      *     }
      *     permissionFilterOption: String(enabled/disabled) (Optional)
      *     purviewEnabled: Boolean (Optional)
@@ -9504,6 +11779,10 @@ public final class SearchIndexClientImpl {
      *         applicationId: String (Required)
      *         federatedCredentialId: String (Required)
      *         tenantId: String (Optional)
+     *     }
+     *     oneLakeSecuritySource (Optional): {
+     *         fabricWorkspaceId: String (Required)
+     *         lakehouseId: String (Required)
      *     }
      *     &#64;odata.etag: String (Optional)
      * }
@@ -9547,7 +11826,8 @@ public final class SearchIndexClientImpl {
      *             filterable: Boolean (Optional)
      *             sortable: Boolean (Optional)
      *             facetable: Boolean (Optional)
-     *             permissionFilter: String(userIds/groupIds/rbacScope) (Optional)
+     *             permissionFilter: String(userIds/groupIds/rbacScope/oneLakeParentFolders/oneLakeLakehouseId) (Optional)
+     *             organizationAccessExpiration: Boolean (Optional)
      *             sensitivityLabelId: Boolean (Optional)
      *             sensitivityLabelName: Boolean (Optional)
      *             sourceDocumentId: Boolean (Optional)
@@ -9558,6 +11838,7 @@ public final class SearchIndexClientImpl {
      *             normalizer: String(asciifolding/elision/lowercase/standard/uppercase) (Optional)
      *             dimensions: Integer (Optional)
      *             vectorSearchProfile: String (Optional)
+     *             topicGraphProfile: String (Optional)
      *             vectorEncoding: String(packedBit) (Optional)
      *             synonymMaps (Optional): [
      *                 String (Optional)
@@ -9567,6 +11848,34 @@ public final class SearchIndexClientImpl {
      *             ]
      *         }
      *     ]
+     *     graphProfile (Optional): {
+     *         kind: String(edgeList) (Required)
+     *         fields (Required): {
+     *             assertionIdField: String (Required)
+     *             factIdField: String (Required)
+     *             subjectField: String (Required)
+     *             predicateField: String (Required)
+     *             objectField: String (Required)
+     *             objectStringField: String (Required)
+     *             objectDoubleField: String (Required)
+     *             objectBoolField: String (Required)
+     *             objectDateTimeField: String (Required)
+     *             subjectTypeField: String (Required)
+     *             subjectIdField: String (Required)
+     *             objectTypeField: String (Required)
+     *             objectIdField: String (Required)
+     *             confidenceField: String (Required)
+     *             subjectConfidenceField: String (Required)
+     *             predicateConfidenceField: String (Required)
+     *             objectConfidenceField: String (Required)
+     *             sourceChunkIdField: String (Required)
+     *             sourceParentIdField: String (Required)
+     *             graphNameField: String (Required)
+     *             subjectIdDisplayNameField: String (Required)
+     *             objectIdDisplayNameField: String (Required)
+     *         }
+     *         provenanceIndexName: String (Optional)
+     *     }
      *     scoringProfiles (Optional): [
      *          (Optional){
      *             name: String (Required)
@@ -9578,8 +11887,6 @@ public final class SearchIndexClientImpl {
      *             functions (Optional): [
      *                  (Optional){
      *                     type: String (Required)
-     *                     fieldName: String (Required)
-     *                     boost: double (Required)
      *                     interpolation: String(linear/constant/quadratic/logarithmic) (Optional)
      *                 }
      *             ]
@@ -9686,7 +11993,7 @@ public final class SearchIndexClientImpl {
      *         ]
      *         vectorizers (Optional): [
      *              (Optional){
-     *                 kind: String(azureOpenAI/customWebApi/aiServicesVision/aml) (Required)
+     *                 kind: String(azureOpenAI/openAICompatible/customWebApi/aiServicesVision/aml) (Required)
      *                 name: String (Required)
      *             }
      *         ]
@@ -9702,9 +12009,27 @@ public final class SearchIndexClientImpl {
      *                 truncationDimension: Integer (Optional)
      *             }
      *         ]
+     *         topicGraphProfiles (Optional): [
+     *              (Optional){
+     *                 name: String (Required)
+     *                 indexName: String (Required)
+     *                 defaultKind: String(none/diverse/balanced) (Required)
+     *                 defaultDiversityFactor: Float (Optional)
+     *                 defaultMinDiversityPoolSize: Integer (Optional)
+     *             }
+     *         ]
      *     }
      *     permissionFilterOption: String(enabled/disabled) (Optional)
      *     purviewEnabled: Boolean (Optional)
+     *     sharePointConnectorAppRegistration (Optional): {
+     *         applicationId: String (Required)
+     *         federatedCredentialId: String (Required)
+     *         tenantId: String (Optional)
+     *     }
+     *     oneLakeSecuritySource (Optional): {
+     *         fabricWorkspaceId: String (Required)
+     *         lakehouseId: String (Required)
+     *     }
      *     &#64;odata.etag: String (Optional)
      * }
      * }
@@ -9750,7 +12075,8 @@ public final class SearchIndexClientImpl {
      *             filterable: Boolean (Optional)
      *             sortable: Boolean (Optional)
      *             facetable: Boolean (Optional)
-     *             permissionFilter: String(userIds/groupIds/rbacScope) (Optional)
+     *             permissionFilter: String(userIds/groupIds/rbacScope/oneLakeParentFolders/oneLakeLakehouseId) (Optional)
+     *             organizationAccessExpiration: Boolean (Optional)
      *             sensitivityLabelId: Boolean (Optional)
      *             sensitivityLabelName: Boolean (Optional)
      *             sourceDocumentId: Boolean (Optional)
@@ -9761,6 +12087,7 @@ public final class SearchIndexClientImpl {
      *             normalizer: String(asciifolding/elision/lowercase/standard/uppercase) (Optional)
      *             dimensions: Integer (Optional)
      *             vectorSearchProfile: String (Optional)
+     *             topicGraphProfile: String (Optional)
      *             vectorEncoding: String(packedBit) (Optional)
      *             synonymMaps (Optional): [
      *                 String (Optional)
@@ -9770,6 +12097,34 @@ public final class SearchIndexClientImpl {
      *             ]
      *         }
      *     ]
+     *     graphProfile (Optional): {
+     *         kind: String(edgeList) (Required)
+     *         fields (Required): {
+     *             assertionIdField: String (Required)
+     *             factIdField: String (Required)
+     *             subjectField: String (Required)
+     *             predicateField: String (Required)
+     *             objectField: String (Required)
+     *             objectStringField: String (Required)
+     *             objectDoubleField: String (Required)
+     *             objectBoolField: String (Required)
+     *             objectDateTimeField: String (Required)
+     *             subjectTypeField: String (Required)
+     *             subjectIdField: String (Required)
+     *             objectTypeField: String (Required)
+     *             objectIdField: String (Required)
+     *             confidenceField: String (Required)
+     *             subjectConfidenceField: String (Required)
+     *             predicateConfidenceField: String (Required)
+     *             objectConfidenceField: String (Required)
+     *             sourceChunkIdField: String (Required)
+     *             sourceParentIdField: String (Required)
+     *             graphNameField: String (Required)
+     *             subjectIdDisplayNameField: String (Required)
+     *             objectIdDisplayNameField: String (Required)
+     *         }
+     *         provenanceIndexName: String (Optional)
+     *     }
      *     scoringProfiles (Optional): [
      *          (Optional){
      *             name: String (Required)
@@ -9781,8 +12136,6 @@ public final class SearchIndexClientImpl {
      *             functions (Optional): [
      *                  (Optional){
      *                     type: String (Required)
-     *                     fieldName: String (Required)
-     *                     boost: double (Required)
      *                     interpolation: String(linear/constant/quadratic/logarithmic) (Optional)
      *                 }
      *             ]
@@ -9889,7 +12242,7 @@ public final class SearchIndexClientImpl {
      *         ]
      *         vectorizers (Optional): [
      *              (Optional){
-     *                 kind: String(azureOpenAI/customWebApi/aiServicesVision/aml) (Required)
+     *                 kind: String(azureOpenAI/openAICompatible/customWebApi/aiServicesVision/aml) (Required)
      *                 name: String (Required)
      *             }
      *         ]
@@ -9905,9 +12258,27 @@ public final class SearchIndexClientImpl {
      *                 truncationDimension: Integer (Optional)
      *             }
      *         ]
+     *         topicGraphProfiles (Optional): [
+     *              (Optional){
+     *                 name: String (Required)
+     *                 indexName: String (Required)
+     *                 defaultKind: String(none/diverse/balanced) (Required)
+     *                 defaultDiversityFactor: Float (Optional)
+     *                 defaultMinDiversityPoolSize: Integer (Optional)
+     *             }
+     *         ]
      *     }
      *     permissionFilterOption: String(enabled/disabled) (Optional)
      *     purviewEnabled: Boolean (Optional)
+     *     sharePointConnectorAppRegistration (Optional): {
+     *         applicationId: String (Required)
+     *         federatedCredentialId: String (Required)
+     *         tenantId: String (Optional)
+     *     }
+     *     oneLakeSecuritySource (Optional): {
+     *         fabricWorkspaceId: String (Required)
+     *         lakehouseId: String (Required)
+     *     }
      *     &#64;odata.etag: String (Optional)
      * }
      * }
@@ -10015,14 +12386,36 @@ public final class SearchIndexClientImpl {
      *             enableFreshness: Boolean (Optional)
      *         }
      *     ]
-     *     models (Optional): [
+     *     tools (Optional): [
      *          (Optional){
-     *             kind: String(azureOpenAI) (Required)
+     *             name: String (Required)
+     *             description: String (Required)
+     *             knowledgeSources (Required): [
+     *                  (Required){
+     *                     name: String (Required)
+     *                     alwaysQuerySource: Boolean (Optional)
+     *                     rerankerThreshold: Float (Optional)
+     *                     filterAddOn: String (Optional)
+     *                     maxOutputDocuments: Integer (Optional)
+     *                     failOnError: Boolean (Optional)
+     *                 }
+     *             ]
+     *             retrievalReasoningEffort (Optional): {
+     *                 kind: String(minimal/low/medium/auto) (Required)
+     *             }
+     *             retrieveDefaults (Optional): {
+     *                 maxRuntimeInSeconds: Integer (Optional)
+     *                 maxOutputDocuments: Integer (Optional)
+     *                 maxOutputSizeInTokens: Integer (Optional)
+     *             }
      *         }
      *     ]
-     *     retrievalReasoningEffort (Optional): {
-     *         kind: String(minimal/low/medium/auto) (Required)
-     *     }
+     *     models (Optional): [
+     *          (Optional){
+     *             kind: String(azureOpenAI/openAICompatible/microsoftRetriever1) (Required)
+     *         }
+     *     ]
+     *     retrievalReasoningEffort (Optional): (recursive schema, see retrievalReasoningEffort above)
      *     outputMode: String(extractiveData/answerSynthesis) (Optional)
      *     &#64;odata.etag: String (Optional)
      *     encryptionKey (Optional): {
@@ -10050,11 +12443,7 @@ public final class SearchIndexClientImpl {
      *         ]
      *         maxAgeInSeconds: Long (Optional)
      *     }
-     *     retrieveDefaults (Optional): {
-     *         maxRuntimeInSeconds: Integer (Optional)
-     *         maxOutputDocuments: Integer (Optional)
-     *         maxOutputSizeInTokens: Integer (Optional)
-     *     }
+     *     retrieveDefaults (Optional): (recursive schema, see retrieveDefaults above)
      * }
      * }
      * </pre>
@@ -10093,14 +12482,36 @@ public final class SearchIndexClientImpl {
      *             enableFreshness: Boolean (Optional)
      *         }
      *     ]
-     *     models (Optional): [
+     *     tools (Optional): [
      *          (Optional){
-     *             kind: String(azureOpenAI) (Required)
+     *             name: String (Required)
+     *             description: String (Required)
+     *             knowledgeSources (Required): [
+     *                  (Required){
+     *                     name: String (Required)
+     *                     alwaysQuerySource: Boolean (Optional)
+     *                     rerankerThreshold: Float (Optional)
+     *                     filterAddOn: String (Optional)
+     *                     maxOutputDocuments: Integer (Optional)
+     *                     failOnError: Boolean (Optional)
+     *                 }
+     *             ]
+     *             retrievalReasoningEffort (Optional): {
+     *                 kind: String(minimal/low/medium/auto) (Required)
+     *             }
+     *             retrieveDefaults (Optional): {
+     *                 maxRuntimeInSeconds: Integer (Optional)
+     *                 maxOutputDocuments: Integer (Optional)
+     *                 maxOutputSizeInTokens: Integer (Optional)
+     *             }
      *         }
      *     ]
-     *     retrievalReasoningEffort (Optional): {
-     *         kind: String(minimal/low/medium/auto) (Required)
-     *     }
+     *     models (Optional): [
+     *          (Optional){
+     *             kind: String(azureOpenAI/openAICompatible/microsoftRetriever1) (Required)
+     *         }
+     *     ]
+     *     retrievalReasoningEffort (Optional): (recursive schema, see retrievalReasoningEffort above)
      *     outputMode: String(extractiveData/answerSynthesis) (Optional)
      *     &#64;odata.etag: String (Optional)
      *     encryptionKey (Optional): {
@@ -10128,11 +12539,7 @@ public final class SearchIndexClientImpl {
      *         ]
      *         maxAgeInSeconds: Long (Optional)
      *     }
-     *     retrieveDefaults (Optional): {
-     *         maxRuntimeInSeconds: Integer (Optional)
-     *         maxOutputDocuments: Integer (Optional)
-     *         maxOutputSizeInTokens: Integer (Optional)
-     *     }
+     *     retrieveDefaults (Optional): (recursive schema, see retrieveDefaults above)
      * }
      * }
      * </pre>
@@ -10329,6 +12736,108 @@ public final class SearchIndexClientImpl {
         final String accept = "application/json;odata.metadata=minimal";
         Response<BinaryData> res = service.listKnowledgeSourceFilesNextSync(nextLink, this.getEndpoint(), accept,
             requestOptions, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "@odata.nextLink"), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     kind: String (Required)
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
+     *     result (Optional): {
+     *         fileId: String (Optional)
+     *         fileName: String (Optional)
+     *         fileSizeBytes: Long (Optional)
+     *         createdAt: OffsetDateTime (Optional)
+     *         lastUpdatedAt: OffsetDateTime (Optional)
+     *         errorMessage: String (Optional)
+     *         prefix: String (Optional)
+     *         metadata (Optional): {
+     *             String: String (Required)
+     *         }
+     *         parsingMode: String(default/text/delimitedText/json/jsonArray/jsonLines/markdown) (Optional)
+     *         extractionMode: String(minimal/standard) (Optional)
+     *     }
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a page of retained ingestion operations belonging to a knowledge source along with {@link PagedResponse}
+     * on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<BinaryData>>
+        listKnowledgeSourceFileIngestionOperationsNextSinglePageAsync(String nextLink, RequestOptions requestOptions) {
+        final String accept = "application/json;odata.metadata=minimal";
+        return FluxUtil
+            .withContext(context -> service.listKnowledgeSourceFileIngestionOperationsNext(nextLink, this.getEndpoint(),
+                accept, requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "@odata.nextLink"), null));
+    }
+
+    /**
+     * Get the next page of items.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     kind: String (Required)
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
+     *     result (Optional): {
+     *         fileId: String (Optional)
+     *         fileName: String (Optional)
+     *         fileSizeBytes: Long (Optional)
+     *         createdAt: OffsetDateTime (Optional)
+     *         lastUpdatedAt: OffsetDateTime (Optional)
+     *         errorMessage: String (Optional)
+     *         prefix: String (Optional)
+     *         metadata (Optional): {
+     *             String: String (Required)
+     *         }
+     *         parsingMode: String(default/text/delimitedText/json/jsonArray/jsonLines/markdown) (Optional)
+     *         extractionMode: String(minimal/standard) (Optional)
+     *     }
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a page of retained ingestion operations belonging to a knowledge source along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BinaryData> listKnowledgeSourceFileIngestionOperationsNextSinglePage(String nextLink,
+        RequestOptions requestOptions) {
+        final String accept = "application/json;odata.metadata=minimal";
+        Response<BinaryData> res = service.listKnowledgeSourceFileIngestionOperationsNextSync(nextLink,
+            this.getEndpoint(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "@odata.nextLink"), null);
     }

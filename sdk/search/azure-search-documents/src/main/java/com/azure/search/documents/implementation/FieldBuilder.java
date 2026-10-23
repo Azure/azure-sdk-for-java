@@ -297,6 +297,7 @@ public final class FieldBuilder {
             .setFilterable(toBoolean(basicField.isFilterable()))
             .setSortable(toBoolean(basicField.isSortable()))
             .setFacetable(toBoolean(basicField.isFacetable()))
+            .setOrganizationAccessExpiration(toBoolean(basicField.isOrganizationAccessExpiration()))
             .setAnalyzerName(nullOrT(basicField.analyzerName(), LexicalAnalyzerName::fromString))
             .setSearchAnalyzerName(nullOrT(basicField.searchAnalyzerName(), LexicalAnalyzerName::fromString))
             .setIndexAnalyzerName(nullOrT(basicField.indexAnalyzerName(), LexicalAnalyzerName::fromString))
@@ -304,6 +305,7 @@ public final class FieldBuilder {
             .setVectorSearchDimensions(
                 basicField.vectorSearchDimensions() > 0 ? basicField.vectorSearchDimensions() : null)
             .setVectorSearchProfileName(nullOrT(basicField.vectorSearchProfileName(), Function.identity()))
+            .setTopicGraphProfile(nullOrT(basicField.topicGraphProfile(), Function.identity()))
             .setVectorEncodingFormat(nullOrT(basicField.vectorEncodingFormat(), VectorEncodingFormat::fromString))
             .setSynonymMapNames(synonymMapNames(basicField.synonymMapNames()));
 
