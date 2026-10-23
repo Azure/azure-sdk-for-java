@@ -45,8 +45,7 @@ public final class VectorSearchTopicGraphProfile implements JsonSerializable<Vec
 
     /*
      * Default minimum number of vector candidates to retrieve before topic graph sampling. This property can only be
-     * used when `defaultKind` is `diverse` or `balanced`. The default is 1,000 for classic services and 500 for
-     * serverless services.
+     * used when `defaultKind` is `diverse` or `balanced`. The default is 1,000.
      */
     @Generated
     private Integer defaultMinDiversityPoolSize;
@@ -122,7 +121,7 @@ public final class VectorSearchTopicGraphProfile implements JsonSerializable<Vec
     /**
      * Get the defaultMinDiversityPoolSize property: Default minimum number of vector candidates to retrieve before
      * topic graph sampling. This property can only be used when `defaultKind` is `diverse` or `balanced`. The default
-     * is 1,000 for classic services and 500 for serverless services.
+     * is 1,000.
      *
      * @return the defaultMinDiversityPoolSize value.
      */
@@ -134,7 +133,7 @@ public final class VectorSearchTopicGraphProfile implements JsonSerializable<Vec
     /**
      * Set the defaultMinDiversityPoolSize property: Default minimum number of vector candidates to retrieve before
      * topic graph sampling. This property can only be used when `defaultKind` is `diverse` or `balanced`. The default
-     * is 1,000 for classic services and 500 for serverless services.
+     * is 1,000.
      *
      * @param defaultMinDiversityPoolSize the defaultMinDiversityPoolSize value to set.
      * @return the VectorSearchTopicGraphProfile object itself.

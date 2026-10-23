@@ -16,6 +16,7 @@
 
 ### Bugs Fixed
 
+- Forwarded topic graph profile and organization access expiration settings from field-builder annotations.
 - Fixed convenience search requests dropping preview query language, spelling, rewriting, hybrid, semantic field, and authorization options.
 
 ### Other Changes

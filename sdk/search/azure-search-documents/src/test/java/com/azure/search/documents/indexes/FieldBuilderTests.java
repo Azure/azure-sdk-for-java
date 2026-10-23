@@ -4,6 +4,7 @@
 package com.azure.search.documents.indexes;
 
 import com.azure.core.models.GeoPoint;
+import com.azure.core.util.BinaryData;
 import com.azure.search.documents.TestHelpers;
 import com.azure.search.documents.indexes.models.LexicalNormalizerName;
 import com.azure.search.documents.indexes.models.SearchField;
@@ -157,6 +158,49 @@ public class FieldBuilderTests {
         assertEquals(SearchFieldDataType.collection(SearchFieldDataType.SBYTE), fieldToDataType.get("ByteArray"));
         assertEquals(SearchFieldDataType.collection(SearchFieldDataType.SBYTE), fieldToDataType.get("ByteList"));
 
+    }
+
+    @Test
+    public void previewFieldAnnotationsAreForwardedAndSerialized() {
+        Map<String, SearchField> fields = SearchIndexClient.buildSearchFields(PreviewFields.class)
+            .stream()
+            .collect(Collectors.toMap(SearchField::getName, field -> field));
+
+        assertEquals(Boolean.TRUE, fields.get("expiration").isOrganizationAccessExpiration());
+        assertEquals(Boolean.FALSE, fields.get("nonExpiration").isOrganizationAccessExpiration());
+        assertEquals("topics", fields.get("embedding").getTopicGraphProfile());
+        assertEquals(Boolean.TRUE,
+            BinaryData.fromObject(fields.get("expiration")).toObject(Map.class).get("organizationAccessExpiration"));
+        assertEquals(Boolean.FALSE,
+            BinaryData.fromObject(fields.get("nonExpiration")).toObject(Map.class).get("organizationAccessExpiration"));
+        assertEquals("topics",
+            BinaryData.fromObject(fields.get("embedding")).toObject(Map.class).get("topicGraphProfile"));
+    }
+
+    @Test
+    public void previewFieldAnnotationsDefaultToServiceDefaults() {
+        for (SearchField field : SearchIndexClient.buildSearchFields(AllSupportedFields.class)) {
+            assertNull(field.isOrganizationAccessExpiration());
+            assertNull(field.getTopicGraphProfile());
+        }
+    }
+
+    @SuppressWarnings("unused")
+    private static final class PreviewFields {
+        @BasicField(name = "expiration", isOrganizationAccessExpiration = BasicField.BooleanHelper.TRUE)
+        private OffsetDateTime expiration;
+
+        @BasicField(
+            name = "embedding",
+            vectorSearchDimensions = 3,
+            vectorSearchProfileName = "vectors",
+            topicGraphProfile = "topics")
+        private float[] embedding;
+
+        @BasicField(name = "nonExpiration", isOrganizationAccessExpiration = BasicField.BooleanHelper.FALSE)
+        public OffsetDateTime getNonExpiration() {
+            return null;
+        }
     }
 
     @SuppressWarnings({ "unused", "UseOfObsoleteDateTimeApi" })

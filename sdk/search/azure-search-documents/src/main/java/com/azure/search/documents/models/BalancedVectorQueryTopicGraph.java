@@ -24,8 +24,7 @@ public final class BalancedVectorQueryTopicGraph extends VectorQueryTopicGraph {
     private VectorSearchTopicGraphKind kind = VectorSearchTopicGraphKind.BALANCED;
 
     /*
-     * The minimum number of vector candidates to retrieve before topic graph sampling. The default is 1,000 for classic
-     * services and 500 for serverless services.
+     * The minimum number of vector candidates to retrieve before topic graph sampling. The default is 1,000.
      */
     @Generated
     private Integer minDiversityPoolSize;
@@ -50,7 +49,7 @@ public final class BalancedVectorQueryTopicGraph extends VectorQueryTopicGraph {
 
     /**
      * Get the minDiversityPoolSize property: The minimum number of vector candidates to retrieve before topic graph
-     * sampling. The default is 1,000 for classic services and 500 for serverless services.
+     * sampling. The default is 1,000.
      *
      * @return the minDiversityPoolSize value.
      */
@@ -61,7 +60,7 @@ public final class BalancedVectorQueryTopicGraph extends VectorQueryTopicGraph {
 
     /**
      * Set the minDiversityPoolSize property: The minimum number of vector candidates to retrieve before topic graph
-     * sampling. The default is 1,000 for classic services and 500 for serverless services.
+     * sampling. The default is 1,000.
      *
      * @param minDiversityPoolSize the minDiversityPoolSize value to set.
      * @return the BalancedVectorQueryTopicGraph object itself.
