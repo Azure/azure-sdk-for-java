@@ -4,6 +4,7 @@
 package com.azure.storage.file.datalake.options;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.storage.common.LayoutAwareRouting;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DownloadRetryOptions;
 import com.azure.storage.file.datalake.models.FileRange;
@@ -117,6 +118,9 @@ public final class FileReadOptions {
 
     /**
      * Sets the endpoint to use for this download.
+     * <p>
+     * Using a data locality endpoint preserves the original storage account authority in the {@code Host} header.
+     * See {@link LayoutAwareRouting#ENABLED} for JDK HTTP transport requirements.
      *
      * @param dataLocalityEndpoint The absolute endpoint selected from file layout information.
      * @return The updated options.

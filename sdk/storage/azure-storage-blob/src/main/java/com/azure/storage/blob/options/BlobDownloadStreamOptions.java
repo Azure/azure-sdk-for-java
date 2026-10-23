@@ -8,6 +8,7 @@ import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.DownloadRetryOptions;
 import com.azure.storage.common.ContentValidationAlgorithm;
+import com.azure.storage.common.LayoutAwareRouting;
 import com.azure.storage.common.ValidatableContent;
 
 /**
@@ -144,6 +145,9 @@ public final class BlobDownloadStreamOptions implements ValidatableContent {
 
     /**
      * Sets the endpoint to use for this download.
+     * <p>
+     * Using a data locality endpoint preserves the original storage account authority in the {@code Host} header.
+     * See {@link LayoutAwareRouting#ENABLED} for JDK HTTP transport requirements.
      *
      * @param dataLocalityEndpoint The absolute endpoint selected from blob layout information.
      * @return The updated options.
