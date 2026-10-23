@@ -8,6 +8,17 @@
 
 ### Bugs Fixed
 
+- Replaced outgoing WebSocket message contents in verbose logs with the payload length in bytes.
+
+- Fixed WebSocket Pong frames to echo the payload of the corresponding Ping frame.
+- Fixed incomplete WebSocket messages being decoded when a connection closes or its handler is removed.
+- Fixed WebSocket connection attempts hanging when the handshake times out, the connection closes, or the handshake request fails to send.
+- Fixed WebSocket event loop resources leaking after failed connections and remote disconnects.
+- Fixed exceptions in WebSocket lifecycle callbacks leaving connection or close operations incomplete and leaking close frames.
+- Fixed WebSocket close operations hanging when the peer does not respond or the close frame cannot be sent.
+- Fixed interrupted WebSocket close operations losing the thread interrupt flag and skipping event loop cleanup.
+- Fixed unexpected WebSocket disconnects being reported as normal closures when no close frame was received.
+
 - Fixed a race condition where Web PubSub client send operations could miss fast ack responses.
 
 ### Other Changes
