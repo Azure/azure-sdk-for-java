@@ -9,7 +9,7 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
  */
 public final class NetworkBootstrapDevicesListSamples {
     /*
-     * x-ms-original-file: 2025-07-15/NetworkBootstrapDevices_ListBySubscription.json
+     * x-ms-original-file: 2026-01-15-preview/NetworkBootstrapDevices_ListBySubscription.json
      */
     /**
      * Sample code: NetworkBootstrapDevices_ListBySubscription.

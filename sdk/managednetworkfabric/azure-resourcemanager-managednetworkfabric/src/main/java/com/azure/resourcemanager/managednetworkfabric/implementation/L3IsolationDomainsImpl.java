@@ -13,13 +13,13 @@ import com.azure.resourcemanager.managednetworkfabric.fluent.L3IsolationDomainsC
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.CommonPostActionResponseForStateUpdateInner;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.L3IsolationDomainInner;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.UpdateAdministrativeStateResponseInner;
-import com.azure.resourcemanager.managednetworkfabric.fluent.models.ValidateConfigurationResponseInner;
+import com.azure.resourcemanager.managednetworkfabric.fluent.models.ValidateConfigurationResponseV2Inner;
 import com.azure.resourcemanager.managednetworkfabric.models.CommonPostActionResponseForStateUpdate;
 import com.azure.resourcemanager.managednetworkfabric.models.L3IsolationDomain;
 import com.azure.resourcemanager.managednetworkfabric.models.L3IsolationDomains;
 import com.azure.resourcemanager.managednetworkfabric.models.UpdateAdministrativeState;
 import com.azure.resourcemanager.managednetworkfabric.models.UpdateAdministrativeStateResponse;
-import com.azure.resourcemanager.managednetworkfabric.models.ValidateConfigurationResponse;
+import com.azure.resourcemanager.managednetworkfabric.models.ValidateConfigurationResponseV2;
 
 public final class L3IsolationDomainsImpl implements L3IsolationDomains {
     private static final ClientLogger LOGGER = new ClientLogger(L3IsolationDomainsImpl.class);
@@ -103,22 +103,23 @@ public final class L3IsolationDomainsImpl implements L3IsolationDomains {
         }
     }
 
-    public ValidateConfigurationResponse validateConfiguration(String resourceGroupName, String l3IsolationDomainName) {
-        ValidateConfigurationResponseInner inner
+    public ValidateConfigurationResponseV2 validateConfiguration(String resourceGroupName,
+        String l3IsolationDomainName) {
+        ValidateConfigurationResponseV2Inner inner
             = this.serviceClient().validateConfiguration(resourceGroupName, l3IsolationDomainName);
         if (inner != null) {
-            return new ValidateConfigurationResponseImpl(inner, this.manager());
+            return new ValidateConfigurationResponseV2Impl(inner, this.manager());
         } else {
             return null;
         }
     }
 
-    public ValidateConfigurationResponse validateConfiguration(String resourceGroupName, String l3IsolationDomainName,
+    public ValidateConfigurationResponseV2 validateConfiguration(String resourceGroupName, String l3IsolationDomainName,
         Context context) {
-        ValidateConfigurationResponseInner inner
+        ValidateConfigurationResponseV2Inner inner
             = this.serviceClient().validateConfiguration(resourceGroupName, l3IsolationDomainName, context);
         if (inner != null) {
-            return new ValidateConfigurationResponseImpl(inner, this.manager());
+            return new ValidateConfigurationResponseV2Impl(inner, this.manager());
         } else {
             return null;
         }

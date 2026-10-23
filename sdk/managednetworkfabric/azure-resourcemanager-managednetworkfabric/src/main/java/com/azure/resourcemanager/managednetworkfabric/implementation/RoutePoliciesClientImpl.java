@@ -38,7 +38,7 @@ import com.azure.resourcemanager.managednetworkfabric.fluent.RoutePoliciesClient
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.CommonPostActionResponseForStateUpdateInner;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.RoutePolicyInner;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.UpdateAdministrativeStateResponseInner;
-import com.azure.resourcemanager.managednetworkfabric.fluent.models.ValidateConfigurationResponseInner;
+import com.azure.resourcemanager.managednetworkfabric.fluent.models.ValidateConfigurationResponseV2Inner;
 import com.azure.resourcemanager.managednetworkfabric.implementation.models.RoutePoliciesListResult;
 import com.azure.resourcemanager.managednetworkfabric.models.RoutePolicyPatch;
 import com.azure.resourcemanager.managednetworkfabric.models.UpdateAdministrativeState;
@@ -1297,13 +1297,13 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
      * @return the {@link PollerFlux} for polling of the response of the action validate configuration.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ValidateConfigurationResponseInner>, ValidateConfigurationResponseInner>
+    private PollerFlux<PollResult<ValidateConfigurationResponseV2Inner>, ValidateConfigurationResponseV2Inner>
         beginValidateConfigurationAsync(String resourceGroupName, String routePolicyName) {
         Mono<Response<Flux<ByteBuffer>>> mono
             = validateConfigurationWithResponseAsync(resourceGroupName, routePolicyName);
-        return this.client.<ValidateConfigurationResponseInner, ValidateConfigurationResponseInner>getLroResult(mono,
-            this.client.getHttpPipeline(), ValidateConfigurationResponseInner.class,
-            ValidateConfigurationResponseInner.class, this.client.getContext());
+        return this.client.<ValidateConfigurationResponseV2Inner, ValidateConfigurationResponseV2Inner>getLroResult(
+            mono, this.client.getHttpPipeline(), ValidateConfigurationResponseV2Inner.class,
+            ValidateConfigurationResponseV2Inner.class, this.client.getContext());
     }
 
     /**
@@ -1317,11 +1317,12 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
      * @return the {@link SyncPoller} for polling of the response of the action validate configuration.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ValidateConfigurationResponseInner>, ValidateConfigurationResponseInner>
+    public SyncPoller<PollResult<ValidateConfigurationResponseV2Inner>, ValidateConfigurationResponseV2Inner>
         beginValidateConfiguration(String resourceGroupName, String routePolicyName) {
         Response<BinaryData> response = validateConfigurationWithResponse(resourceGroupName, routePolicyName);
-        return this.client.<ValidateConfigurationResponseInner, ValidateConfigurationResponseInner>getLroResult(
-            response, ValidateConfigurationResponseInner.class, ValidateConfigurationResponseInner.class, Context.NONE);
+        return this.client.<ValidateConfigurationResponseV2Inner, ValidateConfigurationResponseV2Inner>getLroResult(
+            response, ValidateConfigurationResponseV2Inner.class, ValidateConfigurationResponseV2Inner.class,
+            Context.NONE);
     }
 
     /**
@@ -1336,11 +1337,11 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
      * @return the {@link SyncPoller} for polling of the response of the action validate configuration.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ValidateConfigurationResponseInner>, ValidateConfigurationResponseInner>
+    public SyncPoller<PollResult<ValidateConfigurationResponseV2Inner>, ValidateConfigurationResponseV2Inner>
         beginValidateConfiguration(String resourceGroupName, String routePolicyName, Context context) {
         Response<BinaryData> response = validateConfigurationWithResponse(resourceGroupName, routePolicyName, context);
-        return this.client.<ValidateConfigurationResponseInner, ValidateConfigurationResponseInner>getLroResult(
-            response, ValidateConfigurationResponseInner.class, ValidateConfigurationResponseInner.class, context);
+        return this.client.<ValidateConfigurationResponseV2Inner, ValidateConfigurationResponseV2Inner>getLroResult(
+            response, ValidateConfigurationResponseV2Inner.class, ValidateConfigurationResponseV2Inner.class, context);
     }
 
     /**
@@ -1354,7 +1355,7 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
      * @return the response of the action validate configuration on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ValidateConfigurationResponseInner> validateConfigurationAsync(String resourceGroupName,
+    private Mono<ValidateConfigurationResponseV2Inner> validateConfigurationAsync(String resourceGroupName,
         String routePolicyName) {
         return beginValidateConfigurationAsync(resourceGroupName, routePolicyName).last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -1371,7 +1372,8 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
      * @return the response of the action validate configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ValidateConfigurationResponseInner validateConfiguration(String resourceGroupName, String routePolicyName) {
+    public ValidateConfigurationResponseV2Inner validateConfiguration(String resourceGroupName,
+        String routePolicyName) {
         return beginValidateConfiguration(resourceGroupName, routePolicyName).getFinalResult();
     }
 
@@ -1387,7 +1389,7 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
      * @return the response of the action validate configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ValidateConfigurationResponseInner validateConfiguration(String resourceGroupName, String routePolicyName,
+    public ValidateConfigurationResponseV2Inner validateConfiguration(String resourceGroupName, String routePolicyName,
         Context context) {
         return beginValidateConfiguration(resourceGroupName, routePolicyName, context).getFinalResult();
     }

@@ -26,7 +26,7 @@ public final class NetworkMonitorsListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"bmpConfiguration\":{\"stationConfigurationState\":\"Disabled\",\"scopeResourceId\":\"axuvazzptlda\",\"stationName\":\"glxhb\",\"stationIp\":\"y\",\"stationPort\":361870828,\"stationConnectionMode\":\"Passive\",\"stationConnectionProperties\":{\"keepaliveIdleTime\":256996951,\"probeInterval\":1733397082,\"probeCount\":136668240},\"stationNetwork\":\"tvnedcclpb\",\"monitoredNetworks\":[\"oiviue\"],\"exportPolicy\":\"All\",\"exportPolicyConfiguration\":{\"exportPolicies\":[\"Post-Policy\",\"LocalRib\"]},\"monitoredAddressFamilies\":[\"ipv4Unicast\",\"vpnIpv6\"]},\"lastOperation\":{\"details\":\"dtnllkyiqjtxvxgr\"},\"configurationState\":\"Deprovisioning\",\"provisioningState\":\"Succeeded\",\"administrativeState\":\"RMA\",\"annotation\":\"vhivvoczsry\"},\"location\":\"vii\",\"tags\":{\"bbxkeygmq\":\"qp\",\"cwfcbug\":\"uyusnhnnekhfdlbc\",\"ftp\":\"cccydldavozmibtk\"},\"id\":\"l\",\"name\":\"srran\",\"type\":\"xxwt\"}]}";
+            = "{\"value\":[{\"properties\":{\"bmpConfiguration\":{\"stationConfigurationState\":\"Enabled\",\"scopeResourceId\":\"rgxnlaurviyntcb\",\"stationName\":\"bzoqtfb\",\"stationIp\":\"bfktelblbungrkj\",\"stationPort\":2059356347,\"stationConnectionMode\":\"Passive\",\"stationConnectionProperties\":{\"keepaliveIdleTime\":1615310481,\"probeInterval\":1474293082,\"probeCount\":549792700},\"stationNetwork\":\"pijf\",\"monitoredNetworks\":[\"mqzbznrjwsec\",\"tcwg\",\"kxjd\"],\"exportPolicy\":\"LocalRib\",\"exportPolicyConfiguration\":{\"exportPolicies\":[\"LocalRib\"]},\"monitoredAddressFamilies\":[\"ipv6Unicast\",\"ipv6Unicast\",\"vpnIpv4\",\"ipv6Unicast\"]},\"lastOperation\":{\"details\":\"klefwaia\"},\"configurationState\":\"Rejected\",\"provisioningState\":\"Deleting\",\"administrativeState\":\"Enabled\",\"annotation\":\"aw\"},\"location\":\"eudcgdljbn\",\"tags\":{\"bpgskgpwspxhhnv\":\"ffnngiu\"},\"id\":\"pzjtiktgmdlw\",\"name\":\"fstizemakgzcmbg\",\"type\":\"llnmddflck\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,31 +36,33 @@ public final class NetworkMonitorsListByResourceGroupMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<NetworkMonitor> response
-            = manager.networkMonitors().listByResourceGroup("tnnsjc", com.azure.core.util.Context.NONE);
+            = manager.networkMonitors().listByResourceGroup("khlqdxjdo", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("vii", response.iterator().next().location());
-        Assertions.assertEquals("qp", response.iterator().next().tags().get("bbxkeygmq"));
-        Assertions.assertEquals(StationConfigurationState.DISABLED,
+        Assertions.assertEquals("eudcgdljbn", response.iterator().next().location());
+        Assertions.assertEquals("ffnngiu", response.iterator().next().tags().get("bpgskgpwspxhhnv"));
+        Assertions.assertEquals(StationConfigurationState.ENABLED,
             response.iterator().next().bmpConfiguration().stationConfigurationState());
-        Assertions.assertEquals("axuvazzptlda", response.iterator().next().bmpConfiguration().scopeResourceId());
-        Assertions.assertEquals("glxhb", response.iterator().next().bmpConfiguration().stationName());
-        Assertions.assertEquals("y", response.iterator().next().bmpConfiguration().stationIp());
-        Assertions.assertEquals(361870828, response.iterator().next().bmpConfiguration().stationPort());
+        Assertions.assertEquals("rgxnlaurviyntcb", response.iterator().next().bmpConfiguration().scopeResourceId());
+        Assertions.assertEquals("bzoqtfb", response.iterator().next().bmpConfiguration().stationName());
+        Assertions.assertEquals("bfktelblbungrkj", response.iterator().next().bmpConfiguration().stationIp());
+        Assertions.assertEquals(2059356347, response.iterator().next().bmpConfiguration().stationPort());
         Assertions.assertEquals(StationConnectionMode.PASSIVE,
             response.iterator().next().bmpConfiguration().stationConnectionMode());
-        Assertions.assertEquals(256996951,
+        Assertions.assertEquals(1615310481,
             response.iterator().next().bmpConfiguration().stationConnectionProperties().keepaliveIdleTime());
-        Assertions.assertEquals(1733397082,
+        Assertions.assertEquals(1474293082,
             response.iterator().next().bmpConfiguration().stationConnectionProperties().probeInterval());
-        Assertions.assertEquals(136668240,
+        Assertions.assertEquals(549792700,
             response.iterator().next().bmpConfiguration().stationConnectionProperties().probeCount());
-        Assertions.assertEquals("tvnedcclpb", response.iterator().next().bmpConfiguration().stationNetwork());
-        Assertions.assertEquals("oiviue", response.iterator().next().bmpConfiguration().monitoredNetworks().get(0));
-        Assertions.assertEquals(BmpExportPolicy.ALL, response.iterator().next().bmpConfiguration().exportPolicy());
-        Assertions.assertEquals(BmpExportPolicy.POST_POLICY,
+        Assertions.assertEquals("pijf", response.iterator().next().bmpConfiguration().stationNetwork());
+        Assertions.assertEquals("mqzbznrjwsec",
+            response.iterator().next().bmpConfiguration().monitoredNetworks().get(0));
+        Assertions.assertEquals(BmpExportPolicy.LOCAL_RIB,
+            response.iterator().next().bmpConfiguration().exportPolicy());
+        Assertions.assertEquals(BmpExportPolicy.LOCAL_RIB,
             response.iterator().next().bmpConfiguration().exportPolicyConfiguration().exportPolicies().get(0));
-        Assertions.assertEquals(BmpMonitoredAddressFamily.IPV4UNICAST,
+        Assertions.assertEquals(BmpMonitoredAddressFamily.IPV6UNICAST,
             response.iterator().next().bmpConfiguration().monitoredAddressFamilies().get(0));
-        Assertions.assertEquals("vhivvoczsry", response.iterator().next().annotation());
+        Assertions.assertEquals("aw", response.iterator().next().annotation());
     }
 }

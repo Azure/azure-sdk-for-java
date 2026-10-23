@@ -9,7 +9,7 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
  */
 public final class L2IsolationDomainsValidateConfigurationSamples {
     /*
-     * x-ms-original-file: 2025-07-15/L2IsolationDomains_ValidateConfiguration.json
+     * x-ms-original-file: 2026-01-15-preview/L2IsolationDomains_ValidateConfiguration.json
      */
     /**
      * Sample code: L2IsolationDomains_ValidateConfiguration_MaximumSet_Gen.

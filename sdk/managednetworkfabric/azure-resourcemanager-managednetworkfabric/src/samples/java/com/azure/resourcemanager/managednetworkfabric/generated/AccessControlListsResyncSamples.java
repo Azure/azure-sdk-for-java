@@ -9,7 +9,7 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
  */
 public final class AccessControlListsResyncSamples {
     /*
-     * x-ms-original-file: 2025-07-15/AccessControlLists_Resync.json
+     * x-ms-original-file: 2026-01-15-preview/AccessControlLists_Resync.json
      */
     /**
      * Sample code: AccessControlLists_Resync_MaximumSet_Gen.

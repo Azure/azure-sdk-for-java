@@ -9,7 +9,7 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
  */
 public final class AccessControlListsValidateConfigurationSamples {
     /*
-     * x-ms-original-file: 2025-07-15/AccessControlLists_ValidateConfiguration.json
+     * x-ms-original-file: 2026-01-15-preview/AccessControlLists_ValidateConfiguration.json
      */
     /**
      * Sample code: AccessControlLists_ValidateConfiguration_MaximumSet_Gen.

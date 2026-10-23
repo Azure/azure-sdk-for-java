@@ -13,27 +13,27 @@ public final class InternetGatewayPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         InternetGatewayProperties model = BinaryData.fromString(
-            "{\"annotation\":\"kpdxphlk\",\"internetGatewayRuleId\":\"nmgzvyfijdkzuqnw\",\"ipv4Address\":\"thuqolyahluq\",\"port\":608197313,\"type\":\"Workload\",\"internetGatewayType\":\"Workload\",\"networkFabricControllerId\":\"rjb\",\"lastOperation\":{\"details\":\"kf\"},\"provisioningState\":\"Accepted\"}")
+            "{\"annotation\":\"cqguef\",\"internetGatewayRuleId\":\"ompheqdur\",\"ipv4Address\":\"yujlfyoumpckyecl\",\"port\":1922020394,\"type\":\"Workload\",\"internetGatewayType\":\"Workload\",\"networkFabricControllerId\":\"jbrzmqxucyc\",\"lastOperation\":{\"details\":\"clxiutg\"},\"provisioningState\":\"Accepted\"}")
             .toObject(InternetGatewayProperties.class);
-        Assertions.assertEquals("kpdxphlk", model.annotation());
-        Assertions.assertEquals("nmgzvyfijdkzuqnw", model.internetGatewayRuleId());
+        Assertions.assertEquals("cqguef", model.annotation());
+        Assertions.assertEquals("ompheqdur", model.internetGatewayRuleId());
         Assertions.assertEquals(GatewayType.WORKLOAD, model.type());
         Assertions.assertEquals(GatewayType.WORKLOAD, model.internetGatewayType());
-        Assertions.assertEquals("rjb", model.networkFabricControllerId());
+        Assertions.assertEquals("jbrzmqxucyc", model.networkFabricControllerId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InternetGatewayProperties model = new InternetGatewayProperties().withAnnotation("kpdxphlk")
-            .withInternetGatewayRuleId("nmgzvyfijdkzuqnw")
+        InternetGatewayProperties model = new InternetGatewayProperties().withAnnotation("cqguef")
+            .withInternetGatewayRuleId("ompheqdur")
             .withType(GatewayType.WORKLOAD)
             .withInternetGatewayType(GatewayType.WORKLOAD)
-            .withNetworkFabricControllerId("rjb");
+            .withNetworkFabricControllerId("jbrzmqxucyc");
         model = BinaryData.fromObject(model).toObject(InternetGatewayProperties.class);
-        Assertions.assertEquals("kpdxphlk", model.annotation());
-        Assertions.assertEquals("nmgzvyfijdkzuqnw", model.internetGatewayRuleId());
+        Assertions.assertEquals("cqguef", model.annotation());
+        Assertions.assertEquals("ompheqdur", model.internetGatewayRuleId());
         Assertions.assertEquals(GatewayType.WORKLOAD, model.type());
         Assertions.assertEquals(GatewayType.WORKLOAD, model.internetGatewayType());
-        Assertions.assertEquals("rjb", model.networkFabricControllerId());
+        Assertions.assertEquals("jbrzmqxucyc", model.networkFabricControllerId());
     }
 }

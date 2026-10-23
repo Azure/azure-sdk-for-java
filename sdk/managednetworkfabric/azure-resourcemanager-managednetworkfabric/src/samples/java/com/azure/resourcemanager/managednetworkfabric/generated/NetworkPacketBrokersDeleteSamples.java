@@ -9,7 +9,7 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
  */
 public final class NetworkPacketBrokersDeleteSamples {
     /*
-     * x-ms-original-file: 2025-07-15/NetworkPacketBrokers_Delete.json
+     * x-ms-original-file: 2026-01-15-preview/NetworkPacketBrokers_Delete.json
      */
     /**
      * Sample code: NetworkPacketBrokers_Delete_MaximumSet_Gen.

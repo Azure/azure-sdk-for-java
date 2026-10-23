@@ -18,37 +18,53 @@ public final class IpCommunityInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IpCommunityInner model = BinaryData.fromString(
-            "{\"properties\":{\"annotation\":\"dndsbdweade\",\"networkFabricId\":\"mwntopagttmvmma\",\"ipCommunityRules\":[{\"action\":\"Deny\",\"sequenceNumber\":2211985521883674757,\"wellKnownCommunities\":[\"NoAdvertise\",\"NoExport\",\"Internet\",\"Internet\"],\"communityMembers\":[\"uazjcgmxitpfinz\"]}],\"lastOperation\":{\"details\":\"ltkrl\"},\"configurationState\":\"DeferredControl\",\"provisioningState\":\"Succeeded\",\"administrativeState\":\"EnabledDegraded\"},\"location\":\"cqguef\",\"tags\":{\"lyujlfyoump\":\"mpheqdur\",\"brzmqxucycijoclx\":\"kyeclcdigpta\",\"zjd\":\"utgjcyz\"},\"id\":\"r\",\"name\":\"jb\",\"type\":\"xjeaoqaqbzgyh\"}")
+            "{\"properties\":{\"annotation\":\"huxiqhzlraymez\",\"networkFabricId\":\"skihmxrfd\",\"ipCommunityRules\":[{\"action\":\"Deny\",\"sequenceNumber\":5570655143429039158,\"wellKnownCommunities\":[\"NoExport\"],\"communityMembers\":[\"yshtuwgmev\",\"afpwzyifrkgwl\",\"xeqipx\",\"zdyi\"]},{\"action\":\"Deny\",\"sequenceNumber\":7392314179384433223,\"wellKnownCommunities\":[\"Internet\",\"LocalAS\",\"GShut\"],\"communityMembers\":[\"vk\",\"oge\"]},{\"action\":\"Deny\",\"sequenceNumber\":6167470257711307812,\"wellKnownCommunities\":[\"NoExport\",\"LocalAS\",\"NoAdvertise\",\"NoAdvertise\"],\"communityMembers\":[\"nqxaekqsyk\"]},{\"action\":\"Permit\",\"sequenceNumber\":8788284224046778038,\"wellKnownCommunities\":[\"NoExport\",\"NoExport\"],\"communityMembers\":[\"myltj\",\"rspxklur\",\"clf\"]}],\"lastOperation\":{\"details\":\"nnnoytz\"},\"configurationState\":\"PendingCommit\",\"provisioningState\":\"Updating\",\"administrativeState\":\"RMA\"},\"location\":\"pxvkqma\",\"tags\":{\"aifyzyzeyuubeids\":\"vpifd\",\"ytoithgygvfl\":\"l\"},\"id\":\"gvdihoynkrxwetwk\",\"name\":\"rcyrucpcunnu\",\"type\":\"dqumoenodnai\"}")
             .toObject(IpCommunityInner.class);
-        Assertions.assertEquals("cqguef", model.location());
-        Assertions.assertEquals("mpheqdur", model.tags().get("lyujlfyoump"));
-        Assertions.assertEquals("dndsbdweade", model.annotation());
+        Assertions.assertEquals("pxvkqma", model.location());
+        Assertions.assertEquals("vpifd", model.tags().get("aifyzyzeyuubeids"));
+        Assertions.assertEquals("huxiqhzlraymez", model.annotation());
         Assertions.assertEquals(CommunityActionTypes.DENY, model.ipCommunityRules().get(0).action());
-        Assertions.assertEquals(2211985521883674757L, model.ipCommunityRules().get(0).sequenceNumber());
-        Assertions.assertEquals(WellKnownCommunities.NO_ADVERTISE,
+        Assertions.assertEquals(5570655143429039158L, model.ipCommunityRules().get(0).sequenceNumber());
+        Assertions.assertEquals(WellKnownCommunities.NO_EXPORT,
             model.ipCommunityRules().get(0).wellKnownCommunities().get(0));
-        Assertions.assertEquals("uazjcgmxitpfinz", model.ipCommunityRules().get(0).communityMembers().get(0));
+        Assertions.assertEquals("yshtuwgmev", model.ipCommunityRules().get(0).communityMembers().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IpCommunityInner model = new IpCommunityInner().withLocation("cqguef")
-            .withTags(mapOf("lyujlfyoump", "mpheqdur", "brzmqxucycijoclx", "kyeclcdigpta", "zjd", "utgjcyz"))
-            .withAnnotation("dndsbdweade")
-            .withIpCommunityRules(Arrays.asList(new IpCommunityRule().withAction(CommunityActionTypes.DENY)
-                .withSequenceNumber(2211985521883674757L)
-                .withWellKnownCommunities(Arrays.asList(WellKnownCommunities.NO_ADVERTISE,
-                    WellKnownCommunities.NO_EXPORT, WellKnownCommunities.INTERNET, WellKnownCommunities.INTERNET))
-                .withCommunityMembers(Arrays.asList("uazjcgmxitpfinz"))));
+        IpCommunityInner model = new IpCommunityInner().withLocation("pxvkqma")
+            .withTags(mapOf("aifyzyzeyuubeids", "vpifd", "ytoithgygvfl", "l"))
+            .withAnnotation("huxiqhzlraymez")
+            .withIpCommunityRules(Arrays.asList(
+                new IpCommunityRule().withAction(CommunityActionTypes.DENY)
+                    .withSequenceNumber(5570655143429039158L)
+                    .withWellKnownCommunities(Arrays.asList(WellKnownCommunities.NO_EXPORT))
+                    .withCommunityMembers(Arrays.asList("yshtuwgmev", "afpwzyifrkgwl", "xeqipx", "zdyi")),
+                new IpCommunityRule().withAction(CommunityActionTypes.DENY)
+                    .withSequenceNumber(7392314179384433223L)
+                    .withWellKnownCommunities(Arrays.asList(WellKnownCommunities.INTERNET,
+                        WellKnownCommunities.LOCAL_AS, WellKnownCommunities.GSHUT))
+                    .withCommunityMembers(Arrays.asList("vk", "oge")),
+                new IpCommunityRule().withAction(CommunityActionTypes.DENY)
+                    .withSequenceNumber(6167470257711307812L)
+                    .withWellKnownCommunities(
+                        Arrays.asList(WellKnownCommunities.NO_EXPORT, WellKnownCommunities.LOCAL_AS,
+                            WellKnownCommunities.NO_ADVERTISE, WellKnownCommunities.NO_ADVERTISE))
+                    .withCommunityMembers(Arrays.asList("nqxaekqsyk")),
+                new IpCommunityRule().withAction(CommunityActionTypes.PERMIT)
+                    .withSequenceNumber(8788284224046778038L)
+                    .withWellKnownCommunities(
+                        Arrays.asList(WellKnownCommunities.NO_EXPORT, WellKnownCommunities.NO_EXPORT))
+                    .withCommunityMembers(Arrays.asList("myltj", "rspxklur", "clf"))));
         model = BinaryData.fromObject(model).toObject(IpCommunityInner.class);
-        Assertions.assertEquals("cqguef", model.location());
-        Assertions.assertEquals("mpheqdur", model.tags().get("lyujlfyoump"));
-        Assertions.assertEquals("dndsbdweade", model.annotation());
+        Assertions.assertEquals("pxvkqma", model.location());
+        Assertions.assertEquals("vpifd", model.tags().get("aifyzyzeyuubeids"));
+        Assertions.assertEquals("huxiqhzlraymez", model.annotation());
         Assertions.assertEquals(CommunityActionTypes.DENY, model.ipCommunityRules().get(0).action());
-        Assertions.assertEquals(2211985521883674757L, model.ipCommunityRules().get(0).sequenceNumber());
-        Assertions.assertEquals(WellKnownCommunities.NO_ADVERTISE,
+        Assertions.assertEquals(5570655143429039158L, model.ipCommunityRules().get(0).sequenceNumber());
+        Assertions.assertEquals(WellKnownCommunities.NO_EXPORT,
             model.ipCommunityRules().get(0).wellKnownCommunities().get(0));
-        Assertions.assertEquals("uazjcgmxitpfinz", model.ipCommunityRules().get(0).communityMembers().get(0));
+        Assertions.assertEquals("yshtuwgmev", model.ipCommunityRules().get(0).communityMembers().get(0));
     }
 
     // Use "Map.of" if available

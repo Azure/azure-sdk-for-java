@@ -16,24 +16,23 @@ public final class InternalNetworkBmpPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         InternalNetworkBmpProperties model = BinaryData.fromString(
-            "{\"neighborIpExclusions\":[\"bgnixxoww\",\"kyfwnwpiwxeiicr\",\"p\",\"pk\"],\"bmpConfigurationState\":\"Disabled\",\"exportPolicyConfiguration\":{\"exportPolicies\":[\"Pre-Policy\",\"All\",\"Pre-Policy\",\"Post-Policy\"]}}")
+            "{\"neighborIpExclusions\":[\"ws\",\"gkjgya\"],\"bmpConfigurationState\":\"Enabled\",\"exportPolicyConfiguration\":{\"exportPolicies\":[\"Post-Policy\",\"All\",\"Post-Policy\"]}}")
             .toObject(InternalNetworkBmpProperties.class);
-        Assertions.assertEquals("bgnixxoww", model.neighborIpExclusions().get(0));
-        Assertions.assertEquals(BmpConfigurationState.DISABLED, model.bmpConfigurationState());
-        Assertions.assertEquals(BmpExportPolicy.PRE_POLICY, model.exportPolicyConfiguration().exportPolicies().get(0));
+        Assertions.assertEquals("ws", model.neighborIpExclusions().get(0));
+        Assertions.assertEquals(BmpConfigurationState.ENABLED, model.bmpConfigurationState());
+        Assertions.assertEquals(BmpExportPolicy.POST_POLICY, model.exportPolicyConfiguration().exportPolicies().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InternalNetworkBmpProperties model = new InternalNetworkBmpProperties()
-            .withNeighborIpExclusions(Arrays.asList("bgnixxoww", "kyfwnwpiwxeiicr", "p", "pk"))
-            .withBmpConfigurationState(BmpConfigurationState.DISABLED)
-            .withExportPolicyConfiguration(
-                new BmpExportPolicyProperties().withExportPolicies(Arrays.asList(BmpExportPolicy.PRE_POLICY,
-                    BmpExportPolicy.ALL, BmpExportPolicy.PRE_POLICY, BmpExportPolicy.POST_POLICY)));
+        InternalNetworkBmpProperties model
+            = new InternalNetworkBmpProperties().withNeighborIpExclusions(Arrays.asList("ws", "gkjgya"))
+                .withBmpConfigurationState(BmpConfigurationState.ENABLED)
+                .withExportPolicyConfiguration(new BmpExportPolicyProperties().withExportPolicies(
+                    Arrays.asList(BmpExportPolicy.POST_POLICY, BmpExportPolicy.ALL, BmpExportPolicy.POST_POLICY)));
         model = BinaryData.fromObject(model).toObject(InternalNetworkBmpProperties.class);
-        Assertions.assertEquals("bgnixxoww", model.neighborIpExclusions().get(0));
-        Assertions.assertEquals(BmpConfigurationState.DISABLED, model.bmpConfigurationState());
-        Assertions.assertEquals(BmpExportPolicy.PRE_POLICY, model.exportPolicyConfiguration().exportPolicies().get(0));
+        Assertions.assertEquals("ws", model.neighborIpExclusions().get(0));
+        Assertions.assertEquals(BmpConfigurationState.ENABLED, model.bmpConfigurationState());
+        Assertions.assertEquals(BmpExportPolicy.POST_POLICY, model.exportPolicyConfiguration().exportPolicies().get(0));
     }
 }

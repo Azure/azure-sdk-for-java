@@ -30,6 +30,7 @@ import com.azure.resourcemanager.managednetworkfabric.models.NetworkDeviceUpgrad
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkDeviceUpgradeResponse;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkFabricResyncCertificatesResponse;
 import com.azure.resourcemanager.managednetworkfabric.models.OperationStatusResult;
+import com.azure.resourcemanager.managednetworkfabric.models.OperationalState;
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
 import com.azure.resourcemanager.managednetworkfabric.models.RebootProperties;
 import com.azure.resourcemanager.managednetworkfabric.models.SecretRotationStatus;
@@ -134,6 +135,10 @@ public final class NetworkDeviceImpl implements NetworkDevice, NetworkDevice.Def
 
     public AdministrativeState administrativeState() {
         return this.innerModel().administrativeState();
+    }
+
+    public OperationalState operationalState() {
+        return this.innerModel().operationalState();
     }
 
     public List<SecretRotationStatus> secretRotationStatus() {

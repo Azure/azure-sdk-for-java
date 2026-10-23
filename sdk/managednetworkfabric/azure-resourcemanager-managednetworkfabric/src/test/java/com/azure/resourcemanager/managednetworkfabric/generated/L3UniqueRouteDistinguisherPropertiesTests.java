@@ -10,7 +10,7 @@ import com.azure.resourcemanager.managednetworkfabric.models.L3UniqueRouteDistin
 public final class L3UniqueRouteDistinguisherPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        L3UniqueRouteDistinguisherProperties model = BinaryData.fromString("{\"uniqueRds\":[\"dmbvxekraok\"]}")
+        L3UniqueRouteDistinguisherProperties model = BinaryData.fromString("{\"uniqueRds\":[\"yrplix\",\"aj\"]}")
             .toObject(L3UniqueRouteDistinguisherProperties.class);
     }
 

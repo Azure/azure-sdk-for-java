@@ -24,7 +24,7 @@ public final class InternetGatewaysCreateMockTests {
     @Test
     public void testCreate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"annotation\":\"il\",\"internetGatewayRuleId\":\"abqtjchxsfwe\",\"ipv4Address\":\"eiyem\",\"port\":1262614540,\"type\":\"Workload\",\"internetGatewayType\":\"Workload\",\"networkFabricControllerId\":\"dqqwcspfhrn\",\"lastOperation\":{\"details\":\"m\"},\"provisioningState\":\"Succeeded\"},\"location\":\"qgs\",\"tags\":{\"zqdvgnomtkgoyny\":\"q\",\"h\":\"arw\",\"iltl\":\"uzmv\"},\"id\":\"mfkctpaiwh\",\"name\":\"jw\",\"type\":\"xduwimwn\"}";
+            = "{\"properties\":{\"annotation\":\"isjeovgcfhchgjon\",\"internetGatewayRuleId\":\"dibzvpdjytmeouiu\",\"ipv4Address\":\"cnqonjbbhwsfl\",\"port\":319005675,\"type\":\"Infrastructure\",\"internetGatewayType\":\"Infrastructure\",\"networkFabricControllerId\":\"jdslpbyejsgbpjjn\",\"lastOperation\":{\"details\":\"kaknivwbddndd\"},\"provisioningState\":\"Succeeded\"},\"location\":\"c\",\"tags\":{\"lsbabqtj\":\"dirttq\"},\"id\":\"hxsfweyleiyemj\",\"name\":\"pszekdqqwcspf\",\"type\":\"rndqymloslqgs\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,24 +34,24 @@ public final class InternetGatewaysCreateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         InternetGateway response = manager.internetGateways()
-            .define("ritjjh")
-            .withRegion("disjeovgc")
-            .withExistingResourceGroup("cleyam")
-            .withNetworkFabricControllerId("yx")
-            .withTags(mapOf("dibzvpdjytmeouiu", "hgjonr", "njbbhwsfllzy", "kcnq", "pbyejsgb", "zpjjds"))
-            .withAnnotation("yp")
-            .withInternetGatewayRuleId("ncgwpvbtkaf")
+            .define("gmx")
+            .withRegion("ipheifefznxcl")
+            .withExistingResourceGroup("aopqqiyjrehedche")
+            .withNetworkFabricControllerId("axv")
+            .withTags(mapOf("jjhqvypqgncg", "mvri", "ykdwyjd", "pvbtkafcnfitpuc", "baw", "yx"))
+            .withAnnotation("kuqbngro")
+            .withInternetGatewayRuleId("xsqdzyyalrx")
             .withTypePropertiesType(GatewayType.INFRASTRUCTURE)
             .withInternetGatewayType(GatewayType.INFRASTRUCTURE)
             .create();
 
-        Assertions.assertEquals("qgs", response.location());
-        Assertions.assertEquals("q", response.tags().get("zqdvgnomtkgoyny"));
-        Assertions.assertEquals("il", response.annotation());
-        Assertions.assertEquals("abqtjchxsfwe", response.internetGatewayRuleId());
-        Assertions.assertEquals(GatewayType.WORKLOAD, response.typePropertiesType());
-        Assertions.assertEquals(GatewayType.WORKLOAD, response.internetGatewayType());
-        Assertions.assertEquals("dqqwcspfhrn", response.networkFabricControllerId());
+        Assertions.assertEquals("c", response.location());
+        Assertions.assertEquals("dirttq", response.tags().get("lsbabqtj"));
+        Assertions.assertEquals("isjeovgcfhchgjon", response.annotation());
+        Assertions.assertEquals("dibzvpdjytmeouiu", response.internetGatewayRuleId());
+        Assertions.assertEquals(GatewayType.INFRASTRUCTURE, response.typePropertiesType());
+        Assertions.assertEquals(GatewayType.INFRASTRUCTURE, response.internetGatewayType());
+        Assertions.assertEquals("jdslpbyejsgbpjjn", response.networkFabricControllerId());
     }
 
     // Use "Map.of" if available

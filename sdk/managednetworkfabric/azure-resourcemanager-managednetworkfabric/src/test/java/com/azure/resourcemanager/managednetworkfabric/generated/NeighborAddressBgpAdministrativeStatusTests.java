@@ -13,10 +13,11 @@ public final class NeighborAddressBgpAdministrativeStatusTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NeighborAddressBgpAdministrativeStatus model = BinaryData
-            .fromString("{\"neighborAddress\":\"dj\",\"administrativeState\":\"Enabled\",\"error\":\"smqaz\"}")
+            .fromString(
+                "{\"neighborAddress\":\"cuvbdujgcwxvec\",\"administrativeState\":\"Disabled\",\"error\":\"trdxri\"}")
             .toObject(NeighborAddressBgpAdministrativeStatus.class);
-        Assertions.assertEquals("dj", model.neighborAddress());
-        Assertions.assertEquals(BgpAdministrativeState.ENABLED, model.administrativeState());
-        Assertions.assertEquals("smqaz", model.error());
+        Assertions.assertEquals("cuvbdujgcwxvec", model.neighborAddress());
+        Assertions.assertEquals(BgpAdministrativeState.DISABLED, model.administrativeState());
+        Assertions.assertEquals("trdxri", model.error());
     }
 }

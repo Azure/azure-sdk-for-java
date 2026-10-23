@@ -12,21 +12,21 @@ public final class NetworkBootstrapInterfaceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkBootstrapInterfaceInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Canceled\",\"administrativeState\":\"EnabledDegraded\",\"configurationState\":\"DeferredControl\",\"physicalIdentifier\":\"l\",\"connectedTo\":\"etr\",\"interfaceType\":\"Data\",\"description\":\"fsdswp\",\"additionalDescription\":\"loopz\",\"ipv4Address\":\"egchtabhacjlf\",\"ipv6Address\":\"cklvvwvpfq\",\"serialNumber\":\"vzhmlnfvyhdhff\",\"annotation\":\"dmhawbxnlkmazhle\"},\"id\":\"roksay\",\"name\":\"hfzzipyqt\",\"type\":\"dhbctkgmwxzl\"}")
+            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"administrativeState\":\"Enabled\",\"configurationState\":\"Provisioning\",\"physicalIdentifier\":\"kretsnyr\",\"connectedTo\":\"ulbyzzcxs\",\"interfaceType\":\"Data\",\"description\":\"y\",\"additionalDescription\":\"ck\",\"ipv4Address\":\"z\",\"ipv6Address\":\"xbmljrjyfjleuxix\",\"serialNumber\":\"sjldg\",\"operationalState\":\"Down\",\"annotation\":\"oacf\"},\"id\":\"xjz\",\"name\":\"qcsotwqtkpdc\",\"type\":\"efq\"}")
             .toObject(NetworkBootstrapInterfaceInner.class);
-        Assertions.assertEquals("loopz", model.additionalDescription());
-        Assertions.assertEquals("vzhmlnfvyhdhff", model.serialNumber());
-        Assertions.assertEquals("dmhawbxnlkmazhle", model.annotation());
+        Assertions.assertEquals("ck", model.additionalDescription());
+        Assertions.assertEquals("sjldg", model.serialNumber());
+        Assertions.assertEquals("oacf", model.annotation());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetworkBootstrapInterfaceInner model = new NetworkBootstrapInterfaceInner().withAdditionalDescription("loopz")
-            .withSerialNumber("vzhmlnfvyhdhff")
-            .withAnnotation("dmhawbxnlkmazhle");
+        NetworkBootstrapInterfaceInner model = new NetworkBootstrapInterfaceInner().withAdditionalDescription("ck")
+            .withSerialNumber("sjldg")
+            .withAnnotation("oacf");
         model = BinaryData.fromObject(model).toObject(NetworkBootstrapInterfaceInner.class);
-        Assertions.assertEquals("loopz", model.additionalDescription());
-        Assertions.assertEquals("vzhmlnfvyhdhff", model.serialNumber());
-        Assertions.assertEquals("dmhawbxnlkmazhle", model.annotation());
+        Assertions.assertEquals("ck", model.additionalDescription());
+        Assertions.assertEquals("sjldg", model.serialNumber());
+        Assertions.assertEquals("oacf", model.annotation());
     }
 }

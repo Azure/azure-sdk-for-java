@@ -13,7 +13,7 @@ import java.util.Arrays;
  */
 public final class L2IsolationDomainsUpdateAdministrativeStateSamples {
     /*
-     * x-ms-original-file: 2025-07-15/L2IsolationDomains_UpdateAdministrativeState.json
+     * x-ms-original-file: 2026-01-15-preview/L2IsolationDomains_UpdateAdministrativeState.json
      */
     /**
      * Sample code: L2IsolationDomains_UpdateAdministrativeState_MaximumSet_Gen.

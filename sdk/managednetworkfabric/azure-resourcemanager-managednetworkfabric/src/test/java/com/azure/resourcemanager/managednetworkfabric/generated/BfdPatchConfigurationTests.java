@@ -13,18 +13,18 @@ public final class BfdPatchConfigurationTests {
     public void testDeserialize() throws Exception {
         BfdPatchConfiguration model = BinaryData
             .fromString(
-                "{\"administrativeState\":\"RMA\",\"intervalInMilliSeconds\":1462544860,\"multiplier\":1759946929}")
+                "{\"administrativeState\":\"MAT\",\"intervalInMilliSeconds\":833933188,\"multiplier\":2060565024}")
             .toObject(BfdPatchConfiguration.class);
-        Assertions.assertEquals(1462544860, model.intervalInMilliSeconds());
-        Assertions.assertEquals(1759946929, model.multiplier());
+        Assertions.assertEquals(833933188, model.intervalInMilliSeconds());
+        Assertions.assertEquals(2060565024, model.multiplier());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         BfdPatchConfiguration model
-            = new BfdPatchConfiguration().withIntervalInMilliSeconds(1462544860).withMultiplier(1759946929);
+            = new BfdPatchConfiguration().withIntervalInMilliSeconds(833933188).withMultiplier(2060565024);
         model = BinaryData.fromObject(model).toObject(BfdPatchConfiguration.class);
-        Assertions.assertEquals(1462544860, model.intervalInMilliSeconds());
-        Assertions.assertEquals(1759946929, model.multiplier());
+        Assertions.assertEquals(833933188, model.intervalInMilliSeconds());
+        Assertions.assertEquals(2060565024, model.multiplier());
     }
 }

@@ -11,10 +11,11 @@ import org.junit.jupiter.api.Assertions;
 public final class ControllerServicesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ControllerServices model = BinaryData.fromString(
-            "{\"ipv4AddressSpaces\":[\"ayprldid\",\"mtffbvtzldzchuba\",\"wnlzuvi\",\"vlghfrbzakpjtcqr\"],\"ipv6AddressSpaces\":[\"ojpsucm\",\"imcwqxynqjgsa\",\"kyvscbgngcrus\",\"hirc\"]}")
+        ControllerServices model = BinaryData
+            .fromString(
+                "{\"ipv4AddressSpaces\":[\"nnx\",\"mvynuqqko\"],\"ipv6AddressSpaces\":[\"ratnicppf\",\"scle\"]}")
             .toObject(ControllerServices.class);
-        Assertions.assertEquals("ayprldid", model.ipv4AddressSpaces().get(0));
-        Assertions.assertEquals("ojpsucm", model.ipv6AddressSpaces().get(0));
+        Assertions.assertEquals("nnx", model.ipv4AddressSpaces().get(0));
+        Assertions.assertEquals("ratnicppf", model.ipv6AddressSpaces().get(0));
     }
 }

@@ -26,7 +26,7 @@ public final class NetworkInterfacesCreateMockTests {
     @Test
     public void testCreate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"physicalIdentifier\":\"muwl\",\"connectedTo\":\"jwkpznsfbi\",\"interfaceType\":\"Management\",\"ipv4Address\":\"gpvdl\",\"ipv6Address\":\"yo\",\"description\":\"lcuxzlln\",\"additionalDescription\":\"gqcfggje\",\"lastOperation\":{\"details\":\"xmpgfspwhfhdgu\"},\"networkFabricId\":\"gav\",\"provisioningState\":\"Succeeded\",\"administrativeState\":\"RMA\",\"configurationState\":\"PendingCommit\",\"annotation\":\"zxemqnwpwrf\"},\"identity\":{\"principalId\":\"ggrm\",\"tenantId\":\"fhkoe\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"vrjhtpxydiuviup\":{\"principalId\":\"ichasaenta\",\"clientId\":\"vddei\"},\"qdjw\":{\"principalId\":\"tnsyrrybdyqiv\",\"clientId\":\"suhozihd\"},\"vzbdhrcepanhy\":{\"principalId\":\"wcpijga\",\"clientId\":\"afdjinwgirnjgs\"},\"ehzxzazo\":{\"principalId\":\"ahijbjjlx\",\"clientId\":\"jzbggsnanojty\"}}},\"id\":\"ons\",\"name\":\"jdga\",\"type\":\"mktnsowszbeflhxi\"}";
+            = "{\"properties\":{\"physicalIdentifier\":\"bejxx\",\"connectedTo\":\"iff\",\"interfaceType\":\"Management\",\"ipv4Address\":\"yzsetrmvtqhnso\",\"ipv6Address\":\"ucprkqy\",\"description\":\"bxgayomse\",\"additionalDescription\":\"cxl\",\"lastOperation\":{\"details\":\"qfblsizxpolpsa\"},\"networkFabricId\":\"o\",\"provisioningState\":\"Succeeded\",\"administrativeState\":\"UnderMaintenance\",\"configurationState\":\"Deprovisioning\",\"operationalState\":\"Up\",\"annotation\":\"xvhkobidhh\"},\"identity\":{\"principalId\":\"trddyriwa\",\"tenantId\":\"ydgmqsc\",\"type\":\"None\",\"userAssignedIdentities\":{\"ydehbvbexrbynnl\":{\"principalId\":\"lxgnzasvpmwso\",\"clientId\":\"ypvplmyzebvghh\"},\"wzzsicbbosacr\":{\"principalId\":\"d\",\"clientId\":\"k\"}}},\"id\":\"scfkefeltx\",\"name\":\"famimgjuvjv\",\"type\":\"gecehennledhouk\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,17 +36,17 @@ public final class NetworkInterfacesCreateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         NetworkInterface response = manager.networkInterfaces()
-            .define("aceoaboozxkdz")
-            .withExistingNetworkDevice("jxphwynimcp", "rakucgjre")
+            .define("xfcngef")
+            .withExistingNetworkDevice("wgom", "scsddlcnwbi")
             .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
-                .withUserAssignedIdentities(mapOf("jgmfyernckg", new UserAssignedIdentity())))
-            .withAdditionalDescription("wcveqge")
-            .withAnnotation("jdonufqhqsniobe")
+                .withUserAssignedIdentities(mapOf("eqrnglgituae", new UserAssignedIdentity())))
+            .withAdditionalDescription("fb")
+            .withAnnotation("emnryxnklf")
             .create();
 
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, response.identity().type());
-        Assertions.assertEquals("gqcfggje", response.additionalDescription());
-        Assertions.assertEquals("zxemqnwpwrf", response.annotation());
+        Assertions.assertEquals(ManagedServiceIdentityType.NONE, response.identity().type());
+        Assertions.assertEquals("cxl", response.additionalDescription());
+        Assertions.assertEquals("xvhkobidhh", response.annotation());
     }
 
     // Use "Map.of" if available

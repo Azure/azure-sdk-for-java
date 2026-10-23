@@ -13,9 +13,11 @@ import com.azure.resourcemanager.managednetworkfabric.models.AuthorizedTransceiv
 import com.azure.resourcemanager.managednetworkfabric.models.FeatureFlagProperties;
 import com.azure.resourcemanager.managednetworkfabric.models.ManagementNetworkPatchConfiguration;
 import com.azure.resourcemanager.managednetworkfabric.models.QosPatchProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.SecretArchivePatchSettings;
 import com.azure.resourcemanager.managednetworkfabric.models.StorageAccountPatchConfiguration;
 import com.azure.resourcemanager.managednetworkfabric.models.TerminalServerPatchConfiguration;
 import com.azure.resourcemanager.managednetworkfabric.models.UniqueRouteDistinguisherPatchProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.UpgradeProfilePropertiesPatchProperties;
 import java.io.IOException;
 import java.util.List;
 
@@ -103,6 +105,16 @@ public final class NetworkFabricPatchProperties implements JsonSerializable<Netw
      * Authorized transciever configuration for NetworkFabric.
      */
     private AuthorizedTransceiverPatchProperties authorizedTransceiver;
+
+    /*
+     * The settings for a customer secret archive that may be used to hold copies of credentials for the Network Fabric.
+     */
+    private SecretArchivePatchSettings secretArchiveSettings;
+
+    /*
+     * The upgrade profile to be used by devices in the network fabric during device operations
+     */
+    private List<UpgradeProfilePropertiesPatchProperties> upgradeProfile;
 
     /**
      * Creates an instance of NetworkFabricPatchProperties class.
@@ -438,6 +450,51 @@ public final class NetworkFabricPatchProperties implements JsonSerializable<Netw
     }
 
     /**
+     * Get the secretArchiveSettings property: The settings for a customer secret archive that may be used to hold
+     * copies of credentials for the Network Fabric.
+     * 
+     * @return the secretArchiveSettings value.
+     */
+    public SecretArchivePatchSettings secretArchiveSettings() {
+        return this.secretArchiveSettings;
+    }
+
+    /**
+     * Set the secretArchiveSettings property: The settings for a customer secret archive that may be used to hold
+     * copies of credentials for the Network Fabric.
+     * 
+     * @param secretArchiveSettings the secretArchiveSettings value to set.
+     * @return the NetworkFabricPatchProperties object itself.
+     */
+    public NetworkFabricPatchProperties withSecretArchiveSettings(SecretArchivePatchSettings secretArchiveSettings) {
+        this.secretArchiveSettings = secretArchiveSettings;
+        return this;
+    }
+
+    /**
+     * Get the upgradeProfile property: The upgrade profile to be used by devices in the network fabric during device
+     * operations.
+     * 
+     * @return the upgradeProfile value.
+     */
+    public List<UpgradeProfilePropertiesPatchProperties> upgradeProfile() {
+        return this.upgradeProfile;
+    }
+
+    /**
+     * Set the upgradeProfile property: The upgrade profile to be used by devices in the network fabric during device
+     * operations.
+     * 
+     * @param upgradeProfile the upgradeProfile value to set.
+     * @return the NetworkFabricPatchProperties object itself.
+     */
+    public NetworkFabricPatchProperties
+        withUpgradeProfile(List<UpgradeProfilePropertiesPatchProperties> upgradeProfile) {
+        this.upgradeProfile = upgradeProfile;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -461,6 +518,9 @@ public final class NetworkFabricPatchProperties implements JsonSerializable<Netw
         jsonWriter.writeJsonField("qosConfiguration", this.qosConfiguration);
         jsonWriter.writeArrayField("featureFlags", this.featureFlags, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("authorizedTransceiver", this.authorizedTransceiver);
+        jsonWriter.writeJsonField("secretArchiveSettings", this.secretArchiveSettings);
+        jsonWriter.writeArrayField("upgradeProfile", this.upgradeProfile,
+            (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -522,6 +582,13 @@ public final class NetworkFabricPatchProperties implements JsonSerializable<Netw
                 } else if ("authorizedTransceiver".equals(fieldName)) {
                     deserializedNetworkFabricPatchProperties.authorizedTransceiver
                         = AuthorizedTransceiverPatchProperties.fromJson(reader);
+                } else if ("secretArchiveSettings".equals(fieldName)) {
+                    deserializedNetworkFabricPatchProperties.secretArchiveSettings
+                        = SecretArchivePatchSettings.fromJson(reader);
+                } else if ("upgradeProfile".equals(fieldName)) {
+                    List<UpgradeProfilePropertiesPatchProperties> upgradeProfile
+                        = reader.readArray(reader1 -> UpgradeProfilePropertiesPatchProperties.fromJson(reader1));
+                    deserializedNetworkFabricPatchProperties.upgradeProfile = upgradeProfile;
                 } else {
                     reader.skipChildren();
                 }

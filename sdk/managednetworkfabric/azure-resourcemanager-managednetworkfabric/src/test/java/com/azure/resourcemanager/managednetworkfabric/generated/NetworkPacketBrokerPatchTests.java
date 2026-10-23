@@ -8,6 +8,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.managednetworkfabric.models.ManagedServiceIdentityPatch;
 import com.azure.resourcemanager.managednetworkfabric.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkPacketBrokerPatch;
+import com.azure.resourcemanager.managednetworkfabric.models.NetworkPacketBrokerPatchProperties;
 import com.azure.resourcemanager.managednetworkfabric.models.UserAssignedIdentity;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,20 +18,24 @@ public final class NetworkPacketBrokerPatchTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkPacketBrokerPatch model = BinaryData.fromString(
-            "{\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"xnyprijyoxxj\":{\"principalId\":\"fbgynzfwv\",\"clientId\":\"teqjmyqxuhgk\"}}},\"tags\":{\"pjmspau\":\"owrrlcckly\"}}")
+            "{\"properties\":{\"sourceNetworkTapRuleId\":\"hwesrtja\"},\"identity\":{\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"piobnhrfbrjokjwq\":{\"principalId\":\"cypm\",\"clientId\":\"vspsaneyvae\"},\"djwlzseodtqfdr\":{\"principalId\":\"raq\",\"clientId\":\"lppqcaigazwfwlr\"}}},\"tags\":{\"uhytjwgetfi\":\"ymqxserwy\"}}")
             .toObject(NetworkPacketBrokerPatch.class);
-        Assertions.assertEquals("owrrlcckly", model.tags().get("pjmspau"));
-        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("ymqxserwy", model.tags().get("uhytjwgetfi"));
+        Assertions.assertEquals("hwesrtja", model.properties().sourceNetworkTapRuleId());
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetworkPacketBrokerPatch model = new NetworkPacketBrokerPatch().withTags(mapOf("pjmspau", "owrrlcckly"))
-            .withIdentity(new ManagedServiceIdentityPatch().withType(ManagedServiceIdentityType.USER_ASSIGNED)
-                .withUserAssignedIdentities(mapOf("xnyprijyoxxj", new UserAssignedIdentity())));
+        NetworkPacketBrokerPatch model = new NetworkPacketBrokerPatch().withTags(mapOf("uhytjwgetfi", "ymqxserwy"))
+            .withProperties(new NetworkPacketBrokerPatchProperties().withSourceNetworkTapRuleId("hwesrtja"))
+            .withIdentity(new ManagedServiceIdentityPatch().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
+                .withUserAssignedIdentities(mapOf("piobnhrfbrjokjwq", new UserAssignedIdentity(), "djwlzseodtqfdr",
+                    new UserAssignedIdentity())));
         model = BinaryData.fromObject(model).toObject(NetworkPacketBrokerPatch.class);
-        Assertions.assertEquals("owrrlcckly", model.tags().get("pjmspau"));
-        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("ymqxserwy", model.tags().get("uhytjwgetfi"));
+        Assertions.assertEquals("hwesrtja", model.properties().sourceNetworkTapRuleId());
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
     }
 
     // Use "Map.of" if available

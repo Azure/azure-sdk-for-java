@@ -12,18 +12,18 @@ public final class NetworkInterfacePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkInterfaceProperties model = BinaryData.fromString(
-            "{\"physicalIdentifier\":\"rgjjktfinfhoksmm\",\"connectedTo\":\"lwkqic\",\"interfaceType\":\"Management\",\"ipv4Address\":\"krjflsgaojb\",\"ipv6Address\":\"pqsdoc\",\"description\":\"zpujzflmcdsg\",\"additionalDescription\":\"elujiswl\",\"lastOperation\":{\"details\":\"nxhfwlfxzfwu\"},\"networkFabricId\":\"upcknecexkgrvfp\",\"provisioningState\":\"Deleting\",\"administrativeState\":\"MAT\",\"configurationState\":\"Deprovisioning\",\"annotation\":\"tqpdzfyxcnwawoxc\"}")
+            "{\"physicalIdentifier\":\"vbqv\",\"connectedTo\":\"mpe\",\"interfaceType\":\"Data\",\"ipv4Address\":\"iqasif\",\"ipv6Address\":\"nsnst\",\"description\":\"wqpjnxjkhtupsvy\",\"additionalDescription\":\"weuiyx\",\"lastOperation\":{\"details\":\"ztsm\"},\"networkFabricId\":\"b\",\"provisioningState\":\"Canceled\",\"administrativeState\":\"RMA\",\"configurationState\":\"PendingAdministrativeUpdate\",\"operationalState\":\"Down\",\"annotation\":\"qytkztadop\"}")
             .toObject(NetworkInterfaceProperties.class);
-        Assertions.assertEquals("tqpdzfyxcnwawoxc", model.annotation());
-        Assertions.assertEquals("elujiswl", model.additionalDescription());
+        Assertions.assertEquals("qytkztadop", model.annotation());
+        Assertions.assertEquals("weuiyx", model.additionalDescription());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         NetworkInterfaceProperties model
-            = new NetworkInterfaceProperties().withAnnotation("tqpdzfyxcnwawoxc").withAdditionalDescription("elujiswl");
+            = new NetworkInterfaceProperties().withAnnotation("qytkztadop").withAdditionalDescription("weuiyx");
         model = BinaryData.fromObject(model).toObject(NetworkInterfaceProperties.class);
-        Assertions.assertEquals("tqpdzfyxcnwawoxc", model.annotation());
-        Assertions.assertEquals("elujiswl", model.additionalDescription());
+        Assertions.assertEquals("qytkztadop", model.annotation());
+        Assertions.assertEquals("weuiyx", model.additionalDescription());
     }
 }

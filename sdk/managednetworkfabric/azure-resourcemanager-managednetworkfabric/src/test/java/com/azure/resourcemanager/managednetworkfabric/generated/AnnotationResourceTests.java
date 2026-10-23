@@ -12,14 +12,14 @@ public final class AnnotationResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AnnotationResource model
-            = BinaryData.fromString("{\"annotation\":\"sczpgvdwnapfd\"}").toObject(AnnotationResource.class);
-        Assertions.assertEquals("sczpgvdwnapfd", model.annotation());
+            = BinaryData.fromString("{\"annotation\":\"ytehqpuvjmvqmt\"}").toObject(AnnotationResource.class);
+        Assertions.assertEquals("ytehqpuvjmvqmt", model.annotation());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AnnotationResource model = new AnnotationResource().withAnnotation("sczpgvdwnapfd");
+        AnnotationResource model = new AnnotationResource().withAnnotation("ytehqpuvjmvqmt");
         model = BinaryData.fromObject(model).toObject(AnnotationResource.class);
-        Assertions.assertEquals("sczpgvdwnapfd", model.annotation());
+        Assertions.assertEquals("ytehqpuvjmvqmt", model.annotation());
     }
 }

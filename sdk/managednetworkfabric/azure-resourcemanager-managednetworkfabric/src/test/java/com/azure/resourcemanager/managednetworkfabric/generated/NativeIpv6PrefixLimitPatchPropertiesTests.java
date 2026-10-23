@@ -14,22 +14,22 @@ public final class NativeIpv6PrefixLimitPatchPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NativeIpv6PrefixLimitPatchProperties model = BinaryData.fromString(
-            "{\"prefixLimits\":[{\"maximumRoutes\":1972118177,\"threshold\":383202056,\"idleTimeExpiry\":437555374}]}")
+            "{\"prefixLimits\":[{\"maximumRoutes\":1820368200,\"threshold\":1416607427,\"idleTimeExpiry\":1492301209}]}")
             .toObject(NativeIpv6PrefixLimitPatchProperties.class);
-        Assertions.assertEquals(1972118177, model.prefixLimits().get(0).maximumRoutes());
-        Assertions.assertEquals(383202056, model.prefixLimits().get(0).threshold());
-        Assertions.assertEquals(437555374, model.prefixLimits().get(0).idleTimeExpiry());
+        Assertions.assertEquals(1820368200, model.prefixLimits().get(0).maximumRoutes());
+        Assertions.assertEquals(1416607427, model.prefixLimits().get(0).threshold());
+        Assertions.assertEquals(1492301209, model.prefixLimits().get(0).idleTimeExpiry());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         NativeIpv6PrefixLimitPatchProperties model = new NativeIpv6PrefixLimitPatchProperties()
-            .withPrefixLimits(Arrays.asList(new PrefixLimitPatchProperties().withMaximumRoutes(1972118177)
-                .withThreshold(383202056)
-                .withIdleTimeExpiry(437555374)));
+            .withPrefixLimits(Arrays.asList(new PrefixLimitPatchProperties().withMaximumRoutes(1820368200)
+                .withThreshold(1416607427)
+                .withIdleTimeExpiry(1492301209)));
         model = BinaryData.fromObject(model).toObject(NativeIpv6PrefixLimitPatchProperties.class);
-        Assertions.assertEquals(1972118177, model.prefixLimits().get(0).maximumRoutes());
-        Assertions.assertEquals(383202056, model.prefixLimits().get(0).threshold());
-        Assertions.assertEquals(437555374, model.prefixLimits().get(0).idleTimeExpiry());
+        Assertions.assertEquals(1820368200, model.prefixLimits().get(0).maximumRoutes());
+        Assertions.assertEquals(1416607427, model.prefixLimits().get(0).threshold());
+        Assertions.assertEquals(1492301209, model.prefixLimits().get(0).idleTimeExpiry());
     }
 }

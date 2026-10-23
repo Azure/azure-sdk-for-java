@@ -16,32 +16,32 @@ public final class NetworkMonitorListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkMonitorListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"bmpConfiguration\":{\"stationConfigurationState\":\"Disabled\",\"scopeResourceId\":\"ddj\",\"stationName\":\"pgom\",\"stationIp\":\"kjpajl\",\"stationPort\":913768239,\"stationConnectionMode\":\"Passive\",\"stationConnectionProperties\":{\"keepaliveIdleTime\":1447315290,\"probeInterval\":1948930166,\"probeCount\":982276770},\"stationNetwork\":\"cp\",\"monitoredNetworks\":[\"witafj\"],\"exportPolicy\":\"LocalRib\",\"exportPolicyConfiguration\":{\"exportPolicies\":[\"Post-Policy\",\"Post-Policy\"]},\"monitoredAddressFamilies\":[\"vpnIpv6\"]},\"lastOperation\":{\"details\":\"vkparskplqft\"},\"configurationState\":\"Rejected\",\"provisioningState\":\"Failed\",\"administrativeState\":\"RMA\",\"annotation\":\"dcy\"},\"location\":\"ul\",\"tags\":{\"uxyqbm\":\"fwrm\"},\"id\":\"oubxlpkdsnbqoyms\",\"name\":\"lraduhgwa\",\"type\":\"zyrp\"},{\"properties\":{\"bmpConfiguration\":{\"stationConfigurationState\":\"Enabled\",\"scopeResourceId\":\"jribeskkopbksrib\",\"stationName\":\"tmorikczer\",\"stationIp\":\"iq\",\"stationPort\":1031105777,\"stationConnectionMode\":\"Passive\",\"stationConnectionProperties\":{\"keepaliveIdleTime\":583068147,\"probeInterval\":1602047687,\"probeCount\":655366294},\"stationNetwork\":\"ydgmdoqgruc\",\"monitoredNetworks\":[\"yjudhgwjqegly\",\"nrruwsqp\",\"yxkm\",\"mgexqcilfiulgnn\"],\"exportPolicy\":\"All\",\"exportPolicyConfiguration\":{\"exportPolicies\":[\"LocalRib\",\"Pre-Policy\",\"LocalRib\"]},\"monitoredAddressFamilies\":[\"All\",\"vpnIpv6\"]},\"lastOperation\":{\"details\":\"bamqrbbsnptm\"},\"configurationState\":\"ErrorDeprovisioning\",\"provisioningState\":\"Canceled\",\"administrativeState\":\"EnabledDegraded\",\"annotation\":\"kbyjuwhizcbqjxm\"},\"location\":\"dtunpc\",\"tags\":{\"wkoltjdauujjl\":\"lrfo\",\"ehplmqyoduksa\":\"yhddzeykudjzrim\",\"qkrbyyakrjgbnw\":\"znqqkqxkdglse\"},\"id\":\"okrl\",\"name\":\"becan\",\"type\":\"vxouhdcftptfcj\"},{\"properties\":{\"bmpConfiguration\":{\"stationConfigurationState\":\"Disabled\",\"scopeResourceId\":\"xmcxhwkgihifoyo\",\"stationName\":\"gadhmqyufpfoww\",\"stationIp\":\"lszrtngiqc\",\"stationPort\":1748168426,\"stationConnectionMode\":\"Passive\",\"stationConnectionProperties\":{\"keepaliveIdleTime\":494771165,\"probeInterval\":309044563,\"probeCount\":2050745582},\"stationNetwork\":\"ycigcb\",\"monitoredNetworks\":[\"hdtjfrpo\",\"ajzdj\",\"zbrwrfrmhouf\"],\"exportPolicy\":\"Pre-Policy\",\"exportPolicyConfiguration\":{\"exportPolicies\":[\"LocalRib\",\"Post-Policy\",\"Pre-Policy\"]},\"monitoredAddressFamilies\":[\"vpnIpv4\"]},\"lastOperation\":{\"details\":\"nqunniklyxd\"},\"configurationState\":\"Deprovisioning\",\"provisioningState\":\"Canceled\",\"administrativeState\":\"UnderMaintenance\",\"annotation\":\"mvpehp\"},\"location\":\"vkyqhrplfqqnw\",\"tags\":{\"xnsvb\":\"rgc\",\"ytuecmgu\":\"hhaq\",\"ex\":\"ywdpuowl\",\"tcidcabn\":\"rpitqzqnbseujc\"},\"id\":\"xhcxct\",\"name\":\"hxoeftfo\",\"type\":\"ylx\"},{\"properties\":{\"bmpConfiguration\":{\"stationConfigurationState\":\"Disabled\",\"scopeResourceId\":\"jzvqp\",\"stationName\":\"mtupyjtr\",\"stationIp\":\"zwdsnqhyef\",\"stationPort\":1642775628,\"stationConnectionMode\":\"Active\",\"stationConnectionProperties\":{\"keepaliveIdleTime\":1024582735,\"probeInterval\":1076087917,\"probeCount\":1784688107},\"stationNetwork\":\"lytjxhx\",\"monitoredNetworks\":[\"ttl\",\"vukvupuplug\",\"lynvpdvctqdapyds\"],\"exportPolicy\":\"All\",\"exportPolicyConfiguration\":{\"exportPolicies\":[\"Pre-Policy\",\"Pre-Policy\",\"Post-Policy\",\"Post-Policy\"]},\"monitoredAddressFamilies\":[\"vpnIpv6\",\"vpnIpv4\",\"ipv4Unicast\"]},\"lastOperation\":{\"details\":\"yrnzmjrgfbmps\"},\"configurationState\":\"DeferredControl\",\"provisioningState\":\"Canceled\",\"administrativeState\":\"UnderMaintenance\",\"annotation\":\"u\"},\"location\":\"gaesmaxdwxrwqtbv\",\"tags\":{\"rlk\":\"takx\"},\"id\":\"jho\",\"name\":\"ywly\",\"type\":\"ghhuluqy\"}],\"nextLink\":\"gpqwgiq\"}")
+            "{\"value\":[{\"properties\":{\"bmpConfiguration\":{\"stationConfigurationState\":\"Disabled\",\"scopeResourceId\":\"vsxfrwvlypztu\",\"stationName\":\"pncdocloepjz\",\"stationIp\":\"bod\",\"stationPort\":315264321,\"stationConnectionMode\":\"Passive\",\"stationConnectionProperties\":{\"keepaliveIdleTime\":727201394,\"probeInterval\":118310316,\"probeCount\":1771169566},\"stationNetwork\":\"d\",\"monitoredNetworks\":[\"unngjoasnzlaw\",\"wqsni\",\"xwdqzu\"],\"exportPolicy\":\"Post-Policy\",\"exportPolicyConfiguration\":{\"exportPolicies\":[\"All\",\"All\"]},\"monitoredAddressFamilies\":[\"vpnIpv4\",\"All\",\"vpnIpv4\",\"ipv6Unicast\"]},\"lastOperation\":{\"details\":\"eghtmqo\"},\"configurationState\":\"Accepted\",\"provisioningState\":\"Succeeded\",\"administrativeState\":\"UnderMaintenance\",\"annotation\":\"ecuvwate\"},\"location\":\"wbrnboxishkm\",\"tags\":{\"wrmhmifhfu\":\"bksksmqmw\",\"uqaemoyg\":\"jyxntmgt\",\"dqr\":\"axjy\"},\"id\":\"vgicxt\",\"name\":\"llqgnsydksvj\",\"type\":\"gxgdpivjkhcos\"}],\"nextLink\":\"ljjhcsgzooefzsdt\"}")
             .toObject(NetworkMonitorListResult.class);
-        Assertions.assertEquals("ul", model.value().get(0).location());
-        Assertions.assertEquals("fwrm", model.value().get(0).tags().get("uxyqbm"));
+        Assertions.assertEquals("wbrnboxishkm", model.value().get(0).location());
+        Assertions.assertEquals("bksksmqmw", model.value().get(0).tags().get("wrmhmifhfu"));
         Assertions.assertEquals(StationConfigurationState.DISABLED,
             model.value().get(0).bmpConfiguration().stationConfigurationState());
-        Assertions.assertEquals("ddj", model.value().get(0).bmpConfiguration().scopeResourceId());
-        Assertions.assertEquals("pgom", model.value().get(0).bmpConfiguration().stationName());
-        Assertions.assertEquals("kjpajl", model.value().get(0).bmpConfiguration().stationIp());
-        Assertions.assertEquals(913768239, model.value().get(0).bmpConfiguration().stationPort());
+        Assertions.assertEquals("vsxfrwvlypztu", model.value().get(0).bmpConfiguration().scopeResourceId());
+        Assertions.assertEquals("pncdocloepjz", model.value().get(0).bmpConfiguration().stationName());
+        Assertions.assertEquals("bod", model.value().get(0).bmpConfiguration().stationIp());
+        Assertions.assertEquals(315264321, model.value().get(0).bmpConfiguration().stationPort());
         Assertions.assertEquals(StationConnectionMode.PASSIVE,
             model.value().get(0).bmpConfiguration().stationConnectionMode());
-        Assertions.assertEquals(1447315290,
+        Assertions.assertEquals(727201394,
             model.value().get(0).bmpConfiguration().stationConnectionProperties().keepaliveIdleTime());
-        Assertions.assertEquals(1948930166,
+        Assertions.assertEquals(118310316,
             model.value().get(0).bmpConfiguration().stationConnectionProperties().probeInterval());
-        Assertions.assertEquals(982276770,
+        Assertions.assertEquals(1771169566,
             model.value().get(0).bmpConfiguration().stationConnectionProperties().probeCount());
-        Assertions.assertEquals("cp", model.value().get(0).bmpConfiguration().stationNetwork());
-        Assertions.assertEquals("witafj", model.value().get(0).bmpConfiguration().monitoredNetworks().get(0));
-        Assertions.assertEquals(BmpExportPolicy.LOCAL_RIB, model.value().get(0).bmpConfiguration().exportPolicy());
-        Assertions.assertEquals(BmpExportPolicy.POST_POLICY,
+        Assertions.assertEquals("d", model.value().get(0).bmpConfiguration().stationNetwork());
+        Assertions.assertEquals("unngjoasnzlaw", model.value().get(0).bmpConfiguration().monitoredNetworks().get(0));
+        Assertions.assertEquals(BmpExportPolicy.POST_POLICY, model.value().get(0).bmpConfiguration().exportPolicy());
+        Assertions.assertEquals(BmpExportPolicy.ALL,
             model.value().get(0).bmpConfiguration().exportPolicyConfiguration().exportPolicies().get(0));
-        Assertions.assertEquals(BmpMonitoredAddressFamily.VPN_IPV6,
+        Assertions.assertEquals(BmpMonitoredAddressFamily.VPN_IPV4,
             model.value().get(0).bmpConfiguration().monitoredAddressFamilies().get(0));
-        Assertions.assertEquals("dcy", model.value().get(0).annotation());
-        Assertions.assertEquals("gpqwgiq", model.nextLink());
+        Assertions.assertEquals("ecuvwate", model.value().get(0).annotation());
+        Assertions.assertEquals("ljjhcsgzooefzsdt", model.nextLink());
     }
 }

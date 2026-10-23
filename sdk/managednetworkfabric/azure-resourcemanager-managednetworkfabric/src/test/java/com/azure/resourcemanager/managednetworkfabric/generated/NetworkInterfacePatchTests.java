@@ -17,25 +17,24 @@ public final class NetworkInterfacePatchTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkInterfacePatch model = BinaryData.fromString(
-            "{\"properties\":{\"additionalDescription\":\"ejqfbi\",\"annotation\":\"pfjxdwdrpazq\"},\"identity\":{\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"zmecjjkmqenhai\":{\"principalId\":\"otfcuuugtjigpg\",\"clientId\":\"iawohfmhn\"},\"pijpkhc\":{\"principalId\":\"rpvsgloiovs\",\"clientId\":\"ivqsuvwtenb\"},\"nd\":{\"principalId\":\"aqxukuicjufte\",\"clientId\":\"oo\"},\"vzuaixc\":{\"principalId\":\"wfhvpxjhxzu\",\"clientId\":\"jzabbwz\"}}}}")
+            "{\"properties\":{\"additionalDescription\":\"dgjfc\",\"annotation\":\"rsvloy\"},\"identity\":{\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"ixhyoipnfdbgso\":{\"principalId\":\"juqwqajq\",\"clientId\":\"x\"}}}}")
             .toObject(NetworkInterfacePatch.class);
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("ejqfbi", model.additionalDescription());
-        Assertions.assertEquals("pfjxdwdrpazq", model.annotation());
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("dgjfc", model.additionalDescription());
+        Assertions.assertEquals("rsvloy", model.annotation());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetworkInterfacePatch model = new NetworkInterfacePatch().withIdentity(new ManagedServiceIdentityPatch()
-            .withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
-            .withUserAssignedIdentities(mapOf("zmecjjkmqenhai", new UserAssignedIdentity(), "pijpkhc",
-                new UserAssignedIdentity(), "nd", new UserAssignedIdentity(), "vzuaixc", new UserAssignedIdentity())))
-            .withAdditionalDescription("ejqfbi")
-            .withAnnotation("pfjxdwdrpazq");
+        NetworkInterfacePatch model = new NetworkInterfacePatch()
+            .withIdentity(new ManagedServiceIdentityPatch().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
+                .withUserAssignedIdentities(mapOf("ixhyoipnfdbgso", new UserAssignedIdentity())))
+            .withAdditionalDescription("dgjfc")
+            .withAnnotation("rsvloy");
         model = BinaryData.fromObject(model).toObject(NetworkInterfacePatch.class);
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("ejqfbi", model.additionalDescription());
-        Assertions.assertEquals("pfjxdwdrpazq", model.annotation());
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("dgjfc", model.additionalDescription());
+        Assertions.assertEquals("rsvloy", model.annotation());
     }
 
     // Use "Map.of" if available

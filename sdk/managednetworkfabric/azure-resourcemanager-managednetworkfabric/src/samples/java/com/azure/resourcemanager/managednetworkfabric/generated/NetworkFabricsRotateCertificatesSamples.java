@@ -9,7 +9,7 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
  */
 public final class NetworkFabricsRotateCertificatesSamples {
     /*
-     * x-ms-original-file: 2025-07-15/NetworkFabrics_RotateCertificates_Error.json
+     * x-ms-original-file: 2026-01-15-preview/NetworkFabrics_RotateCertificates_Error.json
      */
     /**
      * Sample code: Total failure to rotate certificates.
@@ -22,7 +22,7 @@ public final class NetworkFabricsRotateCertificatesSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-15/NetworkFabrics_RotateCertificates_PartialSuccess.json
+     * x-ms-original-file: 2026-01-15-preview/NetworkFabrics_RotateCertificates_PartialSuccess.json
      */
     /**
      * Sample code: Partial failure to rotate certificates for some devices.
@@ -35,7 +35,7 @@ public final class NetworkFabricsRotateCertificatesSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-15/NetworkFabrics_RotateCertificates.json
+     * x-ms-original-file: 2026-01-15-preview/NetworkFabrics_RotateCertificates.json
      */
     /**
      * Sample code: Successful certificate rotation for all Network Devices.

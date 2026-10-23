@@ -13,18 +13,19 @@ import org.junit.jupiter.api.Assertions;
 public final class InternetGatewayRulePatchTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        InternetGatewayRulePatch model = BinaryData.fromString(
-            "{\"tags\":{\"carvvlfntymtpoi\":\"qusybwptd\",\"kdnwqapfgsdpcve\":\"enazerohzrsqals\",\"kva\":\"smzhhkuuipldqqct\"}}")
+        InternetGatewayRulePatch model = BinaryData
+            .fromString(
+                "{\"tags\":{\"eimipskd\":\"xivzrrry\",\"tjvv\":\"zatvfuzka\",\"tgrqgdgkkile\":\"uxwigsyeipqdsm\"}}")
             .toObject(InternetGatewayRulePatch.class);
-        Assertions.assertEquals("qusybwptd", model.tags().get("carvvlfntymtpoi"));
+        Assertions.assertEquals("xivzrrry", model.tags().get("eimipskd"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InternetGatewayRulePatch model = new InternetGatewayRulePatch().withTags(
-            mapOf("carvvlfntymtpoi", "qusybwptd", "kdnwqapfgsdpcve", "enazerohzrsqals", "kva", "smzhhkuuipldqqct"));
+        InternetGatewayRulePatch model = new InternetGatewayRulePatch()
+            .withTags(mapOf("eimipskd", "xivzrrry", "tjvv", "zatvfuzka", "tgrqgdgkkile", "uxwigsyeipqdsm"));
         model = BinaryData.fromObject(model).toObject(InternetGatewayRulePatch.class);
-        Assertions.assertEquals("qusybwptd", model.tags().get("carvvlfntymtpoi"));
+        Assertions.assertEquals("xivzrrry", model.tags().get("eimipskd"));
     }
 
     // Use "Map.of" if available

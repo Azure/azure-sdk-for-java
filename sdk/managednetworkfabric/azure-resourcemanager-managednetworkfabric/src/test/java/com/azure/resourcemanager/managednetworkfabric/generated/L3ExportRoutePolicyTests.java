@@ -12,19 +12,18 @@ public final class L3ExportRoutePolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         L3ExportRoutePolicy model = BinaryData
-            .fromString(
-                "{\"exportIpv4RoutePolicyId\":\"lwkzpgajsqjcem\",\"exportIpv6RoutePolicyId\":\"mfuvqarwzxuqr\"}")
+            .fromString("{\"exportIpv4RoutePolicyId\":\"ustbvtqigdx\",\"exportIpv6RoutePolicyId\":\"sgeafgfosehx\"}")
             .toObject(L3ExportRoutePolicy.class);
-        Assertions.assertEquals("lwkzpgajsqjcem", model.exportIpv4RoutePolicyId());
-        Assertions.assertEquals("mfuvqarwzxuqr", model.exportIpv6RoutePolicyId());
+        Assertions.assertEquals("ustbvtqigdx", model.exportIpv4RoutePolicyId());
+        Assertions.assertEquals("sgeafgfosehx", model.exportIpv6RoutePolicyId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        L3ExportRoutePolicy model = new L3ExportRoutePolicy().withExportIpv4RoutePolicyId("lwkzpgajsqjcem")
-            .withExportIpv6RoutePolicyId("mfuvqarwzxuqr");
+        L3ExportRoutePolicy model = new L3ExportRoutePolicy().withExportIpv4RoutePolicyId("ustbvtqigdx")
+            .withExportIpv6RoutePolicyId("sgeafgfosehx");
         model = BinaryData.fromObject(model).toObject(L3ExportRoutePolicy.class);
-        Assertions.assertEquals("lwkzpgajsqjcem", model.exportIpv4RoutePolicyId());
-        Assertions.assertEquals("mfuvqarwzxuqr", model.exportIpv6RoutePolicyId());
+        Assertions.assertEquals("ustbvtqigdx", model.exportIpv4RoutePolicyId());
+        Assertions.assertEquals("sgeafgfosehx", model.exportIpv6RoutePolicyId());
     }
 }

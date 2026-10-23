@@ -12,20 +12,20 @@ import org.junit.jupiter.api.Assertions;
 public final class StaticRouteRoutePolicyPatchTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        StaticRouteRoutePolicyPatch model = BinaryData.fromString(
-            "{\"exportRoutePolicy\":{\"exportIpv4RoutePolicyId\":\"hsidsjtdlpbnin\",\"exportIpv6RoutePolicyId\":\"azlsvbzfcpuo\"}}")
+        StaticRouteRoutePolicyPatch model = BinaryData
+            .fromString(
+                "{\"exportRoutePolicy\":{\"exportIpv4RoutePolicyId\":\"dkwwn\",\"exportIpv6RoutePolicyId\":\"foct\"}}")
             .toObject(StaticRouteRoutePolicyPatch.class);
-        Assertions.assertEquals("hsidsjtdlpbnin", model.exportRoutePolicy().exportIpv4RoutePolicyId());
-        Assertions.assertEquals("azlsvbzfcpuo", model.exportRoutePolicy().exportIpv6RoutePolicyId());
+        Assertions.assertEquals("dkwwn", model.exportRoutePolicy().exportIpv4RoutePolicyId());
+        Assertions.assertEquals("foct", model.exportRoutePolicy().exportIpv6RoutePolicyId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        StaticRouteRoutePolicyPatch model = new StaticRouteRoutePolicyPatch()
-            .withExportRoutePolicy(new L3ExportRoutePolicyPatch().withExportIpv4RoutePolicyId("hsidsjtdlpbnin")
-                .withExportIpv6RoutePolicyId("azlsvbzfcpuo"));
+        StaticRouteRoutePolicyPatch model = new StaticRouteRoutePolicyPatch().withExportRoutePolicy(
+            new L3ExportRoutePolicyPatch().withExportIpv4RoutePolicyId("dkwwn").withExportIpv6RoutePolicyId("foct"));
         model = BinaryData.fromObject(model).toObject(StaticRouteRoutePolicyPatch.class);
-        Assertions.assertEquals("hsidsjtdlpbnin", model.exportRoutePolicy().exportIpv4RoutePolicyId());
-        Assertions.assertEquals("azlsvbzfcpuo", model.exportRoutePolicy().exportIpv6RoutePolicyId());
+        Assertions.assertEquals("dkwwn", model.exportRoutePolicy().exportIpv4RoutePolicyId());
+        Assertions.assertEquals("foct", model.exportRoutePolicy().exportIpv6RoutePolicyId());
     }
 }

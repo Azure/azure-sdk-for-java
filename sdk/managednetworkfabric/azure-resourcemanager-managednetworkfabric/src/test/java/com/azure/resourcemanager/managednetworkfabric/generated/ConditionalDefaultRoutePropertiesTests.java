@@ -14,37 +14,32 @@ public final class ConditionalDefaultRoutePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConditionalDefaultRouteProperties model = BinaryData.fromString(
-            "{\"ipv4Routes\":[{\"prefix\":\"dgsapleqfg\",\"nextHop\":[\"env\",\"z\"]},{\"prefix\":\"lvyakeszsuuvul\",\"nextHop\":[\"cwgg\",\"hxvlqgfbrve\",\"icaovphirlzbipi\"]},{\"prefix\":\"nnepkwzzzku\",\"nextHop\":[\"uwcjomip\"]},{\"prefix\":\"wkau\",\"nextHop\":[\"twykoxvbw\",\"fxxdplrelfkvg\"]}],\"ipv6Routes\":[{\"prefix\":\"btuxlbpxrhrfje\",\"nextHop\":[\"azwef\",\"ktlhqash\",\"ostjixyz\",\"ecigzzdwjta\"]},{\"prefix\":\"fvvtdpcbpz\",\"nextHop\":[\"mcsaugbr\",\"fiwltkfysu\",\"te\",\"hkl\"]},{\"prefix\":\"whcv\",\"nextHop\":[\"yyhgqokjbmsr\",\"ixyxxhwrlqomaqs\",\"ilp\",\"z\"]},{\"prefix\":\"rwnrzo\",\"nextHop\":[\"xagysokli\",\"ksybvrrbnhylsb\",\"ujcy\"]}]}")
+            "{\"ipv4Routes\":[{\"prefix\":\"rvkgpogplbjuvl\",\"nextHop\":[\"xnrnjh\",\"na\"]},{\"prefix\":\"ge\",\"nextHop\":[\"xnepqmjm\"]},{\"prefix\":\"pl\",\"nextHop\":[\"fykkfhsovadkrm\",\"xmwqpdkesjqbzkq\"]}],\"ipv6Routes\":[{\"prefix\":\"poriwbwggijtspzj\",\"nextHop\":[\"rhikwsbzrhdug\"]},{\"prefix\":\"uhtr\",\"nextHop\":[\"frunj\",\"hrjhiycbauseqn\",\"zkvihvtu\",\"y\"]},{\"prefix\":\"sqwzszoszjgzu\",\"nextHop\":[\"fnyskwwu\",\"qhcza\",\"ojmslhip\",\"ukvbljpxpr\"]}]}")
             .toObject(ConditionalDefaultRouteProperties.class);
-        Assertions.assertEquals("dgsapleqfg", model.ipv4Routes().get(0).prefix());
-        Assertions.assertEquals("env", model.ipv4Routes().get(0).nextHop().get(0));
-        Assertions.assertEquals("btuxlbpxrhrfje", model.ipv6Routes().get(0).prefix());
-        Assertions.assertEquals("azwef", model.ipv6Routes().get(0).nextHop().get(0));
+        Assertions.assertEquals("rvkgpogplbjuvl", model.ipv4Routes().get(0).prefix());
+        Assertions.assertEquals("xnrnjh", model.ipv4Routes().get(0).nextHop().get(0));
+        Assertions.assertEquals("poriwbwggijtspzj", model.ipv6Routes().get(0).prefix());
+        Assertions.assertEquals("rhikwsbzrhdug", model.ipv6Routes().get(0).nextHop().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ConditionalDefaultRouteProperties model = new ConditionalDefaultRouteProperties()
             .withIpv4Routes(Arrays.asList(
-                new StaticRouteProperties().withPrefix("dgsapleqfg").withNextHop(Arrays.asList("env", "z")),
-                new StaticRouteProperties().withPrefix("lvyakeszsuuvul")
-                    .withNextHop(Arrays.asList("cwgg", "hxvlqgfbrve", "icaovphirlzbipi")),
-                new StaticRouteProperties().withPrefix("nnepkwzzzku").withNextHop(Arrays.asList("uwcjomip")),
-                new StaticRouteProperties().withPrefix("wkau")
-                    .withNextHop(Arrays.asList("twykoxvbw", "fxxdplrelfkvg"))))
+                new StaticRouteProperties().withPrefix("rvkgpogplbjuvl").withNextHop(Arrays.asList("xnrnjh", "na")),
+                new StaticRouteProperties().withPrefix("ge").withNextHop(Arrays.asList("xnepqmjm")),
+                new StaticRouteProperties().withPrefix("pl")
+                    .withNextHop(Arrays.asList("fykkfhsovadkrm", "xmwqpdkesjqbzkq"))))
             .withIpv6Routes(Arrays.asList(
-                new StaticRouteProperties().withPrefix("btuxlbpxrhrfje")
-                    .withNextHop(Arrays.asList("azwef", "ktlhqash", "ostjixyz", "ecigzzdwjta")),
-                new StaticRouteProperties().withPrefix("fvvtdpcbpz")
-                    .withNextHop(Arrays.asList("mcsaugbr", "fiwltkfysu", "te", "hkl")),
-                new StaticRouteProperties().withPrefix("whcv")
-                    .withNextHop(Arrays.asList("yyhgqokjbmsr", "ixyxxhwrlqomaqs", "ilp", "z")),
-                new StaticRouteProperties().withPrefix("rwnrzo")
-                    .withNextHop(Arrays.asList("xagysokli", "ksybvrrbnhylsb", "ujcy"))));
+                new StaticRouteProperties().withPrefix("poriwbwggijtspzj").withNextHop(Arrays.asList("rhikwsbzrhdug")),
+                new StaticRouteProperties().withPrefix("uhtr")
+                    .withNextHop(Arrays.asList("frunj", "hrjhiycbauseqn", "zkvihvtu", "y")),
+                new StaticRouteProperties().withPrefix("sqwzszoszjgzu")
+                    .withNextHop(Arrays.asList("fnyskwwu", "qhcza", "ojmslhip", "ukvbljpxpr"))));
         model = BinaryData.fromObject(model).toObject(ConditionalDefaultRouteProperties.class);
-        Assertions.assertEquals("dgsapleqfg", model.ipv4Routes().get(0).prefix());
-        Assertions.assertEquals("env", model.ipv4Routes().get(0).nextHop().get(0));
-        Assertions.assertEquals("btuxlbpxrhrfje", model.ipv6Routes().get(0).prefix());
-        Assertions.assertEquals("azwef", model.ipv6Routes().get(0).nextHop().get(0));
+        Assertions.assertEquals("rvkgpogplbjuvl", model.ipv4Routes().get(0).prefix());
+        Assertions.assertEquals("xnrnjh", model.ipv4Routes().get(0).nextHop().get(0));
+        Assertions.assertEquals("poriwbwggijtspzj", model.ipv6Routes().get(0).prefix());
+        Assertions.assertEquals("rhikwsbzrhdug", model.ipv6Routes().get(0).nextHop().get(0));
     }
 }

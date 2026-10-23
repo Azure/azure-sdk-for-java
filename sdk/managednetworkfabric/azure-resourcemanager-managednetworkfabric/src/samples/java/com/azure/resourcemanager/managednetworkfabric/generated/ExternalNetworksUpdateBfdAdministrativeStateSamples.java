@@ -13,7 +13,7 @@ import com.azure.resourcemanager.managednetworkfabric.models.ExternalNetworkUpda
  */
 public final class ExternalNetworksUpdateBfdAdministrativeStateSamples {
     /*
-     * x-ms-original-file: 2025-07-15/ExternalNetworks_UpdateBfdAdministrativeState.json
+     * x-ms-original-file: 2026-01-15-preview/ExternalNetworks_UpdateBfdAdministrativeState.json
      */
     /**
      * Sample code: ExternalNetworks_UpdateBfdAdministrativeState.

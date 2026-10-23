@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class InternetGatewaysUpdateSamples {
     /*
-     * x-ms-original-file: 2025-07-15/InternetGateways_Update.json
+     * x-ms-original-file: 2026-01-15-preview/InternetGateways_Update.json
      */
     /**
      * Sample code: InternetGateways_Update_MaximumSet_Gen.

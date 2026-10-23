@@ -32,7 +32,7 @@ import java.util.Arrays;
  */
 public final class InternalNetworksCreateSamples {
     /*
-     * x-ms-original-file: 2025-07-15/InternalNetworks_Create.json
+     * x-ms-original-file: 2026-01-15-preview/InternalNetworks_Create.json
      */
     /**
      * Sample code: InternalNetworks_Create_MaximumSet_Gen.

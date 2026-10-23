@@ -9,7 +9,7 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
  */
 public final class NetworkDeviceSkusGetSamples {
     /*
-     * x-ms-original-file: 2025-07-15/NetworkDeviceSkus_Get.json
+     * x-ms-original-file: 2026-01-15-preview/NetworkDeviceSkus_Get.json
      */
     /**
      * Sample code: NetworkDeviceSkus_Get_MaximumSet_Gen.

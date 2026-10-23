@@ -12,11 +12,11 @@ public final class DeviceInterfacePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DeviceInterfaceProperties model = BinaryData.fromString(
-            "{\"identifier\":\"cqeb\",\"interfaceType\":\"rdjomlnwsb\",\"supportedConnectorTypes\":[{\"connectorType\":\"sflxkqesd\",\"maxSpeedInMbps\":1696526892}]}")
+            "{\"identifier\":\"cv\",\"interfaceType\":\"zulrqt\",\"supportedConnectorTypes\":[{\"connectorType\":\"ezp\",\"maxSpeedInMbps\":1784958915},{\"connectorType\":\"yfmx\",\"maxSpeedInMbps\":1297191670},{\"connectorType\":\"zf\",\"maxSpeedInMbps\":493502164},{\"connectorType\":\"no\",\"maxSpeedInMbps\":1039114475}]}")
             .toObject(DeviceInterfaceProperties.class);
-        Assertions.assertEquals("cqeb", model.identifier());
-        Assertions.assertEquals("rdjomlnwsb", model.interfaceType());
-        Assertions.assertEquals("sflxkqesd", model.supportedConnectorTypes().get(0).connectorType());
-        Assertions.assertEquals(1696526892, model.supportedConnectorTypes().get(0).maxSpeedInMbps());
+        Assertions.assertEquals("cv", model.identifier());
+        Assertions.assertEquals("zulrqt", model.interfaceType());
+        Assertions.assertEquals("ezp", model.supportedConnectorTypes().get(0).connectorType());
+        Assertions.assertEquals(1784958915, model.supportedConnectorTypes().get(0).maxSpeedInMbps());
     }
 }

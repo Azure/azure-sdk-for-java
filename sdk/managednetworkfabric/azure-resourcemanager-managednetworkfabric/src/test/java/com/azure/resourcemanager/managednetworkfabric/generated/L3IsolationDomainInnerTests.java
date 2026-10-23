@@ -29,83 +29,79 @@ public final class L3IsolationDomainInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         L3IsolationDomainInner model = BinaryData.fromString(
-            "{\"properties\":{\"annotation\":\"wsedvesk\",\"redistributeConnectedSubnets\":\"False\",\"redistributeStaticRoutes\":\"True\",\"aggregateRouteConfiguration\":{\"ipv4Routes\":[{\"prefix\":\"gfnzh\"},{\"prefix\":\"tmjtsghp\"}],\"ipv6Routes\":[{\"prefix\":\"cp\"},{\"prefix\":\"arpzeqacdldtzm\"},{\"prefix\":\"ypefcpczshnuqnda\"},{\"prefix\":\"zupfkhuytuszxhm\"}]},\"connectedSubnetRoutePolicy\":{\"exportRoutePolicy\":{\"exportIpv4RoutePolicyId\":\"egw\",\"exportIpv6RoutePolicyId\":\"ukvzwydwttha\"}},\"networkFabricId\":\"kgkskjivbsshaj\",\"staticRouteRoutePolicy\":{\"exportRoutePolicy\":{\"exportIpv4RoutePolicyId\":\"peexpgeumilhwuit\",\"exportIpv6RoutePolicyId\":\"exyionofninbd\"}},\"uniqueRdConfiguration\":{\"uniqueRds\":[\"cw\",\"qrs\",\"pcbbprtugav\"]},\"v4routePrefixLimit\":{\"hardLimit\":45512614,\"threshold\":439270672},\"v6routePrefixLimit\":{\"hardLimit\":357896673,\"threshold\":284686585},\"lastOperation\":{\"details\":\"dr\"},\"exportPolicyConfiguration\":{\"exportPolicies\":[\"LocalRib\",\"LocalRib\",\"All\"]},\"configurationState\":\"ErrorProvisioning\",\"provisioningState\":\"Failed\",\"administrativeState\":\"Enabled\"},\"identity\":{\"principalId\":\"xsgm\",\"tenantId\":\"wvif\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"funlcpxxvi\":{\"principalId\":\"if\",\"clientId\":\"cjxwkloozrvtxvcm\"}}},\"location\":\"eyngjg\",\"tags\":{\"gglpmcrdcuelj\":\"uvp\"},\"id\":\"iahxmfqryarvs\",\"name\":\"zqbglcjkays\",\"type\":\"thzodubtlmjtgbl\"}")
+            "{\"properties\":{\"annotation\":\"wctofldseacdhz\",\"redistributeConnectedSubnets\":\"False\",\"redistributeStaticRoutes\":\"True\",\"aggregateRouteConfiguration\":{\"ipv4Routes\":[{\"prefix\":\"rwjiyew\"},{\"prefix\":\"fj\"}],\"ipv6Routes\":[{\"prefix\":\"qrxetfgcwvr\"},{\"prefix\":\"mdqntycnaw\"},{\"prefix\":\"hvmaxgnuyeamcmhu\"}]},\"connectedSubnetRoutePolicy\":{\"exportRoutePolicy\":{\"exportIpv4RoutePolicyId\":\"cehokw\",\"exportIpv6RoutePolicyId\":\"qtwloes\"}},\"networkFabricId\":\"rg\",\"staticRouteRoutePolicy\":{\"exportRoutePolicy\":{\"exportIpv4RoutePolicyId\":\"nyrukoil\",\"exportIpv6RoutePolicyId\":\"iduw\"}},\"uniqueRdConfiguration\":{\"uniqueRds\":[\"pjlh\",\"yxpzruzythqk\",\"whbgxvellvul\",\"xdm\"]},\"v4routePrefixLimit\":{\"hardLimit\":857086606,\"threshold\":1665668801},\"v6routePrefixLimit\":{\"hardLimit\":352876563,\"threshold\":1377447657},\"lastOperation\":{\"details\":\"ymffhmjpddnyx\"},\"exportPolicyConfiguration\":{\"exportPolicies\":[\"Post-Policy\"]},\"configurationState\":\"ErrorDeprovisioning\",\"provisioningState\":\"Canceled\",\"administrativeState\":\"Enabled\"},\"identity\":{\"principalId\":\"rb\",\"tenantId\":\"vnmdyfoeboj\",\"type\":\"None\",\"userAssignedIdentities\":{\"cwm\":{\"principalId\":\"laohoqkp\",\"clientId\":\"nqjilaywk\"},\"bbjwhlw\":{\"principalId\":\"yrilmhxdqaolf\",\"clientId\":\"nkkbjpjvlywltmfw\"}}},\"location\":\"fnqzocr\",\"tags\":{\"ncaqttiekoifu\":\"czeuntgx\",\"yri\":\"nyttzgix\",\"lqtxnrflkndrn\":\"lgmgbe\"},\"id\":\"pgfjo\",\"name\":\"hdaqotwfhipxwg\",\"type\":\"abvcipowzaf\"}")
             .toObject(L3IsolationDomainInner.class);
-        Assertions.assertEquals("eyngjg", model.location());
-        Assertions.assertEquals("uvp", model.tags().get("gglpmcrdcuelj"));
-        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("wsedvesk", model.annotation());
+        Assertions.assertEquals("fnqzocr", model.location());
+        Assertions.assertEquals("czeuntgx", model.tags().get("ncaqttiekoifu"));
+        Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.identity().type());
+        Assertions.assertEquals("wctofldseacdhz", model.annotation());
         Assertions.assertEquals(RedistributeConnectedSubnets.FALSE, model.redistributeConnectedSubnets());
         Assertions.assertEquals(RedistributeStaticRoutes.TRUE, model.redistributeStaticRoutes());
-        Assertions.assertEquals("gfnzh", model.aggregateRouteConfiguration().ipv4Routes().get(0).prefix());
-        Assertions.assertEquals("cp", model.aggregateRouteConfiguration().ipv6Routes().get(0).prefix());
-        Assertions.assertEquals("egw",
+        Assertions.assertEquals("rwjiyew", model.aggregateRouteConfiguration().ipv4Routes().get(0).prefix());
+        Assertions.assertEquals("qrxetfgcwvr", model.aggregateRouteConfiguration().ipv6Routes().get(0).prefix());
+        Assertions.assertEquals("cehokw",
             model.connectedSubnetRoutePolicy().exportRoutePolicy().exportIpv4RoutePolicyId());
-        Assertions.assertEquals("ukvzwydwttha",
+        Assertions.assertEquals("qtwloes",
             model.connectedSubnetRoutePolicy().exportRoutePolicy().exportIpv6RoutePolicyId());
-        Assertions.assertEquals("kgkskjivbsshaj", model.networkFabricId());
-        Assertions.assertEquals("peexpgeumilhwuit",
+        Assertions.assertEquals("rg", model.networkFabricId());
+        Assertions.assertEquals("nyrukoil",
             model.staticRouteRoutePolicy().exportRoutePolicy().exportIpv4RoutePolicyId());
-        Assertions.assertEquals("exyionofninbd",
-            model.staticRouteRoutePolicy().exportRoutePolicy().exportIpv6RoutePolicyId());
-        Assertions.assertEquals(45512614, model.v4routePrefixLimit().hardLimit());
-        Assertions.assertEquals(439270672, model.v4routePrefixLimit().threshold());
-        Assertions.assertEquals(357896673, model.v6routePrefixLimit().hardLimit());
-        Assertions.assertEquals(284686585, model.v6routePrefixLimit().threshold());
-        Assertions.assertEquals(BmpExportPolicy.LOCAL_RIB, model.exportPolicyConfiguration().exportPolicies().get(0));
+        Assertions.assertEquals("iduw", model.staticRouteRoutePolicy().exportRoutePolicy().exportIpv6RoutePolicyId());
+        Assertions.assertEquals(857086606, model.v4routePrefixLimit().hardLimit());
+        Assertions.assertEquals(1665668801, model.v4routePrefixLimit().threshold());
+        Assertions.assertEquals(352876563, model.v6routePrefixLimit().hardLimit());
+        Assertions.assertEquals(1377447657, model.v6routePrefixLimit().threshold());
+        Assertions.assertEquals(BmpExportPolicy.POST_POLICY, model.exportPolicyConfiguration().exportPolicies().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        L3IsolationDomainInner model = new L3IsolationDomainInner().withLocation("eyngjg")
-            .withTags(mapOf("gglpmcrdcuelj", "uvp"))
-            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
-                .withUserAssignedIdentities(mapOf("funlcpxxvi", new UserAssignedIdentity())))
-            .withAnnotation("wsedvesk")
+        L3IsolationDomainInner model = new L3IsolationDomainInner().withLocation("fnqzocr")
+            .withTags(mapOf("ncaqttiekoifu", "czeuntgx", "yri", "nyttzgix", "lqtxnrflkndrn", "lgmgbe"))
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE)
+                .withUserAssignedIdentities(
+                    mapOf("cwm", new UserAssignedIdentity(), "bbjwhlw", new UserAssignedIdentity())))
+            .withAnnotation("wctofldseacdhz")
             .withRedistributeConnectedSubnets(RedistributeConnectedSubnets.FALSE)
             .withRedistributeStaticRoutes(RedistributeStaticRoutes.TRUE)
             .withAggregateRouteConfiguration(new AggregateRouteConfiguration()
-                .withIpv4Routes(Arrays.asList(new AggregateRoute().withPrefix("gfnzh"),
-                    new AggregateRoute().withPrefix("tmjtsghp")))
-                .withIpv6Routes(Arrays.asList(new AggregateRoute().withPrefix("cp"),
-                    new AggregateRoute().withPrefix("arpzeqacdldtzm"),
-                    new AggregateRoute().withPrefix("ypefcpczshnuqnda"),
-                    new AggregateRoute().withPrefix("zupfkhuytuszxhm"))))
-            .withConnectedSubnetRoutePolicy(new ConnectedSubnetRoutePolicy()
-                .withExportRoutePolicy(new L3ExportRoutePolicy().withExportIpv4RoutePolicyId("egw")
-                    .withExportIpv6RoutePolicyId("ukvzwydwttha")))
-            .withNetworkFabricId("kgkskjivbsshaj")
-            .withStaticRouteRoutePolicy(new StaticRouteRoutePolicy()
-                .withExportRoutePolicy(new L3ExportRoutePolicy().withExportIpv4RoutePolicyId("peexpgeumilhwuit")
-                    .withExportIpv6RoutePolicyId("exyionofninbd")))
+                .withIpv4Routes(
+                    Arrays.asList(new AggregateRoute().withPrefix("rwjiyew"), new AggregateRoute().withPrefix("fj")))
+                .withIpv6Routes(Arrays.asList(new AggregateRoute().withPrefix("qrxetfgcwvr"),
+                    new AggregateRoute().withPrefix("mdqntycnaw"),
+                    new AggregateRoute().withPrefix("hvmaxgnuyeamcmhu"))))
+            .withConnectedSubnetRoutePolicy(new ConnectedSubnetRoutePolicy().withExportRoutePolicy(
+                new L3ExportRoutePolicy().withExportIpv4RoutePolicyId("cehokw").withExportIpv6RoutePolicyId("qtwloes")))
+            .withNetworkFabricId("rg")
+            .withStaticRouteRoutePolicy(new StaticRouteRoutePolicy().withExportRoutePolicy(
+                new L3ExportRoutePolicy().withExportIpv4RoutePolicyId("nyrukoil").withExportIpv6RoutePolicyId("iduw")))
             .withUniqueRdConfiguration(new L3UniqueRouteDistinguisherProperties())
-            .withV4routePrefixLimit(new RoutePrefixLimitProperties().withHardLimit(45512614).withThreshold(439270672))
-            .withV6routePrefixLimit(new RoutePrefixLimitProperties().withHardLimit(357896673).withThreshold(284686585))
-            .withExportPolicyConfiguration(new BmpExportPolicyProperties().withExportPolicies(
-                Arrays.asList(BmpExportPolicy.LOCAL_RIB, BmpExportPolicy.LOCAL_RIB, BmpExportPolicy.ALL)));
+            .withV4routePrefixLimit(new RoutePrefixLimitProperties().withHardLimit(857086606).withThreshold(1665668801))
+            .withV6routePrefixLimit(new RoutePrefixLimitProperties().withHardLimit(352876563).withThreshold(1377447657))
+            .withExportPolicyConfiguration(
+                new BmpExportPolicyProperties().withExportPolicies(Arrays.asList(BmpExportPolicy.POST_POLICY)));
         model = BinaryData.fromObject(model).toObject(L3IsolationDomainInner.class);
-        Assertions.assertEquals("eyngjg", model.location());
-        Assertions.assertEquals("uvp", model.tags().get("gglpmcrdcuelj"));
-        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("wsedvesk", model.annotation());
+        Assertions.assertEquals("fnqzocr", model.location());
+        Assertions.assertEquals("czeuntgx", model.tags().get("ncaqttiekoifu"));
+        Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.identity().type());
+        Assertions.assertEquals("wctofldseacdhz", model.annotation());
         Assertions.assertEquals(RedistributeConnectedSubnets.FALSE, model.redistributeConnectedSubnets());
         Assertions.assertEquals(RedistributeStaticRoutes.TRUE, model.redistributeStaticRoutes());
-        Assertions.assertEquals("gfnzh", model.aggregateRouteConfiguration().ipv4Routes().get(0).prefix());
-        Assertions.assertEquals("cp", model.aggregateRouteConfiguration().ipv6Routes().get(0).prefix());
-        Assertions.assertEquals("egw",
+        Assertions.assertEquals("rwjiyew", model.aggregateRouteConfiguration().ipv4Routes().get(0).prefix());
+        Assertions.assertEquals("qrxetfgcwvr", model.aggregateRouteConfiguration().ipv6Routes().get(0).prefix());
+        Assertions.assertEquals("cehokw",
             model.connectedSubnetRoutePolicy().exportRoutePolicy().exportIpv4RoutePolicyId());
-        Assertions.assertEquals("ukvzwydwttha",
+        Assertions.assertEquals("qtwloes",
             model.connectedSubnetRoutePolicy().exportRoutePolicy().exportIpv6RoutePolicyId());
-        Assertions.assertEquals("kgkskjivbsshaj", model.networkFabricId());
-        Assertions.assertEquals("peexpgeumilhwuit",
+        Assertions.assertEquals("rg", model.networkFabricId());
+        Assertions.assertEquals("nyrukoil",
             model.staticRouteRoutePolicy().exportRoutePolicy().exportIpv4RoutePolicyId());
-        Assertions.assertEquals("exyionofninbd",
-            model.staticRouteRoutePolicy().exportRoutePolicy().exportIpv6RoutePolicyId());
-        Assertions.assertEquals(45512614, model.v4routePrefixLimit().hardLimit());
-        Assertions.assertEquals(439270672, model.v4routePrefixLimit().threshold());
-        Assertions.assertEquals(357896673, model.v6routePrefixLimit().hardLimit());
-        Assertions.assertEquals(284686585, model.v6routePrefixLimit().threshold());
-        Assertions.assertEquals(BmpExportPolicy.LOCAL_RIB, model.exportPolicyConfiguration().exportPolicies().get(0));
+        Assertions.assertEquals("iduw", model.staticRouteRoutePolicy().exportRoutePolicy().exportIpv6RoutePolicyId());
+        Assertions.assertEquals(857086606, model.v4routePrefixLimit().hardLimit());
+        Assertions.assertEquals(1665668801, model.v4routePrefixLimit().threshold());
+        Assertions.assertEquals(352876563, model.v6routePrefixLimit().hardLimit());
+        Assertions.assertEquals(1377447657, model.v6routePrefixLimit().threshold());
+        Assertions.assertEquals(BmpExportPolicy.POST_POLICY, model.exportPolicyConfiguration().exportPolicies().get(0));
     }
 
     // Use "Map.of" if available

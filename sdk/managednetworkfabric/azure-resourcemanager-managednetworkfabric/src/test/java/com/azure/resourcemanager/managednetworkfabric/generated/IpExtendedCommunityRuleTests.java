@@ -14,21 +14,21 @@ public final class IpExtendedCommunityRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IpExtendedCommunityRule model = BinaryData.fromString(
-            "{\"action\":\"Permit\",\"sequenceNumber\":606765941095041442,\"routeTargets\":[\"ybfueqfrojsydgr\",\"ydkygywezskieca\"]}")
+            "{\"action\":\"Deny\",\"sequenceNumber\":4680478022700249819,\"routeTargets\":[\"noq\",\"xtdisnjevhd\",\"mydidwhepfw\"]}")
             .toObject(IpExtendedCommunityRule.class);
-        Assertions.assertEquals(CommunityActionTypes.PERMIT, model.action());
-        Assertions.assertEquals(606765941095041442L, model.sequenceNumber());
-        Assertions.assertEquals("ybfueqfrojsydgr", model.routeTargets().get(0));
+        Assertions.assertEquals(CommunityActionTypes.DENY, model.action());
+        Assertions.assertEquals(4680478022700249819L, model.sequenceNumber());
+        Assertions.assertEquals("noq", model.routeTargets().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IpExtendedCommunityRule model = new IpExtendedCommunityRule().withAction(CommunityActionTypes.PERMIT)
-            .withSequenceNumber(606765941095041442L)
-            .withRouteTargets(Arrays.asList("ybfueqfrojsydgr", "ydkygywezskieca"));
+        IpExtendedCommunityRule model = new IpExtendedCommunityRule().withAction(CommunityActionTypes.DENY)
+            .withSequenceNumber(4680478022700249819L)
+            .withRouteTargets(Arrays.asList("noq", "xtdisnjevhd", "mydidwhepfw"));
         model = BinaryData.fromObject(model).toObject(IpExtendedCommunityRule.class);
-        Assertions.assertEquals(CommunityActionTypes.PERMIT, model.action());
-        Assertions.assertEquals(606765941095041442L, model.sequenceNumber());
-        Assertions.assertEquals("ybfueqfrojsydgr", model.routeTargets().get(0));
+        Assertions.assertEquals(CommunityActionTypes.DENY, model.action());
+        Assertions.assertEquals(4680478022700249819L, model.sequenceNumber());
+        Assertions.assertEquals("noq", model.routeTargets().get(0));
     }
 }

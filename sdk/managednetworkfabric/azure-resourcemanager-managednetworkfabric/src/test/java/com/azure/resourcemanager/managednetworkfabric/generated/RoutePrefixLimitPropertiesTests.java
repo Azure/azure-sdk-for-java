@@ -11,18 +11,18 @@ import org.junit.jupiter.api.Assertions;
 public final class RoutePrefixLimitPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RoutePrefixLimitProperties model = BinaryData.fromString("{\"hardLimit\":1232558880,\"threshold\":918409300}")
+        RoutePrefixLimitProperties model = BinaryData.fromString("{\"hardLimit\":1031012215,\"threshold\":1773397214}")
             .toObject(RoutePrefixLimitProperties.class);
-        Assertions.assertEquals(1232558880, model.hardLimit());
-        Assertions.assertEquals(918409300, model.threshold());
+        Assertions.assertEquals(1031012215, model.hardLimit());
+        Assertions.assertEquals(1773397214, model.threshold());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RoutePrefixLimitProperties model
-            = new RoutePrefixLimitProperties().withHardLimit(1232558880).withThreshold(918409300);
+            = new RoutePrefixLimitProperties().withHardLimit(1031012215).withThreshold(1773397214);
         model = BinaryData.fromObject(model).toObject(RoutePrefixLimitProperties.class);
-        Assertions.assertEquals(1232558880, model.hardLimit());
-        Assertions.assertEquals(918409300, model.threshold());
+        Assertions.assertEquals(1031012215, model.hardLimit());
+        Assertions.assertEquals(1773397214, model.threshold());
     }
 }

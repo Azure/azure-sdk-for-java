@@ -234,4 +234,18 @@ public interface ManagedNetworkFabricManagementClient {
      * @return the NetworkBootstrapInterfacesClient object.
      */
     NetworkBootstrapInterfacesClient getNetworkBootstrapInterfaces();
+
+    /**
+     * Gets the EdgeConnectorsClient object to access its operations.
+     * 
+     * @return the EdgeConnectorsClient object.
+     */
+    EdgeConnectorsClient getEdgeConnectors();
+
+    /**
+     * Gets the FabricsClient object to access its operations.
+     * 
+     * @return the FabricsClient object.
+     */
+    FabricsClient getFabrics();
 }

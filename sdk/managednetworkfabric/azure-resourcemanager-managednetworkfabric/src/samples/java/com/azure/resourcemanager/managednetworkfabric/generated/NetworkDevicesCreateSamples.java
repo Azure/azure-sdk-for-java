@@ -17,7 +17,7 @@ import java.util.Map;
  */
 public final class NetworkDevicesCreateSamples {
     /*
-     * x-ms-original-file: 2025-07-15/NetworkDevices_Create.json
+     * x-ms-original-file: 2026-01-15-preview/NetworkDevices_Create.json
      */
     /**
      * Sample code: NetworkDevices_Create_MaximumSet_Gen.

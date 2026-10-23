@@ -15,40 +15,31 @@ public final class ExternalNetworkStaticRouteConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExternalNetworkStaticRouteConfiguration model = BinaryData.fromString(
-            "{\"bfdConfiguration\":{\"administrativeState\":\"Disabled\",\"intervalInMilliSeconds\":1774178177,\"multiplier\":1546981752},\"ipv4Routes\":[{\"prefix\":\"ajbvbn\",\"nextHop\":[\"demdidackzi\",\"gzwdydamis\",\"pztdivyk\"]},{\"prefix\":\"xkqejtpjfojiunr\",\"nextHop\":[\"hxuk\",\"sykdtoi\",\"oancdrco\",\"nvxuldxonckb\"]},{\"prefix\":\"lblfxlupibaqzizx\",\"nextHop\":[\"zweghlwwbogvg\",\"klqiyndveqel\",\"b\"]},{\"prefix\":\"vd\",\"nextHop\":[\"rk\",\"xsg\",\"znsvlrd\",\"movpimyndnoxax\"]}],\"ipv6Routes\":[{\"prefix\":\"aqotnndxolousdv\",\"nextHop\":[\"ptqmawzjdrpiz\"]},{\"prefix\":\"ulgyctsdbtqgku\",\"nextHop\":[\"sooxrqw\",\"eurbtigapdyarik\"]}]}")
+            "{\"bfdConfiguration\":{\"administrativeState\":\"MAT\",\"intervalInMilliSeconds\":183545579,\"multiplier\":1641452545},\"ipv4Routes\":[{\"prefix\":\"b\",\"nextHop\":[\"glhzqp\",\"zbawkikcdgfh\"]}],\"ipv6Routes\":[{\"prefix\":\"dpjeyoqxd\",\"nextHop\":[\"ecf\",\"wh\",\"gxsur\",\"jqrshz\"]}]}")
             .toObject(ExternalNetworkStaticRouteConfiguration.class);
-        Assertions.assertEquals(1774178177, model.bfdConfiguration().intervalInMilliSeconds());
-        Assertions.assertEquals(1546981752, model.bfdConfiguration().multiplier());
-        Assertions.assertEquals("ajbvbn", model.ipv4Routes().get(0).prefix());
-        Assertions.assertEquals("demdidackzi", model.ipv4Routes().get(0).nextHop().get(0));
-        Assertions.assertEquals("aqotnndxolousdv", model.ipv6Routes().get(0).prefix());
-        Assertions.assertEquals("ptqmawzjdrpiz", model.ipv6Routes().get(0).nextHop().get(0));
+        Assertions.assertEquals(183545579, model.bfdConfiguration().intervalInMilliSeconds());
+        Assertions.assertEquals(1641452545, model.bfdConfiguration().multiplier());
+        Assertions.assertEquals("b", model.ipv4Routes().get(0).prefix());
+        Assertions.assertEquals("glhzqp", model.ipv4Routes().get(0).nextHop().get(0));
+        Assertions.assertEquals("dpjeyoqxd", model.ipv6Routes().get(0).prefix());
+        Assertions.assertEquals("ecf", model.ipv6Routes().get(0).nextHop().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ExternalNetworkStaticRouteConfiguration model = new ExternalNetworkStaticRouteConfiguration()
             .withBfdConfiguration(
-                new BfdConfiguration().withIntervalInMilliSeconds(1774178177).withMultiplier(1546981752))
+                new BfdConfiguration().withIntervalInMilliSeconds(183545579).withMultiplier(1641452545))
             .withIpv4Routes(Arrays.asList(
-                new StaticRouteProperties().withPrefix("ajbvbn")
-                    .withNextHop(Arrays.asList("demdidackzi", "gzwdydamis", "pztdivyk")),
-                new StaticRouteProperties().withPrefix("xkqejtpjfojiunr")
-                    .withNextHop(Arrays.asList("hxuk", "sykdtoi", "oancdrco", "nvxuldxonckb")),
-                new StaticRouteProperties().withPrefix("lblfxlupibaqzizx")
-                    .withNextHop(Arrays.asList("zweghlwwbogvg", "klqiyndveqel", "b")),
-                new StaticRouteProperties().withPrefix("vd")
-                    .withNextHop(Arrays.asList("rk", "xsg", "znsvlrd", "movpimyndnoxax"))))
-            .withIpv6Routes(Arrays.asList(
-                new StaticRouteProperties().withPrefix("aqotnndxolousdv").withNextHop(Arrays.asList("ptqmawzjdrpiz")),
-                new StaticRouteProperties().withPrefix("ulgyctsdbtqgku")
-                    .withNextHop(Arrays.asList("sooxrqw", "eurbtigapdyarik"))));
+                new StaticRouteProperties().withPrefix("b").withNextHop(Arrays.asList("glhzqp", "zbawkikcdgfh"))))
+            .withIpv6Routes(Arrays.asList(new StaticRouteProperties().withPrefix("dpjeyoqxd")
+                .withNextHop(Arrays.asList("ecf", "wh", "gxsur", "jqrshz"))));
         model = BinaryData.fromObject(model).toObject(ExternalNetworkStaticRouteConfiguration.class);
-        Assertions.assertEquals(1774178177, model.bfdConfiguration().intervalInMilliSeconds());
-        Assertions.assertEquals(1546981752, model.bfdConfiguration().multiplier());
-        Assertions.assertEquals("ajbvbn", model.ipv4Routes().get(0).prefix());
-        Assertions.assertEquals("demdidackzi", model.ipv4Routes().get(0).nextHop().get(0));
-        Assertions.assertEquals("aqotnndxolousdv", model.ipv6Routes().get(0).prefix());
-        Assertions.assertEquals("ptqmawzjdrpiz", model.ipv6Routes().get(0).nextHop().get(0));
+        Assertions.assertEquals(183545579, model.bfdConfiguration().intervalInMilliSeconds());
+        Assertions.assertEquals(1641452545, model.bfdConfiguration().multiplier());
+        Assertions.assertEquals("b", model.ipv4Routes().get(0).prefix());
+        Assertions.assertEquals("glhzqp", model.ipv4Routes().get(0).nextHop().get(0));
+        Assertions.assertEquals("dpjeyoqxd", model.ipv6Routes().get(0).prefix());
+        Assertions.assertEquals("ecf", model.ipv6Routes().get(0).nextHop().get(0));
     }
 }

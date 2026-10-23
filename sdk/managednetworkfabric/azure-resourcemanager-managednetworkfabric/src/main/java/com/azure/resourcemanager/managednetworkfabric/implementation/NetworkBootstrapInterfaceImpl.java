@@ -13,6 +13,7 @@ import com.azure.resourcemanager.managednetworkfabric.models.ConfigurationState;
 import com.azure.resourcemanager.managednetworkfabric.models.InterfaceType;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkBootstrapInterface;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkBootstrapInterfacePatch;
+import com.azure.resourcemanager.managednetworkfabric.models.OperationalState;
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
 import com.azure.resourcemanager.managednetworkfabric.models.UpdateAdministrativeState;
 
@@ -80,6 +81,10 @@ public final class NetworkBootstrapInterfaceImpl
 
     public String serialNumber() {
         return this.innerModel().serialNumber();
+    }
+
+    public OperationalState operationalState() {
+        return this.innerModel().operationalState();
     }
 
     public String annotation() {

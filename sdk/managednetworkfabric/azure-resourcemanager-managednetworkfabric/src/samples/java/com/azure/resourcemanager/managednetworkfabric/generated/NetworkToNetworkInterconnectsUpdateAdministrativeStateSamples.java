@@ -13,7 +13,7 @@ import java.util.Arrays;
  */
 public final class NetworkToNetworkInterconnectsUpdateAdministrativeStateSamples {
     /*
-     * x-ms-original-file: 2025-07-15/NetworkToNetworkInterconnects_UpdateAdministrativeState.json
+     * x-ms-original-file: 2026-01-15-preview/NetworkToNetworkInterconnects_UpdateAdministrativeState.json
      */
     /**
      * Sample code: NetworkToNetworkInterconnects_UpdateAdministrativeState_MaximumSet_Gen.
@@ -24,9 +24,7 @@ public final class NetworkToNetworkInterconnectsUpdateAdministrativeStateSamples
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
         manager.networkToNetworkInterconnects()
             .updateAdministrativeState("example-rg", "example-nf", "example-nni",
-                new UpdateAdministrativeState().withResourceIds(Arrays.asList(
-                    "/subscriptions/0000ABCD-0A0B-0000-0000-000000ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-nf/networkToNetworkInterconnects/example-nni"))
-                    .withState(EnableDisableState.ENABLE),
+                new UpdateAdministrativeState().withResourceIds(Arrays.asList("")).withState(EnableDisableState.ENABLE),
                 com.azure.core.util.Context.NONE);
     }
 }

@@ -23,67 +23,66 @@ public final class BgpConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BgpConfiguration model = BinaryData.fromString(
-            "{\"bfdConfiguration\":{\"administrativeState\":\"Disabled\",\"intervalInMilliSeconds\":1684190073,\"multiplier\":417743478},\"defaultRouteOriginate\":\"True\",\"allowAS\":1136445930,\"allowASOverride\":\"Disable\",\"fabricASN\":4456587067686960599,\"peerASN\":5963284589021239728,\"ipv4ListenRangePrefixes\":[\"ekaj\"],\"ipv6ListenRangePrefixes\":[\"zg\",\"norbjgmnzjot\",\"mrxkhlobvv\",\"bhvhdiqay\"],\"ipv4NeighborAddress\":[{\"address\":\"yu\",\"bfdAdministrativeState\":\"Enabled\",\"bgpAdministrativeState\":\"Enabled\",\"configurationState\":\"Accepted\"},{\"address\":\"lvhyibdrqrswhbu\",\"bfdAdministrativeState\":\"Disabled\",\"bgpAdministrativeState\":\"Enabled\",\"configurationState\":\"Failed\"}],\"ipv6NeighborAddress\":[{\"address\":\"xztfwfqchvczevj\",\"bfdAdministrativeState\":\"Enabled\",\"bgpAdministrativeState\":\"Disabled\",\"configurationState\":\"Deprovisioning\"},{\"address\":\"v\",\"bfdAdministrativeState\":\"Disabled\",\"bgpAdministrativeState\":\"Disabled\",\"configurationState\":\"Provisioned\"},{\"address\":\"z\",\"bfdAdministrativeState\":\"RMA\",\"bgpAdministrativeState\":\"Disabled\",\"configurationState\":\"Rejected\"},{\"address\":\"hqyhwqw\",\"bfdAdministrativeState\":\"Enabled\",\"bgpAdministrativeState\":\"Disabled\",\"configurationState\":\"Succeeded\"}],\"bmpConfiguration\":{\"neighborIpExclusions\":[\"zeoxin\",\"greohtwhlpuzjp\",\"eezn\"],\"bmpConfigurationState\":\"Enabled\",\"exportPolicyConfiguration\":{\"exportPolicies\":[\"All\"]}},\"v4OverV6BgpSession\":\"Disabled\",\"v6OverV4BgpSession\":\"Disabled\",\"annotation\":\"zlbciphmse\"}")
+            "{\"bfdConfiguration\":{\"administrativeState\":\"Enabled\",\"intervalInMilliSeconds\":1625904109,\"multiplier\":1268752565},\"defaultRouteOriginate\":\"False\",\"allowAS\":417743478,\"allowASOverride\":\"Enable\",\"fabricASN\":4880998101692983054,\"peerASN\":1021873909266464669,\"ipv4ListenRangePrefixes\":[\"aqgzekajclyzgs\",\"orbjg\"],\"ipv6ListenRangePrefixes\":[\"jotvmrxkhl\",\"bvvjbhvhdiq\",\"yfluiyuosnuudte\"],\"ipv4NeighborAddress\":[{\"address\":\"ibdrqrswhbuubpyr\",\"bfdAdministrativeState\":\"Disabled\",\"bgpAdministrativeState\":\"Disabled\",\"configurationState\":\"Provisioning\"},{\"address\":\"fwfqchvcze\",\"bfdAdministrativeState\":\"MAT\",\"bgpAdministrativeState\":\"Enabled\",\"configurationState\":\"Provisioning\"},{\"address\":\"fyvrtpqpemhzcgk\",\"bfdAdministrativeState\":\"RMA\",\"bgpAdministrativeState\":\"Disabled\",\"configurationState\":\"Deprovisioned\"}],\"ipv6NeighborAddress\":[{\"address\":\"qwemvxqabckmzeo\",\"bfdAdministrativeState\":\"Enabled\",\"bgpAdministrativeState\":\"Disabled\",\"configurationState\":\"Rejected\"},{\"address\":\"h\",\"bfdAdministrativeState\":\"Enabled\",\"bgpAdministrativeState\":\"Enabled\",\"configurationState\":\"ErrorProvisioning\"},{\"address\":\"pceeznzangprbf\",\"bfdAdministrativeState\":\"MAT\",\"bgpAdministrativeState\":\"Disabled\",\"configurationState\":\"Accepted\"}],\"bmpConfiguration\":{\"neighborIpExclusions\":[\"hm\",\"exroqrndkt\",\"fvo\"],\"bmpConfigurationState\":\"Enabled\",\"exportPolicyConfiguration\":{\"exportPolicies\":[\"All\",\"Pre-Policy\"]}},\"v4OverV6BgpSession\":\"Enabled\",\"v6OverV4BgpSession\":\"Disabled\",\"annotation\":\"gnixxowwzkyfwnw\"}")
             .toObject(BgpConfiguration.class);
-        Assertions.assertEquals("zlbciphmse", model.annotation());
-        Assertions.assertEquals(1684190073, model.bfdConfiguration().intervalInMilliSeconds());
-        Assertions.assertEquals(417743478, model.bfdConfiguration().multiplier());
-        Assertions.assertEquals(BooleanEnumProperty.TRUE, model.defaultRouteOriginate());
-        Assertions.assertEquals(1136445930, model.allowAS());
-        Assertions.assertEquals(AllowASOverride.DISABLE, model.allowASOverride());
-        Assertions.assertEquals(5963284589021239728L, model.peerAsn());
-        Assertions.assertEquals("ekaj", model.ipv4ListenRangePrefixes().get(0));
-        Assertions.assertEquals("zg", model.ipv6ListenRangePrefixes().get(0));
-        Assertions.assertEquals("yu", model.ipv4NeighborAddress().get(0).address());
-        Assertions.assertEquals("xztfwfqchvczevj", model.ipv6NeighborAddress().get(0).address());
-        Assertions.assertEquals("zeoxin", model.bmpConfiguration().neighborIpExclusions().get(0));
+        Assertions.assertEquals("gnixxowwzkyfwnw", model.annotation());
+        Assertions.assertEquals(1625904109, model.bfdConfiguration().intervalInMilliSeconds());
+        Assertions.assertEquals(1268752565, model.bfdConfiguration().multiplier());
+        Assertions.assertEquals(BooleanEnumProperty.FALSE, model.defaultRouteOriginate());
+        Assertions.assertEquals(417743478, model.allowAS());
+        Assertions.assertEquals(AllowASOverride.ENABLE, model.allowASOverride());
+        Assertions.assertEquals(1021873909266464669L, model.peerAsn());
+        Assertions.assertEquals("aqgzekajclyzgs", model.ipv4ListenRangePrefixes().get(0));
+        Assertions.assertEquals("jotvmrxkhl", model.ipv6ListenRangePrefixes().get(0));
+        Assertions.assertEquals("ibdrqrswhbuubpyr", model.ipv4NeighborAddress().get(0).address());
+        Assertions.assertEquals("qwemvxqabckmzeo", model.ipv6NeighborAddress().get(0).address());
+        Assertions.assertEquals("hm", model.bmpConfiguration().neighborIpExclusions().get(0));
         Assertions.assertEquals(BmpConfigurationState.ENABLED, model.bmpConfiguration().bmpConfigurationState());
         Assertions.assertEquals(BmpExportPolicy.ALL,
             model.bmpConfiguration().exportPolicyConfiguration().exportPolicies().get(0));
-        Assertions.assertEquals(V4OverV6BgpSessionState.DISABLED, model.v4OverV6BgpSession());
+        Assertions.assertEquals(V4OverV6BgpSessionState.ENABLED, model.v4OverV6BgpSession());
         Assertions.assertEquals(V6OverV4BgpSessionState.DISABLED, model.v6OverV4BgpSession());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BgpConfiguration model = new BgpConfiguration().withAnnotation("zlbciphmse")
+        BgpConfiguration model = new BgpConfiguration().withAnnotation("gnixxowwzkyfwnw")
             .withBfdConfiguration(
-                new BfdConfiguration().withIntervalInMilliSeconds(1684190073).withMultiplier(417743478))
-            .withDefaultRouteOriginate(BooleanEnumProperty.TRUE)
-            .withAllowAS(1136445930)
-            .withAllowASOverride(AllowASOverride.DISABLE)
-            .withPeerAsn(5963284589021239728L)
-            .withIpv4ListenRangePrefixes(Arrays.asList("ekaj"))
-            .withIpv6ListenRangePrefixes(Arrays.asList("zg", "norbjgmnzjot", "mrxkhlobvv", "bhvhdiqay"))
-            .withIpv4NeighborAddress(Arrays.asList(new NeighborAddress().withAddress("yu"),
-                new NeighborAddress().withAddress("lvhyibdrqrswhbu")))
-            .withIpv6NeighborAddress(Arrays.asList(new NeighborAddress().withAddress("xztfwfqchvczevj"),
-                new NeighborAddress().withAddress("v"), new NeighborAddress().withAddress("z"),
-                new NeighborAddress().withAddress("hqyhwqw")))
-            .withBmpConfiguration(new InternalNetworkBmpProperties()
-                .withNeighborIpExclusions(Arrays.asList("zeoxin", "greohtwhlpuzjp", "eezn"))
-                .withBmpConfigurationState(BmpConfigurationState.ENABLED)
-                .withExportPolicyConfiguration(
-                    new BmpExportPolicyProperties().withExportPolicies(Arrays.asList(BmpExportPolicy.ALL))))
-            .withV4OverV6BgpSession(V4OverV6BgpSessionState.DISABLED)
+                new BfdConfiguration().withIntervalInMilliSeconds(1625904109).withMultiplier(1268752565))
+            .withDefaultRouteOriginate(BooleanEnumProperty.FALSE)
+            .withAllowAS(417743478)
+            .withAllowASOverride(AllowASOverride.ENABLE)
+            .withPeerAsn(1021873909266464669L)
+            .withIpv4ListenRangePrefixes(Arrays.asList("aqgzekajclyzgs", "orbjg"))
+            .withIpv6ListenRangePrefixes(Arrays.asList("jotvmrxkhl", "bvvjbhvhdiq", "yfluiyuosnuudte"))
+            .withIpv4NeighborAddress(Arrays.asList(new NeighborAddress().withAddress("ibdrqrswhbuubpyr"),
+                new NeighborAddress().withAddress("fwfqchvcze"), new NeighborAddress().withAddress("fyvrtpqpemhzcgk")))
+            .withIpv6NeighborAddress(Arrays.asList(new NeighborAddress().withAddress("qwemvxqabckmzeo"),
+                new NeighborAddress().withAddress("h"), new NeighborAddress().withAddress("pceeznzangprbf")))
+            .withBmpConfiguration(
+                new InternalNetworkBmpProperties().withNeighborIpExclusions(Arrays.asList("hm", "exroqrndkt", "fvo"))
+                    .withBmpConfigurationState(BmpConfigurationState.ENABLED)
+                    .withExportPolicyConfiguration(new BmpExportPolicyProperties()
+                        .withExportPolicies(Arrays.asList(BmpExportPolicy.ALL, BmpExportPolicy.PRE_POLICY))))
+            .withV4OverV6BgpSession(V4OverV6BgpSessionState.ENABLED)
             .withV6OverV4BgpSession(V6OverV4BgpSessionState.DISABLED);
         model = BinaryData.fromObject(model).toObject(BgpConfiguration.class);
-        Assertions.assertEquals("zlbciphmse", model.annotation());
-        Assertions.assertEquals(1684190073, model.bfdConfiguration().intervalInMilliSeconds());
-        Assertions.assertEquals(417743478, model.bfdConfiguration().multiplier());
-        Assertions.assertEquals(BooleanEnumProperty.TRUE, model.defaultRouteOriginate());
-        Assertions.assertEquals(1136445930, model.allowAS());
-        Assertions.assertEquals(AllowASOverride.DISABLE, model.allowASOverride());
-        Assertions.assertEquals(5963284589021239728L, model.peerAsn());
-        Assertions.assertEquals("ekaj", model.ipv4ListenRangePrefixes().get(0));
-        Assertions.assertEquals("zg", model.ipv6ListenRangePrefixes().get(0));
-        Assertions.assertEquals("yu", model.ipv4NeighborAddress().get(0).address());
-        Assertions.assertEquals("xztfwfqchvczevj", model.ipv6NeighborAddress().get(0).address());
-        Assertions.assertEquals("zeoxin", model.bmpConfiguration().neighborIpExclusions().get(0));
+        Assertions.assertEquals("gnixxowwzkyfwnw", model.annotation());
+        Assertions.assertEquals(1625904109, model.bfdConfiguration().intervalInMilliSeconds());
+        Assertions.assertEquals(1268752565, model.bfdConfiguration().multiplier());
+        Assertions.assertEquals(BooleanEnumProperty.FALSE, model.defaultRouteOriginate());
+        Assertions.assertEquals(417743478, model.allowAS());
+        Assertions.assertEquals(AllowASOverride.ENABLE, model.allowASOverride());
+        Assertions.assertEquals(1021873909266464669L, model.peerAsn());
+        Assertions.assertEquals("aqgzekajclyzgs", model.ipv4ListenRangePrefixes().get(0));
+        Assertions.assertEquals("jotvmrxkhl", model.ipv6ListenRangePrefixes().get(0));
+        Assertions.assertEquals("ibdrqrswhbuubpyr", model.ipv4NeighborAddress().get(0).address());
+        Assertions.assertEquals("qwemvxqabckmzeo", model.ipv6NeighborAddress().get(0).address());
+        Assertions.assertEquals("hm", model.bmpConfiguration().neighborIpExclusions().get(0));
         Assertions.assertEquals(BmpConfigurationState.ENABLED, model.bmpConfiguration().bmpConfigurationState());
         Assertions.assertEquals(BmpExportPolicy.ALL,
             model.bmpConfiguration().exportPolicyConfiguration().exportPolicies().get(0));
-        Assertions.assertEquals(V4OverV6BgpSessionState.DISABLED, model.v4OverV6BgpSession());
+        Assertions.assertEquals(V4OverV6BgpSessionState.ENABLED, model.v4OverV6BgpSession());
         Assertions.assertEquals(V6OverV4BgpSessionState.DISABLED, model.v6OverV4BgpSession());
     }
 }

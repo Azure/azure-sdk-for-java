@@ -28,7 +28,7 @@ public final class NeighborGroupsCreateMockTests {
     @Test
     public void testCreate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"annotation\":\"gqin\",\"destination\":{\"ipv4Addresses\":[\"xouknzhmzassrsqz\",\"knbtxtdmutdrrqq\"],\"ipv6Addresses\":[\"klttliuwdrtwqj\",\"tyaqd\",\"wfnom\",\"iwhumngihfndsj\"]},\"networkTapIds\":[\"lfvrpbcgdptf\",\"offckejx\",\"mng\"],\"networkTapRuleIds\":[\"xxynt\",\"rnksvximgnsiycx\",\"yzrnngnmfhmwfou\",\"mdomvdi\"],\"networkFabricIds\":[\"qalwlirapqhsidf\",\"sfnoczefgfqxejj\",\"tiqbxzeiudog\"],\"lastOperation\":{\"details\":\"rbroeomufaz\"},\"provisioningState\":\"Succeeded\",\"configurationState\":\"PendingAdministrativeUpdate\"},\"identity\":{\"principalId\":\"pbsspexejhwpnjco\",\"tenantId\":\"jzbovuvmdz\",\"type\":\"None\",\"userAssignedIdentities\":{\"jzkhncaeyk\":{\"principalId\":\"guajsrdecbowkh\",\"clientId\":\"ffllpdnnsujxoueq\"}}},\"location\":\"atztnprnsh\",\"tags\":{\"tjyisjscuwylukt\":\"ahvlzgsqwiubgb\",\"xrziry\":\"cuxuxaihheg\",\"mxqvv\":\"rpjru\",\"rnjvzlynv\":\"poftsapfwusf\"},\"id\":\"empvubs\",\"name\":\"wzntbi\",\"type\":\"u\"}";
+            = "{\"properties\":{\"annotation\":\"htwhh\",\"destination\":{\"ipv4Addresses\":[\"omfo\"],\"ipv6Addresses\":[\"er\",\"ujfnbzamroad\"]},\"networkTapIds\":[\"gbkdctsgv\",\"lhr\",\"neclphmjsqcubyjr\"],\"networkTapRuleIds\":[\"liteenaheecsf\",\"tsu\",\"zfuhjnmd\"],\"networkFabricIds\":[\"bzyjhq\",\"vtzdxtwyxpkww\",\"kkvdevdvkeyq\"],\"lastOperation\":{\"details\":\"hdnlxeiluexvm\"},\"provisioningState\":\"Succeeded\",\"configurationState\":\"DeferredControl\",\"administrativeState\":\"Enabled\"},\"identity\":{\"principalId\":\"xjw\",\"tenantId\":\"lbqkguchd\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"lwnxryyqtjcrpax\":{\"principalId\":\"djikiqtzu\",\"clientId\":\"ddkujvqzcuqc\"}}},\"location\":\"lfxse\",\"tags\":{\"dmxfqftywbba\":\"zid\"},\"id\":\"zhdciuxotb\",\"name\":\"flgkkiu\",\"type\":\"hop\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -38,24 +38,25 @@ public final class NeighborGroupsCreateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         NeighborGroup response = manager.neighborGroups()
-            .define("lsuhsghdovcp")
-            .withRegion("uxotbvflg")
-            .withExistingResourceGroup("ojikffczwaewp")
-            .withDestination(new NeighborGroupDestination().withIpv4Addresses(Arrays.asList("gagv"))
-                .withIpv6Addresses(Arrays.asList("xzcda", "khtwhhs", "bomf", "ojker")))
-            .withTags(mapOf("taevqafdhpkiiu", "uqhopafobpyeob", "vdtqhrtn", "yrobckelowsm"))
-            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
-                .withUserAssignedIdentities(mapOf("ujvqzcuqculwnx", new UserAssignedIdentity(), "e",
-                    new UserAssignedIdentity(), "fqftywbbanzhd", new UserAssignedIdentity())))
-            .withAnnotation("f")
+            .define("wx")
+            .withRegion("pcssusdrgzmmrz")
+            .withExistingResourceGroup("xooxuaufqoo")
+            .withDestination(new NeighborGroupDestination().withIpv4Addresses(Arrays.asList("ery"))
+                .withIpv6Addresses(Arrays.asList("yqxeyzqnupsi", "clxvaovssibnvq")))
+            .withTags(mapOf("nukgovoumn", "btkcvola", "zgvaeqiygbo", "cqoxyxiyhmjwsnwk", "odidgudarclajben", "vz",
+                "kff", "yuufvoj"))
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(
+                    mapOf("dpwrm", new UserAssignedIdentity(), "sxnyo", new UserAssignedIdentity())))
+            .withAnnotation("kveqvpedwmhq")
             .create();
 
-        Assertions.assertEquals("atztnprnsh", response.location());
-        Assertions.assertEquals("ahvlzgsqwiubgb", response.tags().get("tjyisjscuwylukt"));
-        Assertions.assertEquals(ManagedServiceIdentityType.NONE, response.identity().type());
-        Assertions.assertEquals("gqin", response.annotation());
-        Assertions.assertEquals("xouknzhmzassrsqz", response.destination().ipv4Addresses().get(0));
-        Assertions.assertEquals("klttliuwdrtwqj", response.destination().ipv6Addresses().get(0));
+        Assertions.assertEquals("lfxse", response.location());
+        Assertions.assertEquals("zid", response.tags().get("dmxfqftywbba"));
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, response.identity().type());
+        Assertions.assertEquals("htwhh", response.annotation());
+        Assertions.assertEquals("omfo", response.destination().ipv4Addresses().get(0));
+        Assertions.assertEquals("er", response.destination().ipv6Addresses().get(0));
     }
 
     // Use "Map.of" if available
