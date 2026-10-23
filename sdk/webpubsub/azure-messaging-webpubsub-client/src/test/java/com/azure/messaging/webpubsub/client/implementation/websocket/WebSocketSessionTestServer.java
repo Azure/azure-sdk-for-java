@@ -8,10 +8,9 @@ import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.EventLoopGroup;
-import io.netty.channel.MultiThreadIoEventLoopGroup;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.nio.NioIoHandler;
+import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.http.HttpObjectAggregator;
@@ -29,7 +28,7 @@ import java.util.function.Consumer;
 
 final class WebSocketSessionTestServer implements AutoCloseable {
     private static final String PROTOCOL = "json.webpubsub.azure.v1";
-    private final EventLoopGroup group = new MultiThreadIoEventLoopGroup(1, NioIoHandler.newFactory());
+    private final EventLoopGroup group = new NioEventLoopGroup(1);
     private final CompletableFuture<Channel> connection = new CompletableFuture<>();
     private final Channel listener;
 
