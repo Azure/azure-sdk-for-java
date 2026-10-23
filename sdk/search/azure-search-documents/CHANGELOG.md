@@ -4,9 +4,19 @@
 
 ### Features Added
 
+- Added support for `2026-11-01-preview`, now the default service version. Previously supported service versions remain available.
+- Added synchronous and asynchronous graph queries, typed HTTP responses, query planning, diagnostics, statistics, and provenance models.
+- Added graph extraction, enrichment cache, graph retrieval activities and references, and updated knowledge source and model options.
+- Added `none`, `diverse`, and `balanced` vector topic graph retrieval, facet-backed filter hint auto-configuration, and random scoring.
+- Restored preview search options, including more-like-this and agentic search, and exposed query diagnostics on paged responses.
+
 ### Breaking Changes
 
+- Removed preview query hints and query hint overrides from non-SearchIndex knowledge sources, and their query hint processing activity properties, to match the service contract. SearchIndex knowledge source hints remain supported.
+
 ### Bugs Fixed
+
+- Fixed convenience search requests dropping preview query language, spelling, rewriting, hybrid, semantic field, and authorization options.
 
 ### Other Changes
 

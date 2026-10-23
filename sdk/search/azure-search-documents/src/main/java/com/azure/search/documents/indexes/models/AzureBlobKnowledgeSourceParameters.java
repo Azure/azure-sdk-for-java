@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.search.documents.knowledgebases.models.KnowledgeSourceIngestionParameters;
+import com.azure.search.documents.models.VectorQueryTopicGraph;
 import java.io.IOException;
 
 /**
@@ -148,7 +149,8 @@ public final class AzureBlobKnowledgeSourceParameters implements JsonSerializabl
         jsonWriter.writeStringField("folderPath", this.folderPath);
         jsonWriter.writeBooleanField("isADLSGen2", this.adlsGen2);
         jsonWriter.writeJsonField("ingestionParameters", this.ingestionParameters);
-        jsonWriter.writeJsonField("queryHints", this.queryHints);
+        jsonWriter.writeJsonField("graphExtraction", this.graphExtraction);
+        jsonWriter.writeJsonField("topicGraph", this.topicGraph);
         return jsonWriter.writeEndObject();
     }
 
@@ -169,7 +171,8 @@ public final class AzureBlobKnowledgeSourceParameters implements JsonSerializabl
             String folderPath = null;
             Boolean adlsGen2 = null;
             KnowledgeSourceIngestionParameters ingestionParameters = null;
-            SearchIndexKnowledgeSourceQueryHints queryHints = null;
+            KnowledgeSourceGraphExtractionParameters graphExtraction = null;
+            VectorQueryTopicGraph topicGraph = null;
             CreatedResources createdResources = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -184,8 +187,10 @@ public final class AzureBlobKnowledgeSourceParameters implements JsonSerializabl
                     adlsGen2 = reader.getNullable(JsonReader::getBoolean);
                 } else if ("ingestionParameters".equals(fieldName)) {
                     ingestionParameters = KnowledgeSourceIngestionParameters.fromJson(reader);
-                } else if ("queryHints".equals(fieldName)) {
-                    queryHints = SearchIndexKnowledgeSourceQueryHints.fromJson(reader);
+                } else if ("graphExtraction".equals(fieldName)) {
+                    graphExtraction = KnowledgeSourceGraphExtractionParameters.fromJson(reader);
+                } else if ("topicGraph".equals(fieldName)) {
+                    topicGraph = VectorQueryTopicGraph.fromJson(reader);
                 } else if ("createdResources".equals(fieldName)) {
                     createdResources = CreatedResources.fromJson(reader);
                 } else {
@@ -197,7 +202,8 @@ public final class AzureBlobKnowledgeSourceParameters implements JsonSerializabl
             deserializedAzureBlobKnowledgeSourceParameters.folderPath = folderPath;
             deserializedAzureBlobKnowledgeSourceParameters.adlsGen2 = adlsGen2;
             deserializedAzureBlobKnowledgeSourceParameters.ingestionParameters = ingestionParameters;
-            deserializedAzureBlobKnowledgeSourceParameters.queryHints = queryHints;
+            deserializedAzureBlobKnowledgeSourceParameters.graphExtraction = graphExtraction;
+            deserializedAzureBlobKnowledgeSourceParameters.topicGraph = topicGraph;
             deserializedAzureBlobKnowledgeSourceParameters.createdResources = createdResources;
             return deserializedAzureBlobKnowledgeSourceParameters;
         });
@@ -232,33 +238,65 @@ public final class AzureBlobKnowledgeSourceParameters implements JsonSerializabl
     }
 
     /*
-     * Default hints that guide query planning toward useful filters and boosts for this index-backed knowledge source.
-     * Request-time query hints replace these defaults as a complete object.
+     * Graph extraction configuration for Azure Blob knowledge sources. Configure native Blob soft delete on the source
+     * before the first indexing run. ADLS Gen2, ACL ingestion, and sensitivity-label ingestion are not supported for
+     * this workflow.
      */
     @Generated
-    private SearchIndexKnowledgeSourceQueryHints queryHints;
+    private KnowledgeSourceGraphExtractionParameters graphExtraction;
+
+    /*
+     * Default topic graph vector search options for this Azure Blob knowledge source.
+     */
+    @Generated
+    private VectorQueryTopicGraph topicGraph;
 
     /**
-     * Get the queryHints property: Default hints that guide query planning toward useful filters and boosts for this
-     * index-backed knowledge source. Request-time query hints replace these defaults as a complete object.
+     * Get the graphExtraction property: Graph extraction configuration for Azure Blob knowledge sources. Configure
+     * native Blob soft delete on the source before the first indexing run. ADLS Gen2, ACL ingestion, and
+     * sensitivity-label ingestion are not supported for this workflow.
      *
-     * @return the queryHints value.
+     * @return the graphExtraction value.
      */
     @Generated
-    public SearchIndexKnowledgeSourceQueryHints getQueryHints() {
-        return this.queryHints;
+    public KnowledgeSourceGraphExtractionParameters getGraphExtraction() {
+        return this.graphExtraction;
     }
 
     /**
-     * Set the queryHints property: Default hints that guide query planning toward useful filters and boosts for this
-     * index-backed knowledge source. Request-time query hints replace these defaults as a complete object.
+     * Set the graphExtraction property: Graph extraction configuration for Azure Blob knowledge sources. Configure
+     * native Blob soft delete on the source before the first indexing run. ADLS Gen2, ACL ingestion, and
+     * sensitivity-label ingestion are not supported for this workflow.
      *
-     * @param queryHints the queryHints value to set.
+     * @param graphExtraction the graphExtraction value to set.
      * @return the AzureBlobKnowledgeSourceParameters object itself.
      */
     @Generated
-    public AzureBlobKnowledgeSourceParameters setQueryHints(SearchIndexKnowledgeSourceQueryHints queryHints) {
-        this.queryHints = queryHints;
+    public AzureBlobKnowledgeSourceParameters
+        setGraphExtraction(KnowledgeSourceGraphExtractionParameters graphExtraction) {
+        this.graphExtraction = graphExtraction;
+        return this;
+    }
+
+    /**
+     * Get the topicGraph property: Default topic graph vector search options for this Azure Blob knowledge source.
+     *
+     * @return the topicGraph value.
+     */
+    @Generated
+    public VectorQueryTopicGraph getTopicGraph() {
+        return this.topicGraph;
+    }
+
+    /**
+     * Set the topicGraph property: Default topic graph vector search options for this Azure Blob knowledge source.
+     *
+     * @param topicGraph the topicGraph value to set.
+     * @return the AzureBlobKnowledgeSourceParameters object itself.
+     */
+    @Generated
+    public AzureBlobKnowledgeSourceParameters setTopicGraph(VectorQueryTopicGraph topicGraph) {
+        this.topicGraph = topicGraph;
         return this;
     }
 }

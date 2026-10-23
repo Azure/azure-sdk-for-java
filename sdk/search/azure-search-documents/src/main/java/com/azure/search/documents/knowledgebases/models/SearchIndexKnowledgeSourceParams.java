@@ -11,6 +11,7 @@ import com.azure.json.JsonWriter;
 import com.azure.search.documents.indexes.models.KnowledgeSourceKind;
 import com.azure.search.documents.indexes.models.KnowledgeSourceResultsProcessing;
 import com.azure.search.documents.indexes.models.SearchIndexKnowledgeSourceQueryHints;
+import com.azure.search.documents.models.VectorQueryTopicGraph;
 import java.io.IOException;
 
 /**
@@ -125,6 +126,7 @@ public final class SearchIndexKnowledgeSourceParams extends KnowledgeSourceParam
         jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
         jsonWriter.writeStringField("filterAddOn", this.filterAddOn);
         jsonWriter.writeJsonField("queryHintOverrides", this.queryHintOverrides);
+        jsonWriter.writeJsonField("topicGraph", this.topicGraph);
         return jsonWriter.writeEndObject();
     }
 
@@ -153,6 +155,7 @@ public final class SearchIndexKnowledgeSourceParams extends KnowledgeSourceParam
             KnowledgeSourceKind kind = KnowledgeSourceKind.SEARCH_INDEX;
             String filterAddOn = null;
             SearchIndexKnowledgeSourceQueryHints queryHintOverrides = null;
+            VectorQueryTopicGraph topicGraph = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -182,6 +185,8 @@ public final class SearchIndexKnowledgeSourceParams extends KnowledgeSourceParam
                     filterAddOn = reader.getString();
                 } else if ("queryHintOverrides".equals(fieldName)) {
                     queryHintOverrides = SearchIndexKnowledgeSourceQueryHints.fromJson(reader);
+                } else if ("topicGraph".equals(fieldName)) {
+                    topicGraph = VectorQueryTopicGraph.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
@@ -200,6 +205,7 @@ public final class SearchIndexKnowledgeSourceParams extends KnowledgeSourceParam
             deserializedSearchIndexKnowledgeSourceParams.kind = kind;
             deserializedSearchIndexKnowledgeSourceParams.filterAddOn = filterAddOn;
             deserializedSearchIndexKnowledgeSourceParams.queryHintOverrides = queryHintOverrides;
+            deserializedSearchIndexKnowledgeSourceParams.topicGraph = topicGraph;
             return deserializedSearchIndexKnowledgeSourceParams;
         });
     }
@@ -293,6 +299,37 @@ public final class SearchIndexKnowledgeSourceParams extends KnowledgeSourceParam
     @Override
     public SearchIndexKnowledgeSourceParams setResultsProcessing(KnowledgeSourceResultsProcessing resultsProcessing) {
         super.setResultsProcessing(resultsProcessing);
+        return this;
+    }
+
+    /*
+     * Overrides the knowledge source's stored topicGraph for this retrieval. When omitted, the stored knowledge source
+     * value applies.
+     */
+    @Generated
+    private VectorQueryTopicGraph topicGraph;
+
+    /**
+     * Get the topicGraph property: Overrides the knowledge source's stored topicGraph for this retrieval. When omitted,
+     * the stored knowledge source value applies.
+     *
+     * @return the topicGraph value.
+     */
+    @Generated
+    public VectorQueryTopicGraph getTopicGraph() {
+        return this.topicGraph;
+    }
+
+    /**
+     * Set the topicGraph property: Overrides the knowledge source's stored topicGraph for this retrieval. When omitted,
+     * the stored knowledge source value applies.
+     *
+     * @param topicGraph the topicGraph value to set.
+     * @return the SearchIndexKnowledgeSourceParams object itself.
+     */
+    @Generated
+    public SearchIndexKnowledgeSourceParams setTopicGraph(VectorQueryTopicGraph topicGraph) {
+        this.topicGraph = topicGraph;
         return this;
     }
 }

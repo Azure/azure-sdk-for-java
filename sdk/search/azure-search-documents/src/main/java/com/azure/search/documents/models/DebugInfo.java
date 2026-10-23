@@ -67,11 +67,31 @@ public final class DebugInfo implements JsonSerializable<DebugInfo> {
                 reader.nextToken();
                 if ("queryRewrites".equals(fieldName)) {
                     deserializedDebugInfo.queryRewrites = QueryRewritesDebugInfo.fromJson(reader);
+                } else if ("agentic".equals(fieldName)) {
+                    deserializedDebugInfo.agentic = AgenticSearchDebugInfo.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
             return deserializedDebugInfo;
         });
+    }
+
+    /*
+     * Contains request-wide agentic diagnostics when debug selects agentic or all. Does not imply that classic query
+     * rewriting executed.
+     */
+    @Generated
+    private AgenticSearchDebugInfo agentic;
+
+    /**
+     * Get the agentic property: Contains request-wide agentic diagnostics when debug selects agentic or all. Does not
+     * imply that classic query rewriting executed.
+     *
+     * @return the agentic value.
+     */
+    @Generated
+    public AgenticSearchDebugInfo getAgentic() {
+        return this.agentic;
     }
 }

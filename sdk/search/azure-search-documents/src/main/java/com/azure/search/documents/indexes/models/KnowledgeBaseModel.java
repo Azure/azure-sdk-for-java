@@ -79,6 +79,10 @@ public class KnowledgeBaseModel implements JsonSerializable<KnowledgeBaseModel> 
                 // Use the discriminator value to determine which subtype should be deserialized.
                 if ("azureOpenAI".equals(discriminatorValue)) {
                     return KnowledgeBaseAzureOpenAIModel.fromJson(readerToUse.reset());
+                } else if ("openAICompatible".equals(discriminatorValue)) {
+                    return KnowledgeBaseOpenAICompatibleModel.fromJson(readerToUse.reset());
+                } else if ("microsoftRetriever1".equals(discriminatorValue)) {
+                    return KnowledgeBaseMicrosoftRetriever1Model.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

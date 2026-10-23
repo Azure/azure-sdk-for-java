@@ -100,6 +100,8 @@ public class VectorSearchVectorizer implements JsonSerializable<VectorSearchVect
                 // Use the discriminator value to determine which subtype should be deserialized.
                 if ("azureOpenAI".equals(discriminatorValue)) {
                     return AzureOpenAIVectorizer.fromJson(readerToUse.reset());
+                } else if ("openAICompatible".equals(discriminatorValue)) {
+                    return OpenAICompatibleVectorizer.fromJson(readerToUse.reset());
                 } else if ("customWebApi".equals(discriminatorValue)) {
                     return WebApiVectorizer.fromJson(readerToUse.reset());
                 } else if ("aiServicesVision".equals(discriminatorValue)) {

@@ -135,6 +135,7 @@ public final class SynchronizationState implements JsonSerializable<Synchronizat
             int itemsUpdatesProcessed = 0;
             int itemsUpdatesFailed = 0;
             int itemsSkipped = 0;
+            KnowledgeSourceGraphStatistics graphStatistics = null;
             List<KnowledgeSourceSynchronizationError> errors = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -148,6 +149,8 @@ public final class SynchronizationState implements JsonSerializable<Synchronizat
                     itemsUpdatesFailed = reader.getInt();
                 } else if ("itemsSkipped".equals(fieldName)) {
                     itemsSkipped = reader.getInt();
+                } else if ("graphStatistics".equals(fieldName)) {
+                    graphStatistics = KnowledgeSourceGraphStatistics.fromJson(reader);
                 } else if ("errors".equals(fieldName)) {
                     errors = reader.readArray(reader1 -> KnowledgeSourceSynchronizationError.fromJson(reader1));
                 } else {
@@ -156,6 +159,7 @@ public final class SynchronizationState implements JsonSerializable<Synchronizat
             }
             SynchronizationState deserializedSynchronizationState
                 = new SynchronizationState(startTime, itemsUpdatesProcessed, itemsUpdatesFailed, itemsSkipped);
+            deserializedSynchronizationState.graphStatistics = graphStatistics;
             deserializedSynchronizationState.errors = errors;
             return deserializedSynchronizationState;
         });
@@ -190,5 +194,22 @@ public final class SynchronizationState implements JsonSerializable<Synchronizat
     public SynchronizationState setErrors(List<KnowledgeSourceSynchronizationError> errors) {
         this.errors = errors;
         return this;
+    }
+
+    /*
+     * Graph extraction statistics for this synchronization. Omitted when no graph extraction took place.
+     */
+    @Generated
+    private KnowledgeSourceGraphStatistics graphStatistics;
+
+    /**
+     * Get the graphStatistics property: Graph extraction statistics for this synchronization. Omitted when no graph
+     * extraction took place.
+     *
+     * @return the graphStatistics value.
+     */
+    @Generated
+    public KnowledgeSourceGraphStatistics getGraphStatistics() {
+        return this.graphStatistics;
     }
 }

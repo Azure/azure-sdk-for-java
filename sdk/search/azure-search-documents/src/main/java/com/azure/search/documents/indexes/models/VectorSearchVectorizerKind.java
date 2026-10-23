@@ -67,4 +67,10 @@ public final class VectorSearchVectorizerKind extends ExpandableStringEnum<Vecto
     public static Collection<VectorSearchVectorizerKind> values() {
         return values(VectorSearchVectorizerKind.class);
     }
+
+    /**
+     * Generate embeddings using a customer-controlled OpenAI-compatible embeddings endpoint.
+     */
+    @Generated
+    public static final VectorSearchVectorizerKind OPEN_AICOMPATIBLE = fromString("openAICompatible");
 }

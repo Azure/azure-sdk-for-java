@@ -156,6 +156,7 @@ public final class KnowledgeBaseRetrievalClient {
      *             enableImageServing: Boolean (Optional)
      *         }
      *     ]
+     *     toolName: String (Optional)
      * }
      * }
      * </pre>
@@ -177,7 +178,7 @@ public final class KnowledgeBaseRetrievalClient {
      *     ]
      *     activity (Optional): [
      *          (Optional){
-     *             type: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/web/remoteSharePoint/workIQ/fabricDataAgent/fabricOntology/mcpServer/file/indexedSql/modelQueryPlanning/modelAnswerSynthesis/modelWebSummarization/agenticReasoning) (Required)
+     *             type: String(graphSearch/searchIndex/azureBlob/indexedSharePoint/indexedOneLake/web/remoteSharePoint/workIQ/fabricDataAgent/fabricOntology/mcpServer/file/indexedSql/modelQueryPlanning/modelAnswerSynthesis/modelWebSummarization/agenticReasoning) (Required)
      *             id: int (Required)
      *             startedAt: OffsetDateTime (Optional)
      *             completedAt: OffsetDateTime (Optional)
@@ -203,7 +204,7 @@ public final class KnowledgeBaseRetrievalClient {
      *     ]
      *     references (Optional): [
      *          (Optional){
-     *             type: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/web/remoteSharePoint/workIQ/fabricDataAgent/fabricOntology/mcpServer/file/indexedSql) (Required)
+     *             type: String(graphSearch/searchIndex/azureBlob/indexedSharePoint/indexedOneLake/web/remoteSharePoint/workIQ/fabricDataAgent/fabricOntology/mcpServer/file/indexedSql) (Required)
      *             id: String (Required)
      *             activitySource: int (Required)
      *             sourceData (Optional): {
@@ -324,6 +325,7 @@ public final class KnowledgeBaseRetrievalClient {
      *             enableImageServing: Boolean (Optional)
      *         }
      *     ]
+     *     toolName: String (Optional)
      * }
      * }
      * </pre>
