@@ -38,6 +38,11 @@ import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_WRITE_TIM
 /**
  * Builder to configure and build an instance of the azure-core {@link HttpClient} type using the JDK HttpClient APIs,
  * first introduced as preview in JDK 9, but made generally available from JDK 11 onwards.
+ * <p>
+ * To send an explicit {@code Host} header, start the JVM with
+ * {@code -Djdk.httpclient.allowRestrictedHeaders=host} before the JDK HTTP client is initialized. By default, the
+ * SDK filters out this restricted header and logs a warning. If a custom {@link Configuration} is supplied, include
+ * this setting there as well. Setting it only in the builder's configuration does not enable the native JDK override.
  */
 public class JdkHttpClientBuilder {
     private static final ClientLogger LOGGER = new ClientLogger(JdkHttpClientBuilder.class);

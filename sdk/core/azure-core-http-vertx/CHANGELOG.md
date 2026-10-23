@@ -10,6 +10,8 @@
 
 ### Bugs Fixed
 
+- Fixed HTTP/2 requests with an explicit `Host` header sending a conflicting URL-derived `:authority`. The override
+  now sets `:authority` while the connection still uses the request URL.
 - Fixed timeout resolution to prefer explicit builder values, then builder-specific configuration, then global
   configuration, and finally SDK defaults.
 - Fixed a bug where requests with a streaming body, such as `Flux<ByteBuffer>` or `InputStream`, would never be sent

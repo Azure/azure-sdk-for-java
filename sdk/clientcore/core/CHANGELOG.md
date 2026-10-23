@@ -20,6 +20,8 @@
 
 ### Other Changes
 
+- Documented the JDK `Host` header configuration and HTTP/2 authority limitations.
+
 ## 1.0.0-beta.11 (2025-07-21)
 
 ### Features Added

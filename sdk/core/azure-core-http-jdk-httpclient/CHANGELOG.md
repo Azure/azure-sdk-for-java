@@ -17,6 +17,8 @@
 
 ### Other Changes
 
+- Documented the `jdk.httpclient.allowRestrictedHeaders` setting for explicit `Host` headers.
+
 ## 1.2.0 (2026-09-29)
 
 ### Features Added

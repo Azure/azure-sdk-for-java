@@ -64,6 +64,10 @@ add the direct dependency to your project as follows.
 
 ## Key concepts
 
+An explicit request `Host` header overrides the HTTP authority without changing the connection destination specified
+by the request URL. With HTTP/1.1 it is sent as `Host`; with HTTP/2 it is mapped to `:authority` instead of sending a
+conflicting `Host` header. Requests without an explicit `Host` continue to use the URL's authority.
+
 ## Examples
 
 The following sections provide several code snippets covering some of the most common client configuration scenarios.
@@ -143,4 +147,3 @@ For details on contributing to this repository, see the [contributing guide](htt
 [logging]: https://learn.microsoft.com/azure/developer/java/sdk/logging-overview
 [jdk_link]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [java8_client_compatibility]: https://learn.microsoft.com/azure/security/fundamentals/azure-ca-details?tabs=root-and-subordinate-cas-list#client-compatibility-for-public-pkis
-

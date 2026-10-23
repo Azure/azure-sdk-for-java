@@ -35,7 +35,9 @@ import io.vertx.core.http.HttpClientOptions;
 import io.vertx.core.http.HttpClientRequest;
 import io.vertx.core.http.HttpClientResponse;
 import io.vertx.core.http.HttpMethod;
+import io.vertx.core.http.HttpVersion;
 import io.vertx.core.http.RequestOptions;
+import io.vertx.core.net.HostAndPort;
 import reactor.core.publisher.Mono;
 import reactor.util.context.ContextView;
 
@@ -206,7 +208,20 @@ class VertxHttpClient implements HttpClient {
             for (HttpHeader header : request.getHeaders()) {
                 // Potential optimization here would be creating a MultiMap wrapper around azure-core's
                 // HttpHeaders and using RequestOptions.setHeaders(MultiMap)
-                vertxRequest.putHeader(header.getName(), header.getValuesList());
+                if (vertxRequest.version() == HttpVersion.HTTP_2
+                    && HttpHeaderName.HOST.getCaseSensitiveName().equalsIgnoreCase(header.getName())) {
+                    HostAndPort authority
+                        = header.getValuesList().size() == 1 ? HostAndPort.parseAuthority(header.getValue(), -1) : null;
+                    if (authority == null || authority.host().isEmpty()) {
+                        promise.tryFail(LOGGER.logExceptionAsError(new IllegalArgumentException(
+                            "The Host header must contain exactly one valid host and optional port.")));
+                        return;
+                    }
+                    // Override :authority without sending a conflicting Host or changing the connection destination.
+                    vertxRequest.authority(authority);
+                } else {
+                    vertxRequest.putHeader(header.getName(), header.getValuesList());
+                }
             }
             if (request.getHeaders().get(HttpHeaderName.CONTENT_LENGTH) == null) {
                 vertxRequest.setChunked(true);
