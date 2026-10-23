@@ -1,14 +1,316 @@
 # Release History
 
-## 1.2.0-beta.2 (Unreleased)
+## 1.2.0 (2026-09-10)
 
-### Features Added
+- Azure Resource Manager Device Registry client library for Java. This package contains Microsoft Azure SDK for Device Registry Management SDK. Microsoft.DeviceRegistry Resource Provider management API. Package api-version 2026-11-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.SystemAssignedServiceIdentityType` was removed
 
-### Other Changes
+#### `models.NamespaceMigrateResponse` was removed
+
+#### `models.SystemAssignedServiceIdentity` was removed
+
+#### `models.Error` was removed
+
+#### `models.MigrateResultType` was removed
+
+#### `models.MigrateResult` was removed
+
+#### `models.Namespace$Update` was modified
+
+* `withIdentity(models.SystemAssignedServiceIdentity)` was removed
+
+#### `models.SchemaRegistry$Definition` was modified
+
+* `withIdentity(models.SystemAssignedServiceIdentity)` was removed
+
+#### `models.Namespaces` was modified
+
+* `models.NamespaceMigrateResponse migrate(java.lang.String,java.lang.String,models.NamespaceMigrateRequest,com.azure.core.util.Context)` -> `void migrate(java.lang.String,java.lang.String,models.NamespaceMigrateRequest,com.azure.core.util.Context)`
+* `models.NamespaceMigrateResponse migrate(java.lang.String,java.lang.String,models.NamespaceMigrateRequest)` -> `void migrate(java.lang.String,java.lang.String,models.NamespaceMigrateRequest)`
+
+#### `models.Namespace$Definition` was modified
+
+* `withIdentity(models.SystemAssignedServiceIdentity)` was removed
+
+#### `models.NamespaceAssets` was modified
+
+* `listByResourceGroup(java.lang.String,java.lang.String)` was removed
+* `listByResourceGroup(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.Namespace` was modified
+
+* `models.SystemAssignedServiceIdentity identity()` -> `models.ManagedServiceIdentity identity()`
+* `models.NamespaceMigrateResponse migrate(models.NamespaceMigrateRequest)` -> `void migrate(models.NamespaceMigrateRequest)`
+* `models.NamespaceMigrateResponse migrate(models.NamespaceMigrateRequest,com.azure.core.util.Context)` -> `void migrate(models.NamespaceMigrateRequest,com.azure.core.util.Context)`
+
+#### `models.NamespaceDevices` was modified
+
+* `listByResourceGroup(java.lang.String,java.lang.String)` was removed
+* `listByResourceGroup(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.SchemaRegistry$Update` was modified
+
+* `withIdentity(models.SystemAssignedServiceIdentity)` was removed
+
+#### `models.SchemaRegistryUpdate` was modified
+
+* `withIdentity(models.SystemAssignedServiceIdentity)` was removed
+* `models.SystemAssignedServiceIdentity identity()` -> `models.ManagedServiceIdentity identity()`
+
+#### `models.NamespaceDiscoveredAssets` was modified
+
+* `listByResourceGroup(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+* `listByResourceGroup(java.lang.String,java.lang.String)` was removed
+
+#### `models.NamespaceDiscoveredDevices` was modified
+
+* `listByResourceGroup(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+* `listByResourceGroup(java.lang.String,java.lang.String)` was removed
+
+#### `models.SchemaRegistry` was modified
+
+* `models.SystemAssignedServiceIdentity identity()` -> `models.ManagedServiceIdentity identity()`
+
+#### `models.NamespaceUpdate` was modified
+
+* `withIdentity(models.SystemAssignedServiceIdentity)` was removed
+* `models.SystemAssignedServiceIdentity identity()` -> `models.ManagedServiceIdentity identity()`
+
+### Features Added
+
+* `models.CertificateAuthority` was added
+
+* `models.OptionalPropertiesCertificatePolicyConfiguration` was added
+
+* `models.HealthStatus` was added
+
+* `models.ExternalCertificateAuthorityIssuer` was added
+
+* `models.NamespaceLinkingStateValue` was added
+
+* `models.AsyncOperationStatus` was added
+
+* `models.ActivateCertificateAuthorityRequest` was added
+
+* `models.CertificateAuthorityType` was added
+
+* `models.RegistryDevice$Definition` was added
+
+* `models.NamespaceProvisioning` was added
+
+* `models.RootCertificateAuthorityProperties` was added
+
+* `models.CertificateAuthorityKeyType` was added
+
+* `models.RegistryDeviceUpdate` was added
+
+* `models.NamespaceLinkingError` was added
+
+* `models.ManagementEndpoint` was added
+
+* `models.ManagedServiceIdentity` was added
+
+* `models.CertificatePolicyProperties` was added
+
+* `models.UserAssignedIdentity` was added
+
+* `models.CertificateAuthorityProperties` was added
+
+* `models.OutboundIdentity` was added
+
+* `models.RegistryDevice$Update` was added
+
+* `models.RegistryDeviceUpdateProperties` was added
+
+* `models.CertificatePolicyUpdate` was added
+
+* `models.CertificateAuthority$Definition` was added
+
+* `models.CertificatePolicy$DefinitionStages` was added
+
+* `models.MessagingEndpointProvisioning` was added
+
+* `models.RegistryDevice$UpdateStages` was added
+
+* `models.CertificatePolicy` was added
+
+* `models.CertificateAuthorityIssuerType` was added
+
+* `models.InboundCallerIdentity` was added
+
+* `models.ProvisioningEndpoint` was added
+
+* `models.OutboundIdentityType` was added
+
+* `models.MessagingEndpointAvailability` was added
+
+* `models.CertificatePolicy$Update` was added
+
+* `models.CertificateAuthorities` was added
+
+* `models.CertificateAuthority$DefinitionStages` was added
+
+* `models.CertificateAuthority$UpdateStages` was added
+
+* `models.RegistryDeviceProperties` was added
+
+* `models.IntermediateCertificateAuthorityProperties` was added
+
+* `models.InboundCallerIdentityType` was added
+
+* `models.NamespaceAssetExecuteActionRequest` was added
+
+* `models.CertificateAuthorityUpdate` was added
+
+* `models.CertificateAuthority$Update` was added
+
+* `models.RegistryDevices` was added
+
+* `models.RegistryDeviceEnablementState` was added
+
+* `models.HealthState` was added
+
+* `models.Management` was added
+
+* `models.RegistryDevice` was added
+
+* `models.CertificatePolicyUpdateProperties` was added
+
+* `models.CertificatePolicies` was added
+
+* `models.ManagedServiceIdentityType` was added
+
+* `models.CertificatePolicy$UpdateStages` was added
+
+* `models.MicrosoftCertificateAuthorityIssuer` was added
+
+* `models.CertificateAuthorityStatus` was added
+
+* `models.RegistryDevice$DefinitionStages` was added
+
+* `models.CertificateAuthorityIssuer` was added
+
+* `models.ProvisioningEndpointType` was added
+
+* `models.CertificatePolicy$Definition` was added
+
+* `models.CertificatePolicyConfiguration` was added
+
+#### `models.Namespace$Update` was modified
+
+* `withIdentity(models.ManagedServiceIdentity)` was added
+
+#### `models.SchemaRegistry$Definition` was modified
+
+* `withIdentity(models.ManagedServiceIdentity)` was added
+
+#### `models.Format` was modified
+
+* `JSON_LD_1_1` was added
+
+#### `DeviceRegistryManager` was modified
+
+* `asyncOperationStatus()` was added
+* `certificatePolicies()` was added
+* `registryDevices()` was added
+* `certificateAuthorities()` was added
+
+#### `models.Namespace$Definition` was modified
+
+* `withIdentity(models.ManagedServiceIdentity)` was added
+
+#### `models.NamespaceAssetStatus` was modified
+
+* `healthState()` was added
+
+#### `models.SchemaType` was modified
+
+* `THING_MODEL` was added
+* `THING_DESCRIPTION` was added
+
+#### `models.MessagingEndpoint` was modified
+
+* `inboundCallerIdentity()` was added
+* `linkingState()` was added
+* `provisioning()` was added
+* `withInboundCallerIdentity(models.InboundCallerIdentity)` was added
+* `withProvisioning(models.MessagingEndpointProvisioning)` was added
+* `linkingError()` was added
+* `deviceAddress()` was added
+
+#### `models.NamespaceAssets` was modified
+
+* `listByNamespace(java.lang.String,java.lang.String)` was added
+* `executeAction(java.lang.String,java.lang.String,java.lang.String,models.NamespaceAssetExecuteActionRequest,com.azure.core.util.Context)` was added
+* `executeAction(java.lang.String,java.lang.String,java.lang.String,models.NamespaceAssetExecuteActionRequest)` was added
+* `listByNamespace(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.SchemaRegistryUpdateProperties` was modified
+
+* `outboundIdentity()` was added
+* `withOutboundIdentity(models.OutboundIdentity)` was added
+
+#### `models.SchemaRegistryProperties` was modified
+
+* `outboundIdentity()` was added
+* `withOutboundIdentity(models.OutboundIdentity)` was added
+
+#### `models.NamespaceDevices` was modified
+
+* `listByNamespace(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `listByNamespace(java.lang.String,java.lang.String)` was added
+
+#### `models.NamespaceUpdateProperties` was modified
+
+* `management()` was added
+* `withProvisioning(models.NamespaceProvisioning)` was added
+* `withManagement(models.Management)` was added
+* `provisioning()` was added
+* `withOutboundIdentity(models.OutboundIdentity)` was added
+* `outboundIdentity()` was added
+
+#### `models.NamespaceProperties` was modified
+
+* `withProvisioning(models.NamespaceProvisioning)` was added
+* `outboundIdentity()` was added
+* `provisioning()` was added
+* `management()` was added
+* `withManagement(models.Management)` was added
+* `withOutboundIdentity(models.OutboundIdentity)` was added
+
+#### `models.SchemaRegistry$Update` was modified
+
+* `withIdentity(models.ManagedServiceIdentity)` was added
+
+#### `models.SchemaRegistryUpdate` was modified
+
+* `withIdentity(models.ManagedServiceIdentity)` was added
+
+#### `models.NamespaceAsset` was modified
+
+* `executeAction(models.NamespaceAssetExecuteActionRequest,com.azure.core.util.Context)` was added
+* `executeAction(models.NamespaceAssetExecuteActionRequest)` was added
+
+#### `models.DeviceStatusEndpoint` was modified
+
+* `healthState()` was added
+
+#### `models.NamespaceDiscoveredAssets` was modified
+
+* `listByNamespace(java.lang.String,java.lang.String)` was added
+* `listByNamespace(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.NamespaceDiscoveredDevices` was modified
+
+* `listByNamespace(java.lang.String,java.lang.String)` was added
+* `listByNamespace(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.NamespaceUpdate` was modified
+
+* `withIdentity(models.ManagedServiceIdentity)` was added
 
 ## 1.2.0-beta.1 (2026-04-07)
 

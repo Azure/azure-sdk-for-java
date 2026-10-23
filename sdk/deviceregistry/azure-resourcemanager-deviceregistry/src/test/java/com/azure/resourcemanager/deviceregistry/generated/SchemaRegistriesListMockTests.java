@@ -11,8 +11,9 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.deviceregistry.DeviceRegistryManager;
+import com.azure.resourcemanager.deviceregistry.models.ManagedServiceIdentityType;
+import com.azure.resourcemanager.deviceregistry.models.OutboundIdentityType;
 import com.azure.resourcemanager.deviceregistry.models.SchemaRegistry;
-import com.azure.resourcemanager.deviceregistry.models.SystemAssignedServiceIdentityType;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
@@ -23,7 +24,7 @@ public final class SchemaRegistriesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"uuid\":\"jbuscg\",\"namespace\":\"uusioycblev\",\"displayName\":\"clujyx\",\"description\":\"xlzgsjgkzzl\",\"storageAccountContainerUrl\":\"afhbzf\",\"provisioningState\":\"Failed\"},\"identity\":{\"principalId\":\"bjlzqsczpgvdwn\",\"tenantId\":\"fdqwowftpt\",\"type\":\"None\"},\"location\":\"jtks\",\"tags\":{\"hvyeldotj\":\"cgqyhleseyq\",\"kukjtasb\":\"dkwisw\",\"txfkndlqvt\":\"wispkxk\",\"qaqkuea\":\"knvgmmbugtywat\"},\"id\":\"groeshoyg\",\"name\":\"cbyfqxkf\",\"type\":\"oytehqpuvjm\"}]}";
+            = "{\"value\":[{\"properties\":{\"uuid\":\"eqfrojs\",\"namespace\":\"dgrhydkygywezs\",\"displayName\":\"ec\",\"description\":\"ygzmxieqvdsmak\",\"storageAccountContainerUrl\":\"ixqcahyhxalybxaw\",\"outboundIdentity\":{\"type\":\"SystemAssigned\",\"userAssignedIdentity\":\"o\"},\"provisioningState\":\"Failed\"},\"identity\":{\"principalId\":\"pkkwj\",\"tenantId\":\"odqhyk\",\"type\":\"None\",\"userAssignedIdentities\":{\"pyi\":{\"principalId\":\"emehllizh\",\"clientId\":\"umoqodkad\"}}},\"location\":\"gqladywrxwhyd\",\"tags\":{\"uyem\":\"vvadswzs\",\"xlnwyrmouvblgmo\":\"owuowh\",\"ih\":\"zkltrfowtdvrfmv\"},\"id\":\"vjdrqcrjidhftuk\",\"name\":\"hdxlw\",\"type\":\"ojbf\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,12 +35,16 @@ public final class SchemaRegistriesListMockTests {
 
         PagedIterable<SchemaRegistry> response = manager.schemaRegistries().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("jtks", response.iterator().next().location());
-        Assertions.assertEquals("cgqyhleseyq", response.iterator().next().tags().get("hvyeldotj"));
-        Assertions.assertEquals("uusioycblev", response.iterator().next().properties().namespace());
-        Assertions.assertEquals("clujyx", response.iterator().next().properties().displayName());
-        Assertions.assertEquals("xlzgsjgkzzl", response.iterator().next().properties().description());
-        Assertions.assertEquals("afhbzf", response.iterator().next().properties().storageAccountContainerUrl());
-        Assertions.assertEquals(SystemAssignedServiceIdentityType.NONE, response.iterator().next().identity().type());
+        Assertions.assertEquals("gqladywrxwhyd", response.iterator().next().location());
+        Assertions.assertEquals("vvadswzs", response.iterator().next().tags().get("uyem"));
+        Assertions.assertEquals("dgrhydkygywezs", response.iterator().next().properties().namespace());
+        Assertions.assertEquals("ec", response.iterator().next().properties().displayName());
+        Assertions.assertEquals("ygzmxieqvdsmak", response.iterator().next().properties().description());
+        Assertions.assertEquals("ixqcahyhxalybxaw",
+            response.iterator().next().properties().storageAccountContainerUrl());
+        Assertions.assertEquals(OutboundIdentityType.SYSTEM_ASSIGNED,
+            response.iterator().next().properties().outboundIdentity().type());
+        Assertions.assertEquals("o", response.iterator().next().properties().outboundIdentity().userAssignedIdentity());
+        Assertions.assertEquals(ManagedServiceIdentityType.NONE, response.iterator().next().identity().type());
     }
 }

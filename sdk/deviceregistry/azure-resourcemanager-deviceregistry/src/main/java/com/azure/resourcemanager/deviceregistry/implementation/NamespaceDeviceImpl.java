@@ -8,7 +8,6 @@ import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.deviceregistry.fluent.models.NamespaceDeviceInner;
-import com.azure.resourcemanager.deviceregistry.models.DeviceCredentialsRevokeRequest;
 import com.azure.resourcemanager.deviceregistry.models.ExtendedLocation;
 import com.azure.resourcemanager.deviceregistry.models.NamespaceDevice;
 import com.azure.resourcemanager.deviceregistry.models.NamespaceDeviceProperties;
@@ -159,14 +158,6 @@ public final class NamespaceDeviceImpl implements NamespaceDevice, NamespaceDevi
             .getWithResponse(resourceGroupName, namespaceName, deviceName, context)
             .getValue();
         return this;
-    }
-
-    public void revoke(DeviceCredentialsRevokeRequest body) {
-        serviceManager.namespaceDevices().revoke(resourceGroupName, namespaceName, deviceName, body);
-    }
-
-    public void revoke(DeviceCredentialsRevokeRequest body, Context context) {
-        serviceManager.namespaceDevices().revoke(resourceGroupName, namespaceName, deviceName, body, context);
     }
 
     public NamespaceDeviceImpl withRegion(Region location) {

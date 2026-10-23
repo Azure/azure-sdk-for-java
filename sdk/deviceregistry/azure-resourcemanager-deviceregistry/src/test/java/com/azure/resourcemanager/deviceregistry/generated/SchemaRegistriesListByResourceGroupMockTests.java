@@ -11,8 +11,9 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.deviceregistry.DeviceRegistryManager;
+import com.azure.resourcemanager.deviceregistry.models.ManagedServiceIdentityType;
+import com.azure.resourcemanager.deviceregistry.models.OutboundIdentityType;
 import com.azure.resourcemanager.deviceregistry.models.SchemaRegistry;
-import com.azure.resourcemanager.deviceregistry.models.SystemAssignedServiceIdentityType;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
@@ -23,7 +24,7 @@ public final class SchemaRegistriesListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"uuid\":\"bemeluclvd\",\"namespace\":\"jukyrdn\",\"displayName\":\"dxahhxhqfaqnvzo\",\"description\":\"yipemchgavsczuej\",\"storageAccountContainerUrl\":\"txptlghw\",\"provisioningState\":\"Accepted\"},\"identity\":{\"principalId\":\"wjjstliuhqa\",\"tenantId\":\"oaiancznvodrrs\",\"type\":\"None\"},\"location\":\"xydkxrx\",\"tags\":{\"nqkhych\":\"xiwkgfbql\",\"kulehurqlrq\":\"c\",\"rkphyjdxr\":\"fawey\"},\"id\":\"vjuqdbrxmrgchb\",\"name\":\"pxkiyf\",\"type\":\"j\"}]}";
+            = "{\"value\":[{\"properties\":{\"uuid\":\"ssbzhddubbnqfbl\",\"namespace\":\"kalehp\",\"displayName\":\"awugiqjti\",\"description\":\"qgdm\",\"storageAccountContainerUrl\":\"nictteajo\",\"outboundIdentity\":{\"type\":\"UserAssigned\",\"userAssignedIdentity\":\"spnbonhpcz\"},\"provisioningState\":\"Canceled\"},\"identity\":{\"principalId\":\"p\",\"tenantId\":\"xqcsehch\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"fnhsenwphp\":{\"principalId\":\"pqumqyjgydzulo\",\"clientId\":\"aeuzanh\"},\"fwbeqrkuorh\":{\"principalId\":\"ngqjclidf\",\"clientId\":\"jwjj\"},\"rzw\":{\"principalId\":\"sruqnmdvha\",\"clientId\":\"vjytiqswbq\"}}},\"location\":\"ytxtdgu\",\"tags\":{\"tyouambewreswmow\":\"bpktgd\",\"uqi\":\"gmmuteyxey\"},\"id\":\"ijiitns\",\"name\":\"xlzdesygrijwa\",\"type\":\"ufanray\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,14 +34,19 @@ public final class SchemaRegistriesListByResourceGroupMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<SchemaRegistry> response
-            = manager.schemaRegistries().listByResourceGroup("gookrtalvnb", com.azure.core.util.Context.NONE);
+            = manager.schemaRegistries().listByResourceGroup("fckdvez", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("xydkxrx", response.iterator().next().location());
-        Assertions.assertEquals("xiwkgfbql", response.iterator().next().tags().get("nqkhych"));
-        Assertions.assertEquals("jukyrdn", response.iterator().next().properties().namespace());
-        Assertions.assertEquals("dxahhxhqfaqnvzo", response.iterator().next().properties().displayName());
-        Assertions.assertEquals("yipemchgavsczuej", response.iterator().next().properties().description());
-        Assertions.assertEquals("txptlghw", response.iterator().next().properties().storageAccountContainerUrl());
-        Assertions.assertEquals(SystemAssignedServiceIdentityType.NONE, response.iterator().next().identity().type());
+        Assertions.assertEquals("ytxtdgu", response.iterator().next().location());
+        Assertions.assertEquals("bpktgd", response.iterator().next().tags().get("tyouambewreswmow"));
+        Assertions.assertEquals("kalehp", response.iterator().next().properties().namespace());
+        Assertions.assertEquals("awugiqjti", response.iterator().next().properties().displayName());
+        Assertions.assertEquals("qgdm", response.iterator().next().properties().description());
+        Assertions.assertEquals("nictteajo", response.iterator().next().properties().storageAccountContainerUrl());
+        Assertions.assertEquals(OutboundIdentityType.USER_ASSIGNED,
+            response.iterator().next().properties().outboundIdentity().type());
+        Assertions.assertEquals("spnbonhpcz",
+            response.iterator().next().properties().outboundIdentity().userAssignedIdentity());
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED,
+            response.iterator().next().identity().type());
     }
 }

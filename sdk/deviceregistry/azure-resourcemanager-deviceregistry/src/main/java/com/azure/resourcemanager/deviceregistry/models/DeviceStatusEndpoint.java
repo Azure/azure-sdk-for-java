@@ -21,6 +21,11 @@ public final class DeviceStatusEndpoint implements JsonSerializable<DeviceStatus
      */
     private StatusError error;
 
+    /*
+     * Health state of the endpoint.
+     */
+    private HealthState healthState;
+
     /**
      * Creates an instance of DeviceStatusEndpoint class.
      */
@@ -34,6 +39,15 @@ public final class DeviceStatusEndpoint implements JsonSerializable<DeviceStatus
      */
     public StatusError error() {
         return this.error;
+    }
+
+    /**
+     * Get the healthState property: Health state of the endpoint.
+     * 
+     * @return the healthState value.
+     */
+    public HealthState healthState() {
+        return this.healthState;
     }
 
     /**
@@ -62,6 +76,8 @@ public final class DeviceStatusEndpoint implements JsonSerializable<DeviceStatus
 
                 if ("error".equals(fieldName)) {
                     deserializedDeviceStatusEndpoint.error = StatusError.fromJson(reader);
+                } else if ("healthState".equals(fieldName)) {
+                    deserializedDeviceStatusEndpoint.healthState = HealthState.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
