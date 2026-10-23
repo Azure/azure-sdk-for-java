@@ -65,6 +65,9 @@ public class GitHubActionsCredential implements TokenCredential {
     /**
      * Acquires an access token, using the token cache when possible.
      *
+     * <p>Requests with a Continuous Access Evaluation (CAE) claims challenge acquire a new token instead of reusing a
+     * cached token.</p>
+     *
      * @param request the scopes, tenant, and authentication options for the token request.
      * @return the access token.
      * @throws CredentialAuthenticationException if the GitHub OIDC request fails or returns an invalid assertion response.

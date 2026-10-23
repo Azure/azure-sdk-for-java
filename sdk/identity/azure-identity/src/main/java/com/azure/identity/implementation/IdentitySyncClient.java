@@ -134,6 +134,10 @@ public class IdentitySyncClient extends IdentityClientBase {
             builder.clientCredential(ClientCredentialFactory
                 .createFromClientAssertion(clientAssertionSupplierWithHttpPipeline.apply(getPipeline())));
         }
+        if (request.isCaeEnabled() && request.getClaims() != null) {
+            ClaimsRequest claimsRequest = ClaimsRequest.formatAsClaimsRequest(request.getClaims());
+            builder.claims(claimsRequest).skipCache(true);
+        }
         try {
             return new MsalToken(awaitTokenResult(confidentialClient.acquireToken(builder.build())));
         } catch (ExecutionException e) {
@@ -160,16 +164,13 @@ public class IdentitySyncClient extends IdentityClientBase {
      */
     @SuppressWarnings("deprecation")
     public AccessToken authenticateWithConfidentialClientCache(TokenRequestContext request) {
+        if (request.isCaeEnabled() && request.getClaims() != null) {
+            return null;
+        }
         ConfidentialClientApplication confidentialClientApplication = getConfidentialClientInstance(request).getValue();
         SilentParameters.SilentParametersBuilder parametersBuilder
             = SilentParameters.builder(new HashSet<>(request.getScopes()))
                 .tenant(IdentityUtil.resolveTenantId(tenantId, request, options));
-
-        if (request.isCaeEnabled() && request.getClaims() != null) {
-            ClaimsRequest claimsRequest = ClaimsRequest.formatAsClaimsRequest(request.getClaims());
-            parametersBuilder.claims(claimsRequest);
-            parametersBuilder.forceRefresh(true);
-        }
 
         try {
             IAuthenticationResult authenticationResult

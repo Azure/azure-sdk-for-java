@@ -156,6 +156,26 @@ class GitHubActionsCredentialTest {
         assertTrue(claims.contains("CP1"), claims);
     }
 
+    @Test
+    void refreshesCachedTokenForCaeClaims() {
+        FakeHttpClient http = new FakeHttpClient();
+        GitHubActionsCredential credential = credentialBuilder(http).build();
+        TokenRequestContext request = new TokenRequestContext().addScopes(SCOPE).setCaeEnabled(true);
+        assertEquals("access-token-1", credential.getToken(request).getToken());
+        assertEquals("access-token-1", credential.getToken(request).getToken());
+        assertEquals(1, http.tokenForms.size());
+
+        TokenRequestContext claimsRequest = new TokenRequestContext().addScopes(SCOPE)
+            .setCaeEnabled(true)
+            .setClaims("{\"access_token\":{\"auth_time\":{\"essential\":true}}}");
+        assertEquals("access-token-2", credential.getToken(claimsRequest).getToken());
+        assertEquals(2, http.tokenForms.size());
+        String claims = http.tokenForms.get(1).get("claims");
+        assertNotNull(claims);
+        assertTrue(claims.contains("auth_time"), claims);
+        assertTrue(claims.contains("CP1"), claims);
+    }
+
     static GitHubActionsCredentialBuilder credentialBuilder(FakeHttpClient http) {
         return new GitHubActionsCredentialBuilder().configuration(configuration(settings()))
             .httpClient(http)

@@ -148,6 +148,32 @@ class GitHubActionsCredentialTest {
         assertEquals(0, http.tokenForms.size());
     }
 
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    void retriesAsyncAuthenticationAfterOidcFailure(boolean caeEnabled) {
+        FakeHttpClient http = new FakeHttpClient();
+        http.oidcStatus = 401;
+        GitHubActionsCredential credential = credentialBuilder(http).build();
+        TokenRequestContext request = new TokenRequestContext().addScopes(SCOPE).setCaeEnabled(caeEnabled);
+        Mono<AccessToken> token = credential.getToken(request);
+        StepVerifier.create(token).expectError(ClientAuthenticationException.class).verify(TIMEOUT);
+        int failedRequests = http.oidcRequests.get();
+        assertTrue(failedRequests > 0);
+        assertEquals(0, http.tokenForms.size());
+
+        http.oidcStatus = 200;
+        StepVerifier.create(token)
+            .assertNext(value -> assertEquals("access-token-1", value.getToken()))
+            .expectComplete()
+            .verify(TIMEOUT);
+        int successfulRequests = http.oidcRequests.get();
+        assertTrue(successfulRequests > failedRequests);
+        assertEquals("access-token-1", getToken(credential, request, true).getToken());
+        assertEquals(successfulRequests, http.oidcRequests.get());
+        assertEquals(1, http.tokenForms.size());
+        assertEquals(http.oidcRequests.get(), http.closedResponses.get());
+    }
+
     @Test
     void asyncRequestIsLazyAndDoesNotPerformHttpOnAnEventLoop() {
         FakeHttpClient http = new FakeHttpClient();
@@ -205,6 +231,27 @@ class GitHubActionsCredentialTest {
             .setClaims("{\"access_token\":{\"auth_time\":{\"essential\":true}}}");
         getToken(credentialBuilder(http).build(), request, true);
         assertTrue(http.tokenForms.get(0).get("claims").contains("auth_time"));
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    void refreshesCachedTokenForCaeClaims(boolean async) {
+        FakeHttpClient http = new FakeHttpClient();
+        GitHubActionsCredential credential = credentialBuilder(http).build();
+        TokenRequestContext request = new TokenRequestContext().addScopes(SCOPE).setCaeEnabled(true);
+        assertEquals("access-token-1", getToken(credential, request, async).getToken());
+        assertEquals("access-token-1", getToken(credential, request, async).getToken());
+        assertEquals(1, http.tokenForms.size());
+
+        TokenRequestContext claimsRequest = new TokenRequestContext().addScopes(SCOPE)
+            .setCaeEnabled(true)
+            .setClaims("{\"access_token\":{\"auth_time\":{\"essential\":true}}}");
+        assertEquals("access-token-2", getToken(credential, claimsRequest, async).getToken());
+        assertEquals(2, http.tokenForms.size());
+        String claims = http.tokenForms.get(1).get("claims");
+        assertNotNull(claims);
+        assertTrue(claims.contains("auth_time"), claims);
+        assertTrue(claims.contains("CP1"), claims);
     }
 
     @Test

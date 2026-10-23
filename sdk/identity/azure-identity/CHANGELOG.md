@@ -11,6 +11,8 @@
 
 ### Bugs Fixed
 
+- Fixed an initial OIDC request failure preventing later authentication attempts with the same `AzurePipelinesCredential` or `GitHubActionsCredential` instance.
+- Fixed client-credentials authentication to acquire a new token when handling a Continuous Access Evaluation (CAE) claims challenge.
 - Disabled MSAL's internal retry for Confidential Client, Managed Identity and Public Client Applications. ([#48472](https://github.com/Azure/azure-sdk-for-java/pull/48472))
 - Fixed misleading authentication error reporting when token requests are interrupted or the JVM shuts down. ([#50585](https://github.com/Azure/azure-sdk-for-java/issues/50585))
 - Fixed IMDS discovery in `DefaultAzureCredential` to wait for HTTP response headers with a read timeout, allowing the credential chain to continue when a local endpoint accepts connections but does not respond, while preserving fallback on probe setup failures. ([#50517](https://github.com/Azure/azure-sdk-for-java/pull/50517))
