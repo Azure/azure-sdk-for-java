@@ -322,14 +322,13 @@ class DocumentProducer<T> {
                 pageSize,
                 initialContinuationToken,
                 top,
-                getChildFeedRange(targetRange),
+                intersectFeedRange(this.feedRange.getRange(), targetRange.toRange()),
                 this.operationContextTextProvider);
     }
 
-    protected FeedRangeEpkImpl getChildFeedRange(PartitionKeyRange targetRange) {
-        // Replacement physical partitions can extend beyond the requested feed range.
-        Range<String> requestedRange = this.feedRange.getRange();
-        Range<String> physicalRange = targetRange.toRange();
+    protected FeedRangeEpkImpl intersectFeedRange(
+        Range<String> requestedRange, Range<String> physicalRange) {
+        // The ranges overlap, and the physical range has an inclusive minimum and exclusive maximum.
         boolean useRequestedMin = requestedRange.getMin().compareTo(physicalRange.getMin()) >= 0;
         boolean useRequestedMax = requestedRange.getMax().compareTo(physicalRange.getMax()) < 0;
         return new FeedRangeEpkImpl(new Range<>(

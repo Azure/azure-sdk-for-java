@@ -120,6 +120,19 @@ public class DocumentProducerTest {
                 new HashMap<>(), () -> "narrowed ordered split"));
 
         for (DocumentProducer<Document> parent : parents) {
+            Range<String> requestedBounds = requestedRange.getRange();
+            Range<String> physicalBounds = physicalRange.toRange();
+            FeedRangeEpkImpl intersection = parent.intersectFeedRange(requestedBounds, physicalBounds);
+            assertThat(intersection.getRange())
+                .isEqualTo(new Range<>(expectedMin, expectedMax, expectedMinInclusive, expectedMaxInclusive))
+                .isNotSameAs(requestedBounds)
+                .isNotSameAs(physicalBounds);
+            assertThat(requestedBounds).isEqualTo(new Range<>(min, max, minInclusive, maxInclusive));
+            assertThat(physicalBounds).isEqualTo(new Range<>(physicalMin, physicalMax, true, false));
+            assertThat(parent.intersectFeedRange(physicalBounds, physicalBounds).getRange())
+                .as("Intersection must use its arguments rather than the producer's scope")
+                .isEqualTo(physicalBounds);
+
             DocumentProducer<Document> child = parent.createChildDocumentProducerOnSplit(physicalRange, "continuation");
             assertThat(child.feedRange.getRange())
                 .as("Replacement scope for %s", parent.getClass().getSimpleName())
