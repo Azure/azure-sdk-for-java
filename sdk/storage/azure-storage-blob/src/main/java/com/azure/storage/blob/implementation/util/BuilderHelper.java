@@ -104,12 +104,12 @@ public final class BuilderHelper {
 
         policies.addAll(perCallPolicies);
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
+        policies.add(new DataLocalityPolicy());
         policies.add(BuilderUtils.createRetryPolicy(retryOptions, coreRetryOptions, logger));
 
         policies.add(new AddDatePolicy());
 
         policies.add(new AddHeadersFromContextPolicy());
-        policies.add(new DataLocalityPolicy());
 
         // We need to place this policy right before the credential policy since headers may affect the string to sign
         // of the request.

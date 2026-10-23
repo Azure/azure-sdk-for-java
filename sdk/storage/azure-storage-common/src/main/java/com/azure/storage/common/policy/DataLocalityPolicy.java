@@ -104,6 +104,6 @@ public final class DataLocalityPolicy extends HttpPipelineSyncPolicy {
      */
     @Override
     public HttpPipelinePosition getPipelinePosition() {
-        return HttpPipelinePosition.PER_RETRY;
+        return HttpPipelinePosition.PER_CALL;
     }
 }

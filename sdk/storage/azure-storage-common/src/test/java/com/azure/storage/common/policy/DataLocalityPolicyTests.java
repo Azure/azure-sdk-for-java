@@ -8,6 +8,7 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.test.SyncAsyncExtension;
@@ -15,9 +16,13 @@ import com.azure.core.test.annotation.SyncAsyncTest;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.test.http.NoOpHttpClient;
 import com.azure.core.util.Context;
+import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -58,6 +63,49 @@ public class DataLocalityPolicyTests {
         assertMalformedEndpointThrows("   ");
     }
 
+    @Test
+    public void pipelinePositionIsPerCall() {
+        assertEquals(HttpPipelinePosition.PER_CALL, new DataLocalityPolicy().getPipelinePosition());
+    }
+
+    @Test
+    public void retryableFailureUsesSecondaryHostSync() {
+        List<String> requestUrls = new ArrayList<>();
+        HttpPipeline pipeline = createRetryPipeline(new NoOpHttpClient() {
+            @Override
+            public HttpResponse sendSync(HttpRequest request, Context context) {
+                requestUrls.add(request.getUrl().toString());
+                return new MockHttpResponse(request, requestUrls.size() == 1 ? 500 : 200);
+            }
+        });
+
+        HttpResponse response
+            = pipeline.sendSync(new HttpRequest(HttpMethod.GET, "https://storage.example.com/container/blob"),
+                new Context(DataLocalityPolicy.LAYOUT_ENDPOINT_KEY, "https://layout.example.net"));
+
+        assertEquals(200, response.getStatusCode());
+        assertRetryDestinations(requestUrls);
+    }
+
+    @Test
+    public void retryableFailureUsesSecondaryHostAsync() {
+        List<String> requestUrls = new ArrayList<>();
+        HttpPipeline pipeline = createRetryPipeline(new NoOpHttpClient() {
+            @Override
+            public Mono<HttpResponse> send(HttpRequest request) {
+                requestUrls.add(request.getUrl().toString());
+                return Mono.just(new MockHttpResponse(request, requestUrls.size() == 1 ? 500 : 200));
+            }
+        });
+
+        StepVerifier
+            .create(pipeline.send(new HttpRequest(HttpMethod.GET, "https://storage.example.com/container/blob"),
+                new Context(DataLocalityPolicy.LAYOUT_ENDPOINT_KEY, "https://layout.example.net")))
+            .assertNext(response -> assertEquals(200, response.getStatusCode()))
+            .verifyComplete();
+        assertRetryDestinations(requestUrls);
+    }
+
     private void assertMalformedEndpointThrows(String endpoint) {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
             () -> sendRequest(new Context(DataLocalityPolicy.LAYOUT_ENDPOINT_KEY, endpoint)));
@@ -79,6 +127,20 @@ public class DataLocalityPolicyTests {
 
         assertEquals("https://storage.example.com/container/blob", seenRequest.getUrl().toString());
         assertEquals("storage.example.com", seenRequest.getHeaders().getValue(HttpHeaderName.HOST));
+    }
+
+    private static HttpPipeline createRetryPipeline(NoOpHttpClient httpClient) {
+        RequestRetryOptions retryOptions
+            = new RequestRetryOptions(RetryPolicyType.FIXED, 2, (Integer) null, 1L, 1L, "secondary.example.com");
+        return new HttpPipelineBuilder().httpClient(httpClient)
+            .policies(new DataLocalityPolicy(), new RequestRetryPolicy(retryOptions))
+            .build();
+    }
+
+    private static void assertRetryDestinations(List<String> requestUrls) {
+        assertEquals(2, requestUrls.size());
+        assertEquals("https://layout.example.net/container/blob", requestUrls.get(0));
+        assertEquals("https://secondary.example.com/container/blob", requestUrls.get(1));
     }
 
     private HttpRequest sendRequest(Context context) throws Exception {
