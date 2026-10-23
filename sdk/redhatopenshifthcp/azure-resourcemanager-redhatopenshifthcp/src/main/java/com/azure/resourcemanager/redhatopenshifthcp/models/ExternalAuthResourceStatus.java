@@ -13,19 +13,19 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * ResourceStatus represents the observed status of the resource.
+ * ExternalAuthResourceStatus represents the observed status of the external auth resource.
  */
 @Immutable
-public final class ResourceStatus implements JsonSerializable<ResourceStatus> {
+public final class ExternalAuthResourceStatus implements JsonSerializable<ExternalAuthResourceStatus> {
     /*
      * The conditions on the resource
      */
     private List<Condition> conditions;
 
     /**
-     * Creates an instance of ResourceStatus class.
+     * Creates an instance of ExternalAuthResourceStatus class.
      */
-    private ResourceStatus() {
+    private ExternalAuthResourceStatus() {
     }
 
     /**
@@ -47,29 +47,29 @@ public final class ResourceStatus implements JsonSerializable<ResourceStatus> {
     }
 
     /**
-     * Reads an instance of ResourceStatus from the JsonReader.
+     * Reads an instance of ExternalAuthResourceStatus from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ResourceStatus if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IOException If an error occurs while reading the ResourceStatus.
+     * @return An instance of ExternalAuthResourceStatus if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ExternalAuthResourceStatus.
      */
-    public static ResourceStatus fromJson(JsonReader jsonReader) throws IOException {
+    public static ExternalAuthResourceStatus fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            ResourceStatus deserializedResourceStatus = new ResourceStatus();
+            ExternalAuthResourceStatus deserializedExternalAuthResourceStatus = new ExternalAuthResourceStatus();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("conditions".equals(fieldName)) {
                     List<Condition> conditions = reader.readArray(reader1 -> Condition.fromJson(reader1));
-                    deserializedResourceStatus.conditions = conditions;
+                    deserializedExternalAuthResourceStatus.conditions = conditions;
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedResourceStatus;
+            return deserializedExternalAuthResourceStatus;
         });
     }
 }
