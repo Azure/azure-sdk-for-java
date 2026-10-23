@@ -112,6 +112,13 @@ public @interface BasicField {
     BooleanHelper isSensitivityLabel() default BooleanHelper.NULL;
 
     /**
+     * Indicates whether the field contains the expiration time for organization-wide document access.
+     *
+     * @return A flag indicating whether the {@link SearchField field} contains organization access expiration times.
+     */
+    BooleanHelper isOrganizationAccessExpiration() default BooleanHelper.NULL;
+
+    /**
      * A {@link LexicalAnalyzerName} to associate as the search and index analyzer for the {@link SearchField field}.
      *
      * @return The {@link LexicalAnalyzerName} that will be associated as the search and index analyzer for the
@@ -161,6 +168,15 @@ public @interface BasicField {
      * {@link SearchField field}.
      */
     String vectorSearchProfileName() default "";
+
+    /**
+     * The name of the topic graph profile associated with the vector {@link SearchField field}.
+     * <p>
+     * If the value is empty, the field won't have a {@link SearchField#getTopicGraphProfile()} value.
+     *
+     * @return The name of the topic graph profile associated with the vector {@link SearchField field}.
+     */
+    String topicGraphProfile() default "";
 
     /**
      * A {@link VectorEncodingFormat} to be associated with the {@link SearchField field}.
