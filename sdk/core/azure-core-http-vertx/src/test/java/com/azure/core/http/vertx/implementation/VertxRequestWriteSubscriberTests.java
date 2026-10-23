@@ -9,6 +9,9 @@ import io.vertx.core.Handler;
 import io.vertx.core.Promise;
 import io.vertx.core.buffer.Buffer;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Operators;
 import reactor.util.context.Context;
@@ -248,6 +251,73 @@ public class VertxRequestWriteSubscriberTests {
 
         assertTrue(promise.future().failed(), "The request should have failed.");
         assertSame(externalError, promise.future().cause(), "The external error should be the cause of the failure.");
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    public void immediateEndFailurePreservesExternalCompletion(boolean failedExternally) {
+        RuntimeException externalError = new RuntimeException("Connection was closed");
+        RuntimeException endError = new RuntimeException("End failed");
+        Promise<HttpResponse> promise = Promise.promise();
+        Supplier<Future<Void>> end = () -> {
+            if (failedExternally) {
+                promise.fail(externalError);
+            } else {
+                promise.complete();
+            }
+            return Future.failedFuture(endError);
+        };
+
+        VertxRequestWriteSubscriber subscriber
+            = new VertxRequestWriteSubscriber(IGNORED_EXCEPTION_HANDLER, IGNORED_DRAIN_HANDLER,
+                ignored -> Future.succeededFuture(), () -> false, IGNORED_RESET, end, promise, null, Context.empty());
+
+        subscriber.onSubscribe(Operators.emptySubscription());
+        subscriber.onNext(ByteBuffer.wrap(DATA));
+        assertDoesNotThrow(subscriber::onComplete);
+        assertEquals(failedExternally, promise.future().failed());
+        assertSame(failedExternally ? externalError : null, promise.future().cause());
+    }
+
+    @ParameterizedTest
+    @CsvSource({ "false, false", "false, true", "true, false", "true, true" })
+    public void delayedEndFailurePreservesExternalCompletion(boolean failedExternally, boolean pendingWrite) {
+        RuntimeException externalError = new RuntimeException("Connection was closed");
+        RuntimeException endError = new RuntimeException("End failed");
+        Promise<HttpResponse> promise = Promise.promise();
+        Promise<Void> write = Promise.promise();
+        Promise<Void> end = Promise.promise();
+        VertxRequestWriteSubscriber subscriber = new VertxRequestWriteSubscriber(IGNORED_EXCEPTION_HANDLER,
+            IGNORED_DRAIN_HANDLER, ignored -> pendingWrite ? write.future() : Future.succeededFuture(), () -> false,
+            IGNORED_RESET, end::future, promise, null, Context.empty());
+
+        subscriber.onSubscribe(Operators.emptySubscription());
+        subscriber.onNext(ByteBuffer.wrap(DATA));
+        subscriber.onComplete();
+        if (failedExternally) {
+            promise.fail(externalError);
+        } else {
+            promise.complete();
+        }
+        if (pendingWrite) {
+            assertDoesNotThrow(() -> write.complete());
+        }
+        assertDoesNotThrow(() -> end.fail(endError));
+        assertEquals(failedExternally, promise.future().failed());
+        assertSame(failedExternally ? externalError : null, promise.future().cause());
+    }
+
+    @Test
+    public void endFailureCompletesPendingPromise() {
+        RuntimeException endError = new RuntimeException("End failed");
+        Promise<HttpResponse> promise = Promise.promise();
+        VertxRequestWriteSubscriber subscriber = new VertxRequestWriteSubscriber(IGNORED_EXCEPTION_HANDLER,
+            IGNORED_DRAIN_HANDLER, ignored -> Future.succeededFuture(), () -> false, IGNORED_RESET,
+            () -> Future.failedFuture(endError), promise, null, Context.empty());
+
+        subscriber.onSubscribe(Operators.emptySubscription());
+        assertDoesNotThrow(subscriber::onComplete);
+        assertSame(endError, promise.future().cause());
     }
 
     private static void waitForCompletion(Promise<?> promise) throws InterruptedException {
