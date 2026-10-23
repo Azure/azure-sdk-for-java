@@ -93,6 +93,7 @@ public final class BlobServiceClientBuilder implements TokenCredentialTrait<Blob
     private BlobServiceVersion version;
     private BlobAudience audience;
     private boolean anonymousAccess;
+    private SessionContext sessionContext = new SessionContext();
 
     /**
      * Creates a builder instance that is able to configure and construct {@link BlobServiceClient BlobServiceClients}
@@ -123,7 +124,7 @@ public final class BlobServiceClientBuilder implements TokenCredentialTrait<Blob
         }
 
         BlobServiceVersion serviceVersion = version != null ? version : BlobServiceVersion.getLatest();
-        HttpPipeline pipeline = constructPipeline();
+        HttpPipeline pipeline = constructPipeline(serviceVersion);
 
         boolean foundCredential = false;
         for (int i = 0; i < pipeline.getPolicyCount(); i++) {
@@ -139,6 +140,10 @@ public final class BlobServiceClientBuilder implements TokenCredentialTrait<Blob
                 foundCredential = true;
                 break;
             }
+            if (BuilderHelper.isSessionAuthenticationPolicy(pipeline.getPolicy(i))) {
+                foundCredential = true;
+                break;
+            }
         }
         anonymousAccess = !foundCredential;
 
@@ -146,12 +151,13 @@ public final class BlobServiceClientBuilder implements TokenCredentialTrait<Blob
             encryptionScope, blobContainerEncryptionScope, anonymousAccess);
     }
 
-    private HttpPipeline constructPipeline() {
-        return (httpPipeline != null)
-            ? httpPipeline
-            : BuilderHelper.buildPipeline(storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,
-                endpoint, retryOptions, coreRetryOptions, logOptions, clientOptions, httpClient, perCallPolicies,
-                perRetryPolicies, configuration, audience, LOGGER);
+    private HttpPipeline constructPipeline(BlobServiceVersion serviceVersion) {
+        if (httpPipeline != null) {
+            return httpPipeline;
+        }
+        return BuilderHelper.buildPipeline(storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,
+            endpoint, retryOptions, coreRetryOptions, logOptions, clientOptions, httpClient, perCallPolicies,
+            perRetryPolicies, configuration, audience, LOGGER, sessionContext, serviceVersion);
     }
 
     /**
@@ -175,7 +181,7 @@ public final class BlobServiceClientBuilder implements TokenCredentialTrait<Blob
         }
 
         BlobServiceVersion serviceVersion = version != null ? version : BlobServiceVersion.getLatest();
-        HttpPipeline pipeline = constructPipeline();
+        HttpPipeline pipeline = constructPipeline(serviceVersion);
 
         boolean foundCredential = false;
         for (int i = 0; i < pipeline.getPolicyCount(); i++) {
@@ -188,6 +194,10 @@ public final class BlobServiceClientBuilder implements TokenCredentialTrait<Blob
                 break;
             }
             if (pipeline.getPolicy(i) instanceof AzureSasCredentialPolicy) {
+                foundCredential = true;
+                break;
+            }
+            if (BuilderHelper.isSessionAuthenticationPolicy(pipeline.getPolicy(i))) {
                 foundCredential = true;
                 break;
             }
@@ -585,6 +595,27 @@ public final class BlobServiceClientBuilder implements TokenCredentialTrait<Blob
      */
     public BlobServiceClientBuilder audience(BlobAudience audience) {
         this.audience = audience;
+        return this;
+    }
+
+    /**
+     * Sets the {@link SessionContext} that controls how the SDK manages session-based authentication
+     * for container clients created from this service client.
+     * <p>
+     * Sessions amortize authentication and authorization cost across many requests by signing them
+     * with a lightweight HMAC key instead of a full bearer token. Container clients created via
+     * {@link BlobServiceClient#getBlobContainerClient(String)} share the service client's pipeline.
+     * Sessions are disabled by default and apply only to eligible GET blob requests; others use bearer
+     * authentication. Clients using the same
+     * {@link SessionContext} instance share a session cache; each client acquires sessions through its own
+     * pipeline. Share the context only across clients with compatible identity and network contexts, or use
+     * separate instances for independent caches.
+     *
+     * @param sessionContext The session context for the HTTP pipeline.
+     * @return the updated BlobServiceClientBuilder object.
+     */
+    public BlobServiceClientBuilder sessionContext(SessionContext sessionContext) {
+        this.sessionContext = sessionContext != null ? sessionContext : new SessionContext();
         return this;
     }
 }
