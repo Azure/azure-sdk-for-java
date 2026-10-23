@@ -9,7 +9,7 @@ package com.azure.resourcemanager.fileshares.generated;
  */
 public final class PrivateLinkResourcesGetSamples {
     /*
-     * x-ms-original-file: 2026-06-01/PrivateLinkResources_Get.json
+     * x-ms-original-file: 2026-09-01/PrivateLinkResources_Get.json
      */
     /**
      * Sample code: Get PrivateLinkResource.

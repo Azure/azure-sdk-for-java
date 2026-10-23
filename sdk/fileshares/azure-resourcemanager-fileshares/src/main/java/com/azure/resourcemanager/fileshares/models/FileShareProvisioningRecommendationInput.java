@@ -23,6 +23,21 @@ public final class FileShareProvisioningRecommendationInput
      */
     private int provisionedStorageGiB;
 
+    /*
+     * The file sharing protocol. Defaults to NFS.
+     */
+    private Protocol protocol;
+
+    /*
+     * The storage media tier. Defaults to SSD.
+     */
+    private MediaTier mediaTier;
+
+    /*
+     * The scale mode. Defaults to Compatibility.
+     */
+    private ScaleMode scaleMode;
+
     /**
      * Creates an instance of FileShareProvisioningRecommendationInput class.
      */
@@ -52,12 +67,75 @@ public final class FileShareProvisioningRecommendationInput
     }
 
     /**
+     * Get the protocol property: The file sharing protocol. Defaults to NFS.
+     * 
+     * @return the protocol value.
+     */
+    public Protocol protocol() {
+        return this.protocol;
+    }
+
+    /**
+     * Set the protocol property: The file sharing protocol. Defaults to NFS.
+     * 
+     * @param protocol the protocol value to set.
+     * @return the FileShareProvisioningRecommendationInput object itself.
+     */
+    public FileShareProvisioningRecommendationInput withProtocol(Protocol protocol) {
+        this.protocol = protocol;
+        return this;
+    }
+
+    /**
+     * Get the mediaTier property: The storage media tier. Defaults to SSD.
+     * 
+     * @return the mediaTier value.
+     */
+    public MediaTier mediaTier() {
+        return this.mediaTier;
+    }
+
+    /**
+     * Set the mediaTier property: The storage media tier. Defaults to SSD.
+     * 
+     * @param mediaTier the mediaTier value to set.
+     * @return the FileShareProvisioningRecommendationInput object itself.
+     */
+    public FileShareProvisioningRecommendationInput withMediaTier(MediaTier mediaTier) {
+        this.mediaTier = mediaTier;
+        return this;
+    }
+
+    /**
+     * Get the scaleMode property: The scale mode. Defaults to Compatibility.
+     * 
+     * @return the scaleMode value.
+     */
+    public ScaleMode scaleMode() {
+        return this.scaleMode;
+    }
+
+    /**
+     * Set the scaleMode property: The scale mode. Defaults to Compatibility.
+     * 
+     * @param scaleMode the scaleMode value to set.
+     * @return the FileShareProvisioningRecommendationInput object itself.
+     */
+    public FileShareProvisioningRecommendationInput withScaleMode(ScaleMode scaleMode) {
+        this.scaleMode = scaleMode;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeIntField("provisionedStorageGiB", this.provisionedStorageGiB);
+        jsonWriter.writeStringField("protocol", this.protocol == null ? null : this.protocol.toString());
+        jsonWriter.writeStringField("mediaTier", this.mediaTier == null ? null : this.mediaTier.toString());
+        jsonWriter.writeStringField("scaleMode", this.scaleMode == null ? null : this.scaleMode.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -80,6 +158,15 @@ public final class FileShareProvisioningRecommendationInput
 
                 if ("provisionedStorageGiB".equals(fieldName)) {
                     deserializedFileShareProvisioningRecommendationInput.provisionedStorageGiB = reader.getInt();
+                } else if ("protocol".equals(fieldName)) {
+                    deserializedFileShareProvisioningRecommendationInput.protocol
+                        = Protocol.fromString(reader.getString());
+                } else if ("mediaTier".equals(fieldName)) {
+                    deserializedFileShareProvisioningRecommendationInput.mediaTier
+                        = MediaTier.fromString(reader.getString());
+                } else if ("scaleMode".equals(fieldName)) {
+                    deserializedFileShareProvisioningRecommendationInput.scaleMode
+                        = ScaleMode.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

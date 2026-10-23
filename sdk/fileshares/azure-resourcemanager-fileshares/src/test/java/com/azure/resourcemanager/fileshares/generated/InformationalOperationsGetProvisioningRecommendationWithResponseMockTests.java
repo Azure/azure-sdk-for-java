@@ -13,7 +13,10 @@ import com.azure.resourcemanager.fileshares.FileSharesManager;
 import com.azure.resourcemanager.fileshares.models.FileShareProvisioningRecommendationInput;
 import com.azure.resourcemanager.fileshares.models.FileShareProvisioningRecommendationRequest;
 import com.azure.resourcemanager.fileshares.models.FileShareProvisioningRecommendationResponse;
+import com.azure.resourcemanager.fileshares.models.MediaTier;
+import com.azure.resourcemanager.fileshares.models.Protocol;
 import com.azure.resourcemanager.fileshares.models.Redundancy;
+import com.azure.resourcemanager.fileshares.models.ScaleMode;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
@@ -24,7 +27,7 @@ public final class InformationalOperationsGetProvisioningRecommendationWithRespo
     @Test
     public void testGetProvisioningRecommendationWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisionedIOPerSec\":1819120953,\"provisionedThroughputMiBPerSec\":1757688267,\"availableRedundancyOptions\":[\"Local\",\"Zone\"]}}";
+            = "{\"properties\":{\"provisionedIOPerSec\":360418478,\"provisionedThroughputMiBPerSec\":1550349603,\"availableRedundancyOptions\":[\"Local\",\"Local\",\"Local\"]}}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,14 +37,17 @@ public final class InformationalOperationsGetProvisioningRecommendationWithRespo
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         FileShareProvisioningRecommendationResponse response = manager.informationalOperations()
-            .getProvisioningRecommendationWithResponse("nhdldwmgxcx",
-                new FileShareProvisioningRecommendationRequest().withProperties(
-                    new FileShareProvisioningRecommendationInput().withProvisionedStorageGiB(121454695)),
+            .getProvisioningRecommendationWithResponse("mpgcjefuzmuvpbt",
+                new FileShareProvisioningRecommendationRequest()
+                    .withProperties(new FileShareProvisioningRecommendationInput().withProvisionedStorageGiB(131214083)
+                        .withProtocol(Protocol.NFS)
+                        .withMediaTier(MediaTier.SSD)
+                        .withScaleMode(ScaleMode.SCALE)),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(1819120953, response.properties().provisionedIOPerSec());
-        Assertions.assertEquals(1757688267, response.properties().provisionedThroughputMiBPerSec());
+        Assertions.assertEquals(360418478, response.properties().provisionedIOPerSec());
+        Assertions.assertEquals(1550349603, response.properties().provisionedThroughputMiBPerSec());
         Assertions.assertEquals(Redundancy.LOCAL, response.properties().availableRedundancyOptions().get(0));
     }
 }

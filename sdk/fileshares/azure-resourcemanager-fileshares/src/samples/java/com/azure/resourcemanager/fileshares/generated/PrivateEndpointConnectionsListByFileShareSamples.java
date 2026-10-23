@@ -9,7 +9,7 @@ package com.azure.resourcemanager.fileshares.generated;
  */
 public final class PrivateEndpointConnectionsListByFileShareSamples {
     /*
-     * x-ms-original-file: 2026-06-01/PrivateEndpointConnections_ListByFileShare.json
+     * x-ms-original-file: 2026-09-01/PrivateEndpointConnections_ListByFileShare.json
      */
     /**
      * Sample code: PrivateEndpointConnections_ListByFileShare.

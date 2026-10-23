@@ -12,17 +12,17 @@ public final class FileShareLimitsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FileShareLimits model = BinaryData.fromString(
-            "{\"maxFileShares\":206207279,\"maxFileShareSnapshots\":178812834,\"maxFileShareSubnets\":306270503,\"maxFileSharePrivateEndpointConnections\":1423802799,\"minProvisionedStorageGiB\":681133133,\"maxProvisionedStorageGiB\":1044580515,\"minProvisionedIOPerSec\":1201119723,\"maxProvisionedIOPerSec\":812677705,\"minProvisionedThroughputMiBPerSec\":682758161,\"maxProvisionedThroughputMiBPerSec\":1925395217}")
+            "{\"maxFileShares\":1342514759,\"maxFileShareSnapshots\":1305817330,\"maxFileShareSubnets\":1880549577,\"maxFileSharePrivateEndpointConnections\":229483686,\"minProvisionedStorageGiB\":435987287,\"maxProvisionedStorageGiB\":1665159346,\"minProvisionedIOPerSec\":1268089221,\"maxProvisionedIOPerSec\":856772857,\"minProvisionedThroughputMiBPerSec\":403055260,\"maxProvisionedThroughputMiBPerSec\":382213486}")
             .toObject(FileShareLimits.class);
-        Assertions.assertEquals(206207279, model.maxFileShares());
-        Assertions.assertEquals(178812834, model.maxFileShareSnapshots());
-        Assertions.assertEquals(306270503, model.maxFileShareSubnets());
-        Assertions.assertEquals(1423802799, model.maxFileSharePrivateEndpointConnections());
-        Assertions.assertEquals(681133133, model.minProvisionedStorageGiB());
-        Assertions.assertEquals(1044580515, model.maxProvisionedStorageGiB());
-        Assertions.assertEquals(1201119723, model.minProvisionedIOPerSec());
-        Assertions.assertEquals(812677705, model.maxProvisionedIOPerSec());
-        Assertions.assertEquals(682758161, model.minProvisionedThroughputMiBPerSec());
-        Assertions.assertEquals(1925395217, model.maxProvisionedThroughputMiBPerSec());
+        Assertions.assertEquals(1342514759, model.maxFileShares());
+        Assertions.assertEquals(1305817330, model.maxFileShareSnapshots());
+        Assertions.assertEquals(1880549577, model.maxFileShareSubnets());
+        Assertions.assertEquals(229483686, model.maxFileSharePrivateEndpointConnections());
+        Assertions.assertEquals(435987287, model.minProvisionedStorageGiB());
+        Assertions.assertEquals(1665159346, model.maxProvisionedStorageGiB());
+        Assertions.assertEquals(1268089221, model.minProvisionedIOPerSec());
+        Assertions.assertEquals(856772857, model.maxProvisionedIOPerSec());
+        Assertions.assertEquals(403055260, model.minProvisionedThroughputMiBPerSec());
+        Assertions.assertEquals(382213486, model.maxProvisionedThroughputMiBPerSec());
     }
 }
