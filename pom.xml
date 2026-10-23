@@ -32,7 +32,6 @@
     <module>sdk/avs</module>
     <module>sdk/azureadexternalidentities</module>
     <module>sdk/azurearcdata</module>
-    <module>sdk/azuredatatransfer</module>
     <module>sdk/azurestack</module>
     <module>sdk/azurestackhci</module>
     <module>sdk/baremetalinfrastructure</module>
@@ -88,6 +87,7 @@
     <module>sdk/datalakestore</module>
     <module>sdk/datamigration</module>
     <module>sdk/dataprotection</module>
+    <module>sdk/datatransfer</module>
     <module>sdk/defendereasm</module>
     <module>sdk/delegatednetwork</module>
     <module>sdk/dell</module>
