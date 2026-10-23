@@ -18,6 +18,8 @@
   including reset failures caused by incompatible method return types in Vert.x 5.x.
 - Fixed the SDK write timeout continuing to run after writing completed, incorrectly terminating slow responses.
 - Fixed excessive retention of canceled write-timeout tasks during streamed uploads with many small buffers.
+- Fixed `IllegalStateException: Result is already complete` being thrown when ending a streamed request body failed
+  after the request had already failed or completed, for example because the connection was closed.
 
 ### Other Changes
 

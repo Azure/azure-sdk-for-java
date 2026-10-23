@@ -10,6 +10,7 @@ import io.vertx.core.Promise;
 import io.vertx.core.buffer.Buffer;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Operators;
 import reactor.util.context.Context;
 
 import java.nio.ByteBuffer;
@@ -23,6 +24,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 import static com.azure.core.validation.http.HttpValidatonUtils.assertArraysEqual;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -217,6 +219,35 @@ public class VertxRequestWriteSubscriberTests {
         Throwable[] writeSuppressed = writeError.getSuppressed();
         assertEquals(1, writeSuppressed.length, "There should be one suppressed exception.");
         assertSame(reactiveError, writeSuppressed[0], "The reactive error should be the suppressed exception.");
+    }
+
+    /**
+     * Tests that if the promise being used to manage the request-response state fails externally, for example because
+     * the connection closed, while the request is ending, the failure of ending the request is handled appropriately.
+     * <p>
+     * The end failure must not complete the promise a second time, which would throw from the subscriber, and the
+     * promise should keep the external failure as its cause.
+     */
+    @Test
+    public void promiseIsFailedExternallyWhileRequestIsEnding() {
+        RuntimeException externalError = new RuntimeException("External error");
+        Promise<HttpResponse> promise = Promise.promise();
+        Supplier<Future<Void>> end = () -> {
+            promise.fail(externalError);
+            return Future.failedFuture(new RuntimeException("End error"));
+        };
+
+        VertxRequestWriteSubscriber subscriber
+            = new VertxRequestWriteSubscriber(IGNORED_EXCEPTION_HANDLER, IGNORED_DRAIN_HANDLER,
+                ignored -> Future.succeededFuture(), () -> false, IGNORED_RESET, end, promise, null, Context.empty());
+
+        // Signal the subscriber directly, Flux.subscribe would route an exception thrown by onComplete to onError.
+        subscriber.onSubscribe(Operators.emptySubscription());
+        subscriber.onNext(ByteBuffer.wrap(DATA));
+        assertDoesNotThrow(subscriber::onComplete);
+
+        assertTrue(promise.future().failed(), "The request should have failed.");
+        assertSame(externalError, promise.future().cause(), "The external error should be the cause of the failure.");
     }
 
     private static void waitForCompletion(Promise<?> promise) throws InterruptedException {
