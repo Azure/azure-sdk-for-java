@@ -22,4 +22,13 @@
   <properties>
     <relative.path.to.eng.folder>../../../../</relative.path.to.eng.folder>
   </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter</artifactId>
+      <version>5.13.4</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
 </project>

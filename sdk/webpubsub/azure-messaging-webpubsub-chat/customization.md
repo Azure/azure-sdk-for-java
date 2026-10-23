@@ -10,6 +10,17 @@ edit generated files unless the language generator explicitly requires a
 checked-in generated output update. Regenerate before final validation and
 verify that regeneration preserves the custom behavior.
 
+### Java lifecycle documentation
+
+Keep the Java customization's lifecycle Javadoc corrections after generation
+until [Azure/typespec-azure#5721](https://github.com/Azure/typespec-azure/issues/5721)
+is resolved upstream. Request schemas must exclude read-only properties and
+mark PATCH properties optional; response schemas must retain response
+requiredness. Topic state is optional on initial creation and available during
+updates, including PUT's Create/Update context. Do not change model constructors
+or serialization to fix these documentation defects. Run the customization
+module's `WebPubSubChatDocumentationTests` after updating generated output.
+
 The existing Web PubSub **service** SDK for the target language is the source of
 truth for connection-string parsing, access-key authentication, reverse proxy
 behavior, and client access token generation. Reuse or share its implementation

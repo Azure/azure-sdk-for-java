@@ -103,8 +103,8 @@ public final class WebPubSubChatServiceAsyncClient {
      * {@code
      * {
      *     id: String (Required)
-     *     createdBy: String (Optional, Required on create)
-     *     content (Optional, Required on create): {
+     *     createdBy: String (Required)
+     *     content (Required): {
      *         text: String (Optional)
      *         binary: byte[] (Optional)
      *     }
@@ -174,14 +174,11 @@ public final class WebPubSubChatServiceAsyncClient {
      * <pre>
      * {@code
      * {
-     *     id: String (Required)
-     *     createdBy: String (Optional, Required on create)
-     *     content (Optional, Required on create): {
+     *     createdBy: String (Optional)
+     *     content (Optional): {
      *         text: String (Optional)
      *         binary: byte[] (Optional)
      *     }
-     *     createdAt: OffsetDateTime (Required)
-     *     etag: String (Required)
      * }
      * }
      * </pre>
@@ -192,8 +189,8 @@ public final class WebPubSubChatServiceAsyncClient {
      * {@code
      * {
      *     id: String (Required)
-     *     createdBy: String (Optional, Required on create)
-     *     content (Optional, Required on create): {
+     *     createdBy: String (Required)
+     *     content (Required): {
      *         text: String (Optional)
      *         binary: byte[] (Optional)
      *     }
@@ -311,11 +308,9 @@ public final class WebPubSubChatServiceAsyncClient {
      * <pre>
      * {@code
      * {
-     *     name: String (Required)
      *     permissions (Required): [
      *         String(user.create_room/user.fetch_all_rooms/room.publish_message/room.history/room.invite/room.remove_user) (Required)
      *     ]
-     *     etag: String (Required)
      * }
      * }
      * </pre>
@@ -406,10 +401,7 @@ public final class WebPubSubChatServiceAsyncClient {
      * <pre>
      * {@code
      * {
-     *     id: String (Required)
      *     title: String (Required)
-     *     defaultConversation: String (Required)
-     *     etag: String (Required)
      * }
      * }
      * </pre>
@@ -559,9 +551,7 @@ public final class WebPubSubChatServiceAsyncClient {
      * <pre>
      * {@code
      * {
-     *     userId: String (Required)
      *     roleName: String (Required)
-     *     etag: String (Required)
      * }
      * }
      * </pre>
@@ -686,9 +676,7 @@ public final class WebPubSubChatServiceAsyncClient {
      * {@code
      * {
      *     kind: String(Human) (Required)
-     *     id: String (Required)
      *     nickname: String (Required)
-     *     etag: String (Required)
      * }
      * }
      * </pre>
@@ -1715,10 +1703,10 @@ public final class WebPubSubChatServiceAsyncClient {
      * {@code
      * {
      *     id: String (Required)
-     *     title: String (Optional, Required on create)
+     *     title: String (Required)
      *     createdAt: OffsetDateTime (Required)
      *     createdBy: String (Required)
-     *     state: String(Normal/Archived/SoftDeleted) (Optional, Required on create)
+     *     state: String(Normal/Archived/SoftDeleted) (Required)
      *     conversationId: String (Required)
      *     etag: String (Required)
      * }
@@ -1758,13 +1746,8 @@ public final class WebPubSubChatServiceAsyncClient {
      * <pre>
      * {@code
      * {
-     *     id: String (Required)
-     *     title: String (Optional, Required on create)
-     *     createdAt: OffsetDateTime (Required)
-     *     createdBy: String (Required)
-     *     state: String(Normal/Archived/SoftDeleted) (Optional, Required on create)
-     *     conversationId: String (Required)
-     *     etag: String (Required)
+     *     title: String (Required)
+     *     state: String(Normal/Archived/SoftDeleted) (Optional)
      * }
      * }
      * </pre>
@@ -1775,10 +1758,10 @@ public final class WebPubSubChatServiceAsyncClient {
      * {@code
      * {
      *     id: String (Required)
-     *     title: String (Optional, Required on create)
+     *     title: String (Required)
      *     createdAt: OffsetDateTime (Required)
      *     createdBy: String (Required)
-     *     state: String(Normal/Archived/SoftDeleted) (Optional, Required on create)
+     *     state: String(Normal/Archived/SoftDeleted) (Required)
      *     conversationId: String (Required)
      *     etag: String (Required)
      * }
@@ -1817,10 +1800,10 @@ public final class WebPubSubChatServiceAsyncClient {
      * {@code
      * {
      *     id: String (Required)
-     *     title: String (Optional, Required on create)
+     *     title: String (Required)
      *     createdAt: OffsetDateTime (Required)
      *     createdBy: String (Required)
-     *     state: String(Normal/Archived/SoftDeleted) (Optional, Required on create)
+     *     state: String(Normal/Archived/SoftDeleted) (Required)
      *     conversationId: String (Required)
      *     etag: String (Required)
      * }
@@ -1860,13 +1843,8 @@ public final class WebPubSubChatServiceAsyncClient {
      * <pre>
      * {@code
      * {
-     *     id: String (Required)
-     *     title: String (Optional, Required on create)
-     *     createdAt: OffsetDateTime (Required)
-     *     createdBy: String (Required)
-     *     state: String(Normal/Archived/SoftDeleted) (Optional, Required on create)
-     *     conversationId: String (Required)
-     *     etag: String (Required)
+     *     title: String (Optional)
+     *     state: String(Normal/Archived/SoftDeleted) (Optional)
      * }
      * }
      * </pre>
@@ -1877,10 +1855,10 @@ public final class WebPubSubChatServiceAsyncClient {
      * {@code
      * {
      *     id: String (Required)
-     *     title: String (Optional, Required on create)
+     *     title: String (Required)
      *     createdAt: OffsetDateTime (Required)
      *     createdBy: String (Required)
-     *     state: String(Normal/Archived/SoftDeleted) (Optional, Required on create)
+     *     state: String(Normal/Archived/SoftDeleted) (Required)
      *     conversationId: String (Required)
      *     etag: String (Required)
      * }

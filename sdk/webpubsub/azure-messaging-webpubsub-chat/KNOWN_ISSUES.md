@@ -1,5 +1,23 @@
 # Web PubSub Chat generator regression coverage
 
+## Workaround: lifecycle visibility and requiredness in Java documentation
+
+- **Tracking issue:** [Azure/typespec-azure#5721](https://github.com/Azure/typespec-azure/issues/5721).
+- The Java customization corrects request schemas for all seven write operations
+  on the sync, async, and implementation clients. Read-only properties are
+  excluded from request bodies, PATCH properties are optional, and response
+  properties retain their requiredness.
+- Topic state is optional on initial creation and can be supplied for updates.
+  PUT uses Create/Update visibility; this workaround does not exclude state
+  from PUT serialization.
+- `customization/src/test/java/WebPubSubChatDocumentationTests.java` checks the
+  checked-in schemas, genuine required and optional fields, idempotence, and
+  preservation of executable code. Run it with
+  `mvn -f sdk/webpubsub/azure-messaging-webpubsub-chat/customization/pom.xml test`.
+
+This is a documentation-only workaround. Shared models, constructors, partial
+PATCH serialization, public APIs, and service validation are unchanged.
+
 ## Resolved: typed asynchronous page-size overrides
 
 - **Tracking issue:** [microsoft/typespec#12149](https://github.com/microsoft/typespec/issues/12149).

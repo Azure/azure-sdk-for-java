@@ -13,6 +13,7 @@
 
 ### Bugs Fixed
 
+- Corrected request and response Javadoc schemas to reflect read-only properties and partial-update optionality, and clarified that topic state is optional on creation.
 - Regenerated with Java emitter 0.48.1 to preserve page-size overrides on typed asynchronous collections, including continuation requests.
 
 ### Other Changes
