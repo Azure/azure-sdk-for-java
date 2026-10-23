@@ -10,6 +10,8 @@
 
 ### Bugs Fixed
 
+- Fixed late request-end failures throwing `IllegalStateException` when the shared response promise had already
+  completed, preserving the original response or error.
 - Fixed streaming responses reading and buffering data without downstream demand. Cancelling response consumption
   now resets the HTTP exchange without closing unrelated HTTP/2 streams.
 - Fixed timeout resolution to prefer explicit builder values, then builder-specific configuration, then global

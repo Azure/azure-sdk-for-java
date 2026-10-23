@@ -14,6 +14,8 @@
 
 ### Bugs Fixed
 
+- Restricted JDK HTTP proxy credentials to authentication challenges from the configured proxy host and port,
+  preventing destination servers or other proxies from receiving them.
 - Fixed HTTP timeout resolution to prefer explicit builder values, then builder-specific configuration, then global
   configuration, and finally SDK defaults. Global timeouts are resolved when needed rather than cached at class
   initialization. Nonpositive JDK HTTP timeouts now disable the timeout, including the connection timeout.
