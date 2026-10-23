@@ -46,7 +46,7 @@ public class VertxHttpClientHostHeaderTests {
         Vertx vertx = Vertx.vertx(new VertxOptions().setEventLoopPoolSize(2));
         try {
             HttpServer server = vertx.createHttpServer().requestHandler(request -> {
-                HostAndPort authority = request.version() == HttpVersion.HTTP_2 ? request.authority(true) : null;
+                HostAndPort authority = request.version() == HttpVersion.HTTP_2 ? request.authority() : null;
                 request.response()
                     .putHeader("x-request-version", request.version().name())
                     .putHeader("x-request-authority", authority == null ? "" : authority.toString())
@@ -98,7 +98,10 @@ public class VertxHttpClientHostHeaderTests {
 
             if (version == HttpVersion.HTTP_2) {
                 for (List<String> hosts : Arrays.asList(
-                    Collections.singletonList("account.blob.core.windows.net:invalid"), Collections.singletonList(""),
+                    Collections.singletonList("account.blob.core.windows.net:invalid"),
+                    Collections.singletonList("account.blob.core.windows.net:65536"),
+                    Collections.singletonList("account.blob.core.windows.net/path"),
+                    Collections.singletonList("user@account.blob.core.windows.net"), Collections.singletonList(""),
                     Arrays.asList("account.blob.core.windows.net", "other.blob.core.windows.net"))) {
                     HttpRequest invalid = new HttpRequest(HttpMethod.GET, serverUri + requestUri);
                     invalid.getHeaders().set(HttpHeaderName.HOST, hosts);
@@ -128,6 +131,8 @@ public class VertxHttpClientHostHeaderTests {
         HttpResponse response
             = synchronous ? client.sendSync(request, Context.NONE) : client.send(request).block(TEST_TIMEOUT);
         assertNotNull(response);
+        // getBodyAsByteArray() skips zero-length responses, so consume the stream directly before closing it.
+        response.getBody().then().block(TEST_TIMEOUT);
         return response;
     }
 }

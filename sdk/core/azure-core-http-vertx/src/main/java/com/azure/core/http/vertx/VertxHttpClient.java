@@ -44,6 +44,8 @@ import reactor.util.context.ContextView;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.lang.reflect.Method;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.time.Duration;
 import java.util.Objects;
 import java.util.concurrent.CancellationException;
@@ -210,8 +212,7 @@ class VertxHttpClient implements HttpClient {
                 // HttpHeaders and using RequestOptions.setHeaders(MultiMap)
                 if (vertxRequest.version() == HttpVersion.HTTP_2
                     && HttpHeaderName.HOST.getCaseSensitiveName().equalsIgnoreCase(header.getName())) {
-                    HostAndPort authority
-                        = header.getValuesList().size() == 1 ? HostAndPort.parseAuthority(header.getValue(), -1) : null;
+                    HostAndPort authority = parseHostHeader(header);
                     if (authority == null || authority.host().isEmpty()) {
                         promise.tryFail(LOGGER.logExceptionAsError(new IllegalArgumentException(
                             "The Host header must contain exactly one valid host and optional port.")));
@@ -267,6 +268,27 @@ class VertxHttpClient implements HttpClient {
         });
 
         return requestFuture;
+    }
+
+    private static HostAndPort parseHostHeader(HttpHeader header) {
+        if (header.getValuesList().size() != 1) {
+            return null;
+        }
+
+        // HostAndPort.parseAuthority is not available in the minimum supported Vert.x 4.5 release.
+        String value = header.getValue();
+        try {
+            URI uri = new URI("http://" + value);
+            if (uri.getHost() == null
+                || uri.getRawUserInfo() != null
+                || !value.equals(uri.getRawAuthority())
+                || uri.getPort() > 65535) {
+                return null;
+            }
+            return HostAndPort.create(uri.getHost(), uri.getPort());
+        } catch (URISyntaxException ignored) {
+            return null;
+        }
     }
 
     private void sendBody(ContextView contextView, HttpRequest azureRequest, ProgressReporter progressReporter,

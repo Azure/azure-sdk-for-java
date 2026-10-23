@@ -17,6 +17,9 @@ dependencies, including Netty 4.2.
 Keep Vert.x and Netty versions consistent across your application. Do not combine the default Vert.x 4.5/Netty 4.1
 dependencies with the Netty 4.2-based `azure-core-http-netty` library on the same classpath.
 
+Vert.x 5.1.0 rejects a disabled connection timeout (`connectTimeout(Duration.ZERO)`) due to an upstream validation bug.
+Use Vert.x 5.1.1 or later if you need to disable this timeout.
+
 #### Include the BOM file
 
 Please include the azure-sdk-bom to your project to take dependency on the General Availability (GA) version of the library. In the following snippet, replace the {bom_version_to_target} placeholder with the version number.
