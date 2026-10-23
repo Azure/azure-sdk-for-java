@@ -307,31 +307,6 @@ public final class RouteUpdateParameters implements JsonSerializable<RouteUpdate
     }
 
     /**
-     * Get the grpcState property: Whether or not gRPC is enabled on this route. Permitted values are 'Enabled' or
-     * 'Disabled'.
-     * 
-     * @return the grpcState value.
-     */
-    public AfdRouteGrpcState grpcState() {
-        return this.innerProperties() == null ? null : this.innerProperties().grpcState();
-    }
-
-    /**
-     * Set the grpcState property: Whether or not gRPC is enabled on this route. Permitted values are 'Enabled' or
-     * 'Disabled'.
-     * 
-     * @param grpcState the grpcState value to set.
-     * @return the RouteUpdateParameters object itself.
-     */
-    public RouteUpdateParameters withGrpcState(AfdRouteGrpcState grpcState) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new RouteUpdatePropertiesParameters();
-        }
-        this.innerProperties().withGrpcState(grpcState);
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.

@@ -78,10 +78,7 @@ public class SecurityPolicyPropertiesParameters implements JsonSerializable<Secu
                     }
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
-                if ("WebApplicationFirewallEmbedded".equals(discriminatorValue)) {
-                    return SecurityPolicyWebApplicationFirewallParametersWithEmbeddedWafPolicy
-                        .fromJson(readerToUse.reset());
-                } else if ("WebApplicationFirewall".equals(discriminatorValue)) {
+                if ("WebApplicationFirewall".equals(discriminatorValue)) {
                     return SecurityPolicyWebApplicationFirewallParameters.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
