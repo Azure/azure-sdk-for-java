@@ -202,7 +202,10 @@ final class WebSocketSessionNettyImpl implements WebSocketSession {
     public void sendTextAsync(String text, Consumer<SendResult> handler) {
         if (ch != null && ch.isOpen()) {
             TextWebSocketFrame frame = new TextWebSocketFrame(text);
-            loggerReference.get().atVerbose().addKeyValue("text", frame.text()).log("Send TextWebSocketFrame");
+            loggerReference.get()
+                .atVerbose()
+                .addKeyValue("payloadLength", frame.content().readableBytes())
+                .log("Send TextWebSocketFrame");
             ch.writeAndFlush(frame).addListener(future -> {
                 if (future.isSuccess()) {
                     handler.accept(new SendResult());
