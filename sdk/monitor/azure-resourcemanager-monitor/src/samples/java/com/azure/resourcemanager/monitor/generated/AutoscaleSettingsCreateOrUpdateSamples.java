@@ -10,6 +10,8 @@ import com.azure.resourcemanager.monitor.fluent.models.ScaleRuleInner;
 import com.azure.resourcemanager.monitor.models.AutoscaleNotification;
 import com.azure.resourcemanager.monitor.models.ComparisonOperationType;
 import com.azure.resourcemanager.monitor.models.EmailNotification;
+import com.azure.resourcemanager.monitor.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.monitor.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.monitor.models.MetricStatisticType;
 import com.azure.resourcemanager.monitor.models.MetricTrigger;
 import com.azure.resourcemanager.monitor.models.PredictiveAutoscalePolicy;
@@ -23,6 +25,7 @@ import com.azure.resourcemanager.monitor.models.ScaleDirection;
 import com.azure.resourcemanager.monitor.models.ScaleType;
 import com.azure.resourcemanager.monitor.models.TimeAggregationType;
 import com.azure.resourcemanager.monitor.models.TimeWindow;
+import com.azure.resourcemanager.monitor.models.UserAssignedIdentity;
 import com.azure.resourcemanager.monitor.models.WebhookNotification;
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -35,7 +38,7 @@ import java.util.Map;
  */
 public final class AutoscaleSettingsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2022-10-01/createOrUpdateAutoscaleSetting.json
+     * x-ms-original-file: 2025-09-01-preview/createOrUpdateAutoscaleSetting.json
      */
     /**
      * Sample code: Create or update an autoscale setting.
@@ -48,6 +51,10 @@ public final class AutoscaleSettingsCreateOrUpdateSamples {
             .createOrUpdateWithResponse("TestingMetricsScaleSet", "MySetting", new AutoscaleSettingResourceInner()
                 .withLocation("West US")
                 .withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder"))
+                .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                    .withUserAssignedIdentities(mapOf(
+                        "/subscriptions/b67f7fec-69fc-4974-9099-a26bd6ffeda3/resourceGroups/TestingMetricsScaleSet/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myIdentity",
+                        new UserAssignedIdentity())))
                 .withProfiles(Arrays.asList(new AutoscaleProfileInner().withName("adios")
                     .withCapacity(new ScaleCapacity().withMinimum("1").withMaximum("10").withDefaultProperty("1"))
                     .withRules(Arrays.asList(new ScaleRuleInner().withMetricTrigger(new MetricTrigger()
