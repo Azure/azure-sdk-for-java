@@ -73,5 +73,6 @@
  *
  * @see com.azure.v2.core.credentials.AzureSasCredential
  * @see com.azure.v2.core.credentials.TokenCredential
+ * @see com.azure.v2.core.credentials.AccessTokenCache
  */
 package com.azure.v2.core.credentials;
