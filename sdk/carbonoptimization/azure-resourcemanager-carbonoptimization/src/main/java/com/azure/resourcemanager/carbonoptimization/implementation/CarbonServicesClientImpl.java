@@ -10,6 +10,7 @@ import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
+import com.azure.core.annotation.PathParam;
 import com.azure.core.annotation.Post;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
@@ -24,6 +25,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.carbonoptimization.fluent.CarbonServicesClient;
 import com.azure.resourcemanager.carbonoptimization.fluent.models.CarbonEmissionDataAvailableDateRangeInner;
 import com.azure.resourcemanager.carbonoptimization.fluent.models.CarbonEmissionDataListResultInner;
+import com.azure.resourcemanager.carbonoptimization.models.BillingAccountQueryFilter;
 import com.azure.resourcemanager.carbonoptimization.models.QueryFilter;
 import reactor.core.publisher.Mono;
 
@@ -90,6 +92,24 @@ public final class CarbonServicesClientImpl implements CarbonServicesClient {
         Response<CarbonEmissionDataAvailableDateRangeInner> queryCarbonEmissionDataAvailableDateRangeSync(
             @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, Context context);
+
+        @Post("/{scope}/providers/Microsoft.Carbon/carbonEmissionReports")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<CarbonEmissionDataListResultInner>> queryCarbonEmissionReportsByBillingAccount(
+            @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam(value = "scope", encoded = true) String scope, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BillingAccountQueryFilter queryParameters, Context context);
+
+        @Post("/{scope}/providers/Microsoft.Carbon/carbonEmissionReports")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<CarbonEmissionDataListResultInner> queryCarbonEmissionReportsByBillingAccountSync(
+            @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam(value = "scope", encoded = true) String scope, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BillingAccountQueryFilter queryParameters, Context context);
     }
 
     /**
@@ -218,5 +238,84 @@ public final class CarbonServicesClientImpl implements CarbonServicesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CarbonEmissionDataAvailableDateRangeInner queryCarbonEmissionDataAvailableDateRange() {
         return queryCarbonEmissionDataAvailableDateRangeWithResponse(Context.NONE).getValue();
+    }
+
+    /**
+     * API for Carbon Emissions Reports scoped to a billing account.
+     * 
+     * @param scope The scope associated with carbon emission report operations. This includes
+     * '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope.
+     * @param queryParameters Query parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of carbon emission results along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<CarbonEmissionDataListResultInner>>
+        queryCarbonEmissionReportsByBillingAccountWithResponseAsync(String scope,
+            BillingAccountQueryFilter queryParameters) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.queryCarbonEmissionReportsByBillingAccount(this.client.getEndpoint(),
+                this.client.getApiVersion(), scope, contentType, accept, queryParameters, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * API for Carbon Emissions Reports scoped to a billing account.
+     * 
+     * @param scope The scope associated with carbon emission report operations. This includes
+     * '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope.
+     * @param queryParameters Query parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of carbon emission results on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<CarbonEmissionDataListResultInner> queryCarbonEmissionReportsByBillingAccountAsync(String scope,
+        BillingAccountQueryFilter queryParameters) {
+        return queryCarbonEmissionReportsByBillingAccountWithResponseAsync(scope, queryParameters)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * API for Carbon Emissions Reports scoped to a billing account.
+     * 
+     * @param scope The scope associated with carbon emission report operations. This includes
+     * '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope.
+     * @param queryParameters Query parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of carbon emission results along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<CarbonEmissionDataListResultInner> queryCarbonEmissionReportsByBillingAccountWithResponse(
+        String scope, BillingAccountQueryFilter queryParameters, Context context) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.queryCarbonEmissionReportsByBillingAccountSync(this.client.getEndpoint(),
+            this.client.getApiVersion(), scope, contentType, accept, queryParameters, context);
+    }
+
+    /**
+     * API for Carbon Emissions Reports scoped to a billing account.
+     * 
+     * @param scope The scope associated with carbon emission report operations. This includes
+     * '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope.
+     * @param queryParameters Query parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of carbon emission results.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CarbonEmissionDataListResultInner queryCarbonEmissionReportsByBillingAccount(String scope,
+        BillingAccountQueryFilter queryParameters) {
+        return queryCarbonEmissionReportsByBillingAccountWithResponse(scope, queryParameters, Context.NONE).getValue();
     }
 }

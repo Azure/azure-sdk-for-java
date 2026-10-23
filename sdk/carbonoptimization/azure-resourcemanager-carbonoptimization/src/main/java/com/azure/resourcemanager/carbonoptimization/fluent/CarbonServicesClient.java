@@ -10,6 +10,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.carbonoptimization.fluent.models.CarbonEmissionDataAvailableDateRangeInner;
 import com.azure.resourcemanager.carbonoptimization.fluent.models.CarbonEmissionDataListResultInner;
+import com.azure.resourcemanager.carbonoptimization.models.BillingAccountQueryFilter;
 import com.azure.resourcemanager.carbonoptimization.models.QueryFilter;
 
 /**
@@ -64,4 +65,35 @@ public interface CarbonServicesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     CarbonEmissionDataAvailableDateRangeInner queryCarbonEmissionDataAvailableDateRange();
+
+    /**
+     * API for Carbon Emissions Reports scoped to a billing account.
+     * 
+     * @param scope The scope associated with carbon emission report operations. This includes
+     * '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope.
+     * @param queryParameters Query parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of carbon emission results along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<CarbonEmissionDataListResultInner> queryCarbonEmissionReportsByBillingAccountWithResponse(String scope,
+        BillingAccountQueryFilter queryParameters, Context context);
+
+    /**
+     * API for Carbon Emissions Reports scoped to a billing account.
+     * 
+     * @param scope The scope associated with carbon emission report operations. This includes
+     * '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope.
+     * @param queryParameters Query parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of carbon emission results.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CarbonEmissionDataListResultInner queryCarbonEmissionReportsByBillingAccount(String scope,
+        BillingAccountQueryFilter queryParameters);
 }
