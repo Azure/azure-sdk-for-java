@@ -11,7 +11,7 @@ import com.azure.resourcemanager.azurestackhci.vm.fluent.models.VirtualHardDiskU
  */
 public interface VirtualHardDiskUploadResponse {
     /**
-     * Gets the virtualHardDiskId property: The ARM ID for a Virtual Hard Disk.
+     * Gets the virtualHardDiskId property: The Azure Resource ID for a Virtual Hard Disk.
      * 
      * @return the virtualHardDiskId value.
      */

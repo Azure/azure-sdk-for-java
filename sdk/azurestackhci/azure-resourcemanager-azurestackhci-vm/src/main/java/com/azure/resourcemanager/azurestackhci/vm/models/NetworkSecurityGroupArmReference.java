@@ -12,12 +12,12 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The ARM ID for a Network Security Group.
+ * The Azure Resource ID for a Network Security Group.
  */
 @Fluent
 public final class NetworkSecurityGroupArmReference implements JsonSerializable<NetworkSecurityGroupArmReference> {
     /*
-     * The ARM ID for a Network Security Group.
+     * The Azure Resource ID for a Network Security Group.
      */
     private String id;
 
@@ -28,7 +28,7 @@ public final class NetworkSecurityGroupArmReference implements JsonSerializable<
     }
 
     /**
-     * Get the id property: The ARM ID for a Network Security Group.
+     * Get the id property: The Azure Resource ID for a Network Security Group.
      * 
      * @return the id value.
      */
@@ -37,7 +37,7 @@ public final class NetworkSecurityGroupArmReference implements JsonSerializable<
     }
 
     /**
-     * Set the id property: The ARM ID for a Network Security Group.
+     * Set the id property: The Azure Resource ID for a Network Security Group.
      * 
      * @param id the id value to set.
      * @return the NetworkSecurityGroupArmReference object itself.

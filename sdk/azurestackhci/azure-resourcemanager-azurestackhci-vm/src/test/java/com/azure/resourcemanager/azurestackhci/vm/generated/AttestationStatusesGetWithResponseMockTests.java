@@ -20,7 +20,7 @@ public final class AttestationStatusesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"attestSecureBootEnabled\":\"Enabled\",\"attestationCertValidated\":\"Invalid\",\"bootIntegrityValidated\":\"Valid\",\"linuxKernelVersion\":\"fgcviz\",\"healthStatus\":\"Pending\",\"timestamp\":\"l\",\"errorMessage\":\"lyoupfgfbkju\",\"provisioningState\":\"Canceled\",\"attestHardwarePlatform\":\"SEVSNP\",\"attestDiskSecurityEncryptionType\":\"Unknown\"},\"id\":\"in\",\"name\":\"g\",\"type\":\"wzf\"}";
+            = "{\"properties\":{\"attestSecureBootEnabled\":\"Unknown\",\"attestationCertValidated\":\"Unknown\",\"bootIntegrityValidated\":\"Invalid\",\"linuxKernelVersion\":\"opionszon\",\"healthStatus\":\"Unknown\",\"timestamp\":\"ajinnixjawrtmjfj\",\"errorMessage\":\"ccxlzhcoxovnek\",\"provisioningState\":\"Succeeded\",\"attestHardwarePlatform\":\"SEVSNP\",\"attestDiskSecurityEncryptionType\":\"Unknown\"},\"id\":\"rd\",\"name\":\"jxtxrdc\",\"type\":\"tjvidt\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -29,9 +29,8 @@ public final class AttestationStatusesGetWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        AttestationStatus response = manager.attestationStatuses()
-            .getWithResponse("ksbpimlqoljx", com.azure.core.util.Context.NONE)
-            .getValue();
+        AttestationStatus response
+            = manager.attestationStatuses().getWithResponse("vzuyturmlmu", com.azure.core.util.Context.NONE).getValue();
 
     }
 }

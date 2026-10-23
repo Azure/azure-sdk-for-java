@@ -12,17 +12,17 @@ public final class VirtualMachineInstancePropertiesSecurityProfileUefiSettingsTe
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VirtualMachineInstancePropertiesSecurityProfileUefiSettings model
-            = BinaryData.fromString("{\"secureBootEnabled\":true}")
+            = BinaryData.fromString("{\"secureBootEnabled\":false}")
                 .toObject(VirtualMachineInstancePropertiesSecurityProfileUefiSettings.class);
-        Assertions.assertTrue(model.secureBootEnabled());
+        Assertions.assertFalse(model.secureBootEnabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         VirtualMachineInstancePropertiesSecurityProfileUefiSettings model
-            = new VirtualMachineInstancePropertiesSecurityProfileUefiSettings().withSecureBootEnabled(true);
+            = new VirtualMachineInstancePropertiesSecurityProfileUefiSettings().withSecureBootEnabled(false);
         model
             = BinaryData.fromObject(model).toObject(VirtualMachineInstancePropertiesSecurityProfileUefiSettings.class);
-        Assertions.assertTrue(model.secureBootEnabled());
+        Assertions.assertFalse(model.secureBootEnabled());
     }
 }

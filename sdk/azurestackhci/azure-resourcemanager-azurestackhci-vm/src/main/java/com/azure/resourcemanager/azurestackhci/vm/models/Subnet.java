@@ -255,6 +255,15 @@ public final class Subnet implements JsonSerializable<Subnet> {
     }
 
     /**
+     * Get the provisioningState property: Provisioning state of the subnet resource.
+     * 
+     * @return the provisioningState value.
+     */
+    public ProvisioningStateEnum provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override

@@ -13,10 +13,10 @@ public final class VirtualHardDiskDownloadStatusTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VirtualHardDiskDownloadStatus model = BinaryData.fromString(
-            "{\"downloadedSizeInMB\":5146449711958438241,\"status\":\"InProgress\",\"progressPercentage\":1809272573245820148}")
+            "{\"downloadedSizeInMB\":679004142384827161,\"status\":\"Failed\",\"progressPercentage\":8446430665429739352}")
             .toObject(VirtualHardDiskDownloadStatus.class);
-        Assertions.assertEquals(5146449711958438241L, model.downloadedSizeInMB());
-        Assertions.assertEquals(Status.IN_PROGRESS, model.status());
-        Assertions.assertEquals(1809272573245820148L, model.progressPercentage());
+        Assertions.assertEquals(679004142384827161L, model.downloadedSizeInMB());
+        Assertions.assertEquals(Status.FAILED, model.status());
+        Assertions.assertEquals(8446430665429739352L, model.progressPercentage());
     }
 }

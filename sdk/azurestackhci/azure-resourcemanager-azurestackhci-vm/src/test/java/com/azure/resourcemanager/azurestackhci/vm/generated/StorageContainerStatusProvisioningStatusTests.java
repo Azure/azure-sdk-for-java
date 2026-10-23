@@ -13,9 +13,9 @@ public final class StorageContainerStatusProvisioningStatusTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StorageContainerStatusProvisioningStatus model
-            = BinaryData.fromString("{\"operationId\":\"vnotyfjfcnj\",\"status\":\"Failed\"}")
+            = BinaryData.fromString("{\"operationId\":\"johxcrsb\",\"status\":\"InProgress\"}")
                 .toObject(StorageContainerStatusProvisioningStatus.class);
-        Assertions.assertEquals("vnotyfjfcnj", model.operationId());
-        Assertions.assertEquals(Status.FAILED, model.status());
+        Assertions.assertEquals("johxcrsb", model.operationId());
+        Assertions.assertEquals(Status.IN_PROGRESS, model.status());
     }
 }

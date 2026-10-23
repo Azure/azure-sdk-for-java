@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class LogicalNetworksUpdateSamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/LogicalNetworks_Update.json
+     * x-ms-original-file: 2026-07-01-preview/LogicalNetworks_Update.json
      */
     /**
      * Sample code: UpdateLogicalNetwork.

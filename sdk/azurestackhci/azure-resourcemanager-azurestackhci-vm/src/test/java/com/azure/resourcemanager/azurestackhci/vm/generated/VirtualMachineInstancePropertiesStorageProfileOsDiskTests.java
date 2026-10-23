@@ -16,9 +16,9 @@ public final class VirtualMachineInstancePropertiesStorageProfileOsDiskTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VirtualMachineInstancePropertiesStorageProfileOsDisk model = BinaryData.fromString(
-            "{\"id\":\"rmgucnap\",\"osType\":\"Linux\",\"managedDisk\":{\"securityProfile\":{\"securityEncryptionType\":\"NonPersistedTPM\"}}}")
+            "{\"id\":\"ywsuwsy\",\"osType\":\"Linux\",\"managedDisk\":{\"securityProfile\":{\"securityEncryptionType\":\"NonPersistedTPM\"}}}")
             .toObject(VirtualMachineInstancePropertiesStorageProfileOsDisk.class);
-        Assertions.assertEquals("rmgucnap", model.id());
+        Assertions.assertEquals("ywsuwsy", model.id());
         Assertions.assertEquals(OperatingSystemTypes.LINUX, model.osType());
         Assertions.assertEquals(SecurityEncryptionType.NON_PERSISTED_TPM,
             model.managedDisk().securityProfile().securityEncryptionType());
@@ -27,12 +27,12 @@ public final class VirtualMachineInstancePropertiesStorageProfileOsDiskTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         VirtualMachineInstancePropertiesStorageProfileOsDisk model
-            = new VirtualMachineInstancePropertiesStorageProfileOsDisk().withId("rmgucnap")
+            = new VirtualMachineInstancePropertiesStorageProfileOsDisk().withId("ywsuwsy")
                 .withOsType(OperatingSystemTypes.LINUX)
                 .withManagedDisk(new VirtualMachineInstanceManagedDiskParameters().withSecurityProfile(
                     new VMDiskSecurityProfile().withSecurityEncryptionType(SecurityEncryptionType.NON_PERSISTED_TPM)));
         model = BinaryData.fromObject(model).toObject(VirtualMachineInstancePropertiesStorageProfileOsDisk.class);
-        Assertions.assertEquals("rmgucnap", model.id());
+        Assertions.assertEquals("ywsuwsy", model.id());
         Assertions.assertEquals(OperatingSystemTypes.LINUX, model.osType());
         Assertions.assertEquals(SecurityEncryptionType.NON_PERSISTED_TPM,
             model.managedDisk().securityProfile().securityEncryptionType());
