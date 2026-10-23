@@ -2,15 +2,9 @@
 
 ## 1.1.1 (2026-10-23)
 
-### Features Added
-
-### Breaking Changes
-
 ### Bugs Fixed
 
 - Disabled redirects during WebSocket handshakes to prevent credentials from being forwarded to redirect destinations.
-
-### Other Changes
 
 ## 1.1.0 (2026-08-03)
 
