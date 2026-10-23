@@ -240,9 +240,9 @@ public class VertxRequestWriteSubscriberTests {
             return Future.failedFuture(new RuntimeException("End error"));
         };
 
-        VertxRequestWriteSubscriber subscriber = new VertxRequestWriteSubscriber(IGNORED_EXCEPTION_HANDLER,
-            IGNORED_DRAIN_HANDLER, ignored -> Future.succeededFuture(), () -> false, IGNORED_RESET, end, promise, null,
-            Context.empty());
+        VertxRequestWriteSubscriber subscriber
+            = new VertxRequestWriteSubscriber(IGNORED_EXCEPTION_HANDLER, IGNORED_DRAIN_HANDLER,
+                ignored -> Future.succeededFuture(), () -> false, IGNORED_RESET, end, promise, null, Context.empty());
 
         // Signal the subscriber directly, Flux.subscribe would route an exception thrown by onComplete to onError.
         subscriber.onSubscribe(Operators.emptySubscription());
