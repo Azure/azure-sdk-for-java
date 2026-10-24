@@ -12,6 +12,8 @@ import com.azure.core.test.utils.MockTokenCredential;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 import reactor.core.publisher.Mono;
 
 import java.text.ParseException;
@@ -121,11 +123,25 @@ public class WebPubSubChatServiceClientBuilderTests {
     }
 
     @Test
-    public void reverseProxyPreservesJavaServiceBehavior() throws ParseException {
+    public void defaultServiceVersionIsAugustPreview() {
+        AtomicReference<HttpRequest> sentRequest = new AtomicReference<>();
+        WebPubSubChatServiceClient client = createClient(new AzureKeyCredential(FIRST_KEY), sentRequest);
+
+        assertThrows(ResourceNotFoundException.class, () -> client.getRole("room.reader"));
+
+        assertEquals("api-version=2026-08-01-preview", sentRequest.get().getUrl().getQuery());
+        assertEquals(WebPubSubChatServiceVersion.V2026_08_01_PREVIEW, WebPubSubChatServiceVersion.getLatest());
+    }
+
+    @ParameterizedTest
+    @EnumSource(WebPubSubChatServiceVersion.class)
+    public void reverseProxyPreservesJavaServiceBehavior(WebPubSubChatServiceVersion serviceVersion)
+        throws ParseException {
         AtomicReference<HttpRequest> sentRequest = new AtomicReference<>();
         WebPubSubChatServiceClient client = new WebPubSubChatServiceClientBuilder().endpoint(ENDPOINT)
             .hub("chat")
             .credential(new AzureKeyCredential(FIRST_KEY))
+            .serviceVersion(serviceVersion)
             .reverseProxyEndpoint("https://proxy.example/gateway")
             .httpClient(request -> Mono.defer(() -> {
                 sentRequest.set(request);
@@ -137,10 +153,10 @@ public class WebPubSubChatServiceClientBuilderTests {
 
         assertEquals("proxy.example", sentRequest.get().getUrl().getHost());
         assertTrue(sentRequest.get().getUrl().getPath().startsWith("/gateway/api/hubs/chat/chat/roles/"));
-        assertEquals("api-version=2026-02-01-preview", sentRequest.get().getUrl().getQuery());
+        assertEquals("api-version=" + serviceVersion.getVersion(), sentRequest.get().getUrl().getQuery());
         String authorization = sentRequest.get().getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
         JWTClaimsSet claims = SignedJWT.parse(authorization.substring("Bearer ".length())).getJWTClaimsSet();
-        assertEquals(ENDPOINT + "/api/hubs/chat/chat/roles/room.reader?api-version=2026-02-01-preview",
+        assertEquals(ENDPOINT + "/api/hubs/chat/chat/roles/room.reader?api-version=" + serviceVersion.getVersion(),
             claims.getAudience().get(0));
     }
 

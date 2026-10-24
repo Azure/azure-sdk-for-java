@@ -25,7 +25,9 @@ import com.azure.messaging.webpubsub.chat.models.ChatMessage;
 import com.azure.messaging.webpubsub.chat.models.ChatRole;
 import com.azure.messaging.webpubsub.chat.models.ChatRoom;
 import com.azure.messaging.webpubsub.chat.models.ChatRoomMember;
+import com.azure.messaging.webpubsub.chat.models.ChatTopic;
 import com.azure.messaging.webpubsub.chat.models.ChatUser;
+import com.azure.messaging.webpubsub.chat.models.ChatUserRoom;
 import com.azure.messaging.webpubsub.chat.models.GetClientAccessTokenOptions;
 import com.azure.messaging.webpubsub.chat.models.WebPubSubClientAccessToken;
 
@@ -94,8 +96,8 @@ public final class WebPubSubChatServiceClient {
      * {@code
      * {
      *     id: String (Required)
-     *     createdBy: String (Optional, Required on create)
-     *     content (Optional, Required on create): {
+     *     createdBy: String (Required)
+     *     content (Required): {
      *         text: String (Optional)
      *         binary: byte[] (Optional)
      *     }
@@ -165,14 +167,11 @@ public final class WebPubSubChatServiceClient {
      * <pre>
      * {@code
      * {
-     *     id: String (Required)
-     *     createdBy: String (Optional, Required on create)
-     *     content (Optional, Required on create): {
+     *     createdBy: String (Optional)
+     *     content (Optional): {
      *         text: String (Optional)
      *         binary: byte[] (Optional)
      *     }
-     *     createdAt: OffsetDateTime (Required)
-     *     etag: String (Required)
      * }
      * }
      * </pre>
@@ -183,8 +182,8 @@ public final class WebPubSubChatServiceClient {
      * {@code
      * {
      *     id: String (Required)
-     *     createdBy: String (Optional, Required on create)
-     *     content (Optional, Required on create): {
+     *     createdBy: String (Required)
+     *     content (Required): {
      *         text: String (Optional)
      *         binary: byte[] (Optional)
      *     }
@@ -302,11 +301,9 @@ public final class WebPubSubChatServiceClient {
      * <pre>
      * {@code
      * {
-     *     name: String (Required)
      *     permissions (Required): [
      *         String(user.create_room/user.fetch_all_rooms/room.publish_message/room.history/room.invite/room.remove_user) (Required)
      *     ]
-     *     etag: String (Required)
      * }
      * }
      * </pre>
@@ -396,10 +393,7 @@ public final class WebPubSubChatServiceClient {
      * <pre>
      * {@code
      * {
-     *     id: String (Required)
      *     title: String (Required)
-     *     defaultConversation: String (Required)
-     *     etag: String (Required)
      * }
      * }
      * </pre>
@@ -549,9 +543,7 @@ public final class WebPubSubChatServiceClient {
      * <pre>
      * {@code
      * {
-     *     userId: String (Required)
      *     roleName: String (Required)
-     *     etag: String (Required)
      * }
      * }
      * </pre>
@@ -675,9 +667,7 @@ public final class WebPubSubChatServiceClient {
      * {@code
      * {
      *     kind: String(Human) (Required)
-     *     id: String (Required)
      *     nickname: String (Required)
-     *     etag: String (Required)
      * }
      * }
      * </pre>
@@ -1515,5 +1505,714 @@ public final class WebPubSubChatServiceClient {
      */
     public WebPubSubClientAccessToken getClientAccessToken(GetClientAccessTokenOptions options) {
         return WebPubSubClientAccessTokenFactory.create(serviceClient, keyCredential, options);
+    }
+
+    /**
+     * List rooms with pagination.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>The maximum number of result items per page.</td></tr>
+     * <tr><td>continuationToken</td><td>String</td><td>No</td><td>Continuation token for pagination.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     title: String (Required)
+     *     defaultConversation: String (Required)
+     *     etag: String (Required)
+     * }
+     * }
+     * </pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return paged collection of ChatRoom items as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listRooms(RequestOptions requestOptions) {
+        return this.serviceClient.listRooms(requestOptions);
+    }
+
+    /**
+     * List topics in a room with pagination.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>The maximum number of result items per page.</td></tr>
+     * <tr><td>continuationToken</td><td>String</td><td>No</td><td>Continuation token for pagination.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     title: String (Required)
+     *     createdAt: OffsetDateTime (Required)
+     *     createdBy: String (Required)
+     *     state: String(Normal/Archived/SoftDeleted) (Required)
+     *     conversationId: String (Required)
+     *     etag: String (Required)
+     * }
+     * }
+     * </pre>
+     *
+     * @param roomId Room identifier.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return paged collection of ChatTopic items as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listTopics(String roomId, RequestOptions requestOptions) {
+        return this.serviceClient.listTopics(roomId, requestOptions);
+    }
+
+    /**
+     * Create or replace a topic.
+     *
+     * Create or replace a topic with a client-specified ID.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>If-Match</td><td>String</td><td>No</td><td>The request should only proceed if an entity matches this
+     * string.</td></tr>
+     * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>The request should only proceed if no entity matches this
+     * string.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     title: String (Required)
+     *     state: String(Normal/Archived/SoftDeleted) (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     title: String (Required)
+     *     createdAt: OffsetDateTime (Required)
+     *     createdBy: String (Required)
+     *     state: String(Normal/Archived/SoftDeleted) (Required)
+     *     conversationId: String (Required)
+     *     etag: String (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The entity tag for the response.</td></tr>
+     * </table>
+     *
+     * @param roomId Room identifier.
+     * @param topicId Topic identifier unique within the room.
+     * @param resource The resource instance.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents a chat topic in a room along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> createOrReplaceTopicWithResponse(String roomId, String topicId, BinaryData resource,
+        RequestOptions requestOptions) {
+        return this.serviceClient.createOrReplaceTopicWithResponse(roomId, topicId, resource, requestOptions);
+    }
+
+    /**
+     * Get topic information.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     title: String (Required)
+     *     createdAt: OffsetDateTime (Required)
+     *     createdBy: String (Required)
+     *     state: String(Normal/Archived/SoftDeleted) (Required)
+     *     conversationId: String (Required)
+     *     etag: String (Required)
+     * }
+     * }
+     * </pre>
+     *
+     * @param roomId Room identifier.
+     * @param topicId Topic identifier unique within the room.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return topic information along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getTopicWithResponse(String roomId, String topicId, RequestOptions requestOptions) {
+        return this.serviceClient.getTopicWithResponse(roomId, topicId, requestOptions);
+    }
+
+    /**
+     * Update a topic.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>If-Match</td><td>String</td><td>No</td><td>The request should only proceed if an entity matches this
+     * string.</td></tr>
+     * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>The request should only proceed if no entity matches this
+     * string.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     title: String (Optional)
+     *     state: String(Normal/Archived/SoftDeleted) (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     title: String (Required)
+     *     createdAt: OffsetDateTime (Required)
+     *     createdBy: String (Required)
+     *     state: String(Normal/Archived/SoftDeleted) (Required)
+     *     conversationId: String (Required)
+     *     etag: String (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The entity tag for the response.</td></tr>
+     * </table>
+     *
+     * @param roomId Room identifier.
+     * @param topicId Topic identifier unique within the room.
+     * @param resource The resource instance.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents a chat topic in a room along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> updateTopicWithResponse(String roomId, String topicId, BinaryData resource,
+        RequestOptions requestOptions) {
+        return this.serviceClient.updateTopicWithResponse(roomId, topicId, resource, requestOptions);
+    }
+
+    /**
+     * Soft delete a topic.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>If-Match</td><td>String</td><td>No</td><td>The request should only proceed if an entity matches this
+     * string.</td></tr>
+     * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>The request should only proceed if no entity matches this
+     * string.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     *
+     * @param roomId Room identifier.
+     * @param topicId Topic identifier unique within the room.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteTopicWithResponse(String roomId, String topicId, RequestOptions requestOptions) {
+        return this.serviceClient.deleteTopicWithResponse(roomId, topicId, requestOptions);
+    }
+
+    /**
+     * List all users with pagination.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>The maximum number of result items per page.</td></tr>
+     * <tr><td>continuationToken</td><td>String</td><td>No</td><td>Continuation token for pagination.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     kind: String(Human) (Required)
+     *     id: String (Required)
+     *     nickname: String (Required)
+     *     etag: String (Required)
+     * }
+     * }
+     * </pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return paged collection of ChatUser items as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listUsers(RequestOptions requestOptions) {
+        return this.serviceClient.listUsers(requestOptions);
+    }
+
+    /**
+     * List rooms for a user with pagination.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>The maximum number of result items per page.</td></tr>
+     * <tr><td>continuationToken</td><td>String</td><td>No</td><td>Continuation token for pagination.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     title: String (Required)
+     *     defaultConversation: String (Required)
+     *     etag: String (Required)
+     * }
+     * }
+     * </pre>
+     *
+     * @param userId User identifier.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return paged collection of ChatUserRoom items as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listRoomsForUser(String userId, RequestOptions requestOptions) {
+        return this.serviceClient.listRoomsForUser(userId, requestOptions);
+    }
+
+    /**
+     * List rooms with pagination.
+     *
+     * @param continuationToken Continuation token for pagination.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return paged collection of ChatRoom items as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ChatRoom> listRooms(String continuationToken) {
+        // Generated convenience method for listRooms
+        RequestOptions requestOptions = new RequestOptions();
+        if (continuationToken != null) {
+            requestOptions.addQueryParam("continuationToken", continuationToken, false);
+        }
+        return serviceClient.listRooms(requestOptions).mapPage(bodyItemValue -> bodyItemValue.toObject(ChatRoom.class));
+    }
+
+    /**
+     * List rooms with pagination.
+     *
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return paged collection of ChatRoom items as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ChatRoom> listRooms() {
+        // Generated convenience method for listRooms
+        RequestOptions requestOptions = new RequestOptions();
+        return serviceClient.listRooms(requestOptions).mapPage(bodyItemValue -> bodyItemValue.toObject(ChatRoom.class));
+    }
+
+    /**
+     * List topics in a room with pagination.
+     *
+     * @param roomId Room identifier.
+     * @param continuationToken Continuation token for pagination.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return paged collection of ChatTopic items as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ChatTopic> listTopics(String roomId, String continuationToken) {
+        // Generated convenience method for listTopics
+        RequestOptions requestOptions = new RequestOptions();
+        if (continuationToken != null) {
+            requestOptions.addQueryParam("continuationToken", continuationToken, false);
+        }
+        return serviceClient.listTopics(roomId, requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(ChatTopic.class));
+    }
+
+    /**
+     * List topics in a room with pagination.
+     *
+     * @param roomId Room identifier.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return paged collection of ChatTopic items as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ChatTopic> listTopics(String roomId) {
+        // Generated convenience method for listTopics
+        RequestOptions requestOptions = new RequestOptions();
+        return serviceClient.listTopics(roomId, requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(ChatTopic.class));
+    }
+
+    /**
+     * Create or replace a topic.
+     *
+     * Create or replace a topic with a client-specified ID.
+     *
+     * @param roomId Room identifier.
+     * @param topicId Topic identifier unique within the room.
+     * @param resource The resource instance.
+     * @param matchConditions Specifies HTTP options for conditional requests.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a chat topic in a room.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ChatTopic createOrReplaceTopic(String roomId, String topicId, ChatTopic resource,
+        MatchConditions matchConditions) {
+        // Generated convenience method for createOrReplaceTopicWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        String ifMatch = matchConditions == null ? null : matchConditions.getIfMatch();
+        String ifNoneMatch = matchConditions == null ? null : matchConditions.getIfNoneMatch();
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        return createOrReplaceTopicWithResponse(roomId, topicId, BinaryData.fromObject(resource), requestOptions)
+            .getValue()
+            .toObject(ChatTopic.class);
+    }
+
+    /**
+     * Create or replace a topic.
+     *
+     * Create or replace a topic with a client-specified ID.
+     *
+     * @param roomId Room identifier.
+     * @param topicId Topic identifier unique within the room.
+     * @param resource The resource instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a chat topic in a room.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ChatTopic createOrReplaceTopic(String roomId, String topicId, ChatTopic resource) {
+        // Generated convenience method for createOrReplaceTopicWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return createOrReplaceTopicWithResponse(roomId, topicId, BinaryData.fromObject(resource), requestOptions)
+            .getValue()
+            .toObject(ChatTopic.class);
+    }
+
+    /**
+     * Get topic information.
+     *
+     * @param roomId Room identifier.
+     * @param topicId Topic identifier unique within the room.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return topic information.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ChatTopic getTopic(String roomId, String topicId) {
+        // Generated convenience method for getTopicWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getTopicWithResponse(roomId, topicId, requestOptions).getValue().toObject(ChatTopic.class);
+    }
+
+    /**
+     * Update a topic.
+     *
+     * @param roomId Room identifier.
+     * @param topicId Topic identifier unique within the room.
+     * @param resource The resource instance.
+     * @param matchConditions Specifies HTTP options for conditional requests.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a chat topic in a room.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ChatTopic updateTopic(String roomId, String topicId, ChatTopic resource, MatchConditions matchConditions) {
+        // Generated convenience method for updateTopicWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        String ifMatch = matchConditions == null ? null : matchConditions.getIfMatch();
+        String ifNoneMatch = matchConditions == null ? null : matchConditions.getIfNoneMatch();
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        JsonMergePatchHelper.getChatTopicAccessor().prepareModelForJsonMergePatch(resource, true);
+        BinaryData resourceInBinaryData = BinaryData.fromObject(resource);
+        // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
+        resourceInBinaryData.getLength();
+        JsonMergePatchHelper.getChatTopicAccessor().prepareModelForJsonMergePatch(resource, false);
+        return updateTopicWithResponse(roomId, topicId, resourceInBinaryData, requestOptions).getValue()
+            .toObject(ChatTopic.class);
+    }
+
+    /**
+     * Update a topic.
+     *
+     * @param roomId Room identifier.
+     * @param topicId Topic identifier unique within the room.
+     * @param resource The resource instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a chat topic in a room.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ChatTopic updateTopic(String roomId, String topicId, ChatTopic resource) {
+        // Generated convenience method for updateTopicWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        JsonMergePatchHelper.getChatTopicAccessor().prepareModelForJsonMergePatch(resource, true);
+        BinaryData resourceInBinaryData = BinaryData.fromObject(resource);
+        // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
+        resourceInBinaryData.getLength();
+        JsonMergePatchHelper.getChatTopicAccessor().prepareModelForJsonMergePatch(resource, false);
+        return updateTopicWithResponse(roomId, topicId, resourceInBinaryData, requestOptions).getValue()
+            .toObject(ChatTopic.class);
+    }
+
+    /**
+     * Soft delete a topic.
+     *
+     * @param roomId Room identifier.
+     * @param topicId Topic identifier unique within the room.
+     * @param matchConditions Specifies HTTP options for conditional requests.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteTopic(String roomId, String topicId, MatchConditions matchConditions) {
+        // Generated convenience method for deleteTopicWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        String ifMatch = matchConditions == null ? null : matchConditions.getIfMatch();
+        String ifNoneMatch = matchConditions == null ? null : matchConditions.getIfNoneMatch();
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        deleteTopicWithResponse(roomId, topicId, requestOptions).getValue();
+    }
+
+    /**
+     * Soft delete a topic.
+     *
+     * @param roomId Room identifier.
+     * @param topicId Topic identifier unique within the room.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteTopic(String roomId, String topicId) {
+        // Generated convenience method for deleteTopicWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        deleteTopicWithResponse(roomId, topicId, requestOptions).getValue();
+    }
+
+    /**
+     * List all users with pagination.
+     *
+     * @param continuationToken Continuation token for pagination.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return paged collection of ChatUser items as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ChatUser> listUsers(String continuationToken) {
+        // Generated convenience method for listUsers
+        RequestOptions requestOptions = new RequestOptions();
+        if (continuationToken != null) {
+            requestOptions.addQueryParam("continuationToken", continuationToken, false);
+        }
+        return serviceClient.listUsers(requestOptions).mapPage(bodyItemValue -> bodyItemValue.toObject(ChatUser.class));
+    }
+
+    /**
+     * List all users with pagination.
+     *
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return paged collection of ChatUser items as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ChatUser> listUsers() {
+        // Generated convenience method for listUsers
+        RequestOptions requestOptions = new RequestOptions();
+        return serviceClient.listUsers(requestOptions).mapPage(bodyItemValue -> bodyItemValue.toObject(ChatUser.class));
+    }
+
+    /**
+     * List rooms for a user with pagination.
+     *
+     * @param userId User identifier.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return paged collection of ChatUserRoom items as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ChatUserRoom> listRoomsForUser(String userId) {
+        // Generated convenience method for listRoomsForUser
+        RequestOptions requestOptions = new RequestOptions();
+        return serviceClient.listRoomsForUser(userId, requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(ChatUserRoom.class));
+    }
+
+    /**
+     * List rooms for a user with pagination.
+     *
+     * @param userId User identifier.
+     * @param continuationToken Continuation token for pagination.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return paged collection of ChatUserRoom items as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ChatUserRoom> listRoomsForUser(String userId, String continuationToken) {
+        // Generated convenience method for listRoomsForUser
+        RequestOptions requestOptions = new RequestOptions();
+        if (continuationToken != null) {
+            requestOptions.addQueryParam("continuationToken", continuationToken, false);
+        }
+        return serviceClient.listRoomsForUser(userId, requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(ChatUserRoom.class));
     }
 }
