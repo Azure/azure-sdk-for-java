@@ -28,7 +28,6 @@ import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.s
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.DerivedMetricInfo;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.Trace;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.TelemetryType;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.AggregationType;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.CollectionConfigurationError;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.CpuPerformanceCounterCalculator;
 import reactor.util.annotation.Nullable;
@@ -83,7 +82,7 @@ final class QuickPulseDataCollector {
     synchronized void enable(Supplier<String> instrumentationKeySupplier) {
         this.instrumentationKeySupplier = instrumentationKeySupplier;
         FilteringConfiguration config = configuration.get();
-        counters.set(new Counters(config.getValidProjectionInitInfo(), config.getErrors()));
+        counters.set(new Counters(config));
     }
 
     synchronized void setQuickPulseStatus(QuickPulseStatus quickPulseStatus) {
@@ -100,8 +99,7 @@ final class QuickPulseDataCollector {
         lock.writeLock().lock();
         try {
             FilteringConfiguration config = configuration.get();
-            Counters currentCounters
-                = counters.getAndSet(new Counters(config.getValidProjectionInitInfo(), config.getErrors()));
+            Counters currentCounters = counters.getAndSet(new Counters(config));
             if (currentCounters != null) {
                 return new FinalCounters(currentCounters);
             }
@@ -143,7 +141,6 @@ final class QuickPulseDataCollector {
             return;
         }
         int itemCount = sampleRate == null ? 1 : Math.round(100 / sampleRate);
-        FilteringConfiguration currentConfig = configuration.get();
         MonitorDomain data = telemetryItem.getData().getBaseData();
 
         if (!(data instanceof RequestData)
@@ -166,6 +163,7 @@ final class QuickPulseDataCollector {
             if (counters == null) {
                 return;
             }
+            FilteringConfiguration currentConfig = counters.configuration;
             if (data instanceof RequestData) {
                 RequestData requestTelemetry = (RequestData) data;
                 addRequest(requestTelemetry, itemCount, getOperationName(telemetryItem), currentConfig, counters);
@@ -523,9 +521,12 @@ final class QuickPulseDataCollector {
 
         final List<CollectionConfigurationError> configErrors;
 
-        Counters(Map<String, AggregationType> projectionInfo, List<CollectionConfigurationError> errors) {
-            derivedMetrics = new DerivedMetricProjections(projectionInfo);
-            configErrors = errors;
+        final FilteringConfiguration configuration;
+
+        Counters(FilteringConfiguration configuration) {
+            this.configuration = configuration;
+            derivedMetrics = new DerivedMetricProjections(configuration.getValidProjectionInitInfo());
+            configErrors = configuration.getErrors();
         }
 
         static long encodeCountAndDuration(long count, long duration) {
