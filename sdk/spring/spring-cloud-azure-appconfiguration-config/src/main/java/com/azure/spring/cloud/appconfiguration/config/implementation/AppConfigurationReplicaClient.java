@@ -212,7 +212,8 @@ class AppConfigurationReplicaClient {
                 throw new IllegalArgumentException("Snapshot " + snapshotName + " needs to be of type Key.");
             }
 
-            PagedIterable<ConfigurationSetting> settings = client.listConfigurationSettingsForSnapshot(snapshotName);
+            PagedIterable<ConfigurationSetting> settings
+                = client.listConfigurationSettingsForSnapshot(snapshotName, null, context);
             this.failedAttempts = 0;
             settings.forEach(setting -> configurationSettings.add(NormalizeNull.normalizeNullLabel(setting)));
             return configurationSettings;
