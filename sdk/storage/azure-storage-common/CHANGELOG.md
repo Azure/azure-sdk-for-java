@@ -14,6 +14,10 @@
 
 ### Other Changes
 
+- Uploads that are split into blocks, appends, or ranges no longer change the position of the caller's
+  `ByteBuffer`s. Previously, the buffers could be left partially read, so uploading the same buffers again, such as by
+  subscribing to the upload again to retry it, uploaded incomplete content.
+
 ## 12.35.0 (2026-10-07)
 
 ### Features Added

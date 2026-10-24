@@ -14,6 +14,10 @@
 
 ### Other Changes
 
+- Uploads from a `Flux<ByteBuffer>` that are staged in blocks no longer change the position of the caller's
+  buffers. Previously, the buffers could be left partially read, so uploading the same buffers again, such as by
+  subscribing to the upload again to retry it, committed incomplete content.
+
 ## 12.36.0 (2026-10-07)
 
 ### Features Added
