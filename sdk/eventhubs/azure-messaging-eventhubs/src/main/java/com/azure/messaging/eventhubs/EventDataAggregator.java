@@ -8,7 +8,7 @@ import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.EventHubBufferedProducerAsyncClient.BufferedProducerClientOptions;
-import com.azure.messaging.eventhubs.implementation.UncheckedExecutionException;
+import com.azure.messaging.eventhubs.models.SendBatchFailedContext;
 import org.reactivestreams.Publisher;
 import org.reactivestreams.Subscription;
 import reactor.core.CoreSubscriber;
@@ -17,10 +17,13 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxOperator;
 import reactor.core.publisher.Operators;
 import reactor.core.publisher.Sinks;
+import reactor.core.scheduler.Schedulers;
 
+import java.util.Collections;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLongFieldUpdater;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.PARTITION_ID_KEY;
@@ -109,12 +112,13 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
         private final ClientLogger logger;
         private final Supplier<EventDataBatch> batchSupplier;
         private final String namespace;
+        private final Consumer<SendBatchFailedContext> onSendFailed;
         private final Object lock = new Object();
 
         private Subscription subscription;
         private EventDataBatch currentBatch;
-
-        private volatile Throwable lastError;
+        // Guarded by lock.
+        private RuntimeException lastBatchCreationError;
 
         EventDataAggregatorMain(CoreSubscriber<? super EventDataBatch> downstream, String namespace,
             BufferedProducerClientOptions options, Supplier<EventDataBatch> batchSupplier, String partitionId,
@@ -124,12 +128,21 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
             this.partitionId = partitionId;
             this.logger = logger;
             this.batchSupplier = batchSupplier;
-            this.currentBatch = batchSupplier.get();
+            this.onSendFailed = options.getSendFailedContext();
+            // If this fails, the batch is created lazily when the first event arrives.
+            synchronized (lock) {
+                getOrCreateBatch();
+            }
 
             this.eventSink = Sinks.many().unicast().onBackpressureError();
             this.disposable = Flux
                 .switchOnNext(eventSink.asFlux()
                     .map(e -> Flux.interval(options.getMaxWaitTime()).takeUntil(index -> isCompleted.get())))
+                // Every new batch cancels the running interval, and cancelling it interrupts the interval's thread if a
+                // tick is in progress. Handling ticks on another thread keeps that interrupt away from the batch
+                // creation (which would fail) and the send (which would close the connection's IO pipe).
+                .onBackpressureDrop()
+                .publishOn(Schedulers.boundedElastic(), 1)
                 .subscribe(index -> {
                     logger.atVerbose()
                         .addKeyValue(PARTITION_ID_KEY, partitionId)
@@ -199,9 +212,12 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
 
         @Override
         public void onNext(EventData eventData) {
-            updateOrPublishBatch(eventData, false);
-
-            eventSink.emitNext(1L, Sinks.EmitFailureHandler.FAIL_FAST);
+            // maxWaitTime is measured from the first event in a batch. Restarting the timer on every event would
+            // postpone the time-based publish for as long as events keep arriving faster than maxWaitTime, leaving a
+            // partially full batch waiting until it fills up.
+            if (updateOrPublishBatch(eventData, false)) {
+                eventSink.emitNext(1L, Sinks.EmitFailureHandler.FAIL_FAST);
+            }
 
             // When an EventDataBatch is pushed downstream, we decrement REQUESTED. However, if REQUESTED is still > 0,
             // that means we did not publish the EventDataBatch (i.e. because it was not full). We request another
@@ -235,65 +251,140 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
         }
 
         /**
+         * Adds {@code eventData} to the current batch, publishing the batch downstream first if it is full.
+         * <p>
+         * Failures that only affect this event (it is too large for a batch, or a new batch could not be created)
+         * are reported through the send-failed handler instead of terminating the aggregator. Terminating it would
+         * permanently stop publishing to this partition.
+         *
          * @param eventData EventData to add to or null if there are no events to add to the batch.
          * @param alwaysPublish {@code true} to always push batch downstream. {@code false}, otherwise.
+         * @return {@code true} if {@code eventData} was added as the first event of a batch.
          */
-        private void updateOrPublishBatch(EventData eventData, boolean alwaysPublish) {
+        private boolean updateOrPublishBatch(EventData eventData, boolean alwaysPublish) {
             final boolean isFlush = isFlushSignal(eventData);
             if (alwaysPublish || isFlush) {
                 publishDownstream(isFlush);
-                return;
+                return false;
             }
             if (eventData == null) {
                 // EventData will be null in the case when options.maxWaitTime() has elapsed  and we want to push the
                 // batch downstream.
+                return false;
+            }
+
+            Throwable failure;
+            synchronized (lock) {
+                EventDataBatch batch = getOrCreateBatch();
+                if (batch != null) {
+                    failure = tryAdd(batch, eventData);
+                    if (failure == null) {
+                        return batch.getCount() == 1;
+                    }
+
+                    publishDownstream(false);
+
+                    batch = getOrCreateBatch();
+                    if (batch != null) {
+                        failure = tryAdd(batch, eventData);
+                        if (failure == null) {
+                            return batch.getCount() == 1;
+                        }
+                    } else {
+                        failure = batchCreationError();
+                    }
+                } else {
+                    failure = batchCreationError();
+                }
+            }
+
+            reportFailedEvent(eventData, failure);
+            return false;
+        }
+
+        /**
+         * Must be called while holding {@link #lock}.
+         *
+         * @return The current batch, creating one if needed; {@code null} if the aggregator is completed or a new
+         *     batch could not be created (the error is kept in {@link #lastBatchCreationError}).
+         */
+        private EventDataBatch getOrCreateBatch() {
+            if (currentBatch == null && !isCompleted.get()) {
+                try {
+                    currentBatch = batchSupplier.get();
+                    lastBatchCreationError = null;
+                } catch (RuntimeException e) {
+                    lastBatchCreationError = e;
+                    logger.atWarning()
+                        .addKeyValue(PARTITION_ID_KEY, partitionId)
+                        .log("Unable to create a new batch. It will be retried on the next event.", e);
+                }
+            }
+            return currentBatch;
+        }
+
+        private Throwable batchCreationError() {
+            if (isCompleted.get()) {
+                return new IllegalStateException("Partition publisher id[" + partitionId + "] is completed.");
+            }
+            final Throwable error = lastBatchCreationError;
+            return error != null ? error : new IllegalStateException("Unable to create a new batch.");
+        }
+
+        /**
+         * @return {@code null} if the event was added, otherwise the reason it could not be added.
+         */
+        private Throwable tryAdd(EventDataBatch batch, EventData eventData) {
+            try {
+                if (batch.tryAdd(eventData)) {
+                    return null;
+                }
+            } catch (AmqpException e) {
+                // Thrown when a single event exceeds the maximum size allowed for a batch.
+                return e;
+            }
+            return new AmqpException(false, AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED,
+                "EventData exceeded maximum size.", new AmqpErrorContext(namespace));
+        }
+
+        private void reportFailedEvent(EventData eventData, Throwable error) {
+            logger.atWarning()
+                .addKeyValue(PARTITION_ID_KEY, partitionId)
+                .log("Unable to add event to a batch. Reporting it as failed.", error);
+
+            if (onSendFailed == null) {
                 return;
             }
-
-            boolean added;
-            synchronized (lock) {
-                added = currentBatch.tryAdd(eventData);
-
-                if (added) {
-                    return;
-                }
-
-                publishDownstream(false);
-                added = currentBatch.tryAdd(eventData);
-            }
-
-            if (!added) {
-                final AmqpException error = new AmqpException(false, AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED,
-                    "EventData exceeded maximum size.", new AmqpErrorContext(namespace));
-
-                onError(error);
+            try {
+                onSendFailed
+                    .accept(new SendBatchFailedContext(Collections.singletonList(eventData), partitionId, error));
+            } catch (Throwable e) {
+                logger.atWarning()
+                    .addKeyValue(PARTITION_ID_KEY, partitionId)
+                    .log("onSendBatchFailed handler threw.", e);
             }
         }
 
         /**
-         * Publishes batch downstream if there are events in the batch and updates it.
+         * Publishes batch downstream if there are events in the batch and prepares the next one.
          */
         private void publishDownstream(boolean isFlush) {
             EventDataBatch previous = null;
             try {
                 synchronized (lock) {
                     previous = this.currentBatch;
-                    if (previous == null) {
-                        logger.warning("Batch should not be null, setting a new batch.");
-                        this.currentBatch = batchSupplier.get();
+                    if (previous == null || previous.getEvents().isEmpty()) {
                         if (isFlush) {
-                            downstream.onNext(EventDataBatch.EMPTY);
-                        }
-                        return;
-                    } else if (previous.getEvents().isEmpty()) {
-                        if (isFlush) {
-                            // Even if the batch is empty, we'll push EMPTY on a flush signal.
+                            // Even if there is no batch or it is empty, we'll push EMPTY on a flush signal.
                             // This ensures any flush related flags set at the call site are reset.
                             downstream.onNext(EventDataBatch.EMPTY);
                         }
                         return;
                     }
 
+                    // Detach before creating the next batch so that a failed creation can never cause this
+                    // (already published) batch to be filled and sent again.
+                    this.currentBatch = null;
                     downstream.onNext(previous);
 
                     final long batchesLeft = REQUESTED.updateAndGet(this, (v) -> {
@@ -307,28 +398,11 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
                     logger.verbose(previous + ": Batch published. Requested batches left: {}", batchesLeft);
 
                     if (!isCompleted.get()) {
-                        this.currentBatch = batchSupplier.get();
+                        getOrCreateBatch();
                     } else {
                         logger.verbose("Aggregator is completed. Not setting another batch.");
-                        this.currentBatch = null;
                     }
                 }
-            } catch (UncheckedExecutionException exception) {
-                logger.info("An exception occurred while trying to create a new batch.", exception);
-
-                if (this.lastError != null) {
-                    logger.info("Exception has been set already, terminating EventDataAggregator.");
-
-                    final Throwable error
-                        = Operators.onNextError(previous, exception, downstream.currentContext(), subscription);
-
-                    if (error != null) {
-                        onError(error);
-                    }
-                } else {
-                    this.lastError = exception;
-                }
-
             } catch (Throwable e) {
                 final Throwable error = Operators.onNextError(previous, e, downstream.currentContext(), subscription);
 
