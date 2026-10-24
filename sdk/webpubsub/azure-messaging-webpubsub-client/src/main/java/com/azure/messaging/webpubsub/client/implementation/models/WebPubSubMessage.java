@@ -80,6 +80,12 @@ public class WebPubSubMessage implements JsonSerializable<WebPubSubMessage> {
                 return SendToGroupMessage.fromJson(readerToUse.reset());
             } else if ("sequenceAck".equals(typeToUse)) {
                 return SequenceAckMessage.fromJson(readerToUse.reset());
+            } else if ("invoke".equals(typeToUse)) {
+                return InvokeMessage.fromJson(readerToUse.reset());
+            } else if ("invokeResponse".equals(typeToUse)) {
+                return InvokeResponseMessage.fromJson(readerToUse.reset());
+            } else if ("cancelInvocation".equals(typeToUse)) {
+                return CancelInvocationMessage.fromJson(readerToUse.reset());
             }
 
             return null;
