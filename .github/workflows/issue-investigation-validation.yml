@@ -1,0 +1,41 @@
+name: Validate Issue Investigation
+
+on:
+  pull_request:
+    paths:
+      - .github/workflows/issue-investigation*
+      - .github/scripts/issue-investigation*
+      - .github/scripts/issue_investigation*
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with:
+          sparse-checkout: .github
+          persist-credentials: false
+      - name: Use Node.js 24
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: '24'
+      - name: Fetch legacy workflow baseline
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha || github.sha }}
+        run: git fetch --no-tags --depth=1 origin "$BASE_SHA"
+      - name: Set up pinned threat-result parser
+        uses: github/gh-aw-actions/setup@423b3dc04bbf1b1797194a4a75aa5cf5d0d4f5b3 # v0.87.1
+        with:
+          destination: ${{ runner.temp }}/gh-aw/actions
+      - name: Test investigation and legacy isolation
+        env:
+          INVESTIGATION_BASE_SHA: ${{ github.event.pull_request.base.sha || github.sha }}
+          GH_AW_ACTIONS_DIR: ${{ runner.temp }}/gh-aw/actions
+        run: |
+          node --test .github/scripts/issue-investigation-*.test.cjs
+          python3 -m unittest discover -s .github/scripts -p 'issue_investigation_*_test.py' -v
