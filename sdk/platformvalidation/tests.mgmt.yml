@@ -1,0 +1,18 @@
+trigger: none
+
+pr: none
+
+extends:
+  template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
+  parameters:
+    ServiceDirectory: platformvalidation
+    EnvVars:
+      PLATFORMVALIDATION_LOCATION: eastus2euap
+      PLATFORMVALIDATION_CREATE_MANAGED_GROUP: 'true'
+      PLATFORMVALIDATION_RUN_EXECUTION: 'false'
+    Artifacts:
+      - name: azure-resourcemanager-platformvalidation
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerplatformvalidation
+    MatrixFilters:
+      - pool=.*(win).*
