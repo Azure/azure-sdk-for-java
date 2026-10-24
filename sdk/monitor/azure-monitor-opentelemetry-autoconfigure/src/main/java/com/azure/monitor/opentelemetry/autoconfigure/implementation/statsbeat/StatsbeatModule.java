@@ -60,8 +60,9 @@ public class StatsbeatModule {
     }
 
     public void start(TelemetryItemExporter telemetryItemExporter, Supplier<StatsbeatConnectionString> connectionString,
-        Supplier<String> instrumentationKey, boolean disabledAll, long shortIntervalSeconds, long longIntervalSeconds,
-        boolean disabled, Set<Feature> featureSet) {
+        Supplier<StatsbeatConnectionString> oneSettingsConnectionString, Supplier<String> instrumentationKey,
+        boolean disabledAll, long shortIntervalSeconds, long longIntervalSeconds, boolean disabled,
+        Set<Feature> featureSet) {
         if (connectionString.get() == null) {
             logger.debug("Don't start StatsbeatModule when statsbeat connection string is null.");
             return;
@@ -80,6 +81,12 @@ public class StatsbeatModule {
 
         updateConnectionString(connectionString.get());
         updateInstrumentationKey(instrumentationKey.get());
+        scheduledExecutor.scheduleWithFixedDelay(() -> {
+            StatsbeatConnectionString configured = oneSettingsConnectionString.get();
+            if (configured != null) {
+                updateConnectionString(configured);
+            }
+        }, 5, 60, TimeUnit.MINUTES);
 
         if (RpAttachType.getRpAttachType() != RpAttachType.MANUAL) {
             scheduledExecutor.scheduleWithFixedDelay(new StatsbeatSender(networkStatsbeat, telemetryItemExporter),
