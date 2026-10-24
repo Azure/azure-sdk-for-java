@@ -41,7 +41,8 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
    defaultMaxPartitionSizeInMB: Int,
    readLimit: ReadLimit,
    isChangeFeed: Boolean,
-   partitionMetricsMap: Option[ConcurrentHashMap[NormalizedRange, ChangeFeedMetricsTracker]] = None
+   partitionMetricsMap: Option[ConcurrentHashMap[NormalizedRange, ChangeFeedMetricsTracker]] = None,
+   operationDeadline: Option[OperationDeadline] = None
   ): Array[CosmosInputPartition] = {
 
     TransientErrorsRetryPolicy.executeWithRetry(() =>
@@ -53,7 +54,8 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
         defaultMaxPartitionSizeInMB,
         readLimit,
         isChangeFeed,
-        partitionMetricsMap))
+        partitionMetricsMap),
+      operationDeadline = operationDeadline)
   }
 
   private[this] def createInputPartitionsImpl
@@ -171,12 +173,14 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
     containerConfig: CosmosContainerConfig,
     changeFeedConfig: CosmosChangeFeedConfig,
     partitioningConfig: CosmosPartitioningConfig,
-    streamId: Option[String]
+    streamId: Option[String],
+    operationDeadline: Option[OperationDeadline] = None
   ): String = {
 
     TransientErrorsRetryPolicy.executeWithRetry(() =>
-      createInitialOffsetImpl(container, containerConfig, changeFeedConfig, partitioningConfig, streamId)
-    )
+      createInitialOffsetImpl(
+        container, containerConfig, changeFeedConfig, partitioningConfig, streamId, operationDeadline),
+      operationDeadline = operationDeadline)
   }
 
   // scalastyle:off method.length
@@ -186,14 +190,15 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
     containerConfig: CosmosContainerConfig,
     changeFeedConfig: CosmosChangeFeedConfig,
     partitioningConfig: CosmosPartitioningConfig,
-    streamId: Option[String]
+    streamId: Option[String],
+    operationDeadline: Option[OperationDeadline]
   ): String = {
 
     assertOnSparkDriver()
     val lastContinuationTokens: ConcurrentMap[FeedRange, String] = new ConcurrentHashMap[FeedRange, String]()
     val shouldRefreshFeedRangesInCache = new AtomicBoolean(false) // only need to refresh the cache if a partition split has been detected
 
-    ContainerFeedRangesCache
+    val initialOffsets = ContainerFeedRangesCache
       .getFeedRanges(container, containerConfig.feedRangeRefreshIntervalInSecondsOpt)
       .map(feedRangeList =>
         partitioningConfig.feedRangeFiler match {
@@ -209,7 +214,7 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
       .flatMap(feedRange => {
         TransientErrorsRetryPolicy.executeWithRetry(() => {
           queryChangeFeedForInitialOffset(changeFeedConfig, feedRange, container)
-        })
+        }, operationDeadline = operationDeadline)
       })
       .doOnNext(feedRangeContinuationMap => {
         if (feedRangeContinuationMap.size > 1) {
@@ -230,7 +235,11 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
       })
       .asJava()
       .collectList()
-      .block()
+
+    operationDeadline match {
+      case Some(deadline) => deadline.block(initialOffsets)
+      case None => initialOffsets.block()
+    }
 
     if (shouldRefreshFeedRangesInCache.get()) {
       logDebug("Feed range split has been detected, forcing refresh of the feed ranges in cache")
@@ -339,7 +348,8 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
     partitioningConfig: CosmosPartitioningConfig,
     defaultParallelism: Int,
     container: CosmosAsyncContainer,
-    partitionMetricsMap: Option[ConcurrentHashMap[NormalizedRange, ChangeFeedMetricsTracker]] = None
+    partitionMetricsMap: Option[ConcurrentHashMap[NormalizedRange, ChangeFeedMetricsTracker]] = None,
+    operationDeadline: Option[OperationDeadline] = None
   ): ChangeFeedOffset = {
 
     TransientErrorsRetryPolicy.executeWithRetry(() =>
@@ -354,7 +364,9 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
         partitioningConfig,
         defaultParallelism,
         container,
-        partitionMetricsMap))
+        partitionMetricsMap,
+        operationDeadline),
+      operationDeadline = operationDeadline)
   }
   // scalastyle:on parameter.number
 
@@ -373,7 +385,8 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
     partitioningConfig: CosmosPartitioningConfig,
     defaultParallelism: Int,
     container: CosmosAsyncContainer,
-    partitionMetricsMap: Option[ConcurrentHashMap[NormalizedRange, ChangeFeedMetricsTracker]] = None
+    partitionMetricsMap: Option[ConcurrentHashMap[NormalizedRange, ChangeFeedMetricsTracker]] = None,
+    operationDeadline: Option[OperationDeadline]
   ): ChangeFeedOffset = {
     assertOnSparkDriver()
     assertNotNull(startOffset, "startOffset")
@@ -385,7 +398,8 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
       containerConfig,
       partitioningConfig,
       true,
-      Some(maxStaleness)
+      Some(maxStaleness),
+      operationDeadline
     )
 
     val defaultMaxPartitionSizeInMB = DefaultPartitionSizeInMB
@@ -402,7 +416,8 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
       defaultMaxPartitionSizeInMB,
       readLimit,
       true,
-      partitionMetricsMap
+      partitionMetricsMap,
+      operationDeadline
     )
 
     if (isDebugLogEnabled) {
@@ -771,7 +786,8 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
                             cosmosContainerConfig: CosmosContainerConfig,
                             partitionConfig: CosmosPartitioningConfig,
                             isChangeFeed: Boolean,
-                            maxStaleness: Option[Duration] = None
+                            maxStaleness: Option[Duration] = None,
+                            operationDeadline: Option[OperationDeadline] = None
                           ): Array[PartitionMetadata] = {
 
     TransientErrorsRetryPolicy.executeWithRetry(() =>
@@ -782,7 +798,9 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
         cosmosContainerConfig,
         partitionConfig,
         isChangeFeed,
-        maxStaleness))
+        maxStaleness,
+        operationDeadline),
+      operationDeadline = operationDeadline)
   }
 
   private[this] def getPartitionMetadataImpl(
@@ -792,11 +810,12 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
       cosmosContainerConfig: CosmosContainerConfig,
       partitionConfig: CosmosPartitioningConfig,
       isChangeFeed: Boolean,
-      maxStaleness: Option[Duration] = None
+      maxStaleness: Option[Duration] = None,
+      operationDeadline: Option[OperationDeadline] = None
   ): Array[PartitionMetadata] = {
 
     assertOnSparkDriver()
-    this
+    val partitionMetadata = this
       .getFeedRanges(
         userConfig,
         cosmosClientConfig,
@@ -852,8 +871,10 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
               expandPartitionMetadataByLatestLsn(metadata, isChangeFeed),
               partitionConfig.feedRangeFiler))
       })
-      .block()
-      .toArray
+    (operationDeadline match {
+      case Some(deadline) => deadline.block(partitionMetadata.asJava())
+      case None => partitionMetadata.block()
+    }).toArray
   }
 
   private[spark] def expandPartitionMetadataByLatestLsn(

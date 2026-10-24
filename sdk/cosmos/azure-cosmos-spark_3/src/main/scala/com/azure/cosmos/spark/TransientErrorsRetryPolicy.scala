@@ -19,7 +19,8 @@ private[spark] object TransientErrorsRetryPolicy extends BasicLoggingTrait {
     initialMaxRetryIntervalInMs: Int = CosmosConstants.initialMaxRetryIntervalForTransientFailuresInMs,
     maxRetryIntervalInMs: Int = CosmosConstants.maxRetryIntervalForTransientFailuresInMs,
     maxRetryCount: Int = Int.MaxValue,
-    statusResetFuncBetweenRetry: Option[() => Unit] = None
+    statusResetFuncBetweenRetry: Option[() => Unit] = None,
+    operationDeadline: Option[OperationDeadline] = None
   ): T = {
     val loop = new Breaks()
     val retryCount = new AtomicLong(0)
@@ -31,6 +32,7 @@ private[spark] object TransientErrorsRetryPolicy extends BasicLoggingTrait {
         val retryIntervalInMs = rnd.nextInt(currentMaxRetryIntervalInMs)
 
         try {
+          operationDeadline.foreach(_.remainingDuration)
           returnValue = Some(func())
           loop.break
         }
@@ -60,7 +62,17 @@ private[spark] object TransientErrorsRetryPolicy extends BasicLoggingTrait {
           statusResetFuncBetweenRetry.get.apply()
         }
 
-        Thread.sleep(retryIntervalInMs)
+        operationDeadline match {
+          case Some(deadline) => deadline.sleep(retryIntervalInMs)
+          case None =>
+            try {
+              Thread.sleep(retryIntervalInMs)
+            } catch {
+              case interrupted: InterruptedException =>
+                Thread.currentThread().interrupt()
+                throw interrupted
+            }
+        }
         currentMaxRetryIntervalInMs = Math.min(2 * currentMaxRetryIntervalInMs, maxRetryIntervalInMs)
       }
     }
