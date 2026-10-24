@@ -57,12 +57,12 @@
 #### `models.MetricValue` was modified
 
 * `MetricValue()` was changed to private access
-* `withMaximum(java.lang.Double)` was removed
 * `withTotal(java.lang.Double)` was removed
-* `withTimestamp(java.time.OffsetDateTime)` was removed
-* `withAverage(java.lang.Double)` was removed
+* `withMaximum(java.lang.Double)` was removed
 * `withCount(java.lang.Double)` was removed
+* `withTimestamp(java.time.OffsetDateTime)` was removed
 * `withMinimum(java.lang.Double)` was removed
+* `withAverage(java.lang.Double)` was removed
 
 #### `models.DataContainer` was modified
 
@@ -72,14 +72,14 @@
 #### `models.CategoryType` was modified
 
 * `models.CategoryType[] values()` -> `java.util.Collection values()`
-* `valueOf(java.lang.String)` was removed
 * `toString()` was removed
+* `valueOf(java.lang.String)` was removed
 
 #### `models.ConditionOperator` was modified
 
+* `valueOf(java.lang.String)` was removed
 * `models.ConditionOperator[] values()` -> `java.util.Collection values()`
 * `toString()` was removed
-* `valueOf(java.lang.String)` was removed
 
 #### `models.BaselineMetadata` was modified
 
@@ -90,17 +90,17 @@
 #### `models.HttpRequestInfo` was modified
 
 * `HttpRequestInfo()` was changed to private access
-* `withUri(java.lang.String)` was removed
-* `withClientIpAddress(java.lang.String)` was removed
-* `withClientRequestId(java.lang.String)` was removed
 * `withMethod(java.lang.String)` was removed
+* `withClientRequestId(java.lang.String)` was removed
+* `withClientIpAddress(java.lang.String)` was removed
+* `withUri(java.lang.String)` was removed
 
 #### `models.SingleBaseline` was modified
 
 * `SingleBaseline()` was changed to private access
-* `withLowThresholds(java.util.List)` was removed
-* `withSensitivity(models.BaselineSensitivity)` was removed
 * `withHighThresholds(java.util.List)` was removed
+* `withSensitivity(models.BaselineSensitivity)` was removed
+* `withLowThresholds(java.util.List)` was removed
 
 #### `models.WorkspaceInfo` was modified
 
@@ -112,9 +112,9 @@
 #### `models.SenderAuthorization` was modified
 
 * `SenderAuthorization()` was changed to private access
-* `withScope(java.lang.String)` was removed
 * `withAction(java.lang.String)` was removed
 * `withRole(java.lang.String)` was removed
+* `withScope(java.lang.String)` was removed
 
 #### `models.MetricAvailability` was modified
 
@@ -125,11 +125,11 @@
 #### `models.TimeSeriesBaseline` was modified
 
 * `TimeSeriesBaseline()` was changed to private access
-* `withDimensions(java.util.List)` was removed
-* `withData(java.util.List)` was removed
-* `withAggregation(java.lang.String)` was removed
-* `withTimestamps(java.util.List)` was removed
 * `withMetadataValues(java.util.List)` was removed
+* `withAggregation(java.lang.String)` was removed
+* `withData(java.util.List)` was removed
+* `withTimestamps(java.util.List)` was removed
+* `withDimensions(java.util.List)` was removed
 
 #### `models.DataCollectionRuleAssociationMetadata` was modified
 
@@ -143,15 +143,15 @@
 #### `models.MetricSingleDimension` was modified
 
 * `MetricSingleDimension()` was changed to private access
-* `withValue(java.lang.String)` was removed
 * `withName(java.lang.String)` was removed
+* `withValue(java.lang.String)` was removed
 
 #### `models.MetricAlertStatusProperties` was modified
 
 * `MetricAlertStatusProperties()` was changed to private access
-* `withDimensions(java.util.Map)` was removed
 * `withStatus(java.lang.String)` was removed
 * `withTimestamp(java.time.OffsetDateTime)` was removed
+* `withDimensions(java.util.Map)` was removed
 
 #### `models.PredictiveValue` was modified
 
@@ -162,14 +162,14 @@
 #### `models.TimeSeriesElement` was modified
 
 * `TimeSeriesElement()` was changed to private access
-* `withMetadatavalues(java.util.List)` was removed
 * `withData(java.util.List)` was removed
+* `withMetadatavalues(java.util.List)` was removed
 
 #### `models.Context` was modified
 
 * `Context()` was changed to private access
-* `withContextType(java.lang.String)` was removed
 * `withNotificationSource(java.lang.String)` was removed
+* `withContextType(java.lang.String)` was removed
 
 #### `models.AlertSeverity` was modified
 
@@ -179,12 +179,12 @@
 #### `models.ActionDetail` was modified
 
 * `ActionDetail()` was changed to private access
-* `withSendTime(java.lang.String)` was removed
-* `withStatus(java.lang.String)` was removed
 * `withSubState(java.lang.String)` was removed
-* `withDetail(java.lang.String)` was removed
-* `withMechanismType(java.lang.String)` was removed
 * `withName(java.lang.String)` was removed
+* `withSendTime(java.lang.String)` was removed
+* `withMechanismType(java.lang.String)` was removed
+* `withStatus(java.lang.String)` was removed
+* `withDetail(java.lang.String)` was removed
 
 ### Features Added
 
@@ -412,31 +412,31 @@
 
 #### `models.DataCollectionRuleDataSources` was modified
 
-* `withWindowsFirewallLogs(java.util.List)` was added
-* `withEtwProviders(java.util.List)` was added
-* `withPerformanceCountersOTel(java.util.List)` was added
 * `withPrometheusForwarder(java.util.List)` was added
 * `withDataImports(models.DataSourcesSpecDataImports)` was added
-* `withOtelMetrics(java.util.List)` was added
-* `withOtelTraces(java.util.List)` was added
-* `withOtelLogs(java.util.List)` was added
 * `withPlatformTelemetry(java.util.List)` was added
+* `withOtelLogs(java.util.List)` was added
+* `withPerformanceCountersOTel(java.util.List)` was added
+* `withEtwProviders(java.util.List)` was added
+* `withOtelTraces(java.util.List)` was added
+* `withWindowsFirewallLogs(java.util.List)` was added
+* `withOtelMetrics(java.util.List)` was added
 
 #### `models.MetricAlertResourcePatch` was modified
 
-* `withCustomProperties(java.util.Map)` was added
-* `resolveConfiguration()` was added
+* `identity()` was added
 * `customProperties()` was added
 * `actionProperties()` was added
-* `identity()` was added
+* `withCustomProperties(java.util.Map)` was added
 * `withResolveConfiguration(models.ResolveConfiguration)` was added
 * `withActionProperties(java.util.Map)` was added
+* `resolveConfiguration()` was added
 * `withIdentity(models.Identity)` was added
 
 #### `models.ActivityLogAlertActionGroup` was modified
 
-* `withActionProperties(java.util.Map)` was added
 * `actionProperties()` was added
+* `withActionProperties(java.util.Map)` was added
 
 #### `models.Odatatype` was modified
 
@@ -444,11 +444,11 @@
 
 #### `models.DataCollectionEndpoint` was modified
 
-* `metricsIngestion()` was added
-* `failoverConfiguration()` was added
 * `privateLinkScopedResources()` was added
+* `failoverConfiguration()` was added
 * `metadata()` was added
 * `withMetricsIngestion(models.DataCollectionEndpointMetricsIngestion)` was added
+* `metricsIngestion()` was added
 
 #### `models.Actions` was modified
 
@@ -457,13 +457,13 @@
 
 #### `models.DataCollectionRuleMetadata` was modified
 
-* `provisionedByImmutableId()` was added
 * `provisionedByResourceId()` was added
+* `provisionedByImmutableId()` was added
 
 #### `models.SyslogDataSource` was modified
 
-* `withTransformKql(java.lang.String)` was added
 * `transformKql()` was added
+* `withTransformKql(java.lang.String)` was added
 
 #### `models.WebhookReceiver` was modified
 
@@ -481,29 +481,29 @@
 
 #### `models.LogFilesDataSource` was modified
 
-* `withTransformKql(java.lang.String)` was added
 * `transformKql()` was added
+* `withTransformKql(java.lang.String)` was added
 
 #### `models.DataSourcesSpec` was modified
 
-* `dataImports()` was added
-* `etwProviders()` was added
-* `withPlatformTelemetry(java.util.List)` was added
-* `platformTelemetry()` was added
 * `otelTraces()` was added
-* `withDataImports(models.DataSourcesSpecDataImports)` was added
-* `otelMetrics()` was added
-* `withPrometheusForwarder(java.util.List)` was added
-* `withOtelLogs(java.util.List)` was added
 * `withPerformanceCountersOTel(java.util.List)` was added
-* `windowsFirewallLogs()` was added
-* `withWindowsFirewallLogs(java.util.List)` was added
-* `withEtwProviders(java.util.List)` was added
-* `performanceCountersOTel()` was added
-* `withOtelMetrics(java.util.List)` was added
-* `withOtelTraces(java.util.List)` was added
-* `prometheusForwarder()` was added
 * `otelLogs()` was added
+* `withDataImports(models.DataSourcesSpecDataImports)` was added
+* `platformTelemetry()` was added
+* `performanceCountersOTel()` was added
+* `withOtelTraces(java.util.List)` was added
+* `withPlatformTelemetry(java.util.List)` was added
+* `etwProviders()` was added
+* `withOtelLogs(java.util.List)` was added
+* `withWindowsFirewallLogs(java.util.List)` was added
+* `prometheusForwarder()` was added
+* `otelMetrics()` was added
+* `windowsFirewallLogs()` was added
+* `withOtelMetrics(java.util.List)` was added
+* `dataImports()` was added
+* `withEtwProviders(java.util.List)` was added
+* `withPrometheusForwarder(java.util.List)` was added
 
 #### `models.Metadata` was modified
 
@@ -526,27 +526,27 @@
 
 #### `models.IisLogsDataSource` was modified
 
-* `withTransformKql(java.lang.String)` was added
 * `transformKql()` was added
+* `withTransformKql(java.lang.String)` was added
 
 #### `models.DestinationsSpec` was modified
 
+* `withMicrosoftFabric(java.util.List)` was added
+* `withStorageAccounts(java.util.List)` was added
 * `storageTablesDirect()` was added
 * `storageAccounts()` was added
 * `storageBlobsDirect()` was added
-* `eventHubs()` was added
-* `withStorageBlobsDirect(java.util.List)` was added
-* `monitoringAccounts()` was added
-* `microsoftFabric()` was added
-* `withStorageAccounts(java.util.List)` was added
-* `withStorageTablesDirect(java.util.List)` was added
-* `eventHubsDirect()` was added
-* `withMicrosoftFabric(java.util.List)` was added
-* `withEventHubs(java.util.List)` was added
-* `azureDataExplorer()` was added
-* `withMonitoringAccounts(java.util.List)` was added
-* `withAzureDataExplorer(java.util.List)` was added
 * `withEventHubsDirect(java.util.List)` was added
+* `withEventHubs(java.util.List)` was added
+* `withAzureDataExplorer(java.util.List)` was added
+* `azureDataExplorer()` was added
+* `eventHubs()` was added
+* `microsoftFabric()` was added
+* `withMonitoringAccounts(java.util.List)` was added
+* `monitoringAccounts()` was added
+* `withStorageBlobsDirect(java.util.List)` was added
+* `eventHubsDirect()` was added
+* `withStorageTablesDirect(java.util.List)` was added
 
 #### `models.KnownDataCollectionRuleProvisioningState` was modified
 
@@ -563,9 +563,9 @@
 
 #### `models.ScheduledQueryRuleResourcePatch` was modified
 
-* `withIdentity(models.Identity)` was added
 * `withResolveConfiguration(models.RuleResolveConfiguration)` was added
 * `resolveConfiguration()` was added
+* `withIdentity(models.Identity)` was added
 * `identity()` was added
 
 #### `models.KnownPublicNetworkAccessOptions` was modified
@@ -574,32 +574,32 @@
 
 #### `models.DataCollectionRule` was modified
 
+* `withDirectDataSources(models.DataCollectionRuleDirectDataSources)` was added
 * `references()` was added
-* `agentSettings()` was added
-* `ingestionQuotas()` was added
-* `directDataSources()` was added
-* `withAgentSettings(models.DataCollectionRuleAgentSettings)` was added
 * `withReferences(models.DataCollectionRuleReferences)` was added
 * `endpoints()` was added
-* `withDirectDataSources(models.DataCollectionRuleDirectDataSources)` was added
+* `directDataSources()` was added
+* `withAgentSettings(models.DataCollectionRuleAgentSettings)` was added
+* `ingestionQuotas()` was added
+* `agentSettings()` was added
 
 #### `models.DataFlow` was modified
 
-* `withBuiltInTransform(java.lang.String)` was added
-* `captureOverflow()` was added
 * `builtInTransform()` was added
 * `withCaptureOverflow(java.lang.Boolean)` was added
+* `withBuiltInTransform(java.lang.String)` was added
+* `captureOverflow()` was added
 
 #### `models.DataCollectionRuleDestinations` was modified
 
-* `withStorageBlobsDirect(java.util.List)` was added
+* `withMonitoringAccounts(java.util.List)` was added
+* `withAzureDataExplorer(java.util.List)` was added
+* `withMicrosoftFabric(java.util.List)` was added
 * `withStorageTablesDirect(java.util.List)` was added
 * `withEventHubs(java.util.List)` was added
-* `withAzureDataExplorer(java.util.List)` was added
-* `withMonitoringAccounts(java.util.List)` was added
 * `withEventHubsDirect(java.util.List)` was added
 * `withStorageAccounts(java.util.List)` was added
-* `withMicrosoftFabric(java.util.List)` was added
+* `withStorageBlobsDirect(java.util.List)` was added
 
 #### `models.DataCollectionRuleAssociationMetadata` was modified
 
@@ -608,8 +608,8 @@
 
 #### `models.WindowsEventLogDataSource` was modified
 
-* `withTransformKql(java.lang.String)` was added
 * `transformKql()` was added
+* `withTransformKql(java.lang.String)` was added
 
 #### `models.PerfCounterDataSource` was modified
 
@@ -618,8 +618,8 @@
 
 #### `models.ResourceForUpdate` was modified
 
-* `withIdentity(models.ResourceForUpdateIdentity)` was added
 * `identity()` was added
+* `withIdentity(models.ResourceForUpdateIdentity)` was added
 
 #### `models.Kind` was modified
 
@@ -640,19 +640,19 @@
 
 #### `models.AutoscaleSettingResourcePatch` was modified
 
-* `withIdentity(models.ManagedServiceIdentity)` was added
 * `identity()` was added
+* `withIdentity(models.ManagedServiceIdentity)` was added
 
 #### `models.Condition` was modified
 
-* `withAlertSensitivity(java.lang.String)` was added
-* `withMinRecurrenceCount(java.lang.Long)` was added
-* `ignoreDataBefore()` was added
 * `withIgnoreDataBefore(java.time.OffsetDateTime)` was added
 * `criterionType()` was added
 * `withCriterionType(models.CriterionType)` was added
-* `alertSensitivity()` was added
+* `ignoreDataBefore()` was added
+* `withAlertSensitivity(java.lang.String)` was added
+* `withMinRecurrenceCount(java.lang.Long)` was added
 * `minRecurrenceCount()` was added
+* `alertSensitivity()` was added
 
 #### `models.EventHubReceiver` was modified
 
@@ -666,17 +666,17 @@
 #### `models.AlertSeverity` was modified
 
 * `getValue()` was added
-* `toString()` was added
-* `hashCode()` was added
-* `toJson(com.azure.json.JsonWriter)` was added
 * `fromJson(com.azure.json.JsonReader)` was added
-* `equals(java.lang.Object)` was added
 * `fromValue(java.lang.Long)` was added
+* `equals(java.lang.Object)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `hashCode()` was added
+* `toString()` was added
 
 #### `models.LogicAppReceiver` was modified
 
-* `managedIdentity()` was added
 * `withManagedIdentity(java.lang.String)` was added
+* `managedIdentity()` was added
 
 #### `models.ActionGroupPatchBody` was modified
 
