@@ -108,7 +108,7 @@ Available `HttpLogDetailLevel` values:
 
 | Value | What is logged |
 |-------|---------------|
-| `NONE` | Nothing (default) |
+| `LINK` | Nothing (default) |
 | `BASIC` | Method, URL, status code, latency |
 | `HEADERS` | `BASIC` + request/response headers |
 | `BODY` | `BASIC` + request/response bodies |
