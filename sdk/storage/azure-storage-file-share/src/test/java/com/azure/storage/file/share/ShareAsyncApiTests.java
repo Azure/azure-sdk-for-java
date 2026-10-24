@@ -1159,6 +1159,52 @@ public class ShareAsyncApiTests extends FileShareTestBase {
         premiumFileServiceAsyncClient.getShareAsyncClient(shareName).delete().block();
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2026-06-06")
+    @ParameterizedTest
+    @MethodSource("com.azure.storage.file.share.FileShareTestHelper#createShareChangeFeedSupplier")
+    public void createShareChangeFeed(Boolean enabled, Integer retentionInDays) {
+        ShareAsyncClient client = premiumFileServiceAsyncClient.getShareAsyncClient(shareName);
+        ShareCreateOptions options
+            = new ShareCreateOptions().setChangeFeedEnabled(enabled).setChangeFeedRetentionInDays(retentionInDays);
+
+        Response<ShareInfo> response = client.createWithResponse(options).block();
+        try {
+            assertEquals(201, response.getStatusCode());
+            FileShareTestHelper.assertShareChangeFeedRequestHeaders(response, enabled, retentionInDays);
+            StepVerifier.create(client.getPropertiesWithResponse())
+                .assertNext(r -> FileShareTestHelper.assertShareChangeFeedProperties(r, enabled, retentionInDays))
+                .verifyComplete();
+        } finally {
+            client.delete().block();
+        }
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2026-06-06")
+    @ParameterizedTest
+    @MethodSource("com.azure.storage.file.share.FileShareTestHelper#setPropertiesShareChangeFeedSupplier")
+    public void setPropertiesShareChangeFeed(Boolean enabled, Integer retentionInDays) {
+        ShareAsyncClient client = premiumFileServiceAsyncClient.getShareAsyncClient(shareName);
+        client.createWithResponse(new ShareCreateOptions().setChangeFeedEnabled(true).setChangeFeedRetentionInDays(7))
+            .block();
+        try {
+            ShareSetPropertiesOptions options = new ShareSetPropertiesOptions().setChangeFeedEnabled(enabled)
+                .setChangeFeedRetentionInDays(retentionInDays);
+            StepVerifier.create(client.setPropertiesWithResponse(options).flatMap(response -> {
+                assertEquals(200, response.getStatusCode());
+                FileShareTestHelper.assertShareChangeFeedRequestHeaders(response, enabled, retentionInDays);
+                return client.getPropertiesWithResponse();
+            }))
+                .assertNext(
+                    r -> FileShareTestHelper.assertShareChangeFeedProperties(r, enabled == null ? true : enabled,
+                        Boolean.FALSE.equals(enabled)
+                            ? retentionInDays
+                            : retentionInDays == null ? Integer.valueOf(7) : retentionInDays))
+                .verifyComplete();
+        } finally {
+            client.delete().block();
+        }
+    }
+
     @PlaybackOnly
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2025-01-05")
     @Test
