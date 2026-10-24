@@ -8,6 +8,9 @@
 
 ### Bugs Fixed
 
+- Fixed administration clients ignoring the emulator connection-string flag and discarding explicit endpoint ports.
+  Native emulator administration now uses HTTP when `UseDevelopmentEmulator=true` or an HTTP endpoint is explicitly set.
+
 ### Other Changes
 
 - Added a sample showing how to configure processor drain timeout and allow in-flight message settlement during shutdown.

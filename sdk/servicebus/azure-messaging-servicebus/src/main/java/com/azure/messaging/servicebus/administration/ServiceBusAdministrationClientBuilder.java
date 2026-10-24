@@ -164,7 +164,7 @@ public final class ServiceBusAdministrationClientBuilder
 
     private Configuration configuration;
 
-    // Endpoint of the Service Bus resource. It will be the fully-qualified domain name of the Service Bus namespace.
+    // Endpoint of the Service Bus resource, including its scheme and optional port.
     private String endpoint;
     private HttpClient httpClient;
     private HttpLogOptions httpLogOptions = new HttpLogOptions();
@@ -263,11 +263,14 @@ public final class ServiceBusAdministrationClientBuilder
     /**
      * Sets the service endpoint for the Service Bus namespace.
      *
-     * @param endpoint The URL of the Service Bus namespace.
+     * <p>The URL's scheme and optional port are preserved. HTTP endpoints require a shared access key or shared access
+     * signature when using the builder's default pipeline. Microsoft Entra ID credentials require HTTPS.</p>
+     *
+     * @param endpoint The HTTP or HTTPS URL of the Service Bus namespace.
      *
      * @return The updated {@link ServiceBusAdministrationClientBuilder} object.
      * @throws NullPointerException if {@code endpoint} is null.
-     * @throws IllegalArgumentException if {@code endpoint} cannot be parsed into a valid URL.
+     * @throws IllegalArgumentException if {@code endpoint} cannot be parsed into a valid HTTP or HTTPS URL with a host.
      */
     @Override
     public ServiceBusAdministrationClientBuilder endpoint(String endpoint) {
@@ -278,7 +281,16 @@ public final class ServiceBusAdministrationClientBuilder
             throw LOGGER.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL", ex));
         }
 
-        this.endpoint = url.getHost();
+        if (!("http".equals(url.getProtocol()) || "https".equals(url.getProtocol()))
+            || CoreUtils.isNullOrEmpty(url.getHost())) {
+            throw LOGGER.logExceptionAsWarning(
+                new IllegalArgumentException("'endpoint' must be an HTTP or HTTPS URL with a host."));
+        }
+        try {
+            this.endpoint = new URL(url.getProtocol(), url.getHost(), url.getPort(), "").toString();
+        } catch (MalformedURLException ex) {
+            throw LOGGER.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL", ex));
+        }
         return this;
     }
 
@@ -301,6 +313,10 @@ public final class ServiceBusAdministrationClientBuilder
     /**
      * Sets the connection string for a Service Bus namespace or a specific Service Bus resource.
      *
+     * <p>For the Service Bus emulator, set {@code UseDevelopmentEmulator=true} and use its HTTP management port in
+     * {@code Endpoint}, rather than its AMQP port. The emulator flag selects HTTP; otherwise HTTPS is used. An explicit
+     * endpoint port is preserved in either case.</p>
+     *
      * @param connectionString Connection string for a Service Bus namespace or a specific Service Bus resource.
      *
      * @return The updated {@link ServiceBusAdministrationClientBuilder} object.
@@ -313,6 +329,10 @@ public final class ServiceBusAdministrationClientBuilder
         Objects.requireNonNull(connectionString, "'connectionString' cannot be null.");
 
         final ConnectionStringProperties properties = new ConnectionStringProperties(connectionString);
+        if (CoreUtils.isNullOrEmpty(properties.getEndpoint().getHost())) {
+            throw LOGGER
+                .logExceptionAsError(new IllegalArgumentException("'connectionString' endpoint must contain a host."));
+        }
         final TokenCredential tokenCredential;
         try {
             tokenCredential = new ServiceBusSharedKeyCredential(properties.getSharedAccessKeyName(),
@@ -322,13 +342,14 @@ public final class ServiceBusAdministrationClientBuilder
                 .logExceptionAsError(new AzureException("Could not create the ServiceBusSharedKeyCredential.", e));
         }
 
-        this.endpoint = properties.getEndpoint().getHost();
         if (properties.getEntityPath() != null && !properties.getEntityPath().isEmpty()) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 "'connectionString' cannot contain an EntityPath. It should be a namespace connection string."));
         }
 
-        return credential(properties.getEndpoint().getHost(), tokenCredential);
+        credential(tokenCredential);
+        return endpoint((properties.useDevelopmentEmulator() ? "http://" : "https://")
+            + properties.getEndpoint().getRawAuthority());
     }
 
     /**
@@ -341,7 +362,7 @@ public final class ServiceBusAdministrationClientBuilder
      */
     public ServiceBusAdministrationClientBuilder credential(String fullyQualifiedNamespace,
         TokenCredential credential) {
-        this.endpoint = Objects.requireNonNull(fullyQualifiedNamespace, "'fullyQualifiedNamespace' cannot be null.");
+        Objects.requireNonNull(fullyQualifiedNamespace, "'fullyQualifiedNamespace' cannot be null.");
         this.tokenCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
 
         if (CoreUtils.isNullOrEmpty(fullyQualifiedNamespace)) {
@@ -349,7 +370,7 @@ public final class ServiceBusAdministrationClientBuilder
                 new IllegalArgumentException("'fullyQualifiedNamespace' cannot be an empty string."));
         }
 
-        return this;
+        return endpoint("https://" + fullyQualifiedNamespace);
     }
 
     /**
@@ -536,6 +557,11 @@ public final class ServiceBusAdministrationClientBuilder
     private HttpPipeline createPipeline() {
         if (pipeline != null) {
             return pipeline;
+        }
+
+        if (endpoint.startsWith("http://") && !(tokenCredential instanceof ServiceBusSharedKeyCredential)) {
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("HTTP endpoints require a shared access key or shared access signature."));
         }
 
         final Configuration buildConfiguration

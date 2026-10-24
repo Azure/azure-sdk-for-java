@@ -128,6 +128,17 @@ ServiceBusReceiverAsyncClient asyncReceiver = new ServiceBusClientBuilder()
 asyncReceiver.close();
 ```
 
+### Use administration clients with the emulator
+
+For `ServiceBusAdministrationClient` and `ServiceBusAdministrationAsyncClient`, use the emulator's mapped HTTP management
+port in the connection string's `Endpoint`, for example `sb://localhost:5300`, rather than its AMQP port.
+Set `UseDevelopmentEmulator=true` to select HTTP. When the flag is absent or `false`, the client uses HTTPS.
+An explicit port is preserved in both cases.
+
+You can also set an HTTP URL through `ServiceBusAdministrationClientBuilder.endpoint(String)` with a shared access key
+or shared access signature credential. Microsoft Entra ID credentials require HTTPS with the builder's default pipeline.
+A custom pipeline retains control of authentication.
+
 ## Key concepts
 
 You can interact with the primary resource types within a Service Bus Namespace, of which multiple can exist and
@@ -553,4 +564,3 @@ Guidelines](https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.m
 [sync_receivemessages_implicit_prefetch]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/docs/SyncReceiveAndPrefetch.md
 [peek_lock_mode_docs]: https://learn.microsoft.com/azure/service-bus-messaging/message-transfers-locks-settlement#peeklock
 [receive_and_delete_mode_docs]: https://learn.microsoft.com/azure/service-bus-messaging/message-transfers-locks-settlement#receiveanddelete
-

@@ -50,7 +50,7 @@ public final class ServiceBusSupplementaryAuthHeaderPolicy implements HttpPipeli
             final String scope;
             if (this.tokenCredential instanceof ServiceBusSharedKeyCredential) {
                 final URL url = context.getHttpRequest().getUrl();
-                scope = String.format("%s://%s", url.getProtocol(), url.getHost());
+                scope = String.format("%s://%s", url.getProtocol(), url.getAuthority());
             } else {
                 scope = ServiceBusConstants.AZURE_ACTIVE_DIRECTORY_SCOPE;
             }
