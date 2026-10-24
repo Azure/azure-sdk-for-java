@@ -183,6 +183,8 @@
     "mgmtApiVersion": "2019-04-01",
     "blobContainerName": "backup",
     "primaryAccountName": "[concat(parameters('baseName'), 'prim')]",
+    "storageBlobDataContributorDefinitionId": "ba92f5b4-2d11-453d-a403-e96b0029c9fe",
+    "storageBlobDataContributorTestAppAssignmentName": "[guid(resourceGroup().id, variables('storageBlobDataContributorDefinitionId'), parameters('testApplicationOid'), 'storage-testapp')]",
     "encryption": {
       "services": {
         "blob": {
@@ -389,6 +391,20 @@
         "accessTier": "Hot",
         "minimumTlsVersion": "TLS1_2",
         "allowSharedKeyAccess": false
+      }
+    },
+    {
+      "type": "Microsoft.Authorization/roleAssignments",
+      "apiVersion": "2020-04-01-preview",
+      "name": "[variables('storageBlobDataContributorTestAppAssignmentName')]",
+      "scope": "[resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName'))]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName'))]"
+      ],
+      "properties": {
+        "roleDefinitionId": "[resourceId('Microsoft.Authorization/roleDefinitions', variables('storageBlobDataContributorDefinitionId'))]",
+        "principalId": "[parameters('testApplicationOid')]",
+        "scope": "[resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName'))]"
       }
     },
     {

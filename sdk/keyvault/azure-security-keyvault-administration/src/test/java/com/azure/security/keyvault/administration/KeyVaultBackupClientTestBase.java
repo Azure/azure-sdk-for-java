@@ -2,15 +2,16 @@
 // Licensed under the MIT License.
 package com.azure.security.keyvault.administration;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.util.Configuration;
+import com.azure.identity.AzurePowerShellCredentialBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
-import com.azure.storage.common.StorageSharedKeyCredential;
-import com.azure.storage.common.sas.AccountSasPermission;
-import com.azure.storage.common.sas.AccountSasResourceType;
-import com.azure.storage.common.sas.AccountSasService;
-import com.azure.storage.common.sas.AccountSasSignatureValues;
+import com.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.blob.sas.BlobContainerSasPermission;
+import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import org.junit.jupiter.api.Test;
 
 import java.time.OffsetDateTime;
@@ -19,8 +20,15 @@ import java.time.ZoneOffset;
 public abstract class KeyVaultBackupClientTestBase extends KeyVaultAdministrationClientTestBase {
     protected final String blobStorageUrl = IS_MANAGED_HSM_DEPLOYED
         ? getStorageEndpoint() + Configuration.getGlobalConfiguration().get("BLOB_CONTAINER_NAME")
-        : "https://khapytestsdkprim.blob.core.windows.net/hsmbackups";
-    protected final String sasToken = IS_MANAGED_HSM_DEPLOYED ? generateSasToken() : "REDACTED";
+        : "https://externalkeysdkprim.blob.core.windows.net/backup";
+    protected String sasToken;
+
+    @Override
+    protected void beforeTest() {
+        super.beforeTest();
+
+        sasToken = interceptorManager.isPlaybackMode() ? "REDACTED" : generateSasToken();
+    }
 
     KeyVaultBackupClientBuilder getClientBuilder(HttpClient httpClient, boolean forCleanup) {
         return new KeyVaultBackupClientBuilder().vaultUrl(getEndpoint()).pipeline(getPipeline(httpClient, forCleanup));
@@ -48,19 +56,23 @@ public abstract class KeyVaultBackupClientTestBase extends KeyVaultAdministratio
             + Configuration.getGlobalConfiguration().get("KEYVAULT_STORAGE_ENDPOINT_SUFFIX") + "/";
     }
 
-    private static String generateSasToken() {
-        String accountName = Configuration.getGlobalConfiguration().get("BLOB_STORAGE_ACCOUNT_NAME");
-        String accountKey = Configuration.getGlobalConfiguration().get("BLOB_PRIMARY_STORAGE_ACCOUNT_KEY");
+    // The storage account disallows shared key access, so sign the SAS with an Azure AD user delegation key.
+    private String generateSasToken() {
+        TokenCredential credential = interceptorManager.isLiveMode()
+            ? new AzurePowerShellCredentialBuilder().additionallyAllowedTenants("*").build()
+            : new DefaultAzureCredentialBuilder().additionallyAllowedTenants("*").build();
 
         BlobServiceClient blobServiceClient
-            = new BlobServiceClientBuilder().credential(new StorageSharedKeyCredential(accountName, accountKey))
-                .endpoint(getStorageEndpoint())
-                .buildClient();
+            = new BlobServiceClientBuilder().credential(credential).endpoint(getStorageEndpoint()).buildClient();
 
-        AccountSasSignatureValues accountSasSignatureValues = new AccountSasSignatureValues(
-            OffsetDateTime.of(2050, 12, 12, 0, 0, 0, 0, ZoneOffset.UTC), AccountSasPermission.parse("rwdlacuptfx"),
-            AccountSasService.parse("b"), AccountSasResourceType.parse("sco"));
+        OffsetDateTime now = OffsetDateTime.now(ZoneOffset.UTC);
+        OffsetDateTime expiresOn = now.plusHours(1);
+        UserDelegationKey userDelegationKey = blobServiceClient.getUserDelegationKey(now.minusMinutes(5), expiresOn);
 
-        return blobServiceClient.generateAccountSas(accountSasSignatureValues);
+        return blobServiceClient
+            .getBlobContainerClient(Configuration.getGlobalConfiguration().get("BLOB_CONTAINER_NAME"))
+            .generateUserDelegationSas(
+                new BlobServiceSasSignatureValues(expiresOn, BlobContainerSasPermission.parse("racwdl")),
+                userDelegationKey);
     }
 }

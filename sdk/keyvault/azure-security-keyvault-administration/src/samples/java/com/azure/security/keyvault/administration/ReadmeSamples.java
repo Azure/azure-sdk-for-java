@@ -12,6 +12,9 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.administration.models.KeyVaultBackupOperation;
 import com.azure.security.keyvault.administration.models.KeyVaultEkmConnection;
+import com.azure.security.keyvault.administration.models.KeyVaultEkmConnectivityMode;
+import com.azure.security.keyvault.administration.models.KeyVaultEkmPrivateEndpoint;
+import com.azure.security.keyvault.administration.models.KeyVaultEkmPrivateEndpointOperation;
 import com.azure.security.keyvault.administration.models.KeyVaultEkmProxyClientCertificateInfo;
 import com.azure.security.keyvault.administration.models.KeyVaultEkmProxyInfo;
 import com.azure.security.keyvault.administration.models.KeyVaultGetSettingsResult;
@@ -26,6 +29,7 @@ import com.azure.security.keyvault.administration.models.KeyVaultSetting;
 
 import java.time.Duration;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * Class containing code snippets that will be injected to README.md.
@@ -756,5 +760,111 @@ public class ReadmeSamples {
                 System.out.printf("Checked EKM connection. Proxy vendor: '%s', proxy name: '%s'.%n",
                     ekmProxyInfo.getProxyVendor(), ekmProxyInfo.getProxyName()));
         // END: readme-sample-checkEkmConnectionAsync
+    }
+
+    /**
+     * Code sample for creating a {@link KeyVaultEkmPrivateEndpoint EKM proxy private endpoint}.
+     */
+    public void beginCreateEkmPrivateEndpoint() {
+        // BEGIN: readme-sample-beginCreateEkmPrivateEndpoint
+        SyncPoller<KeyVaultEkmPrivateEndpointOperation, KeyVaultEkmPrivateEndpoint> createPoller =
+            keyVaultEkmClient.beginCreateEkmPrivateEndpoint("<private-endpoint-name>", "<private-link-service-alias>",
+                "Please approve this connection from my Managed HSM");
+        PollResponse<KeyVaultEkmPrivateEndpointOperation> createResponse = createPoller.waitForCompletion();
+
+        System.out.printf("EKM private endpoint creation finished with status '%s'.%n",
+            createResponse.getValue().getStatus());
+        // END: readme-sample-beginCreateEkmPrivateEndpoint
+    }
+
+    /**
+     * Code sample for getting a {@link KeyVaultEkmPrivateEndpoint EKM proxy private endpoint}.
+     */
+    public void getEkmPrivateEndpoint() {
+        // BEGIN: readme-sample-getEkmPrivateEndpoint
+        KeyVaultEkmPrivateEndpoint privateEndpoint = keyVaultEkmClient.getEkmPrivateEndpoint("<private-endpoint-name>");
+
+        System.out.printf("Retrieved EKM private endpoint '%s' with provisioning state '%s'.%n",
+            privateEndpoint.getName(), privateEndpoint.getProvisioningState());
+        // END: readme-sample-getEkmPrivateEndpoint
+    }
+
+    /**
+     * Code sample for listing {@link KeyVaultEkmPrivateEndpoint EKM proxy private endpoints}.
+     */
+    public void listEkmPrivateEndpoints() {
+        // BEGIN: readme-sample-listEkmPrivateEndpoints
+        List<KeyVaultEkmPrivateEndpoint> privateEndpoints = keyVaultEkmClient.listEkmPrivateEndpoints();
+
+        for (KeyVaultEkmPrivateEndpoint privateEndpoint : privateEndpoints) {
+            System.out.printf("Retrieved EKM private endpoint '%s' with provisioning state '%s'.%n",
+                privateEndpoint.getName(), privateEndpoint.getProvisioningState());
+        }
+        // END: readme-sample-listEkmPrivateEndpoints
+    }
+
+    /**
+     * Code sample for creating a {@link KeyVaultEkmConnection EKM connection} that reaches the EKM proxy through a
+     * private endpoint.
+     */
+    public void createPrivateEkmConnection() {
+        // BEGIN: readme-sample-createPrivateEkmConnection
+        KeyVaultEkmConnection privateEkmConnectionToCreate =
+            new KeyVaultEkmConnection("<private-endpoint-name>",
+                Collections.singletonList("<server-ca-certificate>".getBytes()))
+                .setPathPrefix("<path-prefix>")
+                .setConnectivityMode(KeyVaultEkmConnectivityMode.PRIVATE_ENDPOINT)
+                .setServerSubjectCommonName("<server-subject-common-name>");
+
+        KeyVaultEkmConnection createdEkmConnection =
+            keyVaultEkmClient.createEkmConnection(privateEkmConnectionToCreate);
+
+        System.out.printf("Created EKM connection with connectivity mode '%s'.%n",
+            createdEkmConnection.getConnectivityMode());
+        // END: readme-sample-createPrivateEkmConnection
+    }
+
+    /**
+     * Code sample for deleting a {@link KeyVaultEkmPrivateEndpoint EKM proxy private endpoint}.
+     */
+    public void beginDeleteEkmPrivateEndpoint() {
+        // BEGIN: readme-sample-beginDeleteEkmPrivateEndpoint
+        SyncPoller<KeyVaultEkmPrivateEndpointOperation, Void> deletePoller =
+            keyVaultEkmClient.beginDeleteEkmPrivateEndpoint("<private-endpoint-name>");
+        PollResponse<KeyVaultEkmPrivateEndpointOperation> deleteResponse = deletePoller.waitForCompletion();
+
+        System.out.printf("EKM private endpoint deletion finished with status '%s'.%n",
+            deleteResponse.getValue().getStatus());
+        // END: readme-sample-beginDeleteEkmPrivateEndpoint
+    }
+
+    /**
+     * Code sample for creating a {@link KeyVaultEkmPrivateEndpoint EKM proxy private endpoint} asynchronously.
+     */
+    public void beginCreateEkmPrivateEndpointAsync() {
+        // BEGIN: readme-sample-beginCreateEkmPrivateEndpointAsync
+        keyVaultEkmAsyncClient
+            .beginCreateEkmPrivateEndpoint("<private-endpoint-name>", "<private-link-service-alias>",
+                "Please approve this connection from my Managed HSM")
+            .last()
+            .subscribe(createResponse ->
+                System.out.printf("EKM private endpoint creation finished with status '%s'.%n",
+                    createResponse.getValue().getStatus()));
+        // END: readme-sample-beginCreateEkmPrivateEndpointAsync
+    }
+
+    /**
+     * Code sample for listing {@link KeyVaultEkmPrivateEndpoint EKM proxy private endpoints} asynchronously.
+     */
+    public void listEkmPrivateEndpointsAsync() {
+        // BEGIN: readme-sample-listEkmPrivateEndpointsAsync
+        keyVaultEkmAsyncClient.listEkmPrivateEndpoints()
+            .subscribe(privateEndpoints -> {
+                for (KeyVaultEkmPrivateEndpoint privateEndpoint : privateEndpoints) {
+                    System.out.printf("Retrieved EKM private endpoint '%s' with provisioning state '%s'.%n",
+                        privateEndpoint.getName(), privateEndpoint.getProvisioningState());
+                }
+            });
+        // END: readme-sample-listEkmPrivateEndpointsAsync
     }
 }
