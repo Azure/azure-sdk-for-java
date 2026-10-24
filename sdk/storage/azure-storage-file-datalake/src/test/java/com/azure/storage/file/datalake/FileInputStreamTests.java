@@ -3,12 +3,15 @@
 package com.azure.storage.file.datalake;
 
 import com.azure.core.test.utils.TestUtils;
+import com.azure.core.util.Context;
+import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.file.datalake.models.ConsistentReadControl;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.PathProperties;
 import com.azure.storage.file.datalake.options.DataLakeFileInputStreamOptions;
+import com.azure.storage.file.datalake.options.FileParallelUploadOptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -36,6 +39,16 @@ public class FileInputStreamTests extends DataLakeTestBase {
         fc = dataLakeFileSystemClient.createFile(generatePathName());
     }
 
+    /*
+     * Uploads the data in a single append, regardless of the default single upload threshold. These tests exercise
+     * reading, not upload partitioning.
+     */
+    private void uploadInSingleAppend(byte[] data) {
+        fc.uploadWithResponse(new FileParallelUploadOptions(new ByteArrayInputStream(data), data.length)
+            .setParallelTransferOptions(new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) data.length)),
+            null, Context.NONE);
+    }
+
     @ParameterizedTest
     @MethodSource("readInputStreamSupplier")
     public void readInputStream(int length, Integer blockSize) throws IOException {
@@ -60,7 +73,7 @@ public class FileInputStreamTests extends DataLakeTestBase {
     @Test
     public void blobInputStreamReadToLargeBuffer() throws IOException {
         byte[] data = getRandomByteArray(6 * Constants.MB);
-        fc.upload(new ByteArrayInputStream(data), data.length, true);
+        uploadInSingleAppend(data);
 
         try (InputStream is = fc.openInputStream().getInputStream()) {
             byte[] outArr = new byte[10 * 1024 * 1024];
@@ -119,7 +132,7 @@ public class FileInputStreamTests extends DataLakeTestBase {
     @Test
     public void inputStreamETagLockDefault() throws IOException {
         byte[] randomBytes = getRandomByteArray(6 * Constants.MB);
-        fc.upload(new ByteArrayInputStream(randomBytes), randomBytes.length, true);
+        uploadInSingleAppend(randomBytes);
 
         // Create the input stream and read from it.
         // Note: Setting block size to 1 is inefficient but helps demonstrate the purpose of this test.
@@ -128,7 +141,7 @@ public class FileInputStreamTests extends DataLakeTestBase {
             inputStream.read();
 
             // Modify the blob again.
-            fc.upload(new ByteArrayInputStream(randomBytes), randomBytes.length, true);
+            uploadInSingleAppend(randomBytes);
 
             // Reading after etag has been changed
             assertThrows(IOException.class, inputStream::read);
@@ -140,7 +153,7 @@ public class FileInputStreamTests extends DataLakeTestBase {
     public void inputStreamConsistentReadControlNone() throws IOException {
         int length = 6 * Constants.MB;
         byte[] randomBytes = getRandomByteArray(length);
-        fc.upload(new ByteArrayInputStream(randomBytes), randomBytes.length, true);
+        uploadInSingleAppend(randomBytes);
 
         // Create the input stream and read from it.
         // Note: Setting block size to 1 is inefficient but helps demonstrate the purpose of this test.
@@ -150,7 +163,7 @@ public class FileInputStreamTests extends DataLakeTestBase {
             inputStream.read();
 
             // Modify the blob again.
-            fc.upload(new ByteArrayInputStream(randomBytes), randomBytes.length, true);
+            uploadInSingleAppend(randomBytes);
 
             // Exception should not be thrown even though blob was modified
             assertDoesNotThrow(() -> inputStream.read());

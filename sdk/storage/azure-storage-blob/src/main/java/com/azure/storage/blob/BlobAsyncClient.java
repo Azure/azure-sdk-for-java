@@ -866,7 +866,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
 
         // Note that if the file will be uploaded using a putBlob, we also can skip the exists check.
         //
-        // Default behavior is to use uploading in chunks when the file size is greater than 256 MB.
+        // Default behavior is to use uploading in chunks when the file size is greater than the default block size.
         if (!overwrite) {
             if (UploadUtils.shouldUploadInChunks(filePath, ModelHelper.BLOB_DEFAULT_MAX_SINGLE_UPLOAD_SIZE, LOGGER)) {
                 overwriteCheck = exists().flatMap(exists -> exists
@@ -992,7 +992,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
             BinaryData fullFileData = BinaryData.fromFile(filePath, DEFAULT_FILE_READ_CHUNK_SIZE);
             long fileSize = fullFileData.getLength();
 
-            // By default, if the file is larger than 256MB chunk it and stage it as blocks.
+            // By default, if the file is larger than the default block size chunk it and stage it as blocks.
             // But, this is configurable by the user passing options with max single upload size configured.
             if (fileSize > finalParallelTransferOptions.getMaxSingleUploadSizeLong()) {
                 return uploadFileChunks(fileSize, finalParallelTransferOptions, originalBlockSize, options.getHeaders(),

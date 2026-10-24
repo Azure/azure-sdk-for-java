@@ -39,14 +39,17 @@ public class ModelHelper {
     private static final long MAX_APPEND_FILE_BYTES = 4000L * Constants.MB;
 
     /**
-     * Indicates the default size above which the upload will be broken into blocks and parallelized.
-     */
-    public static final long FILE_DEFAULT_MAX_SINGLE_UPLOAD_SIZE = 100L * Constants.MB;
-
-    /**
      * The block size to use if none is specified in parallel operations.
      */
     private static final long FILE_DEFAULT_UPLOAD_BLOCK_SIZE = 4 * Constants.MB;
+
+    /**
+     * Indicates the default size above which the upload will be broken into blocks and parallelized.
+     * <p>
+     * This matches the default block size so that, when not explicitly configured, the initial transfer is the same
+     * size as subsequent transfers.
+     */
+    public static final long FILE_DEFAULT_MAX_SINGLE_UPLOAD_SIZE = FILE_DEFAULT_UPLOAD_BLOCK_SIZE;
 
     /**
      * The number of buffers to use if none is specified on the buffered upload method.

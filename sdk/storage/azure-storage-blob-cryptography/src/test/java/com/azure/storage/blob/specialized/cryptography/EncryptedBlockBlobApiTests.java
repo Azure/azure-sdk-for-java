@@ -1854,7 +1854,8 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
                 .clientSideEncryptionOptions(
                     new BlobClientSideEncryptionOptions().setAuthenticatedRegionDataLengthInBytes(regionLength))
                 .buildEncryptedBlobAsyncClient()));
-        bec.uploadWithResponse(new BlobParallelUploadOptions(BinaryData.fromByteBuffer(data.duplicate())), null, null);
+        bec.uploadWithResponse(new BlobParallelUploadOptions(BinaryData.fromByteBuffer(data.duplicate()))
+            .setParallelTransferOptions(singleUploadOptions()), null, null);
 
         ByteArrayOutputStream plaintextOut = new ByteArrayOutputStream();
         bec.downloadStream(plaintextOut);
@@ -1872,7 +1873,8 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
                 .clientSideEncryptionOptions(
                     new BlobClientSideEncryptionOptions().setAuthenticatedRegionDataLengthInBytes(regionLength))
                 .buildEncryptedBlobAsyncClient()));
-        bec.uploadFromFile(file.toPath().toString());
+        assertFalse(bec.exists());
+        bec.uploadFromFile(file.toPath().toString(), singleUploadOptions(), null, null, null, null, null);
 
         File outFile = new File(testResourceNamer.randomName(prefix, 60) + ".txt");
         Files.deleteIfExists(outFile.toPath());
@@ -1895,7 +1897,8 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
                 .clientSideEncryptionOptions(
                     new BlobClientSideEncryptionOptions().setAuthenticatedRegionDataLengthInBytes(regionLength))
                 .buildEncryptedBlobAsyncClient()));
-        bec.uploadWithResponse(new BlobParallelUploadOptions(BinaryData.fromByteBuffer(data.duplicate())), null, null);
+        bec.uploadWithResponse(new BlobParallelUploadOptions(BinaryData.fromByteBuffer(data.duplicate()))
+            .setParallelTransferOptions(singleUploadOptions()), null, null);
 
         ByteArrayOutputStream plaintextOut = new ByteArrayOutputStream();
 
@@ -1921,7 +1924,8 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
                 .clientSideEncryptionOptions(
                     new BlobClientSideEncryptionOptions().setAuthenticatedRegionDataLengthInBytes(regionLength))
                 .buildEncryptedBlobAsyncClient()));
-        bec.uploadWithResponse(new BlobParallelUploadOptions(BinaryData.fromByteBuffer(data.duplicate())), null, null);
+        bec.uploadWithResponse(new BlobParallelUploadOptions(BinaryData.fromByteBuffer(data.duplicate()))
+            .setParallelTransferOptions(singleUploadOptions()), null, null);
 
         ByteArrayOutputStream plaintextOut = new ByteArrayOutputStream();
 

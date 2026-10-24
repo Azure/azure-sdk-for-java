@@ -453,7 +453,7 @@ public class BlobClient extends BlobClientBase {
         if (!overwrite) {
             // Note we only want to make the exists call if we will be uploading in stages. Otherwise it is superfluous.
             //
-            // Default behavior is to use uploading in chunks when the file size is greater than 256 MB.
+            // Default behavior is to use uploading in chunks when the file size is greater than the default block size.
             if (UploadUtils.shouldUploadInChunks(filePath, ModelHelper.BLOB_DEFAULT_MAX_SINGLE_UPLOAD_SIZE, LOGGER)
                 && exists()) {
                 throw LOGGER.logExceptionAsError(new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS));

@@ -51,7 +51,6 @@ import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.models.StorageResponseSerializationFormat;
 import com.azure.storage.blob.models.TaggedBlobItem;
 import com.azure.storage.common.Utility;
-import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 
 import java.io.UnsupportedEncodingException;
@@ -77,8 +76,11 @@ public final class ModelHelper {
 
     /**
      * Indicates the default size above which the upload will be broken into blocks and parallelized.
+     * <p>
+     * This matches the default block size so that, when not explicitly configured, the initial transfer is the same
+     * size as subsequent transfers.
      */
-    public static final long BLOB_DEFAULT_MAX_SINGLE_UPLOAD_SIZE = 256L * Constants.MB;
+    public static final long BLOB_DEFAULT_MAX_SINGLE_UPLOAD_SIZE = BlobConstants.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE;
 
     private static final HttpHeaderName X_MS_ERROR_CODE = HttpHeaderName.fromString("x-ms-error-code");
 

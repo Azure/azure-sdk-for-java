@@ -745,7 +745,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
 
         // Note that if the file will be uploaded using a putBlob, we also can skip the exists check.
         //
-        // Default behavior is to use uploading in chunks when the file size is greater than 100 MB.
+        // Default behavior is to use uploading in chunks when the file size is greater than the default block size.
         if (!overwrite) {
             if (UploadUtils.shouldUploadInChunks(filePath, ModelHelper.FILE_DEFAULT_MAX_SINGLE_UPLOAD_SIZE, LOGGER)) {
                 overwriteCheck = exists().flatMap(exists -> exists
@@ -869,7 +869,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
                         return createWithResponse(null, null, headers, metadata, validatedRequestConditions);
                     }
 
-                    // By default, if the file is larger than 100 MB chunk it and append it in stages.
+                    // By default, if the file is larger than the default block size chunk it and append it in stages.
                     // But, this is configurable by the user passing options with max single upload size configured.
                     if (UploadUtils.shouldUploadInChunks(filePath,
                         finalParallelTransferOptions.getMaxSingleUploadSizeLong(), LOGGER)) {

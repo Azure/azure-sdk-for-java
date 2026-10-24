@@ -6,6 +6,16 @@
 
 ### Breaking Changes
 
+- Changed the default value of `ParallelTransferOptions.maxSingleUploadSize` used by partitioned uploads when it is
+  not set by the caller. It now matches the default block size (4 MB) instead of 100 MB, so the initial transfer is the
+  same size as subsequent transfers. This affects `DataLakeFileAsyncClient.upload`/`uploadWithResponse`,
+  `DataLakeFileAsyncClient.uploadFromFile`/`uploadFromFileWithResponse`, and their `DataLakeFileClient` equivalents:
+  content larger than 4 MB is now uploaded with multiple appends followed by a flush, rather than a single append when
+  smaller than 100 MB. This means uploads may be partitioned more often, leading to more requests. Explicitly set
+  `maxSingleUploadSize` and `blockSize` values are still respected. To restore the previous behavior, set
+  `ParallelTransferOptions.setMaxSingleUploadSizeLong` to 100 MB. Partitioned downloads (`readToFile`) already used the
+  block size for the initial range request and are unchanged.
+
 ### Bugs Fixed
 
 ### Other Changes

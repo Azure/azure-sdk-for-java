@@ -6,6 +6,11 @@
 
 ### Breaking Changes
 
+- When `AzureFileSystem.AZURE_STORAGE_PUT_BLOB_THRESHOLD` is not configured, output streams returned by
+  `AzureFileSystemProvider.newOutputStream` now use the default block size (4 MB) as the single upload threshold
+  instead of 256 MB, so data larger than 4 MB is staged in blocks and committed. To restore the previous behavior, set
+  `AzureFileSystem.AZURE_STORAGE_PUT_BLOB_THRESHOLD` to 256 MB.
+
 ### Bugs Fixed
 
 ### Other Changes

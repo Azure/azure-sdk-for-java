@@ -39,9 +39,11 @@ import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.storage.blob.models.BlobContainerItem;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
+import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.specialized.BlobLeaseClient;
 import com.azure.storage.blob.specialized.BlobLeaseClientBuilder;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.test.shared.StorageCommonTestUtils;
 import com.azure.storage.common.test.shared.TestAccount;
 import com.azure.storage.common.test.shared.TestDataFactory;
@@ -84,6 +86,17 @@ public class BlobCryptographyTestBase extends TestProxyTestBase {
         = String.join("", Collections.nCopies(32, "password")).getBytes(StandardCharsets.UTF_8);
     private static final byte[] MOCK_KEY
         = String.join("", Collections.nCopies(4, "password")).getBytes(StandardCharsets.UTF_8);
+
+    /**
+     * Gets {@link ParallelTransferOptions} which upload data of up to 256 MB in a single Put Blob request (the single
+     * upload threshold used before it defaulted to the block size). Use this in tests whose behavior under test does
+     * not depend on how the upload is partitioned.
+     *
+     * @return The {@link ParallelTransferOptions}.
+     */
+    protected static ParallelTransferOptions singleUploadOptions() {
+        return new ParallelTransferOptions().setMaxSingleUploadSizeLong(256L * Constants.MB);
+    }
 
     private int entityNo = 0; // Used to generate stable container names for recording tests requiring multiple containers.
     protected String prefix;
