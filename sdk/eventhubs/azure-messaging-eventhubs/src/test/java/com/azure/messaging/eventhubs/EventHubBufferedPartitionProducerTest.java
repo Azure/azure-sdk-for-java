@@ -29,6 +29,7 @@ import reactor.util.concurrent.Queues;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -480,6 +481,50 @@ public class EventHubBufferedPartitionProducerTest {
         verify(mockedEventSink).tryEmitNext(event1);
         verify(mockedEventSink, times(3)).tryEmitNext(event2);
         verify(mockedEventSink).tryEmitNext(event3);
+    }
+
+    /**
+     * Checks that an exception thrown by the user's send-succeeded handler does not terminate publishing to the
+     * partition.
+     */
+    @Test
+    public void continuesPublishingWhenHandlerThrows() throws InterruptedException {
+        // Arrange
+        final CountDownLatch success = new CountDownLatch(2);
+        final BufferedProducerClientOptions options = new BufferedProducerClientOptions();
+        options.setMaxWaitTime(Duration.ofSeconds(2));
+        options.setSendSucceededContext(context -> {
+            success.countDown();
+            throw new IllegalStateException("handler failure");
+        });
+        options.setSendFailedContext(context -> {
+        });
+
+        final List<EventData> batchEvents = new ArrayList<>();
+        setupBatchMock(batch, batchEvents, event1);
+
+        final List<EventData> batchEvents2 = new ArrayList<>();
+        setupBatchMock(batch2, batchEvents2, event2);
+
+        when(client.send(any(EventDataBatch.class))).thenReturn(Mono.empty());
+
+        final EventHubBufferedPartitionProducer producer = new EventHubBufferedPartitionProducer(client, PARTITION_ID,
+            options, DEFAULT_RETRY_OPTIONS, eventSink, null);
+
+        // Act
+        StepVerifier.create(producer.enqueueEvent(event1))
+            .expectComplete()
+            .verify(DEFAULT_RETRY_OPTIONS.getTryTimeout());
+
+        // event2 does not fit into the first batch, so the first batch is sent and its handler throws.
+        StepVerifier.create(producer.enqueueEvent(event2))
+            .expectComplete()
+            .verify(DEFAULT_RETRY_OPTIONS.getTryTimeout());
+
+        // Assert
+        assertTrue(success.await(10, TimeUnit.SECONDS),
+            "The second batch should be published even though the handler threw for the first one.");
+        assertEquals(Collections.singletonList(event2), batchEvents2);
     }
 
     private class InvocationHolder {
