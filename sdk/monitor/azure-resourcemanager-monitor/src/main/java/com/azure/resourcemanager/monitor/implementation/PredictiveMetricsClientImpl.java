@@ -125,7 +125,7 @@ public final class PredictiveMetricsClientImpl implements PredictiveMetricsClien
         if (aggregation == null) {
             return Mono.error(new IllegalArgumentException("Parameter aggregation is required and cannot be null."));
         }
-        final String apiVersion = "2022-10-01";
+        final String apiVersion = "2025-09-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -189,7 +189,7 @@ public final class PredictiveMetricsClientImpl implements PredictiveMetricsClien
         if (aggregation == null) {
             return Mono.error(new IllegalArgumentException("Parameter aggregation is required and cannot be null."));
         }
-        final String apiVersion = "2022-10-01";
+        final String apiVersion = "2025-09-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,

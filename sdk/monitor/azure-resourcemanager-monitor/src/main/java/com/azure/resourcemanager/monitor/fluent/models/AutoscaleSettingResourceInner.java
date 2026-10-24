@@ -12,6 +12,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.monitor.models.AutoscaleNotification;
+import com.azure.resourcemanager.monitor.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.monitor.models.PredictiveAutoscalePolicy;
 import java.io.IOException;
 import java.util.List;
@@ -26,6 +27,13 @@ public final class AutoscaleSettingResourceInner extends Resource {
      * The autoscale setting of the resource.
      */
     private AutoscaleSetting innerProperties = new AutoscaleSetting();
+
+    /*
+     * The managed service identities assigned to this resource. Only user-assigned identities are supported;
+     * 'SystemAssigned' and 'SystemAssigned,UserAssigned' are rejected. At most one user-assigned managed identity may
+     * be assigned to an autoscale setting. To remove the assigned identity, send 'type' as 'None'.
+     */
+    private ManagedServiceIdentity identity;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
@@ -60,6 +68,32 @@ public final class AutoscaleSettingResourceInner extends Resource {
      */
     private AutoscaleSetting innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the identity property: The managed service identities assigned to this resource. Only user-assigned
+     * identities are supported; 'SystemAssigned' and 'SystemAssigned,UserAssigned' are rejected. At most one
+     * user-assigned managed identity may be assigned to an autoscale setting. To remove the assigned identity, send
+     * 'type' as 'None'.
+     * 
+     * @return the identity value.
+     */
+    public ManagedServiceIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: The managed service identities assigned to this resource. Only user-assigned
+     * identities are supported; 'SystemAssigned' and 'SystemAssigned,UserAssigned' are rejected. At most one
+     * user-assigned managed identity may be assigned to an autoscale setting. To remove the assigned identity, send
+     * 'type' as 'None'.
+     * 
+     * @param identity the identity value to set.
+     * @return the AutoscaleSettingResourceInner object itself.
+     */
+    public AutoscaleSettingResourceInner withIdentity(ManagedServiceIdentity identity) {
+        this.identity = identity;
+        return this;
     }
 
     /**
@@ -302,6 +336,9 @@ public final class AutoscaleSettingResourceInner extends Resource {
         } else {
             innerProperties().validate();
         }
+        if (identity() != null) {
+            identity().validate();
+        }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AutoscaleSettingResourceInner.class);
@@ -315,6 +352,7 @@ public final class AutoscaleSettingResourceInner extends Resource {
         jsonWriter.writeStringField("location", location());
         jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("identity", this.identity);
         return jsonWriter.writeEndObject();
     }
 
@@ -348,6 +386,8 @@ public final class AutoscaleSettingResourceInner extends Resource {
                     deserializedAutoscaleSettingResourceInner.withTags(tags);
                 } else if ("properties".equals(fieldName)) {
                     deserializedAutoscaleSettingResourceInner.innerProperties = AutoscaleSetting.fromJson(reader);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedAutoscaleSettingResourceInner.identity = ManagedServiceIdentity.fromJson(reader);
                 } else if ("systemData".equals(fieldName)) {
                     deserializedAutoscaleSettingResourceInner.systemData = SystemData.fromJson(reader);
                 } else {
