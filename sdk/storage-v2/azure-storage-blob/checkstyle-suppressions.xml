@@ -8,13 +8,13 @@
   <suppress checks="JavadocMethod" files="com.azure.v2.storage.blob.implementation.*"  />
   <suppress checks="JavaDocFormatting" files="com.azure.v2.storage.blob.implementation.*"  />
   <suppress checks="io.clientcore.linting.extensions.checkstyle.checks.DenyListedWordsCheck" files="com.azure.v2.storage.blob.*" />
-  <suppress checks="io.clientcore.linting.extensions.checkstyle.checks.NoImplInPublicAPI" files="com.azure.v2.storage.blob.ContainerClient.java" />
+  <suppress files="com.azure.v2.storage.blob.ContainerClient.java" checks="io.clientcore.linting.extensions.checkstyle.checks.PublicApiTypeCheck" />
   <suppress checks="io.clientcore.linting.extensions.checkstyle.checks.ServiceClientCheck" files="com.azure.v2.storage.blob.*" />
   <suppress checks="io.clientcore.linting.extensions.checkstyle.checks.ServiceClientBuilderCheck" files="com.azure.v2.storage.blob.*" />
-  <suppress checks="io.clientcore.linting.extensions.checkstyle.checks.ThrowFromClientLoggerCheck" files="com.azure.v2.storage.blob.*" />
+  <suppress files="com.azure.v2.storage.blob.*" checks="io.clientcore.linting.extensions.checkstyle.checks.ExceptionHandlingCheck" />
   <suppress checks="io.clientcore.linting.extensions.checkstyle.checks.GoodLoggingCheck" files="com.azure.v2.storage.blob.implementation.*" />
   <suppress checks="io.clientcore.linting.extensions.checkstyle.checks.HttpPipelinePolicyCheck" files="com.azure.v2.storage.blob.implementation.*" />
-  <suppress checks="io.clientcore.linting.extensions.checkstyle.checks.UseCaughtExceptionCauseCheck" files="com.azure.v2.storage.blob.implementation.*" />
+  <suppress files="com.azure.v2.storage.blob.implementation.*" checks="io.clientcore.linting.extensions.checkstyle.checks.ExceptionHandlingCheck" />
   <suppress checks="JavadocPackage" files="com.azure.v2.storage.blob.implementation.*" />
 
   <!-- These are non-public classes -->
