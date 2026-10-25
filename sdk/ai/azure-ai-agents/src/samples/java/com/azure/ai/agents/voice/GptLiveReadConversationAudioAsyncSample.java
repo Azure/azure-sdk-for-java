@@ -49,10 +49,10 @@ public class GptLiveReadConversationAudioAsyncSample {
     public static void main(String[] args) {
         Path directory = GptLiveReadConversationAudioSample.outputDirectory(args);
         Configuration configuration = Configuration.getGlobalConfiguration();
-        String endpoint = GptLiveReadConversationSample.requireSetting(configuration, "FOUNDRY_PROJECT_ENDPOINT");
-        String agentName = GptLiveReadConversationSample.requireSetting(configuration, "FOUNDRY_GPT_LIVE_AGENT_NAME");
+        String endpoint = GptLiveSampleUtils.requireSetting(configuration, "FOUNDRY_PROJECT_ENDPOINT");
+        String agentName = GptLiveSampleUtils.requireSetting(configuration, "FOUNDRY_GPT_LIVE_AGENT_NAME");
         String conversationId
-            = GptLiveReadConversationSample.requireSetting(configuration, "FOUNDRY_GPT_LIVE_CONVERSATION_ID");
+            = GptLiveSampleUtils.requireSetting(configuration, "FOUNDRY_GPT_LIVE_CONVERSATION_ID");
         String itemId = configuration.get("FOUNDRY_GPT_LIVE_ITEM_ID");
         BetaVoiceAgentsLiveConversationsAsyncClient client = new AgentsClientBuilder().endpoint(endpoint)
             .credential(new DefaultAzureCredentialBuilder().build())

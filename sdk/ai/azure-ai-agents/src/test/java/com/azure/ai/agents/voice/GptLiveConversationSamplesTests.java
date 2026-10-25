@@ -176,7 +176,7 @@ public class GptLiveConversationSamplesTests {
     @Test
     public void configurationDirectoryAndCursorValidation() {
         assertThrows(IllegalArgumentException.class,
-            () -> GptLiveReadConversationSample.requireSetting(Configuration.NONE, "FOUNDRY_PROJECT_ENDPOINT"));
+            () -> GptLiveSampleUtils.requireSetting(Configuration.NONE, "FOUNDRY_PROJECT_ENDPOINT"));
         assertThrows(IllegalArgumentException.class,
             () -> GptLiveReadConversationAudioSample.outputDirectory(new String[0]));
         assertThrows(IllegalArgumentException.class, () -> GptLiveReadConversationAudioSample

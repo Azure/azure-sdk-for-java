@@ -5,22 +5,12 @@ package com.azure.ai.agents.voice;
 
 import com.azure.ai.agents.BetaVoiceAgentLiveWebSocketSessionClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.ai.agents.models.VoiceAgentLiveWebSocketConnectionOptions;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import java.io.Console;
-import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.Reader;
 import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.function.Supplier;
-import java.util.function.Consumer;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 /**
@@ -31,7 +21,7 @@ import reactor.core.scheduler.Schedulers;
  * It streams silent PCM while typing; voice usage is billable. Greeting completion uses the same speech-inactivity
  * heuristic and speaker drain as the asynchronous sample. Assistant transcript fragments are assembled into
  * utterances independently of typed turns; completed text waits until Enter when a You: line is active.
- * Synchronous session I/O runs on workers using the asynchronous sample's shared voice-loop coordination.
+ * Synchronous session I/O runs on workers using the shared voice-loop coordination in GptLiveSampleUtils.
  * After a remote disconnect, a pending console read may require Enter to release the input worker.
  * Scripted command-line prompts print backend text without speaker playback.
  * A uniquely named agent is deleted on exit unless FOUNDRY_KEEP_GPT_LIVE_AGENT=true.
@@ -82,74 +72,14 @@ public class GptLiveTextConversationSample {
                 .openWebSocketSession(agent.name, new VoiceAgentLiveWebSocketConnectionOptions().setStoreEnabled(store))) {
             if (args.length == 0) {
                 Console console = System.console();
-                runConversation(session, console == null ? new InputStreamReader(System.in) : console.reader());
+                GptLiveSampleUtils.runConversation(session,
+                    console == null ? new InputStreamReader(System.in) : console.reader());
             } else {
-                runConversation(session, Arrays.asList(args));
+                GptLiveSampleUtils.runConversation(session, Arrays.asList(args));
             }
         } finally {
             Schedulers.shutdownNow();
         }
     }
 
-    static void runConversation(BetaVoiceAgentLiveWebSocketSessionClient session, List<String> prompts) {
-        Iterator<String> pending = prompts.iterator();
-        runConversation(session, () -> {
-            if (!pending.hasNext()) {
-                return null;
-            }
-            String prompt = pending.next();
-            System.out.println("You: " + prompt);
-            return prompt;
-        });
-    }
-
-    static void runConversation(BetaVoiceAgentLiveWebSocketSessionClient session, Reader input) {
-        try (VoiceAgentRealtimeSampleUtils.SpeakerPlayer player = new VoiceAgentRealtimeSampleUtils.SpeakerPlayer()) {
-            runConversation(session, input, player::play, player::drain);
-            player.drain();
-            System.out.printf("(received %.2fs of reply audio%s)%n", player.getSecondsReceived(),
-                player.isEnabled() ? " and played it" : "");
-        }
-    }
-
-    static void runConversation(BetaVoiceAgentLiveWebSocketSessionClient session, Reader input,
-        Consumer<byte[]> playAudio, Runnable drainAudio) {
-        Flux<BinaryData> events = Flux.defer(() -> Flux.fromIterable(session.receiveEvents(GptLiveSampleUtils.TIMEOUT)))
-            .subscribeOn(Schedulers.boundedElastic());
-        GptLiveTextConversationAsyncSample.runInteractiveConversation(events,
-            event -> Mono.<Void>fromRunnable(() -> session.sendEvent(event)).subscribeOn(Schedulers.boundedElastic()),
-            () -> "transport close code=" + session.getCloseCode() + ", reason=" + session.getCloseReason(),
-            input, playAudio, drainAudio)
-            .onErrorMap(IOException.class, error -> new IllegalStateException("Unable to read console input.", error))
-            .block();
-    }
-
-    private static void runConversation(BetaVoiceAgentLiveWebSocketSessionClient session, Supplier<String> nextPrompt) {
-        Iterator<BinaryData> events = session.receiveEvents(GptLiveSampleUtils.TIMEOUT).iterator();
-        awaitType(events, "session.started");
-        String prompt;
-        while ((prompt = nextPrompt.get()) != null) {
-            System.out.print("Assistant: ");
-            session.sendEvent(GptLiveSampleUtils.userMessage(prompt));
-            session.sendEvent(GptLiveSampleUtils.event("response.create"));
-            awaitType(events, "response.completed");
-            System.out.println();
-        }
-        session.sendEvent(GptLiveSampleUtils.event("session.close"));
-        awaitType(events, "session.closed");
-    }
-
-    static void awaitType(Iterator<BinaryData> events, String expected) {
-        while (events.hasNext()) {
-            Map<?, ?> event = GptLiveSampleUtils.object(events.next());
-            GptLiveSampleUtils.printEvent(event);
-            if (expected.equals(GptLiveSampleUtils.type(GptLiveSampleUtils.backendEvent(event)))) {
-                return;
-            }
-            if ("session.closed".equals(GptLiveSampleUtils.type(event))) {
-                throw new IllegalStateException("GPT Live session closed before " + expected);
-            }
-        }
-        throw new IllegalStateException("GPT Live connection ended before " + expected);
-    }
 }

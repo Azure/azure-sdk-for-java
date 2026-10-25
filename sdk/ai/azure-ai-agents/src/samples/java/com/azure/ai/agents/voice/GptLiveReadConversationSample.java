@@ -38,9 +38,9 @@ import java.util.stream.Collectors;
 public class GptLiveReadConversationSample {
     public static void main(String[] args) {
         Configuration configuration = Configuration.getGlobalConfiguration();
-        String endpoint = requireSetting(configuration, "FOUNDRY_PROJECT_ENDPOINT");
-        String agentName = requireSetting(configuration, "FOUNDRY_GPT_LIVE_AGENT_NAME");
-        String conversationId = requireSetting(configuration, "FOUNDRY_GPT_LIVE_CONVERSATION_ID");
+        String endpoint = GptLiveSampleUtils.requireSetting(configuration, "FOUNDRY_PROJECT_ENDPOINT");
+        String agentName = GptLiveSampleUtils.requireSetting(configuration, "FOUNDRY_GPT_LIVE_AGENT_NAME");
+        String conversationId = GptLiveSampleUtils.requireSetting(configuration, "FOUNDRY_GPT_LIVE_CONVERSATION_ID");
         BetaVoiceAgentsLiveConversationsClient client = new AgentsClientBuilder().endpoint(endpoint)
             .credential(new DefaultAzureCredentialBuilder().build())
             .addPolicy(previewHeaders())
@@ -109,11 +109,4 @@ public class GptLiveReadConversationSample {
         }
     }
 
-    static String requireSetting(Configuration configuration, String name) {
-        String value = configuration.get(name);
-        if (value == null || value.trim().isEmpty()) {
-            throw new IllegalArgumentException("Set environment variable " + name + " before running this sample.");
-        }
-        return value;
-    }
 }
