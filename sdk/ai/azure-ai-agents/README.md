@@ -1116,15 +1116,37 @@ send the `Foundry-Features: VoiceAgents=V1Preview` header, and **do not** negoti
 subprotocol. `allowPreview(true)` is not required.
 
 Foundry sends the initial native `session.start`. Wait for `session.started` before sending application events;
-do not send `session.start` yourself. Live events are exposed as complete `BinaryData` JSON objects, not
-`RealtimeClientEvent` or `RealtimeServerEvent` models. This preserves native events, unknown properties,
-nested `response.event` backend events, and the Foundry `conversation_id` on `session.started`.
+do not send `session.start` yourself. Use `sendEvent(ClientEvent)` and `receiveTypedEvents()` with the
+`com.openai.models.live` event models from the SDK's existing `openai-java` dependency. These are distinct
+from Realtime event models. The synchronous client also offers `receiveTypedEvents(Duration)` for bounded waits.
+The existing `sendEvent(BinaryData)` and `receiveEvents()` APIs expose complete JSON objects when the original
+wire representation is needed, including unknown properties, nested `response.event` backend events, and the
+Foundry `conversation_id` on `session.started`. OpenAI typed models retain extra properties and unknown event
+variants, but typed serialization need not preserve the original JSON formatting.
 The existing samples named `VoiceAgentLive*ConversationSample` above demonstrate live connections using the
 **Realtime** protocol; use the separate GPT Live clients for `VoiceAgentLiveDefinition` agents.
 
-Use `sendEvent(BinaryData)` with native Live JSON commands valid for the configured delegation mode.
+For example, with a connected synchronous Live session configured for Responses delegation:
+
+```java
+import com.openai.models.live.ClientEvent;
+import com.openai.models.live.ResponseCreateEvent;
+import com.openai.models.live.ServerEvent;
+
+for (ServerEvent event : session.receiveTypedEvents()) {
+    if (event.isSessionStarted()) {
+        session.sendEvent(ClientEvent.ofResponseCreate(ResponseCreateEvent.builder().build()));
+    } else if (event.isSessionOutputTranscriptDelta()) {
+        System.out.print(event.asSessionOutputTranscriptDelta().delta());
+    } else if (event.isSessionClosed() || event.isErrorEvent()) {
+        break;
+    }
+}
+```
+
+Send only native Live commands valid for the configured delegation mode, whether typed or raw.
 In particular, `response.item.create` and `response.create` are Responses-delegation-only commands.
-Service `error` events arrive as JSON events for the application to inspect; transport and malformed JSON
+Service `error` events arrive as events for the application to inspect; transport and malformed JSON
 errors fail the receive stream unless a malformed-event callback was explicitly configured.
 
 Configure timeouts, bounded receive capacity, overflow handling, message size, persistence, agent version,
@@ -1135,7 +1157,8 @@ options are not exposed. Options are copied when opening a session.
 
 Both transports retain the realtime clients' credential, proxy, custom-header and builder validation behavior.
 Custom HTTP clients, pipelines, policies, and retry settings are unsupported and fail at build time rather
-than being ignored. Each session permits one receiver. The default receive buffer holds 256 events; overflow
+than being ignored. Each session permits one receiver, shared by typed and raw receive APIs.
+The default receive buffer holds 256 events; overflow
 terminates the session unless a drop strategy explicitly permits event loss.
 
 #### Runnable GPT Live scenarios

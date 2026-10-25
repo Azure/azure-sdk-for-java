@@ -20,7 +20,6 @@ public final class VoiceAgentWebSocketClientConfiguration {
     private final String userAgent;
     private final HttpHeaders headers;
     private final ProxyOptions proxyOptions;
-    private final boolean live;
 
     /**
      * Creates the connection configuration.
@@ -34,35 +33,12 @@ public final class VoiceAgentWebSocketClientConfiguration {
      */
     public VoiceAgentWebSocketClientConfiguration(URI endpoint, TokenCredential credential, String apiVersion,
         String userAgent, HttpHeaders headers, ProxyOptions proxyOptions) {
-        this(endpoint, credential, apiVersion, userAgent, headers, proxyOptions, false);
-    }
-
-    private VoiceAgentWebSocketClientConfiguration(URI endpoint, TokenCredential credential, String apiVersion,
-        String userAgent, HttpHeaders headers, ProxyOptions proxyOptions, boolean live) {
         this.endpoint = Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
         this.credential = Objects.requireNonNull(credential, "'credential' cannot be null.");
         this.apiVersion = Objects.requireNonNull(apiVersion, "'apiVersion' cannot be null.");
         this.userAgent = Objects.requireNonNull(userAgent, "'userAgent' cannot be null.");
         this.headers = headers;
         this.proxyOptions = proxyOptions;
-        this.live = live;
-    }
-
-    /**
-     * Creates a configuration for the native GPT Live protocol.
-     * @return the Live configuration.
-     */
-    public VoiceAgentWebSocketClientConfiguration forLive() {
-        return new VoiceAgentWebSocketClientConfiguration(endpoint, credential, apiVersion, userAgent, headers,
-            proxyOptions, true);
-    }
-
-    /**
-     * Indicates whether this connection uses native GPT Live events and routing.
-     * @return whether the Live protocol is selected.
-     */
-    public boolean isLive() {
-        return live;
     }
 
     /**

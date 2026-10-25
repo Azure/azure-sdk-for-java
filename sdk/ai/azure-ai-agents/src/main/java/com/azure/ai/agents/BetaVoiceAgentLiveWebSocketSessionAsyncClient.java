@@ -3,25 +3,29 @@
 
 package com.azure.ai.agents;
 
-import com.azure.ai.agents.implementation.realtime.VoiceAgentWebSocketUtils;
+import com.azure.ai.agents.implementation.OpenAIJsonHelper;
+import com.azure.ai.agents.implementation.realtime.WebSocketSessionAsyncTransport;
 import com.azure.ai.agents.implementation.utils.Beta;
 import com.azure.core.util.AsyncCloseable;
 import com.azure.core.util.BinaryData;
+import com.openai.models.live.ClientEvent;
+import com.openai.models.live.ServerEvent;
+import java.util.Objects;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
  * An asynchronous bidirectional native GPT Live session.
  * <p>
- * Live events are complete JSON objects, not {@code RealtimeServerEvent} or {@code RealtimeClientEvent} models.
- * Unknown fields, nested {@code response.event} payloads and Foundry {@code conversation_id} values are preserved.
- * Sessions support one event subscriber and must be closed when no longer needed.
+ * Live events can be sent and received using {@link ClientEvent} and {@link ServerEvent}, or as complete JSON objects.
+ * Raw JSON preserves unknown fields, nested {@code response.event} payloads and Foundry {@code conversation_id} values.
+ * Typed and raw receivers share one event subscriber. Close sessions when they are no longer needed.
  */
 @Beta(warningText = "This class is in preview and may change in future releases.")
 public final class BetaVoiceAgentLiveWebSocketSessionAsyncClient implements AsyncCloseable, AutoCloseable {
-    private final BetaVoiceAgentWebSocketSessionAsyncClient transport;
+    private final WebSocketSessionAsyncTransport<ServerEvent> transport;
 
-    BetaVoiceAgentLiveWebSocketSessionAsyncClient(BetaVoiceAgentWebSocketSessionAsyncClient transport) {
+    BetaVoiceAgentLiveWebSocketSessionAsyncClient(WebSocketSessionAsyncTransport<ServerEvent> transport) {
         this.transport = transport;
     }
 
@@ -63,7 +67,26 @@ public final class BetaVoiceAgentLiveWebSocketSessionAsyncClient implements Asyn
      * @return the single-subscriber stream of complete JSON events.
      */
     public Flux<BinaryData> receiveEvents() {
-        return transport.receiveEvents().map(VoiceAgentWebSocketUtils::liveEventPayload);
+        return transport.receiveRawEvents();
+    }
+
+    /**
+     * Receives typed native Live server events. Typed and raw receivers share the single-subscriber limit.
+     * Use {@link #receiveEvents()} when the original JSON representation is needed.
+     * @return the typed server event stream.
+     */
+    public Flux<ServerEvent> receiveTypedEvents() {
+        return transport.receiveEvents();
+    }
+
+    /**
+     * Sends a typed native Live command. Foundry supplies {@code session.start}; clients must not send it.
+     * @param event the command to send.
+     * @return completion after the frame is written.
+     */
+    public Mono<Void> sendEvent(ClientEvent event) {
+        Objects.requireNonNull(event, "'event' cannot be null.");
+        return Mono.defer(() -> sendEvent(OpenAIJsonHelper.toBinaryData(event)));
     }
 
     /**

@@ -5,6 +5,7 @@ package com.azure.ai.agents;
 
 import com.azure.ai.agents.implementation.realtime.VoiceAgentWebSocketClientConfiguration;
 import com.azure.ai.agents.implementation.realtime.VoiceAgentWebSocketUtils;
+import com.azure.ai.agents.implementation.realtime.WebSocketSessionTransport;
 import com.azure.ai.agents.models.VoiceAgentTransport;
 import com.azure.ai.agents.models.VoiceAgentWebSocketConnectionOptions;
 import com.azure.core.http.ProxyOptions;
@@ -48,8 +49,8 @@ public class BetaVoiceAgentWebSocketSessionClientTests {
             URI.create("https://localhost"),
             request -> Mono.just(new com.azure.core.credential.AccessToken("token", OffsetDateTime.now().plusHours(1))),
             "v1", "test-user-agent", null, proxyOptions);
-        OkHttpClient client = BetaVoiceAgentWebSocketSessionClient.createHttpClient(configuration,
-            new VoiceAgentWebSocketConnectionOptions());
+        OkHttpClient client
+            = WebSocketSessionTransport.createHttpClient(configuration, new VoiceAgentWebSocketConnectionOptions());
 
         List<Proxy> bypassed = client.proxySelector().select(URI.create("https://LOCALHOST/session"));
         List<Proxy> proxied = client.proxySelector().select(URI.create("https://example.com/session"));

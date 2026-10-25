@@ -3,26 +3,28 @@
 
 package com.azure.ai.agents;
 
-import com.azure.ai.agents.implementation.realtime.VoiceAgentWebSocketUtils;
+import com.azure.ai.agents.implementation.OpenAIJsonHelper;
+import com.azure.ai.agents.implementation.realtime.WebSocketSessionTransport;
 import com.azure.ai.agents.implementation.utils.Beta;
-import com.azure.ai.agents.models.RealtimeServerEvent;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.IterableStream;
+import com.openai.models.live.ClientEvent;
+import com.openai.models.live.ServerEvent;
 import java.time.Duration;
-import java.util.Iterator;
+import java.util.Objects;
 
 /**
  * A synchronous bidirectional native GPT Live session.
  * <p>
- * Events are complete JSON objects, not Realtime protocol models. Unknown fields, nested {@code response.event}
- * payloads and Foundry {@code conversation_id} values are preserved. Only one event iterator is supported.
- * Close sessions when they are no longer needed.
+ * Events can be sent and received using {@link ClientEvent} and {@link ServerEvent}, or as complete JSON objects.
+ * Raw JSON preserves unknown fields, nested {@code response.event} payloads and Foundry {@code conversation_id} values.
+ * Typed and raw receivers share one event iterator. Close sessions when they are no longer needed.
  */
 @Beta(warningText = "This class is in preview and may change in future releases.")
 public final class BetaVoiceAgentLiveWebSocketSessionClient implements AutoCloseable {
-    private final BetaVoiceAgentWebSocketSessionClient transport;
+    private final WebSocketSessionTransport<ServerEvent> transport;
 
-    BetaVoiceAgentLiveWebSocketSessionClient(BetaVoiceAgentWebSocketSessionClient transport) {
+    BetaVoiceAgentLiveWebSocketSessionClient(WebSocketSessionTransport<ServerEvent> transport) {
         this.transport = transport;
     }
 
@@ -69,6 +71,36 @@ public final class BetaVoiceAgentLiveWebSocketSessionClient implements AutoClose
     }
 
     /**
+     * Receives typed native Live server events. Typed and raw receivers share the single-consumer limit.
+     * @return the typed server event stream.
+     */
+    public IterableStream<ServerEvent> receiveTypedEvents() {
+        return receiveTypedEvents(null);
+    }
+
+    /**
+     * Receives typed native Live events with a timeout per wait. Timeouts leave the session open.
+     * Use {@link #receiveEvents(Duration)} when the original JSON representation is needed.
+     * @param timeout a positive timeout, or null to wait indefinitely.
+     * @return the single-consumer typed event stream.
+     * @throws IllegalArgumentException if the timeout is zero or negative.
+     * @throws IllegalStateException if the receive stream was already claimed, or a wait times out.
+     */
+    public IterableStream<ServerEvent> receiveTypedEvents(Duration timeout) {
+        return transport.receiveEvents(timeout);
+    }
+
+    /**
+     * Sends a typed native Live command. Foundry supplies {@code session.start}; clients must not send it.
+     * @param event the command to send.
+     * @throws IllegalStateException if the session cannot accept the event.
+     */
+    public void sendEvent(ClientEvent event) {
+        Objects.requireNonNull(event, "'event' cannot be null.");
+        sendEvent(OpenAIJsonHelper.toBinaryData(event));
+    }
+
+    /**
      * Receives native Live events with a timeout per wait. Timeouts leave the session open so iteration can resume.
      * @param timeout a positive timeout, or null to wait indefinitely.
      * @return the single-consumer event stream.
@@ -76,20 +108,7 @@ public final class BetaVoiceAgentLiveWebSocketSessionClient implements AutoClose
      * @throws IllegalStateException if the receive stream was already claimed, or a wait times out.
      */
     public IterableStream<BinaryData> receiveEvents(Duration timeout) {
-        IterableStream<RealtimeServerEvent> events = transport.receiveEvents(timeout);
-        return IterableStream.of(() -> new Iterator<BinaryData>() {
-            private final Iterator<RealtimeServerEvent> iterator = events.iterator();
-
-            @Override
-            public boolean hasNext() {
-                return iterator.hasNext();
-            }
-
-            @Override
-            public BinaryData next() {
-                return VoiceAgentWebSocketUtils.liveEventPayload(iterator.next());
-            }
-        });
+        return transport.receiveRawEvents(timeout);
     }
 
     /**

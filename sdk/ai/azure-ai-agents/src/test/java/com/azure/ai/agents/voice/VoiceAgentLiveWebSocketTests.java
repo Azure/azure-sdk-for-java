@@ -6,13 +6,21 @@ package com.azure.ai.agents.voice;
 import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.BetaVoiceAgentLiveWebSocketSessionAsyncClient;
 import com.azure.ai.agents.BetaVoiceAgentLiveWebSocketSessionClient;
+import com.azure.ai.agents.BetaVoiceAgentWebSocketSessionAsyncClient;
+import com.azure.ai.agents.BetaVoiceAgentWebSocketSessionClient;
+import com.azure.ai.agents.implementation.OpenAIJsonHelper;
 import com.azure.ai.agents.models.VoiceAgentLiveWebSocketConnectionOptions;
+import com.azure.ai.agents.models.VoiceAgentWebSocketConnectionOptions;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Header;
+import com.openai.core.JsonValue;
+import com.openai.models.live.ClientEvent;
+import com.openai.models.live.ResponseCreateEvent;
+import com.openai.models.live.ServerEvent;
 import io.netty.handler.codec.http.HttpHeaderNames;
 import java.net.URI;
 import java.net.URLDecoder;
@@ -36,6 +44,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.netty.DisposableServer;
+import reactor.netty.http.server.WebsocketServerSpec;
 import reactor.test.StepVerifier;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -144,6 +153,7 @@ public class VoiceAgentLiveWebSocketTests {
             assertEquals(FUTURE, events.next().toString());
             assertEquals(ERROR, events.next().toString());
             assertThrows(IllegalStateException.class, session::receiveEvents);
+            assertThrows(IllegalStateException.class, session::receiveTypedEvents);
             assertThrows(IllegalArgumentException.class, () -> session.sendEvent(BinaryData.fromString("[]")));
             session.sendEvent(BinaryData.fromString(COMMAND));
             assertEquals(COMMAND, events.next().toString());
@@ -179,6 +189,7 @@ public class VoiceAgentLiveWebSocketTests {
                 .verify(TIMEOUT);
             assertEquals(Arrays.asList(COMMAND), sent);
             StepVerifier.create(session.receiveEvents()).expectError(IllegalStateException.class).verify(TIMEOUT);
+            StepVerifier.create(session.receiveTypedEvents()).expectError(IllegalStateException.class).verify(TIMEOUT);
             session.closeAsync(1000, "done").block(TIMEOUT);
             assertFalse(session.isOpen());
             StepVerifier.create(session.sendEvent(BinaryData.fromString(COMMAND)))
@@ -187,6 +198,150 @@ public class VoiceAgentLiveWebSocketTests {
         } finally {
             session.closeAsync().block(TIMEOUT);
         }
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    public void sameBuilderKeepsLiveAndRealtimeHandshakesIndependent(boolean async) {
+        List<String> requestUris = new CopyOnWriteArrayList<>();
+        List<io.netty.handler.codec.http.HttpHeaders> headers = new CopyOnWriteArrayList<>();
+        server = VoiceAgentWebSocketSessionTests.tlsServer().host("localhost").port(0).handle((request, response) -> {
+            requestUris.add(request.uri());
+            headers.add(request.requestHeaders().copy());
+            return response.sendWebsocket((inbound, outbound) -> inbound.receive().then(),
+                WebsocketServerSpec.builder().protocols("realtime").build());
+        }).bindNow();
+        AgentsClientBuilder builder = builder();
+        String inputs = "{\"name\":\"value\"}";
+        VoiceAgentLiveWebSocketConnectionOptions liveOptions
+            = new VoiceAgentLiveWebSocketConnectionOptions().setStructuredInputs(inputs);
+        VoiceAgentWebSocketConnectionOptions realtimeOptions
+            = new VoiceAgentWebSocketConnectionOptions().setStructuredInputs(inputs);
+        if (async) {
+            try (BetaVoiceAgentLiveWebSocketSessionAsyncClient live = builder.beta()
+                .buildBetaVoiceAgentLiveWebSocketAsyncClient()
+                .openWebSocketSession("agent", liveOptions)
+                .block(TIMEOUT)) {
+                assertNotNull(live);
+                assertTrue(live.isOpen());
+            }
+            try (BetaVoiceAgentWebSocketSessionAsyncClient realtime = builder.beta()
+                .buildBetaVoiceAgentWebSocketAsyncClient()
+                .openWebSocketSession("agent", realtimeOptions)
+                .block(TIMEOUT)) {
+                assertNotNull(realtime);
+                assertTrue(realtime.isOpen());
+            }
+        } else {
+            try (BetaVoiceAgentLiveWebSocketSessionClient live
+                = builder.beta().buildBetaVoiceAgentLiveWebSocketClient().openWebSocketSession("agent", liveOptions)) {
+                assertTrue(live.isOpen());
+            }
+            try (BetaVoiceAgentWebSocketSessionClient realtime
+                = builder.beta().buildBetaVoiceAgentWebSocketClient().openWebSocketSession("agent", realtimeOptions)) {
+                assertTrue(realtime.isOpen());
+            }
+        }
+        assertEquals(2, requestUris.size());
+        assertEquals("/agents/agent/endpoint/protocols/voice/live/sessions", URI.create(requestUris.get(0)).getPath());
+        assertTrue(requestUris.get(0).contains("structured_inputs="));
+        assertFalse(requestUris.get(0).contains("transport="));
+        assertNull(headers.get(0).get(HttpHeaderNames.SEC_WEBSOCKET_PROTOCOL));
+        assertNull(headers.get(0).get("x-ms-voice-structured-inputs"));
+        assertEquals("/agents/agent/endpoint/protocols/voice", URI.create(requestUris.get(1)).getPath());
+        assertTrue(requestUris.get(1).contains("transport=websocket"));
+        assertFalse(requestUris.get(1).contains("structured_inputs="));
+        assertEquals("realtime", headers.get(1).get(HttpHeaderNames.SEC_WEBSOCKET_PROTOCOL));
+        assertEquals(inputs, headers.get(1).get("x-ms-voice-structured-inputs"));
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    public void typedEventsRoundTripWithoutLosingUnknownFields(boolean async) {
+        List<String> sent = new CopyOnWriteArrayList<>();
+        String audio = "{\"type\":\"session.output_audio.delta\",\"delta\":\"AAA=\",\"future_field\":true}";
+        String backend = "{\"type\":\"response.event\",\"event_id\":\"backend-1\","
+            + "\"event\":{\"type\":\"response.completed\",\"response\":{\"id\":\"response-1\",\"future_field\":true}}}";
+        server = VoiceAgentWebSocketSessionTests.tlsServer()
+            .host("localhost")
+            .port(0)
+            .handle((request,
+                response) -> response.sendWebsocket((inbound,
+                    outbound) -> outbound.sendString(Flux.concat(Flux.just(STARTED, audio, backend, FUTURE, ERROR),
+                        inbound.receive().asString().doOnNext(sent::add))).then()))
+            .bindNow();
+        ClientEvent command = ClientEvent.ofResponseCreate(ResponseCreateEvent.builder()
+            .eventId("command-1")
+            .putAdditionalProperty("future_setting", JsonValue.from(true))
+            .build());
+        String commandJson = OpenAIJsonHelper.toBinaryData(command).toString();
+        if (async) {
+            BetaVoiceAgentLiveWebSocketSessionAsyncClient session = builder().beta()
+                .buildBetaVoiceAgentLiveWebSocketAsyncClient()
+                .openWebSocketSession("agent")
+                .block(TIMEOUT);
+            assertNotNull(session);
+            try {
+                assertThrows(NullPointerException.class, () -> session.sendEvent((ClientEvent) null));
+                StepVerifier.create(session.sendEvent(command).thenMany(session.receiveTypedEvents()))
+                    .assertNext(event -> assertStartedEvent(event))
+                    .assertNext(event -> assertAudioEvent(event, audio))
+                    .assertNext(event -> assertBackendEvent(event, backend))
+                    .assertNext(event -> assertEventJson(event, FUTURE))
+                    .assertNext(event -> {
+                        assertTrue(event.isErrorEvent());
+                        assertEventJson(event, ERROR);
+                    })
+                    .assertNext(event -> assertEventJson(event, commandJson))
+                    .thenCancel()
+                    .verify(TIMEOUT);
+                StepVerifier.create(session.receiveEvents()).expectError(IllegalStateException.class).verify(TIMEOUT);
+            } finally {
+                session.closeAsync().block(TIMEOUT);
+            }
+        } else {
+            try (BetaVoiceAgentLiveWebSocketSessionClient session
+                = builder().beta().buildBetaVoiceAgentLiveWebSocketClient().openWebSocketSession("agent")) {
+                assertThrows(NullPointerException.class, () -> session.sendEvent((ClientEvent) null));
+                assertThrows(IllegalArgumentException.class, () -> session.receiveTypedEvents(Duration.ZERO));
+                Iterator<ServerEvent> events = session.receiveTypedEvents(TIMEOUT).iterator();
+                assertStartedEvent(events.next());
+                assertAudioEvent(events.next(), audio);
+                assertBackendEvent(events.next(), backend);
+                assertEventJson(events.next(), FUTURE);
+                ServerEvent error = events.next();
+                assertTrue(error.isErrorEvent());
+                assertEventJson(error, ERROR);
+                session.sendEvent(command);
+                assertEventJson(events.next(), commandJson);
+                assertThrows(IllegalStateException.class, session::receiveEvents);
+            }
+        }
+        assertEquals(Arrays.asList(commandJson), sent);
+    }
+
+    private static void assertStartedEvent(ServerEvent event) {
+        assertTrue(event.isSessionStarted());
+        assertEquals(JsonValue.from("conversation-1"),
+            event.asSessionStarted()._additionalProperties().get("conversation_id"));
+        assertEventJson(event, STARTED);
+    }
+
+    private static void assertAudioEvent(ServerEvent event, String json) {
+        assertTrue(event.isSessionOutputAudioDelta());
+        assertEquals("AAA=", event.asSessionOutputAudioDelta().delta());
+        assertEventJson(event, json);
+    }
+
+    private static void assertBackendEvent(ServerEvent event, String json) {
+        assertTrue(event.isResponseEvent());
+        assertEquals("backend-1", event.asResponseEvent().eventId());
+        assertEventJson(event, json);
+    }
+
+    private static void assertEventJson(ServerEvent event, String json) {
+        assertEquals(BinaryData.fromString(json).toObject(Object.class),
+            OpenAIJsonHelper.toBinaryData(event).toObject(Object.class));
     }
 
     @ParameterizedTest

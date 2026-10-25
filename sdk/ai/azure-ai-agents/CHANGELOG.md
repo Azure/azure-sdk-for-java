@@ -10,6 +10,10 @@
   `AgentsClientBuilder.beta().buildBetaVoiceAgentLiveWebSocketClient()` and
   `buildBetaVoiceAgentLiveWebSocketAsyncClient()`. Native Live events are sent and received as lossless JSON
   using `BinaryData`, separately from the Realtime protocol clients.
+- Added typed GPT Live sends through `sendEvent(com.openai.models.live.ClientEvent)` and typed receives through
+  `receiveTypedEvents()`, retaining the raw JSON APIs. The synchronous client also supports per-event receive timeouts.
+  Live transports use native OpenAI `ServerEvent` models while retaining original JSON for raw receivers.
+  Live and Realtime clients select their own routes and headers without a shared protocol-mode flag.
 - Added synchronous/asynchronous persisted GPT Live conversation history and audio-download examples with offline tests.
 - Added opt-in persistence to the GPT Live text and microphone/speaker samples using `FOUNDRY_GPT_LIVE_STORE` (default `false`),
   with explicit startup output when the service does not provide a persisted conversation ID.
@@ -86,6 +90,8 @@
 
 ### Other Changes
 
+- Extracted shared protocol-neutral WebSocket transports for Live and Realtime, keeping independent blocking
+  and asynchronous implementations and protocol-specific event decoding in the respective clients.
 - Regenerated from the updated Foundry TypeSpec specification.
 - Updated `SessionConfiguration` documentation to reflect the service-supported maximum idle timeout of 14,400 seconds
   (four hours); the default remains 900 seconds.
