@@ -5,8 +5,12 @@ package com.azure.ai.agents;
 
 import com.azure.ai.agents.implementation.realtime.VoiceAgentWebSocketClientConfiguration;
 import com.azure.ai.agents.implementation.realtime.VoiceAgentWebSocketUtils;
+import com.azure.ai.agents.implementation.realtime.WebSocketSessionTransport;
+import com.azure.ai.agents.implementation.OpenAIJsonHelper;
+import com.openai.models.live.ServerEvent;
 import com.azure.ai.agents.implementation.utils.Beta;
 import com.azure.ai.agents.models.VoiceAgentLiveWebSocketConnectionOptions;
+import com.azure.ai.agents.models.VoiceAgentWebSocketConnectionOptions;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.logging.ClientLogger;
 import java.util.Objects;
@@ -48,7 +52,10 @@ public final class BetaVoiceAgentLiveWebSocketClient {
         if (agentName.isEmpty()) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'agentName' cannot be empty."));
         }
-        return new BetaVoiceAgentLiveWebSocketSessionClient(BetaVoiceAgentWebSocketSessionClient.connect(configuration,
-            agentName, VoiceAgentWebSocketUtils.liveOptions(options)));
+        VoiceAgentWebSocketConnectionOptions snapshot = VoiceAgentWebSocketUtils.liveOptions(options);
+        return new BetaVoiceAgentLiveWebSocketSessionClient(WebSocketSessionTransport.connect(configuration,
+            VoiceAgentWebSocketUtils.buildLiveWebSocketUri(configuration, agentName, snapshot), snapshot, null,
+            token -> VoiceAgentWebSocketUtils.buildHeaders(configuration, token), json -> OpenAIJsonHelper
+                .fromBinaryData(VoiceAgentWebSocketUtils.deserializeRawEvent(json), ServerEvent.class)));
     }
 }

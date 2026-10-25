@@ -799,7 +799,7 @@ public final class AgentsClientBuilder
          */
         @Beta
         public BetaVoiceAgentLiveWebSocketAsyncClient buildBetaVoiceAgentLiveWebSocketAsyncClient() {
-            return new BetaVoiceAgentLiveWebSocketAsyncClient(createVoiceAgentWebSocketConfiguration().forLive());
+            return new BetaVoiceAgentLiveWebSocketAsyncClient(createVoiceAgentWebSocketConfiguration());
         }
 
         /**
@@ -813,7 +813,7 @@ public final class AgentsClientBuilder
          */
         @Beta
         public BetaVoiceAgentLiveWebSocketClient buildBetaVoiceAgentLiveWebSocketClient() {
-            return new BetaVoiceAgentLiveWebSocketClient(createVoiceAgentWebSocketConfiguration().forLive());
+            return new BetaVoiceAgentLiveWebSocketClient(createVoiceAgentWebSocketConfiguration());
         }
 
         /**

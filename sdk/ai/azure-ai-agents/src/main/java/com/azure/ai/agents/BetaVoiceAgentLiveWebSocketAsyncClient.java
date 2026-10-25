@@ -5,12 +5,16 @@ package com.azure.ai.agents;
 
 import com.azure.ai.agents.implementation.realtime.VoiceAgentWebSocketClientConfiguration;
 import com.azure.ai.agents.implementation.realtime.VoiceAgentWebSocketUtils;
+import com.azure.ai.agents.implementation.realtime.WebSocketSessionAsyncTransport;
+import com.azure.ai.agents.implementation.OpenAIJsonHelper;
 import com.azure.ai.agents.implementation.utils.Beta;
 import com.azure.ai.agents.models.VoiceAgentLiveWebSocketConnectionOptions;
 import com.azure.ai.agents.models.VoiceAgentWebSocketConnectionOptions;
 import com.azure.core.annotation.ServiceClient;
+import com.openai.models.live.ServerEvent;
 import java.util.Objects;
 import reactor.core.publisher.Mono;
+import reactor.netty.http.client.HttpClient;
 
 /**
  * An asynchronous client for opening native GPT Live sessions with persisted Foundry Live voice agents.
@@ -46,8 +50,11 @@ public final class BetaVoiceAgentLiveWebSocketAsyncClient {
         Objects.requireNonNull(agentName, "'agentName' cannot be null.");
         VoiceAgentWebSocketConnectionOptions snapshot = VoiceAgentWebSocketUtils.liveOptions(options);
         return Mono.defer(() -> {
-            BetaVoiceAgentWebSocketSessionAsyncClient transport
-                = new BetaVoiceAgentWebSocketSessionAsyncClient(configuration, agentName, snapshot);
+            WebSocketSessionAsyncTransport<ServerEvent> transport = new WebSocketSessionAsyncTransport<>(configuration,
+                VoiceAgentWebSocketUtils.buildLiveWebSocketUri(configuration, agentName, snapshot), snapshot,
+                HttpClient.create(), null, token -> VoiceAgentWebSocketUtils.buildHeaders(configuration, token),
+                json -> OpenAIJsonHelper.fromBinaryData(VoiceAgentWebSocketUtils.deserializeRawEvent(json),
+                    ServerEvent.class));
             return transport.connect().thenReturn(new BetaVoiceAgentLiveWebSocketSessionAsyncClient(transport));
         });
     }
