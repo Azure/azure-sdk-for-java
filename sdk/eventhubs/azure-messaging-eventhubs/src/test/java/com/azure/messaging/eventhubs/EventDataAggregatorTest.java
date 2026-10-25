@@ -18,6 +18,7 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import reactor.core.Disposable;
 import reactor.core.publisher.MonoSink;
+import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 import reactor.test.publisher.TestPublisher;
 import reactor.util.context.Context;
@@ -27,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -219,7 +221,7 @@ public class EventDataAggregatorTest {
     @Test
     public void newEventDoesNotInterruptTimerPublish() throws InterruptedException {
         // Arrange
-        final Duration waitTime = Duration.ofMillis(100);
+        final Duration waitTime = Duration.ofMillis(250);
         final BufferedProducerClientOptions options = new BufferedProducerClientOptions();
         options.setMaxWaitTime(waitTime);
 
@@ -229,12 +231,14 @@ public class EventDataAggregatorTest {
 
         final CountDownLatch event2Emitted = new CountDownLatch(1);
         final CountDownLatch timerPublishDone = new CountDownLatch(1);
+        final AtomicBoolean tickWaitedForLock = new AtomicBoolean();
         final AtomicBoolean interrupted = new AtomicBoolean();
         final AtomicInteger supplierCalls = new AtomicInteger();
 
-        // Holds the aggregator lock (tryAdd is called under it) until a timer tick is waiting for it.
+        // Holds the aggregator lock (tryAdd is called under it) until the timer tick is waiting for it, so the tick
+        // is in progress when event2 restarts the interval.
         Mockito.doAnswer(invocation -> {
-            Thread.sleep(waitTime.toMillis() * 3);
+            tickWaitedForLock.set(awaitTimerTickBlockedOnLock());
             batchEvents.add(event2);
             return true;
         }).when(batch).tryAdd(event2);
@@ -274,12 +278,100 @@ public class EventDataAggregatorTest {
 
             // Assert
             assertTrue(timerPublishDone.await(10, TimeUnit.SECONDS), "Timer did not publish the batch.");
+            assertTrue(tickWaitedForLock.get(), "Timer tick did not wait for the aggregator lock.");
             assertFalse(interrupted.get(), "Timer-triggered publish was interrupted by a new event.");
             assertEquals(Collections.singletonList(batch), published);
             assertEquals(Arrays.asList(event1, event2), batchEvents);
         } finally {
             subscription.dispose();
         }
+    }
+
+    /**
+     * A timer tick blocks while the next batch is created, and the producer delivers created batches on
+     * {@link Schedulers#boundedElastic()}. Ticks must therefore not depend on that scheduler: when all its threads
+     * are busy, ticks queued on it could wait forever for their own batches.
+     */
+    @Test
+    public void timerPublishesWhileBoundedElasticIsSaturated() throws InterruptedException {
+        // Arrange
+        final Duration waitTime = Duration.ofMillis(100);
+        final BufferedProducerClientOptions options = new BufferedProducerClientOptions();
+        options.setMaxWaitTime(waitTime);
+        setupBatchMock(batch, new ArrayList<>(), event1);
+
+        final AtomicInteger supplierCalls = new AtomicInteger();
+        final Supplier<EventDataBatch> supplier = () -> supplierCalls.getAndIncrement() == 0 ? batch : batch2;
+
+        final int threads = Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE;
+        final CountDownLatch blockersStarted = new CountDownLatch(threads);
+        final CountDownLatch releaseBlockers = new CountDownLatch(1);
+        final List<Disposable> blockers = new ArrayList<>();
+        final List<EventDataBatch> published = Collections.synchronizedList(new ArrayList<>());
+        Disposable subscription = null;
+
+        try {
+            for (int i = 0; i < threads; i++) {
+                blockers.add(Schedulers.boundedElastic().schedule(() -> {
+                    blockersStarted.countDown();
+                    try {
+                        releaseBlockers.await();
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                    }
+                }));
+            }
+            // If not all started, other work already occupies threads; the scheduler is saturated either way.
+            if (!blockersStarted.await(10, TimeUnit.SECONDS)) {
+                LOGGER.log(LogLevel.WARNING, () -> "Not all blockers started; boundedElastic is busy.");
+            }
+
+            final TestPublisher<EventData> publisher = TestPublisher.createCold();
+            final EventDataAggregator aggregator
+                = new EventDataAggregator(publisher.flux(), supplier, NAMESPACE, options, PARTITION_ID);
+            subscription = aggregator.subscribe(published::add);
+
+            // Act
+            publisher.next(event1);
+
+            // Assert
+            final long deadline = System.nanoTime() + TimeUnit.SECONDS.toNanos(5);
+            while (published.isEmpty() && System.nanoTime() < deadline) {
+                TimeUnit.MILLISECONDS.sleep(10);
+            }
+            assertEquals(Collections.singletonList(batch), published,
+                "Timer did not publish while boundedElastic was saturated.");
+        } finally {
+            releaseBlockers.countDown();
+            blockers.forEach(Disposable::dispose);
+            if (subscription != null) {
+                subscription.dispose();
+            }
+        }
+    }
+
+    /**
+     * Called while holding the aggregator lock. Waits until a timer tick is blocked on that lock.
+     *
+     * @return {@code true} if a timer tick is waiting for the lock; {@code false} if none did in time.
+     */
+    private static boolean awaitTimerTickBlockedOnLock() throws InterruptedException {
+        final long deadline = System.nanoTime() + TimeUnit.SECONDS.toNanos(10);
+        while (System.nanoTime() < deadline) {
+            for (Map.Entry<Thread, StackTraceElement[]> entry : Thread.getAllStackTraces().entrySet()) {
+                if (entry.getKey().getState() != Thread.State.BLOCKED) {
+                    continue;
+                }
+                for (StackTraceElement frame : entry.getValue()) {
+                    if (frame.getClassName().endsWith("EventDataAggregator$EventDataAggregatorMain")
+                        && "publishDownstream".equals(frame.getMethodName())) {
+                        return true;
+                    }
+                }
+            }
+            TimeUnit.MILLISECONDS.sleep(5);
+        }
+        return false;
     }
 
     /**

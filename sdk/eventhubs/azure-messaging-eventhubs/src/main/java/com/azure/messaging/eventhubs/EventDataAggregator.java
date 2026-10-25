@@ -17,6 +17,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxOperator;
 import reactor.core.publisher.Operators;
 import reactor.core.publisher.Sinks;
+import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
 import java.util.Collections;
@@ -103,6 +104,7 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
             = AtomicLongFieldUpdater.newUpdater(EventDataAggregatorMain.class, "requested");
 
         private final Sinks.Many<Long> eventSink;
+        private final Scheduler timerScheduler;
         private final Disposable disposable;
 
         private final AtomicBoolean isCompleted = new AtomicBoolean(false);
@@ -135,14 +137,18 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
             }
 
             this.eventSink = Sinks.many().unicast().onBackpressureError();
+            // Every event cancels the running interval, and cancelling it interrupts the interval's thread if a
+            // tick is in progress. Handling ticks on another thread keeps that interrupt away from the batch
+            // creation (which would fail) and the send (which would close the connection's IO pipe).
+            // That thread is owned by this aggregator: a tick blocks while the next batch is created, and the
+            // created batch is delivered on the producer's scheduler (boundedElastic by default). If ticks ran on
+            // that scheduler, they could occupy all of its threads and wait forever for their own results.
+            this.timerScheduler = Schedulers.newSingle("eventhubs-buffered-producer-timer-" + partitionId, true);
             this.disposable = Flux
                 .switchOnNext(eventSink.asFlux()
                     .map(e -> Flux.interval(options.getMaxWaitTime()).takeUntil(index -> isCompleted.get())))
-                // Every event cancels the running interval, and cancelling it interrupts the interval's thread if a
-                // tick is in progress. Handling ticks on another thread keeps that interrupt away from the batch
-                // creation (which would fail) and the send (which would close the connection's IO pipe).
                 .onBackpressureDrop()
-                .publishOn(Schedulers.boundedElastic(), 1)
+                .publishOn(timerScheduler, 1)
                 .subscribe(index -> {
                     logger.atVerbose()
                         .addKeyValue(PARTITION_ID_KEY, partitionId)
@@ -197,6 +203,7 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
             updateOrPublishBatch(null, true);
             downstream.onComplete();
             disposable.dispose();
+            disposeTimerScheduler();
         }
 
         @Override
@@ -234,6 +241,7 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
 
             updateOrPublishBatch(null, true);
             downstream.onError(t);
+            disposeTimerScheduler();
         }
 
         /**
@@ -244,7 +252,20 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
             if (isCompleted.compareAndSet(false, true)) {
                 updateOrPublishBatch(null, true);
                 downstream.onComplete();
+                disposeTimerScheduler();
             }
+        }
+
+        /**
+         * Shuts down the timer thread without interrupting a tick in progress. Further ticks are no-ops since the
+         * aggregator is completed.
+         */
+        private void disposeTimerScheduler() {
+            timerScheduler.disposeGracefully()
+                .subscribe(null,
+                    error -> logger.atVerbose()
+                        .addKeyValue(PARTITION_ID_KEY, partitionId)
+                        .log("Unable to dispose timer scheduler.", error));
         }
 
         /**
