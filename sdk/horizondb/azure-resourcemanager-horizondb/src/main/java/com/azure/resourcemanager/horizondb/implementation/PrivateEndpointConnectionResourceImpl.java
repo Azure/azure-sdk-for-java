@@ -5,20 +5,16 @@
 package com.azure.resourcemanager.horizondb.implementation;
 
 import com.azure.core.management.SystemData;
+import com.azure.core.util.Context;
 import com.azure.resourcemanager.horizondb.fluent.models.PrivateEndpointConnectionResourceInner;
 import com.azure.resourcemanager.horizondb.models.PrivateEndpointConnectionProperties;
 import com.azure.resourcemanager.horizondb.models.PrivateEndpointConnectionResource;
 
-public final class PrivateEndpointConnectionResourceImpl implements PrivateEndpointConnectionResource {
+public final class PrivateEndpointConnectionResourceImpl implements PrivateEndpointConnectionResource,
+    PrivateEndpointConnectionResource.Definition, PrivateEndpointConnectionResource.Update {
     private PrivateEndpointConnectionResourceInner innerObject;
 
     private final com.azure.resourcemanager.horizondb.HorizonDbManager serviceManager;
-
-    PrivateEndpointConnectionResourceImpl(PrivateEndpointConnectionResourceInner innerObject,
-        com.azure.resourcemanager.horizondb.HorizonDbManager serviceManager) {
-        this.innerObject = innerObject;
-        this.serviceManager = serviceManager;
-    }
 
     public String id() {
         return this.innerModel().id();
@@ -40,11 +36,99 @@ public final class PrivateEndpointConnectionResourceImpl implements PrivateEndpo
         return this.innerModel().systemData();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public PrivateEndpointConnectionResourceInner innerModel() {
         return this.innerObject;
     }
 
     private com.azure.resourcemanager.horizondb.HorizonDbManager manager() {
         return this.serviceManager;
+    }
+
+    private String resourceGroupName;
+
+    private String clusterName;
+
+    private String privateEndpointConnectionName;
+
+    public PrivateEndpointConnectionResourceImpl withExistingCluster(String resourceGroupName, String clusterName) {
+        this.resourceGroupName = resourceGroupName;
+        this.clusterName = clusterName;
+        return this;
+    }
+
+    public PrivateEndpointConnectionResource create() {
+        this.innerObject = serviceManager.serviceClient()
+            .getPrivateEndpointConnections()
+            .approveOrReject(resourceGroupName, clusterName, privateEndpointConnectionName, this.innerModel(),
+                Context.NONE);
+        return this;
+    }
+
+    public PrivateEndpointConnectionResource create(Context context) {
+        this.innerObject = serviceManager.serviceClient()
+            .getPrivateEndpointConnections()
+            .approveOrReject(resourceGroupName, clusterName, privateEndpointConnectionName, this.innerModel(), context);
+        return this;
+    }
+
+    PrivateEndpointConnectionResourceImpl(String name,
+        com.azure.resourcemanager.horizondb.HorizonDbManager serviceManager) {
+        this.innerObject = new PrivateEndpointConnectionResourceInner();
+        this.serviceManager = serviceManager;
+        this.privateEndpointConnectionName = name;
+    }
+
+    public PrivateEndpointConnectionResourceImpl update() {
+        return this;
+    }
+
+    public PrivateEndpointConnectionResource apply() {
+        this.innerObject = serviceManager.serviceClient()
+            .getPrivateEndpointConnections()
+            .approveOrReject(resourceGroupName, clusterName, privateEndpointConnectionName, this.innerModel(),
+                Context.NONE);
+        return this;
+    }
+
+    public PrivateEndpointConnectionResource apply(Context context) {
+        this.innerObject = serviceManager.serviceClient()
+            .getPrivateEndpointConnections()
+            .approveOrReject(resourceGroupName, clusterName, privateEndpointConnectionName, this.innerModel(), context);
+        return this;
+    }
+
+    PrivateEndpointConnectionResourceImpl(PrivateEndpointConnectionResourceInner innerObject,
+        com.azure.resourcemanager.horizondb.HorizonDbManager serviceManager) {
+        this.innerObject = innerObject;
+        this.serviceManager = serviceManager;
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.clusterName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "clusters");
+        this.privateEndpointConnectionName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "privateEndpointConnections");
+    }
+
+    public PrivateEndpointConnectionResource refresh() {
+        this.innerObject = serviceManager.serviceClient()
+            .getPrivateEndpointConnections()
+            .getWithResponse(resourceGroupName, clusterName, privateEndpointConnectionName, Context.NONE)
+            .getValue();
+        return this;
+    }
+
+    public PrivateEndpointConnectionResource refresh(Context context) {
+        this.innerObject = serviceManager.serviceClient()
+            .getPrivateEndpointConnections()
+            .getWithResponse(resourceGroupName, clusterName, privateEndpointConnectionName, context)
+            .getValue();
+        return this;
+    }
+
+    public PrivateEndpointConnectionResourceImpl withProperties(PrivateEndpointConnectionProperties properties) {
+        this.innerModel().withProperties(properties);
+        return this;
     }
 }

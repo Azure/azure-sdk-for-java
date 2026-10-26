@@ -9,7 +9,7 @@ package com.azure.resourcemanager.durabletask.generated;
  */
 public final class SchedulersDeletePrivateEndpointConnectionSamples {
     /*
-     * x-ms-original-file: 2026-02-01/PrivateEndpointConnections_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01-preview/PrivateEndpointConnections_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: PrivateEndpointConnections_Delete_MaximumSet.

@@ -22,8 +22,7 @@ import reactor.core.publisher.Mono;
 public final class VolumesPeerExternalClusterMockTests {
     @Test
     public void testPeerExternalCluster() throws Exception {
-        String responseStr
-            = "{\"properties\":{\"clusterPeeringCommand\":\"eslabnsmjkwynq\",\"passphrase\":\"ekqsykvwjtqpkev\"}}";
+        String responseStr = "{\"properties\":{\"clusterPeeringCommand\":\"uahokq\",\"passphrase\":\"bkau\"}}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,11 +32,12 @@ public final class VolumesPeerExternalClusterMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ClusterPeerCommandResponse response = manager.volumes()
-            .peerExternalCluster("dsajrednwyysh", "uwg", "evuafpwzyifrk", "wltxeqipxgzdyims",
-                new PeerClusterForVolumeMigrationRequest().withPeerIpAddresses(Arrays.asList("yorpr", "vk")),
+            .peerExternalCluster("ahmnxhkxjqirw", "weooxffifhxwrs", "ewmozqvbu", "qmamhsycxhxzga",
+                new PeerClusterForVolumeMigrationRequest().withPeerIpAddresses(
+                    Arrays.asList("taboidvmf", "hppubowsepdfgkmt", "herngb")),
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("eslabnsmjkwynq", response.properties().clusterPeeringCommand());
-        Assertions.assertEquals("ekqsykvwjtqpkev", response.properties().passphrase());
+        Assertions.assertEquals("uahokq", response.properties().clusterPeeringCommand());
+        Assertions.assertEquals("bkau", response.properties().passphrase());
     }
 }

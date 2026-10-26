@@ -13,7 +13,8 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Configuration overrides for GitHub Copilot built-in tools.
+ * The legacy GitHub Copilot toolset retained for compatibility. Use `MicrosoftCopilotToolsetPreview` for new
+ * integrations.
  */
 @Fluent
 @Beta(warningText = "Preview API. GitHubCopilot=V1Preview")
