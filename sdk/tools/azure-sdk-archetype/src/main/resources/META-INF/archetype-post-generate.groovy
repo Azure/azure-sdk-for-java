@@ -9,5 +9,5 @@ def run(String cmd) {
 }
 def mvnFileName = System.properties['os.name'].toLowerCase().contains('windows') ? 'mvn.cmd' : 'mvn'
 
-run("echo 'Updating to latest versions...'")
-run("$mvnFileName versions:update-properties -DincludeProperties=bom.version -DgenerateBackupPoms=false")
+println 'Updating to latest versions...'
+run("$mvnFileName org.codehaus.mojo:versions-maven-plugin:update-properties -DincludeProperties=bom.version -DgenerateBackupPoms=false")
