@@ -16,6 +16,10 @@
 - Replaced the public `BatchFileProperties(HttpHeaders)` constructor with a static factory
   `BatchFileProperties.fromHeaders(HttpHeaders)`.
 
+### Bugs Fixed
+
+- Fixed a race condition that could cause bulk task creation to return before retrying tasks with server errors.
+
 ### Other Changes
 
 This is the first generally available release of the `azure-compute-batch` library. It includes all features and breaking changes introduced in `1.0.0-beta.6`.

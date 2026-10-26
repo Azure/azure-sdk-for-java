@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * The provisioning state of the scheduled action.
+ * The provisioning state of the recurring bulk action.
  */
 public final class ScheduledActionsProvisioningState extends ExpandableStringEnum<ScheduledActionsProvisioningState> {
     /**
@@ -27,12 +27,12 @@ public final class ScheduledActionsProvisioningState extends ExpandableStringEnu
     public static final ScheduledActionsProvisioningState CANCELED = fromString("Canceled");
 
     /**
-     * The scheduled action is being deleted.
+     * The recurring bulk action is being deleted.
      */
     public static final ScheduledActionsProvisioningState DELETING = fromString("Deleting");
 
     /**
-     * The scheduled action is being updated.
+     * The recurring bulk action is being updated.
      */
     public static final ScheduledActionsProvisioningState UPDATING = fromString("Updating");
 

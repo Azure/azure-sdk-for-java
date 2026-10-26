@@ -19,7 +19,7 @@ import java.util.Arrays;
  */
 public final class HubVirtualNetworkConnectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-01-01/HubVirtualNetworkConnectionPut.json
+     * x-ms-original-file: 2026-03-01/HubVirtualNetworkConnectionPut.json
      */
     /**
      * Sample code: HubVirtualNetworkConnectionPut.

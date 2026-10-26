@@ -32,7 +32,7 @@ public final class IotHubResourcesTestRouteWithResponseMockTests {
     @Test
     public void testTestRouteWithResponse() throws Exception {
         String responseStr
-            = "{\"result\":\"undefined\",\"details\":{\"compilationErrors\":[{\"message\":\"gpikpzimejza\",\"severity\":\"warning\",\"location\":{\"start\":{},\"end\":{}}}]}}";
+            = "{\"result\":\"undefined\",\"details\":{\"compilationErrors\":[{\"message\":\"p\",\"severity\":\"error\",\"location\":{\"start\":{},\"end\":{}}},{\"message\":\"cwxqu\",\"severity\":\"warning\",\"location\":{\"start\":{},\"end\":{}}},{\"message\":\"totxhojujb\",\"severity\":\"warning\",\"location\":{\"start\":{},\"end\":{}}},{\"message\":\"vhixbjxy\",\"severity\":\"error\",\"location\":{\"start\":{},\"end\":{}}}]}}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -41,28 +41,27 @@ public final class IotHubResourcesTestRouteWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        TestRouteResult response
-            = manager.iotHubResources()
-                .testRouteWithResponse("bdeibqipqk", "hvxndzwmkrefajpj",
-                    new TestRouteInput()
-                        .withMessage(new RoutingMessage().withBody("kqnyh")
-                            .withAppProperties(mapOf("jivfxzsjabib", "j"))
-                            .withSystemProperties(mapOf("jxbkzbzkdvn", "tawfsdjpvkvp", "zhjjklffhmouwq",
-                                "jabudurgkakmo", "eeyebi", "gzrf")))
-                        .withRoute(new RouteProperties().withName("ikayuhqlbjbsybb")
-                            .withSource(RoutingSource.DEVICE_MESSAGES)
-                            .withCondition("vtldgmfpgvmpip")
-                            .withEndpointNames(Arrays.asList("ltha", "fxssm"))
-                            .withIsEnabled(false))
-                        .withTwin(new RoutingTwin().withTags("\"databdsrez\"")
-                            .withProperties(new RoutingTwinProperties().withDesired("\"datahneuyowqkd\"")
-                                .withReported("\"datat\""))),
-                    com.azure.core.util.Context.NONE)
-                .getValue();
+        TestRouteResult response = manager.iotHubResources()
+            .testRouteWithResponse("a", "krrjrea", new TestRouteInput()
+                .withMessage(new RoutingMessage().withBody("sgumhjglikkxwsl")
+                    .withAppProperties(mapOf("tgp", "qpvuzlmvfelf"))
+                    .withSystemProperties(mapOf("igbrnjw", "pwjxezn")))
+                .withRoute(new RouteProperties().withName("wkpnbsaz")
+                    .withSource(RoutingSource.DEVICE_LIFECYCLE_EVENTS)
+                    .withCondition("oqkag")
+                    .withDataSchema("sxtta")
+                    .withEndpointNames(Arrays.asList("zxnfaaz", "xdtnkdmkqjjlw", "envrkpyouaibrebq", "aysjkixqtnqttez"))
+                    .withIsEnabled(false))
+                .withTwin(
+                    new RoutingTwin().withTags("\"datafiakpjpqqm\"")
+                        .withProperties(new RoutingTwinProperties().withDesired("\"dataltmm\"")
+                            .withReported("\"datahyeozphvwau\""))),
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals(TestResultStatus.UNDEFINED, response.result());
-        Assertions.assertEquals("gpikpzimejza", response.details().compilationErrors().get(0).message());
-        Assertions.assertEquals(RouteErrorSeverity.WARNING, response.details().compilationErrors().get(0).severity());
+        Assertions.assertEquals("p", response.details().compilationErrors().get(0).message());
+        Assertions.assertEquals(RouteErrorSeverity.ERROR, response.details().compilationErrors().get(0).severity());
     }
 
     // Use "Map.of" if available

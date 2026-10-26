@@ -12,7 +12,7 @@ public final class RootCertificatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RootCertificateProperties model = BinaryData
-            .fromString("{\"enableRootCertificateV2\":false,\"lastUpdatedTimeUtc\":\"2021-07-01T11:34:52Z\"}")
+            .fromString("{\"enableRootCertificateV2\":false,\"lastUpdatedTimeUtc\":\"2021-07-17T04:44:41Z\"}")
             .toObject(RootCertificateProperties.class);
         Assertions.assertFalse(model.enableRootCertificateV2());
     }

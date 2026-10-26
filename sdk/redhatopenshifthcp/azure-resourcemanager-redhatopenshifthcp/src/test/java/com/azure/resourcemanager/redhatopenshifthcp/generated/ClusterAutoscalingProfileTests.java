@@ -12,24 +12,24 @@ public final class ClusterAutoscalingProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClusterAutoscalingProfile model = BinaryData.fromString(
-            "{\"maxNodesTotal\":865429737,\"maxPodGracePeriodSeconds\":1555681942,\"maxNodeProvisionTimeSeconds\":1341897858,\"podPriorityThreshold\":1455975978}")
+            "{\"maxNodesTotal\":1381464845,\"maxPodGracePeriodSeconds\":1134924822,\"maxNodeProvisionTimeSeconds\":303743621,\"podPriorityThreshold\":743908174}")
             .toObject(ClusterAutoscalingProfile.class);
-        Assertions.assertEquals(865429737, model.maxNodesTotal());
-        Assertions.assertEquals(1555681942, model.maxPodGracePeriodSeconds());
-        Assertions.assertEquals(1341897858, model.maxNodeProvisionTimeSeconds());
-        Assertions.assertEquals(1455975978, model.podPriorityThreshold());
+        Assertions.assertEquals(1381464845, model.maxNodesTotal());
+        Assertions.assertEquals(1134924822, model.maxPodGracePeriodSeconds());
+        Assertions.assertEquals(303743621, model.maxNodeProvisionTimeSeconds());
+        Assertions.assertEquals(743908174, model.podPriorityThreshold());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClusterAutoscalingProfile model = new ClusterAutoscalingProfile().withMaxNodesTotal(865429737)
-            .withMaxPodGracePeriodSeconds(1555681942)
-            .withMaxNodeProvisionTimeSeconds(1341897858)
-            .withPodPriorityThreshold(1455975978);
+        ClusterAutoscalingProfile model = new ClusterAutoscalingProfile().withMaxNodesTotal(1381464845)
+            .withMaxPodGracePeriodSeconds(1134924822)
+            .withMaxNodeProvisionTimeSeconds(303743621)
+            .withPodPriorityThreshold(743908174);
         model = BinaryData.fromObject(model).toObject(ClusterAutoscalingProfile.class);
-        Assertions.assertEquals(865429737, model.maxNodesTotal());
-        Assertions.assertEquals(1555681942, model.maxPodGracePeriodSeconds());
-        Assertions.assertEquals(1341897858, model.maxNodeProvisionTimeSeconds());
-        Assertions.assertEquals(1455975978, model.podPriorityThreshold());
+        Assertions.assertEquals(1381464845, model.maxNodesTotal());
+        Assertions.assertEquals(1134924822, model.maxPodGracePeriodSeconds());
+        Assertions.assertEquals(303743621, model.maxNodeProvisionTimeSeconds());
+        Assertions.assertEquals(743908174, model.podPriorityThreshold());
     }
 }

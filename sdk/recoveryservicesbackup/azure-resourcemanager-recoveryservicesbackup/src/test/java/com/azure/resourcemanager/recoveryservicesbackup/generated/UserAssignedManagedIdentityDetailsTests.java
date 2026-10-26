@@ -13,25 +13,25 @@ public final class UserAssignedManagedIdentityDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UserAssignedManagedIdentityDetails model = BinaryData.fromString(
-            "{\"identityArmId\":\"wbzasqbuclj\",\"identityName\":\"yexaoguy\",\"userAssignedIdentityProperties\":{\"clientId\":\"ids\",\"principalId\":\"ultxijjumfq\"}}")
+            "{\"identityArmId\":\"cmslclblyjxltbs\",\"identityName\":\"scvsfxigctm\",\"userAssignedIdentityProperties\":{\"clientId\":\"upbezqccydrt\",\"principalId\":\"ukdqkkyihztg\"}}")
             .toObject(UserAssignedManagedIdentityDetails.class);
-        Assertions.assertEquals("wbzasqbuclj", model.identityArmId());
-        Assertions.assertEquals("yexaoguy", model.identityName());
-        Assertions.assertEquals("ids", model.userAssignedIdentityProperties().clientId());
-        Assertions.assertEquals("ultxijjumfq", model.userAssignedIdentityProperties().principalId());
+        Assertions.assertEquals("cmslclblyjxltbs", model.identityArmId());
+        Assertions.assertEquals("scvsfxigctm", model.identityName());
+        Assertions.assertEquals("upbezqccydrt", model.userAssignedIdentityProperties().clientId());
+        Assertions.assertEquals("ukdqkkyihztg", model.userAssignedIdentityProperties().principalId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         UserAssignedManagedIdentityDetails model
-            = new UserAssignedManagedIdentityDetails().withIdentityArmId("wbzasqbuclj")
-                .withIdentityName("yexaoguy")
+            = new UserAssignedManagedIdentityDetails().withIdentityArmId("cmslclblyjxltbs")
+                .withIdentityName("scvsfxigctm")
                 .withUserAssignedIdentityProperties(
-                    new UserAssignedIdentityProperties().withClientId("ids").withPrincipalId("ultxijjumfq"));
+                    new UserAssignedIdentityProperties().withClientId("upbezqccydrt").withPrincipalId("ukdqkkyihztg"));
         model = BinaryData.fromObject(model).toObject(UserAssignedManagedIdentityDetails.class);
-        Assertions.assertEquals("wbzasqbuclj", model.identityArmId());
-        Assertions.assertEquals("yexaoguy", model.identityName());
-        Assertions.assertEquals("ids", model.userAssignedIdentityProperties().clientId());
-        Assertions.assertEquals("ultxijjumfq", model.userAssignedIdentityProperties().principalId());
+        Assertions.assertEquals("cmslclblyjxltbs", model.identityArmId());
+        Assertions.assertEquals("scvsfxigctm", model.identityName());
+        Assertions.assertEquals("upbezqccydrt", model.userAssignedIdentityProperties().clientId());
+        Assertions.assertEquals("ukdqkkyihztg", model.userAssignedIdentityProperties().principalId());
     }
 }
