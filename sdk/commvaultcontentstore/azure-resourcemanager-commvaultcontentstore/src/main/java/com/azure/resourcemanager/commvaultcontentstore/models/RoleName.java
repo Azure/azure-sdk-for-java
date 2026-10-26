@@ -8,7 +8,8 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Supported Commvault role names.
+ * Supported Commvault role names. Extensible enum — additional roles may be added in future versions without a breaking
+ * change.
  */
 public final class RoleName extends ExpandableStringEnum<RoleName> {
     /**

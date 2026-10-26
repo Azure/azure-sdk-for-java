@@ -13,12 +13,12 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * The recurring schedule for a scheduled action.
+ * The recurring schedule for a recurring bulk action.
  */
 @Fluent
 public final class ScheduledActionsSchedule implements JsonSerializable<ScheduledActionsSchedule> {
     /*
-     * The local time of day when the scheduled action runs.
+     * The local time of day when the recurring bulk action runs.
      */
     private String scheduledTime;
 
@@ -59,7 +59,7 @@ public final class ScheduledActionsSchedule implements JsonSerializable<Schedule
     }
 
     /**
-     * Get the scheduledTime property: The local time of day when the scheduled action runs.
+     * Get the scheduledTime property: The local time of day when the recurring bulk action runs.
      * 
      * @return the scheduledTime value.
      */
@@ -68,7 +68,7 @@ public final class ScheduledActionsSchedule implements JsonSerializable<Schedule
     }
 
     /**
-     * Set the scheduledTime property: The local time of day when the scheduled action runs.
+     * Set the scheduledTime property: The local time of day when the recurring bulk action runs.
      * 
      * @param scheduledTime the scheduledTime value to set.
      * @return the ScheduledActionsSchedule object itself.

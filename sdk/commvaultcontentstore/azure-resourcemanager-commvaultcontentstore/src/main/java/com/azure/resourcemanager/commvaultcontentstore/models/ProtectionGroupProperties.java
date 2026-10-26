@@ -39,12 +39,12 @@ public final class ProtectionGroupProperties implements JsonSerializable<Protect
     /*
      * The number of ProtectedItems under the Protection Group
      */
-    private Integer numberOfProtectedItems;
+    private int numberOfProtectedItems;
 
     /*
      * The Commvault Protection Group backup time
      */
-    private Long lastBackUpTime;
+    private long lastBackUpTime;
 
     /*
      * The backup activity status indicating if backup is enabled or not on the protection group
@@ -125,7 +125,7 @@ public final class ProtectionGroupProperties implements JsonSerializable<Protect
      * 
      * @return the numberOfProtectedItems value.
      */
-    public Integer numberOfProtectedItems() {
+    public int numberOfProtectedItems() {
         return this.numberOfProtectedItems;
     }
 
@@ -134,7 +134,7 @@ public final class ProtectionGroupProperties implements JsonSerializable<Protect
      * 
      * @return the lastBackUpTime value.
      */
-    public Long lastBackUpTime() {
+    public long lastBackUpTime() {
         return this.lastBackUpTime;
     }
 
@@ -193,10 +193,9 @@ public final class ProtectionGroupProperties implements JsonSerializable<Protect
                     deserializedProtectionGroupProperties.protectionStatus
                         = ProtectionStatus.fromString(reader.getString());
                 } else if ("numberOfProtectedItems".equals(fieldName)) {
-                    deserializedProtectionGroupProperties.numberOfProtectedItems
-                        = reader.getNullable(JsonReader::getInt);
+                    deserializedProtectionGroupProperties.numberOfProtectedItems = reader.getInt();
                 } else if ("lastBackUpTime".equals(fieldName)) {
-                    deserializedProtectionGroupProperties.lastBackUpTime = reader.getNullable(JsonReader::getLong);
+                    deserializedProtectionGroupProperties.lastBackUpTime = reader.getLong();
                 } else if ("backupActivityStatus".equals(fieldName)) {
                     deserializedProtectionGroupProperties.backupActivityStatus = reader.getString();
                 } else if ("provisioningState".equals(fieldName)) {

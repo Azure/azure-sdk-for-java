@@ -273,6 +273,7 @@ directive:
         $.SharePropertiesInternal.properties.Metadata = { "$ref": path };
     }
     $.SharePropertiesInternal.properties.Etag["x-ms-client-name"] = "eTag";
+    $.SharePropertiesInternal.properties.CreationTime.xml = {"name": "Creation-Time"};
 ```
 
 ### ShareUsageBytes

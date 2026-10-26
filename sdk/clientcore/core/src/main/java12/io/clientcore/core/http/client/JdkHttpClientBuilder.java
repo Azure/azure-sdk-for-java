@@ -27,6 +27,8 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.Executor;
 
+import static io.clientcore.core.implementation.utils.ImplUtils.getTimeout;
+
 /**
  * Builder to configure and build an instance of the JDK {@code HttpClient} introduced in Java 11.
  * <p>
@@ -41,7 +43,6 @@ import java.util.concurrent.Executor;
 public class JdkHttpClientBuilder {
     private static final ClientLogger LOGGER = new ClientLogger(JdkHttpClientBuilder.class);
 
-    private static final Duration MINIMUM_TIMEOUT = Duration.ofMillis(1);
     private static final Duration DEFAULT_CONNECTION_TIMEOUT = ImplUtils.getDefaultHttpConnectTimeout();
     private static final Duration DEFAULT_WRITE_TIMEOUT = ImplUtils.getDefaultHttpWriteTimeout();
     private static final Duration DEFAULT_RESPONSE_TIMEOUT = ImplUtils.getDefaultHttpResponseTimeout();
@@ -105,7 +106,7 @@ public class JdkHttpClientBuilder {
      * </pre>
      * <!-- end io.clientcore.core.http.client.DefaultHttpClientBuilder.connectionTimeout#Duration -->
      *
-     * The default connection timeout is 10 seconds.
+     * The default connection timeout is 10 seconds. A duration less than or equal to zero disables this timeout.
      *
      * @param connectionTimeout the connection timeout
      * @return the updated {@link JdkHttpClientBuilder} object
@@ -242,6 +243,10 @@ public class JdkHttpClientBuilder {
 
     /**
      * Sets the configuration store that is used during construction of the HTTP client.
+     * <p>
+     * Timeouts explicitly set on this builder take precedence over this store, then the global configuration store,
+     * then the default timeout. Missing timeout values fall back to the global store even when
+     * {@link Configuration#none()} is supplied.
      *
      * @param configuration The configuration store used to
      * @return The updated {@link JdkHttpClientBuilder} object.
@@ -259,11 +264,18 @@ public class JdkHttpClientBuilder {
     public HttpClient build() {
         java.net.http.HttpClient.Builder httpClientBuilder = java.net.http.HttpClient.newBuilder();
 
-        httpClientBuilder = httpClientBuilder.connectTimeout(getTimeout(connectionTimeout, DEFAULT_CONNECTION_TIMEOUT));
+        Duration connectionTimeout = getTimeout(this.connectionTimeout, configuration,
+            Configuration.REQUEST_CONNECT_TIMEOUT_IN_MS, DEFAULT_CONNECTION_TIMEOUT);
+        if (!connectionTimeout.isZero()) {
+            httpClientBuilder.connectTimeout(connectionTimeout);
+        }
 
-        Duration writeTimeout = getTimeout(this.writeTimeout, DEFAULT_WRITE_TIMEOUT);
-        Duration responseTimeout = getTimeout(this.responseTimeout, DEFAULT_RESPONSE_TIMEOUT);
-        Duration readTimeout = getTimeout(this.readTimeout, DEFAULT_READ_TIMEOUT);
+        Duration writeTimeout = getTimeout(this.writeTimeout, configuration, Configuration.REQUEST_WRITE_TIMEOUT_IN_MS,
+            DEFAULT_WRITE_TIMEOUT);
+        Duration responseTimeout = getTimeout(this.responseTimeout, configuration,
+            Configuration.REQUEST_RESPONSE_TIMEOUT_IN_MS, DEFAULT_RESPONSE_TIMEOUT);
+        Duration readTimeout = getTimeout(this.readTimeout, configuration, Configuration.REQUEST_READ_TIMEOUT_IN_MS,
+            DEFAULT_READ_TIMEOUT);
 
         Configuration buildConfiguration
             = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
@@ -356,13 +368,5 @@ public class JdkHttpClientBuilder {
         protected PasswordAuthentication getPasswordAuthentication() {
             return new PasswordAuthentication(this.userName, password.toCharArray());
         }
-    }
-
-    private static Duration getTimeout(Duration configuredTimeout, Duration defaultTimeout) {
-        if (configuredTimeout == null) {
-            return defaultTimeout;
-        }
-
-        return configuredTimeout.compareTo(MINIMUM_TIMEOUT) < 0 ? MINIMUM_TIMEOUT : configuredTimeout;
     }
 }

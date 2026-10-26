@@ -218,6 +218,7 @@ public class ModelHelper {
      */
     public static ShareProperties populateShareProperties(SharePropertiesInternal sharePropertiesInternal) {
         ShareProperties properties = new ShareProperties();
+        properties.setCreationTime(sharePropertiesInternal.getCreationTime());
         properties.setLastModified(sharePropertiesInternal.getLastModified());
         properties.setETag(sharePropertiesInternal.getETag());
         properties.setQuota(sharePropertiesInternal.getQuota());
@@ -504,6 +505,7 @@ public class ModelHelper {
         mapGetPropertiesResponse(ResponseBase<SharesGetPropertiesHeaders, Void> response) {
         SharesGetPropertiesHeaders headers = response.getDeserializedHeaders();
         ShareProperties shareProperties = new ShareProperties().setETag(headers.getETag())
+            .setCreationTime(headers.getXMsShareCreationTime())
             .setLastModified(headers.getLastModified())
             .setMetadata(headers.getXMsMeta())
             .setQuota(headers.getXMsShareQuota())
@@ -528,7 +530,10 @@ public class ModelHelper {
             .setMaxBurstCreditsForIops(headers.getXMsShareMaxBurstCreditsForIops())
             .setNextAllowedProvisionedIopsDowngradeTime(headers.getXMsShareNextAllowedProvisionedIopsDowngradeTime())
             .setNextAllowedProvisionedBandwidthDowngradeTime(
-                headers.getXMsShareNextAllowedProvisionedBandwidthDowngradeTime());
+                headers.getXMsShareNextAllowedProvisionedBandwidthDowngradeTime())
+            .setChangeFeedEnabled(headers.isXMsFileEnableChangeFeed())
+            .setChangeFeedBlobContainerName(headers.getXMsFileBlobContainerForXfilesChangeFeed())
+            .setChangeFeedRetentionInDays(headers.getXMsFileChangeFeedRetentionInDays());
 
         return new SimpleResponse<>(response, shareProperties);
     }

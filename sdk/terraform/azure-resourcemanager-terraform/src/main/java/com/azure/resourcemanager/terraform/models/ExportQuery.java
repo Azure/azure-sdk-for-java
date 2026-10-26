@@ -235,6 +235,15 @@ public final class ExportQuery extends BaseExportModel {
      * {@inheritDoc}
      */
     @Override
+    public ExportQuery withIncludeExtensions(List<AzureExtensionResourceType> includeExtensions) {
+        super.withIncludeExtensions(includeExtensions);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public ExportQuery withIncludeManagedResource(Boolean includeManagedResource) {
         super.withIncludeManagedResource(includeManagedResource);
         return this;
@@ -268,6 +277,8 @@ public final class ExportQuery extends BaseExportModel {
         jsonWriter.writeBooleanField("fullProperties", fullProperties());
         jsonWriter.writeBooleanField("maskSensitive", maskSensitive());
         jsonWriter.writeBooleanField("includeRoleAssignment", includeRoleAssignment());
+        jsonWriter.writeArrayField("includeExtensions", includeExtensions(),
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
         jsonWriter.writeBooleanField("includeManagedResource", includeManagedResource());
         jsonWriter.writeArrayField("excludeAzureResource", excludeAzureResource(),
             (writer, element) -> writer.writeString(element));
@@ -308,6 +319,10 @@ public final class ExportQuery extends BaseExportModel {
                     deserializedExportQuery.withMaskSensitive(reader.getNullable(JsonReader::getBoolean));
                 } else if ("includeRoleAssignment".equals(fieldName)) {
                     deserializedExportQuery.withIncludeRoleAssignment(reader.getNullable(JsonReader::getBoolean));
+                } else if ("includeExtensions".equals(fieldName)) {
+                    List<AzureExtensionResourceType> includeExtensions
+                        = reader.readArray(reader1 -> AzureExtensionResourceType.fromString(reader1.getString()));
+                    deserializedExportQuery.withIncludeExtensions(includeExtensions);
                 } else if ("includeManagedResource".equals(fieldName)) {
                     deserializedExportQuery.withIncludeManagedResource(reader.getNullable(JsonReader::getBoolean));
                 } else if ("excludeAzureResource".equals(fieldName)) {
