@@ -6,10 +6,17 @@ package com.azure.analytics.planetarycomputer.generated;
 
 import com.azure.analytics.planetarycomputer.DataClient;
 import com.azure.analytics.planetarycomputer.PlanetaryComputerProClientBuilder;
+import com.azure.analytics.planetarycomputer.models.ColorMapNames;
+import com.azure.analytics.planetarycomputer.models.PixelSelection;
+import com.azure.analytics.planetarycomputer.models.Resampling;
+import com.azure.analytics.planetarycomputer.models.SelMethod;
+import com.azure.analytics.planetarycomputer.models.TerrainAlgorithm;
+import com.azure.analytics.planetarycomputer.models.WarpKernelResampling;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import java.util.Arrays;
+import java.util.List;
 
 public class MosaicCollectionsBboxGetCroppedToBoundingBox {
     public static void main(String[] args) {
@@ -18,10 +25,14 @@ public class MosaicCollectionsBboxGetCroppedToBoundingBox {
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildDataClient();
         // BEGIN:com.azure.analytics.planetarycomputer.generated.data-get-collection-bbox-crop.mosaic-collections-bbox-get-cropped-to-bounding-box
-        BinaryData response = dataClient.getCollectionBboxCrop("naip-atl", -122.5, 37.7, -122.3, 37.8, "png", null,
-            Arrays.asList("image"), null, null, null, null, null, null, null, null, null, null, null,
-            "item-id-1,item-id-2", "-180,-90,180,90", "{}", "-datetime", null, null, null, null, null, null, null, null,
-            null, null, null, null, null, null, null, null, null, null, null, null, null);
+        BinaryData response = dataClient.getCollectionBboxCrop("naip-atl", -122.5, 37.7, -122.3, 37.8, "png",
+            (List<Integer>) null, Arrays.asList("image"), (String) null, (List<String>) null, (Boolean) null,
+            (String) null, (Boolean) null, (WarpKernelResampling) null, (Integer) null, (Integer) null, (Integer) null,
+            (Boolean) null, (Boolean) null, "item-id-1,item-id-2", "-180,-90,180,90", "{}", "-datetime", (String) null,
+            (String) null, (List<Integer>) null, (String) null, (List<String>) null, (SelMethod) null,
+            (TerrainAlgorithm) null, (String) null, (String) null, (String) null, (Integer) null, (Integer) null,
+            (Integer) null, (String) null, (String) null, (Resampling) null, (PixelSelection) null, (List<String>) null,
+            (ColorMapNames) null, (String) null, (Boolean) null);
         // END:com.azure.analytics.planetarycomputer.generated.data-get-collection-bbox-crop.mosaic-collections-bbox-get-cropped-to-bounding-box
     }
 }

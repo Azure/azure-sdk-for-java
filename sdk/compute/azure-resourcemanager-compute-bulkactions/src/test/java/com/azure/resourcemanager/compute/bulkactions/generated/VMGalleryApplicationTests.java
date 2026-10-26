@@ -12,29 +12,29 @@ public final class VMGalleryApplicationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VMGalleryApplication model = BinaryData.fromString(
-            "{\"tags\":\"tpuqujmq\",\"order\":1609409452,\"packageReferenceId\":\"fbtndoaong\",\"configurationReference\":\"cn\",\"treatFailureAsDeploymentFailure\":true,\"enableAutomaticUpgrade\":false}")
+            "{\"tags\":\"kszzcmrvexztv\",\"order\":1159944878,\"packageReferenceId\":\"gsfraoyzkoow\",\"configurationReference\":\"mnguxawqaldsyu\",\"treatFailureAsDeploymentFailure\":true,\"enableAutomaticUpgrade\":false}")
             .toObject(VMGalleryApplication.class);
-        Assertions.assertEquals("tpuqujmq", model.tags());
-        Assertions.assertEquals(1609409452, model.order());
-        Assertions.assertEquals("fbtndoaong", model.packageReferenceId());
-        Assertions.assertEquals("cn", model.configurationReference());
+        Assertions.assertEquals("kszzcmrvexztv", model.tags());
+        Assertions.assertEquals(1159944878, model.order());
+        Assertions.assertEquals("gsfraoyzkoow", model.packageReferenceId());
+        Assertions.assertEquals("mnguxawqaldsyu", model.configurationReference());
         Assertions.assertTrue(model.treatFailureAsDeploymentFailure());
         Assertions.assertFalse(model.enableAutomaticUpgrade());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VMGalleryApplication model = new VMGalleryApplication().withTags("tpuqujmq")
-            .withOrder(1609409452)
-            .withPackageReferenceId("fbtndoaong")
-            .withConfigurationReference("cn")
+        VMGalleryApplication model = new VMGalleryApplication().withTags("kszzcmrvexztv")
+            .withOrder(1159944878)
+            .withPackageReferenceId("gsfraoyzkoow")
+            .withConfigurationReference("mnguxawqaldsyu")
             .withTreatFailureAsDeploymentFailure(true)
             .withEnableAutomaticUpgrade(false);
         model = BinaryData.fromObject(model).toObject(VMGalleryApplication.class);
-        Assertions.assertEquals("tpuqujmq", model.tags());
-        Assertions.assertEquals(1609409452, model.order());
-        Assertions.assertEquals("fbtndoaong", model.packageReferenceId());
-        Assertions.assertEquals("cn", model.configurationReference());
+        Assertions.assertEquals("kszzcmrvexztv", model.tags());
+        Assertions.assertEquals(1159944878, model.order());
+        Assertions.assertEquals("gsfraoyzkoow", model.packageReferenceId());
+        Assertions.assertEquals("mnguxawqaldsyu", model.configurationReference());
         Assertions.assertTrue(model.treatFailureAsDeploymentFailure());
         Assertions.assertFalse(model.enableAutomaticUpgrade());
     }

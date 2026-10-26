@@ -12,22 +12,22 @@ import org.junit.jupiter.api.Assertions;
 public final class UsernameClaimProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UsernameClaimProfile model = BinaryData
-            .fromString("{\"claim\":\"kvceoveilovnotyf\",\"prefix\":\"cnjbkcnxdhbt\",\"prefixPolicy\":\"NoPrefix\"}")
-            .toObject(UsernameClaimProfile.class);
-        Assertions.assertEquals("kvceoveilovnotyf", model.claim());
-        Assertions.assertEquals("cnjbkcnxdhbt", model.prefix());
+        UsernameClaimProfile model
+            = BinaryData.fromString("{\"claim\":\"ehhseyvjusrts\",\"prefix\":\"spkdee\",\"prefixPolicy\":\"NoPrefix\"}")
+                .toObject(UsernameClaimProfile.class);
+        Assertions.assertEquals("ehhseyvjusrts", model.claim());
+        Assertions.assertEquals("spkdee", model.prefix());
         Assertions.assertEquals(UsernameClaimPrefixPolicy.NO_PREFIX, model.prefixPolicy());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UsernameClaimProfile model = new UsernameClaimProfile().withClaim("kvceoveilovnotyf")
-            .withPrefix("cnjbkcnxdhbt")
+        UsernameClaimProfile model = new UsernameClaimProfile().withClaim("ehhseyvjusrts")
+            .withPrefix("spkdee")
             .withPrefixPolicy(UsernameClaimPrefixPolicy.NO_PREFIX);
         model = BinaryData.fromObject(model).toObject(UsernameClaimProfile.class);
-        Assertions.assertEquals("kvceoveilovnotyf", model.claim());
-        Assertions.assertEquals("cnjbkcnxdhbt", model.prefix());
+        Assertions.assertEquals("ehhseyvjusrts", model.claim());
+        Assertions.assertEquals("spkdee", model.prefix());
         Assertions.assertEquals(UsernameClaimPrefixPolicy.NO_PREFIX, model.prefixPolicy());
     }
 }

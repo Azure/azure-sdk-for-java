@@ -1,6 +1,6 @@
 # Release History
 
-## 1.60.0-beta.1 (Unreleased)
+## 1.61.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -8,7 +8,47 @@
 
 ### Bugs Fixed
 
+- Fixed concurrent or cancelled `PollerFlux` subscriptions busy-waiting for activation. Pending activation is now
+  shared without blocking, and successful activation is reused even when its first subscriber cancels.
+- Fixed asynchronous channel and file writes blocking producer threads. Writes now use completion handlers,
+  preserve partial writes, copy producer-owned buffers before returning from `onNext`, and stop requesting source
+  data when cancelled.
+- Fixed HTTP timeout resolution, including `HttpClientOptions`, to prefer explicit values, then builder-specific
+  configuration, then global configuration, and finally SDK defaults. Global timeouts are resolved when needed rather
+  than cached at class initialization, and nonpositive timeout values disable the timeout. Global timeout settings
+  continue to apply when using older HTTP transport versions.
+- Fixed `AccessTokenCache` and `SimpleTokenCache` leaving concurrent callers waiting forever when the caller that was
+  refreshing the token was cancelled, for example by a timeout. Waiting callers now retry the token acquisition when
+  the refresh they waited on ends without a token, including when `SimpleTokenCache`'s token supplier completes empty.
+- Fixed streaming of `InputStream`-backed response bodies to emit partial reads without waiting for the response to
+  complete.
+
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded Reactor from `3.7.19` to `3.8.7`.
+
+## 1.60.0 (2026-09-29)
+
+### Features Added
+
+- Added `CloseableIterableStream<T>` for resource-backed iteration with deterministic cleanup.
+
+### Bugs Fixed
+
+- Fixed retention of unused shared executors and shutdown hooks by serializing executor initialization.
+- Registering or removing the shutdown hook that closes the shared executor service no longer fails when the JVM is
+  already shutting down. `Runtime.addShutdownHook` throws `IllegalStateException` once shutdown has begun, which
+  surfaced to callers of `SharedExecutorService` as `IllegalStateException: Shutdown in progress` when work, such as
+  an in-flight request draining during shutdown, needed the executor after it had been closed. A hook registered at
+  that point could never run, so this case is now logged and the work continues.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded Jackson from `2.18.9` to `2.18.11`.
 
 ## 1.59.1 (2026-08-27)
 
@@ -20,6 +60,7 @@
 
 ### Features Added
 
+- Added `azure-deprecating` to the default allowed (unsanitized) HTTP request and response header list so it is logged without redaction. ([#49946](https://github.com/Azure/azure-sdk-for-java/pull/49946))
 - Promoted `AccessTokenCache` to a public API in the `com.azure.core.credential` package. This class provides a thread-safe, proactively refreshing token cache that wraps a `TokenCredential`, supporting both synchronous and asynchronous token retrieval.
 
 ### Bugs Fixed

@@ -7,10 +7,10 @@ import com.azure.ai.agents.implementation.BetaVoiceAgentsConversationsImpl;
 import com.azure.ai.agents.implementation.utils.Beta;
 import com.azure.ai.agents.models.PageOrder;
 import com.azure.ai.agents.models.RealtimeConversationItem;
-import com.azure.ai.agents.models.VoiceAudioItemResponse;
+import com.azure.ai.agents.models.VoiceAudioItem;
 import com.azure.ai.agents.models.VoiceConversation;
-import com.azure.ai.agents.models.VoiceGeneratedAudioItemResponse;
-import com.azure.ai.agents.models.VoiceRecordingResponse;
+import com.azure.ai.agents.models.VoiceGeneratedAudioItem;
+import com.azure.ai.agents.models.VoiceRecording;
 import com.azure.ai.agents.models.VoiceResponse;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
@@ -109,6 +109,13 @@ public final class BetaVoiceAgentsConversationsClient {
      *         message: String (Required)
      *         param: String (Optional)
      *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
@@ -180,6 +187,13 @@ public final class BetaVoiceAgentsConversationsClient {
      *         message: String (Required)
      *         param: String (Optional)
      *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
@@ -267,8 +281,10 @@ public final class BetaVoiceAgentsConversationsClient {
      * <pre>
      * {@code
      * {
+     *     id: String (Optional)
      *     object: String(realtime.response) (Optional)
-     *     status: String(completed/cancelled/failed/incomplete/in_progress) (Optional)
+     *     status (Optional): {
+     *     }
      *     status_details (Optional): {
      *         type: String(completed/cancelled/failed/incomplete) (Optional)
      *         reason: String(turn_detected/client_cancelled/max_output_tokens/content_filter) (Optional)
@@ -276,6 +292,14 @@ public final class BetaVoiceAgentsConversationsClient {
      *             type: String (Optional)
      *             code: String (Optional)
      *         }
+     *     }
+     *     output (Optional): [
+     *          (Optional){
+     *             type: String(function_call/function_call_output/mcp_approval_response/mcp_list_tools/mcp_call/mcp_approval_request/message) (Required)
+     *         }
+     *     ]
+     *     metadata (Optional): {
+     *         String: String (Required)
      *     }
      *     usage (Optional): {
      *         total_tokens: Long (Optional)
@@ -297,17 +321,12 @@ public final class BetaVoiceAgentsConversationsClient {
      *             audio_tokens: Long (Optional)
      *         }
      *     }
+     *     conversation_id: String (Optional)
      *     output_modalities (Optional): [
-     *         String(text/audio) (Optional)
-     *     ]
-     *     max_output_tokens: BinaryData (Optional)
-     *     id: String (Required)
-     *     output (Optional): [
      *          (Optional){
-     *             type: String(function_call/function_call_output/mcp_approval_response/mcp_list_tools/mcp_call/mcp_approval_request/message) (Required)
      *         }
      *     ]
-     *     conversation_id: String (Required)
+     *     max_output_tokens: BinaryData (Optional)
      *     audio (Optional): {
      *         output (Optional): {
      *             voice: String (Optional)
@@ -317,9 +336,6 @@ public final class BetaVoiceAgentsConversationsClient {
      *                 type: String(audio/pcm/audio/pcmu/audio/pcma) (Required)
      *             }
      *         }
-     *     }
-     *     metadata (Optional): {
-     *         String: String (Required)
      *     }
      *     temperature: Double (Optional)
      *     created_at: Long (Optional)
@@ -354,8 +370,10 @@ public final class BetaVoiceAgentsConversationsClient {
      * <pre>
      * {@code
      * {
+     *     id: String (Optional)
      *     object: String(realtime.response) (Optional)
-     *     status: String(completed/cancelled/failed/incomplete/in_progress) (Optional)
+     *     status (Optional): {
+     *     }
      *     status_details (Optional): {
      *         type: String(completed/cancelled/failed/incomplete) (Optional)
      *         reason: String(turn_detected/client_cancelled/max_output_tokens/content_filter) (Optional)
@@ -363,6 +381,14 @@ public final class BetaVoiceAgentsConversationsClient {
      *             type: String (Optional)
      *             code: String (Optional)
      *         }
+     *     }
+     *     output (Optional): [
+     *          (Optional){
+     *             type: String(function_call/function_call_output/mcp_approval_response/mcp_list_tools/mcp_call/mcp_approval_request/message) (Required)
+     *         }
+     *     ]
+     *     metadata (Optional): {
+     *         String: String (Required)
      *     }
      *     usage (Optional): {
      *         total_tokens: Long (Optional)
@@ -384,17 +410,12 @@ public final class BetaVoiceAgentsConversationsClient {
      *             audio_tokens: Long (Optional)
      *         }
      *     }
+     *     conversation_id: String (Optional)
      *     output_modalities (Optional): [
-     *         String(text/audio) (Optional)
-     *     ]
-     *     max_output_tokens: BinaryData (Optional)
-     *     id: String (Required)
-     *     output (Optional): [
      *          (Optional){
-     *             type: String(function_call/function_call_output/mcp_approval_response/mcp_list_tools/mcp_call/mcp_approval_request/message) (Required)
      *         }
      *     ]
-     *     conversation_id: String (Required)
+     *     max_output_tokens: BinaryData (Optional)
      *     audio (Optional): {
      *         output (Optional): {
      *             voice: String (Optional)
@@ -404,9 +425,6 @@ public final class BetaVoiceAgentsConversationsClient {
      *                 type: String(audio/pcm/audio/pcmu/audio/pcma) (Required)
      *             }
      *         }
-     *     }
-     *     metadata (Optional): {
-     *         String: String (Required)
      *     }
      *     temperature: Double (Optional)
      *     created_at: Long (Optional)
@@ -845,54 +863,6 @@ public final class BetaVoiceAgentsConversationsClient {
      * agent definition or enabled by the WebSocket session override.
      *
      * @param agentName The name of the agent.
-     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
-     * default is 20.
-     * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
-     * for descending order.
-     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
-     * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<VoiceConversation> listAgentConversations(String agentName, Integer limit, PageOrder order,
-        String after, String before) {
-        // Generated convenience method for listAgentConversations
-        RequestOptions requestOptions = new RequestOptions();
-        if (limit != null) {
-            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
-        }
-        if (order != null) {
-            requestOptions.addQueryParam("order", order.toString(), false);
-        }
-        if (after != null) {
-            requestOptions.addQueryParam("after", after, false);
-        }
-        if (before != null) {
-            requestOptions.addQueryParam("before", before, false);
-        }
-        return serviceClient.listAgentConversations(agentName, requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(VoiceConversation.class));
-    }
-
-    /**
-     * List voice agent conversations
-     *
-     * Returns the conversations persisted for the specified voice agent endpoint.
-     * Conversations are present when the session's effective `store` setting is `true`, whether inherited from the
-     * agent definition or enabled by the WebSocket session override.
-     *
-     * @param agentName The name of the agent.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -906,7 +876,7 @@ public final class BetaVoiceAgentsConversationsClient {
     public PagedIterable<VoiceConversation> listAgentConversations(String agentName) {
         // Generated convenience method for listAgentConversations
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listAgentConversations(agentName, requestOptions)
+        return serviceClient.listAgentConversations(null, agentName, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(VoiceConversation.class));
     }
 
@@ -970,55 +940,6 @@ public final class BetaVoiceAgentsConversationsClient {
      *
      * @param agentName The name of the agent.
      * @param conversationId The id of the conversation whose responses are listed.
-     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
-     * default is 20.
-     * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
-     * for descending order.
-     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
-     * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<VoiceResponse> listAgentConversationResponses(String agentName, String conversationId,
-        Integer limit, PageOrder order, String after, String before) {
-        // Generated convenience method for listAgentConversationResponses
-        RequestOptions requestOptions = new RequestOptions();
-        if (limit != null) {
-            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
-        }
-        if (order != null) {
-            requestOptions.addQueryParam("order", order.toString(), false);
-        }
-        if (after != null) {
-            requestOptions.addQueryParam("after", after, false);
-        }
-        if (before != null) {
-            requestOptions.addQueryParam("before", before, false);
-        }
-        return serviceClient.listAgentConversationResponses(agentName, conversationId, requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(VoiceResponse.class));
-    }
-
-    /**
-     * List responses in a voice agent conversation
-     *
-     * Returns a paged collection of the responses (model inference turns) recorded for the specified
-     * conversation. The per-response `output` projection may be omitted here; use the response-items route
-     * for the canonical paged output. Returns `404` when the conversation was not persisted (`store = false`).
-     *
-     * @param agentName The name of the agent.
-     * @param conversationId The id of the conversation whose responses are listed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1032,7 +953,7 @@ public final class BetaVoiceAgentsConversationsClient {
     public PagedIterable<VoiceResponse> listAgentConversationResponses(String agentName, String conversationId) {
         // Generated convenience method for listAgentConversationResponses
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listAgentConversationResponses(agentName, conversationId, requestOptions)
+        return serviceClient.listAgentConversationResponses(null, agentName, conversationId, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(VoiceResponse.class));
     }
 
@@ -1077,57 +998,6 @@ public final class BetaVoiceAgentsConversationsClient {
      * @param agentName The name of the agent.
      * @param conversationId The id of the conversation that contains the response.
      * @param responseId The id of the response whose output items are listed.
-     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
-     * default is 20.
-     * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
-     * for descending order.
-     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
-     * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RealtimeConversationItem> listAgentConversationResponseItems(String agentName,
-        String conversationId, String responseId, Integer limit, PageOrder order, String after, String before) {
-        // Generated convenience method for listAgentConversationResponseItems
-        RequestOptions requestOptions = new RequestOptions();
-        if (limit != null) {
-            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
-        }
-        if (order != null) {
-            requestOptions.addQueryParam("order", order.toString(), false);
-        }
-        if (after != null) {
-            requestOptions.addQueryParam("after", after, false);
-        }
-        if (before != null) {
-            requestOptions.addQueryParam("before", before, false);
-        }
-        return serviceClient.listAgentConversationResponseItems(agentName, conversationId, responseId, requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(RealtimeConversationItem.class));
-    }
-
-    /**
-     * List items produced by a voice agent conversation response
-     *
-     * Returns a paged collection of the output items produced by a specific response (the response's output
-     * projection). For the complete ordered conversation history — including user input and client-created
-     * tool outputs — use the conversation items route instead. Returns `404` when the conversation or
-     * response was not persisted (`store = false`).
-     *
-     * @param agentName The name of the agent.
-     * @param conversationId The id of the conversation that contains the response.
-     * @param responseId The id of the response whose output items are listed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1142,56 +1012,8 @@ public final class BetaVoiceAgentsConversationsClient {
         String conversationId, String responseId) {
         // Generated convenience method for listAgentConversationResponseItems
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listAgentConversationResponseItems(agentName, conversationId, responseId, requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(RealtimeConversationItem.class));
-    }
-
-    /**
-     * List items in a voice agent conversation
-     *
-     * Returns a paged collection of items — the complete ordered conversation history, including user input,
-     * assistant output, and client-created tool outputs (transcripts + tool events). Returns `404` when the
-     * conversation was not persisted (`store = false`).
-     *
-     * @param agentName The name of the agent.
-     * @param conversationId The id of the conversation whose items are listed.
-     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
-     * default is 20.
-     * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
-     * for descending order.
-     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
-     * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RealtimeConversationItem> listAgentConversationItems(String agentName, String conversationId,
-        Integer limit, PageOrder order, String after, String before) {
-        // Generated convenience method for listAgentConversationItems
-        RequestOptions requestOptions = new RequestOptions();
-        if (limit != null) {
-            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
-        }
-        if (order != null) {
-            requestOptions.addQueryParam("order", order.toString(), false);
-        }
-        if (after != null) {
-            requestOptions.addQueryParam("after", after, false);
-        }
-        if (before != null) {
-            requestOptions.addQueryParam("before", before, false);
-        }
-        return serviceClient.listAgentConversationItems(agentName, conversationId, requestOptions)
+        return serviceClient
+            .listAgentConversationResponseItems(null, agentName, conversationId, responseId, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(RealtimeConversationItem.class));
     }
 
@@ -1217,7 +1039,7 @@ public final class BetaVoiceAgentsConversationsClient {
     public PagedIterable<RealtimeConversationItem> listAgentConversationItems(String agentName, String conversationId) {
         // Generated convenience method for listAgentConversationItems
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listAgentConversationItems(agentName, conversationId, requestOptions)
+        return serviceClient.listAgentConversationItems(null, agentName, conversationId, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(RealtimeConversationItem.class));
     }
 
@@ -1282,12 +1104,11 @@ public final class BetaVoiceAgentsConversationsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VoiceAudioItemResponse getAgentConversationAudioItem(String agentName, String conversationId,
-        String itemId) {
+    public VoiceAudioItem getAgentConversationAudioItem(String agentName, String conversationId, String itemId) {
         // Generated convenience method for getAgentConversationAudioItemWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getAgentConversationAudioItemWithResponse(agentName, conversationId, itemId, requestOptions).getValue()
-            .toObject(VoiceAudioItemResponse.class);
+            .toObject(VoiceAudioItem.class);
     }
 
     /**
@@ -1342,13 +1163,13 @@ public final class BetaVoiceAgentsConversationsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VoiceGeneratedAudioItemResponse getAgentConversationGeneratedAudioItem(String agentName,
-        String conversationId, String itemId) {
+    public VoiceGeneratedAudioItem getAgentConversationGeneratedAudioItem(String agentName, String conversationId,
+        String itemId) {
         // Generated convenience method for getAgentConversationGeneratedAudioItemWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getAgentConversationGeneratedAudioItemWithResponse(agentName, conversationId, itemId, requestOptions)
             .getValue()
-            .toObject(VoiceGeneratedAudioItemResponse.class);
+            .toObject(VoiceGeneratedAudioItem.class);
     }
 
     /**
@@ -1411,11 +1232,11 @@ public final class BetaVoiceAgentsConversationsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VoiceRecordingResponse getAgentConversationAudio(String agentName, String conversationId) {
+    public VoiceRecording getAgentConversationAudio(String agentName, String conversationId) {
         // Generated convenience method for getAgentConversationAudioWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getAgentConversationAudioWithResponse(agentName, conversationId, requestOptions).getValue()
-            .toObject(VoiceRecordingResponse.class);
+            .toObject(VoiceRecording.class);
     }
 
     /**
@@ -1447,5 +1268,191 @@ public final class BetaVoiceAgentsConversationsClient {
         // Generated convenience method for downloadAgentConversationAudioWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return downloadAgentConversationAudioWithResponse(agentName, conversationId, requestOptions).getValue();
+    }
+
+    /**
+     * List voice agent conversations
+     *
+     * Returns the conversations persisted for the specified voice agent endpoint.
+     * Conversations are present when the session's effective `store` setting is `true`, whether inherited from the
+     * agent definition or enabled by the WebSocket session override.
+     *
+     * @param agentName The name of the agent.
+     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
+     * default is 20.
+     * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
+     * for descending order.
+     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
+     * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<VoiceConversation> listAgentConversations(String agentName, Integer limit, PageOrder order,
+        String after, String before) {
+        // Generated convenience method for listAgentConversations
+        RequestOptions requestOptions = new RequestOptions();
+        if (limit != null) {
+            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
+        }
+        if (order != null) {
+            requestOptions.addQueryParam("order", order.toString(), false);
+        }
+        if (before != null) {
+            requestOptions.addQueryParam("before", before, false);
+        }
+        return serviceClient.listAgentConversations(after, agentName, requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(VoiceConversation.class));
+    }
+
+    /**
+     * List responses in a voice agent conversation
+     *
+     * Returns a paged collection of the responses (model inference turns) recorded for the specified
+     * conversation. The per-response `output` projection may be omitted here; use the response-items route
+     * for the canonical paged output. Returns `404` when the conversation was not persisted (`store = false`).
+     *
+     * @param agentName The name of the agent.
+     * @param conversationId The id of the conversation whose responses are listed.
+     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
+     * default is 20.
+     * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
+     * for descending order.
+     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
+     * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<VoiceResponse> listAgentConversationResponses(String agentName, String conversationId,
+        Integer limit, PageOrder order, String after, String before) {
+        // Generated convenience method for listAgentConversationResponses
+        RequestOptions requestOptions = new RequestOptions();
+        if (limit != null) {
+            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
+        }
+        if (order != null) {
+            requestOptions.addQueryParam("order", order.toString(), false);
+        }
+        if (before != null) {
+            requestOptions.addQueryParam("before", before, false);
+        }
+        return serviceClient.listAgentConversationResponses(after, agentName, conversationId, requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(VoiceResponse.class));
+    }
+
+    /**
+     * List items produced by a voice agent conversation response
+     *
+     * Returns a paged collection of the output items produced by a specific response (the response's output
+     * projection). For the complete ordered conversation history — including user input and client-created
+     * tool outputs — use the conversation items route instead. Returns `404` when the conversation or
+     * response was not persisted (`store = false`).
+     *
+     * @param agentName The name of the agent.
+     * @param conversationId The id of the conversation that contains the response.
+     * @param responseId The id of the response whose output items are listed.
+     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
+     * default is 20.
+     * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
+     * for descending order.
+     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
+     * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<RealtimeConversationItem> listAgentConversationResponseItems(String agentName,
+        String conversationId, String responseId, Integer limit, PageOrder order, String after, String before) {
+        // Generated convenience method for listAgentConversationResponseItems
+        RequestOptions requestOptions = new RequestOptions();
+        if (limit != null) {
+            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
+        }
+        if (order != null) {
+            requestOptions.addQueryParam("order", order.toString(), false);
+        }
+        if (before != null) {
+            requestOptions.addQueryParam("before", before, false);
+        }
+        return serviceClient
+            .listAgentConversationResponseItems(after, agentName, conversationId, responseId, requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(RealtimeConversationItem.class));
+    }
+
+    /**
+     * List items in a voice agent conversation
+     *
+     * Returns a paged collection of items — the complete ordered conversation history, including user input,
+     * assistant output, and client-created tool outputs (transcripts + tool events). Returns `404` when the
+     * conversation was not persisted (`store = false`).
+     *
+     * @param agentName The name of the agent.
+     * @param conversationId The id of the conversation whose items are listed.
+     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
+     * default is 20.
+     * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
+     * for descending order.
+     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
+     * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<RealtimeConversationItem> listAgentConversationItems(String agentName, String conversationId,
+        Integer limit, PageOrder order, String after, String before) {
+        // Generated convenience method for listAgentConversationItems
+        RequestOptions requestOptions = new RequestOptions();
+        if (limit != null) {
+            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
+        }
+        if (order != null) {
+            requestOptions.addQueryParam("order", order.toString(), false);
+        }
+        if (before != null) {
+            requestOptions.addQueryParam("before", before, false);
+        }
+        return serviceClient.listAgentConversationItems(after, agentName, conversationId, requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(RealtimeConversationItem.class));
     }
 }

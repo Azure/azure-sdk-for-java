@@ -81,11 +81,6 @@ public final class FleetProperties implements JsonSerializable<FleetProperties> 
      */
     private CapacityType capacityType;
 
-    /*
-     * Zone Allocation Policy for Fleet.
-     */
-    private ZoneAllocationPolicy zoneAllocationPolicy;
-
     /**
      * Creates an instance of FleetProperties class.
      */
@@ -308,26 +303,6 @@ public final class FleetProperties implements JsonSerializable<FleetProperties> 
     }
 
     /**
-     * Get the zoneAllocationPolicy property: Zone Allocation Policy for Fleet.
-     * 
-     * @return the zoneAllocationPolicy value.
-     */
-    public ZoneAllocationPolicy zoneAllocationPolicy() {
-        return this.zoneAllocationPolicy;
-    }
-
-    /**
-     * Set the zoneAllocationPolicy property: Zone Allocation Policy for Fleet.
-     * 
-     * @param zoneAllocationPolicy the zoneAllocationPolicy value to set.
-     * @return the FleetProperties object itself.
-     */
-    public FleetProperties withZoneAllocationPolicy(ZoneAllocationPolicy zoneAllocationPolicy) {
-        this.zoneAllocationPolicy = zoneAllocationPolicy;
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -343,7 +318,6 @@ public final class FleetProperties implements JsonSerializable<FleetProperties> 
         jsonWriter.writeStringField("mode", this.mode == null ? null : this.mode.toString());
         jsonWriter.writeStringField("vmNamePrefix", this.vmNamePrefix);
         jsonWriter.writeStringField("capacityType", this.capacityType == null ? null : this.capacityType.toString());
-        jsonWriter.writeJsonField("zoneAllocationPolicy", this.zoneAllocationPolicy);
         return jsonWriter.writeEndObject();
     }
 
@@ -390,8 +364,6 @@ public final class FleetProperties implements JsonSerializable<FleetProperties> 
                     deserializedFleetProperties.vmNamePrefix = reader.getString();
                 } else if ("capacityType".equals(fieldName)) {
                     deserializedFleetProperties.capacityType = CapacityType.fromString(reader.getString());
-                } else if ("zoneAllocationPolicy".equals(fieldName)) {
-                    deserializedFleetProperties.zoneAllocationPolicy = ZoneAllocationPolicy.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

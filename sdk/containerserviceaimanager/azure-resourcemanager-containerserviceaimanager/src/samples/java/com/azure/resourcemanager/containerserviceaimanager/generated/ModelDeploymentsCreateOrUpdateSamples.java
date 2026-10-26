@@ -14,7 +14,7 @@ import com.azure.resourcemanager.containerserviceaimanager.models.ScalingProfile
  */
 public final class ModelDeploymentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-02-preview/ModelDeployments_CreateOrUpdate.json
+     * x-ms-original-file: 2026-09-02-preview/ModelDeployments_CreateOrUpdate.json
      */
     /**
      * Sample code: ModelDeployments_CreateOrUpdate_MaximumSet.
@@ -27,7 +27,7 @@ public final class ModelDeploymentsCreateOrUpdateSamples {
             .define("deployment-1")
             .withExistingNamespace("rgaimanagers", "aimanager1", "namespace-1")
             .withProperties(new ModelDeploymentProperties().withModelResourceId(
-                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgaimanagers/providers/Microsoft.ContainerService/aiModels/9806f0c862fdd920")
+                "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ContainerService/locations/eastus/aiModels/9806f0c862fdd920")
                 .withModelSourceResourceId(
                     "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgaimanagers/providers/Microsoft.ContainerService/aiManagers/aimanager1/modelSources/huggingface")
                 .withPerformanceMode(ModelDeploymentPerformanceMode.BALANCED)

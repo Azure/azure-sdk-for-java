@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerserviceaimanager.generated;
  */
 public final class AIManagerNamespacesListByAIManagerSamples {
     /*
-     * x-ms-original-file: 2026-05-02-preview/AIManagerNamespaces_ListByAIManager.json
+     * x-ms-original-file: 2026-09-02-preview/AIManagerNamespaces_ListByAIManager.json
      */
     /**
      * Sample code: Lists AI Manager namespace resources by AI Manager.

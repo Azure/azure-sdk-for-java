@@ -11,7 +11,7 @@ import com.azure.resourcemanager.edgeactions.models.SkuType;
  */
 public final class EdgeActionsCreateSamples {
     /*
-     * x-ms-original-file: 2025-12-01-preview/EdgeActions_Create.json
+     * x-ms-original-file: 2026-10-01/EdgeActions_Create.json
      */
     /**
      * Sample code: CreateEdgeAction.

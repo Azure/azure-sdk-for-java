@@ -16,21 +16,21 @@ public final class ResourceTypeAliasesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceTypeAliases model = BinaryData.fromString(
-            "{\"resourceType\":\"kgjubgdknnqvsazn\",\"aliases\":[{\"name\":\"rudsg\",\"paths\":[{\"path\":\"kycgrauwj\",\"apiVersions\":[\"aeburuvdmo\",\"s\",\"zlxwabmqoefkifr\"],\"pattern\":{\"phrase\":\"u\",\"variable\":\"jmqlgkfb\",\"type\":\"NotSpecified\"},\"metadata\":{\"type\":\"Object\",\"attributes\":\"Modifiable\"}}],\"type\":\"Mask\",\"defaultPath\":\"ntuji\",\"defaultPattern\":{\"phrase\":\"ed\",\"variable\":\"wwa\",\"type\":\"NotSpecified\"},\"defaultMetadata\":{\"type\":\"NotSpecified\",\"attributes\":\"None\"}}]}")
+            "{\"resourceType\":\"ywggx\",\"aliases\":[{\"name\":\"atmelwui\",\"paths\":[{\"path\":\"jzkzi\",\"apiVersions\":[\"vc\",\"ayrhyrnx\"],\"pattern\":{\"phrase\":\"eedndrdvstkwqqtc\",\"variable\":\"alm\",\"type\":\"Extract\"},\"metadata\":{\"type\":\"Integer\",\"attributes\":\"None\"}},{\"path\":\"v\",\"apiVersions\":[\"piohgwxrtfu\",\"xepxgyqagvrvmn\",\"k\",\"kghimdblxgwimfnj\"],\"pattern\":{\"phrase\":\"xw\",\"variable\":\"zk\",\"type\":\"Extract\"},\"metadata\":{\"type\":\"Array\",\"attributes\":\"None\"}},{\"path\":\"zi\",\"apiVersions\":[\"aw\",\"eaivxwczel\"],\"pattern\":{\"phrase\":\"r\",\"variable\":\"sfeaenwabfat\",\"type\":\"Extract\"},\"metadata\":{\"type\":\"Object\",\"attributes\":\"Modifiable\"}}],\"type\":\"PlainText\",\"defaultPath\":\"an\",\"defaultPattern\":{\"phrase\":\"osphyoul\",\"variable\":\"rvxaglrvimjwosy\",\"type\":\"NotSpecified\"},\"defaultMetadata\":{\"type\":\"Any\",\"attributes\":\"Modifiable\"}}]}")
             .toObject(ResourceTypeAliases.class);
-        Assertions.assertEquals("kgjubgdknnqvsazn", model.resourceType());
-        Assertions.assertEquals("rudsg", model.aliases().get(0).name());
-        Assertions.assertEquals("kycgrauwj", model.aliases().get(0).paths().get(0).path());
-        Assertions.assertEquals("aeburuvdmo", model.aliases().get(0).paths().get(0).apiVersions().get(0));
-        Assertions.assertEquals("u", model.aliases().get(0).paths().get(0).pattern().phrase());
-        Assertions.assertEquals("jmqlgkfb", model.aliases().get(0).paths().get(0).pattern().variable());
-        Assertions.assertEquals(AliasPatternType.NOT_SPECIFIED, model.aliases().get(0).paths().get(0).pattern().type());
-        Assertions.assertEquals(AliasType.MASK, model.aliases().get(0).type());
-        Assertions.assertEquals("ntuji", model.aliases().get(0).defaultPath());
-        Assertions.assertEquals("ed", model.aliases().get(0).defaultPattern().phrase());
-        Assertions.assertEquals("wwa", model.aliases().get(0).defaultPattern().variable());
+        Assertions.assertEquals("ywggx", model.resourceType());
+        Assertions.assertEquals("atmelwui", model.aliases().get(0).name());
+        Assertions.assertEquals("jzkzi", model.aliases().get(0).paths().get(0).path());
+        Assertions.assertEquals("vc", model.aliases().get(0).paths().get(0).apiVersions().get(0));
+        Assertions.assertEquals("eedndrdvstkwqqtc", model.aliases().get(0).paths().get(0).pattern().phrase());
+        Assertions.assertEquals("alm", model.aliases().get(0).paths().get(0).pattern().variable());
+        Assertions.assertEquals(AliasPatternType.EXTRACT, model.aliases().get(0).paths().get(0).pattern().type());
+        Assertions.assertEquals(AliasType.PLAIN_TEXT, model.aliases().get(0).type());
+        Assertions.assertEquals("an", model.aliases().get(0).defaultPath());
+        Assertions.assertEquals("osphyoul", model.aliases().get(0).defaultPattern().phrase());
+        Assertions.assertEquals("rvxaglrvimjwosy", model.aliases().get(0).defaultPattern().variable());
         Assertions.assertEquals(AliasPatternType.NOT_SPECIFIED, model.aliases().get(0).defaultPattern().type());
-        Assertions.assertEquals(AliasPathTokenType.NOT_SPECIFIED, model.aliases().get(0).defaultMetadata().type());
-        Assertions.assertEquals(AliasPathAttributes.NONE, model.aliases().get(0).defaultMetadata().attributes());
+        Assertions.assertEquals(AliasPathTokenType.ANY, model.aliases().get(0).defaultMetadata().type());
+        Assertions.assertEquals(AliasPathAttributes.MODIFIABLE, model.aliases().get(0).defaultMetadata().attributes());
     }
 }

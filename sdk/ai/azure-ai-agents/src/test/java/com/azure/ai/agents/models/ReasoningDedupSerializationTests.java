@@ -3,6 +3,7 @@
 
 package com.azure.ai.agents.models;
 
+import com.azure.core.util.BinaryData;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonWriter;
@@ -23,6 +24,38 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class ReasoningDedupSerializationTests {
 
     private static final String TEST_MODEL = "gpt-4o";
+
+    @Test
+    public void testVoiceResponseAudioConfigRoundTrip() throws IOException {
+        try (JsonReader reader = JsonProviders.createReader("{\"audio\":{\"output\":{}}}")) {
+            VoiceAgentResponseCreateOptions response = VoiceAgentResponseCreateOptions.fromJson(reader);
+            assertNotNull(response.getAudio().getOutput());
+            VoiceAgentResponseCreateOptions roundTrip
+                = BinaryData.fromObject(response).toObject(VoiceAgentResponseCreateOptions.class);
+            assertNotNull(roundTrip.getAudio().getOutput());
+        }
+    }
+
+    @Test
+    public void testVoiceRealtimeResponseObjectRoundTrip() throws IOException {
+        try (JsonReader reader = JsonProviders.createReader("{\"object\":\"realtime.response\"}")) {
+            VoiceAgentRealtimeResponse response = VoiceAgentRealtimeResponse.fromJson(reader);
+            assertEquals(VoiceResponseObjectType.REALTIME_RESPONSE, response.getObjectType());
+            VoiceAgentRealtimeResponse roundTrip
+                = BinaryData.fromObject(response).toObject(VoiceAgentRealtimeResponse.class);
+            assertEquals(response.getObjectType(), roundTrip.getObjectType());
+        }
+    }
+
+    @Test
+    public void testVoiceResponseObjectTypeRoundTrip() throws IOException {
+        try (JsonReader reader = JsonProviders.createReader("{\"object\":\"realtime.response\"}")) {
+            VoiceResponse response = VoiceResponse.fromJson(reader);
+            assertEquals(VoiceResponseObjectType.REALTIME_RESPONSE, response.getObjectType());
+            VoiceResponse roundTrip = BinaryData.fromObject(response).toObject(VoiceResponse.class);
+            assertEquals(response.getObjectType(), roundTrip.getObjectType());
+        }
+    }
 
     // -----------------------------------------------------------------------
     // Reasoning on PromptAgentDefinition — getter / setter
@@ -85,6 +118,8 @@ public class ReasoningDedupSerializationTests {
         String json = serializeDefinition(definition);
 
         assertTrue(json.contains("\"effort\":\"high\""));
+        // Computed helper methods on openai-java models must not be serialized as request properties.
+        assertFalse(json.contains("\"isValid\""));
         // summary and generate_summary should not appear when not set
         assertFalse(json.contains("\"summary\""));
         assertFalse(json.contains("\"generate_summary\""));

@@ -61,7 +61,7 @@ public final class ToolboxesClient {
      *     }
      *     tools (Required): [
      *          (Required){
-     *             type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search/toolbox_search_preview/a2a/shell/web_iq_preview) (Required)
+     *             type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search/toolbox_search_preview/a2a/shell/web_iq_preview/browser_automation) (Required)
      *             name: String (Optional)
      *             description: String (Optional)
      *             tool_configs (Optional): {
@@ -118,7 +118,7 @@ public final class ToolboxesClient {
      *     created_at: long (Required)
      *     tools (Required): [
      *          (Required){
-     *             type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search/toolbox_search_preview/a2a/shell/web_iq_preview) (Required)
+     *             type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search/toolbox_search_preview/a2a/shell/web_iq_preview/browser_automation) (Required)
      *             name: String (Optional)
      *             description: String (Optional)
      *             tool_configs (Optional): {
@@ -200,7 +200,7 @@ public final class ToolboxesClient {
      *             created_at: long (Required)
      *             tools (Required): [
      *                  (Required){
-     *                     type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search/toolbox_search_preview/a2a/shell/web_iq_preview) (Required)
+     *                     type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search/toolbox_search_preview/a2a/shell/web_iq_preview/browser_automation) (Required)
      *                     name: String (Optional)
      *                     description: String (Optional)
      *                     tool_configs (Optional): {
@@ -303,7 +303,7 @@ public final class ToolboxesClient {
      *             created_at: long (Required)
      *             tools (Required): [
      *                  (Required){
-     *                     type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search/toolbox_search_preview/a2a/shell/web_iq_preview) (Required)
+     *                     type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search/toolbox_search_preview/a2a/shell/web_iq_preview/browser_automation) (Required)
      *                     name: String (Optional)
      *                     description: String (Optional)
      *                     tool_configs (Optional): {
@@ -400,7 +400,7 @@ public final class ToolboxesClient {
      *     created_at: long (Required)
      *     tools (Required): [
      *          (Required){
-     *             type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search/toolbox_search_preview/a2a/shell/web_iq_preview) (Required)
+     *             type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search/toolbox_search_preview/a2a/shell/web_iq_preview/browser_automation) (Required)
      *             name: String (Optional)
      *             description: String (Optional)
      *             tool_configs (Optional): {
@@ -475,7 +475,7 @@ public final class ToolboxesClient {
      *     created_at: long (Required)
      *     tools (Required): [
      *          (Required){
-     *             type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search/toolbox_search_preview/a2a/shell/web_iq_preview) (Required)
+     *             type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search/toolbox_search_preview/a2a/shell/web_iq_preview/browser_automation) (Required)
      *             name: String (Optional)
      *             description: String (Optional)
      *             tool_configs (Optional): {
@@ -567,7 +567,7 @@ public final class ToolboxesClient {
      *             created_at: long (Required)
      *             tools (Required): [
      *                  (Required){
-     *                     type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search/toolbox_search_preview/a2a/shell/web_iq_preview) (Required)
+     *                     type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search/toolbox_search_preview/a2a/shell/web_iq_preview/browser_automation) (Required)
      *                     name: String (Optional)
      *                     description: String (Optional)
      *                     tool_configs (Optional): {
@@ -756,50 +756,6 @@ public final class ToolboxesClient {
      *
      * Returns the toolboxes available in the current project.
      *
-     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
-     * default is 20.
-     * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
-     * for descending order.
-     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
-     * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ToolboxDetails> listToolboxes(Integer limit, PageOrder order, String after, String before) {
-        // Generated convenience method for listToolboxes
-        RequestOptions requestOptions = new RequestOptions();
-        if (limit != null) {
-            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
-        }
-        if (order != null) {
-            requestOptions.addQueryParam("order", order.toString(), false);
-        }
-        if (after != null) {
-            requestOptions.addQueryParam("after", after, false);
-        }
-        if (before != null) {
-            requestOptions.addQueryParam("before", before, false);
-        }
-        return serviceClient.listToolboxes(requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(ToolboxDetails.class));
-    }
-
-    /**
-     * List toolboxes
-     *
-     * Returns the toolboxes available in the current project.
-     *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
@@ -812,54 +768,8 @@ public final class ToolboxesClient {
     public PagedIterable<ToolboxDetails> listToolboxes() {
         // Generated convenience method for listToolboxes
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listToolboxes(requestOptions)
+        return serviceClient.listToolboxes(null, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(ToolboxDetails.class));
-    }
-
-    /**
-     * List toolbox versions
-     *
-     * Returns the available versions for the specified toolbox.
-     *
-     * @param name The name of the toolbox to list versions for.
-     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
-     * default is 20.
-     * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
-     * for descending order.
-     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
-     * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ToolboxVersionDetails> listToolboxVersions(String name, Integer limit, PageOrder order,
-        String after, String before) {
-        // Generated convenience method for listToolboxVersions
-        RequestOptions requestOptions = new RequestOptions();
-        if (limit != null) {
-            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
-        }
-        if (order != null) {
-            requestOptions.addQueryParam("order", order.toString(), false);
-        }
-        if (after != null) {
-            requestOptions.addQueryParam("after", after, false);
-        }
-        if (before != null) {
-            requestOptions.addQueryParam("before", before, false);
-        }
-        return serviceClient.listToolboxVersions(name, requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(ToolboxVersionDetails.class));
     }
 
     /**
@@ -881,7 +791,7 @@ public final class ToolboxesClient {
     public PagedIterable<ToolboxVersionDetails> listToolboxVersions(String name) {
         // Generated convenience method for listToolboxVersions
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listToolboxVersions(name, requestOptions)
+        return serviceClient.listToolboxVersions(null, name, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(ToolboxVersionDetails.class));
     }
 
@@ -1045,5 +955,89 @@ public final class ToolboxesClient {
         // Generated convenience method for invokeLatestToolboxMcpWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return invokeLatestToolboxMcpWithResponse(name, contentType, request, requestOptions).getValue();
+    }
+
+    /**
+     * List toolboxes
+     *
+     * Returns the toolboxes available in the current project.
+     *
+     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
+     * default is 20.
+     * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
+     * for descending order.
+     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
+     * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ToolboxDetails> listToolboxes(Integer limit, PageOrder order, String after, String before) {
+        // Generated convenience method for listToolboxes
+        RequestOptions requestOptions = new RequestOptions();
+        if (limit != null) {
+            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
+        }
+        if (order != null) {
+            requestOptions.addQueryParam("order", order.toString(), false);
+        }
+        if (before != null) {
+            requestOptions.addQueryParam("before", before, false);
+        }
+        return serviceClient.listToolboxes(after, requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(ToolboxDetails.class));
+    }
+
+    /**
+     * List toolbox versions
+     *
+     * Returns the available versions for the specified toolbox.
+     *
+     * @param name The name of the toolbox to list versions for.
+     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
+     * default is 20.
+     * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
+     * for descending order.
+     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
+     * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ToolboxVersionDetails> listToolboxVersions(String name, Integer limit, PageOrder order,
+        String after, String before) {
+        // Generated convenience method for listToolboxVersions
+        RequestOptions requestOptions = new RequestOptions();
+        if (limit != null) {
+            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
+        }
+        if (order != null) {
+            requestOptions.addQueryParam("order", order.toString(), false);
+        }
+        if (before != null) {
+            requestOptions.addQueryParam("before", before, false);
+        }
+        return serviceClient.listToolboxVersions(after, name, requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(ToolboxVersionDetails.class));
     }
 }

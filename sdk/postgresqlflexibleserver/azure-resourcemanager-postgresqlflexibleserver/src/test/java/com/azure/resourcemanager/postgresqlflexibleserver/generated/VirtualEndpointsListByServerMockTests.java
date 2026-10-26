@@ -23,7 +23,7 @@ public final class VirtualEndpointsListByServerMockTests {
     @Test
     public void testListByServer() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"endpointType\":\"ReadWrite\",\"members\":[\"pdwrpqafgfugsn\",\"fhyete\"],\"virtualEndpoints\":[\"oc\",\"ctfjgtixr\",\"vzuyturmlmu\"]},\"id\":\"olbauirop\",\"name\":\"ons\",\"type\":\"onwpnga\"}]}";
+            = "{\"value\":[{\"properties\":{\"endpointType\":\"ReadWrite\",\"members\":[\"nchrszizoyu\",\"lyetndnbfqygg\",\"g\"],\"virtualEndpoints\":[\"lgmtrwahzjmucf\",\"byrplrohkpig\",\"fusuckzmkwklsno\",\"axmqeqal\"]},\"id\":\"jnhgwydyyn\",\"name\":\"svkhgbv\",\"type\":\"ta\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,9 +33,9 @@ public final class VirtualEndpointsListByServerMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<VirtualEndpoint> response
-            = manager.virtualEndpoints().listByServer("phwpnulaiywzej", "whslwkoj", com.azure.core.util.Context.NONE);
+            = manager.virtualEndpoints().listByServer("tsjgqrsx", "p", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(VirtualEndpointType.READ_WRITE, response.iterator().next().endpointType());
-        Assertions.assertEquals("pdwrpqafgfugsn", response.iterator().next().members().get(0));
+        Assertions.assertEquals("nchrszizoyu", response.iterator().next().members().get(0));
     }
 }

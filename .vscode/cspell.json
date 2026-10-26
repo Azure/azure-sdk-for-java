@@ -75,7 +75,8 @@
     "**/src/**/resources/**",
     "docs/spring/**",
     "sdk/core/.idea/**",
-    ".github/CODEOWNERS"
+    ".github/CODEOWNERS",
+    ".github/CODEOWNERS_baseline_errors.txt"
   ],
   "words": [
     "aadb",
@@ -128,6 +129,7 @@
     "dshade",
     "dskip",
     "dspotbugs",
+    "dspotless",
     "dtdl",
     "dtest",
     "dtmf",
@@ -230,6 +232,7 @@
     "testdb",
     "testng",
     "tofile",
+    "trucy",
     "uami",
     "uksouth",
     "umls",
@@ -265,6 +268,13 @@
     "xlsb"
   ],
   "overrides": [
+    {
+      "filename": ".github/skills/management-autopr-review/**",
+      "words": [
+        "autopr",
+        "vally"
+      ]
+    },
     {
       "filename": "**/pom.xml",
       "patterns": [

@@ -10,8 +10,9 @@ import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.TuningOp
 public final class TuningOptionsInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TuningOptionsInner model = BinaryData.fromString(
-            "{\"properties\":{\"state\":\"fajnjwltlwtjjguk\"},\"id\":\"lhsnvkcdmx\",\"name\":\"rpoaimlnwi\",\"type\":\"aomylwea\"}")
+        TuningOptionsInner model = BinaryData
+            .fromString(
+                "{\"properties\":{\"state\":\"zybbj\"},\"id\":\"dj\",\"name\":\"syxkyxvxevblb\",\"type\":\"ednljl\"}")
             .toObject(TuningOptionsInner.class);
     }
 }

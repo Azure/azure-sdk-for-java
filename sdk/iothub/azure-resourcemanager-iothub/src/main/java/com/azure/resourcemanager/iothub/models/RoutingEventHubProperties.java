@@ -63,6 +63,11 @@ public final class RoutingEventHubProperties implements JsonSerializable<Routing
      */
     private String resourceGroup;
 
+    /*
+     * The format of the message payload delivered to this endpoint.
+     */
+    private MessagePayloadFormat messagePayloadFormat;
+
     /**
      * Creates an instance of RoutingEventHubProperties class.
      */
@@ -254,6 +259,26 @@ public final class RoutingEventHubProperties implements JsonSerializable<Routing
     }
 
     /**
+     * Get the messagePayloadFormat property: The format of the message payload delivered to this endpoint.
+     * 
+     * @return the messagePayloadFormat value.
+     */
+    public MessagePayloadFormat messagePayloadFormat() {
+        return this.messagePayloadFormat;
+    }
+
+    /**
+     * Set the messagePayloadFormat property: The format of the message payload delivered to this endpoint.
+     * 
+     * @param messagePayloadFormat the messagePayloadFormat value to set.
+     * @return the RoutingEventHubProperties object itself.
+     */
+    public RoutingEventHubProperties withMessagePayloadFormat(MessagePayloadFormat messagePayloadFormat) {
+        this.messagePayloadFormat = messagePayloadFormat;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -269,6 +294,8 @@ public final class RoutingEventHubProperties implements JsonSerializable<Routing
         jsonWriter.writeJsonField("identity", this.identity);
         jsonWriter.writeStringField("subscriptionId", this.subscriptionId);
         jsonWriter.writeStringField("resourceGroup", this.resourceGroup);
+        jsonWriter.writeStringField("messagePayloadFormat",
+            this.messagePayloadFormat == null ? null : this.messagePayloadFormat.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -307,6 +334,9 @@ public final class RoutingEventHubProperties implements JsonSerializable<Routing
                     deserializedRoutingEventHubProperties.subscriptionId = reader.getString();
                 } else if ("resourceGroup".equals(fieldName)) {
                     deserializedRoutingEventHubProperties.resourceGroup = reader.getString();
+                } else if ("messagePayloadFormat".equals(fieldName)) {
+                    deserializedRoutingEventHubProperties.messagePayloadFormat
+                        = MessagePayloadFormat.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

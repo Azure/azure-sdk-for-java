@@ -10,6 +10,7 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.BackupForPatch;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.CreateModeForPatch;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.DataEncryption;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.DataEncryptionType;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.FipsMode;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.IdentityType;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.MaintenanceWindowForPatch;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.MicrosoftEntraAuth;
@@ -33,7 +34,7 @@ import java.util.Map;
  */
 public final class ServersUpdateSamples {
     /*
-     * x-ms-original-file: 2026-04-01-preview/ServersPromoteReplicaAsForcedSwitchover.json
+     * x-ms-original-file: 2026-07-01-preview/ServersPromoteReplicaAsForcedSwitchover.json
      */
     /**
      * Sample code: Switch over a read replica to primary server with forced data synchronization. Meaning that it
@@ -49,13 +50,15 @@ public final class ServersUpdateSamples {
             .getByResourceGroupWithResponse("exampleresourcegroup", "exampleserver", com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
+            .withSourceServerResourceId(
+                "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/examplesourceserver")
             .withReplica(new Replica().withPromoteMode(ReadReplicaPromoteMode.SWITCHOVER)
                 .withPromoteOption(ReadReplicaPromoteOption.FORCED))
             .apply();
     }
 
     /*
-     * x-ms-original-file: 2026-04-01-preview/ServersPromoteReplicaAsPlannedSwitchover.json
+     * x-ms-original-file: 2026-07-01-preview/ServersPromoteReplicaAsPlannedSwitchover.json
      */
     /**
      * Sample code: Switch over a read replica to primary server with planned data synchronization. Meaning that it
@@ -71,13 +74,31 @@ public final class ServersUpdateSamples {
             .getByResourceGroupWithResponse("exampleresourcegroup", "exampleserver", com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
+            .withSourceServerResourceId(
+                "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/examplesourceserver")
             .withReplica(new Replica().withPromoteMode(ReadReplicaPromoteMode.SWITCHOVER)
                 .withPromoteOption(ReadReplicaPromoteOption.PLANNED))
             .apply();
     }
 
     /*
-     * x-ms-original-file: 2026-04-01-preview/ServersUpdateWithDataEncryptionEnabledAutoUpdate.json
+     * x-ms-original-file: 2026-07-01-preview/ServersUpdateFIPS.json
+     */
+    /**
+     * Sample code: Enable or disable FIPS mode on an existing server.
+     * 
+     * @param manager Entry point to PostgreSqlManager.
+     */
+    public static void enableOrDisableFIPSModeOnAnExistingServer(
+        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
+        Server resource = manager.servers()
+            .getByResourceGroupWithResponse("exampleresourcegroup", "exampleserver", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update().withFipsMode(FipsMode.DISABLED).apply();
+    }
+
+    /*
+     * x-ms-original-file: 2026-07-01-preview/ServersUpdateWithDataEncryptionEnabledAutoUpdate.json
      */
     /**
      * Sample code: Update an existing server with data encryption based on customer managed key with automatic key
@@ -111,7 +132,7 @@ public final class ServersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-04-01-preview/ServersUpdateWithMicrosoftEntraEnabled.json
+     * x-ms-original-file: 2026-07-01-preview/ServersUpdateWithMicrosoftEntraEnabled.json
      */
     /**
      * Sample code: Update an existing server with Microsoft Entra authentication enabled.
@@ -138,7 +159,7 @@ public final class ServersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-04-01-preview/ServersUpdateWithCustomMaintenanceWindow.json
+     * x-ms-original-file: 2026-07-01-preview/ServersUpdateWithCustomMaintenanceWindow.json
      */
     /**
      * Sample code: Update an existing server with custom maintenance window.
@@ -160,7 +181,7 @@ public final class ServersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-04-01-preview/ServersUpdateWithDataEncryptionEnabled.json
+     * x-ms-original-file: 2026-07-01-preview/ServersUpdateWithDataEncryptionEnabled.json
      */
     /**
      * Sample code: Update an existing server with data encryption based on customer managed key.
@@ -193,7 +214,7 @@ public final class ServersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-04-01-preview/ServersUpdateWithMajorVersionUpgrade.json
+     * x-ms-original-file: 2026-07-01-preview/ServersUpdateWithMajorVersionUpgrade.json
      */
     /**
      * Sample code: Update an existing server to upgrade the major version of PostgreSQL database engine.
@@ -209,7 +230,7 @@ public final class ServersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-04-01-preview/ServersUpdate.json
+     * x-ms-original-file: 2026-07-01-preview/ServersUpdate.json
      */
     /**
      * Sample code: Update an existing server.
@@ -233,7 +254,7 @@ public final class ServersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-04-01-preview/ServersPromoteReplicaAsForcedStandaloneServer.json
+     * x-ms-original-file: 2026-07-01-preview/ServersPromoteReplicaAsForcedStandaloneServer.json
      */
     /**
      * Sample code: Promote a read replica to a standalone server with forced data synchronization. Meaning that it
@@ -255,7 +276,7 @@ public final class ServersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-04-01-preview/ServersPromoteReplicaAsPlannedStandaloneServer.json
+     * x-ms-original-file: 2026-07-01-preview/ServersPromoteReplicaAsPlannedStandaloneServer.json
      */
     /**
      * Sample code: Promote a read replica to a standalone server with planned data synchronization. Meaning that it

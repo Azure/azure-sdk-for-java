@@ -21,7 +21,7 @@ public final class IssuesFetchBackgroundVisualizationWithResponseMockTests {
     @Test
     public void testFetchBackgroundVisualizationWithResponse() throws Exception {
         String responseStr
-            = "{\"visualization\":\"uodpv\",\"origin\":{\"addedBy\":\"uudl\",\"addedByType\":\"Manual\"}}";
+            = "{\"visualization\":\"db\",\"origin\":{\"addedBy\":\"evwrdnhfuk\",\"addedByType\":\"Automatic\"}}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +31,9 @@ public final class IssuesFetchBackgroundVisualizationWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         BackgroundVisualization response = manager.issues()
-            .fetchBackgroundVisualizationWithResponse("ehvbbxurip", "tfnhtbaxkgxywr", "kpyklyhp",
-                com.azure.core.util.Context.NONE)
+            .fetchBackgroundVisualizationWithResponse("vvbalx", "l", "chp", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("uodpv", response.visualization());
+        Assertions.assertEquals("db", response.visualization());
     }
 }

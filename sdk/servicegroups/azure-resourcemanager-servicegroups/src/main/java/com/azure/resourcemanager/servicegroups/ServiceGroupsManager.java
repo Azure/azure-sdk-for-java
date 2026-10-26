@@ -25,9 +25,11 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.servicegroups.fluent.ServiceGroupsManagementClient;
+import com.azure.resourcemanager.servicegroups.implementation.OperationsImpl;
 import com.azure.resourcemanager.servicegroups.implementation.ResourceProvidersImpl;
 import com.azure.resourcemanager.servicegroups.implementation.ServiceGroupsImpl;
 import com.azure.resourcemanager.servicegroups.implementation.ServiceGroupsManagementClientBuilder;
+import com.azure.resourcemanager.servicegroups.models.Operations;
 import com.azure.resourcemanager.servicegroups.models.ResourceProviders;
 import com.azure.resourcemanager.servicegroups.models.ServiceGroups;
 import java.time.Duration;
@@ -40,14 +42,13 @@ import java.util.stream.Collectors;
 
 /**
  * Entry point to ServiceGroupsManager.
- * The Groups RP provides Service Groups as a construct to group multiple resources, resource groups, subscriptions and
- * other service groups into an organizational hierarchy and centrally manage access control, policies, alerting and
- * reporting for those resources.
  */
 public final class ServiceGroupsManager {
     private ResourceProviders resourceProviders;
 
     private ServiceGroups serviceGroups;
+
+    private Operations operations;
 
     private final ServiceGroupsManagementClient clientObject;
 
@@ -285,6 +286,18 @@ public final class ServiceGroupsManager {
             this.serviceGroups = new ServiceGroupsImpl(clientObject.getServiceGroups(), this);
         }
         return serviceGroups;
+    }
+
+    /**
+     * Gets the resource collection API of Operations.
+     * 
+     * @return Resource collection API of Operations.
+     */
+    public Operations operations() {
+        if (this.operations == null) {
+            this.operations = new OperationsImpl(clientObject.getOperations(), this);
+        }
+        return operations;
     }
 
     /**

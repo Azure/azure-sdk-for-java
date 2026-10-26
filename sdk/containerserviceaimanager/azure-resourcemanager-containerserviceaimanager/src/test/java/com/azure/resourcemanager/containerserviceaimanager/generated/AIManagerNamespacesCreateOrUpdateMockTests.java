@@ -24,7 +24,7 @@ public final class AIManagerNamespacesCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"labels\":{\"w\":\"vvqfovljxyws\",\"dsytgadgvr\":\"yrs\",\"neqn\":\"ea\",\"jfqka\":\"arrwlquu\"},\"annotations\":{\"bwwift\":\"iipfpubj\",\"ynfs\":\"hqkvpuvksgplsak\"}},\"eTag\":\"ljphuopxodl\",\"id\":\"ynt\",\"name\":\"rz\",\"type\":\"hleosjsw\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"labels\":{\"qagvrvm\":\"xg\"},\"annotations\":{\"mfnjh\":\"ukghimdblxgw\"}},\"eTag\":\"xw\",\"id\":\"zk\",\"name\":\"foqreyfkzik\",\"type\":\"jawneaiv\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,20 +33,18 @@ public final class AIManagerNamespacesCreateOrUpdateMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        AIManagerNamespace response
-            = manager.aIManagerNamespaces()
-                .define("apvhelxprgly")
-                .withExistingAiManager("smocmbq", "qvmkcxo")
-                .withProperties(new AIManagerNamespaceProperties()
-                    .withLabels(mapOf("rhos", "cbcuejrjxgciqi", "ibahwflus", "sdqrhzoymibmrq"))
-                    .withAnnotations(mapOf("expbtg", "mhrkwofyyvoqacp", "nwashrtd", "wbwo", "ulpiuj", "kcnqxwbpo",
-                        "obyu", "aasipqi")))
-                .withIfMatch("hkoymkcdyhbp")
-                .withIfNoneMatch("kpw")
-                .create();
+        AIManagerNamespace response = manager.aIManagerNamespaces()
+            .define("rgjhxb")
+            .withExistingAiManager("mwzn", "abikns")
+            .withProperties(new AIManagerNamespaceProperties()
+                .withLabels(mapOf("xdy", "rlkdmtncvokotl", "tdtbnnhadooc", "gsyocogj"))
+                .withAnnotations(mapOf("amqgxqquezikyw", "cikhnv", "lla", "gxk", "z", "melwuipiccjz", "vvcnayr", "v")))
+            .withIfMatch("gdv")
+            .withIfNoneMatch("vgpiohgwxrt")
+            .create();
 
-        Assertions.assertEquals("vvqfovljxyws", response.properties().labels().get("w"));
-        Assertions.assertEquals("iipfpubj", response.properties().annotations().get("bwwift"));
+        Assertions.assertEquals("xg", response.properties().labels().get("qagvrvm"));
+        Assertions.assertEquals("ukghimdblxgw", response.properties().annotations().get("mfnjh"));
     }
 
     // Use "Map.of" if available

@@ -12,18 +12,18 @@ public final class CrossRegionRestoreJobsRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CrossRegionRestoreJobsRequest model
-            = BinaryData.fromString("{\"sourceRegion\":\"yw\",\"sourceBackupVaultId\":\"t\"}")
+            = BinaryData.fromString("{\"sourceRegion\":\"riglaec\",\"sourceBackupVaultId\":\"ndtic\"}")
                 .toObject(CrossRegionRestoreJobsRequest.class);
-        Assertions.assertEquals("yw", model.sourceRegion());
-        Assertions.assertEquals("t", model.sourceBackupVaultId());
+        Assertions.assertEquals("riglaec", model.sourceRegion());
+        Assertions.assertEquals("ndtic", model.sourceBackupVaultId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CrossRegionRestoreJobsRequest model
-            = new CrossRegionRestoreJobsRequest().withSourceRegion("yw").withSourceBackupVaultId("t");
+            = new CrossRegionRestoreJobsRequest().withSourceRegion("riglaec").withSourceBackupVaultId("ndtic");
         model = BinaryData.fromObject(model).toObject(CrossRegionRestoreJobsRequest.class);
-        Assertions.assertEquals("yw", model.sourceRegion());
-        Assertions.assertEquals("t", model.sourceBackupVaultId());
+        Assertions.assertEquals("riglaec", model.sourceRegion());
+        Assertions.assertEquals("ndtic", model.sourceBackupVaultId());
     }
 }

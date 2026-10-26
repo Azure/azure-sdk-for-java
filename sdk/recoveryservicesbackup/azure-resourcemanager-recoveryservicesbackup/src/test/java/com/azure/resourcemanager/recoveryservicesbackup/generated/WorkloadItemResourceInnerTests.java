@@ -13,14 +13,14 @@ public final class WorkloadItemResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkloadItemResourceInner model = BinaryData.fromString(
-            "{\"location\":\"owzfttsttkt\",\"tags\":{\"tmmqtgqqqxhrn\":\"bqactxtgzukx\"},\"eTag\":\"xcpjuisavokqdzf\",\"properties\":{\"workloadItemType\":\"WorkloadItem\",\"backupManagementType\":\"ivjlfrqttbajlka\",\"workloadType\":\"wxyiopidkqq\",\"friendlyName\":\"uvscxkdmligov\",\"protectionState\":\"Protecting\"},\"id\":\"kpmloa\",\"name\":\"uruocbgo\",\"type\":\"rb\"}")
+            "{\"location\":\"ewzjkjexfd\",\"tags\":{\"bffmbmxz\":\"hpsylkksh\",\"jx\":\"rgywwp\",\"gaao\":\"nptfujgi\",\"wemxswvruunzz\":\"pttaqutd\"},\"eTag\":\"ehkfkimrtixok\",\"properties\":{\"workloadItemType\":\"WorkloadItem\",\"backupManagementType\":\"yinljqe\",\"workloadType\":\"whixmonstsh\",\"friendlyName\":\"xgvelfclduccbird\",\"protectionState\":\"Invalid\"},\"id\":\"cobiegstmninwjiz\",\"name\":\"i\",\"type\":\"nghgshej\"}")
             .toObject(WorkloadItemResourceInner.class);
-        Assertions.assertEquals("owzfttsttkt", model.location());
-        Assertions.assertEquals("bqactxtgzukx", model.tags().get("tmmqtgqqqxhrn"));
-        Assertions.assertEquals("xcpjuisavokqdzf", model.eTag());
-        Assertions.assertEquals("ivjlfrqttbajlka", model.properties().backupManagementType());
-        Assertions.assertEquals("wxyiopidkqq", model.properties().workloadType());
-        Assertions.assertEquals("uvscxkdmligov", model.properties().friendlyName());
-        Assertions.assertEquals(ProtectionStatus.PROTECTING, model.properties().protectionState());
+        Assertions.assertEquals("ewzjkjexfd", model.location());
+        Assertions.assertEquals("hpsylkksh", model.tags().get("bffmbmxz"));
+        Assertions.assertEquals("ehkfkimrtixok", model.eTag());
+        Assertions.assertEquals("yinljqe", model.properties().backupManagementType());
+        Assertions.assertEquals("whixmonstsh", model.properties().workloadType());
+        Assertions.assertEquals("xgvelfclduccbird", model.properties().friendlyName());
+        Assertions.assertEquals(ProtectionStatus.INVALID, model.properties().protectionState());
     }
 }

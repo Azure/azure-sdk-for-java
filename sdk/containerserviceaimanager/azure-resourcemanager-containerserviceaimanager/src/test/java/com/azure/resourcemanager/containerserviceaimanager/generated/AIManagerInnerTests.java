@@ -19,27 +19,30 @@ public final class AIManagerInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AIManagerInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Canceled\",\"deletePolicy\":\"Delete\",\"managedResourceGroupName\":\"vg\"},\"eTag\":\"zsymglzufcyzkohd\",\"identity\":{\"principalId\":\"anufhfcbjysag\",\"tenantId\":\"hxqh\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"ivyqniwbybrkxvd\":{\"principalId\":\"ikxwc\",\"clientId\":\"yscnpqxu\"},\"yejhk\":{\"principalId\":\"jgrtfwvukxga\",\"clientId\":\"ccsnhsjc\"},\"jnchgej\":{\"principalId\":\"htnapczwlokjyem\",\"clientId\":\"vnipjox\"}}},\"location\":\"odmailzyd\",\"tags\":{\"wixjsprozvcp\":\"jwyahuxinpmqnja\"},\"id\":\"tegjvwmf\",\"name\":\"atscmd\",\"type\":\"pjhulsuuvmkj\"}")
+            "{\"properties\":{\"provisioningState\":\"Canceled\",\"deletePolicy\":\"Delete\",\"managedResourceGroupName\":\"vg\",\"clusterResourceId\":\"zsymglzufcyzkohd\"},\"eTag\":\"hanufhfcbjysagi\",\"identity\":{\"principalId\":\"qhabifpikxwcz\",\"tenantId\":\"scnpqxuhivy\",\"type\":\"None\",\"userAssignedIdentities\":{\"gaudcc\":{\"principalId\":\"ybrk\",\"clientId\":\"dumjgrtfwvuk\"}}},\"location\":\"h\",\"tags\":{\"zw\":\"nyejhkryhtnap\",\"kkvnipjox\":\"okjye\",\"podmailzydehojwy\":\"jnchgej\",\"qwixjspro\":\"huxinpmqnj\"},\"id\":\"vcputegj\",\"name\":\"wmfdatscmdvpjhul\",\"type\":\"uuvmkjozkrwfnd\"}")
             .toObject(AIManagerInner.class);
-        Assertions.assertEquals("odmailzyd", model.location());
-        Assertions.assertEquals("jwyahuxinpmqnja", model.tags().get("wixjsprozvcp"));
+        Assertions.assertEquals("h", model.location());
+        Assertions.assertEquals("nyejhkryhtnap", model.tags().get("zw"));
         Assertions.assertEquals(DeletePolicy.DELETE, model.properties().deletePolicy());
-        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("zsymglzufcyzkohd", model.properties().clusterResourceId());
+        Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.identity().type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AIManagerInner model = new AIManagerInner().withLocation("odmailzyd")
-            .withTags(mapOf("wixjsprozvcp", "jwyahuxinpmqnja"))
-            .withProperties(new AIManagerProperties().withDeletePolicy(DeletePolicy.DELETE))
-            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
-                .withUserAssignedIdentities(mapOf("ivyqniwbybrkxvd", new UserAssignedIdentity(), "yejhk",
-                    new UserAssignedIdentity(), "jnchgej", new UserAssignedIdentity())));
+        AIManagerInner model = new AIManagerInner().withLocation("h")
+            .withTags(mapOf("zw", "nyejhkryhtnap", "kkvnipjox", "okjye", "podmailzydehojwy", "jnchgej", "qwixjspro",
+                "huxinpmqnj"))
+            .withProperties(new AIManagerProperties().withDeletePolicy(DeletePolicy.DELETE)
+                .withClusterResourceId("zsymglzufcyzkohd"))
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE)
+                .withUserAssignedIdentities(mapOf("gaudcc", new UserAssignedIdentity())));
         model = BinaryData.fromObject(model).toObject(AIManagerInner.class);
-        Assertions.assertEquals("odmailzyd", model.location());
-        Assertions.assertEquals("jwyahuxinpmqnja", model.tags().get("wixjsprozvcp"));
+        Assertions.assertEquals("h", model.location());
+        Assertions.assertEquals("nyejhkryhtnap", model.tags().get("zw"));
         Assertions.assertEquals(DeletePolicy.DELETE, model.properties().deletePolicy());
-        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("zsymglzufcyzkohd", model.properties().clusterResourceId());
+        Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.identity().type());
     }
 
     // Use "Map.of" if available

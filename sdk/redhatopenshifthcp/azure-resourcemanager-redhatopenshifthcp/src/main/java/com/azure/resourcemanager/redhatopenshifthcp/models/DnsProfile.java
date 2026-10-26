@@ -22,8 +22,8 @@ public final class DnsProfile implements JsonSerializable<DnsProfile> {
     private String baseDomain;
 
     /*
-     * BaseDomainPrefix is the unique name of the cluster representing the OpenShift's cluster name.
-     * BaseDomainPrefix is the name that will appear in the cluster's DNS, provisioned cloud providers resources
+     * BaseDomainPrefix is the base domain prefix for the cluster ingress. It will be used to
+     * configure ingress in the cluster through the subdomain "BaseDomainPrefix.BaseDomain".
      */
     private String baseDomainPrefix;
 
@@ -43,9 +43,9 @@ public final class DnsProfile implements JsonSerializable<DnsProfile> {
     }
 
     /**
-     * Get the baseDomainPrefix property: BaseDomainPrefix is the unique name of the cluster representing the
-     * OpenShift's cluster name.
-     * BaseDomainPrefix is the name that will appear in the cluster's DNS, provisioned cloud providers resources.
+     * Get the baseDomainPrefix property: BaseDomainPrefix is the base domain prefix for the cluster ingress. It will be
+     * used to
+     * configure ingress in the cluster through the subdomain "BaseDomainPrefix.BaseDomain".
      * 
      * @return the baseDomainPrefix value.
      */
@@ -54,9 +54,9 @@ public final class DnsProfile implements JsonSerializable<DnsProfile> {
     }
 
     /**
-     * Set the baseDomainPrefix property: BaseDomainPrefix is the unique name of the cluster representing the
-     * OpenShift's cluster name.
-     * BaseDomainPrefix is the name that will appear in the cluster's DNS, provisioned cloud providers resources.
+     * Set the baseDomainPrefix property: BaseDomainPrefix is the base domain prefix for the cluster ingress. It will be
+     * used to
+     * configure ingress in the cluster through the subdomain "BaseDomainPrefix.BaseDomain".
      * 
      * @param baseDomainPrefix the baseDomainPrefix value to set.
      * @return the DnsProfile object itself.

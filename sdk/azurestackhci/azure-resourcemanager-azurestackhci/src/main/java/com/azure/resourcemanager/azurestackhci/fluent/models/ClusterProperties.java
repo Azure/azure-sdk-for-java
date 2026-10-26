@@ -14,6 +14,7 @@ import com.azure.resourcemanager.azurestackhci.models.ClusterBillingProperties;
 import com.azure.resourcemanager.azurestackhci.models.ClusterDesiredProperties;
 import com.azure.resourcemanager.azurestackhci.models.ClusterPattern;
 import com.azure.resourcemanager.azurestackhci.models.ClusterReportedProperties;
+import com.azure.resourcemanager.azurestackhci.models.ClusterSdnProperties;
 import com.azure.resourcemanager.azurestackhci.models.ConnectivityStatus;
 import com.azure.resourcemanager.azurestackhci.models.IdentityProvider;
 import com.azure.resourcemanager.azurestackhci.models.IsolatedVmAttestationConfiguration;
@@ -166,6 +167,11 @@ public final class ClusterProperties implements JsonSerializable<ClusterProperti
      * Supported Storage Type for HCI Cluster
      */
     private ClusterPattern clusterPattern;
+
+    /*
+     * Software Defined Networking Properties of the cluster
+     */
+    private ClusterSdnProperties sdnProperties;
 
     /*
      * Local Availability Zone information for HCI cluster
@@ -538,6 +544,15 @@ public final class ClusterProperties implements JsonSerializable<ClusterProperti
     }
 
     /**
+     * Get the sdnProperties property: Software Defined Networking Properties of the cluster.
+     * 
+     * @return the sdnProperties value.
+     */
+    public ClusterSdnProperties sdnProperties() {
+        return this.sdnProperties;
+    }
+
+    /**
      * Get the localAvailabilityZones property: Local Availability Zone information for HCI cluster.
      * 
      * @return the localAvailabilityZones value.
@@ -673,6 +688,8 @@ public final class ClusterProperties implements JsonSerializable<ClusterProperti
                     deserializedClusterProperties.secretsLocations = secretsLocations;
                 } else if ("clusterPattern".equals(fieldName)) {
                     deserializedClusterProperties.clusterPattern = ClusterPattern.fromString(reader.getString());
+                } else if ("sdnProperties".equals(fieldName)) {
+                    deserializedClusterProperties.sdnProperties = ClusterSdnProperties.fromJson(reader);
                 } else if ("localAvailabilityZones".equals(fieldName)) {
                     List<LocalAvailabilityZones> localAvailabilityZones
                         = reader.readArray(reader1 -> LocalAvailabilityZones.fromJson(reader1));
