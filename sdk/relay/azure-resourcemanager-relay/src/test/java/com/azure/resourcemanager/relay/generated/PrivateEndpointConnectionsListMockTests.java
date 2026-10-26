@@ -24,7 +24,7 @@ public final class PrivateEndpointConnectionsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"privateEndpoint\":{\"id\":\"uwaboekqvke\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"bxwyjsflhhcaa\"},\"provisioningState\":\"Succeeded\"},\"location\":\"xisxyawjoyaqcsl\",\"id\":\"pkii\",\"name\":\"zyexzn\",\"type\":\"lixhnrztfol\"}]}";
+            = "{\"value\":[{\"properties\":{\"privateEndpoint\":{\"id\":\"eriofzpyqs\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"n\"},\"provisioningState\":\"Failed\"},\"location\":\"hszhedplvwiwu\",\"id\":\"wmbesldnkw\",\"name\":\"tppjflcx\",\"type\":\"gaokonzmnsikv\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,13 +34,12 @@ public final class PrivateEndpointConnectionsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<PrivateEndpointConnection> response
-            = manager.privateEndpointConnections().list("fpbsjyofdxl", "us", com.azure.core.util.Context.NONE);
+            = manager.privateEndpointConnections().list("erscdntne", "fiwjmygtdssls", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("uwaboekqvke", response.iterator().next().privateEndpoint().id());
-        Assertions.assertEquals(PrivateLinkConnectionStatus.PENDING,
+        Assertions.assertEquals("eriofzpyqs", response.iterator().next().privateEndpoint().id());
+        Assertions.assertEquals(PrivateLinkConnectionStatus.APPROVED,
             response.iterator().next().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("bxwyjsflhhcaa",
-            response.iterator().next().privateLinkServiceConnectionState().description());
-        Assertions.assertEquals(EndPointProvisioningState.SUCCEEDED, response.iterator().next().provisioningState());
+        Assertions.assertEquals("n", response.iterator().next().privateLinkServiceConnectionState().description());
+        Assertions.assertEquals(EndPointProvisioningState.FAILED, response.iterator().next().provisioningState());
     }
 }

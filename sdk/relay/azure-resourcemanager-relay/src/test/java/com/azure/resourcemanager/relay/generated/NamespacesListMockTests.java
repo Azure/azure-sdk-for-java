@@ -27,7 +27,7 @@ public final class NamespacesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"ijfqkacewiipfp\",\"status\":\"ji\",\"createdAt\":\"2021-01-24T11:42:32Z\",\"updatedAt\":\"2021-02-08T13:33:20Z\",\"serviceBusEndpoint\":\"ohqkvpuvksgpls\",\"metricId\":\"nynfsynljphuo\",\"privateEndpointConnections\":[{\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Canceled\"},\"location\":\"torzih\",\"id\":\"osjswsr\",\"name\":\"slyzrpzbchckqq\",\"type\":\"qioxi\"},{\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Creating\"},\"location\":\"nkedyatrwyhqmib\",\"id\":\"hwit\",\"name\":\"mypyynpcdpu\",\"type\":\"nzgmwznmabik\"},{\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Canceled\"},\"location\":\"xbldtlwwrlkdmtn\",\"id\":\"ok\",\"name\":\"tllxdyhgsyocogj\",\"type\":\"tdtbnnhadooc\"}],\"publicNetworkAccess\":\"SecuredByPerimeter\",\"minimumTlsVersion\":\"1.3\"},\"sku\":{\"name\":\"Standard\",\"tier\":\"Standard\"},\"location\":\"amqgxqquezikyw\",\"tags\":{\"uipiccjzk\":\"kallatmel\",\"rhyrnxxmueed\":\"ivgvvcna\"},\"id\":\"drd\",\"name\":\"stkwqqtch\",\"type\":\"alm\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"srp\",\"status\":\"ujzra\",\"createdAt\":\"2021-03-03T18:15:09Z\",\"updatedAt\":\"2021-06-17T09:10:46Z\",\"serviceBusEndpoint\":\"r\",\"metricId\":\"swibyr\",\"privateEndpointConnections\":[{\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Failed\"},\"location\":\"p\",\"id\":\"cstwity\",\"name\":\"hevxcced\",\"type\":\"pnmdyodnwzxltjcv\"}],\"publicNetworkAccess\":\"Disabled\",\"minimumTlsVersion\":\"1.3\"},\"sku\":{\"name\":\"Standard\",\"tier\":\"Standard\"},\"location\":\"avvwxqi\",\"tags\":{\"djrkvfgbvfvpd\":\"unyowxwl\",\"q\":\"odacizs\",\"ibdeibq\":\"hkr\",\"kghv\":\"p\"},\"id\":\"ndzwmkrefa\",\"name\":\"pjorwkqnyhg\",\"type\":\"ij\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -38,14 +38,13 @@ public final class NamespacesListMockTests {
 
         PagedIterable<RelayNamespace> response = manager.namespaces().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("amqgxqquezikyw", response.iterator().next().location());
-        Assertions.assertEquals("kallatmel", response.iterator().next().tags().get("uipiccjzk"));
+        Assertions.assertEquals("avvwxqi", response.iterator().next().location());
+        Assertions.assertEquals("unyowxwl", response.iterator().next().tags().get("djrkvfgbvfvpd"));
         Assertions.assertEquals(SkuName.STANDARD, response.iterator().next().sku().name());
         Assertions.assertEquals(SkuTier.STANDARD, response.iterator().next().sku().tier());
-        Assertions.assertEquals(EndPointProvisioningState.CANCELED,
+        Assertions.assertEquals(EndPointProvisioningState.FAILED,
             response.iterator().next().privateEndpointConnections().get(0).provisioningState());
-        Assertions.assertEquals(PublicNetworkAccess.SECURED_BY_PERIMETER,
-            response.iterator().next().publicNetworkAccess());
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED, response.iterator().next().publicNetworkAccess());
         Assertions.assertEquals(TlsVersion.ONE_THREE, response.iterator().next().minimumTlsVersion());
     }
 }

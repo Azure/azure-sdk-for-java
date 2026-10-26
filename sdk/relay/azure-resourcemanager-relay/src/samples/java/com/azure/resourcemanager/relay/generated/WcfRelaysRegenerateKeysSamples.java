@@ -12,7 +12,7 @@ import com.azure.resourcemanager.relay.models.RegenerateAccessKeyParameters;
  */
 public final class WcfRelaysRegenerateKeysSamples {
     /*
-     * x-ms-original-file: 2026-01-01/Relay/RelayAuthorizationRuleRegenerateKey.json
+     * x-ms-original-file: 2026-07-01-preview/Relay/RelayAuthorizationRuleRegenerateKey.json
      */
     /**
      * Sample code: RelayAuthorizationRuleRegenerateKey.json.

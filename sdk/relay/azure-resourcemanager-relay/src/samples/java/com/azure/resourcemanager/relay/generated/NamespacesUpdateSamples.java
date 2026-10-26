@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public final class NamespacesUpdateSamples {
     /*
-     * x-ms-original-file: 2026-01-01/NameSpaces/RelayNameSpaceUpdate.json
+     * x-ms-original-file: 2026-07-01-preview/NameSpaces/RelayNameSpaceUpdate.json
      */
     /**
      * Sample code: RelayNameSpaceUpdate.

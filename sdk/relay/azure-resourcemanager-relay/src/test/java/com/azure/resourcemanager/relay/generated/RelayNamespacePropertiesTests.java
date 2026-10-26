@@ -20,39 +20,52 @@ public final class RelayNamespacePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RelayNamespaceProperties model = BinaryData.fromString(
-            "{\"provisioningState\":\"maajrmvdjwzrlo\",\"status\":\"clwhijcoejctbz\",\"createdAt\":\"2021-04-25T10:37:50Z\",\"updatedAt\":\"2021-02-04T17:33:10Z\",\"serviceBusEndpoint\":\"cbkbfkg\",\"metricId\":\"dkexxppofm\",\"privateEndpointConnections\":[{\"properties\":{\"privateEndpoint\":{\"id\":\"pg\"},\"privateLinkServiceConnectionState\":{\"status\":\"Disconnected\",\"description\":\"jjxhvpmo\"},\"provisioningState\":\"Deleting\"},\"location\":\"dzxibqeojnxqbzvd\",\"id\":\"t\",\"name\":\"ndei\",\"type\":\"btwnpzaoqvuhrhcf\"}],\"publicNetworkAccess\":\"Disabled\",\"minimumTlsVersion\":\"1.3\"}")
+            "{\"provisioningState\":\"daj\",\"status\":\"ysou\",\"createdAt\":\"2021-08-25T21:25:46Z\",\"updatedAt\":\"2021-07-16T12:10:28Z\",\"serviceBusEndpoint\":\"oaeupfhyhltrpmo\",\"metricId\":\"mcmatuokthfuiu\",\"privateEndpointConnections\":[{\"properties\":{\"privateEndpoint\":{\"id\":\"pk\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"uozmyzydagfua\"},\"provisioningState\":\"Succeeded\"},\"location\":\"yiuokktwh\",\"id\":\"xw\",\"name\":\"ywqsmbsurexim\",\"type\":\"ryocfsfksymdd\"},{\"properties\":{\"privateEndpoint\":{\"id\":\"i\"},\"privateLinkServiceConnectionState\":{\"status\":\"Disconnected\",\"description\":\"yudxorrqnbp\"},\"provisioningState\":\"Canceled\"},\"location\":\"yifqrvkdvjsllrmv\",\"id\":\"f\",\"name\":\"atkpnp\",\"type\":\"lexxbczwtru\"},{\"properties\":{\"privateEndpoint\":{\"id\":\"bq\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"myokacspkwlh\"},\"provisioningState\":\"Succeeded\"},\"location\":\"pxjmflbvvnchr\",\"id\":\"ciwwzjuqkhr\",\"name\":\"ajiwkuo\",\"type\":\"oskg\"},{\"properties\":{\"privateEndpoint\":{\"id\":\"uimjmvx\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"gidyjrrf\"},\"provisioningState\":\"Deleting\"},\"location\":\"svexcsonpclhoco\",\"id\":\"lkevle\",\"name\":\"gz\",\"type\":\"buhfmvfaxkffeiit\"}],\"publicNetworkAccess\":\"Disabled\",\"minimumTlsVersion\":\"1.2\"}")
             .toObject(RelayNamespaceProperties.class);
-        Assertions.assertEquals("pg", model.privateEndpointConnections().get(0).privateEndpoint().id());
-        Assertions.assertEquals(PrivateLinkConnectionStatus.DISCONNECTED,
+        Assertions.assertEquals("pk", model.privateEndpointConnections().get(0).privateEndpoint().id());
+        Assertions.assertEquals(PrivateLinkConnectionStatus.APPROVED,
             model.privateEndpointConnections().get(0).privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("jjxhvpmo",
+        Assertions.assertEquals("uozmyzydagfua",
             model.privateEndpointConnections().get(0).privateLinkServiceConnectionState().description());
-        Assertions.assertEquals(EndPointProvisioningState.DELETING,
+        Assertions.assertEquals(EndPointProvisioningState.SUCCEEDED,
             model.privateEndpointConnections().get(0).provisioningState());
         Assertions.assertEquals(PublicNetworkAccess.DISABLED, model.publicNetworkAccess());
-        Assertions.assertEquals(TlsVersion.ONE_THREE, model.minimumTlsVersion());
+        Assertions.assertEquals(TlsVersion.ONE_TWO, model.minimumTlsVersion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RelayNamespaceProperties model = new RelayNamespaceProperties()
-            .withPrivateEndpointConnections(Arrays
-                .asList(new PrivateEndpointConnectionInner().withPrivateEndpoint(new PrivateEndpoint().withId("pg"))
-                    .withPrivateLinkServiceConnectionState(
-                        new ConnectionState().withStatus(PrivateLinkConnectionStatus.DISCONNECTED)
-                            .withDescription("jjxhvpmo"))
-                    .withProvisioningState(EndPointProvisioningState.DELETING)))
+        RelayNamespaceProperties model = new RelayNamespaceProperties().withPrivateEndpointConnections(Arrays.asList(
+            new PrivateEndpointConnectionInner().withPrivateEndpoint(new PrivateEndpoint().withId("pk"))
+                .withPrivateLinkServiceConnectionState(
+                    new ConnectionState().withStatus(PrivateLinkConnectionStatus.APPROVED)
+                        .withDescription("uozmyzydagfua"))
+                .withProvisioningState(EndPointProvisioningState.SUCCEEDED),
+            new PrivateEndpointConnectionInner().withPrivateEndpoint(new PrivateEndpoint().withId("i"))
+                .withPrivateLinkServiceConnectionState(
+                    new ConnectionState().withStatus(PrivateLinkConnectionStatus.DISCONNECTED)
+                        .withDescription("yudxorrqnbp"))
+                .withProvisioningState(EndPointProvisioningState.CANCELED),
+            new PrivateEndpointConnectionInner().withPrivateEndpoint(new PrivateEndpoint().withId("bq"))
+                .withPrivateLinkServiceConnectionState(
+                    new ConnectionState().withStatus(PrivateLinkConnectionStatus.PENDING)
+                        .withDescription("myokacspkwlh"))
+                .withProvisioningState(EndPointProvisioningState.SUCCEEDED),
+            new PrivateEndpointConnectionInner().withPrivateEndpoint(new PrivateEndpoint().withId("uimjmvx"))
+                .withPrivateLinkServiceConnectionState(
+                    new ConnectionState().withStatus(PrivateLinkConnectionStatus.REJECTED).withDescription("gidyjrrf"))
+                .withProvisioningState(EndPointProvisioningState.DELETING)))
             .withPublicNetworkAccess(PublicNetworkAccess.DISABLED)
-            .withMinimumTlsVersion(TlsVersion.ONE_THREE);
+            .withMinimumTlsVersion(TlsVersion.ONE_TWO);
         model = BinaryData.fromObject(model).toObject(RelayNamespaceProperties.class);
-        Assertions.assertEquals("pg", model.privateEndpointConnections().get(0).privateEndpoint().id());
-        Assertions.assertEquals(PrivateLinkConnectionStatus.DISCONNECTED,
+        Assertions.assertEquals("pk", model.privateEndpointConnections().get(0).privateEndpoint().id());
+        Assertions.assertEquals(PrivateLinkConnectionStatus.APPROVED,
             model.privateEndpointConnections().get(0).privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("jjxhvpmo",
+        Assertions.assertEquals("uozmyzydagfua",
             model.privateEndpointConnections().get(0).privateLinkServiceConnectionState().description());
-        Assertions.assertEquals(EndPointProvisioningState.DELETING,
+        Assertions.assertEquals(EndPointProvisioningState.SUCCEEDED,
             model.privateEndpointConnections().get(0).provisioningState());
         Assertions.assertEquals(PublicNetworkAccess.DISABLED, model.publicNetworkAccess());
-        Assertions.assertEquals(TlsVersion.ONE_THREE, model.minimumTlsVersion());
+        Assertions.assertEquals(TlsVersion.ONE_TWO, model.minimumTlsVersion());
     }
 }

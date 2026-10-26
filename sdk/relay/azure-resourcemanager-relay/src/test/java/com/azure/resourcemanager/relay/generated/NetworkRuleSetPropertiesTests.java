@@ -17,28 +17,30 @@ public final class NetworkRuleSetPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkRuleSetProperties model = BinaryData.fromString(
-            "{\"trustedServiceAccessEnabled\":true,\"defaultAction\":\"Deny\",\"publicNetworkAccess\":\"SecuredByPerimeter\",\"ipRules\":[{\"ipMask\":\"pu\",\"action\":\"Allow\"},{\"ipMask\":\"ywnuzoq\",\"action\":\"Allow\"},{\"ipMask\":\"qzrnkcqvyxlwhz\",\"action\":\"Allow\"}]}")
+            "{\"trustedServiceAccessEnabled\":false,\"defaultAction\":\"Allow\",\"publicNetworkAccess\":\"Enabled\",\"ipRules\":[{\"ipMask\":\"hvgyuguosvmk\",\"action\":\"Allow\"},{\"ipMask\":\"qukkfp\",\"action\":\"Allow\"},{\"ipMask\":\"sxnkjzkdeslpvlo\",\"action\":\"Allow\"}]}")
             .toObject(NetworkRuleSetProperties.class);
-        Assertions.assertTrue(model.trustedServiceAccessEnabled());
-        Assertions.assertEquals(DefaultAction.DENY, model.defaultAction());
-        Assertions.assertEquals(PublicNetworkAccess.SECURED_BY_PERIMETER, model.publicNetworkAccess());
-        Assertions.assertEquals("pu", model.ipRules().get(0).ipMask());
+        Assertions.assertFalse(model.trustedServiceAccessEnabled());
+        Assertions.assertEquals(DefaultAction.ALLOW, model.defaultAction());
+        Assertions.assertEquals(PublicNetworkAccess.ENABLED, model.publicNetworkAccess());
+        Assertions.assertEquals("hvgyuguosvmk", model.ipRules().get(0).ipMask());
         Assertions.assertEquals(NetworkRuleIPAction.ALLOW, model.ipRules().get(0).action());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetworkRuleSetProperties model = new NetworkRuleSetProperties().withTrustedServiceAccessEnabled(true)
-            .withDefaultAction(DefaultAction.DENY)
-            .withPublicNetworkAccess(PublicNetworkAccess.SECURED_BY_PERIMETER)
-            .withIpRules(Arrays.asList(new NWRuleSetIpRules().withIpMask("pu").withAction(NetworkRuleIPAction.ALLOW),
-                new NWRuleSetIpRules().withIpMask("ywnuzoq").withAction(NetworkRuleIPAction.ALLOW),
-                new NWRuleSetIpRules().withIpMask("qzrnkcqvyxlwhz").withAction(NetworkRuleIPAction.ALLOW)));
+        NetworkRuleSetProperties model
+            = new NetworkRuleSetProperties().withTrustedServiceAccessEnabled(false)
+                .withDefaultAction(DefaultAction.ALLOW)
+                .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
+                .withIpRules(Arrays.asList(
+                    new NWRuleSetIpRules().withIpMask("hvgyuguosvmk").withAction(NetworkRuleIPAction.ALLOW),
+                    new NWRuleSetIpRules().withIpMask("qukkfp").withAction(NetworkRuleIPAction.ALLOW),
+                    new NWRuleSetIpRules().withIpMask("sxnkjzkdeslpvlo").withAction(NetworkRuleIPAction.ALLOW)));
         model = BinaryData.fromObject(model).toObject(NetworkRuleSetProperties.class);
-        Assertions.assertTrue(model.trustedServiceAccessEnabled());
-        Assertions.assertEquals(DefaultAction.DENY, model.defaultAction());
-        Assertions.assertEquals(PublicNetworkAccess.SECURED_BY_PERIMETER, model.publicNetworkAccess());
-        Assertions.assertEquals("pu", model.ipRules().get(0).ipMask());
+        Assertions.assertFalse(model.trustedServiceAccessEnabled());
+        Assertions.assertEquals(DefaultAction.ALLOW, model.defaultAction());
+        Assertions.assertEquals(PublicNetworkAccess.ENABLED, model.publicNetworkAccess());
+        Assertions.assertEquals("hvgyuguosvmk", model.ipRules().get(0).ipMask());
         Assertions.assertEquals(NetworkRuleIPAction.ALLOW, model.ipRules().get(0).action());
     }
 }

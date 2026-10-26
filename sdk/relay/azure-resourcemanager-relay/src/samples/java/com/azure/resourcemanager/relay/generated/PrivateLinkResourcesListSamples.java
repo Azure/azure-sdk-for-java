@@ -9,7 +9,7 @@ package com.azure.resourcemanager.relay.generated;
  */
 public final class PrivateLinkResourcesListSamples {
     /*
-     * x-ms-original-file: 2026-01-01/PrivateEndpointConnections/PrivateLinkResourcesList.json
+     * x-ms-original-file: 2026-07-01-preview/PrivateEndpointConnections/PrivateLinkResourcesList.json
      */
     /**
      * Sample code: NameSpacePrivateLinkResourcesGet.

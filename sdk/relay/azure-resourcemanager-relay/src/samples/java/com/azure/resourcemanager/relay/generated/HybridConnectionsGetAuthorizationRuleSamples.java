@@ -9,7 +9,7 @@ package com.azure.resourcemanager.relay.generated;
  */
 public final class HybridConnectionsGetAuthorizationRuleSamples {
     /*
-     * x-ms-original-file: 2026-01-01/HybridConnection/RelayHybridConnectionAuthorizationRuleGet.json
+     * x-ms-original-file: 2026-07-01-preview/HybridConnection/RelayHybridConnectionAuthorizationRuleGet.json
      */
     /**
      * Sample code: RelayHybridConnectionAuthorizationRuleGet.

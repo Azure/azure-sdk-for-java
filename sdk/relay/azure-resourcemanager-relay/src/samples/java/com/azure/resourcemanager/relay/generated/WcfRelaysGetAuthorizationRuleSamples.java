@@ -9,7 +9,7 @@ package com.azure.resourcemanager.relay.generated;
  */
 public final class WcfRelaysGetAuthorizationRuleSamples {
     /*
-     * x-ms-original-file: 2026-01-01/Relay/RelayAuthorizationRuleGet.json
+     * x-ms-original-file: 2026-07-01-preview/Relay/RelayAuthorizationRuleGet.json
      */
     /**
      * Sample code: RelayAuthorizationRuleGet.

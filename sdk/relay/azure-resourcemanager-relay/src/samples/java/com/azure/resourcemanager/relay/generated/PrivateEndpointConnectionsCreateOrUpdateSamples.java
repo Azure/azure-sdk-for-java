@@ -13,7 +13,7 @@ import com.azure.resourcemanager.relay.models.PrivateLinkConnectionStatus;
  */
 public final class PrivateEndpointConnectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-01-01/PrivateEndpointConnections/PrivateEndpointConnectionsCreate.json
+     * x-ms-original-file: 2026-07-01-preview/PrivateEndpointConnections/PrivateEndpointConnectionsCreate.json
      */
     /**
      * Sample code: NameSpacePrivateEndPointConnectionCreate.

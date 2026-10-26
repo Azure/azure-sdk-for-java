@@ -12,18 +12,17 @@ import org.junit.jupiter.api.Assertions;
 public final class NWRuleSetIpRulesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NWRuleSetIpRules model = BinaryData.fromString("{\"ipMask\":\"ohoqqnwvlryav\",\"action\":\"Allow\"}")
-            .toObject(NWRuleSetIpRules.class);
-        Assertions.assertEquals("ohoqqnwvlryav", model.ipMask());
+        NWRuleSetIpRules model
+            = BinaryData.fromString("{\"ipMask\":\"ighxpk\",\"action\":\"Allow\"}").toObject(NWRuleSetIpRules.class);
+        Assertions.assertEquals("ighxpk", model.ipMask());
         Assertions.assertEquals(NetworkRuleIPAction.ALLOW, model.action());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NWRuleSetIpRules model
-            = new NWRuleSetIpRules().withIpMask("ohoqqnwvlryav").withAction(NetworkRuleIPAction.ALLOW);
+        NWRuleSetIpRules model = new NWRuleSetIpRules().withIpMask("ighxpk").withAction(NetworkRuleIPAction.ALLOW);
         model = BinaryData.fromObject(model).toObject(NWRuleSetIpRules.class);
-        Assertions.assertEquals("ohoqqnwvlryav", model.ipMask());
+        Assertions.assertEquals("ighxpk", model.ipMask());
         Assertions.assertEquals(NetworkRuleIPAction.ALLOW, model.action());
     }
 }

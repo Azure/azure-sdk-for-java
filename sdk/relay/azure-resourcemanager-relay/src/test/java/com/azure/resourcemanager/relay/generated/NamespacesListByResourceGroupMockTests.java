@@ -27,7 +27,7 @@ public final class NamespacesListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"smond\",\"status\":\"quxvypomgkop\",\"createdAt\":\"2021-06-11T03:04:33Z\",\"updatedAt\":\"2021-02-21T13:48:45Z\",\"serviceBusEndpoint\":\"ajqgxy\",\"metricId\":\"ocmbqfqvmkcxoza\",\"privateEndpointConnections\":[{\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Updating\"},\"location\":\"lya\",\"id\":\"dckcbc\",\"name\":\"ejrjxgciqibrho\",\"type\":\"xsdqrhzoymibmrqy\"},{\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Deleting\"},\"location\":\"uszdtmhrkwof\",\"id\":\"voqacpiexpbt\",\"name\":\"iwbwoenwashrtdtk\",\"type\":\"nqxwbp\"},{\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Updating\"},\"location\":\"jwaa\",\"id\":\"pqiiobyuqe\",\"name\":\"pqlpq\",\"type\":\"cciuqgbdbutau\"}],\"publicNetworkAccess\":\"Disabled\",\"minimumTlsVersion\":\"1.2\"},\"sku\":{\"name\":\"Standard\",\"tier\":\"Standard\"},\"location\":\"hykojoxafnndlpic\",\"tags\":{\"kkpwdreqnovvq\":\"ymkcdyhb\"},\"id\":\"ovljxywsu\",\"name\":\"syrsndsytgadgvra\",\"type\":\"aeneqnzarrwl\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"sfraoyzko\",\"status\":\"tlmngu\",\"createdAt\":\"2021-09-15T03:59:48Z\",\"updatedAt\":\"2021-09-07T06:52:28Z\",\"serviceBusEndpoint\":\"dsyuuximerqfob\",\"metricId\":\"znkbykutwpfhpagm\",\"privateEndpointConnections\":[{\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Updating\"},\"location\":\"sd\",\"id\":\"kgtdlmkkze\",\"name\":\"dlhewp\",\"type\":\"sdsttwvog\"},{\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Updating\"},\"location\":\"ngqqmoakuf\",\"id\":\"jzrwrdgrtw\",\"name\":\"enuuzkopbm\",\"type\":\"nrfdw\"},{\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Updating\"},\"location\":\"u\",\"id\":\"fozbhdmsmlmzqhof\",\"name\":\"rmaequ\",\"type\":\"ah\"},{\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Failed\"},\"location\":\"oqzpiyylha\",\"id\":\"swhccsphk\",\"name\":\"ivwitqscywugg\",\"type\":\"oluhczbwemh\"}],\"publicNetworkAccess\":\"SecuredByPerimeter\",\"minimumTlsVersion\":\"1.2\"},\"sku\":{\"name\":\"Standard\",\"tier\":\"Standard\"},\"location\":\"msweypqwdxggicc\",\"tags\":{\"ttlstvlzywemhz\":\"qhuexm\",\"sfgytguslfead\":\"ncsdtclusiyp\"},\"id\":\"ygqukyhejh\",\"name\":\"isxgfp\",\"type\":\"lolp\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -37,15 +37,16 @@ public final class NamespacesListByResourceGroupMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<RelayNamespace> response
-            = manager.namespaces().listByResourceGroup("nubexk", com.azure.core.util.Context.NONE);
+            = manager.namespaces().listByResourceGroup("zcmrvexztvb", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("hykojoxafnndlpic", response.iterator().next().location());
-        Assertions.assertEquals("ymkcdyhb", response.iterator().next().tags().get("kkpwdreqnovvq"));
+        Assertions.assertEquals("msweypqwdxggicc", response.iterator().next().location());
+        Assertions.assertEquals("qhuexm", response.iterator().next().tags().get("ttlstvlzywemhz"));
         Assertions.assertEquals(SkuName.STANDARD, response.iterator().next().sku().name());
         Assertions.assertEquals(SkuTier.STANDARD, response.iterator().next().sku().tier());
         Assertions.assertEquals(EndPointProvisioningState.UPDATING,
             response.iterator().next().privateEndpointConnections().get(0).provisioningState());
-        Assertions.assertEquals(PublicNetworkAccess.DISABLED, response.iterator().next().publicNetworkAccess());
+        Assertions.assertEquals(PublicNetworkAccess.SECURED_BY_PERIMETER,
+            response.iterator().next().publicNetworkAccess());
         Assertions.assertEquals(TlsVersion.ONE_TWO, response.iterator().next().minimumTlsVersion());
     }
 }

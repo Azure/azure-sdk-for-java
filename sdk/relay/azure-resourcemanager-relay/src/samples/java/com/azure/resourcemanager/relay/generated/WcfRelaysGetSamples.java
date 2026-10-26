@@ -9,7 +9,7 @@ package com.azure.resourcemanager.relay.generated;
  */
 public final class WcfRelaysGetSamples {
     /*
-     * x-ms-original-file: 2026-01-01/Relay/RelayGet.json
+     * x-ms-original-file: 2026-07-01-preview/Relay/RelayGet.json
      */
     /**
      * Sample code: RelayGet.

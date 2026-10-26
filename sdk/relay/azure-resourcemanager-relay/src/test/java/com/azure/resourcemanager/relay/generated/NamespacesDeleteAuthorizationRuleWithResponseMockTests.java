@@ -28,7 +28,8 @@ public final class NamespacesDeleteAuthorizationRuleWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.namespaces()
-            .deleteAuthorizationRuleWithResponse("dzu", "erscdntne", "fiwjmygtdssls", com.azure.core.util.Context.NONE);
+            .deleteAuthorizationRuleWithResponse("xiilivpdtiirqt", "qoaxoruzfgs", "uyfxrxxleptramxj",
+                com.azure.core.util.Context.NONE);
 
     }
 }
