@@ -14,16 +14,16 @@ public final class BaseBackupPolicyResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BaseBackupPolicyResourceInner model = BinaryData.fromString(
-            "{\"properties\":{\"objectType\":\"BaseBackupPolicy\",\"datasourceTypes\":[\"xbjhwuaanozjosph\",\"oulpjrv\",\"ag\",\"rvimjwosytxitcsk\"]},\"id\":\"k\",\"name\":\"qumiek\",\"type\":\"ez\"}")
+            "{\"properties\":{\"objectType\":\"BaseBackupPolicy\",\"datasourceTypes\":[\"vdkcrodtj\",\"nfwjlfltkacjvefk\",\"lfoakg\"]},\"id\":\"fpagaowpulp\",\"name\":\"blylsyxkqjnsj\",\"type\":\"r\"}")
             .toObject(BaseBackupPolicyResourceInner.class);
-        Assertions.assertEquals("xbjhwuaanozjosph", model.properties().datasourceTypes().get(0));
+        Assertions.assertEquals("vdkcrodtj", model.properties().datasourceTypes().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BaseBackupPolicyResourceInner model = new BaseBackupPolicyResourceInner().withProperties(new BaseBackupPolicy()
-            .withDatasourceTypes(Arrays.asList("xbjhwuaanozjosph", "oulpjrv", "ag", "rvimjwosytxitcsk")));
+        BaseBackupPolicyResourceInner model = new BaseBackupPolicyResourceInner().withProperties(
+            new BaseBackupPolicy().withDatasourceTypes(Arrays.asList("vdkcrodtj", "nfwjlfltkacjvefk", "lfoakg")));
         model = BinaryData.fromObject(model).toObject(BaseBackupPolicyResourceInner.class);
-        Assertions.assertEquals("xbjhwuaanozjosph", model.properties().datasourceTypes().get(0));
+        Assertions.assertEquals("vdkcrodtj", model.properties().datasourceTypes().get(0));
     }
 }

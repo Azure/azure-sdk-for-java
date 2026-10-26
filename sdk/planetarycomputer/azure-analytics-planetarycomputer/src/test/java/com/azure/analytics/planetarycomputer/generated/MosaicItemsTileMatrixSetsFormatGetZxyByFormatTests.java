@@ -4,10 +4,14 @@
 
 package com.azure.analytics.planetarycomputer.generated;
 
+import com.azure.analytics.planetarycomputer.models.ColorMapNames;
+import com.azure.analytics.planetarycomputer.models.Resampling;
 import com.azure.analytics.planetarycomputer.models.SelMethod;
+import com.azure.analytics.planetarycomputer.models.TerrainAlgorithm;
 import com.azure.analytics.planetarycomputer.models.WarpKernelResampling;
 import com.azure.core.util.BinaryData;
 import java.util.Arrays;
+import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -19,9 +23,11 @@ public final class MosaicItemsTileMatrixSetsFormatGetZxyByFormatTests extends Pl
     public void testMosaicItemsTileMatrixSetsFormatGetZxyByFormatTests() {
         // method invocation
         BinaryData response = dataClient.getTileWithTmsByFormat("naip-atl", "ga_m_3308421_se_16_060_20211114",
-            "WebMercatorQuad", 14.0, 4349.0, 6564.0, "png", Arrays.asList(1, 2, 3), Arrays.asList("image"), null,
-            Arrays.asList("image|1,2,3"), null, null, null, WarpKernelResampling.NEAREST, null, null, 1, null, null,
-            null, null, null, null, null, 2, null, null, "epsg:4326", "2024-01-01T00:00:00Z", Arrays.asList("band=1"),
+            "WebMercatorQuad", 14.0, 4349.0, 6564.0, "png", Arrays.asList(1, 2, 3), Arrays.asList("image"),
+            (String) null, Arrays.asList("image|1,2,3"), (Boolean) null, (String) null, (Boolean) null,
+            WarpKernelResampling.NEAREST, (TerrainAlgorithm) null, (String) null, 1, (Double) null, (String) null,
+            (Resampling) null, (List<String>) null, (ColorMapNames) null, (String) null, (Boolean) null, 2,
+            (String) null, (List<Integer>) null, "epsg:4326", "2024-01-01T00:00:00Z", Arrays.asList("band=1"),
             SelMethod.NEAREST);
 
         // response assertion

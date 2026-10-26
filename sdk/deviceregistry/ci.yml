@@ -10,10 +10,12 @@ trigger:
     include:
       - sdk/deviceregistry/ci.yml
       - sdk/deviceregistry/azure-resourcemanager-deviceregistry/
+      - sdk/deviceregistry/azure-resourcemanager-deviceregistry-softwareupdate/
       - sdk/deviceregistry/azure-iot-deviceregistry-softwareupdate/
     exclude:
       - sdk/deviceregistry/pom.xml
       - sdk/deviceregistry/azure-resourcemanager-deviceregistry/pom.xml
+      - sdk/deviceregistry/azure-resourcemanager-deviceregistry-softwareupdate/pom.xml
       - sdk/deviceregistry/azure-iot-deviceregistry-softwareupdate/pom.xml
 
 pr:
@@ -27,10 +29,12 @@ pr:
     include:
       - sdk/deviceregistry/ci.yml
       - sdk/deviceregistry/azure-resourcemanager-deviceregistry/
+      - sdk/deviceregistry/azure-resourcemanager-deviceregistry-softwareupdate/
       - sdk/deviceregistry/azure-iot-deviceregistry-softwareupdate/
     exclude:
       - sdk/deviceregistry/pom.xml
       - sdk/deviceregistry/azure-resourcemanager-deviceregistry/pom.xml
+      - sdk/deviceregistry/azure-resourcemanager-deviceregistry-softwareupdate/pom.xml
       - sdk/deviceregistry/azure-iot-deviceregistry-softwareupdate/pom.xml
 
 parameters:

@@ -24,12 +24,6 @@ public final class PstnTelephonyTransferDestination extends TelephonyTransferDes
     @Generated
     private TelephonyTransferDestinationKind kind = TelephonyTransferDestinationKind.PSTN;
 
-    /*
-     * The E.164 phone number to call.
-     */
-    @Generated
-    private final String value;
-
     /**
      * Creates an instance of PstnTelephonyTransferDestination class.
      *
@@ -49,16 +43,6 @@ public final class PstnTelephonyTransferDestination extends TelephonyTransferDes
     @Override
     public TelephonyTransferDestinationKind getKind() {
         return this.kind;
-    }
-
-    /**
-     * Get the value property: The E.164 phone number to call.
-     *
-     * @return the value value.
-     */
-    @Generated
-    public String getValue() {
-        return this.value;
     }
 
     /**
@@ -103,5 +87,21 @@ public final class PstnTelephonyTransferDestination extends TelephonyTransferDes
             deserializedPstnTelephonyTransferDestination.kind = kind;
             return deserializedPstnTelephonyTransferDestination;
         });
+    }
+
+    /*
+     * The E.164 phone number to call.
+     */
+    @Generated
+    private final String value;
+
+    /**
+     * Get the value property: The E.164 phone number to call.
+     *
+     * @return the value value.
+     */
+    @Generated
+    public String getValue() {
+        return this.value;
     }
 }

@@ -277,7 +277,7 @@ public final class ComputeBulkActionsManagementClientImpl implements ComputeBulk
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2026-09-06-preview";
+        this.apiVersion = "2026-10-06-preview";
         this.operations = new OperationsClientImpl(this);
         this.virtualMachineBulkOperations = new VirtualMachineBulkOperationsClientImpl(this);
         this.bulkCreateCustoms = new BulkCreateCustomsClientImpl(this);

@@ -12,14 +12,14 @@ public final class UserInitiatedRebootTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UserInitiatedReboot model
-            = BinaryData.fromString("{\"automaticallyApprove\":true}").toObject(UserInitiatedReboot.class);
-        Assertions.assertTrue(model.userInitiatedRebootAutomaticallyApprove());
+            = BinaryData.fromString("{\"automaticallyApprove\":false}").toObject(UserInitiatedReboot.class);
+        Assertions.assertFalse(model.userInitiatedRebootAutomaticallyApprove());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UserInitiatedReboot model = new UserInitiatedReboot().withUserInitiatedRebootAutomaticallyApprove(true);
+        UserInitiatedReboot model = new UserInitiatedReboot().withUserInitiatedRebootAutomaticallyApprove(false);
         model = BinaryData.fromObject(model).toObject(UserInitiatedReboot.class);
-        Assertions.assertTrue(model.userInitiatedRebootAutomaticallyApprove());
+        Assertions.assertFalse(model.userInitiatedRebootAutomaticallyApprove());
     }
 }

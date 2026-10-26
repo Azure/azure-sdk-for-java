@@ -21,7 +21,7 @@ public final class SchedulersGetPrivateLinkWithResponseMockTests {
     @Test
     public void testGetPrivateLinkWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"groupId\":\"bxu\",\"requiredMembers\":[\"hqwa\",\"muzyoxaepdk\",\"jancu\",\"rhdwbavxbniw\"],\"requiredZoneNames\":[\"wz\",\"s\"]},\"id\":\"pgn\",\"name\":\"ytxhp\",\"type\":\"xbzpfzab\"}";
+            = "{\"properties\":{\"groupId\":\"lsj\",\"requiredMembers\":[\"szfjvfbgofelja\",\"rqmq\"],\"requiredZoneNames\":[\"vriiio\",\"nalghfkvtvsexso\",\"ueluqhhahhxvrhmz\"]},\"id\":\"pjgwwspug\",\"name\":\"ftqsxhqxujxuk\",\"type\":\"dxdigr\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +31,9 @@ public final class SchedulersGetPrivateLinkWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SchedulerPrivateLinkResource response = manager.schedulers()
-            .getPrivateLinkWithResponse("hsucoc", "nyyazttbtwwrqpue", "ckzywbiexzfeyue",
-                com.azure.core.util.Context.NONE)
+            .getPrivateLinkWithResponse("szrnwo", "indfpwpjyl", "bt", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("wz", response.properties().requiredZoneNames().get(0));
+        Assertions.assertEquals("vriiio", response.properties().requiredZoneNames().get(0));
     }
 }

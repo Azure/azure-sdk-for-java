@@ -12,7 +12,7 @@ import com.azure.resourcemanager.edgeactions.models.EdgeActionExecutionFilterUpd
  */
 public final class EdgeActionExecutionFiltersUpdateSamples {
     /*
-     * x-ms-original-file: 2025-12-01-preview/EdgeActionExecutionFilters_Update.json
+     * x-ms-original-file: 2026-10-01/EdgeActionExecutionFilters_Update.json
      */
     /**
      * Sample code: UpdateEdgeActionExecutionFilters.

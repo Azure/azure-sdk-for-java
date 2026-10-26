@@ -15,7 +15,7 @@ import java.util.Map;
  * Web search
  *
  * Search the Internet for sources related to the prompt. Learn more about the
- * [web search tool](/docs/guides/tools-web-search).
+ * [web search tool](https://developers.openai.com/api/docs/guides/tools-web-search).
  */
 @Fluent
 public final class WebSearchTool extends Tool {

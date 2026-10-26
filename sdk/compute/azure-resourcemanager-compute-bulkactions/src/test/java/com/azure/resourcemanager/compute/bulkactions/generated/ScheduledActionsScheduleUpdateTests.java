@@ -19,42 +19,42 @@ public final class ScheduledActionsScheduleUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ScheduledActionsScheduleUpdate model = BinaryData.fromString(
-            "{\"scheduledTime\":\"kyrk\",\"timeZone\":\"dg\",\"requestedWeekDays\":[\"Thursday\"],\"requestedMonths\":[\"November\",\"All\",\"January\",\"October\"],\"requestedDaysOfTheMonth\":[1591130479,1313812453,688364927,1666235741],\"executionParameters\":{\"retryPolicy\":{\"retryCount\":261138703,\"retryWindowInMinutes\":110094366,\"onFailureAction\":\"Delete\"}},\"deadlineType\":\"CompleteBy\"}")
+            "{\"scheduledTime\":\"l\",\"timeZone\":\"x\",\"requestedWeekDays\":[\"Tuesday\"],\"requestedMonths\":[\"All\",\"June\",\"July\"],\"requestedDaysOfTheMonth\":[1985792970,704618732,542957889,1129591709],\"executionParameters\":{\"retryPolicy\":{\"retryCount\":728133751,\"retryWindowInMinutes\":1333047825,\"onFailureAction\":\"Delete\"}},\"deadlineType\":\"InitiateAt\"}")
             .toObject(ScheduledActionsScheduleUpdate.class);
-        Assertions.assertEquals("kyrk", model.scheduledTime());
-        Assertions.assertEquals("dg", model.timeZone());
-        Assertions.assertEquals(WeekDay.THURSDAY, model.requestedWeekDays().get(0));
-        Assertions.assertEquals(Month.NOVEMBER, model.requestedMonths().get(0));
-        Assertions.assertEquals(1591130479, model.requestedDaysOfTheMonth().get(0));
-        Assertions.assertEquals(261138703, model.executionParameters().retryPolicy().retryCount());
-        Assertions.assertEquals(110094366, model.executionParameters().retryPolicy().retryWindowInMinutes());
+        Assertions.assertEquals("l", model.scheduledTime());
+        Assertions.assertEquals("x", model.timeZone());
+        Assertions.assertEquals(WeekDay.TUESDAY, model.requestedWeekDays().get(0));
+        Assertions.assertEquals(Month.ALL, model.requestedMonths().get(0));
+        Assertions.assertEquals(1985792970, model.requestedDaysOfTheMonth().get(0));
+        Assertions.assertEquals(728133751, model.executionParameters().retryPolicy().retryCount());
+        Assertions.assertEquals(1333047825, model.executionParameters().retryPolicy().retryWindowInMinutes());
         Assertions.assertEquals(ScheduledActionsResourceOperationType.DELETE,
             model.executionParameters().retryPolicy().onFailureAction());
-        Assertions.assertEquals(ScheduledActionsDeadlineType.COMPLETE_BY, model.deadlineType());
+        Assertions.assertEquals(ScheduledActionsDeadlineType.INITIATE_AT, model.deadlineType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ScheduledActionsScheduleUpdate model = new ScheduledActionsScheduleUpdate().withScheduledTime("kyrk")
-            .withTimeZone("dg")
-            .withRequestedWeekDays(Arrays.asList(WeekDay.THURSDAY))
-            .withRequestedMonths(Arrays.asList(Month.NOVEMBER, Month.ALL, Month.JANUARY, Month.OCTOBER))
-            .withRequestedDaysOfTheMonth(Arrays.asList(1591130479, 1313812453, 688364927, 1666235741))
+        ScheduledActionsScheduleUpdate model = new ScheduledActionsScheduleUpdate().withScheduledTime("l")
+            .withTimeZone("x")
+            .withRequestedWeekDays(Arrays.asList(WeekDay.TUESDAY))
+            .withRequestedMonths(Arrays.asList(Month.ALL, Month.JUNE, Month.JULY))
+            .withRequestedDaysOfTheMonth(Arrays.asList(1985792970, 704618732, 542957889, 1129591709))
             .withExecutionParameters(new ScheduledActionsExecutionParameters()
-                .withRetryPolicy(new ScheduledActionsRetryPolicy().withRetryCount(261138703)
-                    .withRetryWindowInMinutes(110094366)
+                .withRetryPolicy(new ScheduledActionsRetryPolicy().withRetryCount(728133751)
+                    .withRetryWindowInMinutes(1333047825)
                     .withOnFailureAction(ScheduledActionsResourceOperationType.DELETE)))
-            .withDeadlineType(ScheduledActionsDeadlineType.COMPLETE_BY);
+            .withDeadlineType(ScheduledActionsDeadlineType.INITIATE_AT);
         model = BinaryData.fromObject(model).toObject(ScheduledActionsScheduleUpdate.class);
-        Assertions.assertEquals("kyrk", model.scheduledTime());
-        Assertions.assertEquals("dg", model.timeZone());
-        Assertions.assertEquals(WeekDay.THURSDAY, model.requestedWeekDays().get(0));
-        Assertions.assertEquals(Month.NOVEMBER, model.requestedMonths().get(0));
-        Assertions.assertEquals(1591130479, model.requestedDaysOfTheMonth().get(0));
-        Assertions.assertEquals(261138703, model.executionParameters().retryPolicy().retryCount());
-        Assertions.assertEquals(110094366, model.executionParameters().retryPolicy().retryWindowInMinutes());
+        Assertions.assertEquals("l", model.scheduledTime());
+        Assertions.assertEquals("x", model.timeZone());
+        Assertions.assertEquals(WeekDay.TUESDAY, model.requestedWeekDays().get(0));
+        Assertions.assertEquals(Month.ALL, model.requestedMonths().get(0));
+        Assertions.assertEquals(1985792970, model.requestedDaysOfTheMonth().get(0));
+        Assertions.assertEquals(728133751, model.executionParameters().retryPolicy().retryCount());
+        Assertions.assertEquals(1333047825, model.executionParameters().retryPolicy().retryWindowInMinutes());
         Assertions.assertEquals(ScheduledActionsResourceOperationType.DELETE,
             model.executionParameters().retryPolicy().onFailureAction());
-        Assertions.assertEquals(ScheduledActionsDeadlineType.COMPLETE_BY, model.deadlineType());
+        Assertions.assertEquals(ScheduledActionsDeadlineType.INITIATE_AT, model.deadlineType());
     }
 }

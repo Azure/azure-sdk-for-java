@@ -13,12 +13,12 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * The resources needed for the user request.
+ * The virtual machines targeted by a bulk action.
  */
 @Fluent
 public final class Resources implements JsonSerializable<Resources> {
     /*
-     * The resource ids used for the request
+     * The Azure resource IDs of the target virtual machines.
      */
     private List<String> ids;
 
@@ -29,7 +29,7 @@ public final class Resources implements JsonSerializable<Resources> {
     }
 
     /**
-     * Get the ids property: The resource ids used for the request.
+     * Get the ids property: The Azure resource IDs of the target virtual machines.
      * 
      * @return the ids value.
      */
@@ -38,7 +38,7 @@ public final class Resources implements JsonSerializable<Resources> {
     }
 
     /**
-     * Set the ids property: The resource ids used for the request.
+     * Set the ids property: The Azure resource IDs of the target virtual machines.
      * 
      * @param ids the ids value to set.
      * @return the Resources object itself.

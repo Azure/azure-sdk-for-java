@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class ListParameterTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ListParameter model = BinaryData.fromString("{\"filter\":\"pnppfuf\"}").toObject(ListParameter.class);
-        Assertions.assertEquals("pnppfuf", model.filter());
+        ListParameter model = BinaryData.fromString("{\"filter\":\"ilpjzuaejxdult\"}").toObject(ListParameter.class);
+        Assertions.assertEquals("ilpjzuaejxdult", model.filter());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ListParameter model = new ListParameter().withFilter("pnppfuf");
+        ListParameter model = new ListParameter().withFilter("ilpjzuaejxdult");
         model = BinaryData.fromObject(model).toObject(ListParameter.class);
-        Assertions.assertEquals("pnppfuf", model.filter());
+        Assertions.assertEquals("ilpjzuaejxdult", model.filter());
     }
 }
