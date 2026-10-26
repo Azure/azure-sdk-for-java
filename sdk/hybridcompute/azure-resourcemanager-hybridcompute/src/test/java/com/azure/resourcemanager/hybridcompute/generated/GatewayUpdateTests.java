@@ -15,23 +15,22 @@ public final class GatewayUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GatewayUpdate model = BinaryData.fromString(
-            "{\"properties\":{\"allowedFeatures\":[\"cirgzp\"],\"gatewayBypass\":[\"azszrnwoiindfpw\",\"jylwbtlhflsj\"]},\"tags\":{\"rqmq\":\"szfjvfbgofelja\",\"tvsexsowuel\":\"ldvriiiojnalghfk\"}}")
+            "{\"properties\":{\"allowedFeatures\":[\"ifqjz\",\"xmrhu\",\"lw\"],\"gatewayBypass\":[\"sutrgjup\",\"uutpwoqhih\",\"jqgwzp\",\"fqntcyp\"]},\"tags\":{\"cizjxvydfceacvl\":\"vfoimwksli\"}}")
             .toObject(GatewayUpdate.class);
-        Assertions.assertEquals("szfjvfbgofelja", model.tags().get("rqmq"));
-        Assertions.assertEquals("cirgzp", model.allowedFeatures().get(0));
-        Assertions.assertEquals("azszrnwoiindfpw", model.gatewayBypass().get(0));
+        Assertions.assertEquals("vfoimwksli", model.tags().get("cizjxvydfceacvl"));
+        Assertions.assertEquals("ifqjz", model.allowedFeatures().get(0));
+        Assertions.assertEquals("sutrgjup", model.gatewayBypass().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GatewayUpdate model
-            = new GatewayUpdate().withTags(mapOf("rqmq", "szfjvfbgofelja", "tvsexsowuel", "ldvriiiojnalghfk"))
-                .withAllowedFeatures(Arrays.asList("cirgzp"))
-                .withGatewayBypass(Arrays.asList("azszrnwoiindfpw", "jylwbtlhflsj"));
+        GatewayUpdate model = new GatewayUpdate().withTags(mapOf("cizjxvydfceacvl", "vfoimwksli"))
+            .withAllowedFeatures(Arrays.asList("ifqjz", "xmrhu", "lw"))
+            .withGatewayBypass(Arrays.asList("sutrgjup", "uutpwoqhih", "jqgwzp", "fqntcyp"));
         model = BinaryData.fromObject(model).toObject(GatewayUpdate.class);
-        Assertions.assertEquals("szfjvfbgofelja", model.tags().get("rqmq"));
-        Assertions.assertEquals("cirgzp", model.allowedFeatures().get(0));
-        Assertions.assertEquals("azszrnwoiindfpw", model.gatewayBypass().get(0));
+        Assertions.assertEquals("vfoimwksli", model.tags().get("cizjxvydfceacvl"));
+        Assertions.assertEquals("ifqjz", model.allowedFeatures().get(0));
+        Assertions.assertEquals("sutrgjup", model.gatewayBypass().get(0));
     }
 
     // Use "Map.of" if available

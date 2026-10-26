@@ -23,7 +23,7 @@ public final class GatewaysListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleting\",\"gatewayId\":\"ynkbwetnju\",\"gatewayType\":\"Public\",\"gatewayEndpoint\":\"rkzyaupia\",\"allowedFeatures\":[\"n\",\"fbwqrooht\"],\"gatewayBypass\":[\"maonurj\",\"umghihpvecmsl\",\"lbl\"]},\"location\":\"xltbsjuscvsf\",\"tags\":{\"rtceukdqkkyihzt\":\"ctmgxuupbezqccy\",\"gqzgwldoychill\":\"eq\",\"a\":\"ecfehuwa\",\"rweft\":\"uhicqllizstacsjv\"},\"id\":\"wqejpmvsse\",\"name\":\"aepwamcxtcz\",\"type\":\"upeuknijduyye\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"gatewayId\":\"ekzkdhmeottaw\",\"gatewayType\":\"Public\",\"gatewayEndpoint\":\"xwwhnh\",\"allowedFeatures\":[\"vpndp\"],\"gatewayBypass\":[\"jpnwynudql\",\"zsauzp\",\"lxeehuxiq\"]},\"location\":\"lraymezxlskih\",\"tags\":{\"wyyshtuwgm\":\"fdsajred\",\"gwltxeqip\":\"vuafpwzyifr\",\"avkjog\":\"gzdyimsfayorp\"},\"id\":\"sl\",\"name\":\"bnsmjkwynqxaek\",\"type\":\"sykvwjtqpke\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,10 +34,10 @@ public final class GatewaysListMockTests {
 
         PagedIterable<Gateway> response = manager.gateways().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("xltbsjuscvsf", response.iterator().next().location());
-        Assertions.assertEquals("ctmgxuupbezqccy", response.iterator().next().tags().get("rtceukdqkkyihzt"));
+        Assertions.assertEquals("lraymezxlskih", response.iterator().next().location());
+        Assertions.assertEquals("fdsajred", response.iterator().next().tags().get("wyyshtuwgm"));
         Assertions.assertEquals(GatewayType.PUBLIC, response.iterator().next().gatewayType());
-        Assertions.assertEquals("n", response.iterator().next().allowedFeatures().get(0));
-        Assertions.assertEquals("maonurj", response.iterator().next().gatewayBypass().get(0));
+        Assertions.assertEquals("vpndp", response.iterator().next().allowedFeatures().get(0));
+        Assertions.assertEquals("jpnwynudql", response.iterator().next().gatewayBypass().get(0));
     }
 }

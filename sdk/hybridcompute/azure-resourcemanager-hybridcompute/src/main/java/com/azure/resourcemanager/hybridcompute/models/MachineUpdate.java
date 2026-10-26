@@ -289,6 +289,31 @@ public final class MachineUpdate extends ResourceUpdate {
     }
 
     /**
+     * Get the clientPublicKey property: Public Key that the client provides to be used during initial resource
+     * onboarding.
+     * 
+     * @return the clientPublicKey value.
+     */
+    public String clientPublicKey() {
+        return this.innerProperties() == null ? null : this.innerProperties().clientPublicKey();
+    }
+
+    /**
+     * Set the clientPublicKey property: Public Key that the client provides to be used during initial resource
+     * onboarding.
+     * 
+     * @param clientPublicKey the clientPublicKey value to set.
+     * @return the MachineUpdate object itself.
+     */
+    public MachineUpdate withClientPublicKey(String clientPublicKey) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new MachineUpdateProperties();
+        }
+        this.innerProperties().withClientPublicKey(clientPublicKey);
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override

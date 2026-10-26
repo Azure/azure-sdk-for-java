@@ -22,7 +22,7 @@ public final class PrivateLinkScopesGetValidationDetailsForMachineWithResponseMo
     @Test
     public void testGetValidationDetailsForMachineWithResponse() throws Exception {
         String responseStr
-            = "{\"id\":\"gdgxvcoqraswug\",\"publicNetworkAccess\":\"Enabled\",\"connectionDetails\":[{\"id\":\"we\",\"privateIpAddress\":\"l\",\"linkIdentifier\":\"skbuhzaca\",\"groupId\":\"yltcoqcuj\",\"memberName\":\"sxzakuejkm\"},{\"id\":\"iztjof\",\"privateIpAddress\":\"vovjufycsjmlbe\",\"linkIdentifier\":\"ej\",\"groupId\":\"iuxegth\",\"memberName\":\"tudaw\"},{\"id\":\"jfel\",\"privateIpAddress\":\"rpptcbgqnzmnhiil\",\"linkIdentifier\":\"lwcjgckbbcccgzpr\",\"groupId\":\"xnyuffatsgftipwc\",\"memberName\":\"yubhiqdx\"},{\"id\":\"rnpnuhzafccnuh\",\"privateIpAddress\":\"gbylbuig\",\"linkIdentifier\":\"vatvcrkd\",\"groupId\":\"nbqxvhcsyhzlwxae\",\"memberName\":\"vurex\"}]}";
+            = "{\"id\":\"gqa\",\"publicNetworkAccess\":\"Disabled\",\"connectionDetails\":[{\"id\":\"qqbtny\",\"privateIpAddress\":\"ylxd\",\"linkIdentifier\":\"vabm\",\"groupId\":\"s\",\"memberName\":\"aevwjcnkot\"},{\"id\":\"wuhvaj\",\"privateIpAddress\":\"ilfemjj\",\"linkIdentifier\":\"kzwjiqullq\",\"groupId\":\"dmvr\",\"memberName\":\"mqerndb\"},{\"id\":\"yeofltfnnxrkad\",\"privateIpAddress\":\"ynnfmuiii\",\"linkIdentifier\":\"pfoh\",\"groupId\":\"fkx\",\"memberName\":\"cbrwjiutgnjizbe\"},{\"id\":\"oiymrvzbjuyrsrzi\",\"privateIpAddress\":\"tixgbd\",\"linkIdentifier\":\"ifrevk\",\"groupId\":\"pezkis\",\"memberName\":\"jm\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,9 +32,9 @@ public final class PrivateLinkScopesGetValidationDetailsForMachineWithResponseMo
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PrivateLinkScopeValidationDetails response = manager.privateLinkScopes()
-            .getValidationDetailsForMachineWithResponse("foknubnoitp", "pz", com.azure.core.util.Context.NONE)
+            .getValidationDetailsForMachineWithResponse("eebgvopemtuoqu", "l", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(PublicNetworkAccessType.ENABLED, response.publicNetworkAccess());
+        Assertions.assertEquals(PublicNetworkAccessType.DISABLED, response.publicNetworkAccess());
     }
 }

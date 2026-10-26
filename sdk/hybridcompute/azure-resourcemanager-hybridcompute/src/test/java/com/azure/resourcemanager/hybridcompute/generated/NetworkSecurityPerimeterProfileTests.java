@@ -11,7 +11,7 @@ public final class NetworkSecurityPerimeterProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkSecurityPerimeterProfile model = BinaryData.fromString(
-            "{\"name\":\"tjuewbcihx\",\"accessRulesVersion\":1985861684,\"accessRules\":[{\"name\":\"yxccyb\",\"properties\":{\"direction\":\"Inbound\",\"addressPrefixes\":[\"kudzpxgwj\",\"lma\"]}}],\"diagnosticSettingsVersion\":625665728,\"enabledLogCategories\":[\"ohpfkyrkdbdgiog\",\"jkmnwq\",\"nobaiyhddviacegf\",\"m\"]}")
+            "{\"name\":\"kozzwculkb\",\"accessRulesVersion\":1523794500,\"accessRules\":[{\"name\":\"njwltlwtjjgu\",\"properties\":{\"direction\":\"Outbound\",\"addressPrefixes\":[\"nvkcdmxzrpoa\"]}},{\"name\":\"lnwiaaomylwe\",\"properties\":{\"direction\":\"Outbound\",\"addressPrefixes\":[\"ethwwnpjhlfz\",\"wpchwahf\"]}},{\"name\":\"usnfepgfewet\",\"properties\":{\"direction\":\"Inbound\",\"addressPrefixes\":[\"cxy\",\"xhdjhl\",\"mmbcxfhbcp\",\"rxvxcjzh\"]}}],\"diagnosticSettingsVersion\":398428257,\"enabledLogCategories\":[\"pxtgqscjav\",\"t\"]}")
             .toObject(NetworkSecurityPerimeterProfile.class);
     }
 }

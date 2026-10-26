@@ -10,7 +10,8 @@ import com.azure.resourcemanager.hybridcompute.fluent.models.NetworkSecurityPeri
 public final class NetworkSecurityPerimeterConfigurationReconcileResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NetworkSecurityPerimeterConfigurationReconcileResultInner model = BinaryData.fromString("{\"location\":\"g\"}")
-            .toObject(NetworkSecurityPerimeterConfigurationReconcileResultInner.class);
+        NetworkSecurityPerimeterConfigurationReconcileResultInner model
+            = BinaryData.fromString("{\"location\":\"bkbxgomfa\"}")
+                .toObject(NetworkSecurityPerimeterConfigurationReconcileResultInner.class);
     }
 }
