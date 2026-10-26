@@ -18,17 +18,22 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public abstract class KeyVaultEkmClientTestBase extends KeyVaultAdministrationClientTestBase {
+    // Shared by the sync and async EKM tests: the HSM has a single EKM connection and a pool of at most two private
+    // endpoints, so the classes must not run concurrently against a live service.
+    static final String EKM_RESOURCE_LOCK = "KeyVaultEkm";
 
     // Placeholder values used during playback so the tests can run without live resources or secrets.
     private static final String PLAYBACK_HOST = "ekm.contoso.com";
     private static final String PLAYBACK_PATH_PREFIX = "/api/v1";
     private static final byte[] PLAYBACK_CA_CERTIFICATE = new byte[] { 0x00 };
+    private static final String PLAYBACK_PRIVATE_LINK_SERVICE_ALIAS = "fake-private-link-service-id";
 
     KeyVaultEkmClientBuilder getClientBuilder(HttpClient httpClient, boolean forCleanup) {
         if (!interceptorManager.isLiveMode() && !forCleanup) {
-
             List<TestProxySanitizer> sanitizers = new ArrayList<>();
             sanitizers.add(new TestProxySanitizer("$..host", null, PLAYBACK_HOST, TestProxySanitizerType.BODY_KEY));
+            sanitizers.add(new TestProxySanitizer("$..privateLinkServiceId", null, PLAYBACK_PRIVATE_LINK_SERVICE_ALIAS,
+                TestProxySanitizerType.BODY_KEY));
             sanitizers
                 .add(new TestProxySanitizer("[A-Za-z0-9+/]{100,}={0,2}", "AA==", TestProxySanitizerType.BODY_REGEX));
             interceptorManager.addSanitizers(sanitizers);
@@ -39,6 +44,31 @@ public abstract class KeyVaultEkmClientTestBase extends KeyVaultAdministrationCl
 
     @Test
     public abstract void ekmConnectionLifecycle(HttpClient httpClient);
+
+    @Test
+    public abstract void ekmPrivateEndpointLifecycle(HttpClient httpClient);
+
+    String generatePrivateEndpointName() {
+        return testResourceNamer.randomName("ekm-pe-", 24);
+    }
+
+    // The default $..name sanitizer would hide the private endpoint name, which is asserted on and is not a secret.
+    void keepPrivateEndpointNameInRecording() {
+        if (!interceptorManager.isLiveMode()) {
+            interceptorManager.removeSanitizers("AZSDK3493");
+        }
+    }
+
+    String getPrivateLinkServiceAlias() {
+        if (interceptorManager.isPlaybackMode()) {
+            return PLAYBACK_PRIVATE_LINK_SERVICE_ALIAS;
+        }
+
+        String alias = Configuration.getGlobalConfiguration().get("EKM_PRIVATE_LINK_SERVICE_ID");
+        Assumptions.assumeTrue(alias != null, "EKM_PRIVATE_LINK_SERVICE_ID is not defined.");
+
+        return alias;
+    }
 
     /**
      * Builds the {@link KeyVaultEkmConnection} used as input for the lifecycle tests. In playback mode it returns a

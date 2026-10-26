@@ -13,18 +13,34 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.polling.LongRunningOperationStatus;
+import com.azure.core.util.polling.PollResponse;
+import com.azure.core.util.polling.PollingContext;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.security.keyvault.administration.implementation.KeyVaultAdministrationClientImpl;
 import com.azure.security.keyvault.administration.implementation.models.EkmConnection;
+import com.azure.security.keyvault.administration.implementation.models.EkmPrivateEndpointCreateParameters;
+import com.azure.security.keyvault.administration.implementation.models.EkmPrivateEndpointOperation;
 import com.azure.security.keyvault.administration.implementation.models.EkmProxyClientCertificateInfo;
 import com.azure.security.keyvault.administration.implementation.models.EkmProxyInfo;
 import com.azure.security.keyvault.administration.models.KeyVaultAdministrationException;
 import com.azure.security.keyvault.administration.models.KeyVaultEkmConnection;
+import com.azure.security.keyvault.administration.models.KeyVaultEkmPrivateEndpoint;
+import com.azure.security.keyvault.administration.models.KeyVaultEkmPrivateEndpointOperation;
 import com.azure.security.keyvault.administration.models.KeyVaultEkmProxyClientCertificateInfo;
 import com.azure.security.keyvault.administration.models.KeyVaultEkmProxyInfo;
 
+import java.time.Duration;
+import java.util.List;
 import java.util.Objects;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.EMPTY_OPTIONS;
+import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.toLongRunningOperationStatus;
+import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.transformToKeyVaultEkmPrivateEndpointOperation;
+import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.transformToKeyVaultEkmPrivateEndpoints;
+import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.validateRequiredParameter;
 import static com.azure.security.keyvault.administration.KeyVaultEkmAsyncClient.transformToEkmConnection;
 import static com.azure.security.keyvault.administration.KeyVaultEkmAsyncClient.transformToKeyVaultEkmConnection;
 import static com.azure.security.keyvault.administration.KeyVaultEkmAsyncClient.transformToKeyVaultEkmProxyClientCertificateInfo;
@@ -202,6 +218,140 @@ import static com.azure.security.keyvault.administration.implementation.KeyVault
  *
  * <p><strong>Note:</strong> For the asynchronous sample, refer to {@link KeyVaultEkmAsyncClient}.</p>
  *
+ * <br/>
+ *
+ * <hr/>
+ *
+ * <h2>Create an EKM Proxy Private Endpoint</h2>
+ * The {@link KeyVaultEkmClient} can be used to create a private endpoint that connects the Managed HSM EKM proxy pool
+ * to a Private Link Service.
+ *
+ * <p><strong>Code Sample:</strong></p>
+ * <p>The following code sample demonstrates how to synchronously create an EKM proxy private endpoint, using the
+ * {@link KeyVaultEkmClient#beginCreateEkmPrivateEndpoint(String, String, String)} API.</p>
+ *
+ * <!-- src_embed com.azure.security.keyvault.administration.KeyVaultEkmClient.beginCreateEkmPrivateEndpoint#String-String-String -->
+ * <pre>
+ * SyncPoller&lt;KeyVaultEkmPrivateEndpointOperation, KeyVaultEkmPrivateEndpoint&gt; createPoller =
+ *     keyVaultEkmClient.beginCreateEkmPrivateEndpoint&#40;&quot;&lt;private-endpoint-name&gt;&quot;, &quot;&lt;private-link-service-alias&gt;&quot;,
+ *         &quot;Please approve this connection from my Managed HSM&quot;&#41;;
+ * PollResponse&lt;KeyVaultEkmPrivateEndpointOperation&gt; createResponse = createPoller.waitForCompletion&#40;&#41;;
+ *
+ * System.out.printf&#40;&quot;EKM private endpoint creation finished with status '%s'.%n&quot;,
+ *     createResponse.getValue&#40;&#41;.getStatus&#40;&#41;&#41;;
+ *
+ * KeyVaultEkmPrivateEndpoint createdPrivateEndpoint = createPoller.getFinalResult&#40;&#41;;
+ *
+ * System.out.printf&#40;&quot;Created EKM private endpoint '%s'.%n&quot;, createdPrivateEndpoint.getName&#40;&#41;&#41;;
+ * </pre>
+ * <!-- end com.azure.security.keyvault.administration.KeyVaultEkmClient.beginCreateEkmPrivateEndpoint#String-String-String -->
+ *
+ * <p><strong>Note:</strong> For the asynchronous sample, refer to {@link KeyVaultEkmAsyncClient}.</p>
+ *
+ * <br/>
+ *
+ * <hr/>
+ *
+ * <h2>Get an EKM Proxy Private Endpoint</h2>
+ * The {@link KeyVaultEkmClient} can be used to retrieve an EKM proxy private endpoint from the key vault.
+ *
+ * <p><strong>Code Sample:</strong></p>
+ * <p>The following code sample demonstrates how to synchronously retrieve an EKM proxy private endpoint, using the
+ * {@link KeyVaultEkmClient#getEkmPrivateEndpoint(String)} API.</p>
+ *
+ * <!-- src_embed com.azure.security.keyvault.administration.KeyVaultEkmClient.getEkmPrivateEndpoint#String -->
+ * <pre>
+ * KeyVaultEkmPrivateEndpoint privateEndpoint = keyVaultEkmClient.getEkmPrivateEndpoint&#40;&quot;&lt;private-endpoint-name&gt;&quot;&#41;;
+ *
+ * System.out.printf&#40;&quot;Retrieved EKM private endpoint '%s' with provisioning state '%s'.%n&quot;,
+ *     privateEndpoint.getName&#40;&#41;, privateEndpoint.getProvisioningState&#40;&#41;&#41;;
+ * </pre>
+ * <!-- end com.azure.security.keyvault.administration.KeyVaultEkmClient.getEkmPrivateEndpoint#String -->
+ *
+ * <p><strong>Note:</strong> For the asynchronous sample, refer to {@link KeyVaultEkmAsyncClient}.</p>
+ *
+ * <br/>
+ *
+ * <hr/>
+ *
+ * <h2>List EKM Proxy Private Endpoints</h2>
+ * The {@link KeyVaultEkmClient} can be used to list the EKM proxy private endpoints in the key vault.
+ *
+ * <p><strong>Code Sample:</strong></p>
+ * <p>The following code sample demonstrates how to synchronously list the EKM proxy private endpoints, using the
+ * {@link KeyVaultEkmClient#listEkmPrivateEndpoints()} API.</p>
+ *
+ * <!-- src_embed com.azure.security.keyvault.administration.KeyVaultEkmClient.listEkmPrivateEndpoints -->
+ * <pre>
+ * List&lt;KeyVaultEkmPrivateEndpoint&gt; privateEndpoints = keyVaultEkmClient.listEkmPrivateEndpoints&#40;&#41;;
+ *
+ * for &#40;KeyVaultEkmPrivateEndpoint privateEndpoint : privateEndpoints&#41; &#123;
+ *     System.out.printf&#40;&quot;Retrieved EKM private endpoint '%s' with provisioning state '%s'.%n&quot;,
+ *         privateEndpoint.getName&#40;&#41;, privateEndpoint.getProvisioningState&#40;&#41;&#41;;
+ * &#125;
+ * </pre>
+ * <!-- end com.azure.security.keyvault.administration.KeyVaultEkmClient.listEkmPrivateEndpoints -->
+ *
+ * <p><strong>Note:</strong> For the asynchronous sample, refer to {@link KeyVaultEkmAsyncClient}.</p>
+ *
+ * <br/>
+ *
+ * <hr/>
+ *
+ * <h2>Create an EKM Connection Through a Private Endpoint</h2>
+ * Once the Private Link Service owner approves the private endpoint connection, the {@link KeyVaultEkmClient} can be
+ * used to create an EKM connection that reaches the EKM proxy through the private endpoint.
+ *
+ * <p><strong>Code Sample:</strong></p>
+ * <p>The following code sample demonstrates how to synchronously create an EKM connection that uses
+ * {@link com.azure.security.keyvault.administration.models.KeyVaultEkmConnectivityMode#PRIVATE_ENDPOINT}, using the
+ * {@link KeyVaultEkmClient#createEkmConnection(KeyVaultEkmConnection)} API.</p>
+ *
+ * <!-- src_embed com.azure.security.keyvault.administration.KeyVaultEkmClient.createPrivateEkmConnection -->
+ * <pre>
+ * &#47;&#47; The host is the private endpoint's name, so the proxy's certificate is validated against the subject name.
+ * KeyVaultEkmConnection privateEkmConnectionToCreate =
+ *     new KeyVaultEkmConnection&#40;&quot;&lt;private-endpoint-name&gt;&quot;,
+ *         Collections.singletonList&#40;&quot;&lt;server-ca-certificate&gt;&quot;.getBytes&#40;&#41;&#41;&#41;
+ *         .setPathPrefix&#40;&quot;&lt;path-prefix&gt;&quot;&#41;
+ *         .setConnectivityMode&#40;KeyVaultEkmConnectivityMode.PRIVATE_ENDPOINT&#41;
+ *         .setServerSubjectCommonName&#40;&quot;&lt;server-subject-common-name&gt;&quot;&#41;;
+ *
+ * KeyVaultEkmConnection createdEkmConnection =
+ *     keyVaultEkmClient.createEkmConnection&#40;privateEkmConnectionToCreate&#41;;
+ *
+ * System.out.printf&#40;&quot;Created EKM connection with connectivity mode '%s'.%n&quot;,
+ *     createdEkmConnection.getConnectivityMode&#40;&#41;&#41;;
+ * </pre>
+ * <!-- end com.azure.security.keyvault.administration.KeyVaultEkmClient.createPrivateEkmConnection -->
+ *
+ * <p><strong>Note:</strong> For the asynchronous sample, refer to {@link KeyVaultEkmAsyncClient}.</p>
+ *
+ * <br/>
+ *
+ * <hr/>
+ *
+ * <h2>Delete an EKM Proxy Private Endpoint</h2>
+ * The {@link KeyVaultEkmClient} can be used to delete an EKM proxy private endpoint. The EKM connection that
+ * references the private endpoint must be deleted first.
+ *
+ * <p><strong>Code Sample:</strong></p>
+ * <p>The following code sample demonstrates how to synchronously delete an EKM proxy private endpoint, using the
+ * {@link KeyVaultEkmClient#beginDeleteEkmPrivateEndpoint(String)} API.</p>
+ *
+ * <!-- src_embed com.azure.security.keyvault.administration.KeyVaultEkmClient.beginDeleteEkmPrivateEndpoint#String -->
+ * <pre>
+ * SyncPoller&lt;KeyVaultEkmPrivateEndpointOperation, Void&gt; deletePoller =
+ *     keyVaultEkmClient.beginDeleteEkmPrivateEndpoint&#40;&quot;&lt;private-endpoint-name&gt;&quot;&#41;;
+ * PollResponse&lt;KeyVaultEkmPrivateEndpointOperation&gt; deleteResponse = deletePoller.waitForCompletion&#40;&#41;;
+ *
+ * System.out.printf&#40;&quot;EKM private endpoint deletion finished with status '%s'.%n&quot;,
+ *     deleteResponse.getValue&#40;&#41;.getStatus&#40;&#41;&#41;;
+ * </pre>
+ * <!-- end com.azure.security.keyvault.administration.KeyVaultEkmClient.beginDeleteEkmPrivateEndpoint#String -->
+ *
+ * <p><strong>Note:</strong> For the asynchronous sample, refer to {@link KeyVaultEkmAsyncClient}.</p>
+ *
  * @see com.azure.security.keyvault.administration
  * @see KeyVaultEkmClientBuilder
  */
@@ -210,6 +360,7 @@ import static com.azure.security.keyvault.administration.implementation.KeyVault
     serviceInterfaces = KeyVaultAdministrationClientImpl.KeyVaultAdministrationClientService.class)
 public final class KeyVaultEkmClient {
     private static final ClientLogger LOGGER = new ClientLogger(KeyVaultEkmClient.class);
+    private static final Duration DEFAULT_POLLING_INTERVAL = Duration.ofSeconds(1);
     private final KeyVaultAdministrationClientImpl implClient;
 
     /**
@@ -219,6 +370,10 @@ public final class KeyVaultEkmClient {
      */
     KeyVaultEkmClient(KeyVaultAdministrationClientImpl implClient) {
         this.implClient = implClient;
+    }
+
+    Duration getDefaultPollingInterval() {
+        return DEFAULT_POLLING_INTERVAL;
     }
 
     /**
@@ -526,6 +681,274 @@ public final class KeyVaultEkmClient {
 
             return new SimpleResponse<>(response, transformToKeyVaultEkmProxyClientCertificateInfo(
                 response.getValue().toObject(EkmProxyClientCertificateInfo.class)));
+        } catch (HttpResponseException e) {
+            throw LOGGER.logExceptionAsError(toKeyVaultAdministrationException(e));
+        } catch (RuntimeException e) {
+            throw LOGGER.logExceptionAsError(e);
+        }
+    }
+
+    /**
+     * Begins creating an EKM proxy private endpoint that connects the Managed HSM to the Private Link Service in front
+     * of an EKM proxy. A Managed HSM may have up to two EKM proxy private endpoints. This operation requires the
+     * {@code ekm/write} permission and service version {@code 2026-07-01-preview} or later.
+     * <p>
+     * Once the operation completes, the Private Link Service owner may still need to approve the connection before
+     * the private endpoint can be used by an {@link KeyVaultEkmConnection EKM connection}. See
+     * {@link KeyVaultEkmPrivateEndpoint#getPrivateLinkServiceConnectionState()}.
+     *
+     * @param name The name of the private endpoint. Must be 1-24 characters, start and end with an alphanumeric
+     * character, and contain only alphanumeric characters and hyphens.
+     * @param privateLinkServiceAlias The alias of the Private Link Service that the private endpoint connects to.
+     *
+     * @return A {@link SyncPoller} polling on the {@link KeyVaultEkmPrivateEndpointOperation operation} status, whose
+     * final result is the created {@link KeyVaultEkmPrivateEndpoint private endpoint}. If the operation fails, the
+     * poller does not throw: its last poll response has status {@link LongRunningOperationStatus#FAILED}, the final
+     * result is {@code null}, and the failure details are available from
+     * {@link KeyVaultEkmPrivateEndpointOperation#getError()}.
+     *
+     * @throws NullPointerException if {@code name} or {@code privateLinkServiceAlias} is {@code null}.
+     * @throws IllegalArgumentException if {@code name} or {@code privateLinkServiceAlias} is empty.
+     * @throws KeyVaultAdministrationException thrown if the request is rejected by the server.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<KeyVaultEkmPrivateEndpointOperation, KeyVaultEkmPrivateEndpoint>
+        beginCreateEkmPrivateEndpoint(String name, String privateLinkServiceAlias) {
+        return beginCreateEkmPrivateEndpoint(name, privateLinkServiceAlias, null);
+    }
+
+    /**
+     * Begins creating an EKM proxy private endpoint that connects the Managed HSM to the Private Link Service in front
+     * of an EKM proxy. A Managed HSM may have up to two EKM proxy private endpoints. This operation requires the
+     * {@code ekm/write} permission and service version {@code 2026-07-01-preview} or later.
+     * <p>
+     * Once the operation completes, the Private Link Service owner may still need to approve the connection before
+     * the private endpoint can be used by an {@link KeyVaultEkmConnection EKM connection}. See
+     * {@link KeyVaultEkmPrivateEndpoint#getPrivateLinkServiceConnectionState()}.
+     *
+     * @param name The name of the private endpoint. Must be 1-24 characters, start and end with an alphanumeric
+     * character, and contain only alphanumeric characters and hyphens.
+     * @param privateLinkServiceAlias The alias of the Private Link Service that the private endpoint connects to.
+     * @param requestMessage An optional message shown to the Private Link Service owner when approving the private
+     * endpoint connection.
+     *
+     * @return A {@link SyncPoller} polling on the {@link KeyVaultEkmPrivateEndpointOperation operation} status, whose
+     * final result is the created {@link KeyVaultEkmPrivateEndpoint private endpoint}. If the operation fails, the
+     * poller does not throw: its last poll response has status {@link LongRunningOperationStatus#FAILED}, the final
+     * result is {@code null}, and the failure details are available from
+     * {@link KeyVaultEkmPrivateEndpointOperation#getError()}.
+     *
+     * @throws NullPointerException if {@code name} or {@code privateLinkServiceAlias} is {@code null}.
+     * @throws IllegalArgumentException if {@code name} or {@code privateLinkServiceAlias} is empty.
+     * @throws KeyVaultAdministrationException thrown if the request is rejected by the server.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<KeyVaultEkmPrivateEndpointOperation, KeyVaultEkmPrivateEndpoint>
+        beginCreateEkmPrivateEndpoint(String name, String privateLinkServiceAlias, String requestMessage) {
+        validateRequiredParameter(name, "name", LOGGER);
+        validateRequiredParameter(privateLinkServiceAlias, "privateLinkServiceAlias", LOGGER);
+
+        BinaryData parameters = BinaryData.fromObject(
+            new EkmPrivateEndpointCreateParameters(privateLinkServiceAlias).setRequestMessage(requestMessage));
+
+        return SyncPoller.createPoller(getDefaultPollingInterval(),
+            pollingContext -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
+                startEkmPrivateEndpointOperation(
+                    () -> implClient.createEkmPrivateEndpointWithResponse(name, parameters, EMPTY_OPTIONS))),
+            ekmPrivateEndpointPollOperation(), (pollingContext, activationResponse) -> {
+                throw LOGGER.logExceptionAsError(new RuntimeException("Cancellation is not supported"));
+            }, pollingContext -> pollingContext.getLatestResponse().getStatus()
+                == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED ? getEkmPrivateEndpoint(name) : null);
+    }
+
+    /**
+     * Begins deleting an EKM proxy private endpoint. The operation is rejected while an
+     * {@link KeyVaultEkmConnection EKM connection} still references the private endpoint. This operation requires the
+     * {@code ekm/write} permission and service version {@code 2026-07-01-preview} or later.
+     *
+     * @param name The name of the private endpoint to delete.
+     *
+     * @return A {@link SyncPoller} polling on the {@link KeyVaultEkmPrivateEndpointOperation operation} status. If the
+     * operation fails, the poller does not throw: its last poll response has status
+     * {@link LongRunningOperationStatus#FAILED} and the failure details are available from
+     * {@link KeyVaultEkmPrivateEndpointOperation#getError()}.
+     *
+     * @throws NullPointerException if {@code name} is {@code null}.
+     * @throws IllegalArgumentException if {@code name} is empty.
+     * @throws KeyVaultAdministrationException thrown if the request is rejected by the server.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<KeyVaultEkmPrivateEndpointOperation, Void> beginDeleteEkmPrivateEndpoint(String name) {
+        validateRequiredParameter(name, "name", LOGGER);
+
+        return SyncPoller.createPoller(getDefaultPollingInterval(),
+            pollingContext -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
+                startEkmPrivateEndpointOperation(
+                    () -> implClient.deleteEkmPrivateEndpointWithResponse(name, EMPTY_OPTIONS))),
+            ekmPrivateEndpointPollOperation(), (pollingContext, activationResponse) -> {
+                throw LOGGER.logExceptionAsError(new RuntimeException("Cancellation is not supported"));
+            }, pollingContext -> null);
+    }
+
+    private KeyVaultEkmPrivateEndpointOperation
+        startEkmPrivateEndpointOperation(Supplier<Response<BinaryData>> activation) {
+        try {
+            return transformToKeyVaultEkmPrivateEndpointOperation(
+                activation.get().getValue().toObject(EkmPrivateEndpointOperation.class));
+        } catch (HttpResponseException e) {
+            throw LOGGER.logExceptionAsError(toKeyVaultAdministrationException(e));
+        } catch (RuntimeException e) {
+            throw LOGGER.logExceptionAsError(e);
+        }
+    }
+
+    private
+        Function<PollingContext<KeyVaultEkmPrivateEndpointOperation>, PollResponse<KeyVaultEkmPrivateEndpointOperation>>
+        ekmPrivateEndpointPollOperation() {
+        return pollingContext -> {
+            String operationId = pollingContext.getLatestResponse().getValue().getOperationId();
+
+            if (operationId == null) {
+                throw LOGGER.logExceptionAsError(
+                    new IllegalStateException("The service did not return an operation ID for the private endpoint "
+                        + "operation, so its status cannot be polled."));
+            }
+
+            KeyVaultEkmPrivateEndpointOperation operation = getEkmPrivateEndpointOperationStatus(operationId);
+
+            return new PollResponse<>(toLongRunningOperationStatus(operation.getStatus()), operation);
+        };
+    }
+
+    /**
+     * Gets an EKM proxy private endpoint. This operation requires the {@code ekm/read} permission and service version
+     * {@code 2026-07-01-preview} or later.
+     *
+     * @param name The name of the private endpoint to get.
+     *
+     * @return The {@link KeyVaultEkmPrivateEndpoint private endpoint}.
+     *
+     * @throws NullPointerException if {@code name} is {@code null}.
+     * @throws IllegalArgumentException if {@code name} is empty.
+     * @throws KeyVaultAdministrationException thrown if the request is rejected by the server.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public KeyVaultEkmPrivateEndpoint getEkmPrivateEndpoint(String name) {
+        return getEkmPrivateEndpointWithResponse(name, Context.NONE).getValue();
+    }
+
+    /**
+     * Gets an EKM proxy private endpoint. This operation requires the {@code ekm/read} permission and service version
+     * {@code 2026-07-01-preview} or later.
+     *
+     * @param name The name of the private endpoint to get.
+     * @param context Additional {@link Context} that is passed through the HTTP pipeline during the service call.
+     *
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the
+     * {@link KeyVaultEkmPrivateEndpoint private endpoint}.
+     *
+     * @throws NullPointerException if {@code name} is {@code null}.
+     * @throws IllegalArgumentException if {@code name} is empty.
+     * @throws KeyVaultAdministrationException thrown if the request is rejected by the server.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<KeyVaultEkmPrivateEndpoint> getEkmPrivateEndpointWithResponse(String name, Context context) {
+        validateRequiredParameter(name, "name", LOGGER);
+
+        try {
+            Response<BinaryData> response
+                = implClient.getEkmPrivateEndpointWithResponse(name, new RequestOptions().setContext(context));
+
+            return new SimpleResponse<>(response, response.getValue().toObject(KeyVaultEkmPrivateEndpoint.class));
+        } catch (HttpResponseException e) {
+            throw LOGGER.logExceptionAsError(toKeyVaultAdministrationException(e));
+        } catch (RuntimeException e) {
+            throw LOGGER.logExceptionAsError(e);
+        }
+    }
+
+    /**
+     * Lists the EKM proxy private endpoints of the Managed HSM. This operation requires the {@code ekm/read}
+     * permission and service version {@code 2026-07-01-preview} or later.
+     *
+     * @return The list of {@link KeyVaultEkmPrivateEndpoint private endpoints}.
+     *
+     * @throws KeyVaultAdministrationException thrown if the request is rejected by the server.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public List<KeyVaultEkmPrivateEndpoint> listEkmPrivateEndpoints() {
+        return listEkmPrivateEndpointsWithResponse(Context.NONE).getValue();
+    }
+
+    /**
+     * Lists the EKM proxy private endpoints of the Managed HSM. This operation requires the {@code ekm/read}
+     * permission and service version {@code 2026-07-01-preview} or later.
+     *
+     * @param context Additional {@link Context} that is passed through the HTTP pipeline during the service call.
+     *
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the list of
+     * {@link KeyVaultEkmPrivateEndpoint private endpoints}.
+     *
+     * @throws KeyVaultAdministrationException thrown if the request is rejected by the server.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<List<KeyVaultEkmPrivateEndpoint>> listEkmPrivateEndpointsWithResponse(Context context) {
+        try {
+            Response<BinaryData> response
+                = implClient.listEkmPrivateEndpointsWithResponse(new RequestOptions().setContext(context));
+
+            return new SimpleResponse<>(response, transformToKeyVaultEkmPrivateEndpoints(response.getValue()));
+        } catch (HttpResponseException e) {
+            throw LOGGER.logExceptionAsError(toKeyVaultAdministrationException(e));
+        } catch (RuntimeException e) {
+            throw LOGGER.logExceptionAsError(e);
+        }
+    }
+
+    /**
+     * Gets the status of an EKM proxy private endpoint create or delete operation. This operation requires the
+     * {@code ekm/read} permission and service version {@code 2026-07-01-preview} or later.
+     *
+     * @param operationId The identifier of the operation, as returned by
+     * {@link KeyVaultEkmPrivateEndpointOperation#getOperationId()}.
+     *
+     * @return The {@link KeyVaultEkmPrivateEndpointOperation operation}.
+     *
+     * @throws NullPointerException if {@code operationId} is {@code null}.
+     * @throws IllegalArgumentException if {@code operationId} is empty.
+     * @throws KeyVaultAdministrationException thrown if the request is rejected by the server.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public KeyVaultEkmPrivateEndpointOperation getEkmPrivateEndpointOperationStatus(String operationId) {
+        return getEkmPrivateEndpointOperationStatusWithResponse(operationId, Context.NONE).getValue();
+    }
+
+    /**
+     * Gets the status of an EKM proxy private endpoint create or delete operation. This operation requires the
+     * {@code ekm/read} permission and service version {@code 2026-07-01-preview} or later.
+     *
+     * @param operationId The identifier of the operation, as returned by
+     * {@link KeyVaultEkmPrivateEndpointOperation#getOperationId()}.
+     * @param context Additional {@link Context} that is passed through the HTTP pipeline during the service call.
+     *
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the
+     * {@link KeyVaultEkmPrivateEndpointOperation operation}.
+     *
+     * @throws NullPointerException if {@code operationId} is {@code null}.
+     * @throws IllegalArgumentException if {@code operationId} is empty.
+     * @throws KeyVaultAdministrationException thrown if the request is rejected by the server.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<KeyVaultEkmPrivateEndpointOperation>
+        getEkmPrivateEndpointOperationStatusWithResponse(String operationId, Context context) {
+        validateRequiredParameter(operationId, "operationId", LOGGER);
+
+        try {
+            Response<BinaryData> response = implClient.getEkmPrivateEndpointOperationStatusWithResponse(operationId,
+                new RequestOptions().setContext(context));
+
+            return new SimpleResponse<>(response, transformToKeyVaultEkmPrivateEndpointOperation(
+                response.getValue().toObject(EkmPrivateEndpointOperation.class)));
         } catch (HttpResponseException e) {
             throw LOGGER.logExceptionAsError(toKeyVaultAdministrationException(e));
         } catch (RuntimeException e) {

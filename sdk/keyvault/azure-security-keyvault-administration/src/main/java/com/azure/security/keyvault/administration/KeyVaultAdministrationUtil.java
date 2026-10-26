@@ -16,7 +16,10 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.LongRunningOperationStatus;
+import com.azure.security.keyvault.administration.implementation.models.EkmPrivateEndpointListResult;
+import com.azure.security.keyvault.administration.implementation.models.EkmPrivateEndpointOperation;
 import com.azure.security.keyvault.administration.implementation.models.FullBackupOperation;
+import com.azure.security.keyvault.administration.implementation.models.FullBackupOperationError;
 import com.azure.security.keyvault.administration.implementation.models.Permission;
 import com.azure.security.keyvault.administration.implementation.models.RestoreOperation;
 import com.azure.security.keyvault.administration.implementation.models.RoleAssignment;
@@ -27,8 +30,12 @@ import com.azure.security.keyvault.administration.implementation.models.RoleDefi
 import com.azure.security.keyvault.administration.implementation.models.RoleDefinitionCreateParameters;
 import com.azure.security.keyvault.administration.implementation.models.RoleDefinitionProperties;
 import com.azure.security.keyvault.administration.implementation.models.SelectiveKeyRestoreOperation;
+import com.azure.security.keyvault.administration.models.KeyVaultAdministrationError;
 import com.azure.security.keyvault.administration.models.KeyVaultBackupOperation;
 import com.azure.security.keyvault.administration.models.KeyVaultDataAction;
+import com.azure.security.keyvault.administration.models.KeyVaultEkmPrivateEndpoint;
+import com.azure.security.keyvault.administration.models.KeyVaultEkmPrivateEndpointOperation;
+import com.azure.security.keyvault.administration.models.KeyVaultEkmPrivateEndpointOperationStatus;
 import com.azure.security.keyvault.administration.models.KeyVaultLongRunningOperation;
 import com.azure.security.keyvault.administration.models.KeyVaultPermission;
 import com.azure.security.keyvault.administration.models.KeyVaultRestoreOperation;
@@ -44,6 +51,7 @@ import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
@@ -325,5 +333,54 @@ class KeyVaultAdministrationUtil {
 
         return new PagedResponseBase<>(page.getRequest(), page.getStatusCode(), page.getHeaders(), mappedValues,
             page.getContinuationToken(), null);
+    }
+
+    static KeyVaultEkmPrivateEndpointOperation
+        transformToKeyVaultEkmPrivateEndpointOperation(EkmPrivateEndpointOperation operation) {
+        return new KeyVaultEkmPrivateEndpointOperation(operation.getJobId(), operation.getPrivateEndpointName(),
+            operation.getOperationType(),
+            operation.getStatus() == null
+                ? null
+                : KeyVaultEkmPrivateEndpointOperationStatus.fromString(operation.getStatus().toString()),
+            operation.getStatusDetails(), transformToKeyVaultAdministrationError(operation.getError()),
+            operation.getStartTime(), operation.getEndTime());
+    }
+
+    // Maps field by field; KeyVaultAdministrationUtils.toKeyVaultAdministrationError only recognizes Error.
+    static KeyVaultAdministrationError transformToKeyVaultAdministrationError(FullBackupOperationError error) {
+        return error == null
+            ? null
+            : new KeyVaultAdministrationError(error.getCode(), error.getMessage(),
+                transformToKeyVaultAdministrationError(error.getInnerError()));
+    }
+
+    static List<KeyVaultEkmPrivateEndpoint> transformToKeyVaultEkmPrivateEndpoints(BinaryData listResult) {
+        List<KeyVaultEkmPrivateEndpoint> privateEndpoints
+            = listResult.toObject(EkmPrivateEndpointListResult.class).getValue();
+
+        return privateEndpoints == null ? Collections.emptyList() : privateEndpoints;
+    }
+
+    static LongRunningOperationStatus toLongRunningOperationStatus(KeyVaultEkmPrivateEndpointOperationStatus status) {
+        if (KeyVaultEkmPrivateEndpointOperationStatus.SUCCEEDED.equals(status)) {
+            return LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
+        } else if (KeyVaultEkmPrivateEndpointOperationStatus.FAILED.equals(status)) {
+            return LongRunningOperationStatus.FAILED;
+        } else if (KeyVaultEkmPrivateEndpointOperationStatus.CANCELED.equals(status)) {
+            return LongRunningOperationStatus.USER_CANCELLED;
+        } else {
+            return LongRunningOperationStatus.IN_PROGRESS;
+        }
+    }
+
+    static void validateRequiredParameter(String value, String parameterName, ClientLogger logger) {
+        if (value == null) {
+            throw logger.logExceptionAsError(
+                new NullPointerException(String.format(PARAMETER_REQUIRED, "'" + parameterName + "'")));
+        }
+
+        if (value.isEmpty()) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'" + parameterName + "' cannot be empty."));
+        }
     }
 }
