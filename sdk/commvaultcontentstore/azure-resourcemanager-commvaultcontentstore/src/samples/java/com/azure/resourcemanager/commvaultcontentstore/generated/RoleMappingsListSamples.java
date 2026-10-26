@@ -9,7 +9,7 @@ package com.azure.resourcemanager.commvaultcontentstore.generated;
  */
 public final class RoleMappingsListSamples {
     /*
-     * x-ms-original-file: 2026-07-03-preview/RoleMappings_List_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-30/RoleMappings_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: RoleMappings_List.
@@ -22,7 +22,7 @@ public final class RoleMappingsListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-03-preview/RoleMappings_List_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-09-30/RoleMappings_List_MinimumSet_Gen.json
      */
     /**
      * Sample code: RoleMappings_List_MinimumSet - List role mappings with single role.

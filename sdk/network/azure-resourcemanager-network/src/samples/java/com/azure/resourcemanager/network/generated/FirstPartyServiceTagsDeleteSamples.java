@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class FirstPartyServiceTagsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-01-01/FirstPartyServiceTagDelete.json
+     * x-ms-original-file: 2026-03-01/FirstPartyServiceTagDelete.json
      */
     /**
      * Sample code: Delete first party service tag.

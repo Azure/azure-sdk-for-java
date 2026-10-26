@@ -111,7 +111,8 @@ public interface RaiPolicy {
          * The stage of the RaiPolicy definition which contains all the minimum required properties for the resource to
          * be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithProperties {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithProperties,
+            DefinitionStages.WithIfMatch, DefinitionStages.WithIfNoneMatch {
             /**
              * Executes the create request.
              * 
@@ -153,6 +154,32 @@ public interface RaiPolicy {
              */
             WithCreate withProperties(RaiPolicyProperties properties);
         }
+
+        /**
+         * The stage of the RaiPolicy definition allowing to specify ifMatch.
+         */
+        interface WithIfMatch {
+            /**
+             * Specifies the ifMatch property: Proceed only when the current resource ETag matches this value..
+             * 
+             * @param ifMatch Proceed only when the current resource ETag matches this value.
+             * @return the next definition stage.
+             */
+            WithCreate withIfMatch(String ifMatch);
+        }
+
+        /**
+         * The stage of the RaiPolicy definition allowing to specify ifNoneMatch.
+         */
+        interface WithIfNoneMatch {
+            /**
+             * Specifies the ifNoneMatch property: Proceed only when no current resource ETag matches this value..
+             * 
+             * @param ifNoneMatch Proceed only when no current resource ETag matches this value.
+             * @return the next definition stage.
+             */
+            WithCreate withIfNoneMatch(String ifNoneMatch);
+        }
     }
 
     /**
@@ -165,7 +192,8 @@ public interface RaiPolicy {
     /**
      * The template for RaiPolicy update.
      */
-    interface Update extends UpdateStages.WithTags, UpdateStages.WithProperties {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithProperties, UpdateStages.WithIfMatch,
+        UpdateStages.WithIfNoneMatch {
         /**
          * Executes the update request.
          * 
@@ -210,6 +238,32 @@ public interface RaiPolicy {
              * @return the next definition stage.
              */
             Update withProperties(RaiPolicyProperties properties);
+        }
+
+        /**
+         * The stage of the RaiPolicy update allowing to specify ifMatch.
+         */
+        interface WithIfMatch {
+            /**
+             * Specifies the ifMatch property: Proceed only when the current resource ETag matches this value..
+             * 
+             * @param ifMatch Proceed only when the current resource ETag matches this value.
+             * @return the next definition stage.
+             */
+            Update withIfMatch(String ifMatch);
+        }
+
+        /**
+         * The stage of the RaiPolicy update allowing to specify ifNoneMatch.
+         */
+        interface WithIfNoneMatch {
+            /**
+             * Specifies the ifNoneMatch property: Proceed only when no current resource ETag matches this value..
+             * 
+             * @param ifNoneMatch Proceed only when no current resource ETag matches this value.
+             * @return the next definition stage.
+             */
+            Update withIfNoneMatch(String ifNoneMatch);
         }
     }
 

@@ -11,7 +11,7 @@ import com.azure.resourcemanager.cosmos.models.RegionForOnlineOffline;
  */
 public final class DatabaseAccountsOfflineRegionSamples {
     /*
-     * x-ms-original-file: 2026-03-15/CosmosDBDatabaseAccountOfflineRegion.json
+     * x-ms-original-file: 2026-04-01-preview/CosmosDBDatabaseAccountOfflineRegion.json
      */
     /**
      * Sample code: CosmosDBDatabaseAccountOfflineRegion.

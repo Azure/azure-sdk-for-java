@@ -7,18 +7,23 @@ package com.azure.resourcemanager.durabletask.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.durabletask.fluent.models.TaskHubInner;
 import com.azure.resourcemanager.durabletask.models.TaskHubProperties;
+import java.util.Arrays;
+import org.junit.jupiter.api.Assertions;
 
 public final class TaskHubInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TaskHubInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Deleting\",\"dashboardUrl\":\"gnzscxaqwo\"},\"id\":\"hcbonqvpkvlr\",\"name\":\"njeaseipheofloke\",\"type\":\"y\"}")
+            "{\"properties\":{\"provisioningState\":\"Accepted\",\"dashboardUrl\":\"jefuzmuvpbttdumo\",\"capabilities\":[\"xe\",\"mnzb\",\"bhjpglkfgohdne\"]},\"id\":\"lfphsdyhtozfikd\",\"name\":\"wwquuvxzxclvithh\",\"type\":\"zonosgg\"}")
             .toObject(TaskHubInner.class);
+        Assertions.assertEquals("xe", model.properties().capabilities().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TaskHubInner model = new TaskHubInner().withProperties(new TaskHubProperties());
+        TaskHubInner model = new TaskHubInner()
+            .withProperties(new TaskHubProperties().withCapabilities(Arrays.asList("xe", "mnzb", "bhjpglkfgohdne")));
         model = BinaryData.fromObject(model).toObject(TaskHubInner.class);
+        Assertions.assertEquals("xe", model.properties().capabilities().get(0));
     }
 }

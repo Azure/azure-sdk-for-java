@@ -23,7 +23,7 @@ public final class DeploymentSettingsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Accepted\",\"arcNodeResourceIds\":[\"omlnws\",\"v\",\"dls\",\"lxkqesdfeds\"],\"deploymentMode\":\"Deploy\",\"operationType\":\"ClusterUpgrade\",\"deploymentConfiguration\":{\"version\":\"coinmphymcqi\",\"scaleUnits\":[{\"deploymentData\":{},\"sbePartnerInfo\":{}},{\"deploymentData\":{},\"sbePartnerInfo\":{}},{\"deploymentData\":{},\"sbePartnerInfo\":{}}]},\"reportedProperties\":{\"validationStatus\":{\"status\":\"nufbxwei\",\"steps\":[{},{},{},{}]},\"deploymentStatus\":{\"status\":\"jovf\",\"steps\":[{},{}]}}},\"id\":\"dhuihaouwudhuao\",\"name\":\"hjkehwvumosqir\",\"type\":\"amqprlo\"}";
+            = "{\"properties\":{\"provisioningState\":\"Failed\",\"arcNodeResourceIds\":[\"gqp\",\"dhgxgiea\"],\"deploymentMode\":\"Deploy\",\"operationType\":\"ClusterProvisioning\",\"deploymentConfiguration\":{\"version\":\"xavlozukgs\",\"scaleUnits\":[{\"deploymentData\":{},\"sbePartnerInfo\":{}},{\"deploymentData\":{},\"sbePartnerInfo\":{}},{\"deploymentData\":{},\"sbePartnerInfo\":{}},{\"deploymentData\":{},\"sbePartnerInfo\":{}}]},\"reportedProperties\":{\"validationStatus\":{\"status\":\"maxcebnb\",\"steps\":[{},{},{}]},\"deploymentStatus\":{\"status\":\"mqqerwqxpj\",\"steps\":[{},{}]}}},\"id\":\"dfkhttuobrxz\",\"name\":\"hyt\",\"type\":\"bjkjge\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,12 +33,12 @@ public final class DeploymentSettingsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DeploymentSetting response = manager.deploymentSettings()
-            .getWithResponse("dux", "pg", "cqeb", com.azure.core.util.Context.NONE)
+            .getWithResponse("s", "rxs", "mfpabw", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("omlnws", response.arcNodeResourceIds().get(0));
+        Assertions.assertEquals("gqp", response.arcNodeResourceIds().get(0));
         Assertions.assertEquals(DeploymentMode.DEPLOY, response.deploymentMode());
-        Assertions.assertEquals(OperationType.CLUSTER_UPGRADE, response.operationType());
-        Assertions.assertEquals("coinmphymcqi", response.deploymentConfiguration().version());
+        Assertions.assertEquals(OperationType.CLUSTER_PROVISIONING, response.operationType());
+        Assertions.assertEquals("xavlozukgs", response.deploymentConfiguration().version());
     }
 }

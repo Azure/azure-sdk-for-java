@@ -9,9 +9,10 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.maintenance.fluent.ScheduledEventsClient;
-import com.azure.resourcemanager.maintenance.fluent.models.ScheduledEventApproveResponseInner;
-import com.azure.resourcemanager.maintenance.models.ScheduledEventApproveResponse;
+import com.azure.resourcemanager.maintenance.fluent.models.ScheduledEventsApproveResponseInner;
 import com.azure.resourcemanager.maintenance.models.ScheduledEvents;
+import com.azure.resourcemanager.maintenance.models.ScheduledEventsApproveResponse;
+import com.azure.resourcemanager.maintenance.models.ScheduledEventsIdList;
 
 public final class ScheduledEventsImpl implements ScheduledEvents {
     private static final ClientLogger LOGGER = new ClientLogger(ScheduledEventsImpl.class);
@@ -26,20 +27,39 @@ public final class ScheduledEventsImpl implements ScheduledEvents {
         this.serviceManager = serviceManager;
     }
 
-    public Response<ScheduledEventApproveResponse> acknowledgeWithResponse(String resourceGroupName,
+    public Response<ScheduledEventsApproveResponse> acknowledgeWithResponse(String resourceGroupName,
         String resourceType, String resourceName, String scheduledEventId, Context context) {
-        Response<ScheduledEventApproveResponseInner> inner = this.serviceClient()
+        Response<ScheduledEventsApproveResponseInner> inner = this.serviceClient()
             .acknowledgeWithResponse(resourceGroupName, resourceType, resourceName, scheduledEventId, context);
         return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new ScheduledEventApproveResponseImpl(inner.getValue(), this.manager()));
+            new ScheduledEventsApproveResponseImpl(inner.getValue(), this.manager()));
     }
 
-    public ScheduledEventApproveResponse acknowledge(String resourceGroupName, String resourceType, String resourceName,
-        String scheduledEventId) {
-        ScheduledEventApproveResponseInner inner
+    public ScheduledEventsApproveResponse acknowledge(String resourceGroupName, String resourceType,
+        String resourceName, String scheduledEventId) {
+        ScheduledEventsApproveResponseInner inner
             = this.serviceClient().acknowledge(resourceGroupName, resourceType, resourceName, scheduledEventId);
         if (inner != null) {
-            return new ScheduledEventApproveResponseImpl(inner, this.manager());
+            return new ScheduledEventsApproveResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<ScheduledEventsApproveResponse> acknowledgeListWithResponse(String resourceGroupName,
+        String resourceType, String resourceName, ScheduledEventsIdList scheduledEventsIdList, Context context) {
+        Response<ScheduledEventsApproveResponseInner> inner = this.serviceClient()
+            .acknowledgeListWithResponse(resourceGroupName, resourceType, resourceName, scheduledEventsIdList, context);
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new ScheduledEventsApproveResponseImpl(inner.getValue(), this.manager()));
+    }
+
+    public ScheduledEventsApproveResponse acknowledgeList(String resourceGroupName, String resourceType,
+        String resourceName, ScheduledEventsIdList scheduledEventsIdList) {
+        ScheduledEventsApproveResponseInner inner = this.serviceClient()
+            .acknowledgeList(resourceGroupName, resourceType, resourceName, scheduledEventsIdList);
+        if (inner != null) {
+            return new ScheduledEventsApproveResponseImpl(inner, this.manager());
         } else {
             return null;
         }

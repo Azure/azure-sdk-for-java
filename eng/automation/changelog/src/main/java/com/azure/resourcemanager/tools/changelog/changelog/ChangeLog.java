@@ -10,10 +10,13 @@ import com.azure.resourcemanager.tools.changelog.utils.MethodName;
 import japicmp.model.AccessModifier;
 import japicmp.model.JApiChangeStatus;
 import japicmp.model.JApiClass;
+import japicmp.model.JApiClassType;
+import japicmp.model.JApiClassType.ClassType;
 import japicmp.model.JApiConstructor;
 import japicmp.model.JApiField;
 import japicmp.model.JApiMethod;
 import japicmp.model.StaticModifier;
+import javassist.CtMethod;
 import javassist.bytecode.AccessFlag;
 
 import java.util.ArrayList;
@@ -125,6 +128,11 @@ public class ChangeLog {
             case NEW: newFeature.add(String.format("* `%s` was added", getJApiClass().getFullyQualifiedName())); break;
             case REMOVED: breakingChange.setClassLevelChangeType(BreakingChange.Type.REMOVED); break;
             default:
+                if (isClassTypeChange(ClassType.CLASS, ClassType.INTERFACE)) {
+                    breakingChange.addClassTypeChange("a class", "an interface");
+                } else if (isClassTypeChange(ClassType.INTERFACE, ClassType.CLASS)) {
+                    breakingChange.addClassTypeChange("an interface", "a class");
+                }
                 boolean checkReturnType = !ClassName.name(getJApiClass()).equals("Definition");
                 allMethods.getConstructors().forEach(constructor -> this.calcChangelogForConstructor(constructor));
                 allMethods.getMethods().forEach(method -> this.calcChangelogForMethod(method, checkReturnType));
@@ -150,6 +158,9 @@ public class ChangeLog {
                 breakingChange.addMethodLevelChange(String.format("`%s` was removed", MethodName.name(method.getOldMethod().get())));
                 break;
             case MODIFIED:
+                if (isRedundantAbstractnessChange(method)) {
+                    break;
+                }
                 if (!checkReturnType){
                     if (!method.getOldMethod().get().getLongName().equals(method.getNewMethod().get().getLongName())) {
                         breakingChange.addMethodLevelChange(String.format("`%s` -> `%s`", MethodName.name(method.getOldMethod().get()), MethodName.name(method.getNewMethod().get())));
@@ -159,6 +170,29 @@ public class ChangeLog {
                 }
                 break;
         }
+    }
+
+    private boolean isClassTypeChange(ClassType oldType, ClassType newType) {
+        JApiClassType classType = getJApiClass().getClassType();
+        return classType.getOldTypeOptional().isPresent() && classType.getNewTypeOptional().isPresent()
+            && classType.getOldTypeOptional().get() == oldType && classType.getNewTypeOptional().get() == newType;
+    }
+
+    private boolean isRedundantAbstractnessChange(JApiMethod method) {
+        boolean toInterface = isClassTypeChange(ClassType.CLASS, ClassType.INTERFACE);
+        if ((!toInterface && !isClassTypeChange(ClassType.INTERFACE, ClassType.CLASS))
+            || !method.getjApiClass().getFullyQualifiedName().equals(getJApiClass().getFullyQualifiedName())) {
+            return false;
+        }
+        CtMethod oldMethod = method.getOldMethod().get();
+        CtMethod newMethod = method.getNewMethod().get();
+        return oldMethod.getSignature().equals(newMethod.getSignature())
+            && Objects.equals(oldMethod.getGenericSignature(), newMethod.getGenericSignature())
+            && (oldMethod.getModifiers() ^ newMethod.getModifiers()) == AccessFlag.ABSTRACT
+            && ((newMethod.getModifiers() & AccessFlag.ABSTRACT) != 0) == toInterface
+            && method.getAnnotations().stream().allMatch(annotation -> annotation.getChangeStatus() == JApiChangeStatus.UNCHANGED)
+            && method.getExceptions().stream().allMatch(exception -> exception.getChangeStatus() == JApiChangeStatus.UNCHANGED)
+            && method.getAttributes().stream().allMatch(attribute -> attribute.getChangeStatus() == JApiChangeStatus.UNCHANGED);
     }
 
     private void calcChangelogForConstructor(JApiConstructor constructor) {

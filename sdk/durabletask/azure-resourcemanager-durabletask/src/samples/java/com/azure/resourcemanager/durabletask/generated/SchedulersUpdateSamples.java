@@ -4,6 +4,8 @@
 
 package com.azure.resourcemanager.durabletask.generated;
 
+import com.azure.resourcemanager.durabletask.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.durabletask.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.durabletask.models.Scheduler;
 import com.azure.resourcemanager.durabletask.models.SchedulerPropertiesUpdate;
 import com.azure.resourcemanager.durabletask.models.SchedulerSkuName;
@@ -17,7 +19,7 @@ import java.util.Map;
  */
 public final class SchedulersUpdateSamples {
     /*
-     * x-ms-original-file: 2026-02-01/Schedulers_Update.json
+     * x-ms-original-file: 2026-07-01-preview/Schedulers_Update.json
      */
     /**
      * Sample code: Schedulers_Update.
@@ -32,6 +34,7 @@ public final class SchedulersUpdateSamples {
             .withTags(mapOf("hello", "world"))
             .withProperties(new SchedulerPropertiesUpdate().withIpAllowlist(Arrays.asList("10.0.0.0/8"))
                 .withSku(new SchedulerSkuUpdate().withName(SchedulerSkuName.DEDICATED).withCapacity(3)))
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE))
             .apply();
     }
 

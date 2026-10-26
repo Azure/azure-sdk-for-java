@@ -9,7 +9,7 @@ package com.azure.resourcemanager.edgeactions.generated;
  */
 public final class EdgeActionsListSamples {
     /*
-     * x-ms-original-file: 2025-12-01-preview/EdgeActions_ListBySubscription.json
+     * x-ms-original-file: 2026-10-01/EdgeActions_ListBySubscription.json
      */
     /**
      * Sample code: ListEdgeActions_bySubscription.

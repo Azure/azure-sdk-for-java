@@ -12,7 +12,8 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The GitHub Copilot managed harness for prompt agents.
+ * The legacy GitHub Copilot managed harness retained for compatibility. Use `MicrosoftCopilotHarness` for new prompt
+ * agents.
  */
 @Immutable
 @Beta(warningText = "Preview API. GitHubCopilot=V1Preview")

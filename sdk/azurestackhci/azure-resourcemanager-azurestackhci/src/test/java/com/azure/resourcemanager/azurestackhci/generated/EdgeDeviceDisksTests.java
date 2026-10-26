@@ -11,7 +11,7 @@ public final class EdgeDeviceDisksTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EdgeDeviceDisks model = BinaryData.fromString(
-            "{\"id\":\"lod\",\"sizeInBytes\":\"euzanhs\",\"type\":\"hse\",\"model\":\"phpzfngqjcl\",\"manufacturer\":\"ftujwjjufw\",\"isSupported\":false}")
+            "{\"id\":\"epbnwgfm\",\"sizeInBytes\":\"gcgbjb\",\"type\":\"lfgtdysnaquflqbc\",\"model\":\"hamzjrwdkqze\",\"manufacturer\":\"jleziunjx\",\"isSupported\":true}")
             .toObject(EdgeDeviceDisks.class);
     }
 }

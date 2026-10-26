@@ -103,6 +103,7 @@ public final class BulkCreateCancelSamples {
 
 ```java
 import com.azure.core.management.SubResource;
+import com.azure.resourcemanager.compute.bulkactions.models.BillingProfile;
 import com.azure.resourcemanager.compute.bulkactions.models.BulkCreateProperties;
 import com.azure.resourcemanager.compute.bulkactions.models.BulkactionVMProperties;
 import com.azure.resourcemanager.compute.bulkactions.models.CachingTypes;
@@ -113,6 +114,8 @@ import com.azure.resourcemanager.compute.bulkactions.models.DiskCreateOptionType
 import com.azure.resourcemanager.compute.bulkactions.models.DiskDeleteOptionTypes;
 import com.azure.resourcemanager.compute.bulkactions.models.EvictionPolicy;
 import com.azure.resourcemanager.compute.bulkactions.models.ExecutionParameters;
+import com.azure.resourcemanager.compute.bulkactions.models.ExtendedLocation;
+import com.azure.resourcemanager.compute.bulkactions.models.ExtendedLocationType;
 import com.azure.resourcemanager.compute.bulkactions.models.HardwareProfile;
 import com.azure.resourcemanager.compute.bulkactions.models.ImageReference;
 import com.azure.resourcemanager.compute.bulkactions.models.LinuxConfiguration;
@@ -124,9 +127,7 @@ import com.azure.resourcemanager.compute.bulkactions.models.NetworkProfile;
 import com.azure.resourcemanager.compute.bulkactions.models.OSDisk;
 import com.azure.resourcemanager.compute.bulkactions.models.OSProfile;
 import com.azure.resourcemanager.compute.bulkactions.models.OperatingSystemTypes;
-import com.azure.resourcemanager.compute.bulkactions.models.PartialFulfillmentMode;
-import com.azure.resourcemanager.compute.bulkactions.models.PartialFulfillmentPolicy;
-import com.azure.resourcemanager.compute.bulkactions.models.PriorityProfile;
+import com.azure.resourcemanager.compute.bulkactions.models.Placement;
 import com.azure.resourcemanager.compute.bulkactions.models.PriorityType;
 import com.azure.resourcemanager.compute.bulkactions.models.ResourceOperationType;
 import com.azure.resourcemanager.compute.bulkactions.models.RetryPolicy;
@@ -138,6 +139,7 @@ import com.azure.resourcemanager.compute.bulkactions.models.VirtualMachineNetwor
 import com.azure.resourcemanager.compute.bulkactions.models.VirtualMachineNetworkInterfaceConfigurationProperties;
 import com.azure.resourcemanager.compute.bulkactions.models.VirtualMachineNetworkInterfaceIPConfiguration;
 import com.azure.resourcemanager.compute.bulkactions.models.VirtualMachineNetworkInterfaceIPConfigurationProperties;
+import com.azure.resourcemanager.compute.bulkactions.models.ZonePlacementPolicyType;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -162,11 +164,6 @@ public final class BulkCreateCreateOrUpdateSamples {
             .withTags(mapOf("workload", "batch-render", "env", "prod"))
             .withProperties(new BulkCreateProperties().withCapacity(2)
                 .withCapacityType(CapacityType.VM)
-                .withMinCapacity(1)
-                .withPartialFulfillmentPolicy(new PartialFulfillmentPolicy().withMode(PartialFulfillmentMode.ENABLED))
-                .withPriorityProfile(new PriorityProfile().withType(PriorityType.SPOT)
-                    .withMaxPricePerVM(0.2D)
-                    .withEvictionPolicy(EvictionPolicy.DELETE))
                 .withComputeProfile(new ComputeProfile().withVirtualMachineProfile(new BulkactionVMProperties()
                     .withStorageProfile(new StorageProfile()
                         .withImageReference(new ImageReference().withPublisher("Canonical")
@@ -199,11 +196,18 @@ public final class BulkCreateCreateOrUpdateSamples {
                                                 new VirtualMachineNetworkInterfaceIPConfigurationProperties()
                                                     .withSubnet(new SubResource().withId(
                                                         "/subscriptions/1FBA3C66-5C9C-4391-B72F-9F52735FC9F2/resourceGroups/rgBulkactions/providers/Microsoft.Network/virtualNetworks/bulkvnet/subnets/default"))
-                                                    .withPrimary(true)))))))))
-                    .withComputeApiVersion("2024-11-01"))
+                                                    .withPrimary(true))))))))
+                    .withPriority(PriorityType.SPOT)
+                    .withBillingProfile(new BillingProfile().withMaxPrice(0.05D))
+                    .withEvictionPolicy(EvictionPolicy.DEALLOCATE)).withComputeApiVersion("2024-11-01"))
                 .withExecutionParameters(new ExecutionParameters().withRetryPolicy(
                     new RetryPolicy().withRetryWindowInMinutes(30).withOnFailureAction(ResourceOperationType.DELETE))))
             .withZones(Arrays.asList("1", "2"))
+            .withExtendedLocation(
+                new ExtendedLocation().withName("microsoftlosangeles1").withType(ExtendedLocationType.EDGE_ZONE))
+            .withPlacement(new Placement().withZonePlacementPolicy(ZonePlacementPolicyType.AUTO)
+                .withIncludeZones(Arrays.asList("1", "2"))
+                .withExcludeZones(Arrays.asList("3")))
             .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED))
             .create();
     }
@@ -390,9 +394,9 @@ public final class BulkCreateCustomCancelSamples {
 
 ```java
 import com.azure.core.management.SubResource;
+import com.azure.resourcemanager.compute.bulkactions.models.BillingProfile;
 import com.azure.resourcemanager.compute.bulkactions.models.BulkCreateCustomOverride;
 import com.azure.resourcemanager.compute.bulkactions.models.BulkCreateCustomOverridesProfile;
-import com.azure.resourcemanager.compute.bulkactions.models.BulkCreateCustomPriorityProfile;
 import com.azure.resourcemanager.compute.bulkactions.models.BulkCreateCustomProperties;
 import com.azure.resourcemanager.compute.bulkactions.models.BulkactionVMProperties;
 import com.azure.resourcemanager.compute.bulkactions.models.CachingTypes;
@@ -403,6 +407,8 @@ import com.azure.resourcemanager.compute.bulkactions.models.DiskCreateOptionType
 import com.azure.resourcemanager.compute.bulkactions.models.DiskDeleteOptionTypes;
 import com.azure.resourcemanager.compute.bulkactions.models.EvictionPolicy;
 import com.azure.resourcemanager.compute.bulkactions.models.ExecutionParameters;
+import com.azure.resourcemanager.compute.bulkactions.models.ExtendedLocation;
+import com.azure.resourcemanager.compute.bulkactions.models.ExtendedLocationType;
 import com.azure.resourcemanager.compute.bulkactions.models.HardwareProfile;
 import com.azure.resourcemanager.compute.bulkactions.models.ImageReference;
 import com.azure.resourcemanager.compute.bulkactions.models.LinuxConfiguration;
@@ -414,8 +420,7 @@ import com.azure.resourcemanager.compute.bulkactions.models.NetworkProfile;
 import com.azure.resourcemanager.compute.bulkactions.models.OSDisk;
 import com.azure.resourcemanager.compute.bulkactions.models.OSProfile;
 import com.azure.resourcemanager.compute.bulkactions.models.OperatingSystemTypes;
-import com.azure.resourcemanager.compute.bulkactions.models.PartialFulfillmentMode;
-import com.azure.resourcemanager.compute.bulkactions.models.PartialFulfillmentPolicy;
+import com.azure.resourcemanager.compute.bulkactions.models.Placement;
 import com.azure.resourcemanager.compute.bulkactions.models.PriorityType;
 import com.azure.resourcemanager.compute.bulkactions.models.ResourceOperationType;
 import com.azure.resourcemanager.compute.bulkactions.models.RetryPolicy;
@@ -427,6 +432,7 @@ import com.azure.resourcemanager.compute.bulkactions.models.VirtualMachineNetwor
 import com.azure.resourcemanager.compute.bulkactions.models.VirtualMachineNetworkInterfaceConfigurationProperties;
 import com.azure.resourcemanager.compute.bulkactions.models.VirtualMachineNetworkInterfaceIPConfiguration;
 import com.azure.resourcemanager.compute.bulkactions.models.VirtualMachineNetworkInterfaceIPConfigurationProperties;
+import com.azure.resourcemanager.compute.bulkactions.models.ZonePlacementPolicyType;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -451,11 +457,6 @@ public final class BulkCreateCustomCreateOrUpdateSamples {
             .withTags(mapOf("workload", "batch-render", "env", "prod"))
             .withProperties(new BulkCreateCustomProperties().withCapacity(2)
                 .withCapacityType(CapacityType.VM)
-                .withMinCapacity(1)
-                .withPartialFulfillmentPolicy(new PartialFulfillmentPolicy().withMode(PartialFulfillmentMode.ENABLED))
-                .withPriorityProfile(new BulkCreateCustomPriorityProfile().withType(PriorityType.SPOT)
-                    .withMaxPricePerVM(0.2D)
-                    .withEvictionPolicy(EvictionPolicy.DELETE))
                 .withComputeProfile(new ComputeProfile().withVirtualMachineProfile(new BulkactionVMProperties()
                     .withStorageProfile(new StorageProfile()
                         .withImageReference(new ImageReference().withPublisher("Canonical")
@@ -488,16 +489,33 @@ public final class BulkCreateCustomCreateOrUpdateSamples {
                                                 new VirtualMachineNetworkInterfaceIPConfigurationProperties()
                                                     .withSubnet(new SubResource().withId(
                                                         "/subscriptions/1FBA3C66-5C9C-4391-B72F-9F52735FC9F2/resourceGroups/rgBulkactions/providers/Microsoft.Network/virtualNetworks/bulkvnet/subnets/default"))
-                                                    .withPrimary(true)))))))))
-                    .withComputeApiVersion("2024-11-01"))
+                                                    .withPrimary(true))))))))
+                    .withPriority(PriorityType.SPOT)
+                    .withBillingProfile(new BillingProfile().withMaxPrice(0.05D))
+                    .withEvictionPolicy(EvictionPolicy.DEALLOCATE)).withComputeApiVersion("2024-11-01"))
                 .withOverridesProfile(new BulkCreateCustomOverridesProfile().withVirtualMachineNamePrefix("bulkvm")
                     .withOverrides(Arrays.asList(
                         new BulkCreateCustomOverride().withVirtualMachineName("bulkvm-payments-0")
+                            .withZone("1")
+                            .withExtendedLocation(new ExtendedLocation().withName("microsoftlosangeles1")
+                                .withType(ExtendedLocationType.EDGE_ZONE))
+                            .withPlacement(new Placement().withZonePlacementPolicy(ZonePlacementPolicyType.ANY)
+                                .withIncludeZones(Arrays.asList("1")))
                             .withTags(mapOf("workload", "payments", "env", "prod")),
-                        new BulkCreateCustomOverride().withTags(mapOf("workload", "batch")))))
+                        new BulkCreateCustomOverride().withZone("2")
+                            .withExtendedLocation(new ExtendedLocation().withName("microsoftlosangeles2")
+                                .withType(ExtendedLocationType.EDGE_ZONE))
+                            .withPlacement(new Placement().withZonePlacementPolicy(ZonePlacementPolicyType.AUTO)
+                                .withExcludeZones(Arrays.asList("3")))
+                            .withTags(mapOf("workload", "batch")))))
                 .withExecutionParameters(new ExecutionParameters().withRetryPolicy(
                     new RetryPolicy().withRetryWindowInMinutes(30).withOnFailureAction(ResourceOperationType.DELETE))))
             .withZones(Arrays.asList("1", "2"))
+            .withExtendedLocation(
+                new ExtendedLocation().withName("microsoftlosangeles1").withType(ExtendedLocationType.EDGE_ZONE))
+            .withPlacement(new Placement().withZonePlacementPolicy(ZonePlacementPolicyType.AUTO)
+                .withIncludeZones(Arrays.asList("1", "2"))
+                .withExcludeZones(Arrays.asList("3")))
             .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED))
             .create();
     }
@@ -667,11 +685,11 @@ public final class OccurrenceExtensionListOccurrenceByVmsSamples {
      * x-ms-original-file: 2026-10-06-preview/OccurrenceExtension_ListOccurrenceByVms_BasicSuccess.json
      */
     /**
-     * Sample code: List recurring scheduled action occurrences for a virtual machine.
+     * Sample code: List recurring bulk action occurrences for a virtual machine.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
-    public static void listRecurringScheduledActionOccurrencesForAVirtualMachine(
+    public static void listRecurringBulkActionOccurrencesForAVirtualMachine(
         com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.occurrenceExtensions()
             .listOccurrenceByVms(
@@ -692,15 +710,15 @@ import java.util.Arrays;
  */
 public final class OccurrencesCancelSamples {
     /*
-     * x-ms-original-file: 2026-10-06-preview/Occurrences_Cancel_BasicSuccess.json
+     * x-ms-original-file: 2026-10-06-preview/Occurrences_Cancel_PartialSuccess.json
      */
     /**
-     * Sample code: 01 - Cancel operations in a recurring scheduled action occurrence.
+     * Sample code: 03 - Response with partial results when canceling resources in a recurring bulk action occurrence.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
     public static void
-        zeroOneSpaceHyphenMinusSpaceCancelSpaceoperationsSpaceinSpaceaSpacerecurringSpacescheduledSpaceactionSpaceoccurrence(
+        zeroThreeSpaceHyphenMinusSpaceResponseSpacewithSpacepartialSpaceresultsSpacewhenSpacecancelingSpaceresourcesSpaceinSpaceaSpacerecurringSpacebulkSpaceactionSpaceoccurrence(
             com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.occurrences()
             .cancel("example-rg", "weekday-start", "77777777-7777-7777-7777-777777777777",
@@ -714,12 +732,12 @@ public final class OccurrencesCancelSamples {
      * x-ms-original-file: 2026-10-06-preview/Occurrences_Cancel_EntireOccurrenceSuccess.json
      */
     /**
-     * Sample code: 02 - Cancel all operations in a recurring scheduled action occurrence.
+     * Sample code: 02 - Cancel all operations in a recurring bulk action occurrence.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
     public static void
-        zeroTwoSpaceHyphenMinusSpaceCancelSpaceallSpaceoperationsSpaceinSpaceaSpacerecurringSpacescheduledSpaceactionSpaceoccurrence(
+        zeroTwoSpaceHyphenMinusSpaceCancelSpaceallSpaceoperationsSpaceinSpaceaSpacerecurringSpacebulkSpaceactionSpaceoccurrence(
             com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.occurrences()
             .cancel("example-rg", "weekday-start", "77777777-7777-7777-7777-777777777777",
@@ -727,16 +745,15 @@ public final class OccurrencesCancelSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-10-06-preview/Occurrences_Cancel_PartialSuccess.json
+     * x-ms-original-file: 2026-10-06-preview/Occurrences_Cancel_BasicSuccess.json
      */
     /**
-     * Sample code: 03 - Response with partial results when canceling resources in a recurring scheduled action
-     * occurrence.
+     * Sample code: 01 - Cancel operations in a recurring bulk action occurrence.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
     public static void
-        zeroThreeSpaceHyphenMinusSpaceResponseSpacewithSpacepartialSpaceresultsSpacewhenSpacecancelingSpaceresourcesSpaceinSpaceaSpacerecurringSpacescheduledSpaceactionSpaceoccurrence(
+        zeroOneSpaceHyphenMinusSpaceCancelSpaceoperationsSpaceinSpaceaSpacerecurringSpacebulkSpaceactionSpaceoccurrence(
             com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.occurrences()
             .cancel("example-rg", "weekday-start", "77777777-7777-7777-7777-777777777777",
@@ -763,13 +780,13 @@ public final class OccurrencesDelaySamples {
      * x-ms-original-file: 2026-10-06-preview/Occurrences_Delay_PartialSuccess.json
      */
     /**
-     * Sample code: 03 - Response with partial success results when delaying operations in a recurring scheduled action
+     * Sample code: 03 - Response with partial success results when delaying operations in a recurring bulk action
      * occurrence.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
     public static void
-        zeroThreeSpaceHyphenMinusSpaceResponseSpacewithSpacepartialSpacesuccessSpaceresultsSpacewhenSpacedelayingSpaceoperationsSpaceinSpaceaSpacerecurringSpacescheduledSpaceactionSpaceoccurrence(
+        zeroThreeSpaceHyphenMinusSpaceResponseSpacewithSpacepartialSpacesuccessSpaceresultsSpacewhenSpacedelayingSpaceoperationsSpaceinSpaceaSpacerecurringSpacebulkSpaceactionSpaceoccurrence(
             com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.occurrences()
             .delay("example-rg", "weekday-start", "77777777-7777-7777-7777-777777777777", new DelayRequest()
@@ -784,12 +801,12 @@ public final class OccurrencesDelaySamples {
      * x-ms-original-file: 2026-10-06-preview/Occurrences_Delay_BasicSuccess.json
      */
     /**
-     * Sample code: 01 - Delay operations in a recurring scheduled action occurrence.
+     * Sample code: 01 - Delay operations in a recurring bulk action occurrence.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
     public static void
-        zeroOneSpaceHyphenMinusSpaceDelaySpaceoperationsSpaceinSpaceaSpacerecurringSpacescheduledSpaceactionSpaceoccurrence(
+        zeroOneSpaceHyphenMinusSpaceDelaySpaceoperationsSpaceinSpaceaSpacerecurringSpacebulkSpaceactionSpaceoccurrence(
             com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.occurrences()
             .delay("example-rg", "weekday-start", "77777777-7777-7777-7777-777777777777", new DelayRequest()
@@ -804,12 +821,12 @@ public final class OccurrencesDelaySamples {
      * x-ms-original-file: 2026-10-06-preview/Occurrences_Delay_EntireOccurrenceSuccess.json
      */
     /**
-     * Sample code: 02 - Delay all operations in a recurring scheduled action occurrence.
+     * Sample code: 02 - Delay all operations in a recurring bulk action occurrence.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
     public static void
-        zeroTwoSpaceHyphenMinusSpaceDelaySpaceallSpaceoperationsSpaceinSpaceaSpacerecurringSpacescheduledSpaceactionSpaceoccurrence(
+        zeroTwoSpaceHyphenMinusSpaceDelaySpaceallSpaceoperationsSpaceinSpaceaSpacerecurringSpacebulkSpaceactionSpaceoccurrence(
             com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.occurrences()
             .delay("example-rg", "weekday-start", "77777777-7777-7777-7777-777777777777",
@@ -828,33 +845,33 @@ public final class OccurrencesDelaySamples {
  */
 public final class OccurrencesGetSamples {
     /*
-     * x-ms-original-file: 2026-10-06-preview/Occurrences_Get_ComprehensiveSuccess.json
+     * x-ms-original-file: 2026-10-06-preview/Occurrences_Get_BasicSuccess.json
      */
     /**
-     * Sample code: 02 - Read a recurring scheduled action occurrence with mixed results.
+     * Sample code: 01 - Read a recurring bulk action occurrence.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
-    public static void
-        zeroTwoSpaceHyphenMinusSpaceReadSpaceaSpacerecurringSpacescheduledSpaceactionSpaceoccurrenceSpacewithSpacemixedSpaceresults(
-            com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
+    public static void zeroOneSpaceHyphenMinusSpaceReadSpaceaSpacerecurringSpacebulkSpaceactionSpaceoccurrence(
+        com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.occurrences()
-            .getWithResponse("example-rg", "weekday-start", "88888888-8888-8888-8888-888888888888",
+            .getWithResponse("example-rg", "weekday-start", "77777777-7777-7777-7777-777777777777",
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: 2026-10-06-preview/Occurrences_Get_BasicSuccess.json
+     * x-ms-original-file: 2026-10-06-preview/Occurrences_Get_ComprehensiveSuccess.json
      */
     /**
-     * Sample code: 01 - Read a recurring scheduled action occurrence.
+     * Sample code: 02 - Read a recurring bulk action occurrence with mixed results.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
-    public static void zeroOneSpaceHyphenMinusSpaceReadSpaceaSpacerecurringSpacescheduledSpaceactionSpaceoccurrence(
-        com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
+    public static void
+        zeroTwoSpaceHyphenMinusSpaceReadSpaceaSpacerecurringSpacebulkSpaceactionSpaceoccurrenceSpacewithSpacemixedSpaceresults(
+            com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.occurrences()
-            .getWithResponse("example-rg", "weekday-start", "77777777-7777-7777-7777-777777777777",
+            .getWithResponse("example-rg", "weekday-start", "88888888-8888-8888-8888-888888888888",
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -871,11 +888,11 @@ public final class OccurrencesListByScheduledActionSamples {
      * x-ms-original-file: 2026-10-06-preview/Occurrences_ListByScheduledAction_BasicSuccess.json
      */
     /**
-     * Sample code: 01 - List recurring scheduled action occurrences.
+     * Sample code: 01 - List recurring bulk action occurrences.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
-    public static void zeroOneSpaceHyphenMinusSpaceListSpacerecurringSpacescheduledSpaceactionSpaceoccurrences(
+    public static void zeroOneSpaceHyphenMinusSpaceListSpacerecurringSpacebulkSpaceactionSpaceoccurrences(
         com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.occurrences().listByScheduledAction("example-rg", "weekday-start", com.azure.core.util.Context.NONE);
     }
@@ -884,12 +901,12 @@ public final class OccurrencesListByScheduledActionSamples {
      * x-ms-original-file: 2026-10-06-preview/Occurrences_ListByScheduledAction_PagedSuccess.json
      */
     /**
-     * Sample code: 02 - List a page of recurring scheduled action occurrences.
+     * Sample code: 02 - List recurring bulk action occurrences with mixed results.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
     public static void
-        zeroTwoSpaceHyphenMinusSpaceListSpaceaSpacepageSpaceofSpacerecurringSpacescheduledSpaceactionSpaceoccurrences(
+        zeroTwoSpaceHyphenMinusSpaceListSpacerecurringSpacebulkSpaceactionSpaceoccurrencesSpacewithSpacemixedSpaceresults(
             com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.occurrences().listByScheduledAction("example-rg", "weekday-start", com.azure.core.util.Context.NONE);
     }
@@ -907,12 +924,12 @@ public final class OccurrencesListResourcesSamples {
      * x-ms-original-file: 2026-10-06-preview/Occurrences_ListResources_PagedSuccess.json
      */
     /**
-     * Sample code: 02 - List a page of resources in a recurring scheduled action occurrence.
+     * Sample code: 02 - List a page of resources in a recurring bulk action occurrence.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
     public static void
-        zeroTwoSpaceHyphenMinusSpaceListSpaceaSpacepageSpaceofSpaceresourcesSpaceinSpaceaSpacerecurringSpacescheduledSpaceactionSpaceoccurrence(
+        zeroTwoSpaceHyphenMinusSpaceListSpaceaSpacepageSpaceofSpaceresourcesSpaceinSpaceaSpacerecurringSpacebulkSpaceactionSpaceoccurrence(
             com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.occurrences()
             .listResources("example-rg", "weekday-start", "88888888-8888-8888-8888-888888888888",
@@ -923,12 +940,12 @@ public final class OccurrencesListResourcesSamples {
      * x-ms-original-file: 2026-10-06-preview/Occurrences_ListResources_BasicSuccess.json
      */
     /**
-     * Sample code: 01 - List resources in a recurring scheduled action occurrence.
+     * Sample code: 01 - List resources in a recurring bulk action occurrence.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
     public static void
-        zeroOneSpaceHyphenMinusSpaceListSpaceresourcesSpaceinSpaceaSpacerecurringSpacescheduledSpaceactionSpaceoccurrence(
+        zeroOneSpaceHyphenMinusSpaceListSpaceresourcesSpaceinSpaceaSpacerecurringSpacebulkSpaceactionSpaceoccurrence(
             com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.occurrences()
             .listResources("example-rg", "weekday-start", "77777777-7777-7777-7777-777777777777",
@@ -996,11 +1013,11 @@ public final class ScheduledActionExtensionListByVmsSamples {
      * x-ms-original-file: 2026-10-06-preview/ScheduledActionExtension_ListByVms_MaximumSet_Gen.json
      */
     /**
-     * Sample code: List recurring scheduled actions for a VM.
+     * Sample code: List recurring bulk actions for a VM.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
-    public static void listRecurringScheduledActionsForAVM(
+    public static void listRecurringBulkActionsForAVM(
         com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.scheduledActionExtensions()
             .listByVms(
@@ -1021,11 +1038,11 @@ public final class ScheduledActionOperationStatusGetSamples {
      * x-ms-original-file: 2026-10-06-preview/ScheduledActionOperationStatus_Get_MaximumSet_Gen.json
      */
     /**
-     * Sample code: Get scheduled action operation status.
+     * Sample code: Get recurring bulk action operation status.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
-    public static void getScheduledActionOperationStatus(
+    public static void getRecurringBulkActionOperationStatus(
         com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.scheduledActionOperationStatus()
             .getWithResponse("eastus", "00000000-0000-0000-0000-000000000000", com.azure.core.util.Context.NONE);
@@ -1048,15 +1065,35 @@ import java.util.Arrays;
  */
 public final class ScheduledActionsAttachResourcesSamples {
     /*
-     * x-ms-original-file: 2026-10-06-preview/ScheduledActions_AttachResources_ComprehensiveSuccess.json
+     * x-ms-original-file: 2026-10-06-preview/RecurringBulkActions_AttachResources_PartialSuccess.json
      */
     /**
-     * Sample code: 02 - Attach resources to a recurring scheduled action with individual notification settings.
+     * Sample code: 03 - Response with partial results when attaching resources to a recurring bulk action.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
     public static void
-        zeroTwoSpaceHyphenMinusSpaceAttachSpaceresourcesSpacetoSpaceaSpacerecurringSpacescheduledSpaceactionSpacewithSpaceindividualSpacenotificationSpacesettings(
+        zeroThreeSpaceHyphenMinusSpaceResponseSpacewithSpacepartialSpaceresultsSpacewhenSpaceattachingSpaceresourcesSpacetoSpaceaSpacerecurringSpacebulkSpaceaction(
+            com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
+        manager.scheduledActions()
+            .attachResources("example-rg", "weekday-start", new ResourceAttachRequest().withResources(Arrays.asList(
+                new ScheduledActionResourceInput().withResourceId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-01"),
+                new ScheduledActionResourceInput().withResourceId(
+                    "/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-02"))),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-10-06-preview/RecurringBulkActions_AttachResources_ComprehensiveSuccess.json
+     */
+    /**
+     * Sample code: 02 - Attach resources to a recurring bulk action with individual notification settings.
+     * 
+     * @param manager Entry point to ComputeBulkActionsManager.
+     */
+    public static void
+        zeroTwoSpaceHyphenMinusSpaceAttachSpaceresourcesSpacetoSpaceaSpacerecurringSpacebulkSpaceactionSpacewithSpaceindividualSpacenotificationSpacesettings(
             com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.scheduledActions()
             .attachResources("example-rg", "weekday-start", new ResourceAttachRequest().withResources(Arrays.asList(
@@ -1082,36 +1119,15 @@ public final class ScheduledActionsAttachResourcesSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-10-06-preview/ScheduledActions_AttachResources_BasicSuccess.json
+     * x-ms-original-file: 2026-10-06-preview/RecurringBulkActions_AttachResources_BasicSuccess.json
      */
     /**
-     * Sample code: 01 - Attach resources to a recurring scheduled action.
+     * Sample code: 01 - Attach resources to a recurring bulk action.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
-    public static void
-        zeroOneSpaceHyphenMinusSpaceAttachSpaceresourcesSpacetoSpaceaSpacerecurringSpacescheduledSpaceaction(
-            com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
-        manager.scheduledActions()
-            .attachResources("example-rg", "weekday-start", new ResourceAttachRequest().withResources(Arrays.asList(
-                new ScheduledActionResourceInput().withResourceId(
-                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-01"),
-                new ScheduledActionResourceInput().withResourceId(
-                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-02"))),
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2026-10-06-preview/ScheduledActions_AttachResources_PartialSuccess.json
-     */
-    /**
-     * Sample code: 03 - Response with partial results when attaching resources to a recurring scheduled action.
-     * 
-     * @param manager Entry point to ComputeBulkActionsManager.
-     */
-    public static void
-        zeroThreeSpaceHyphenMinusSpaceResponseSpacewithSpacepartialSpaceresultsSpacewhenSpaceattachingSpaceresourcesSpacetoSpaceaSpacerecurringSpacescheduledSpaceaction(
-            com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
+    public static void zeroOneSpaceHyphenMinusSpaceAttachSpaceresourcesSpacetoSpaceaSpacerecurringSpacebulkSpaceaction(
+        com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.scheduledActions()
             .attachResources("example-rg", "weekday-start", new ResourceAttachRequest().withResources(Arrays.asList(
                 new ScheduledActionResourceInput().withResourceId(
@@ -1134,57 +1150,57 @@ import java.util.Arrays;
  */
 public final class ScheduledActionsCancelNextOccurrenceSamples {
     /*
-     * x-ms-original-file: 2026-10-06-preview/ScheduledActions_CancelNextOccurrence_PartialSuccess.json
+     * x-ms-original-file: 2026-10-06-preview/RecurringBulkActions_CancelNextOccurrence_EntireOccurrenceSuccess.json
      */
     /**
-     * Sample code: 03 - Response with partial results when canceling the next recurring scheduled action occurrence.
+     * Sample code: 02 - Cancel all operations in the next recurring bulk action occurrence.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
     public static void
-        zeroThreeSpaceHyphenMinusSpaceResponseSpacewithSpacepartialSpaceresultsSpacewhenSpacecancelingSpacetheSpacenextSpacerecurringSpacescheduledSpaceactionSpaceoccurrence(
-            com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
-        manager.scheduledActions()
-            .cancelNextOccurrence("example-rg", "weekday-start",
-                new CancelOccurrenceRequest().withResourceIds(Arrays.asList(
-                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-01",
-                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-02")),
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2026-10-06-preview/ScheduledActions_CancelNextOccurrence_BasicSuccess.json
-     */
-    /**
-     * Sample code: 01 - Cancel the next recurring scheduled action occurrence for multiple resources.
-     * 
-     * @param manager Entry point to ComputeBulkActionsManager.
-     */
-    public static void
-        zeroOneSpaceHyphenMinusSpaceCancelSpacetheSpacenextSpacerecurringSpacescheduledSpaceactionSpaceoccurrenceSpaceforSpacemultipleSpaceresources(
-            com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
-        manager.scheduledActions()
-            .cancelNextOccurrence("example-rg", "weekday-start",
-                new CancelOccurrenceRequest().withResourceIds(Arrays.asList(
-                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-01",
-                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-02")),
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2026-10-06-preview/ScheduledActions_CancelNextOccurrence_EntireOccurrenceSuccess.json
-     */
-    /**
-     * Sample code: 02 - Cancel all operations in the next recurring scheduled action occurrence.
-     * 
-     * @param manager Entry point to ComputeBulkActionsManager.
-     */
-    public static void
-        zeroTwoSpaceHyphenMinusSpaceCancelSpaceallSpaceoperationsSpaceinSpacetheSpacenextSpacerecurringSpacescheduledSpaceactionSpaceoccurrence(
+        zeroTwoSpaceHyphenMinusSpaceCancelSpaceallSpaceoperationsSpaceinSpacetheSpacenextSpacerecurringSpacebulkSpaceactionSpaceoccurrence(
             com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.scheduledActions()
             .cancelNextOccurrence("example-rg", "weekday-start",
                 new CancelOccurrenceRequest().withResourceIds(Arrays.asList()), com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-10-06-preview/RecurringBulkActions_CancelNextOccurrence_PartialSuccess.json
+     */
+    /**
+     * Sample code: 03 - Response with partial results when canceling the next recurring bulk action occurrence.
+     * 
+     * @param manager Entry point to ComputeBulkActionsManager.
+     */
+    public static void
+        zeroThreeSpaceHyphenMinusSpaceResponseSpacewithSpacepartialSpaceresultsSpacewhenSpacecancelingSpacetheSpacenextSpacerecurringSpacebulkSpaceactionSpaceoccurrence(
+            com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
+        manager.scheduledActions()
+            .cancelNextOccurrence("example-rg", "weekday-start",
+                new CancelOccurrenceRequest().withResourceIds(Arrays.asList(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-01",
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-02")),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-10-06-preview/RecurringBulkActions_CancelNextOccurrence_BasicSuccess.json
+     */
+    /**
+     * Sample code: 01 - Cancel the next recurring bulk action occurrence for multiple resources.
+     * 
+     * @param manager Entry point to ComputeBulkActionsManager.
+     */
+    public static void
+        zeroOneSpaceHyphenMinusSpaceCancelSpacetheSpacenextSpacerecurringSpacebulkSpaceactionSpaceoccurrenceSpaceforSpacemultipleSpaceresources(
+            com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
+        manager.scheduledActions()
+            .cancelNextOccurrence("example-rg", "weekday-start",
+                new CancelOccurrenceRequest().withResourceIds(Arrays.asList(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-01",
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-02")),
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1211,40 +1227,15 @@ import java.util.Map;
  */
 public final class ScheduledActionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-10-06-preview/ScheduledActions_CreateOrUpdate_BasicSuccess.json
+     * x-ms-original-file: 2026-10-06-preview/RecurringBulkActions_CreateOrUpdate_ComprehensiveSuccess.json
      */
     /**
-     * Sample code: 01 - Create a new recurring scheduled action.
-     * 
-     * @param manager Entry point to ComputeBulkActionsManager.
-     */
-    public static void zeroOneSpaceHyphenMinusSpaceCreateSpaceaSpacenewSpacerecurringSpacescheduledSpaceaction(
-        com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
-        manager.scheduledActions()
-            .define("weekday-start")
-            .withRegion("eastus")
-            .withExistingResourceGroup("example-rg")
-            .withProperties(new ScheduledActionProperties().withResourceType(ResourceType.VIRTUAL_MACHINE)
-                .withActionType(ScheduledActionType.START)
-                .withStartTime(OffsetDateTime.parse("2026-09-15T07:00:00-07:00"))
-                .withSchedule(new ScheduledActionsSchedule().withScheduledTime("07:00:00")
-                    .withTimeZone("America/Los_Angeles")
-                    .withRequestedWeekDays(Arrays.asList(WeekDay.MONDAY, WeekDay.TUESDAY, WeekDay.WEDNESDAY,
-                        WeekDay.THURSDAY, WeekDay.FRIDAY)))
-                .withNotificationSettings(Arrays.asList()))
-            .create();
-    }
-
-    /*
-     * x-ms-original-file: 2026-10-06-preview/ScheduledActions_CreateOrUpdate_ComprehensiveSuccess.json
-     */
-    /**
-     * Sample code: 02 - Create a recurring scheduled action with comprehensive settings.
+     * Sample code: 02 - Create a recurring bulk action with comprehensive settings.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
     public static void
-        zeroTwoSpaceHyphenMinusSpaceCreateSpaceaSpacerecurringSpacescheduledSpaceactionSpacewithSpacecomprehensiveSpacesettings(
+        zeroTwoSpaceHyphenMinusSpaceCreateSpaceaSpacerecurringSpacebulkSpaceactionSpacewithSpacecomprehensiveSpacesettings(
             com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.scheduledActions()
             .define("first-fifteenth-start")
@@ -1266,6 +1257,31 @@ public final class ScheduledActionsCreateOrUpdateSamples {
                         .withLanguage(Language.EN_US)
                         .withDisabled(true)))
                 .withDisabled(false))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2026-10-06-preview/RecurringBulkActions_CreateOrUpdate_BasicSuccess.json
+     */
+    /**
+     * Sample code: 01 - Create a new recurring bulk action.
+     * 
+     * @param manager Entry point to ComputeBulkActionsManager.
+     */
+    public static void zeroOneSpaceHyphenMinusSpaceCreateSpaceaSpacenewSpacerecurringSpacebulkSpaceaction(
+        com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
+        manager.scheduledActions()
+            .define("weekday-start")
+            .withRegion("eastus")
+            .withExistingResourceGroup("example-rg")
+            .withProperties(new ScheduledActionProperties().withResourceType(ResourceType.VIRTUAL_MACHINE)
+                .withActionType(ScheduledActionType.START)
+                .withStartTime(OffsetDateTime.parse("2026-09-15T07:00:00-07:00"))
+                .withSchedule(new ScheduledActionsSchedule().withScheduledTime("07:00:00")
+                    .withTimeZone("America/Los_Angeles")
+                    .withRequestedWeekDays(Arrays.asList(WeekDay.MONDAY, WeekDay.TUESDAY, WeekDay.WEDNESDAY,
+                        WeekDay.THURSDAY, WeekDay.FRIDAY)))
+                .withNotificationSettings(Arrays.asList()))
             .create();
     }
 
@@ -1291,15 +1307,15 @@ public final class ScheduledActionsCreateOrUpdateSamples {
  */
 public final class ScheduledActionsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-10-06-preview/ScheduledActions_Delete_BasicSuccess.json
+     * x-ms-original-file: 2026-10-06-preview/RecurringBulkActions_Delete_BasicSuccess.json
      */
     /**
-     * Sample code: Delete a recurring scheduled action.
+     * Sample code: Delete a recurring bulk action.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
-    public static void deleteARecurringScheduledAction(
-        com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
+    public static void
+        deleteARecurringBulkAction(com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.scheduledActions().delete("example-rg", "weekday-start", com.azure.core.util.Context.NONE);
     }
 }
@@ -1316,15 +1332,15 @@ import java.util.Arrays;
  */
 public final class ScheduledActionsDetachResourcesSamples {
     /*
-     * x-ms-original-file: 2026-10-06-preview/ScheduledActions_DetachResources_BasicSuccess.json
+     * x-ms-original-file: 2026-10-06-preview/RecurringBulkActions_DetachResources_BasicSuccess.json
      */
     /**
-     * Sample code: 01 - Detach resources from a recurring scheduled action.
+     * Sample code: 01 - Detach resources from a recurring bulk action.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
     public static void
-        zeroOneSpaceHyphenMinusSpaceDetachSpaceresourcesSpacefromSpaceaSpacerecurringSpacescheduledSpaceaction(
+        zeroOneSpaceHyphenMinusSpaceDetachSpaceresourcesSpacefromSpaceaSpacerecurringSpacebulkSpaceaction(
             com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.scheduledActions()
             .detachResources("example-rg", "weekday-start", new ResourceDetachRequest().withResources(Arrays.asList(
@@ -1334,20 +1350,20 @@ public final class ScheduledActionsDetachResourcesSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-10-06-preview/ScheduledActions_DetachResources_PartialSuccess.json
+     * x-ms-original-file: 2026-10-06-preview/RecurringBulkActions_DetachResources_PartialSuccess.json
      */
     /**
-     * Sample code: 02 - Detach resources from a recurring scheduled action with partial success.
+     * Sample code: 02 - Detach resources from a recurring bulk action with partial success.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
     public static void
-        zeroTwoSpaceHyphenMinusSpaceDetachSpaceresourcesSpacefromSpaceaSpacerecurringSpacescheduledSpaceactionSpacewithSpacepartialSpacesuccess(
+        zeroTwoSpaceHyphenMinusSpaceDetachSpaceresourcesSpacefromSpaceaSpacerecurringSpacebulkSpaceactionSpacewithSpacepartialSpacesuccess(
             com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.scheduledActions()
             .detachResources("example-rg", "weekday-start", new ResourceDetachRequest().withResources(Arrays.asList(
                 "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-01",
-                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-02")),
+                "/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-02")),
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -1361,15 +1377,15 @@ public final class ScheduledActionsDetachResourcesSamples {
  */
 public final class ScheduledActionsDisableSamples {
     /*
-     * x-ms-original-file: 2026-10-06-preview/ScheduledActions_Disable_BasicSuccess.json
+     * x-ms-original-file: 2026-10-06-preview/RecurringBulkActions_Disable_BasicSuccess.json
      */
     /**
-     * Sample code: Disable a recurring scheduled action.
+     * Sample code: Disable a recurring bulk action.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
-    public static void disableARecurringScheduledAction(
-        com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
+    public static void
+        disableARecurringBulkAction(com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.scheduledActions().disable("example-rg", "weekday-start", com.azure.core.util.Context.NONE);
     }
 }
@@ -1383,15 +1399,15 @@ public final class ScheduledActionsDisableSamples {
  */
 public final class ScheduledActionsEnableSamples {
     /*
-     * x-ms-original-file: 2026-10-06-preview/ScheduledActions_Enable_BasicSuccess.json
+     * x-ms-original-file: 2026-10-06-preview/RecurringBulkActions_Enable_BasicSuccess.json
      */
     /**
-     * Sample code: Enable a recurring scheduled action.
+     * Sample code: Enable a recurring bulk action.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
-    public static void enableARecurringScheduledAction(
-        com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
+    public static void
+        enableARecurringBulkAction(com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.scheduledActions().enable("example-rg", "weekday-start", com.azure.core.util.Context.NONE);
     }
 }
@@ -1405,29 +1421,29 @@ public final class ScheduledActionsEnableSamples {
  */
 public final class ScheduledActionsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-10-06-preview/ScheduledActions_Get_BasicSuccess.json
+     * x-ms-original-file: 2026-10-06-preview/RecurringBulkActions_Get_BasicSuccess.json
      */
     /**
-     * Sample code: 01 - Get a recurring scheduled action.
+     * Sample code: 01 - Get a recurring bulk action.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
-    public static void zeroOneSpaceHyphenMinusSpaceGetSpaceaSpacerecurringSpacescheduledSpaceaction(
+    public static void zeroOneSpaceHyphenMinusSpaceGetSpaceaSpacerecurringSpacebulkSpaceaction(
         com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.scheduledActions()
             .getByResourceGroupWithResponse("example-rg", "weekday-start", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: 2026-10-06-preview/ScheduledActions_Get_ComprehensiveSuccess.json
+     * x-ms-original-file: 2026-10-06-preview/RecurringBulkActions_Get_ComprehensiveSuccess.json
      */
     /**
-     * Sample code: 02 - Get a recurring scheduled action with complete configuration.
+     * Sample code: 02 - Get a recurring bulk action with complete configuration.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
     public static void
-        zeroTwoSpaceHyphenMinusSpaceGetSpaceaSpacerecurringSpacescheduledSpaceactionSpacewithSpacecompleteSpaceconfiguration(
+        zeroTwoSpaceHyphenMinusSpaceGetSpaceaSpacerecurringSpacebulkSpaceactionSpacewithSpacecompleteSpaceconfiguration(
             com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.scheduledActions()
             .getByResourceGroupWithResponse("example-rg", "weekday-start", com.azure.core.util.Context.NONE);
@@ -1443,14 +1459,14 @@ public final class ScheduledActionsGetByResourceGroupSamples {
  */
 public final class ScheduledActionsListSamples {
     /*
-     * x-ms-original-file: 2026-10-06-preview/ScheduledActions_ListBySubscription_PagedSuccess.json
+     * x-ms-original-file: 2026-10-06-preview/RecurringBulkActions_ListBySubscription_PagedSuccess.json
      */
     /**
-     * Sample code: List a page of recurring scheduled actions in a subscription.
+     * Sample code: List recurring bulk actions in a subscription.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
-    public static void listAPageOfRecurringScheduledActionsInASubscription(
+    public static void listRecurringBulkActionsInASubscription(
         com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.scheduledActions().list(com.azure.core.util.Context.NONE);
     }
@@ -1465,14 +1481,14 @@ public final class ScheduledActionsListSamples {
  */
 public final class ScheduledActionsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-10-06-preview/ScheduledActions_ListByResourceGroup_PagedSuccess.json
+     * x-ms-original-file: 2026-10-06-preview/RecurringBulkActions_ListByResourceGroup_PagedSuccess.json
      */
     /**
-     * Sample code: List a page of recurring scheduled actions in a resource group.
+     * Sample code: List recurring bulk actions in a resource group.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
-    public static void listAPageOfRecurringScheduledActionsInAResourceGroup(
+    public static void listRecurringBulkActionsInAResourceGroup(
         com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.scheduledActions().listByResourceGroup("example-rg", com.azure.core.util.Context.NONE);
     }
@@ -1487,14 +1503,14 @@ public final class ScheduledActionsListByResourceGroupSamples {
  */
 public final class ScheduledActionsListResourcesSamples {
     /*
-     * x-ms-original-file: 2026-10-06-preview/ScheduledActions_ListResources_PagedSuccess.json
+     * x-ms-original-file: 2026-10-06-preview/RecurringBulkActions_ListResources_PagedSuccess.json
      */
     /**
-     * Sample code: List a page of resources associated with a recurring scheduled action.
+     * Sample code: List a page of resources associated with a recurring bulk action.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
-    public static void listAPageOfResourcesAssociatedWithARecurringScheduledAction(
+    public static void listAPageOfResourcesAssociatedWithARecurringBulkAction(
         com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.scheduledActions().listResources("example-rg", "weekday-start", com.azure.core.util.Context.NONE);
     }
@@ -1516,15 +1532,15 @@ import java.util.Arrays;
  */
 public final class ScheduledActionsPatchResourcesSamples {
     /*
-     * x-ms-original-file: 2026-10-06-preview/ScheduledActions_PatchResources_ComprehensiveSuccess.json
+     * x-ms-original-file: 2026-10-06-preview/RecurringBulkActions_PatchResources_ComprehensiveSuccess.json
      */
     /**
-     * Sample code: 02 - Update resource-specific notification settings for a recurring scheduled action.
+     * Sample code: 02 - Update resource-specific notification settings for a recurring bulk action.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
     public static void
-        zeroTwoSpaceHyphenMinusSpaceUpdateSpaceresourceHyphenMinusspecificSpacenotificationSpacesettingsSpaceforSpaceaSpacerecurringSpacescheduledSpaceaction(
+        zeroTwoSpaceHyphenMinusSpaceUpdateSpaceresourceHyphenMinusspecificSpacenotificationSpacesettingsSpaceforSpaceaSpacerecurringSpacebulkSpaceaction(
             com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.scheduledActions()
             .patchResourcesWithResponse("example-rg", "weekday-start", new ResourcePatchRequest()
@@ -1550,45 +1566,15 @@ public final class ScheduledActionsPatchResourcesSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-10-06-preview/ScheduledActions_PatchResources_BasicSuccess.json
+     * x-ms-original-file: 2026-10-06-preview/RecurringBulkActions_PatchResources_PartialSuccess.json
      */
     /**
-     * Sample code: 01 - Update settings for recurring scheduled action resources.
+     * Sample code: 03 - Response with partial results when updating recurring bulk action resources.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
     public static void
-        zeroOneSpaceHyphenMinusSpaceUpdateSpacesettingsSpaceforSpacerecurringSpacescheduledSpaceactionSpaceresources(
-            com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
-        manager.scheduledActions()
-            .patchResourcesWithResponse("example-rg", "weekday-start", new ResourcePatchRequest()
-                .withResources(Arrays.asList(new ScheduledActionResourceInput().withResourceId(
-                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-01")
-                    .withNotificationSettings(
-                        Arrays.asList(new NotificationProperties().withDestination("operations@contoso.com")
-                            .withType(NotificationType.EMAIL)
-                            .withLanguage(Language.EN_US)
-                            .withDisabled(false))),
-                    new ScheduledActionResourceInput().withResourceId(
-                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-02")
-                        .withNotificationSettings(
-                            Arrays.asList(new NotificationProperties().withDestination("operations@contoso.com")
-                                .withType(NotificationType.EMAIL)
-                                .withLanguage(Language.EN_US)
-                                .withDisabled(false))))),
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2026-10-06-preview/ScheduledActions_PatchResources_PartialSuccess.json
-     */
-    /**
-     * Sample code: 03 - Response with partial results when updating recurring scheduled action resources.
-     * 
-     * @param manager Entry point to ComputeBulkActionsManager.
-     */
-    public static void
-        zeroThreeSpaceHyphenMinusSpaceResponseSpacewithSpacepartialSpaceresultsSpacewhenSpaceupdatingSpacerecurringSpacescheduledSpaceactionSpaceresources(
+        zeroThreeSpaceHyphenMinusSpaceResponseSpacewithSpacepartialSpaceresultsSpacewhenSpaceupdatingSpacerecurringSpacebulkSpaceactionSpaceresources(
             com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.scheduledActions()
             .patchResourcesWithResponse("example-rg", "weekday-start", new ResourcePatchRequest()
@@ -1608,6 +1594,36 @@ public final class ScheduledActionsPatchResourcesSamples {
                                 .withDisabled(true))))),
                 com.azure.core.util.Context.NONE);
     }
+
+    /*
+     * x-ms-original-file: 2026-10-06-preview/RecurringBulkActions_PatchResources_BasicSuccess.json
+     */
+    /**
+     * Sample code: 01 - Update settings for recurring bulk action resources.
+     * 
+     * @param manager Entry point to ComputeBulkActionsManager.
+     */
+    public static void
+        zeroOneSpaceHyphenMinusSpaceUpdateSpacesettingsSpaceforSpacerecurringSpacebulkSpaceactionSpaceresources(
+            com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
+        manager.scheduledActions()
+            .patchResourcesWithResponse("example-rg", "weekday-start", new ResourcePatchRequest()
+                .withResources(Arrays.asList(new ScheduledActionResourceInput().withResourceId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-01")
+                    .withNotificationSettings(
+                        Arrays.asList(new NotificationProperties().withDestination("operations@contoso.com")
+                            .withType(NotificationType.EMAIL)
+                            .withLanguage(Language.EN_US)
+                            .withDisabled(false))),
+                    new ScheduledActionResourceInput().withResourceId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-02")
+                        .withNotificationSettings(
+                            Arrays.asList(new NotificationProperties().withDestination("operations@contoso.com")
+                                .withType(NotificationType.EMAIL)
+                                .withLanguage(Language.EN_US)
+                                .withDisabled(false))))),
+                com.azure.core.util.Context.NONE);
+    }
 }
 ```
 
@@ -1619,14 +1635,14 @@ public final class ScheduledActionsPatchResourcesSamples {
  */
 public final class ScheduledActionsTriggerManualOccurrenceSamples {
     /*
-     * x-ms-original-file: 2026-10-06-preview/ScheduledActions_TriggerManualOccurrence_BasicSuccess.json
+     * x-ms-original-file: 2026-10-06-preview/RecurringBulkActions_TriggerManualOccurrence_BasicSuccess.json
      */
     /**
-     * Sample code: Run a recurring scheduled action immediately.
+     * Sample code: Run a recurring bulk action immediately.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
-    public static void runARecurringScheduledActionImmediately(
+    public static void runARecurringBulkActionImmediately(
         com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.scheduledActions()
             .triggerManualOccurrence("example-rg", "weekday-start", com.azure.core.util.Context.NONE);
@@ -1650,14 +1666,14 @@ import java.util.Arrays;
  */
 public final class ScheduledActionsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-10-06-preview/ScheduledActions_Update_ComprehensiveSuccess.json
+     * x-ms-original-file: 2026-10-06-preview/RecurringBulkActions_Update_ComprehensiveSuccess.json
      */
     /**
-     * Sample code: 02 - Update a recurring scheduled action schedule.
+     * Sample code: 02 - Update a recurring bulk action schedule.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
-    public static void zeroTwoSpaceHyphenMinusSpaceUpdateSpaceaSpacerecurringSpacescheduledSpaceactionSpaceschedule(
+    public static void zeroTwoSpaceHyphenMinusSpaceUpdateSpaceaSpacerecurringSpacebulkSpaceactionSpaceschedule(
         com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.scheduledActions()
             .update("example-rg", "weekday-start",
@@ -1671,15 +1687,15 @@ public final class ScheduledActionsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-10-06-preview/ScheduledActions_Update_BasicSuccess.json
+     * x-ms-original-file: 2026-10-06-preview/RecurringBulkActions_Update_BasicSuccess.json
      */
     /**
-     * Sample code: 01 - Update the action type of a recurring scheduled action.
+     * Sample code: 01 - Update the action type of a recurring bulk action.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
     public static void
-        zeroOneSpaceHyphenMinusSpaceUpdateSpacetheSpaceactionSpacetypeSpaceofSpaceaSpacerecurringSpacescheduledSpaceaction(
+        zeroOneSpaceHyphenMinusSpaceUpdateSpacetheSpaceactionSpacetypeSpaceofSpaceaSpacerecurringSpacebulkSpaceaction(
             com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.scheduledActions()
             .update("example-rg", "weekday-start",
