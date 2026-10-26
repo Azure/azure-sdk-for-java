@@ -13,6 +13,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.openai.models.live.ClientEvent;
 import com.openai.models.live.ServerEvent;
+import com.openai.models.responses.ResponseStreamEvent;
 import java.io.ByteArrayOutputStream;
 import java.io.FilterReader;
 import java.io.InputStream;
@@ -42,6 +43,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.TargetDataLine;
@@ -476,6 +478,138 @@ public class GptLiveSamplesTests {
             }, () -> {
             }, false, null));
         assertTrue(error.getMessage().contains("transport close code=1006, reason=test disconnect"));
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    public void conversationCoresUseTheSameLifecycleHooks(boolean async) {
+        List<String> callbacks = new CopyOnWriteArrayList<>();
+        runCoreWithCallbacks(async, () -> callbacks.add("started"), event -> {
+            assertTrue(event.isCompleted());
+            callbacks.add("response");
+            return false;
+        }, reason -> {
+            callbacks.add("close:" + reason);
+            return "expired".equals(reason);
+        });
+        assertEquals(Arrays.asList("started", "response", "close:expired"), callbacks);
+        assertEquals(Arrays.asList("response.item.create", "response.create", "session.close"), commandTypes());
+    }
+
+    @ParameterizedTest
+    @MethodSource("coreCallbackFailureCases")
+    public void conversationCoresPropagateHookFailures(boolean async, String callback) {
+        IllegalStateException failure = new IllegalStateException("Failed " + callback);
+        IllegalStateException actual
+            = assertThrows(IllegalStateException.class, () -> runCoreWithCallbacks(async, () -> {
+                if ("started".equals(callback)) {
+                    throw failure;
+                }
+            }, event -> {
+                if ("response".equals(callback)) {
+                    throw failure;
+                }
+                return false;
+            }, reason -> {
+                throw failure;
+            }));
+        assertEquals(failure, actual);
+        assertEquals("started".equals(callback)
+            ? Collections.emptyList()
+            : "response".equals(callback)
+                ? Arrays.asList("response.item.create", "response.create")
+                : Arrays.asList("response.item.create", "response.create", "session.close"),
+            commandTypes());
+    }
+
+    private static Stream<Arguments> coreCallbackFailureCases() {
+        return Stream.of(false, true)
+            .flatMap(
+                async -> Stream.of("started", "response", "closed").map(callback -> Arguments.of(async, callback)));
+    }
+
+    private void runCoreWithCallbacks(boolean async, Runnable onStarted, Predicate<ResponseStreamEvent> handleResponse,
+        Predicate<String> acceptClose) {
+        java.util.concurrent.BlockingQueue<ServerEvent> blocking = new java.util.concurrent.LinkedBlockingQueue<>();
+        Sinks.Many<ServerEvent> reactive = Sinks.many().unicast().onBackpressureBuffer();
+        Consumer<ServerEvent> enqueue
+            = async ? event -> reactive.emitNext(event, Sinks.EmitFailureHandler.FAIL_FAST) : blocking::add;
+        enqueue.accept(typedEvent(BinaryData.fromString(STARTED)));
+        Consumer<ClientEvent> sendEvent = command -> {
+            commands.add(GptLiveSampleUtils.object(OpenAIJsonHelper.toBinaryData(command)));
+            if (command.isResponseCreate()) {
+                enqueue.accept(typedEvent(BinaryData.fromString(COMPLETED)));
+            } else if (command.isSessionClose()) {
+                enqueue
+                    .accept(typedEvent(BinaryData.fromString("{\"type\":\"session.closed\",\"reason\":\"expired\"}")));
+            }
+        };
+        AtomicInteger prompts = new AtomicInteger();
+        if (async) {
+            GptLiveSampleUtils.runConversationCoreAsync(reactive.asFlux(),
+                command -> Mono.fromRunnable(() -> sendEvent.accept(command)), () -> "test close details",
+                transcripts -> Mono.justOrEmpty(prompts.getAndIncrement() == 0 ? "one" : null), pcm -> {
+                }, () -> {
+                }, false, false, false, () -> Mono.fromRunnable(onStarted), Mono.empty(),
+                event -> Mono.fromSupplier(() -> handleResponse.test(event)), acceptClose).block(TIMEOUT);
+        } else {
+            Iterable<ServerEvent> events = () -> Stream.generate(() -> {
+                try {
+                    return blocking.take();
+                } catch (InterruptedException error) {
+                    Thread.currentThread().interrupt();
+                    throw new IllegalStateException("Event producer interrupted.", error);
+                }
+            }).iterator();
+            GptLiveSampleUtils.runConversationCore(events, sendEvent, () -> "test close details",
+                transcripts -> prompts.getAndIncrement() == 0 ? "one" : null, pcm -> {
+                }, () -> {
+                }, false, onStarted, handleResponse, acceptClose);
+        }
+    }
+
+    @Test
+    public void asyncResponseContinuationWaitsForHandlerBeforeProcessingNextEvent() {
+        Sinks.Many<ServerEvent> incoming = Sinks.many().unicast().onBackpressureBuffer();
+        Sinks.Empty<Void> continuation = Sinks.empty();
+        CountDownLatch handling = new CountDownLatch(1);
+        AtomicInteger responses = new AtomicInteger();
+        AtomicInteger prompts = new AtomicInteger();
+        incoming.emitNext(typedEvent(BinaryData.fromString(STARTED)), Sinks.EmitFailureHandler.FAIL_FAST);
+        Mono<Void> conversation = GptLiveSampleUtils.runConversationCoreAsync(incoming.asFlux(), command -> {
+            commands.add(GptLiveSampleUtils.object(OpenAIJsonHelper.toBinaryData(command)));
+            if (command.isResponseCreate()) {
+                incoming.emitNext(typedEvent(BinaryData.fromString(COMPLETED)), Sinks.EmitFailureHandler.FAIL_FAST);
+            } else if (command.isSessionClose()) {
+                incoming.emitNext(typedEvent(BinaryData.fromString(CLOSED)), Sinks.EmitFailureHandler.FAIL_FAST);
+            }
+            return Mono.empty();
+        }, () -> "test close details", transcripts -> Mono.justOrEmpty(prompts.getAndIncrement() == 0 ? "one" : null),
+            pcm -> {
+            }, () -> {
+            }, false, false, false, Mono::empty, Mono.empty(), event -> {
+                if (responses.incrementAndGet() == 1) {
+                    incoming.emitNext(typedEvent(BinaryData.fromString(COMPLETED)), Sinks.EmitFailureHandler.FAIL_FAST);
+                    handling.countDown();
+                    return continuation.asMono().thenReturn(true);
+                }
+                assertEquals(1, prompts.get(), "The next prompt must wait until the continuation completes");
+                return Mono.just(false);
+            }, reason -> false);
+        StepVerifier.create(conversation).then(() -> {
+            try {
+                assertTrue(handling.await(TIMEOUT.toMillis(), TimeUnit.MILLISECONDS));
+            } catch (InterruptedException error) {
+                Thread.currentThread().interrupt();
+                throw new AssertionError(error);
+            }
+            assertEquals(1, responses.get(), "Later events must wait for the asynchronous handler");
+            assertEquals(1, prompts.get());
+            continuation.emitEmpty(Sinks.EmitFailureHandler.FAIL_FAST);
+        }).verifyComplete();
+        assertEquals(2, responses.get());
+        assertEquals(2, prompts.get());
+        assertEquals(Arrays.asList("response.item.create", "response.create", "session.close"), commandTypes());
     }
 
     @ParameterizedTest
