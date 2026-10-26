@@ -11,6 +11,7 @@ import com.azure.ai.agents.models.VoiceAgentLiveWebSocketConnectionOptions;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
+import com.openai.models.live.ClientEvent;
 import com.openai.models.live.ServerEvent;
 import java.io.ByteArrayOutputStream;
 import java.io.FilterReader;
@@ -904,10 +905,9 @@ public class GptLiveSamplesTests {
             .verifyComplete();
     }
 
-    private void assertSilentAudioFrame(BinaryData frame) {
-        Map<?, ?> event = GptLiveSampleUtils.object(frame);
-        assertEquals("session.input_audio.append", event.get("type"));
-        assertArrayEquals(new byte[960], Base64.getDecoder().decode(GptLiveSampleUtils.string(event, "audio")));
+    private void assertSilentAudioFrame(ClientEvent frame) {
+        assertTrue(frame.isSessionInputAudioAppend());
+        assertArrayEquals(new byte[960], Base64.getDecoder().decode(frame.asSessionInputAudioAppend().audio()));
     }
 
     @ParameterizedTest
@@ -1071,11 +1071,28 @@ public class GptLiveSamplesTests {
     }
 
     @Test
+    public void typedCommentaryPreservesExplicitNullDelegationId() throws IOException {
+        ClientEvent event = GptLiveSampleUtils.commentary("Hello");
+        assertTrue(event.isSessionCommentaryAppend());
+        BinaryData data = OpenAIJsonHelper.toBinaryData(event);
+        Map<?, ?> command = GptLiveSampleUtils.object(data);
+        assertEquals("session.commentary.append", command.get("type"));
+        assertEquals("Hello", command.get("content"));
+        assertTrue(command.containsKey("delegation_id"));
+        assertEquals(null, command.get("delegation_id"));
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        try (com.azure.json.JsonWriter writer = com.azure.json.JsonProviders.createWriter(output)) {
+            data.writeTo(writer);
+        }
+        assertEquals(command, GptLiveSampleUtils.object(BinaryData.fromBytes(output.toByteArray())));
+    }
+
+    @Test
     public void nativeAudioEncodingAndDecodingPreservePcmBytes() {
         byte[] pcm = new byte[] { 0, 1, -1, 127 };
-        Map<?, ?> command = GptLiveSampleUtils.object(GptLiveSampleUtils.audio(pcm));
-        assertEquals("session.input_audio.append", command.get("type"));
-        assertArrayEquals(pcm, Base64.getDecoder().decode((String) command.get("audio")));
+        ClientEvent command = GptLiveSampleUtils.audio(pcm);
+        assertTrue(command.isSessionInputAudioAppend());
+        assertArrayEquals(pcm, Base64.getDecoder().decode(command.asSessionInputAudioAppend().audio()));
         ServerEvent event = typedEvent(
             GptLiveSampleUtils.event("session.output_audio.delta", "delta", Base64.getEncoder().encodeToString(pcm)));
         assertArrayEquals(pcm, GptLiveSampleUtils.decodeAudio(event));

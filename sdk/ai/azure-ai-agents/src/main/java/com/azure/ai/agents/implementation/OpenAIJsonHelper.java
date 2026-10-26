@@ -114,10 +114,7 @@ public final class OpenAIJsonHelper {
         }
         try {
             String json = OPENAI_MODEL_MAPPER.writeValueAsString(openAIObject);
-            try (JsonReader reader = JsonProviders.createReader(new StringReader(json))) {
-                reader.nextToken();
-                return BinaryData.fromObject(reader.readUntyped());
-            }
+            return BinaryData.fromObject(OPENAI_MODEL_MAPPER.readTree(json));
         } catch (IOException e) {
             throw new RuntimeException("Failed to convert OpenAI type to BinaryData", e);
         }
