@@ -72,10 +72,10 @@ public class GptLiveTextConversationSample {
                 .openWebSocketSession(agent.name, new VoiceAgentLiveWebSocketConnectionOptions().setStoreEnabled(store))) {
             if (args.length == 0) {
                 Console console = System.console();
-                GptLiveSampleUtils.runConversation(session,
+                GptLiveSampleUtils.runInteractiveConversation(session,
                     console == null ? new InputStreamReader(System.in) : console.reader());
             } else {
-                GptLiveSampleUtils.runConversation(session, Arrays.asList(args));
+                GptLiveSampleUtils.runTextConversation(session, Arrays.asList(args));
             }
         } finally {
             Schedulers.shutdownNow();
