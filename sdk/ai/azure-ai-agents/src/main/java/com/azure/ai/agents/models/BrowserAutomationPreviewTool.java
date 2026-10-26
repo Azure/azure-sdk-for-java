@@ -13,6 +13,9 @@ import java.io.IOException;
 
 /**
  * The input definition information for a Browser Automation Tool, as used to configure an Agent.
+ * BrowserAutomationPreviewTool is deprecated.
+ * Please use BrowserAutomationTool instead.
+ * See https://aka.ms/bat/docs for more information on Browser automation tool.
  */
 @Immutable
 @Beta(warningText = "Preview API. preview_tool")
