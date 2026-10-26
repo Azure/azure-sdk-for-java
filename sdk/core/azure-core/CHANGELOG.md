@@ -22,6 +22,8 @@
   the refresh they waited on ends without a token, including when `SimpleTokenCache`'s token supplier completes empty.
 - Fixed streaming of `InputStream`-backed response bodies to emit partial reads without waiting for the response to
   complete.
+- Fixed virtual-thread carrier starvation during synchronous paging, which could deadlock token acquisition on Java 21
+  when authentication uses the shared executor.
 
 ### Other Changes
 
