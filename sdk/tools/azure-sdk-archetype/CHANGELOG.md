@@ -12,7 +12,6 @@
 
 - Configured Maven Surefire for generated JUnit Jupiter projects so `mvn test` discovers and runs their tests.
 - Fixed post-generation status output on Windows, where `echo` cannot be launched as an executable.
-- Fixed project generation when Maven repositories do not provide the `versions` plugin prefix metadata.
 
 ### Other Changes
 
