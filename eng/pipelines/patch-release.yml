@@ -11,6 +11,7 @@ extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-client-patch.yml
   parameters:
     TestPipeline: ${{ parameters.TestPipeline }}
+    PatchMergeBack: true
     artifacts:
     - name: azure-sdk-template
       groupId: com.azure
@@ -42,4 +43,3 @@ extends:
       safeName: azuresdktemplatethree
       skipPublishDocMs: true
       ServiceDirectory: template-v2
-
