@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Fixed code generation when a TypeSpec revision replaces telephony polymorphic base models. Constructor customization now applies only to emitted models, including the shared telephony address and binding roots.
+
 ### Other Changes
 
 ## 2.8.0 (2026-10-19)

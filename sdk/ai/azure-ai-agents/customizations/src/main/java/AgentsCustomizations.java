@@ -147,22 +147,26 @@ public class AgentsCustomizations extends Customization {
         List<String> classNames = Arrays.asList("AgentHarness", "AgentOptimizationConfigurationBase",
             "AgentOptimizationEvaluationSet", "AgentOptimizationTargetCompletionDataSource",
             "AgentOptimizationTargetConfiguration", "AgentOptimizationUserConversationSimulationDataSource",
-            "CreateTelephonyBindingInput", "EvaluationVoiceModelConfiguration", "OptimizationContext",
-            "MemoryItem", "MemoryStoreDefinition",
-            "RealtimeAudioFormat", "RealtimeClientEvent", "RealtimeConversationItem",
-            "RealtimeConversationItemMessage", "RealtimeMcpError", "RealtimeSessionConfigurationBase",
-            "RealtimeTurnDetection", "TelephonyOutboundRetryPolicy", "TelephonyTransferDestination",
-            "UserConversationSimulationInterruptionConfiguration", "VoiceAgentGreetingConfiguration",
-            "VoiceAgentInterimResponseConfiguration", "VoiceAgentSystemTool", "VoiceAgentTool",
-            "VoiceAgentTurnDetectionConfiguration", "VoiceConversationEngine");
+            "CreateTelephonyBindingInput", "TelephonyBinding", "TelephonyAddress", "EvaluationVoiceModelConfiguration",
+            "OptimizationContext", "MemoryItem", "MemoryStoreDefinition", "RealtimeAudioFormat", "RealtimeClientEvent",
+            "RealtimeConversationItem", "RealtimeConversationItemMessage", "RealtimeMcpError",
+            "RealtimeSessionConfigurationBase", "RealtimeTurnDetection", "TelephonyOutboundRetryPolicy",
+            "TelephonyTransferDestination", "UserConversationSimulationInterruptionConfiguration",
+            "VoiceAgentGreetingConfiguration", "VoiceAgentInterimResponseConfiguration", "VoiceAgentSystemTool",
+            "VoiceAgentTool", "VoiceAgentTurnDetectionConfiguration", "VoiceConversationEngine");
 
-        for (String className : classNames) {
-            ClassCustomization classCustomization = customization.getClass(MODELS_PACKAGE, className);
-            classCustomization.customizeAst(ast -> ast.getClassByName(className).ifPresent(clazz -> clazz
-                .getConstructors()
-                .stream()
-                .filter(constructor -> constructor.isPublic())
-                .forEach(constructor -> constructor.setModifiers(Modifier.Keyword.PROTECTED))));
+        // TypeSpec can remove or replace a polymorphic root. Protect every root that is
+        // actually emitted, without requiring retired models to remain in the package.
+        for (ClassCustomization classCustomization : customization.getPackage(MODELS_PACKAGE).listClasses()) {
+            String className = classCustomization.getClassName();
+            if (!classNames.contains(className)) {
+                continue;
+            }
+            classCustomization.customizeAst(ast -> ast.getClassByName(className)
+                .ifPresent(clazz -> clazz.getConstructors()
+                    .stream()
+                    .filter(constructor -> constructor.isPublic())
+                    .forEach(constructor -> constructor.setModifiers(Modifier.Keyword.PROTECTED))));
         }
     }
 
