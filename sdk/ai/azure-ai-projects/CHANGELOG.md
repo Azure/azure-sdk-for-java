@@ -1,5 +1,15 @@
 # Release History
 
+## 2.9.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 2.8.0 (2026-10-19)
 
 ### Bugs Fixed
@@ -10,8 +20,7 @@
 ### Other Changes
 
 - Regenerated from the updated Foundry TypeSpec specification.
-- Updated `azure-ai-agents` to `2.8.0`, `azure-storage-blob` to `12.36.0`, and `azure-core-http-netty` to
-  `1.17.0-beta.1`.
+- Updated `azure-ai-agents` to `2.8.0` and `azure-storage-blob` to `12.36.0`.
 
 ## 2.7.0 (2026-10-06)
 
