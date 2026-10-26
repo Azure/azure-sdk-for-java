@@ -14,6 +14,10 @@
 
 ### Bugs Fixed
 
+- Fixed HTTP timeout resolution to prefer explicit builder values, then builder-specific configuration, then global
+  configuration, and finally SDK defaults. Global timeouts are resolved when needed rather than cached at class
+  initialization. Nonpositive JDK HTTP timeouts now disable the timeout, including the connection timeout.
+
 ### Other Changes
 
 ## 1.0.0-beta.11 (2025-07-21)

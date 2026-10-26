@@ -63,6 +63,10 @@
     </Or>
   </Match>
   <Match>
+    <Bug pattern="RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT" />
+    <Class name="io.clientcore.http.netty4.implementation.Netty4Http11ChannelBinaryDataTests" />
+  </Match>
+  <Match>
     <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON" />
     <Or>
       <Class name="io.clientcore.http.netty4.NettyHttpClientTests" />

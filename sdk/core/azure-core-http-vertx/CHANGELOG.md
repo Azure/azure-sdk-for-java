@@ -4,11 +4,26 @@
 
 ### Features Added
 
+- Added support for Vert.x 5.1 and 5.2 while retaining compatibility with Vert.x 4.5 and 5.0.
+
 ### Breaking Changes
 
 ### Bugs Fixed
 
+- Fixed timeout resolution to prefer explicit builder values, then builder-specific configuration, then global
+  configuration, and finally SDK defaults.
+- Fixed a bug where requests with a streaming body, such as `Flux<ByteBuffer>` or `InputStream`, would never be sent
+  when running with Vert.x 5.x.
+- Fixed response timeouts and request cancellation leaving HTTP exchanges active and occupying pooled connections,
+  including reset failures caused by incompatible method return types in Vert.x 5.x.
+- Fixed the SDK write timeout continuing to run after writing completed, incorrectly terminating slow responses.
+- Fixed excessive retention of canceled write-timeout tasks during streamed uploads with many small buffers.
+
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `vertx-codegen` and `vertx-core` from `4.5.32` to `4.5.35`.
 
 ## 1.2.0 (2026-09-29)
 

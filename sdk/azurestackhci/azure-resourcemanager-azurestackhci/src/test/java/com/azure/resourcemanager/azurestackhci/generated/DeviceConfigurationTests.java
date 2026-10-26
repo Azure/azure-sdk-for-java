@@ -14,52 +14,42 @@ public final class DeviceConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DeviceConfiguration model = BinaryData.fromString(
-            "{\"nicDetails\":[{\"adapterName\":\"sxze\",\"interfaceDescription\":\"axwk\",\"componentId\":\"ykhv\",\"driverVersion\":\"xepmrut\",\"ip4Address\":\"abaobnslujdjltym\",\"subnetMask\":\"vguihywar\",\"defaultGateway\":\"pphkixkykxds\",\"dnsServers\":[\"emmucfxh\",\"kkflrmymyincqlhr\",\"s\"],\"defaultIsolationId\":\"lmiiiovg\"},{\"adapterName\":\"gxuugqkctotio\",\"interfaceDescription\":\"xteqdptjgwdtg\",\"componentId\":\"ranblwphqlkccu\",\"driverVersion\":\"ygqwahoiu\",\"ip4Address\":\"gniiprglvaw\",\"subnetMask\":\"z\",\"defaultGateway\":\"fypiv\",\"dnsServers\":[\"bjpmcubk\",\"ifoxxkubvphav\",\"mhbrbqgvg\"],\"defaultIsolationId\":\"pbbttefjoknss\"}],\"deviceMetadata\":\"zqedikdfrdbi\"}")
+            "{\"nicDetails\":[{\"adapterName\":\"aqvlgafcqusr\",\"interfaceDescription\":\"etnwsdtutnw\",\"componentId\":\"uycvuzhyrmewip\",\"driverVersion\":\"ekdxuku\",\"ip4Address\":\"sjjxundxgketw\",\"subnetMask\":\"hzjhf\",\"defaultGateway\":\"hvvmuvgpmun\",\"dnsServers\":[\"xvmhf\"],\"defaultIsolationId\":\"zjyi\"}],\"deviceMetadata\":\"as\"}")
             .toObject(DeviceConfiguration.class);
-        Assertions.assertEquals("sxze", model.nicDetails().get(0).adapterName());
-        Assertions.assertEquals("axwk", model.nicDetails().get(0).interfaceDescription());
-        Assertions.assertEquals("ykhv", model.nicDetails().get(0).componentId());
-        Assertions.assertEquals("xepmrut", model.nicDetails().get(0).driverVersion());
-        Assertions.assertEquals("abaobnslujdjltym", model.nicDetails().get(0).ip4Address());
-        Assertions.assertEquals("vguihywar", model.nicDetails().get(0).subnetMask());
-        Assertions.assertEquals("pphkixkykxds", model.nicDetails().get(0).defaultGateway());
-        Assertions.assertEquals("emmucfxh", model.nicDetails().get(0).dnsServers().get(0));
-        Assertions.assertEquals("lmiiiovg", model.nicDetails().get(0).defaultIsolationId());
-        Assertions.assertEquals("zqedikdfrdbi", model.deviceMetadata());
+        Assertions.assertEquals("aqvlgafcqusr", model.nicDetails().get(0).adapterName());
+        Assertions.assertEquals("etnwsdtutnw", model.nicDetails().get(0).interfaceDescription());
+        Assertions.assertEquals("uycvuzhyrmewip", model.nicDetails().get(0).componentId());
+        Assertions.assertEquals("ekdxuku", model.nicDetails().get(0).driverVersion());
+        Assertions.assertEquals("sjjxundxgketw", model.nicDetails().get(0).ip4Address());
+        Assertions.assertEquals("hzjhf", model.nicDetails().get(0).subnetMask());
+        Assertions.assertEquals("hvvmuvgpmun", model.nicDetails().get(0).defaultGateway());
+        Assertions.assertEquals("xvmhf", model.nicDetails().get(0).dnsServers().get(0));
+        Assertions.assertEquals("zjyi", model.nicDetails().get(0).defaultIsolationId());
+        Assertions.assertEquals("as", model.deviceMetadata());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DeviceConfiguration model = new DeviceConfiguration().withNicDetails(Arrays.asList(
-            new NicDetail().withAdapterName("sxze")
-                .withInterfaceDescription("axwk")
-                .withComponentId("ykhv")
-                .withDriverVersion("xepmrut")
-                .withIp4Address("abaobnslujdjltym")
-                .withSubnetMask("vguihywar")
-                .withDefaultGateway("pphkixkykxds")
-                .withDnsServers(Arrays.asList("emmucfxh", "kkflrmymyincqlhr", "s"))
-                .withDefaultIsolationId("lmiiiovg"),
-            new NicDetail().withAdapterName("gxuugqkctotio")
-                .withInterfaceDescription("xteqdptjgwdtg")
-                .withComponentId("ranblwphqlkccu")
-                .withDriverVersion("ygqwahoiu")
-                .withIp4Address("gniiprglvaw")
-                .withSubnetMask("z")
-                .withDefaultGateway("fypiv")
-                .withDnsServers(Arrays.asList("bjpmcubk", "ifoxxkubvphav", "mhbrbqgvg"))
-                .withDefaultIsolationId("pbbttefjoknss")))
-            .withDeviceMetadata("zqedikdfrdbi");
+        DeviceConfiguration model
+            = new DeviceConfiguration().withNicDetails(Arrays.asList(new NicDetail().withAdapterName("aqvlgafcqusr")
+                .withInterfaceDescription("etnwsdtutnw")
+                .withComponentId("uycvuzhyrmewip")
+                .withDriverVersion("ekdxuku")
+                .withIp4Address("sjjxundxgketw")
+                .withSubnetMask("hzjhf")
+                .withDefaultGateway("hvvmuvgpmun")
+                .withDnsServers(Arrays.asList("xvmhf"))
+                .withDefaultIsolationId("zjyi"))).withDeviceMetadata("as");
         model = BinaryData.fromObject(model).toObject(DeviceConfiguration.class);
-        Assertions.assertEquals("sxze", model.nicDetails().get(0).adapterName());
-        Assertions.assertEquals("axwk", model.nicDetails().get(0).interfaceDescription());
-        Assertions.assertEquals("ykhv", model.nicDetails().get(0).componentId());
-        Assertions.assertEquals("xepmrut", model.nicDetails().get(0).driverVersion());
-        Assertions.assertEquals("abaobnslujdjltym", model.nicDetails().get(0).ip4Address());
-        Assertions.assertEquals("vguihywar", model.nicDetails().get(0).subnetMask());
-        Assertions.assertEquals("pphkixkykxds", model.nicDetails().get(0).defaultGateway());
-        Assertions.assertEquals("emmucfxh", model.nicDetails().get(0).dnsServers().get(0));
-        Assertions.assertEquals("lmiiiovg", model.nicDetails().get(0).defaultIsolationId());
-        Assertions.assertEquals("zqedikdfrdbi", model.deviceMetadata());
+        Assertions.assertEquals("aqvlgafcqusr", model.nicDetails().get(0).adapterName());
+        Assertions.assertEquals("etnwsdtutnw", model.nicDetails().get(0).interfaceDescription());
+        Assertions.assertEquals("uycvuzhyrmewip", model.nicDetails().get(0).componentId());
+        Assertions.assertEquals("ekdxuku", model.nicDetails().get(0).driverVersion());
+        Assertions.assertEquals("sjjxundxgketw", model.nicDetails().get(0).ip4Address());
+        Assertions.assertEquals("hzjhf", model.nicDetails().get(0).subnetMask());
+        Assertions.assertEquals("hvvmuvgpmun", model.nicDetails().get(0).defaultGateway());
+        Assertions.assertEquals("xvmhf", model.nicDetails().get(0).dnsServers().get(0));
+        Assertions.assertEquals("zjyi", model.nicDetails().get(0).defaultIsolationId());
+        Assertions.assertEquals("as", model.deviceMetadata());
     }
 }

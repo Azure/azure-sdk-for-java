@@ -13,7 +13,7 @@ import com.azure.resourcemanager.storagecache.models.AutoImportJobUpdateProperti
 import java.io.IOException;
 
 /**
- * The AutoImportJobUpdateProperties model.
+ * Properties for updating an auto import job.
  */
 @Fluent
 public final class AutoImportJobUpdateProperties implements JsonSerializable<AutoImportJobUpdateProperties> {

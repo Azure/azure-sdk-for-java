@@ -12,7 +12,8 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The SKU type for update operations.
+ * The SKU fields in the update model. Do not include sku in PATCH requests; any supplied sku, including null or the
+ * existing value, is rejected.
  */
 @Fluent
 public final class SkuTypeUpdate implements JsonSerializable<SkuTypeUpdate> {

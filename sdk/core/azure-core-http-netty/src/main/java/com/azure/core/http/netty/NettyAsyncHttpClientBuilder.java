@@ -16,12 +16,13 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
-import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.handler.logging.LoggingHandler;
 import io.netty.resolver.DefaultAddressResolverGroup;
 import io.netty.resolver.NoopAddressResolverGroup;
+import io.netty.util.internal.SystemPropertyUtil;
 import reactor.netty.Connection;
 import reactor.netty.NettyPipeline;
 import reactor.netty.http.HttpDecoderSpec;
@@ -40,11 +41,15 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Pattern;
 
-import static com.azure.core.implementation.util.HttpUtils.getDefaultConnectTimeout;
-import static com.azure.core.implementation.util.HttpUtils.getDefaultReadTimeout;
-import static com.azure.core.implementation.util.HttpUtils.getDefaultResponseTimeout;
-import static com.azure.core.implementation.util.HttpUtils.getDefaultWriteTimeout;
+import static com.azure.core.implementation.util.HttpUtils.DEFAULT_CONNECT_TIMEOUT;
+import static com.azure.core.implementation.util.HttpUtils.DEFAULT_READ_TIMEOUT;
+import static com.azure.core.implementation.util.HttpUtils.DEFAULT_RESPONSE_TIMEOUT;
+import static com.azure.core.implementation.util.HttpUtils.DEFAULT_WRITE_TIMEOUT;
 import static com.azure.core.implementation.util.HttpUtils.getTimeout;
+import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT;
+import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_READ_TIMEOUT;
+import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT;
+import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT;
 
 /**
  * <p>
@@ -151,7 +156,7 @@ public class NettyAsyncHttpClientBuilder {
      *     .wiretap&#40;TcpClient.class.getName&#40;&#41;, LogLevel.INFO&#41;;
      * &#47;&#47; Create an HttpClient based on above reactor-netty client and configure EventLoop count.
      * HttpClient client = new NettyAsyncHttpClientBuilder&#40;baseHttpClient&#41;
-     *     .eventLoopGroup&#40;new NioEventLoopGroup&#40;5&#41;&#41;
+     *     .eventLoopGroup&#40;new MultiThreadIoEventLoopGroup&#40;5, NioIoHandler.newFactory&#40;&#41;&#41;&#41;
      *     .build&#40;&#41;;
      * </pre>
      * <!-- end com.azure.core.http.netty.from-existing-http-client -->
@@ -202,21 +207,38 @@ public class NettyAsyncHttpClientBuilder {
             nettyHttpClient = HttpClient.create();
         }
 
+        // Keep the pooled default while respecting allocator choices made by the application.
+        if (!nettyHttpClient.configuration().options().containsKey(ChannelOption.ALLOCATOR)
+            && !SystemPropertyUtil.contains("io.netty.allocator.type")) {
+            // If ChannelOptions and io.netty.allocator.type wasn't configured with an allocator fallback to the default
+            // setting from Netty 4.1 which was the pooled allocator. Otherwise, respect the configuration, be it
+            // ChannelOptions or io.netty.allocator.type. In the future, this should be validated for if this should use
+            // the new Netty 4.2 default which is an adaptive allocator.
+            nettyHttpClient = nettyHttpClient.option(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT);
+        }
+
         // If a resolver hasn't been set, set the default one.
         if (nettyHttpClient.configuration().resolver() == null) {
             nettyHttpClient = nettyHttpClient.resolver(DefaultAddressResolverGroup.INSTANCE);
             setDefaultAddressResolverGroup = true;
         }
 
-        long writeTimeout = getTimeout(this.writeTimeout, getDefaultWriteTimeout()).toMillis();
-        long responseTimeout = getTimeout(this.responseTimeout, getDefaultResponseTimeout()).toMillis();
-        long readTimeout = getTimeout(this.readTimeout, getDefaultReadTimeout()).toMillis();
+        long writeTimeout
+            = getTimeout(this.writeTimeout, configuration, PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT, DEFAULT_WRITE_TIMEOUT)
+                .toMillis();
+        long responseTimeout = getTimeout(this.responseTimeout, configuration, PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT,
+            DEFAULT_RESPONSE_TIMEOUT).toMillis();
+        long readTimeout
+            = getTimeout(this.readTimeout, configuration, PROPERTY_AZURE_REQUEST_READ_TIMEOUT, DEFAULT_READ_TIMEOUT)
+                .toMillis();
 
         // Get the initial HttpResponseDecoderSpec and update it.
         // .httpResponseDecoder passes a new HttpResponseDecoderSpec and any existing configuration should be updated
         // instead of overwritten.
         HttpResponseDecoderSpec initialSpec = nettyHttpClient.configuration().decoder();
-        long connectTimeoutMillis = getTimeout(connectTimeout, getDefaultConnectTimeout()).toMillis();
+        long connectTimeoutMillis
+            = getTimeout(connectTimeout, configuration, PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT, DEFAULT_CONNECT_TIMEOUT)
+                .toMillis();
         nettyHttpClient = nettyHttpClient.port(port)
             .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, (int) connectTimeoutMillis)
             .httpResponseDecoder(httpResponseDecoderSpec -> {
@@ -385,12 +407,12 @@ public class NettyAsyncHttpClientBuilder {
     /**
      * Sets the NIO event loop group that will be used to run IO loops.
      *
-     * @param nioEventLoopGroup The {@link NioEventLoopGroup} that will run IO loops.
+     * @param nioEventLoopGroup The {@link io.netty.channel.nio.NioEventLoopGroup} that will run IO loops.
      * @return the updated NettyAsyncHttpClientBuilder object.
      * @deprecated deprecated in favor of {@link #eventLoopGroup(EventLoopGroup)}.
      */
     @Deprecated
-    public NettyAsyncHttpClientBuilder nioEventLoopGroup(NioEventLoopGroup nioEventLoopGroup) {
+    public NettyAsyncHttpClientBuilder nioEventLoopGroup(io.netty.channel.nio.NioEventLoopGroup nioEventLoopGroup) {
         this.eventLoopGroup = nioEventLoopGroup;
         return this;
     }
@@ -404,7 +426,7 @@ public class NettyAsyncHttpClientBuilder {
      * <pre>
      * int threadCount = 5;
      * HttpClient client = new NettyAsyncHttpClientBuilder&#40;&#41;
-     *     .eventLoopGroup&#40;new NioEventLoopGroup&#40;threadCount&#41;&#41;
+     *     .eventLoopGroup&#40;new MultiThreadIoEventLoopGroup&#40;threadCount, NioIoHandler.newFactory&#40;&#41;&#41;&#41;
      *     .build&#40;&#41;;
      * </pre>
      * <!-- end com.azure.core.http.netty.NettyAsyncHttpClientBuilder#eventLoopGroup -->
@@ -420,8 +442,10 @@ public class NettyAsyncHttpClientBuilder {
     /**
      * Sets the configuration store that is used during construction of the HTTP client.
      * <p>
-     * The default configuration store is a clone of the {@link Configuration#getGlobalConfiguration() global
-     * configuration store}, use {@link Configuration#NONE} to bypass using configuration settings during construction.
+     * The default configuration store is the {@link Configuration#getGlobalConfiguration() global configuration store}.
+     * Timeouts explicitly set on this builder take precedence over this store, then the global store, then the default
+     * timeout. Use {@link Configuration#NONE} to bypass other configuration settings during construction; unset
+     * timeouts still fall back to the global store.
      *
      * @param configuration The configuration store used to
      * @return The updated NettyAsyncHttpClientBuilder object.

@@ -24,7 +24,7 @@ public final class ImportJobsListByAmlFilesystemMockTests {
     @Test
     public void testListByAmlFilesystem() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"adminStatus\":\"Active\",\"importPrefixes\":[\"firclnpkciayz\"],\"conflictResolutionMode\":\"OverwriteAlways\",\"maximumErrors\":614415901,\"status\":{\"state\":\"InProgress\",\"statusMessage\":\"vjlboxqvk\",\"totalBlobsWalked\":4212162432049005189,\"blobsWalkedPerSecond\":5251286170836534049,\"totalBlobsImported\":1283948358684815684,\"importedFiles\":8975628624340233031,\"importedDirectories\":2742511706808371729,\"importedSymlinks\":2236366643117518924,\"preexistingFiles\":8263718862766737851,\"preexistingDirectories\":4316338834967316017,\"preexistingSymlinks\":67075187560460490,\"blobsImportedPerSecond\":837193967660191056,\"lastCompletionTime\":\"2021-01-17T13:30:22Z\",\"lastStartedTime\":\"2021-07-18T15:19:57Z\",\"totalErrors\":1077210175,\"totalConflicts\":1413339279}},\"location\":\"vaiqyuvvf\",\"tags\":{\"hqyikvy\":\"p\",\"vluwmncsttij\":\"auy\"},\"id\":\"y\",\"name\":\"vpo\",\"type\":\"krsgsgb\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\",\"adminStatus\":\"Active\",\"importPrefixes\":[\"k\",\"tgguwpijrajcivmm\",\"hfcf\",\"wrxgkneuvy\"],\"conflictResolutionMode\":\"OverwriteIfDirty\",\"maximumErrors\":125071316,\"status\":{\"state\":\"Cancelling\",\"statusMessage\":\"gsh\",\"totalBlobsWalked\":2714250773470139673,\"blobsWalkedPerSecond\":7279810640288598675,\"totalBlobsImported\":205270169500348285,\"importedFiles\":5025759340585142887,\"importedDirectories\":6848841794880922522,\"importedSymlinks\":7660573073239419550,\"preexistingFiles\":136963912247235187,\"preexistingDirectories\":8476054187284390796,\"preexistingSymlinks\":6222035378690339444,\"blobsImportedPerSecond\":5138444574404162444,\"lastCompletionTime\":\"2021-02-21T01:21:42Z\",\"lastStartedTime\":\"2021-03-05T03:27:21Z\",\"totalErrors\":673220982,\"totalConflicts\":1349436155}},\"location\":\"sdtutnwlduyc\",\"tags\":{\"kuqgsjjxundxgket\":\"hyrmewipmvekdx\",\"gpmuneqsxvmhfbuz\":\"zhhzjhfjmhvvmu\",\"ms\":\"yihsasbhudypohyu\"},\"id\":\"ynsqyrpfoobr\",\"name\":\"ttymsjny\",\"type\":\"qdnfwqzdz\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,15 +33,15 @@ public final class ImportJobsListByAmlFilesystemMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<ImportJob> response
-            = manager.importJobs().listByAmlFilesystem("ndtic", "kpvzmlq", com.azure.core.util.Context.NONE);
+        PagedIterable<ImportJob> response = manager.importJobs()
+            .listByAmlFilesystem("cporxvxcjz", "qizxfpxtgqscjavf", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("vaiqyuvvf", response.iterator().next().location());
-        Assertions.assertEquals("p", response.iterator().next().tags().get("hqyikvy"));
+        Assertions.assertEquals("sdtutnwlduyc", response.iterator().next().location());
+        Assertions.assertEquals("hyrmewipmvekdx", response.iterator().next().tags().get("kuqgsjjxundxgket"));
         Assertions.assertEquals(ImportJobAdminStatus.ACTIVE, response.iterator().next().adminStatus());
-        Assertions.assertEquals("firclnpkciayz", response.iterator().next().importPrefixes().get(0));
-        Assertions.assertEquals(ConflictResolutionMode.OVERWRITE_ALWAYS,
+        Assertions.assertEquals("k", response.iterator().next().importPrefixes().get(0));
+        Assertions.assertEquals(ConflictResolutionMode.OVERWRITE_IF_DIRTY,
             response.iterator().next().conflictResolutionMode());
-        Assertions.assertEquals(614415901, response.iterator().next().maximumErrors());
+        Assertions.assertEquals(125071316, response.iterator().next().maximumErrors());
     }
 }

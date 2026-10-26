@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Results of a scheduled action operation for targeted resources.
+ * Results of a recurring bulk action operation for targeted resources.
  */
 @Immutable
 public final class ResourceOperationResponseInner implements JsonSerializable<ResourceOperationResponseInner> {
