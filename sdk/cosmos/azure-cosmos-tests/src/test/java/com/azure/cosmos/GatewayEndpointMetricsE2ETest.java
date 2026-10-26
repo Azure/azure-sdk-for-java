@@ -155,7 +155,7 @@ public class GatewayEndpointMetricsE2ETest extends TestSuiteBase {
                 assertThat(rule.getHitCount()).isEqualTo(1);
 
                 List<Counter> planCounters = registry.find(CosmosMetricName.REQUEST_SUMMARY_GATEWAY_REQUESTS.toString())
-                    .tag(TagName.RequestOperationType.toString(), "Document/QueryPlan")
+                    .tag(TagName.RequestOperationType.toString(), "DocumentCollection/QueryPlan")
                     .counters().stream().collect(Collectors.toList());
                 assertThat(planCounters).hasSize(2);
                 assertThat(planCounters.stream().mapToDouble(Counter::count).sum()).isEqualTo(2);

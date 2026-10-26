@@ -120,11 +120,13 @@ public class GatewayEndpointMetricsTest {
                 }
             }
             assertThat(state.registry.get(CosmosMetricName.REQUEST_SUMMARY_GATEWAY_REQUESTS.toString())
-                .tag(TagName.RequestOperationType.toString(), "Document/QueryPlan")
+                .tag(TagName.RequestOperationType.toString(), "DocumentCollection/QueryPlan")
                 .counter().count()).isEqualTo(1);
             assertThat(state.registry.get(CosmosMetricName.REQUEST_SUMMARY_GATEWAY_LATENCY.toString())
-                .tag(TagName.RequestOperationType.toString(), "Document/QueryPlan")
+                .tag(TagName.RequestOperationType.toString(), "DocumentCollection/QueryPlan")
                 .timer().count()).isEqualTo(1);
+            assertThat(state.registry.find(CosmosMetricName.REQUEST_SUMMARY_GATEWAY_REQUESTS.toString())
+                .tag(TagName.RequestOperationType.toString(), "Document/QueryPlan").counters()).isEmpty();
         }
     }
 
@@ -175,7 +177,7 @@ public class GatewayEndpointMetricsTest {
             laterPage.setDiagnosticsContext(feed.getQueryPlanDiagnosticsContext());
             state.record(new CosmosDiagnostics(laterPage), 200);
             assertThat(state.registry.find(CosmosMetricName.REQUEST_SUMMARY_GATEWAY_REQUESTS.toString())
-                .tag(TagName.RequestOperationType.toString(), "Document/QueryPlan").counters())
+                .tag(TagName.RequestOperationType.toString(), "DocumentCollection/QueryPlan").counters())
                 .hasSize(2).allSatisfy(counter -> assertThat(counter.count()).isEqualTo(1));
             assertThat(state.registry.get(CosmosMetricName.REQUEST_SUMMARY_GATEWAY_REQUESTS.toString())
                 .tag(SERVICE_ENDPOINT, "account-eastus.documents.azure.com_443")

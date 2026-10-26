@@ -8,6 +8,8 @@ import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.OperationType;
+import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient;
@@ -74,6 +76,9 @@ public final class ClientTelemetryMetrics {
     private static volatile DescendantValidationResult lastDescendantValidation = new DescendantValidationResult(Instant.MIN, true);
 
     private static final Object lockObject = new Object();
+    private static final Tag QUERYPLAN_TAG = Tag.of(
+        TagName.RequestOperationType.toString(),
+        ResourceType.DocumentCollection + "/" + OperationType.QueryPlan);
     private static final Tag UNKNOWN_SERVICE_ENDPOINT_TAG = Tag.of(TagName.ServiceEndpoint.toString(), "NONE");
 
     private static String convertStackTraceToString(Throwable throwable)
@@ -666,7 +671,7 @@ public final class ClientTelemetryMetrics {
             }
 
             if (metricTagNames.contains(TagName.RequestOperationType)) {
-                effectiveTags.add(Tag.of(
+                effectiveTags.add(OperationType.QueryPlan.toString().equals(operationType) ? QUERYPLAN_TAG : Tag.of(
                     TagName.RequestOperationType.toString(),
                     resourceType + "/" + operationType));
             }
